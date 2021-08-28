@@ -1,0 +1,13 @@
+{
+	"name": "tinyusb-gamepad-driver",
+	"version": "0.0.1",
+	"description": "C library for handling USB HID/XID gamepads via TinyUSB.",
+	"keywords": "tinyusb gamepad hid xinput switch",
+	"authors": [
+		{
+			"name": "Jason Skuby",
+			"url": "https://mytechtoybox.com"
+		}
+	],
+	"license": "MIT"
+}

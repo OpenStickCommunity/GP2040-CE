@@ -1,0 +1,13 @@
+{
+	"name": "Gamepad",
+	"version": "0.0.1",
+	"description": "C++ library for common gamepad handling.",
+	"keywords": "c c++ baremetal gamepad hid xinput switch",
+	"authors": [
+		{
+			"name": "Jason Skuby",
+			"url": "https://mytechtoybox.com"
+		}
+	],
+	"license": "MIT"
+}

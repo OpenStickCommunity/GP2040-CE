@@ -1,0 +1,13 @@
+{
+	"name": "FlashPROM",
+	"version": "0.0.1",
+	"description": "Basic EEPROM-like interface for saving to flash memory on the RP2040.",
+	"keywords": "pico rp2040 eeprom flash",
+	"authors": [
+		{
+			"name": "Jason Skuby",
+			"url": "https://mytechtoybox.com"
+		}
+	],
+	"license": "MIT"
+}
