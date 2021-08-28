@@ -6,6 +6,8 @@
 #ifndef OPEN_STICK_BOARD_H_
 #define OPEN_STICK_BOARD_H_
 
+#include "Gamepad.h"
+
 #define PIN_DPAD_UP     13
 #define PIN_DPAD_DOWN   11
 #define PIN_DPAD_LEFT   10
@@ -24,5 +26,7 @@
 #define PIN_BUTTON_12   16
 #define PIN_BUTTON_13   28
 #define PIN_BUTTON_14   18
+
+#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 #endif

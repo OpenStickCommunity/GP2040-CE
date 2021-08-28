@@ -20,6 +20,10 @@
 #include "definitions/TestBoard.h"
 #endif
 
+#include "definitions/Defaults.h"
+
+
+
 GamepadButtonMapping GamepadClass::mapDpadUp    = { .port = 0, .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP    };
 GamepadButtonMapping GamepadClass::mapDpadDown  = { .port = 0, .pin = PIN_DPAD_DOWN,  .pinMask = (1 << PIN_DPAD_DOWN),  .buttonMask = GAMEPAD_MASK_DOWN  };
 GamepadButtonMapping GamepadClass::mapDpadLeft  = { .port = 0, .pin = PIN_DPAD_LEFT,  .pinMask = (1 << PIN_DPAD_LEFT),  .buttonMask = GAMEPAD_MASK_LEFT  };
@@ -108,13 +112,13 @@ void GamepadClass::load()
 	Storage.start();
 	current_input_mode = Storage.getInputMode();
 	if (current_input_mode > SWITCH)
-		current_input_mode = XINPUT;
+		current_input_mode = DEFAULT_INPUT_MODE;
 
 	dpadMode = Storage.getDpadMode();
 	if (dpadMode > DPAD_MODE_RIGHT_ANALOG)
-		dpadMode = DPAD_MODE_DIGITAL;
+		dpadMode = DEFAULT_DPAD_MODE;
 
 	socdMode = Storage.getSOCDMode();;
 	if (socdMode > SOCD_MODE_SECOND_INPUT_PRIORITY)
-		socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY;
+		socdMode = DEFAULT_SOCD_MODE;
 }
