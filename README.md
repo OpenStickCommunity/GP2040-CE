@@ -93,4 +93,3 @@ SOCD mode is saved across power cycles.
 * Ha Thach for the TinyUSB library and excellent examples.
 * fluffymadness for the [tinyusb-xinput](https://github.com/fluffymadness/tinyusb-xinput) example.
 * Kevin Boone for his [blog post on using RP2040 flash memory as emulated EEPROM](https://kevinboone.me/picoflash.html).
-# GP2040
