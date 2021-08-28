@@ -16,7 +16,7 @@ The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO 
 
 ### Edit Existing Definition
 
-Once you have the project loaded into PlatformIO, edit the `include/definitions/RP2040Board.h` file to map your GPIO pins. Then from the PlatformIO environment BACKor, choose `env:raspberry-pi-pico`. From there you should be able to build or upload the project to you RP2040 board.
+Once you have the project loaded into PlatformIO, edit the `include/definitions/RP2040Board.h` file to map your GPIO pins. Then from the PlatformIO environment selector, choose `env:raspberry-pi-pico`. From there you should be able to build or upload the project to you RP2040 board.
 
 ### Create New Definition
 
