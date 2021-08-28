@@ -23,7 +23,7 @@ Once you have the project loaded into PlatformIO, edit the `include/definitions/
 You can also add a new board definition to `include/definitions`. If you do, perform the following:
 
 * Add `#define` for it in `include/definitions/BoardConfig.h`.
-* Add option to `src/RP2040Gamepad.cpp` in the `BOARD_DEFINITION` BACKion logic.
+* Add option to `src/RP2040Gamepad.cpp` in the `BOARD_DEFINITION` selection logic.
 * Add a new environment to the `platformio.ini`
   * Copy from existing env
   * Replace `BOARD_DEFINITION=#` with the number in the `BoardConfig.h` file.
