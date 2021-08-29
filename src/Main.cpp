@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "pico/stdlib.h"
+#include "pico/multicore.h"
 
 #include "usb_driver.h"
 #include "Gamepad.h"
@@ -44,14 +45,14 @@ void handleLed(GamepadButtonMapping button, bool pressed) {
 
 void handleLeds()
 {
-	GamepadButtonMapping dPadButtons[4] = {Gamepad.mapDpadLeft, Gamepad.mapDpadDown, Gamepad.mapDpadRight, Gamepad.mapDpadUp};
-	GamepadButtonMapping actionButtons[14] = {Gamepad.mapButton01, Gamepad.mapButton02, Gamepad.mapButton03, Gamepad.mapButton04, Gamepad.mapButton05, Gamepad.mapButton06, Gamepad.mapButton07, Gamepad.mapButton08, Gamepad.mapButton09, Gamepad.mapButton10, Gamepad.mapButton11, Gamepad.mapButton12, Gamepad.mapButton13, Gamepad.mapButton14};
+	static GamepadButtonMapping dPadButtons[4] = {Gamepad.mapDpadLeft, Gamepad.mapDpadDown, Gamepad.mapDpadRight, Gamepad.mapDpadUp};
+	static GamepadButtonMapping actionButtons[14] = {Gamepad.mapButton01, Gamepad.mapButton02, Gamepad.mapButton03, Gamepad.mapButton04, Gamepad.mapButton05, Gamepad.mapButton06, Gamepad.mapButton07, Gamepad.mapButton08, Gamepad.mapButton09, Gamepad.mapButton10, Gamepad.mapButton11, Gamepad.mapButton12, Gamepad.mapButton13, Gamepad.mapButton14};
 
-	for(const GamepadButtonMapping &button : dPadButtons)
-			handleLed(button, isDpadPressed(button));
+	for (const GamepadButtonMapping &button : dPadButtons)
+		handleLed(button, isDpadPressed(button));
 
-	for(const GamepadButtonMapping &button : actionButtons)
-			handleLed(button, isButtonPressed(button));
+	for (const GamepadButtonMapping &button : actionButtons)
+		handleLed(button, isButtonPressed(button));
 }
 #endif
 
@@ -108,23 +109,31 @@ static inline void loop() {
 	Gamepad.process();
 
 	// Convert to USB report
-	report = fill_report(&Gamepad.state, false);
+	report = fill_report((GamepadState *)&Gamepad.state, false);
 
 	// Send it!
 	send_report(report, report_size);
 
 	// Ensure next runtime ahead of current time
 	nextRuntime = getMillis() + intervalMS;
+}
 
-	#ifdef BOARD_LEDS_PIN
-	handleLeds();
-	leds.Show();
-	#endif
+void core1()
+{
+	while (1)
+	{
+#ifdef BOARD_LEDS_PIN
+		handleLeds();
+		leds.Show();
+#endif
+	}
 }
 
 int main()
 {
 	setup();
+
+	multicore_launch_core1(core1);
 
 	while (1)
 		loop();
