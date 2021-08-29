@@ -1,0 +1,13 @@
+{
+	"name": "NeoPico",
+	"version": "0.0.1",
+	"description": "WS2812 PIO handling based on official Pico examples",
+	"keywords": "c c++ baremetal neopixel led",
+	"authors": [
+		{
+			"name": "Jonathan Barket",
+			"url": "https://jonathanbarket.com"
+		}
+	],
+	"license": "MIT"
+}

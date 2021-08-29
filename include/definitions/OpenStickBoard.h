@@ -27,6 +27,21 @@
 #define PIN_BUTTON_13   28
 #define PIN_BUTTON_14   18
 
+#define LEDS_DPAD_UP     3
+#define LEDS_DPAD_DOWN   1
+#define LEDS_DPAD_LEFT   0
+#define LEDS_DPAD_RIGHT  2
+#define LEDS_BUTTON_01   8
+#define LEDS_BUTTON_02   9
+#define LEDS_BUTTON_03   4
+#define LEDS_BUTTON_04   5
+#define LEDS_BUTTON_05   7
+#define LEDS_BUTTON_06   6
+#define LEDS_BUTTON_07   11
+#define LEDS_BUTTON_08   10
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+
+#define BOARD_LEDS_PIN 14
+#define BOARD_LEDS_COUNT 16
 
 #endif

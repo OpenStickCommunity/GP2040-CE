@@ -9,39 +9,26 @@
 #include "definitions/BoardConfig.h"
 #include "Gamepad.h"
 #include "GamepadStorage.h"
+#include "definitions/BoardConfig.h"
 
-#if BOARD_DEFINITION == DEBUG_BOARD
-#include "definitions/DebugBoard.h"
-#elif BOARD_DEFINITION == PICO_BOARD
-#include "definitions/RP2040Board.h""
-#elif BOARD_DEFINITION == OPEN_STICK_BOARD
-#include "definitions/OpenStickBoard.h"
-#elif BOARD_DEFINITION == TEST_BOARD
-#include "definitions/TestBoard.h"
-#endif
-
-#include "definitions/Defaults.h"
-
-
-
-GamepadButtonMapping GamepadClass::mapDpadUp    = { .port = 0, .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP    };
-GamepadButtonMapping GamepadClass::mapDpadDown  = { .port = 0, .pin = PIN_DPAD_DOWN,  .pinMask = (1 << PIN_DPAD_DOWN),  .buttonMask = GAMEPAD_MASK_DOWN  };
-GamepadButtonMapping GamepadClass::mapDpadLeft  = { .port = 0, .pin = PIN_DPAD_LEFT,  .pinMask = (1 << PIN_DPAD_LEFT),  .buttonMask = GAMEPAD_MASK_LEFT  };
-GamepadButtonMapping GamepadClass::mapDpadRight = { .port = 0, .pin = PIN_DPAD_RIGHT, .pinMask = (1 << PIN_DPAD_RIGHT), .buttonMask = GAMEPAD_MASK_RIGHT };
-GamepadButtonMapping GamepadClass::mapButton01  = { .port = 0, .pin = PIN_BUTTON_01,  .pinMask = (1 << PIN_BUTTON_01),  .buttonMask = GAMEPAD_MASK_01    };
-GamepadButtonMapping GamepadClass::mapButton02  = { .port = 0, .pin = PIN_BUTTON_02,  .pinMask = (1 << PIN_BUTTON_02),  .buttonMask = GAMEPAD_MASK_02    };
-GamepadButtonMapping GamepadClass::mapButton03  = { .port = 0, .pin = PIN_BUTTON_03,  .pinMask = (1 << PIN_BUTTON_03),  .buttonMask = GAMEPAD_MASK_03    };
-GamepadButtonMapping GamepadClass::mapButton04  = { .port = 0, .pin = PIN_BUTTON_04,  .pinMask = (1 << PIN_BUTTON_04),  .buttonMask = GAMEPAD_MASK_04    };
-GamepadButtonMapping GamepadClass::mapButton05  = { .port = 0, .pin = PIN_BUTTON_05,  .pinMask = (1 << PIN_BUTTON_05),  .buttonMask = GAMEPAD_MASK_05    };
-GamepadButtonMapping GamepadClass::mapButton06  = { .port = 0, .pin = PIN_BUTTON_06,  .pinMask = (1 << PIN_BUTTON_06),  .buttonMask = GAMEPAD_MASK_06    };
-GamepadButtonMapping GamepadClass::mapButton07  = { .port = 0, .pin = PIN_BUTTON_07,  .pinMask = (1 << PIN_BUTTON_07),  .buttonMask = GAMEPAD_MASK_07    };
-GamepadButtonMapping GamepadClass::mapButton08  = { .port = 0, .pin = PIN_BUTTON_08,  .pinMask = (1 << PIN_BUTTON_08),  .buttonMask = GAMEPAD_MASK_08    };
-GamepadButtonMapping GamepadClass::mapButton09  = { .port = 0, .pin = PIN_BUTTON_09,  .pinMask = (1 << PIN_BUTTON_09),  .buttonMask = GAMEPAD_MASK_09    };
-GamepadButtonMapping GamepadClass::mapButton10  = { .port = 0, .pin = PIN_BUTTON_10,  .pinMask = (1 << PIN_BUTTON_10),  .buttonMask = GAMEPAD_MASK_10    };
-GamepadButtonMapping GamepadClass::mapButton11  = { .port = 0, .pin = PIN_BUTTON_11,  .pinMask = (1 << PIN_BUTTON_11),  .buttonMask = GAMEPAD_MASK_11    };
-GamepadButtonMapping GamepadClass::mapButton12  = { .port = 0, .pin = PIN_BUTTON_12,  .pinMask = (1 << PIN_BUTTON_12),  .buttonMask = GAMEPAD_MASK_12    };
-GamepadButtonMapping GamepadClass::mapButton13  = { .port = 0, .pin = PIN_BUTTON_13,  .pinMask = (1 << PIN_BUTTON_13),  .buttonMask = GAMEPAD_MASK_13    };
-GamepadButtonMapping GamepadClass::mapButton14  = { .port = 0, .pin = PIN_BUTTON_14,  .pinMask = (1 << PIN_BUTTON_14),  .buttonMask = GAMEPAD_MASK_14    };
+GamepadButtonMapping GamepadClass::mapDpadUp    = { .port = 0, .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP,    .ledPos = LEDS_DPAD_UP    };
+GamepadButtonMapping GamepadClass::mapDpadDown  = { .port = 0, .pin = PIN_DPAD_DOWN,  .pinMask = (1 << PIN_DPAD_DOWN),  .buttonMask = GAMEPAD_MASK_DOWN,  .ledPos = LEDS_DPAD_DOWN  };
+GamepadButtonMapping GamepadClass::mapDpadLeft  = { .port = 0, .pin = PIN_DPAD_LEFT,  .pinMask = (1 << PIN_DPAD_LEFT),  .buttonMask = GAMEPAD_MASK_LEFT,  .ledPos = LEDS_DPAD_LEFT  };
+GamepadButtonMapping GamepadClass::mapDpadRight = { .port = 0, .pin = PIN_DPAD_RIGHT, .pinMask = (1 << PIN_DPAD_RIGHT), .buttonMask = GAMEPAD_MASK_RIGHT, .ledPos = LEDS_DPAD_RIGHT };
+GamepadButtonMapping GamepadClass::mapButton01  = { .port = 0, .pin = PIN_BUTTON_01,  .pinMask = (1 << PIN_BUTTON_01),  .buttonMask = GAMEPAD_MASK_01, 		.ledPos = LEDS_BUTTON_01  };
+GamepadButtonMapping GamepadClass::mapButton02  = { .port = 0, .pin = PIN_BUTTON_02,  .pinMask = (1 << PIN_BUTTON_02),  .buttonMask = GAMEPAD_MASK_02, 		.ledPos = LEDS_BUTTON_02  };
+GamepadButtonMapping GamepadClass::mapButton03  = { .port = 0, .pin = PIN_BUTTON_03,  .pinMask = (1 << PIN_BUTTON_03),  .buttonMask = GAMEPAD_MASK_03,    .ledPos = LEDS_BUTTON_03  };
+GamepadButtonMapping GamepadClass::mapButton04  = { .port = 0, .pin = PIN_BUTTON_04,  .pinMask = (1 << PIN_BUTTON_04),  .buttonMask = GAMEPAD_MASK_04,    .ledPos = LEDS_BUTTON_04  };
+GamepadButtonMapping GamepadClass::mapButton05  = { .port = 0, .pin = PIN_BUTTON_05,  .pinMask = (1 << PIN_BUTTON_05),  .buttonMask = GAMEPAD_MASK_05, 		.ledPos = LEDS_BUTTON_05  };
+GamepadButtonMapping GamepadClass::mapButton06  = { .port = 0, .pin = PIN_BUTTON_06,  .pinMask = (1 << PIN_BUTTON_06),  .buttonMask = GAMEPAD_MASK_06, 		.ledPos = LEDS_BUTTON_06  };
+GamepadButtonMapping GamepadClass::mapButton07  = { .port = 0, .pin = PIN_BUTTON_07,  .pinMask = (1 << PIN_BUTTON_07),  .buttonMask = GAMEPAD_MASK_07, 		.ledPos = LEDS_BUTTON_07  };
+GamepadButtonMapping GamepadClass::mapButton08  = { .port = 0, .pin = PIN_BUTTON_08,  .pinMask = (1 << PIN_BUTTON_08),  .buttonMask = GAMEPAD_MASK_08, 		.ledPos = LEDS_BUTTON_08  };
+GamepadButtonMapping GamepadClass::mapButton09  = { .port = 0, .pin = PIN_BUTTON_09,  .pinMask = (1 << PIN_BUTTON_09),  .buttonMask = GAMEPAD_MASK_09, 		.ledPos = LEDS_BUTTON_09  };
+GamepadButtonMapping GamepadClass::mapButton10  = { .port = 0, .pin = PIN_BUTTON_10,  .pinMask = (1 << PIN_BUTTON_10),  .buttonMask = GAMEPAD_MASK_10, 		.ledPos = LEDS_BUTTON_10  };
+GamepadButtonMapping GamepadClass::mapButton11  = { .port = 0, .pin = PIN_BUTTON_11,  .pinMask = (1 << PIN_BUTTON_11),  .buttonMask = GAMEPAD_MASK_11, 		.ledPos = LEDS_BUTTON_11  };
+GamepadButtonMapping GamepadClass::mapButton12  = { .port = 0, .pin = PIN_BUTTON_12,  .pinMask = (1 << PIN_BUTTON_12),  .buttonMask = GAMEPAD_MASK_12,		.ledPos = LEDS_BUTTON_12  };
+GamepadButtonMapping GamepadClass::mapButton13  = { .port = 0, .pin = PIN_BUTTON_13,  .pinMask = (1 << PIN_BUTTON_13),  .buttonMask = GAMEPAD_MASK_13, 		.ledPos = LEDS_BUTTON_13  };
+GamepadButtonMapping GamepadClass::mapButton14  = { .port = 0, .pin = PIN_BUTTON_14,  .pinMask = (1 << PIN_BUTTON_14),  .buttonMask = GAMEPAD_MASK_14, 		.ledPos = LEDS_BUTTON_14  };
 
 void GamepadClass::setup()
 {

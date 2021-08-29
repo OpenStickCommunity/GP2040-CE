@@ -27,6 +27,7 @@ struct GamepadButtonMapping
 	const uint8_t pin;
 	const uint32_t pinMask;
 	const uint32_t buttonMask;
+	const int8_t ledPos;
 };
 
 // The available stick emulation modes
