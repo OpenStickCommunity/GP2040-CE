@@ -15,11 +15,45 @@
 #include "Gamepad.h"
 #include "GamepadStorage.h"
 #include "StateConverter.h"
+#include "NeoPico.hpp"
+#include "definitions/BoardConfig.h"
 
 void *report;
 uint8_t report_size;
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
+
+#ifdef BOARD_LEDS_PIN
+NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
+
+bool isDpadPressed(GamepadButtonMapping button) {
+	return ((Gamepad.state.dpad & button.buttonMask) == button.buttonMask);
+}
+
+bool isButtonPressed(GamepadButtonMapping button) {
+	return ((Gamepad.state.buttons & button.buttonMask) == button.buttonMask);
+}
+
+void handleLed(GamepadButtonMapping button, bool pressed) {
+	if (button.ledPos < 0) 
+		return;
+
+	uint32_t color = pressed ? leds.RGB(255, 255, 255) : 0;
+	leds.SetPixel(button.ledPos, color);
+}
+
+void handleLeds()
+{
+	GamepadButtonMapping dPadButtons[4] = {Gamepad.mapDpadLeft, Gamepad.mapDpadDown, Gamepad.mapDpadRight, Gamepad.mapDpadUp};
+	GamepadButtonMapping actionButtons[14] = {Gamepad.mapButton01, Gamepad.mapButton02, Gamepad.mapButton03, Gamepad.mapButton04, Gamepad.mapButton05, Gamepad.mapButton06, Gamepad.mapButton07, Gamepad.mapButton08, Gamepad.mapButton09, Gamepad.mapButton10, Gamepad.mapButton11, Gamepad.mapButton12, Gamepad.mapButton13, Gamepad.mapButton14};
+
+	for(const GamepadButtonMapping &button : dPadButtons)
+			handleLed(button, isDpadPressed(button));
+
+	for(const GamepadButtonMapping &button : actionButtons)
+			handleLed(button, isButtonPressed(button));
+}
+#endif
 
 static inline void setup()
 {
@@ -51,8 +85,7 @@ static inline void setup()
 	initialize_driver();
 }
 
-static inline void loop()
-{
+static inline void loop() {
 	// Poll every 1ms
 	const uint32_t intervalMS = 1;
 	static uint32_t nextRuntime = 0;
@@ -82,6 +115,11 @@ static inline void loop()
 
 	// Ensure next runtime ahead of current time
 	nextRuntime = getMillis() + intervalMS;
+
+	#ifdef BOARD_LEDS_PIN
+	handleLeds();
+	leds.Show();
+	#endif
 }
 
 int main()
