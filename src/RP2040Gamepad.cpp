@@ -32,7 +32,7 @@ GamepadButtonMapping GamepadClass::mapButton14  = { .port = 0, .pin = PIN_BUTTON
 
 void GamepadClass::setup()
 {
-	static GamepadButtonMapping *gamepadMappings[] =
+	GamepadButtonMapping *gamepadMappings[] =
 	{
 		&mapDpadUp,   &mapDpadDown, &mapDpadLeft, &mapDpadRight,
 		&mapButton01, &mapButton02, &mapButton03, &mapButton04,

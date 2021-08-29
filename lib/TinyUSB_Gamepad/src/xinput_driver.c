@@ -25,17 +25,17 @@ bool send_xinput_report(void *report, uint8_t report_size)
 	return sent;
 }
 
-static void gamepad_init(void)
+static void xinput_init(void)
 {
 
 }
 
-static void gamepad_reset(uint8_t __unused rhport)
+static void xinput_reset(uint8_t __unused rhport)
 {
 
 }
 
-static uint16_t gamepad_open(uint8_t __unused rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length)
+static uint16_t xinput_open(uint8_t __unused rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length)
 {
 	uint16_t driver_length = sizeof(tusb_desc_interface_t)
 		+ (itf_descriptor->bNumEndpoints * sizeof(tusb_desc_endpoint_t))
@@ -65,17 +65,17 @@ static uint16_t gamepad_open(uint8_t __unused rhport, tusb_desc_interface_t cons
 	return driver_length;
 }
 
-static bool gamepad_device_control_request(uint8_t __unused rhport, tusb_control_request_t __unused const *request)
+static bool xinput_device_control_request(uint8_t __unused rhport, tusb_control_request_t __unused const *request)
 {
 	return true;
 }
 
-static bool gamepad_control_complete(uint8_t __unused rhport, tusb_control_request_t __unused const *request)
+static bool xinput_control_complete(uint8_t __unused rhport, tusb_control_request_t __unused const *request)
 {
 	return true;
 }
 
-static bool gamepad_xfer_callback(uint8_t __unused rhport, uint8_t __unused ep_addr, xfer_result_t __unused result, uint32_t __unused xferred_bytes)
+static bool xinput_xfer_callback(uint8_t __unused rhport, uint8_t __unused ep_addr, xfer_result_t __unused result, uint32_t __unused xferred_bytes)
 {
 	return true;
 }
@@ -85,11 +85,11 @@ const usbd_class_driver_t xinput_driver =
 #if CFG_TUSB_DEBUG >= 2
 	.name = "XINPUT",
 #endif
-	.init = gamepad_init,
-	.reset = gamepad_reset,
-	.open = gamepad_open,
-	.control_request = gamepad_device_control_request,
-	.control_complete = gamepad_control_complete,
-	.xfer_cb = gamepad_xfer_callback,
+	.init = xinput_init,
+	.reset = xinput_reset,
+	.open = xinput_open,
+	.control_request = xinput_device_control_request,
+	.control_complete = xinput_control_complete,
+	.xfer_cb = xinput_xfer_callback,
 	.sof = NULL
 };
