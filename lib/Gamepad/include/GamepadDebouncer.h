@@ -1,7 +1,8 @@
 /* 
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
- *
+ * SPDX-FileCopyrightText: Copyright (c) 2013 thomasfredericks
+ * 
  * Debouncer class ported from the Arduino Bounce2 library (MIT license).
  */
 

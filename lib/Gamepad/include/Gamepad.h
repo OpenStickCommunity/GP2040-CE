@@ -208,49 +208,49 @@ class GamepadClass
 
 			switch (dpad & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN))
 			{
-			case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN):
-				if (mode == SOCD_MODE_UP_PRIORITY)
-				{
+				case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN):
+					if (mode == SOCD_MODE_UP_PRIORITY)
+					{
+						new_dpad |= GAMEPAD_MASK_UP;
+						last_ud = DIRECTION_UP;
+					}
+					else if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && last_ud != DIRECTION_NONE)
+						new_dpad |= (last_ud == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
+					else
+						last_ud = DIRECTION_NONE;
+					break;
+				case GAMEPAD_MASK_UP:
 					new_dpad |= GAMEPAD_MASK_UP;
 					last_ud = DIRECTION_UP;
-				}
-				else if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && last_ud != DIRECTION_NONE)
-					new_dpad |= (last_ud == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
-				else
+					break;
+				case GAMEPAD_MASK_DOWN:
+					new_dpad |= GAMEPAD_MASK_DOWN;
+					last_ud = DIRECTION_DOWN;
+					break;
+				default:
 					last_ud = DIRECTION_NONE;
-				break;
-			case GAMEPAD_MASK_UP:
-				new_dpad |= GAMEPAD_MASK_UP;
-				last_ud = DIRECTION_UP;
-				break;
-			case GAMEPAD_MASK_DOWN:
-				new_dpad |= GAMEPAD_MASK_DOWN;
-				last_ud = DIRECTION_DOWN;
-				break;
-			default:
-				last_ud = DIRECTION_NONE;
-				break;
-			}
+					break;
+				}
 
-			switch (dpad & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
-			{
-			case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
-				if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && last_lr != DIRECTION_NONE)
-					new_dpad |= (last_lr == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
-				else
+				switch (dpad & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
+				{
+				case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
+					if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && last_lr != DIRECTION_NONE)
+						new_dpad |= (last_lr == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
+					else
+						last_lr = DIRECTION_NONE;
+					break;
+				case GAMEPAD_MASK_LEFT:
+					new_dpad |= GAMEPAD_MASK_LEFT;
+					last_lr = DIRECTION_LEFT;
+					break;
+				case GAMEPAD_MASK_RIGHT:
+					new_dpad |= GAMEPAD_MASK_RIGHT;
+					last_lr = DIRECTION_RIGHT;
+					break;
+				default:
 					last_lr = DIRECTION_NONE;
-				break;
-			case GAMEPAD_MASK_LEFT:
-				new_dpad |= GAMEPAD_MASK_LEFT;
-				last_lr = DIRECTION_LEFT;
-				break;
-			case GAMEPAD_MASK_RIGHT:
-				new_dpad |= GAMEPAD_MASK_RIGHT;
-				last_lr = DIRECTION_RIGHT;
-				break;
-			default:
-				last_lr = DIRECTION_NONE;
-				break;
+					break;
 			}
 
 			return new_dpad;

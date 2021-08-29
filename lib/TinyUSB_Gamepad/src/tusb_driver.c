@@ -14,7 +14,6 @@
 #include "hid_driver.h"
 #include "xinput_driver.h"
 
-
 InputMode current_input_mode = XINPUT;
 
 void initialize_driver(void)

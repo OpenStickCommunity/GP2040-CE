@@ -1,6 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ * SPDX-FileCopyrightText: Copyright (c) 2019 Ha Thach (tinyusb.org)
  */
 
 #include "tusb.h"
@@ -23,17 +24,13 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 	{
 		case XINPUT:
 			for (int i = 0; i < 4; i++)
-			{
 				string_descriptors[i] = xinput_string_descriptors[i];
-			}
 			break;
 
 		case SWITCH:
 		default:
 			for (int i = 0; i < 4; i++)
-			{
 				string_descriptors[i] = switch_string_descriptors[i];
-			}
 			break;
 	}
 

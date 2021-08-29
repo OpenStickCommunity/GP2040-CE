@@ -13,7 +13,7 @@
 #if BOARD_DEFINITION == DEBUG_BOARD
 #include "definitions/DebugBoard.h"
 #elif BOARD_DEFINITION == PICO_BOARD
-#include "definitions/RP2040Board.h""
+#include "definitions/RP2040Board.h"
 #elif BOARD_DEFINITION == OPEN_STICK_BOARD
 #include "definitions/OpenStickBoard.h"
 #elif BOARD_DEFINITION == TEST_BOARD
@@ -41,7 +41,7 @@ GamepadButtonMapping GamepadClass::mapButton14  = { .port = 0, .pin = PIN_BUTTON
 
 void GamepadClass::setup()
 {
-	static GamepadButtonMapping *gamepadMappings[] =
+	GamepadButtonMapping *gamepadMappings[] =
 	{
 		&mapDpadUp,   &mapDpadDown, &mapDpadLeft, &mapDpadRight,
 		&mapButton01, &mapButton02, &mapButton03, &mapButton04,

@@ -1,8 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
- *
- * Adapted from example provided in the TinyUSB library (MIT license).
+ * SPDX-FileCopyrightText: Copyright (c) 2019 Ha Thach (tinyusb.org)
  */
 
 #ifndef TUSB_CONFIG_H_
