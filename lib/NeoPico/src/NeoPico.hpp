@@ -10,6 +10,7 @@ public:
   void Show();
   void Clear();
   void SetPixel(int pixel, uint32_t color);
+  void SetFrame(uint8_t newFrame[100]);
   uint32_t RGB(uint8_t r, uint8_t g, uint8_t b);
 private:
   void PutPixel(uint32_t pixel_grb);
