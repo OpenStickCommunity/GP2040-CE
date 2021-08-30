@@ -38,7 +38,7 @@ void Rainbow::Animate(uint32_t (&frame)[100]) {
     currentFrame--;
 
     if (currentFrame < 0) {
-      currentFrame = 0;
+      currentFrame = 1;
       reverse = false;
     }
   }
@@ -46,7 +46,7 @@ void Rainbow::Animate(uint32_t (&frame)[100]) {
     currentFrame++;
 
     if (currentFrame > 255) {
-      currentFrame = 255;
+      currentFrame = 254;
       reverse = true;
     }
   }
