@@ -10,13 +10,13 @@ public:
   void Show();
   void Clear();
   void SetPixel(int pixel, uint32_t color);
-  void SetFrame(uint8_t newFrame[100]);
+  void SetFrame(uint32_t newFrame[100]);
   uint32_t RGB(uint8_t r, uint8_t g, uint8_t b);
 private:
   void PutPixel(uint32_t pixel_grb);
   PIO pio = pio0;
   int numPixels = 0;
-  uint8_t frame[100];
+  uint32_t frame[100];
 };
 
 

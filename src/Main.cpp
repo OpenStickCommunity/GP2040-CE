@@ -17,6 +17,7 @@
 #include "GamepadStorage.h"
 #include "StateConverter.h"
 #include "NeoPico.hpp"
+#include "AnimationStation.hpp"
 #include "definitions/BoardConfig.h"
 
 void *report;
@@ -26,6 +27,7 @@ uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
 #ifdef BOARD_LEDS_PIN
 NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
+AnimationStation as(BOARD_LEDS_COUNT);
 
 bool isDpadPressed(GamepadButtonMapping button) {
 	return ((Gamepad.state.dpad & button.buttonMask) == button.buttonMask);
@@ -48,11 +50,11 @@ void handleLeds()
 	static GamepadButtonMapping dPadButtons[4] = {Gamepad.mapDpadLeft, Gamepad.mapDpadDown, Gamepad.mapDpadRight, Gamepad.mapDpadUp};
 	static GamepadButtonMapping actionButtons[14] = {Gamepad.mapButton01, Gamepad.mapButton02, Gamepad.mapButton03, Gamepad.mapButton04, Gamepad.mapButton05, Gamepad.mapButton06, Gamepad.mapButton07, Gamepad.mapButton08, Gamepad.mapButton09, Gamepad.mapButton10, Gamepad.mapButton11, Gamepad.mapButton12, Gamepad.mapButton13, Gamepad.mapButton14};
 
-	for (const GamepadButtonMapping &button : dPadButtons)
-		handleLed(button, isDpadPressed(button));
+	// for (const GamepadButtonMapping &button : dPadButtons)
+	// 	handleLed(button, isDpadPressed(button));
 
-	for (const GamepadButtonMapping &button : actionButtons)
-		handleLed(button, isButtonPressed(button));
+	// for (const GamepadButtonMapping &button : actionButtons)
+	// 	handleLed(button, isButtonPressed(button));
 }
 #endif
 
@@ -120,13 +122,18 @@ static inline void loop() {
 
 void core1()
 {
+#ifdef BOARD_LEDS_PIN
+	// For now, until things can be configured, we'll just start with
+	// a static color.
+	as.SetStaticColor(true, leds.RGB(0, 0, 255), 0, 11);
 	while (1)
 	{
-#ifdef BOARD_LEDS_PIN
+		as.Animate();
+		leds.SetFrame(as.frame);
 		handleLeds();
 		leds.Show();
-#endif
 	}
+#endif
 }
 
 int main()

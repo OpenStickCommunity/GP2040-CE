@@ -44,7 +44,7 @@ void NeoPico::Clear() {
   }
 }
 
-void NeoPico::SetFrame(uint8_t newFrame[100]) {
+void NeoPico::SetFrame(uint32_t newFrame[100]) {
   for (int i = 0; i < 100; i++) {
     this->frame[i] = newFrame[i];
   }

@@ -1,29 +1,23 @@
 #ifndef _ANIMATION_STATION_H_
 #define _ANIMATION_STATION_H_
 
-typedef enum
-{
-	OFF,
-	STATIC,
-	WHEEL
-} AnimationEffect;
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
 
-struct ActiveAnimation
-{
-	const AnimationEffect effect;
-	const int startIndex;
-	const int activeFrame;
-};
-
+#include "Animation.hpp"
 class AnimationStation
 {
 public:
   AnimationStation(int numPixels);
-  void StaticColor();
+  void Animate();
+  void SetStaticColor(bool defaultAnimation, uint32_t color, int firstPixel, int lastPixel);
   void Clear();
+
+  uint32_t frame[100];
 private:
   int numPixels = 0;
-  uint8_t frame[100];
+  std::vector<Animation*> animations;
 };
 
 #endif
