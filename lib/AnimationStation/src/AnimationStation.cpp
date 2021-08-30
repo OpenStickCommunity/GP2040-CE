@@ -12,6 +12,7 @@
 #include "AnimationStation.hpp"
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
+#include "Effects/Chase.hpp"
 
 AnimationStation::AnimationStation(int numPixels) {
     this->numPixels = numPixels;
@@ -29,6 +30,13 @@ void AnimationStation::SetRainbow(bool defaultAnimation, int firstPixel, int las
         lastPixel = this->numPixels - 1;
 
     this->animations.push_back(new Rainbow(firstPixel, lastPixel, cycleTime, defaultAnimation));
+}
+
+void AnimationStation::SetChase(bool defaultAnimation, int firstPixel, int lastPixel = -1, int cycleTime = 50) {
+    if (lastPixel < 0) 
+        lastPixel = this->numPixels - 1;
+
+    this->animations.push_back(new Chase(firstPixel, lastPixel, cycleTime, defaultAnimation));
 }
 
 void AnimationStation::Animate() {

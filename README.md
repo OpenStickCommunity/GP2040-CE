@@ -54,8 +54,9 @@ If your board has WS2812 (or similar) LEDs, these can be configured in your boar
 | BOARD_LEDS_COUNT | Total LEDs in your strand    | No        |
 | LEDS_BASE_ANIMATION_FIRST_PIXEL | The index for the first pixel in your base animation. If you have additional LEDs that aren't part of the base animation, this is your chance to leave them out of it. By default, this is 0. | Yes |
 | LEDS_BASE_ANIMATION_LAST_PIXEL | Same as above, but the index for the final pixel. By default, this is 11... 12 LEDs for 12 buttons on a standard stickless layout. | Yes |
-| LEDS_BASE_ANIMATION | This can be either "RAINBOW" or "STATIC" to set your base animation | Yes |
+| LEDS_BASE_ANIMATION | This can be either "RAINBOW", "CHASE" or "STATIC" to set your base animation | Yes |
 | LEDS_RAINBOW_CYCLE_TIME | For "RAINBOW," this sets how long (in ms) it takes to cycle from one color step to the next | Yes |
+| LEDS_CHASE_CYCLE_TIME | For "CHASE," this sets how long (in ms) it takes to move from one pixel to the next | Yes |
 | LEDS_STATIC_COLOR_COLOR | For "STATIC", this sets the static color. This is a uint32_t value. This should be friendlier, I know. | Yes |
 
 ### Building the Project

@@ -15,7 +15,7 @@ protected:
   int cycleTime;
   int currentFrame = 0;
   bool reverse = false;
-  uint32_t nextRunTime = 0;
+  absolute_time_t nextRunTime = 0;
 };
 
 #endif

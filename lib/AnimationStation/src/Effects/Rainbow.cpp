@@ -5,8 +5,9 @@
 #include "Helpers.hpp"
 
 void Rainbow::Animate(uint32_t (&frame)[100]) {
-	if (to_ms_since_boot(get_absolute_time()) - this->nextRunTime < 0)
-		return;
+  if (!time_reached(this->nextRunTime)) {
+    return;
+  }
 
   for (int i = this->firstPixel; i < this->lastPixel + 1; ++i) {
     frame[i] = Helpers::Wheel(this->currentFrame);
@@ -29,5 +30,5 @@ void Rainbow::Animate(uint32_t (&frame)[100]) {
     }
   }
 
-	this->nextRunTime = to_ms_since_boot(get_absolute_time()) + this->cycleTime;
+  this->nextRunTime = make_timeout_time_ms(this->cycleTime);
 }
