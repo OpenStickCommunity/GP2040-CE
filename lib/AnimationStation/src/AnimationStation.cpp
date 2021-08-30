@@ -22,6 +22,13 @@ void AnimationStation::SetStaticColor(bool defaultAnimation, uint32_t color, int
     this->animations.push_back(new StaticColor(firstPixel, lastPixel, defaultAnimation, color));
 }
 
+void AnimationStation::SetRainbow(bool defaultAnimation, int firstPixel, int lastPixel = -1) {
+    if (lastPixel < 0) 
+        lastPixel = this->numPixels - 1;
+
+    this->animations.push_back(new Rainbow(firstPixel, lastPixel, defaultAnimation));
+}
+
 void AnimationStation::Animate() {
     for (auto & element : this->animations) {
         element->Animate(this->frame);

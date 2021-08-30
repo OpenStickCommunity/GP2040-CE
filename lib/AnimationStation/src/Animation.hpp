@@ -31,4 +31,17 @@ protected:
   uint32_t color;
 };
 
+class Rainbow : public Animation {
+public:
+  Rainbow() : Animation() {
+  }
+  Rainbow(int firstPixel, int lastPixel, bool defaultAnimation) : Animation(firstPixel, lastPixel, defaultAnimation) {
+  }
+  void Animate(uint32_t (&frame)[100]);
+protected:
+  int currentFrame = 0;
+  bool reverse = false;
+  uint32_t nextRunTime = 0;
+};
+
 #endif

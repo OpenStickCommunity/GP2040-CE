@@ -123,14 +123,13 @@ static inline void loop() {
 void core1()
 {
 #ifdef BOARD_LEDS_PIN
-	// For now, until things can be configured, we'll just start with
-	// a static color.
-	as.SetStaticColor(true, leds.RGB(0, 0, 255), 0, 11);
+	// as.SetStaticColor(true, leds.RGB(0, 0, 255), 0, 11);
+	as.SetRainbow(true, 0, 11);
+
 	while (1)
 	{
 		as.Animate();
 		leds.SetFrame(as.frame);
-		handleLeds();
 		leds.Show();
 	}
 #endif
