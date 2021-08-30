@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "AnimationStation.hpp"
+#include "Effects/Rainbow.hpp"
+#include "Effects/StaticColor.hpp"
 
 AnimationStation::AnimationStation(int numPixels) {
     this->numPixels = numPixels;
@@ -22,11 +24,11 @@ void AnimationStation::SetStaticColor(bool defaultAnimation, uint32_t color, int
     this->animations.push_back(new StaticColor(firstPixel, lastPixel, defaultAnimation, color));
 }
 
-void AnimationStation::SetRainbow(bool defaultAnimation, int firstPixel, int lastPixel = -1) {
+void AnimationStation::SetRainbow(bool defaultAnimation, int firstPixel, int lastPixel = -1, int cycleTime = 50) {
     if (lastPixel < 0) 
         lastPixel = this->numPixels - 1;
 
-    this->animations.push_back(new Rainbow(firstPixel, lastPixel, defaultAnimation));
+    this->animations.push_back(new Rainbow(firstPixel, lastPixel, cycleTime, defaultAnimation));
 }
 
 void AnimationStation::Animate() {

@@ -44,6 +44,20 @@ You can also add a new board definition to `include/definitions`. If you do, per
 
 You will now have a new build environment target for PlatformIO. Use the VS Code status bar to select your new environment target.
 
+### LED Configuration
+
+If your board has WS2812 (or similar) LEDs, these can be configured in your board definition by setting the following:
+
+| Name             | Description                  | Optional? |
+| ---------------- | ---------------------------- | --------- |
+| BOARD_LEDS_PIN   | Data PIN for your LED strand | No        |
+| BOARD_LEDS_COUNT | Total LEDs in your strand    | No        |
+| LEDS_BASE_ANIMATION_FIRST_PIXEL | The index for the first pixel in your base animation. If you have additional LEDs that aren't part of the base animation, this is your chance to leave them out of it. By default, this is 0. | Yes |
+| LEDS_BASE_ANIMATION_LAST_PIXEL | Same as above, but the index for the final pixel. By default, this is 11... 12 LEDs for 12 buttons on a standard stickless layout. | Yes |
+| LEDS_BASE_ANIMATION | This can be either "RAINBOW" or "STATIC" to set your base animation | Yes |
+| LEDS_RAINBOW_CYCLE_TIME | For "RAINBOW," this sets how long (in ms) it takes to cycle from one color step to the next | Yes |
+| LEDS_STATIC_COLOR_COLOR | For "STATIC", this sets the static color. This is a uint32_t value. This should be friendlier, I know. | Yes |
+
 ### Building the Project
 
 You should now be able to build or upload the project to you RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file, but they should all default to a path under `.pio/build/${env:NAME}`.

@@ -1,6 +1,8 @@
 #ifndef _ANIMATION_H_
 #define _ANIMATION_H_
 
+ #include <stdint.h>
+
 class Animation {
 public:
   Animation() {
@@ -16,32 +18,6 @@ protected:
 	int firstPixel;
   int lastPixel;
   bool defaultAnimation = false;
-};
-
-class StaticColor : public Animation {
-public:
-  StaticColor() : Animation() {
-
-  }
-  StaticColor(int firstPixel, int lastPixel, bool defaultAnimation, uint32_t color) : Animation(firstPixel, lastPixel, defaultAnimation) {
-    this->color = color;
-  }
-  void Animate(uint32_t (&frame)[100]);
-protected:
-  uint32_t color;
-};
-
-class Rainbow : public Animation {
-public:
-  Rainbow() : Animation() {
-  }
-  Rainbow(int firstPixel, int lastPixel, bool defaultAnimation) : Animation(firstPixel, lastPixel, defaultAnimation) {
-  }
-  void Animate(uint32_t (&frame)[100]);
-protected:
-  int currentFrame = 0;
-  bool reverse = false;
-  uint32_t nextRunTime = 0;
 };
 
 #endif

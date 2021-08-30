@@ -19,6 +19,7 @@
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
 #include "definitions/BoardConfig.h"
+#include "Helpers.hpp"
 
 void *report;
 uint8_t report_size;
@@ -41,8 +42,8 @@ void handleLed(GamepadButtonMapping button, bool pressed) {
 	if (button.ledPos < 0) 
 		return;
 
-	uint32_t color = pressed ? leds.RGB(255, 255, 255) : 0;
-	leds.SetPixel(button.ledPos, color);
+	// uint32_t color = pressed ? leds.RGB(255, 255, 255) : 0;
+	// leds.SetPixel(button.ledPos, color);
 }
 
 void handleLeds()
@@ -123,8 +124,12 @@ static inline void loop() {
 void core1()
 {
 #ifdef BOARD_LEDS_PIN
-	// as.SetStaticColor(true, leds.RGB(0, 0, 255), 0, 11);
-	as.SetRainbow(true, 0, 11);
+	if (LEDS_BASE_ANIMATION == "STATIC") {
+		as.SetStaticColor(true, LEDS_STATIC_COLOR_COLOR, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
+	}
+	else {
+		as.SetRainbow(true, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL, LEDS_RAINBOW_CYCLE_TIME);
+	}
 
 	while (1)
 	{
