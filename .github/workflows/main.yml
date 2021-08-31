@@ -29,10 +29,12 @@ jobs:
         pip install --upgrade platformio
         pio platform install https://github.com/Wiz-IO/wizio-pico
     - name: Run PlatformIO
-      run: pio run -e open-stick
+      run: |
+        pio run -e open-stick
+        mv .pio/build/open-stick/APPLICATION.uf2 .pio/build/open-stick/OSFRD.uf2
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          .pio/build/open-stick/APPLICATION.uf2
+          .pio/build/open-stick/OSFRD.uf2
