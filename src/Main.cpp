@@ -27,14 +27,6 @@ uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 #ifdef BOARD_LEDS_PIN
 NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
 
-bool isDpadPressed(GamepadButtonMapping button) {
-	return ((Gamepad.state.dpad & button.buttonMask) == button.buttonMask);
-}
-
-bool isButtonPressed(GamepadButtonMapping button) {
-	return ((Gamepad.state.buttons & button.buttonMask) == button.buttonMask);
-}
-
 void handleLed(GamepadButtonMapping button, bool pressed) {
 	if (button.ledPos < 0)
 		return;
@@ -49,10 +41,10 @@ void handleLeds()
 	static GamepadButtonMapping actionButtons[14] = {Gamepad.mapButton01, Gamepad.mapButton02, Gamepad.mapButton03, Gamepad.mapButton04, Gamepad.mapButton05, Gamepad.mapButton06, Gamepad.mapButton07, Gamepad.mapButton08, Gamepad.mapButton09, Gamepad.mapButton10, Gamepad.mapButton11, Gamepad.mapButton12, Gamepad.mapButton13, Gamepad.mapButton14};
 
 	for (const GamepadButtonMapping &button : dPadButtons)
-		handleLed(button, isDpadPressed(button));
+		handleLed(button, Gamepad.state.pressedDpad(button.buttonMask));
 
 	for (const GamepadButtonMapping &button : actionButtons)
-		handleLed(button, isButtonPressed(button));
+		handleLed(button, Gamepad.state.pressedButton(button.buttonMask));
 }
 #endif
 
