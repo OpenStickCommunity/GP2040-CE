@@ -82,6 +82,10 @@
 #define LEDS_BUTTON_14  -1
 #endif
 
+#ifndef LEDS_BRIGHTNESS
+#define LEDS_BRIGHTNESS 25
+#endif
+
 #ifndef LEDS_BASE_ANIMATION
 #define LEDS_BASE_ANIMATION "RAINBOW"
 #endif

@@ -19,7 +19,6 @@
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
 #include "definitions/BoardConfig.h"
-#include "Helpers.hpp"
 
 void *report;
 uint8_t report_size;
@@ -124,6 +123,9 @@ static inline void loop() {
 void core1()
 {
 #ifdef BOARD_LEDS_PIN
+
+	as.SetBrightness(LEDS_BRIGHTNESS / 100.0);
+
 	if (LEDS_BASE_ANIMATION == "STATIC") {
 		as.SetStaticColor(true, LEDS_STATIC_COLOR_COLOR, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
 	}

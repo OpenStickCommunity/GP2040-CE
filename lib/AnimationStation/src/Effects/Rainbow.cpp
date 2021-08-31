@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "Rainbow.hpp"
-#include "Helpers.hpp"
 
 void Rainbow::Animate(uint32_t (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
@@ -10,7 +9,7 @@ void Rainbow::Animate(uint32_t (&frame)[100]) {
   }
 
   for (int i = this->firstPixel; i < this->lastPixel + 1; ++i) {
-    frame[i] = Helpers::Wheel(this->currentFrame);
+    frame[i] = AnimationStation::Wheel(this->currentFrame);
   }
 
   if (reverse) {

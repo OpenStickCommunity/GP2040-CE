@@ -16,10 +16,15 @@ public:
   void SetChase(bool defaultAnimation, int firstPixel, int lastPixel, int cycleTime);
   void Clear();
 
+  static void SetBrightness(float brightness);
+  static uint32_t RGB(uint8_t r, uint8_t g, uint8_t b);
+  static uint32_t Wheel(uint8_t pos);
+  
+  std::vector<Animation*> animations;
+  static float brightness;
   uint32_t frame[100];
 private:
   int numPixels = 0;
-  std::vector<Animation*> animations;
 };
 
 #endif

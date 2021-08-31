@@ -1,5 +1,4 @@
 #include "Chase.hpp"
-#include "Helpers.hpp"
 
 void Chase::Animate(uint32_t (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
@@ -8,7 +7,7 @@ void Chase::Animate(uint32_t (&frame)[100]) {
 
   for (int i = this->firstPixel; i < this->lastPixel + 1; ++i) {
     if (this->IsChasePixel(i)) {
-      frame[i] = Helpers::Wheel(this->WheelFrame(i));
+      frame[i] = AnimationStation::Wheel(this->WheelFrame(i));
     } else {
       frame[i] = 0;
     }
