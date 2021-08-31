@@ -30,3 +30,9 @@ jobs:
         pio platform install https://github.com/Wiz-IO/wizio-pico
     - name: Run PlatformIO
       run: pio run -e open-stick
+    - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            .pio/build/open-stick/APPLICATION.uf2
