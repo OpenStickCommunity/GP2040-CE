@@ -28,4 +28,4 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade platformio
     - name: Run PlatformIO
-      run: pio run -e <ID_1> -e <ID_2> -e <ID_N>
+      run: pio run -e open-stick
