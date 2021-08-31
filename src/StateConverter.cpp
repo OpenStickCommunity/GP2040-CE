@@ -76,24 +76,24 @@ static PS3Report *fill_ps3_report(GamepadState *state)
 	ps3_report.ry = state->ry >> 8;
 
 	ps3_report.buttons = 0
-		| ((state->buttons & GAMEPAD_MASK_09)    ? PS3_MASK_SELECT   : 0)
-		| ((state->buttons & GAMEPAD_MASK_11)    ? PS3_MASK_L3       : 0)
-		| ((state->buttons & GAMEPAD_MASK_12)    ? PS3_MASK_R3       : 0)
-		| ((state->buttons & GAMEPAD_MASK_10)    ? PS3_MASK_START    : 0)
-		| ((state->dpad    & GAMEPAD_MASK_UP)    ? PS3_MASK_UP       : 0)
-		| ((state->dpad    & GAMEPAD_MASK_RIGHT) ? PS3_MASK_RIGHT    : 0)
-		| ((state->dpad    & GAMEPAD_MASK_DOWN)  ? PS3_MASK_DOWN     : 0)
-		| ((state->dpad    & GAMEPAD_MASK_LEFT)  ? PS3_MASK_LEFT     : 0)
-		| ((state->buttons & GAMEPAD_MASK_07)    ? PS3_MASK_L2       : 0)
-		| ((state->buttons & GAMEPAD_MASK_08)    ? PS3_MASK_R2       : 0)
-		| ((state->buttons & GAMEPAD_MASK_05)    ? PS3_MASK_L1       : 0)
-		| ((state->buttons & GAMEPAD_MASK_06)    ? PS3_MASK_R2       : 0)
-		| ((state->buttons & GAMEPAD_MASK_04)    ? PS3_MASK_TRIANGLE : 0)
-		| ((state->buttons & GAMEPAD_MASK_02)    ? PS3_MASK_CIRCLE   : 0)
-		| ((state->buttons & GAMEPAD_MASK_01)    ? PS3_MASK_CROSS    : 0)
-		| ((state->buttons & GAMEPAD_MASK_03)    ? PS3_MASK_SQUARE   : 0)
-		| ((state->buttons & GAMEPAD_MASK_13)    ? PS3_MASK_PS       : 0)
-		// | ((state->buttons & GAMEPAD_MASK_14)    ? PS3_MASK_TP       : 0)
+		| (state->pressedS1()    ? PS3_MASK_SELECT   : 0)
+		| (state->pressedL3()    ? PS3_MASK_L3       : 0)
+		| (state->pressedR3()    ? PS3_MASK_R3       : 0)
+		| (state->pressedS2()    ? PS3_MASK_START    : 0)
+		| (state->pressedUp()    ? PS3_MASK_UP       : 0)
+		| (state->pressedRight() ? PS3_MASK_RIGHT    : 0)
+		| (state->pressedDown()  ? PS3_MASK_DOWN     : 0)
+		| (state->pressedLeft()  ? PS3_MASK_LEFT     : 0)
+		| (state->pressedL2()    ? PS3_MASK_L2       : 0)
+		| (state->pressedR2()    ? PS3_MASK_R2       : 0)
+		| (state->pressedL1()    ? PS3_MASK_L1       : 0)
+		| (state->pressedR1()    ? PS3_MASK_R2       : 0)
+		| (state->pressedB4()    ? PS3_MASK_TRIANGLE : 0)
+		| (state->pressedB2()    ? PS3_MASK_CIRCLE   : 0)
+		| (state->pressedB1()    ? PS3_MASK_CROSS    : 0)
+		| (state->pressedB3()    ? PS3_MASK_SQUARE   : 0)
+		| (state->pressedA1()    ? PS3_MASK_PS       : 0)
+		| (state->pressedA2()    ? PS3_MASK_TP       : 0)
 	;
 
 	return &ps3_report;
@@ -117,20 +117,20 @@ static SwitchReport *fill_switch_report(GamepadState *state)
 
 	// Convert button states
 	switch_report.buttons = 0
-		| ((state->buttons & GAMEPAD_MASK_03) ? SWITCH_MASK_Y       : 0)
-		| ((state->buttons & GAMEPAD_MASK_01) ? SWITCH_MASK_B       : 0)
-		| ((state->buttons & GAMEPAD_MASK_02) ? SWITCH_MASK_A       : 0)
-		| ((state->buttons & GAMEPAD_MASK_04) ? SWITCH_MASK_X       : 0)
-		| ((state->buttons & GAMEPAD_MASK_05) ? SWITCH_MASK_L       : 0)
-		| ((state->buttons & GAMEPAD_MASK_06) ? SWITCH_MASK_R       : 0)
-		| ((state->buttons & GAMEPAD_MASK_07) ? SWITCH_MASK_ZL      : 0)
-		| ((state->buttons & GAMEPAD_MASK_08) ? SWITCH_MASK_ZR      : 0)
-		| ((state->buttons & GAMEPAD_MASK_09) ? SWITCH_MASK_MINUS   : 0)
-		| ((state->buttons & GAMEPAD_MASK_10) ? SWITCH_MASK_PLUS    : 0)
-		| ((state->buttons & GAMEPAD_MASK_11) ? SWITCH_MASK_L3      : 0)
-		| ((state->buttons & GAMEPAD_MASK_12) ? SWITCH_MASK_R3      : 0)
-		| ((state->buttons & GAMEPAD_MASK_13) ? SWITCH_MASK_HOME    : 0)
-		| ((state->buttons & GAMEPAD_MASK_14) ? SWITCH_MASK_CAPTURE : 0)
+		| (state->pressedB3() ? SWITCH_MASK_Y       : 0)
+		| (state->pressedB1() ? SWITCH_MASK_B       : 0)
+		| (state->pressedB2() ? SWITCH_MASK_A       : 0)
+		| (state->pressedB4() ? SWITCH_MASK_X       : 0)
+		| (state->pressedL1() ? SWITCH_MASK_L       : 0)
+		| (state->pressedR1() ? SWITCH_MASK_R       : 0)
+		| (state->pressedL2() ? SWITCH_MASK_ZL      : 0)
+		| (state->pressedR2() ? SWITCH_MASK_ZR      : 0)
+		| (state->pressedS1() ? SWITCH_MASK_MINUS   : 0)
+		| (state->pressedS2() ? SWITCH_MASK_PLUS    : 0)
+		| (state->pressedL3() ? SWITCH_MASK_L3      : 0)
+		| (state->pressedR3() ? SWITCH_MASK_R3      : 0)
+		| (state->pressedA1() ? SWITCH_MASK_HOME    : 0)
+		| (state->pressedA2() ? SWITCH_MASK_CAPTURE : 0)
 	;
 
 	// Direct assignments
@@ -146,20 +146,20 @@ static XInputReport *fill_xinput_report(GamepadState *state, bool has_analog_tri
 {
 	// Convert button states
 	xinput_report.buttons1 = state->dpad
-		| ((state->buttons & GAMEPAD_MASK_10) ? XBOX_MASK_START : 0)
-		| ((state->buttons & GAMEPAD_MASK_09) ? XBOX_MASK_BACK  : 0)
-		| ((state->buttons & GAMEPAD_MASK_11) ? XBOX_MASK_LS    : 0)
-		| ((state->buttons & GAMEPAD_MASK_12) ? XBOX_MASK_RS    : 0)
+		| (state->pressedS2() ? XBOX_MASK_START : 0)
+		| (state->pressedS1() ? XBOX_MASK_BACK  : 0)
+		| (state->pressedL3() ? XBOX_MASK_LS    : 0)
+		| (state->pressedR3() ? XBOX_MASK_RS    : 0)
 	;
 
 	xinput_report.buttons2 = 0
-		| ((state->buttons & GAMEPAD_MASK_05) ? XBOX_MASK_LB   : 0)
-		| ((state->buttons & GAMEPAD_MASK_06) ? XBOX_MASK_RB   : 0)
-		| ((state->buttons & GAMEPAD_MASK_13) ? XBOX_MASK_HOME : 0)
-		| ((state->buttons & GAMEPAD_MASK_01) ? XBOX_MASK_A    : 0)
-		| ((state->buttons & GAMEPAD_MASK_02) ? XBOX_MASK_B    : 0)
-		| ((state->buttons & GAMEPAD_MASK_03) ? XBOX_MASK_X    : 0)
-		| ((state->buttons & GAMEPAD_MASK_04) ? XBOX_MASK_Y    : 0)
+		| (state->pressedL1() ? XBOX_MASK_LB   : 0)
+		| (state->pressedR1() ? XBOX_MASK_RB   : 0)
+		| (state->pressedA1() ? XBOX_MASK_HOME : 0)
+		| (state->pressedB1() ? XBOX_MASK_A    : 0)
+		| (state->pressedB2() ? XBOX_MASK_B    : 0)
+		| (state->pressedB3() ? XBOX_MASK_X    : 0)
+		| (state->pressedB4() ? XBOX_MASK_Y    : 0)
 	;
 
 	// Direct assignments
@@ -176,8 +176,8 @@ static XInputReport *fill_xinput_report(GamepadState *state, bool has_analog_tri
 	}
 	else
 	{
-		xinput_report.lt = (state->buttons & GAMEPAD_MASK_07) ? 0xFF : 0;
-		xinput_report.rt = (state->buttons & GAMEPAD_MASK_08) ? 0xFF : 0;
+		xinput_report.lt = (state->buttons & GAMEPAD_MASK_L2) ? 0xFF : 0;
+		xinput_report.rt = (state->buttons & GAMEPAD_MASK_R2) ? 0xFF : 0;
 	}
 
 	return &xinput_report;

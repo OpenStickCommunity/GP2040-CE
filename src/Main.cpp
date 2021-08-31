@@ -67,11 +67,11 @@ static inline void setup()
 	// Check for input mode override
 	Gamepad.read();
 	InputMode newInputMode = current_input_mode;
-	if (Gamepad.isRightStickButtonPressed())
+	if (Gamepad.state.pressedR3())
 		newInputMode = PS3;
-	else if (Gamepad.isSelectPressed())
+	else if (Gamepad.state.pressedS1())
 		newInputMode = SWITCH;
-	else if (Gamepad.isStartPressed())
+	else if (Gamepad.state.pressedS2())
 		newInputMode = XINPUT;
 
 	if (newInputMode != current_input_mode)

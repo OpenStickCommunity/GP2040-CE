@@ -38,33 +38,33 @@ GamepadHotkey GamepadClass::hotkey()
 	if (isDpadHotkeyPressed())
 	{
 		DpadMode lastDpadMode = dpadMode;
-		if (isDpadLeftPressed())
+		if (state.pressedLeft())
 		{
 			action = HOTKEY_DPAD_LEFT_ANALOG;
 			dpadMode = DPAD_MODE_LEFT_ANALOG;
 			state.dpad = 0;
-			state.buttons &= ~(GAMEPAD_MASK_09 | GAMEPAD_MASK_10);
+			state.buttons &= ~(GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
-		else if (isDpadRightPressed())
+		else if (state.pressedRight())
 		{
 			action = HOTKEY_DPAD_RIGHT_ANALOG;
 			dpadMode = DPAD_MODE_RIGHT_ANALOG;
 			state.dpad = 0;
-			state.buttons &= ~(GAMEPAD_MASK_09 | GAMEPAD_MASK_10);
+			state.buttons &= ~(GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
-		else if (isDpadDownPressed())
+		else if (state.pressedDown())
 		{
 			action = HOTKEY_DPAD_DIGITAL;
 			dpadMode = DPAD_MODE_DIGITAL;
 			state.dpad = 0;
-			state.buttons &= ~(GAMEPAD_MASK_09 | GAMEPAD_MASK_10);
+			state.buttons &= ~(GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
-		else if (isDpadUpPressed())
+		else if (state.pressedUp())
 		{
 			action = HOTKEY_HOME_BUTTON;
 			state.dpad = 0;
-			state.buttons &= ~(GAMEPAD_MASK_09 | GAMEPAD_MASK_10);
-			state.buttons |= GAMEPAD_MASK_13; // Press the Home button
+			state.buttons &= ~(GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+			state.buttons |= GAMEPAD_MASK_A1; // Press the Home button
 		}
 
 		if (lastDpadMode != dpadMode)
@@ -73,26 +73,26 @@ GamepadHotkey GamepadClass::hotkey()
 	else if (isSOCDHotkeyPressed())
 	{
 		SOCDMode lastSOCDMode = socdMode;
-		if (isDpadUpPressed())
+		if (state.pressedUp())
 		{
 			action = HOTKEY_SOCD_UP_PRIORITY;
 			socdMode = SOCD_MODE_UP_PRIORITY;
 			state.dpad = 0;
-			state.buttons &= ~(GAMEPAD_MASK_11 | GAMEPAD_MASK_12);
+			state.buttons &= ~(GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3);
 		}
-		else if (isDpadDownPressed())
+		else if (state.pressedDown())
 		{
 			action = HOTKEY_SOCD_NEUTRAL;
 			socdMode = SOCD_MODE_NEUTRAL;
 			state.dpad = 0;
-			state.buttons &= ~(GAMEPAD_MASK_11 | GAMEPAD_MASK_12);
+			state.buttons &= ~(GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3);
 		}
-		else if (isDpadLeftPressed())
+		else if (state.pressedLeft())
 		{
 			action = HOTKEY_SOCD_LAST_INPUT;
 			socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY;
 			state.dpad = 0;
-			state.buttons &= ~(GAMEPAD_MASK_11 | GAMEPAD_MASK_12);
+			state.buttons &= ~(GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3);
 		}
 
 		if (lastSOCDMode != socdMode)
@@ -128,11 +128,11 @@ void GamepadClass::process()
 bool GamepadClass::isDpadHotkeyPressed()
 {
 	// Select + Start
-	return (state.buttons & (GAMEPAD_MASK_09 | GAMEPAD_MASK_10)) == (GAMEPAD_MASK_09 | GAMEPAD_MASK_10);
+	return (state.buttons & (GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2)) == (GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 }
 
 bool GamepadClass::isSOCDHotkeyPressed()
 {
 	// LS + RS
-	return (state.buttons & (GAMEPAD_MASK_11 | GAMEPAD_MASK_12)) == (GAMEPAD_MASK_11 | GAMEPAD_MASK_12);
+	return (state.buttons & (GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3)) == (GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3);
 }
