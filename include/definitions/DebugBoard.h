@@ -30,7 +30,7 @@
 #define PIN_BUTTON_08   26
 #define PIN_BUTTON_11   27
 #define PIN_BUTTON_13   28
-#define PIN_BUTTON_14   255
+#define PIN_BUTTON_14   31
 
 #define LEDS_DPAD_UP     3
 #define LEDS_DPAD_DOWN   1

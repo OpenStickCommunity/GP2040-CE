@@ -20,7 +20,6 @@
 #define PS3_MASK_CROSS    (1U << 14)
 #define PS3_MASK_SQUARE   (1U << 15)
 #define PS3_MASK_PS       (1U << 16)
-#define PS3_MASK_TP       (1U << 17)
 
 #define PS3_JOYSTICK_MIN 0x00
 #define PS3_JOYSTICK_MID 0x80
@@ -28,28 +27,27 @@
 
 #define PS3_ACCEL_GYRO_MID 0x01FF
 
-typedef struct __attribute((packed, aligned(1)))
+typedef struct __attribute((packed))
 {
 	uint8_t reportId;
-	uint8_t _reserved1;
 	uint32_t buttons;
 	uint8_t lx;
 	uint8_t ly;
 	uint8_t rx;
 	uint8_t ry;
-	uint8_t analogDpadUp;
 	uint8_t analogDpadRight;
-	uint8_t analogDpadDown;
 	uint8_t analogDpadLeft;
-	uint8_t analogL2;
-	uint8_t analogR2;
-	uint8_t analogL1;
-	uint8_t analogR1;
+	uint8_t analogDpadUp;
+	uint8_t analogDpadDown;
 	uint8_t analogTriangle;
 	uint8_t analogCircle;
 	uint8_t analogCross;
 	uint8_t analogSquare;
-	uint8_t _reserved2[18];
+	uint8_t analogL1;
+	uint8_t analogL2;
+	uint8_t analogR1;
+	uint8_t analogR2;
+	uint8_t _reserved[19];
 	uint16_t accelX;        // 10 bit
 	uint16_t accellY;       // 10 bit
 	uint16_t accelZ;        // 10 bit
@@ -58,8 +56,10 @@ typedef struct __attribute((packed, aligned(1)))
 
 extern PS3Report ps3_report;
 
-static const char ps3_string_manufacturer[] = "Generic";
-static const char ps3_string_product[]      = "PS3 Controller";
+static const char ps3_string_manufacturer[] = "Sony";
+static const char ps3_string_product[]      = "PLAYSTATION(R)3 Controller";
+// static const char ps3_string_manufacturer[] = "Generic";
+// static const char ps3_string_product[]      = "PS3 Controller";
 static const char ps3_string_version[]      = "1.0";
 
 static const char *ps3_string_descriptors[] =
@@ -79,10 +79,10 @@ static const uint8_t ps3_device_descriptor[] =
 	0x00,        // bDeviceSubClass
 	0x00,        // bDeviceProtocol
 	0x40,        // bMaxPacketSize0 64
-	0xFE, 0xCA,  // Test VID...
-	0xEA, 0x01,  // ...and PID
-	// 0x4C, 0x05,  // idVendor 0x054C
-	// 0x68, 0x02,  // idProduct 0x0268
+	// 0xFE, 0xCA,  // Test VID...
+	// 0xEA, 0x01,  // ...and PID
+	0x4C, 0x05,  // idVendor 0x054C
+	0x68, 0x02,  // idProduct 0x0268
 	0x00, 0x01,  // bcdDevice 1.00
 	0x01,        // iManufacturer (String Index)
 	0x02,        // iProduct (String Index)

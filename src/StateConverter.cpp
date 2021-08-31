@@ -1,7 +1,7 @@
 /*
- * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
- */
+* SPDX-License-Identifier: MIT
+* SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+*/
 
 #include <stdio.h>
 
@@ -15,26 +15,25 @@
 
 PS3Report ps3_report =
 {
-	.reportId = 1,
-	._reserved1 = 0,
+	.reportId = 0,
 	.buttons = 0,
 	.lx = PS3_JOYSTICK_MID,
 	.ly = PS3_JOYSTICK_MID,
 	.rx = PS3_JOYSTICK_MID,
 	.ry = PS3_JOYSTICK_MID,
-	.analogDpadUp = 0,
 	.analogDpadRight = 0,
-	.analogDpadDown = 0,
 	.analogDpadLeft = 0,
-	.analogL2 = 0,
-	.analogR2 = 0,
-	.analogL1 = 0,
-	.analogR1 = 0,
+	.analogDpadUp = 0,
+	.analogDpadDown = 0,
 	.analogTriangle = 0,
 	.analogCircle = 0,
 	.analogCross = 0,
 	.analogSquare = 0,
-	._reserved2 = { 0 },
+	.analogL1 = 0,
+	.analogL2 = 0,
+	.analogR1 = 0,
+	.analogR2 = 0,
+	._reserved = { 0 },
 	.accelX = PS3_ACCEL_GYRO_MID,
 	.accellY = PS3_ACCEL_GYRO_MID,
 	.accelZ = PS3_ACCEL_GYRO_MID,
@@ -75,26 +74,104 @@ static PS3Report *fill_ps3_report(GamepadState *state)
 	ps3_report.rx = state->rx >> 8;
 	ps3_report.ry = state->ry >> 8;
 
-	ps3_report.buttons = 0
-		| (state->pressedS1()    ? PS3_MASK_SELECT   : 0)
-		| (state->pressedL3()    ? PS3_MASK_L3       : 0)
-		| (state->pressedR3()    ? PS3_MASK_R3       : 0)
-		| (state->pressedS2()    ? PS3_MASK_START    : 0)
-		| (state->pressedUp()    ? PS3_MASK_UP       : 0)
-		| (state->pressedRight() ? PS3_MASK_RIGHT    : 0)
-		| (state->pressedDown()  ? PS3_MASK_DOWN     : 0)
-		| (state->pressedLeft()  ? PS3_MASK_LEFT     : 0)
-		| (state->pressedL2()    ? PS3_MASK_L2       : 0)
-		| (state->pressedR2()    ? PS3_MASK_R2       : 0)
-		| (state->pressedL1()    ? PS3_MASK_L1       : 0)
-		| (state->pressedR1()    ? PS3_MASK_R2       : 0)
-		| (state->pressedB4()    ? PS3_MASK_TRIANGLE : 0)
-		| (state->pressedB2()    ? PS3_MASK_CIRCLE   : 0)
-		| (state->pressedB1()    ? PS3_MASK_CROSS    : 0)
-		| (state->pressedB3()    ? PS3_MASK_SQUARE   : 0)
-		| (state->pressedA1()    ? PS3_MASK_PS       : 0)
-		| (state->pressedA2()    ? PS3_MASK_TP       : 0)
-	;
+	ps3_report.buttons = 0;
+
+	// "Analog" buttons
+	if (state->pressedB4())
+	{
+		ps3_report.buttons |= PS3_MASK_TRIANGLE;
+		ps3_report.analogTriangle = 0xFF;
+	}
+	else { ps3_report.analogTriangle = 0; }
+
+	if (state->pressedB2())
+	{
+		ps3_report.buttons |= PS3_MASK_CIRCLE;
+		ps3_report.analogCircle = 0xFF;
+	}
+	else { ps3_report.analogCircle = 0; }
+
+	if (state->pressedB1())
+	{
+		ps3_report.buttons |= PS3_MASK_CROSS;
+		ps3_report.analogCross = 0xFF;
+	}
+	else { ps3_report.analogCross = 0; }
+
+	if (state->pressedB3())
+	{
+		ps3_report.buttons |= PS3_MASK_SQUARE;
+		ps3_report.analogSquare = 0xFF;
+	}
+	else { ps3_report.analogSquare = 0; }
+
+	if (state->pressedUp())
+	{
+		ps3_report.buttons |= PS3_MASK_UP;
+		ps3_report.analogDpadUp = 0xFF;
+	}
+	else { ps3_report.analogDpadUp = 0; }
+
+	if (state->pressedRight())
+	{
+		ps3_report.buttons |= PS3_MASK_RIGHT;
+		ps3_report.analogDpadRight = 0xFF;
+	}
+	else { ps3_report.analogDpadRight = 0; }
+
+	if (state->pressedDown())
+	{
+		ps3_report.buttons |= PS3_MASK_DOWN;
+		ps3_report.analogDpadDown = 0xFF;
+	}
+	else { ps3_report.analogDpadDown = 0; }
+
+	if (state->pressedLeft())
+	{
+		ps3_report.buttons |= PS3_MASK_LEFT;
+		ps3_report.analogDpadLeft = 0xFF;
+	}
+	else { ps3_report.analogDpadLeft = 0; }
+
+	if (state->pressedL1())
+	{
+		ps3_report.buttons |= PS3_MASK_L1;
+		ps3_report.analogL1 = 0xFF;
+	}
+	else { ps3_report.analogL1 = 0; }
+
+	if (state->pressedR1())
+	{
+		ps3_report.buttons |= PS3_MASK_R2;
+		ps3_report.analogR1 = 0xFF;
+	}
+	else { ps3_report.analogR1 = 0; }
+
+	if (state->pressedL2())
+	{
+		ps3_report.buttons |= PS3_MASK_L2;
+		ps3_report.analogL2 = 0xFF;
+	}
+	else { ps3_report.analogL2 = 0; }
+
+	if (state->pressedR2())
+	{
+		ps3_report.buttons |= PS3_MASK_R2;
+		ps3_report.analogR2 = 0xFF;
+	}
+	else { ps3_report.analogR2 = 0; }
+
+	// Digital buttons
+	if (state->pressedS1())
+		ps3_report.buttons |= PS3_MASK_SELECT;
+	if (state->pressedS2())
+		ps3_report.buttons |= PS3_MASK_START;
+	if (state->pressedL3())
+		ps3_report.buttons |= PS3_MASK_L3;
+	if (state->pressedR3())
+		ps3_report.buttons |= PS3_MASK_R3;
+	if (state->pressedA1())
+		ps3_report.buttons |= PS3_MASK_PS;
 
 	return &ps3_report;
 }
