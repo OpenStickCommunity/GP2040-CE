@@ -98,7 +98,7 @@ void GamepadClass::load()
 {
 	Storage.start();
 	current_input_mode = Storage.getInputMode();
-	if (current_input_mode > SWITCH)
+	if (current_input_mode > PS3)
 		current_input_mode = DEFAULT_INPUT_MODE;
 
 	dpadMode = Storage.getDpadMode();

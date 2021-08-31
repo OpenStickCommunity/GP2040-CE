@@ -6,6 +6,7 @@
 
 #include "tusb.h"
 #include "usb_driver.h"
+#include "ps3_device.h"
 #include "switch_device.h"
 #include "xinput_device.h"
 
@@ -25,6 +26,11 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 		case XINPUT:
 			for (int i = 0; i < 4; i++)
 				string_descriptors[i] = xinput_string_descriptors[i];
+			break;
+
+		case PS3:
+			for (int i = 0; i < 4; i++)
+				string_descriptors[i] = ps3_string_descriptors[i];
 			break;
 
 		case SWITCH:
@@ -69,7 +75,10 @@ uint8_t const *tud_descriptor_device_cb(void)
 	{
 		case XINPUT:
 			return (const uint8_t *)xinput_device_descriptor;
-		
+
+		case PS3:
+			return (const uint8_t *)ps3_device_descriptor;
+
 		case SWITCH:
 		default:
 			return (const uint8_t *)switch_device_descriptor;
@@ -83,6 +92,9 @@ uint8_t const *tud_hid_descriptor_report_cb(void)
 {
 	switch (current_input_mode)
 	{
+		case PS3:
+			return ps3_report_descriptor;
+
 		case SWITCH:
 		default:
 			return switch_report_descriptor;
@@ -99,7 +111,10 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 	{
 		case XINPUT:
 			return xinput_configuration_descriptor;
-		
+
+		case PS3:
+			return ps3_configuration_descriptor;
+
 		case SWITCH:
 		default:
 			return switch_configuration_descriptor;

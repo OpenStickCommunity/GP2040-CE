@@ -10,6 +10,7 @@ typedef enum
 {
 	XINPUT,
 	SWITCH,
+	PS3,
 } InputMode;
 
 extern InputMode current_input_mode;

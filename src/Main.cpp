@@ -36,7 +36,7 @@ bool isButtonPressed(GamepadButtonMapping button) {
 }
 
 void handleLed(GamepadButtonMapping button, bool pressed) {
-	if (button.ledPos < 0) 
+	if (button.ledPos < 0)
 		return;
 
 	uint32_t color = pressed ? leds.RGB(255, 255, 255) : 0;
@@ -67,7 +67,9 @@ static inline void setup()
 	// Check for input mode override
 	Gamepad.read();
 	InputMode newInputMode = current_input_mode;
-	if (Gamepad.isSelectPressed())
+	if (Gamepad.isRightStickButtonPressed())
+		newInputMode = PS3;
+	else if (Gamepad.isSelectPressed())
 		newInputMode = SWITCH;
 	else if (Gamepad.isStartPressed())
 		newInputMode = XINPUT;
@@ -109,7 +111,7 @@ static inline void loop() {
 	Gamepad.process();
 
 	// Convert to USB report
-	report = fill_report((GamepadState *)&Gamepad.state, false);
+	report = fill_report(&Gamepad.state, false);
 
 	// Send it!
 	send_report(report, report_size);

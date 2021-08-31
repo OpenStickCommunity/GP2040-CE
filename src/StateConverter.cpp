@@ -6,11 +6,40 @@
 #include <stdio.h>
 
 #include "usb_driver.h"
+#include "ps3_device.h"
 #include "switch_device.h"
 #include "xinput_device.h"
 
 #include "StateConverter.h"
 #include "GamepadState.h"
+
+PS3Report ps3_report =
+{
+	.reportId = 1,
+	._reserved1 = 0,
+	.buttons = 0,
+	.lx = PS3_JOYSTICK_MID,
+	.ly = PS3_JOYSTICK_MID,
+	.rx = PS3_JOYSTICK_MID,
+	.ry = PS3_JOYSTICK_MID,
+	.analogDpadUp = 0,
+	.analogDpadRight = 0,
+	.analogDpadDown = 0,
+	.analogDpadLeft = 0,
+	.analogL2 = 0,
+	.analogR2 = 0,
+	.analogL1 = 0,
+	.analogR1 = 0,
+	.analogTriangle = 0,
+	.analogCircle = 0,
+	.analogCross = 0,
+	.analogSquare = 0,
+	._reserved2 = { 0 },
+	.accelX = PS3_ACCEL_GYRO_MID,
+	.accellY = PS3_ACCEL_GYRO_MID,
+	.accelZ = PS3_ACCEL_GYRO_MID,
+	.gyro = PS3_ACCEL_GYRO_MID,
+};
 
 SwitchReport switch_report =
 {
@@ -37,6 +66,38 @@ XInputReport xinput_report =
 	.ry = GAMEPAD_JOYSTICK_MID,
 	._reserved = { },
 };
+
+static PS3Report *fill_ps3_report(GamepadState *state)
+{
+	// Direct assignments
+	ps3_report.lx = state->lx >> 8;
+	ps3_report.ly = state->ly >> 8;
+	ps3_report.rx = state->rx >> 8;
+	ps3_report.ry = state->ry >> 8;
+
+	ps3_report.buttons = 0
+		| ((state->buttons & GAMEPAD_MASK_09)    ? PS3_MASK_SELECT   : 0)
+		| ((state->buttons & GAMEPAD_MASK_11)    ? PS3_MASK_L3       : 0)
+		| ((state->buttons & GAMEPAD_MASK_12)    ? PS3_MASK_R3       : 0)
+		| ((state->buttons & GAMEPAD_MASK_10)    ? PS3_MASK_START    : 0)
+		| ((state->dpad    & GAMEPAD_MASK_UP)    ? PS3_MASK_UP       : 0)
+		| ((state->dpad    & GAMEPAD_MASK_RIGHT) ? PS3_MASK_RIGHT    : 0)
+		| ((state->dpad    & GAMEPAD_MASK_DOWN)  ? PS3_MASK_DOWN     : 0)
+		| ((state->dpad    & GAMEPAD_MASK_LEFT)  ? PS3_MASK_LEFT     : 0)
+		| ((state->buttons & GAMEPAD_MASK_07)    ? PS3_MASK_L2       : 0)
+		| ((state->buttons & GAMEPAD_MASK_08)    ? PS3_MASK_R2       : 0)
+		| ((state->buttons & GAMEPAD_MASK_05)    ? PS3_MASK_L1       : 0)
+		| ((state->buttons & GAMEPAD_MASK_06)    ? PS3_MASK_R2       : 0)
+		| ((state->buttons & GAMEPAD_MASK_04)    ? PS3_MASK_TRIANGLE : 0)
+		| ((state->buttons & GAMEPAD_MASK_02)    ? PS3_MASK_CIRCLE   : 0)
+		| ((state->buttons & GAMEPAD_MASK_01)    ? PS3_MASK_CROSS    : 0)
+		| ((state->buttons & GAMEPAD_MASK_03)    ? PS3_MASK_SQUARE   : 0)
+		| ((state->buttons & GAMEPAD_MASK_13)    ? PS3_MASK_PS       : 0)
+		// | ((state->buttons & GAMEPAD_MASK_14)    ? PS3_MASK_TP       : 0)
+	;
+
+	return &ps3_report;
+}
 
 static SwitchReport *fill_switch_report(GamepadState *state)
 {
@@ -129,6 +190,9 @@ void *fill_report(GamepadState *state, bool has_analog_triggers)
 		case XINPUT:
 			return fill_xinput_report(state, has_analog_triggers);
 
+		case PS3:
+			return fill_ps3_report(state);
+
 		case SWITCH:
 		default:
 			return fill_switch_report(state);
@@ -142,12 +206,16 @@ void *select_report(uint8_t *report_size, InputMode mode)
 	switch (current_input_mode)
 	{
 		case XINPUT:
-			*report_size = sizeof(XInputReport);
+			*report_size = sizeof(xinput_report);
 			return &xinput_report;
+
+		case PS3:
+			*report_size = sizeof(ps3_report);
+			return &ps3_report;
 
 		case SWITCH:
 		default:
-			*report_size = sizeof(SwitchReport);
+			*report_size = sizeof(switch_report);
 			return &switch_report;
 	}
 }

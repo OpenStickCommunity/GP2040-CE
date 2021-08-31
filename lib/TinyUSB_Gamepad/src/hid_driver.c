@@ -8,12 +8,12 @@
 #include "device/usbd_pvt.h"
 #include "class/hid/hid_device.h"
 
-bool send_hid_report(void *report, uint8_t report_size)
+bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
 {
 	bool sent = false;
 	if (tud_hid_ready())
 	{
-		tud_hid_report(0, report, report_size);
+		tud_hid_report(report_id, report, report_size);
 		sent = true;
 	}
 
