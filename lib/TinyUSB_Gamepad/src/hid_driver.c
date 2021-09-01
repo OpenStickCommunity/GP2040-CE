@@ -22,17 +22,16 @@ bool hid_device_control_request(uint8_t rhport, tusb_control_request_t const * r
 {
 	if (
 		current_input_mode == HID &&
-		request->bmRequestType_bit.recipient == TUSB_REQ_RCPT_INTERFACE &&
-		request->bmRequestType_bit.type == TUSB_REQ_TYPE_CLASS &&
-		request->bmRequestType_bit.direction == TUSB_DIR_IN &&
+		request->bmRequestType == 0xA1 &&
+		request->bRequest == HID_REQ_CONTROL_GET_REPORT &&
 		request->wValue == 0x0300
 	)
 	{
-		tud_hid_report(0, magic_init_bytes, sizeof(magic_init_bytes));
+		return tud_hid_report(0, magic_init_bytes, sizeof(magic_init_bytes));
 	}
 	else
 	{
-		hidd_control_request(rhport, request);
+		return hidd_control_request(rhport, request);
 	}
 }
 

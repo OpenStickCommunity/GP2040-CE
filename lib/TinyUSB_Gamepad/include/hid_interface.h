@@ -42,7 +42,8 @@
 #define HID_JOYSTICK_MID 0x80
 #define HID_JOYSTICK_MAX 0xFF
 
-static const uint8_t magic_init_bytes[] = { 0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00 };
+// Magic byte sequence to enable PS button on PS3
+static const uint8_t magic_init_bytes[8] = { 0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00 };
 
 typedef struct
 {
@@ -113,7 +114,7 @@ static const uint8_t hid_configuration_descriptor[] =
 	0x00,        // bCountryCode
 	0x01,        // bNumDescriptors
 	0x22,        // bDescriptorType[0] (HID)
-	0x4F, 0x00,  // wDescriptorLength[0] 79
+	0x5A, 0x00,  // wDescriptorLength[0] 90
 
 	0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
@@ -162,6 +163,14 @@ static const uint8_t hid_report_descriptor[] =
 	0x09, 0x20,        //   Usage (0x20)
 	0x95, 0x01,        //   Report Count (1)
 	0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+
+	// Begin PS3 "magic" vendor page
+	0x06, 0x00, 0xff, // USAGE_PAGE (Vendor Specific)
+	0x09, 0x20, // Unknown
+	0x75, 0x08, // REPORT_SIZE (8)
+	0x95, 0x01, // REPORT_COUNT (1)
+	0xB1, 0x02,        //    Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+
 	0xC0,              // End Collection
 };
 
