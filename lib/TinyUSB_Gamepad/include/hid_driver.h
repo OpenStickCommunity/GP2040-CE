@@ -7,8 +7,8 @@
 #define HID_DRIVER_H_
 
 #include "device/usbd_pvt.h"
-#include "ps3_device.h"
-#include "switch_device.h"
+#include "hid_interface.h"
+#include "switch_interface.h"
 
 extern const usbd_class_driver_t hid_driver;
 

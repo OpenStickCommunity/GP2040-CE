@@ -60,7 +60,7 @@ static inline void setup()
 	Gamepad.read();
 	InputMode newInputMode = current_input_mode;
 	if (Gamepad.state.pressedR3())
-		newInputMode = PS3;
+		newInputMode = HID;
 	else if (Gamepad.state.pressedS1())
 		newInputMode = SWITCH;
 	else if (Gamepad.state.pressedS2())

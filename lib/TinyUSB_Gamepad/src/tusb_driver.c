@@ -37,10 +37,6 @@ void send_report(void *report, uint8_t report_size)
 				sent = send_xinput_report(report, report_size);
 				break;
 
-			case PS3:
-				sent = send_hid_report(1, report, report_size);
-				break;
-
 			default:
 				sent = send_hid_report(0, report, report_size);
 				break;
@@ -57,15 +53,14 @@ void send_report(void *report, uint8_t report_size)
 
 const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 {
+	*driver_count = 1;
+
 	switch (current_input_mode)
 	{
 		case XINPUT:
-			*driver_count = 1;
 			return &xinput_driver;
 
-		case SWITCH:
 		default:
-			*driver_count = 1;
 			return &hid_driver;
 	}
 }
@@ -86,9 +81,9 @@ uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type,
 	uint8_t report_size = 0;
 	switch (current_input_mode)
 	{
-		case PS3:
-			report_size = sizeof(ps3_report);
-			memcpy(buffer, &ps3_report, report_size);
+		case HID:
+			report_size = sizeof(hid_report);
+			memcpy(buffer, &hid_report, report_size);
 			break;
 
 		case SWITCH:

@@ -6,44 +6,21 @@
 #include <stdio.h>
 
 #include "usb_driver.h"
-#include "ps3_device.h"
-#include "switch_device.h"
-#include "xinput_device.h"
+#include "hid_interface.h"
+#include "switch_interface.h"
+#include "xinput_interface.h"
 
 #include "StateConverter.h"
 #include "GamepadState.h"
 
-PS3Report ps3_report =
+HIDReport hid_report =
 {
-	.reportId = 0,
 	.buttons = 0,
-	.lx = PS3_JOYSTICK_MID,
-	.ly = PS3_JOYSTICK_MID,
-	.rx = PS3_JOYSTICK_MID,
-	.ry = PS3_JOYSTICK_MID,
-	._reserved2 = { 0 },
-	.analogDpadUp = 0,
-	.analogDpadRight = 0,
-	.analogDpadDown = 0,
-	.analogDpadLeft = 0,
-	.analogL2 = 0,
-	.analogR2 = 0,
-	.analogL1 = 0,
-	.analogR1 = 0,
-	.analogTriangle = 0,
-	.analogCircle = 0,
-	.analogCross = 0,
-	.analogSquare = 0,
-	._reserved3 = { 0 },
-	.status = 0x02,
-	.power = 0xFF,
-	.comm = 0x12,
-	._reserved4 = { 0 },
-	.accelX = PS3_ACCEL_GYRO_MID,
-	.accellY = PS3_ACCEL_GYRO_MID,
-	.accelZ = PS3_ACCEL_GYRO_MID,
-	.gyro = PS3_ACCEL_GYRO_MID,
-	.magic = 0x02,
+	.hat = HID_HAT_NOTHING,
+	.lx = HID_JOYSTICK_MID,
+	.ly = HID_JOYSTICK_MID,
+	.rx = HID_JOYSTICK_MID,
+	.ry = HID_JOYSTICK_MID,
 };
 
 SwitchReport switch_report =
@@ -72,114 +49,46 @@ XInputReport xinput_report =
 	._reserved = { },
 };
 
-static PS3Report *fill_ps3_report(GamepadState *state)
+static HIDReport *fill_hid_report(GamepadState *state)
 {
 	// Direct assignments
-	ps3_report.lx = state->lx >> 8;
-	ps3_report.ly = state->ly >> 8;
-	ps3_report.rx = state->rx >> 8;
-	ps3_report.ry = state->ry >> 8;
+	hid_report.lx = state->lx >> 8;
+	hid_report.ly = state->ly >> 8;
+	hid_report.rx = state->rx >> 8;
+	hid_report.ry = state->ry >> 8;
 
-	ps3_report.buttons = 0;
-
-	// "Analog" buttons
-	if (state->pressedB4())
+	// Handle HAT switch (D-Pad)
+	switch (state->dpad & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
 	{
-		ps3_report.buttons |= PS3_MASK_TRIANGLE;
-		ps3_report.analogTriangle = 0xFF;
+		case GAMEPAD_MASK_UP:                        hid_report.hat = HID_HAT_UP;        break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   hid_report.hat = HID_HAT_UPRIGHT;   break;
+		case GAMEPAD_MASK_RIGHT:                     hid_report.hat = HID_HAT_RIGHT;     break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: hid_report.hat = HID_HAT_DOWNRIGHT; break;
+		case GAMEPAD_MASK_DOWN:                      hid_report.hat = HID_HAT_DOWN;      break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  hid_report.hat = HID_HAT_DOWNLEFT;  break;
+		case GAMEPAD_MASK_LEFT:                      hid_report.hat = HID_HAT_LEFT;      break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    hid_report.hat = HID_HAT_UPLEFT;    break;
+		default:                                     hid_report.hat = HID_HAT_NOTHING;   break;
 	}
-	else { ps3_report.analogTriangle = 0; }
 
-	if (state->pressedB2())
-	{
-		ps3_report.buttons |= PS3_MASK_CIRCLE;
-		ps3_report.analogCircle = 0xFF;
-	}
-	else { ps3_report.analogCircle = 0; }
+	hid_report.buttons = 0
+		| (state->pressedB3() ? HID_MASK_SQUARE   : 0)
+		| (state->pressedB1() ? HID_MASK_CROSS    : 0)
+		| (state->pressedB2() ? HID_MASK_CIRCLE   : 0)
+		| (state->pressedB4() ? HID_MASK_TRIANGLE : 0)
+		| (state->pressedL1() ? HID_MASK_L1       : 0)
+		| (state->pressedR1() ? HID_MASK_R1       : 0)
+		| (state->pressedL2() ? HID_MASK_L2       : 0)
+		| (state->pressedR2() ? HID_MASK_R2       : 0)
+		| (state->pressedS1() ? HID_MASK_SELECT   : 0)
+		| (state->pressedS2() ? HID_MASK_START    : 0)
+		| (state->pressedL3() ? HID_MASK_L3       : 0)
+		| (state->pressedR3() ? HID_MASK_R3       : 0)
+		| (state->pressedA1() ? HID_MASK_PS       : 0)
+		| (state->pressedA2() ? HID_MASK_TP       : 0)
+	;
 
-	if (state->pressedB1())
-	{
-		ps3_report.buttons |= PS3_MASK_CROSS;
-		ps3_report.analogCross = 0xFF;
-	}
-	else { ps3_report.analogCross = 0; }
-
-	if (state->pressedB3())
-	{
-		ps3_report.buttons |= PS3_MASK_SQUARE;
-		ps3_report.analogSquare = 0xFF;
-	}
-	else { ps3_report.analogSquare = 0; }
-
-	if (state->pressedUp())
-	{
-		ps3_report.buttons |= PS3_MASK_UP;
-		ps3_report.analogDpadUp = 0xFF;
-	}
-	else { ps3_report.analogDpadUp = 0; }
-
-	if (state->pressedRight())
-	{
-		ps3_report.buttons |= PS3_MASK_RIGHT;
-		ps3_report.analogDpadRight = 0xFF;
-	}
-	else { ps3_report.analogDpadRight = 0; }
-
-	if (state->pressedDown())
-	{
-		ps3_report.buttons |= PS3_MASK_DOWN;
-		ps3_report.analogDpadDown = 0xFF;
-	}
-	else { ps3_report.analogDpadDown = 0; }
-
-	if (state->pressedLeft())
-	{
-		ps3_report.buttons |= PS3_MASK_LEFT;
-		ps3_report.analogDpadLeft = 0xFF;
-	}
-	else { ps3_report.analogDpadLeft = 0; }
-
-	if (state->pressedL1())
-	{
-		ps3_report.buttons |= PS3_MASK_L1;
-		ps3_report.analogL1 = 0xFF;
-	}
-	else { ps3_report.analogL1 = 0; }
-
-	if (state->pressedR1())
-	{
-		ps3_report.buttons |= PS3_MASK_R2;
-		ps3_report.analogR1 = 0xFF;
-	}
-	else { ps3_report.analogR1 = 0; }
-
-	if (state->pressedL2())
-	{
-		ps3_report.buttons |= PS3_MASK_L2;
-		ps3_report.analogL2 = 0xFF;
-	}
-	else { ps3_report.analogL2 = 0; }
-
-	if (state->pressedR2())
-	{
-		ps3_report.buttons |= PS3_MASK_R2;
-		ps3_report.analogR2 = 0xFF;
-	}
-	else { ps3_report.analogR2 = 0; }
-
-	// Digital buttons
-	if (state->pressedS1())
-		ps3_report.buttons |= PS3_MASK_SELECT;
-	if (state->pressedS2())
-		ps3_report.buttons |= PS3_MASK_START;
-	if (state->pressedL3())
-		ps3_report.buttons |= PS3_MASK_L3;
-	if (state->pressedR3())
-		ps3_report.buttons |= PS3_MASK_R3;
-	if (state->pressedA1())
-		ps3_report.buttons |= PS3_MASK_PS;
-
-	return &ps3_report;
+	return &hid_report;
 }
 
 static SwitchReport *fill_switch_report(GamepadState *state)
@@ -273,12 +182,11 @@ void *fill_report(GamepadState *state, bool has_analog_triggers)
 		case XINPUT:
 			return fill_xinput_report(state, has_analog_triggers);
 
-		case PS3:
-			return fill_ps3_report(state);
-
 		case SWITCH:
-		default:
 			return fill_switch_report(state);
+
+		default:
+			return fill_hid_report(state);
 	}
 
 	return NULL;
@@ -292,13 +200,12 @@ void *select_report(uint8_t *report_size, InputMode mode)
 			*report_size = sizeof(xinput_report);
 			return &xinput_report;
 
-		case PS3:
-			*report_size = sizeof(ps3_report);
-			return &ps3_report;
-
 		case SWITCH:
-		default:
 			*report_size = sizeof(switch_report);
 			return &switch_report;
+
+		default:
+			*report_size = sizeof(hid_report);
+			return &hid_report;
 	}
 }
