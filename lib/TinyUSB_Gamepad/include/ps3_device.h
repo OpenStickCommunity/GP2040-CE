@@ -27,7 +27,13 @@
 
 #define PS3_ACCEL_GYRO_MID 0x01FF
 
-typedef struct __attribute((packed))
+static const uint8_t magic_init_bytes[] =
+{
+	0x21, 0x26, 0x01, 0x07,
+	0x00, 0x00, 0x00, 0x00
+};
+
+typedef struct __attribute((packed, aligned(1)))
 {
 	uint8_t reportId;
 	uint32_t buttons;
@@ -35,31 +41,35 @@ typedef struct __attribute((packed))
 	uint8_t ly;
 	uint8_t rx;
 	uint8_t ry;
-	uint8_t analogDpadRight;
-	uint8_t analogDpadLeft;
+	uint8_t _reserved2[4];
 	uint8_t analogDpadUp;
+	uint8_t analogDpadRight;
 	uint8_t analogDpadDown;
+	uint8_t analogDpadLeft;
+	uint8_t analogL2;
+	uint8_t analogR2;
+	uint8_t analogL1;
+	uint8_t analogR1;
 	uint8_t analogTriangle;
 	uint8_t analogCircle;
 	uint8_t analogCross;
 	uint8_t analogSquare;
-	uint8_t analogL1;
-	uint8_t analogL2;
-	uint8_t analogR1;
-	uint8_t analogR2;
-	uint8_t _reserved[19];
+	uint8_t _reserved3[3];
+	uint8_t status;
+	uint8_t power;
+	uint8_t comm;
+	uint8_t _reserved4[8];
 	uint16_t accelX;        // 10 bit
 	uint16_t accellY;       // 10 bit
 	uint16_t accelZ;        // 10 bit
 	uint16_t gyro;          // 10 bit
+	uint8_t magic;
 } PS3Report;
 
 extern PS3Report ps3_report;
 
 static const char ps3_string_manufacturer[] = "Sony";
 static const char ps3_string_product[]      = "PLAYSTATION(R)3 Controller";
-// static const char ps3_string_manufacturer[] = "Generic";
-// static const char ps3_string_product[]      = "PS3 Controller";
 static const char ps3_string_version[]      = "1.0";
 
 static const char *ps3_string_descriptors[] =
@@ -79,8 +89,6 @@ static const uint8_t ps3_device_descriptor[] =
 	0x00,        // bDeviceSubClass
 	0x00,        // bDeviceProtocol
 	0x40,        // bMaxPacketSize0 64
-	// 0xFE, 0xCA,  // Test VID...
-	// 0xEA, 0x01,  // ...and PID
 	0x4C, 0x05,  // idVendor 0x054C
 	0x68, 0x02,  // idProduct 0x0268
 	0x00, 0x01,  // bcdDevice 1.00
