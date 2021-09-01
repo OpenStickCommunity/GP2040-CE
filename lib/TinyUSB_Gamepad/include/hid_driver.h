@@ -7,6 +7,7 @@
 #define HID_DRIVER_H_
 
 #include "device/usbd_pvt.h"
+#include "switch_interface.h"
 
 extern const usbd_class_driver_t hid_driver;
 
@@ -14,10 +15,10 @@ extern const usbd_class_driver_t hid_driver;
 extern "C" {
 #endif
 
-bool send_hid_report(void *report, uint8_t report_size);
+bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size);
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif

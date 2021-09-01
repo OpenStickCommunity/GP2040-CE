@@ -38,7 +38,7 @@ void send_report(void *report, uint8_t report_size)
 				break;
 
 			default:
-				sent = send_hid_report(report, report_size);
+				sent = send_hid_report(0, report, report_size);
 				break;
 		}
 
@@ -53,15 +53,14 @@ void send_report(void *report, uint8_t report_size)
 
 const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 {
+	*driver_count = 1;
+
 	switch (current_input_mode)
 	{
 		case XINPUT:
-			*driver_count = 1;
 			return &xinput_driver;
 
-		case SWITCH:
 		default:
-			*driver_count = 0;
 			return &hid_driver;
 	}
 }
@@ -73,13 +72,25 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 // Return zero will cause the stack to STALL request
 uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen)
 {
-	// TODO not Implemented
+	// TODO: Handle the correct report type, if required
+
 	(void)report_id;
 	(void)report_type;
-	(void)buffer;
 	(void)reqlen;
 
-	return 0;
+	uint8_t report_size = 0;
+	switch (current_input_mode)
+	{
+		case SWITCH:
+			report_size = sizeof(switch_report);
+			memcpy(buffer, &switch_report, report_size);
+			break;
+
+		default:
+			break;
+	}
+
+	return report_size;
 }
 
 // Invoked when received SET_REPORT control request or
@@ -87,7 +98,7 @@ uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type,
 void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize)
 {
 	// echo back anything we received from host
-	tud_hid_report(0, buffer, bufsize);
+	tud_hid_report(report_id, buffer, bufsize);
 }
 
 

@@ -6,8 +6,8 @@
 
 #include "tusb.h"
 #include "usb_driver.h"
-#include "switch_device.h"
-#include "xinput_device.h"
+#include "switch_interface.h"
+#include "xinput_interface.h"
 
 static uint16_t _desc_str[32];
 
@@ -69,7 +69,7 @@ uint8_t const *tud_descriptor_device_cb(void)
 	{
 		case XINPUT:
 			return (const uint8_t *)xinput_device_descriptor;
-		
+
 		case SWITCH:
 		default:
 			return (const uint8_t *)switch_device_descriptor;
@@ -99,7 +99,7 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 	{
 		case XINPUT:
 			return xinput_configuration_descriptor;
-		
+
 		case SWITCH:
 		default:
 			return switch_configuration_descriptor;

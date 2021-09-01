@@ -18,7 +18,7 @@
 #define PIN_BUTTON_02   17
 #define PIN_BUTTON_09   19
 #define PIN_BUTTON_10   21
-#define PIN_BUTTON_11   3
+#define PIN_BUTTON_12   3
 
 /* Map other buttons to remaining open pins */
 
@@ -28,9 +28,9 @@
 #define PIN_BUTTON_06   7
 #define PIN_BUTTON_07   14
 #define PIN_BUTTON_08   26
-#define PIN_BUTTON_12   27
+#define PIN_BUTTON_11   27
 #define PIN_BUTTON_13   28
-#define PIN_BUTTON_14   255
+#define PIN_BUTTON_14   0
 
 #define LEDS_DPAD_UP     3
 #define LEDS_DPAD_DOWN   1

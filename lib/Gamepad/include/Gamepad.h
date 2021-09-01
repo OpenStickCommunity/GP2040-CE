@@ -163,15 +163,6 @@ class GamepadClass
 		 */
 		virtual bool isSOCDHotkeyPressed();
 
-		inline bool isDpadUpPressed()           { return (state.dpad    & GAMEPAD_MASK_UP)    == GAMEPAD_MASK_UP   ; }
-		inline bool isDpadDownPressed()         { return (state.dpad    & GAMEPAD_MASK_DOWN)  == GAMEPAD_MASK_DOWN ; }
-		inline bool isDpadLeftPressed()         { return (state.dpad    & GAMEPAD_MASK_LEFT)  == GAMEPAD_MASK_LEFT ; }
-		inline bool isDpadRightPressed()        { return (state.dpad    & GAMEPAD_MASK_RIGHT) == GAMEPAD_MASK_RIGHT; }
-		inline bool isLeftStickButtonPressed()  { return (state.buttons & GAMEPAD_MASK_11)    == GAMEPAD_MASK_11   ; }
-		inline bool isRightStickButtonPressed() { return (state.buttons & GAMEPAD_MASK_12)    == GAMEPAD_MASK_12   ; }
-		inline bool isSelectPressed()           { return (state.buttons & GAMEPAD_MASK_09)    == GAMEPAD_MASK_09   ; }
-		inline bool isStartPressed()            { return (state.buttons & GAMEPAD_MASK_10)    == GAMEPAD_MASK_10   ; }
-
 	protected:
 		// Convert the horizontal GamepadState dpad axis value into an analog value
 		inline uint16_t dpadToAnalogX(uint8_t dpad)
@@ -263,20 +254,20 @@ class GamepadClass
 					GamepadDebouncer(GAMEPAD_MASK_DOWN, GAMEPAD_DEBOUNCE_MILLIS, true),
 					GamepadDebouncer(GAMEPAD_MASK_LEFT, GAMEPAD_DEBOUNCE_MILLIS, true),
 					GamepadDebouncer(GAMEPAD_MASK_RIGHT, GAMEPAD_DEBOUNCE_MILLIS, true),
-					GamepadDebouncer(GAMEPAD_MASK_01, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_02, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_03, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_04, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_05, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_06, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_07, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_08, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_09, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_10, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_11, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_12, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_13, GAMEPAD_DEBOUNCE_MILLIS, false),
-					GamepadDebouncer(GAMEPAD_MASK_14, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_B1, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_B2, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_B3, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_B4, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_L1, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_R1, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_L2, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_R2, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_S1, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_S2, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_L3, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_R3, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_A1, GAMEPAD_DEBOUNCE_MILLIS, false),
+					GamepadDebouncer(GAMEPAD_MASK_A2, GAMEPAD_DEBOUNCE_MILLIS, false),
 				};
 		#else
 				GamepadDebouncer debouncers[GAMEPAD_DIGITAL_INPUT_COUNT];
