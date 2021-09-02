@@ -6,6 +6,14 @@
 #include <vector>
 
 #include "Animation.hpp"
+
+typedef enum
+{
+	STATIC,
+	RAINBOW,
+	CHASE,
+} AnimationMode;
+
 class AnimationStation
 {
 public:
@@ -19,7 +27,7 @@ public:
   static void SetBrightness(float brightness);
   static uint32_t RGB(uint8_t r, uint8_t g, uint8_t b);
   static uint32_t Wheel(uint8_t pos);
-  
+
   std::vector<Animation*> animations;
   static float brightness;
   uint32_t frame[100];
