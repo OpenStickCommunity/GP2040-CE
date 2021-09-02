@@ -4,7 +4,10 @@ The goal of GP2040 is to provide multi-platform compatibility for RP2040-based g
 
 ## Features
 
-* XInput (PC, Android, Raspberry Pi, etc.) and Nintendo Switch support
+* Supports the following input modes:
+  * Nintendo Switch
+  * XInput (PC, Android, Raspberry Pi)
+  * DirectInput (PC, Mac, PS3)
 * Left and Right stick emulation via D-pad inputs
 * 3 SOCD cleaning modes - Neutral, Up Priority (a.k.a. Hitbox), Second Input Priority
 * Low input latency, with default 1000 Hz (1 ms) polling rate in all modes
@@ -18,20 +21,21 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 
 | Mode | Poll Rate | Min | Max | Avg | Stdev | % on time | %1f skip | %2f skip |
 | - | - | - | - | - | - | - | - | - |
-| XInput | 1 ms | 0.56 ms | 1.34 ms | 0.86 ms | 0.24 ms | 95.94% | 4.06% | 0% |
-| Switch | 1 ms | 0.56 ms | 1.34 ms | 0.86 ms | 0.24 ms | 95.89% | 4.11% | 0% |
+| All | 1 ms | 0.56 ms | 1.59 ms | 0.96 ms | 0.28 ms | 95.28% | 4.72% | 0% |
 
 ## Development
 
-The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the Wiz-IO baremetal (Pico SDK) configuration. Only the Pico SDK is utilized, so there are no external dependencies at this time.
+The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. Only the Pico SDK is utilized, so there are no external dependencies at this time.
+
+### Board Definition
 
 There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it.
 
-### Edit Definition
+#### Existing Board
 
 Once you have the project loaded into PlatformIO, edit the `include/definitions/RP2040Board.h` file to map your GPIO pins. Then from the VS Code status bar, use the PlatformIO environment selector to choose `env:raspberry-pi-pico`.
 
-### Create Definition
+#### Create New Board
 
 You can also add a new board definition to `include/definitions`. If you do, perform the following:
 
@@ -67,24 +71,24 @@ You should now be able to build or upload the project to you RP2040 board from t
 
 GP2040 uses a generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. Here are the mappings of generic buttons to each supported platform/layout:
 
-| Generic | XInput | Switch  | Arcade |
-| ------- | ------ | ------- | ------ |
-| 01      | A      | B       | K1     |
-| 02      | B      | A       | K2     |
-| 03      | X      | Y       | P1     |
-| 04      | Y      | X       | P2     |
-| 05      | LB     | L       | P4     |
-| 06      | RB     | R       | P3     |
-| 07      | LT     | ZL      | K4     |
-| 08      | RT     | ZR      | K3     |
-| 09      | Back   | -       | Coin   |
-| 10      | Start  | +       | Start  |
-| 11      | LS     | LS      | LS     |
-| 12      | RS     | RS      | RS     |
-| 13      | Guide  | Home    | -      |
-| 14      | RS     | Capture | -      |
+| GP2040  | XInput | Switch  | PS3          | DirectInput  | Arcade |
+| ------- | ------ | ------- | ------------ | ------------ | ------ |
+| B1      | A      | B       | Cross        | 2            | K1     |
+| B2      | B      | A       | Circle       | 3            | K2     |
+| B3      | X      | Y       | Square       | 1            | P1     |
+| B4      | Y      | X       | Triangle     | 4            | P2     |
+| L1      | LB     | L       | L1           | 5            | P4     |
+| R1      | RB     | R       | R1           | 6            | P3     |
+| L2      | LT     | ZL      | L2           | 7            | K4     |
+| R2      | RT     | ZR      | R2           | 8            | K3     |
+| S1      | Back   | Minus   | Select       | 9            | Coin   |
+| S2      | Start  | Plus    | Start        | 10           | Start  |
+| L3      | LS     | LS      | L3           | 11           | LS     |
+| R3      | RS     | RS      | R3           | 12           | RS     |
+| A1      | Guide  | Home    | -            | 13           | -      |
+| A2      | -      | Capture | -            | 14           | -      |
 
-Any references to these buttons will use the `XInput` labels in this documentation.
+Any button references in this documentation will use the `XInput` labels for clarity.
 
 ### Home Button
 
@@ -94,6 +98,7 @@ If you do not have a dedicated Home button, you can activate it via the **`BACK 
 
 To change the input mode, **hold one of the following buttons as the controller is plugged in:**
 
+* **`RS`** for DirectInput/PS3
 * **`BACK`** for Nintendo Switch
 * **`START`** for XInput
 

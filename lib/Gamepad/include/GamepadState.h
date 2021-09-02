@@ -11,24 +11,24 @@
 /*
 	Gamepad button mapping table:
 
-	+---------+--------+----------+---------+--------+
-	| Generic | XInput | PS3      | Switch  | Arcade |
-	+---------+--------+----------+---------+--------+
-	| B1      | A      | Cross    | B       | K1     |
-	| B2      | B      | Circle   | A       | K2     |
-	| B3      | X      | Square   | Y       | P1     |
-	| B4      | Y      | Triangle | X       | P2     |
-	| L1      | LB     | L1       | L       | P4     |
-	| R1      | RB     | R1       | R       | P3     |
-	| L2      | LT     | L2       | ZL      | K4     |
-	| R2      | RT     | R2       | ZR      | K3     |
-	| S1      | Back   | Select   | -       | Coin   |
-	| S2      | Start  | Start    | +       | Start  |
-	| L3      | LS     | L3       | LS      | LS     |
-	| R3      | RS     | R3       | RS      | RS     |
-	| A1      | Guide  | PS       | Home    | -      |
-	| A2      | -      | -        | Capture | -      |
-	+---------+--------+----------+---------+--------+
+	+---------+--------+---------+----------+----------+--------+
+	| Generic | XInput | Switch  | PS3      | DInput   | Arcade |
+	+---------+--------+---------+----------|----------+--------+
+	| B1      | A      | B       | Cross    | 2        | K1     |
+	| B2      | B      | A       | Circle   | 3        | K2     |
+	| B3      | X      | Y       | Square   | 1        | P1     |
+	| B4      | Y      | X       | Triangle | 4        | P2     |
+	| L1      | LB     | L       | L1       | 5        | P4     |
+	| R1      | RB     | R       | R1       | 6        | P3     |
+	| L2      | LT     | ZL      | L2       | 7        | K4     |
+	| R2      | RT     | ZR      | R2       | 8        | K3     |
+	| S1      | Back   | -       | Select   | 9        | Coin   |
+	| S2      | Start  | +       | Start    | 10       | Start  |
+	| L3      | LS     | LS      | L3       | 11       | LS     |
+	| R3      | RS     | RS      | R3       | 12       | RS     |
+	| A1      | Guide  | Home    | -        | 13       | -      |
+	| A2      | -      | Capture | -        | 14       | -      |
+	+---------+--------+---------+----------+----------+--------+
 */
 
 #define GAMEPAD_MASK_UP    (1U << 0)
