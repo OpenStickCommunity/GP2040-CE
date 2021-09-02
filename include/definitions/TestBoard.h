@@ -10,19 +10,19 @@
 #define PIN_DPAD_DOWN   17
 #define PIN_DPAD_LEFT   19
 #define PIN_DPAD_RIGHT  18
-#define PIN_BUTTON_01   4
-#define PIN_BUTTON_02   5
-#define PIN_BUTTON_03   14
-#define PIN_BUTTON_04   15
-#define PIN_BUTTON_05   3
-#define PIN_BUTTON_06   2
-#define PIN_BUTTON_07   7
-#define PIN_BUTTON_08   6
-#define PIN_BUTTON_09   8
-#define PIN_BUTTON_10   9
-#define PIN_BUTTON_11   10
-#define PIN_BUTTON_12   11
-#define PIN_BUTTON_13   12
-#define PIN_BUTTON_14   20
+#define PIN_BUTTON_B1   4
+#define PIN_BUTTON_B2   5
+#define PIN_BUTTON_B3   14
+#define PIN_BUTTON_B4   15
+#define PIN_BUTTON_L1   3
+#define PIN_BUTTON_R1   2
+#define PIN_BUTTON_L2   7
+#define PIN_BUTTON_R2   6
+#define PIN_BUTTON_S1   8
+#define PIN_BUTTON_S2   9
+#define PIN_BUTTON_L3   10
+#define PIN_BUTTON_R3   11
+#define PIN_BUTTON_A1   12
+#define PIN_BUTTON_A2   20
 
 #endif

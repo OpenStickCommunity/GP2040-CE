@@ -1,3 +1,7 @@
+#include "Gamepad.h"
+#include "usb_driver.h"
+#include "AnimationStation.hpp"
+
 #ifndef DEFAULT_SOCD_MODE
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #endif
@@ -87,22 +91,22 @@
 #endif
 
 #ifndef LEDS_BASE_ANIMATION
-#define LEDS_BASE_ANIMATION "RAINBOW"
+#define LEDS_BASE_ANIMATION RAINBOW
 #endif
 
 #ifndef LEDS_BASE_ANIMATION_FIRST_PIXEL
 #define LEDS_BASE_ANIMATION_FIRST_PIXEL 0
 #endif
 
-#ifndef LEDS_BASE_ANIMATION_LAST_PIXEL 
+#ifndef LEDS_BASE_ANIMATION_LAST_PIXEL
 #define LEDS_BASE_ANIMATION_LAST_PIXEL 11
 #endif
 
-#ifndef LEDS_RAINBOW_CYCLE_TIME 
+#ifndef LEDS_RAINBOW_CYCLE_TIME
 #define LEDS_RAINBOW_CYCLE_TIME 40
 #endif
 
-#ifndef LEDS_CHASE_CYCLE_TIME 
+#ifndef LEDS_CHASE_CYCLE_TIME
 #define LEDS_CHASE_CYCLE_TIME 85
 #endif
 
