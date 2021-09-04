@@ -6,7 +6,7 @@
 #ifndef DEBUG_BOARD_H_
 #define DEBUG_BOARD_H_
 
-#include "Gamepad.h"
+#include "MPG.h"
 
 /* Mapped to pins on Waveshare IPS panel w/4 button + HAT */
 

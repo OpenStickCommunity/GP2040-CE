@@ -7,7 +7,16 @@
 
 #include "usb_driver.h"
 #include "BoardConfig.h"
-#include "Gamepad.h"
+#include "MPG.h"
+
+struct GamepadButtonMapping
+{
+	const uint8_t port;
+	const uint8_t pin;
+	const uint32_t pinMask;
+	const uint32_t buttonMask;
+	const int8_t ledPos;
+};
 
 GamepadButtonMapping mapDpadUp    = { .port = 0, .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP,    .ledPos = LEDS_DPAD_UP    };
 GamepadButtonMapping mapDpadDown  = { .port = 0, .pin = PIN_DPAD_DOWN,  .pinMask = (1 << PIN_DPAD_DOWN),  .buttonMask = GAMEPAD_MASK_DOWN,  .ledPos = LEDS_DPAD_DOWN  };
@@ -28,7 +37,7 @@ GamepadButtonMapping mapButtonR3  = { .port = 0, .pin = PIN_BUTTON_R3,  .pinMask
 GamepadButtonMapping mapButtonA1  = { .port = 0, .pin = PIN_BUTTON_A1,  .pinMask = (1 << PIN_BUTTON_A1),  .buttonMask = GAMEPAD_MASK_A1,    .ledPos = LEDS_BUTTON_13  };
 GamepadButtonMapping mapButtonA2  = { .port = 0, .pin = PIN_BUTTON_A2,  .pinMask = (1 << PIN_BUTTON_A2),  .buttonMask = GAMEPAD_MASK_A2,    .ledPos = LEDS_BUTTON_14  };
 
-void GamepadClass::setup()
+void MPG::setup()
 {
 	GamepadButtonMapping *gamepadMappings[] =
 	{
@@ -47,7 +56,7 @@ void GamepadClass::setup()
 	}
 }
 
-void GamepadClass::read()
+void MPG::read()
 {
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();

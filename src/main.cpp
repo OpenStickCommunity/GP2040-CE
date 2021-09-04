@@ -14,15 +14,13 @@
 #include "pico/multicore.h"
 
 #include "usb_driver.h"
-#include "BoardConfig.h"
-#include "GamepadStorage.h"
-#include "Gamepad.h"
+#include "MPG.h"
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
-GamepadClass gamepad;
+MPG gamepad;
 
 #ifdef BOARD_LEDS_PIN
 NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
