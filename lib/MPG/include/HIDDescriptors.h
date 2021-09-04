@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef GENERIC_HID_DEVICE_H_
-#define GENERIC_HID_DEVICE_H_
+#ifndef HID_DESCRIPTORS_H_
+#define HID_DESCRIPTORS_H_
 
 #include <stdint.h>
 
@@ -42,9 +42,6 @@
 #define HID_JOYSTICK_MID 0x80
 #define HID_JOYSTICK_MAX 0xFF
 
-// Magic byte sequence to enable PS button on PS3
-static const uint8_t magic_init_bytes[8] = { 0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00 };
-
 typedef struct
 {
 	uint16_t buttons;
@@ -54,8 +51,6 @@ typedef struct
 	uint8_t rx;
 	uint8_t ry;
 } HIDReport;
-
-extern HIDReport hid_report;
 
 static const char hid_string_manufacturer[] = "Generic";
 static const char hid_string_product[]      = "HID Gamepad";

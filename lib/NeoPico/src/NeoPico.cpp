@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
@@ -32,15 +33,11 @@ void NeoPico::SetPixel(int pixel, uint32_t color) {
 }
 
 void NeoPico::Clear() {
-  for (int i = 0; i < this->numPixels; ++i) {
-    this->frame[i] = 0;
-  }
+  memset(frame, 0, sizeof(frame));
 }
 
 void NeoPico::SetFrame(uint32_t newFrame[100]) {
-  for (int i = 0; i < 100; i++) {
-    this->frame[i] = newFrame[i];
-  }
+  memcpy(frame, newFrame, sizeof(frame));
 }
 
 void NeoPico::Show() {

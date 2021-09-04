@@ -9,9 +9,12 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "usb_driver.h"
+#include "GamepadConfig.h"
+#include "GamepadDescriptors.h"
+#include "GamepadEnums.h"
 #include "GamepadState.h"
 #include "GamepadDebouncer.h"
+#include "GamepadStorage.h"
 
 #ifndef GAMEPAD_DEBOUNCE_MILLIS
 #define GAMEPAD_DEBOUNCE_MILLIS 0
@@ -29,46 +32,6 @@ struct GamepadButtonMapping
 	const uint32_t buttonMask;
 	const int8_t ledPos;
 };
-
-// The available stick emulation modes
-typedef enum
-{
-	DPAD_MODE_DIGITAL,
-	DPAD_MODE_LEFT_ANALOG,
-	DPAD_MODE_RIGHT_ANALOG,
-} DpadMode;
-
-// The available SOCD cleaning methods
-typedef enum
-{
-	SOCD_MODE_UP_PRIORITY,           // U+D=U, L+R=N
-	SOCD_MODE_NEUTRAL,               // U+D=N, L+R=N
-	SOCD_MODE_SECOND_INPUT_PRIORITY, // U>D=D, L>R=R (Last Input Priority, aka Last Win)
-} SOCDMode;
-
-// Enum for tracking last direction state of Second Input SOCD method
-typedef enum
-{
-	DIRECTION_NONE,
-	DIRECTION_UP,
-	DIRECTION_DOWN,
-	DIRECTION_LEFT,
-	DIRECTION_RIGHT
-} DpadDirection;
-
-// The available hotkey actions
-typedef enum
-{
-	HOTKEY_NONE = 0x00,
-	HOTKEY_DPAD_DIGITAL = 0x01,
-	HOTKEY_DPAD_LEFT_ANALOG = 0x02,
-	HOTKEY_DPAD_RIGHT_ANALOG = 0x04,
-	HOTKEY_HOME_BUTTON = 0x08,
-	HOTKEY_CAPTURE_BUTTON = 0x10,
-	HOTKEY_SOCD_UP_PRIORITY = 0x20,
-	HOTKEY_SOCD_NEUTRAL = 0x40,
-	HOTKEY_SOCD_LAST_INPUT = 0x80,
-} GamepadHotkey;
 
 class GamepadClass
 {
@@ -101,6 +64,7 @@ class GamepadClass
 		static GamepadButtonMapping mapButtonA2;
 
 		DpadMode dpadMode = DPAD_MODE_DIGITAL;
+		InputMode inputMode = INPUT_MODE_XINPUT;
 		SOCDMode socdMode = SOCD_MODE_UP_PRIORITY;
 		GamepadState state =
 		{
@@ -153,6 +117,13 @@ class GamepadClass
 		 */
 		void process();
 
+		uint8_t *getReport();
+		uint8_t getReportSize();
+
+		HIDReport *getHIDReport();
+		SwitchReport *getSwitchReport();
+		XInputReport *getXInputReport();
+
 		/**
 		 * Returns if the function button/hotkey is pressed, override in derived board class
 		 */
@@ -162,6 +133,28 @@ class GamepadClass
 		 * Returns if the function button/hotkey is pressed, override in derived board class
 		 */
 		virtual bool isSOCDHotkeyPressed();
+
+		inline bool __attribute__((always_inline)) pressedDpad(const uint8_t mask)    { return (state.dpad & mask) == mask; }
+		inline bool __attribute__((always_inline)) pressedButton(const uint32_t mask) { return (state.buttons & mask) == mask; }
+
+		inline bool __attribute__((always_inline)) pressedUp()    { return pressedDpad(GAMEPAD_MASK_UP); }
+		inline bool __attribute__((always_inline)) pressedDown()  { return pressedDpad(GAMEPAD_MASK_DOWN); }
+		inline bool __attribute__((always_inline)) pressedLeft()  { return pressedDpad(GAMEPAD_MASK_LEFT); }
+		inline bool __attribute__((always_inline)) pressedRight() { return pressedDpad(GAMEPAD_MASK_RIGHT); }
+		inline bool __attribute__((always_inline)) pressedB1()    { return pressedButton(GAMEPAD_MASK_B1); }
+		inline bool __attribute__((always_inline)) pressedB2()    { return pressedButton(GAMEPAD_MASK_B2); }
+		inline bool __attribute__((always_inline)) pressedB3()    { return pressedButton(GAMEPAD_MASK_B3); }
+		inline bool __attribute__((always_inline)) pressedB4()    { return pressedButton(GAMEPAD_MASK_B4); }
+		inline bool __attribute__((always_inline)) pressedL1()    { return pressedButton(GAMEPAD_MASK_L1); }
+		inline bool __attribute__((always_inline)) pressedR1()    { return pressedButton(GAMEPAD_MASK_R1); }
+		inline bool __attribute__((always_inline)) pressedL2()    { return pressedButton(GAMEPAD_MASK_L2); }
+		inline bool __attribute__((always_inline)) pressedR2()    { return pressedButton(GAMEPAD_MASK_R2); }
+		inline bool __attribute__((always_inline)) pressedS1()    { return pressedButton(GAMEPAD_MASK_S1); }
+		inline bool __attribute__((always_inline)) pressedS2()    { return pressedButton(GAMEPAD_MASK_S2); }
+		inline bool __attribute__((always_inline)) pressedL3()    { return pressedButton(GAMEPAD_MASK_L3); }
+		inline bool __attribute__((always_inline)) pressedR3()    { return pressedButton(GAMEPAD_MASK_R3); }
+		inline bool __attribute__((always_inline)) pressedA1()    { return pressedButton(GAMEPAD_MASK_A1); }
+		inline bool __attribute__((always_inline)) pressedA2()    { return pressedButton(GAMEPAD_MASK_A2); }
 
 	protected:
 		// Convert the horizontal GamepadState dpad axis value into an analog value
@@ -222,10 +215,10 @@ class GamepadClass
 				default:
 					last_ud = DIRECTION_NONE;
 					break;
-				}
+			}
 
-				switch (dpad & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
-				{
+			switch (dpad & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
+			{
 				case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
 					if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && last_lr != DIRECTION_NONE)
 						new_dpad |= (last_lr == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;

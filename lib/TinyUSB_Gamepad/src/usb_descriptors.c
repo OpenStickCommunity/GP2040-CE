@@ -6,9 +6,9 @@
 
 #include "tusb.h"
 #include "usb_driver.h"
-#include "hid_interface.h"
-#include "switch_interface.h"
-#include "xinput_interface.h"
+#include "HIDDescriptors.h"
+#include "SwitchDescriptors.h"
+#include "XInputDescriptors.h"
 
 static uint16_t _desc_str[32];
 
@@ -21,22 +21,21 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 	uint8_t chr_count;
 
 	static const char *string_descriptors[4];
-	switch (current_input_mode)
+	switch (get_input_mode())
 	{
-		case XINPUT:
+		case INPUT_MODE_XINPUT:
 			for (int i = 0; i < 4; i++)
 				string_descriptors[i] = xinput_string_descriptors[i];
 			break;
 
-		case HID:
-			for (int i = 0; i < 4; i++)
-				string_descriptors[i] = hid_string_descriptors[i];
-			break;
-
-		case SWITCH:
-		default:
+		case INPUT_MODE_SWITCH:
 			for (int i = 0; i < 4; i++)
 				string_descriptors[i] = switch_string_descriptors[i];
+			break;
+
+		default:
+			for (int i = 0; i < 4; i++)
+				string_descriptors[i] = hid_string_descriptors[i];
 			break;
 	}
 
@@ -71,17 +70,16 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 // Application return pointer to descriptor
 uint8_t const *tud_descriptor_device_cb(void)
 {
-	switch (current_input_mode)
+	switch (get_input_mode())
 	{
-		case XINPUT:
+		case INPUT_MODE_XINPUT:
 			return (const uint8_t *)xinput_device_descriptor;
 
-		case HID:
-			return (const uint8_t *)hid_device_descriptor;
-
-		case SWITCH:
-		default:
+		case INPUT_MODE_SWITCH:
 			return (const uint8_t *)switch_device_descriptor;
+
+		default:
+			return (const uint8_t *)hid_device_descriptor;
 	}
 }
 
@@ -90,14 +88,13 @@ uint8_t const *tud_descriptor_device_cb(void)
 // Descriptor contents must exist long enough for transfer to complete
 uint8_t const *tud_hid_descriptor_report_cb(void)
 {
-	switch (current_input_mode)
+	switch (get_input_mode())
 	{
-		case HID:
-			return hid_report_descriptor;
-
-		case SWITCH:
-		default:
+		case INPUT_MODE_SWITCH:
 			return switch_report_descriptor;
+
+		default:
+			return hid_report_descriptor;
 	}
 }
 
@@ -107,16 +104,15 @@ uint8_t const *tud_hid_descriptor_report_cb(void)
 uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 {
 	(void)index; // for multiple configurations
-	switch (current_input_mode)
+	switch (get_input_mode())
 	{
-		case XINPUT:
+		case INPUT_MODE_XINPUT:
 			return xinput_configuration_descriptor;
 
-		case HID:
-			return hid_configuration_descriptor;
-
-		case SWITCH:
-		default:
+		case INPUT_MODE_SWITCH:
 			return switch_configuration_descriptor;
+
+		default:
+			return hid_configuration_descriptor;
 	}
 }

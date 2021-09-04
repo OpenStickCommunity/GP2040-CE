@@ -6,9 +6,8 @@
 #ifndef GAMEPAD_STORAGE_H_
 #define GAMEPAD_STORAGE_H_
 
-#include "FlashPROM.h"
-#include "Gamepad.h"
-#include "usb_driver.h"
+#include "GamepadEnums.h"
+#include "GamepadDescriptors.h"
 
 #define STORAGE_INPUT_MODE_INDEX 0 // 1 byte
 #define STORAGE_DPAD_MODE_INDEX  1 // 1 byte
@@ -17,8 +16,9 @@
 class GamepadStorage
 {
 	public:
-		inline void start() { EEPROM.start();  }
-		inline void save()  { EEPROM.commit(); }
+		GamepadStorage();
+
+		void save();
 
 		DpadMode getDpadMode();
 		void setDpadMode(DpadMode mode);
@@ -28,21 +28,6 @@ class GamepadStorage
 
 		SOCDMode getSOCDMode();
 		void setSOCDMode(SOCDMode mode);
-	
-	protected:
-		// Wrapper for "get" call to storage API
-		template <typename T>
-		T &get(int index, T &value)
-		{
-			return EEPROM.get(index, value);
-		}
-
-		// Wrapper for "set" call to storage API
-		template <typename T>
-		void set(int index, const T &value)
-		{
-			EEPROM.set(index, value);
-		}
 };
 
 static GamepadStorage Storage;

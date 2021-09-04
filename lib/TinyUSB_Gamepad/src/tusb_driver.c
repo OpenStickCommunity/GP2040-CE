@@ -10,18 +10,26 @@
 #include "class/hid/hid.h"
 #include "device/usbd_pvt.h"
 
+#include "GamepadDescriptors.h"
+
 #include "usb_driver.h"
 #include "hid_driver.h"
 #include "xinput_driver.h"
 
-InputMode current_input_mode = XINPUT;
+InputMode input_mode = INPUT_MODE_XINPUT;
 
-void initialize_driver(void)
+InputMode get_input_mode(void)
 {
+	return input_mode;
+}
+
+void initialize_driver(InputMode mode)
+{
+	input_mode = mode;
 	tusb_init();
 }
 
-void send_report(void *report, uint8_t report_size)
+void send_report(uint8_t *report, uint8_t report_size)
 {
 	static uint8_t previous_report[CFG_TUD_ENDPOINT0_SIZE] = { };
 
@@ -31,9 +39,9 @@ void send_report(void *report, uint8_t report_size)
 	if (memcmp(previous_report, report, report_size) != 0)
 	{
 		bool sent = false;
-		switch (current_input_mode)
+		switch (input_mode)
 		{
-			case XINPUT:
+			case INPUT_MODE_XINPUT:
 				sent = send_xinput_report(report, report_size);
 				break;
 
@@ -55,9 +63,9 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 {
 	*driver_count = 1;
 
-	switch (current_input_mode)
+	switch (input_mode)
 	{
-		case XINPUT:
+		case INPUT_MODE_XINPUT:
 			return &xinput_driver;
 
 		default:
@@ -79,19 +87,18 @@ uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type,
 	(void)reqlen;
 
 	uint8_t report_size = 0;
-	switch (current_input_mode)
+	SwitchReport switch_report;
+	HIDReport hid_report;
+	switch (input_mode)
 	{
-		case HID:
-			report_size = sizeof(hid_report);
-			memcpy(buffer, &hid_report, report_size);
-			break;
-
-		case SWITCH:
-			report_size = sizeof(switch_report);
+		case INPUT_MODE_SWITCH:
+			report_size = sizeof(SwitchReport);
 			memcpy(buffer, &switch_report, report_size);
 			break;
 
 		default:
+			report_size = sizeof(HIDReport);
+			memcpy(buffer, &hid_report, report_size);
 			break;
 	}
 

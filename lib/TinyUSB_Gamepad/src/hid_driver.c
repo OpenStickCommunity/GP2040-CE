@@ -8,9 +8,12 @@
 
 #include "device/usbd_pvt.h"
 #include "class/hid/hid_device.h"
-#include "hid_interface.h"
+#include "GamepadDescriptors.h"
 
-bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
+// Magic byte sequence to enable PS button on PS3
+static const uint8_t magic_init_bytes[8] = { 0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00 };
+
+bool send_hid_report(uint8_t report_id, uint8_t *report, uint8_t report_size)
 {
 	if (tud_hid_ready())
 		return tud_hid_report(report_id, report, report_size);
@@ -21,7 +24,7 @@ bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
 bool hid_device_control_request(uint8_t rhport, tusb_control_request_t const * request)
 {
 	if (
-		current_input_mode == HID &&
+		get_input_mode() == INPUT_MODE_HID &&
 		request->bmRequestType == 0xA1 &&
 		request->bRequest == HID_REQ_CONTROL_GET_REPORT &&
 		request->wValue == 0x0300

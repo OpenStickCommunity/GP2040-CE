@@ -2,17 +2,7 @@
 #include "usb_driver.h"
 #include "AnimationStation.hpp"
 
-#ifndef DEFAULT_SOCD_MODE
-#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
-#endif
-
-#ifndef DEFAULT_DPAD_MODE
-#define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL
-#endif
-
-#ifndef DEFAULT_INPUT_MODE
-#define DEFAULT_INPUT_MODE XINPUT
-#endif
+#include "GamepadConfig.h"
 
 #ifndef LEDS_DPAD_LEFT
 #define LEDS_DPAD_LEFT -1

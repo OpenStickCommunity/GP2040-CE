@@ -4,6 +4,30 @@
  */
 
 #include "GamepadStorage.h"
+#include "FlashPROM.h"
+
+template <typename T>
+static T &get(int index, T &value)
+{
+	return EEPROM.get(index, value);
+}
+
+// Wrapper for "set" call to storage API
+template <typename T>
+static void set(int index, const T &value)
+{
+	EEPROM.set(index, value);
+}
+
+GamepadStorage::GamepadStorage()
+{
+	EEPROM.start();
+}
+
+void GamepadStorage::save()
+{
+	EEPROM.commit();
+}
 
 DpadMode GamepadStorage::getDpadMode()
 {
@@ -19,7 +43,7 @@ void GamepadStorage::setDpadMode(DpadMode mode)
 
 InputMode GamepadStorage::getInputMode()
 {
-	InputMode mode = XINPUT;
+	InputMode mode = INPUT_MODE_XINPUT;
 	get(STORAGE_INPUT_MODE_INDEX, mode);
 	return mode;
 }

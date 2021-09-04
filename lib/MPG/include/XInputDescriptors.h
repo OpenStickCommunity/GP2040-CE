@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef XINPUT_DEVICE_H_
-#define XINPUT_DEVICE_H_
+#ifndef XINPUT_DESCRIPTORS_H_
+#define XINPUT_DESCRIPTORS_H_
 
 #include <stdint.h>
 
@@ -31,8 +31,7 @@
 #define XBOX_MASK_X     (1U << 6)
 #define XBOX_MASK_Y     (1U << 7)
 
-typedef struct
-{
+typedef struct {
 	uint8_t report_id;
 	uint8_t report_size;
 	uint8_t buttons1;
@@ -45,8 +44,6 @@ typedef struct
 	int16_t ry;
 	uint8_t _reserved[6];
 } XInputReport;
-
-extern XInputReport xinput_report;
 
 static const char xinput_string_manfacturer[] = "Microsoft";
 static const char xinput_string_product[] = "XInput STANDARD GAMEPAD";
@@ -121,7 +118,6 @@ static const uint8_t xinput_configuration_descriptor[] =
 	0x81,       // bEndpointAddress  (IN endpoint 1)
 	0x03,       // bmAttributes      (Transfer: Interrupt / Synch: None / Usage: Data)
 	0x20, 0x00, // wMaxPacketSize    (1 x 32 bytes)
-	// 0x04,       // bInterval         (4 frames)
 	0x01,       // bInterval         (1 frames)
 
 	//Endpoint Descriptor:

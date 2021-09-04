@@ -15,13 +15,9 @@
 #include "usb_driver.h"
 #include "Gamepad.h"
 #include "GamepadStorage.h"
-#include "StateConverter.h"
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
 #include "definitions/BoardConfig.h"
-
-void *report;
-uint8_t report_size;
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
@@ -30,7 +26,23 @@ NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
 AnimationStation as(BOARD_LEDS_COUNT);
 #endif
 
-static inline void setup()
+void setup();
+void loop();
+void core1();
+
+int main()
+{
+	setup();
+
+	multicore_launch_core1(core1);
+
+	while (1)
+		loop();
+
+	return 0;
+}
+
+void setup()
 {
 	// Set up controller
 	Gamepad.setup();
@@ -40,29 +52,30 @@ static inline void setup()
 
 	// Check for input mode override
 	Gamepad.read();
-	InputMode newInputMode = current_input_mode;
-	if (Gamepad.state.pressedR3())
-		newInputMode = HID;
-	else if (Gamepad.state.pressedS1())
-		newInputMode = SWITCH;
-	else if (Gamepad.state.pressedS2())
-		newInputMode = XINPUT;
+	InputMode newInputMode = Gamepad.inputMode;
+	if (Gamepad.pressedR3())
+		newInputMode = INPUT_MODE_HID;
+	else if (Gamepad.pressedS1())
+		newInputMode = INPUT_MODE_SWITCH;
+	else if (Gamepad.pressedS2())
+		newInputMode = INPUT_MODE_XINPUT;
 
-	if (newInputMode != current_input_mode)
+	if (newInputMode != Gamepad.inputMode)
 	{
-		current_input_mode = newInputMode;
-		Storage.setInputMode(current_input_mode);
+		Gamepad.inputMode = newInputMode;
+		Storage.setInputMode(Gamepad.inputMode);
 		Storage.save();
 	}
 
-	// Grab a pointer to the USB report for the selected input
-	report = select_report(&report_size, current_input_mode);
-
-	// Initialize USB/HID driver
-	initialize_driver();
+	// Initialize USB driver
+	initialize_driver(Gamepad.inputMode);
 }
 
-static inline void loop() {
+void loop()
+{
+	static const uint8_t reportSize = Gamepad.getReportSize();
+	static uint8_t *report;
+
 	// Poll every 1ms
 	const uint32_t intervalMS = 1;
 	static uint32_t nextRuntime = 0;
@@ -85,10 +98,10 @@ static inline void loop() {
 	Gamepad.process();
 
 	// Convert to USB report
-	report = fill_report(&Gamepad.state, false);
+	report = Gamepad.getReport();
 
 	// Send it!
-	send_report(report, report_size);
+	send_report(report, reportSize);
 
 	// Ensure next runtime ahead of current time
 	nextRuntime = getMillis() + intervalMS;
@@ -122,16 +135,4 @@ void core1()
 		leds.Show();
 	}
 #endif
-}
-
-int main()
-{
-	setup();
-
-	multicore_launch_core1(core1);
-
-	while (1)
-		loop();
-
-	return 0;
 }

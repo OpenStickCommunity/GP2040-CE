@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef SWITCH_DEVICE_H_
-#define SWITCH_DEVICE_H_
+#ifndef SWITCH_DESCRIPTORS_H_
+#define SWITCH_DESCRIPTORS_H_
 
 #include <stdint.h>
 
@@ -63,8 +63,6 @@ typedef struct
 	uint8_t ry;
 } SwitchOutReport;
 
-extern SwitchReport switch_report;
-
 static const char switch_string_manufacturer[] = "HORI CO.,LTD.";
 static const char switch_string_product[]      = "POKKEN CONTROLLER";
 static const char switch_string_version[]      = "1.0";
@@ -83,8 +81,8 @@ static const uint8_t switch_device_descriptor[] =
 	0x01,        // bDescriptorType (Device)
 	0x00, 0x02,  // bcdUSB 2.00
 	0x00,        // bDeviceClass (Use class information in the Interface Descriptors)
-	0x00,        // bDeviceSubClass 
-	0x00,        // bDeviceProtocol 
+	0x00,        // bDeviceSubClass
+	0x00,        // bDeviceProtocol
 	0x40,        // bMaxPacketSize0 64
 	0x0D, 0x0F,  // idVendor 0x0F0D
 	0x92, 0x00,  // idProduct 0x92

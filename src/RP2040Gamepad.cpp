@@ -6,9 +6,8 @@
 #include "pico/stdlib.h"
 
 #include "usb_driver.h"
-#include "definitions/BoardConfig.h"
 #include "Gamepad.h"
-#include "GamepadStorage.h"
+
 #include "definitions/BoardConfig.h"
 
 GamepadButtonMapping GamepadClass::mapDpadUp    = { .port = 0, .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP,    .ledPos = LEDS_DPAD_UP    };
@@ -84,28 +83,4 @@ void GamepadClass::read()
 	state.ry = GAMEPAD_JOYSTICK_MID;
 	state.lt = 0;
 	state.rt = 0;
-}
-
-void GamepadClass::save()
-{
-	Storage.setInputMode(current_input_mode);
-	Storage.setDpadMode(dpadMode);
-	Storage.setSOCDMode(socdMode);
-	Storage.save();
-}
-
-void GamepadClass::load()
-{
-	Storage.start();
-	current_input_mode = Storage.getInputMode();
-	if (current_input_mode > HID)
-		current_input_mode = DEFAULT_INPUT_MODE;
-
-	dpadMode = Storage.getDpadMode();
-	if (dpadMode > DPAD_MODE_RIGHT_ANALOG)
-		dpadMode = DEFAULT_DPAD_MODE;
-
-	socdMode = Storage.getSOCDMode();;
-	if (socdMode > SOCD_MODE_SECOND_INPUT_PRIORITY)
-		socdMode = DEFAULT_SOCD_MODE;
 }
