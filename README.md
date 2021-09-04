@@ -1,10 +1,8 @@
 # GP2040 - Multi-platform Gamepad Firmware for RP2040 microcontrollers
 
-The goal of GP2040 is to provide multi-platform compatibility for RP2040-based game controllers.
+The goal of GP2040 is to provide multi-platform compatibility for RP2040-based game controllers. The current feature set is:
 
-## Features
-
-* Supports the following input modes:
+* Support for the following input modes:
   * Nintendo Switch
   * XInput (PC, Android, Raspberry Pi)
   * DirectInput (PC, Mac, PS3)
@@ -21,11 +19,11 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 
 | Mode | Poll Rate | Min | Max | Avg | Stdev | % on time | %1f skip | %2f skip |
 | - | - | - | - | - | - | - | - | - |
-| All | 1 ms | 0.56 ms | 1.59 ms | 0.96 ms | 0.28 ms | 95.28% | 4.72% | 0% |
+| All | 1 ms | 0.56 ms | 1.58 ms | 0.89 ms | 0.25 ms | 95.71% | 4.29% | 0% |
 
 ## Development
 
-The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. Only the Pico SDK is utilized, so there are no external dependencies at this time.
+The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. There is an external dependency on the [MPG](https://github.com/FeralAI/MPG) C++ gamepad library for handling input state, providing extra features like Left/Right stick emulation and SOCD cleaning, and converting the generic gamepad state to the appropriate USB report.
 
 ### Board Definition
 
@@ -40,7 +38,7 @@ Once you have the project loaded into PlatformIO, edit the `include/definitions/
 You can also add a new board definition to `include/definitions`. If you do, perform the following:
 
 * Create new board definition file in `include/definitions` with your pin configuration and options.
-* Add `#define` for your new board in `include/definitions/BoardConfig.h`.
+* Add `#define` for your new board in `include/BoardConfig.h`.
 * Add option to `src/RP2040Gamepad.cpp` in the `BOARD_DEFINITION` selection logic.
 * Add a new environment to the `platformio.ini`
   * Copy from existing environment and rename

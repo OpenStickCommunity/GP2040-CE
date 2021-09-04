@@ -14,6 +14,7 @@
 #include "pico/multicore.h"
 
 #include "usb_driver.h"
+#include "BoardConfig.h"
 #include "MPG.h"
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
