@@ -16,52 +16,17 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 {
 	(void)langid;
 
-	uint8_t chr_count;
-
-	static const char *string_descriptors[4];
 	switch (get_input_mode())
 	{
 		case INPUT_MODE_XINPUT:
-			for (int i = 0; i < 4; i++)
-				string_descriptors[i] = xinput_string_descriptors[i];
-			break;
+			return (uint16_t *)xinput_string_descriptors[index];
 
 		case INPUT_MODE_SWITCH:
-			for (int i = 0; i < 4; i++)
-				string_descriptors[i] = switch_string_descriptors[i];
-			break;
+			return (uint16_t *)switch_string_descriptors[index];
 
 		default:
-			for (int i = 0; i < 4; i++)
-				string_descriptors[i] = hid_string_descriptors[i];
-			break;
+			return (uint16_t *)hid_string_descriptors[index];
 	}
-
-	if (index == 0)
-	{
-		memcpy(&_desc_str[1], string_descriptors[0], 2);
-		chr_count = 1;
-	}
-	else
-	{
-		// Convert ASCII string into UTF-16
-		if (!(index < sizeof(string_descriptors) / sizeof(string_descriptors[0])))
-			return NULL;
-
-		const char *str = string_descriptors[index];
-
-		// Cap at max char
-		chr_count = strlen(str);
-		if (chr_count > 31)
-			chr_count = 31;
-
-		for (uint8_t i = 0; i < chr_count; i++)
-			_desc_str[1 + i] = str[i];
-	}
-
-	// first byte is length (including header), second byte is string type
-	_desc_str[0] = (TUSB_DESC_STRING << 8) | (2 * chr_count + 2);
-	return _desc_str;
 }
 
 // Invoked when received GET DEVICE DESCRIPTOR
