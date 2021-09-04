@@ -6,9 +6,8 @@
 #include "pico/stdlib.h"
 
 #include "usb_driver.h"
+#include "BoardConfig.h"
 #include "Gamepad.h"
-
-#include "definitions/BoardConfig.h"
 
 GamepadButtonMapping GamepadClass::mapDpadUp    = { .port = 0, .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP,    .ledPos = LEDS_DPAD_UP    };
 GamepadButtonMapping GamepadClass::mapDpadDown  = { .port = 0, .pin = PIN_DPAD_DOWN,  .pinMask = (1 << PIN_DPAD_DOWN),  .buttonMask = GAMEPAD_MASK_DOWN,  .ledPos = LEDS_DPAD_DOWN  };

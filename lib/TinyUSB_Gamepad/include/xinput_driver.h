@@ -10,7 +10,7 @@
 #include "tusb.h"
 #include "device/usbd_pvt.h"
 
-#include "XInputDescriptors.h"
+#include "descriptors/XInputDescriptors.h"
 
 // USB endpoint state vars
 extern uint8_t endpoint_in;

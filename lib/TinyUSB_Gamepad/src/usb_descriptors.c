@@ -6,9 +6,7 @@
 
 #include "tusb.h"
 #include "usb_driver.h"
-#include "HIDDescriptors.h"
-#include "SwitchDescriptors.h"
-#include "XInputDescriptors.h"
+#include "GamepadDescriptors.h"
 
 static uint16_t _desc_str[32];
 

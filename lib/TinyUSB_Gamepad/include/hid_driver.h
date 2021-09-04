@@ -7,8 +7,8 @@
 #define HID_DRIVER_H_
 
 #include "device/usbd_pvt.h"
-#include "HIDDescriptors.h"
-#include "SwitchDescriptors.h"
+#include "descriptors/HIDDescriptors.h"
+#include "descriptors/SwitchDescriptors.h"
 
 extern const usbd_class_driver_t hid_driver;
 

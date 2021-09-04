@@ -3,6 +3,7 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
+// #define HAS_PERSISTENT_STORAGE 1 // WHY DOESN'T THIS WORK?!?!?!?!?!?!?
 #define GAMEPAD_DEBOUNCE_MILLIS 5
 
 #include <stdio.h>
@@ -13,13 +14,15 @@
 #include "pico/multicore.h"
 
 #include "usb_driver.h"
-#include "Gamepad.h"
+#include "BoardConfig.h"
 #include "GamepadStorage.h"
+#include "Gamepad.h"
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
-#include "definitions/BoardConfig.h"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
+
+GamepadClass gamepad;
 
 #ifdef BOARD_LEDS_PIN
 NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
@@ -45,65 +48,51 @@ int main()
 void setup()
 {
 	// Set up controller
-	Gamepad.setup();
+	gamepad.setup();
 
 	// Read options from EEPROM
-	Gamepad.load();
+	gamepad.load();
 
 	// Check for input mode override
-	Gamepad.read();
-	InputMode newInputMode = Gamepad.inputMode;
-	if (Gamepad.pressedR3())
+	gamepad.read();
+	InputMode newInputMode = gamepad.inputMode;
+	if (gamepad.pressedR3())
 		newInputMode = INPUT_MODE_HID;
-	else if (Gamepad.pressedS1())
+	else if (gamepad.pressedS1())
 		newInputMode = INPUT_MODE_SWITCH;
-	else if (Gamepad.pressedS2())
+	else if (gamepad.pressedS2())
 		newInputMode = INPUT_MODE_XINPUT;
 
-	if (newInputMode != Gamepad.inputMode)
+	if (newInputMode != gamepad.inputMode)
 	{
-		Gamepad.inputMode = newInputMode;
-		Storage.setInputMode(Gamepad.inputMode);
+		gamepad.inputMode = newInputMode;
+		Storage.setInputMode(gamepad.inputMode);
 		Storage.save();
 	}
 
 	// Initialize USB driver
-	initialize_driver(Gamepad.inputMode);
+	initialize_driver(gamepad.inputMode);
 }
 
 void loop()
 {
-	static const uint8_t reportSize = Gamepad.getReportSize();
 	static uint8_t *report;
-
-	// Poll every 1ms
-	const uint32_t intervalMS = 1;
+	static const uint8_t reportSize = gamepad.getReportSize();
+	static const uint32_t intervalMS = 1;
 	static uint32_t nextRuntime = 0;
 
 	if (getMillis() - nextRuntime < 0)
 		return;
 
-	// Read raw inputs
-	Gamepad.read();
+	gamepad.read();
 
 #if GAMEPAD_DEBOUNCE_MILLIS > 0
-	// Run debouncing if enabled
-	Gamepad.debounce();
+	gamepad.debounce();
 #endif
-
-	// Check for hotkey presses, can react to return value
-	Gamepad.hotkey();
-
-	// Perform final input processing before report conversion
-	Gamepad.process();
-
-	// Convert to USB report
-	report = Gamepad.getReport();
-
-	// Send it!
+	gamepad.hotkey();
+	gamepad.process();
+	report = gamepad.getReport();
 	send_report(report, reportSize);
-
-	// Ensure next runtime ahead of current time
 	nextRuntime = getMillis() + intervalMS;
 }
 

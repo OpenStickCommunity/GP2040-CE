@@ -1,8 +1,4 @@
-#include "Gamepad.h"
-#include "usb_driver.h"
 #include "AnimationStation.hpp"
-
-#include "GamepadConfig.h"
 
 #ifndef LEDS_DPAD_LEFT
 #define LEDS_DPAD_LEFT -1
