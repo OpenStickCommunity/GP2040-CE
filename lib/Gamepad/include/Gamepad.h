@@ -68,6 +68,8 @@ typedef enum
 	HOTKEY_SOCD_UP_PRIORITY = 0x20,
 	HOTKEY_SOCD_NEUTRAL = 0x40,
 	HOTKEY_SOCD_LAST_INPUT = 0x80,
+	HOTKEY_LEDS_BRIGHTNESS_UP = 0x21,
+	HOTKEY_LEDS_BRIGHTNESS_DOWN = 0x22
 } GamepadHotkey;
 
 class GamepadClass
@@ -171,6 +173,8 @@ class GamepadClass
 		inline bool isRightStickButtonPressed() { return (state.buttons & GAMEPAD_MASK_12)    == GAMEPAD_MASK_12   ; }
 		inline bool isSelectPressed()           { return (state.buttons & GAMEPAD_MASK_09)    == GAMEPAD_MASK_09   ; }
 		inline bool isStartPressed()            { return (state.buttons & GAMEPAD_MASK_10)    == GAMEPAD_MASK_10   ; }
+		inline bool is1PPressed()               { return (state.buttons & GAMEPAD_MASK_03)    == GAMEPAD_MASK_03   ; }
+		inline bool is1KPressed()               { return (state.buttons & GAMEPAD_MASK_01)    == GAMEPAD_MASK_01   ; }
 
 	protected:
 		// Convert the horizontal GamepadState dpad axis value into an analog value

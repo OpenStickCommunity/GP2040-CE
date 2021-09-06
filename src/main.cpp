@@ -105,7 +105,17 @@ static inline void loop() {
 #endif
 
 	// Check for hotkey presses, can react to return value
-	Gamepad.hotkey();
+	GamepadHotkey action = Gamepad.hotkey();
+
+#ifdef BOARD_LEDS_PIN
+	if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
+		AnimationStation::IncreaseBrightness();	
+	}
+
+	if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) {
+		AnimationStation::DecreaseBrightness();	
+	}
+#endif
 
 	// Perform final input processing before report conversion
 	Gamepad.process();

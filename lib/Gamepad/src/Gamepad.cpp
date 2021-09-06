@@ -66,6 +66,16 @@ GamepadHotkey GamepadClass::hotkey()
 			state.buttons &= ~(GAMEPAD_MASK_09 | GAMEPAD_MASK_10);
 			state.buttons |= GAMEPAD_MASK_13; // Press the Home button
 		}
+		else if (is1PPressed())
+		{
+			action = HOTKEY_LEDS_BRIGHTNESS_UP;
+			state.buttons &= ~(GAMEPAD_MASK_03 | GAMEPAD_MASK_09 | GAMEPAD_MASK_10);
+		}
+		else if (is1KPressed())
+		{
+			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
+			state.buttons &= ~(GAMEPAD_MASK_01 | GAMEPAD_MASK_09 | GAMEPAD_MASK_10);
+		}
 
 		if (lastDpadMode != dpadMode)
 			save();

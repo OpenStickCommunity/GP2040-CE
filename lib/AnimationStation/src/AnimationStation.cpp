@@ -15,6 +15,7 @@
 #include "Effects/Chase.hpp"
 
 float AnimationStation::brightness = 0;
+absolute_time_t AnimationStation::nextBrightnessChange = 0;
 
 AnimationStation::AnimationStation(int numPixels) {
     this->numPixels = numPixels;
@@ -49,6 +50,39 @@ void AnimationStation::Animate() {
 
 void AnimationStation::SetBrightness(float brightness) {
     AnimationStation::brightness = brightness;
+}
+
+void AnimationStation::DecreaseBrightness() {
+    if (!time_reached(AnimationStation::nextBrightnessChange)) {
+        return;
+    }
+
+    float newBrightness = AnimationStation::brightness;
+    newBrightness -= 0.01;
+
+    if (newBrightness < 0.0) {
+        newBrightness = 0.0;
+    }
+
+    AnimationStation::brightness = newBrightness;
+    AnimationStation::nextBrightnessChange = make_timeout_time_ms(50);
+}
+
+void AnimationStation::IncreaseBrightness() {
+    if (!time_reached(AnimationStation::nextBrightnessChange)) {
+        return;
+    }
+
+    float newBrightness = AnimationStation::brightness;
+    newBrightness += 0.01;
+
+    if (newBrightness > 1.0) {
+        newBrightness = 1.0;
+    }
+
+    AnimationStation::brightness = newBrightness;    
+    AnimationStation::nextBrightnessChange = make_timeout_time_ms(50);
+
 }
 
 uint32_t AnimationStation::RGB(uint8_t r, uint8_t g, uint8_t b) {
