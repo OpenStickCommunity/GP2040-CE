@@ -12,14 +12,14 @@
 #define TEST_BOARD       255
 
 #if BOARD_DEFINITION == DEBUG_BOARD
-#include "DebugBoard.h"
+#include "definitions/DebugBoard.h"
 #elif BOARD_DEFINITION == PICO_BOARD
-#include "RP2040Board.h"
+#include "definitions/RP2040Board.h"
 #elif BOARD_DEFINITION == OPEN_STICK_BOARD
-#include "OpenStickBoard.h"
+#include "definitions/OpenStickBoard.h"
 #elif BOARD_DEFINITION == TEST_BOARD
-#include "TestBoard.h"
+#include "definitions/TestBoard.h"
 #endif
 
-#include "Defaults.h"
+#include "LEDConfig.h"
 #endif

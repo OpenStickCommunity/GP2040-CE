@@ -3,6 +3,7 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
+// #define HAS_PERSISTENT_STORAGE 1 // WHY DOESN'T THIS WORK?!?!?!?!?!?!?
 #define GAMEPAD_DEBOUNCE_MILLIS 5
 
 #include <stdio.h>
@@ -13,96 +14,81 @@
 #include "pico/multicore.h"
 
 #include "usb_driver.h"
-#include "Gamepad.h"
-#include "GamepadStorage.h"
-#include "StateConverter.h"
+#include "BoardConfig.h"
+#include "MPG.h"
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
-#include "definitions/BoardConfig.h"
-
-void *report;
-uint8_t report_size;
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
+
+MPG gamepad;
 
 #ifdef BOARD_LEDS_PIN
 NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
 AnimationStation as(BOARD_LEDS_COUNT);
-
-bool isDpadPressed(GamepadButtonMapping button) {
-	return ((Gamepad.state.dpad & button.buttonMask) == button.buttonMask);
-}
-
-bool isButtonPressed(GamepadButtonMapping button) {
-	return ((Gamepad.state.buttons & button.buttonMask) == button.buttonMask);
-}
-
-void handleLed(GamepadButtonMapping button, bool pressed) {
-	if (button.ledPos < 0) 
-		return;
-
-	// uint32_t color = pressed ? leds.RGB(255, 255, 255) : 0;
-	// leds.SetPixel(button.ledPos, color);
-}
-
-void handleLeds()
-{
-	static GamepadButtonMapping dPadButtons[4] = {Gamepad.mapDpadLeft, Gamepad.mapDpadDown, Gamepad.mapDpadRight, Gamepad.mapDpadUp};
-	static GamepadButtonMapping actionButtons[14] = {Gamepad.mapButton01, Gamepad.mapButton02, Gamepad.mapButton03, Gamepad.mapButton04, Gamepad.mapButton05, Gamepad.mapButton06, Gamepad.mapButton07, Gamepad.mapButton08, Gamepad.mapButton09, Gamepad.mapButton10, Gamepad.mapButton11, Gamepad.mapButton12, Gamepad.mapButton13, Gamepad.mapButton14};
-
-	// for (const GamepadButtonMapping &button : dPadButtons)
-	// 	handleLed(button, isDpadPressed(button));
-
-	// for (const GamepadButtonMapping &button : actionButtons)
-	// 	handleLed(button, isButtonPressed(button));
-}
 #endif
 
-static inline void setup()
+void setup();
+void loop();
+void core1();
+
+int main()
+{
+	setup();
+
+	multicore_launch_core1(core1);
+
+	while (1)
+		loop();
+
+	return 0;
+}
+
+void setup()
 {
 	// Set up controller
-	Gamepad.setup();
+	gamepad.setup();
 
 	// Read options from EEPROM
-	Gamepad.load();
+	gamepad.load();
 
 	// Check for input mode override
-	Gamepad.read();
-	InputMode newInputMode = current_input_mode;
-	if (Gamepad.isSelectPressed())
-		newInputMode = SWITCH;
-	else if (Gamepad.isStartPressed())
-		newInputMode = XINPUT;
+	gamepad.read();
+	InputMode newInputMode = gamepad.inputMode;
+	if (gamepad.pressedR3())
+		newInputMode = INPUT_MODE_HID;
+	else if (gamepad.pressedS1())
+		newInputMode = INPUT_MODE_SWITCH;
+	else if (gamepad.pressedS2())
+		newInputMode = INPUT_MODE_XINPUT;
 
-	if (newInputMode != current_input_mode)
+	if (newInputMode != gamepad.inputMode)
 	{
-		current_input_mode = newInputMode;
-		Storage.setInputMode(current_input_mode);
+		gamepad.inputMode = newInputMode;
+		Storage.setInputMode(gamepad.inputMode);
 		Storage.save();
 	}
 
-	// Grab a pointer to the USB report for the selected input
-	report = select_report(&report_size, current_input_mode);
-
-	// Initialize USB/HID driver
-	initialize_driver();
+	// Initialize USB driver
+	initialize_driver(gamepad.inputMode);
 }
 
-static inline void loop() {
-	// Poll every 1ms
-	const uint32_t intervalMS = 1;
+void loop()
+{
+	static uint8_t *report;
+	static const uint8_t reportSize = gamepad.getReportSize();
+	static const uint32_t intervalMS = 1;
 	static uint32_t nextRuntime = 0;
 
 	if (getMillis() - nextRuntime < 0)
 		return;
 
-	// Read raw inputs
-	Gamepad.read();
+	gamepad.read();
 
 #if GAMEPAD_DEBOUNCE_MILLIS > 0
-	// Run debouncing if enabled
-	Gamepad.debounce();
+	gamepad.debounce();
 #endif
+<<<<<<< HEAD
 
 	// Check for hotkey presses, can react to return value
 	GamepadHotkey action = Gamepad.hotkey();
@@ -127,6 +113,12 @@ static inline void loop() {
 	send_report(report, report_size);
 
 	// Ensure next runtime ahead of current time
+=======
+	gamepad.hotkey();
+	gamepad.process();
+	report = gamepad.getReport();
+	send_report(report, reportSize);
+>>>>>>> 425ce9537f7c797819a73b38abc0d254488ae756
 	nextRuntime = getMillis() + intervalMS;
 }
 
@@ -136,16 +128,19 @@ void core1()
 
 	as.SetBrightness(LEDS_BRIGHTNESS / 100.0);
 
-	if (LEDS_BASE_ANIMATION == "STATIC") {
-		as.SetStaticColor(true, LEDS_STATIC_COLOR_COLOR, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
-	}
+	switch (LEDS_BASE_ANIMATION)
+	{
+		case RAINBOW:
+			as.SetRainbow(true, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL, LEDS_RAINBOW_CYCLE_TIME);
+			break;
 
-	if (LEDS_BASE_ANIMATION == "CHASE") {
-		as.SetChase(true, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL, LEDS_CHASE_CYCLE_TIME);
-	}		
+		case CHASE:
+			as.SetChase(true, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL, LEDS_CHASE_CYCLE_TIME);
+			break;
 
-	if (LEDS_BASE_ANIMATION == "RAINBOW") {
-		as.SetRainbow(true, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL, LEDS_RAINBOW_CYCLE_TIME);
+		default:
+			as.SetStaticColor(true, LEDS_STATIC_COLOR_COLOR, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
+			break;
 	}
 
 	while (1)
@@ -155,16 +150,4 @@ void core1()
 		leds.Show();
 	}
 #endif
-}
-
-int main()
-{
-	setup();
-
-	multicore_launch_core1(core1);
-
-	while (1)
-		loop();
-
-	return 0;
 }

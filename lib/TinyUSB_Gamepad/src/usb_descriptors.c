@@ -4,12 +4,10 @@
  * SPDX-FileCopyrightText: Copyright (c) 2019 Ha Thach (tinyusb.org)
  */
 
+#include <wchar.h>
 #include "tusb.h"
 #include "usb_driver.h"
-#include "switch_device.h"
-#include "xinput_device.h"
-
-static uint16_t _desc_str[32];
+#include "GamepadDescriptors.h"
 
 // Invoked when received GET STRING DESCRIPTOR request
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
@@ -17,62 +15,53 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 {
 	(void)langid;
 
-	uint8_t chr_count;
+	static uint16_t descriptorStringBuffer[32];
 
-	static const char *string_descriptors[4];
-	switch (current_input_mode)
+	uint8_t charCount;
+	wchar_t *value;
+
+	switch (get_input_mode())
 	{
-		case XINPUT:
-			for (int i = 0; i < 4; i++)
-				string_descriptors[i] = xinput_string_descriptors[i];
+		case INPUT_MODE_XINPUT:
+			value = xinput_string_descriptors[index];
 			break;
 
-		case SWITCH:
+		case INPUT_MODE_SWITCH:
+			value = switch_string_descriptors[index];
+			break;
+
 		default:
-			for (int i = 0; i < 4; i++)
-				string_descriptors[i] = switch_string_descriptors[i];
+			value = hid_string_descriptors[index];
 			break;
 	}
 
-	if (index == 0)
-	{
-		memcpy(&_desc_str[1], string_descriptors[0], 2);
-		chr_count = 1;
-	}
-	else
-	{
-		// Convert ASCII string into UTF-16
-		if (!(index < sizeof(string_descriptors) / sizeof(string_descriptors[0])))
-			return NULL;
+	// Cap at max char
+	charCount = wcslen(value);
+	if (charCount > 31)
+		charCount = 31;
 
-		const char *str = string_descriptors[index];
-
-		// Cap at max char
-		chr_count = strlen(str);
-		if (chr_count > 31)
-			chr_count = 31;
-
-		for (uint8_t i = 0; i < chr_count; i++)
-			_desc_str[1 + i] = str[i];
-	}
+	for (uint8_t i = 0; i < charCount; i++)
+		descriptorStringBuffer[1 + i] = value[i];
 
 	// first byte is length (including header), second byte is string type
-	_desc_str[0] = (TUSB_DESC_STRING << 8) | (2 * chr_count + 2);
-	return _desc_str;
+	descriptorStringBuffer[0] = (TUSB_DESC_STRING << 8) | (2 * charCount + 2);
+	return descriptorStringBuffer;
 }
 
 // Invoked when received GET DEVICE DESCRIPTOR
 // Application return pointer to descriptor
 uint8_t const *tud_descriptor_device_cb(void)
 {
-	switch (current_input_mode)
+	switch (get_input_mode())
 	{
-		case XINPUT:
+		case INPUT_MODE_XINPUT:
 			return (const uint8_t *)xinput_device_descriptor;
-		
-		case SWITCH:
-		default:
+
+		case INPUT_MODE_SWITCH:
 			return (const uint8_t *)switch_device_descriptor;
+
+		default:
+			return (const uint8_t *)hid_device_descriptor;
 	}
 }
 
@@ -81,11 +70,13 @@ uint8_t const *tud_descriptor_device_cb(void)
 // Descriptor contents must exist long enough for transfer to complete
 uint8_t const *tud_hid_descriptor_report_cb(void)
 {
-	switch (current_input_mode)
+	switch (get_input_mode())
 	{
-		case SWITCH:
-		default:
+		case INPUT_MODE_SWITCH:
 			return switch_report_descriptor;
+
+		default:
+			return hid_report_descriptor;
 	}
 }
 
@@ -95,13 +86,15 @@ uint8_t const *tud_hid_descriptor_report_cb(void)
 uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 {
 	(void)index; // for multiple configurations
-	switch (current_input_mode)
+	switch (get_input_mode())
 	{
-		case XINPUT:
+		case INPUT_MODE_XINPUT:
 			return xinput_configuration_descriptor;
-		
-		case SWITCH:
-		default:
+
+		case INPUT_MODE_SWITCH:
 			return switch_configuration_descriptor;
+
+		default:
+			return hid_configuration_descriptor;
 	}
 }

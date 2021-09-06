@@ -6,26 +6,26 @@
 #ifndef OPEN_STICK_BOARD_H_
 #define OPEN_STICK_BOARD_H_
 
-#include "Gamepad.h"
+#include "MPG.h"
 
 #define PIN_DPAD_UP     13
 #define PIN_DPAD_DOWN   11
 #define PIN_DPAD_LEFT   10
 #define PIN_DPAD_RIGHT  12
-#define PIN_BUTTON_01   4
-#define PIN_BUTTON_02   5
-#define PIN_BUTTON_03   0
-#define PIN_BUTTON_04   1
-#define PIN_BUTTON_05   3
-#define PIN_BUTTON_06   2
-#define PIN_BUTTON_07   7
-#define PIN_BUTTON_08   6
-#define PIN_BUTTON_09   8
-#define PIN_BUTTON_10   9
-#define PIN_BUTTON_11   17
-#define PIN_BUTTON_12   16
-#define PIN_BUTTON_13   28
-#define PIN_BUTTON_14   18
+#define PIN_BUTTON_B1   4
+#define PIN_BUTTON_B2   5
+#define PIN_BUTTON_B3   0
+#define PIN_BUTTON_B4   1
+#define PIN_BUTTON_L1   3
+#define PIN_BUTTON_R1   2
+#define PIN_BUTTON_L2   7
+#define PIN_BUTTON_R2   6
+#define PIN_BUTTON_S1   8
+#define PIN_BUTTON_S2   9
+#define PIN_BUTTON_L3   17
+#define PIN_BUTTON_R3   16
+#define PIN_BUTTON_A1   28
+#define PIN_BUTTON_A2   18
 
 #define BOARD_LEDS_PIN 14
 #define BOARD_LEDS_COUNT 16
