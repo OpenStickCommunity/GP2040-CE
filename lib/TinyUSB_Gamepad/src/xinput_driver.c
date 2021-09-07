@@ -37,9 +37,7 @@ static void xinput_reset(uint8_t __unused rhport)
 
 static uint16_t xinput_open(uint8_t __unused rhport, tusb_desc_interface_t const *itf_descriptor, uint16_t max_length)
 {
-	uint16_t driver_length = sizeof(tusb_desc_interface_t)
-		+ (itf_descriptor->bNumEndpoints * sizeof(tusb_desc_endpoint_t))
-		+ XINPUT_UNKNOWN_DESCRIPTOR_SIZE;
+	uint16_t driver_length = sizeof(tusb_desc_interface_t) + (itf_descriptor->bNumEndpoints * sizeof(tusb_desc_endpoint_t)) + 16;
 
 	TU_VERIFY(max_length >= driver_length, 0);
 
