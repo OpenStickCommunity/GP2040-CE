@@ -15,8 +15,8 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 {
 	(void)langid;
 
-	uint16_t *size;
-	return getStringDescriptor(size, get_input_mode(), index);
+	uint16_t size = 0;
+	return getStringDescriptor(&size, get_input_mode(), index);
 }
 
 // Invoked when received GET DEVICE DESCRIPTOR
