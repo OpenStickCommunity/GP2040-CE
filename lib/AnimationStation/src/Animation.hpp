@@ -1,23 +1,34 @@
 #ifndef _ANIMATION_H_
 #define _ANIMATION_H_
 
- #include <stdint.h>
+#include <stdint.h>
+
+typedef enum
+{
+	STATIC = 0x20,
+	RAINBOW = 0x21,
+	CHASE = 0x22,
+} AnimationMode;
 
 class Animation {
 public:
   Animation() {
-
-  }
-  Animation(int firstPixel, int lastPixel, bool defaultAnimation) {
-    this->firstPixel = firstPixel;
-    this->lastPixel = lastPixel;
-    this->defaultAnimation = defaultAnimation;
+    this->firstPixel = Animation::defaultFirstPixel;
+    this->lastPixel = Animation::defaultLastPixel;
   }
   virtual void Animate(uint32_t (&frame)[100]);
+  AnimationMode mode;
+
+  static void SetDefaultPixels(int firstPixel, int lastPixel) {
+    Animation::defaultFirstPixel = firstPixel;
+    Animation::defaultLastPixel = lastPixel;
+  }
 protected:
-	int firstPixel;
+	static int defaultFirstPixel;
+  static int defaultLastPixel;
+
+  int firstPixel;
   int lastPixel;
-  bool defaultAnimation = false;
 };
 
 #endif

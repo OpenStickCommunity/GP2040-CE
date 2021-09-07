@@ -10,21 +10,27 @@
 
 typedef enum
 {
-	STATIC,
-	RAINBOW,
-	CHASE,
-} AnimationMode;
+  HOTKEY_LEDS_NONE = 0x20,
+	HOTKEY_LEDS_ANIMATION_UP = 0x21,
+	HOTKEY_LEDS_ANIMATION_DOWN = 0x22,
+	HOTKEY_LEDS_PARAMETER_UP = 0x23,
+	HOTKEY_LEDS_PARAMETER_DOWN = 0x24,
+	HOTKEY_LEDS_BRIGHTNESS_UP = 0x25,
+	HOTKEY_LEDS_BRIGHTNESS_DOWN = 0x26
+} AnimationHotkey;
 
 class AnimationStation
 {
 public:
   AnimationStation(int numPixels);
-  void Animate();
-  void SetStaticColor(bool defaultAnimation, uint32_t color, int firstPixel, int lastPixel);
-  void SetRainbow(bool defaultAnimation, int firstPixel, int lastPixel, int cycleTime);
-  void SetChase(bool defaultAnimation, int firstPixel, int lastPixel, int cycleTime);
-  void Clear();
 
+  void Animate();
+  void HandleEvent(AnimationHotkey action);
+  void SetStaticColor();
+  void SetRainbow();
+  void SetChase();
+  void Clear();
+  void ChangeAnimation();
 
   static void SetBrightness(float brightness);  
   static void DecreaseBrightness();
@@ -35,10 +41,10 @@ public:
   std::vector<Animation*> animations;
   static float brightness;
   static absolute_time_t nextBrightnessChange;
+  static absolute_time_t nextAnimationChange;
   uint32_t frame[100];
 private:
   int numPixels = 0;
-
 };
 
 #endif

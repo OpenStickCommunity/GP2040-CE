@@ -10,14 +10,18 @@
 class Chase : public Animation {
 public:
   Chase() : Animation() {
-  }
-  Chase(int firstPixel, int lastPixel, int cycleTime = 50, bool defaultAnimation = false) : Animation(firstPixel, lastPixel, defaultAnimation) {
-    this->cycleTime = cycleTime;
-    this->currentPixel = firstPixel;
+    this->cycleTime = Chase::defaultCycleTime;
+    this->currentPixel = this->firstPixel;
     this->totalPixels = this->lastPixel - this->firstPixel + 1;
+    this->mode = CHASE;
   }
   void Animate(uint32_t (&frame)[100]);
+
+  static void SetDefaultCycleTime(int cycleTime) {
+    Chase::defaultCycleTime = cycleTime;
+  }
 protected:
+  static int defaultCycleTime;
   bool IsChasePixel(int i);
   int WheelFrame(int i);
 

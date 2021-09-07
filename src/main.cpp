@@ -18,6 +18,8 @@
 #include "MPG.h"
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
+#include "Animation.hpp"
+#include "Effects/StaticColor.hpp"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
@@ -26,6 +28,53 @@ MPG gamepad;
 #ifdef BOARD_LEDS_PIN
 NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
 AnimationStation as(BOARD_LEDS_COUNT);
+
+
+AnimationHotkey animationHotkeys(MPG gamepad)
+{
+	AnimationHotkey action = HOTKEY_LEDS_NONE;
+
+	if (gamepad.isDpadHotkeyPressed())
+	{
+
+		if (gamepad.pressedB3())
+		{
+			action = HOTKEY_LEDS_ANIMATION_UP;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_B3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+		else if (gamepad.pressedB1())
+		{
+			action = HOTKEY_LEDS_ANIMATION_DOWN;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_B1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+
+		else if (gamepad.pressedB4())
+		{
+			action = HOTKEY_LEDS_BRIGHTNESS_UP;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_B4 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+
+		else if (gamepad.pressedB2())
+		{
+			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_B2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+
+		else if (gamepad.pressedR1())
+		{
+			action = HOTKEY_LEDS_PARAMETER_UP;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+
+		else if (gamepad.pressedR2())
+		{
+			action = HOTKEY_LEDS_PARAMETER_DOWN;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+	}
+
+	return action;
+}
 #endif
 
 void setup();
@@ -46,6 +95,10 @@ int main()
 
 void setup()
 {
+	AnimationStation::SetBrightness(LEDS_BRIGHTNESS / 100.0);
+	Animation::SetDefaultPixels(LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
+	StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
+
 	// Set up controller
 	gamepad.setup();
 
@@ -88,37 +141,18 @@ void loop()
 #if GAMEPAD_DEBOUNCE_MILLIS > 0
 	gamepad.debounce();
 #endif
-<<<<<<< HEAD
 
-	// Check for hotkey presses, can react to return value
-	GamepadHotkey action = Gamepad.hotkey();
 
 #ifdef BOARD_LEDS_PIN
-	if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
-		AnimationStation::IncreaseBrightness();	
-	}
-
-	if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) {
-		AnimationStation::DecreaseBrightness();	
-	}
+	AnimationHotkey action = animationHotkeys(gamepad);
+	as.HandleEvent(action);
 #endif
 
-	// Perform final input processing before report conversion
-	Gamepad.process();
-
-	// Convert to USB report
-	report = fill_report((GamepadState *)&Gamepad.state, false);
-
-	// Send it!
-	send_report(report, report_size);
-
 	// Ensure next runtime ahead of current time
-=======
 	gamepad.hotkey();
 	gamepad.process();
 	report = gamepad.getReport();
 	send_report(report, reportSize);
->>>>>>> 425ce9537f7c797819a73b38abc0d254488ae756
 	nextRuntime = getMillis() + intervalMS;
 }
 
@@ -126,20 +160,18 @@ void core1()
 {
 #ifdef BOARD_LEDS_PIN
 
-	as.SetBrightness(LEDS_BRIGHTNESS / 100.0);
-
 	switch (LEDS_BASE_ANIMATION)
 	{
 		case RAINBOW:
-			as.SetRainbow(true, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL, LEDS_RAINBOW_CYCLE_TIME);
+			as.SetRainbow();
 			break;
 
 		case CHASE:
-			as.SetChase(true, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL, LEDS_CHASE_CYCLE_TIME);
+			as.SetChase();
 			break;
 
 		default:
-			as.SetStaticColor(true, LEDS_STATIC_COLOR_COLOR, LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
+			as.SetStaticColor();
 			break;
 	}
 
@@ -151,3 +183,5 @@ void core1()
 	}
 #endif
 }
+
+

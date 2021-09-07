@@ -3,6 +3,8 @@
 
 #include "Rainbow.hpp"
 
+int Rainbow::defaultCycleTime = 40;
+
 void Rainbow::Animate(uint32_t (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
     return;

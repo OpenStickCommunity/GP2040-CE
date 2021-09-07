@@ -10,86 +10,116 @@
 #include <vector>
 
 #include "AnimationStation.hpp"
+#include "Effects/Chase.hpp"
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
-#include "Effects/Chase.hpp"
 
-float AnimationStation::brightness = 0;
+float AnimationStation::brightness = 0.2;
 absolute_time_t AnimationStation::nextBrightnessChange = 0;
+absolute_time_t AnimationStation::nextAnimationChange = 0;
 
 AnimationStation::AnimationStation(int numPixels) {
-    this->numPixels = numPixels;
+  this->numPixels = numPixels;
 }
 
-void AnimationStation::SetStaticColor(bool defaultAnimation, uint32_t color, int firstPixel, int lastPixel = -1) {
-    if (lastPixel < 0) 
-        lastPixel = this->numPixels - 1;
+void AnimationStation::HandleEvent(AnimationHotkey action) {
+  if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
+    AnimationStation::IncreaseBrightness();
+  }
 
-    this->animations.push_back(new StaticColor(firstPixel, lastPixel, defaultAnimation, color));
+  if (action == HOTKEY_LEDS_BRIGHTNESS_DOWN) {
+    AnimationStation::DecreaseBrightness();
+  }
+
+  if (action == HOTKEY_LEDS_ANIMATION_UP) {
+    this->ChangeAnimation();
+  }
+
+  if (action == HOTKEY_LEDS_ANIMATION_DOWN) {
+    this->ChangeAnimation();
+  }
 }
 
-void AnimationStation::SetRainbow(bool defaultAnimation, int firstPixel, int lastPixel = -1, int cycleTime = 50) {
-    if (lastPixel < 0) 
-        lastPixel = this->numPixels - 1;
+void AnimationStation::ChangeAnimation() {
+  if (!time_reached(AnimationStation::nextAnimationChange)) {
+    return;
+  }
 
-    this->animations.push_back(new Rainbow(firstPixel, lastPixel, cycleTime, defaultAnimation));
+  if (this->animations.size() > 0) {
+    switch (this->animations.at(0)->mode) {
+    case STATIC:
+      this->animations.push_back(new Rainbow());
+      break;
+    case RAINBOW:
+      this->animations.push_back(new Chase());
+      break;
+    default:
+      this->animations.push_back(new StaticColor());
+      break;
+    }
+
+    this->animations.erase(this->animations.begin());
+  }
+
+  AnimationStation::nextAnimationChange = make_timeout_time_ms(150);
 }
 
-void AnimationStation::SetChase(bool defaultAnimation, int firstPixel, int lastPixel = -1, int cycleTime = 50) {
-    if (lastPixel < 0) 
-        lastPixel = this->numPixels - 1;
-
-    this->animations.push_back(new Chase(firstPixel, lastPixel, cycleTime, defaultAnimation));
+void AnimationStation::SetStaticColor() {
+  this->animations.push_back(new StaticColor());
 }
+
+void AnimationStation::SetRainbow() {
+  this->animations.push_back(new Rainbow());
+}
+
+void AnimationStation::SetChase() { this->animations.push_back(new Chase()); }
 
 void AnimationStation::Animate() {
-    for (auto & element : this->animations) {
-        element->Animate(this->frame);
-    }
+  for (auto &element : this->animations) {
+    element->Animate(this->frame);
+  }
 }
 
 void AnimationStation::SetBrightness(float brightness) {
-    AnimationStation::brightness = brightness;
+  AnimationStation::brightness = brightness;
 }
 
 void AnimationStation::DecreaseBrightness() {
-    if (!time_reached(AnimationStation::nextBrightnessChange)) {
-        return;
-    }
+  if (!time_reached(AnimationStation::nextBrightnessChange)) {
+    return;
+  }
 
-    float newBrightness = AnimationStation::brightness;
-    newBrightness -= 0.01;
+  float newBrightness = AnimationStation::brightness;
+  newBrightness -= 0.01;
 
-    if (newBrightness < 0.0) {
-        newBrightness = 0.0;
-    }
+  if (newBrightness < 0.0) {
+    newBrightness = 0.0;
+  }
 
-    AnimationStation::brightness = newBrightness;
-    AnimationStation::nextBrightnessChange = make_timeout_time_ms(50);
+  AnimationStation::brightness = newBrightness;
+  AnimationStation::nextBrightnessChange = make_timeout_time_ms(50);
 }
 
 void AnimationStation::IncreaseBrightness() {
-    if (!time_reached(AnimationStation::nextBrightnessChange)) {
-        return;
-    }
+  if (!time_reached(AnimationStation::nextBrightnessChange)) {
+    return;
+  }
 
-    float newBrightness = AnimationStation::brightness;
-    newBrightness += 0.01;
+  float newBrightness = AnimationStation::brightness;
+  newBrightness += 0.01;
 
-    if (newBrightness > 1.0) {
-        newBrightness = 1.0;
-    }
+  if (newBrightness > 1.0) {
+    newBrightness = 1.0;
+  }
 
-    AnimationStation::brightness = newBrightness;    
-    AnimationStation::nextBrightnessChange = make_timeout_time_ms(50);
-
+  AnimationStation::brightness = newBrightness;
+  AnimationStation::nextBrightnessChange = make_timeout_time_ms(50);
 }
 
 uint32_t AnimationStation::RGB(uint8_t r, uint8_t g, uint8_t b) {
-    return
-            ((uint32_t) (r * AnimationStation::brightness) << 8) |
-            ((uint32_t) (g * AnimationStation::brightness) << 16) |
-            (uint32_t) (b * AnimationStation::brightness);
+  return ((uint32_t)(r * AnimationStation::brightness) << 8) |
+         ((uint32_t)(g * AnimationStation::brightness) << 16) |
+         (uint32_t)(b * AnimationStation::brightness);
 }
 
 uint32_t AnimationStation::Wheel(uint8_t pos) {
@@ -104,5 +134,3 @@ uint32_t AnimationStation::Wheel(uint8_t pos) {
     return AnimationStation::RGB(pos * 3, 255 - pos * 3, 0);
   }
 }
-
-
