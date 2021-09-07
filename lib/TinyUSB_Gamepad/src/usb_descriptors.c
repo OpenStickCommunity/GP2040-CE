@@ -15,37 +15,8 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 {
 	(void)langid;
 
-	static uint16_t descriptorStringBuffer[32];
-
-	uint8_t charCount;
-	wchar_t *value;
-
-	switch (get_input_mode())
-	{
-		case INPUT_MODE_XINPUT:
-			value = xinput_string_descriptors[index];
-			break;
-
-		case INPUT_MODE_SWITCH:
-			value = switch_string_descriptors[index];
-			break;
-
-		default:
-			value = hid_string_descriptors[index];
-			break;
-	}
-
-	// Cap at max char
-	charCount = wcslen(value);
-	if (charCount > 31)
-		charCount = 31;
-
-	for (uint8_t i = 0; i < charCount; i++)
-		descriptorStringBuffer[1 + i] = value[i];
-
-	// first byte is length (including header), second byte is string type
-	descriptorStringBuffer[0] = (TUSB_DESC_STRING << 8) | (2 * charCount + 2);
-	return descriptorStringBuffer;
+	uint16_t *size;
+	return getStringDescriptor(size, get_input_mode(), index);
 }
 
 // Invoked when received GET DEVICE DESCRIPTOR
@@ -55,13 +26,13 @@ uint8_t const *tud_descriptor_device_cb(void)
 	switch (get_input_mode())
 	{
 		case INPUT_MODE_XINPUT:
-			return (const uint8_t *)xinput_device_descriptor;
+			return xinput_device_descriptor;
 
 		case INPUT_MODE_SWITCH:
-			return (const uint8_t *)switch_device_descriptor;
+			return switch_device_descriptor;
 
 		default:
-			return (const uint8_t *)hid_device_descriptor;
+			return hid_device_descriptor;
 	}
 }
 
