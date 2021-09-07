@@ -20,15 +20,16 @@
 #include "AnimationStation.hpp"
 #include "Animation.hpp"
 #include "Effects/StaticColor.hpp"
+#include "ConfigStorage.hpp"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
 MPG gamepad;
+ConfigStorage config;
 
 #ifdef BOARD_LEDS_PIN
 NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
 AnimationStation as(BOARD_LEDS_COUNT);
-
 
 AnimationHotkey animationHotkeys(MPG gamepad)
 {
@@ -95,9 +96,7 @@ int main()
 
 void setup()
 {
-	AnimationStation::SetBrightness(LEDS_BRIGHTNESS / 100.0);
-	Animation::SetDefaultPixels(LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
-	StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
+	config.setup();
 
 	// Set up controller
 	gamepad.setup();
@@ -146,6 +145,7 @@ void loop()
 #ifdef BOARD_LEDS_PIN
 	AnimationHotkey action = animationHotkeys(gamepad);
 	as.HandleEvent(action);
+	config.save(as);
 #endif
 
 	// Ensure next runtime ahead of current time
@@ -160,7 +160,7 @@ void core1()
 {
 #ifdef BOARD_LEDS_PIN
 
-	switch (LEDS_BASE_ANIMATION)
+	switch (config.getBaseAnimation())
 	{
 		case RAINBOW:
 			as.SetRainbow();
