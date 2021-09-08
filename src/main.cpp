@@ -15,17 +15,17 @@
 
 #include "usb_driver.h"
 #include "BoardConfig.h"
+#include "FlashPROM.h"
 #include "MPG.h"
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
+#include "AnimationStorage.hpp"
 #include "Animation.hpp"
 #include "Effects/StaticColor.hpp"
-#include "ConfigStorage.hpp"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
 MPG gamepad;
-ConfigStorage config;
 
 #ifdef BOARD_LEDS_PIN
 NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
@@ -37,7 +37,6 @@ AnimationHotkey animationHotkeys(MPG gamepad)
 
 	if (gamepad.isDpadHotkeyPressed())
 	{
-
 		if (gamepad.pressedB3())
 		{
 			action = HOTKEY_LEDS_ANIMATION_UP;
@@ -96,8 +95,6 @@ int main()
 
 void setup()
 {
-	config.setup();
-
 	// Set up controller
 	gamepad.setup();
 
@@ -118,7 +115,7 @@ void setup()
 	{
 		gamepad.inputMode = newInputMode;
 		Storage.setInputMode(gamepad.inputMode);
-		Storage.save();
+		gamepad.save();
 	}
 
 	// Initialize USB driver
@@ -142,25 +139,32 @@ void loop()
 #endif
 
 
+// TODO: We'll want to move this to the aux loop, and use Pico SDK queues to pass gamepad data
+
 #ifdef BOARD_LEDS_PIN
 	AnimationHotkey action = animationHotkeys(gamepad);
-	as.HandleEvent(action);
-	config.save(as);
+	if (action != HOTKEY_LEDS_NONE)
+	{
+		as.HandleEvent(action);
+		AnimationStore.save(as);
+	}
 #endif
 
-	// Ensure next runtime ahead of current time
-	// gamepad.hotkey();
+	gamepad.hotkey();
 	gamepad.process();
 	report = gamepad.getReport();
 	send_report(report, reportSize);
+
+	// Ensure next runtime ahead of current time
 	nextRuntime = getMillis() + intervalMS;
 }
 
 void core1()
 {
 #ifdef BOARD_LEDS_PIN
+	AnimationStore.setup();
 
-	switch (config.getBaseAnimation())
+	switch (AnimationStore.getBaseAnimation())
 	{
 		case RAINBOW:
 			as.SetRainbow();
