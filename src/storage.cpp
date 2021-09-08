@@ -22,7 +22,7 @@ static mutex_t eepromMutex;
 
 GamepadStorage::GamepadStorage()
 {
-	// Moved EEPROM init to main.cpp
+	EEPROM.start();
 	mutex_init(&eepromMutex);
 }
 
