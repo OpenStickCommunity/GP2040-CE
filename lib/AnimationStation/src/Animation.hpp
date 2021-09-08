@@ -5,9 +5,9 @@
 
 typedef enum
 {
-	STATIC = 0x20,
-	RAINBOW = 0x21,
-	CHASE = 0x22,
+	STATIC,
+	RAINBOW,
+	CHASE,
 } AnimationMode;
 
 class Animation {

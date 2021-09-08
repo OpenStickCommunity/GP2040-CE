@@ -138,9 +138,9 @@ void loop()
 	gamepad.debounce();
 #endif
 
+	gamepad.hotkey();
 
 // TODO: We'll want to move this to the aux loop, and use Pico SDK queues to pass gamepad data
-
 #ifdef BOARD_LEDS_PIN
 	AnimationHotkey action = animationHotkeys(gamepad);
 	if (action != HOTKEY_LEDS_NONE)
@@ -150,7 +150,6 @@ void loop()
 	}
 #endif
 
-	gamepad.hotkey();
 	gamepad.process();
 	report = gamepad.getReport();
 	send_report(report, reportSize);
@@ -164,7 +163,8 @@ void core1()
 #ifdef BOARD_LEDS_PIN
 	AnimationStore.setup();
 
-	switch (AnimationStore.getBaseAnimation())
+	AnimationMode mode = AnimationStore.getBaseAnimation();
+	switch (mode)
 	{
 		case RAINBOW:
 			as.SetRainbow();
