@@ -120,7 +120,7 @@ void AnimationStorage::save(AnimationStation as)
 		dirty = true;
 	}
 
-	if (dirty && mutex_enter_block_until(&eepromMutex, make_timeout_time_ms(10)))
+	if (dirty && mutex_enter_block_until(&eepromMutex, make_timeout_time_ms(100)))
 	{
 		EEPROM.commit();
 		mutex_exit(&eepromMutex);

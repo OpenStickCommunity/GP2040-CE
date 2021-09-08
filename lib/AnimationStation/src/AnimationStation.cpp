@@ -15,7 +15,7 @@
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
 
-int AnimationStation::brightness = 20;
+uint8_t AnimationStation::brightness = 20;
 absolute_time_t AnimationStation::nextBrightnessChange = 0;
 absolute_time_t AnimationStation::nextAnimationChange = 0;
 
@@ -101,7 +101,7 @@ void AnimationStation::Clear() {
   }
 }
 
-void AnimationStation::SetBrightness(int brightness) {
+void AnimationStation::SetBrightness(uint8_t brightness) {
   AnimationStation::brightness = brightness;
 }
 
@@ -110,7 +110,7 @@ void AnimationStation::DecreaseBrightness() {
     return;
   }
 
-  int newBrightness = AnimationStation::brightness;
+  uint8_t newBrightness = AnimationStation::brightness;
   newBrightness -= 1;
 
   if (newBrightness < 0) {
@@ -126,7 +126,7 @@ void AnimationStation::IncreaseBrightness() {
     return;
   }
 
-  int newBrightness = AnimationStation::brightness;
+  uint8_t newBrightness = AnimationStation::brightness;
   newBrightness += 1;
 
   if (newBrightness > 100) {

@@ -146,7 +146,7 @@ void loop()
 	if (action != HOTKEY_LEDS_NONE)
 	{
 		as.HandleEvent(action);
-		// AnimationStore.save(as);
+		AnimationStore.save(as);
 	}
 #endif
 
