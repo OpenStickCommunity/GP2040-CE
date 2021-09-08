@@ -15,7 +15,11 @@
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
 
-uint8_t AnimationStation::brightness = 20;
+#define BRIGHTNESS_MAXIMUM  255
+#define BRIGHTNESS_INCREMENTS 5
+#define BRIGHTNESS_SEGMENT (BRIGHTNESS_MAXIMUM / BRIGHTNESS_INCREMENTS)
+
+uint8_t AnimationStation::brightness = BRIGHTNESS_SEGMENT * 2;
 absolute_time_t AnimationStation::nextBrightnessChange = 0;
 absolute_time_t AnimationStation::nextAnimationChange = 0;
 
@@ -62,7 +66,7 @@ void AnimationStation::ChangeAnimation() {
     this->animations.erase(this->animations.begin());
   }
 
-  AnimationStation::nextAnimationChange = make_timeout_time_ms(150);
+  AnimationStation::nextAnimationChange = make_timeout_time_ms(250);
 }
 
 void AnimationStation::SetStaticColor() {
@@ -110,15 +114,10 @@ void AnimationStation::DecreaseBrightness() {
     return;
   }
 
-  uint8_t newBrightness = AnimationStation::brightness;
-  newBrightness -= 1;
+  if (AnimationStation::brightness >= BRIGHTNESS_SEGMENT)
+    AnimationStation::brightness -= BRIGHTNESS_SEGMENT;
 
-  if (newBrightness < 0) {
-    newBrightness = 0;
-  }
-
-  AnimationStation::brightness = newBrightness;
-  AnimationStation::nextBrightnessChange = make_timeout_time_ms(50);
+  AnimationStation::nextBrightnessChange = make_timeout_time_ms(250);
 }
 
 void AnimationStation::IncreaseBrightness() {
@@ -126,19 +125,14 @@ void AnimationStation::IncreaseBrightness() {
     return;
   }
 
-  uint8_t newBrightness = AnimationStation::brightness;
-  newBrightness += 1;
+  if (AnimationStation::brightness < BRIGHTNESS_MAXIMUM)
+    AnimationStation::brightness += BRIGHTNESS_SEGMENT;
 
-  if (newBrightness > 100) {
-    newBrightness = 100;
-  }
-
-  AnimationStation::brightness = newBrightness;
-  AnimationStation::nextBrightnessChange = make_timeout_time_ms(50);
+  AnimationStation::nextBrightnessChange = make_timeout_time_ms(250);
 }
 
 uint32_t AnimationStation::RGB(uint8_t r, uint8_t g, uint8_t b) {
-  float brightness = AnimationStation::brightness / 100.0;
+  float brightness = AnimationStation::brightness / (float)BRIGHTNESS_MAXIMUM;
   return ((uint32_t)(r * brightness) << 8) |
          ((uint32_t)(g * brightness) << 16) |
          (uint32_t)(b * brightness);
