@@ -97,7 +97,7 @@ void AnimationStorage::setBrightness(uint8_t brightness)
 
 void AnimationStorage::setup()
 {
-	AnimationStation::SetBrightness(this->getBrightness() / 100.0);
+	AnimationStation::SetBrightness(this->getBrightness());
 	Animation::SetDefaultPixels(LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
 	StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
 }
@@ -108,17 +108,17 @@ void AnimationStorage::save(AnimationStation as)
 {
 	bool dirty = false;
 
-	if (as.brightness * 100 != getBrightness())
+	if (as.brightness != getBrightness())
 	{
-		setBrightness((uint8_t)(as.brightness * 100));
+		setBrightness(as.brightness);
 		dirty = true;
 	}
 
-	// if (as.animations.size() > 0 && as.animations.at(0)->mode != getBaseAnimation())
-	// {
-	// 	setBaseAnimation(as.animations.at(0)->mode);
-	// 	dirty = true;
-	// }
+	if (as.animations.size() > 0 && as.animations.at(0)->mode != getBaseAnimation())
+	{
+		setBaseAnimation(as.animations.at(0)->mode);
+		dirty = true;
+	}
 
 	if (dirty && mutex_enter_block_until(&eepromMutex, make_timeout_time_ms(10)))
 	{

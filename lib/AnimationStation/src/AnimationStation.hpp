@@ -10,13 +10,13 @@
 
 typedef enum
 {
-  HOTKEY_LEDS_NONE = 0x20,
-	HOTKEY_LEDS_ANIMATION_UP = 0x21,
-	HOTKEY_LEDS_ANIMATION_DOWN = 0x22,
-	HOTKEY_LEDS_PARAMETER_UP = 0x23,
-	HOTKEY_LEDS_PARAMETER_DOWN = 0x24,
-	HOTKEY_LEDS_BRIGHTNESS_UP = 0x25,
-	HOTKEY_LEDS_BRIGHTNESS_DOWN = 0x26
+  HOTKEY_LEDS_NONE,
+	HOTKEY_LEDS_ANIMATION_UP,
+	HOTKEY_LEDS_ANIMATION_DOWN,
+	HOTKEY_LEDS_PARAMETER_UP,
+	HOTKEY_LEDS_PARAMETER_DOWN,
+	HOTKEY_LEDS_BRIGHTNESS_UP,
+	HOTKEY_LEDS_BRIGHTNESS_DOWN
 } AnimationHotkey;
 
 class AnimationStation
@@ -32,14 +32,14 @@ public:
   void Clear();
   void ChangeAnimation();
 
-  static void SetBrightness(float brightness);  
+  static void SetBrightness(int brightness);  
   static void DecreaseBrightness();
   static void IncreaseBrightness();
   static uint32_t RGB(uint8_t r, uint8_t g, uint8_t b);
   static uint32_t Wheel(uint8_t pos);
 
   std::vector<Animation*> animations;
-  static float brightness;
+  static int brightness;
   static absolute_time_t nextBrightnessChange;
   static absolute_time_t nextAnimationChange;
   uint32_t frame[100];

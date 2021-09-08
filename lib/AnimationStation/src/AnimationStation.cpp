@@ -15,7 +15,7 @@
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
 
-float AnimationStation::brightness = 0.2;
+int AnimationStation::brightness = 20;
 absolute_time_t AnimationStation::nextBrightnessChange = 0;
 absolute_time_t AnimationStation::nextAnimationChange = 0;
 
@@ -61,7 +61,7 @@ void AnimationStation::ChangeAnimation() {
 
     this->animations.erase(this->animations.begin());
   }
-  
+
   AnimationStation::nextAnimationChange = make_timeout_time_ms(150);
 }
 
@@ -101,7 +101,7 @@ void AnimationStation::Clear() {
   }
 }
 
-void AnimationStation::SetBrightness(float brightness) {
+void AnimationStation::SetBrightness(int brightness) {
   AnimationStation::brightness = brightness;
 }
 
@@ -110,11 +110,11 @@ void AnimationStation::DecreaseBrightness() {
     return;
   }
 
-  float newBrightness = AnimationStation::brightness;
-  newBrightness -= 0.01;
+  int newBrightness = AnimationStation::brightness;
+  newBrightness -= 1;
 
-  if (newBrightness < 0.0) {
-    newBrightness = 0.0;
+  if (newBrightness < 0) {
+    newBrightness = 0;
   }
 
   AnimationStation::brightness = newBrightness;
@@ -126,11 +126,11 @@ void AnimationStation::IncreaseBrightness() {
     return;
   }
 
-  float newBrightness = AnimationStation::brightness;
-  newBrightness += 0.01;
+  int newBrightness = AnimationStation::brightness;
+  newBrightness += 1;
 
-  if (newBrightness > 1.0) {
-    newBrightness = 1.0;
+  if (newBrightness > 100) {
+    newBrightness = 100;
   }
 
   AnimationStation::brightness = newBrightness;
@@ -138,9 +138,10 @@ void AnimationStation::IncreaseBrightness() {
 }
 
 uint32_t AnimationStation::RGB(uint8_t r, uint8_t g, uint8_t b) {
-  return ((uint32_t)(r * AnimationStation::brightness) << 8) |
-         ((uint32_t)(g * AnimationStation::brightness) << 16) |
-         (uint32_t)(b * AnimationStation::brightness);
+  float brightness = AnimationStation::brightness / 100.0;
+  return ((uint32_t)(r * brightness) << 8) |
+         ((uint32_t)(g * brightness) << 16) |
+         (uint32_t)(b * brightness);
 }
 
 uint32_t AnimationStation::Wheel(uint8_t pos) {
