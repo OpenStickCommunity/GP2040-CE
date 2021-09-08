@@ -115,7 +115,7 @@ void setup()
 	{
 		gamepad.inputMode = newInputMode;
 		Storage.setInputMode(gamepad.inputMode);
-		EEPROM.commit();
+		gamepad.save();
 	}
 
 	// Initialize USB driver
@@ -143,8 +143,11 @@ void loop()
 
 #ifdef BOARD_LEDS_PIN
 	AnimationHotkey action = animationHotkeys(gamepad);
-	as.HandleEvent(action);
-	AnimationStore.save(as);
+	if (action != HOTKEY_LEDS_NONE)
+	{
+		as.HandleEvent(action);
+		AnimationStore.save(as);
+	}
 #endif
 
 	gamepad.hotkey();
