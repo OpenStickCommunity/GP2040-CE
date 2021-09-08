@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <algorithm>
 
 #include "AnimationStation.hpp"
 #include "Effects/Chase.hpp"
@@ -60,7 +61,7 @@ void AnimationStation::ChangeAnimation() {
 
     this->animations.erase(this->animations.begin());
   }
-
+  
   AnimationStation::nextAnimationChange = make_timeout_time_ms(150);
 }
 
@@ -75,8 +76,28 @@ void AnimationStation::SetRainbow() {
 void AnimationStation::SetChase() { this->animations.push_back(new Chase()); }
 
 void AnimationStation::Animate() {
+  if (this->animations.size() == 0) {
+    this->Clear();
+    return;
+  }
+
   for (auto &element : this->animations) {
-    element->Animate(this->frame);
+    /* non-base animations (eg. button presses) only run
+      a certain number of times. before we animate, we need
+      to verify that it isn't already complete */
+
+    if (element->isComplete()) {
+      this->animations.erase(std::remove(this->animations.begin(), this->animations.end(), element), this->animations.end());
+    }
+    else {
+      element->Animate(this->frame);
+    }
+  }
+}
+
+void AnimationStation::Clear() {
+  for (int i = 0; i < this->numPixels; ++i) {
+    frame[i] = 0;
   }
 }
 

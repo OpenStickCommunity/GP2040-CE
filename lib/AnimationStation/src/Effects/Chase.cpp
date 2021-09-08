@@ -27,6 +27,7 @@ void Chase::Animate(uint32_t (&frame)[100]) {
     if (currentFrame < 0) {
       currentFrame = 1;
       reverse = false;
+      this->currentLoop++;
     }
   }
   else {

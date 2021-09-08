@@ -2,6 +2,7 @@
 #define _STATIC_COLOR_H_
 
 #include "../Animation.hpp"
+#include "../AnimationStation.hpp"
 
 class StaticColor : public Animation {
 public:

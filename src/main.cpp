@@ -149,7 +149,7 @@ void loop()
 #endif
 
 	// Ensure next runtime ahead of current time
-	gamepad.hotkey();
+	// gamepad.hotkey();
 	gamepad.process();
 	report = gamepad.getReport();
 	send_report(report, reportSize);

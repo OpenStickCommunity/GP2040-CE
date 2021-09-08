@@ -15,9 +15,12 @@ public:
   Animation() {
     this->firstPixel = Animation::defaultFirstPixel;
     this->lastPixel = Animation::defaultLastPixel;
+    this->totalLoops = 1;
   }
   virtual void Animate(uint32_t (&frame)[100]);
   AnimationMode mode;
+
+  bool isComplete();
 
   static void SetDefaultPixels(int firstPixel, int lastPixel) {
     Animation::defaultFirstPixel = firstPixel;
@@ -29,6 +32,9 @@ protected:
 
   int firstPixel;
   int lastPixel;
+  int currentLoop = 0;
+  int totalLoops;
+  bool baseAnimation = true;
 };
 
 #endif

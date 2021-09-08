@@ -14,7 +14,7 @@ class ConfigStorage
 {
 public:
   ConfigStorage() {
-    // EEPROM.start();
+    EEPROM.start();
   }
   AnimationMode getBaseAnimation();
   void setup();
