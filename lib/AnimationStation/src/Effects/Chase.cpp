@@ -1,5 +1,7 @@
 #include "Chase.hpp"
 
+int Chase::defaultCycleTime = 85;
+
 void Chase::Animate(uint32_t (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
     return;
@@ -25,6 +27,7 @@ void Chase::Animate(uint32_t (&frame)[100]) {
     if (currentFrame < 0) {
       currentFrame = 1;
       reverse = false;
+      this->currentLoop++;
     }
   }
   else {
