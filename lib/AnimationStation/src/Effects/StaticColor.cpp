@@ -6,7 +6,8 @@
 uint32_t StaticColor::defaultColor = 255;
 
 void StaticColor::Animate(uint32_t (&frame)[100]) {
+  float brightness = AnimationStation::GetBrightnessMultiplier();
   for (int i = this->firstPixel; i < this->lastPixel + 1; ++i) {
-    frame[i] = this->color * AnimationStation::brightness;
+    frame[i] = this->color * brightness;
   }
 }

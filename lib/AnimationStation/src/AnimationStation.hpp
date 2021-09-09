@@ -8,6 +8,10 @@
 
 #include "Animation.hpp"
 
+#define BRIGHTNESS_MAXIMUM  255
+#define BRIGHTNESS_INCREMENTS 5
+#define BRIGHTNESS_SEGMENT (BRIGHTNESS_MAXIMUM / BRIGHTNESS_INCREMENTS)
+
 typedef enum
 {
   HOTKEY_LEDS_NONE,
@@ -32,17 +36,23 @@ public:
   void Clear();
   void ChangeAnimation();
 
-  static void SetBrightness(uint8_t brightness);  
+  static float GetBrightnessMultiplier();
+  static uint8_t GetBrightness();
+  static void SetBrightness(uint8_t brightness);
   static void DecreaseBrightness();
   static void IncreaseBrightness();
   static uint32_t RGB(uint8_t r, uint8_t g, uint8_t b);
   static uint32_t Wheel(uint8_t pos);
 
   std::vector<Animation*> animations;
-  static uint8_t brightness;
   static absolute_time_t nextBrightnessChange;
   static absolute_time_t nextAnimationChange;
   uint32_t frame[100];
+
+protected:
+  static uint8_t brightness;
+  static float brightnessMultiplier;
+
 private:
   int numPixels = 0;
 };

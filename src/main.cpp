@@ -23,6 +23,7 @@
 #include "AnimationStorage.hpp"
 #include "Animation.hpp"
 #include "Effects/StaticColor.hpp"
+#include "Multicore.h"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
@@ -120,7 +121,8 @@ void setup()
 		gamepad.save();
 	}
 
-	// Initialize animiation queue
+	// Initialize core1 vars
+	mutex_init(&core1Mutex);
 	queue_init(&animationQueue, sizeof(AnimationHotkey), 1);
 
 	// Initialize USB driver
@@ -145,7 +147,6 @@ void loop()
 
 	gamepad.hotkey();
 
-// TODO: We'll want to move this to the aux loop, and use Pico SDK queues to pass gamepad data
 #ifdef BOARD_LEDS_PIN
 	AnimationHotkey action = animationHotkeys(gamepad);
 	if (action != HOTKEY_LEDS_NONE)
@@ -185,6 +186,14 @@ void core1()
 
 	while (1)
 	{
+		static const uint32_t intervalMS = 20;
+		static uint32_t nextRuntime = 0;
+
+		mutex_enter_blocking(&core1Mutex);
+
+		if (getMillis() - nextRuntime < 0)
+			return;
+
 		if (queue_try_peek(&animationQueue, &action))
 		{
 			queue_remove_blocking(&animationQueue, &action);
@@ -195,6 +204,10 @@ void core1()
 		as.Animate();
 		leds.SetFrame(as.frame);
 		leds.Show();
+
+		nextRuntime = getMillis() + intervalMS;
+
+		mutex_exit(&core1Mutex);
 	}
 #endif
 }

@@ -17,22 +17,18 @@
 #include "AnimationStorage.hpp"
 
 #include "LEDConfig.h"
-
-static mutex_t eepromMutex;
+#include "Multicore.h"
 
 GamepadStorage::GamepadStorage()
 {
 	EEPROM.start();
-	mutex_init(&eepromMutex);
 }
 
 void GamepadStorage::save()
 {
-	if (mutex_enter_block_until(&eepromMutex, make_timeout_time_ms(10)))
-	{
-		EEPROM.commit();
-		mutex_exit(&eepromMutex);
-	}
+	mutex_enter_blocking(&core1Mutex);
+	EEPROM.commit();
+	mutex_exit(&core1Mutex);
 }
 
 DpadMode GamepadStorage::getDpadMode()
@@ -108,9 +104,10 @@ void AnimationStorage::save(AnimationStation as)
 {
 	bool dirty = false;
 
-	if (as.brightness != getBrightness())
+	uint8_t brightness = as.GetBrightness();
+	if (brightness != getBrightness())
 	{
-		setBrightness(as.brightness);
+		setBrightness(brightness);
 		dirty = true;
 	}
 
@@ -120,9 +117,14 @@ void AnimationStorage::save(AnimationStation as)
 		dirty = true;
 	}
 
-	if (dirty && mutex_enter_block_until(&eepromMutex, make_timeout_time_ms(100)))
+	if (dirty)
 	{
+		uint32_t owner = 0;
+		bool blocked = mutex_try_enter(&core1Mutex, &owner);
+
 		EEPROM.commit();
-		mutex_exit(&eepromMutex);
+
+		if (blocked)
+			mutex_exit(&core1Mutex);
 	}
 }
