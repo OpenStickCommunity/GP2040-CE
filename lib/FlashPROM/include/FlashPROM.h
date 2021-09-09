@@ -19,6 +19,7 @@ class FlashPROM
 	public:
 		void start();
 		void commit();
+		void checkCommit();
 
 		template<typename T>
 		T &get(uint16_t const index, T &value)
@@ -37,8 +38,11 @@ class FlashPROM
 				memcpy(&cache[index], &value, sizeof(T));
 		}
 
+	  static absolute_time_t nextWriteTime;
 	private:
+		void writeToFlash();
 		static uint8_t cache[EEPROM_SIZE_BYTES];
+
 };
 
 static FlashPROM EEPROM;

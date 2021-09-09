@@ -159,10 +159,16 @@ void loop()
 
 	// Ensure next runtime ahead of current time
 	nextRuntime = getMillis() + intervalMS;
+	
+	// If we've made changes that are queued for writing to flash, do it!
+	EEPROM.checkCommit();
+
 }
 
 void core1()
 {
+	multicore_lockout_victim_init();
+
 #ifdef BOARD_LEDS_PIN
 	static AnimationHotkey action;
 
@@ -189,8 +195,6 @@ void core1()
 		static const uint32_t intervalMS = 20;
 		static uint32_t nextRuntime = 0;
 
-		mutex_enter_blocking(&core1Mutex);
-
 		if (getMillis() - nextRuntime < 0)
 			return;
 
@@ -206,8 +210,6 @@ void core1()
 		leds.Show();
 
 		nextRuntime = getMillis() + intervalMS;
-
-		mutex_exit(&core1Mutex);
 	}
 #endif
 }
