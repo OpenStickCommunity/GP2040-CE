@@ -37,7 +37,7 @@ AnimationHotkey animationHotkeys(MPG gamepad)
 {
 	AnimationHotkey action = HOTKEY_LEDS_NONE;
 
-	if (gamepad.isDpadHotkeyPressed())
+	if (gamepad.pressedF1())
 	{
 		if (gamepad.pressedB3())
 		{
@@ -49,25 +49,21 @@ AnimationHotkey animationHotkeys(MPG gamepad)
 			action = HOTKEY_LEDS_ANIMATION_DOWN;
 			gamepad.state.buttons &= ~(GAMEPAD_MASK_B1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
-
 		else if (gamepad.pressedB4())
 		{
 			action = HOTKEY_LEDS_BRIGHTNESS_UP;
 			gamepad.state.buttons &= ~(GAMEPAD_MASK_B4 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
-
 		else if (gamepad.pressedB2())
 		{
 			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
 			gamepad.state.buttons &= ~(GAMEPAD_MASK_B2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
-
 		else if (gamepad.pressedR1())
 		{
 			action = HOTKEY_LEDS_PARAMETER_UP;
 			gamepad.state.buttons &= ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
-
 		else if (gamepad.pressedR2())
 		{
 			action = HOTKEY_LEDS_PARAMETER_DOWN;
@@ -160,6 +156,9 @@ void loop()
 
 void core1()
 {
+	static const uint32_t intervalMS = 20;
+	static uint32_t nextRuntime = 0;
+
 	multicore_lockout_victim_init();
 
 #ifdef BOARD_LEDS_PIN
@@ -185,6 +184,9 @@ void core1()
 
 	while (1)
 	{
+		if (getMillis() - nextRuntime < 0)
+			return;
+
 		if (queue_try_peek(&animationQueue, &action))
 		{
 			queue_remove_blocking(&animationQueue, &action);
@@ -195,8 +197,9 @@ void core1()
 		as.Animate();
 		leds.SetFrame(as.frame);
 		leds.Show();
+
+		// Ensure next runtime ahead of current time
+		nextRuntime = getMillis() + intervalMS;
 	}
 #endif
 }
-
-
