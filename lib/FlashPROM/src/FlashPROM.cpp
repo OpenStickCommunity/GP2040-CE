@@ -10,12 +10,6 @@ spin_lock_t *FlashPROM::flashLock;
 absolute_time_t FlashPROM::nextWriteTime = 0;
 alarm_id_t flashWriteAlarm = 0;
 
-int64_t alarm_callback(alarm_id_t id, void *user_data)
-{
-	// Can return a value here in us to fire in the future
-	return 0;
-}
-
 FlashPROM::FlashPROM()
 {
 	flashLock = spin_lock_instance(spin_lock_claim_unused(true));

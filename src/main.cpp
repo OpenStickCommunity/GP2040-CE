@@ -116,7 +116,6 @@ void setup()
 	if (newInputMode != gamepad.inputMode)
 	{
 		gamepad.inputMode = newInputMode;
-		Storage.setInputMode(gamepad.inputMode);
 		gamepad.save();
 	}
 
