@@ -16,13 +16,13 @@
 #include "Effects/StaticColor.hpp"
 
 uint8_t AnimationStation::brightness = 0;
-float AnimationStation::brightnessMultiplier = 0;
-absolute_time_t AnimationStation::nextBrightnessChange = 0;
+float AnimationStation::brightnessX = 0;
 absolute_time_t AnimationStation::nextAnimationChange = 0;
+absolute_time_t AnimationStation::nextBrightnessChange = 0;
 
 AnimationStation::AnimationStation(int numPixels) {
   this->numPixels = numPixels;
-	AnimationStation::SetBrightness(BRIGHTNESS_SEGMENT);
+	AnimationStation::SetBrightness(1);
 }
 
 void AnimationStation::HandleEvent(AnimationHotkey action) {
@@ -103,8 +103,8 @@ void AnimationStation::Clear() {
   }
 }
 
-float AnimationStation::GetBrightnessMultiplier() {
-  return AnimationStation::brightnessMultiplier;
+float AnimationStation::GetBrightnessX() {
+  return AnimationStation::brightnessX;
 }
 
 uint8_t AnimationStation::GetBrightness() {
@@ -112,41 +112,41 @@ uint8_t AnimationStation::GetBrightness() {
 }
 
 void AnimationStation::SetBrightness(uint8_t brightness) {
-  AnimationStation::brightness = brightness;
+  AnimationStation::brightness = (brightness > BRIGHTNESS_STEPS) ? BRIGHTNESS_STEPS : brightness;
+  AnimationStation::brightnessX = (AnimationStation::brightness * BRIGHTNESS_STEP_SIZE) / 255.0F;
 
-  AnimationStation::brightnessMultiplier = brightness / (float)BRIGHTNESS_MAXIMUM;
-  if (AnimationStation::brightnessMultiplier > 1)
-    AnimationStation::brightnessMultiplier = 1;
-  else if (AnimationStation::brightnessMultiplier < 0)
-    AnimationStation::brightnessMultiplier = 0;
+  if (AnimationStation::brightnessX > 1)
+    AnimationStation::brightnessX = 1;
+  else if (AnimationStation::brightnessX < 0)
+    AnimationStation::brightnessX = 0;
 }
 
 void AnimationStation::DecreaseBrightness() {
-  if (!time_reached(AnimationStation::nextBrightnessChange)) {
+  if (!time_reached(AnimationStation::nextBrightnessChange))
     return;
-  }
 
-  if (AnimationStation::brightness >= BRIGHTNESS_SEGMENT)
-    AnimationStation::SetBrightness(AnimationStation::brightness - BRIGHTNESS_SEGMENT);
+  if (AnimationStation::brightness > 0)
+    AnimationStation::SetBrightness(--AnimationStation::brightness);
 
   AnimationStation::nextBrightnessChange = make_timeout_time_ms(250);
 }
 
 void AnimationStation::IncreaseBrightness() {
-  if (!time_reached(AnimationStation::nextBrightnessChange)) {
+  if (!time_reached(AnimationStation::nextBrightnessChange))
     return;
-  }
 
-  if (AnimationStation::brightness < BRIGHTNESS_MAXIMUM)
-    AnimationStation::SetBrightness(AnimationStation::brightness + BRIGHTNESS_SEGMENT);
+  if (AnimationStation::brightness < BRIGHTNESS_STEP_SIZE)
+    AnimationStation::SetBrightness(++AnimationStation::brightness);
+  else if (AnimationStation::brightness > BRIGHTNESS_STEP_SIZE)
+    AnimationStation::SetBrightness(BRIGHTNESS_STEPS);
 
   AnimationStation::nextBrightnessChange = make_timeout_time_ms(250);
 }
 
 uint32_t AnimationStation::RGB(uint8_t r, uint8_t g, uint8_t b) {
-  return ((uint32_t)(r * brightnessMultiplier) << 8) |
-         ((uint32_t)(g * brightnessMultiplier) << 16) |
-         (uint32_t)(b * brightnessMultiplier);
+  return ((uint32_t)(r * brightnessX) << 8) |
+         ((uint32_t)(g * brightnessX) << 16) |
+         (uint32_t)(b * brightnessX);
 }
 
 uint32_t AnimationStation::Wheel(uint8_t pos) {

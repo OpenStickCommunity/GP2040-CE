@@ -8,9 +8,9 @@
 
 #include "Animation.hpp"
 
-#define BRIGHTNESS_MAXIMUM  255
-#define BRIGHTNESS_INCREMENTS 5
-#define BRIGHTNESS_SEGMENT (BRIGHTNESS_MAXIMUM / BRIGHTNESS_INCREMENTS)
+#define BRIGHTNESS_MAXIMUM  100
+#define BRIGHTNESS_STEPS 5
+#define BRIGHTNESS_STEP_SIZE (BRIGHTNESS_MAXIMUM / BRIGHTNESS_STEPS)
 
 typedef enum
 {
@@ -36,7 +36,7 @@ public:
   void Clear();
   void ChangeAnimation();
 
-  static float GetBrightnessMultiplier();
+  static float GetBrightnessX();
   static uint8_t GetBrightness();
   static void SetBrightness(uint8_t brightness);
   static void DecreaseBrightness();
@@ -45,13 +45,13 @@ public:
   static uint32_t Wheel(uint8_t pos);
 
   std::vector<Animation*> animations;
-  static absolute_time_t nextBrightnessChange;
   static absolute_time_t nextAnimationChange;
+  static absolute_time_t nextBrightnessChange;
   uint32_t frame[100];
 
 protected:
   static uint8_t brightness;
-  static float brightnessMultiplier;
+  static float brightnessX;
 
 private:
   int numPixels = 0;
