@@ -17,7 +17,6 @@
 #include "AnimationStorage.hpp"
 
 #include "LEDConfig.h"
-#include "Multicore.h"
 
 GamepadStorage::GamepadStorage()
 {
@@ -26,9 +25,7 @@ GamepadStorage::GamepadStorage()
 
 void GamepadStorage::save()
 {
-	mutex_enter_blocking(&core1Mutex);
 	EEPROM.commit();
-	mutex_exit(&core1Mutex);
 }
 
 DpadMode GamepadStorage::getDpadMode()
@@ -99,7 +96,7 @@ void AnimationStorage::setup()
 }
 
 /* We don't want to couple our event calls directly to what AS is doing. That means we need to
-  let it handle its business, and then afterwards save any changes we find. */
+	let it handle its business, and then afterwards save any changes we find. */
 void AnimationStorage::save(AnimationStation as)
 {
 	bool dirty = false;
@@ -118,13 +115,5 @@ void AnimationStorage::save(AnimationStation as)
 	}
 
 	if (dirty)
-	{
-		uint32_t owner = 0;
-		bool blocked = mutex_try_enter(&core1Mutex, &owner);
-
 		EEPROM.commit();
-
-		if (blocked)
-			mutex_exit(&core1Mutex);
-	}
 }

@@ -23,7 +23,6 @@
 #include "AnimationStorage.hpp"
 #include "Animation.hpp"
 #include "Effects/StaticColor.hpp"
-#include "Multicore.h"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
@@ -121,8 +120,7 @@ void setup()
 		gamepad.save();
 	}
 
-	// Initialize core1 vars
-	mutex_init(&core1Mutex);
+	// Initialize queue(s)
 	queue_init(&animationQueue, sizeof(AnimationHotkey), 1);
 
 	// Initialize USB driver
@@ -159,10 +157,6 @@ void loop()
 
 	// Ensure next runtime ahead of current time
 	nextRuntime = getMillis() + intervalMS;
-	
-	// If we've made changes that are queued for writing to flash, do it!
-	EEPROM.checkCommit();
-
 }
 
 void core1()
@@ -192,12 +186,6 @@ void core1()
 
 	while (1)
 	{
-		static const uint32_t intervalMS = 20;
-		static uint32_t nextRuntime = 0;
-
-		if (getMillis() - nextRuntime < 0)
-			return;
-
 		if (queue_try_peek(&animationQueue, &action))
 		{
 			queue_remove_blocking(&animationQueue, &action);
@@ -208,8 +196,6 @@ void core1()
 		as.Animate();
 		leds.SetFrame(as.frame);
 		leds.Show();
-
-		nextRuntime = getMillis() + intervalMS;
 	}
 #endif
 }
