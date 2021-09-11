@@ -6,6 +6,8 @@
 #ifndef TEST_BOARD_H_
 #define TEST_BOARD_H_
 
+#include <GamepadEnums.h>
+
 #define PIN_DPAD_UP     16
 #define PIN_DPAD_DOWN   17
 #define PIN_DPAD_LEFT   19
@@ -24,5 +26,7 @@
 #define PIN_BUTTON_R3   11
 #define PIN_BUTTON_A1   12
 #define PIN_BUTTON_A2   20
+
+#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 #endif

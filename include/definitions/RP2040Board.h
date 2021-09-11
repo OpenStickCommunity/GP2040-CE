@@ -6,6 +6,8 @@
 #ifndef RP2040_BOARD_H_
 #define RP2040_BOARD_H_
 
+#include <GamepadEnums.h>
+
 #define PIN_DPAD_UP     2
 #define PIN_DPAD_DOWN   3
 #define PIN_DPAD_LEFT   4
@@ -24,5 +26,7 @@
 #define PIN_BUTTON_R3   17
 #define PIN_BUTTON_A1   18
 #define PIN_BUTTON_A2   19
+
+#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 #endif

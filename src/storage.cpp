@@ -9,13 +9,9 @@
 #define STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX 3 // 1 byte
 #define STORAGE_LEDS_BRIGHTNESS_INDEX 4          // 1 byte
 
-#include "pico/mutex.h"
-#include "pico/time.h"
-
+#include <GamepadStorage.h>
 #include "FlashPROM.h"
-#include "GamepadStorage.h"
 #include "AnimationStorage.hpp"
-
 #include "LEDConfig.h"
 
 GamepadStorage::GamepadStorage()

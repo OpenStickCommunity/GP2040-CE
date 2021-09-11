@@ -4,9 +4,9 @@
  */
 
 #include <MPG.h>
+
 #include "pico/stdlib.h"
 
-#include "usb_driver.h"
 #include "BoardConfig.h"
 #include "LEDConfig.h"
 

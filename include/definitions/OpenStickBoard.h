@@ -6,7 +6,7 @@
 #ifndef OPEN_STICK_BOARD_H_
 #define OPEN_STICK_BOARD_H_
 
-#include "MPG.h"
+#include <GamepadEnums.h>
 
 #define PIN_DPAD_UP     13
 #define PIN_DPAD_DOWN   11
