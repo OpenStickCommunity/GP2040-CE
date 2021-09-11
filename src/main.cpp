@@ -3,7 +3,6 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-// #define HAS_PERSISTENT_STORAGE 1 // WHY DOESN'T THIS WORK?!?!?!?!?!?!?
 #define GAMEPAD_DEBOUNCE_MILLIS 5
 
 #include <stdio.h>
@@ -83,8 +82,6 @@ int main()
 {
 	setup();
 
-	multicore_launch_core1(core1);
-
 	while (1)
 		loop();
 
@@ -93,10 +90,7 @@ int main()
 
 void setup()
 {
-	// Set up controller
 	gamepad.setup();
-
-	// Read options from EEPROM
 	gamepad.load();
 
 	// Check for input mode override
@@ -115,10 +109,11 @@ void setup()
 		gamepad.save();
 	}
 
-	// Initialize queue(s)
+#ifdef BOARD_LEDS_PIN
 	queue_init(&animationQueue, sizeof(AnimationHotkey), 1);
+	multicore_launch_core1(core1);
+#endif
 
-	// Initialize USB driver
 	initialize_driver(gamepad.inputMode);
 }
 
@@ -181,12 +176,14 @@ void core1()
 			as.SetStaticColor();
 			break;
 	}
+#endif
 
 	while (1)
 	{
 		if (getMillis() - nextRuntime < 0)
 			return;
 
+#ifdef BOARD_LEDS_PIN
 		if (queue_try_peek(&animationQueue, &action))
 		{
 			queue_remove_blocking(&animationQueue, &action);
@@ -197,9 +194,9 @@ void core1()
 		as.Animate();
 		leds.SetFrame(as.frame);
 		leds.Show();
+#endif
 
 		// Ensure next runtime ahead of current time
 		nextRuntime = getMillis() + intervalMS;
 	}
-#endif
 }

@@ -3,11 +3,12 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
+#include <MPG.h>
 #include "pico/stdlib.h"
 
 #include "usb_driver.h"
 #include "BoardConfig.h"
-#include "MPG.h"
+#include "LEDConfig.h"
 
 struct GamepadButtonMapping
 {
