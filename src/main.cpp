@@ -5,24 +5,19 @@
 
 #define GAMEPAD_DEBOUNCE_MILLIS 5
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "pico/stdlib.h"
 #include "pico/multicore.h"
 #include "pico/util/queue.h"
 
-#include "usb_driver.h"
-#include "BoardConfig.h"
-#include "LEDConfig.h"
-#include "FlashPROM.h"
-#include "MPG.h"
+#include <MPG.h>
+
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
 #include "AnimationStorage.hpp"
-#include "Animation.hpp"
-#include "Effects/StaticColor.hpp"
+
+#include "usb_driver.h"
+#include "BoardConfig.h"
+#include "LEDConfig.h"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
