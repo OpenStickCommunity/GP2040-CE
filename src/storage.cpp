@@ -3,18 +3,34 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#define STORAGE_INPUT_MODE_INDEX 0               // 1 byte
-#define STORAGE_DPAD_MODE_INDEX 1                // 1 byte
-#define STORAGE_SOCD_MODE_INDEX 2                // 1 byte
-#define STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX 3 // 1 byte
-#define STORAGE_LEDS_BRIGHTNESS_INDEX 4          // 1 byte
-
 #include <GamepadStorage.h>
 #include "FlashPROM.h"
 #include "AnimationStorage.hpp"
 #include "LEDConfig.h"
 
-GamepadStorage::GamepadStorage()
+#define STORAGE_LEDS_BRIGHTNESS_INDEX (STORAGE_FIRST_AVAILBLE_INDEX)              // 1 byte
+#define STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX (STORAGE_FIRST_AVAILBLE_INDEX + 1) // 4 bytes
+
+static void getStorageValue(int index, void *data, uint16_t size)
+{
+	uint8_t buffer[size] = { };
+	for (int i = 0; i < size; i++)
+		EEPROM.get(index + i, buffer[i]);
+
+	memcpy(data, buffer, size);
+}
+
+static void setStorageValue(int index, void *data, uint16_t size)
+{
+	uint8_t buffer[size] = { };
+	memcpy(buffer, data, size);
+	for (int i = 0; i < size; i++)
+		EEPROM.set(index + i, buffer[i]);
+}
+
+/* Gamepad stuffs */
+
+void GamepadStorage::start()
 {
 	EEPROM.start();
 }
@@ -24,64 +40,40 @@ void GamepadStorage::save()
 	EEPROM.commit();
 }
 
-DpadMode GamepadStorage::getDpadMode()
+void GamepadStorage::get(int index, void *data, uint16_t size)
 {
-	DpadMode mode = DPAD_MODE_DIGITAL;
-	EEPROM.get(STORAGE_DPAD_MODE_INDEX, mode);
-	return mode;
+	getStorageValue(index, data, size);
 }
 
-void GamepadStorage::setDpadMode(DpadMode mode)
+void GamepadStorage::set(int index, void *data, uint16_t size)
 {
-	EEPROM.set(STORAGE_DPAD_MODE_INDEX, mode);
+	setStorageValue(index, data, size);
 }
 
-InputMode GamepadStorage::getInputMode()
-{
-	InputMode mode = INPUT_MODE_XINPUT;
-	EEPROM.get(STORAGE_INPUT_MODE_INDEX, mode);
-	return mode;
-}
-
-void GamepadStorage::setInputMode(InputMode mode)
-{
-	EEPROM.set(STORAGE_INPUT_MODE_INDEX, mode);
-}
-
-SOCDMode GamepadStorage::getSOCDMode()
-{
-	SOCDMode mode = SOCD_MODE_UP_PRIORITY;
-	EEPROM.get(STORAGE_SOCD_MODE_INDEX, mode);
-	return mode;
-}
-
-void GamepadStorage::setSOCDMode(SOCDMode mode)
-{
-	EEPROM.set(STORAGE_SOCD_MODE_INDEX, mode);
-}
+/* Animation stuffs */
 
 AnimationMode AnimationStorage::getBaseAnimation()
 {
 	AnimationMode mode = RAINBOW;
-	EEPROM.get(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, mode);
+	getStorageValue(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, &mode, sizeof(AnimationMode));
 	return mode;
 }
 
 void AnimationStorage::setBaseAnimation(AnimationMode mode)
 {
-	EEPROM.set(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, mode);
+	setStorageValue(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, &mode, sizeof(AnimationMode));
 }
 
 uint8_t AnimationStorage::getBrightness()
 {
 	uint8_t brightness = LEDS_BRIGHTNESS;
-	EEPROM.get(STORAGE_LEDS_BRIGHTNESS_INDEX, brightness);
+	getStorageValue(STORAGE_LEDS_BRIGHTNESS_INDEX, &brightness, sizeof(uint8_t));
 	return brightness;
 }
 
 void AnimationStorage::setBrightness(uint8_t brightness)
 {
-	EEPROM.set(STORAGE_LEDS_BRIGHTNESS_INDEX, brightness);
+	setStorageValue(STORAGE_LEDS_BRIGHTNESS_INDEX, &brightness, sizeof(uint8_t));
 }
 
 void AnimationStorage::setup()
@@ -91,8 +83,6 @@ void AnimationStorage::setup()
 	StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
 }
 
-/* We don't want to couple our event calls directly to what AS is doing. That means we need to
-	let it handle its business, and then afterwards save any changes we find. */
 void AnimationStorage::save(AnimationStation as)
 {
 	bool dirty = false;

@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#include <MPG.h>
+#include <MPGS.h>
 
 #include "pico/stdlib.h"
 
@@ -37,8 +37,12 @@ GamepadButtonMapping mapButtonR3  = { .pin = PIN_BUTTON_R3,  .pinMask = (1 << PI
 GamepadButtonMapping mapButtonA1  = { .pin = PIN_BUTTON_A1,  .pinMask = (1 << PIN_BUTTON_A1),  .buttonMask = GAMEPAD_MASK_A1,    .ledPos = LEDS_BUTTON_13  };
 GamepadButtonMapping mapButtonA2  = { .pin = PIN_BUTTON_A2,  .pinMask = (1 << PIN_BUTTON_A2),  .buttonMask = GAMEPAD_MASK_A2,    .ledPos = LEDS_BUTTON_14  };
 
+uint32_t GamepadDebouncer::getMillis() { return to_ms_since_boot(get_absolute_time()); }
+
 void MPG::setup()
 {
+	GamepadStore.start();
+
 	GamepadButtonMapping *gamepadMappings[] =
 	{
 		&mapDpadUp,   &mapDpadDown, &mapDpadLeft, &mapDpadRight,
