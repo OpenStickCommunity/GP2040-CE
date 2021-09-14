@@ -54,8 +54,6 @@ If your board has WS2812 (or similar) LEDs, these can be configured in your boar
 | ---------------- | ---------------------------- | --------- |
 | BOARD_LEDS_PIN   | Data PIN for your LED strand | No        |
 | BOARD_LEDS_COUNT | Total LEDs in your strand    | No        |
-| LEDS_BASE_ANIMATION_FIRST_PIXEL | The index for the first pixel in your base animation. If you have additional LEDs that aren't part of the base animation, this is your chance to leave them out of it. By default, this is 0. | Yes |
-| LEDS_BASE_ANIMATION_LAST_PIXEL | Same as above, but the index for the final pixel. By default, this is 11... 12 LEDs for 12 buttons on a standard stickless layout. | Yes |
 | LEDS_BASE_ANIMATION | This can be either "RAINBOW", "CHASE" or "STATIC" to set your base animation | Yes |
 | LEDS_RAINBOW_CYCLE_TIME | For "RAINBOW," this sets how long (in ms) it takes to cycle from one color step to the next | Yes |
 | LEDS_CHASE_CYCLE_TIME | For "CHASE," this sets how long (in ms) it takes to move from one pixel to the next | Yes |
@@ -121,6 +119,29 @@ Simultaneous Opposite Cardinal Direction (SOCD) cleaning will ensure the control
 * **`LS + RS + LEFT`** - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
 
 SOCD mode is saved across power cycles.
+
+### LED Brightness
+
+You can increase brightness with `BACK + START + Y` and decrease brightness with `BACK + START + B`.
+
+### LED Modes
+
+Swap between LED modes using the `BACK + START + A` or `BACK + START + X`. The following modes are available (pics coming eventually):
+
+* Off
+* Static Color
+* Rainbow Cycle
+* Rainbow Chase
+* Static Rainbow
+* Super Famicom
+* Xbox
+* Neo Geo Classic
+* Neo Geo Curved
+* Neo Geo Modern
+* Six Button Fighter
+* Six Button Fighter+
+* Guilty Gear Type-A
+* Guilty Gear Type-D
 
 ## Acknowledgements
 
