@@ -14,16 +14,16 @@
 #include "NeoPico.hpp"
 #include "AnimationStation.hpp"
 #include "AnimationStorage.hpp"
+#include "Pixel.hpp"
 
 #include "usb_driver.h"
 #include "BoardConfig.h"
-#include "LEDConfig.h"
 
 MPGS gamepad(GAMEPAD_DEBOUNCE_MILLIS);
 
 #ifdef BOARD_LEDS_PIN
-NeoPico leds(BOARD_LEDS_PIN, BOARD_LEDS_COUNT);
-AnimationStation as(BOARD_LEDS_COUNT);
+NeoPico leds(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels));
+AnimationStation as(pixels);
 queue_t animationQueue;
 #endif
 
@@ -104,31 +104,16 @@ void loop()
 
 void core1()
 {
-	static const uint32_t intervalMS = 20;
+	static const uint32_t intervalMS = 10;
 	static uint32_t nextRuntime = 0;
 
 	multicore_lockout_victim_init();
 
 #ifdef BOARD_LEDS_PIN
 	static AnimationHotkey action;
+	static uint32_t frame[100];
 
-	AnimationStore.setup();
-
-	AnimationMode mode = AnimationStore.getBaseAnimation();
-	switch (mode)
-	{
-		case RAINBOW:
-			as.SetRainbow();
-			break;
-
-		case CHASE:
-			as.SetChase();
-			break;
-
-		default:
-			as.SetStaticColor();
-			break;
-	}
+	AnimationStore.setup(&as);
 #endif
 
 	while (1)
@@ -141,11 +126,12 @@ void core1()
 		{
 			queue_remove_blocking(&animationQueue, &action);
 			as.HandleEvent(action);
-			AnimationStore.save(as);
+			AnimationStore.save();
 		}
 
 		as.Animate();
-		leds.SetFrame(as.frame);
+		as.ApplyBrightness(frame);
+		leds.SetFrame(frame);
 		leds.Show();
 #endif
 

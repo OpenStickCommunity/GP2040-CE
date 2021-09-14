@@ -5,11 +5,7 @@
 
 #include <GamepadStorage.h>
 #include "FlashPROM.h"
-#include "AnimationStorage.hpp"
-#include "LEDConfig.h"
-
-#define STORAGE_LEDS_BRIGHTNESS_INDEX (STORAGE_FIRST_AVAILBLE_INDEX)              // 1 byte
-#define STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX (STORAGE_FIRST_AVAILBLE_INDEX + 1) // 4 bytes
+#include "BoardConfig.h"
 
 static void getStorageValue(int index, void *data, uint16_t size)
 {
@@ -52,16 +48,24 @@ void GamepadStorage::set(int index, void *data, uint16_t size)
 
 /* Animation stuffs */
 
-AnimationMode AnimationStorage::getBaseAnimation()
+#ifdef BOARD_LEDS_PIN
+
+#include "AnimationStorage.hpp"
+#include "AnimationStation/src/Effects/StaticColor.hpp"
+
+#define STORAGE_LEDS_BRIGHTNESS_INDEX (STORAGE_FIRST_AVAILBLE_INDEX)              // 1 byte
+#define STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX (STORAGE_FIRST_AVAILBLE_INDEX + 1) // 1 byte
+
+uint8_t AnimationStorage::getMode()
 {
-	AnimationMode mode = RAINBOW;
-	getStorageValue(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, &mode, sizeof(AnimationMode));
+	uint8_t mode = 0;
+	getStorageValue(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, &mode, sizeof(uint8_t));
 	return mode;
 }
 
-void AnimationStorage::setBaseAnimation(AnimationMode mode)
+void AnimationStorage::setMode(uint8_t mode)
 {
-	setStorageValue(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, &mode, sizeof(AnimationMode));
+	setStorageValue(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, &mode, sizeof(uint8_t));
 }
 
 uint8_t AnimationStorage::getBrightness()
@@ -76,30 +80,34 @@ void AnimationStorage::setBrightness(uint8_t brightness)
 	setStorageValue(STORAGE_LEDS_BRIGHTNESS_INDEX, &brightness, sizeof(uint8_t));
 }
 
-void AnimationStorage::setup()
+void AnimationStorage::setup(AnimationStation *as)
 {
+	this->as = as;
 	AnimationStation::SetBrightness(this->getBrightness());
-	Animation::SetDefaultPixels(LEDS_BASE_ANIMATION_FIRST_PIXEL, LEDS_BASE_ANIMATION_LAST_PIXEL);
-	StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
+	as->SetMode(getMode());
+	configureAnimations(as);
 }
 
-void AnimationStorage::save(AnimationStation as)
+void AnimationStorage::save()
 {
 	bool dirty = false;
 
-	uint8_t brightness = as.GetBrightness();
+	uint8_t brightness = as->GetBrightness();
 	if (brightness != getBrightness())
 	{
 		setBrightness(brightness);
 		dirty = true;
 	}
 
-	if (as.animations.size() > 0 && as.animations.at(0)->mode != getBaseAnimation())
+	uint8_t mode = as->GetMode();
+	if (mode != getMode())
 	{
-		setBaseAnimation(as.animations.at(0)->mode);
+		setMode(mode);
 		dirty = true;
 	}
 
 	if (dirty)
 		EEPROM.commit();
 }
+
+#endif

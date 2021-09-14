@@ -1,10 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "Animation.hpp"
 
-int Animation::defaultFirstPixel = 0;
-int Animation::defaultLastPixel = 0;
+Animation::Animation(std::vector<Pixel> pixels) : pixels(pixels) {
+  this->totalLoops = 1;
+}
 
 bool Animation::isComplete() {
   if (this->baseAnimation || this->currentLoop < this->totalLoops) {

@@ -2,23 +2,32 @@
 
 int Chase::defaultCycleTime = 85;
 
-void Chase::Animate(uint32_t (&frame)[100]) {
+Chase::Chase(std::vector<Pixel> pixels) : Animation(pixels) {
+  this->cycleTime = Chase::defaultCycleTime;
+}
+
+void Chase::Animate(RGB (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
     return;
   }
 
-  for (int i = this->firstPixel; i < this->lastPixel + 1; ++i) {
-    if (this->IsChasePixel(i)) {
-      frame[i] = AnimationStation::Wheel(this->WheelFrame(i));
+  for (size_t i = 0; i != pixels.size(); i++) {
+    if (this->IsChasePixel(pixels[i].index)) {
+      RGB color = RGB::wheel(this->WheelFrame(i));
+      for (size_t j = 0; j != pixels[i].positions.size(); j++) {
+        frame[pixels[i].positions[j]] = color;
+      }
     } else {
-      frame[i] = 0;
+      for (size_t j = 0; j != pixels[i].positions.size(); j++) {
+        frame[pixels[i].positions[j]] = ColorBlack;
+      }
     }
   }
 
   currentPixel++;
 
-  if (currentPixel > this->lastPixel) {
-    currentPixel = this->firstPixel;
+  if (currentPixel > pixels.size() - 1) {
+    currentPixel = 0;
   }
 
   if (reverse) {
@@ -43,8 +52,8 @@ void Chase::Animate(uint32_t (&frame)[100]) {
 }
 
 bool Chase::IsChasePixel(int i) {
-  if (i == this->currentPixel || i == (this->currentPixel - 1) % this->totalPixels || i == (this->currentPixel - 2) % this->totalPixels) {
-    return true; 
+  if (i == this->currentPixel || i == (this->currentPixel - 1) || i == (this->currentPixel - 2)) {
+    return true;
   }
 
   return false;
@@ -53,7 +62,7 @@ bool Chase::IsChasePixel(int i) {
 int Chase::WheelFrame(int i) {
   int frame = this->currentFrame;
 
-  if (i == (this->currentPixel - 1) % totalPixels) {
+  if (i == (this->currentPixel - 1) % pixels.size()) {
     if (this->reverse) {
       frame = frame + 16;
     }
@@ -61,8 +70,8 @@ int Chase::WheelFrame(int i) {
       frame = frame - 16;
     }
   }
-  
-  if (i == (this->currentPixel - 2) % totalPixels) {
+
+  if (i == (this->currentPixel - 2) % pixels.size()) {
     if (this->reverse) {
       frame = frame + 32;
     }

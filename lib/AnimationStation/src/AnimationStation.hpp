@@ -1,12 +1,19 @@
 #ifndef _ANIMATION_STATION_H_
 #define _ANIMATION_STATION_H_
 
+#include <algorithm>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
 #include "hardware/clocks.h"
 
+#include "NeoPico.hpp"
 #include "Animation.hpp"
+#include "Effects/Chase.hpp"
+#include "Effects/Rainbow.hpp"
+#include "Effects/StaticColor.hpp"
+#include "Effects/StaticTheme.hpp"
 
 #define BRIGHTNESS_MAXIMUM  100
 #define BRIGHTNESS_STEPS 5
@@ -26,35 +33,34 @@ typedef enum
 class AnimationStation
 {
 public:
-  AnimationStation(int numPixels);
+  AnimationStation(std::vector<Pixel> pixels);
 
   void Animate();
+  void AddAnimation(Animation *animation);
   void HandleEvent(AnimationHotkey action);
-  void SetStaticColor();
-  void SetRainbow();
-  void SetChase();
+  void SetStaticColor(RGB color);
   void Clear();
   void ChangeAnimation();
+  void ApplyBrightness(uint32_t *frameValue);
 
+  uint8_t GetMode();
+  void SetMode(uint8_t mode);
   static float GetBrightnessX();
   static uint8_t GetBrightness();
   static void SetBrightness(uint8_t brightness);
   static void DecreaseBrightness();
   static void IncreaseBrightness();
-  static uint32_t RGB(uint8_t r, uint8_t g, uint8_t b);
-  static uint32_t Wheel(uint8_t pos);
 
   std::vector<Animation*> animations;
   static absolute_time_t nextAnimationChange;
   static absolute_time_t nextBrightnessChange;
-  uint32_t frame[100];
+  RGB frame[100];
 
 protected:
   static uint8_t brightness;
   static float brightnessX;
-
-private:
-  int numPixels = 0;
+  uint8_t animationIndex = 0;
+  std::vector<Pixel> pixels;
 };
 
 #endif

@@ -8,34 +8,32 @@
 #include "pico/stdlib.h"
 
 #include "BoardConfig.h"
-#include "LEDConfig.h"
 
 struct GamepadButtonMapping
 {
 	const uint8_t pin;
 	const uint32_t pinMask;
 	const uint32_t buttonMask;
-	const int8_t ledPos;
 };
 
-GamepadButtonMapping mapDpadUp    = { .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP,    .ledPos = LEDS_DPAD_UP    };
-GamepadButtonMapping mapDpadDown  = { .pin = PIN_DPAD_DOWN,  .pinMask = (1 << PIN_DPAD_DOWN),  .buttonMask = GAMEPAD_MASK_DOWN,  .ledPos = LEDS_DPAD_DOWN  };
-GamepadButtonMapping mapDpadLeft  = { .pin = PIN_DPAD_LEFT,  .pinMask = (1 << PIN_DPAD_LEFT),  .buttonMask = GAMEPAD_MASK_LEFT,  .ledPos = LEDS_DPAD_LEFT  };
-GamepadButtonMapping mapDpadRight = { .pin = PIN_DPAD_RIGHT, .pinMask = (1 << PIN_DPAD_RIGHT), .buttonMask = GAMEPAD_MASK_RIGHT, .ledPos = LEDS_DPAD_RIGHT };
-GamepadButtonMapping mapButtonB1  = { .pin = PIN_BUTTON_B1,  .pinMask = (1 << PIN_BUTTON_B1),  .buttonMask = GAMEPAD_MASK_B1,    .ledPos = LEDS_BUTTON_01  };
-GamepadButtonMapping mapButtonB2  = { .pin = PIN_BUTTON_B2,  .pinMask = (1 << PIN_BUTTON_B2),  .buttonMask = GAMEPAD_MASK_B2,    .ledPos = LEDS_BUTTON_02  };
-GamepadButtonMapping mapButtonB3  = { .pin = PIN_BUTTON_B3,  .pinMask = (1 << PIN_BUTTON_B3),  .buttonMask = GAMEPAD_MASK_B3,    .ledPos = LEDS_BUTTON_03  };
-GamepadButtonMapping mapButtonB4  = { .pin = PIN_BUTTON_B4,  .pinMask = (1 << PIN_BUTTON_B4),  .buttonMask = GAMEPAD_MASK_B4,    .ledPos = LEDS_BUTTON_04  };
-GamepadButtonMapping mapButtonL1  = { .pin = PIN_BUTTON_L1,  .pinMask = (1 << PIN_BUTTON_L1),  .buttonMask = GAMEPAD_MASK_L1,    .ledPos = LEDS_BUTTON_05  };
-GamepadButtonMapping mapButtonR1  = { .pin = PIN_BUTTON_R1,  .pinMask = (1 << PIN_BUTTON_R1),  .buttonMask = GAMEPAD_MASK_R1,    .ledPos = LEDS_BUTTON_06  };
-GamepadButtonMapping mapButtonL2  = { .pin = PIN_BUTTON_L2,  .pinMask = (1 << PIN_BUTTON_L2),  .buttonMask = GAMEPAD_MASK_L2,    .ledPos = LEDS_BUTTON_07  };
-GamepadButtonMapping mapButtonR2  = { .pin = PIN_BUTTON_R2,  .pinMask = (1 << PIN_BUTTON_R2),  .buttonMask = GAMEPAD_MASK_R2,    .ledPos = LEDS_BUTTON_08  };
-GamepadButtonMapping mapButtonS1  = { .pin = PIN_BUTTON_S1,  .pinMask = (1 << PIN_BUTTON_S1),  .buttonMask = GAMEPAD_MASK_S1,    .ledPos = LEDS_BUTTON_09  };
-GamepadButtonMapping mapButtonS2  = { .pin = PIN_BUTTON_S2,  .pinMask = (1 << PIN_BUTTON_S2),  .buttonMask = GAMEPAD_MASK_S2,    .ledPos = LEDS_BUTTON_10  };
-GamepadButtonMapping mapButtonL3  = { .pin = PIN_BUTTON_L3,  .pinMask = (1 << PIN_BUTTON_L3),  .buttonMask = GAMEPAD_MASK_L3,    .ledPos = LEDS_BUTTON_11  };
-GamepadButtonMapping mapButtonR3  = { .pin = PIN_BUTTON_R3,  .pinMask = (1 << PIN_BUTTON_R3),  .buttonMask = GAMEPAD_MASK_R3,    .ledPos = LEDS_BUTTON_12  };
-GamepadButtonMapping mapButtonA1  = { .pin = PIN_BUTTON_A1,  .pinMask = (1 << PIN_BUTTON_A1),  .buttonMask = GAMEPAD_MASK_A1,    .ledPos = LEDS_BUTTON_13  };
-GamepadButtonMapping mapButtonA2  = { .pin = PIN_BUTTON_A2,  .pinMask = (1 << PIN_BUTTON_A2),  .buttonMask = GAMEPAD_MASK_A2,    .ledPos = LEDS_BUTTON_14  };
+GamepadButtonMapping mapDpadUp    = { .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP    };
+GamepadButtonMapping mapDpadDown  = { .pin = PIN_DPAD_DOWN,  .pinMask = (1 << PIN_DPAD_DOWN),  .buttonMask = GAMEPAD_MASK_DOWN  };
+GamepadButtonMapping mapDpadLeft  = { .pin = PIN_DPAD_LEFT,  .pinMask = (1 << PIN_DPAD_LEFT),  .buttonMask = GAMEPAD_MASK_LEFT  };
+GamepadButtonMapping mapDpadRight = { .pin = PIN_DPAD_RIGHT, .pinMask = (1 << PIN_DPAD_RIGHT), .buttonMask = GAMEPAD_MASK_RIGHT };
+GamepadButtonMapping mapButtonB1  = { .pin = PIN_BUTTON_B1,  .pinMask = (1 << PIN_BUTTON_B1),  .buttonMask = GAMEPAD_MASK_B1    };
+GamepadButtonMapping mapButtonB2  = { .pin = PIN_BUTTON_B2,  .pinMask = (1 << PIN_BUTTON_B2),  .buttonMask = GAMEPAD_MASK_B2    };
+GamepadButtonMapping mapButtonB3  = { .pin = PIN_BUTTON_B3,  .pinMask = (1 << PIN_BUTTON_B3),  .buttonMask = GAMEPAD_MASK_B3    };
+GamepadButtonMapping mapButtonB4  = { .pin = PIN_BUTTON_B4,  .pinMask = (1 << PIN_BUTTON_B4),  .buttonMask = GAMEPAD_MASK_B4    };
+GamepadButtonMapping mapButtonL1  = { .pin = PIN_BUTTON_L1,  .pinMask = (1 << PIN_BUTTON_L1),  .buttonMask = GAMEPAD_MASK_L1    };
+GamepadButtonMapping mapButtonR1  = { .pin = PIN_BUTTON_R1,  .pinMask = (1 << PIN_BUTTON_R1),  .buttonMask = GAMEPAD_MASK_R1    };
+GamepadButtonMapping mapButtonL2  = { .pin = PIN_BUTTON_L2,  .pinMask = (1 << PIN_BUTTON_L2),  .buttonMask = GAMEPAD_MASK_L2    };
+GamepadButtonMapping mapButtonR2  = { .pin = PIN_BUTTON_R2,  .pinMask = (1 << PIN_BUTTON_R2),  .buttonMask = GAMEPAD_MASK_R2    };
+GamepadButtonMapping mapButtonS1  = { .pin = PIN_BUTTON_S1,  .pinMask = (1 << PIN_BUTTON_S1),  .buttonMask = GAMEPAD_MASK_S1    };
+GamepadButtonMapping mapButtonS2  = { .pin = PIN_BUTTON_S2,  .pinMask = (1 << PIN_BUTTON_S2),  .buttonMask = GAMEPAD_MASK_S2    };
+GamepadButtonMapping mapButtonL3  = { .pin = PIN_BUTTON_L3,  .pinMask = (1 << PIN_BUTTON_L3),  .buttonMask = GAMEPAD_MASK_L3    };
+GamepadButtonMapping mapButtonR3  = { .pin = PIN_BUTTON_R3,  .pinMask = (1 << PIN_BUTTON_R3),  .buttonMask = GAMEPAD_MASK_R3    };
+GamepadButtonMapping mapButtonA1  = { .pin = PIN_BUTTON_A1,  .pinMask = (1 << PIN_BUTTON_A1),  .buttonMask = GAMEPAD_MASK_A1    };
+GamepadButtonMapping mapButtonA2  = { .pin = PIN_BUTTON_A2,  .pinMask = (1 << PIN_BUTTON_A2),  .buttonMask = GAMEPAD_MASK_A2    };
 
 uint32_t GamepadDebouncer::getMillis() { return to_ms_since_boot(get_absolute_time()); }
 

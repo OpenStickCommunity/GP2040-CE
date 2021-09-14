@@ -1,46 +1,7 @@
+#include <vector>
 #include <MPG.h>
 #include "AnimationStation.hpp"
-
-static AnimationHotkey animationHotkeys(MPG gamepad)
-{
-	AnimationHotkey action = HOTKEY_LEDS_NONE;
-
-	if (gamepad.pressedF1())
-	{
-		if (gamepad.pressedB3())
-		{
-			action = HOTKEY_LEDS_ANIMATION_UP;
-			gamepad.state.buttons &= ~(GAMEPAD_MASK_B3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}
-		else if (gamepad.pressedB1())
-		{
-			action = HOTKEY_LEDS_ANIMATION_DOWN;
-			gamepad.state.buttons &= ~(GAMEPAD_MASK_B1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}
-		else if (gamepad.pressedB4())
-		{
-			action = HOTKEY_LEDS_BRIGHTNESS_UP;
-			gamepad.state.buttons &= ~(GAMEPAD_MASK_B4 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}
-		else if (gamepad.pressedB2())
-		{
-			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
-			gamepad.state.buttons &= ~(GAMEPAD_MASK_B2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}
-		else if (gamepad.pressedR1())
-		{
-			action = HOTKEY_LEDS_PARAMETER_UP;
-			gamepad.state.buttons &= ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}
-		else if (gamepad.pressedR2())
-		{
-			action = HOTKEY_LEDS_PARAMETER_DOWN;
-			gamepad.state.buttons &= ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-		}
-	}
-
-	return action;
-}
+#include "LEDThemes.h"
 
 #ifndef LEDS_DPAD_LEFT
 #define LEDS_DPAD_LEFT -1
@@ -139,5 +100,54 @@ static AnimationHotkey animationHotkeys(MPG gamepad)
 #endif
 
 #ifndef LEDS_STATIC_COLOR_COLOR
-#define LEDS_STATIC_COLOR_COLOR 255
+#define LEDS_STATIC_COLOR_COLOR ColorRed
 #endif
+
+extern const std::vector<Pixel> pixels;
+
+static void configureAnimations(AnimationStation *as) {
+	as->SetStaticColor(LEDS_STATIC_COLOR_COLOR);
+	for (size_t i = 0; i < customThemes.size(); i++)
+		as->AddAnimation(&customThemes[i]);
+}
+
+static AnimationHotkey animationHotkeys(MPG gamepad)
+{
+	AnimationHotkey action = HOTKEY_LEDS_NONE;
+
+	if (gamepad.pressedF1())
+	{
+		if (gamepad.pressedB3())
+		{
+			action = HOTKEY_LEDS_ANIMATION_UP;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_B3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+		else if (gamepad.pressedB1())
+		{
+			action = HOTKEY_LEDS_ANIMATION_DOWN;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_B1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+		else if (gamepad.pressedB4())
+		{
+			action = HOTKEY_LEDS_BRIGHTNESS_UP;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_B4 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+		else if (gamepad.pressedB2())
+		{
+			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_B2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+		else if (gamepad.pressedR1())
+		{
+			action = HOTKEY_LEDS_PARAMETER_UP;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+		else if (gamepad.pressedR2())
+		{
+			action = HOTKEY_LEDS_PARAMETER_DOWN;
+			gamepad.state.buttons &= ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+	}
+
+	return action;
+}

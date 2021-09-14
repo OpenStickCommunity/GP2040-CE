@@ -1,17 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "Rainbow.hpp"
 
 int Rainbow::defaultCycleTime = 40;
 
-void Rainbow::Animate(uint32_t (&frame)[100]) {
+Rainbow::Rainbow(std::vector<Pixel> pixels) : Animation(pixels) {
+  this->cycleTime = Rainbow::defaultCycleTime;
+}
+
+void Rainbow::Animate(RGB (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
     return;
   }
 
-  for (int i = this->firstPixel; i < this->lastPixel + 1; ++i) {
-    frame[i] = AnimationStation::Wheel(this->currentFrame);
+  for (size_t i = 0; i != pixels.size(); i++) {
+    RGB color = RGB::wheel(this->currentFrame);
+    for (size_t j = 0; j != pixels[i].positions.size(); j++) {
+      frame[pixels[i].positions[j]] = color;
+    }
   }
 
   if (reverse) {
