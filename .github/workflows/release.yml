@@ -1,0 +1,50 @@
+name: PlatformIO Release
+
+on: [release]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: olegtarasov/get-tag@v2.1
+      id: tagName
+      with:
+        tagRegex: "(?<package>.*)-(?<version>.*)"
+    - uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Cache PlatformIO
+      uses: actions/cache@v2
+      with:
+        path: ~/.platformio
+        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
+    - name: Install PlatformIO
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade platformio
+        pio platform install https://github.com/Wiz-IO/wizio-pico
+    - name: Run PlatformIO
+      run: |
+        pio run -e osfrd
+        mv .pio/build/osfrd/APPLICATION.uf2 .pio/build/osfrd/GP2040-OSFRD_${{ steps.tagName.outputs.version }}.uf2
+        pio run -e raspberry-pi-pico
+        mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-PiPico_${{ steps.tagName.outputs.version }}.uf2
+        pio run -e pimoroni-pico-lipo
+        mv .pio/build/pimoroni-pico-lipo/APPLICATION.uf2 .pio/build/pimoroni-pico-lipo/GP2040-PimoroniPicoLipo_${{ steps.tagName.outputs.version }}.uf2
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          .pio/build/osfrd/GP2040-OSFRD_${{ steps.tagName.outputs.version }}.uf2
+          .pio/build/raspberry-pi-pico/GP2040-PiPico_${{ steps.tagName.outputs.version }}.uf2
+          .pio/build/pimoroni-pico-lipo/GP2040-PimoroniPicoLipo_${{ steps.tagName.outputs.version }}.uf2

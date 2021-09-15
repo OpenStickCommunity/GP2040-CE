@@ -36,11 +36,3 @@ jobs:
         mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-PiPico.uf2
         pio run -e pimoroni-pico-lipo
         mv .pio/build/pimoroni-pico-lipo/APPLICATION.uf2 .pio/build/pimoroni-pico-lipo/GP2040-PimoroniPicoLipo.uf2
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: |
-          .pio/build/osfrd/GP2040-OSFRD.uf2
-          .pio/build/raspberry-pi-pico/GP2040-PiPico.uf2
-          .pio/build/pimoroni-pico-lipo/GP2040-PimoroniPicoLipo.uf2
