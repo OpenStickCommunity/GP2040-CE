@@ -24,7 +24,6 @@ class FlashPROM
 
 		void start();
 		void commit();
-		void checkCommit();
 
 		template<typename T>
 		T &get(uint16_t const index, T &value)

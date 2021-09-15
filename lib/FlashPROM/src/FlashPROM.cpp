@@ -4,7 +4,6 @@
  */
 
 #include "FlashPROM.h"
-#include "pico/multicore.h"
 
 uint8_t FlashPROM::cache[EEPROM_SIZE_BYTES] = { };
 spin_lock_t *FlashPROM::flashLock;
