@@ -1,10 +1,19 @@
 #ifndef CONFIG_AUTOGEN_H_
 #define CONFIG_AUTOGEN_H_
 
-#define PI_PICO_LAYOUT     0
-#define PIMORONI_PICO_16MB 1
+// Boards supported in PlatformIO build configuration
 
-#if BOARD_DEFINITION == PIMORONI_PICO_16MB
+#ifdef BOARD_ADAFRUIT_FEATHER_RP2040
+#include "boards/adafruit_feather_rp2040.h"
+#elif BOARD_ADAFRUIT_ITSYBITSY_RP2040
+#include "boards/adafruit_itsybitsy_rp2040.h"
+#elif BOARD_SPARKFUN_MICRO_RP2040
+#include "boards/sparkfun_promicro.h"
+#elif BOARD_ARDUINO_NANO_CONNECT
+#include "boards/arduino_nano_rp2040_connect.h"
+#elif BOARD_PIMORONI_PICO_LIPO_4MB
+#include "boards/pimoroni_picolipo_4mb.h"
+#elif BOARD_PIMORONI_PICO_LIPO_16MB
 #include "boards/pimoroni_picolipo_16mb.h"
 #else
 #include "boards/pico.h"

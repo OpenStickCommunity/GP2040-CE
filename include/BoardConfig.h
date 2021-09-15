@@ -8,23 +8,16 @@
 
 #include <vector>
 
-#define DEBUG_BOARD           0
-#define PICO_BOARD            1
-#define OPEN_STICK_BOARD      2
-#define PIMORONI_16MB_BOARD   3
-#define TEST_BOARD          255
-
-#if BOARD_CONFIG == DEBUG_BOARD
+#ifdef CONFIG_DEBUG_BOARD
 #include "definitions/DebugBoard.h"
-#include "LEDConfig.h"
-#elif BOARD_CONFIG == OPEN_STICK_BOARD
-#include "definitions/OpenStickBoard.h"
-#include "LEDConfig.h"
-#elif BOARD_CONFIG == TEST_BOARD
-#include "definitions/TestBoard.h"
+#elif CONFIG_OSFRD
+#include "definitions/OSFRDConfig.h"
 #else
-#include "definitions/RP2040Board.h"
+#include "definitions/PicoConfig.h"
 #endif
 
+#ifdef CONFIG_USE_LEDS
+#include "LEDConfig.h"
+#endif
 
 #endif
