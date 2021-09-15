@@ -11,10 +11,8 @@
 #include "boards/sparkfun_promicro.h"
 #elif BOARD_ARDUINO_NANO_CONNECT
 #include "boards/arduino_nano_rp2040_connect.h"
-#elif BOARD_PIMORONI_PICO_LIPO_4MB
+#elif BOARD_PIMORONI_PICO_LIPO
 #include "boards/pimoroni_picolipo_4mb.h"
-#elif BOARD_PIMORONI_PICO_LIPO_16MB
-#include "boards/pimoroni_picolipo_16mb.h"
 #else
 #include "boards/pico.h"
 #endif
