@@ -79,6 +79,51 @@ If your board has WS2812 (or similar) LEDs, these can be configured in your boar
 | LEDS_CHASE_CYCLE_TIME | For "CHASE," this sets how long (in ms) it takes to move from one pixel to the next | Yes |
 | LEDS_STATIC_COLOR_COLOR | For "STATIC", this sets the static color. This is an `RGB` struct which can be found in `AnimationStation/src/Animation.hpp`. Can be custom or one of these predefined values: `ColorBlack`, `ColorWhite`, `ColorRed`, `ColorOrange`, `ColorYellow`, `ColorLimeGreen`, `ColorGreen`, `ColorSeafoam`, `ColorAqua`, `ColorSkyBlue`, `ColorBlue`, `ColorPurple`, `ColorPink`, `ColorMagenta` | Yes |
 
+You will also need to define a mapping of buttons to pixels using the `Pixel` struct:
+
+```c++
+struct Pixel {
+  uint8_t index;                  // The pixel index
+  uint32_t mask;                  // Used to detect per-pixel lighting
+  std::vector<uint8_t> positions; // The actual LED indexes on the chain
+}
+```
+
+A full pixel setup in your `BoardConfig.h` file:
+
+```c++
+#define LEDS_DPAD_UP     3
+#define LEDS_DPAD_DOWN   1
+#define LEDS_DPAD_LEFT   0
+#define LEDS_DPAD_RIGHT  2
+#define LEDS_BUTTON_01   8
+#define LEDS_BUTTON_02   9
+#define LEDS_BUTTON_03   4
+#define LEDS_BUTTON_04   5
+#define LEDS_BUTTON_05   7
+#define LEDS_BUTTON_06   6
+#define LEDS_BUTTON_07   11
+#define LEDS_BUTTON_08   10
+
+const static std::vector<Pixel> pixels =
+{
+  { .index = LEDS_DPAD_LEFT,  .mask = GAMEPAD_MASK_LEFT,  .positions = { 0 } },
+  { .index = LEDS_DPAD_DOWN,  .mask = GAMEPAD_MASK_DOWN,  .positions = { 1 } },
+  { .index = LEDS_DPAD_RIGHT, .mask = GAMEPAD_MASK_RIGHT, .positions = { 2 } },
+  { .index = LEDS_DPAD_UP,    .mask = GAMEPAD_MASK_UP,    .positions = { 3, 4, 5 } },
+  { .index = LEDS_BUTTON_03,  .mask = GAMEPAD_MASK_B3,    .positions = { 6 } },
+  { .index = LEDS_BUTTON_04,  .mask = GAMEPAD_MASK_B4,    .positions = { 7 } },
+  { .index = LEDS_BUTTON_06,  .mask = GAMEPAD_MASK_R1,    .positions = { 8 } },
+  { .index = LEDS_BUTTON_05,  .mask = GAMEPAD_MASK_L1,    .positions = { 9 } },
+  { .index = LEDS_BUTTON_01,  .mask = GAMEPAD_MASK_B1,    .positions = { 10, 11 } },
+  { .index = LEDS_BUTTON_02,  .mask = GAMEPAD_MASK_B2,    .positions = { 12, 13 } },
+  { .index = LEDS_BUTTON_08,  .mask = GAMEPAD_MASK_R2,    .positions = { 14 } },
+  { .index = LEDS_BUTTON_07,  .mask = GAMEPAD_MASK_L2,    .positions = { 15 } },
+};
+```
+
+The `Pixel.positions` data member can take an arbitrary number of LED indexes if any of your buttons have more than one LED.
+
 ### Building the Project
 
 You should now be able to build or upload the project to you RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file, but they should all default to a path under `.pio/build/${env:NAME}`.
