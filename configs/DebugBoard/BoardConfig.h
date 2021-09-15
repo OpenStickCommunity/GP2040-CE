@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef DEBUG_BOARD_H_
-#define DEBUG_BOARD_H_
+#ifndef DEBUG_BOARD_CONFIG_H_
+#define DEBUG_BOARD_CONFIG_H_
 
 #include <vector>
 #include <GamepadEnums.h>

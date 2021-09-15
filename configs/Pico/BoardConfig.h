@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef PICO_CONFIG_H_
-#define PICO_CONFIG_H_
+#ifndef PICO_BOARD_CONFIG_H_
+#define PICO_BOARD_CONFIG_H_
 
 #include <GamepadEnums.h>
 

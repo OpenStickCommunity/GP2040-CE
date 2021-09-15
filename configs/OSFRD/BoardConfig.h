@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef OPEN_STICK_BOARD_H_
-#define OPEN_STICK_BOARD_H_
+#ifndef OSFRD_BOARD_CONFIG_H_
+#define OSFRD_BOARD_CONFIG_H_
 
 #include <vector>
 #include <GamepadEnums.h>

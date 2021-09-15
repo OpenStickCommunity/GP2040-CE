@@ -3,9 +3,9 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#include <MPGS.h>
-
 #include "pico/stdlib.h"
+
+#include <MPGS.h>
 
 #include "BoardConfig.h"
 

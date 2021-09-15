@@ -50,6 +50,7 @@ void GamepadStorage::set(int index, void *data, uint16_t size)
 
 #ifdef BOARD_LEDS_PIN
 
+#include "leds.h"
 #include "AnimationStorage.hpp"
 #include "AnimationStation/src/Effects/StaticColor.hpp"
 
