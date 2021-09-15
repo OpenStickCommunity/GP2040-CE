@@ -54,26 +54,7 @@ There are two simple options for building GP2040 for your board. You can either 
 
 Once you have the project loaded into PlatformIO, edit the `config/Pico/BoardConfig.h` file to map your GPIO pins. Then from the VS Code status bar, use the PlatformIO environment selector to choose `env:raspberry-pi-pico`. The stock pin definitions for a pin-compatible Pico board are:
 
-| Pin Define | GPIO Pin |
-| ---------- | -------- |
-| PIN_DPAD_UP | 2 |
-| PIN_DPAD_DOWN | 3 |
-| PIN_DPAD_LEFT | 4 |
-| PIN_DPAD_RIGHT | 5 |
-| PIN_BUTTON_B1 | 6 |
-| PIN_BUTTON_B2 | 7 |
-| PIN_BUTTON_B3 | 8 |
-| PIN_BUTTON_B4 | 9 |
-| PIN_BUTTON_L1 | 10 |
-| PIN_BUTTON_R1 | 11 |
-| PIN_BUTTON_L2 | 26 |
-| PIN_BUTTON_R2 | 27 |
-| PIN_BUTTON_S1 | 16 |
-| PIN_BUTTON_S2 | 17 |
-| PIN_BUTTON_L3 | 18 |
-| PIN_BUTTON_R3 | 19 |
-| PIN_BUTTON_A1 | 20 |
-| PIN_BUTTON_A2 | 21 |
+![Raspberry Pi Pico Default Pin Mapping](assets/pico-pin-mapping.png)
 
 #### Create New Board
 
