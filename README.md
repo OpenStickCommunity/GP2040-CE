@@ -21,49 +21,7 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 | - | - | - | - | - | - | - | - | - |
 | All | 1 ms | 0.56 ms | 1.58 ms | 0.89 ms | 0.25 ms | 95.71% | 4.29% | 0% |
 
-## Development
-
-The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. There is an external dependency on the [MPG](https://github.com/FeralAI/MPG) C++ gamepad library for handling input state, providing extra features like Left/Right stick emulation and SOCD cleaning, and converting the generic gamepad state to the appropriate USB report.
-
-### Board Definition
-
-There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it.
-
-#### Existing Board
-
-Once you have the project loaded into PlatformIO, edit the `include/definitions/RP2040Board.h` file to map your GPIO pins. Then from the VS Code status bar, use the PlatformIO environment selector to choose `env:raspberry-pi-pico`.
-
-#### Create New Board
-
-You can also add a new board definition to `include/definitions`. If you do, perform the following:
-
-* Create new board definition file in `include/definitions` with your pin configuration and options.
-* Add `#define` for your new board in `include/BoardConfig.h`.
-* Add option to `src/RP2040Gamepad.cpp` in the `BOARD_DEFINITION` selection logic.
-* Add a new environment to the `platformio.ini`
-  * Copy from existing environment and rename
-  * Replace `BOARD_DEFINITION=#` with the number in the `BoardConfig.h` file.
-
-You will now have a new build environment target for PlatformIO. Use the VS Code status bar to select your new environment target.
-
-### LED Configuration
-
-If your board has WS2812 (or similar) LEDs, these can be configured in your board definition by setting the following:
-
-| Name             | Description                  | Optional? |
-| ---------------- | ---------------------------- | --------- |
-| BOARD_LEDS_PIN   | Data PIN for your LED strand | No        |
-| BOARD_LEDS_COUNT | Total LEDs in your strand    | No        |
-| LEDS_BASE_ANIMATION | This can be either "RAINBOW", "CHASE" or "STATIC" to set your base animation | Yes |
-| LEDS_RAINBOW_CYCLE_TIME | For "RAINBOW," this sets how long (in ms) it takes to cycle from one color step to the next | Yes |
-| LEDS_CHASE_CYCLE_TIME | For "CHASE," this sets how long (in ms) it takes to move from one pixel to the next | Yes |
-| LEDS_STATIC_COLOR_COLOR | For "STATIC", this sets the static color. This is a uint32_t value. This should be friendlier, I know. | Yes |
-
-### Building the Project
-
-You should now be able to build or upload the project to you RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file, but they should all default to a path under `.pio/build/${env:NAME}`.
-
-## Usage
+## Button Reference
 
 GP2040 uses a generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. Here are the mappings of generic buttons to each supported platform/layout:
 
@@ -84,7 +42,69 @@ GP2040 uses a generic button labeling for gamepad state, which is then converted
 | A1      | Guide  | Home    | -            | 13           | -      |
 | A2      | -      | Capture | -            | 14           | -      |
 
-Any button references in this documentation will use the `XInput` labels for clarity.
+## Development
+
+The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. There is an external dependency on the [MPG](https://github.com/FeralAI/MPG) C++ gamepad library for handling input state, providing extra features like Left/Right stick emulation and SOCD cleaning, and converting the generic gamepad state to the appropriate USB report.
+
+### Board Definition
+
+There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it.
+
+#### Existing Board
+
+Once you have the project loaded into PlatformIO, edit the `config/Pico/BoardConfig.h` file to map your GPIO pins. Then from the VS Code status bar, use the PlatformIO environment selector to choose `env:raspberry-pi-pico`. The stock pin definitions for a pin-compatible Pico board are:
+
+| Pin Define | GPIO Pin |
+| ---------- | -------- |
+| PIN_DPAD_UP | 2 |
+| PIN_DPAD_DOWN | 3 |
+| PIN_DPAD_LEFT | 4 |
+| PIN_DPAD_RIGHT | 5 |
+| PIN_BUTTON_B1 | 6 |
+| PIN_BUTTON_B2 | 7 |
+| PIN_BUTTON_B3 | 8 |
+| PIN_BUTTON_B4 | 9 |
+| PIN_BUTTON_L1 | 10 |
+| PIN_BUTTON_R1 | 11 |
+| PIN_BUTTON_L2 | 26 |
+| PIN_BUTTON_R2 | 27 |
+| PIN_BUTTON_S1 | 16 |
+| PIN_BUTTON_S2 | 17 |
+| PIN_BUTTON_L3 | 18 |
+| PIN_BUTTON_R3 | 19 |
+| PIN_BUTTON_A1 | 20 |
+| PIN_BUTTON_A2 | 21 |
+
+#### Create New Board
+
+You can also add a new board definition to the `config`. If you do, perform the following:
+
+* Create new board definition file in `config/<BoardNameHere>/BoardConfig.h` with your pin configuration and options.
+* Add a new environment to the `platformio.ini`
+  * Copy from existing environment and rename
+  * Update the `build_flags` parameter for the config folder, should look like `-I configs/Pico/` or similar.
+  * If you're not using a Pico or bare RP2040, check the `include/pico/config_autogen.h` file to see if there is a define for your board. If so, add or update the `-D BOARD_...` option in `build_flags`. The Pimoroni board config is an example of usage.
+
+You will now have a new build environment target for PlatformIO. Use the VS Code status bar to select your new environment target.
+
+### LED Configuration
+
+If your board has WS2812 (or similar) LEDs, these can be configured in your board definition by setting the following in your `BoardConfig.h` file:
+
+| Name             | Description                  | Required? |
+| ---------------- | ---------------------------- | --------- |
+| BOARD_LEDS_PIN   | Data PIN for your LED strand | Yes       |
+| LEDS_RAINBOW_CYCLE_TIME | For "RAINBOW," this sets how long (in ms) it takes to cycle from one color step to the next | Yes |
+| LEDS_CHASE_CYCLE_TIME | For "CHASE," this sets how long (in ms) it takes to move from one pixel to the next | Yes |
+| LEDS_STATIC_COLOR_COLOR | For "STATIC", this sets the static color. This is an `RGB` struct which can be found in `AnimationStation/src/Animation.hpp`. Can be custom or one of these predefined values: `ColorBlack`, `ColorWhite`, `ColorRed`, `ColorOrange`, `ColorYellow`, `ColorLimeGreen`, `ColorGreen`, `ColorSeafoam`, `ColorAqua`, `ColorSkyBlue`, `ColorBlue`, `ColorPurple`, `ColorPink`, `ColorMagenta` | Yes |
+
+### Building the Project
+
+You should now be able to build or upload the project to you RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file, but they should all default to a path under `.pio/build/${env:NAME}`.
+
+## Usage
+
+> NOTE: Any button references in this documentation will use the `XInput` labels for clarity.
 
 ### Home Button
 

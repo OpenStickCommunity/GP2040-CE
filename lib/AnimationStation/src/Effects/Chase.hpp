@@ -9,19 +9,15 @@
 
 class Chase : public Animation {
 public:
-  Chase(std::vector<Pixel> pixels);
+  Chase(std::vector<Pixel> pixels, uint16_t cycleTime = 85);
 
   void Animate(RGB (&frame)[100]);
 
-  static void SetDefaultCycleTime(int cycleTime) {
-    Chase::defaultCycleTime = cycleTime;
-  }
 protected:
-  static int defaultCycleTime;
   bool IsChasePixel(int i);
   int WheelFrame(int i);
 
-  int cycleTime;
+  int16_t cycleTime;
   int currentFrame = 0;
   int currentPixel = 0;
   bool reverse = false;

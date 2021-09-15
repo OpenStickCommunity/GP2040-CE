@@ -1,9 +1,7 @@
 #include "Chase.hpp"
 
-int Chase::defaultCycleTime = 85;
+Chase::Chase(std::vector<Pixel> pixels, uint16_t cycleTime) : Animation(pixels), cycleTime(cycleTime) {
 
-Chase::Chase(std::vector<Pixel> pixels) : Animation(pixels) {
-  this->cycleTime = Chase::defaultCycleTime;
 }
 
 void Chase::Animate(RGB (&frame)[100]) {

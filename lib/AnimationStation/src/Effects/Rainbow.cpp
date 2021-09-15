@@ -1,9 +1,7 @@
 #include "Rainbow.hpp"
 
-int Rainbow::defaultCycleTime = 40;
+Rainbow::Rainbow(std::vector<Pixel> pixels, uint16_t cycleTime) : Animation(pixels), cycleTime(cycleTime) {
 
-Rainbow::Rainbow(std::vector<Pixel> pixels) : Animation(pixels) {
-  this->cycleTime = Rainbow::defaultCycleTime;
 }
 
 void Rainbow::Animate(RGB (&frame)[100]) {

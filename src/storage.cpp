@@ -54,19 +54,19 @@ void GamepadStorage::set(int index, void *data, uint16_t size)
 #include "AnimationStorage.hpp"
 #include "AnimationStation/src/Effects/StaticColor.hpp"
 
-#define STORAGE_LEDS_BRIGHTNESS_INDEX (STORAGE_FIRST_AVAILBLE_INDEX)              // 1 byte
-#define STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX (STORAGE_FIRST_AVAILBLE_INDEX + 1) // 1 byte
+#define STORAGE_LEDS_BRIGHTNESS_INDEX (STORAGE_FIRST_AVAILBLE_INDEX)         // 1 byte
+#define STORAGE_LEDS_ANIMATION_MODE_INDEX (STORAGE_FIRST_AVAILBLE_INDEX + 1) // 1 byte
 
 uint8_t AnimationStorage::getMode()
 {
 	uint8_t mode = 0;
-	getStorageValue(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, &mode, sizeof(uint8_t));
+	getStorageValue(STORAGE_LEDS_ANIMATION_MODE_INDEX, &mode, sizeof(uint8_t));
 	return mode;
 }
 
 void AnimationStorage::setMode(uint8_t mode)
 {
-	setStorageValue(STORAGE_LEDS_BASE_ANIMATION_MODE_INDEX, &mode, sizeof(uint8_t));
+	setStorageValue(STORAGE_LEDS_ANIMATION_MODE_INDEX, &mode, sizeof(uint8_t));
 }
 
 uint8_t AnimationStorage::getBrightness()

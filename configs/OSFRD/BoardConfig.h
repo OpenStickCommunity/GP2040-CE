@@ -31,7 +31,6 @@
 #define PIN_BUTTON_A2   18
 
 #define BOARD_LEDS_PIN 14
-#define BOARD_LEDS_COUNT 16
 
 #define LEDS_DPAD_UP     3
 #define LEDS_DPAD_DOWN   1

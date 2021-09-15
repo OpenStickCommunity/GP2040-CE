@@ -51,9 +51,6 @@
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 #define BOARD_LEDS_PIN 22
-#define BOARD_LEDS_COUNT 16
-
-#define LEDS_BASE_ANIMATION CHASE
 
 const static std::vector<Pixel> pixels =
 {

@@ -12,7 +12,11 @@
 
 void configureAnimations(AnimationStation *as)
 {
-	as->SetStaticColor(LEDS_STATIC_COLOR_COLOR);
+	as->AddAnimation(new StaticColor(pixels, ColorBlack));
+	as->AddAnimation(new StaticColor(pixels, LEDS_STATIC_COLOR_COLOR));
+	as->AddAnimation(new Rainbow(pixels, LEDS_RAINBOW_CYCLE_TIME));
+	as->AddAnimation(new Chase(pixels, LEDS_CHASE_CYCLE_TIME));
+
 	for (size_t i = 0; i < customThemes.size(); i++)
 		as->AddAnimation(&customThemes[i]);
 }

@@ -15,13 +15,6 @@ StaticColor *staticColor;
 
 AnimationStation::AnimationStation(std::vector<Pixel> pixels) : pixels(pixels) {
   AnimationStation::SetBrightness(1);
-
-  staticColor = new StaticColor(pixels, ColorWhite);
-
-  animations.push_back(new StaticColor(pixels, ColorBlack));
-  animations.push_back(staticColor);
-  animations.push_back(new Rainbow(pixels));
-  animations.push_back(new Chase(pixels));
 }
 
 void AnimationStation::AddAnimation(Animation *animation) {
