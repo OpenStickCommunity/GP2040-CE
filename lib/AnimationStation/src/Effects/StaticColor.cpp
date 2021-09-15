@@ -1,13 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "StaticColor.hpp"
 
-uint32_t StaticColor::defaultColor = 255;
+StaticColor::StaticColor(std::vector<Pixel> pixels, RGB color) : Animation(pixels), color(color) {
 
-void StaticColor::Animate(uint32_t (&frame)[100]) {
-  float brightness = AnimationStation::GetBrightnessMultiplier();
-  for (int i = this->firstPixel; i < this->lastPixel + 1; ++i) {
-    frame[i] = this->color * brightness;
+}
+
+void StaticColor::Animate(RGB (&frame)[100]) {
+  for (size_t i = 0; i != pixels.size(); i++) {
+    for (size_t j = 0; j != pixels[i].positions.size(); j++) {
+      frame[pixels[i].positions[j]] = color;
+    }
   }
 }

@@ -3,18 +3,19 @@
 
 #include "Animation.hpp"
 #include "AnimationStation.hpp"
-#include "Effects/StaticColor.hpp"
 
 class AnimationStorage
 {
-	public:
-		void setup();
-		void save(AnimationStation as);
+  public:
+    void setup(AnimationStation *as);
+    void save();
 
-		AnimationMode getBaseAnimation();
-		void setBaseAnimation(AnimationMode mode);
-		uint8_t getBrightness();
-		void setBrightness(uint8_t brightness);
+    uint8_t getMode();
+    void setMode(uint8_t mode);
+    uint8_t getBrightness();
+    void setBrightness(uint8_t brightness);
+  protected:
+    AnimationStation *as;
 };
 
 static AnimationStorage AnimationStore;

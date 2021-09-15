@@ -29,7 +29,7 @@ void initialize_driver(InputMode mode)
 	tusb_init();
 }
 
-void send_report(uint8_t *report, uint8_t report_size)
+void send_report(void *report, uint16_t report_size)
 {
 	static uint8_t previous_report[CFG_TUD_ENDPOINT0_SIZE] = { };
 

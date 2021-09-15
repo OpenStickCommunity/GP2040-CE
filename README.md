@@ -21,51 +21,7 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 | - | - | - | - | - | - | - | - | - |
 | All | 1 ms | 0.56 ms | 1.58 ms | 0.89 ms | 0.25 ms | 95.71% | 4.29% | 0% |
 
-## Development
-
-The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. There is an external dependency on the [MPG](https://github.com/FeralAI/MPG) C++ gamepad library for handling input state, providing extra features like Left/Right stick emulation and SOCD cleaning, and converting the generic gamepad state to the appropriate USB report.
-
-### Board Definition
-
-There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it.
-
-#### Existing Board
-
-Once you have the project loaded into PlatformIO, edit the `include/definitions/RP2040Board.h` file to map your GPIO pins. Then from the VS Code status bar, use the PlatformIO environment selector to choose `env:raspberry-pi-pico`.
-
-#### Create New Board
-
-You can also add a new board definition to `include/definitions`. If you do, perform the following:
-
-* Create new board definition file in `include/definitions` with your pin configuration and options.
-* Add `#define` for your new board in `include/BoardConfig.h`.
-* Add option to `src/RP2040Gamepad.cpp` in the `BOARD_DEFINITION` selection logic.
-* Add a new environment to the `platformio.ini`
-  * Copy from existing environment and rename
-  * Replace `BOARD_DEFINITION=#` with the number in the `BoardConfig.h` file.
-
-You will now have a new build environment target for PlatformIO. Use the VS Code status bar to select your new environment target.
-
-### LED Configuration
-
-If your board has WS2812 (or similar) LEDs, these can be configured in your board definition by setting the following:
-
-| Name             | Description                  | Optional? |
-| ---------------- | ---------------------------- | --------- |
-| BOARD_LEDS_PIN   | Data PIN for your LED strand | No        |
-| BOARD_LEDS_COUNT | Total LEDs in your strand    | No        |
-| LEDS_BASE_ANIMATION_FIRST_PIXEL | The index for the first pixel in your base animation. If you have additional LEDs that aren't part of the base animation, this is your chance to leave them out of it. By default, this is 0. | Yes |
-| LEDS_BASE_ANIMATION_LAST_PIXEL | Same as above, but the index for the final pixel. By default, this is 11... 12 LEDs for 12 buttons on a standard stickless layout. | Yes |
-| LEDS_BASE_ANIMATION | This can be either "RAINBOW", "CHASE" or "STATIC" to set your base animation | Yes |
-| LEDS_RAINBOW_CYCLE_TIME | For "RAINBOW," this sets how long (in ms) it takes to cycle from one color step to the next | Yes |
-| LEDS_CHASE_CYCLE_TIME | For "CHASE," this sets how long (in ms) it takes to move from one pixel to the next | Yes |
-| LEDS_STATIC_COLOR_COLOR | For "STATIC", this sets the static color. This is a uint32_t value. This should be friendlier, I know. | Yes |
-
-### Building the Project
-
-You should now be able to build or upload the project to you RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file, but they should all default to a path under `.pio/build/${env:NAME}`.
-
-## Usage
+## Button Reference
 
 GP2040 uses a generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. Here are the mappings of generic buttons to each supported platform/layout:
 
@@ -86,7 +42,95 @@ GP2040 uses a generic button labeling for gamepad state, which is then converted
 | A1      | Guide  | Home    | -            | 13           | -      |
 | A2      | -      | Capture | -            | 14           | -      |
 
-Any button references in this documentation will use the `XInput` labels for clarity.
+## Development
+
+The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. There is an external dependency on the [MPG](https://github.com/FeralAI/MPG) C++ gamepad library for handling input state, providing extra features like Left/Right stick emulation and SOCD cleaning, and converting the generic gamepad state to the appropriate USB report.
+
+### Board Definition
+
+There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it.
+
+#### Existing Board
+
+Once you have the project loaded into PlatformIO, edit the `config/Pico/BoardConfig.h` file to map your GPIO pins. Then from the VS Code status bar, use the PlatformIO environment selector to choose `env:raspberry-pi-pico`. The stock pin definitions for a pin-compatible Pico board are:
+
+![Raspberry Pi Pico Default Pin Mapping](assets/pico-pin-mapping.png)
+
+#### Create New Board
+
+You can also add a new board definition to the `config`. If you do, perform the following:
+
+* Create new board definition file in `config/<BoardNameHere>/BoardConfig.h` with your pin configuration and options.
+* Add a new environment to the `platformio.ini`
+  * Copy from existing environment and rename
+  * Update the `build_flags` parameter for the config folder, should look like `-I configs/Pico/` or similar.
+  * If you're not using a Pico or bare RP2040, check the `include/pico/config_autogen.h` file to see if there is a define for your board. If so, add or update the `-D BOARD_...` option in `build_flags`. The Pimoroni board config is an example of usage.
+
+You will now have a new build environment target for PlatformIO. Use the VS Code status bar to select your new environment target.
+
+### LED Configuration
+
+If your board has WS2812 (or similar) LEDs, these can be configured in your board definition by setting the following in your `BoardConfig.h` file:
+
+| Name             | Description                  | Required? |
+| ---------------- | ---------------------------- | --------- |
+| BOARD_LEDS_PIN   | Data PIN for your LED strand | Yes       |
+| LEDS_RAINBOW_CYCLE_TIME | For "RAINBOW," this sets how long (in ms) it takes to cycle from one color step to the next | Yes |
+| LEDS_CHASE_CYCLE_TIME | For "CHASE," this sets how long (in ms) it takes to move from one pixel to the next | Yes |
+| LEDS_STATIC_COLOR_COLOR | For "STATIC", this sets the static color. This is an `RGB` struct which can be found in `AnimationStation/src/Animation.hpp`. Can be custom or one of these predefined values: `ColorBlack`, `ColorWhite`, `ColorRed`, `ColorOrange`, `ColorYellow`, `ColorLimeGreen`, `ColorGreen`, `ColorSeafoam`, `ColorAqua`, `ColorSkyBlue`, `ColorBlue`, `ColorPurple`, `ColorPink`, `ColorMagenta` | Yes |
+
+You will also need to define a mapping of buttons to pixels using the `Pixel` struct:
+
+```c++
+struct Pixel {
+  uint8_t index;                  // The pixel index
+  uint32_t mask;                  // Used to detect per-pixel lighting
+  std::vector<uint8_t> positions; // The actual LED indexes on the chain
+}
+```
+
+A full pixel setup in your `BoardConfig.h` file:
+
+```c++
+#define LEDS_DPAD_UP     3
+#define LEDS_DPAD_DOWN   1
+#define LEDS_DPAD_LEFT   0
+#define LEDS_DPAD_RIGHT  2
+#define LEDS_BUTTON_01   8
+#define LEDS_BUTTON_02   9
+#define LEDS_BUTTON_03   4
+#define LEDS_BUTTON_04   5
+#define LEDS_BUTTON_05   7
+#define LEDS_BUTTON_06   6
+#define LEDS_BUTTON_07   11
+#define LEDS_BUTTON_08   10
+
+const static std::vector<Pixel> pixels =
+{
+  { .index = LEDS_DPAD_LEFT,  .mask = GAMEPAD_MASK_LEFT,  .positions = { 0 } },
+  { .index = LEDS_DPAD_DOWN,  .mask = GAMEPAD_MASK_DOWN,  .positions = { 1 } },
+  { .index = LEDS_DPAD_RIGHT, .mask = GAMEPAD_MASK_RIGHT, .positions = { 2 } },
+  { .index = LEDS_DPAD_UP,    .mask = GAMEPAD_MASK_UP,    .positions = { 3, 4, 5 } },
+  { .index = LEDS_BUTTON_03,  .mask = GAMEPAD_MASK_B3,    .positions = { 6 } },
+  { .index = LEDS_BUTTON_04,  .mask = GAMEPAD_MASK_B4,    .positions = { 7 } },
+  { .index = LEDS_BUTTON_06,  .mask = GAMEPAD_MASK_R1,    .positions = { 8 } },
+  { .index = LEDS_BUTTON_05,  .mask = GAMEPAD_MASK_L1,    .positions = { 9 } },
+  { .index = LEDS_BUTTON_01,  .mask = GAMEPAD_MASK_B1,    .positions = { 10, 11 } },
+  { .index = LEDS_BUTTON_02,  .mask = GAMEPAD_MASK_B2,    .positions = { 12, 13 } },
+  { .index = LEDS_BUTTON_08,  .mask = GAMEPAD_MASK_R2,    .positions = { 14 } },
+  { .index = LEDS_BUTTON_07,  .mask = GAMEPAD_MASK_L2,    .positions = { 15 } },
+};
+```
+
+The `Pixel.positions` data member can take an arbitrary number of LED indexes if any of your buttons have more than one LED.
+
+### Building the Project
+
+You should now be able to build or upload the project to you RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file, but they should all default to a path under `.pio/build/${env:NAME}`.
+
+## Usage
+
+> NOTE: Any button references in this documentation will use the `XInput` labels for clarity.
 
 ### Home Button
 
@@ -121,6 +165,29 @@ Simultaneous Opposite Cardinal Direction (SOCD) cleaning will ensure the control
 * **`LS + RS + LEFT`** - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
 
 SOCD mode is saved across power cycles.
+
+### LED Brightness
+
+You can increase brightness with `BACK + START + Y` and decrease brightness with `BACK + START + B`.
+
+### LED Modes
+
+Swap between LED modes using the `BACK + START + A` or `BACK + START + X`. The following modes are available (pics coming eventually):
+
+* Off
+* Static Color
+* Rainbow Cycle
+* Rainbow Chase
+* Static Rainbow
+* Super Famicom
+* Xbox
+* Neo Geo Classic
+* Neo Geo Curved
+* Neo Geo Modern
+* Six Button Fighter
+* Six Button Fighter+
+* Guilty Gear Type-A
+* Guilty Gear Type-D
 
 ## Acknowledgements
 

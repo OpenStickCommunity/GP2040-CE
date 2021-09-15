@@ -1,3 +1,13 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ */
+
+#ifndef LEDS_H_
+#define LEDS_H_
+
+#include <vector>
+#include <MPG.h>
 #include "AnimationStation.hpp"
 
 #ifndef LEDS_DPAD_LEFT
@@ -76,18 +86,6 @@
 #define LEDS_BRIGHTNESS 75
 #endif
 
-#ifndef LEDS_BASE_ANIMATION
-#define LEDS_BASE_ANIMATION RAINBOW
-#endif
-
-#ifndef LEDS_BASE_ANIMATION_FIRST_PIXEL
-#define LEDS_BASE_ANIMATION_FIRST_PIXEL 0
-#endif
-
-#ifndef LEDS_BASE_ANIMATION_LAST_PIXEL
-#define LEDS_BASE_ANIMATION_LAST_PIXEL 11
-#endif
-
 #ifndef LEDS_RAINBOW_CYCLE_TIME
 #define LEDS_RAINBOW_CYCLE_TIME 40
 #endif
@@ -97,5 +95,12 @@
 #endif
 
 #ifndef LEDS_STATIC_COLOR_COLOR
-#define LEDS_STATIC_COLOR_COLOR 255
+#define LEDS_STATIC_COLOR_COLOR ColorRed
+#endif
+
+extern const std::vector<Pixel> pixels;
+
+void configureAnimations(AnimationStation *as);
+AnimationHotkey animationHotkeys(MPG *gamepad);
+
 #endif

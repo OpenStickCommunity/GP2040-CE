@@ -15,7 +15,7 @@ extern "C"
 
 	InputMode get_input_mode(void);
 	void initialize_driver(InputMode mode);
-	void send_report(uint8_t *report, uint8_t report_size);
+	void send_report(void *report, uint16_t report_size);
 
 #ifdef __cplusplus
 }
