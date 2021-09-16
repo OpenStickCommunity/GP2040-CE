@@ -10,6 +10,7 @@ The goal of GP2040 is to provide multi-platform compatibility for RP2040-based g
 * 3 SOCD cleaning modes - Neutral, Up Priority (a.k.a. Hitbox), Second Input Priority
 * Low input latency, with default 1000 Hz (1 ms) polling rate in all modes
 * Save options to internal memory
+* Per-button LED support
 
 ## Performance
 
@@ -21,7 +22,9 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 | - | - | - | - | - | - | - | - | - |
 | All | 1 ms | 0.56 ms | 1.58 ms | 0.89 ms | 0.25 ms | 95.71% | 4.29% | 0% |
 
-## Button Reference
+## Mappings
+
+### Button Mappings
 
 GP2040 uses a generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. Here are the mappings of generic buttons to each supported platform/layout:
 
@@ -42,35 +45,59 @@ GP2040 uses a generic button labeling for gamepad state, which is then converted
 | A1      | Guide  | Home    | -            | 13           | -      |
 | A2      | -      | Capture | -            | 14           | -      |
 
+### Pin Mappings
+
+The stock pin definitions for a pin-compatible Pico board are:
+
+![Raspberry Pi Pico Default Pin Mapping](assets/pico-pin-mapping.png)
+
 ## Development
 
 The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. There is an external dependency on the [MPG](https://github.com/FeralAI/MPG) C++ gamepad library for handling input state, providing extra features like Left/Right stick emulation and SOCD cleaning, and converting the generic gamepad state to the appropriate USB report.
 
-### Board Definition
-
 There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it.
 
-#### Existing Board
+### Existing Configuration
 
-Once you have the project loaded into PlatformIO, edit the `config/Pico/BoardConfig.h` file to map your GPIO pins. Then from the VS Code status bar, use the PlatformIO environment selector to choose `env:raspberry-pi-pico`. The stock pin definitions for a pin-compatible Pico board are:
+Once you have the project loaded into PlatformIO, edit the `config/Pico/BoardConfig.h` file to map your GPIO pins. Then from the VS Code status bar, use the PlatformIO environment selector to choose `env:raspberry-pi-pico`.
 
-![Raspberry Pi Pico Default Pin Mapping](assets/pico-pin-mapping.png)
+### New Configuration
 
-#### Create New Board
+* Create a file named `BoardConfig.h` in `configs/[BoardNameHere]` with your pin configuration and options, for example: `configs/MyAwesomeGamepad/BoardConfig.h`. A `BoardConfig.h` file can be as basic as some pin definitions:
 
-You can also add a new board definition to the `config`. If you do, perform the following:
+  ```c++
+  // BoardConfig.h
 
-* Create new board definition file in `config/<BoardNameHere>/BoardConfig.h` with your pin configuration and options.
+  #define PIN_DPAD_UP     2
+  #define PIN_DPAD_DOWN   3
+  #define PIN_DPAD_LEFT   4
+  #define PIN_DPAD_RIGHT  5
+  #define PIN_BUTTON_B1   6
+  #define PIN_BUTTON_B2   7
+  #define PIN_BUTTON_B3   8
+  #define PIN_BUTTON_B4   9
+  #define PIN_BUTTON_L1   10
+  #define PIN_BUTTON_R1   11
+  #define PIN_BUTTON_L2   26
+  #define PIN_BUTTON_R2   27
+  #define PIN_BUTTON_S1   16
+  #define PIN_BUTTON_S2   17
+  #define PIN_BUTTON_L3   18
+  #define PIN_BUTTON_R3   19
+  #define PIN_BUTTON_A1   20
+  #define PIN_BUTTON_A2   21
+  ```
+
 * Add a new environment to the `platformio.ini`
-  * Copy from existing environment and rename
+  * Copy from existing environment and update/rename options accordingly.
   * Update the `build_flags` parameter for the config folder, should look like `-I configs/Pico/` or similar.
-  * If you're not using a Pico or bare RP2040, check the `include/pico/config_autogen.h` file to see if there is a define for your board. If so, add or update the `-D BOARD_...` option in `build_flags`. The Pimoroni board config is an example of usage.
+  * If you're not using a Pico or bare RP2040, check the `include/pico/config_autogen.h` file to see if there is a define for your board. If so, add or update the `-D BOARD_...` option in `build_flags`. The `env:pimoroni-pico-lipo` config is an example of usage.
 
-You will now have a new build environment target for PlatformIO. Use the VS Code status bar to select your new environment target.
+You can now use the VS Code status bar to select your new PlatformIO environment target.
 
 ### LED Configuration
 
-If your board has WS2812 (or similar) LEDs, these can be configured in your board definition by setting the following in your `BoardConfig.h` file:
+If your board has WS2812 (or similar) LEDs, they can be configured in the `BoardConfig.h` file:
 
 | Name             | Description                  | Required? |
 | ---------------- | ---------------------------- | --------- |
@@ -79,7 +106,9 @@ If your board has WS2812 (or similar) LEDs, these can be configured in your boar
 | LEDS_CHASE_CYCLE_TIME | For "CHASE," this sets how long (in ms) it takes to move from one pixel to the next | Yes |
 | LEDS_STATIC_COLOR_COLOR | For "STATIC", this sets the static color. This is an `RGB` struct which can be found in `AnimationStation/src/Animation.hpp`. Can be custom or one of these predefined values: `ColorBlack`, `ColorWhite`, `ColorRed`, `ColorOrange`, `ColorYellow`, `ColorLimeGreen`, `ColorGreen`, `ColorSeafoam`, `ColorAqua`, `ColorSkyBlue`, `ColorBlue`, `ColorPurple`, `ColorPink`, `ColorMagenta` | Yes |
 
-You will also need to define a mapping of buttons to pixels using the `Pixel` struct:
+#### Pixels
+
+The `AnimationStation` local library uses the `Pixel` struct to map buttons to LEDs:
 
 ```c++
 struct Pixel {
@@ -89,9 +118,20 @@ struct Pixel {
 }
 ```
 
+This allows an arbitrary number of LEDs to be grouped and treated as a single LED for theming and animation purposes.
+
+#### LED Example
+
 A full pixel setup in your `BoardConfig.h` file:
 
 ```c++
+#include <Pixel.h>
+
+#define BOARD_LEDS_PIN 22
+#define LEDS_RAINBOW_CYCLE_TIME 100
+#define LEDS_CHASE_CYCLE_TIME 50
+#define LEDS_STATIC_COLOR_COLOR ColorRed // Could also use: RGB(255, 0, 0)
+
 #define LEDS_DPAD_UP     3
 #define LEDS_DPAD_DOWN   1
 #define LEDS_DPAD_LEFT   0
@@ -122,15 +162,15 @@ const static std::vector<Pixel> pixels =
 };
 ```
 
-The `Pixel.positions` data member can take an arbitrary number of LED indexes if any of your buttons have more than one LED.
+### Generating Binaries
 
-### Building the Project
-
-You should now be able to build or upload the project to you RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file, but they should all default to a path under `.pio/build/${env:NAME}`.
+You should now be able to build or upload the project to your RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file and should default to a path under `.pio/build/${env:NAME}`.
 
 ## Usage
 
-> NOTE: Any button references in this documentation will use the `XInput` labels for clarity.
+Any button references in this documentation will use the `XInput` labels for clarity.
+
+> NOTE: LED modes are only available for custom builds and the OSFRD configuration right now.
 
 ### Home Button
 
