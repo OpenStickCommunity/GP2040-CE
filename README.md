@@ -231,9 +231,12 @@ Swap between LED modes using the `BACK + START + A` or `BACK + START + X`. The f
 * Guilty Gear Type-A
 * Guilty Gear Type-D
 
+## Support
+
+If you would like to discuss features, issues or anything else related to GP2040 please join the [OpenStick GP2040 Discord channel](https://discord.gg/BQAqDj2N).
+
 ## Acknowledgements
 
 * Ha Thach's excellent [TinyUSB library](https://github.com/hathach/tinyusb) examples
-* Thomas Fredericks' [Bounce2 Arduino library](https://github.com/thomasfredericks/Bounce2)
 * fluffymadness's [tinyusb-xinput](https://github.com/fluffymadness/tinyusb-xinput) sample
 * Kevin Boone's [blog post on using RP2040 flash memory as emulated EEPROM](https://kevinboone.me/picoflash.html)
