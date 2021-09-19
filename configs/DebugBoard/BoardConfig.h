@@ -1,6 +1,14 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ *
+ * Debug setup
+ * ------------------------------------------------------------------------------------
+ * 2x Raspberry Pi Pico (2nd is for picoprobe debugging)
+ * 1x Waveshare 1.3inch LCD Display Module - https://www.waveshare.com/pico-lcd-1.3.htm
+ * 1x Waveshare RGB 16x10 LED Matrix - https://www.waveshare.com/pico-rgb-led.htm
+ * 1x Waveshare Quad GPIO Expander - https://www.waveshare.com/pico-quad-expander.htm
+ *
  */
 
 #ifndef DEBUG_BOARD_CONFIG_H_
@@ -51,6 +59,8 @@
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 #define BOARD_LEDS_PIN 22
+#define LED_BRIGHTNESS_MAXIMUM 100
+#define LED_BRIGHTNESS_STEPS 5
 
 const static std::vector<Pixel> pixels =
 {

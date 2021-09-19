@@ -115,6 +115,7 @@ void core1()
 	static AnimationHotkey action;
 	static uint32_t frame[100];
 
+	AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM, LED_BRIGHTNESS_STEPS);
 	AnimationStore.setup(&as);
 #endif
 
