@@ -15,10 +15,6 @@
 #include "Effects/StaticColor.hpp"
 #include "Effects/StaticTheme.hpp"
 
-#define BRIGHTNESS_MAXIMUM  100
-#define BRIGHTNESS_STEPS 5
-#define BRIGHTNESS_STEP_SIZE (BRIGHTNESS_MAXIMUM / BRIGHTNESS_STEPS)
-
 typedef enum
 {
   HOTKEY_LEDS_NONE,
@@ -45,6 +41,7 @@ public:
 
   uint8_t GetMode();
   void SetMode(uint8_t mode);
+  static void ConfigureBrightness(uint8_t max, uint8_t steps);
   static float GetBrightnessX();
   static uint8_t GetBrightness();
   static void SetBrightness(uint8_t brightness);
@@ -57,6 +54,10 @@ public:
   RGB frame[100];
 
 protected:
+  inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
+
+  static uint8_t brightnessMax;
+  static uint8_t brightnessSteps;
   static uint8_t brightness;
   static float brightnessX;
   uint8_t animationIndex = 0;

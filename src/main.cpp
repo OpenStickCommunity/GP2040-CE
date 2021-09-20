@@ -25,6 +25,8 @@ AnimationStation as(pixels);
 queue_t animationQueue;
 #endif
 
+uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
+
 MPGS gamepad(GAMEPAD_DEBOUNCE_MILLIS);
 
 void setup();
@@ -77,7 +79,7 @@ void loop()
 	static const uint32_t intervalMS = 1;
 	static uint32_t nextRuntime = 0;
 
-	if (GamepadDebouncer::getMillis() - nextRuntime < 0)
+	if (getMillis() - nextRuntime < 0)
 		return;
 
 	gamepad.read();
@@ -99,7 +101,7 @@ void loop()
 	send_report(report, reportSize);
 
 	// Ensure next runtime ahead of current time
-	nextRuntime = GamepadDebouncer::getMillis() + intervalMS;
+	nextRuntime = getMillis() + intervalMS;
 }
 
 void core1()
@@ -113,12 +115,13 @@ void core1()
 	static AnimationHotkey action;
 	static uint32_t frame[100];
 
+	AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM, LED_BRIGHTNESS_STEPS);
 	AnimationStore.setup(&as);
 #endif
 
 	while (1)
 	{
-		if (GamepadDebouncer::getMillis() - nextRuntime < 0)
+		if (getMillis() - nextRuntime < 0)
 			return;
 
 #ifdef BOARD_LEDS_PIN
@@ -136,6 +139,6 @@ void core1()
 #endif
 
 		// Ensure next runtime ahead of current time
-		nextRuntime = GamepadDebouncer::getMillis() + intervalMS;
+		nextRuntime = getMillis() + intervalMS;
 	}
 }

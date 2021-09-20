@@ -7,6 +7,8 @@
 
 #include "AnimationStation.hpp"
 
+uint8_t AnimationStation::brightnessMax = 100;
+uint8_t AnimationStation::brightnessSteps = 5;
 uint8_t AnimationStation::brightness = 0;
 float AnimationStation::brightnessX = 0;
 absolute_time_t AnimationStation::nextAnimationChange = 0;
@@ -19,6 +21,11 @@ AnimationStation::AnimationStation(std::vector<Pixel> pixels) : pixels(pixels) {
 
 void AnimationStation::AddAnimation(Animation *animation) {
   animations.push_back(animation);
+}
+
+void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
+  brightnessMax = max;
+  brightnessSteps = steps;
 }
 
 void AnimationStation::HandleEvent(AnimationHotkey action) {
@@ -86,8 +93,8 @@ void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
 }
 
 void AnimationStation::SetBrightness(uint8_t brightness) {
-  AnimationStation::brightness = (brightness > BRIGHTNESS_STEPS) ? BRIGHTNESS_STEPS : brightness;
-  AnimationStation::brightnessX = (AnimationStation::brightness * BRIGHTNESS_STEP_SIZE) / 255.0F;
+  AnimationStation::brightness = (brightness > brightnessSteps) ? brightnessSteps : brightness;
+  AnimationStation::brightnessX = (AnimationStation::brightness * getBrightnessStepSize()) / 255.0F;
 
   if (AnimationStation::brightnessX > 1)
     AnimationStation::brightnessX = 1;
@@ -113,10 +120,10 @@ void AnimationStation::IncreaseBrightness() {
   if (!time_reached(AnimationStation::nextBrightnessChange))
     return;
 
-  if (AnimationStation::brightness < BRIGHTNESS_STEP_SIZE)
+  if (AnimationStation::brightness < getBrightnessStepSize())
     AnimationStation::SetBrightness(++AnimationStation::brightness);
-  else if (AnimationStation::brightness > BRIGHTNESS_STEP_SIZE)
-    AnimationStation::SetBrightness(BRIGHTNESS_STEPS);
+  else if (AnimationStation::brightness > getBrightnessStepSize())
+    AnimationStation::SetBrightness(brightnessSteps);
 
   AnimationStation::nextBrightnessChange = make_timeout_time_ms(250);
 }

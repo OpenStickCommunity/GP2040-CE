@@ -13,7 +13,7 @@ struct GamepadButtonMapping
 {
 	const uint8_t pin;
 	const uint32_t pinMask;
-	const uint32_t buttonMask;
+	const uint16_t buttonMask;
 };
 
 GamepadButtonMapping mapDpadUp    = { .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP    };
@@ -34,8 +34,6 @@ GamepadButtonMapping mapButtonL3  = { .pin = PIN_BUTTON_L3,  .pinMask = (1 << PI
 GamepadButtonMapping mapButtonR3  = { .pin = PIN_BUTTON_R3,  .pinMask = (1 << PIN_BUTTON_R3),  .buttonMask = GAMEPAD_MASK_R3    };
 GamepadButtonMapping mapButtonA1  = { .pin = PIN_BUTTON_A1,  .pinMask = (1 << PIN_BUTTON_A1),  .buttonMask = GAMEPAD_MASK_A1    };
 GamepadButtonMapping mapButtonA2  = { .pin = PIN_BUTTON_A2,  .pinMask = (1 << PIN_BUTTON_A2),  .buttonMask = GAMEPAD_MASK_A2    };
-
-uint32_t GamepadDebouncer::getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
 void MPG::setup()
 {
@@ -63,11 +61,14 @@ void MPG::read()
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
 
-	state.buttons = 0
+	state.dpad = 0
 		| ((values & mapDpadUp.pinMask)    ? mapDpadUp.buttonMask    : 0)
 		| ((values & mapDpadDown.pinMask)  ? mapDpadDown.buttonMask  : 0)
 		| ((values & mapDpadLeft.pinMask)  ? mapDpadLeft.buttonMask  : 0)
 		| ((values & mapDpadRight.pinMask) ? mapDpadRight.buttonMask : 0)
+	;
+
+	state.buttons = 0
 		| ((values & mapButtonB1.pinMask)  ? mapButtonB1.buttonMask  : 0)
 		| ((values & mapButtonB2.pinMask)  ? mapButtonB2.buttonMask  : 0)
 		| ((values & mapButtonB3.pinMask)  ? mapButtonB3.buttonMask  : 0)
