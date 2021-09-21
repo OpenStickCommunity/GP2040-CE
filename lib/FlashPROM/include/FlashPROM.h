@@ -20,8 +20,6 @@
 class FlashPROM
 {
 	public:
-		FlashPROM();
-
 		void start();
 		void commit();
 
@@ -43,14 +41,8 @@ class FlashPROM
 				memcpy(&cache[index], &value, sizeof(T));
 		}
 
-		static absolute_time_t nextWriteTime;
-
 	private:
-		static spin_lock_t *flashLock;
-		static uint8_t cache[EEPROM_SIZE_BYTES];
-
-		static int64_t writeToFlash(alarm_id_t id, void *user_data);
-
+		uint8_t cache[EEPROM_SIZE_BYTES] = { };
 };
 
 static FlashPROM EEPROM;
