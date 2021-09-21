@@ -17,7 +17,7 @@ FlashPROM::FlashPROM()
 
 void FlashPROM::start()
 {
-	memcpy(cache, (uint8_t *)EEPROM_ADDRESS_START, EEPROM_SIZE_BYTES);
+	memcpy(cache, reinterpret_cast<uint8_t *>(EEPROM_ADDRESS_START), EEPROM_SIZE_BYTES);
 }
 
 /* We don't have an actual EEPROM, so we need to be extra careful about minimizing writes. Instead
