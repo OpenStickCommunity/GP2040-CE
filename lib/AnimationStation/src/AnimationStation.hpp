@@ -36,7 +36,7 @@ public:
   void HandleEvent(AnimationHotkey action);
   void SetStaticColor(RGB color);
   void Clear();
-  void ChangeAnimation();
+  void ChangeAnimation(int changeSize);
   void ApplyBrightness(uint32_t *frameValue);
 
   uint8_t GetMode();

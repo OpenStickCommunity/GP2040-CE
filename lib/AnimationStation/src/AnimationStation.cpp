@@ -38,20 +38,20 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
   }
 
   if (action == HOTKEY_LEDS_ANIMATION_UP) {
-    ChangeAnimation();
+    ChangeAnimation(1);
   }
 
   if (action == HOTKEY_LEDS_ANIMATION_DOWN) {
-    ChangeAnimation();
+    ChangeAnimation(-1);
   }
 }
 
-void AnimationStation::ChangeAnimation() {
+void AnimationStation::ChangeAnimation(int changeSize) {
   if (!time_reached(AnimationStation::nextAnimationChange)) {
     return;
   }
 
-  animationIndex = (animationIndex + 1) % animations.size();
+  animationIndex = (animationIndex + changeSize) % animations.size();
   AnimationStation::nextAnimationChange = make_timeout_time_ms(250);
 }
 

@@ -38,8 +38,8 @@ void FlashPROM::start()
 	to commit in that timeframe, we'll hold off until the user is done sending changes. */
 void FlashPROM::commit()
 {
-	// if (flashWriteAlarm)
-	// 	cancel_alarm(flashWriteAlarm);
+	if (flashWriteAlarm)
+		cancel_alarm(flashWriteAlarm);
 
-	// flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, cache, true);
+	flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, cache, true);
 }
