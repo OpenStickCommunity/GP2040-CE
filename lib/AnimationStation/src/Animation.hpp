@@ -57,6 +57,7 @@ static const RGB ColorMagenta(255, 0, 128);
 
 class Animation {
 public:
+  Animation(Pixel pixel);
   Animation(std::vector<Pixel> pixels);
 
   virtual void Animate(RGB (&frame)[100]) = 0;

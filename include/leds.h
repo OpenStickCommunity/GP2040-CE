@@ -29,7 +29,7 @@
 
 extern const std::vector<Pixel> pixels;
 
-void configureAnimations(AnimationStation *as);
+void configureAnimations();
 AnimationHotkey animationHotkeys(MPGS *gamepad);
 
 class GPModule {
@@ -46,7 +46,6 @@ public:
   void loop();
   void process(MPGS *gamepad);
 	uint32_t frame[100];
-	AnimationHotkey action;
 };
 
 #endif

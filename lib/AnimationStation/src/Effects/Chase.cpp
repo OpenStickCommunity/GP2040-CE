@@ -1,8 +1,12 @@
 #include "Chase.hpp"
 
-Chase::Chase(std::vector<Pixel> pixels, uint16_t cycleTime) : Animation(pixels), cycleTime(cycleTime) {
+uint16_t Chase::defaultCycleTime = 80;
 
-}
+Chase::Chase(std::vector<Pixel> pixels)
+    : Animation(pixels), cycleTime(Chase::defaultCycleTime) {}
+
+Chase::Chase(std::vector<Pixel> pixels, uint16_t cycleTime)
+    : Animation(pixels), cycleTime(cycleTime) {}
 
 void Chase::Animate(RGB (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
@@ -36,8 +40,7 @@ void Chase::Animate(RGB (&frame)[100]) {
       reverse = false;
       this->currentLoop++;
     }
-  }
-  else {
+  } else {
     currentFrame++;
 
     if (currentFrame > 255) {
@@ -50,7 +53,8 @@ void Chase::Animate(RGB (&frame)[100]) {
 }
 
 bool Chase::IsChasePixel(int i) {
-  if (i == this->currentPixel || i == (this->currentPixel - 1) || i == (this->currentPixel - 2)) {
+  if (i == this->currentPixel || i == (this->currentPixel - 1) ||
+      i == (this->currentPixel - 2)) {
     return true;
   }
 
@@ -63,8 +67,7 @@ int Chase::WheelFrame(int i) {
   if (i == (this->currentPixel - 1) % pixels.size()) {
     if (this->reverse) {
       frame = frame + 16;
-    }
-    else {
+    } else {
       frame = frame - 16;
     }
   }
@@ -72,8 +75,7 @@ int Chase::WheelFrame(int i) {
   if (i == (this->currentPixel - 2) % pixels.size()) {
     if (this->reverse) {
       frame = frame + 32;
-    }
-    else {
+    } else {
       frame = frame - 32;
     }
   }

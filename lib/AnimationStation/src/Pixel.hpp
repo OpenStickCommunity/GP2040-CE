@@ -1,6 +1,11 @@
 #ifndef PIXEL_HPP_
 #define PIXEL_HPP_
 
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+
 struct Pixel {
   uint8_t index;                  // The pixel index
   uint32_t mask;                  // Used to detect per-pixel lighting

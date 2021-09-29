@@ -86,7 +86,7 @@ void AnimationStorage::setup(AnimationStation *as)
 	this->as = as;
 	AnimationStation::SetBrightness(this->getBrightness());
 	as->SetMode(getMode());
-	configureAnimations(as);
+	configureAnimations();
 }
 
 void AnimationStorage::save()

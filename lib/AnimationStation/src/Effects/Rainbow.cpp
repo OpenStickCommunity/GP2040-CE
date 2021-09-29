@@ -1,8 +1,12 @@
 #include "Rainbow.hpp"
 
-Rainbow::Rainbow(std::vector<Pixel> pixels, uint16_t cycleTime) : Animation(pixels), cycleTime(cycleTime) {
+uint16_t Rainbow::defaultCycleTime = 40;
 
-}
+Rainbow::Rainbow(std::vector<Pixel> pixels)
+    : Animation(pixels), cycleTime(Rainbow::defaultCycleTime) {}
+
+Rainbow::Rainbow(std::vector<Pixel> pixels, uint16_t cycleTime)
+    : Animation(pixels), cycleTime(cycleTime) {}
 
 void Rainbow::Animate(RGB (&frame)[100]) {
   if (!time_reached(this->nextRunTime)) {
@@ -24,8 +28,7 @@ void Rainbow::Animate(RGB (&frame)[100]) {
       reverse = false;
       this->currentLoop++;
     }
-  }
-  else {
+  } else {
     currentFrame++;
 
     if (currentFrame > 255) {

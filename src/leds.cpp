@@ -16,13 +16,14 @@
 #include "leds.h"
 #include "themes.h"
 
-
 NeoPico neopico(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels));
 AnimationStation as(pixels);
-queue_t animationQueue;
+queue_t baseAnimationQueue;
+queue_t buttonAnimationQueue;
 
 void LEDs::setup() {
-  queue_init(&animationQueue, sizeof(AnimationHotkey), 1);
+  queue_init(&baseAnimationQueue, sizeof(AnimationHotkey), 1);
+  queue_init(&buttonAnimationQueue, sizeof(GamepadState), 1);
 
   AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM,
                                         LED_BRIGHTNESS_STEPS);
@@ -30,9 +31,15 @@ void LEDs::setup() {
 }
 
 void LEDs::process(MPGS *gamepad) {
+  // We use queue_try_add here because if core1 explodes everywhere, we don't
+  // care. It's not as important as handling inputs.
+
   AnimationHotkey action = animationHotkeys(gamepad);
-  if (action != HOTKEY_LEDS_NONE)
-    queue_add_blocking(&animationQueue, &action);
+  if (action != HOTKEY_LEDS_NONE) {
+    queue_try_add(&baseAnimationQueue, &action);
+  }
+
+  queue_try_add(&buttonAnimationQueue, &gamepad->state);
 }
 
 void LEDs::loop() {
@@ -40,10 +47,32 @@ void LEDs::loop() {
     return;
   }
 
-  if (queue_try_peek(&animationQueue, &action)) {
-    queue_remove_blocking(&animationQueue, &action);
-    as.HandleEvent(this->action);
+  AnimationHotkey action;
+  GamepadState buttonState;
+
+  if (queue_try_peek(&baseAnimationQueue, &action)) {
+    queue_try_remove(&baseAnimationQueue, &action);
+    as.HandleEvent(action);
     AnimationStore.save();
+  }
+
+  if (queue_try_peek(&buttonAnimationQueue, &buttonState)) {
+    queue_remove_blocking(&buttonAnimationQueue, &buttonState);
+
+    std::vector<Pixel> pressed;
+
+    for (size_t i = 0; i < pixels.size(); i++) {
+      if (buttonState.buttons & pixels[i].mask ||
+          buttonState.dpad & pixels[i].mask) {
+        pressed.push_back(pixels[i]);
+      }
+    }
+
+    if (pressed.size() > 0) {
+      as.HandlePressed(pressed);
+    } else {
+      as.ClearPressed();
+    }
   }
 
   as.Animate();
@@ -54,14 +83,13 @@ void LEDs::loop() {
   this->nextRunTime = make_timeout_time_ms(LEDs::intervalMS);
 }
 
-void configureAnimations(AnimationStation *as) {
-  as->AddAnimation(new StaticColor(pixels, ColorBlack));
-  as->AddAnimation(new StaticColor(pixels, LEDS_STATIC_COLOR_COLOR));
-  as->AddAnimation(new Rainbow(pixels, LEDS_RAINBOW_CYCLE_TIME));
-  as->AddAnimation(new Chase(pixels, LEDS_CHASE_CYCLE_TIME));
+void configureAnimations() {
+  StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
+  Rainbow::SetDefaultCycleTime(LEDS_RAINBOW_CYCLE_TIME);
+  Chase::SetDefaultCycleTime(LEDS_CHASE_CYCLE_TIME);
 
-  for (size_t i = 0; i < customThemes.size(); i++)
-    as->AddAnimation(&customThemes[i]);
+  // for (size_t i = 0; i < customThemes.size(); i++)
+  // as->AddAnimation(&customThemes[i]);
 }
 
 AnimationHotkey animationHotkeys(MPGS *gamepad) {

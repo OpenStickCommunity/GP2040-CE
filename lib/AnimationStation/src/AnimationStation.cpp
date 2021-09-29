@@ -19,10 +19,6 @@ AnimationStation::AnimationStation(std::vector<Pixel> pixels) : pixels(pixels) {
   AnimationStation::SetBrightness(1);
 }
 
-void AnimationStation::AddAnimation(Animation *animation) {
-  animations.push_back(animation);
-}
-
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
   brightnessMax = max;
   brightnessSteps = steps;
@@ -51,25 +47,46 @@ void AnimationStation::ChangeAnimation(int changeSize) {
     return;
   }
 
-  animationIndex = (animationIndex + changeSize) % animations.size();
+  this->SetMode(this->AdjustIndex(changeSize));
   AnimationStation::nextAnimationChange = make_timeout_time_ms(250);
 }
 
+uint16_t AnimationStation::AdjustIndex(int changeSize) {
+  uint16_t newIndex = this->baseAnimationIndex + changeSize;
+
+  if (newIndex >= TOTAL_EFFECTS) {
+    return 0;
+  }
+
+  if (newIndex < 0) {
+    return (TOTAL_EFFECTS - 1);
+  }
+
+  return newIndex;
+}
+
+void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
+  this->buttonAnimation = new StaticColor(pressed, true);
+}
+
+void AnimationStation::ClearPressed() {
+  this->buttonAnimation = nullptr;
+}
+
 void AnimationStation::Animate() {
-  if (animations.size() == 0) {
+  if (baseAnimation == nullptr) {
     this->Clear();
     return;
   }
 
-  Animation *animation = animations[animationIndex];
-  if (!animation->isComplete()) {
-    animation->Animate(frame);
+  baseAnimation->Animate(this->frame);
+
+  if (buttonAnimation != nullptr) {
+    buttonAnimation->Animate(this->frame);
   }
 }
 
-void AnimationStation::Clear() {
-  memset(frame, 0, sizeof(frame));
-}
+void AnimationStation::Clear() { memset(frame, 0, sizeof(frame)); }
 
 float AnimationStation::GetBrightnessX() {
   return AnimationStation::brightnessX;
@@ -79,12 +96,27 @@ uint8_t AnimationStation::GetBrightness() {
   return AnimationStation::brightness;
 }
 
-uint8_t AnimationStation::GetMode() {
-  return animationIndex;
-}
+uint8_t AnimationStation::GetMode() { return this->baseAnimationIndex; }
 
 void AnimationStation::SetMode(uint8_t mode) {
-  animationIndex = mode;
+  this->baseAnimationIndex = mode;
+  AnimationEffects newEffect =
+      static_cast<AnimationEffects>(this->baseAnimationIndex);
+
+  switch (newEffect) {
+  case AnimationEffects::EFFECT_STATIC_COLOR:
+    this->baseAnimation = new StaticColor(pixels);
+    break;
+  case AnimationEffects::EFFECT_RAINBOW:
+    this->baseAnimation = new Rainbow(pixels);
+    break;
+  case AnimationEffects::EFFECT_CHASE:
+    this->baseAnimation = new Chase(pixels);
+    break;
+  default:
+    this->baseAnimation = new StaticColor(pixels, ColorBlack);
+    break;
+  }
 }
 
 void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
@@ -93,17 +125,15 @@ void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
 }
 
 void AnimationStation::SetBrightness(uint8_t brightness) {
-  AnimationStation::brightness = (brightness > brightnessSteps) ? brightnessSteps : brightness;
-  AnimationStation::brightnessX = (AnimationStation::brightness * getBrightnessStepSize()) / 255.0F;
+  AnimationStation::brightness =
+      (brightness > brightnessSteps) ? brightnessSteps : brightness;
+  AnimationStation::brightnessX =
+      (AnimationStation::brightness * getBrightnessStepSize()) / 255.0F;
 
   if (AnimationStation::brightnessX > 1)
     AnimationStation::brightnessX = 1;
   else if (AnimationStation::brightnessX < 0)
     AnimationStation::brightnessX = 0;
-}
-
-void AnimationStation::SetStaticColor(RGB color) {
-  staticColor->SetColor(color);
 }
 
 void AnimationStation::DecreaseBrightness() {
