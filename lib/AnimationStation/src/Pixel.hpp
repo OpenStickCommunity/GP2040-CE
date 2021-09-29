@@ -20,5 +20,8 @@ struct Pixel {
   }
 };
 
+inline bool operator==(const Pixel &lhs, const Pixel &rhs) {
+  return lhs.index == rhs.index;
+}
 
 #endif

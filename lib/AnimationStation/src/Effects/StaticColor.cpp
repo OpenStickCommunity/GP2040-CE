@@ -22,5 +22,4 @@ void StaticColor::Animate(RGB (&frame)[100]) {
       frame[pixels[i].positions[j]] = color;
     }
   }
-  this->currentLoop++;
 }

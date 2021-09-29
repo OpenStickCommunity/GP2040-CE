@@ -57,7 +57,7 @@ void LEDs::loop() {
   }
 
   if (queue_try_peek(&buttonAnimationQueue, &buttonState)) {
-    queue_remove_blocking(&buttonAnimationQueue, &buttonState);
+    queue_try_remove(&buttonAnimationQueue, &buttonState);
 
     std::vector<Pixel> pressed;
 
