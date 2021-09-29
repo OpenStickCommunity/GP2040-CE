@@ -68,7 +68,10 @@ uint16_t AnimationStation::AdjustIndex(int changeSize) {
 void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
   if (pressed != this->lastPressed) {
     this->lastPressed = pressed;
-    this->buttonAnimation = new StaticColor(pressed, true);
+    if (this->buttonAnimation != nullptr) {
+      delete this->buttonAnimation;
+    }
+    this->buttonAnimation = new StaticColor(pressed);
   }
 }
 

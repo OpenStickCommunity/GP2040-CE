@@ -62,8 +62,8 @@ void LEDs::loop() {
     std::vector<Pixel> pressed;
 
     for (size_t i = 0; i < pixels.size(); i++) {
-      if (buttonState.buttons & pixels[i].mask ||
-          buttonState.dpad & pixels[i].mask) {
+      if ((pixels[i].index > 3 && buttonState.buttons & pixels[i].mask) ||
+      (pixels[i].index <= 3 && buttonState.dpad & pixels[i].mask)) {
         pressed.push_back(pixels[i]);
       }
     }

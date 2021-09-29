@@ -2,16 +2,8 @@
 
 RGB StaticColor::defaultColor = ColorRed;
 
-StaticColor::StaticColor(Pixel pixel)
-    : Animation(pixel), color(StaticColor::defaultColor) {}
-
 StaticColor::StaticColor(std::vector<Pixel> pixels)
     : Animation(pixels), color(StaticColor::defaultColor) {}
-
-StaticColor::StaticColor(std::vector<Pixel> pixels, bool ephemeral)
-    : Animation(pixels), color(StaticColor::defaultColor) {
-      this->baseAnimation = !ephemeral;
-    }
 
 StaticColor::StaticColor(std::vector<Pixel> pixels, RGB color)
     : Animation(pixels), color(color) {}

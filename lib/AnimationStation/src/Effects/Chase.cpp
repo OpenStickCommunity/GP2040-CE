@@ -38,7 +38,6 @@ void Chase::Animate(RGB (&frame)[100]) {
     if (currentFrame < 0) {
       currentFrame = 1;
       reverse = false;
-      this->currentLoop++;
     }
   } else {
     currentFrame++;

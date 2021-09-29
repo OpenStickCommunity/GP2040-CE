@@ -51,10 +51,10 @@
 
 const static std::vector<Pixel> pixels =
 {
-	{ .index = LEDS_DPAD_LEFT,  .mask = GAMEPAD_MASK_DL, .positions = { LEDS_DPAD_LEFT } },
-	{ .index = LEDS_DPAD_DOWN,  .mask = GAMEPAD_MASK_DD, .positions = { LEDS_DPAD_DOWN } },
-	{ .index = LEDS_DPAD_RIGHT, .mask = GAMEPAD_MASK_DR, .positions = { LEDS_DPAD_RIGHT } },
-	{ .index = LEDS_DPAD_UP,    .mask = GAMEPAD_MASK_DU, .positions = { LEDS_DPAD_UP } },
+	{ .index = LEDS_DPAD_LEFT,  .mask = GAMEPAD_MASK_LEFT, .positions = { LEDS_DPAD_LEFT } },
+	{ .index = LEDS_DPAD_DOWN,  .mask = GAMEPAD_MASK_DOWN, .positions = { LEDS_DPAD_DOWN } },
+	{ .index = LEDS_DPAD_RIGHT, .mask = GAMEPAD_MASK_RIGHT, .positions = { LEDS_DPAD_RIGHT } },
+	{ .index = LEDS_DPAD_UP,    .mask = GAMEPAD_MASK_UP, .positions = { LEDS_DPAD_UP } },
 	{ .index = LEDS_BUTTON_03,  .mask = GAMEPAD_MASK_B3, .positions = { LEDS_BUTTON_03 } },
 	{ .index = LEDS_BUTTON_04,  .mask = GAMEPAD_MASK_B4, .positions = { LEDS_BUTTON_04 } },
 	{ .index = LEDS_BUTTON_06,  .mask = GAMEPAD_MASK_R1, .positions = { LEDS_BUTTON_06 } },

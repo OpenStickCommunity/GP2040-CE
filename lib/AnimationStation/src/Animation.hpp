@@ -57,16 +57,13 @@ static const RGB ColorMagenta(255, 0, 128);
 
 class Animation {
 public:
-  Animation(Pixel pixel);
   Animation(std::vector<Pixel> pixels);
+  virtual ~Animation() {};
 
   virtual void Animate(RGB (&frame)[100]) = 0;
   bool isComplete();
 protected:
   std::vector<Pixel> pixels;
-  int currentLoop = 0;
-  int totalLoops;
-  bool baseAnimation = true;
 };
 
 #endif
