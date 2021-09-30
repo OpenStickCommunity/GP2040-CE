@@ -110,6 +110,10 @@ void AnimationStation::SetMode(uint8_t mode) {
   AnimationEffects newEffect =
       static_cast<AnimationEffects>(this->baseAnimationIndex);
 
+  if (this->baseAnimation != nullptr) {
+    delete this->baseAnimation;
+  }
+
   switch (newEffect) {
   case AnimationEffects::EFFECT_STATIC_COLOR:
     this->baseAnimation = new StaticColor(pixels);
