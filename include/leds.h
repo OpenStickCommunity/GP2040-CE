@@ -7,8 +7,7 @@
 #define LEDS_H_
 
 #include "AnimationStation.hpp"
-#include <MPG.h>
-#include <MPGS.h>
+#include "gamepad.hpp"
 #include <vector>
 
 #ifndef LEDS_BRIGHTNESS
@@ -30,13 +29,13 @@
 extern const std::vector<Pixel> pixels;
 
 void configureAnimations();
-AnimationHotkey animationHotkeys(MPGS *gamepad);
+AnimationHotkey animationHotkeys(Gamepad *gamepad);
 
 class GPModule {
 public:
   virtual void setup();
   virtual void loop();
-  virtual void process(MPGS *gamepad);
+  virtual void process(Gamepad *gamepad);
   absolute_time_t nextRunTime;
  	const uint32_t intervalMS = 10;
 };
@@ -44,7 +43,7 @@ class LEDs : public GPModule {
 public:
   void setup();
   void loop();
-  void process(MPGS *gamepad);
+  void process(Gamepad *gamepad);
 	uint32_t frame[100];
 };
 

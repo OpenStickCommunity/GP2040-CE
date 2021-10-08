@@ -30,7 +30,7 @@ void LEDs::setup() {
   AnimationStore.setup(&as);
 }
 
-void LEDs::process(MPGS *gamepad) {
+void LEDs::process(Gamepad *gamepad) {
   // We use queue_try_add here because if core1 explodes everywhere, we don't
   // care. It's not as important as handling inputs.
 
@@ -63,7 +63,7 @@ void LEDs::loop() {
 
     for (size_t i = 0; i < pixels.size(); i++) {
       if ((pixels[i].index > 3 && buttonState.buttons & pixels[i].mask) ||
-      (pixels[i].index <= 3 && buttonState.dpad & pixels[i].mask)) {
+          (pixels[i].index <= 3 && buttonState.dpad & pixels[i].mask)) {
         pressed.push_back(pixels[i]);
       }
     }
@@ -92,7 +92,7 @@ void configureAnimations() {
   // as->AddAnimation(&customThemes[i]);
 }
 
-AnimationHotkey animationHotkeys(MPGS *gamepad) {
+AnimationHotkey animationHotkeys(Gamepad *gamepad) {
   AnimationHotkey action = HOTKEY_LEDS_NONE;
 
   if (gamepad->pressedF1()) {

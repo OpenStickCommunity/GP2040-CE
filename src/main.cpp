@@ -9,17 +9,15 @@
 #include "pico/stdlib.h"
 #include "pico/util/queue.h"
 
-
-#include <MPGS.h>
-
 #include "BoardConfig.h"
-#include "leds.h"
 #include "usb_driver.h"
+#include "gamepad.hpp"
+#include "leds.h"
 
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
-MPGS gamepad(GAMEPAD_DEBOUNCE_MILLIS);
+Gamepad gamepad(GAMEPAD_DEBOUNCE_MILLIS);
 LEDs leds;
 
 void setup();

@@ -29,6 +29,7 @@
 #define PIN_BUTTON_R3   7
 #define PIN_BUTTON_A1   4
 #define PIN_BUTTON_A2   5
+#define PIN_SETTINGS    11
 
 #define BOARD_LEDS_PIN 2
 #define LED_BRIGHTNESS_MAXIMUM 100
