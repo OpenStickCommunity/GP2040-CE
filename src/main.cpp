@@ -6,6 +6,7 @@
 #define GAMEPAD_DEBOUNCE_MILLIS 5
 
 #include "pico/multicore.h"
+#include "pico/bootrom.h"
 #include "pico/stdlib.h"
 #include "pico/util/queue.h"
 
@@ -46,6 +47,8 @@ void setup() {
     newInputMode = INPUT_MODE_SWITCH;
   else if (gamepad.pressedS2())
     newInputMode = INPUT_MODE_XINPUT;
+  else if (gamepad.pressedF1() && gamepad.pressedUp())
+    reset_usb_boot(0, 0);
 
   if (newInputMode != gamepad.inputMode) {
     gamepad.inputMode = newInputMode;
