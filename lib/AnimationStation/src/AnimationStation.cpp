@@ -52,6 +52,14 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
     this->baseAnimation->ParameterDown();
   }
   
+  if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) {
+    this->buttonAnimation->ParameterUp();
+  }
+
+  if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) {
+    this->buttonAnimation->ParameterDown();
+  }
+
   AnimationStation::nextChange = make_timeout_time_ms(250);
 }
 

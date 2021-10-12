@@ -15,8 +15,8 @@ public:
   ~Chase() {};
 
   void Animate(RGB (&frame)[100]);
-  void ParameterUp() {};
-  void ParameterDown() {};
+  void ParameterUp();
+  void ParameterDown();
 
   static void SetDefaultCycleTime(uint16_t cycleTime) {
     defaultCycleTime = cycleTime;

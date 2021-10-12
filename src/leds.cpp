@@ -120,6 +120,14 @@ AnimationHotkey animationHotkeys(Gamepad *gamepad) {
       action = HOTKEY_LEDS_PARAMETER_DOWN;
       gamepad->state.buttons &=
           ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    } else if (gamepad->pressedL1()) {
+      action = HOTKEY_LEDS_PRESS_PARAMETER_UP;
+      gamepad->state.buttons &=
+          ~(GAMEPAD_MASK_L1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    } else if (gamepad->pressedL2()) {
+      action = HOTKEY_LEDS_PRESS_PARAMETER_DOWN;
+      gamepad->state.buttons &=
+          ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
     }
   }
 

@@ -85,3 +85,13 @@ int Chase::WheelFrame(int i) {
 
   return frame;
 }
+
+void Chase::ParameterUp() {
+  this->cycleTime = this->cycleTime + 10;
+}
+
+void Chase::ParameterDown() {
+  if (this->cycleTime > 0) {
+    this->cycleTime = this->cycleTime - 10;
+  }
+}

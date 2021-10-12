@@ -38,3 +38,13 @@ void Rainbow::Animate(RGB (&frame)[100]) {
 
   this->nextRunTime = make_timeout_time_ms(this->cycleTime);
 }
+
+void Rainbow::ParameterUp() {
+  this->cycleTime = this->cycleTime + 10;
+}
+
+void Rainbow::ParameterDown() {
+  if (this->cycleTime > 0) {
+    this->cycleTime = this->cycleTime - 10;
+  }
+}
