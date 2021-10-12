@@ -23,6 +23,7 @@
 NeoPico leds(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels));
 AnimationStation as(pixels);
 queue_t animationQueue;
+queue_t animationSaveQueue;
 #endif
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
@@ -33,15 +34,18 @@ void setup();
 void loop();
 void core1();
 
+
 int main()
 {
 	setup();
+	multicore_launch_core1(core1);
 
 	while (1)
 		loop();
 
 	return 0;
 }
+
 
 void setup()
 {
@@ -50,7 +54,7 @@ void setup()
 
 	// Check for input mode override
 	gamepad.read();
-	InputMode newInputMode = gamepad.inputMode;
+	InputMode newInputMode = gamepad.options.inputMode;
 	if (gamepad.pressedR3())
 		newInputMode = INPUT_MODE_HID;
 	else if (gamepad.pressedS1())
@@ -58,29 +62,28 @@ void setup()
 	else if (gamepad.pressedS2())
 		newInputMode = INPUT_MODE_XINPUT;
 
-	if (newInputMode != gamepad.inputMode)
+	if (newInputMode != gamepad.options.inputMode)
 	{
-		gamepad.inputMode = newInputMode;
+		gamepad.options.inputMode = newInputMode;
 		gamepad.save();
 	}
 
+	initialize_driver(gamepad.options.inputMode);
+
 #ifdef BOARD_LEDS_PIN
 	queue_init(&animationQueue, sizeof(AnimationHotkey), 1);
-	multicore_launch_core1(core1);
+	queue_init(&animationSaveQueue, sizeof(int), 1);
 #endif
-
-	initialize_driver(gamepad.inputMode);
 }
+
 
 void loop()
 {
 	static void *report;
 	static const uint16_t reportSize = gamepad.getReportSize();
-	static const uint32_t intervalMS = 1;
-	static uint32_t nextRuntime = 0;
-
-	if (getMillis() - nextRuntime < 0)
-		return;
+#ifdef BOARD_LEDS_PIN
+	static int saveValue = 0;
+#endif
 
 	gamepad.read();
 
@@ -89,20 +92,19 @@ void loop()
 #endif
 
 	gamepad.hotkey();
-
-#ifdef BOARD_LEDS_PIN
-	AnimationHotkey action = animationHotkeys(&gamepad);
-	if (action != HOTKEY_LEDS_NONE)
-		queue_add_blocking(&animationQueue, &action);
-#endif
-
 	gamepad.process();
 	report = gamepad.getReport();
 	send_report(report, reportSize);
 
-	// Ensure next runtime ahead of current time
-	nextRuntime = getMillis() + intervalMS;
+#ifdef BOARD_LEDS_PIN
+	AnimationHotkey action = animationHotkeys(&gamepad);
+	if (action != HOTKEY_LEDS_NONE)
+		queue_try_add(&animationQueue, &action);
+	if (queue_try_remove(&animationSaveQueue, &saveValue))
+		AnimationStore.save();
+#endif
 }
+
 
 void core1()
 {
@@ -115,7 +117,6 @@ void core1()
 	static AnimationHotkey action;
 	static uint32_t frame[100];
 
-	AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM, LED_BRIGHTNESS_STEPS);
 	AnimationStore.setup(&as);
 #endif
 
@@ -125,11 +126,10 @@ void core1()
 			return;
 
 #ifdef BOARD_LEDS_PIN
-		if (queue_try_peek(&animationQueue, &action))
+		if (queue_try_remove(&animationQueue, &action))
 		{
-			queue_remove_blocking(&animationQueue, &action);
 			as.HandleEvent(action);
-			AnimationStore.save();
+			queue_try_add(&animationSaveQueue, 0);
 		}
 
 		as.Animate();

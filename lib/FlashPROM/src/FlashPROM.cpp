@@ -5,7 +5,7 @@
 
 #include "FlashPROM.h"
 
-static alarm_id_t flashWriteAlarm = 0;
+volatile static alarm_id_t flashWriteAlarm = 0;
 static spin_lock_t *flashLock = nullptr;
 
 int64_t writeToFlash(alarm_id_t id, void *cache)
@@ -16,12 +16,13 @@ int64_t writeToFlash(alarm_id_t id, void *cache)
 	uint32_t interrupts = spin_lock_blocking(flashLock);
 
 	flash_range_erase((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, EEPROM_SIZE_BYTES);
-	flash_range_program((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, (uint8_t *)cache, EEPROM_SIZE_BYTES);
+	flash_range_program((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, reinterpret_cast<uint8_t *>(cache), EEPROM_SIZE_BYTES);
 
 	spin_unlock(flashLock, interrupts);
-	flashWriteAlarm = 0;
 
 	multicore_lockout_end_blocking();
+	flashWriteAlarm = 0;
+
 	return 0;
 }
 
@@ -31,6 +32,8 @@ void FlashPROM::start()
 		flashLock = spin_lock_instance(spin_lock_claim_unused(true));
 
 	memcpy(cache, reinterpret_cast<uint8_t *>(EEPROM_ADDRESS_START), EEPROM_SIZE_BYTES);
+	for (int i = 0; i < EEPROM_SIZE_BYTES; i++)
+		cache[i] = ~cache[i];
 }
 
 /* We don't have an actual EEPROM, so we need to be extra careful about minimizing writes. Instead
@@ -38,8 +41,18 @@ void FlashPROM::start()
 	to commit in that timeframe, we'll hold off until the user is done sending changes. */
 void FlashPROM::commit()
 {
-	// if (flashWriteAlarm)
-	// 	cancel_alarm(flashWriteAlarm);
+	if (flashWriteAlarm && !is_spin_locked(flashLock))
+	{
+		cancel_alarm(flashWriteAlarm);
+	}
+	else
+	{
+		while (is_spin_locked(flashLock));
+	}
 
-	// flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, cache, true);
+	static uint8_t flashCache[EEPROM_SIZE_BYTES];
+	for (int i = 0; i < EEPROM_SIZE_BYTES; i++)
+		flashCache[i] = ~cache[i];
+
+	flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, flashCache, true);
 }
