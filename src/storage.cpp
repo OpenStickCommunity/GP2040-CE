@@ -7,23 +7,6 @@
 #include "FlashPROM.h"
 #include "BoardConfig.h"
 
-static void getStorageValue(int index, void *data, uint16_t size)
-{
-	uint8_t buffer[size] = { };
-	for (int i = 0; i < size; i++)
-		EEPROM.get(index + i, buffer[i]);
-
-	memcpy(data, buffer, size);
-}
-
-static void setStorageValue(int index, void *data, uint16_t size)
-{
-	uint8_t buffer[size] = { };
-	memcpy(buffer, data, size);
-	for (int i = 0; i < size; i++)
-		EEPROM.set(index + i, buffer[i]);
-}
-
 /* Gamepad stuffs */
 
 void GamepadStorage::start()
@@ -36,14 +19,22 @@ void GamepadStorage::save()
 	EEPROM.commit();
 }
 
-void GamepadStorage::get(int index, void *data, uint16_t size)
+GamepadOptions GamepadStorage::getGamepadOptions()
 {
-	getStorageValue(index, data, size);
+	GamepadOptions options =
+	{
+		.inputMode = InputMode::INPUT_MODE_XINPUT,
+		.dpadMode = DpadMode::DPAD_MODE_DIGITAL,
+		.socdMode = DEFAULT_SOCD_MODE,
+	};
+
+	EEPROM.get(0, options);
+	return options;
 }
 
-void GamepadStorage::set(int index, void *data, uint16_t size)
+void GamepadStorage::setGamepadOptions(GamepadOptions options)
 {
-	setStorageValue(index, data, size);
+	EEPROM.set(0, options);
 }
 
 /* Animation stuffs */
@@ -60,30 +51,31 @@ void GamepadStorage::set(int index, void *data, uint16_t size)
 uint8_t AnimationStorage::getMode()
 {
 	uint8_t mode = 0;
-	getStorageValue(STORAGE_LEDS_ANIMATION_MODE_INDEX, &mode, sizeof(uint8_t));
+	EEPROM.get(STORAGE_LEDS_ANIMATION_MODE_INDEX, mode);
 	return mode;
 }
 
 void AnimationStorage::setMode(uint8_t mode)
 {
-	setStorageValue(STORAGE_LEDS_ANIMATION_MODE_INDEX, &mode, sizeof(uint8_t));
+	EEPROM.set(STORAGE_LEDS_ANIMATION_MODE_INDEX, mode);
 }
 
 uint8_t AnimationStorage::getBrightness()
 {
 	uint8_t brightness = LEDS_BRIGHTNESS;
-	getStorageValue(STORAGE_LEDS_BRIGHTNESS_INDEX, &brightness, sizeof(uint8_t));
+	EEPROM.get(STORAGE_LEDS_BRIGHTNESS_INDEX, brightness);
 	return brightness;
 }
 
 void AnimationStorage::setBrightness(uint8_t brightness)
 {
-	setStorageValue(STORAGE_LEDS_BRIGHTNESS_INDEX, &brightness, sizeof(uint8_t));
+	EEPROM.set(STORAGE_LEDS_BRIGHTNESS_INDEX, brightness);
 }
 
 void AnimationStorage::setup(AnimationStation *as)
 {
 	this->as = as;
+	AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM, LED_BRIGHTNESS_STEPS);
 	AnimationStation::SetBrightness(this->getBrightness());
 	as->SetMode(getMode());
 	configureAnimations(as);
