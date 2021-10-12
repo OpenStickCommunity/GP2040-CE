@@ -15,6 +15,8 @@ public:
   ~StaticTheme() {};
 
   void Animate(RGB (&frame)[100]);
+  void ParameterUp();
+  void ParameterDown();
   std::map<uint32_t, RGB> theme;
 protected:
   RGB defaultColor;

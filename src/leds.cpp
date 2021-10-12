@@ -84,7 +84,7 @@ void LEDs::loop() {
 }
 
 void configureAnimations() {
-  StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
+  // StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
   Rainbow::SetDefaultCycleTime(LEDS_RAINBOW_CYCLE_TIME);
   Chase::SetDefaultCycleTime(LEDS_CHASE_CYCLE_TIME);
 

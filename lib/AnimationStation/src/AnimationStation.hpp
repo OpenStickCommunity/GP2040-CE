@@ -64,8 +64,7 @@ public:
   Animation* baseAnimation;
   Animation* buttonAnimation;
   std::vector<Pixel> lastPressed;
-  static absolute_time_t nextAnimationChange;
-  static absolute_time_t nextBrightnessChange;
+  static absolute_time_t nextChange;
   RGB frame[100];
 
 protected:

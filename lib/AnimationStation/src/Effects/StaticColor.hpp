@@ -9,18 +9,20 @@
 class StaticColor : public Animation {
 public:
   StaticColor(std::vector<Pixel> pixels);
-  StaticColor(std::vector<Pixel> pixels, RGB color);
+  StaticColor(std::vector<Pixel> pixels, int colorIndex);
   ~StaticColor() {};
 
   void Animate(RGB (&frame)[100]);
+  void ParameterUp();
+  void ParameterDown();
 
-  static void SetDefaultColor(RGB color) {
-    defaultColor = color;
+  static void SetDefaultColorIndex(int colorIndex) {
+    defaultColorIndex = colorIndex;
   }
 
 protected:
-  static RGB defaultColor;
-  RGB color;
+  static int defaultColorIndex;
+  int colorIndex;
 };
 
 #endif

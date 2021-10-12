@@ -1,19 +1,17 @@
 #ifndef _ANIMATION_H_
 #define _ANIMATION_H_
 
+#include "Pixel.hpp"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-#include "Pixel.hpp"
 
-struct RGB
-{
-  RGB()
-    : r(0), g(0), b(0) { }
 
-  RGB(uint8_t r, uint8_t g, uint8_t b)
-    : r(r), g(g), b(b) { }
+struct RGB {
+  RGB() : r(0), g(0), b(0) {}
+
+  RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
 
   uint8_t r;
   uint8_t g;
@@ -33,11 +31,9 @@ struct RGB
   }
 
   inline uint32_t value(float brightnessX = 1.0F) {
-    return ((uint32_t)(r * brightnessX) << 8)
-         | ((uint32_t)(g * brightnessX) << 16)
-         | (uint32_t)(b * brightnessX);
+    return ((uint32_t)(r * brightnessX) << 8) |
+           ((uint32_t)(g * brightnessX) << 16) | (uint32_t)(b * brightnessX);
   }
-
 };
 
 static const RGB ColorBlack(0, 0, 0);
@@ -55,13 +51,23 @@ static const RGB ColorPurple(128, 0, 255);
 static const RGB ColorPink(255, 0, 255);
 static const RGB ColorMagenta(255, 0, 128);
 
+static const std::vector<RGB> colors = {
+    ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
+    ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
+    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta};
+
 class Animation {
 public:
   Animation(std::vector<Pixel> pixels);
-  virtual ~Animation() {};
+  void UpdatePixels(std::vector<Pixel> pixels);
+  void ClearPixels();
+  virtual ~Animation(){};
 
   virtual void Animate(RGB (&frame)[100]) = 0;
+  virtual void ParameterUp() = 0;
+  virtual void ParameterDown() = 0;
   bool isComplete();
+
 protected:
   std::vector<Pixel> pixels;
 };
