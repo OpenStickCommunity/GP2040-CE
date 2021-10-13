@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include "NeoPico.hpp"
 
 
 struct RGB {
@@ -13,9 +14,13 @@ struct RGB {
 
   RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
 
+  RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
+    : r(r), g(g), b(b), w(w) { }
+
   uint8_t r;
   uint8_t g;
   uint8_t b;
+  uint8_t w;
 
   inline static RGB wheel(uint8_t pos) {
     pos = 255 - pos;
@@ -30,9 +35,40 @@ struct RGB {
     }
   }
 
-  inline uint32_t value(float brightnessX = 1.0F) {
-    return ((uint32_t)(r * brightnessX) << 8) |
-           ((uint32_t)(g * brightnessX) << 16) | (uint32_t)(b * brightnessX);
+  inline uint32_t value(LEDFormat format, float brightnessX = 1.0F) {
+    switch (format) {
+      case LED_FORMAT_GRB:
+        return ((uint32_t)(g * brightnessX) << 16)
+            | ((uint32_t)(r * brightnessX) << 8)
+            | (uint32_t)(b * brightnessX);
+
+      case LED_FORMAT_RGB:
+        return ((uint32_t)(r * brightnessX) << 16)
+            | ((uint32_t)(g * brightnessX) << 8)
+            | (uint32_t)(b * brightnessX);
+
+      case LED_FORMAT_GRBW:
+      {
+        if ((r == g) && (r == b))
+          return (uint32_t)(r * brightnessX);
+
+        return ((uint32_t)(g * brightnessX) << 24)
+            | ((uint32_t)(r * brightnessX) << 16)
+            | ((uint32_t)(b * brightnessX) << 8)
+            | (uint32_t)(w * brightnessX);
+      }
+
+      case LED_FORMAT_RGBW:
+      {
+        if ((r == g) && (r == b))
+          return (uint32_t)(r * brightnessX);
+
+        return ((uint32_t)(r * brightnessX) << 24)
+            | ((uint32_t)(g * brightnessX) << 16)
+            | ((uint32_t)(b * brightnessX) << 8)
+            | (uint32_t)(w * brightnessX);
+      }
+    }
   }
 };
 
@@ -62,6 +98,8 @@ public:
   void UpdatePixels(std::vector<Pixel> pixels);
   void ClearPixels();
   virtual ~Animation(){};
+
+  static LEDFormat format;
 
   virtual void Animate(RGB (&frame)[100]) = 0;
   virtual void ParameterUp() = 0;

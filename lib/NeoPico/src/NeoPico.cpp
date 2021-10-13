@@ -14,28 +14,28 @@
 #include "hardware/clocks.h"
 #include "NeoPico.hpp"
 
-void NeoPico::PutPixel(uint32_t pixel_grb) {
-  pio_sm_put_blocking(pio0, 0, pixel_grb << 8u);
+void NeoPico::PutPixel(uint32_t pixelData) {
+  switch (format) {
+    case LED_FORMAT_GRB:
+    case LED_FORMAT_RGB:
+      pio_sm_put_blocking(pio0, 0, pixelData << 8u);
+      break;
+    case LED_FORMAT_GRBW:
+    case LED_FORMAT_RGBW:
+      pio_sm_put_blocking(pio0, 0, pixelData);
+      break;
+  }
 }
 
-NeoPico::NeoPico(int ledPin, int numPixels) : numPixels(numPixels) {
+NeoPico::NeoPico(int ledPin, int numPixels, LEDFormat format) : format(format), numPixels(numPixels) {
   PIO pio = pio0;
   int sm = 0;
   uint offset = pio_add_program(pio, &ws2812_program);
-  ws2812_program_init(pio, sm, offset, ledPin, 800000, false);
+  bool rgbw = (format == LED_FORMAT_GRBW) || (format == LED_FORMAT_RGBW);
+  ws2812_program_init(pio, sm, offset, ledPin, 800000, rgbw);
   this->Clear();
   sleep_ms(10);
 }
-
-// void NeoPico::SetPixel(int pixel, uint32_t color) {
-//   if (pixels.size() > 0) {
-//     for (size_t i = 0; i != pixels[pixel].positions.size(); i++) {
-//       this->frame[pixels[pixel].positions[i]] = color;
-//     }
-//   } else {
-//     this->frame[pixel] = color;
-//   }
-// }
 
 void NeoPico::Clear() {
   memset(frame, 0, sizeof(frame));

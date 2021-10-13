@@ -43,6 +43,7 @@ class LEDs : public GPModule {
 public:
   void setup();
   void loop();
+  void trySave();
   void process(Gamepad *gamepad);
 	uint32_t frame[100];
 };

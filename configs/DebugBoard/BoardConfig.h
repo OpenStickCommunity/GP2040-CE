@@ -59,7 +59,7 @@
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 #define BOARD_LEDS_PIN 22
-#define LED_BRIGHTNESS_MAXIMUM 100
+#define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
 
 const static std::vector<Pixel> pixels =

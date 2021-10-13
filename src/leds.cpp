@@ -16,11 +16,23 @@
 #include "leds.h"
 #include "themes.h"
 
+#ifdef LED_FORMAT
+NeoPico neopico(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels), LED_FORMAT);
+#else
 NeoPico neopico(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels));
+#endif
+
 AnimationStation as(pixels);
 queue_t baseAnimationQueue;
 queue_t buttonAnimationQueue;
+queue_t animationSaveQueue;
 
+void LEDs::trySave() {
+ 	static int saveValue = 0;
+
+	if (queue_try_remove(&animationSaveQueue, &saveValue))
+		AnimationStore.save();
+}
 void LEDs::setup() {
   queue_init(&baseAnimationQueue, sizeof(AnimationHotkey), 1);
   queue_init(&buttonAnimationQueue, sizeof(GamepadState), 1);
@@ -28,6 +40,15 @@ void LEDs::setup() {
   AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM,
                                         LED_BRIGHTNESS_STEPS);
   AnimationStore.setup(&as);
+}
+
+void configureAnimations() {
+  // StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
+  Rainbow::SetDefaultCycleTime(LEDS_RAINBOW_CYCLE_TIME);
+  Chase::SetDefaultCycleTime(LEDS_CHASE_CYCLE_TIME);
+
+  // for (size_t i = 0; i < customThemes.size(); i++)
+  // as->AddAnimation(&customThemes[i]);
 }
 
 void LEDs::process(Gamepad *gamepad) {
@@ -53,7 +74,7 @@ void LEDs::loop() {
   if (queue_try_peek(&baseAnimationQueue, &action)) {
     queue_try_remove(&baseAnimationQueue, &action);
     as.HandleEvent(action);
-    AnimationStore.save();
+		queue_try_add(&animationSaveQueue, 0);
   }
 
   if (queue_try_peek(&buttonAnimationQueue, &buttonState)) {
@@ -83,51 +104,34 @@ void LEDs::loop() {
   this->nextRunTime = make_timeout_time_ms(LEDs::intervalMS);
 }
 
-void configureAnimations() {
-  // StaticColor::SetDefaultColor(LEDS_STATIC_COLOR_COLOR);
-  Rainbow::SetDefaultCycleTime(LEDS_RAINBOW_CYCLE_TIME);
-  Chase::SetDefaultCycleTime(LEDS_CHASE_CYCLE_TIME);
-
-  // for (size_t i = 0; i < customThemes.size(); i++)
-  // as->AddAnimation(&customThemes[i]);
-}
-
 AnimationHotkey animationHotkeys(Gamepad *gamepad) {
   AnimationHotkey action = HOTKEY_LEDS_NONE;
 
   if (gamepad->pressedF1()) {
     if (gamepad->pressedB3()) {
       action = HOTKEY_LEDS_ANIMATION_UP;
-      gamepad->state.buttons &=
-          ~(GAMEPAD_MASK_B3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+      gamepad->state.buttons &= ~(GAMEPAD_MASK_B3 | gamepad->f1Mask);
     } else if (gamepad->pressedB1()) {
       action = HOTKEY_LEDS_ANIMATION_DOWN;
-      gamepad->state.buttons &=
-          ~(GAMEPAD_MASK_B1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+      gamepad->state.buttons &= ~(GAMEPAD_MASK_B1 | gamepad->f1Mask);
     } else if (gamepad->pressedB4()) {
       action = HOTKEY_LEDS_BRIGHTNESS_UP;
-      gamepad->state.buttons &=
-          ~(GAMEPAD_MASK_B4 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+      gamepad->state.buttons &= ~(GAMEPAD_MASK_B4 | gamepad->f1Mask);
     } else if (gamepad->pressedB2()) {
       action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
-      gamepad->state.buttons &=
-          ~(GAMEPAD_MASK_B2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+      gamepad->state.buttons &= ~(GAMEPAD_MASK_B2 | gamepad->f1Mask);
     } else if (gamepad->pressedR1()) {
       action = HOTKEY_LEDS_PARAMETER_UP;
-      gamepad->state.buttons &=
-          ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+      gamepad->state.buttons &= ~(GAMEPAD_MASK_R1 | gamepad->f1Mask);
     } else if (gamepad->pressedR2()) {
       action = HOTKEY_LEDS_PARAMETER_DOWN;
-      gamepad->state.buttons &=
-          ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+      gamepad->state.buttons &= ~(GAMEPAD_MASK_R2 | gamepad->f1Mask);
     } else if (gamepad->pressedL1()) {
       action = HOTKEY_LEDS_PRESS_PARAMETER_UP;
-      gamepad->state.buttons &=
-          ~(GAMEPAD_MASK_L1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+      gamepad->state.buttons &= ~(GAMEPAD_MASK_L1 | gamepad->f1Mask);
     } else if (gamepad->pressedL2()) {
       action = HOTKEY_LEDS_PRESS_PARAMETER_DOWN;
-      gamepad->state.buttons &=
-          ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+      gamepad->state.buttons &= ~(GAMEPAD_MASK_L2 | gamepad->f1Mask);
     }
   }
 

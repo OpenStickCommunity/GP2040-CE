@@ -13,20 +13,24 @@
 #include "BoardConfig.h"
 #include "usb_driver.h"
 #include "gamepad.hpp"
-#include "leds.h"
 
+#ifdef BOARD_LEDS_PIN
+#include "leds.h"
+LEDs leds;
+#endif
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
 Gamepad gamepad(GAMEPAD_DEBOUNCE_MILLIS);
-LEDs leds;
 
 void setup();
 void loop();
 void core1();
 
-int main() {
-  setup();
+int main()
+{
+	setup();
+	multicore_launch_core1(core1);
 
   while (1)
     loop();
@@ -34,43 +38,41 @@ int main() {
   return 0;
 }
 
-void setup() {
-  gamepad.setup();
-  gamepad.load();
 
-  // Check for input mode override
-  gamepad.read();
-  InputMode newInputMode = gamepad.inputMode;
-  if (gamepad.pressedR3())
-    newInputMode = INPUT_MODE_HID;
-  else if (gamepad.pressedS1())
-    newInputMode = INPUT_MODE_SWITCH;
-  else if (gamepad.pressedS2())
-    newInputMode = INPUT_MODE_XINPUT;
+void setup()
+{
+	gamepad.setup();
+	gamepad.load();
+
+	// Check for input mode override
+	gamepad.read();
+	InputMode newInputMode = gamepad.options.inputMode;
+	if (gamepad.pressedR3())
+		newInputMode = INPUT_MODE_HID;
+	else if (gamepad.pressedS1())
+		newInputMode = INPUT_MODE_SWITCH;
+	else if (gamepad.pressedS2())
+		newInputMode = INPUT_MODE_XINPUT;
   else if (gamepad.pressedF1() && gamepad.pressedUp())
     reset_usb_boot(0, 0);
 
-  if (newInputMode != gamepad.inputMode) {
-    gamepad.inputMode = newInputMode;
-    gamepad.save();
-  }
+	if (newInputMode != gamepad.options.inputMode)
+	{
+		gamepad.options.inputMode = newInputMode;
+		gamepad.save();
+	}
+
+	initialize_driver(gamepad.options.inputMode);
 
 #ifdef BOARD_LEDS_PIN
-  multicore_launch_core1(core1);
   leds.setup();
 #endif
-
-  initialize_driver(gamepad.inputMode);
 }
 
-void loop() {
-  static void *report;
-  static const uint16_t reportSize = gamepad.getReportSize();
-  static const uint32_t intervalMS = 1;
-  static uint32_t nextRuntime = 0;
-
-  if (getMillis() - nextRuntime < 0)
-    return;
+void loop()
+{
+	static void *report;
+	static const uint16_t reportSize = gamepad.getReportSize();
 
   gamepad.read();
 
@@ -78,7 +80,7 @@ void loop() {
   gamepad.debounce();
 #endif
 
-  gamepad.hotkey();
+	gamepad.hotkey();
 
 #ifdef BOARD_LEDS_PIN
 	leds.process(&gamepad);
@@ -88,8 +90,9 @@ void loop() {
   report = gamepad.getReport();
   send_report(report, reportSize);
 
-  // Ensure next runtime ahead of current time
-  nextRuntime = getMillis() + intervalMS;
+#ifdef BOARD_LEDS_PIN
+	leds.trySave();
+#endif
 }
 
 void core1() {

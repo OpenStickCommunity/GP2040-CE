@@ -13,9 +13,9 @@
 #include <hardware/flash.h>
 #include <hardware/timer.h>
 
-#define EEPROM_SIZE_BYTES    4096       // Reserve 4k of flash memory (ensure this value is divisible by 256)
-#define EEPROM_ADDRESS_START 0x101FF000 // The arduino-pico EEPROM lib starts here, so we'll do the same
-#define EEPROM_WRITE_WAIT    100        // Amount of time in ms to wait before blocking core1 and committing to flash
+#define EEPROM_SIZE_BYTES    4096           // Reserve 4k of flash memory (ensure this value is divisible by 256)
+#define EEPROM_ADDRESS_START _u(0x101FF000) // The arduino-pico EEPROM lib starts here, so we'll do the same
+#define EEPROM_WRITE_WAIT    100            // Amount of time in ms to wait before blocking core1 and committing to flash
 
 class FlashPROM
 {
@@ -42,7 +42,7 @@ class FlashPROM
 		}
 
 	private:
-		uint8_t cache[EEPROM_SIZE_BYTES] = { };
+		static uint8_t cache[EEPROM_SIZE_BYTES];
 };
 
 static FlashPROM EEPROM;
