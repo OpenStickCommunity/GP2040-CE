@@ -36,9 +36,8 @@ void LEDs::trySave() {
 void LEDs::setup() {
   queue_init(&baseAnimationQueue, sizeof(AnimationHotkey), 1);
   queue_init(&buttonAnimationQueue, sizeof(GamepadState), 1);
+	queue_init(&animationSaveQueue, sizeof(int), 1);
 
-  AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM,
-                                        LED_BRIGHTNESS_STEPS);
   AnimationStore.setup(&as);
 }
 
