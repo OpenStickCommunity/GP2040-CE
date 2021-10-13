@@ -30,32 +30,32 @@ AnimationHotkey animationHotkeys(MPG *gamepad)
 		if (gamepad->pressedB3())
 		{
 			action = HOTKEY_LEDS_ANIMATION_UP;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_B3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_B3 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedB1())
 		{
 			action = HOTKEY_LEDS_ANIMATION_DOWN;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_B1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_B1 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedB4())
 		{
 			action = HOTKEY_LEDS_BRIGHTNESS_UP;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_B4 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_B4 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedB2())
 		{
 			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_B2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_B2 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedR1())
 		{
 			action = HOTKEY_LEDS_PARAMETER_UP;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_R1 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_R1 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedR2())
 		{
 			action = HOTKEY_LEDS_PARAMETER_DOWN;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_R2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_R2 | gamepad->f1Mask);
 		}
 	}
 

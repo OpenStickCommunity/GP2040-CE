@@ -42,7 +42,7 @@ class FlashPROM
 		}
 
 	private:
-		uint8_t cache[EEPROM_SIZE_BYTES] = { };
+		static uint8_t cache[EEPROM_SIZE_BYTES];
 };
 
 static FlashPROM EEPROM;

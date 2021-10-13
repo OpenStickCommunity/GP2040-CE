@@ -26,9 +26,9 @@
 #define PIN_BUTTON_S1   5
 #define PIN_BUTTON_S2   6
 #define PIN_BUTTON_L3   21
-#define PIN_BUTTON_R3   22
+#define PIN_BUTTON_R3   20
 #define PIN_BUTTON_A1   4
-#define PIN_BUTTON_A2   20
+#define PIN_BUTTON_A2   22
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
