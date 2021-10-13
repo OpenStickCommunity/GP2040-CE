@@ -1,6 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ *
+ * Custom config for a modded Fightboard / Fightboard MX using an ItsyBitsy RP2040.
+ *
  */
 
 #ifndef FIGHTBOARD_CONFIG_H_
