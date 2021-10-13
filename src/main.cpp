@@ -20,7 +20,11 @@
 #include "AnimationStation.hpp"
 #include "AnimationStorage.hpp"
 #include "Pixel.hpp"
+#ifdef LED_FORMAT
+NeoPico leds(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels), LED_FORMAT);
+#else
 NeoPico leds(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels));
+#endif
 AnimationStation as(pixels);
 queue_t animationQueue;
 queue_t animationSaveQueue;
@@ -92,14 +96,17 @@ void loop()
 #endif
 
 	gamepad.hotkey();
+#ifdef BOARD_LEDS_PIN
+	AnimationHotkey action = animationHotkeys(&gamepad);
+	if (action != HOTKEY_LEDS_NONE)
+		queue_try_add(&animationQueue, &action);
+#endif
+
 	gamepad.process();
 	report = gamepad.getReport();
 	send_report(report, reportSize);
 
 #ifdef BOARD_LEDS_PIN
-	AnimationHotkey action = animationHotkeys(&gamepad);
-	if (action != HOTKEY_LEDS_NONE)
-		queue_try_add(&animationQueue, &action);
 	if (queue_try_remove(&animationSaveQueue, &saveValue))
 		AnimationStore.save();
 #endif

@@ -6,6 +6,8 @@
 #include <GamepadStorage.h>
 #include "FlashPROM.h"
 #include "BoardConfig.h"
+#include "Animation.hpp"
+#include "NeoPico.hpp"
 
 /* Gamepad stuffs */
 
@@ -75,6 +77,11 @@ void AnimationStorage::setBrightness(uint8_t brightness)
 void AnimationStorage::setup(AnimationStation *as)
 {
 	this->as = as;
+#ifdef LED_FORMAT
+	Animation::format = LED_FORMAT;
+#else
+	Animation::format = LED_FORMAT_GRB;
+#endif
 	AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM, LED_BRIGHTNESS_STEPS);
 	AnimationStation::SetBrightness(this->getBrightness());
 	as->SetMode(getMode());

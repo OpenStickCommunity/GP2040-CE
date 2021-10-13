@@ -33,15 +33,16 @@
 #define BOARD_LEDS_PIN 26
 #define LED_BRIGHTNESS_MAXIMUM 100
 #define LED_BRIGHTNESS_STEPS 5
+#define LED_FORMAT LED_FORMAT_GRBW
 
 #define LEDS_BUTTON_03   0
 #define LEDS_BUTTON_04   1
 #define LEDS_BUTTON_06   2
 #define LEDS_BUTTON_05   3
-#define LEDS_BUTTON_01   4
-#define LEDS_BUTTON_02   5
-#define LEDS_BUTTON_08   6
-#define LEDS_BUTTON_07   7
+#define LEDS_BUTTON_07   4
+#define LEDS_BUTTON_08   5
+#define LEDS_BUTTON_02   6
+#define LEDS_BUTTON_01   7
 #define LEDS_DPAD_RIGHT  8
 #define LEDS_DPAD_DOWN   9
 #define LEDS_DPAD_LEFT   10
