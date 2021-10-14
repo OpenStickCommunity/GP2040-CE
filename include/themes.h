@@ -10,10 +10,8 @@
 #include <MPG.h>
 #include "AnimationStation.hpp"
 
-extern const std::vector<Pixel> pixels;
-
 static StaticTheme themeStaticRainbow(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DL, ColorRed },
 		{ GAMEPAD_MASK_DD, ColorOrange },
@@ -31,7 +29,7 @@ static StaticTheme themeStaticRainbow(
 );
 
 static StaticTheme themeGuiltyGearTypeA(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -46,7 +44,7 @@ static StaticTheme themeGuiltyGearTypeA(
 );
 
 static StaticTheme themeGuiltyGearTypeD(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -61,7 +59,7 @@ static StaticTheme themeGuiltyGearTypeD(
 );
 
 static StaticTheme themeGuiltyGearCustom(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -77,7 +75,7 @@ static StaticTheme themeGuiltyGearCustom(
 );
 
 static StaticTheme themeNeoGeo(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -91,7 +89,7 @@ static StaticTheme themeNeoGeo(
 );
 
 static StaticTheme themeNeoGeoCurved(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -105,7 +103,7 @@ static StaticTheme themeNeoGeoCurved(
 );
 
 static StaticTheme themeNeoGeoModern(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -119,7 +117,7 @@ static StaticTheme themeNeoGeoModern(
 );
 
 static StaticTheme themeSixButtonFighter(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -135,7 +133,7 @@ static StaticTheme themeSixButtonFighter(
 );
 
 static StaticTheme themeSixButtonFighterPlus(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -153,7 +151,7 @@ static StaticTheme themeSixButtonFighterPlus(
 );
 
 static StaticTheme themeSuperFamicom(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -171,7 +169,7 @@ static StaticTheme themeSuperFamicom(
 );
 
 static StaticTheme themeXbox(
-	pixels,
+	matrix,
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },

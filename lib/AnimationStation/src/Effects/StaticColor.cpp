@@ -1,13 +1,18 @@
 #include "StaticColor.hpp"
 
-StaticColor::StaticColor(std::vector<Pixel> pixels, RGB color) : Animation(pixels), color(color) {
+StaticColor::StaticColor(PixelMatrix &matrix, RGB color) : Animation(matrix), color(color) {
 
 }
 
 void StaticColor::Animate(RGB (&frame)[100]) {
-  for (size_t i = 0; i != pixels.size(); i++) {
-    for (size_t j = 0; j != pixels[i].positions.size(); j++) {
-      frame[pixels[i].positions[j]] = color;
+  for (size_t r = 0; r != matrix->pixels.size(); r++) {
+    for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
+      if (matrix->pixels[r][c].index == NO_PIXEL.index)
+        continue;
+
+      for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+        frame[matrix->pixels[r][c].positions[p]] = color;
+      }
     }
   }
 }

@@ -49,20 +49,50 @@
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
-const static std::vector<Pixel> pixels =
+static std::vector<std::vector<Pixel>> pixels =
 {
-	{ .index = LEDS_DPAD_LEFT,  .mask = GAMEPAD_MASK_DL, .positions = { LEDS_DPAD_LEFT } },
-	{ .index = LEDS_DPAD_DOWN,  .mask = GAMEPAD_MASK_DD, .positions = { LEDS_DPAD_DOWN } },
-	{ .index = LEDS_DPAD_RIGHT, .mask = GAMEPAD_MASK_DR, .positions = { LEDS_DPAD_RIGHT } },
-	{ .index = LEDS_DPAD_UP,    .mask = GAMEPAD_MASK_DU, .positions = { LEDS_DPAD_UP } },
-	{ .index = LEDS_BUTTON_03,  .mask = GAMEPAD_MASK_B3, .positions = { LEDS_BUTTON_03 } },
-	{ .index = LEDS_BUTTON_04,  .mask = GAMEPAD_MASK_B4, .positions = { LEDS_BUTTON_04 } },
-	{ .index = LEDS_BUTTON_06,  .mask = GAMEPAD_MASK_R1, .positions = { LEDS_BUTTON_06 } },
-	{ .index = LEDS_BUTTON_05,  .mask = GAMEPAD_MASK_L1, .positions = { LEDS_BUTTON_05 } },
-	{ .index = LEDS_BUTTON_01,  .mask = GAMEPAD_MASK_B1, .positions = { LEDS_BUTTON_01 } },
-	{ .index = LEDS_BUTTON_02,  .mask = GAMEPAD_MASK_B2, .positions = { LEDS_BUTTON_02 } },
-	{ .index = LEDS_BUTTON_08,  .mask = GAMEPAD_MASK_R2, .positions = { LEDS_BUTTON_08 } },
-	{ .index = LEDS_BUTTON_07,  .mask = GAMEPAD_MASK_L2, .positions = { LEDS_BUTTON_07 } },
+		{
+			Pixel(LEDS_DPAD_LEFT, GAMEPAD_MASK_DL),
+			NO_PIXEL,
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_DPAD_DOWN, GAMEPAD_MASK_DD),
+			NO_PIXEL,
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_DPAD_RIGHT, GAMEPAD_MASK_DR),
+			NO_PIXEL,
+			NO_PIXEL,
+		},
+		{
+			NO_PIXEL,
+			NO_PIXEL,
+			Pixel(LEDS_DPAD_UP,   GAMEPAD_MASK_DU),
+		},
+		{
+			Pixel(LEDS_BUTTON_03, GAMEPAD_MASK_B3),
+			Pixel(LEDS_BUTTON_01, GAMEPAD_MASK_B1),
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_BUTTON_04, GAMEPAD_MASK_B4),
+			Pixel(LEDS_BUTTON_02, GAMEPAD_MASK_B2),
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_BUTTON_06, GAMEPAD_MASK_R1),
+			Pixel(LEDS_BUTTON_08, GAMEPAD_MASK_R2),
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_BUTTON_05, GAMEPAD_MASK_L1),
+			Pixel(LEDS_BUTTON_07, GAMEPAD_MASK_L2),
+			NO_PIXEL,
+		},
 };
+
+static PixelMatrix matrix(pixels, 1);
 
 #endif

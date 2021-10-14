@@ -21,11 +21,11 @@
 #include "AnimationStorage.hpp"
 #include "Pixel.hpp"
 #ifdef LED_FORMAT
-NeoPico leds(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels), LED_FORMAT);
+NeoPico leds(BOARD_LEDS_PIN, matrix.getLedCount(), LED_FORMAT);
 #else
-NeoPico leds(BOARD_LEDS_PIN, Pixel::getPixelCount(pixels));
+NeoPico leds(BOARD_LEDS_PIN, matrix.getLedCount());
 #endif
-AnimationStation as(pixels);
+AnimationStation as(matrix);
 queue_t animationQueue;
 queue_t animationSaveQueue;
 #endif

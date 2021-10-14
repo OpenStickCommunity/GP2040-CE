@@ -92,14 +92,14 @@ static const RGB ColorMagenta(255, 0, 128);
 
 class Animation {
 public:
-  Animation(std::vector<Pixel> pixels);
+  Animation(PixelMatrix &matrix);
 
   static LEDFormat format;
 
   virtual void Animate(RGB (&frame)[100]) = 0;
   bool isComplete();
 protected:
-  std::vector<Pixel> pixels;
+  PixelMatrix *matrix;
   int currentLoop = 0;
   int totalLoops;
   bool baseAnimation = true;

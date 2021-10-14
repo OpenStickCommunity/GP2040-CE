@@ -12,10 +12,11 @@
 
 void configureAnimations(AnimationStation *as)
 {
-	as->AddAnimation(new StaticColor(pixels, ColorBlack));
-	as->AddAnimation(new StaticColor(pixels, LEDS_STATIC_COLOR_COLOR));
-	as->AddAnimation(new Rainbow(pixels, LEDS_RAINBOW_CYCLE_TIME));
-	as->AddAnimation(new Chase(pixels, LEDS_CHASE_CYCLE_TIME));
+
+	as->AddAnimation(new StaticColor(matrix, ColorBlack));
+	as->AddAnimation(new StaticColor(matrix, LEDS_STATIC_COLOR_COLOR));
+	as->AddAnimation(new Rainbow(matrix, LEDS_RAINBOW_CYCLE_TIME));
+	as->AddAnimation(new Chase(matrix, LEDS_CHASE_CYCLE_TIME));
 
 	for (size_t i = 0; i < customThemes.size(); i++)
 		as->AddAnimation(&customThemes[i]);
@@ -27,25 +28,25 @@ AnimationHotkey animationHotkeys(MPG *gamepad)
 
 	if (gamepad->pressedF1())
 	{
-		if (gamepad->pressedB3())
+		if (gamepad->pressedB1())
 		{
 			action = HOTKEY_LEDS_ANIMATION_UP;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_B3 | gamepad->f1Mask);
-		}
-		else if (gamepad->pressedB1())
-		{
-			action = HOTKEY_LEDS_ANIMATION_DOWN;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B1 | gamepad->f1Mask);
 		}
-		else if (gamepad->pressedB4())
+		else if (gamepad->pressedB3())
 		{
-			action = HOTKEY_LEDS_BRIGHTNESS_UP;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_B4 | gamepad->f1Mask);
+			action = HOTKEY_LEDS_ANIMATION_DOWN;
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_B3 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedB2())
 		{
-			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
+			action = HOTKEY_LEDS_BRIGHTNESS_UP;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B2 | gamepad->f1Mask);
+		}
+		else if (gamepad->pressedB4())
+		{
+			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_B4 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedR1())
 		{

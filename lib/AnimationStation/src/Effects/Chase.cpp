@@ -1,6 +1,6 @@
 #include "Chase.hpp"
 
-Chase::Chase(std::vector<Pixel> pixels, uint16_t cycleTime) : Animation(pixels), cycleTime(cycleTime) {
+Chase::Chase(PixelMatrix &matrix, uint16_t cycleTime) : Animation(matrix), cycleTime(cycleTime) {
 
 }
 
@@ -9,22 +9,27 @@ void Chase::Animate(RGB (&frame)[100]) {
     return;
   }
 
-  for (size_t i = 0; i != pixels.size(); i++) {
-    if (this->IsChasePixel(pixels[i].index)) {
-      RGB color = RGB::wheel(this->WheelFrame(i));
-      for (size_t j = 0; j != pixels[i].positions.size(); j++) {
-        frame[pixels[i].positions[j]] = color;
-      }
-    } else {
-      for (size_t j = 0; j != pixels[i].positions.size(); j++) {
-        frame[pixels[i].positions[j]] = ColorBlack;
+  for (size_t r = 0; r != matrix->pixels.size(); r++) {
+    for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
+      if (matrix->pixels[r][c].index == NO_PIXEL.index)
+        continue;
+
+      if (this->IsChasePixel(matrix->pixels[r][c].index)) {
+        RGB color = RGB::wheel(this->WheelFrame(matrix->pixels[r][c].index));
+        for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+          frame[matrix->pixels[r][c].positions[p]] = color;
+        }
+      } else {
+        for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+          frame[matrix->pixels[r][c].positions[p]] = ColorBlack;
+        }
       }
     }
   }
 
   currentPixel++;
 
-  if (currentPixel > pixels.size() - 1) {
+  if (currentPixel > matrix->getPixelCount() - 1) {
     currentPixel = 0;
   }
 
@@ -59,8 +64,8 @@ bool Chase::IsChasePixel(int i) {
 
 int Chase::WheelFrame(int i) {
   int frame = this->currentFrame;
-
-  if (i == (this->currentPixel - 1) % pixels.size()) {
+  int pixelCount = matrix->getPixelCount();
+  if (i == (this->currentPixel - 1) % pixelCount) {
     if (this->reverse) {
       frame = frame + 16;
     }
@@ -69,7 +74,7 @@ int Chase::WheelFrame(int i) {
     }
   }
 
-  if (i == (this->currentPixel - 2) % pixels.size()) {
+  if (i == (this->currentPixel - 2) % pixelCount) {
     if (this->reverse) {
       frame = frame + 32;
     }

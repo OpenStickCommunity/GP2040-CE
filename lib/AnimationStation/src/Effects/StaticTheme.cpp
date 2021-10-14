@@ -1,21 +1,24 @@
 #include "StaticTheme.hpp"
 
-StaticTheme::StaticTheme(std::vector<Pixel> pixels, std::map<uint32_t, RGB> theme, RGB defaultColor)
-  : Animation(pixels), theme(theme), defaultColor(defaultColor) { }
+StaticTheme::StaticTheme(PixelMatrix &matrix, std::map<uint32_t, RGB> theme, RGB defaultColor)
+  : Animation(matrix), theme(theme), defaultColor(defaultColor) { }
 
 void StaticTheme::Animate(RGB (&frame)[100]) {
-  for (size_t i = 0; i != pixels.size(); i++) {
-    bool found = false;
+  for (size_t r = 0; r != matrix->pixels.size(); r++) {
+    for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
+      if (matrix->pixels[r][c].index == NO_PIXEL.index)
+        continue;
 
-    auto itr = theme.find(pixels[i].mask);
-    if (itr != theme.end()) {
-      for (size_t j = 0; j != pixels[i].positions.size(); j++) {
-        frame[pixels[i].positions[j]] = itr->second;
+      auto itr = theme.find(matrix->pixels[r][c].mask);
+      if (itr != theme.end()) {
+        for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+          frame[matrix->pixels[r][c].positions[p]] = itr->second;
+        }
       }
-    }
-    else {
-      for (size_t j = 0; j != pixels[i].positions.size(); j++) {
-        frame[pixels[i].positions[j]] = defaultColor;
+      else {
+        for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+          frame[matrix->pixels[r][c].positions[p]] = defaultColor;
+        }
       }
     }
   }

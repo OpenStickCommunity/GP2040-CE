@@ -9,7 +9,7 @@
 
 class Chase : public Animation {
 public:
-  Chase(std::vector<Pixel> pixels, uint16_t cycleTime = 85);
+  Chase(PixelMatrix &matrix, uint16_t cycleTime = 85);
 
   void Animate(RGB (&frame)[100]);
 

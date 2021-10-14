@@ -26,9 +26,8 @@
 #define LEDS_STATIC_COLOR_COLOR ColorRed
 #endif
 
-extern const std::vector<Pixel> pixels;
-
 void configureAnimations(AnimationStation *as);
 AnimationHotkey animationHotkeys(MPG *gamepad);
+extern PixelMatrix matrix;
 
 #endif

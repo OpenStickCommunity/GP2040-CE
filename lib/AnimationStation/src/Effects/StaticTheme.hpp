@@ -11,7 +11,7 @@
 
 class StaticTheme : public Animation {
 public:
-  StaticTheme(std::vector<Pixel> pixels, std::map<uint32_t, RGB> theme, RGB defaultColor = ColorBlack);
+  StaticTheme(PixelMatrix &matrix, std::map<uint32_t, RGB> theme, RGB defaultColor = ColorBlack);
 
   void Animate(RGB (&frame)[100]);
   std::map<uint32_t, RGB> theme;

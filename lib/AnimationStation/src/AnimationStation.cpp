@@ -15,7 +15,7 @@ absolute_time_t AnimationStation::nextAnimationChange = 0;
 absolute_time_t AnimationStation::nextBrightnessChange = 0;
 StaticColor *staticColor;
 
-AnimationStation::AnimationStation(std::vector<Pixel> pixels) : pixels(pixels) {
+AnimationStation::AnimationStation(PixelMatrix matrix) : matrix(matrix) {
   AnimationStation::SetBrightness(1);
 }
 

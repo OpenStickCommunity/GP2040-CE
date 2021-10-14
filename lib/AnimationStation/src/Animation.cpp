@@ -2,7 +2,7 @@
 
 LEDFormat Animation::format;
 
-Animation::Animation(std::vector<Pixel> pixels) : pixels(pixels) {
+Animation::Animation(PixelMatrix &matrix) : matrix(&matrix) {
   this->totalLoops = 1;
 }
 

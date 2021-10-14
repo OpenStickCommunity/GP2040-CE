@@ -9,7 +9,7 @@
 
 class Rainbow : public Animation {
 public:
-  Rainbow(std::vector<Pixel> pixels, uint16_t cycleTime = 40);
+  Rainbow(PixelMatrix &matrix, uint16_t cycleTime = 40);
 
   void Animate(RGB (&frame)[100]);
 protected:
