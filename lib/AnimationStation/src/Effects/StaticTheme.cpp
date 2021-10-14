@@ -23,3 +23,11 @@ void StaticTheme::Animate(RGB (&frame)[100]) {
     }
   }
 }
+
+void StaticTheme::ParameterUp() {
+
+}
+
+void StaticTheme::ParameterDown() {
+  
+}

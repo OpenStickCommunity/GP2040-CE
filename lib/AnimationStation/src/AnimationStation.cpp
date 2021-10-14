@@ -11,16 +11,11 @@ uint8_t AnimationStation::brightnessMax = 100;
 uint8_t AnimationStation::brightnessSteps = 5;
 uint8_t AnimationStation::brightness = 0;
 float AnimationStation::brightnessX = 0;
-absolute_time_t AnimationStation::nextAnimationChange = 0;
-absolute_time_t AnimationStation::nextBrightnessChange = 0;
+absolute_time_t AnimationStation::nextChange = 0;
 StaticColor *staticColor;
 
 AnimationStation::AnimationStation(PixelMatrix matrix) : matrix(matrix) {
   AnimationStation::SetBrightness(1);
-}
-
-void AnimationStation::AddAnimation(Animation *animation) {
-  animations.push_back(animation);
 }
 
 void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
@@ -29,6 +24,10 @@ void AnimationStation::ConfigureBrightness(uint8_t max, uint8_t steps) {
 }
 
 void AnimationStation::HandleEvent(AnimationHotkey action) {
+  if (action == HOTKEY_LEDS_NONE || !time_reached(AnimationStation::nextChange)) {
+    return;
+  }
+
   if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
     AnimationStation::IncreaseBrightness();
   }
@@ -38,38 +37,83 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
   }
 
   if (action == HOTKEY_LEDS_ANIMATION_UP) {
-    ChangeAnimation();
+    ChangeAnimation(1);
   }
 
   if (action == HOTKEY_LEDS_ANIMATION_DOWN) {
-    ChangeAnimation();
+    ChangeAnimation(-1);
+  }
+
+  if (action == HOTKEY_LEDS_PARAMETER_UP) {
+    this->baseAnimation->ParameterUp();
+  }
+
+  if (action == HOTKEY_LEDS_PARAMETER_DOWN) {
+    this->baseAnimation->ParameterDown();
+  }
+  
+  if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) {
+    this->buttonAnimation->ParameterUp();
+  }
+
+  if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) {
+    this->buttonAnimation->ParameterDown();
+  }
+
+  AnimationStation::nextChange = make_timeout_time_ms(250);
+}
+
+void AnimationStation::ChangeAnimation(int changeSize) {
+  this->SetMode(this->AdjustIndex(changeSize));
+}
+
+uint16_t AnimationStation::AdjustIndex(int changeSize) {
+  uint16_t newIndex = this->baseAnimationIndex + changeSize;
+
+  if (newIndex >= TOTAL_EFFECTS) {
+    return 0;
+  }
+
+  if (newIndex < 0) {
+    return (TOTAL_EFFECTS - 1);
+  }
+
+  return newIndex;
+}
+
+void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
+  if (pressed != this->lastPressed) {
+    this->lastPressed = pressed;
+    if (this->buttonAnimation == nullptr) {
+      this->buttonAnimation = new StaticColor(pressed);
+    }
+    else {
+      this->buttonAnimation->UpdatePixels(pressed);
+    }
   }
 }
 
-void AnimationStation::ChangeAnimation() {
-  if (!time_reached(AnimationStation::nextAnimationChange)) {
-    return;
+void AnimationStation::ClearPressed() {
+  if (this->buttonAnimation != nullptr) {
+    this->buttonAnimation->ClearPixels();
   }
-
-  animationIndex = (animationIndex + 1) % animations.size();
-  AnimationStation::nextAnimationChange = make_timeout_time_ms(250);
+  this->lastPressed.clear();
 }
 
 void AnimationStation::Animate() {
-  if (animations.size() == 0) {
+  if (baseAnimation == nullptr) {
     this->Clear();
     return;
   }
 
-  Animation *animation = animations[animationIndex];
-  if (!animation->isComplete()) {
-    animation->Animate(frame);
+  baseAnimation->Animate(this->frame);
+
+  if (buttonAnimation != nullptr) {
+    buttonAnimation->Animate(this->frame);
   }
 }
 
-void AnimationStation::Clear() {
-  memset(frame, 0, sizeof(frame));
-}
+void AnimationStation::Clear() { memset(frame, 0, sizeof(frame)); }
 
 float AnimationStation::GetBrightnessX() {
   return AnimationStation::brightnessX;
@@ -79,12 +123,31 @@ uint8_t AnimationStation::GetBrightness() {
   return AnimationStation::brightness;
 }
 
-uint8_t AnimationStation::GetMode() {
-  return animationIndex;
-}
+uint8_t AnimationStation::GetMode() { return this->baseAnimationIndex; }
 
 void AnimationStation::SetMode(uint8_t mode) {
-  animationIndex = mode;
+  this->baseAnimationIndex = mode;
+  AnimationEffects newEffect =
+      static_cast<AnimationEffects>(this->baseAnimationIndex);
+
+  if (this->baseAnimation != nullptr) {
+    delete this->baseAnimation;
+  }
+
+  switch (newEffect) {
+  case AnimationEffects::EFFECT_STATIC_COLOR:
+    this->baseAnimation = new StaticColor(pixels);
+    break;
+  case AnimationEffects::EFFECT_RAINBOW:
+    this->baseAnimation = new Rainbow(pixels);
+    break;
+  case AnimationEffects::EFFECT_CHASE:
+    this->baseAnimation = new Chase(pixels);
+    break;
+  default:
+    this->baseAnimation = new StaticColor(pixels, 0);
+    break;
+  }
 }
 
 void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
@@ -93,8 +156,10 @@ void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
 }
 
 void AnimationStation::SetBrightness(uint8_t brightness) {
-  AnimationStation::brightness = (brightness > brightnessSteps) ? brightnessSteps : brightness;
-  AnimationStation::brightnessX = (AnimationStation::brightness * getBrightnessStepSize()) / 255.0F;
+  AnimationStation::brightness =
+      (brightness > brightnessSteps) ? brightnessSteps : brightness;
+  AnimationStation::brightnessX =
+      (AnimationStation::brightness * getBrightnessStepSize()) / 255.0F;
 
   if (AnimationStation::brightnessX > 1)
     AnimationStation::brightnessX = 1;
@@ -102,28 +167,14 @@ void AnimationStation::SetBrightness(uint8_t brightness) {
     AnimationStation::brightnessX = 0;
 }
 
-void AnimationStation::SetStaticColor(RGB color) {
-  staticColor->SetColor(color);
-}
-
 void AnimationStation::DecreaseBrightness() {
-  if (!time_reached(AnimationStation::nextBrightnessChange))
-    return;
-
   if (AnimationStation::brightness > 0)
     AnimationStation::SetBrightness(--AnimationStation::brightness);
-
-  AnimationStation::nextBrightnessChange = make_timeout_time_ms(250);
 }
 
 void AnimationStation::IncreaseBrightness() {
-  if (!time_reached(AnimationStation::nextBrightnessChange))
-    return;
-
   if (AnimationStation::brightness < getBrightnessStepSize())
     AnimationStation::SetBrightness(++AnimationStation::brightness);
   else if (AnimationStation::brightness > getBrightnessStepSize())
     AnimationStation::SetBrightness(brightnessSteps);
-
-  AnimationStation::nextBrightnessChange = make_timeout_time_ms(250);
 }

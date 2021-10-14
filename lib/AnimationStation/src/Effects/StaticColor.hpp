@@ -9,14 +9,19 @@
 class StaticColor : public Animation {
 public:
   StaticColor(PixelMatrix &matrix, RGB color);
+  ~StaticColor() {};
 
   void Animate(RGB (&frame)[100]);
+  void ParameterUp();
+  void ParameterDown();
 
-  void SetColor(RGB color) {
-    this->color = color;
+  static void SetDefaultColorIndex(int colorIndex) {
+    defaultColorIndex = colorIndex;
   }
+
 protected:
-  RGB color;
+  static int defaultColorIndex;
+  int colorIndex;
 };
 
 #endif

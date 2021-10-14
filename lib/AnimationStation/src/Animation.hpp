@@ -1,20 +1,18 @@
 #ifndef _ANIMATION_H_
 #define _ANIMATION_H_
 
+#include "Pixel.hpp"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
 #include "NeoPico.hpp"
-#include "Pixel.hpp"
 
-struct RGB
-{
-  RGB()
-    : r(0), g(0), b(0) { }
 
-  RGB(uint8_t r, uint8_t g, uint8_t b)
-    : r(r), g(g), b(b) { }
+struct RGB {
+  RGB() : r(0), g(0), b(0) {}
+
+  RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
 
   RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
     : r(r), g(g), b(b), w(w) { }
@@ -72,7 +70,6 @@ struct RGB
       }
     }
   }
-
 };
 
 static const RGB ColorBlack(0, 0, 0);
@@ -90,19 +87,28 @@ static const RGB ColorPurple(128, 0, 255);
 static const RGB ColorPink(255, 0, 255);
 static const RGB ColorMagenta(255, 0, 128);
 
+static const std::vector<RGB> colors = {
+    ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
+    ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
+    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta};
+
 class Animation {
 public:
   Animation(PixelMatrix &matrix);
+  void UpdatePixels(std::vector<Pixel> pixels);
+  void ClearPixels();
+  virtual ~Animation(){};
 
   static LEDFormat format;
 
   virtual void Animate(RGB (&frame)[100]) = 0;
+  virtual void ParameterUp() = 0;
+  virtual void ParameterDown() = 0;
   bool isComplete();
+
 protected:
   PixelMatrix *matrix;
   int currentLoop = 0;
-  int totalLoops;
-  bool baseAnimation = true;
 };
 
 #endif

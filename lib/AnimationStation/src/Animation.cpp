@@ -3,13 +3,12 @@
 LEDFormat Animation::format;
 
 Animation::Animation(PixelMatrix &matrix) : matrix(&matrix) {
-  this->totalLoops = 1;
 }
 
-bool Animation::isComplete() {
-  if (this->baseAnimation || this->currentLoop < this->totalLoops) {
-    return false;
-  }
+void Animation::UpdatePixels(std::vector<Pixel> pixels) {
+  this->pixels = pixels;
+}
 
-  return true;
+void Animation::ClearPixels() {
+  this->pixels.clear();
 }

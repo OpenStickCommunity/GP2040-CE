@@ -7,10 +7,10 @@
 #define LEDS_H_
 
 #include <vector>
-#include <MPG.h>
-#include "enums.h"
 #include "AnimationStation.hpp"
 #include "BoardConfig.h"
+#include "gamepad.hpp"
+#include "enums.h"
 
 #define LED_BUTTON_COUNT 12
 
@@ -79,10 +79,27 @@
 #endif
 
 void configureAnimations(AnimationStation *as);
-AnimationHotkey animationHotkeys(MPG *gamepad);
+AnimationHotkey animationHotkeys(Gamepad *gamepad);
 PixelMatrix createLedButtonLayout(LedLayout layout, int ledsPerPixel);
 PixelMatrix createLedButtonLayout(LedLayout layout, std::vector<uint8_t> *positions);
 
 extern PixelMatrix matrix;
+
+class GPModule {
+public:
+  virtual void setup();
+  virtual void loop();
+  virtual void process(Gamepad *gamepad);
+  absolute_time_t nextRunTime;
+ 	const uint32_t intervalMS = 10;
+};
+class LEDs : public GPModule {
+public:
+  void setup();
+  void loop();
+  void trySave();
+  void process(Gamepad *gamepad);
+	uint32_t frame[100];
+};
 
 #endif
