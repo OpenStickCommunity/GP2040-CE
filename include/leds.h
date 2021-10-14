@@ -80,8 +80,8 @@
 
 void configureAnimations(AnimationStation *as);
 AnimationHotkey animationHotkeys(MPG *gamepad);
-PixelMatrix createLedButtonLayout(LedButtonLayout layout, int ledsPerPixel);
-PixelMatrix createLedButtonLayout(LedButtonLayout layout, std::vector<uint8_t> *positions);
+PixelMatrix createLedButtonLayout(LedLayout layout, int ledsPerPixel);
+PixelMatrix createLedButtonLayout(LedLayout layout, std::vector<uint8_t> *positions);
 
 extern PixelMatrix matrix;
 

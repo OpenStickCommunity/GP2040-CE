@@ -62,22 +62,13 @@ AnimationHotkey animationHotkeys(MPG *gamepad)
 	return action;
 }
 
-PixelMatrix createStandardLayout(std::vector<uint8_t> *positions)
+/**
+ * @brief Create an LED layout using a 2x4 matrix.
+ */
+PixelMatrix createLedLayoutArcadeButtons(std::vector<uint8_t> *positions)
 {
 	std::vector<std::vector<Pixel>> pixels =
 	{
-		{
-			NO_PIXEL,
-			Pixel(LEDS_DPAD_LEFT, GAMEPAD_MASK_DL, positions[LEDS_DPAD_LEFT]),
-		},
-		{
-			Pixel(LEDS_DPAD_UP,   GAMEPAD_MASK_DU, positions[LEDS_DPAD_UP]),
-			Pixel(LEDS_DPAD_DOWN, GAMEPAD_MASK_DD, positions[LEDS_DPAD_DOWN]),
-		},
-		{
-			NO_PIXEL,
-			Pixel(LEDS_DPAD_RIGHT, GAMEPAD_MASK_DR, positions[LEDS_DPAD_RIGHT]),
-		},
 		{
 			Pixel(LEDS_BUTTON_B3, GAMEPAD_MASK_B3, positions[LEDS_BUTTON_B3]),
 			Pixel(LEDS_BUTTON_B1, GAMEPAD_MASK_B1, positions[LEDS_BUTTON_B1]),
@@ -99,7 +90,10 @@ PixelMatrix createStandardLayout(std::vector<uint8_t> *positions)
 	return PixelMatrix(pixels);
 }
 
-PixelMatrix createHitboxLayout(std::vector<uint8_t> *positions)
+/**
+ * @brief Create an LED layout using a 3x8 matrix.
+ */
+PixelMatrix createLedLayoutArcadeHitbox(std::vector<uint8_t> *positions)
 {
 	std::vector<std::vector<Pixel>> pixels =
 	{
@@ -148,7 +142,47 @@ PixelMatrix createHitboxLayout(std::vector<uint8_t> *positions)
 	return PixelMatrix(pixels);
 }
 
-PixelMatrix createLedButtonLayout(LedButtonLayout layout, int ledsPerPixel)
+/**
+ * @brief Create an LED layout using a 2x7 matrix.
+ */
+PixelMatrix createLedLayoutArcadeWasd(std::vector<uint8_t> *positions)
+{
+	std::vector<std::vector<Pixel>> pixels =
+	{
+		{
+			NO_PIXEL,
+			Pixel(LEDS_DPAD_LEFT, GAMEPAD_MASK_DL, positions[LEDS_DPAD_LEFT]),
+		},
+		{
+			Pixel(LEDS_DPAD_UP,   GAMEPAD_MASK_DU, positions[LEDS_DPAD_UP]),
+			Pixel(LEDS_DPAD_DOWN, GAMEPAD_MASK_DD, positions[LEDS_DPAD_DOWN]),
+		},
+		{
+			NO_PIXEL,
+			Pixel(LEDS_DPAD_RIGHT, GAMEPAD_MASK_DR, positions[LEDS_DPAD_RIGHT]),
+		},
+		{
+			Pixel(LEDS_BUTTON_B3, GAMEPAD_MASK_B3, positions[LEDS_BUTTON_B3]),
+			Pixel(LEDS_BUTTON_B1, GAMEPAD_MASK_B1, positions[LEDS_BUTTON_B1]),
+		},
+		{
+			Pixel(LEDS_BUTTON_B4, GAMEPAD_MASK_B4, positions[LEDS_BUTTON_B4]),
+			Pixel(LEDS_BUTTON_B2, GAMEPAD_MASK_B2, positions[LEDS_BUTTON_B2]),
+		},
+		{
+			Pixel(LEDS_BUTTON_R1, GAMEPAD_MASK_R1, positions[LEDS_BUTTON_R1]),
+			Pixel(LEDS_BUTTON_R2, GAMEPAD_MASK_R2, positions[LEDS_BUTTON_R2]),
+		},
+		{
+			Pixel(LEDS_BUTTON_L1, GAMEPAD_MASK_L1, positions[LEDS_BUTTON_L1]),
+			Pixel(LEDS_BUTTON_L2, GAMEPAD_MASK_L2, positions[LEDS_BUTTON_L2]),
+		},
+	};
+
+	return PixelMatrix(pixels);
+}
+
+PixelMatrix createLedButtonLayout(LedLayout layout, int ledsPerPixel)
 {
 	std::vector<uint8_t> positions[LED_BUTTON_COUNT];
 	for (int i = 0; i != LED_BUTTON_COUNT; i++)
@@ -161,15 +195,18 @@ PixelMatrix createLedButtonLayout(LedButtonLayout layout, int ledsPerPixel)
 	return createLedButtonLayout(layout, positions);
 }
 
-PixelMatrix createLedButtonLayout(LedButtonLayout layout, std::vector<uint8_t> *positions)
+PixelMatrix createLedButtonLayout(LedLayout layout, std::vector<uint8_t> *positions)
 {
 	switch (layout)
 	{
-		case LED_BUTTONS_STANDARD:
-			return createStandardLayout(positions);
+		case LED_LAYOUT_ARCADE_BUTTONS:
+			return createLedLayoutArcadeButtons(positions);
 
-		case LED_BUTTONS_HITBOX:
-			return createHitboxLayout(positions);
+		case LED_LAYOUT_ARCADE_HITBOX:
+			return createLedLayoutArcadeHitbox(positions);
+
+		case LED_LAYOUT_ARCADE_WASD:
+			return createLedLayoutArcadeWasd(positions);
 	}
 }
 
