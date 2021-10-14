@@ -28,25 +28,25 @@ AnimationHotkey animationHotkeys(MPG *gamepad)
 
 	if (gamepad->pressedF1())
 	{
-		if (gamepad->pressedB1())
+		if (gamepad->pressedB3())
 		{
 			action = HOTKEY_LEDS_ANIMATION_UP;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_B1 | gamepad->f1Mask);
-		}
-		else if (gamepad->pressedB3())
-		{
-			action = HOTKEY_LEDS_ANIMATION_DOWN;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B3 | gamepad->f1Mask);
 		}
-		else if (gamepad->pressedB2())
+		else if (gamepad->pressedB1())
 		{
-			action = HOTKEY_LEDS_BRIGHTNESS_UP;
-			gamepad->state.buttons &= ~(GAMEPAD_MASK_B2 | gamepad->f1Mask);
+			action = HOTKEY_LEDS_ANIMATION_DOWN;
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_B1 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedB4())
 		{
-			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
+			action = HOTKEY_LEDS_BRIGHTNESS_UP;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_B4 | gamepad->f1Mask);
+		}
+		else if (gamepad->pressedB2())
+		{
+			action = HOTKEY_LEDS_BRIGHTNESS_DOWN;
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_B2 | gamepad->f1Mask);
 		}
 		else if (gamepad->pressedR1())
 		{
