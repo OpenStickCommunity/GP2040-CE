@@ -2,7 +2,7 @@
 
 LEDFormat Animation::format;
 
-Animation::Animation(std::vector<Pixel> pixels) : pixels(pixels) {
+Animation::Animation(PixelMatrix &matrix) : matrix(&matrix) {
 }
 
 void Animation::UpdatePixels(std::vector<Pixel> pixels) {

@@ -13,6 +13,7 @@
 #include <GamepadEnums.h>
 #include <GamepadState.h>
 #include "Pixel.hpp"
+#include "enums.h"
 
 #define PIN_DPAD_UP     11
 #define PIN_DPAD_DOWN   9
@@ -33,40 +34,27 @@
 #define PIN_BUTTON_A1   14
 #define PIN_BUTTON_A2   1
 
-#define BOARD_LEDS_PIN 26
-#define LED_BRIGHTNESS_MAXIMUM 100
-#define LED_BRIGHTNESS_STEPS 5
-#define LED_FORMAT LED_FORMAT_GRBW
-
-#define LEDS_BUTTON_03   0
-#define LEDS_BUTTON_04   1
-#define LEDS_BUTTON_06   2
-#define LEDS_BUTTON_05   3
-#define LEDS_BUTTON_07   4
-#define LEDS_BUTTON_08   5
-#define LEDS_BUTTON_02   6
-#define LEDS_BUTTON_01   7
-#define LEDS_DPAD_RIGHT  8
-#define LEDS_DPAD_DOWN   9
-#define LEDS_DPAD_LEFT   10
-#define LEDS_DPAD_UP     11
-
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
-const static std::vector<Pixel> pixels =
-{
-	{ .index = LEDS_DPAD_LEFT,  .mask = GAMEPAD_MASK_DL, .positions = { LEDS_DPAD_LEFT } },
-	{ .index = LEDS_DPAD_DOWN,  .mask = GAMEPAD_MASK_DD, .positions = { LEDS_DPAD_DOWN } },
-	{ .index = LEDS_DPAD_RIGHT, .mask = GAMEPAD_MASK_DR, .positions = { LEDS_DPAD_RIGHT } },
-	{ .index = LEDS_DPAD_UP,    .mask = GAMEPAD_MASK_DU, .positions = { LEDS_DPAD_UP } },
-	{ .index = LEDS_BUTTON_03,  .mask = GAMEPAD_MASK_B3, .positions = { LEDS_BUTTON_03 } },
-	{ .index = LEDS_BUTTON_04,  .mask = GAMEPAD_MASK_B4, .positions = { LEDS_BUTTON_04 } },
-	{ .index = LEDS_BUTTON_06,  .mask = GAMEPAD_MASK_R1, .positions = { LEDS_BUTTON_06 } },
-	{ .index = LEDS_BUTTON_05,  .mask = GAMEPAD_MASK_L1, .positions = { LEDS_BUTTON_05 } },
-	{ .index = LEDS_BUTTON_01,  .mask = GAMEPAD_MASK_B1, .positions = { LEDS_BUTTON_01 } },
-	{ .index = LEDS_BUTTON_02,  .mask = GAMEPAD_MASK_B2, .positions = { LEDS_BUTTON_02 } },
-	{ .index = LEDS_BUTTON_08,  .mask = GAMEPAD_MASK_R2, .positions = { LEDS_BUTTON_08 } },
-	{ .index = LEDS_BUTTON_07,  .mask = GAMEPAD_MASK_L2, .positions = { LEDS_BUTTON_07 } },
-};
+#define BOARD_LEDS_PIN 26
+
+#define LED_BRIGHTNESS_MAXIMUM 255
+#define LED_BRIGHTNESS_STEPS 5
+#define LED_FORMAT LED_FORMAT_GRBW
+#define LED_LAYOUT LED_LAYOUT_ARCADE_WASD
+#define LEDS_PER_PIXEL 1
+
+#define LEDS_DPAD_LEFT  10
+#define LEDS_DPAD_DOWN   9
+#define LEDS_DPAD_RIGHT  8
+#define LEDS_DPAD_UP    11
+#define LEDS_BUTTON_B3   0
+#define LEDS_BUTTON_B4   1
+#define LEDS_BUTTON_R1   2
+#define LEDS_BUTTON_L1   3
+#define LEDS_BUTTON_B1   7
+#define LEDS_BUTTON_B2   6
+#define LEDS_BUTTON_R2   5
+#define LEDS_BUTTON_L2   4
 
 #endif

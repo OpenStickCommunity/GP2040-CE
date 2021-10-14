@@ -33,12 +33,21 @@ void LEDs::trySave() {
 	if (queue_try_remove(&animationSaveQueue, &saveValue))
 		AnimationStore.save();
 }
+  
 void LEDs::setup() {
   queue_init(&baseAnimationQueue, sizeof(AnimationHotkey), 1);
   queue_init(&buttonAnimationQueue, sizeof(GamepadState), 1);
 	queue_init(&animationSaveQueue, sizeof(int), 1);
 
   AnimationStore.setup(&as);
+}
+
+void configureAnimations(AnimationStation *as)
+{
+	as->AddAnimation(new StaticColor(matrix, ColorBlack));
+	as->AddAnimation(new StaticColor(matrix, LEDS_STATIC_COLOR_COLOR));
+	as->AddAnimation(new Rainbow(matrix, LEDS_RAINBOW_CYCLE_TIME));
+	as->AddAnimation(new Chase(matrix, LEDS_CHASE_CYCLE_TIME));
 }
 
 void configureAnimations() {
@@ -101,6 +110,154 @@ void LEDs::loop() {
   neopico.Show();
 
   this->nextRunTime = make_timeout_time_ms(LEDs::intervalMS);
+}
+
+/**
+ * @brief Create an LED layout using a 2x4 matrix.
+ */
+PixelMatrix createLedLayoutArcadeButtons(std::vector<uint8_t> *positions)
+{
+	std::vector<std::vector<Pixel>> pixels =
+	{
+		{
+			Pixel(LEDS_BUTTON_B3, GAMEPAD_MASK_B3, positions[LEDS_BUTTON_B3]),
+			Pixel(LEDS_BUTTON_B1, GAMEPAD_MASK_B1, positions[LEDS_BUTTON_B1]),
+		},
+		{
+			Pixel(LEDS_BUTTON_B4, GAMEPAD_MASK_B4, positions[LEDS_BUTTON_B4]),
+			Pixel(LEDS_BUTTON_B2, GAMEPAD_MASK_B2, positions[LEDS_BUTTON_B2]),
+		},
+		{
+			Pixel(LEDS_BUTTON_R1, GAMEPAD_MASK_R1, positions[LEDS_BUTTON_R1]),
+			Pixel(LEDS_BUTTON_R2, GAMEPAD_MASK_R2, positions[LEDS_BUTTON_R2]),
+		},
+		{
+			Pixel(LEDS_BUTTON_L1, GAMEPAD_MASK_L1, positions[LEDS_BUTTON_L1]),
+			Pixel(LEDS_BUTTON_L2, GAMEPAD_MASK_L2, positions[LEDS_BUTTON_L2]),
+		},
+	};
+
+	return PixelMatrix(pixels);
+}
+
+/**
+ * @brief Create an LED layout using a 3x8 matrix.
+ */
+PixelMatrix createLedLayoutArcadeHitbox(std::vector<uint8_t> *positions)
+{
+	std::vector<std::vector<Pixel>> pixels =
+	{
+		{
+			Pixel(LEDS_DPAD_LEFT, GAMEPAD_MASK_DL, positions[LEDS_DPAD_LEFT]),
+			NO_PIXEL,
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_DPAD_DOWN, GAMEPAD_MASK_DD, positions[LEDS_DPAD_DOWN]),
+			NO_PIXEL,
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_DPAD_RIGHT, GAMEPAD_MASK_DR, positions[LEDS_DPAD_RIGHT]),
+			NO_PIXEL,
+			NO_PIXEL,
+		},
+		{
+			NO_PIXEL,
+			NO_PIXEL,
+			Pixel(LEDS_DPAD_UP,   GAMEPAD_MASK_DU, positions[LEDS_DPAD_UP]),
+		},
+		{
+			Pixel(LEDS_BUTTON_B3, GAMEPAD_MASK_B3, positions[LEDS_BUTTON_B3]),
+			Pixel(LEDS_BUTTON_B1, GAMEPAD_MASK_B1, positions[LEDS_BUTTON_B1]),
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_BUTTON_B4, GAMEPAD_MASK_B4, positions[LEDS_BUTTON_B4]),
+			Pixel(LEDS_BUTTON_B2, GAMEPAD_MASK_B2, positions[LEDS_BUTTON_B2]),
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_BUTTON_R1, GAMEPAD_MASK_R1, positions[LEDS_BUTTON_R1]),
+			Pixel(LEDS_BUTTON_R2, GAMEPAD_MASK_R2, positions[LEDS_BUTTON_R2]),
+			NO_PIXEL,
+		},
+		{
+			Pixel(LEDS_BUTTON_L1, GAMEPAD_MASK_L1, positions[LEDS_BUTTON_L1]),
+			Pixel(LEDS_BUTTON_L2, GAMEPAD_MASK_L2, positions[LEDS_BUTTON_L2]),
+			NO_PIXEL,
+		},
+	};
+
+	return PixelMatrix(pixels);
+}
+
+/**
+ * @brief Create an LED layout using a 2x7 matrix.
+ */
+PixelMatrix createLedLayoutArcadeWasd(std::vector<uint8_t> *positions)
+{
+	std::vector<std::vector<Pixel>> pixels =
+	{
+		{
+			NO_PIXEL,
+			Pixel(LEDS_DPAD_LEFT, GAMEPAD_MASK_DL, positions[LEDS_DPAD_LEFT]),
+		},
+		{
+			Pixel(LEDS_DPAD_UP,   GAMEPAD_MASK_DU, positions[LEDS_DPAD_UP]),
+			Pixel(LEDS_DPAD_DOWN, GAMEPAD_MASK_DD, positions[LEDS_DPAD_DOWN]),
+		},
+		{
+			NO_PIXEL,
+			Pixel(LEDS_DPAD_RIGHT, GAMEPAD_MASK_DR, positions[LEDS_DPAD_RIGHT]),
+		},
+		{
+			Pixel(LEDS_BUTTON_B3, GAMEPAD_MASK_B3, positions[LEDS_BUTTON_B3]),
+			Pixel(LEDS_BUTTON_B1, GAMEPAD_MASK_B1, positions[LEDS_BUTTON_B1]),
+		},
+		{
+			Pixel(LEDS_BUTTON_B4, GAMEPAD_MASK_B4, positions[LEDS_BUTTON_B4]),
+			Pixel(LEDS_BUTTON_B2, GAMEPAD_MASK_B2, positions[LEDS_BUTTON_B2]),
+		},
+		{
+			Pixel(LEDS_BUTTON_R1, GAMEPAD_MASK_R1, positions[LEDS_BUTTON_R1]),
+			Pixel(LEDS_BUTTON_R2, GAMEPAD_MASK_R2, positions[LEDS_BUTTON_R2]),
+		},
+		{
+			Pixel(LEDS_BUTTON_L1, GAMEPAD_MASK_L1, positions[LEDS_BUTTON_L1]),
+			Pixel(LEDS_BUTTON_L2, GAMEPAD_MASK_L2, positions[LEDS_BUTTON_L2]),
+		},
+	};
+
+	return PixelMatrix(pixels);
+}
+
+PixelMatrix createLedButtonLayout(LedLayout layout, int ledsPerPixel)
+{
+	std::vector<uint8_t> positions[LED_BUTTON_COUNT];
+	for (int i = 0; i != LED_BUTTON_COUNT; i++)
+	{
+		positions[i].resize(ledsPerPixel);
+		for (int l = 0; l != ledsPerPixel; l++)
+			positions[i][l] = (i * ledsPerPixel) + l;
+	}
+
+	return createLedButtonLayout(layout, positions);
+}
+
+PixelMatrix createLedButtonLayout(LedLayout layout, std::vector<uint8_t> *positions)
+{
+	switch (layout)
+	{
+		case LED_LAYOUT_ARCADE_BUTTONS:
+			return createLedLayoutArcadeButtons(positions);
+
+		case LED_LAYOUT_ARCADE_HITBOX:
+			return createLedLayoutArcadeHitbox(positions);
+
+		case LED_LAYOUT_ARCADE_WASD:
+			return createLedLayoutArcadeWasd(positions);
+	}
 }
 
 AnimationHotkey animationHotkeys(Gamepad *gamepad) {

@@ -14,10 +14,9 @@
 #ifndef DEBUG_BOARD_CONFIG_H_
 #define DEBUG_BOARD_CONFIG_H_
 
-#include <vector>
 #include <GamepadEnums.h>
-#include <GamepadState.h>
-#include "Animation.hpp"
+#include "enums.h"
+#include "NeoPico.hpp"
 
 /* Mapped to pins on Waveshare IPS panel w/4 button + HAT */
 
@@ -43,39 +42,27 @@
 #define PIN_BUTTON_A1   28
 #define PIN_BUTTON_A2   0
 
+#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+
+#define BOARD_LEDS_PIN 22
+
+#define LED_BRIGHTNESS_MAXIMUM 50
+#define LED_BRIGHTNESS_STEPS 5
+#define LED_FORMAT LED_FORMAT_GRB
+#define LED_LAYOUT LED_LAYOUT_ARCADE_WASD
+#define LEDS_PER_PIXEL 4
+
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
 #define LEDS_DPAD_RIGHT  2
 #define LEDS_DPAD_UP     3
-#define LEDS_BUTTON_03   4
-#define LEDS_BUTTON_04   5
-#define LEDS_BUTTON_06   6
-#define LEDS_BUTTON_05   7
-#define LEDS_BUTTON_01   8
-#define LEDS_BUTTON_02   9
-#define LEDS_BUTTON_08   10
-#define LEDS_BUTTON_07   11
-
-#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
-
-#define BOARD_LEDS_PIN 22
-#define LED_BRIGHTNESS_MAXIMUM 50
-#define LED_BRIGHTNESS_STEPS 5
-
-const static std::vector<Pixel> pixels =
-{
-	{ .index = LEDS_DPAD_LEFT,  .mask = GAMEPAD_MASK_LEFT,  .positions = { 0, 1, 2, 3 } },
-	{ .index = LEDS_DPAD_DOWN,  .mask = GAMEPAD_MASK_DOWN,  .positions = { 4, 5, 6, 7 } },
-	{ .index = LEDS_DPAD_RIGHT, .mask = GAMEPAD_MASK_RIGHT, .positions = { 8, 9, 10, 11 } },
-	{ .index = LEDS_DPAD_UP,    .mask = GAMEPAD_MASK_UP,    .positions = { 12, 13, 14, 15 } },
-	{ .index = LEDS_BUTTON_03,  .mask = GAMEPAD_MASK_B3,    .positions = { 16, 17, 18, 19} },
-	{ .index = LEDS_BUTTON_04,  .mask = GAMEPAD_MASK_B4,    .positions = { 20, 21, 22, 23 } },
-	{ .index = LEDS_BUTTON_06,  .mask = GAMEPAD_MASK_R1,    .positions = { 24, 25, 26, 27 } },
-	{ .index = LEDS_BUTTON_05,  .mask = GAMEPAD_MASK_L1,    .positions = { 28, 29, 30, 31 } },
-	{ .index = LEDS_BUTTON_01,  .mask = GAMEPAD_MASK_B1,    .positions = { 32, 33, 34, 35 } },
-	{ .index = LEDS_BUTTON_02,  .mask = GAMEPAD_MASK_B2,    .positions = { 36, 37, 38, 39 } },
-	{ .index = LEDS_BUTTON_08,  .mask = GAMEPAD_MASK_R2,    .positions = { 40, 41, 42, 43 } },
-	{ .index = LEDS_BUTTON_07,  .mask = GAMEPAD_MASK_L2,    .positions = { 44, 45, 46, 47 } },
-};
+#define LEDS_BUTTON_B3   4
+#define LEDS_BUTTON_B4   5
+#define LEDS_BUTTON_R1   6
+#define LEDS_BUTTON_L1   7
+#define LEDS_BUTTON_B1   8
+#define LEDS_BUTTON_B2   9
+#define LEDS_BUTTON_R2   10
+#define LEDS_BUTTON_L2   11
 
 #endif

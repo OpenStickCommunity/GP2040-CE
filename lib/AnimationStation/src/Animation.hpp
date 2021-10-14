@@ -94,7 +94,7 @@ static const std::vector<RGB> colors = {
 
 class Animation {
 public:
-  Animation(std::vector<Pixel> pixels);
+  Animation(PixelMatrix &matrix);
   void UpdatePixels(std::vector<Pixel> pixels);
   void ClearPixels();
   virtual ~Animation(){};
@@ -107,7 +107,8 @@ public:
   bool isComplete();
 
 protected:
-  std::vector<Pixel> pixels;
+  PixelMatrix *matrix;
+  int currentLoop = 0;
 };
 
 #endif

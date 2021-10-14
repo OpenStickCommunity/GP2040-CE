@@ -42,7 +42,7 @@ typedef enum
 class AnimationStation
 {
 public:
-  AnimationStation(std::vector<Pixel> pixels);
+  AnimationStation(PixelMatrix matrix);
 
   void Animate();
   void AddAnimation(Animation *animation);
@@ -76,8 +76,8 @@ protected:
   static uint8_t brightnessSteps;
   static uint8_t brightness;
   static float brightnessX;
+  PixelMatrix matrix;
   uint8_t baseAnimationIndex = 0;
-  std::vector<Pixel> pixels;
 };
 
 #endif
