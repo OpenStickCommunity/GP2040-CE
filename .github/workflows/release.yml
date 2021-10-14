@@ -13,6 +13,8 @@ jobs:
     - uses: olegtarasov/get-tag@v2.1
       id: tagName
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Cache pip
       uses: actions/cache@v2
       with:
