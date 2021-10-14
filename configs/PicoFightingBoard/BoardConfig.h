@@ -33,68 +33,39 @@
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 #define BOARD_LEDS_PIN 15
+
 #define LED_BRIGHTNESS_MAXIMUM 200
 #define LED_BRIGHTNESS_STEPS 5
+#define LED_FORMAT LED_FORMAT_GRB
+#define LED_LAYOUT LED_BUTTONS_HITBOX
 
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
 #define LEDS_DPAD_RIGHT  2
 #define LEDS_DPAD_UP     3
-#define LEDS_BUTTON_03   4
-#define LEDS_BUTTON_04   5
-#define LEDS_BUTTON_06   6
-#define LEDS_BUTTON_05   7
-#define LEDS_BUTTON_01   8
-#define LEDS_BUTTON_02   9
-#define LEDS_BUTTON_07   11
-#define LEDS_BUTTON_08   10
+#define LEDS_BUTTON_B3   4
+#define LEDS_BUTTON_B4   5
+#define LEDS_BUTTON_R1   6
+#define LEDS_BUTTON_L1   7
+#define LEDS_BUTTON_B1   8
+#define LEDS_BUTTON_B2   9
+#define LEDS_BUTTON_R2   10
+#define LEDS_BUTTON_L2   11
 
-// Hitbox layout
-
-static std::vector<std::vector<Pixel>> pixels =
+static std::vector<uint8_t> ledPositions[] =
 {
-		{
-			Pixel(LEDS_DPAD_LEFT, GAMEPAD_MASK_DL, { 22, 23 }),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_DPAD_DOWN, GAMEPAD_MASK_DD, { 20, 21 }),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_DPAD_RIGHT, GAMEPAD_MASK_DR, { 18, 19 }),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			NO_PIXEL,
-			NO_PIXEL,
-			Pixel(LEDS_DPAD_UP,   GAMEPAD_MASK_DU, { 0, 1 }),
-		},
-		{
-			Pixel(LEDS_BUTTON_03, GAMEPAD_MASK_B3, { 16, 17 }),
-			Pixel(LEDS_BUTTON_01, GAMEPAD_MASK_B1, { 2, 3 }),
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_BUTTON_04, GAMEPAD_MASK_B4, { 14, 15 }),
-			Pixel(LEDS_BUTTON_02, GAMEPAD_MASK_B2, { 4, 5 }),
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_BUTTON_06, GAMEPAD_MASK_R1, { 12, 13 }),
-			Pixel(LEDS_BUTTON_08, GAMEPAD_MASK_R2, { 6, 7 }),
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_BUTTON_05, GAMEPAD_MASK_L1, { 10, 11 }),
-			Pixel(LEDS_BUTTON_07, GAMEPAD_MASK_L2, { 8, 9 }),
-			NO_PIXEL,
-		},
+	{ 22, 23 },
+	{ 20, 21 },
+	{ 18, 19 },
+	{ 0, 1 },
+	{ 16, 17 },
+	{ 2, 3 },
+	{ 14, 15 },
+	{ 4, 5 },
+	{ 12, 13 },
+	{ 6, 7 },
+	{ 10, 11 },
+	{ 8, 9 },
 };
-
-static PixelMatrix matrix(pixels);
 
 #endif

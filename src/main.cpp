@@ -20,6 +20,11 @@
 #include "AnimationStation.hpp"
 #include "AnimationStorage.hpp"
 #include "Pixel.hpp"
+#ifdef LEDS_PER_PIXEL
+	PixelMatrix matrix = createLedButtonLayout(LED_LAYOUT, LEDS_PER_PIXEL);
+#else
+	PixelMatrix matrix = createLedButtonLayout(LED_LAYOUT, ledPositions);
+#endif
 #ifdef LED_FORMAT
 NeoPico leds(BOARD_LEDS_PIN, matrix.getLedCount(), LED_FORMAT);
 #else

@@ -15,8 +15,7 @@ const Pixel NO_PIXEL(-1);
 
 struct PixelMatrix {
   PixelMatrix(std::vector<std::vector<Pixel>> pixels, int ledsPerPixel = -1) : pixels(pixels), ledsPerPixel(ledsPerPixel) {
-    // Perform automatic led position assignment
-    updatePositions();
+
   }
 
   std::vector<std::vector<Pixel>> pixels;

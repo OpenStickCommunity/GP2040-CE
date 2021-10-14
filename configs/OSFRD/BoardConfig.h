@@ -30,69 +30,27 @@
 #define PIN_BUTTON_A1   28
 #define PIN_BUTTON_A2   18
 
+#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+
 #define BOARD_LEDS_PIN 14
+
 #define LED_BRIGHTNESS_MAXIMUM 100
 #define LED_BRIGHTNESS_STEPS 5
+#define LED_FORMAT LED_FORMAT_GRB
+#define LED_LAYOUT LED_BUTTONS_HITBOX
+#define LEDS_PER_PIXEL 1
 
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
 #define LEDS_DPAD_RIGHT  2
 #define LEDS_DPAD_UP     3
-#define LEDS_BUTTON_03   4
-#define LEDS_BUTTON_04   5
-#define LEDS_BUTTON_06   6
-#define LEDS_BUTTON_05   7
-#define LEDS_BUTTON_01   8
-#define LEDS_BUTTON_02   9
-#define LEDS_BUTTON_07   11
-#define LEDS_BUTTON_08   10
-
-#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
-
-static std::vector<std::vector<Pixel>> pixels =
-{
-		{
-			Pixel(LEDS_DPAD_LEFT, GAMEPAD_MASK_DL),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_DPAD_DOWN, GAMEPAD_MASK_DD),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_DPAD_RIGHT, GAMEPAD_MASK_DR),
-			NO_PIXEL,
-			NO_PIXEL,
-		},
-		{
-			NO_PIXEL,
-			NO_PIXEL,
-			Pixel(LEDS_DPAD_UP,   GAMEPAD_MASK_DU),
-		},
-		{
-			Pixel(LEDS_BUTTON_03, GAMEPAD_MASK_B3),
-			Pixel(LEDS_BUTTON_01, GAMEPAD_MASK_B1),
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_BUTTON_04, GAMEPAD_MASK_B4),
-			Pixel(LEDS_BUTTON_02, GAMEPAD_MASK_B2),
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_BUTTON_06, GAMEPAD_MASK_R1),
-			Pixel(LEDS_BUTTON_08, GAMEPAD_MASK_R2),
-			NO_PIXEL,
-		},
-		{
-			Pixel(LEDS_BUTTON_05, GAMEPAD_MASK_L1),
-			Pixel(LEDS_BUTTON_07, GAMEPAD_MASK_L2),
-			NO_PIXEL,
-		},
-};
-
-static PixelMatrix matrix(pixels, 1);
+#define LEDS_BUTTON_B3   4
+#define LEDS_BUTTON_B4   5
+#define LEDS_BUTTON_R1   6
+#define LEDS_BUTTON_L1   7
+#define LEDS_BUTTON_B1   8
+#define LEDS_BUTTON_B2   9
+#define LEDS_BUTTON_R2   10
+#define LEDS_BUTTON_L2   11
 
 #endif

@@ -8,7 +8,11 @@
 
 #include <vector>
 #include <MPG.h>
+#include "enums.h"
 #include "AnimationStation.hpp"
+#include "BoardConfig.h"
+
+#define LED_BUTTON_COUNT 12
 
 #ifndef LEDS_BRIGHTNESS
 #define LEDS_BRIGHTNESS 75
@@ -26,8 +30,59 @@
 #define LEDS_STATIC_COLOR_COLOR ColorRed
 #endif
 
+#ifndef LEDS_DPAD_LEFT
+#define LEDS_DPAD_LEFT  -1
+#endif
+
+#ifndef LEDS_DPAD_DOWN
+#define LEDS_DPAD_DOWN  -1
+#endif
+
+#ifndef LEDS_DPAD_RIGHT
+#define LEDS_DPAD_RIGHT -1
+#endif
+
+#ifndef LEDS_DPAD_UP
+#define LEDS_DPAD_UP    -1
+#endif
+
+#ifndef LEDS_BUTTON_B3
+#define LEDS_BUTTON_B3  -1
+#endif
+
+#ifndef LEDS_BUTTON_B4
+#define LEDS_BUTTON_B4  -1
+#endif
+
+#ifndef LEDS_BUTTON_R1
+#define LEDS_BUTTON_R1  -1
+#endif
+
+#ifndef LEDS_BUTTON_L1
+#define LEDS_BUTTON_L1  -1
+#endif
+
+#ifndef LEDS_BUTTON_B1
+#define LEDS_BUTTON_B1  -1
+#endif
+
+#ifndef LEDS_BUTTON_B2
+#define LEDS_BUTTON_B2  -1
+#endif
+
+#ifndef LEDS_BUTTON_L2
+#define LEDS_BUTTON_L2  -1
+#endif
+
+#ifndef LEDS_BUTTON_R2
+#define LEDS_BUTTON_R2  -1
+#endif
+
 void configureAnimations(AnimationStation *as);
 AnimationHotkey animationHotkeys(MPG *gamepad);
+PixelMatrix createLedButtonLayout(LedButtonLayout layout, int ledsPerPixel);
+PixelMatrix createLedButtonLayout(LedButtonLayout layout, std::vector<uint8_t> *positions);
+
 extern PixelMatrix matrix;
 
 #endif
