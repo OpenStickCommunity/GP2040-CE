@@ -14,10 +14,9 @@
 #ifndef DEBUG_BOARD_CONFIG_H_
 #define DEBUG_BOARD_CONFIG_H_
 
-#include <vector>
 #include <GamepadEnums.h>
-#include <GamepadState.h>
-#include "Animation.hpp"
+#include "enums.h"
+#include "NeoPico.hpp"
 
 /* Mapped to pins on Waveshare IPS panel w/4 button + HAT */
 
@@ -50,7 +49,7 @@
 #define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
-#define LED_LAYOUT LED_BUTTONS_STANDARD
+#define LED_LAYOUT LED_LAYOUT_ARCADE_WASD
 #define LEDS_PER_PIXEL 4
 
 #define LEDS_DPAD_LEFT   0
