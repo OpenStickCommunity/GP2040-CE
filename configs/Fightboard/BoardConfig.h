@@ -44,17 +44,17 @@
 #define LED_LAYOUT LED_LAYOUT_ARCADE_WASD
 #define LEDS_PER_PIXEL 1
 
-#define LEDS_DPAD_LEFT   0
-#define LEDS_DPAD_DOWN   1
-#define LEDS_DPAD_RIGHT  2
-#define LEDS_DPAD_UP     3
-#define LEDS_BUTTON_B3   4
-#define LEDS_BUTTON_B4   5
-#define LEDS_BUTTON_R1   6
-#define LEDS_BUTTON_L1   7
-#define LEDS_BUTTON_B1   8
-#define LEDS_BUTTON_B2   9
-#define LEDS_BUTTON_R2   10
-#define LEDS_BUTTON_L2   11
+#define LEDS_DPAD_LEFT  10
+#define LEDS_DPAD_DOWN   9
+#define LEDS_DPAD_RIGHT  8
+#define LEDS_DPAD_UP    11
+#define LEDS_BUTTON_B3   0
+#define LEDS_BUTTON_B4   1
+#define LEDS_BUTTON_R1   2
+#define LEDS_BUTTON_L1   3
+#define LEDS_BUTTON_B1   7
+#define LEDS_BUTTON_B2   6
+#define LEDS_BUTTON_R2   5
+#define LEDS_BUTTON_L2   4
 
 #endif
