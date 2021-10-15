@@ -12,6 +12,24 @@ The goal of GP2040 is to provide multi-platform compatibility for RP2040-based g
 * Save options to internal memory
 * Per-button LED support
 
+Prebuilt `uf2` files are available in the [Releases](https://github.com/FeralAI/GP2040/releases) section for the following boards:
+
+* [Raspberry Pi Pico](https://github.com/FeralAI/GP2040/tree/main/configs/Pico) and other pin-compatible boards such as the Pimoroni Pico Lipo
+* [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/tree/ca6659ca678aad4f5fbb2756fdbf6d00782c6cd2)
+* [OSFRD](https://github.com/FeralAI/GP2040/tree/main/configs/OSFRD)
+
+Several other working example configurations are located in the [configs](https://github.com/FeralAI/GP2040/tree/main/configs) folder.
+
+## Installation
+
+The instructions will slightly vary based on your device. These instructions are for a Raspberry Pi Pico.
+
+1. Download the latest `GP2040.uf2` file from the [Releases](https://github.com/FeralAI/GP2040/releases) section for your board (e.g. `GP2040-PiPico.uf2` for the Raspberry Pi Pico).
+1. Unplug your Pico.
+1. Hold the BOOTSEL button on the Pico and plug into your computer. A new removable drive named `RPI-RP2` should appear in your file explorer.
+1. Drag and drop the `GP2040.uf2` file into the removable drive. This will flash the board.
+1. The board is now running the GP2040 firmware and will appear as a controller on your computer.
+
 ## Performance
 
 One of the highest priorities of GP2040 is low input latency. Why bother building a custom controller if it's just a laggy, input-missing mess?
