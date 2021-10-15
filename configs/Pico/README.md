@@ -1,4 +1,4 @@
-# Raspberry Pi Pico Board Configuration
+# GP2040 Configuration for Raspberry Pi Pico
 
 ![Pin Mapping](assets/PinMapping.png)
 

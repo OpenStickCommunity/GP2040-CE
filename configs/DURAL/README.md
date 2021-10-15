@@ -1,5 +1,5 @@
-# Raspberry Pi Pico Board Configuration
+# GP2040 Configuration for DURAL
 
-![Pin Mapping](PinMapping.png)
+![DURAL](assets/DURAL.jpg)
 
-Basic pin setup for a stock Raspberry Pi Pico. L2 and R2 are assigned to analog pins to leave the option open in the future.
+<https://dural.gg/>

@@ -40,3 +40,5 @@ jobs:
         mv .pio/build/pimoroni-pico-lipo/APPLICATION.uf2 .pio/build/pimoroni-pico-lipo/GP2040-PimoroniPicoLipo.uf2
         pio run -e pico-fighting-board
         mv .pio/build/pico-fighting-board/APPLICATION.uf2 .pio/build/pico-fighting-board/GP2040-PicoFightingBoard.uf2
+        pio run -e dural
+        mv .pio/build/dural/APPLICATION.uf2 .pio/build/dural/GP2040-DURAL.uf2
