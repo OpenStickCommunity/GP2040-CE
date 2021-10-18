@@ -262,7 +262,7 @@ You should now be able to build or upload the project to your RP2040 board from 
 
 ## Support
 
-If you would like to discuss features, issues or anything else related to GP2040 please join the [OpenStick GP2040 Discord channel](https://discord.gg/BQAqDj2N).
+If you would like to discuss features, issues or anything else related to GP2040 please join the [OpenStick GP2040 Discord channel](https://discord.gg/ABQafnty).
 
 ## Acknowledgements
 
