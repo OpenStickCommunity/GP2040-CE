@@ -73,11 +73,11 @@ If you do not have a dedicated Home button, you can activate it via the **`BACK 
 
 ### Input Modes
 
-To change the input mode, **hold one of the following buttons as the controller is plugged in:**
+To change the input mode, **hold one of the following buttons as the controller is plugged in (Arcade mapping in parentheses):**
 
-* **`RS`** for DirectInput/PS3
-* **`BACK`** for Nintendo Switch
-* **`START`** for XInput
+* **`X (P1)`** for DirectInput/PS3
+* **`A (K1)`** for Nintendo Switch
+* **`B (K2)`** for XInput
 
 Input mode is saved across power cycles.
 
