@@ -13,6 +13,8 @@ jobs:
     - uses: olegtarasov/get-tag@v2.1
       id: tagName
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Cache pip
       uses: actions/cache@v2
       with:
@@ -37,17 +39,17 @@ jobs:
         pio run -e osfrd
         mv .pio/build/osfrd/APPLICATION.uf2 .pio/build/osfrd/GP2040-OSFRD_${{ steps.tagName.outputs.tag }}.uf2
         pio run -e raspberry-pi-pico
-        mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-PiPico_${{ steps.tagName.outputs.tag }}.uf2
-        pio run -e pimoroni-pico-lipo
-        mv .pio/build/pimoroni-pico-lipo/APPLICATION.uf2 .pio/build/pimoroni-pico-lipo/GP2040-PimoroniPicoLipo_${{ steps.tagName.outputs.tag }}.uf2
+        mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-RaspberryPiPico_${{ steps.tagName.outputs.tag }}.uf2
         pio run -e pico-fighting-board
         mv .pio/build/pico-fighting-board/APPLICATION.uf2 .pio/build/pico-fighting-board/GP2040-PicoFightingBoard_${{ steps.tagName.outputs.tag }}.uf2
+        pio run -e dural
+        mv .pio/build/dural/APPLICATION.uf2 .pio/build/dural/GP2040-DURAL_${{ steps.tagName.outputs.tag }}.uf2
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
           .pio/build/osfrd/GP2040-OSFRD_${{ steps.tagName.outputs.tag }}.uf2
-          .pio/build/raspberry-pi-pico/GP2040-PiPico_${{ steps.tagName.outputs.tag }}.uf2
-          .pio/build/pimoroni-pico-lipo/GP2040-PimoroniPicoLipo_${{ steps.tagName.outputs.tag }}.uf2
+          .pio/build/raspberry-pi-pico/GP2040-RaspberryPiPico_${{ steps.tagName.outputs.tag }}.uf2
           .pio/build/pico-fighting-board/GP2040-PicoFightingBoard_${{ steps.tagName.outputs.tag }}.uf2
+          .pio/build/dural/GP2040-DURAL_${{ steps.tagName.outputs.tag }}.uf2

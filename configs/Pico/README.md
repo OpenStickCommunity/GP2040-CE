@@ -1,5 +1,5 @@
-# Raspberry Pi Pico Board Configuration
+# GP2040 Configuration for Raspberry Pi Pico
 
-![Pin Mapping](PinMapping.png)
+![Pin Mapping](assets/PinMapping.png)
 
-Basic pin setup for a stock Raspberry Pi Pico. L2 and R2 are assigned to analog pins to leave the option open in the future.
+Basic pin setup for a stock Raspberry Pi Pico. Combine with a simple GPIO breakout/screw terminal board for an easy DIY arcade stick.

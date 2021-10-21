@@ -9,6 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Cache pip
       uses: actions/cache@v2
       with:
@@ -33,8 +35,8 @@ jobs:
         pio run -e osfrd
         mv .pio/build/osfrd/APPLICATION.uf2 .pio/build/osfrd/GP2040-OSFRD.uf2
         pio run -e raspberry-pi-pico
-        mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-PiPico.uf2
-        pio run -e pimoroni-pico-lipo
-        mv .pio/build/pimoroni-pico-lipo/APPLICATION.uf2 .pio/build/pimoroni-pico-lipo/GP2040-PimoroniPicoLipo.uf2
+        mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-RaspberryPiPico.uf2
         pio run -e pico-fighting-board
         mv .pio/build/pico-fighting-board/APPLICATION.uf2 .pio/build/pico-fighting-board/GP2040-PicoFightingBoard.uf2
+        pio run -e dural
+        mv .pio/build/dural/APPLICATION.uf2 .pio/build/dural/GP2040-DURAL.uf2

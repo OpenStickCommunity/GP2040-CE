@@ -25,41 +25,24 @@ struct PixelMatrix {
 
   std::vector<std::vector<Pixel>> pixels;
   uint8_t ledsPerPixel;
-
   inline int getLedCount() {
     int count = 0;
-    for (int c = 0; c != pixels.size(); c++)
-      for (int r = 0; r != pixels[c].size(); r++)
-        if (pixels[c][r].index == NO_PIXEL.index)
+    for (auto &col : pixels)
+      for (auto &pixel : col)
+        if (pixel.index == NO_PIXEL.index)
           continue;
         else
-          count += pixels[c][r].positions.size();
+          count += pixel.positions.size();
 
     return count;
   }
 
-  inline uint16_t getPixelCount() {
+  inline uint16_t getPixelCount() const {
     uint16_t count = 0;
-    for (size_t r = 0; r != pixels.size(); r++) {
-      count += pixels[r].size();
-    }
+    for (auto &col : pixels)
+      count += col.size();
 
     return count;
-  }
-
-  void updatePositions() {
-    if (ledsPerPixel > 0) {
-      for (auto &col : pixels) {
-        for (auto &pixel : col) {
-          if (pixel.index == NO_PIXEL.index)
-            continue;
-
-          pixel.positions.resize(ledsPerPixel);
-          for (int p = 0; p != ledsPerPixel; p++)
-            pixel.positions[p] = (pixel.index * ledsPerPixel) + p;
-        }
-      }
-    }
   }
 
 };

@@ -1,8 +1,8 @@
-# GeeekPi GPIO Breakout Configuration
+# GP2040 Configuration for GeeekPi GPIO Breakout
 
 Preset config for Pico with a GeeekPi Pico Screw Terminal Expansion Board: <https://www.amazon.com/gp/product/B0998594PL/>
 
-![Pin Mapping](PinMapping.png)
+![Pin Mapping](assets/PinMapping.png)
 
 Notes:
 
