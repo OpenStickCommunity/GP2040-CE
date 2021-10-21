@@ -10,8 +10,8 @@
 
 #define PIN_DPAD_UP     2
 #define PIN_DPAD_DOWN   3
-#define PIN_DPAD_LEFT   4
-#define PIN_DPAD_RIGHT  5
+#define PIN_DPAD_RIGHT  4
+#define PIN_DPAD_LEFT   5
 #define PIN_BUTTON_B1   6
 #define PIN_BUTTON_B2   7
 #define PIN_BUTTON_R2   8
