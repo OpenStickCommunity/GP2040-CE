@@ -4,6 +4,9 @@
  */
 
 #include "BoardConfig.h"
+
+#ifdef BOARD_LEDS_PIN
+
 #include "pico/util/queue.h"
 
 #include "AnimationStation.hpp"
@@ -282,3 +285,5 @@ AnimationHotkey animationHotkeys(Gamepad *gamepad) {
 
   return action;
 }
+
+#endif
