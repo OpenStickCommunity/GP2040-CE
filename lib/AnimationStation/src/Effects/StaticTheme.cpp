@@ -1,23 +1,54 @@
 #include "StaticTheme.hpp"
 
-StaticTheme::StaticTheme(PixelMatrix &matrix, std::map<uint32_t, RGB> theme, RGB defaultColor)
-  : Animation(matrix), theme(theme), defaultColor(defaultColor) { }
+std::vector<std::map<uint32_t, RGB>> StaticTheme::themes = {};
+
+StaticTheme::StaticTheme(PixelMatrix &matrix) : Animation(matrix) {
+  if (AnimationStation::options.themeIndex >= StaticTheme::themes.size()) {
+    AnimationStation::options.themeIndex = 0;
+  }
+}
 
 void StaticTheme::Animate(RGB (&frame)[100]) {
-  for (auto &col : matrix->pixels) {
-    for (auto &pixel : col) {
-      if (pixel.index == NO_PIXEL.index)
-        continue;
+  if (StaticTheme::themes.size() > 0) {
+    for (size_t r = 0; r != matrix->pixels.size(); r++) {
+      for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
+        if (matrix->pixels[r][c].index == NO_PIXEL.index)
+          continue;
 
-      auto itr = theme.find(pixel.mask);
-      if (itr != theme.end()) {
-        for (auto &pos : pixel.positions)
-          frame[pos] = itr->second;
-      }
-      else {
-        for (auto &pos : pixel.positions)
-          frame[pos] = defaultColor;
+        std::map<uint32_t, RGB> theme =
+            StaticTheme::themes.at(AnimationStation::options.themeIndex);
+        auto itr = theme.find(matrix->pixels[r][c].mask);
+        if (itr != theme.end()) {
+          for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+            frame[matrix->pixels[r][c].positions[p]] = itr->second;
+          }
+        } else {
+          for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+            frame[matrix->pixels[r][c].positions[p]] = defaultColor;
+          }
+        }
       }
     }
+  }
+}
+
+void StaticTheme::AddTheme(std::map<uint32_t, RGB> theme) {
+  themes.push_back(theme);
+}
+
+void StaticTheme::ParameterUp() {
+  if (AnimationStation::options.themeIndex < StaticTheme::themes.size() - 1) {
+    AnimationStation::options.themeIndex++;
+  } else {
+    AnimationStation::options.themeIndex = 0;
+  }
+}
+
+void StaticTheme::ParameterDown() {
+
+  if (AnimationStation::options.themeIndex > 0) {
+    AnimationStation::options.themeIndex--;
+  } else {
+    AnimationStation::options.themeIndex = StaticTheme::themes.size() - 1;
   }
 }

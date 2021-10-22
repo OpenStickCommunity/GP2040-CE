@@ -17,14 +17,38 @@
 
 typedef enum
 {
+  EFFECT_STATIC_COLOR,
+  EFFECT_RAINBOW,
+  EFFECT_CHASE,
+  EFFECT_STATIC_THEME
+} AnimationEffects;
+
+// We can't programmatically determine how many elements are in an enum. Yes, that's dumb.
+const int TOTAL_EFFECTS = 4;
+
+typedef enum
+{
   HOTKEY_LEDS_NONE,
 	HOTKEY_LEDS_ANIMATION_UP,
 	HOTKEY_LEDS_ANIMATION_DOWN,
 	HOTKEY_LEDS_PARAMETER_UP,
+  HOTKEY_LEDS_PRESS_PARAMETER_UP,
+  HOTKEY_LEDS_PRESS_PARAMETER_DOWN,
 	HOTKEY_LEDS_PARAMETER_DOWN,
 	HOTKEY_LEDS_BRIGHTNESS_UP,
 	HOTKEY_LEDS_BRIGHTNESS_DOWN
 } AnimationHotkey;
+
+struct AnimationOptions
+{
+	uint8_t baseAnimationIndex = 2;
+  uint8_t brightness = 40;
+  uint8_t staticColorIndex = 2;
+  uint8_t buttonColorIndex = 1;
+  int16_t chaseCycleTime = 85;
+  int16_t rainbowCycleTime = 40;
+  uint8_t themeIndex = 0;
+};
 
 class AnimationStation
 {
@@ -32,12 +56,13 @@ public:
   AnimationStation(PixelMatrix matrix);
 
   void Animate();
-  void AddAnimation(Animation *animation);
   void HandleEvent(AnimationHotkey action);
-  void SetStaticColor(RGB color);
   void Clear();
-  void ChangeAnimation();
+  void ChangeAnimation(int changeSize);
   void ApplyBrightness(uint32_t *frameValue);
+  uint16_t AdjustIndex(int changeSize);
+  void HandlePressed(std::vector<Pixel> pressed);
+  void ClearPressed();
 
   uint8_t GetMode();
   void SetMode(uint8_t mode);
@@ -47,20 +72,20 @@ public:
   static void SetBrightness(uint8_t brightness);
   static void DecreaseBrightness();
   static void IncreaseBrightness();
+  static void SetOptions(AnimationOptions options);
 
-  std::vector<Animation*> animations;
-  static absolute_time_t nextAnimationChange;
-  static absolute_time_t nextBrightnessChange;
+  Animation* baseAnimation;
+  Animation* buttonAnimation;
+  std::vector<Pixel> lastPressed;
+  static AnimationOptions options;
+  static absolute_time_t nextChange;
   RGB frame[100];
 
 protected:
   inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
-
   static uint8_t brightnessMax;
   static uint8_t brightnessSteps;
-  static uint8_t brightness;
   static float brightnessX;
-  uint8_t animationIndex = 0;
   PixelMatrix matrix;
 };
 

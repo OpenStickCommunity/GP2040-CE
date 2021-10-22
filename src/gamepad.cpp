@@ -4,17 +4,7 @@
  */
 
 #include "pico/stdlib.h"
-
-#include <MPGS.h>
-
-#include "BoardConfig.h"
-
-struct GamepadButtonMapping
-{
-	const uint8_t pin;
-	const uint32_t pinMask;
-	const uint16_t buttonMask;
-};
+#include "gamepad.hpp"
 
 static GamepadButtonMapping mapDpadUp    = { .pin = PIN_DPAD_UP,    .pinMask = (1 << PIN_DPAD_UP),    .buttonMask = GAMEPAD_MASK_UP    };
 static GamepadButtonMapping mapDpadDown  = { .pin = PIN_DPAD_DOWN,  .pinMask = (1 << PIN_DPAD_DOWN),  .buttonMask = GAMEPAD_MASK_DOWN  };
@@ -35,7 +25,7 @@ static GamepadButtonMapping mapButtonR3  = { .pin = PIN_BUTTON_R3,  .pinMask = (
 static GamepadButtonMapping mapButtonA1  = { .pin = PIN_BUTTON_A1,  .pinMask = (1 << PIN_BUTTON_A1),  .buttonMask = GAMEPAD_MASK_A1    };
 static GamepadButtonMapping mapButtonA2  = { .pin = PIN_BUTTON_A2,  .pinMask = (1 << PIN_BUTTON_A2),  .buttonMask = GAMEPAD_MASK_A2    };
 
-void MPG::setup()
+void Gamepad::setup()
 {
 	GamepadStore.start();
 
@@ -45,7 +35,7 @@ void MPG::setup()
 		&mapButtonB1, &mapButtonB2, &mapButtonB3, &mapButtonB4,
 		&mapButtonL1, &mapButtonR1, &mapButtonL2, &mapButtonR2,
 		&mapButtonS1, &mapButtonS2, &mapButtonL3, &mapButtonR3,
-		&mapButtonA1, &mapButtonA2,
+		&mapButtonA1, &mapButtonA2
 	};
 
 	for (int i = 0; i < GAMEPAD_DIGITAL_INPUT_COUNT; i++)
@@ -54,12 +44,24 @@ void MPG::setup()
 		gpio_set_dir(gamepadMappings[i]->pin, GPIO_IN); // Set as INPUT
 		gpio_pull_up(gamepadMappings[i]->pin);          // Set as PULLUP
 	}
+
+	#ifdef PIN_SETTINGS
+		gpio_init(PIN_SETTINGS);             // Initialize pin
+		gpio_set_dir(PIN_SETTINGS, GPIO_IN); // Set as INPUT
+		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
+	#endif
 }
 
-void MPG::read()
+void Gamepad::read()
 {
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
+
+	#ifdef PIN_SETTINGS
+	state.aux = 0
+		| ((values & (1 << PIN_SETTINGS)) ? (1 << 0) : 0)
+	;
+	#endif
 
 	state.dpad = 0
 		| ((values & mapDpadUp.pinMask)    ? mapDpadUp.buttonMask    : 0)

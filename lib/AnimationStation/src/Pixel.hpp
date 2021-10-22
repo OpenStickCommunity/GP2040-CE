@@ -1,6 +1,11 @@
 #ifndef PIXEL_HPP_
 #define PIXEL_HPP_
 
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+
 struct Pixel {
   Pixel(int index, uint32_t mask = 0) : index(index), mask(mask) { }
   Pixel(int index, std::vector<uint8_t> positions) : index(index), positions(positions) { }
@@ -41,5 +46,9 @@ struct PixelMatrix {
   }
 
 };
+
+inline bool operator==(const Pixel &lhs, const Pixel &rhs) {
+  return lhs.index == rhs.index;
+}
 
 #endif

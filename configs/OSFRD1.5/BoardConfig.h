@@ -6,32 +6,34 @@
 #ifndef OSFRD_BOARD_CONFIG_H_
 #define OSFRD_BOARD_CONFIG_H_
 
+#include <vector>
 #include <GamepadEnums.h>
-#include "enums.h"
-#include "NeoPico.hpp"
+#include <GamepadState.h>
+#include "Pixel.hpp"
 
-#define PIN_DPAD_UP     13
-#define PIN_DPAD_DOWN   11
-#define PIN_DPAD_LEFT   10
-#define PIN_DPAD_RIGHT  12
-#define PIN_BUTTON_B1   4
-#define PIN_BUTTON_B2   5
-#define PIN_BUTTON_B3   0
-#define PIN_BUTTON_B4   1
-#define PIN_BUTTON_L1   3
-#define PIN_BUTTON_R1   2
-#define PIN_BUTTON_L2   7
-#define PIN_BUTTON_R2   6
-#define PIN_BUTTON_S1   8
-#define PIN_BUTTON_S2   9
-#define PIN_BUTTON_L3   17
-#define PIN_BUTTON_R3   16
-#define PIN_BUTTON_A1   28
-#define PIN_BUTTON_A2   18
+#define PIN_DPAD_UP     20
+#define PIN_DPAD_DOWN   8
+#define PIN_DPAD_LEFT   1
+#define PIN_DPAD_RIGHT  14
+#define PIN_BUTTON_B1   18
+#define PIN_BUTTON_B2   17
+#define PIN_BUTTON_B3   13
+#define PIN_BUTTON_B4   9
+#define PIN_BUTTON_L1   12
+#define PIN_BUTTON_R1   10
+#define PIN_BUTTON_L2   19
+#define PIN_BUTTON_R2   16
+#define PIN_BUTTON_S1   3
+#define PIN_BUTTON_S2   0
+#define PIN_BUTTON_L3   6
+#define PIN_BUTTON_R3   7
+#define PIN_BUTTON_A1   4
+#define PIN_BUTTON_A2   5
+#define PIN_SETTINGS    11
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
-#define BOARD_LEDS_PIN 14
+#define BOARD_LEDS_PIN 2
 
 #define LED_BRIGHTNESS_MAXIMUM 100
 #define LED_BRIGHTNESS_STEPS 5
@@ -51,6 +53,5 @@
 #define LEDS_BUTTON_B2   9
 #define LEDS_BUTTON_R2   10
 #define LEDS_BUTTON_L2   11
-
 
 #endif

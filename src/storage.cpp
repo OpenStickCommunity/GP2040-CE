@@ -47,31 +47,18 @@ void GamepadStorage::setGamepadOptions(GamepadOptions options)
 #include "AnimationStorage.hpp"
 #include "AnimationStation/src/Effects/StaticColor.hpp"
 
-#define STORAGE_LEDS_BRIGHTNESS_INDEX (STORAGE_FIRST_AVAILBLE_INDEX)         // 1 byte
-#define STORAGE_LEDS_ANIMATION_MODE_INDEX (STORAGE_FIRST_AVAILBLE_INDEX + 1) // 1 byte
+#define STORAGE_LEDS_INDEX (STORAGE_FIRST_AVAILBLE_INDEX)         // 1 byte
 
-uint8_t AnimationStorage::getMode()
+AnimationOptions AnimationStorage::getAnimationOptions()
 {
-	uint8_t mode = 0;
-	EEPROM.get(STORAGE_LEDS_ANIMATION_MODE_INDEX, mode);
-	return mode;
+	AnimationOptions options;
+	EEPROM.get(STORAGE_LEDS_INDEX, options);
+	return options;
 }
 
-void AnimationStorage::setMode(uint8_t mode)
+void AnimationStorage::setAnimationOptions(AnimationOptions options)
 {
-	EEPROM.set(STORAGE_LEDS_ANIMATION_MODE_INDEX, mode);
-}
-
-uint8_t AnimationStorage::getBrightness()
-{
-	uint8_t brightness = LEDS_BRIGHTNESS;
-	EEPROM.get(STORAGE_LEDS_BRIGHTNESS_INDEX, brightness);
-	return brightness;
-}
-
-void AnimationStorage::setBrightness(uint8_t brightness)
-{
-	EEPROM.set(STORAGE_LEDS_BRIGHTNESS_INDEX, brightness);
+	EEPROM.set(STORAGE_LEDS_INDEX, options);
 }
 
 void AnimationStorage::setup(AnimationStation *as)
@@ -82,32 +69,23 @@ void AnimationStorage::setup(AnimationStation *as)
 #else
 	Animation::format = LED_FORMAT_GRB;
 #endif
+	AnimationStation::SetOptions(getAnimationOptions());
 	AnimationStation::ConfigureBrightness(LED_BRIGHTNESS_MAXIMUM, LED_BRIGHTNESS_STEPS);
-	AnimationStation::SetBrightness(this->getBrightness());
-	as->SetMode(getMode());
-	configureAnimations(as);
+	as->SetMode(AnimationStation::options.baseAnimationIndex);
 }
 
 void AnimationStorage::save()
 {
 	bool dirty = false;
+	AnimationOptions savedOptions = getAnimationOptions();
 
-	uint8_t brightness = as->GetBrightness();
-	if (brightness != getBrightness())
+	if (memcmp(&savedOptions, &AnimationStation::options, sizeof(AnimationOptions)))
 	{
-		setBrightness(brightness);
-		dirty = true;
-	}
-
-	uint8_t mode = as->GetMode();
-	if (mode != getMode())
-	{
-		setMode(mode);
+		this->setAnimationOptions(AnimationStation::options);
 		dirty = true;
 	}
 
 	if (dirty)
 		EEPROM.commit();
 }
-
 #endif
