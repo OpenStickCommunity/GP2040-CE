@@ -6,13 +6,15 @@
 #ifndef LED_THEMES_H_
 #define LED_THEMES_H_
 
+#include "BoardConfig.h"
+
+#ifdef BOARD_LEDS_PIN
+
 #include <vector>
 #include <MPG.h>
 #include "AnimationStation.hpp"
-#include "BoardConfig.h"
 
-static StaticTheme themeStaticRainbow(
-	matrix,
+static std::map<uint32_t, RGB> themeStaticRainbow(
 	{
 		{ GAMEPAD_MASK_DL, ColorRed },
 		{ GAMEPAD_MASK_DD, ColorOrange },
@@ -29,8 +31,7 @@ static StaticTheme themeStaticRainbow(
 	}
 );
 
-static StaticTheme themeGuiltyGearTypeA(
-	matrix,
+static std::map<uint32_t, RGB> themeGuiltyGearTypeA(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -44,8 +45,7 @@ static StaticTheme themeGuiltyGearTypeA(
 	}
 );
 
-static StaticTheme themeGuiltyGearTypeD(
-	matrix,
+static std::map<uint32_t, RGB> themeGuiltyGearTypeD(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -59,8 +59,7 @@ static StaticTheme themeGuiltyGearTypeD(
 	}
 );
 
-static StaticTheme themeGuiltyGearCustom(
-	matrix,
+static std::map<uint32_t, RGB> themeGuiltyGearCustom(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -75,8 +74,7 @@ static StaticTheme themeGuiltyGearCustom(
 	}
 );
 
-static StaticTheme themeNeoGeo(
-	matrix,
+static std::map<uint32_t, RGB> themeNeoGeo(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -89,8 +87,7 @@ static StaticTheme themeNeoGeo(
 	}
 );
 
-static StaticTheme themeNeoGeoCurved(
-	matrix,
+static std::map<uint32_t, RGB> themeNeoGeoCurved(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -103,8 +100,7 @@ static StaticTheme themeNeoGeoCurved(
 	}
 );
 
-static StaticTheme themeNeoGeoModern(
-	matrix,
+static std::map<uint32_t, RGB> themeNeoGeoModern(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -117,8 +113,7 @@ static StaticTheme themeNeoGeoModern(
 	}
 );
 
-static StaticTheme themeSixButtonFighter(
-	matrix,
+static std::map<uint32_t, RGB> themeSixButtonFighter(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -133,8 +128,7 @@ static StaticTheme themeSixButtonFighter(
 	}
 );
 
-static StaticTheme themeSixButtonFighterPlus(
-	matrix,
+static std::map<uint32_t, RGB> themeSixButtonFighterPlus(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -151,8 +145,7 @@ static StaticTheme themeSixButtonFighterPlus(
 	}
 );
 
-static StaticTheme themeSuperFamicom(
-	matrix,
+static std::map<uint32_t, RGB> themeSuperFamicom(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -169,8 +162,7 @@ static StaticTheme themeSuperFamicom(
 	}
 );
 
-static StaticTheme themeXbox(
-	matrix,
+static std::map<uint32_t, RGB> themeXbox(
 	{
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
@@ -187,19 +179,6 @@ static StaticTheme themeXbox(
 	}
 );
 
-static std::vector<StaticTheme> customThemes =
-{
-	themeStaticRainbow,
-	themeSuperFamicom,
-	themeXbox,
-	themeNeoGeo,
-	themeNeoGeoCurved,
-	themeNeoGeoModern,
-	themeSixButtonFighter,
-	themeSixButtonFighterPlus,
-	themeGuiltyGearTypeA,
-	themeGuiltyGearTypeD,
-	themeGuiltyGearCustom,
-};
+#endif
 
 #endif

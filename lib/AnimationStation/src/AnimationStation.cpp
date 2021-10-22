@@ -9,10 +9,10 @@
 
 uint8_t AnimationStation::brightnessMax = 100;
 uint8_t AnimationStation::brightnessSteps = 5;
-uint8_t AnimationStation::brightness = 0;
 float AnimationStation::brightnessX = 0;
 absolute_time_t AnimationStation::nextChange = 0;
-StaticColor *staticColor;
+AnimationOptions AnimationStation::options = {};
+
 
 AnimationStation::AnimationStation(PixelMatrix matrix) : matrix(matrix) {
   AnimationStation::SetBrightness(1);
@@ -68,7 +68,7 @@ void AnimationStation::ChangeAnimation(int changeSize) {
 }
 
 uint16_t AnimationStation::AdjustIndex(int changeSize) {
-  uint16_t newIndex = this->baseAnimationIndex + changeSize;
+  uint16_t newIndex = this->options.baseAnimationIndex + changeSize;
 
   if (newIndex >= TOTAL_EFFECTS) {
     return 0;
@@ -85,7 +85,7 @@ void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
   if (pressed != this->lastPressed) {
     this->lastPressed = pressed;
     if (this->buttonAnimation == nullptr) {
-      this->buttonAnimation = new StaticColor(pressed);
+      this->buttonAnimation = new StaticColor(matrix, pressed);
     }
     else {
       this->buttonAnimation->UpdatePixels(pressed);
@@ -120,34 +120,39 @@ float AnimationStation::GetBrightnessX() {
 }
 
 uint8_t AnimationStation::GetBrightness() {
-  return AnimationStation::brightness;
+  return AnimationStation::options.brightness;
 }
 
-uint8_t AnimationStation::GetMode() { return this->baseAnimationIndex; }
+uint8_t AnimationStation::GetMode() { return this->options.baseAnimationIndex; }
 
 void AnimationStation::SetMode(uint8_t mode) {
-  this->baseAnimationIndex = mode;
+  this->options.baseAnimationIndex = mode;
   AnimationEffects newEffect =
-      static_cast<AnimationEffects>(this->baseAnimationIndex);
+      static_cast<AnimationEffects>(this->options.baseAnimationIndex);
 
   if (this->baseAnimation != nullptr) {
     delete this->baseAnimation;
   }
 
   switch (newEffect) {
-  case AnimationEffects::EFFECT_STATIC_COLOR:
-    this->baseAnimation = new StaticColor(pixels);
-    break;
   case AnimationEffects::EFFECT_RAINBOW:
-    this->baseAnimation = new Rainbow(pixels);
+    this->baseAnimation = new Rainbow(matrix);
     break;
   case AnimationEffects::EFFECT_CHASE:
-    this->baseAnimation = new Chase(pixels);
+    this->baseAnimation = new Chase(matrix);
+    break;
+  case AnimationEffects::EFFECT_STATIC_THEME:
+    this->baseAnimation = new StaticTheme(matrix);
     break;
   default:
-    this->baseAnimation = new StaticColor(pixels, 0);
+    this->baseAnimation = new StaticColor(matrix);
     break;
   }
+}
+
+void AnimationStation::SetOptions(AnimationOptions options) {
+  AnimationStation::options = options;
+  AnimationStation::SetBrightness(options.brightness);
 }
 
 void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
@@ -156,10 +161,10 @@ void AnimationStation::ApplyBrightness(uint32_t *frameValue) {
 }
 
 void AnimationStation::SetBrightness(uint8_t brightness) {
-  AnimationStation::brightness =
-      (brightness > brightnessSteps) ? brightnessSteps : brightness;
+  AnimationStation::options.brightness =
+      (brightness > brightnessSteps) ? brightnessSteps : options.brightness;
   AnimationStation::brightnessX =
-      (AnimationStation::brightness * getBrightnessStepSize()) / 255.0F;
+      (AnimationStation::options.brightness * getBrightnessStepSize()) / 255.0F;
 
   if (AnimationStation::brightnessX > 1)
     AnimationStation::brightnessX = 1;
@@ -168,13 +173,13 @@ void AnimationStation::SetBrightness(uint8_t brightness) {
 }
 
 void AnimationStation::DecreaseBrightness() {
-  if (AnimationStation::brightness > 0)
-    AnimationStation::SetBrightness(--AnimationStation::brightness);
+  if (AnimationStation::options.brightness > 0)
+    AnimationStation::SetBrightness(--AnimationStation::options.brightness);
 }
 
 void AnimationStation::IncreaseBrightness() {
-  if (AnimationStation::brightness < getBrightnessStepSize())
-    AnimationStation::SetBrightness(++AnimationStation::brightness);
-  else if (AnimationStation::brightness > getBrightnessStepSize())
+  if (AnimationStation::options.brightness < getBrightnessStepSize())
+    AnimationStation::SetBrightness(++AnimationStation::options.brightness);
+  else if (AnimationStation::options.brightness > getBrightnessStepSize())
     AnimationStation::SetBrightness(brightnessSteps);
 }

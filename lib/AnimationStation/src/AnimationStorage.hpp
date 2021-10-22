@@ -10,10 +10,8 @@ class AnimationStorage
     void setup(AnimationStation *as);
     void save();
 
-    uint8_t getMode();
-    void setMode(uint8_t mode);
-    uint8_t getBrightness();
-    void setBrightness(uint8_t brightness);
+    AnimationOptions getAnimationOptions();
+    void setAnimationOptions(AnimationOptions options);
   protected:
     AnimationStation *as;
 };

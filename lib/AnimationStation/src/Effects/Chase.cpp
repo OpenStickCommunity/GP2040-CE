@@ -1,6 +1,6 @@
 #include "Chase.hpp"
 
-Chase::Chase(PixelMatrix &matrix, uint16_t cycleTime) : Animation(matrix), cycleTime(cycleTime) {
+Chase::Chase(PixelMatrix &matrix) : Animation(matrix) {
 }
 
 void Chase::Animate(RGB (&frame)[100]) {
@@ -47,7 +47,7 @@ void Chase::Animate(RGB (&frame)[100]) {
     }
   }
 
-  this->nextRunTime = make_timeout_time_ms(this->cycleTime);
+  this->nextRunTime = make_timeout_time_ms(AnimationStation::options.chaseCycleTime);
 }
 
 bool Chase::IsChasePixel(int i) {
@@ -86,11 +86,11 @@ int Chase::WheelFrame(int i) {
 }
 
 void Chase::ParameterUp() {
-  this->cycleTime = this->cycleTime + 10;
+  AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime + 10;
 }
 
 void Chase::ParameterDown() {
-  if (this->cycleTime > 0) {
-    this->cycleTime = this->cycleTime - 10;
-  }
+  if (AnimationStation::options.chaseCycleTime > 0) {
+    AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime - 10;
 }
+

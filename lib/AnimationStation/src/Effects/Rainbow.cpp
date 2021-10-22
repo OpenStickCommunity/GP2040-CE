@@ -1,6 +1,6 @@
 #include "Rainbow.hpp"
 
-Rainbow::Rainbow(PixelMatrix &matrix, uint16_t cycleTime) : Animation(matrix), cycleTime(cycleTime) {
+Rainbow::Rainbow(PixelMatrix &matrix) : Animation(matrix) {
 }
 
 void Rainbow::Animate(RGB (&frame)[100]) {
@@ -35,15 +35,15 @@ void Rainbow::Animate(RGB (&frame)[100]) {
     }
   }
 
-  this->nextRunTime = make_timeout_time_ms(this->cycleTime);
+  this->nextRunTime = make_timeout_time_ms(AnimationStation::options.rainbowCycleTime);
 }
 
 void Rainbow::ParameterUp() {
-  this->cycleTime = this->cycleTime + 10;
+  AnimationStation::options.rainbowCycleTime =AnimationStation::options.rainbowCycleTime + 10;
 }
 
 void Rainbow::ParameterDown() {
-  if (this->cycleTime > 0) {
-    this->cycleTime = this->cycleTime - 10;
+  if (AnimationStation::options.rainbowCycleTime > 0) {
+    AnimationStation::options.rainbowCycleTime = AnimationStation::options.rainbowCycleTime - 10;
   }
 }

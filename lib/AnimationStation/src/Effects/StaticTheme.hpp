@@ -8,18 +8,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../Animation.hpp"
+#include "../AnimationStation.hpp"
 
 class StaticTheme : public Animation {
 public:
-  StaticTheme(PixelMatrix &matrix, std::map<uint32_t, RGB> theme, RGB defaultColor = ColorBlack);
+  StaticTheme(PixelMatrix &matrix);
   ~StaticTheme() {};
 
+  static void AddTheme(std::map<uint32_t, RGB> theme);
   void Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();
-  std::map<uint32_t, RGB> theme;
 protected:
-  RGB defaultColor;
+  RGB defaultColor = ColorBlack;
+  static std::vector<std::map<uint32_t, RGB>> themes;
 };
 
 #endif

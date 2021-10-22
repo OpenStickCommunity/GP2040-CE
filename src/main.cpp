@@ -16,17 +16,7 @@
 
 #ifdef BOARD_LEDS_PIN
 #include "leds.h"
-#ifdef LEDS_PER_PIXEL
-	PixelMatrix matrix = createLedButtonLayout(LED_LAYOUT, LEDS_PER_PIXEL);
-#else
-	PixelMatrix matrix = createLedButtonLayout(LED_LAYOUT, ledPositions);
-#endif
-#ifdef LED_FORMAT
-NeoPico leds(BOARD_LEDS_PIN, matrix.getLedCount(), LED_FORMAT);
-#else
-NeoPico leds(BOARD_LEDS_PIN, matrix.getLedCount());
-#endif
-AnimationStation as(matrix);
+LEDs leds;
 #endif
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }

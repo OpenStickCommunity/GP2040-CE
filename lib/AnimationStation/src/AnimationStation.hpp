@@ -17,10 +17,10 @@
 
 typedef enum
 {
-  EFFECT_OFF,
   EFFECT_STATIC_COLOR,
   EFFECT_RAINBOW,
-  EFFECT_CHASE
+  EFFECT_CHASE,
+  EFFECT_STATIC_THEME
 } AnimationEffects;
 
 // We can't programmatically determine how many elements are in an enum. Yes, that's dumb.
@@ -39,13 +39,23 @@ typedef enum
 	HOTKEY_LEDS_BRIGHTNESS_DOWN
 } AnimationHotkey;
 
+struct AnimationOptions
+{
+	uint8_t baseAnimationIndex = 2;
+  uint8_t brightness = 40;
+  uint8_t staticColorIndex = 2;
+  uint8_t buttonColorIndex = 1;
+  int16_t chaseCycleTime = 85;
+  int16_t rainbowCycleTime = 40;
+  uint8_t themeIndex = 0;
+};
+
 class AnimationStation
 {
 public:
   AnimationStation(PixelMatrix matrix);
 
   void Animate();
-  void AddAnimation(Animation *animation);
   void HandleEvent(AnimationHotkey action);
   void Clear();
   void ChangeAnimation(int changeSize);
@@ -62,22 +72,21 @@ public:
   static void SetBrightness(uint8_t brightness);
   static void DecreaseBrightness();
   static void IncreaseBrightness();
+  static void SetOptions(AnimationOptions options);
 
   Animation* baseAnimation;
   Animation* buttonAnimation;
   std::vector<Pixel> lastPressed;
+  static AnimationOptions options;
   static absolute_time_t nextChange;
   RGB frame[100];
 
 protected:
   inline static uint8_t getBrightnessStepSize() { return (brightnessMax / brightnessSteps); }
-
   static uint8_t brightnessMax;
   static uint8_t brightnessSteps;
-  static uint8_t brightness;
   static float brightnessX;
   PixelMatrix matrix;
-  uint8_t baseAnimationIndex = 0;
 };
 
 #endif

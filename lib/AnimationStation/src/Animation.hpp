@@ -8,7 +8,6 @@
 #include <vector>
 #include "NeoPico.hpp"
 
-
 struct RGB {
   RGB() : r(0), g(0), b(0) {}
 
@@ -101,14 +100,18 @@ public:
 
   static LEDFormat format;
 
+  bool notInFilter(Pixel pixel);
   virtual void Animate(RGB (&frame)[100]) = 0;
   virtual void ParameterUp() = 0;
   virtual void ParameterDown() = 0;
-  bool isComplete();
 
 protected:
+/* We track both the full matrix as well as individual pixels here to support
+button press changes. Rather than adjusting the matrix to represent a subset of pixels,
+we provide a subset of pixels to use as a filter. */
   PixelMatrix *matrix;
-  int currentLoop = 0;
+  std::vector<Pixel> pixels;
+  bool filtered = false;
 };
 
 #endif

@@ -6,27 +6,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-
+#include "../AnimationStation.hpp"
 
 class Chase : public Animation {
 public:
-  Chase(PixelMatrix &matrix, uint16_t cycleTime = 85);
+  Chase(PixelMatrix &matrix);
   ~Chase() {};
 
   void Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();
 
-  static void SetDefaultCycleTime(uint16_t cycleTime) {
-    defaultCycleTime = cycleTime;
-  }
-
 protected:
   bool IsChasePixel(int i);
   int WheelFrame(int i);
-
-  static uint16_t defaultCycleTime;
-  int16_t cycleTime;
   int currentFrame = 0;
   int currentPixel = 0;
   bool reverse = false;
