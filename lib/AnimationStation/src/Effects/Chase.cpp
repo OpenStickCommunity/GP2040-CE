@@ -92,5 +92,5 @@ void Chase::ParameterUp() {
 void Chase::ParameterDown() {
   if (AnimationStation::options.chaseCycleTime > 0) {
     AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime - 10;
-  }
 }
+

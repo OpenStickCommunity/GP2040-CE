@@ -20,7 +20,6 @@ public:
 protected:
   bool IsChasePixel(int i);
   int WheelFrame(int i);
-
   int currentFrame = 0;
   int currentPixel = 0;
   bool reverse = false;
