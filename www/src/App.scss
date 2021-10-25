@@ -1,0 +1,8 @@
+.body-content {
+	min-height: calc(100vh - 56px);
+	min-width: 400px;
+	display: flex;
+	flex-direction: column;
+	margin: 56px 0 0;
+	padding: 10px 20px;
+}

@@ -39,7 +39,7 @@ jobs:
         pio run -e osfrd
         mv .pio/build/osfrd/APPLICATION.uf2 .pio/build/osfrd/GP2040-OSFRD_${{ steps.tagName.outputs.tag }}.uf2
         pio run -e osfrd1.5
-        mv .pio/build/osfrd1.5/APPLICATION.uf2 .pio/build/osfrd1.5/GP2040-OSFRD-1.5_${{ steps.tagName.outputs.tag }}.uf2        
+        mv .pio/build/osfrd1.5/APPLICATION.uf2 .pio/build/osfrd1.5/GP2040-OSFRD-1.5_${{ steps.tagName.outputs.tag }}.uf2
         pio run -e raspberry-pi-pico
         mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-RaspberryPiPico_${{ steps.tagName.outputs.tag }}.uf2
         pio run -e pico-fighting-board

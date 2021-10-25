@@ -3,11 +3,41 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
+#include "storage.h"
 #include <GamepadStorage.h>
 #include "FlashPROM.h"
 #include "BoardConfig.h"
 #include "Animation.hpp"
-#include "NeoPico.hpp"
+#include "enums.h"
+#include "leds.h"
+
+/* Board stuffs */
+
+BoardOptions getBoardOptions()
+{
+	BoardOptions options;
+	EEPROM.get(BOARD_STORAGE_INDEX, options);
+	return options;
+}
+
+void setBoardOptions(BoardOptions options)
+{
+	EEPROM.set(BOARD_STORAGE_INDEX, options);
+}
+
+/* LED stuffs */
+
+LEDOptions getLEDOptions()
+{
+	LEDOptions options;
+	EEPROM.get(LED_STORAGE_INDEX, options);
+	return options;
+}
+
+void setLEDOptions(LEDOptions options)
+{
+	EEPROM.set(LED_STORAGE_INDEX, options);
+}
 
 /* Gamepad stuffs */
 

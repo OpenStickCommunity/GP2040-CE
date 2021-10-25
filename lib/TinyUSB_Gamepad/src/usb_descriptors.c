@@ -8,6 +8,7 @@
 #include "tusb.h"
 #include "usb_driver.h"
 #include "GamepadDescriptors.h"
+#include "webserver_descriptors.h"
 
 // Invoked when received GET STRING DESCRIPTOR request
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
@@ -15,8 +16,15 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 {
 	(void)langid;
 
-	uint16_t size = 0;
-	return getStringDescriptor(&size, get_input_mode(), index);
+	if (get_input_mode() == INPUT_MODE_CONFIG)
+	{
+		return webserver_string_descriptors[index];
+	}
+	else
+	{
+		uint16_t size = 0;
+		return getStringDescriptor(&size, get_input_mode(), index);
+	}
 }
 
 // Invoked when received GET DEVICE DESCRIPTOR
@@ -25,6 +33,9 @@ uint8_t const *tud_descriptor_device_cb(void)
 {
 	switch (get_input_mode())
 	{
+		case INPUT_MODE_CONFIG:
+			return (uint8_t const *)&webserver_device_descriptor;
+
 		case INPUT_MODE_XINPUT:
 			return xinput_device_descriptor;
 
@@ -39,8 +50,9 @@ uint8_t const *tud_descriptor_device_cb(void)
 // Invoked when received GET HID REPORT DESCRIPTOR
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
-uint8_t const *tud_hid_descriptor_report_cb(void)
+uint8_t const *tud_hid_descriptor_report_cb(uint8_t itf)
 {
+	(void) itf;
 	switch (get_input_mode())
 	{
 		case INPUT_MODE_SWITCH:
@@ -56,9 +68,11 @@ uint8_t const *tud_hid_descriptor_report_cb(void)
 // Descriptor contents must exist long enough for transfer to complete
 uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 {
-	(void)index; // for multiple configurations
 	switch (get_input_mode())
 	{
+		case INPUT_MODE_CONFIG:
+			return net_configuration_arr[index];
+
 		case INPUT_MODE_XINPUT:
 			return xinput_configuration_descriptor;
 

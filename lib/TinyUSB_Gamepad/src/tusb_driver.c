@@ -13,9 +13,11 @@
 #include "GamepadDescriptors.h"
 
 #include "usb_driver.h"
+#include "net_driver.h"
 #include "hid_driver.h"
 #include "xinput_driver.h"
 
+UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
 
 InputMode get_input_mode(void)
@@ -26,6 +28,9 @@ InputMode get_input_mode(void)
 void initialize_driver(InputMode mode)
 {
 	input_mode = mode;
+	if (mode == INPUT_MODE_CONFIG)
+		usb_mode = USB_MODE_NET;
+
 	tusb_init();
 }
 
@@ -63,13 +68,20 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 {
 	*driver_count = 1;
 
-	switch (input_mode)
+	if (usb_mode == USB_MODE_NET)
 	{
-		case INPUT_MODE_XINPUT:
-			return &xinput_driver;
+		return &net_driver;
+	}
+	else
+	{
+		switch (input_mode)
+		{
+			case INPUT_MODE_XINPUT:
+				return &xinput_driver;
 
-		default:
-			return &hid_driver;
+			default:
+				return &hid_driver;
+		}
 	}
 }
 
@@ -78,10 +90,10 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 // Invoked when received GET_REPORT control request
 // Application must fill buffer report's content and return its length.
 // Return zero will cause the stack to STALL request
-uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen)
+uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen)
 {
 	// TODO: Handle the correct report type, if required
-
+	(void)itf;
 	(void)report_id;
 	(void)report_type;
 	(void)reqlen;
@@ -107,8 +119,10 @@ uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type,
 
 // Invoked when received SET_REPORT control request or
 // received data on OUT endpoint ( Report ID = 0, Type = 0 )
-void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize)
+void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize)
 {
+	(void) itf;
+
 	// echo back anything we received from host
 	tud_hid_report(report_id, buffer, bufsize);
 }

@@ -238,8 +238,7 @@ PixelMatrix createLedButtonLayout(LedLayout layout, int ledsPerPixel) {
   return createLedButtonLayout(layout, positions);
 }
 
-PixelMatrix createLedButtonLayout(LedLayout layout,
-                                  std::vector<uint8_t> *positions) {
+PixelMatrix createLedButtonLayout(LedLayout layout, std::vector<uint8_t> *positions) {
   switch (layout) {
   case LED_LAYOUT_ARCADE_BUTTONS:
     return createLedLayoutArcadeButtons(positions);

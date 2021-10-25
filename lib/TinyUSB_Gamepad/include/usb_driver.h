@@ -8,6 +8,12 @@
 
 #include "GamepadDescriptors.h"
 
+typedef enum
+{
+	USB_MODE_HID,
+	USB_MODE_NET,
+} UsbMode;
+
 #ifdef __cplusplus
 extern "C"
 {
