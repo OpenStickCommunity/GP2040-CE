@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-import pinMapping from '../Data/PinMapping.json'
-import boardParams from '../Data/BoardParams.json'
+import boards from '../Data/Boards.json'
+import controllers from '../Data/Controllers.json'
 
 import './PinMappings.scss';
 
@@ -41,6 +41,7 @@ const requiredButtons = ['B1', 'B2', 'B3', 'S2'];
 
 export default function PinMappingPage() {
 	const [buttonMappings, setButtonMappings] = useState(baseButtonMappings);
+	const [selectedController] = useState(process.env.REACT_APP_GP2040_CONTROLLER);
 	const [selectedBoard] = useState(process.env.REACT_APP_GP2040_BOARD);
 	const [selectedButtonLabels, setSelectedButtonLabels] = useState(buttonLabelOptions[0]);
 	const [validated, setValidated] = useState(false);
@@ -63,14 +64,14 @@ export default function PinMappingPage() {
 		else {
 			// Test code
 			let newMappings = {...baseButtonMappings};
-			for (let prop of Object.keys(pinMapping[selectedBoard])) {
+			for (let prop of Object.keys(controllers[selectedController])) {
 				if (newMappings[prop])
-					newMappings[prop].pin = parseInt(pinMapping[selectedBoard][prop]);
+					newMappings[prop].pin = parseInt(controllers[selectedController][prop]);
 			}
 
 			setButtonMappings(newMappings);
 		}
-	}, [selectedBoard]);
+	}, [selectedController]);
 
 	const buttonLabelsChanged = (e) => {
 		setSelectedButtonLabels(buttonLabelOptions.filter(o => o.value === e.target.value)[0]);
@@ -136,7 +137,7 @@ export default function PinMappingPage() {
 					mappings[prop].error = `${mappings[prop].button} is required`;
 				else if (mappings[prop].pin === mappings[otherProp].pin)
 					mappings[prop].error = `Pin ${mappings[prop].pin} is already assigned`;
-				else if (boardParams[selectedBoard]?.invalid.filter(p => p === mappings[prop].pin).length > 0)
+				else if (boards[selectedBoard].invalidPins.filter(p => p === mappings[prop].pin).length > 0)
 					mappings[prop].error = `Pin ${mappings[prop].pin} is invalid for this board`;
 			}
 
@@ -153,11 +154,18 @@ export default function PinMappingPage() {
 					<h1>Pin Mapping</h1>
 				</header>
 				<p>Use the form below to reconfigure your button-to-pin mapping.</p>
-				<p className="alert alert-warning">
-					Mapping buttons to pins you don't have connected or available can leave your device in non-functional state.
-					If this happens, you can reset your device by flashing <a href="downloads/flash_nuke.uf2">flash_nuke.uf2</a> to your
-					RP2040 board. Then reflash GP2040 onto the controller to get back to defaults.
-				</p>
+				<div className="alert alert-warning">
+					<p>
+						Mapping buttons to pins that aren't connected or available can leave the device in non-functional state. To clear the
+						the invalid configuration:
+					</p>
+					<ol>
+						<li>Download <a href="downloads/flash_nuke.uf2">flash_nuke.uf2</a> and the <a href="https://github.com/FeralAI/GP2040/releases">latest GP2040 release</a> for your controller.</li>
+						<li>Put your controller into bootloader mode (on Pi Pico, hold BOOTSEL while plugging in), then copy the <em>flash_nuke.uf2</em> file to it.</li>
+						<li>Reset into bootloader mode again, then copy the <em>GP2040.uf2</em> file to it.</li>
+						<li>The controller is now set to the default configuration.</li>
+					</ol>
+				</div>
 				<Form.Group className="select-button-labels-container">
 					<Form.Label>Labels</Form.Label>
 					<Form.Select className="select-button-labels form-select-sm" onChange={buttonLabelsChanged}>
@@ -180,12 +188,13 @@ export default function PinMappingPage() {
 										type="number"
 										className="pin-input form-control-sm"
 										value={buttonMappings[prop].pin}
-										min={boardParams[selectedBoard]?.min}
-										max={boardParams[selectedBoard]?.max}
+										min={boards[selectedBoard].minPin}
+										max={boards[selectedBoard].maxPin}
 										isInvalid={!!buttonMappings[prop].error}
 										required={requiredButtons.filter(b => b === buttonMappings[prop].button).length}
 										onChange={(e) => handlePinChange(e, prop)}
 									></Form.Control>
+									{boards[selectedBoard]?.min}
 									<Form.Control.Feedback type="invalid">{buttonMappings[prop].error}</Form.Control.Feedback>
 								</td>
 							</tr>

@@ -1,0 +1,8 @@
+{
+	"pico": {
+		"minPin": 0,
+		"maxPin": 28,
+		"analogPins": [26, 27, 28],
+		"invalidPins": [23, 24, 25]
+	}
+}

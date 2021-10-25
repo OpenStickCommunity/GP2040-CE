@@ -23,7 +23,7 @@ function Navbar(props) {
 						<li className="nav-item dropdown">
 							<a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Links</a>
 							<ul className="dropdown-menu">
-								<li><a className="dropdown-item" target="_blank" rel="noreferrer" href="https://github.com/FeralAI/GP2040/">Home Page</a></li>
+								<li><a className="dropdown-item" target="_blank" rel="noreferrer" href="https://github.com/FeralAI/GP2040/">Github</a></li>
 								<li><a className="dropdown-item" target="_blank" rel="noreferrer" href="https://github.com/FeralAI/GP2040/releases">Releases</a></li>
 							</ul>
 						</li>
