@@ -4,7 +4,7 @@
  */
 
 #include "pico/stdlib.h"
-#include "gamepad.hpp"
+#include "gamepad.h"
 #include "storage.h"
 
 void Gamepad::setup()

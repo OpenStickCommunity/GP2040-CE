@@ -9,8 +9,9 @@
 #include <vector>
 #include "AnimationStation.hpp"
 #include "BoardConfig.h"
-#include "gamepad.hpp"
+#include "gamepad.h"
 #include "enums.h"
+#include "gp2040.h"
 
 #define LED_BUTTON_COUNT 12
 
@@ -85,20 +86,12 @@ PixelMatrix createLedButtonLayout(LedLayout layout, std::vector<uint8_t> *positi
 
 extern PixelMatrix matrix;
 
-class GPModule {
-public:
-  virtual void setup();
-  virtual void loop();
-  virtual void process(Gamepad *gamepad);
-  absolute_time_t nextRunTime;
- 	const uint32_t intervalMS = 10;
-};
-class LEDs : public GPModule {
+class LEDModule : public GPModule {
 public:
   void setup();
   void loop();
-  void trySave();
   void process(Gamepad *gamepad);
+  void trySave();
 	uint32_t frame[100];
 };
 

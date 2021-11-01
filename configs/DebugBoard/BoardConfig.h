@@ -17,6 +17,7 @@
 #include <GamepadEnums.h>
 #include "enums.h"
 #include "NeoPico.hpp"
+#include "PlayerLEDs.h"
 
 /* Mapped to pins on Waveshare IPS panel w/4 button + HAT */
 
@@ -27,20 +28,20 @@
 #define PIN_BUTTON_B1   15
 #define PIN_BUTTON_B2   17
 #define PIN_BUTTON_B3   19
-#define PIN_BUTTON_B4   21
+#define PIN_BUTTON_S1   21
 #define PIN_BUTTON_S2   3
 
 /* Map other buttons to remaining open pins */
 
-#define PIN_BUTTON_S1   4
-#define PIN_BUTTON_L1   6
-#define PIN_BUTTON_R1   7
-#define PIN_BUTTON_L2   14
-#define PIN_BUTTON_R2   26
-#define PIN_BUTTON_L3   27
-#define PIN_BUTTON_R3   5
-#define PIN_BUTTON_A1   28
-#define PIN_BUTTON_A2   0
+#define PIN_BUTTON_B4   4
+#define PIN_BUTTON_L1   5
+#define PIN_BUTTON_R1   6
+#define PIN_BUTTON_L2   7
+#define PIN_BUTTON_R2   8
+#define PIN_BUTTON_L3   9
+#define PIN_BUTTON_R3   14
+#define PIN_BUTTON_A1   26
+#define PIN_BUTTON_A2   27
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
@@ -64,5 +65,11 @@
 #define LEDS_BUTTON_B2   9
 #define LEDS_BUTTON_R2   10
 #define LEDS_BUTTON_L2   11
+
+#define PLED_TYPE PLED_TYPE_PWM
+#define PLED1_PIN 10
+#define PLED2_PIN 11
+#define PLED3_PIN 12
+#define PLED4_PIN 13
 
 #endif

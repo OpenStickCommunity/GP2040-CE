@@ -34,6 +34,15 @@ void initialize_driver(InputMode mode)
 	tusb_init();
 }
 
+void receive_report(uint8_t *buffer)
+{
+	if (input_mode == INPUT_MODE_XINPUT)
+	{
+		receive_xinput_report();
+		memcpy(buffer, xinput_out_buffer, XINPUT_OUT_SIZE);
+	}
+}
+
 void send_report(void *report, uint16_t report_size)
 {
 	static uint8_t previous_report[CFG_TUD_ENDPOINT0_SIZE] = { };
@@ -58,8 +67,6 @@ void send_report(void *report, uint16_t report_size)
 		if (sent)
 			memcpy(previous_report, report, report_size);
 	}
-
-	tud_task();
 }
 
 /* USB Driver Callback (Required for XInput) */

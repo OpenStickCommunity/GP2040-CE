@@ -2,33 +2,47 @@
 #define _GAMEPAD_H_
 
 #include "BoardConfig.h"
-#include "pico/stdlib.h"
+#include <string.h>
 #include <MPGS.h>
+#include "pico/stdlib.h"
 #include "storage.h"
 
-struct GamepadButtonMapping {
-	GamepadButtonMapping(uint8_t p, uint16_t bm) : pin(p), pinMask((1 << p)), buttonMask(bm) { }
+#define GAMEPAD_FEATURE_REPORT_SIZE 32
+
+struct GamepadButtonMapping
+{
+	GamepadButtonMapping(uint8_t p, uint16_t bm) : pin(p), pinMask((1 << p)), buttonMask(bm) {}
 
 	const uint8_t pin;
 	const uint32_t pinMask;
 	const uint16_t buttonMask;
 };
 
-class Gamepad : public MPGS {
+class Gamepad : public MPGS
+{
 public:
 	Gamepad(int debounceMS = 5, GamepadStorage *storage = &GamepadStore)
-		: MPGS(debounceMS, storage) { }
+			: MPGS(debounceMS, storage) {}
 
 	void setup();
 	void read();
 
-	inline bool __attribute__((always_inline)) pressedF1() {
+	void process()
+	{
+		memcpy(&rawState, &state, sizeof(GamepadState));
+		MPGS::process();
+	}
+
+	inline bool __attribute__((always_inline)) pressedF1()
+	{
 #ifdef PIN_SETTINGS
 		return state.aux & (1 << 0);
 #else
 		return MPGS::pressedF1();
 #endif
 	}
+
+	GamepadState rawState;
 
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
