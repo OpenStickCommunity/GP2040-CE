@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef OSFRD_BOARD_CONFIG_H_
-#define OSFRD_BOARD_CONFIG_H_
+#ifndef CRUSH_COUNTER_BOARD_CONFIG_H_
+#define CRUSH_COUNTER_BOARD_CONFIG_H_
 
 #include <vector>
 #include <GamepadEnums.h>
