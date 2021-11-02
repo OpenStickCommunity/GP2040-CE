@@ -9,7 +9,9 @@
 #include "BoardConfig.h"
 #include "pico/util/queue.h"
 #include <stdint.h>
+#include "AnimationStation.hpp"
 #include "PlayerLEDs.h"
+#include "NeoPico.hpp"
 #include "gp2040.h"
 
 #define PLED_REPORT_SIZE 32
@@ -29,7 +31,17 @@
 
 #define PLED_MASK_ALL ((1U << PLED1_PIN) | (1U << PLED2_PIN) | (1U << PLED3_PIN) | (1U << PLED4_PIN))
 
+extern NeoPico neopico;
+extern AnimationStation as;
+
 class PWMPlayerLEDs : public PlayerLEDs
+{
+public:
+	void setup();
+	void display();
+};
+
+class RGBPlayerLEDs : public PlayerLEDs
 {
 public:
 	void setup();

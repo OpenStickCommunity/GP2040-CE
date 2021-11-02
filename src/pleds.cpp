@@ -10,10 +10,20 @@
 #include <vector>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
+#include "GamepadEnums.h"
+#include "Animation.hpp"
 #include "pleds.h"
 #include "xinput_driver.h"
 
 const uint8_t PLED_PINS[] = {PLED1_PIN, PLED2_PIN, PLED3_PIN, PLED4_PIN};
+InputMode inputMode;
+uint32_t rgbPLEDValues[4];
+
+void setRGBPLEDs(uint32_t *frame)
+{
+	for (int i = 0; i < PLED_COUNT; i++)
+		frame[PLED_PINS[i]] = rgbPLEDValues[i];
+}
 
 PLEDAnimationState getXInputAnimation(uint8_t *data)
 {
@@ -101,6 +111,25 @@ void PWMPlayerLEDs::display()
 		pwm_set_gpio_level(PLED_PINS[i], ledLevels[i]);
 }
 
+void RGBPlayerLEDs::setup()
+{
+
+}
+
+void RGBPlayerLEDs::display()
+{
+	switch (inputMode)
+	{
+		case INPUT_MODE_XINPUT:
+			for (int i = 0; i < PLED_COUNT; i++) {
+				float level = (static_cast<float>(PLED_MAX_LEVEL - ledLevels[i]) / static_cast<float>(PLED_MAX_LEVEL));
+				float brightness = as.GetBrightnessX() * level;
+				rgbPLEDValues[i] = ((RGB)ColorGreen).value(neopico.GetFormat(), brightness);
+			}
+			break;
+	}
+}
+
 void PLEDModule::setup()
 {
 	queue_init(&featureQueue, PLED_REPORT_SIZE, 20);
@@ -109,6 +138,9 @@ void PLEDModule::setup()
 	{
 		case PLED_TYPE_PWM:
 			pleds = new PWMPlayerLEDs();
+			break;
+		case PLED_TYPE_RGB:
+			pleds = new RGBPlayerLEDs();
 			break;
 	}
 
@@ -126,7 +158,8 @@ void PLEDModule::process(Gamepad *gamepad)
 
 	if (queue_try_remove(&featureQueue, featureData))
 	{
-		switch (gamepad->options.inputMode)
+		inputMode = gamepad->options.inputMode;
+		switch (inputMode)
 		{
 			case INPUT_MODE_XINPUT:
 				animationState = getXInputAnimation(featureData);

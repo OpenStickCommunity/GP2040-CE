@@ -14,6 +14,10 @@
 #include "hardware/clocks.h"
 #include "NeoPico.hpp"
 
+LEDFormat NeoPico::GetFormat() {
+  return format;
+}
+
 void NeoPico::PutPixel(uint32_t pixelData) {
   switch (format) {
     case LED_FORMAT_GRB:

@@ -13,6 +13,7 @@
 #include "AnimationStorage.hpp"
 #include "NeoPico.hpp"
 #include "Pixel.hpp"
+#include "PlayerLEDs.h"
 #include "leds.h"
 #include "themes.h"
 
@@ -22,10 +23,17 @@ PixelMatrix matrix = createLedButtonLayout(LED_LAYOUT, LEDS_PER_PIXEL);
 PixelMatrix matrix = createLedButtonLayout(LED_LAYOUT, ledPositions);
 #endif
 
-#ifdef LED_FORMAT
-NeoPico neopico(BOARD_LEDS_PIN, matrix.getLedCount(), LED_FORMAT);
+#if PLED_TYPE == PLED_TYPE_RGB
+extern void setRGBPLEDs(uint32_t *frame);
+const uint8_t ledCount = matrix.getLedCount() + PLED_COUNT;
 #else
-NeoPico neopico(BOARD_LEDS_PIN, matrix.getLedCount());
+const uint8_t ledCount = matrix.getLedCount();
+#endif
+
+#ifdef LED_FORMAT
+NeoPico neopico(BOARD_LEDS_PIN, ledCount, LED_FORMAT);
+#else
+NeoPico neopico(BOARD_LEDS_PIN, ledCount);
 #endif
 
 AnimationStation as(matrix);
@@ -109,6 +117,9 @@ void LEDModule::loop()
 
 	as.Animate();
 	as.ApplyBrightness(frame);
+#if PLED_TYPE == PLED_TYPE_RGB
+	setRGBPLEDs(frame);
+#endif
 	neopico.SetFrame(frame);
 	neopico.Show();
 

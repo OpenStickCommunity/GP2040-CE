@@ -72,8 +72,8 @@ struct PLEDAnimationState
 class PlayerLEDs
 {
 	public:
-		virtual void setup();
-		virtual void display();
+		virtual void setup() = 0;
+		virtual void display() = 0;
 		void animate(PLEDAnimationState animationState);
 
 	protected:
