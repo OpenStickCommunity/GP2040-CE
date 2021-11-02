@@ -6,10 +6,10 @@
 #ifndef CRUSH_COUNTER_BOARD_CONFIG_H_
 #define CRUSH_COUNTER_BOARD_CONFIG_H_
 
-#include <vector>
 #include <GamepadEnums.h>
-#include <GamepadState.h>
-#include "Pixel.hpp"
+#include "enums.h"
+#include "NeoPico.hpp"
+#include "PlayerLEDs.h"
 
 #define PIN_DPAD_UP     20
 #define PIN_DPAD_DOWN   8
@@ -53,5 +53,11 @@
 #define LEDS_BUTTON_B2   9
 #define LEDS_BUTTON_R2   10
 #define LEDS_BUTTON_L2   11
+
+#define PLED_TYPE PLED_TYPE_RGB
+#define PLED1_PIN 12
+#define PLED2_PIN 13
+#define PLED3_PIN 14
+#define PLED4_PIN 15
 
 #endif

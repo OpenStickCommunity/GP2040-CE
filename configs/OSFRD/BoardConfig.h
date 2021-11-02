@@ -9,6 +9,7 @@
 #include <GamepadEnums.h>
 #include "enums.h"
 #include "NeoPico.hpp"
+#include "PlayerLEDs.h"
 
 #define PIN_DPAD_UP     13
 #define PIN_DPAD_DOWN   11
