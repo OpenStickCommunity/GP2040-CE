@@ -3,10 +3,10 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
+#include "BoardConfig.h"
 #include "storage.h"
 #include <GamepadStorage.h>
 #include "FlashPROM.h"
-#include "BoardConfig.h"
 #include "Animation.hpp"
 #include "enums.h"
 #include "leds.h"
@@ -57,7 +57,11 @@ GamepadOptions GamepadStorage::getGamepadOptions()
 	{
 		.inputMode = InputMode::INPUT_MODE_XINPUT,
 		.dpadMode = DpadMode::DPAD_MODE_DIGITAL,
+#ifdef DEFAULT_SOCD_MODE
 		.socdMode = DEFAULT_SOCD_MODE,
+#else
+		.socdMode = SOCD_MODE_NEUTRAL,
+#endif
 	};
 
 	EEPROM.get(0, options);
