@@ -97,7 +97,6 @@
 					template: `
 						<VueStickyElement visibleOnDirection="disabled" class="label-select" stuckClass="sticky-label-select">
 							<div class="form-dropdown">
-								<label for="labelSelect">Button Labels</label>
 								<select name="labelSelect" v-model="state.selectedLabels" v-on:change="setSelectedLabels">
 									<option v-for="item in labelData" :key="item.name" v-bind:value="item.name">{{ item.name }}</option>
 								</select>
