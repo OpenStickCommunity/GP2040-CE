@@ -45,7 +45,7 @@
 							"PS3":    { "name": "PS3", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "Cross", "B2": "Circle", "B3": "Square", "B4": "Triangle", "L1": "L1", "R1": "R1", "L2": "L2", "R2": "R2", "S1": "Select", "S2": "Start", "L3": "L3", "R3": "R3", "A1": "(A1)", "A2": "(A2)" },
 							"Arcade": { "name": "Arcade", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "K1", "B2": "K2", "B3": "P1", "B4": "P2", "L1": "P4", "R1": "P3", "L2": "K4", "R2": "K3", "S1": "Select", "S2": "Start", "L3": "LS", "R3": "RS", "A1": "(A1)", "A2": "(A2)" },
 						},
-						selectedLabels: 'GP2040',
+						selectedLabels: localStorage.getItem('selectedLabels') || 'GP2040',
 					}
 				},
 			},
@@ -69,6 +69,7 @@
 					},
 					methods: {
 						setSelectedLabels($event) {
+							localStorage.setItem('selectedLabels', $event.target.value);
 							this.$root.$data.selectedLabels = $event.target.value;
 						},
 					},
