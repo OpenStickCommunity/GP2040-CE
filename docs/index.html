@@ -8,6 +8,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-coldark-dark.min.css">
+	<style>
+		.form-dropdown {
+			margin-top: 10px;
+		}
+
+		.form-dropdown label {
+			margin-right: 10px;
+		}
+
+		.hotkey {
+			text-transform: uppercase;
+		}
+	</style>
 </head>
 <body>
 	<div id="app"></div>
@@ -48,15 +61,6 @@
 							</select>
 						</div>
 					`,
-					style: `
-						.form-dropdown {
-							margin-top: 10px;
-						}
-
-						.form-dropdown label {
-							margin-right: 10px;
-						}
-					`,
 					data() {
 						return {
 							state: this.$root.$data,
@@ -76,11 +80,6 @@
 						<strong>
 							<code class="hotkey">{{ buttons.reduce((prev, next) => prev ? prev + " + " + labelData[state.selectedLabels][next] : labelData[state.selectedLabels][next] , "") }}</code>
 						</strong>
-					`,
-					style: `
-						.hotkey {
-							text-transform: uppercase;
-						}
 					`,
 					data() {
 						return {
