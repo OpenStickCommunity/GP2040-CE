@@ -1,8 +1,6 @@
 # GP2040 Usage
 
-Select the button labels to be displayed in the usage guide:
-
-<label-selector></label-selector>
+Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
 
 ## Buttons
 

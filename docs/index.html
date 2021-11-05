@@ -9,22 +9,61 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-coldark-dark.min.css">
 	<style>
-		.form-dropdown {
-			margin-top: 10px;
-		}
-
 		.form-dropdown label {
-			margin-right: 10px;
+			display: none;
+			margin-right: 5px;
 		}
 
 		.hotkey {
 			text-transform: uppercase;
 		}
+
+		.label-select {
+			display: inline-block;
+			margin-left: 10px;
+		}
+
+		.sticky-label-select {
+			/* width: 100%; */
+			position: fixed!important;
+			top: 0;
+			right: 0px;
+			background-color: rgb(0, 0, 0);
+			padding: 10px;
+			border-radius: 4px;
+			transform: translateY(-100%);
+			opacity: 0.8;
+			z-index: 10;
+		}
+
+		.sticky-label-select label {
+			display: block;
+			text-align: center;
+			margin-top: -5px;
+			margin-bottom: 5px;
+		}
 	</style>
 </head>
 <body>
 	<div id="app"></div>
+
+	<!-- Vue 2.x -->
+	<!-- <script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script> -->
+	<script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/v-scroll-threshold@2.0.0/dist/v-scroll-threshold.min.js"></script>
+	<script>var thresholdPlugin = VScrollThreshold;</script>
+	<script src="//cdn.jsdelivr.net/npm/vue-sticky-element@1.1.2/dist/vue-sticky-element.min.js"></script>
+	<!-- Docsify v4 -->
+	<script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+	<!-- docsify-themeable (latest v0.x.x) -->
+	<script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/prismjs@1.x/components/prism-c.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/prismjs@1.x/components/prism-cpp.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/prismjs@1.x/components/prism-ini.min.js"></script>
+
 	<script>
+		Vue.use(VScrollThreshold);
+
 		window.$docsify = {
 			name: 'GP2040',
 			repo: 'https://github.com/FeralAI/GP2040/',
@@ -35,6 +74,10 @@
 					responsiveTables: true  // default
 			},
 			vueGlobalOptions: {
+				directives: {
+					VScrollThreshold,
+					VueStickyElement,
+				},
 				data() {
 					return {
 						labelData: {
@@ -52,14 +95,14 @@
 			vueComponents: {
 				'label-selector': {
 					template: `
-						<div class="form-dropdown">
-							<label for="labelSelect">
-								Button Labels:
-							</label>
-							<select name="labelSelect" v-model="state.selectedLabels" v-on:change="setSelectedLabels">
-								<option v-for="item in labelData" :key="item.name" v-bind:value="item.name">{{ item.name }}</option>
-							</select>
-						</div>
+						<VueStickyElement visibleOnDirection="disabled" class="label-select" stuckClass="sticky-label-select">
+							<div class="form-dropdown">
+								<label for="labelSelect">Button Labels</label>
+								<select name="labelSelect" v-model="state.selectedLabels" v-on:change="setSelectedLabels">
+									<option v-for="item in labelData" :key="item.name" v-bind:value="item.name">{{ item.name }}</option>
+								</select>
+							</div>
+						</VueStickyElement>
 					`,
 					data() {
 						return {
@@ -92,15 +135,5 @@
 			}
 		};
 	</script>
-	<!-- Vue 2.x -->
-	<!-- <script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script> -->
-	<script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-	<!-- Docsify v4 -->
-	<script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-	<!-- docsify-themeable (latest v0.x.x) -->
-	<script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-c.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-cpp.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-ini.min.js"></script>
 </body>
 </html>
