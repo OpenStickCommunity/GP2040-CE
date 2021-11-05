@@ -1,5 +1,9 @@
 # GP2040 Usage
 
+Select the button labels to be displayed in the usage guide:
+
+<label-selector></label-selector>
+
 ## Buttons
 
 GP2040 uses a generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. This table provides a map of GP2040 buttons to the supported input types and layouts:
@@ -21,15 +25,15 @@ GP2040 uses a generic button labeling for gamepad state, which is then converted
 | A1      | Guide  | Home    | -            | 13           | -      |
 | A2      | -      | Capture | -            | 14           | -      |
 
-If you do not have a dedicated Home button, you can activate it via the **`S1 + S2 + UP`** button combination.
+If you do not have a dedicated Home button, you can activate it via the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> button combination.
 
 ## Input Modes
 
-To change the input mode, **hold one of the following buttons as the controller is plugged in (Arcade mapping in parentheses):**
+To change the input mode, **hold one of the following buttons as the controller is plugged in:**
 
-* **`B1 (K1)`** for Nintendo Switch
-* **`B2 (K2)`** for XInput
-* **`B3 (P1)`** for DirectInput/PS3
+* <hotkey v-bind:buttons='["B1"]'></hotkey> for Nintendo Switch
+* <hotkey v-bind:buttons='["B2"]'></hotkey> for XInput
+* <hotkey v-bind:buttons='["B3"]'></hotkey> for DirectInput/PS3
 
 Input mode is saved across power cycles.
 
@@ -37,9 +41,9 @@ Input mode is saved across power cycles.
 
 You can switch between the 3 modes for the D-Pad **while the controller is in use by pressing one of the following combinations:**
 
-* **`S1 + S2 + DOWN`** - D-Pad
-* **`S1 + S2 + LEFT`** - Emulate Left Analog stick
-* **`S1 + S2 + RIGHT`** - Emulate Right Analog stick
+* <hotkey v-bind:buttons='["S1", "S2", "Down"]'></hotkey> - D-Pad
+* <hotkey v-bind:buttons='["S1", "S2", "Left"]'></hotkey> - Emulate Left Analog stick
+* <hotkey v-bind:buttons='["S1", "S2", "Right"]'></hotkey> - Emulate Right Analog stick
 
 D-Pad mode is saved across power cycles.
 
@@ -47,9 +51,9 @@ D-Pad mode is saved across power cycles.
 
 Simultaneous Opposite Cardinal Direction (SOCD) cleaning will ensure the controller doesn't send invalid directional inputs to the computer/console, like Left + Right at the same time. There are 3 modes to choose from **while the controller is in use by pressing one of the following combinations:**
 
-* **`L3 + R3 + UP`** - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Hitbox behavior)
-* **`L3 + R3 + DOWN`** - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral
-* **`L3 + R3 + LEFT`** - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
+* <hotkey v-bind:buttons='["L3", "R3", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Hitbox behavior)
+* <hotkey v-bind:buttons='["L3", "R3", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral
+* <hotkey v-bind:buttons='["L3", "R3", "Left"]'></hotkey> - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
 
 SOCD mode is saved across power cycles.
 
@@ -73,11 +77,11 @@ The following animations are available:
 
 | Hotkey | Description |
 | - | - |
-| `S1 + S2 + B3` | Next Animation |
-| `S1 + S2 + B1` | Previous Animation |
-| `S1 + S2 + B4` | Brightness Up |
-| `S1 + S2 + B2` | Brightness Down |
-| `S1 + S2 + R1` | LED Parameter Up |
-| `S1 + S2 + R2` | LED Parameter Down |
-| `S1 + S2 + L1` | Pressed Parameter Up |
-| `S1 + S2 + L2` | Pressed Parameter Down |
+| <hotkey v-bind:buttons='["S1", "S2", "B3"]'></hotkey> | Next Animation |
+| <hotkey v-bind:buttons='["S1", "S2", "B1"]'></hotkey> | Previous Animation |
+| <hotkey v-bind:buttons='["S1", "S2", "B4"]'></hotkey> | Brightness Up |
+| <hotkey v-bind:buttons='["S1", "S2", "B2"]'></hotkey> | Brightness Down |
+| <hotkey v-bind:buttons='["S1", "S2", "R1"]'></hotkey> | LED Parameter Up |
+| <hotkey v-bind:buttons='["S1", "S2", "R2"]'></hotkey> | LED Parameter Down |
+| <hotkey v-bind:buttons='["S1", "S2", "L1"]'></hotkey> | Pressed Parameter Up |
+| <hotkey v-bind:buttons='["S1", "S2", "L2"]'></hotkey> | Pressed Parameter Down |

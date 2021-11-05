@@ -1,0 +1,11 @@
+.hotkey {
+	text-transform: uppercase;
+}
+
+.form-dropdown {
+	margin-top: 10px;
+}
+
+.form-dropdown label {
+	margin-right: 10px;
+}

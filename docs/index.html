@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
 	<link rel="stylesheet" href="/css/prism-coldark-dark.css">
+	<link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 	<div id="app"></div>
@@ -20,16 +21,73 @@
 			themeable: {
 					readyTransition : true, // default
 					responsiveTables: true  // default
-			}
-		}
+			},
+			vueGlobalOptions: {
+				data() {
+					return {
+						labelData: {
+							"GP2040": { "name": "GP2040", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "B1", "B2": "B2", "B3": "B3", "B4": "B4", "L1": "L1", "R1": "R1", "L2": "L2", "R2": "R2", "S1": "S1", "S2": "S2", "L3": "L3", "R3": "R3", "A1": "A1", "A2": "A2" },
+							"XInput": { "name": "XInput", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "A", "B2": "B", "B3": "X", "B4": "Y", "L1": "LB", "R1": "RB", "L2": "LT", "R2": "RT", "S1": "Back", "S2": "Start", "L3": "LS", "R3": "RS", "A1": "Guide", "A2": "(A2)" },
+							"DirectInput": { "name": "DirectInput", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "2", "B2": "3", "B3": "1", "B4": "4", "L1": "5", "R1": "6", "L2": "7", "R2": "8", "S1": "9", "S2": "10", "L3": "11", "R3": "12", "A1": "13", "A2": "14" },
+							"Nintendo Switch": { "name": "Nintendo Switch", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "B", "B2": "A", "B3": "Y", "B4": "X", "L1": "L", "R1": "R", "L2": "ZL", "R2": "ZR", "S1": "Minus", "S2": "Plus", "L3": "LS", "R3": "RS", "A1": "Home", "A2": "Capture" },
+							"PS3":    { "name": "PS3", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "Cross", "B2": "Circle", "B3": "Square", "B4": "Triangle", "L1": "L1", "R1": "R1", "L2": "L2", "R2": "R2", "S1": "Select", "S2": "Start", "L3": "L3", "R3": "R3", "A1": "(A1)", "A2": "(A2)" },
+							"Arcade": { "name": "Arcade", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "K1", "B2": "K2", "B3": "P1", "B4": "P2", "L1": "P4", "R1": "P3", "L2": "K4", "R2": "K3", "S1": "Select", "S2": "Start", "L3": "LS", "R3": "RS", "A1": "(A1)", "A2": "(A2)" },
+						},
+						selectedLabels: 'GP2040',
+					}
+				},
+			},
+			vueComponents: {
+				'label-selector': {
+					template: `
+						<div class="form-dropdown">
+							<label for="labelSelect">
+								Button Labels:
+							</label>
+							<select name="labelSelect" v-model="state.selectedLabels" v-on:change="setSelectedLabels">
+								<option v-for="item in labelData" :key="item.name" v-bind:value="item.name">{{ item.name }}</option>
+							</select>
+						</div>
+					`,
+					data() {
+						return {
+							state: this.$root.$data,
+							labelData: this.$root.labelData,
+						};
+					},
+					methods: {
+						setSelectedLabels($event) {
+							this.$root.$data.selectedLabels = $event.target.value;
+						},
+					},
+				},
 
+				'hotkey': {
+					props: ['buttons'],
+					template: `
+						<strong>
+							<code class="hotkey">{{ buttons.reduce((prev, next) => prev ? prev + " + " + labelData[state.selectedLabels][next] : labelData[state.selectedLabels][next] , "") }}</code>
+						</strong>
+					`,
+					data() {
+						return {
+							state: this.$root.$data,
+							labelData: this.$root.labelData,
+						};
+					},
+				},
+			}
+		};
 	</script>
+	<!-- Vue 2.x -->
+	<!-- <script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script> -->
+	<script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 	<!-- Docsify v4 -->
 	<script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 	<!-- docsify-themeable (latest v0.x.x) -->
-	<script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-c.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-cpp.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-ini.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-c.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-cpp.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-ini.min.js"></script>
 </body>
 </html>
