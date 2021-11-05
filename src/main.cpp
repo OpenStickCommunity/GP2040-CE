@@ -33,7 +33,15 @@ uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
 static Gamepad gamepad(GAMEPAD_DEBOUNCE_MILLIS);
 queue_t gamepadQueue;
-std::vector<GPModule*> modules;
+std::vector<GPModule*> modules =
+{
+#ifdef BOARD_LEDS_PIN
+	&ledModule,
+#endif
+#ifdef PLED_TYPE
+	&pledModule,
+#endif
+};
 
 void setup();
 void loop();
@@ -87,13 +95,6 @@ void setup()
 	}
 
 	queue_init(&gamepadQueue, sizeof(Gamepad), 1);
-
-#ifdef BOARD_LEDS_PIN
-	modules.push_back(&ledModule);
-#endif
-#ifdef PLED_TYPE
-	modules.push_back(&pledModule);
-#endif
 
 	for (auto module : modules)
 		module->setup();
