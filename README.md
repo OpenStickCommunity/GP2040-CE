@@ -47,7 +47,7 @@ Full results can be found in the [GP2040 Firmware Latency Test Results](https://
 
 ## Support
 
-If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](https://github.com/FeralAI/GP2040/issues/new) or join the [OpenStick GP2040 Discord channel](https://discord.gg/ABQafnty).
+If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](https://github.com/FeralAI/GP2040/issues/new) or join the [OpenStick GP2040 Discord channel](https://discord.gg/KyQCHcjwJ2).
 
 ## Acknowledgements
 
