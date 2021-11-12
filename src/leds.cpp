@@ -23,7 +23,7 @@ PixelMatrix matrix = createLedButtonLayout(LED_LAYOUT, LEDS_PER_PIXEL);
 PixelMatrix matrix = createLedButtonLayout(LED_LAYOUT, ledPositions);
 #endif
 
-#if PLED_TYPE == PLED_TYPE_RGB
+#if (defined(PLED_TYPE) && PLED_TYPE == PLED_TYPE_RGB)
 extern void setRGBPLEDs(uint32_t *frame);
 const uint8_t ledCount = matrix.getLedCount() + PLED_COUNT;
 #else
@@ -117,7 +117,7 @@ void LEDModule::loop()
 
 	as.Animate();
 	as.ApplyBrightness(frame);
-#if PLED_TYPE == PLED_TYPE_RGB
+#if (defined(PLED_TYPE) && PLED_TYPE == PLED_TYPE_RGB)
 	setRGBPLEDs(frame);
 #endif
 	neopico.SetFrame(frame);
