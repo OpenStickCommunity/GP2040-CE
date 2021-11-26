@@ -1,6 +1,6 @@
 # GP2040 Firmware
 
-GP2040 is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontroller. GP2040 provides high performance and a rich feature set across multiple platforms. GP2040 is compatible with PC, PS3, PS4 (legacy support) and Nintendo Switch.
+GP2040 is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontrollers, and provides high performance with a rich feature set across multiple platforms. GP2040 is compatible with PC, PS3, PS4 (legacy support) and Nintendo Switch.
 
 Full documentation can be found at <https://feralai.github.io/GP2040>.
 
