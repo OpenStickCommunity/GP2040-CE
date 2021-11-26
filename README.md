@@ -1,6 +1,6 @@
 # GP2040 Firmware
 
-GP2040 is a gamepad firmware for the RP2040 microcontroller that provides high performance and a rich feature set across multiple platforms. GP2040 is compatible with PC, PS3, PS4 (legacy support) and Nintendo Switch.
+GP2040 is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontroller. GP2040 provides high performance and a rich feature set across multiple platforms. GP2040 is compatible with PC, PS3, PS4 (legacy support) and Nintendo Switch.
 
 Full documentation can be found at <https://feralai.github.io/GP2040>.
 
@@ -14,7 +14,7 @@ Full documentation can be found at <https://feralai.github.io/GP2040>.
 * PWM and RGB player indicator LED support (XInput only)
 * Saves options to internal memory
 * Support for 128x64 monochrome I2C displays using SSD1306, SH1106 or SH1107 display drivers.
-* Built-in configuration app hosted via embedded webserver...no downloading a separate app!
+* [Built-in configuration app](https://feralai.github.io/GP2040/#/web-configurator) hosted via embedded webserver...no downloading a separate app!
 
 Take a look at the [GP2040 Usage](https://feralai.github.io/GP2040/#/usage) page for more details.
 
@@ -22,7 +22,7 @@ Take a look at the [GP2040 Usage](https://feralai.github.io/GP2040/#/usage) page
 
 Prebuilt `uf2` files are available in the [Releases](https://github.com/FeralAI/GP2040/releases) section for the following boards and controllers:
 
-* [Raspberry Pi Pico](https://github.com/FeralAI/GP2040/tree/main/configs/Pico) and other pin-compatible boards such as the Pimoroni Pico Lipo
+* [Raspberry Pi Pico](https://github.com/FeralAI/GP2040/tree/main/configs/Pico) and other pin-compatible boards such as the Pimoroni Pico Lipo ([wiring diagram](https://raw.githubusercontent.com/FeralAI/GP2040/main/configs/Pico/assets/PinMapping.png))
 * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
 * [Crush Counter](https://github.com/FeralAI/GP2040/tree/main/configs/CrushCounter) (formerly the [OSFRD](https://github.com/FeralAI/GP2040/tree/main/configs/OSFRD))
 * [DURAL](https://github.com/FeralAI/GP2040/tree/main/configs/DURAL)
