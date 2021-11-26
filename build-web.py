@@ -22,6 +22,6 @@ else:
   os.system("./tools/makefsdata -11 " + website_dir + " -f:" + fsdata_filename)
 print("Done")
 
-print("Replace includes")
-os.system("perl -i -p0e 's/#include.*?\"lwip\/def.h\"/#include \"fsdata.h\"/s' " + fsdata_filename)
-print("Done")
+# print("Replace includes")
+# os.system("perl -i -p0e 's/#include.*?\"lwip\/def.h\"/#include \"fsdata.h\"/s' " + fsdata_filename)
+# print("Done")
