@@ -35,6 +35,7 @@
 /* Prevent having to link sys_arch.c (we don't test the API layers in unit tests) */
 #define NO_SYS                          1
 #define MEM_ALIGNMENT                   4
+#define MEMP_OVERFLOW_CHECK             2
 #define LWIP_RAW                        0
 #define LWIP_NETCONN                    0
 #define LWIP_SOCKET                     0
@@ -50,14 +51,16 @@
 
 #define ETHARP_SUPPORT_STATIC_ENTRIES   1
 
-#define LWIP_HTTPD_CGI                  1
+#define LWIP_HTTPD_CGI                  0
 #define LWIP_HTTPD_SSI                  0
+#define LWIP_HTTPD_CGI_SSI              0
 #define LWIP_HTTPD_SSI_INCLUDE_TAG      0
 #define LWIP_HTTPD_CUSTOM_FILES         1
+#define LWIP_HTTPD_SUPPORT_POST         1
+#define LWIP_HTTPD_SUPPORT_V09          0
+#define LWIP_HTTPD_SUPPORT_11_KEEPALIVE 0 // Causes lockups with CGI requests
+#define LWIP_HTTPD_ABORT_ON_CLOSE_MEM_ERROR 1
 
 #define LWIP_SINGLE_NETIF               1
-
-#define LWIP_HTTPD_SUPPORT_V09          0
-#define LWIP_HTTPD_SUPPORT_11_KEEPALIVE 0
 
 #endif /* __LWIPOPTS_H__ */

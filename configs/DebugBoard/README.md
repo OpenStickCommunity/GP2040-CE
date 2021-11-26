@@ -2,11 +2,18 @@
 
 ![Debug setup](assets/DebugBoard.jpg)
 
-This is my personal debugging setup. It contains:
+Feral's debugging setup. This is what peak performance looks like.
 
-- 2x Raspberry Pi Pico (2nd is for picoprobe debugging via a custom proto board)
-- 1x [Waveshare Quad GPIO Expander](https://www.waveshare.com/pico-quad-expander.htm)
-- 1x [Waveshare 1.3inch LCD Display Module](https://www.waveshare.com/pico-lcd-1.3.htm) (used for HAT switch and buttons)
-- 1x [Waveshare RGB 16x10 LED Matrix](https://www.waveshare.com/pico-rgb-led.htm)
+But seriously, it contains (from left to right):
 
-The `BoardConfig.h` file is set up to work with these modules. The four buttons on the LCD module are `B1`, `B2`, `S1`, and `S2`. The HAT switch can be clicked, and that button is bound to `R3`.
+- Custom "fightstick" Pico hat with 17 total inputs
+  - 1x [10x10x9mm 5 Way Tact Switch](https://www.amazon.com/gp/product/B00E6QM2F0/)
+  - 12x [3x6x4.3mm Tact Switch](https://www.amazon.com/gp/product/B008DS188Y/)
+- Custom 128x32 SSD1306 I2C OLED
+- [Pimoroni Pico LiPo](https://shop.pimoroni.com/products/pimoroni-pico-lipo) (USB-C FTW!)
+- [Waveshare RGB 16x10 LED Matrix](https://www.waveshare.com/pico-rgb-led.htm)
+- Custom player LED hat
+
+All connected to a [Waveshare Quad GPIO Expander](https://www.waveshare.com/pico-quad-expander.htm). Custom hats are built on [Pimoroni Pico Proto boards](https://shop.pimoroni.com/products/pico-proto).
+
+An [Adafruit QT Py RP2040](https://www.adafruit.com/product/4900) is attached to the Pico LiPo's JST-SH connectors for debugging.

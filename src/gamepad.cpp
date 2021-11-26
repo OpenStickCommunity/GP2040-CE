@@ -12,6 +12,7 @@ void Gamepad::setup()
 	// Configure storage
 	GamepadStore.start();
 	load();
+	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
 
 	// Configure pin mapping
 	BoardOptions boardOptions = getBoardOptions();

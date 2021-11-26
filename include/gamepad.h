@@ -13,9 +13,15 @@ struct GamepadButtonMapping
 {
 	GamepadButtonMapping(uint8_t p, uint16_t bm) : pin(p), pinMask((1 << p)), buttonMask(bm) {}
 
-	const uint8_t pin;
-	const uint32_t pinMask;
+	uint8_t pin;
+	uint32_t pinMask;
 	const uint16_t buttonMask;
+
+	inline void setPin(uint8_t p)
+	{
+		pin = p;
+		pinMask = 1 << p;
+	}
 };
 
 class Gamepad : public MPGS

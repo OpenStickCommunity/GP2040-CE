@@ -3,8 +3,7 @@
 StaticColor::StaticColor(PixelMatrix &matrix) : Animation(matrix) {
 }
 
-StaticColor::StaticColor(PixelMatrix &matrix, std::vector<Pixel> pixels) : Animation(matrix) {
-  this->pixels = pixels;
+StaticColor::StaticColor(PixelMatrix &matrix, std::vector<Pixel> &pixels) : Animation(matrix), pixels(&pixels) {
   this->filtered = true;
 }
 

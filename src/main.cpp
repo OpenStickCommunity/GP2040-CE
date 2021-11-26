@@ -14,55 +14,51 @@
 #include "pico/util/queue.h"
 #include "tusb.h"
 
-#include "gp2040.h"
+#include "rndis/rndis.h"
 #include "usb_driver.h"
+#include "gp2040.h"
 #include "gamepad.h"
-#include "webserver.h"
-
-#ifdef BOARD_LEDS_PIN
 #include "leds.h"
-LEDModule ledModule;
-#endif
-
-#ifdef PLED_TYPE
 #include "pleds.h"
-PLEDModule pledModule(PLED_TYPE);
-#endif
+#include "display.h"
 
 uint32_t getMillis() { return to_ms_since_boot(get_absolute_time()); }
 
-static Gamepad gamepad(GAMEPAD_DEBOUNCE_MILLIS);
+Gamepad gamepad(GAMEPAD_DEBOUNCE_MILLIS);
+static InputMode inputMode;
 queue_t gamepadQueue;
+
+DisplayModule displayModule;
+LEDModule ledModule;
+PLEDModule pledModule(PLED_TYPE);
 std::vector<GPModule*> modules =
 {
-#ifdef BOARD_LEDS_PIN
+	&displayModule,
 	&ledModule,
-#endif
-#ifdef PLED_TYPE
 	&pledModule,
-#endif
 };
 
 void setup();
 void loop();
 void core1();
+void webserver();
 
 int main()
 {
 	setup();
 	multicore_launch_core1(core1);
 
-	if (gamepad.options.inputMode == INPUT_MODE_CONFIG)
+	if (inputMode == INPUT_MODE_CONFIG)
 	{
-		webserver(&gamepad);
+		webserver();
 	}
 	else
 	{
 		while (1)
 			loop();
-
-		return 0;
 	}
+
+	return 0;
 }
 
 void setup()
@@ -71,35 +67,39 @@ void setup()
 
 	// Check for input mode override
 	gamepad.read();
-	InputMode newInputMode = gamepad.options.inputMode;
+	inputMode = gamepad.options.inputMode;
 	if (gamepad.pressedS2())
-		newInputMode = INPUT_MODE_CONFIG;
+		inputMode = INPUT_MODE_CONFIG;
 	else if (gamepad.pressedB3())
-		newInputMode = INPUT_MODE_HID;
+		inputMode = INPUT_MODE_HID;
 	else if (gamepad.pressedB1())
-		newInputMode = INPUT_MODE_SWITCH;
+		inputMode = INPUT_MODE_SWITCH;
 	else if (gamepad.pressedB2())
-		newInputMode = INPUT_MODE_XINPUT;
+		inputMode = INPUT_MODE_XINPUT;
 	else if (gamepad.pressedF1() && gamepad.pressedUp())
 		reset_usb_boot(0, 0);
 
-	bool configMode = newInputMode == INPUT_MODE_CONFIG;
-	if (newInputMode != gamepad.options.inputMode && !configMode)
-	{
-		gamepad.options.inputMode = newInputMode;
-		gamepad.save();
-	}
-	else
-	{
-		gamepad.options.inputMode = newInputMode;
-	}
-
 	queue_init(&gamepadQueue, sizeof(Gamepad), 1);
 
-	for (auto module : modules)
+	for (auto it = modules.begin(); it != modules.end();)
+	{
+		GPModule *module = (*it);
 		module->setup();
 
-	initialize_driver(gamepad.options.inputMode);
+		if (module->isEnabled())
+			it++;
+		else
+			it = modules.erase(it);
+	}
+
+	bool configMode = inputMode == INPUT_MODE_CONFIG;
+	if (inputMode != gamepad.options.inputMode && !configMode)
+	{
+		gamepad.options.inputMode = inputMode;
+		gamepad.save();
+	}
+
+	initialize_driver(inputMode);
 }
 
 void loop()
@@ -125,10 +125,9 @@ void loop()
 
 	memset(featureData, 0, sizeof(featureData));
 	receive_report(featureData);
-#ifdef PLED_TYPE
 	if (featureData[0])
 		queue_try_add(&pledModule.featureQueue, featureData);
-#endif
+
 	tud_task();
 
 	if (queue_is_empty(&gamepadQueue))
@@ -156,5 +155,29 @@ void core1()
 
 		for (auto module : modules)
 			module->loop();
+	}
+}
+
+void webserver()
+{
+	static Gamepad snapshot;
+
+	rndis_init();
+	while (1)
+	{
+		gamepad.read();
+#if GAMEPAD_DEBOUNCE_MILLIS > 0
+		gamepad.debounce();
+#endif
+		gamepad.hotkey();
+		gamepad.process();
+
+		if (queue_is_empty(&gamepadQueue))
+		{
+			memcpy(&snapshot, &gamepad, sizeof(Gamepad));
+			queue_try_add(&gamepadQueue, &snapshot);
+		}
+
+		rndis_task();
 	}
 }

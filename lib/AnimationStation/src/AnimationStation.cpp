@@ -14,7 +14,7 @@ absolute_time_t AnimationStation::nextChange = 0;
 AnimationOptions AnimationStation::options = {};
 
 
-AnimationStation::AnimationStation(PixelMatrix matrix) : matrix(matrix) {
+AnimationStation::AnimationStation() {
   AnimationStation::SetBrightness(1);
 }
 
@@ -51,7 +51,7 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
   if (action == HOTKEY_LEDS_PARAMETER_DOWN) {
     this->baseAnimation->ParameterDown();
   }
-  
+
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_UP) {
     this->buttonAnimation->ParameterUp();
   }
@@ -84,12 +84,10 @@ uint16_t AnimationStation::AdjustIndex(int changeSize) {
 void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
   if (pressed != this->lastPressed) {
     this->lastPressed = pressed;
-    if (this->buttonAnimation == nullptr) {
+    if (this->buttonAnimation == nullptr)
       this->buttonAnimation = new StaticColor(matrix, pressed);
-    }
-    else {
-      this->buttonAnimation->UpdatePixels(pressed);
-    }
+
+    this->buttonAnimation->UpdatePixels(pressed);
   }
 }
 
@@ -148,6 +146,10 @@ void AnimationStation::SetMode(uint8_t mode) {
     this->baseAnimation = new StaticColor(matrix);
     break;
   }
+}
+
+void AnimationStation::SetMatrix(PixelMatrix matrix) {
+  this->matrix = matrix;
 }
 
 void AnimationStation::SetOptions(AnimationOptions options) {

@@ -2,7 +2,7 @@
 
 GP2040 is a gamepad firmware for the RP2040 microcontroller that provides high performance and a rich feature set across multiple platforms. GP2040 is compatible with PC, PS3, PS4 (legacy support) and Nintendo Switch.
 
-Documentation can be found at <https://feralai.github.io/GP2040>.
+Full documentation can be found at <https://feralai.github.io/GP2040>.
 
 ## Features
 
@@ -12,7 +12,9 @@ Documentation can be found at <https://feralai.github.io/GP2040>.
 * Left and Right stick emulation via D-pad inputs
 * Per-button RGB LED support
 * PWM and RGB player indicator LED support (XInput only)
-* Save options to internal memory
+* Saves options to internal memory
+* Support for 128x64 monochrome I2C displays using SSD1306, SH1106 or SH1107 display drivers.
+* Built-in configuration app hosted via embedded webserver...no downloading a separate app!
 
 Take a look at the [GP2040 Usage](https://feralai.github.io/GP2040/#/usage) page for more details.
 
@@ -54,3 +56,4 @@ If you would like to discuss features, issues or anything else related to GP2040
 * Ha Thach's excellent [TinyUSB library](https://github.com/hathach/tinyusb) examples
 * fluffymadness's [tinyusb-xinput](https://github.com/fluffymadness/tinyusb-xinput) sample
 * Kevin Boone's [blog post on using RP2040 flash memory as emulated EEPROM](https://kevinboone.me/picoflash.html)
+* [bitbank2](https://github.com/bitbank2) for the [OneBitDisplay](https://github.com/bitbank2/OneBitDisplay) and [BitBang_I2C](https://github.com/bitbank2/BitBang_I2C) libraries, which were ported for use with the Pico SDK

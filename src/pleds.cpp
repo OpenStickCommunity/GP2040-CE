@@ -3,11 +3,8 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#include "BoardConfig.h"
-
-#ifdef PLED_TYPE
-
 #include <vector>
+#include "pico/util/queue.h"
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 #include "GamepadEnums.h"
@@ -15,14 +12,15 @@
 #include "pleds.h"
 #include "xinput_driver.h"
 
-const uint8_t PLED_PINS[] = {PLED1_PIN, PLED2_PIN, PLED3_PIN, PLED4_PIN};
+const int PLED_PINS[] = {PLED1_PIN, PLED2_PIN, PLED3_PIN, PLED4_PIN};
 InputMode inputMode;
 uint32_t rgbPLEDValues[4];
 
 void setRGBPLEDs(uint32_t *frame)
 {
 	for (int i = 0; i < PLED_COUNT; i++)
-		frame[PLED_PINS[i]] = rgbPLEDValues[i];
+		if (PLED_PINS[i] > -1)
+			frame[PLED_PINS[i]] = rgbPLEDValues[i];
 }
 
 PLEDAnimationState getXInputAnimation(uint8_t *data)
@@ -94,11 +92,14 @@ void PWMPlayerLEDs::setup()
 
 	for (int i = 0; i < PLED_COUNT; i++)
 	{
-		gpio_set_function(PLED_PINS[i], GPIO_FUNC_PWM);
-		uint sliceNum = pwm_gpio_to_slice_num(PLED_PINS[i]);
-		uint channelNum = pwm_gpio_to_channel(PLED_PINS[i]);
-		sliceNums.push_back(sliceNum);
-		pwm_set_chan_level(sliceNum, channelNum, PLED_MAX_LEVEL);
+		if (PLED_PINS[i] > -1)
+		{
+			gpio_set_function(PLED_PINS[i], GPIO_FUNC_PWM);
+			uint sliceNum = pwm_gpio_to_slice_num(PLED_PINS[i]);
+			uint channelNum = pwm_gpio_to_channel(PLED_PINS[i]);
+			sliceNums.push_back(sliceNum);
+			pwm_set_chan_level(sliceNum, channelNum, PLED_MAX_LEVEL);
+		}
 	}
 
 	for (auto sliceNum : sliceNums)
@@ -108,7 +109,8 @@ void PWMPlayerLEDs::setup()
 void PWMPlayerLEDs::display()
 {
 	for (int i = 0; i < PLED_COUNT; i++)
-		pwm_set_gpio_level(PLED_PINS[i], ledLevels[i]);
+		if (PLED_PINS[i] > -1)
+			pwm_set_gpio_level(PLED_PINS[i], ledLevels[i]);
 }
 
 void RGBPlayerLEDs::setup()
@@ -124,7 +126,7 @@ void RGBPlayerLEDs::display()
 			for (int i = 0; i < PLED_COUNT; i++) {
 				float level = (static_cast<float>(PLED_MAX_LEVEL - ledLevels[i]) / static_cast<float>(PLED_MAX_LEVEL));
 				float brightness = as.GetBrightnessX() * level;
-				rgbPLEDValues[i] = ((RGB)ColorGreen).value(neopico.GetFormat(), brightness);
+				rgbPLEDValues[i] = ((RGB)ColorGreen).value(neopico->GetFormat(), brightness);
 			}
 			break;
 	}
@@ -134,22 +136,28 @@ void PLEDModule::setup()
 {
 	queue_init(&featureQueue, PLED_REPORT_SIZE, 20);
 
-	switch (type)
+	enabled = PLED_TYPE != PLED_TYPE_NONE;
+	if (enabled)
 	{
-		case PLED_TYPE_PWM:
-			pleds = new PWMPlayerLEDs();
-			break;
-		case PLED_TYPE_RGB:
-			pleds = new RGBPlayerLEDs();
-			break;
-	}
+		switch (type)
+		{
+			case PLED_TYPE_PWM:
+				pleds = new PWMPlayerLEDs();
+				break;
+			case PLED_TYPE_RGB:
+				pleds = new RGBPlayerLEDs();
+				break;
+		}
 
-	pleds->setup();
+		if (pleds != nullptr)
+			pleds->setup();
+	}
 }
 
 void PLEDModule::loop()
 {
-	pleds->display();
+	if (pleds != nullptr)
+		pleds->display();
 }
 
 void PLEDModule::process(Gamepad *gamepad)
@@ -166,10 +174,7 @@ void PLEDModule::process(Gamepad *gamepad)
 				break;
 		}
 
-		if (animationState.animation != PLED_ANIM_NONE)
+		if (pleds != nullptr && animationState.animation != PLED_ANIM_NONE)
 			pleds->animate(animationState);
 	}
 }
-
-#endif
-

@@ -21,7 +21,7 @@ bool Animation::notInFilter(Pixel pixel) {
   }
 
   for (size_t i = 0; i < this->pixels.size(); i++) {
-    if (pixel == this->pixels[i]) {
+    if (pixel == this->pixels.at(i)) {
       return false;
     }
   }

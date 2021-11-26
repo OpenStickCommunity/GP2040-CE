@@ -10,8 +10,9 @@
 
 typedef enum
 {
-	PLED_TYPE_PWM,
-	PLED_TYPE_RGB,
+	PLED_TYPE_NONE = -1,
+	PLED_TYPE_PWM = 0,
+	PLED_TYPE_RGB = 1,
 } PLEDType;
 
 typedef enum

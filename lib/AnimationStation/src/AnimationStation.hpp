@@ -53,7 +53,7 @@ struct AnimationOptions
 class AnimationStation
 {
 public:
-  AnimationStation(PixelMatrix matrix);
+  AnimationStation();
 
   void Animate();
   void HandleEvent(AnimationHotkey action);
@@ -66,6 +66,7 @@ public:
 
   uint8_t GetMode();
   void SetMode(uint8_t mode);
+  void SetMatrix(PixelMatrix matrix);
   static void ConfigureBrightness(uint8_t max, uint8_t steps);
   static float GetBrightnessX();
   static uint8_t GetBrightness();

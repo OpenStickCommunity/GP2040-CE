@@ -11,7 +11,7 @@
 	<style>
 		.form-dropdown label {
 			display: none;
-			margin-right: 5px;
+			margin-right: 4px;
 		}
 
 		.hotkey {
@@ -20,16 +20,17 @@
 
 		.label-select {
 			display: inline-block;
-			margin-left: 10px;
+			margin-left: 4px;
 		}
 
 		.sticky-label-select {
 			/* width: 100%; */
 			position: fixed!important;
-			top: 0;
+			top: var(--sidebar-toggle-offset-top);
+			height: var(--sidebar-toggle-height);
 			right: 0px;
-			background-color: rgb(0, 0, 0);
-			padding: 10px;
+			background: var(--sidebar-toggle-background, transparent);
+			padding: 4px;
 			border-radius: 4px;
 			transform: translateY(-100%);
 			opacity: 0.8;
@@ -39,8 +40,8 @@
 		.sticky-label-select label {
 			display: block;
 			text-align: center;
-			margin-top: -5px;
-			margin-bottom: 5px;
+			margin-top: -4px;
+			margin-bottom: 4px;
 		}
 	</style>
 </head>

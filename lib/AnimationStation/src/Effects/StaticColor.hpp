@@ -10,7 +10,7 @@
 class StaticColor : public Animation {
 public:
   StaticColor(PixelMatrix &matrix);
-  StaticColor(PixelMatrix &matrix, std::vector<Pixel> pixels);
+  StaticColor(PixelMatrix &matrix, std::vector<Pixel> &pixels);
   ~StaticColor() {};
 
   void Animate(RGB (&frame)[100]);
@@ -18,6 +18,8 @@ public:
   uint8_t GetColor();
   void ParameterUp();
   void ParameterDown();
+protected:
+  std::vector<Pixel> *pixels;
 };
 
 #endif

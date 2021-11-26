@@ -1,3 +1,8 @@
+ /*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ */
+
 #ifndef STORAGE_H_
 #define STORAGE_H_
 
@@ -5,8 +10,10 @@
 #include "NeoPico.hpp"
 #include "enums.h"
 
-#define BOARD_STORAGE_INDEX 1024
-#define LED_STORAGE_INDEX 1536
+#define GAMEPAD_STORAGE_INDEX      0
+#define BOARD_STORAGE_INDEX     1024
+#define LED_STORAGE_INDEX       1536
+#define ANIMATION_STORAGE_INDEX 2048
 
 struct BoardOptions
 {
@@ -33,30 +40,31 @@ struct BoardOptions
 
 struct LEDOptions
 {
-	uint8_t ledBrightnessMaximum;
-	uint8_t ledBrightnessSteps;
+	bool useUserDefinedLEDs;
+	int dataPin;
 	LEDFormat ledFormat;
-	LedLayout ledLayout;
-	uint8_t ledsPerPixel;
-
-	uint8_t ledDpadUp;
-	uint8_t ledDpadDown;
-	uint8_t ledDpadLeft;
-	uint8_t ledDpadRight;
-	uint8_t ledButtonB1;
-	uint8_t ledButtonB2;
-	uint8_t ledButtonB3;
-	uint8_t ledButtonB4;
-	uint8_t ledButtonL1;
-	uint8_t ledButtonR1;
-	uint8_t ledButtonL2;
-	uint8_t ledButtonR2;
-	uint8_t ledButtonS1;
-	uint8_t ledButtonS2;
-	uint8_t ledButtonL3;
-	uint8_t ledButtonR3;
-	uint8_t ledButtonA1;
-	uint8_t ledButtonA2;
+	ButtonLayout ledLayout;
+	uint8_t ledsPerButton;
+	uint8_t brightnessMaximum;
+	uint8_t brightnessSteps;
+	int indexUp;
+	int indexDown;
+	int indexLeft;
+	int indexRight;
+	int indexB1;
+	int indexB2;
+	int indexB3;
+	int indexB4;
+	int indexL1;
+	int indexR1;
+	int indexL2;
+	int indexR2;
+	int indexS1;
+	int indexS2;
+	int indexL3;
+	int indexR3;
+	int indexA1;
+	int indexA2;
 };
 
 BoardOptions getBoardOptions();

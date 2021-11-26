@@ -11,6 +11,7 @@
 #include "NeoPico.hpp"
 #include "PlayerLEDs.h"
 
+
 #define PIN_DPAD_UP     20
 #define PIN_DPAD_DOWN   8
 #define PIN_DPAD_LEFT   1
@@ -32,13 +33,13 @@
 #define PIN_SETTINGS    11
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+#define BUTTON_LAYOUT BUTTON_LAYOUT_HITBOX
 
 #define BOARD_LEDS_PIN 2
 
 #define LED_BRIGHTNESS_MAXIMUM 100
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
-#define LED_LAYOUT LED_LAYOUT_ARCADE_HITBOX
 #define LEDS_PER_PIXEL 1
 
 #define LEDS_DPAD_LEFT   0

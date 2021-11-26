@@ -1,14 +1,37 @@
 # GP2040 Development
 
-The project is built using the PlatformIO VS Code plugin along with the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package, using the baremetal (Pico SDK) configuration. There is an external dependency on the [MPG](https://github.com/FeralAI/MPG) C++ gamepad library for handling input state, providing extra features like Left/Right stick emulation and SOCD cleaning, and converting the generic gamepad state to the appropriate USB report.
+GP2040 is written in C++ and set up as a [PlatformIO](https://platformio.org/) project, using the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package in the `baremetal` (Pico SDK) configuration.
 
-There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it.
+## Environment Setup
+
+The recommended setup is to develop using the [PlatformIO IDE](https://platformio.org/platformio-ide), which is an extension to the excellent [Visual Studio Code (VS Code)](https://code.visualstudio.com/) editor. If a dedicated IDE for embedded development isn't your thing, you can easily build the project using the [PlatformIO CLI](https://platformio.org/install/cli) instead. This section will cover using the PlatformIO IDE.
+
+1. Use Git to clone the [GP2040 repository](https://github.com/FeralAI/GP2040.git), or [download the latest version](https://github.com/FeralAI/GP2040/archive/refs/heads/main.zip) and extract it.
+1. Follow the [installation instructions for the PlatformIO IDE](https://platformio.org/install/ide?install=vscode).
+1. Open VS Code and you should be greeted with the PlatformIO Home screen.
+1. Select the PlatformIO tab in the activity bar (bug icon), then go to `PIO Home > Platforms`.
+1. On the Platforms tab click the `Advanced Installation` button, then type `https://github.com/Wiz-IO/wizio-pico` and click `Install`.
+1. Open the `GP2040` (`GP2040-main` if from zip) folder in VS Code and it should automatically get picked up as a Platform IO project.
+1. Click on the VS Code Explorer tab (or Ctrl+Shift+E) and expand the folders and files in your project.
+
+PlatformIO will download any dependencies not already included with the project.
 
 ## Configuration
 
-Several example configurations are located in the repository **[configs](https://github.com/FeralAI/GP2040/tree/main/configs)** folder. This document will outline setting up a new build configuration.
+There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it. Several example configurations are located in the repository **[configs](https://github.com/FeralAI/GP2040/tree/main/configs)** folder. This document will outline setting up a new build configuration.
 
-### Build Configuration
+### Board Configuration Folder
+
+Each subfolder in [`configs`](https://github.com/FeralAI/GP2040/tree/main/configs) contains a separate PlatformIO build configuration, which consists of the following:
+
+| Name | Required? | Description |
+| ----------- | --------- | ----------- |
+| `BoardConfig.h` | Yes | The configuration file used when building GP2040 for a specific controller/board. Contains initial pin mappings, LED configuration, etc. |
+| `env.ini` | Yes | A partial PlatformIO project configuration file which defines the build parameters for this board. All `env.ini` files in subfolders of `configs` will be parsed and selectable when loading the project in the PlatformIO IDE (may require a restart to pick up the new build config).
+| `README.md` | No | Provides information related to this board configuration. Not required for the build process, but suggested for pull requests of new board configurations. |
+| `assets/` | No | Folder for containing assets included in the `README.md`. Not required for the build process.
+
+### Build Configuration (`env.ini`)
 
 1. Create a new folder in `configs` for your board, e.g. `configs/NewBoard`.
 1. Create `configs/NewBoard/env.ini` using the following template:
@@ -34,9 +57,17 @@ Several example configurations are located in the repository **[configs](https:/
 
 This will create a new PlatformIO build environment named `new-board`. Select the new environment from the VS Code status bar menu. You may need to restart VS Code in order for PlatformIO to pick up on the `env.ini` changes.
 
-### Board Configuration
+### Board Configuration (`BoardConfig.h`)
 
-Create `configs/NewBoard/BoardConfig.h` and add your pin configuration and options:
+The following board options are available in the `BoardConfig.h` file:
+
+| Name             | Description                  | Required? |
+| ---------------- | ---------------------------- | --------- |
+| **PIN_DPAD_*X***<br>**PIN_BUTTON_*X*** | The GPIO pin for the button. Replace the *`X`* with GP2040 button or D-pad direction. | Yes |
+| **DEFAULT_SOCD_MODE** | The default SOCD mode to use, defaults to `SOCD_MODE_NEUTRAL`.<br>Available options are:<br>`SOCD_MODE_NEUTRAL`<br>`SOCD_MODE_UP_PRIORITY`<br>`SOCD_MODE_SECOND_INPUT_PRIORITY` | No |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_WASD` | Yes |
+
+Create `configs/NewBoard/BoardConfig.h` and add your pin configuration and options. An example `BoardConfig.h` file:
 
 ```cpp
 // BoardConfig.h
@@ -63,16 +94,10 @@ Create `configs/NewBoard/BoardConfig.h` and add your pin configuration and optio
 #define PIN_BUTTON_A2   21
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+#define BUTTON_LAYOUT BUTTON_LAYOUT_ARCADE
 ```
 
-The following board options are available in the `BoardConfig.h` file:
-
-| Name             | Description                  | Required? |
-| ---------------- | ---------------------------- | --------- |
-| **PIN_DPAD_*X***<br>**PIN_BUTTON_*X*** | The GPIO pin for the button. Replace the *`X`* with GP2040 button or D-pad direction. | Yes |
-| **DEFAULT_SOCD_MODE** | Defines the default SOCD mode to use, defaults to `SOCD_MODE_NEUTRAL`.<br>Available options are:<br>`SOCD_MODE_NEUTRAL`<br>`SOCD_MODE_UP_PRIORITY`<br>`SOCD_MODE_SECOND_INPUT_PRIORITY` | No |
-
-### RGB LEDs
+#### RGB LEDs
 
 GP2040 supports per-button WS2812 and similar RGB LEDs.
 
@@ -80,9 +105,9 @@ The following RGB LED options are available in the `BoardConfig.h` file:
 
 | Name             | Description                  | Required? |
 | ---------------- | ---------------------------- | --------- |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_WASD` | Yes |
 | **BOARD_LEDS_PIN** | Data PIN for your LED strand | Yes       |
-| **LED_LAYOUT** | Defines the layout of your LED buttons as a `Pixel` matrix.<br>Available options are:<br>`LED_LAYOUT_ARCADE_BUTTONS`<br>`LED_LAYOUT_ARCADE_HITBOX`<br>`LED_LAYOUT_ARCADE_WASD` | Yes |
-| **LED_FORMAT** | Defines the color data format for the LED chain.<br>Available options are:<br>`LED_FORMAT_GRB`<br>`LED_FORMAT_RGB`<br>`LED_FORMAT_GRBW`<br>`LED_FORMAT_RGBW` | No, default value `LED_FORMAT_GRB` |
+| **LED_FORMAT** | The color data format for the LED chain.<br>Available options are:<br>`LED_FORMAT_GRB`<br>`LED_FORMAT_RGB`<br>`LED_FORMAT_GRBW`<br>`LED_FORMAT_RGBW` | No, default value `LED_FORMAT_GRB` |
 | **LEDS_PER_PIXEL** | The number of LEDs per button. | Yes |
 | **LED_BRIGHTNESS_MAX** | Max brightness value, `uint8_t` 0-255. | Yes |
 | **LED_BRIGHTNESS_STEPS** | The number of brightness steps when using the up/down hotkey. | Yes |
@@ -93,20 +118,17 @@ An example RGB LED setup in the `BoardConfig.h` file:
 ```cpp
 // BoardConfig.h
 
-#include "enums.h"
+#include "gp2040.h"
 #include "NeoPico.hpp"
+
+#define BUTTON_LAYOUT BUTTON_LAYOUT_HITBOX
 
 #define BOARD_LEDS_PIN 22
 
 #define LED_BRIGHTNESS_MAXIMUM 100
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
-#define LED_LAYOUT LED_LAYOUT_ARCADE_HITBOX
 #define LEDS_PER_PIXEL 2
-
-#define LEDS_RAINBOW_CYCLE_TIME 100
-#define LEDS_CHASE_CYCLE_TIME 50
-#define LEDS_STATIC_COLOR_COLOR ColorRed // Could also use: RGB(255, 0, 0)
 
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
@@ -122,7 +144,7 @@ An example RGB LED setup in the `BoardConfig.h` file:
 #define LEDS_BUTTON_L2   11
 ```
 
-### Player LEDs
+#### Player LEDs
 
 GP2040 supports PWM and RGB player LEDs (PLEDs) and can be configured in the `BoardConfig.h` file.
 
@@ -150,6 +172,26 @@ An example PLED setup in the `BoardConfig.h` file:
 #define PLED2_PIN 13
 #define PLED3_PIN 14
 #define PLED4_PIN 15
+```
+
+#### I2C Displays
+
+GP2040 supports 128x64 monochrome displays that run on the SSD1306, SH1106 or SH1107 drivers. The following options are available for displays:
+
+| Name | Description | Required? |
+| - | - | - |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_WASD` | Yes |
+| **HAS_I2C_DISPLAY** | Flag to indicate the controller contains an I2C display module. | No |
+| **I2C_SDA_PIN** | The GPIO pin for the I2C SDA line. | If `HAS_I2C_DISPLAY` is enabled |
+| **I2C_SCL_PIN** | The GPIO pin for the I2C SCL line. | If `HAS_I2C_DISPLAY` is enabled |
+
+An example I2C display setup in the `BoardConfig.h` file:
+
+```cpp
+#define BUTTON_LAYOUT BUTTON_LAYOUT_WASD
+#define HAS_I2C_DISPLAY 1
+#define I2C_SDA_PIN 0
+#define I2C_SCL_PIN 1
 ```
 
 ## Building
