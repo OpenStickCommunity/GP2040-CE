@@ -10,14 +10,14 @@
 #include "NeoPico.hpp"
 #include "enums.h"
 
-#define GAMEPAD_STORAGE_INDEX      0
-#define BOARD_STORAGE_INDEX     1024
-#define LED_STORAGE_INDEX       1536
-#define ANIMATION_STORAGE_INDEX 2048
+#define GAMEPAD_STORAGE_INDEX      0 // 1024 bytes for gamepad options
+#define BOARD_STORAGE_INDEX     1024 //  512 bytes for hardware options
+#define LED_STORAGE_INDEX       1536 //  512 bytes for LED configuration
+#define ANIMATION_STORAGE_INDEX 2048 // ???? bytes for LED animations
 
 struct BoardOptions
 {
-	bool useUserDefinedPins;
+	bool hasOptionsSet;
 	uint8_t pinDpadUp;
 	uint8_t pinDpadDown;
 	uint8_t pinDpadLeft;
@@ -36,6 +36,18 @@ struct BoardOptions
 	uint8_t pinButtonR3;
 	uint8_t pinButtonA1;
 	uint8_t pinButtonA2;
+	ButtonLayout buttonLayout;
+
+	int i2cSDAPin;
+	int i2cSCLPin;
+	int i2cBlock;
+	uint32_t i2cSpeed;
+
+	bool hasI2CDisplay;
+	int displayI2CAddress;
+	uint8_t displaySize;
+	bool displayFlip;
+	bool displayInvert;
 };
 
 struct LEDOptions

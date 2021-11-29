@@ -182,8 +182,13 @@ GP2040 supports 128x64 monochrome displays that run on the SSD1306, SH1106 or SH
 | - | - | - |
 | **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_WASD` | Yes |
 | **HAS_I2C_DISPLAY** | Flag to indicate the controller contains an I2C display module. | No |
+| **DISPLAY_I2C_ADDR** | The I2C address of the display. | No, defaults to `0x3C` |
 | **I2C_SDA_PIN** | The GPIO pin for the I2C SDA line. | If `HAS_I2C_DISPLAY` is enabled |
 | **I2C_SCL_PIN** | The GPIO pin for the I2C SCL line. | If `HAS_I2C_DISPLAY` is enabled |
+| **I2C_BLOCK** | The I2C block on the Pico. Refer to the [Pico Pinout Diagram](https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf) to identify which block is in use based on the SDA and SCL pins being used.<br>Available options are:<br>`i2c0`<br>`i2c1` | No, defaults to `i2c0` |
+| **I2C_SPEED** | The speed of the I2C bus. `100000` is standard mode, while `400000` is used for fast mode communication. Higher values may be used but will require testing the device for support. | No, defaults to `400000` |
+| **DISPLAY_FLIP** | Flag to flip the rendered display output. Set to `1` to enable. | No, defaults to `0` |
+| **DISPLAY_INVERT** | Flag to invert the rendered display output. Set to `1` to enable. | No, defaults to `0` |
 
 An example I2C display setup in the `BoardConfig.h` file:
 
@@ -192,6 +197,8 @@ An example I2C display setup in the `BoardConfig.h` file:
 #define HAS_I2C_DISPLAY 1
 #define I2C_SDA_PIN 0
 #define I2C_SCL_PIN 1
+#define I2C_BLOCK i2c0
+#define I2C_SPEED 800000
 ```
 
 ## Building

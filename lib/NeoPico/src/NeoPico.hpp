@@ -18,6 +18,7 @@ public:
   NeoPico(int ledPin, int numPixels, LEDFormat format = LED_FORMAT_GRB);
   void Show();
   void Clear();
+  void Off();
   LEDFormat GetFormat();
   // void SetPixel(int pixel, uint32_t color);
   void SetFrame(uint32_t newFrame[100]);

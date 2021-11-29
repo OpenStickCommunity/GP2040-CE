@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { AppContext } from './Contexts/AppContext';
 import Navigation from './Components/Navigation'
+
 import HomePage from './Pages/HomePage'
 import PinMappingPage from "./Pages/PinMapping";
 import ResetSettingsPage from './Pages/ResetSettingsPage';
 import SettingsPage from './Pages/SettingsPage';
+import DisplayConfigPage from './Pages/DisplayConfig';
 import LEDConfigPage from './Pages/LEDConfigPage';
+
 import { loadButtonLabels } from './Services/Storage';
 import './App.scss';
 
@@ -38,6 +41,9 @@ const App = () => {
 						</Route>
 						<Route path="/led-config">
 							<LEDConfigPage />
+						</Route>
+						<Route path="/display-config">
+							<DisplayConfigPage />
 						</Route>
 					</Switch>
 				</div>

@@ -64,6 +64,18 @@ vector<vector<Pixel>> createLedLayoutArcadeButtons(vector<vector<uint8_t>> *posi
 			Pixel(buttonPositions[BUTTON_LABEL_L1], GAMEPAD_MASK_L1, *getLEDPositions(BUTTON_LABEL_L1, positions)),
 			Pixel(buttonPositions[BUTTON_LABEL_L2], GAMEPAD_MASK_L2, *getLEDPositions(BUTTON_LABEL_L2, positions)),
 		},
+		{
+			Pixel(buttonPositions[BUTTON_LABEL_LEFT], GAMEPAD_MASK_DL, *getLEDPositions(BUTTON_LABEL_LEFT, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_DOWN], GAMEPAD_MASK_DD, *getLEDPositions(BUTTON_LABEL_DOWN, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_RIGHT], GAMEPAD_MASK_DR, *getLEDPositions(BUTTON_LABEL_RIGHT, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_UP], GAMEPAD_MASK_DU, *getLEDPositions(BUTTON_LABEL_UP, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_S1], GAMEPAD_MASK_S1, *getLEDPositions(BUTTON_LABEL_S1, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_S2], GAMEPAD_MASK_S2, *getLEDPositions(BUTTON_LABEL_S2, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_L3], GAMEPAD_MASK_L3, *getLEDPositions(BUTTON_LABEL_L3, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_R3], GAMEPAD_MASK_R3, *getLEDPositions(BUTTON_LABEL_R3, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_A1], GAMEPAD_MASK_A1, *getLEDPositions(BUTTON_LABEL_A1, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_A2], GAMEPAD_MASK_A2, *getLEDPositions(BUTTON_LABEL_A2, positions)),
+		},
 	};
 
 	return pixels;
@@ -115,6 +127,14 @@ vector<vector<Pixel>> createLedLayoutArcadeHitbox(vector<vector<uint8_t>> *posit
 			Pixel(buttonPositions[BUTTON_LABEL_L2], GAMEPAD_MASK_L2, *getLEDPositions(BUTTON_LABEL_L2, positions)),
 			NO_PIXEL,
 		},
+		{
+			Pixel(buttonPositions[BUTTON_LABEL_S1], GAMEPAD_MASK_S1, *getLEDPositions(BUTTON_LABEL_S1, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_S2], GAMEPAD_MASK_S2, *getLEDPositions(BUTTON_LABEL_S2, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_L3], GAMEPAD_MASK_L3, *getLEDPositions(BUTTON_LABEL_L3, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_R3], GAMEPAD_MASK_R3, *getLEDPositions(BUTTON_LABEL_R3, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_A1], GAMEPAD_MASK_A1, *getLEDPositions(BUTTON_LABEL_A1, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_A2], GAMEPAD_MASK_A2, *getLEDPositions(BUTTON_LABEL_A2, positions)),
+		},
 	};
 
 	return pixels;
@@ -154,6 +174,14 @@ vector<vector<Pixel>> createLedLayoutArcadeWasd(vector<vector<uint8_t>> *positio
 		{
 			Pixel(buttonPositions[BUTTON_LABEL_L1], GAMEPAD_MASK_L1, *getLEDPositions(BUTTON_LABEL_L1, positions)),
 			Pixel(buttonPositions[BUTTON_LABEL_L2], GAMEPAD_MASK_L2, *getLEDPositions(BUTTON_LABEL_L2, positions)),
+		},
+		{
+			Pixel(buttonPositions[BUTTON_LABEL_S1], GAMEPAD_MASK_S1, *getLEDPositions(BUTTON_LABEL_S1, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_S2], GAMEPAD_MASK_S2, *getLEDPositions(BUTTON_LABEL_S2, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_L3], GAMEPAD_MASK_L3, *getLEDPositions(BUTTON_LABEL_L3, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_R3], GAMEPAD_MASK_R3, *getLEDPositions(BUTTON_LABEL_R3, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_A1], GAMEPAD_MASK_A1, *getLEDPositions(BUTTON_LABEL_A1, positions)),
+			Pixel(buttonPositions[BUTTON_LABEL_A2], GAMEPAD_MASK_A2, *getLEDPositions(BUTTON_LABEL_A2, positions)),
 		},
 	};
 
@@ -238,10 +266,14 @@ void LEDModule::configureLEDs()
 	queue_init(&buttonAnimationQueue, sizeof(uint32_t), 1);
 	queue_init(&animationSaveQueue, sizeof(int), 1);
 
+	if (neopico != NULL)
+		neopico->Off();
+
 	delete neopico;
 	neopico = new NeoPico(ledOptions.dataPin, ledCount, ledOptions.ledFormat);
+	neopico->Off();
 
-	Animation::format = LED_FORMAT;
+	Animation::format = ledOptions.ledFormat;
 	AnimationStation::ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
 	AnimationStation::SetOptions(AnimationStore.getAnimationOptions());
 	as.SetMode(AnimationStation::options.baseAnimationIndex);

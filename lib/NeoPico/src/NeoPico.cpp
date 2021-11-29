@@ -56,3 +56,10 @@ void NeoPico::Show() {
   sleep_ms(10);
 }
 
+void NeoPico::Off() {
+  Clear();
+  for (int i = 0; i < this->numPixels; ++i) {
+     this->PutPixel(this->frame[i]);
+  }
+  sleep_ms(10);
+}

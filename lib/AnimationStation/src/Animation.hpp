@@ -11,7 +11,7 @@
 struct RGB {
   RGB() : r(0), g(0), b(0) {}
 
-  RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
+  RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b), w(0) {}
 
   RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
     : r(r), g(g), b(b), w(w) { }

@@ -74,5 +74,7 @@
 #define HAS_I2C_DISPLAY 1
 #define I2C_SDA_PIN 0
 #define I2C_SCL_PIN 1
+#define I2C_BLOCK i2c0
+#define I2C_SPEED 800000
 
 #endif

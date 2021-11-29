@@ -38,6 +38,20 @@ app.get('/api/resetSettings', (req, res) => {
 	return res.send({ success: true });
 });
 
+app.get('/api/getDisplayOptions', (req, res) => {
+	console.log('/api/getDisplayOptions');
+	return res.send({
+		enabled: 1,
+		sdaPin: 0,
+		sclPin: 1,
+		i2cAddress: '0x3D',
+		i2cBlock: 0,
+		i2cSpeed: 400000,
+		flipDisplay: 0,
+		invertDisplay: 1,
+	});
+});
+
 app.get('/api/getGamepadOptions', (req, res) => {
 	console.log('/api/getGamepadOptions');
 	return res.send({
@@ -96,20 +110,10 @@ app.get('/api/getPinMappings', (req, res) => {
 	return res.send(mappings);
 });
 
-app.post('/api/setGamepadOptions', (req, res) => {
-	console.log('/api/setGamepadOptions');
+app.post('/api/*', (req, res) => {
+	console.log(req.url);
 	return res.send(req.body);
-});
-
-app.post('/api/setLedOptions', (req, res) => {
-	console.log('/api/setLedOptions');
-	return res.send(req.body);
-});
-
-app.post('/api/setPinMappings', (req, res) => {
-	console.log('/api/setPinMappings');
-	return res.send(req.body);
-});
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

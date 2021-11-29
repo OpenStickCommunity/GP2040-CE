@@ -5,6 +5,7 @@
 
 #include <string>
 #include "display.h"
+#include "storage.h"
 #include "pico/stdlib.h"
 #include "OneBitDisplay.h"
 
@@ -119,20 +120,21 @@ void setStatusBar(Gamepad *gamepad)
 
 void DisplayModule::setup()
 {
-	enabled = HAS_I2C_DISPLAY == 1 && I2C_SDA_PIN != -1 && I2C_SCL_PIN != -1;
+	BoardOptions options = getBoardOptions();
+	enabled = options.hasI2CDisplay && options.i2cSDAPin != -1 && options.i2cSCLPin != -1;
 	if (enabled)
 	{
 		obdI2CInit(&obd,
-			DISPLAY_SIZE,
-			DISPLAY_I2C_ADDR,
-			DISPLAY_FLIP,
-			DISPLAY_INVERT,
+			options.displaySize,
+			options.displayI2CAddress,
+			options.displayFlip,
+			options.displayInvert,
 			DISPLAY_USEWIRE,
-			I2C_SDA_PIN,
-			I2C_SCL_PIN,
-			I2C_BLOCK,
+			options.i2cSDAPin,
+			options.i2cSCLPin,
+			options.i2cBlock == 0 ? i2c0 : i2c1,
 			-1,
-			I2C_SPEED);
+			options.i2cSpeed);
 
 		sleep_ms(100);
 		obdSetContrast(&obd, 0xFF);

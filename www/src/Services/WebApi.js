@@ -29,6 +29,31 @@ async function resetSettings() {
 		.catch(console.error);
 }
 
+async function getDisplayOptions() {
+	return axios.get(`${baseUrl}/api/getDisplayOptions`)
+		.then((response) => {
+			if (response.data.i2cAddress)
+				response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
+
+			return response.data;
+		})
+		.catch(console.error);
+}
+
+async function setDisplayOptions(options) {
+	let newOptions = { ...options };
+	newOptions.i2cAddress = parseInt(options.i2cAddress);
+	return axios.post(`${baseUrl}/api/setDisplayOptions`, newOptions)
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
 async function getGamepadOptions() {
 	return axios.get(`${baseUrl}/api/getGamepadOptions`)
 		.then((response) => response.data)
@@ -94,6 +119,8 @@ async function setPinMappings(mappings) {
 
 const WebApi = {
 	resetSettings,
+	getDisplayOptions,
+	setDisplayOptions,
 	getGamepadOptions,
 	setGamepadOptions,
 	getLedOptions,

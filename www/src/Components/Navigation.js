@@ -27,6 +27,7 @@ const Navigation = (props) => {
 					<NavDropdown title="Configuration">
 						<NavDropdown.Item as={NavLink} exact={true} to="/pin-mapping">Pin Mapping</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact={true} to="/led-config">LED Configuration</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} exact={true} to="/display-config">Display Configuration</NavDropdown.Item>
 					</NavDropdown>
 					<NavDropdown title="Links">
 						<NavDropdown.Item as={NavLink} to="https://feralai.github.io/GP2040/">Documentation</NavDropdown.Item>
