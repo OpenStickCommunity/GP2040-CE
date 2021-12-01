@@ -33,9 +33,9 @@ Here you can remap the GP2040 buttons to different GPIO pins on the RP2040 chip.
 
 ## LED Configuration
 
-![GP2040 Configurator - LED Configuration](assets/images/gpc-rgb-led-config.png)
+If you have a setup with per-button RGB LEDs, they can be configured here.
 
-If you have a setup with per-button RGB LEDs, they can be configured here. The following fields are available:
+![GP2040 Configurator - LED Configuration](assets/images/gpc-rgb-led-config.png)
 
 * `Data Pin` - The GPIO pin that will drive the data line for your RGB LED chain. Set to `-1` to disable RGB LEDs.
 * `LED Format` - The data format used to communicate with your RGB LEDs. If unsure the default `GRB` value is usually safe.
@@ -44,6 +44,19 @@ If you have a setup with per-button RGB LEDs, they can be configured here. The f
 * `Max Brightness` - Set the maximum brightness for the LEDs. Ranges from 0-255.
 * `Brightness Steps` - The number of levels of brightness to cycle through when turning brightness up and down.
 * `LED Button Order` - Configure which buttons and what order they reside on the LED chain.
+
+## Display Configuration
+
+![GP2040 Configurator - Display Configuration](assets/images/gpc-display-config.png)
+
+* `Use Display` - Turns on/off the display module.
+* `I2C Block` - The Pico I2C block that will be used. Set based on pins, refer to table on page.
+* `SDA Pin` - The GPIO pin used for the I2C SDA channel.
+* `SCL Pin` - The GPIO pin used for the I2C SCL channel.
+* `I2C Address` - The I2C address of your device, defaults to the very commonly used `0x3C`
+* `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
+* `Flip Display` - Rotates the display 180°.
+* `Invert Display` - Inverts the pixel colors, effectively giving you a negative image when enabled.
 
 ## DANGER ZONE
 
