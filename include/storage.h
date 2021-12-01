@@ -17,7 +17,7 @@
 
 struct BoardOptions
 {
-	bool hasOptionsSet;
+	bool hasBoardOptions;
 	uint8_t pinDpadUp;
 	uint8_t pinDpadDown;
 	uint8_t pinDpadLeft;

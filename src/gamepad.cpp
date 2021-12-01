@@ -5,6 +5,7 @@
 
 #include "pico/stdlib.h"
 #include "gamepad.h"
+#include "display.h"
 #include "storage.h"
 #include "display.h"
 #include "OneBitDisplay.h"
@@ -14,11 +15,11 @@ void Gamepad::setup()
 	// Configure storage
 	GamepadStore.start();
 	load();
-	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
 
 	// Configure pin mapping
+	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
 	BoardOptions boardOptions = getBoardOptions();
-	if (!boardOptions.hasOptionsSet)
+	if (!boardOptions.hasBoardOptions)
 	{
 		boardOptions.pinDpadUp    = PIN_DPAD_UP;
 		boardOptions.pinDpadDown  = PIN_DPAD_DOWN;
@@ -50,6 +51,7 @@ void Gamepad::setup()
 		boardOptions.displayFlip       = DISPLAY_FLIP;
 		boardOptions.displayInvert     = DISPLAY_INVERT;
 
+		boardOptions.hasBoardOptions = true;
 		setBoardOptions(boardOptions);
 		GamepadStore.save();
 	}
