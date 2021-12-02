@@ -63,6 +63,8 @@ int main()
 
 void setup()
 {
+	// Start storage before anything else
+	GamepadStore.start();
 	gamepad.setup();
 
 	// Check for input mode override

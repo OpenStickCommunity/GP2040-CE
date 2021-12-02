@@ -12,8 +12,6 @@
 
 void Gamepad::setup()
 {
-	// Configure storage
-	GamepadStore.start();
 	load();
 
 	// Configure pin mapping
