@@ -30,7 +30,7 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} exact={true} to="/display-config">Display Configuration</NavDropdown.Item>
 					</NavDropdown>
 					<NavDropdown title="Links">
-						<NavDropdown.Item as={NavLink} to="https://feralai.github.io/GP2040/">Documentation</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} to="https://gp2040.info/">Documentation</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} to="https://github.com/FeralAI/GP2040/">Github</NavDropdown.Item>
 					</NavDropdown>
 					<NavDropdown title="DANGER ZONE" className="btn-danger danger-zone">
