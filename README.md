@@ -71,7 +71,7 @@ Yes! Each board with GP2040 is treated as a separate controller. The one thing t
 
 #### Does GP2040 really have less than 1 ms of latency?
 
-Yes...if you're platform supports 1000 Hz USB polling. GP2040 is configured for 1000 Hz / 1 ms polling by default in all modes, however some systems override or ignore the polling rate the controller requests. PC and MiSTer are confirmed to work with 1000 Hz polling. Even if your system doesn't support a USB polling rate that high, you can feel comfortable knowing GP2040 is still reading and processing your inputs as fast as the target system will allow.
+Yes...if your platform supports 1000 Hz USB polling. GP2040 is configured for 1000 Hz / 1 ms polling by default in all modes, however some systems override or ignore the polling rate the controller requests. PC and MiSTer are confirmed to work with 1000 Hz polling. Even if your system doesn't support a USB polling rate that high, you can feel comfortable knowing GP2040 is still reading and processing your inputs as fast as the target system will allow.
 
 #### Do the additional features like RGB LEDs, Player LEDs and OLED displays affect performance?
 
