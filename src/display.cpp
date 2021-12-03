@@ -136,7 +136,6 @@ void DisplayModule::setup()
 			-1,
 			options.i2cSpeed);
 
-		sleep_ms(100);
 		obdSetContrast(&obd, 0xFF);
 		obdSetBackBuffer(&obd, ucBackBuffer);
 		clearScreen(1);

@@ -47,9 +47,6 @@ void FlashPROM::start()
 
 	if (reset)
 		this->reset();
-
-	// Just wait a bit to make sure things are settled
-	sleep_ms(50);
 }
 
 /* We don't have an actual EEPROM, so we need to be extra careful about minimizing writes. Instead
