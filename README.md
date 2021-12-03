@@ -18,6 +18,16 @@ Full documentation can be found at <https://feralai.github.io/GP2040>.
 
 Take a look at the [GP2040 Usage](https://feralai.github.io/GP2040/#/usage) page for more details.
 
+## Performance
+
+Input latency is tested using the methodology outlined at [WydD's inputlag.science website](https://inputlag.science/controller/methodology), using the default 1000 Hz (1 ms) polling rate in the firmware.
+
+| Version | Mode | Poll Rate | Min | Max | Avg | Stdev | % on time | %1f skip | %2f skip |
+| - | - | - | - | - | - | - | - | - | - |
+| v0.3.1 | All | 1 ms | 0.56 ms | 1.32 ms | 0.85 ms | 0.24 ms | 95.95% | 4.05% | 0% |
+
+Full results can be found in the [GP2040 Firmware Latency Test Results](https://docs.google.com/spreadsheets/d/1eeX0SCOYnUDZMYzt_69wDpjnB_XUtvsfvHJYxxgTj28/edit#gid=1559471406) Google Sheet.
+
 ## Installation
 
 Prebuilt `uf2` files are available in the [Releases](https://github.com/FeralAI/GP2040/releases) section for the following boards and controllers:
@@ -37,19 +47,52 @@ The instructions will slightly vary based on your device. These instructions are
 1. Drag and drop the `GP2040.uf2` file into the removable drive. This will flash the board.
 1. The board is now running the GP2040 firmware and will appear as a controller on your computer.
 
-## Performance
-
-Input latency is tested using the methodology outlined at [WydD's inputlag.science website](https://inputlag.science/controller/methodology), using the default 1000 Hz (1 ms) polling rate in the firmware.
-
-| Version | Mode | Poll Rate | Min | Max | Avg | Stdev | % on time | %1f skip | %2f skip |
-| - | - | - | - | - | - | - | - | - | - |
-| v0.3.1 | All | 1 ms | 0.56 ms | 1.32 ms | 0.85 ms | 0.24 ms | 95.95% | 4.05% | 0% |
-
-Full results can be found in the [GP2040 Firmware Latency Test Results](https://docs.google.com/spreadsheets/d/1eeX0SCOYnUDZMYzt_69wDpjnB_XUtvsfvHJYxxgTj28/edit#gid=1559471406) Google Sheet.
-
 ## Support
 
 If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](https://github.com/FeralAI/GP2040/issues/new) or join the [OpenStick GP2040 Discord channel](https://discord.gg/KyQCHcjwJ2).
+
+### Frequently Asked Questions
+
+#### Which input mode should I use?
+
+Generally speaking, XInput will be the mode of choice for everything except Nintendo Switch and PlayStation 3. XInput mode is the most fully-featured, has the best compatibility with PC games and is compatible with console adapters like the Brook Wingman product line. All things being equal, performance is the same in all modes.
+
+#### What is the extent of PS4 support in GP2040?
+
+GP2040 will work on PS4 games that implement support for legacy PS3 controllers. Many of the popular PS4 fighting games have this support.
+
+#### Does/can/will GP2040 natively support the PS4, PS5, Xbox One or Xbox Series consoles?
+
+These consoles implement security to prevent unauthorized accessories from being used. The process of cracking or bypassing that security may not be legal everywhere. These consoles could be supported in the future if a user-friendly and completely legal implementation method is found.
+
+#### Can I use multiple controllers with GP2040 on the same system?
+
+Yes! Each board with GP2040 is treated as a separate controller. The one thing to keep in mind would be to only run the web configurator for one controller at a time.
+
+#### Does GP2040 really have less than 1 ms of latency?
+
+Yes...if you're platform supports 1000 Hz USB polling. GP2040 is configured for 1000 Hz / 1 ms polling by default in all modes, however some systems override or ignore the polling rate the controller requests. PC and MiSTer are confirmed to work with 1000 Hz polling. Even if your system doesn't support a USB polling rate that high, you can feel comfortable knowing GP2040 is still reading and processing your inputs as fast as the target system will allow.
+
+#### Do the additional features like RGB LEDs, Player LEDs and OLED displays affect performance?
+
+No! The RP2040 chip contains two processing cores. GP2040 dedicates one core to reading inputs and sending them via USB, while the second core is used to handle any auxiliary modules like LEDs and display support. No matter how crazy the feature set of GP2040 becomes, it's unlikely your controller's input latency will be affected.
+
+#### Why do the buttons have weird labels like B3, A1, S2, etc.?
+
+GP2040 uses a generic system for handling button inputs that most closely maps to a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040 documentation and web configurator have a dropdown to change the labels to more familiar controller layouts. You can also refer to the button mapping table on the [GP2040 Usage](https://feralai.github.io/GP2040/#/usage?id=buttons) page.
+
+#### Why use PlatformIO instead of \<insert favorite project setup\>?
+
+Setting up a development environment to build Pico SDK projects is a manual process which requires several components to be installed and configured. Using PlatformIO allows easy installation and updating of build and project dependencies, and makes for a less confusing experience for new developers and people that just want to make a few tweaks for a custom build.
+
+#### What kind of voodoo is that built-in web configurator?
+
+There's no magic here, just some useful libraries working together:
+
+* Single page application using React and Bootstrap is embedded in the GP2040 firmware
+* TinyUSB library provides virtual network connection over USB via RNDIS
+* lwIP library provides an HTTP server for the embedded React app and the web configuration API
+* ArduinoJson library is used for serialization and deserialization of web API requests
 
 ## Acknowledgements
 
