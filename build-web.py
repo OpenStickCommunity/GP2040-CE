@@ -1,6 +1,5 @@
 import os
 import os.path
-import sys
 
 website_dir = "www/build/"
 fsdata_filename = "lib/httpd/fsdata.c"
@@ -16,12 +15,11 @@ os.chdir("..")
 print("Done")
 
 print("Regenerating " + fsdata_filename)
-if sys.platform == "win32":
-  os.system("tools\makefsdata.exe -11 " + website_dir + " -f:" + fsdata_filename)
-else:
-  os.system("./tools/makefsdata -11 " + website_dir + " -f:" + fsdata_filename)
+dirname = os.path.dirname(__file__)
+makefsdata = os.path.join(dirname, 'tools/makefsdata')
+os.system(makefsdata + " " + website_dir + " -f:" + fsdata_filename)
 print("Done")
 
 print("Replace includes")
-os.system("perl -i -p0e 's/#include.*?\"lwip\/def.h\"/#include \"fsdata.h\"/s' " + fsdata_filename)
+os.system('perl -i -p0e "s/#include.*?"lwip\/def.h"/#include ""fsdata.h"/s" ' + fsdata_filename)
 print("Done")
