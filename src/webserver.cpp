@@ -77,10 +77,12 @@ inline string serialize_json(DynamicJsonDocument &doc)
 
 int set_file_data(struct fs_file *file, string data)
 {
-	file->data = data.c_str();
-	file->len = data.size();
+	static string returnData;
+
+	returnData = data;
+	file->data = returnData.c_str();
+	file->len = returnData.size();
 	file->index = file->len;
-	file->is_custom_file = 1;
 	file->http_header_included = 0;
 	file->pextension = NULL;
 
