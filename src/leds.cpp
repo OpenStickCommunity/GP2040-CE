@@ -316,6 +316,9 @@ void LEDModule::setup()
 	enabled = ledOptions.dataPin != -1;
 	if (enabled)
 	{
+		if (ledOptions.ledLayout == BUTTON_LAYOUT_HITBOX)
+			themeStaticRainbow[3] = ColorGreen;
+
 		StaticTheme::AddTheme(themeStaticRainbow);
 		StaticTheme::AddTheme(themeGuiltyGearTypeA);
 		StaticTheme::AddTheme(themeGuiltyGearTypeD);
