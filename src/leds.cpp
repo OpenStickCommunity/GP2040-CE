@@ -276,6 +276,7 @@ void LEDModule::configureLEDs()
 	Animation::format = ledOptions.ledFormat;
 	AnimationStation::ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
 	AnimationStation::SetOptions(AnimationStore.getAnimationOptions());
+	addStaticThemes(ledOptions);
 	as.SetMode(AnimationStation::options.baseAnimationIndex);
 	as.SetMatrix(matrix);
 
@@ -316,21 +317,6 @@ void LEDModule::setup()
 	enabled = ledOptions.dataPin != -1;
 	if (enabled)
 	{
-		if (ledOptions.ledLayout == BUTTON_LAYOUT_HITBOX)
-			themeStaticRainbow[3] = ColorGreen;
-
-		StaticTheme::AddTheme(themeStaticRainbow);
-		StaticTheme::AddTheme(themeGuiltyGearTypeA);
-		StaticTheme::AddTheme(themeGuiltyGearTypeD);
-		StaticTheme::AddTheme(themeGuiltyGearCustom);
-		StaticTheme::AddTheme(themeNeoGeo);
-		StaticTheme::AddTheme(themeNeoGeoCurved);
-		StaticTheme::AddTheme(themeNeoGeoModern);
-		StaticTheme::AddTheme(themeSixButtonFighter);
-		StaticTheme::AddTheme(themeSixButtonFighterPlus);
-		StaticTheme::AddTheme(themeSuperFamicom);
-		StaticTheme::AddTheme(themeXbox);
-
 		configureLEDs();
 	}
 }

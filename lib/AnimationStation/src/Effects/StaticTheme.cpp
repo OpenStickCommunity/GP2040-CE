@@ -36,6 +36,10 @@ void StaticTheme::AddTheme(std::map<uint32_t, RGB> theme) {
   themes.push_back(theme);
 }
 
+void StaticTheme::ClearThemes() {
+  themes.clear();
+}
+
 void StaticTheme::ParameterUp() {
   if (AnimationStation::options.themeIndex < StaticTheme::themes.size() - 1) {
     AnimationStation::options.themeIndex++;

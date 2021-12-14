@@ -16,6 +16,7 @@ public:
   ~StaticTheme() {};
 
   static void AddTheme(std::map<uint32_t, RGB> theme);
+  static void ClearThemes();
   void Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();
