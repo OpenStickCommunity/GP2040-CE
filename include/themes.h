@@ -146,8 +146,8 @@ static map<uint32_t, RGB> themeSixButtonFighterPlus({
 	{ GAMEPAD_MASK_B2, ColorYellow },
 	{ GAMEPAD_MASK_R1, ColorRed },
 	{ GAMEPAD_MASK_R2, ColorRed },
-	{ GAMEPAD_MASK_L1, ColorMagenta },
-	{ GAMEPAD_MASK_L2, ColorMagenta },
+	{ GAMEPAD_MASK_L1, ColorGreen },
+	{ GAMEPAD_MASK_L2, ColorGreen },
 });
 
 static map<uint32_t, RGB> themeStreetFighter2({
