@@ -86,7 +86,7 @@ The following animations are available:
 
 The `LED Parameter` hotkeys may affect color, speed or theme depending on the current RGB LED animation. The `Pressed Parameter` options will change the colors/effects for the on-press animations.
 
-#### RGB LED Static Themes
+### RGB LED Static Themes
 
 | Name | Preview |
 | - | - |
