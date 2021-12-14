@@ -102,6 +102,7 @@ The `LED Parameter` hotkeys may affect color, speed or theme depending on the cu
 | **Neo Geo Modern** | ![Neo Geo Modern](./assets/images/led-themes/neogeo-modern.png) |
 | **Six Button Fighter** | ![Six Button Fighter](./assets/images/led-themes/six-button-fighter.png) |
 | **Six Button Fighter +** | ![Six Button Fighter +](./assets/images/led-themes/six-button-fighter-plus.png) |
+| **Street Fighter 2** | ![Street Fighter 2](./assets/images/led-themes/street-fighter-2.png) |
 | **Guilty Gear Type-A** | ![Guilty Gear Type-A](./assets/images/led-themes/guilty-gear-type-a.png) |
 | **Guilty Gear Type-B** | ![Guilty Gear Type-B](./assets/images/led-themes/guilty-gear-type-b.png) |
 | **Guilty Gear Type-C** | ![Guilty Gear Type-C](./assets/images/led-themes/guilty-gear-type-c.png) |
