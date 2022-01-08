@@ -9,6 +9,7 @@
 #include "AnimationStation/src/Effects/StaticColor.hpp"
 #include "FlashPROM.h"
 #include "Animation.hpp"
+#include "CRC32.h"
 #include "storage.h"
 #include "leds.h"
 
@@ -82,11 +83,29 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 {
 	AnimationOptions options;
 	EEPROM.get(ANIMATION_STORAGE_INDEX, options);
+
+	uint32_t lastCRC = options.checksum;
+	options.checksum = 0;
+	if (CRC32::calculate(&options, sizeof(AnimationOptions)) != lastCRC)
+	{
+		options.baseAnimationIndex = LEDS_BASE_ANIMATION_INDEX;
+		options.brightness         = LEDS_BRIGHTNESS;
+		options.staticColorIndex   = LEDS_STATIC_COLOR_INDEX;
+		options.buttonColorIndex   = LEDS_BUTTON_COLOR_INDEX;
+		options.chaseCycleTime     = LEDS_CHASE_CYCLE_TIME;
+		options.rainbowCycleTime   = LEDS_RAINBOW_CYCLE_TIME;
+		options.themeIndex         = LEDS_THEME_INDEX;
+
+		setAnimationOptions(options);
+	}
+
 	return options;
 }
 
 void AnimationStorage::setAnimationOptions(AnimationOptions options)
 {
+	options.checksum = 0;
+	options.checksum = CRC32::calculate(&options, sizeof(AnimationOptions));
 	EEPROM.set(ANIMATION_STORAGE_INDEX, options);
 }
 

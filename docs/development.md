@@ -109,9 +109,15 @@ The following RGB LED options are available in the `BoardConfig.h` file:
 | **BOARD_LEDS_PIN** | Data PIN for your LED strand | Yes       |
 | **LED_FORMAT** | The color data format for the LED chain.<br>Available options are:<br>`LED_FORMAT_GRB`<br>`LED_FORMAT_RGB`<br>`LED_FORMAT_GRBW`<br>`LED_FORMAT_RGBW` | No, default value `LED_FORMAT_GRB` |
 | **LEDS_PER_PIXEL** | The number of LEDs per button. | Yes |
-| **LED_BRIGHTNESS_MAX** | Max brightness value, `uint8_t` 0-255. | Yes |
+| **LED_BRIGHTNESS_MAXIMUM** | Max brightness value, `uint8_t` 0-255. | Yes |
 | **LED_BRIGHTNESS_STEPS** | The number of brightness steps when using the up/down hotkey. | Yes |
 | **LEDS_DPAD_*X***<br>**LEDS_BUTTON_*X*** | The index of the button on the LED chain. Replace the *`X`* with GP2040 button or D-pad direction. | Yes |
+| **LEDS_BASE_ANIMATION_INDEX** | The default LED animation index. | No, defaults to `1` |
+| **LEDS_STATIC_COLOR_INDEX** | The default color index for the static color theme  | No, defaults to `2` |
+| **LEDS_BUTTON_COLOR_INDEX** | The default color index for the pressed button color | No, defaults to `1` |
+| **LEDS_THEME_INDEX** | The default theme index for static themes | No, defaults to `0` |
+| **LEDS_RAINBOW_CYCLE_TIME** | The color cycle time for rainbow cycle theme | No, defaults to `40` |
+| **LEDS_CHASE_CYCLE_TIME** | The animation speed for the rainbow chase theme | No, defaults to `85` |
 
 An example RGB LED setup in the `BoardConfig.h` file:
 

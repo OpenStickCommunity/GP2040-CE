@@ -39,15 +39,16 @@ typedef enum
 	HOTKEY_LEDS_BRIGHTNESS_DOWN
 } AnimationHotkey;
 
-struct AnimationOptions
+struct __attribute__ ((__packed__)) AnimationOptions
 {
-	uint8_t baseAnimationIndex = 2;
-  uint8_t brightness = 40;
-  uint8_t staticColorIndex = 2;
-  uint8_t buttonColorIndex = 1;
-  int16_t chaseCycleTime = 85;
-  int16_t rainbowCycleTime = 40;
-  uint8_t themeIndex = 0;
+  uint32_t checksum;
+	uint8_t baseAnimationIndex;
+  uint8_t brightness;
+  uint8_t staticColorIndex;
+  uint8_t buttonColorIndex;
+  int16_t chaseCycleTime;
+  int16_t rainbowCycleTime;
+  uint8_t themeIndex;
 };
 
 class AnimationStation
