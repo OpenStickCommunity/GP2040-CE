@@ -96,6 +96,26 @@ There's no magic here, just some useful libraries working together:
 * lwIP library provides an HTTP server for the embedded React app and the web configuration API
 * ArduinoJson library is used for serialization and deserialization of web API requests
 
+## Contributions
+
+Want to help improve GP2040? There are a bunch of ways to contribute!
+
+### Pull Requests
+
+Pull requests are welcome and encouraged for enhancements, bug fixes and documentation updates.
+
+Please respect the coding style of the file(s) you are working in, and enforce the use of the `.editorconfig` file when present.
+
+### Donations
+
+If you'd like to make a donation to my open source work, you can
+
+<a href=""><img src=".github/assets/github-sponsor-dimmed.png" alt="Sponsor Feral AI on Github" style="height: 40px !important;" ></a>
+
+or
+
+<a href="https://www.buymeacoffee.com/feralai" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 40px !important;" ></a>
+
 ## Acknowledgements
 
 * Ha Thach's excellent [TinyUSB library](https://github.com/hathach/tinyusb) examples
