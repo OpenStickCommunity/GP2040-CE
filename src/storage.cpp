@@ -86,7 +86,7 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 
 	uint32_t lastCRC = options.checksum;
 	options.checksum = 0;
-	if (CRC32::calculate(&options, sizeof(AnimationOptions)) != lastCRC)
+	if (CRC32::calculate(&options, 1) != lastCRC)
 	{
 		options.baseAnimationIndex = LEDS_BASE_ANIMATION_INDEX;
 		options.brightness         = LEDS_BRIGHTNESS;
@@ -105,7 +105,7 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 void AnimationStorage::setAnimationOptions(AnimationOptions options)
 {
 	options.checksum = 0;
-	options.checksum = CRC32::calculate(&options, sizeof(AnimationOptions));
+	options.checksum = CRC32::calculate(&options, 1);
 	EEPROM.set(ANIMATION_STORAGE_INDEX, options);
 }
 
