@@ -110,7 +110,7 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 
 If you'd like to make a donation to my open source work, you can
 
-<a href=""><img src=".github/assets/github-sponsor-dimmed.png" alt="Sponsor Feral AI on Github" style="height: 40px !important;" ></a>
+<a href="https://github.com/sponsors/FeralAI"><img src=".github/assets/github-sponsor-dimmed.png" alt="Sponsor Feral AI on Github" style="height: 40px !important;" ></a>
 
 or
 
