@@ -55,6 +55,10 @@ Simultaneous Opposite Cardinal Direction (SOCD) cleaning will ensure the control
 
 SOCD mode is saved across power cycles.
 
+## Invert D-Pad Y-axis
+
+A toggle is available to invert the Y-axis input of the D-pad, allowing some additional input flexibility. To toggle, press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey>. This is a temporary hotkey mapping for this feature, so keep an eye on updated releases for this to change.
+
 ## RGB LEDs
 
 > LED modes are available on the Pico Fighting Board, Crush Counter/OSFRD and custom builds only.
