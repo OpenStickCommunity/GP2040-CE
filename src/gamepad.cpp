@@ -72,8 +72,8 @@ void Gamepad::read()
 	#endif
 
 	state.dpad = 0
-		| ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask    : 0)
-		| ((values & mapDpadDown->pinMask)  ? mapDpadDown->buttonMask  : 0)
+		| ((values & mapDpadUp->pinMask)    ? (options.invertYAxis ? mapDpadDown->buttonMask : mapDpadUp->buttonMask) : 0)
+		| ((values & mapDpadDown->pinMask)  ? (options.invertYAxis ? mapDpadUp->buttonMask : mapDpadDown->buttonMask) : 0)
 		| ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask  : 0)
 		| ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0)
 	;
