@@ -48,6 +48,7 @@ struct BoardOptions
 	uint8_t displaySize;
 	bool displayFlip;
 	bool displayInvert;
+	uint32_t checksum;
 };
 
 struct LEDOptions

@@ -6,6 +6,8 @@
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
+#include <hardware/i2c.h>
+#include "OneBitDisplay.h"
 #include "BoardConfig.h"
 #include "gp2040.h"
 #include "gamepad.h"

@@ -10,6 +10,7 @@
 #include "FlashPROM.h"
 #include "Animation.hpp"
 #include "CRC32.h"
+#include "display.h"
 #include "storage.h"
 #include "leds.h"
 
@@ -19,11 +20,49 @@ BoardOptions getBoardOptions()
 {
 	BoardOptions options;
 	EEPROM.get(BOARD_STORAGE_INDEX, options);
+
+	uint32_t lastCRC = options.checksum;
+	options.checksum = 0;
+	if (CRC32::calculate(&options) != lastCRC)
+	{
+		options.hasBoardOptions   = false;
+		options.pinDpadUp         = PIN_DPAD_UP;
+		options.pinDpadDown       = PIN_DPAD_DOWN;
+		options.pinDpadLeft       = PIN_DPAD_LEFT;
+		options.pinDpadRight      = PIN_DPAD_RIGHT;
+		options.pinButtonB1       = PIN_BUTTON_B1;
+		options.pinButtonB2       = PIN_BUTTON_B2;
+		options.pinButtonB3       = PIN_BUTTON_B3;
+		options.pinButtonB4       = PIN_BUTTON_B4;
+		options.pinButtonL1       = PIN_BUTTON_L1;
+		options.pinButtonR1       = PIN_BUTTON_R1;
+		options.pinButtonL2       = PIN_BUTTON_L2;
+		options.pinButtonR2       = PIN_BUTTON_R2;
+		options.pinButtonS1       = PIN_BUTTON_S1;
+		options.pinButtonS2       = PIN_BUTTON_S2;
+		options.pinButtonL3       = PIN_BUTTON_L3;
+		options.pinButtonR3       = PIN_BUTTON_R3;
+		options.pinButtonA1       = PIN_BUTTON_A1;
+		options.pinButtonA2       = PIN_BUTTON_A2;
+		options.buttonLayout      = BUTTON_LAYOUT;
+		options.i2cSDAPin         = I2C_SDA_PIN;
+		options.i2cSCLPin         = I2C_SCL_PIN;
+		options.i2cBlock          = (I2C_BLOCK == i2c0) ? 0 : 1;
+		options.i2cSpeed          = I2C_SPEED;
+		options.hasI2CDisplay     = HAS_I2C_DISPLAY;
+		options.displayI2CAddress = DISPLAY_I2C_ADDR;
+		options.displaySize       = DISPLAY_SIZE;
+		options.displayFlip       = DISPLAY_FLIP;
+		options.displayInvert     = DISPLAY_INVERT;
+	}
+
 	return options;
 }
 
 void setBoardOptions(BoardOptions options)
 {
+	options.checksum = 0;
+	options.checksum = CRC32::calculate(&options);
 	EEPROM.set(BOARD_STORAGE_INDEX, options);
 }
 
@@ -57,7 +96,10 @@ GamepadOptions GamepadStorage::getGamepadOptions()
 {
 	GamepadOptions options;
 	EEPROM.get(GAMEPAD_STORAGE_INDEX, options);
-	if (!options.isSet)
+
+	uint32_t lastCRC = options.checksum;
+	options.checksum = 0;
+	if (CRC32::calculate(&options) != lastCRC)
 	{
 		options.inputMode = InputMode::INPUT_MODE_XINPUT;
 		options.dpadMode = DpadMode::DPAD_MODE_DIGITAL;
@@ -73,7 +115,8 @@ GamepadOptions GamepadStorage::getGamepadOptions()
 
 void GamepadStorage::setGamepadOptions(GamepadOptions options)
 {
-	options.isSet = true;
+	options.checksum = 0;
+	options.checksum = CRC32::calculate(&options);
 	EEPROM.set(GAMEPAD_STORAGE_INDEX, options);
 }
 
@@ -86,7 +129,7 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 
 	uint32_t lastCRC = options.checksum;
 	options.checksum = 0;
-	if (CRC32::calculate(&options, 1) != lastCRC)
+	if (CRC32::calculate(&options) != lastCRC)
 	{
 		options.baseAnimationIndex = LEDS_BASE_ANIMATION_INDEX;
 		options.brightness         = LEDS_BRIGHTNESS;
@@ -105,7 +148,7 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 void AnimationStorage::setAnimationOptions(AnimationOptions options)
 {
 	options.checksum = 0;
-	options.checksum = CRC32::calculate(&options, 1);
+	options.checksum = CRC32::calculate(&options);
 	EEPROM.set(ANIMATION_STORAGE_INDEX, options);
 }
 

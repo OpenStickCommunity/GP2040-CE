@@ -17,42 +17,6 @@ void Gamepad::setup()
 	// Configure pin mapping
 	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
 	BoardOptions boardOptions = getBoardOptions();
-	if (!boardOptions.hasBoardOptions)
-	{
-		boardOptions.pinDpadUp    = PIN_DPAD_UP;
-		boardOptions.pinDpadDown  = PIN_DPAD_DOWN;
-		boardOptions.pinDpadLeft  = PIN_DPAD_LEFT;
-		boardOptions.pinDpadRight = PIN_DPAD_RIGHT;
-		boardOptions.pinButtonB1  = PIN_BUTTON_B1;
-		boardOptions.pinButtonB2  = PIN_BUTTON_B2;
-		boardOptions.pinButtonB3  = PIN_BUTTON_B3;
-		boardOptions.pinButtonB4  = PIN_BUTTON_B4;
-		boardOptions.pinButtonL1  = PIN_BUTTON_L1;
-		boardOptions.pinButtonR1  = PIN_BUTTON_R1;
-		boardOptions.pinButtonL2  = PIN_BUTTON_L2;
-		boardOptions.pinButtonR2  = PIN_BUTTON_R2;
-		boardOptions.pinButtonS1  = PIN_BUTTON_S1;
-		boardOptions.pinButtonS2  = PIN_BUTTON_S2;
-		boardOptions.pinButtonL3  = PIN_BUTTON_L3;
-		boardOptions.pinButtonR3  = PIN_BUTTON_R3;
-		boardOptions.pinButtonA1  = PIN_BUTTON_A1;
-		boardOptions.pinButtonA2  = PIN_BUTTON_A2;
-
-		boardOptions.i2cSDAPin = I2C_SDA_PIN;
-		boardOptions.i2cSCLPin = I2C_SCL_PIN;
-		boardOptions.i2cBlock  = (I2C_BLOCK == i2c0) ? 0 : 1;
-		boardOptions.i2cSpeed  = I2C_SPEED;
-
-		boardOptions.hasI2CDisplay     = HAS_I2C_DISPLAY;
-		boardOptions.displayI2CAddress = DISPLAY_I2C_ADDR;
-		boardOptions.displaySize       = DISPLAY_SIZE;
-		boardOptions.displayFlip       = DISPLAY_FLIP;
-		boardOptions.displayInvert     = DISPLAY_INVERT;
-
-		boardOptions.hasBoardOptions = true;
-		setBoardOptions(boardOptions);
-		GamepadStore.save();
-	}
 
 	mapDpadUp    = new GamepadButtonMapping(boardOptions.pinDpadUp,    GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(boardOptions.pinDpadDown,  GAMEPAD_MASK_DOWN);

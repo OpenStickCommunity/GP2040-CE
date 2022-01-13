@@ -54,7 +54,7 @@ public:
 	/// \param size The size of the data to add to the checksum.
 	/// \returns the calculated checksum.
 	template <typename Type>
-	static uint32_t calculate(const Type *data, uint16_t size) {
+	static uint32_t calculate(const Type *data, uint16_t size = 1) {
 		CRC32 crc;
 		crc.update(data, size);
 		return crc.finalize();
