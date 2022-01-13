@@ -36,6 +36,7 @@ Prebuilt `uf2` files are available in the [Releases](https://github.com/FeralAI/
 * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
 * [Crush Counter](https://github.com/FeralAI/GP2040/tree/main/configs/CrushCounter) (formerly the [OSFRD](https://github.com/FeralAI/GP2040/tree/main/configs/OSFRD))
 * [DURAL](https://github.com/FeralAI/GP2040/tree/main/configs/DURAL)
+* [Flatbox Rev 4](https://github.com/jfedor2/flatbox/tree/master/hardware-rev4)
 
 Several other working example configurations are located in the [configs](https://github.com/FeralAI/GP2040/tree/main/configs) folder.
 
