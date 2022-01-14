@@ -18,7 +18,7 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 
 	if (get_input_mode() == INPUT_MODE_CONFIG)
 	{
-		return webserver_string_descriptors[index];
+		return reinterpret_cast<uint16_t const *>(webserver_string_descriptors[index]);
 	}
 	else
 	{
@@ -34,7 +34,7 @@ uint8_t const *tud_descriptor_device_cb(void)
 	switch (get_input_mode())
 	{
 		case INPUT_MODE_CONFIG:
-			return (uint8_t const *)&webserver_device_descriptor;
+			return reinterpret_cast<uint8_t const *>(&webserver_device_descriptor);
 
 		case INPUT_MODE_XINPUT:
 			return xinput_device_descriptor;

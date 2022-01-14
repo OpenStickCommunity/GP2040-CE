@@ -3,8 +3,7 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef WEBSERVER_DESCRIPTORS_H_
-#define WEBSERVER_DESCRIPTORS_H_
+#pragma once
 
 #include <stdint.h>
 #include "tusb.h"
@@ -93,5 +92,3 @@ static uint8_t const * const net_configuration_arr[] =
 	rndis_configuration,
 	ecm_configuration,
 };
-
-#endif

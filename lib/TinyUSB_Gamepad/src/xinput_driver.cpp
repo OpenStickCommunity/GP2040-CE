@@ -30,7 +30,7 @@ bool send_xinput_report(void *report, uint8_t report_size)
 		(endpoint_in != 0) && (!usbd_edpt_busy(0, endpoint_in)) // Is the IN endpoint available?
 	) {
 		usbd_edpt_claim(0, endpoint_in);                        // Take control of IN endpoint
-		usbd_edpt_xfer(0, endpoint_in, report, report_size);    // Send report buffer
+		usbd_edpt_xfer(0, endpoint_in, (uint8_t *)report, report_size);    // Send report buffer
 		usbd_edpt_release(0, endpoint_in);                      // Release control of IN endpoint
 		sent = true;
 	}

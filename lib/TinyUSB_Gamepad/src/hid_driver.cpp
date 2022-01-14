@@ -13,7 +13,7 @@
 // Magic byte sequence to enable PS button on PS3
 static const uint8_t magic_init_bytes[8] = { 0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00 };
 
-bool send_hid_report(uint8_t report_id, uint8_t *report, uint8_t report_size)
+bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
 {
 	if (tud_hid_ready())
 		return tud_hid_report(report_id, report, report_size);
