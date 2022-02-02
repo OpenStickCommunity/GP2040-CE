@@ -165,6 +165,18 @@ static map<uint32_t, RGB> themeStreetFighter2({
 	{ GAMEPAD_MASK_L2, ColorBlack },
 });
 
+static map<uint32_t, RGB> themeTekken({
+	{ GAMEPAD_MASK_DL, ColorWhite },
+	{ GAMEPAD_MASK_DD, ColorWhite },
+	{ GAMEPAD_MASK_DR, ColorWhite },
+	{ GAMEPAD_MASK_DU, ColorWhite },
+	{ GAMEPAD_MASK_B3, ColorYellow },
+	{ GAMEPAD_MASK_B1, ColorAqua },
+	{ GAMEPAD_MASK_B4, ColorGreen },
+	{ GAMEPAD_MASK_B2, ColorPink },
+	{ GAMEPAD_MASK_R1, ColorRed },
+});
+
 static map<uint32_t, RGB> themePlayStation({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
@@ -278,6 +290,7 @@ void addStaticThemes(LEDOptions options)
 	StaticTheme::AddTheme(themeSixButtonFighterPlus);
 
 	StaticTheme::AddTheme(themeStreetFighter2);
+	StaticTheme::AddTheme(themeTekken);
 	StaticTheme::AddTheme(themeGuiltyGearTypeA);
 	StaticTheme::AddTheme(themeGuiltyGearTypeB);
 	StaticTheme::AddTheme(themeGuiltyGearTypeC);
