@@ -107,16 +107,6 @@ Pull requests are welcome and encouraged for enhancements, bug fixes and documen
 
 Please respect the coding style of the file(s) you are working in, and enforce the use of the `.editorconfig` file when present.
 
-### Donations
-
-If you'd like to make a donation to my open source work, you can
-
-<a href="https://github.com/sponsors/FeralAI"><img src="https://github.com/FeralAI/GP2040/raw/main/.github/assets/github-sponsor-dimmed.png" alt="Sponsor Feral AI on Github" style="height: 40px !important;" ></a>
-
-or
-
-<a href="https://www.buymeacoffee.com/feralai" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 40px !important;" ></a>
-
 ### Discussions
 
 Join the [OpenStick GP2040-CE Discord channel](https://discord.gg/KyQCHcjwJ2) to participate!
