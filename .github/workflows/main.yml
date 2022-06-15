@@ -34,8 +34,10 @@ jobs:
       run: |
         pio run -e osfrd
         mv .pio/build/osfrd/APPLICATION.uf2 .pio/build/osfrd/GP2040-OSFRD.uf2
-        pio run -e crush-counter
-        mv .pio/build/crush-counter/APPLICATION.uf2 .pio/build/crush-counter/GP2040-CrushCounter.uf2
+        pio run -e crush-counter-1.5
+        mv .pio/build/crush-counter-1.5/APPLICATION.uf2 .pio/build/crush-counter-1.5/GP2040-CrushCounter-15.uf2
+        pio run -e crush-counter-2.0
+        mv .pio/build/crush-counter-2.0/APPLICATION.uf2 .pio/build/crush-counter-2.0/GP2040-CrushCounter-20.uf2
         pio run -e raspberry-pi-pico
         mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-RaspberryPiPico.uf2
         pio run -e pico-fighting-board

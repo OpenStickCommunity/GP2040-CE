@@ -3,8 +3,7 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef CRUSH_COUNTER_BOARD_CONFIG_H_
-#define CRUSH_COUNTER_BOARD_CONFIG_H_
+#pragma once
 
 #include <GamepadEnums.h>
 #include "enums.h"
@@ -60,5 +59,3 @@
 #define PLED2_PIN 13
 #define PLED3_PIN 14
 #define PLED4_PIN 15
-
-#endif
