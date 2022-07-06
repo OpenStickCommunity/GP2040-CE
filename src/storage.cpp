@@ -8,15 +8,18 @@
 #include "AnimationStorage.hpp"
 #include "AnimationStation/src/Effects/StaticColor.hpp"
 #include "FlashPROM.h"
+#include "hardware/watchdog.h"
 #include "Animation.hpp"
 #include "CRC32.h"
-#include "display.h"
+
+#include "modules/i2cdisplay.h"
+#include "modules/neopicoleds.h"
+#include "modules/pleds.h"
+
 #include "storage.h"
-#include "leds.h"
 
 /* Board stuffs */
-
-BoardOptions getBoardOptions()
+BoardOptions Storage::getBoardOptions()
 {
 	BoardOptions options;
 	EEPROM.get(BOARD_STORAGE_INDEX, options);
@@ -59,7 +62,7 @@ BoardOptions getBoardOptions()
 	return options;
 }
 
-void setBoardOptions(BoardOptions options)
+void Storage::setBoardOptions(BoardOptions options)
 {
 	options.checksum = 0;
 	options.checksum = CRC32::calculate(&options);
@@ -67,21 +70,54 @@ void setBoardOptions(BoardOptions options)
 }
 
 /* LED stuffs */
-
-LEDOptions getLEDOptions()
+LEDOptions Storage::getLEDOptions()
 {
 	LEDOptions options;
 	EEPROM.get(LED_STORAGE_INDEX, options);
 	return options;
 }
 
-void setLEDOptions(LEDOptions options)
+void Storage::setLEDOptions(LEDOptions options)
 {
 	EEPROM.set(LED_STORAGE_INDEX, options);
 }
 
-/* Gamepad stuffs */
+void Storage::setDefaultLEDOptions()
+{
+	LEDOptions ledOptions;
+	ledOptions.dataPin = BOARD_LEDS_PIN;
+	ledOptions.ledFormat = LED_FORMAT;
+	ledOptions.ledLayout = BUTTON_LAYOUT;
+	ledOptions.ledsPerButton = LEDS_PER_PIXEL;
+	ledOptions.brightnessMaximum = LED_BRIGHTNESS_MAXIMUM;
+	ledOptions.brightnessSteps = LED_BRIGHTNESS_STEPS;
+	ledOptions.indexUp = LEDS_DPAD_UP;
+	ledOptions.indexDown = LEDS_DPAD_DOWN;
+	ledOptions.indexLeft = LEDS_DPAD_LEFT;
+	ledOptions.indexRight = LEDS_DPAD_RIGHT;
+	ledOptions.indexB1 = LEDS_BUTTON_B1;
+	ledOptions.indexB2 = LEDS_BUTTON_B2;
+	ledOptions.indexB3 = LEDS_BUTTON_B3;
+	ledOptions.indexB4 = LEDS_BUTTON_B4;
+	ledOptions.indexL1 = LEDS_BUTTON_L1;
+	ledOptions.indexR1 = LEDS_BUTTON_R1;
+	ledOptions.indexL2 = LEDS_BUTTON_L2;
+	ledOptions.indexR2 = LEDS_BUTTON_R2;
+	ledOptions.indexS1 = LEDS_BUTTON_S1;
+	ledOptions.indexS2 = LEDS_BUTTON_S2;
+	ledOptions.indexL3 = LEDS_BUTTON_L3;
+	ledOptions.indexR3 = LEDS_BUTTON_R3;
+	ledOptions.indexA1 = LEDS_BUTTON_A1;
+	ledOptions.indexA2 = LEDS_BUTTON_A2;
+	EEPROM.set(LED_STORAGE_INDEX, ledOptions);
+}
 
+void Storage::ResetSettings() {
+	EEPROM.reset();
+	watchdog_reboot(0, SRAM_END, 2000);
+}
+
+/* Gamepad stuffs */
 void GamepadStorage::start()
 {
 	EEPROM.start();
@@ -121,7 +157,6 @@ void GamepadStorage::setGamepadOptions(GamepadOptions options)
 }
 
 /* Animation stuffs */
-
 AnimationOptions AnimationStorage::getAnimationOptions()
 {
 	AnimationOptions options;

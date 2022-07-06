@@ -5,7 +5,13 @@
 #include <string.h>
 #include <MPGS.h>
 #include "pico/stdlib.h"
-#include "storage.h"
+
+// MUST BE DEFINED FOR MPG
+extern uint32_t getMillis();
+extern uint64_t getMicro();
+
+#define GAMEPAD_POLL_MS 1
+#define GAMEPAD_POLL_MICRO 100
 
 #define GAMEPAD_FEATURE_REPORT_SIZE 32
 
@@ -31,13 +37,8 @@ public:
 			: MPGS(debounceMS, storage) {}
 
 	void setup();
+	void process();
 	void read();
-
-	void process()
-	{
-		memcpy(&rawState, &state, sizeof(GamepadState));
-		MPGS::process();
-	}
 
 	inline bool __attribute__((always_inline)) pressedF1()
 	{
@@ -47,9 +48,7 @@ public:
 		return MPGS::pressedF1();
 #endif
 	}
-
 	GamepadState rawState;
-
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;
@@ -68,7 +67,6 @@ public:
 	GamepadButtonMapping *mapButtonR3;
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
-
 	GamepadButtonMapping **gamepadMappings;
 };
 

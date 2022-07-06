@@ -3,16 +3,25 @@
 * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
 */
 
-#ifndef LEDS_H_
-#define LEDS_H_
+#ifndef _NEOPICOLEDS_H_
+#define _NEOPICOLEDS_H_
 
-#include "BoardConfig.h"
+// Pico Includes
+#include "pico/util/queue.h"
+#include <string>
 #include <vector>
+#include <map>
+
+// GP2040 Includes
+#include "helper.h"
+#include "gamepad.h"
+#include "gpmodule.h"
+#include "storage.h"
+
+// MPGS
+#include "BoardConfig.h"
 #include "AnimationStation.hpp"
 #include "NeoPico.hpp"
-#include "gamepad.h"
-#include "enums.h"
-#include "gp2040.h"
 
 #ifndef BOARD_LEDS_PIN
 #define BOARD_LEDS_PIN -1
@@ -35,7 +44,7 @@
 #endif
 
 #ifndef LEDS_BASE_ANIMATION_INDEX
-#define LEDS_BASE_ANIMATION_INDEX 1
+#define LEDS_BASE_ANIMATION_INDEX 2//1
 #endif
 
 #ifndef LEDS_STATIC_COLOR_INDEX
@@ -140,21 +149,52 @@
 
 void configureAnimations(AnimationStation *as);
 AnimationHotkey animationHotkeys(Gamepad *gamepad);
-void configureLEDs(LEDOptions ledOptions);
 PixelMatrix createLedButtonLayout(ButtonLayout layout, int ledsPerPixel);
 PixelMatrix createLedButtonLayout(ButtonLayout layout, std::vector<uint8_t> *positions);
 
-class LEDModule : public GPModule {
+// Neo Pixel needs to tie into PlayerLEDS led Levels
+class NeoPicoPlayerLEDs : public PlayerLEDs
+{
 public:
-	void setup();
-	void loop();
-	void process(Gamepad *gamepad);
+	virtual void setup(){}
+	virtual void display(){}
+	uint16_t * getLedLevels() { return ledLevels; }
+};
+
+// NeoPico LED Module
+#define NeoPicoLEDName "NeoPicoLED"
+
+// NeoPico LED Module
+class NeoPicoLEDModule : public GPModule {
+public:
+	virtual bool available();  // GPModule
+	virtual void setup();
+	virtual void loop();
+	virtual void process(Gamepad *gamepad);
+	virtual std::string name() { return NeoPicoLEDName; }
 	void trySave();
 	void configureLEDs();
 	uint32_t frame[100];
-	LEDOptions ledOptions;
+private:
+	std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);
+	std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
+	std::vector<std::vector<Pixel>> generatedLEDHitbox(std::vector<std::vector<uint8_t>> *positions);
+	std::vector<std::vector<Pixel>> generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions);
+	std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
+	uint8_t setupButtonPositions();
+	const uint32_t intervalMS = 10;
+	absolute_time_t nextRunTime;
+	uint8_t ledCount;
+	PixelMatrix matrix;
+	NeoPico *neopico;
+	InputMode inputMode; // HACK
+	PLEDAnimationState animationState; // NeoPico can control the player LEDs
+	NeoPicoPlayerLEDs * neoPLEDs = nullptr;
+	AnimationStation as;
+	queue_t baseAnimationQueue;
+	queue_t buttonAnimationQueue;
+	queue_t animationSaveQueue;
+	std::map<std::string, int> buttonPositions;
 };
-
-extern LEDModule ledModule;
 
 #endif
