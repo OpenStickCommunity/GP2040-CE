@@ -8,7 +8,12 @@
 
 #include <stdint.h>
 #include "NeoPico.hpp"
+#include "pico/util/queue.h"
+
 #include "enums.h"
+#include "helper.h"
+#include "gamepad.h"
+#include "gpmodule.h"
 
 #define GAMEPAD_STORAGE_INDEX      0 // 1024 bytes for gamepad options
 #define BOARD_STORAGE_INDEX     1024 //  512 bytes for hardware options
@@ -48,6 +53,7 @@ struct BoardOptions
 	uint8_t displaySize;
 	bool displayFlip;
 	bool displayInvert;
+
 	uint32_t checksum;
 };
 
@@ -80,10 +86,51 @@ struct LEDOptions
 	int indexA2;
 };
 
-BoardOptions getBoardOptions();
-void setBoardOptions(BoardOptions options);
+// Storage manager for board, LED options, and thread-safe settings
+class Storage {
+public:
+	Storage(Storage const&) = delete;
+	void operator=(Storage const&)  = delete;
+	static Storage& getInstance() // Thread-safe storage ensures cross-thread talk
+	{
+		static Storage instance;
+		return instance;
+	}
 
-LEDOptions getLEDOptions();
-void setLEDOptions(LEDOptions options);
+	BoardOptions getBoardOptions();
+	void setBoardOptions(BoardOptions options);
+	LEDOptions getLEDOptions();
+	void setLEDOptions(LEDOptions options);
+	void setDefaultLEDOptions(); // set defaults
+
+	void SetConfigMode(bool mode) { // hack for config mode
+		CONFIG_MODE = mode;
+	}
+	bool GetConfigMode() { return CONFIG_MODE; }
+	void SetGamepadQueue(queue_t queuein) {
+		gamepadQueue = queuein;
+	}
+	queue_t * GetGamepadQueue() { return &gamepadQueue; }
+	void SetFeatureQueue(queue_t queuein) {
+		featureQueue = queuein;
+	}
+	queue_t * GetFeatureQueue() { return &featureQueue; }
+	void SetGamepad(Gamepad * newpad) {
+		gamepad = newpad;
+	}
+	Gamepad * GetGamepad() { return gamepad; }
+
+	void ResetSettings(); // EEPROM Reset Feature
+
+	std::vector<GPModule*> Modules;
+
+private:
+	Storage() {}
+
+	bool CONFIG_MODE; // stack storage for cross-thread chatter
+	queue_t gamepadQueue; // Passing Gamepad Data
+	queue_t featureQueue; // Passing Feature Data (X-Input Player #)
+	Gamepad * gamepad;
+};
 
 #endif
