@@ -41,19 +41,16 @@
 #define PIN_BUTTON_R3  8
 #define PIN_BUTTON_A1  26
 #define PIN_BUTTON_A2  9 // Not connected
-#define PIN_BUTTON_TURBO -1 // Not connected right now
-#define PIN_SLIDER_LS    -1
-#define PIN_SLIDER_RS    -1
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
-#define BUTTON_LAYOUT BUTTON_LAYOUT_ARCADE
+#define BUTTON_LAYOUT BUTTON_LAYOUT_WASD
 
 #define BOARD_LEDS_PIN 7
 
 #define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
-#define LEDS_PER_PIXEL 1
+#define LEDS_PER_PIXEL 4
 
 #define LEDS_DPAD_LEFT   0
 #define LEDS_DPAD_DOWN   1
@@ -68,13 +65,11 @@
 #define LEDS_BUTTON_R2   10
 #define LEDS_BUTTON_L2   11
 
-#define PLED_TYPE PLED_TYPE_NONE
-
-//#define PLED_TYPE PLED_TYPE_PWM
-//#define PLED1_PIN 20
-//#define PLED2_PIN 11
-//#define PLED3_PIN 18
-//#define PLED4_PIN 13
+#define PLED_TYPE PLED_TYPE_PWM
+#define PLED1_PIN 20
+#define PLED2_PIN 11
+#define PLED3_PIN 18
+#define PLED4_PIN 13
 
 #define HAS_I2C_DISPLAY 1
 #define I2C_SDA_PIN 0
