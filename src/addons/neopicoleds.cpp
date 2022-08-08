@@ -3,16 +3,14 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#include "pico/util/queue.h"
-
 #include "AnimationStation.hpp"
 #include "AnimationStorage.hpp"
 #include "NeoPico.hpp"
 #include "Pixel.hpp"
 #include "PlayerLEDs.h"
 #include "gp2040.h"
-#include "modules/neopicoleds.h"
-#include "modules/pleds.h"
+#include "addons/neopicoleds.h"
+#include "addons/playerleds.h"
 #include "themes.h"
 
 #include "enums.h"
@@ -84,12 +82,12 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
 	return animationState;
 }
 
-bool NeoPicoLEDModule::available() {
+bool NeoPicoLEDAddon::available() {
 	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
 	return ledOptions.dataPin != -1;
 }
 
-void NeoPicoLEDModule::setup()
+void NeoPicoLEDAddon::setup()
 {
 	// Set Default LED Options
 	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
@@ -103,11 +101,6 @@ void NeoPicoLEDModule::setup()
 
 	neopico = nullptr; // set neopico to null
 
-	// Initialize our 3 queues
-	queue_init(&baseAnimationQueue, sizeof(AnimationHotkey), 1);
-	queue_init(&buttonAnimationQueue, sizeof(uint32_t), 1);
-	queue_init(&animationSaveQueue, sizeof(int), 1);
-
 	// Create a dummy Neo Pico for the initial configuration
 	neopico = new NeoPico(-1, 0);
 	configureLEDs();
@@ -115,60 +108,42 @@ void NeoPicoLEDModule::setup()
 	nextRunTime = make_timeout_time_ms(0); // Reset timeout
 }
 
-void NeoPicoLEDModule::process(Gamepad *gamepad)
-{
-	AnimationHotkey action = animationHotkeys(gamepad);
-	if (action != HOTKEY_LEDS_NONE)
-		queue_try_add(&baseAnimationQueue, &action);
-
-	static uint8_t featureData[PLED_REPORT_SIZE];
-	if (PLED_TYPE == PLED_TYPE_RGB) {
-		inputMode = gamepad->options.inputMode; // HACK
-		if (queue_try_remove(Storage::getInstance().GetFeatureQueue(), featureData)) {
-			switch (gamepad->options.inputMode) {
-				case INPUT_MODE_XINPUT:
-					animationState = getXInputAnimationNEOPICO(featureData);
-					break;
-			}
-		}
-	}
-
-	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
-	queue_try_add(&buttonAnimationQueue, &buttonState);
-}
-
-void NeoPicoLEDModule::loop()
+void NeoPicoLEDAddon::process()
 {
 	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
 	if (ledOptions.dataPin < 0 || !time_reached(this->nextRunTime))
 		return;
 
-	AnimationHotkey action;
-	if (queue_try_remove(&baseAnimationQueue, &action))
-	{
-		as.HandleEvent(action);
-		queue_try_add(&animationSaveQueue, 0);
-	}
-
-	uint32_t buttonState;
-	if (queue_try_remove(&buttonAnimationQueue, &buttonState))
-	{
-		vector<Pixel> pressed;
-
-		for (auto row : matrix.pixels)
-		{
-			for (auto pixel : row)
-			{
-				if (buttonState & pixel.mask)
-					pressed.push_back(pixel);
-			}
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	uint8_t * featureData = Storage::getInstance().GetFeatureData();
+	AnimationHotkey action = animationHotkeys(gamepad);
+	if (PLED_TYPE == PLED_TYPE_RGB) {
+		inputMode = gamepad->options.inputMode; // HACK
+		switch (gamepad->options.inputMode) {
+			case INPUT_MODE_XINPUT:
+				animationState = getXInputAnimationNEOPICO(featureData);
+				break;
 		}
-
-		if (pressed.size() > 0)
-			as.HandlePressed(pressed);
-		else
-			as.ClearPressed();
 	}
+
+	if ( action != HOTKEY_LEDS_NONE ) {
+		as.HandleEvent(action);
+	}
+
+	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
+	vector<Pixel> pressed;
+	for (auto row : matrix.pixels)
+	{
+		for (auto pixel : row)
+		{
+			if (buttonState & pixel.mask)
+				pressed.push_back(pixel);
+		}
+	}
+	if (pressed.size() > 0)
+		as.HandlePressed(pressed);
+	else
+		as.ClearPressed();
 
 	as.Animate();
 	as.ApplyBrightness(frame);
@@ -188,12 +163,12 @@ void NeoPicoLEDModule::loop()
 
 	neopico->SetFrame(frame);
 	neopico->Show();
+	AnimationStore.save();
 
-	this->nextRunTime = make_timeout_time_ms(NeoPicoLEDModule::intervalMS);
-	trySave();
+	this->nextRunTime = make_timeout_time_ms(NeoPicoLEDAddon::intervalMS);
 }
 
-std::vector<uint8_t> * NeoPicoLEDModule::getLEDPositions(string button, std::vector<std::vector<uint8_t>> *positions)
+std::vector<uint8_t> * NeoPicoLEDAddon::getLEDPositions(string button, std::vector<std::vector<uint8_t>> *positions)
 {
 	int buttonPosition = buttonPositions[button];
 	if (buttonPosition < 0)
@@ -209,7 +184,7 @@ std::vector<uint8_t> * NeoPicoLEDModule::getLEDPositions(string button, std::vec
 /**
  * @brief Create an LED layout using a 2x4 matrix.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDModule::generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions)
+std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions)
 {
 	std::vector<std::vector<Pixel>> pixels =
 	{
@@ -249,7 +224,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDModule::generatedLEDButtons(std::vecto
 /**
  * @brief Create an LED layout using a 3x8 matrix.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDModule::generatedLEDHitbox(vector<vector<uint8_t>> *positions)
+std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDHitbox(vector<vector<uint8_t>> *positions)
 {
 	std::vector<std::vector<Pixel>> pixels =
 	{
@@ -309,7 +284,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDModule::generatedLEDHitbox(vector<vect
 /**
  * @brief Create an LED layout using a 2x7 matrix.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDModule::generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions)
+std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions)
 {
 	std::vector<std::vector<Pixel>> pixels =
 	{
@@ -354,7 +329,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDModule::generatedLEDWasd(std::vector<s
 	return pixels;
 }
 
-std::vector<std::vector<Pixel>> NeoPicoLEDModule::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount)
+std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount)
 {
 	vector<vector<uint8_t>> positions(ledButtonCount);
 	for (int i = 0; i != ledButtonCount; i++)
@@ -377,7 +352,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDModule::createLEDLayout(ButtonLayout l
 	}
 }
 
-uint8_t NeoPicoLEDModule::setupButtonPositions()
+uint8_t NeoPicoLEDAddon::setupButtonPositions()
 {
 	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
 	buttonPositions.clear();
@@ -409,7 +384,7 @@ uint8_t NeoPicoLEDModule::setupButtonPositions()
 	return buttonCount;
 }
 
-void NeoPicoLEDModule::configureLEDs()
+void NeoPicoLEDAddon::configureLEDs()
 {
 	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
 	uint8_t buttonCount = setupButtonPositions();
@@ -430,14 +405,6 @@ void NeoPicoLEDModule::configureLEDs()
 	addStaticThemes(ledOptions);
 	as.SetMode(as.options.baseAnimationIndex);
 	as.SetMatrix(matrix);
-}
-
-void NeoPicoLEDModule::trySave()
-{
-	static int saveValue = 0;
-
-	if (queue_try_remove(&animationSaveQueue, &saveValue))
-		AnimationStore.save();
 }
 
 AnimationHotkey animationHotkeys(Gamepad *gamepad)

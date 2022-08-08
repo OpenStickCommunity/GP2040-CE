@@ -3,7 +3,7 @@
 
 #include "enums.h"
 #include "gpconfig.h"
-#include "storage.h"
+#include "storagemanager.h"
 
 class ConfigManager {
 public:
@@ -16,8 +16,8 @@ public:
     void setup(ConfigType);
     void loop(); // If anything needs to update in the gpconfig driver
     void setGamepadOptions(Gamepad*);
-    void setBoardOptions(BoardOptions*);
-    void setLedOptions(LEDOptions*);
+    void setBoardOptions(BoardOptions);
+    void setLedOptions(LEDOptions);
 private:
     ConfigManager() {}
     void setupConfig(GPConfig*);

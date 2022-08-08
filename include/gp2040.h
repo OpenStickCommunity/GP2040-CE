@@ -8,19 +8,17 @@
 
 // GP2040 Classes
 #include "gamepad.h"
-#include "config.h"
+#include "gpaddon.h"
 
 class GP2040 {
 public:
 	GP2040();
     ~GP2040();
-    void setup();
-    void run();
+    void setup();           // setup core0
+    void run();             // loop core0
 private:
-    void loop();
-	void configLoop(); // web-config
+    void setupInput(GPAddon*);
     uint64_t nextRuntime;
-    uint8_t featureData[32];
     Gamepad snapshot;
 };
 

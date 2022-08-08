@@ -8,17 +8,19 @@
 
 #include <stdint.h>
 #include "NeoPico.hpp"
-#include "pico/util/queue.h"
 
 #include "enums.h"
 #include "helper.h"
 #include "gamepad.h"
-#include "gpmodule.h"
+#include "gpaddon.h"
 
 #define GAMEPAD_STORAGE_INDEX      0 // 1024 bytes for gamepad options
 #define BOARD_STORAGE_INDEX     1024 //  512 bytes for hardware options
 #define LED_STORAGE_INDEX       1536 //  512 bytes for LED configuration
-#define ANIMATION_STORAGE_INDEX 2048 // ???? bytes for LED animations
+#define TURBO_STORAGE_INDEX		2048 //   64 bytes for TURBO options
+#define ANIMATION_STORAGE_INDEX 2112 // ???? bytes for LED animations
+
+#define CHECKSUM_MAGIC          0xCE2040 	// Checksum CRC
 
 struct BoardOptions
 {
@@ -41,19 +43,21 @@ struct BoardOptions
 	uint8_t pinButtonR3;
 	uint8_t pinButtonA1;
 	uint8_t pinButtonA2;
+	uint8_t pinButtonTurbo;
+	uint8_t pinSliderLS;
+	uint8_t pinSliderRS;
 	ButtonLayout buttonLayout;
-
 	int i2cSDAPin;
 	int i2cSCLPin;
 	int i2cBlock;
 	uint32_t i2cSpeed;
-
 	bool hasI2CDisplay;
 	int displayI2CAddress;
 	uint8_t displaySize;
 	bool displayFlip;
 	bool displayInvert;
-
+	uint8_t turboShotCount; // Turbo
+	//char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };
 
@@ -84,7 +88,10 @@ struct LEDOptions
 	int indexR3;
 	int indexA1;
 	int indexA2;
+	uint32_t checksum;
 };
+
+#define SI Storage::getInstance()
 
 // Storage manager for board, LED options, and thread-safe settings
 class Storage {
@@ -96,41 +103,42 @@ public:
 		static Storage instance;
 		return instance;
 	}
-
+	
+	void setBoardOptions(BoardOptions);	// Board Options
+	void setDefaultBoardOptions();
 	BoardOptions getBoardOptions();
-	void setBoardOptions(BoardOptions options);
+
+	void setLEDOptions(LEDOptions);		// LED Options
+	void setDefaultLEDOptions();
 	LEDOptions getLEDOptions();
-	void setLEDOptions(LEDOptions options);
-	void setDefaultLEDOptions(); // set defaults
 
-	void SetConfigMode(bool mode) { // hack for config mode
-		CONFIG_MODE = mode;
-	}
-	bool GetConfigMode() { return CONFIG_MODE; }
-	void SetGamepadQueue(queue_t queuein) {
-		gamepadQueue = queuein;
-	}
-	queue_t * GetGamepadQueue() { return &gamepadQueue; }
-	void SetFeatureQueue(queue_t queuein) {
-		featureQueue = queuein;
-	}
-	queue_t * GetFeatureQueue() { return &featureQueue; }
-	void SetGamepad(Gamepad * newpad) {
-		gamepad = newpad;
-	}
-	Gamepad * GetGamepad() { return gamepad; }
+	void SetConfigMode(bool); 			// Config Mode (on-boot)
+	bool GetConfigMode();
 
-	void ResetSettings(); // EEPROM Reset Feature
+	void SetGamepad(Gamepad *); 		// MPGS Gamepad Get/Set
+	Gamepad * GetGamepad();
 
-	std::vector<GPModule*> Modules;
+	void SetFeatureData(uint8_t *); 	// USB Feature Data Get/Set
+	void ClearFeatureData();
+	uint8_t * GetFeatureData();
+
+	void ResetSettings(); 				// EEPROM Reset Feature
+	
+	std::vector<GPAddon*> Addons;		// Modular Features
+	std::vector<GPAddon*> Inputs;
 
 private:
-	Storage() {}
-
-	bool CONFIG_MODE; // stack storage for cross-thread chatter
-	queue_t gamepadQueue; // Passing Gamepad Data
-	queue_t featureQueue; // Passing Feature Data (X-Input Player #)
-	Gamepad * gamepad;
+	Storage() : gamepad(0) {
+		initBoardOptions();
+		initLEDOptions();
+	}
+	void initBoardOptions();
+	void initLEDOptions();
+	bool CONFIG_MODE; 			// Config mode (boot)
+	Gamepad * gamepad;    		// Gamepad data
+	BoardOptions boardOptions;
+	LEDOptions ledOptions;
+	uint8_t featureData[32]; // USB X-Input Feature Data
 };
 
 #endif

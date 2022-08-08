@@ -8,14 +8,14 @@
 
 // GP2040 includes
 #include "gp2040.h"
-#include "gp2040core1.h"
+#include "gp2040aux.h"
 
 // Launch our second core with additional modules loaded in
 void core1() {
 	multicore_lockout_victim_init(); // block core 1
 
 	// Create GP2040 w/ Additional Modules for Core 1
-	GP2040Core1 * gp2040Core1 = new GP2040Core1();
+	GP2040Aux * gp2040Core1 = new GP2040Aux();
 	gp2040Core1->setup();
 	gp2040Core1->run();
 }

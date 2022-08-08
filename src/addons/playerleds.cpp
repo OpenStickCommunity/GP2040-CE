@@ -3,17 +3,17 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
+// Pico Includes
 #include <vector>
-#include "pico/util/queue.h"
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 #include "GamepadEnums.h"
 #include "xinput_driver.h"
 
-// Pico Includes
-#include "modules/pleds.h"
+// GP2040 Includes
+#include "addons/playerleds.h"
 #include "helper.h"
-#include "storage.h"
+#include "storagemanager.h"
 
 // TODO: make this a helper function
 // Animation Helper for Player LEDs
@@ -77,11 +77,11 @@ PLEDAnimationState getXInputAnimationPWM(uint8_t *data)
 	return animationState;
 }
 
-bool PLEDModule::available() {
+bool PlayerLEDAddon::available() {
 	return PLED_TYPE != PLED_TYPE_NONE;
 }
 
-void PLEDModule::setup() {
+void PlayerLEDAddon::setup() {
 
 	switch (PLED_TYPE)
 	{
@@ -97,28 +97,24 @@ void PLEDModule::setup() {
 		pwmLEDs->setup();
 }
 
-void PLEDModule::loop() {
+void PlayerLEDAddon::process()
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
 	// Player LEDs can be PWM or driven by NeoPixel
-	if (PLED_TYPE == PLED_TYPE_PWM) {
+	uint8_t * featureData = Storage::getInstance().GetFeatureData();
+	if (PLED_TYPE == PLED_TYPE_PWM) { // only process the feature queue if we're on PWM
 		if (pwmLEDs != nullptr)
 			pwmLEDs->display();
-	}
-}
 
-void PLEDModule::process(Gamepad *gamepad) {
-	static uint8_t featureData[PLED_REPORT_SIZE];
-	if (PLED_TYPE == PLED_TYPE_PWM) { // only process the feature queue if we're on PWM
-		if (queue_try_remove(Storage::getInstance().GetFeatureQueue(), featureData))
+		switch (gamepad->options.inputMode)
 		{
-			switch (gamepad->options.inputMode)
-			{
-				case INPUT_MODE_XINPUT:
-					animationState = getXInputAnimationPWM(featureData);
-					break;
-			}
-			if (pwmLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
-				pwmLEDs->animate(animationState);
+			case INPUT_MODE_XINPUT:
+				animationState = getXInputAnimationPWM(featureData);
+				break;
 		}
+		if (pwmLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
+			pwmLEDs->animate(animationState);
 	}
 }
 

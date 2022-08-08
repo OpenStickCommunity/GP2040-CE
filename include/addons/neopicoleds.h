@@ -7,7 +7,6 @@
 #define _NEOPICOLEDS_H_
 
 // Pico Includes
-#include "pico/util/queue.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -15,8 +14,8 @@
 // GP2040 Includes
 #include "helper.h"
 #include "gamepad.h"
-#include "gpmodule.h"
-#include "storage.h"
+#include "gpaddon.h"
+#include "storagemanager.h"
 
 // MPGS
 #include "BoardConfig.h"
@@ -161,18 +160,15 @@ public:
 	uint16_t * getLedLevels() { return ledLevels; }
 };
 
-// NeoPico LED Module
 #define NeoPicoLEDName "NeoPicoLED"
 
-// NeoPico LED Module
-class NeoPicoLEDModule : public GPModule {
+// NeoPico LED Addon
+class NeoPicoLEDAddon : public GPAddon {
 public:
-	virtual bool available();  // GPModule
+	virtual bool available();  // GPAddon
 	virtual void setup();
-	virtual void loop();
-	virtual void process(Gamepad *gamepad);
+	virtual void process();
 	virtual std::string name() { return NeoPicoLEDName; }
-	void trySave();
 	void configureLEDs();
 	uint32_t frame[100];
 private:
@@ -191,9 +187,6 @@ private:
 	PLEDAnimationState animationState; // NeoPico can control the player LEDs
 	NeoPicoPlayerLEDs * neoPLEDs = nullptr;
 	AnimationStation as;
-	queue_t baseAnimationQueue;
-	queue_t buttonAnimationQueue;
-	queue_t animationSaveQueue;
 	std::map<std::string, int> buttonPositions;
 };
 

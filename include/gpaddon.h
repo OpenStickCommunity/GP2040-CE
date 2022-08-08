@@ -1,15 +1,16 @@
-#ifndef _GPModule_H_
-#define _GPModule_H_
+#ifndef _GPAddon_H_
+#define _GPAddon_H_
 
 #include "gamepad.h"
 
-class GPModule
+#include <string>
+
+class GPAddon
 {
 public:
 	virtual bool available() = 0;
 	virtual void setup() = 0;
-	virtual void loop() = 0;
-	virtual void process(Gamepad *gamepad) = 0;
+	virtual void process() = 0;
 	virtual std::string name() = 0;
 private:
 };
