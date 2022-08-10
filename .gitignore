@@ -6,3 +6,4 @@
 .vscode/settings.json
 node_modules/
 configs/MyBoard
+.DS_Store

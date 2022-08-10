@@ -30,8 +30,8 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} exact={true} to="/display-config">Display Configuration</NavDropdown.Item>
 					</NavDropdown>
 					<NavDropdown title="Links">
-						<NavDropdown.Item as={NavLink} to="https://gp2040.info/">Documentation</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="https://github.com/FeralAI/GP2040/">Github</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} to={{ pathname: "https://gp2040.info/" }} target="_blank">Documentation</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} to={{ pathname: "https://github.com/OpenStickFoundation/GP2040-CE" }} target="_blank">Github</NavDropdown.Item>
 					</NavDropdown>
 					<NavDropdown title="DANGER ZONE" className="btn-danger danger-zone">
 						<NavDropdown.Item as={NavLink} exact={true} to="/reset-settings">Reset Settings</NavDropdown.Item>
