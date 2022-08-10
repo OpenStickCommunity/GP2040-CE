@@ -10,7 +10,7 @@
 #include <vector>
 #include <MPG.h>
 #include "AnimationStation.hpp"
-#include "enums.h"
+#include "helper.h"
 
 using namespace std;
 

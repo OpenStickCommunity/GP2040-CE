@@ -3,20 +3,26 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#include "pico/stdlib.h"
+// GP2040 Libraries
 #include "gamepad.h"
-#include "display.h"
-#include "storage.h"
-#include "display.h"
-#include "OneBitDisplay.h"
+#include "storagemanager.h"
+
+// MUST BE DEFINED for mpgs
+uint32_t getMillis() {
+	return to_ms_since_boot(get_absolute_time());
+}
+
+uint64_t getMicro() {
+	return to_us_since_boot(get_absolute_time());
+}
 
 void Gamepad::setup()
 {
-	load();
+	load(); // MPGS loads
 
 	// Configure pin mapping
 	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-	BoardOptions boardOptions = getBoardOptions();
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 
 	mapDpadUp    = new GamepadButtonMapping(boardOptions.pinDpadUp,    GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(boardOptions.pinDpadDown,  GAMEPAD_MASK_DOWN);
@@ -36,7 +42,7 @@ void Gamepad::setup()
 	mapButtonR3  = new GamepadButtonMapping(boardOptions.pinButtonR3,  GAMEPAD_MASK_R3);
 	mapButtonA1  = new GamepadButtonMapping(boardOptions.pinButtonA1,  GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(boardOptions.pinButtonA2,  GAMEPAD_MASK_A2);
-
+	
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
 		mapDpadUp,   mapDpadDown, mapDpadLeft, mapDpadRight,
@@ -58,6 +64,12 @@ void Gamepad::setup()
 		gpio_set_dir(PIN_SETTINGS, GPIO_IN); // Set as INPUT
 		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
 	#endif
+}
+
+void Gamepad::process()
+{
+	memcpy(&rawState, &state, sizeof(GamepadState));
+	MPGS::process();
 }
 
 void Gamepad::read()

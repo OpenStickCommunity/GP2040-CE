@@ -1,3 +1,4 @@
+import re
 import os
 import os.path
 
@@ -21,5 +22,10 @@ os.system(makefsdata + " " + website_dir + " -f:" + fsdata_filename)
 print("Done")
 
 print("Replace includes")
-os.system('perl -i -p0e "s/#include.*?"lwip\/def.h"/#include ""fsdata.h"/s" ' + fsdata_filename)
+f = open(fsdata_filename, "rb")
+res = re.sub("#include .*\n.*lwip\/def\.h", "#include \"fsdata.h", f.read())
+f.close()
+f = open(fsdata_filename, "wb")
+f.write(res)
+f.close()
 print("Done")

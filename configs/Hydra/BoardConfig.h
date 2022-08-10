@@ -29,6 +29,9 @@
 #define PIN_BUTTON_A1   15
 #define PIN_BUTTON_A2   18
 #define PIN_BUTTON_L3   19
+#define PIN_BUTTON_TURBO -1
+#define PIN_SLIDER_LS    -1
+#define PIN_SLIDER_RS    -1
 
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_UP_PRIORITY
