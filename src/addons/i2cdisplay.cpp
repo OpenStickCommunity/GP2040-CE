@@ -35,22 +35,27 @@ void I2CDisplayAddon::setup() {
 void I2CDisplayAddon::process() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	clearScreen(0);
-	setStatusBar(gamepad);
-	drawStatusBar();
+	bool configMode = Storage::getInstance().GetConfigMode();
+	if (configMode == true ) {
+		drawText(0, 0, "[Web Config Mode]");
+		drawText(0, 1, "GP2040-CE");
+	} else {
+		setStatusBar(gamepad);
+		drawStatusBar();
+		switch (BUTTON_LAYOUT)
+		{
+			case BUTTON_LAYOUT_ARCADE:
+				drawArcadeStick(8, 28, 8, 2, gamepad);
+				break;
 
-	switch (BUTTON_LAYOUT)
-	{
-		case BUTTON_LAYOUT_ARCADE:
-			drawArcadeStick(8, 28, 8, 2, gamepad);
-			break;
+			case BUTTON_LAYOUT_HITBOX:
+				drawHitbox(8, 20, 8, 2, gamepad);
+				break;
 
-		case BUTTON_LAYOUT_HITBOX:
-			drawHitbox(8, 20, 8, 2, gamepad);
-			break;
-
-		case BUTTON_LAYOUT_WASD:
-			drawWasdBox(8, 28, 7, 3, gamepad);
-			break;
+			case BUTTON_LAYOUT_WASD:
+				drawWasdBox(8, 28, 7, 3, gamepad);
+				break;
+		}
 	}
 
 	obdDumpBuffer(&obd, NULL);

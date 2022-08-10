@@ -29,6 +29,8 @@
 #define API_SET_LED_OPTIONS "/api/setLedOptions"
 #define API_GET_PIN_MAPPINGS "/api/getPinMappings"
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
+#define API_GET_ADDON_MAPPINGS "/api/getAddonsOptions"
+#define API_SET_ADDON_MAPPINGS "/api/setAddonsOptions"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
@@ -37,7 +39,7 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings" };
+const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
 static char *http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
@@ -62,7 +64,7 @@ int set_file_data(struct fs_file *file, string data)
 	file->data = returnData.c_str();
 	file->len = returnData.size();
 	file->index = file->len;
-	file->http_header_included = 0;
+	file->http_header_included = file->http_header_included;
 	file->pextension = NULL;
 
 	return 1;
@@ -146,7 +148,7 @@ void httpd_post_finished(void *connection, char *response_uri, uint16_t response
 	response_uri = http_post_uri;
 }
 
-inline string serialize_json(DynamicJsonDocument &doc)
+std::string serialize_json(DynamicJsonDocument &doc)
 {
 	string data;
 	serializeJson(doc, data);
@@ -345,7 +347,6 @@ std::string setPinMappings()
 	boardOptions.pinButtonR3  = doc["R3"];
 	boardOptions.pinButtonA1  = doc["A1"];
 	boardOptions.pinButtonA2  = doc["A2"];
-	boardOptions.pinButtonTurbo = doc["Turbo"];
 
 	Storage::getInstance().setBoardOptions(boardOptions);
 
@@ -379,6 +380,31 @@ std::string getPinMappings()
 	return serialize_json(doc);
 }
 
+std::string setAddonMappings()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	BoardOptions boardOptions;
+	boardOptions.pinButtonTurbo    	= doc["Turbo"];
+	boardOptions.pinSliderLS  		= doc["LS"];
+	boardOptions.pinSliderRS  		= doc["RS"];
+	boardOptions.turboShotCount 	= doc["TurboShotCount"];
+
+	return serialize_json(doc);
+}
+
+std::string getAddonMappings()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	BoardOptions boardOptions;
+	doc["Turbo"] = boardOptions.pinButtonTurbo;
+	doc["LS"] = boardOptions.pinSliderLS;
+	doc["RS"] = boardOptions.pinSliderRS;
+	doc["TurboShotCount"] = boardOptions.turboShotCount;
+
+	return serialize_json(doc);
+}
+
 // This should be a storage feature
 std::string resetSettings()
 {
@@ -400,6 +426,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setLedOptions());
 		if (!memcmp(http_post_uri, API_SET_PIN_MAPPINGS, sizeof(API_SET_PIN_MAPPINGS)))
 			return set_file_data(file, setPinMappings());
+		if (!memcmp(http_post_uri, API_SET_ADDON_MAPPINGS, sizeof(API_SET_ADDON_MAPPINGS)))
+			return set_file_data(file, setAddonMappings());
 	}
 	else
 	{
@@ -411,6 +439,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getLedOptions());
 		if (!memcmp(name, API_GET_PIN_MAPPINGS, sizeof(API_GET_PIN_MAPPINGS)))
 			return set_file_data(file, getPinMappings());
+		if (!memcmp(name, API_GET_ADDON_MAPPINGS, sizeof(API_GET_ADDON_MAPPINGS)))
+			return set_file_data(file, getAddonMappings());
 		if (!memcmp(name, API_RESET_SETTINGS, sizeof(API_RESET_SETTINGS)))
 			return set_file_data(file, resetSettings());
 	}

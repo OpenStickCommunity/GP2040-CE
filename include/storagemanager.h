@@ -20,7 +20,7 @@
 #define TURBO_STORAGE_INDEX		2048 //   64 bytes for TURBO options
 #define ANIMATION_STORAGE_INDEX 2112 // ???? bytes for LED animations
 
-#define CHECKSUM_MAGIC          0xCE2040 	// Checksum CRC
+#define CHECKSUM_MAGIC          0 	// Checksum CRC
 
 struct BoardOptions
 {
