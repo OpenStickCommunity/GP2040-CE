@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include "AnimationStation.hpp"
 #include "PlayerLEDs.h"
-#include "gpmodule.h"
+#include "gpaddon.h"
 #include "helper.h"
 
 // This needs to be moved to storage if we're going to share between modules
@@ -28,16 +28,15 @@ public:
 #define PLEDName "PLED"
 
 // Player LED Module
-class PLEDModule : public GPModule
+class PlayerLEDAddon : public GPAddon
 {
 public:
-	virtual bool available();  // GPModule
+	virtual bool available();  // GPAddon
 	virtual void setup();
-	virtual void loop();
-	virtual void process(Gamepad *gamepad);
+	virtual void process();
 	virtual std::string name() { return PLEDName; }
-	PLEDModule() : type(PLED_TYPE) { }
-	PLEDModule(PLEDType type) : type(type) { }
+	PlayerLEDAddon() : type(PLED_TYPE) { }
+	PlayerLEDAddon(PLEDType type) : type(type) { }
 protected:
 	PLEDType type;
 	PWMPlayerLEDs * pwmLEDs = nullptr;

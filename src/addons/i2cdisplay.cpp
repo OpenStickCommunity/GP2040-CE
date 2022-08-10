@@ -3,67 +3,69 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#include "modules/i2cdisplay.h"
+#include "addons/i2cdisplay.h"
 #include "enums.h"
 #include "helper.h"
-#include "storage.h"
+#include "storagemanager.h"
 #include "pico/stdlib.h"
 
-bool I2CDisplayModule::available() {
+bool I2CDisplayAddon::available() {
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	return boardOptions.hasI2CDisplay && boardOptions.i2cSDAPin != -1 && boardOptions.i2cSCLPin != -1;
 }
 
-void I2CDisplayModule::setup() {
-	BoardOptions options = Storage::getInstance().getBoardOptions();
+void I2CDisplayAddon::setup() {
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	obdI2CInit(&obd,
-	    options.displaySize,
-		options.displayI2CAddress,
-		options.displayFlip,
-		options.displayInvert,
+	    boardOptions.displaySize,
+		boardOptions.displayI2CAddress,
+		boardOptions.displayFlip,
+		boardOptions.displayInvert,
 		DISPLAY_USEWIRE,
-		options.i2cSDAPin,
-		options.i2cSCLPin,
-		options.i2cBlock == 0 ? i2c0 : i2c1,
+		boardOptions.i2cSDAPin,
+		boardOptions.i2cSCLPin,
+		boardOptions.i2cBlock == 0 ? i2c0 : i2c1,
 		-1,
-		options.i2cSpeed);
+		boardOptions.i2cSpeed);
 	obdSetContrast(&obd, 0xFF);
 	obdSetBackBuffer(&obd, ucBackBuffer);
 	clearScreen(1);
 }
 
-void I2CDisplayModule::loop() {
-	// All screen updates should be handled in process() as they need to display ASAP
-}
-
-void I2CDisplayModule::process(Gamepad *gamepad) {
+void I2CDisplayAddon::process() {
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	clearScreen(0);
-	setStatusBar(gamepad);
-	drawStatusBar();
+	bool configMode = Storage::getInstance().GetConfigMode();
+	if (configMode == true ) {
+		drawText(0, 0, "[Web Config Mode]");
+		drawText(0, 1, "GP2040-CE");
+	} else {
+		setStatusBar(gamepad);
+		drawStatusBar();
+		switch (BUTTON_LAYOUT)
+		{
+			case BUTTON_LAYOUT_ARCADE:
+				drawArcadeStick(8, 28, 8, 2, gamepad);
+				break;
 
-	switch (BUTTON_LAYOUT)
-	{
-		case BUTTON_LAYOUT_ARCADE:
-			drawArcadeStick(8, 28, 8, 2, gamepad);
-			break;
+			case BUTTON_LAYOUT_HITBOX:
+				drawHitbox(8, 20, 8, 2, gamepad);
+				break;
 
-		case BUTTON_LAYOUT_HITBOX:
-			drawHitbox(8, 20, 8, 2, gamepad);
-			break;
-
-		case BUTTON_LAYOUT_WASD:
-			drawWasdBox(8, 28, 7, 3, gamepad);
-			break;
+			case BUTTON_LAYOUT_WASD:
+				drawWasdBox(8, 28, 7, 3, gamepad);
+				break;
+		}
 	}
 
 	obdDumpBuffer(&obd, NULL);
 }
 
-void I2CDisplayModule::clearScreen(int render) {
+void I2CDisplayAddon::clearScreen(int render) {
 	obdFill(&obd, 0, render);
 }
 
-void I2CDisplayModule::drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad) {
+void I2CDisplayAddon::drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad) {
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// UDLR
@@ -84,7 +86,7 @@ void I2CDisplayModule::drawHitbox(int startX, int startY, int buttonRadius, int 
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayModule::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad)
+void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad)
 {
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
@@ -106,7 +108,7 @@ void I2CDisplayModule::drawWasdBox(int startX, int startY, int buttonRadius, int
 	obdPreciseEllipse(&obd, startX + buttonMargin * 6.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayModule::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad)
+void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad)
 {
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
@@ -128,16 +130,16 @@ void I2CDisplayModule::drawArcadeStick(int startX, int startY, int buttonRadius,
 	obdPreciseEllipse(&obd, startX + buttonMargin * 5.875, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayModule::drawStatusBar()
+void I2CDisplayAddon::drawStatusBar()
 {
 	obdWriteString(&obd, 0, 0, 0, (char *)statusBar.c_str(), FONT_6x8, 0, 0);
 }
 
-void I2CDisplayModule::drawText(int x, int y, std::string text) {
+void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 	obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, 0, 0);
 }
 
-void I2CDisplayModule::setStatusBar(Gamepad *gamepad)
+void I2CDisplayAddon::setStatusBar(Gamepad *gamepad)
 {
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();

@@ -1,7 +1,7 @@
 #include "configs/WebConfig.h"
 
-#include "storage.h"
-#include "config.h"
+#include "storagemanager.h"
+#include "configmanager.h"
 
 #include <cstring>
 #include <string>
@@ -29,6 +29,8 @@
 #define API_SET_LED_OPTIONS "/api/setLedOptions"
 #define API_GET_PIN_MAPPINGS "/api/getPinMappings"
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
+#define API_GET_ADDON_MAPPINGS "/api/getAddonsOptions"
+#define API_SET_ADDON_MAPPINGS "/api/setAddonsOptions"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
@@ -37,7 +39,7 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings" };
+const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
 static char *http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
@@ -62,7 +64,7 @@ int set_file_data(struct fs_file *file, string data)
 	file->data = returnData.c_str();
 	file->len = returnData.size();
 	file->index = file->len;
-	file->http_header_included = 0;
+	file->http_header_included = file->http_header_included;
 	file->pextension = NULL;
 
 	return 1;
@@ -146,7 +148,7 @@ void httpd_post_finished(void *connection, char *response_uri, uint16_t response
 	response_uri = http_post_uri;
 }
 
-inline string serialize_json(DynamicJsonDocument &doc)
+std::string serialize_json(DynamicJsonDocument &doc)
 {
 	string data;
 	serializeJson(doc, data);
@@ -156,31 +158,31 @@ inline string serialize_json(DynamicJsonDocument &doc)
 std::string setDisplayOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
-	BoardOptions options = Storage::getInstance().getBoardOptions();
-	options.hasI2CDisplay     = doc["enabled"];
-	options.i2cSDAPin         = doc["sdaPin"];
-	options.i2cSCLPin         = doc["sclPin"];
-	options.displayI2CAddress = doc["i2cAddress"];
-	options.i2cBlock          = doc["i2cBlock"];
-	options.i2cSpeed          = doc["i2cSpeed"];
-	options.displayFlip       = doc["flipDisplay"];
-	options.displayInvert     = doc["invertDisplay"];
-	ConfigManager::getInstance().setBoardOptions(&options);
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	boardOptions.hasI2CDisplay     = doc["enabled"];
+	boardOptions.i2cSDAPin         = doc["sdaPin"];
+	boardOptions.i2cSCLPin         = doc["sclPin"];
+	boardOptions.displayI2CAddress = doc["i2cAddress"];
+	boardOptions.i2cBlock          = doc["i2cBlock"];
+	boardOptions.i2cSpeed          = doc["i2cSpeed"];
+	boardOptions.displayFlip       = doc["flipDisplay"];
+	boardOptions.displayInvert     = doc["invertDisplay"];
+	ConfigManager::getInstance().setBoardOptions(boardOptions);
 	return serialize_json(doc);
 }
 
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	BoardOptions options = Storage::getInstance().getBoardOptions();
-	doc["enabled"]       = options.hasI2CDisplay ? 1 : 0;
-	doc["sdaPin"]        = options.i2cSDAPin;
-	doc["sclPin"]        = options.i2cSCLPin;
-	doc["i2cAddress"]    = options.displayI2CAddress;
-	doc["i2cBlock"]      = options.i2cBlock;
-	doc["i2cSpeed"]      = options.i2cSpeed;
-	doc["flipDisplay"]   = options.displayFlip ? 1 : 0;
-	doc["invertDisplay"] = options.displayInvert ? 1 : 0;
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	doc["enabled"]       = boardOptions.hasI2CDisplay ? 1 : 0;
+	doc["sdaPin"]        = boardOptions.i2cSDAPin;
+	doc["sclPin"]        = boardOptions.i2cSCLPin;
+	doc["i2cAddress"]    = boardOptions.displayI2CAddress;
+	doc["i2cBlock"]      = boardOptions.i2cBlock;
+	doc["i2cSpeed"]      = boardOptions.i2cSpeed;
+	doc["flipDisplay"]   = boardOptions.displayFlip ? 1 : 0;
+	doc["invertDisplay"] = boardOptions.displayInvert ? 1 : 0;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
@@ -256,7 +258,7 @@ std::string setLedOptions()
 	ledOptions.indexR3            = (doc["ledButtonMap"]["R3"]    == nullptr) ? -1 : doc["ledButtonMap"]["R3"];
 	ledOptions.indexA1            = (doc["ledButtonMap"]["A1"]    == nullptr) ? -1 : doc["ledButtonMap"]["A1"];
 	ledOptions.indexA2            = (doc["ledButtonMap"]["A2"]    == nullptr) ? -1 : doc["ledButtonMap"]["A2"];
-	ConfigManager::getInstance().setLedOptions(&ledOptions);
+	ConfigManager::getInstance().setLedOptions(ledOptions);
 	return serialize_json(doc);
 }
 
@@ -325,28 +327,28 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	BoardOptions options;
-	options.hasBoardOptions = true;
-	options.pinDpadUp    = doc["Up"];
-	options.pinDpadDown  = doc["Down"];
-	options.pinDpadLeft  = doc["Left"];
-	options.pinDpadRight = doc["Right"];
-	options.pinButtonB1  = doc["B1"];
-	options.pinButtonB2  = doc["B2"];
-	options.pinButtonB3  = doc["B3"];
-	options.pinButtonB4  = doc["B4"];
-	options.pinButtonL1  = doc["L1"];
-	options.pinButtonR1  = doc["R1"];
-	options.pinButtonL2  = doc["L2"];
-	options.pinButtonR2  = doc["R2"];
-	options.pinButtonS1  = doc["S1"];
-	options.pinButtonS2  = doc["S2"];
-	options.pinButtonL3  = doc["L3"];
-	options.pinButtonR3  = doc["R3"];
-	options.pinButtonA1  = doc["A1"];
-	options.pinButtonA2  = doc["A2"];
+	BoardOptions boardOptions;
+	boardOptions.hasBoardOptions = true;
+	boardOptions.pinDpadUp    = doc["Up"];
+	boardOptions.pinDpadDown  = doc["Down"];
+	boardOptions.pinDpadLeft  = doc["Left"];
+	boardOptions.pinDpadRight = doc["Right"];
+	boardOptions.pinButtonB1  = doc["B1"];
+	boardOptions.pinButtonB2  = doc["B2"];
+	boardOptions.pinButtonB3  = doc["B3"];
+	boardOptions.pinButtonB4  = doc["B4"];
+	boardOptions.pinButtonL1  = doc["L1"];
+	boardOptions.pinButtonR1  = doc["R1"];
+	boardOptions.pinButtonL2  = doc["L2"];
+	boardOptions.pinButtonR2  = doc["R2"];
+	boardOptions.pinButtonS1  = doc["S1"];
+	boardOptions.pinButtonS2  = doc["S2"];
+	boardOptions.pinButtonL3  = doc["L3"];
+	boardOptions.pinButtonR3  = doc["R3"];
+	boardOptions.pinButtonA1  = doc["A1"];
+	boardOptions.pinButtonA2  = doc["A2"];
 
-	Storage::getInstance().setBoardOptions(options);
+	Storage::getInstance().setBoardOptions(boardOptions);
 
 	return serialize_json(doc);
 }
@@ -378,6 +380,31 @@ std::string getPinMappings()
 	return serialize_json(doc);
 }
 
+std::string setAddonMappings()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	BoardOptions boardOptions;
+	boardOptions.pinButtonTurbo    	= doc["Turbo"];
+	boardOptions.pinSliderLS  		= doc["LS"];
+	boardOptions.pinSliderRS  		= doc["RS"];
+	boardOptions.turboShotCount 	= doc["TurboShotCount"];
+
+	return serialize_json(doc);
+}
+
+std::string getAddonMappings()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	BoardOptions boardOptions;
+	doc["Turbo"] = boardOptions.pinButtonTurbo;
+	doc["LS"] = boardOptions.pinSliderLS;
+	doc["RS"] = boardOptions.pinSliderRS;
+	doc["TurboShotCount"] = boardOptions.turboShotCount;
+
+	return serialize_json(doc);
+}
+
 // This should be a storage feature
 std::string resetSettings()
 {
@@ -399,6 +426,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setLedOptions());
 		if (!memcmp(http_post_uri, API_SET_PIN_MAPPINGS, sizeof(API_SET_PIN_MAPPINGS)))
 			return set_file_data(file, setPinMappings());
+		if (!memcmp(http_post_uri, API_SET_ADDON_MAPPINGS, sizeof(API_SET_ADDON_MAPPINGS)))
+			return set_file_data(file, setAddonMappings());
 	}
 	else
 	{
@@ -410,6 +439,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getLedOptions());
 		if (!memcmp(name, API_GET_PIN_MAPPINGS, sizeof(API_GET_PIN_MAPPINGS)))
 			return set_file_data(file, getPinMappings());
+		if (!memcmp(name, API_GET_ADDON_MAPPINGS, sizeof(API_GET_ADDON_MAPPINGS)))
+			return set_file_data(file, getAddonMappings());
 		if (!memcmp(name, API_RESET_SETTINGS, sizeof(API_RESET_SETTINGS)))
 			return set_file_data(file, resetSettings());
 	}

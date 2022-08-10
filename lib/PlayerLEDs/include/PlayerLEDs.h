@@ -4,6 +4,8 @@
 #include <cstring>
 #include <stdint.h>
 
+#include "pico/time.h"
+
 #define PLED_COUNT 4
 #define PLED_MAX_BRIGHTNESS 0xFF
 #define PLED_MAX_LEVEL 0xFFFF

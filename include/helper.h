@@ -10,6 +10,9 @@
 #include "PlayerLEDs.h"
 #include "xinput_driver.h"
 
+// GP2040-CE Version (32 character limit)
+#define GP2040VERSION "0.4.4"
+
 const std::string BUTTON_LABEL_UP = "Up";
 const std::string BUTTON_LABEL_DOWN = "Down";
 const std::string BUTTON_LABEL_LEFT = "Left";
