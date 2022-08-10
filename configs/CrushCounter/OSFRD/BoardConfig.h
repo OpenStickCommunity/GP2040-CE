@@ -3,8 +3,7 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef OSFRD_BOARD_CONFIG_H_
-#define OSFRD_BOARD_CONFIG_H_
+#pragma once
 
 #include <GamepadEnums.h>
 #include "enums.h"
@@ -29,9 +28,6 @@
 #define PIN_BUTTON_R3   16
 #define PIN_BUTTON_A1   28
 #define PIN_BUTTON_A2   18
-#define PIN_BUTTON_TURBO -1
-#define PIN_SLIDER_LS    -1
-#define PIN_SLIDER_RS    -1
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #define BUTTON_LAYOUT BUTTON_LAYOUT_HITBOX
@@ -62,4 +58,3 @@
 #define PLED3_PIN 14
 #define PLED4_PIN 15
 
-#endif

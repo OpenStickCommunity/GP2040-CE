@@ -3,8 +3,7 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef CRUSH_COUNTER_BOARD_CONFIG_H_
-#define CRUSH_COUNTER_BOARD_CONFIG_H_
+#pragma once
 
 #include <GamepadEnums.h>
 #include "enums.h"
@@ -31,9 +30,6 @@
 #define PIN_BUTTON_A1   4
 #define PIN_BUTTON_A2   5
 #define PIN_SETTINGS    11
-#define PIN_BUTTON_TURBO -1
-#define PIN_SLIDER_LS    -1
-#define PIN_SLIDER_RS    -1
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #define BUTTON_LAYOUT BUTTON_LAYOUT_HITBOX
@@ -63,5 +59,3 @@
 #define PLED2_PIN 13
 #define PLED3_PIN 14
 #define PLED4_PIN 15
-
-#endif
