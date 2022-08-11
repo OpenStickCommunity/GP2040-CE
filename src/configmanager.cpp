@@ -1,5 +1,5 @@
 #include "configmanager.h"
-#include "configs/WebConfig.h"
+#include "configs/webconfig.h"
 #include "addons/neopicoleds.h"
 
 void ConfigManager::setup(ConfigType config) {
