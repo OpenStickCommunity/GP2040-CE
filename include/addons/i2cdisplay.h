@@ -13,8 +13,28 @@
 #include "gpaddon.h"
 #include "gamepad.h"
 
+#ifndef HAS_I2C_DISPLAY
+#define HAS_I2C_DISPLAY -1
+#endif
+
 #ifndef DISPLAY_I2C_ADDR
 #define DISPLAY_I2C_ADDR 0x3C
+#endif
+
+#ifndef I2C_SDA_PIN
+#define I2C_SDA_PIN -1
+#endif
+
+#ifndef I2C_SCL_PIN
+#define I2C_SCL_PIN -1
+#endif
+
+#ifndef I2C_BLOCK
+#define I2C_BLOCK i2c0
+#endif
+
+#ifndef I2C_SPEED
+#define I2C_SPEED 800000
 #endif
 
 #ifndef DISPLAY_SIZE

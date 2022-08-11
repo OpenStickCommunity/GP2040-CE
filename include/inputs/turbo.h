@@ -16,9 +16,6 @@
 #define TURBO_LED_PIN   -1
 #endif
 
-#define TURBO_SHOT_MAX  60
-#define TURBO_SHOT_MIN  1
-
 // Turbo Module Name
 #define TurboName "TURBO"
 
