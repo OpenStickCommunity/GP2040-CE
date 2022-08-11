@@ -27,8 +27,8 @@
 #define PIN_BUTTON_A1   20
 #define PIN_BUTTON_A2   21
 #define PIN_BUTTON_TURBO 14
-#define PIN_SLIDER_LS    0
-#define PIN_SLIDER_RS    1
+#define PIN_SLIDER_LS    26
+#define PIN_SLIDER_RS    27
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #define BUTTON_LAYOUT BUTTON_LAYOUT_ARCADE
@@ -62,8 +62,8 @@
 #define PLED4_PIN -1
 
 #define HAS_I2C_DISPLAY 1
-#define I2C_SDA_PIN 26
-#define I2C_SCL_PIN 27
+#define I2C_SDA_PIN 0
+#define I2C_SCL_PIN 1
 #define I2C_BLOCK i2c0
 #define I2C_SPEED 800000
 
