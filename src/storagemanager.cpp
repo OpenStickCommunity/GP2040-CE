@@ -74,7 +74,6 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.displayFlip       = DISPLAY_FLIP;
 	boardOptions.displayInvert     = DISPLAY_INVERT;
 	boardOptions.turboShotCount    = DEFAULT_SHOT_PER_SEC;
-	//strcpy(boardOptions.boardVersion, GP2040VERSION);
 	boardOptions.checksum = CHECKSUM_MAGIC; // set checksum to magic number
 	boardOptions.checksum = CRC32::calculate(&boardOptions);
 	EEPROM.set(BOARD_STORAGE_INDEX, boardOptions);
