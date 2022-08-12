@@ -21,6 +21,12 @@ void TurboInput::setup()
     gpio_set_dir(boardOptions.pinButtonTurbo, GPIO_IN); // Set as INPUT
     gpio_pull_up(boardOptions.pinButtonTurbo);          // Set as PULLUP
     
+    if (TURBO_LED_PIN != -1) {
+        gpio_init(TURBO_LED_PIN);
+        gpio_set_dir(TURBO_LED_PIN, GPIO_OUT);
+        gpio_put(TURBO_LED_PIN, 0);
+    }
+
     bDebState = false;
     uDebTime = getMillis();
     lastPressed = 0;
@@ -92,6 +98,16 @@ void TurboInput::process()
         lastDpad = 0; // disable last dpad
     }
 
+
+    // Set TURBO LED if a button is going
+    if ( TURBO_LED_PIN != -1 ) {
+        if ((gamepad->state.buttons & buttonsEnabled) && !bTurboFlicker) {
+            gpio_put(TURBO_LED_PIN, 1);
+        } else {
+            gpio_put(TURBO_LED_PIN, 0);
+        }	
+    }
+
     // disable button during turbo flicker
     if (bTurboFlicker) { 
         gamepad->state.buttons &= ~(buttonsEnabled);
@@ -103,13 +119,4 @@ void TurboInput::process()
 
     bTurboFlicker ^= true; // Button ON/OFF State Reverse
     nextTimer = getMillis() + uIntervalMS; // interval to flicker-off button
-
-    // Set TURBO LED if a button is going
-    if ( TURBO_LED_PIN != -1 ) {
-        if ((gamepad->state.buttons & buttonsEnabled) && !bTurboFlicker) {
-            gpio_put(TURBO_LED_PIN, 1);
-        } else {
-            gpio_put(TURBO_LED_PIN, 0);
-        }
-    }
 }
