@@ -1,5 +1,11 @@
 # GP2040 Usage
 
+## v0.5 Warning
+
+The v0.5 release has some breaking changes to boards other than the RPi Pico. If you are using such a board, do not update from an older version unless you have a backup .uf2 from a known good version, or you know what you're doing.
+
+---
+
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
 
 ## Buttons
@@ -24,6 +30,10 @@ GP2040 uses a generic button labeling for gamepad state, which is then converted
 | A2      | -      | Capture | -            | 14           | -      |
 
 If you do not have a dedicated Home button, you can activate it via the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> button combination.
+
+## Additional Features: Turbo & LS/RS Emulation
+
+Please note that the documentation for these new features is yet to be written. A future version will include updated docs.
 
 ## Input Modes
 
