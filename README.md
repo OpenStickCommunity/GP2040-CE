@@ -9,9 +9,10 @@ Full documentation can be found at <https://gp2040.info>.
 * Selectable input modes - XInput, DirectInput, and Nintendo Switch
 * Overclocked polling rate for less than 1 ms of input latency in all modes
 * Multiple SOCD cleaning modes - Neutral, Up Priority (a.k.a. Hitbox), and Second Input Priority
-* Left and Right stick emulation via D-pad inputs
+* Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches
+* Turbo and Turbo LED with selectable speed
 * Per-button RGB LED support
-* PWM and RGB player indicator LED support (XInput only)
+* PWM Player indicator LED support (XInput only)
 * Multiple profile support
 * Support for 128x64 monochrome I2C displays - SSD1306, SH1106, and SH1107 compatible
 * [Built-in, embedded web configuration](https://gp2040.info/#/web-configurator) - no download required!
@@ -30,13 +31,15 @@ Full results can be found in the [GP2040-CE Firmware Latency Test Results](https
 
 ## Installation
 
-Prebuilt `uf2` files are available in the [Releases](https://github.com/OpenStickFoundation/GP2040-CE/releases) section for the following boards and controllers:
+Prebuilt `uf2` files are available in the [Releases](https://github.com/OpenStickFoundation/GP2040-CE/releases) section.
 
-* [Raspberry Pi Pico](configs/Pico) and other pin-compatible boards such as the Pimoroni Pico Lipo ([wiring diagram](configs/Pico/assets/PinMapping.png))
-* [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
-* [Crush Counter](configs/CrushCounter) (formerly the [OSFRD](configs/OSFRD))
-* [DURAL](configs/DURAL)
-* [Flatbox Rev 4](configs/FlatboxRev4)
+Currently only a basic RaspBerry Pi Pico setup is supported.  
+
+> **If you have any of the following products or setups we would recommend waiting until their devices are tested with this new firmware**
+> * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
+> * [Crush Counter](configs/CrushCounter) (formerly the [OSFRD](configs/OSFRD))
+> * [DURAL](configs/DURAL)
+> * [Flatbox Rev 4](configs/FlatboxRev4)
 
 Several other working example configurations are located in the [configs](configs) folder.
 
@@ -118,3 +121,6 @@ Join the [OpenStick GP2040-CE Discord channel](https://discord.gg/KyQCHcjwJ2) to
 * fluffymadness's [tinyusb-xinput](https://github.com/fluffymadness/tinyusb-xinput) sample
 * Kevin Boone's [blog post on using RP2040 flash memory as emulated EEPROM](https://kevinboone.me/picoflash.html)
 * [bitbank2](https://github.com/bitbank2) for the [OneBitDisplay](https://github.com/bitbank2/OneBitDisplay) and [BitBang_I2C](https://github.com/bitbank2/BitBang_I2C) libraries, which were ported for use with the Pico SDK
+* [arntsonl](https://github.com/arntsonl) for the amazing cleanup and feature additions that brought us to v0.5.0
+* [alirin222](https://github.com/alirin222) for the awesome turbo code ([@alirin222](https://twitter.com/alirin222) on Twitter)
+* [TheTrain](https://github.com/TheTrainGoes/GP2040-Projects) and [Fortinbra](https://github.com/Fortinbra) for helping keep our community chugging along
