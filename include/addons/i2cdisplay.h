@@ -65,16 +65,12 @@ public:
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
 	void clearScreen(int render); // DisplayModule
-	void drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad);
-	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad);
-	void drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad);
+	void drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawStatusBar();
-
 	void drawText(int startX, int startY, std::string text);
-	
 	void initMenu(char**);
-
-	void setStatusBar(Gamepad *gamepad);
 	uint8_t ucBackBuffer[1024];
 	OBDISP obd;
 	std::string statusBar;

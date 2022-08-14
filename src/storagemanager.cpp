@@ -182,45 +182,6 @@ uint8_t * Storage::GetFeatureData()
 	return featureData;
 }
 
-/* Gamepad stuffs */
-void GamepadStorage::start()
-{
-	EEPROM.start();
-}
-
-void GamepadStorage::save()
-{
-	EEPROM.commit();
-}
-
-GamepadOptions GamepadStorage::getGamepadOptions()
-{
-	GamepadOptions options;
-	EEPROM.get(GAMEPAD_STORAGE_INDEX, options);
-
-	uint32_t lastCRC = options.checksum;
-	options.checksum = CHECKSUM_MAGIC;
-	if (CRC32::calculate(&options) != lastCRC)
-	{
-		options.inputMode = InputMode::INPUT_MODE_XINPUT; // Default?
-		options.dpadMode = DpadMode::DPAD_MODE_DIGITAL; // Default?
-#ifdef DEFAULT_SOCD_MODE
-		options.socdMode = DEFAULT_SOCD_MODE;
-#else
-		options.socdMode = SOCD_MODE_NEUTRAL;
-#endif
-	}
-
-	return options;
-}
-
-void GamepadStorage::setGamepadOptions(GamepadOptions options)
-{
-	options.checksum = 0;
-	options.checksum = CRC32::calculate(&options);
-	EEPROM.set(GAMEPAD_STORAGE_INDEX, options);
-}
-
 /* Animation stuffs */
 AnimationOptions AnimationStorage::getAnimationOptions()
 {

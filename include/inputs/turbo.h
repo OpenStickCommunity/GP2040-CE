@@ -4,7 +4,7 @@
 #include "gpaddon.h"
 
 #ifndef DEFAULT_SHOT_PER_SEC
-#define DEFAULT_SHOT_PER_SEC 5
+#define DEFAULT_SHOT_PER_SEC 15
 #endif  // DEFAULT_SHOT_PER_SEC
 
 // TURBO Button Mask
@@ -37,6 +37,5 @@ private:
     bool bTurboState;           // Turbo Buttons State
     bool bTurboFlicker;         // Turbo Enable Buttons Toggle OFF Flag ??
     uint32_t nextTimer;         // Turbo Timer
-    uint8_t shotCount;          // Turbo Shotcount (local-copy, default is saved on board)
 };
 #endif  // TURBO_H_
