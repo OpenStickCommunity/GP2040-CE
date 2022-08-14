@@ -8,6 +8,7 @@
 #include "helper.h"
 #include "storagemanager.h"
 #include "pico/stdlib.h"
+#include "addons/bitmaps.h"
 
 bool I2CDisplayAddon::available() {
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
@@ -39,6 +40,8 @@ void I2CDisplayAddon::process() {
 		drawStatusBar();
 		drawText(0, 3, "[Web Config Mode]");
 		drawText(0, 4, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
+	} else if (getMillis() < 7500 && SPLASH_MODE != NOSPLASH) {
+		drawSplashScreen(SPLASH_MODE, 90);
 	} else {
 		drawStatusBar();
 		switch (BUTTON_LAYOUT)
@@ -452,7 +455,7 @@ void I2CDisplayAddon::drawArcadeButtons(int startX, int startY, int buttonRadius
 	obdPreciseEllipse(&obd, startX + buttonMargin * 4.875, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR2());
 	obdPreciseEllipse(&obd, startX + buttonMargin * 5.875, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
-/*
+
 void I2CDisplayAddon::drawSplashScreen(int splashMode, int splashSpeed)
 {
     int mils = getMillis();
@@ -483,7 +486,7 @@ void I2CDisplayAddon::drawSplashScreen(int splashMode, int splashSpeed)
             break;
 	}
 }
-*/
+
 void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 	obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, 0, 0);
 }

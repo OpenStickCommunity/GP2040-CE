@@ -86,6 +86,7 @@ public:
 	void drawHitboxButtons(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawSplashScreen(int splashMode, int splashSpeed);
 	uint8_t ucBackBuffer[1024];
 	OBDISP obd;
 	std::string statusBar;
