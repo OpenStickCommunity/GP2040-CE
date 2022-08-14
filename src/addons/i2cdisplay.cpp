@@ -66,6 +66,9 @@ void I2CDisplayAddon::process() {
 			case BUTTON_LAYOUT_MAMEA:
 				drawMAMEA(8, 28, 10, 1);
 				break;
+			case BUTTON_LAYOUT_DANCEPADA:
+				drawDancepadA(39, 12, 15, 2);
+				break;
 		}
 
 		switch (BUTTON_LAYOUT_RIGHT)
@@ -99,6 +102,9 @@ void I2CDisplayAddon::process() {
 				break;
 			case BUTTON_LAYOUT_MAMEB:
 				drawMAMEB(68, 28, 10, 1);
+				break;
+			case BUTTON_LAYOUT_DANCEPADB:
+				drawDancepadB(39, 12, 15, 2);
 				break;
 		}
 	}
@@ -454,6 +460,31 @@ void I2CDisplayAddon::drawArcadeButtons(int startX, int startY, int buttonRadius
 	obdPreciseEllipse(&obd, startX + buttonMargin * 3.875, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB2());
 	obdPreciseEllipse(&obd, startX + buttonMargin * 4.875, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR2());
 	obdPreciseEllipse(&obd, startX + buttonMargin * 5.875, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
+}
+
+// I pulled this out of my PR, brought it back because of recent talks re: SOCD and rhythm games
+// Enjoy!
+
+void I2CDisplayAddon::drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + buttonSize;
+
+	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonSize + buttonMargin, 1, gamepad->pressedLeft());
+	obdRectangle(&obd, startX + buttonMargin, startY + buttonMargin * 2, startX + buttonSize + buttonMargin, startY + buttonSize + buttonMargin * 2, 1, gamepad->pressedDown());
+	obdRectangle(&obd, startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, gamepad->pressedUp());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, gamepad->pressedRight());
+}
+
+void I2CDisplayAddon::drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + buttonSize;
+	
+	obdRectangle(&obd, startX, startY, startX + buttonSize, startY + buttonSize, 1, gamepad->pressedB2()); // Up/Left
+	obdRectangle(&obd, startX, startY + buttonMargin * 2, startX + buttonSize, startY + buttonSize + buttonMargin * 2, 1, gamepad->pressedB4()); // Down/Left
+	obdRectangle(&obd, startX + buttonMargin * 2, startY, startX + buttonSize + buttonMargin * 2, startY + buttonSize, 1, gamepad->pressedB1()); // Up/Right
+	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin * 2, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin * 2, 1, gamepad->pressedB3()); // Down/Right
 }
 
 void I2CDisplayAddon::drawSplashScreen(int splashMode, int splashSpeed)

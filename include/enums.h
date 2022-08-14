@@ -9,6 +9,7 @@ typedef enum
 	BUTTON_LAYOUT_UDLR,
 	BUTTON_LAYOUT_MIXBOX,
 	BUTTON_LAYOUT_MAMEA,
+	BUTTON_LAYOUT_DANCEPADA,
 } ButtonLayout;
 
 typedef enum
@@ -23,6 +24,7 @@ typedef enum
 	BUTTON_LAYOUT_SEGA2P,
 	BUTTON_LAYOUT_NOIR8,
 	BUTTON_LAYOUT_MAMEB,
+	BUTTON_LAYOUT_DANCEPADB,
 } ButtonLayoutRight;
 
 typedef enum
