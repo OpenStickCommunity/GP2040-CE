@@ -33,27 +33,26 @@ void I2CDisplayAddon::setup() {
 }
 
 void I2CDisplayAddon::process() {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	clearScreen(0);
 	bool configMode = Storage::getInstance().GetConfigMode();
 	if (configMode == true ) {
-		drawText(0, 0, "[Web Config Mode]");
-		drawText(0, 1, "GP2040-CE");
+		drawStatusBar();
+		drawText(0, 3, "[Web Config Mode]");
+		drawText(0, 4, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
 	} else {
-		setStatusBar(gamepad);
 		drawStatusBar();
 		switch (BUTTON_LAYOUT)
 		{
 			case BUTTON_LAYOUT_ARCADE:
-				drawArcadeStick(8, 28, 8, 2, gamepad);
+				drawArcadeStick(8, 28, 8, 2);
 				break;
 
 			case BUTTON_LAYOUT_HITBOX:
-				drawHitbox(8, 20, 8, 2, gamepad);
+				drawHitbox(8, 20, 8, 2);
 				break;
 
 			case BUTTON_LAYOUT_WASD:
-				drawWasdBox(8, 28, 7, 3, gamepad);
+				drawWasdBox(8, 28, 7, 3);
 				break;
 		}
 	}
@@ -65,7 +64,8 @@ void I2CDisplayAddon::clearScreen(int render) {
 	obdFill(&obd, 0, render);
 }
 
-void I2CDisplayAddon::drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad) {
+void I2CDisplayAddon::drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding) {
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// UDLR
@@ -86,8 +86,9 @@ void I2CDisplayAddon::drawHitbox(int startX, int startY, int buttonRadius, int b
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad)
+void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding)
 {
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// UDLR
@@ -108,8 +109,9 @@ void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int 
 	obdPreciseEllipse(&obd, startX + buttonMargin * 6.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad *gamepad)
+void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding)
 {
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// UDLR
@@ -130,17 +132,15 @@ void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, 
 	obdPreciseEllipse(&obd, startX + buttonMargin * 5.875, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawStatusBar()
-{
-	obdWriteString(&obd, 0, 0, 0, (char *)statusBar.c_str(), FONT_6x8, 0, 0);
-}
-
 void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 	obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, 0, 0);
 }
 
-void I2CDisplayAddon::setStatusBar(Gamepad *gamepad)
+void I2CDisplayAddon::drawStatusBar()
 {
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
 
@@ -152,12 +152,20 @@ void I2CDisplayAddon::setStatusBar(Gamepad *gamepad)
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
+	if ( boardOptions.pinButtonTurbo != (uint8_t)-1 ) {
+		statusBar += "   T";
+		if ( boardOptions.turboShotCount < 10 ) // padding
+			statusBar += "0";
+		statusBar += std::to_string(boardOptions.turboShotCount);
+	} else {
+		statusBar += "      "; // no turbo, don't show Txx setting
+	}
 	switch (gamepad->options.dpadMode)
 	{
 
-		case DPAD_MODE_DIGITAL:      statusBar += "         DPAD"; break;
-		case DPAD_MODE_LEFT_ANALOG:  statusBar += "         LEFT"; break;
-		case DPAD_MODE_RIGHT_ANALOG: statusBar += "        RIGHT"; break;
+		case DPAD_MODE_DIGITAL:      statusBar += "   DPAD"; break;
+		case DPAD_MODE_LEFT_ANALOG:  statusBar += "   LEFT"; break;
+		case DPAD_MODE_RIGHT_ANALOG: statusBar += "   RIGHT"; break;
 	}
 
 	switch (gamepad->options.socdMode)
@@ -166,4 +174,5 @@ void I2CDisplayAddon::setStatusBar(Gamepad *gamepad)
 		case SOCD_MODE_UP_PRIORITY:           statusBar += "-U"; break;
 		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += "-L"; break;
 	}
+	drawText(0, 0, statusBar);
 }
