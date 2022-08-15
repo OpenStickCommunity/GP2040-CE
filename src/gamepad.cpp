@@ -7,6 +7,9 @@
 #include "gamepad.h"
 #include "storagemanager.h"
 
+#include "FlashPROM.h"
+#include "CRC32.h"
+
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
 	return to_ms_since_boot(get_absolute_time());
@@ -114,3 +117,45 @@ void Gamepad::read()
 	state.lt = 0;
 	state.rt = 0;
 }
+
+
+/* Gamepad stuffs */
+void GamepadStorage::start()
+{
+	EEPROM.start();
+}
+
+void GamepadStorage::save()
+{
+	EEPROM.commit();
+}
+
+GamepadOptions GamepadStorage::getGamepadOptions()
+{
+	GamepadOptions options;
+	EEPROM.get(GAMEPAD_STORAGE_INDEX, options);
+
+	uint32_t lastCRC = options.checksum;
+	options.checksum = CHECKSUM_MAGIC;
+	if (CRC32::calculate(&options) != lastCRC)
+	{
+		options.inputMode = InputMode::INPUT_MODE_XINPUT; // Default?
+		options.dpadMode = DpadMode::DPAD_MODE_DIGITAL; // Default?
+#ifdef DEFAULT_SOCD_MODE
+		options.socdMode = DEFAULT_SOCD_MODE;
+#else
+		options.socdMode = SOCD_MODE_NEUTRAL;
+#endif
+		setGamepadOptions(options);
+	}
+
+	return options;
+}
+
+void GamepadStorage::setGamepadOptions(GamepadOptions options)
+{
+	options.checksum = 0;
+	options.checksum = CRC32::calculate(&options);
+	EEPROM.set(GAMEPAD_STORAGE_INDEX, options);
+}
+

@@ -7,7 +7,6 @@
 #include "inputs/jslider.h" // Inputs
 #include "inputs/turbo.h"
 
-
 // Pico includes
 #include "pico/bootrom.h"
 
@@ -33,7 +32,7 @@ void GP2040::setup() {
 	// Check for Config or Regular Input (w/ Button Combos)
 	InputMode inputMode = gamepad->options.inputMode;
 	gamepad->read();
-	if (gamepad->pressedF1() && gamepad->pressedUp()) { // RESET everything
+	if (gamepad->pressedF1() && gamepad->pressedUp()) { // BOOTSEL - Go to UF2 Flasher
 		reset_usb_boot(0, 0);
 	} else if (gamepad->pressedS2()) { 					// START - Config Mode
 		Storage::getInstance().SetConfigMode(true);
@@ -55,6 +54,7 @@ void GP2040::setup() {
 		initialize_driver(inputMode);
 	}
 
+	// Setup Add-on Inputs
 	setupInput(new JSliderInput());
 	setupInput(new TurboInput());
 }
