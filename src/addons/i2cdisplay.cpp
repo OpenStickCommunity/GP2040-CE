@@ -51,7 +51,7 @@ void I2CDisplayAddon::process() {
 				break;
 
 			case BUTTON_LAYOUT_STICKLESS:
-				drawHitbox(8, 20, 8, 2);
+				drawStickless(8, 20, 8, 2);
 				break;
 
 			case BUTTON_LAYOUT_BUTTONS_ANGLED:
@@ -61,7 +61,7 @@ void I2CDisplayAddon::process() {
 				drawUDLR(8, 28, 8, 2);
 				break;
 			case BUTTON_LAYOUT_KEYBOARD_ANGLED:
-				drawMixBox(18, 28, 5, 2);
+				drawKeyboardAngled(18, 28, 5, 2);
 				break;
 			case BUTTON_LAYOUT_KEYBOARDA:
 				drawMAMEA(8, 28, 10, 1);
@@ -77,7 +77,7 @@ void I2CDisplayAddon::process() {
 				drawArcadeButtons(8, 28, 8, 2);
 				break;
 			case BUTTON_LAYOUT_STICKLESSB:
-				drawHitboxButtons(8, 20, 8, 2);
+				drawSticklessButtons(8, 20, 8, 2);
 				break;
 			case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
 				drawWasdButtons(8, 28, 7, 3);
@@ -132,12 +132,11 @@ void I2CDisplayAddon::drawDiamond(int cx, int cy, int size, uint8_t colour, uint
 	obdDrawLine(&obd, cx, cy + size, cx - size, cy, colour, 0);
 }
 
-void I2CDisplayAddon::drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawStickless(int startX, int startY, int buttonRadius, int buttonPadding)
 {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
-	// Hitbox
 	obdPreciseEllipse(&obd, startX, startY, buttonRadius, buttonRadius, 1, gamepad->pressedLeft());
 	obdPreciseEllipse(&obd, startX + buttonMargin, startY, buttonRadius, buttonRadius, 1, gamepad->pressedDown());
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 1.875), startY + (buttonMargin / 2), buttonRadius, buttonRadius, 1, gamepad->pressedRight());
@@ -229,7 +228,7 @@ void I2CDisplayAddon::drawMAMEB(int startX, int startY, int buttonSize, int butt
 
 }
 
-void I2CDisplayAddon::drawMixBox(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawKeyboardAngled(int startX, int startY, int buttonRadius, int buttonPadding)
 {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
@@ -341,7 +340,7 @@ void I2CDisplayAddon::drawCapcom6(int startX, int startY, int buttonRadius, int 
 	obdPreciseEllipse(&obd, startX + buttonMargin * 5.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedR2());
 }
 
-void I2CDisplayAddon::drawHitboxButtons(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawSticklessButtons(int startX, int startY, int buttonRadius, int buttonPadding)
 {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
