@@ -8,6 +8,7 @@
 #include "helper.h"
 #include "storagemanager.h"
 #include "pico/stdlib.h"
+#include "bitmaps.h"
 
 bool I2CDisplayAddon::available() {
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
@@ -39,6 +40,8 @@ void I2CDisplayAddon::process() {
 		drawStatusBar();
 		drawText(0, 3, "[Web Config Mode]");
 		drawText(0, 4, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
+	} else if (getMillis() < 7500 && SPLASH_MODE != NOSPLASH) {
+		drawSplashScreen(SPLASH_MODE, 90);
 	} else {
 		drawStatusBar();
 		switch (BUTTON_LAYOUT)
@@ -54,6 +57,55 @@ void I2CDisplayAddon::process() {
 			case BUTTON_LAYOUT_WASD:
 				drawWasdBox(8, 28, 7, 3);
 				break;
+			case BUTTON_LAYOUT_UDLR:
+				drawUDLR(8, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_MIXBOX:
+				drawMixBox(18, 28, 5, 2);
+				break;
+			case BUTTON_LAYOUT_MAMEA:
+				drawMAMEA(8, 28, 10, 1);
+				break;
+			case BUTTON_LAYOUT_DANCEPADA:
+				drawDancepadA(39, 12, 15, 2);
+				break;
+		}
+
+		switch (BUTTON_LAYOUT_RIGHT)
+		{
+			case BUTTON_LAYOUT_ARCADEB:
+				drawArcadeButtons(8, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_HITBOXB:
+				drawHitboxButtons(8, 20, 8, 2);
+				break;
+			case BUTTON_LAYOUT_WASDB:
+				drawWasdButtons(8, 28, 7, 3);
+				break;
+			case BUTTON_LAYOUT_VEWLIX:
+				drawVewlix(8, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_VEWLIX7:
+				drawVewlix7(8, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_CAPCOM:
+				drawCapcom(6, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_CAPCOM6:
+				drawCapcom6(16, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_SEGA2P:
+				drawSega2p(8, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_NOIR8:
+				drawNoir8(8, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_MAMEB:
+				drawMAMEB(68, 28, 10, 1);
+				break;
+			case BUTTON_LAYOUT_DANCEPADB:
+				drawDancepadB(39, 12, 15, 2);
+				break;
 		}
 	}
 
@@ -64,15 +116,235 @@ void I2CDisplayAddon::clearScreen(int render) {
 	obdFill(&obd, 0, render);
 }
 
-void I2CDisplayAddon::drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding) {
+void I2CDisplayAddon::drawDiamond(int cx, int cy, int size, uint8_t colour, uint8_t filled)
+{
+	if (filled) {
+		int i;
+		for (i = 0; i < size; i++) {
+			obdDrawLine(&obd, cx - i, cy - size + i, cx + i, cy - size + i, colour, 0);
+			obdDrawLine(&obd, cx - i, cy + size - i, cx + i, cy + size - i, colour, 0);
+		}
+		obdDrawLine(&obd, cx - size, cy, cx + size, cy, colour, 0); // Fill in the middle
+	}
+	obdDrawLine(&obd, cx - size, cy, cx, cy - size, colour, 0);
+	obdDrawLine(&obd, cx, cy - size, cx + size, cy, colour, 0);
+	obdDrawLine(&obd, cx + size, cy, cx, cy + size, colour, 0);
+	obdDrawLine(&obd, cx, cy + size, cx - size, cy, colour, 0);
+}
+
+void I2CDisplayAddon::drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding)
+{
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
-	// UDLR
+	// Hitbox
 	obdPreciseEllipse(&obd, startX, startY, buttonRadius, buttonRadius, 1, gamepad->pressedLeft());
 	obdPreciseEllipse(&obd, startX + buttonMargin, startY, buttonRadius, buttonRadius, 1, gamepad->pressedDown());
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 1.875), startY + (buttonMargin / 2), buttonRadius, buttonRadius, 1, gamepad->pressedRight());
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.25), startY + buttonMargin * 1.875, buttonRadius, buttonRadius, 1, gamepad->pressedUp());
+}
+
+void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// WASD
+	obdPreciseEllipse(&obd, startX, startY + buttonMargin * 0.5, buttonRadius, buttonRadius, 1, gamepad->pressedLeft());
+	obdPreciseEllipse(&obd, startX + buttonMargin, startY + buttonMargin * 0.875, buttonRadius, buttonRadius, 1, gamepad->pressedDown());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 1.5, startY - buttonMargin * 0.125, buttonRadius, buttonRadius, 1, gamepad->pressedUp());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, gamepad->pressedRight());
+}
+
+void I2CDisplayAddon::drawUDLR(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// UDLR
+	obdPreciseEllipse(&obd, startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, gamepad->pressedLeft());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedUp());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, gamepad->pressedDown());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 1.625), startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, gamepad->pressedRight());
+}
+
+void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// Stick
+	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
+	
+	if (gamepad->pressedUp()) {
+		if (gamepad->pressedLeft()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
+		} else if (gamepad->pressedRight()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
+		} else {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY, buttonRadius, buttonRadius, 1, 1);
+		}
+	} else if (gamepad->pressedDown()) {
+		if (gamepad->pressedLeft()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
+		} else if (gamepad->pressedRight()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
+		} else {
+			obdPreciseEllipse(&obd, startX + buttonMargin / 2, startY + buttonMargin, buttonRadius, buttonRadius, 1, 1);
+		}
+	} else if (gamepad->pressedLeft()) {
+		obdPreciseEllipse(&obd, startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	} else if (gamepad->pressedRight()) {
+		obdPreciseEllipse(&obd, startX + buttonMargin, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	} else {
+		obdPreciseEllipse(&obd, startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	}
+}
+
+void I2CDisplayAddon::drawMAMEA(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + buttonSize;
+
+	// MAME
+	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonSize + buttonMargin, 1, gamepad->pressedLeft());
+	obdRectangle(&obd, startX + buttonMargin, startY + buttonMargin, startX + buttonSize + buttonMargin, startY + buttonSize + buttonMargin, 1, gamepad->pressedDown());
+	obdRectangle(&obd, startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, gamepad->pressedUp());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, gamepad->pressedRight());
+}
+
+void I2CDisplayAddon::drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + buttonSize;
+
+	// 6-button MAME Style
+	obdRectangle(&obd, startX, startY, startX + buttonSize, startY + buttonSize, 1, gamepad->pressedB3());
+	obdRectangle(&obd, startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, gamepad->pressedB4());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY, startX + buttonSize + buttonMargin * 2, startY + buttonSize, 1, gamepad->pressedR1());
+
+	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonMargin + buttonSize, 1, gamepad->pressedB1());
+	obdRectangle(&obd, startX + buttonMargin, startY + buttonMargin, startX + buttonSize + buttonMargin, startY + buttonMargin + buttonSize, 1, gamepad->pressedB2());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonMargin + buttonSize, 1, gamepad->pressedR2());
+
+}
+
+void I2CDisplayAddon::drawMixBox(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// MixBox
+	drawDiamond(startX, startY, buttonRadius, 1, gamepad->pressedLeft());
+	drawDiamond(startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, 1, gamepad->pressedDown());
+	drawDiamond(startX + buttonMargin, startY, buttonRadius, 1, gamepad->pressedUp());
+	drawDiamond(startX + buttonMargin, startY + buttonMargin, buttonRadius, 1, gamepad->pressedRight());
+}
+
+void I2CDisplayAddon::drawVewlix(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// 8-button Vewlix
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75), startY + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, gamepad->pressedB3());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB4());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR1());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedL1());
+
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75) - (buttonMargin / 3), startY + buttonMargin + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, gamepad->pressedB1());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 3.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB2());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 4.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR2());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedL2());
+}
+
+void I2CDisplayAddon::drawVewlix7(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// 8-button Vewlix
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75), startY + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, gamepad->pressedB3());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB4());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR1());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedL1());
+
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75) - (buttonMargin / 3), startY + buttonMargin + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, gamepad->pressedB1());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 3.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB2());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 4.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR2());
+	//obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedL2());
+}
+
+void I2CDisplayAddon::drawSega2p(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// 8-button Sega2P
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75), startY + (buttonMargin / 3), buttonRadius, buttonRadius, 1, gamepad->pressedB3());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB4());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR1());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY, buttonRadius, buttonRadius, 1, gamepad->pressedL1());
+
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75), startY + buttonMargin + (buttonMargin / 3), buttonRadius, buttonRadius, 1, gamepad->pressedB1());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 3.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB2());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 4.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR2());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
+}
+
+void I2CDisplayAddon::drawNoir8(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// 8-button Noir8
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75), startY + (buttonMargin / 3.5), buttonRadius, buttonRadius, 1, gamepad->pressedB3());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB4());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR1());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY, buttonRadius, buttonRadius, 1, gamepad->pressedL1());
+
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75), startY + buttonMargin + (buttonMargin / 3.5), buttonRadius, buttonRadius, 1, gamepad->pressedB1());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 3.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB2());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 4.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR2());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
+}
+
+void I2CDisplayAddon::drawCapcom(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// 8-button Capcom
+	obdPreciseEllipse(&obd, startX + buttonMargin * 3.25, startY, buttonRadius, buttonRadius, 1, gamepad->pressedB3());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 4.25, startY, buttonRadius, buttonRadius, 1, gamepad->pressedB4());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 5.25, startY, buttonRadius, buttonRadius, 1, gamepad->pressedR1());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 6.25, startY, buttonRadius, buttonRadius, 1, gamepad->pressedL1());
+
+	obdPreciseEllipse(&obd, startX + buttonMargin * 3.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedB1());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 4.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedB2());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 5.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedR2());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 6.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
+}
+
+void I2CDisplayAddon::drawCapcom6(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// 6-button Capcom
+	obdPreciseEllipse(&obd, startX + buttonMargin * 3.25, startY, buttonRadius, buttonRadius, 1, gamepad->pressedB3());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 4.25, startY, buttonRadius, buttonRadius, 1, gamepad->pressedB4());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 5.25, startY, buttonRadius, buttonRadius, 1, gamepad->pressedR1());
+
+	obdPreciseEllipse(&obd, startX + buttonMargin * 3.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedB1());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 4.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedB2());
+	obdPreciseEllipse(&obd, startX + buttonMargin * 5.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedR2());
+}
+
+void I2CDisplayAddon::drawHitboxButtons(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.75), startY, buttonRadius, buttonRadius, 1, gamepad->pressedB3());
@@ -86,16 +358,10 @@ void I2CDisplayAddon::drawHitbox(int startX, int startY, int buttonRadius, int b
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding)
 {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// UDLR
-	obdPreciseEllipse(&obd, startX, startY + buttonMargin * 0.5, buttonRadius, buttonRadius, 1, gamepad->pressedLeft());
-	obdPreciseEllipse(&obd, startX + buttonMargin, startY + buttonMargin * 0.875, buttonRadius, buttonRadius, 1, gamepad->pressedDown());
-	obdPreciseEllipse(&obd, startX + buttonMargin * 1.5, startY - buttonMargin * 0.125, buttonRadius, buttonRadius, 1, gamepad->pressedUp());
-	obdPreciseEllipse(&obd, startX + (buttonMargin * 2), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, gamepad->pressedRight());
 
 	// 8-button
 	obdPreciseEllipse(&obd, startX + buttonMargin * 3.625, startY, buttonRadius, buttonRadius, 1, gamepad->pressedB3());
@@ -109,16 +375,10 @@ void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int 
 	obdPreciseEllipse(&obd, startX + buttonMargin * 6.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding)
 {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// UDLR
-	obdPreciseEllipse(&obd, startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, gamepad->pressedLeft());
-	obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedUp());
-	obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, gamepad->pressedDown());
-	obdPreciseEllipse(&obd, startX + (buttonMargin * 1.625), startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, gamepad->pressedRight());
 
 	// 8-button
 	obdPreciseEllipse(&obd, startX + buttonMargin * 3.125, startY, buttonRadius, buttonRadius, 1, gamepad->pressedB3());
@@ -130,6 +390,62 @@ void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, 
 	obdPreciseEllipse(&obd, startX + buttonMargin * 3.875, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedB2());
 	obdPreciseEllipse(&obd, startX + buttonMargin * 4.875, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedR2());
 	obdPreciseEllipse(&obd, startX + buttonMargin * 5.875, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
+}
+
+// I pulled this out of my PR, brought it back because of recent talks re: SOCD and rhythm games
+// Enjoy!
+
+void I2CDisplayAddon::drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + buttonSize;
+
+	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonSize + buttonMargin, 1, gamepad->pressedLeft());
+	obdRectangle(&obd, startX + buttonMargin, startY + buttonMargin * 2, startX + buttonSize + buttonMargin, startY + buttonSize + buttonMargin * 2, 1, gamepad->pressedDown());
+	obdRectangle(&obd, startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, gamepad->pressedUp());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, gamepad->pressedRight());
+}
+
+void I2CDisplayAddon::drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	const int buttonMargin = buttonPadding + buttonSize;
+	
+	obdRectangle(&obd, startX, startY, startX + buttonSize, startY + buttonSize, 1, gamepad->pressedB2()); // Up/Left
+	obdRectangle(&obd, startX, startY + buttonMargin * 2, startX + buttonSize, startY + buttonSize + buttonMargin * 2, 1, gamepad->pressedB4()); // Down/Left
+	obdRectangle(&obd, startX + buttonMargin * 2, startY, startX + buttonSize + buttonMargin * 2, startY + buttonSize, 1, gamepad->pressedB1()); // Up/Right
+	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin * 2, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin * 2, 1, gamepad->pressedB3()); // Down/Right
+}
+
+void I2CDisplayAddon::drawSplashScreen(int splashMode, int splashSpeed)
+{
+    int mils = getMillis();
+    switch (splashMode)
+	{
+		case STATICSPLASH: // Default, display static or custom image
+            if ((sizeof(splashCustom) / sizeof(*splashCustom)) > 0) {
+                obdDrawSprite(&obd, (uint8_t *)splashCustom, 128, 64, 16, 0, 0, 1);
+            } else {
+			    obdDrawSprite(&obd, (uint8_t *)splashImage, 128, 64, 16, 0, 0, 1);
+            }
+			break;
+		case CLOSEIN: // Close-in. Animate the GP2040 logo
+			obdDrawSprite(&obd, (uint8_t *)bootLogoTop, 43, 39, 6, 43, std::min<int>((mils / splashSpeed) - 39, 0), 1);
+			obdDrawSprite(&obd, (uint8_t *)bootLogoBottom, 80, 21, 10, 24, std::max<int>(64 - (mils / (splashSpeed * 2)), 44), 1);
+			break;
+        case CLOSEINCUSTOM: // Close-in on custom image or delayed close-in if custom image does not exist
+            if ((sizeof(splashCustom) / sizeof(*splashCustom)) > 0) {
+               obdDrawSprite(&obd, (uint8_t *)splashCustom, 128, 64, 16, 0, 0, 1);
+            }
+            if (mils > 2500) {
+                int milss = mils - 2500;
+                obdRectangle(&obd, 0, 0, 127, 1 + (milss / splashSpeed), 0, 1);
+                obdRectangle(&obd, 0, 63, 127, 62 - (milss / (splashSpeed * 2)), 0, 1);
+                obdDrawSprite(&obd, (uint8_t *)bootLogoTop, 43, 39, 6, 43, std::min<int>((milss / splashSpeed) - 39, 0), 1);
+                obdDrawSprite(&obd, (uint8_t *)bootLogoBottom, 80, 21, 10, 24, std::max<int>(64 - (milss / (splashSpeed * 2)), 44), 1);
+            }
+            break;
+	}
 }
 
 void I2CDisplayAddon::drawText(int x, int y, std::string text) {

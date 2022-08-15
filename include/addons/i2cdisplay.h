@@ -71,6 +71,24 @@ public:
 	void drawStatusBar();
 	void drawText(int startX, int startY, std::string text);
 	void initMenu(char**);
+	//Adding my stuff here, remember to sort before PR
+	void drawDiamond(int cx, int cy, int size, uint8_t colour, uint8_t filled);
+	void drawUDLR(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawMAMEA(int startX, int startY, int buttonSize, int buttonPadding);
+	void drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding);
+	void drawMixBox(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawVewlix(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawVewlix7(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawSega2p(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawNoir8(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawCapcom(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawCapcom6(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawHitboxButtons(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawSplashScreen(int splashMode, int splashSpeed);
+	void drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding);
+	void drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding);
 	uint8_t ucBackBuffer[1024];
 	OBDISP obd;
 	std::string statusBar;
