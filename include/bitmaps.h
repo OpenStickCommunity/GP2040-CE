@@ -104,7 +104,7 @@ const unsigned char bootLogoBottom[] = {
     0xc0, 0xf0
 };
 
-// Replicating user uploaded image.
+// Replicating user uploaded image. Uncomment to test.
 const unsigned char splashCustom[] = {
     /*
     // 'im numbah 1', 128x64px
