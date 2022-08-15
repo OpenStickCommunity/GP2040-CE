@@ -46,24 +46,24 @@ void I2CDisplayAddon::process() {
 		drawStatusBar();
 		switch (BUTTON_LAYOUT)
 		{
-			case BUTTON_LAYOUT_ARCADE:
+			case BUTTON_LAYOUT_STICK:
 				drawArcadeStick(8, 28, 8, 2);
 				break;
 
-			case BUTTON_LAYOUT_HITBOX:
+			case BUTTON_LAYOUT_STICKLESS:
 				drawHitbox(8, 20, 8, 2);
 				break;
 
-			case BUTTON_LAYOUT_WASD:
+			case BUTTON_LAYOUT_BUTTONS_ANGLED:
 				drawWasdBox(8, 28, 7, 3);
 				break;
-			case BUTTON_LAYOUT_UDLR:
+			case BUTTON_LAYOUT_BUTTONS_BASIC:
 				drawUDLR(8, 28, 8, 2);
 				break;
-			case BUTTON_LAYOUT_MIXBOX:
+			case BUTTON_LAYOUT_KEYBOARD_ANGLED:
 				drawMixBox(18, 28, 5, 2);
 				break;
-			case BUTTON_LAYOUT_MAMEA:
+			case BUTTON_LAYOUT_KEYBOARDA:
 				drawMAMEA(8, 28, 10, 1);
 				break;
 			case BUTTON_LAYOUT_DANCEPADA:
@@ -73,13 +73,13 @@ void I2CDisplayAddon::process() {
 
 		switch (BUTTON_LAYOUT_RIGHT)
 		{
-			case BUTTON_LAYOUT_ARCADEB:
+			case BUTTON_LAYOUT_ARCADE:
 				drawArcadeButtons(8, 28, 8, 2);
 				break;
-			case BUTTON_LAYOUT_HITBOXB:
+			case BUTTON_LAYOUT_STICKLESSB:
 				drawHitboxButtons(8, 20, 8, 2);
 				break;
-			case BUTTON_LAYOUT_WASDB:
+			case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
 				drawWasdButtons(8, 28, 7, 3);
 				break;
 			case BUTTON_LAYOUT_VEWLIX:
@@ -100,7 +100,7 @@ void I2CDisplayAddon::process() {
 			case BUTTON_LAYOUT_NOIR8:
 				drawNoir8(8, 28, 8, 2);
 				break;
-			case BUTTON_LAYOUT_MAMEB:
+			case BUTTON_LAYOUT_KEYBOARDB:
 				drawMAMEB(68, 28, 10, 1);
 				break;
 			case BUTTON_LAYOUT_DANCEPADB:
