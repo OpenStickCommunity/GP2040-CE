@@ -65,7 +65,7 @@ public:
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
 	void clearScreen(int render); // DisplayModule
-	void drawHitbox(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawStickless(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawStatusBar();
@@ -76,14 +76,14 @@ public:
 	void drawUDLR(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawMAMEA(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawMixBox(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawKeyboardAngled(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawVewlix(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawVewlix7(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawSega2p(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawNoir8(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawCapcom(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawCapcom6(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawHitboxButtons(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawSticklessButtons(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawSplashScreen(int splashMode, int splashSpeed);

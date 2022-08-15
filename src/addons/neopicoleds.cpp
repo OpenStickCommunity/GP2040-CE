@@ -344,10 +344,10 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 		case BUTTON_LAYOUT_ARCADE:
 			return generatedLEDButtons(&positions);
 
-		case BUTTON_LAYOUT_HITBOX:
+		case BUTTON_LAYOUT_STICKLESS:
 			return generatedLEDHitbox(&positions);
 
-		case BUTTON_LAYOUT_WASD:
+		case BUTTON_LAYOUT_BUTTONS_ANGLED:
 			return generatedLEDWasd(&positions);
 	}
 }
