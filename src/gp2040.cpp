@@ -4,7 +4,8 @@
 #include "configmanager.h" // Managers
 #include "storagemanager.h"
 
-#include "inputs/jslider.h" // Inputs
+#include "inputs/analog.h" // Inputs
+#include "inputs/jslider.h"
 #include "inputs/turbo.h"
 
 // Pico includes
@@ -55,6 +56,7 @@ void GP2040::setup() {
 	}
 
 	// Setup Add-on Inputs
+	setupInput(new AnalogInput());
 	setupInput(new JSliderInput());
 	setupInput(new TurboInput());
 }
