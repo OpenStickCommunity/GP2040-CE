@@ -64,8 +64,8 @@
 #define PLED3_PIN -1
 #define PLED4_PIN -1
 
-#define ANALOG_ADC_VRX 26
-#define ANALOG_ADC_VRY 27
+#define ANALOG_ADC_VRX -1
+#define ANALOG_ADC_VRY -1
 
 #define HAS_I2C_DISPLAY 1
 #define I2C_SDA_PIN 0
