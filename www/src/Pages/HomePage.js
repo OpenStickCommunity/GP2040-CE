@@ -10,7 +10,7 @@ export default function HomePage() {
 	const [latestVersion, setLatestVersion] = useState('');
 
 	useEffect(() => {
-		axios.get('https://api.github.com/repos/FeralAI/GP2040/releases')
+		axios.get('https://api.github.com/repos/OpenStickFoundation/GP2040-CE/releases')
 			.then((response) => {
 				const sortedData = orderBy(response.data, 'published_at', 'desc');
 				setLatestVersion(sortedData[0].name);
@@ -31,7 +31,7 @@ export default function HomePage() {
 							<a
 								target="_blank"
 								rel="noreferrer"
-								href={`https://github.com/FeralAI/GP2040/releases/${latestVersion}`}
+								href={`https://github.com/OpenStickFoundation/GP2040-CE/releases/${latestVersion}`}
 								className="btn btn-primary"
 							>
 								Get Latest Version
