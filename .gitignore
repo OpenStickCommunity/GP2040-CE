@@ -7,3 +7,4 @@
 node_modules/
 configs/MyBoard
 .DS_Store
+/www/package-lock.json
