@@ -468,7 +468,7 @@ void I2CDisplayAddon::drawStatusBar()
 	}
 
 	if ( boardOptions.pinButtonTurbo != (uint8_t)-1 ) {
-		statusBar += "   T";
+		statusBar += " T";
 		if ( boardOptions.turboShotCount < 10 ) // padding
 			statusBar += "0";
 		statusBar += std::to_string(boardOptions.turboShotCount);
@@ -478,16 +478,16 @@ void I2CDisplayAddon::drawStatusBar()
 	switch (gamepad->options.dpadMode)
 	{
 
-		case DPAD_MODE_DIGITAL:      statusBar += "   DPAD"; break;
-		case DPAD_MODE_LEFT_ANALOG:  statusBar += "   LEFT"; break;
-		case DPAD_MODE_RIGHT_ANALOG: statusBar += "   RIGHT"; break;
+		case DPAD_MODE_DIGITAL:      statusBar += " DP"; break;
+		case DPAD_MODE_LEFT_ANALOG:  statusBar += " LS"; break;
+		case DPAD_MODE_RIGHT_ANALOG: statusBar += " RS"; break;
 	}
 
 	switch (gamepad->options.socdMode)
 	{
-		case SOCD_MODE_NEUTRAL:               statusBar += "-N"; break;
-		case SOCD_MODE_UP_PRIORITY:           statusBar += "-U"; break;
-		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += "-L"; break;
+		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
+		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
+		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
 	}
 	drawText(0, 0, statusBar);
 }
