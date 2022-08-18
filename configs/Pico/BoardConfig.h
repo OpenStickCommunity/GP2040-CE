@@ -27,8 +27,8 @@
 #define PIN_BUTTON_A1   20
 #define PIN_BUTTON_A2   21
 #define PIN_BUTTON_TURBO 14
-#define PIN_SLIDER_LS    26
-#define PIN_SLIDER_RS    27
+#define PIN_SLIDER_LS    -1
+#define PIN_SLIDER_RS    -1
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
@@ -63,6 +63,9 @@
 #define PLED2_PIN -1
 #define PLED3_PIN -1
 #define PLED4_PIN -1
+
+#define ANALOG_ADC_VRX -1
+#define ANALOG_ADC_VRY -1
 
 #define HAS_I2C_DISPLAY 1
 #define I2C_SDA_PIN 0
