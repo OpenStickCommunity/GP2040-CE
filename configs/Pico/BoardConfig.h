@@ -10,33 +10,34 @@
 
 
 // This is the main pin definition section.
-// This will let you specify which GPIO pin each button is assigned to. 
+// This will let you specify which GPIO pin each button is assigned too. 
 // You can set any of the main pins as `-1` to disable it.
 // The Turbo pin and LS + RS slider pins can also be set to `-1` to disable that functionality.
 // Please note that only when `PIN_BUTTON_TURBO` is set to `-1` will the `T##` be removed from a connected display.
-// Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut work.
+// Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
+// The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
-#define PIN_DPAD_UP     2
-#define PIN_DPAD_DOWN   3
-#define PIN_DPAD_RIGHT  4
-#define PIN_DPAD_LEFT   5
-#define PIN_BUTTON_B1   6
-#define PIN_BUTTON_B2   7
-#define PIN_BUTTON_R2   8
-#define PIN_BUTTON_L2   9
-#define PIN_BUTTON_B3   10
-#define PIN_BUTTON_B4   11
-#define PIN_BUTTON_R1   12
-#define PIN_BUTTON_L1   13
-#define PIN_BUTTON_S1   16
-#define PIN_BUTTON_S2   17
-#define PIN_BUTTON_L3   18
-#define PIN_BUTTON_R3   19
-#define PIN_BUTTON_A1   20
-#define PIN_BUTTON_A2   21
-#define PIN_BUTTON_TURBO 14
-#define PIN_SLIDER_LS    -1
-#define PIN_SLIDER_RS    -1
+#define PIN_DPAD_UP     2           // UP
+#define PIN_DPAD_DOWN   3           // DOWN
+#define PIN_DPAD_RIGHT  4           // RIGHT
+#define PIN_DPAD_LEFT   5           // LEFT
+#define PIN_BUTTON_B1   6           // B1 / A / B / Cross / 2 / K1
+#define PIN_BUTTON_B2   7           // B2 / B / A / Circle / 3 / K2
+#define PIN_BUTTON_R2   8           // R2 / RT / ZR / R2 / 8 / K3
+#define PIN_BUTTON_L2   9           // L2 / LT / ZL / L2 / 7 / K4
+#define PIN_BUTTON_B3   10          // B3 / X / Y / Square / 1 / P1
+#define PIN_BUTTON_B4   11          // B4 / Y / X / Triangle / 4 / P2
+#define PIN_BUTTON_R1   12          // R1 / RB / R / R1 / 6 / P3
+#define PIN_BUTTON_L1   13          // L1 / LB / L / L1 / 5 / P4
+#define PIN_BUTTON_S1   16          // S1 / Back / Minus / Select / 9 / Coin
+#define PIN_BUTTON_S2   17          // S2 / Start / Plus / Start / 10 / Start
+#define PIN_BUTTON_L3   18          // L3 / LS / LS / L3 / 11 / LS
+#define PIN_BUTTON_R3   19          // R3 / RS / RS / R3 / 12 / RS
+#define PIN_BUTTON_A1   20          // A1 / Guide / Home / ~ / 13 / ~
+#define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_TURBO 14         // Turbo
+#define PIN_SLIDER_LS    -1         // Left Stick Slider
+#define PIN_SLIDER_RS    -1         // Right Stick Slider
 
 
 // This is the SOCD section.
@@ -54,10 +55,11 @@
 // The Turbo LED will flash at a speed consistant with the set speed of the Turbo when a Turbo button is active.
 // It is recommended to disable the `TURBO_LED_PIN` by setting it to `-1` if you are sensitive of flashing lights.
 // The default `BOARD_LEDS_PIN` pin is set to `28`.
-// The board LED pin will allow you to connect addressible RGB LEDs off of the Pico.
+// The board LED pin will allow you to connect addressible RGB LEDs on the Pico.
 // Addressible RGB LEDs should be connected to the `VBUS` pin (#40), an avalible ground pin and the defined `BOARD_LEDS_PIN`.
 // Special note - You should only ever use addressible RGB LEDs that are rated for 5v operation on the Pico.
 // The defualt `LED_BRIGHTNESS_MAXIMUM` value is `50`.  
+// This will change how bright the LEDs are with `0` being off and `100` being full brightness.
 // The minimum `LED_BRIGHTNESS_MAXIMUM` value is `0`.
 // The maximum `LED_BRIGHTNESS_MAXIMUM` value is `100`.
 // The defualt `LED_BRIGHTNESS_STEPS` value is `5`.
@@ -91,6 +93,7 @@
 #define LEDS_BUTTON_B2   9
 #define LEDS_BUTTON_R2   10
 #define LEDS_BUTTON_L2   11
+
 
 // This is the Player LED section.  
 // In this section you can specify if Player LEDs will be active, and, if active, which pins will be used for them.
