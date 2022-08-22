@@ -39,11 +39,36 @@
 #define PIN_SLIDER_RS    -1
 
 
-// This is the main pin definition section.
+// This is the SOCD section.
+// SOCD stands for `simultaneous opposing cardinal directions`.
+// There are three options for `DEFAULT_SOCD_MODE` currently:
+// 1 - `SOCD_MODE_NEUTRAL` - This is a neutral SOCD.  EG. when you press `up` + `down` no input will be registered.
+// 2 - `SOCD_MODE_UP_PRIORITY` - This is up priority SOCD.  EG. when you press `up` + `down` `up` will be registered.
+// 3 - `SOCD_MODE_SECOND_INPUT_PRIORITY` - This is last priority SOCD.  EG. when you press and hold `up` then press `down` `down` will be registered.
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
-#define SPLASH_MODE STATICSPLASH
+
+// This is the LEDs section.
+// The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
+// The Turbo LED will flash at a speed consistant with the set speed of the Turbo when a Turbo button is active.
+// It is recommended to disable the `TURBO_LED_PIN` by setting it to `-1` if you are sensitive of flashing lights.
+// The default `BOARD_LEDS_PIN` pin is set to `28`.
+// The board LED pin will allow you to connect addressible RGB LEDs off of the Pico.
+// Addressible RGB LEDs should be connected to the `VBUS` pin (#40), an avalible ground pin and the defined `BOARD_LEDS_PIN`.
+// Special note - You should only ever use addressible RGB LEDs that are rated for 5v operation on the Pico.
+// The defualt `LED_BRIGHTNESS_MAXIMUM` value is `50`.  
+// The minimum `LED_BRIGHTNESS_MAXIMUM` value is `0`.
+// The maximum `LED_BRIGHTNESS_MAXIMUM` value is `100`.
+// The defualt `LED_BRIGHTNESS_STEPS` value is `5`.
+// This will change how many brightness steps there are when increasing or decreasing the brightness of the LEDs via the onboard shortcut.
+// It is recommend to keep this value at `5` or `10`.
+// The defualt `LED_FORMAT` is `LED_FORMAT_GRB`.
+// You can also choose the `LED_FORMAT` of `LED_FORMAT_RGB` if your addressible RGB LEDs are not working as intended.
+// The defualt `LEDS_PER_PIXEL` is set to `1`.
+// This will change how many addressible RGB LEDs there are per button.
+// The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
+// Unless you are planning on running custom animations I would recommmend you leave this as is.
 
 #define TURBO_LED_PIN 15
 
@@ -74,7 +99,7 @@
 // To enable a `PLED#_PIN`, replace the `-1` with the GPIO pin number that is desired. 
 // There are three options for `PLED_TYPE` currently:
 // 1 - `PLED_TYPE_NONE` - This will disable the Player LEDs
-// 2 - `PLED_TYPE_PWM` - This will enable the Player LEDs ( it is recommended to run through 3V3(OUT))
+// 2 - `PLED_TYPE_PWM` - This will enable the Player LEDs ( it is recommended to run through 3V3(OUT) with a resistor)
 // 3 - `PLED_TYPE_RGB` - This will enable the Player LEDs as addressible RGB LEDs (please not that this has not been implemented yet) 
 
 #define PLED_TYPE PLED_TYPE_NONE
@@ -127,6 +152,13 @@
 // 9 - BUTTON_LAYOUT_NOIR8 - This is the standard 8 button Noir layout
 // 10 - BUTTON_LAYOUT_KEYBOARDB - This is a WASD keyboard layout that is straight
 // 11 - BUTTON_LAYOUT_DANCEPADB - This is a dance pad layout (must be used with `BUTTON_LAYOUT_DANCEPADA` in `BUTTON_LAYOUT`)
+// The defualt `SPLASH_MODE` is `STATICSPLASH`.  
+// There are four options for `SPLASH_MODE` currently:
+// 1 - `STATICSPLASH` - This will display the static splash image
+// 2 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
+// 3 - `CLOSEINCUSTOM` - This will display the custom splash image as a top and bottom coming together animation
+// 4 - `NOSPLASH` - This will not display a splash screen on boot
+// Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
 #define HAS_I2C_DISPLAY 1
 #define I2C_SDA_PIN 0
@@ -135,5 +167,6 @@
 #define I2C_SPEED 400000
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX
+#define SPLASH_MODE STATICSPLASH
 
 #endif
