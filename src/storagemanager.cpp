@@ -167,6 +167,16 @@ Gamepad * Storage::GetGamepad()
 	return gamepad;
 }
 
+void Storage::SetProcessedGamepad(Gamepad * newpad)
+{
+	processedGamepad = newpad;
+}
+
+Gamepad * Storage::GetProcessedGamepad()
+{
+	return processedGamepad;
+}
+
 void Storage::SetFeatureData(uint8_t * newData)
 {
 	memcpy(newData, featureData, sizeof(uint8_t)*sizeof(featureData));
