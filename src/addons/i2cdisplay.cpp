@@ -34,7 +34,8 @@ void I2CDisplayAddon::setup() {
 }
 
 void I2CDisplayAddon::process() {
-	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	Gamepad * pGamepad = Storage::getInstance().GetProcessedGamepad();
 
 	clearScreen(0);
 	bool configMode = Storage::getInstance().GetConfigMode();
@@ -49,64 +50,64 @@ void I2CDisplayAddon::process() {
 		switch (BUTTON_LAYOUT)
 		{
 			case BUTTON_LAYOUT_STICK:
-				drawArcadeStick(8, 28, 8, 2, gamepad);
+				drawArcadeStick(8, 28, 8, 2, pGamepad);
 				break;
 
 			case BUTTON_LAYOUT_STICKLESS:
-				drawStickless(8, 20, 8, 2, gamepad);
+				drawStickless(8, 20, 8, 2, pGamepad);
 				break;
 
 			case BUTTON_LAYOUT_BUTTONS_ANGLED:
-				drawWasdBox(8, 28, 7, 3, gamepad);
+				drawWasdBox(8, 28, 7, 3, pGamepad);
 				break;
 			case BUTTON_LAYOUT_BUTTONS_BASIC:
-				drawUDLR(8, 28, 8, 2, gamepad);
+				drawUDLR(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_KEYBOARD_ANGLED:
-				drawKeyboardAngled(18, 28, 5, 2, gamepad);
+				drawKeyboardAngled(18, 28, 5, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_KEYBOARDA:
-				drawMAMEA(8, 28, 10, 1, gamepad);
+				drawMAMEA(8, 28, 10, 1, pGamepad);
 				break;
 			case BUTTON_LAYOUT_DANCEPADA:
-				drawDancepadA(39, 12, 15, 2, gamepad);
+				drawDancepadA(39, 12, 15, 2, pGamepad);
 				break;
 		}
 
 		switch (BUTTON_LAYOUT_RIGHT)
 		{
 			case BUTTON_LAYOUT_ARCADE:
-				drawArcadeButtons(8, 28, 8, 2, gamepad);
+				drawArcadeButtons(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_STICKLESSB:
-				drawSticklessButtons(8, 20, 8, 2, gamepad);
+				drawSticklessButtons(8, 20, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
-				drawWasdButtons(8, 28, 7, 3, gamepad);
+				drawWasdButtons(8, 28, 7, 3, pGamepad);
 				break;
 			case BUTTON_LAYOUT_VEWLIX:
-				drawVewlix(8, 28, 8, 2, gamepad);
+				drawVewlix(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_VEWLIX7:
-				drawVewlix7(8, 28, 8, 2, gamepad);
+				drawVewlix7(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_CAPCOM:
-				drawCapcom(6, 28, 8, 2, gamepad);
+				drawCapcom(6, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_CAPCOM6:
-				drawCapcom6(16, 28, 8, 2, gamepad);
+				drawCapcom6(16, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_SEGA2P:
-				drawSega2p(8, 28, 8, 2, gamepad);
+				drawSega2p(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_NOIR8:
-				drawNoir8(8, 28, 8, 2, gamepad);
+				drawNoir8(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_KEYBOARDB:
-				drawMAMEB(68, 28, 10, 1, gamepad);
+				drawMAMEB(68, 28, 10, 1, pGamepad);
 				break;
 			case BUTTON_LAYOUT_DANCEPADB:
-				drawDancepadB(39, 12, 15, 2, gamepad);
+				drawDancepadB(39, 12, 15, 2, pGamepad);
 				break;
 		}
 	}
@@ -457,7 +458,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 			statusBar += "0";
 		statusBar += std::to_string(boardOptions.turboShotCount);
 	} else {
-		statusBar += "      "; // no turbo, don't show Txx setting
+		statusBar += "    "; // no turbo, don't show Txx setting
 	}
 	switch (gamepad->options.dpadMode)
 	{
