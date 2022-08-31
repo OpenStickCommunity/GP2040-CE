@@ -114,7 +114,7 @@ void NeoPicoLEDAddon::process()
 	if (ledOptions.dataPin < 0 || !time_reached(this->nextRunTime))
 		return;
 
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();
 	AnimationHotkey action = animationHotkeys(gamepad);
 	if (PLED_TYPE == PLED_TYPE_RGB) {

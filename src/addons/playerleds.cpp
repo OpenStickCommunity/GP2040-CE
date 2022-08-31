@@ -99,7 +99,7 @@ void PlayerLEDAddon::setup() {
 
 void PlayerLEDAddon::process()
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 
 	// Player LEDs can be PWM or driven by NeoPixel
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();
