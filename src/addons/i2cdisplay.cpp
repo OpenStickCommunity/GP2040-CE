@@ -34,77 +34,80 @@ void I2CDisplayAddon::setup() {
 }
 
 void I2CDisplayAddon::process() {
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	Gamepad * pGamepad = Storage::getInstance().GetProcessedGamepad();
+
 	clearScreen(0);
 	bool configMode = Storage::getInstance().GetConfigMode();
 	if (configMode == true ) {
-		drawStatusBar();
+		drawStatusBar(gamepad);
 		drawText(0, 3, "[Web Config Mode]");
 		drawText(0, 4, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
 	} else if (getMillis() < 7500 && SPLASH_MODE != NOSPLASH) {
 		drawSplashScreen(SPLASH_MODE, 90);
 	} else {
-		drawStatusBar();
+		drawStatusBar(gamepad);
 		switch (BUTTON_LAYOUT)
 		{
 			case BUTTON_LAYOUT_STICK:
-				drawArcadeStick(8, 28, 8, 2);
+				drawArcadeStick(8, 28, 8, 2, pGamepad);
 				break;
 
 			case BUTTON_LAYOUT_STICKLESS:
-				drawStickless(8, 20, 8, 2);
+				drawStickless(8, 20, 8, 2, pGamepad);
 				break;
 
 			case BUTTON_LAYOUT_BUTTONS_ANGLED:
-				drawWasdBox(8, 28, 7, 3);
+				drawWasdBox(8, 28, 7, 3, pGamepad);
 				break;
 			case BUTTON_LAYOUT_BUTTONS_BASIC:
-				drawUDLR(8, 28, 8, 2);
+				drawUDLR(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_KEYBOARD_ANGLED:
-				drawKeyboardAngled(18, 28, 5, 2);
+				drawKeyboardAngled(18, 28, 5, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_KEYBOARDA:
-				drawMAMEA(8, 28, 10, 1);
+				drawMAMEA(8, 28, 10, 1, pGamepad);
 				break;
 			case BUTTON_LAYOUT_DANCEPADA:
-				drawDancepadA(39, 12, 15, 2);
+				drawDancepadA(39, 12, 15, 2, pGamepad);
 				break;
 		}
 
 		switch (BUTTON_LAYOUT_RIGHT)
 		{
 			case BUTTON_LAYOUT_ARCADE:
-				drawArcadeButtons(8, 28, 8, 2);
+				drawArcadeButtons(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_STICKLESSB:
-				drawSticklessButtons(8, 20, 8, 2);
+				drawSticklessButtons(8, 20, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
-				drawWasdButtons(8, 28, 7, 3);
+				drawWasdButtons(8, 28, 7, 3, pGamepad);
 				break;
 			case BUTTON_LAYOUT_VEWLIX:
-				drawVewlix(8, 28, 8, 2);
+				drawVewlix(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_VEWLIX7:
-				drawVewlix7(8, 28, 8, 2);
+				drawVewlix7(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_CAPCOM:
-				drawCapcom(6, 28, 8, 2);
+				drawCapcom(6, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_CAPCOM6:
-				drawCapcom6(16, 28, 8, 2);
+				drawCapcom6(16, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_SEGA2P:
-				drawSega2p(8, 28, 8, 2);
+				drawSega2p(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_NOIR8:
-				drawNoir8(8, 28, 8, 2);
+				drawNoir8(8, 28, 8, 2, pGamepad);
 				break;
 			case BUTTON_LAYOUT_KEYBOARDB:
-				drawMAMEB(68, 28, 10, 1);
+				drawMAMEB(68, 28, 10, 1, pGamepad);
 				break;
 			case BUTTON_LAYOUT_DANCEPADB:
-				drawDancepadB(39, 12, 15, 2);
+				drawDancepadB(39, 12, 15, 2, pGamepad);
 				break;
 		}
 	}
@@ -132,9 +135,9 @@ void I2CDisplayAddon::drawDiamond(int cx, int cy, int size, uint8_t colour, uint
 	obdDrawLine(&obd, cx, cy + size, cx - size, cy, colour, 0);
 }
 
-void I2CDisplayAddon::drawStickless(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawStickless(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	obdPreciseEllipse(&obd, startX, startY, buttonRadius, buttonRadius, 1, gamepad->pressedLeft());
@@ -143,9 +146,8 @@ void I2CDisplayAddon::drawStickless(int startX, int startY, int buttonRadius, in
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.25), startY + buttonMargin * 1.875, buttonRadius, buttonRadius, 1, gamepad->pressedUp());
 }
 
-void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// WASD
@@ -155,9 +157,8 @@ void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int 
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 2), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, gamepad->pressedRight());
 }
 
-void I2CDisplayAddon::drawUDLR(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawUDLR(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// UDLR
@@ -167,9 +168,8 @@ void I2CDisplayAddon::drawUDLR(int startX, int startY, int buttonRadius, int but
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 1.625), startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, gamepad->pressedRight());
 }
 
-void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// Stick
@@ -200,9 +200,8 @@ void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, 
 	}
 }
 
-void I2CDisplayAddon::drawMAMEA(int startX, int startY, int buttonSize, int buttonPadding)
+void I2CDisplayAddon::drawMAMEA(int startX, int startY, int buttonSize, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + buttonSize;
 
 	// MAME
@@ -212,9 +211,8 @@ void I2CDisplayAddon::drawMAMEA(int startX, int startY, int buttonSize, int butt
 	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, gamepad->pressedRight());
 }
 
-void I2CDisplayAddon::drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding)
+void I2CDisplayAddon::drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + buttonSize;
 
 	// 6-button MAME Style
@@ -228,9 +226,8 @@ void I2CDisplayAddon::drawMAMEB(int startX, int startY, int buttonSize, int butt
 
 }
 
-void I2CDisplayAddon::drawKeyboardAngled(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawKeyboardAngled(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// MixBox
@@ -240,9 +237,8 @@ void I2CDisplayAddon::drawKeyboardAngled(int startX, int startY, int buttonRadiu
 	drawDiamond(startX + buttonMargin, startY + buttonMargin, buttonRadius, 1, gamepad->pressedRight());
 }
 
-void I2CDisplayAddon::drawVewlix(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawVewlix(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button Vewlix
@@ -257,9 +253,8 @@ void I2CDisplayAddon::drawVewlix(int startX, int startY, int buttonRadius, int b
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawVewlix7(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawVewlix7(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button Vewlix
@@ -274,9 +269,8 @@ void I2CDisplayAddon::drawVewlix7(int startX, int startY, int buttonRadius, int 
 	//obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawSega2p(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawSega2p(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button Sega2P
@@ -291,9 +285,8 @@ void I2CDisplayAddon::drawSega2p(int startX, int startY, int buttonRadius, int b
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawNoir8(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawNoir8(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button Noir8
@@ -308,9 +301,8 @@ void I2CDisplayAddon::drawNoir8(int startX, int startY, int buttonRadius, int bu
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawCapcom(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawCapcom(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button Capcom
@@ -325,9 +317,8 @@ void I2CDisplayAddon::drawCapcom(int startX, int startY, int buttonRadius, int b
 	obdPreciseEllipse(&obd, startX + buttonMargin * 6.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawCapcom6(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawCapcom6(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 6-button Capcom
@@ -340,9 +331,8 @@ void I2CDisplayAddon::drawCapcom6(int startX, int startY, int buttonRadius, int 
 	obdPreciseEllipse(&obd, startX + buttonMargin * 5.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedR2());
 }
 
-void I2CDisplayAddon::drawSticklessButtons(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawSticklessButtons(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button
@@ -357,9 +347,8 @@ void I2CDisplayAddon::drawSticklessButtons(int startX, int startY, int buttonRad
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button
@@ -374,9 +363,8 @@ void I2CDisplayAddon::drawWasdButtons(int startX, int startY, int buttonRadius, 
 	obdPreciseEllipse(&obd, startX + buttonMargin * 6.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, gamepad->pressedL2());
 }
 
-void I2CDisplayAddon::drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding)
+void I2CDisplayAddon::drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
 	// 8-button
@@ -394,9 +382,8 @@ void I2CDisplayAddon::drawArcadeButtons(int startX, int startY, int buttonRadius
 // I pulled this out of my PR, brought it back because of recent talks re: SOCD and rhythm games
 // Enjoy!
 
-void I2CDisplayAddon::drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding)
+void I2CDisplayAddon::drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + buttonSize;
 
 	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonSize + buttonMargin, 1, gamepad->pressedLeft());
@@ -405,9 +392,8 @@ void I2CDisplayAddon::drawDancepadA(int startX, int startY, int buttonSize, int 
 	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, gamepad->pressedRight());
 }
 
-void I2CDisplayAddon::drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding)
+void I2CDisplayAddon::drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding, Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	const int buttonMargin = buttonPadding + buttonSize;
 	
 	obdRectangle(&obd, startX, startY, startX + buttonSize, startY + buttonSize, 1, gamepad->pressedB2()); // Up/Left
@@ -451,9 +437,8 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 	obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, 0, 0);
 }
 
-void I2CDisplayAddon::drawStatusBar()
+void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 
 	// Limit to 21 chars with 6x8 font for now
@@ -473,7 +458,7 @@ void I2CDisplayAddon::drawStatusBar()
 			statusBar += "0";
 		statusBar += std::to_string(boardOptions.turboShotCount);
 	} else {
-		statusBar += "      "; // no turbo, don't show Txx setting
+		statusBar += "    "; // no turbo, don't show Txx setting
 	}
 	switch (gamepad->options.dpadMode)
 	{

@@ -118,6 +118,9 @@ public:
 	void SetGamepad(Gamepad *); 		// MPGS Gamepad Get/Set
 	Gamepad * GetGamepad();
 
+	void SetProcessedGamepad(Gamepad *); // MPGS Processed Gamepad Get/Set
+	Gamepad * GetProcessedGamepad();
+
 	void SetFeatureData(uint8_t *); 	// USB Feature Data Get/Set
 	void ClearFeatureData();
 	uint8_t * GetFeatureData();
@@ -136,6 +139,7 @@ private:
 	void initLEDOptions();
 	bool CONFIG_MODE; 			// Config mode (boot)
 	Gamepad * gamepad;    		// Gamepad data
+	Gamepad * processedGamepad; // Gamepad with ONLY processed data
 	BoardOptions boardOptions;
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
