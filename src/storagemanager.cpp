@@ -28,7 +28,7 @@ void Storage::initBoardOptions() {
 	EEPROM.get(BOARD_STORAGE_INDEX, boardOptions);
 	uint32_t lastCRC = boardOptions.checksum;
 	boardOptions.checksum = CHECKSUM_MAGIC;
-	if (lastCRC != CRC32::calculate(&boardOptions, sizeof(BoardOptions))) {
+	if (lastCRC != CRC32::calculate(&boardOptions)) {
 		setDefaultBoardOptions();
 	}
 }
@@ -74,17 +74,21 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.displayFlip       = DISPLAY_FLIP;
 	boardOptions.displayInvert     = DISPLAY_INVERT;
 	boardOptions.turboShotCount    = DEFAULT_SHOT_PER_SEC;
-	boardOptions.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-	boardOptions.checksum = CRC32::calculate(&boardOptions);
-	EEPROM.set(BOARD_STORAGE_INDEX, boardOptions);
+	boardOptions.pinTurboLED       = TURBO_LED_PIN;
+	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
+	setBoardOptions(boardOptions);
 }
 
 void Storage::setBoardOptions(BoardOptions options)
 {
-	options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-	options.checksum = CRC32::calculate(&options);
-	EEPROM.set(BOARD_STORAGE_INDEX, options);
-	memcpy(&boardOptions, &options, sizeof(BoardOptions));
+	if (memcmp(&options, &boardOptions, sizeof(BoardOptions)) != 0)
+	{
+		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
+		options.checksum = CRC32::calculate(&options);
+		EEPROM.set(BOARD_STORAGE_INDEX, options);
+		EEPROM.commit();
+		memcpy(&boardOptions, &options, sizeof(BoardOptions));
+	}
 }
 
 /* LED stuffs */
@@ -93,7 +97,7 @@ void Storage::initLEDOptions()
 	EEPROM.get(LED_STORAGE_INDEX, ledOptions);
 	uint32_t lastCRC = ledOptions.checksum;
 	ledOptions.checksum = CHECKSUM_MAGIC;
-	if (lastCRC != CRC32::calculate(&ledOptions, sizeof(ledOptions))) {
+	if (lastCRC != CRC32::calculate(&ledOptions)) {
 		setDefaultLEDOptions();
 	}
 }
@@ -129,17 +133,19 @@ void Storage::setDefaultLEDOptions()
 	ledOptions.indexR3 = LEDS_BUTTON_R3;
 	ledOptions.indexA1 = LEDS_BUTTON_A1;
 	ledOptions.indexA2 = LEDS_BUTTON_A2;
-	ledOptions.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-	ledOptions.checksum = CRC32::calculate(&ledOptions);
-	EEPROM.set(LED_STORAGE_INDEX, ledOptions);
+	setLEDOptions(ledOptions);
 }
 
 void Storage::setLEDOptions(LEDOptions options)
 {
-	options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-	options.checksum = CRC32::calculate(&options);
-	EEPROM.set(LED_STORAGE_INDEX, options);
-	memcpy(&ledOptions, &options, sizeof(LEDOptions));
+	if (memcmp(&options, &ledOptions, sizeof(LEDOptions)) != 0)
+	{
+		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
+		options.checksum = CRC32::calculate(&options);
+		EEPROM.set(LED_STORAGE_INDEX, options);
+		EEPROM.commit();
+		memcpy(&ledOptions, &options, sizeof(LEDOptions));
+	}
 }
 
 void Storage::ResetSettings()
@@ -228,7 +234,7 @@ void AnimationStorage::save()
 	bool dirty = false;
 	AnimationOptions savedOptions = getAnimationOptions();
 
-	if (memcmp(&savedOptions, &AnimationStation::options, sizeof(AnimationOptions)))
+	if (memcmp(&savedOptions, &AnimationStation::options, sizeof(AnimationOptions)) != 0)
 	{
 		this->setAnimationOptions(AnimationStation::options);
 		dirty = true;

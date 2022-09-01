@@ -74,7 +74,7 @@ export default function DisplayConfigPage() {
 
 	const onSuccess = async (values) => {
 		const success = WebApi.setDisplayOptions(values);
-		setSaveMessage(success ? 'Saved!' : 'Unable to Save');
+		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
 
 	return (

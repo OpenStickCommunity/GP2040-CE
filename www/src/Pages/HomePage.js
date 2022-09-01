@@ -8,19 +8,21 @@ const currentVersion = process.env.REACT_APP_CURRENT_VERSION;
 
 export default function HomePage() {
 	const [latestVersion, setLatestVersion] = useState('');
+	const [latestTag, setLatestTag] = useState('');
 
 	useEffect(() => {
 		axios.get('https://api.github.com/repos/OpenStickFoundation/GP2040-CE/releases')
 			.then((response) => {
 				const sortedData = orderBy(response.data, 'published_at', 'desc');
 				setLatestVersion(sortedData[0].name);
+				setLatestTag(sortedData[0].tag_name);
 			})
 			.catch(console.error);
-	}, [setLatestVersion]);
+	}, [setLatestVersion, setLatestTag]);
 
 	return (
 		<div>
-			<h1>Welcome to the GP2040 Web Configurator!</h1>
+			<h1>Welcome to the GP2040-CE Web Configurator!</h1>
 			<p>Please select a menu option to proceed.</p>
 			<Section title="Firmware Version">
 				<div className="card-body">
@@ -31,7 +33,7 @@ export default function HomePage() {
 							<a
 								target="_blank"
 								rel="noreferrer"
-								href={`https://github.com/OpenStickFoundation/GP2040-CE/releases/${latestVersion}`}
+								href={`https://github.com/OpenStickFoundation/GP2040-CE/releases/tag/${latestTag}`}
 								className="btn btn-primary"
 							>
 								Get Latest Version
