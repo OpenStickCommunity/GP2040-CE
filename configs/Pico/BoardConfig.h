@@ -161,10 +161,9 @@
 // The defualt `SPLASH_MODE` is `STATICSPLASH`.  
 // There are four options for `SPLASH_MODE` currently:
 // 1 - `STATICSPLASH` - This will display the static splash image
-// 2 - `SPLASHCUSTOM` - This will display the custom splash image
-// 3 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
-// 4 - `CLOSEINCUSTOM` - This will display the custom splash image as a top and bottom coming together animation
-// 5 - `NOSPLASH` - This will not display a splash screen on boot
+// 2 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
+// 3 - `CLOSEINCUSTOM` - This will display the custom splash image as a top and bottom coming together animation
+// 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
 #define HAS_I2C_DISPLAY 1
