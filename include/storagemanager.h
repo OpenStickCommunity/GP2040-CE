@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include "NeoPico.hpp"
+#include "FlashPROM.h"
 
 #include "enums.h"
 #include "helper.h"
