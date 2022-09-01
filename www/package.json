@@ -8,7 +8,6 @@
     "formik": "^2.2.9",
     "lodash": "^4.17.21",
     "node-gyp": "^8.4.0",
-    "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-bootstrap": "^2.0.2",
@@ -48,6 +47,7 @@
     "concurrently": "^6.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "node-sass": "^7.0.1",
     "nodemon": "^2.0.15"
   }
 }

@@ -19,6 +19,7 @@
 
 GP2040::GP2040() : nextRuntime(0) {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
+	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 }
 
 GP2040::~GP2040() {
@@ -62,6 +63,7 @@ void GP2040::setup() {
 
 void GP2040::run() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	bool configMode = Storage::getInstance().GetConfigMode();
 	while (1) { // LOOP
 		// Config Loop (Web-Config does not require gamepad)
@@ -87,6 +89,9 @@ void GP2040::run() {
 		for (std::vector<GPAddon*>::iterator it = Storage::getInstance().Inputs.begin(); it != Storage::getInstance().Inputs.end(); it++) {
 			(*it)->process();
 		}
+
+		// Copy Processed Gamepad
+		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
 		send_report(gamepad->getReport(), gamepad->getReportSize());

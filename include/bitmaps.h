@@ -1,3 +1,15 @@
+// bitmaps.h allows you change what is shown on the display during the startup of GP2040.
+// The default image size is 128x64px.
+// The default image type is 2 color monotone (black and white).
+// Bitmap images can be converted using the Marlin Bitmap Converter (https://marlinfw.org/tools/u8glib/converter.html) choose `Marlin 2.x`, `invert` and `Binary`.
+// Copy the output and replace the desired image below.
+// `splashImage` is the default image.
+// `bootLogoTop` is the default image that will scroll down from the top.
+// `bootLogoBottom` is the default image that will scroll up from the bottom.
+// `splashCustom` is a custom image that you can change as needed.
+// If you plan to use a custom image through `splashCustom`, make sure to remove ` /*` from the top and bottom of the section 
+
+
 // Hard coded default
 const unsigned char splashImage[] = {
     // 'canvas', 128x64px
