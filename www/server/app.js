@@ -110,6 +110,22 @@ app.get('/api/getPinMappings', (req, res) => {
 	return res.send(mappings);
 });
 
+app.get('/api/getAddonsOptions', (req, res) => {
+	console.log('/api/getAddonsOptions');
+	let usedPins = [];
+	for (let prop of Object.keys(controllers['pico']))
+		if (!isNaN(parseInt(controllers['pico'][prop])))
+			usedPins.push(parseInt(controllers['pico'][prop]));
+	return res.send({
+		turboPin: -1,
+		turboPinLED: -1,
+		sliderLSPin: -1,
+		sliderRSPin: -1,
+		turboShotCount: 20,
+		usedPins,
+	});
+});
+
 app.post('/api/*', (req, res) => {
 	console.log(req.url);
 	return res.send(req.body);

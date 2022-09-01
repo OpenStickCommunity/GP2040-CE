@@ -20,7 +20,7 @@ export default function HomePage() {
 
 	return (
 		<div>
-			<h1>Welcome to the GP2040 Web Configurator!</h1>
+			<h1>Welcome to the GP2040-CE Web Configurator!</h1>
 			<p>Please select a menu option to proceed.</p>
 			<Section title="Firmware Version">
 				<div className="card-body">

@@ -9,6 +9,7 @@ import ResetSettingsPage from './Pages/ResetSettingsPage';
 import SettingsPage from './Pages/SettingsPage';
 import DisplayConfigPage from './Pages/DisplayConfig';
 import LEDConfigPage from './Pages/LEDConfigPage';
+import AddonsConfigPage from './Pages/AddonsConfigPage';
 
 import { loadButtonLabels } from './Services/Storage';
 import './App.scss';
@@ -44,6 +45,9 @@ const App = () => {
 						</Route>
 						<Route path="/display-config">
 							<DisplayConfigPage />
+						</Route>
+						<Route path="/add-ons">
+							<AddonsConfigPage />
 						</Route>
 					</Switch>
 				</div>

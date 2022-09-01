@@ -17,8 +17,7 @@
 #define GAMEPAD_STORAGE_INDEX      0 // 1024 bytes for gamepad options
 #define BOARD_STORAGE_INDEX     1024 //  512 bytes for hardware options
 #define LED_STORAGE_INDEX       1536 //  512 bytes for LED configuration
-#define TURBO_STORAGE_INDEX		2048 //   64 bytes for TURBO options
-#define ANIMATION_STORAGE_INDEX 2112 // ???? bytes for LED animations
+#define ANIMATION_STORAGE_INDEX 2048 // ???? bytes for LED animations
 
 #define CHECKSUM_MAGIC          0 	// Checksum CRC
 
@@ -57,7 +56,8 @@ struct BoardOptions
 	bool displayFlip;
 	bool displayInvert;
 	uint8_t turboShotCount; // Turbo
-	//char boardVersion[32]; // 32-char limit to board name
+	uint8_t pinTurboLED;    // Turbo LED
+	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };
 
@@ -88,6 +88,7 @@ struct LEDOptions
 	int indexR3;
 	int indexA1;
 	int indexA2;
+	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };
 
@@ -129,6 +130,7 @@ public:
 
 private:
 	Storage() : gamepad(0) {
+		EEPROM.start(); // init EEPROM
 		initBoardOptions();
 		initLEDOptions();
 	}

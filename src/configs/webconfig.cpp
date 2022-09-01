@@ -29,8 +29,8 @@
 #define API_SET_LED_OPTIONS "/api/setLedOptions"
 #define API_GET_PIN_MAPPINGS "/api/getPinMappings"
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
-#define API_GET_ADDON_MAPPINGS "/api/getAddonsOptions"
-#define API_SET_ADDON_MAPPINGS "/api/setAddonsOptions"
+#define API_GET_ADDON_OPTIONS "/api/getAddonsOptions"
+#define API_SET_ADDON_OPTIONS "/api/setAddonsOptions"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
@@ -160,8 +160,8 @@ std::string setDisplayOptions()
 	DynamicJsonDocument doc = get_post_data();
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	boardOptions.hasI2CDisplay     = doc["enabled"];
-	boardOptions.i2cSDAPin         = doc["sdaPin"];
-	boardOptions.i2cSCLPin         = doc["sclPin"];
+	boardOptions.i2cSDAPin         = doc["sdaPin"] == -1 ? 0xFF : doc["sdaPin"];
+	boardOptions.i2cSCLPin         = doc["sclPin"] == -1 ? 0xFF : doc["sclPin"];
 	boardOptions.displayI2CAddress = doc["i2cAddress"];
 	boardOptions.i2cBlock          = doc["i2cBlock"];
 	boardOptions.i2cSpeed          = doc["i2cSpeed"];
@@ -176,8 +176,8 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	doc["enabled"]       = boardOptions.hasI2CDisplay ? 1 : 0;
-	doc["sdaPin"]        = boardOptions.i2cSDAPin;
-	doc["sclPin"]        = boardOptions.i2cSCLPin;
+	doc["sdaPin"]        = boardOptions.i2cSDAPin == 0xFF ? -1 : boardOptions.i2cSDAPin;
+	doc["sclPin"]        = boardOptions.i2cSCLPin == 0xFF ? -1 : boardOptions.i2cSCLPin;
 	doc["i2cAddress"]    = boardOptions.displayI2CAddress;
 	doc["i2cBlock"]      = boardOptions.i2cBlock;
 	doc["i2cSpeed"]      = boardOptions.i2cSpeed;
@@ -327,8 +327,7 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	BoardOptions boardOptions;
-	boardOptions.hasBoardOptions = true;
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	boardOptions.pinDpadUp    = doc["Up"];
 	boardOptions.pinDpadDown  = doc["Down"];
 	boardOptions.pinDpadLeft  = doc["Left"];
@@ -380,27 +379,52 @@ std::string getPinMappings()
 	return serialize_json(doc);
 }
 
-std::string setAddonMappings()
+std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	BoardOptions boardOptions;
-	boardOptions.pinButtonTurbo    	= doc["Turbo"];
-	boardOptions.pinSliderLS  		= doc["LS"];
-	boardOptions.pinSliderRS  		= doc["RS"];
-	boardOptions.turboShotCount 	= doc["TurboShotCount"];
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	boardOptions.hasBoardOptions    = true;
+	boardOptions.pinButtonTurbo    	= doc["turboPin"] == -1 ? 0xFF : doc["turboPin"];
+	boardOptions.pinTurboLED        = doc["turboPinLED"] == -1 ? 0xFF : doc["turboPinLED"];
+	boardOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
+	boardOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
+	boardOptions.turboShotCount 	= doc["turboShotCount"];
+	Storage::getInstance().setBoardOptions(boardOptions);
 
 	return serialize_json(doc);
 }
 
-std::string getAddonMappings()
+std::string getAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	BoardOptions boardOptions;
-	doc["Turbo"] = boardOptions.pinButtonTurbo;
-	doc["LS"] = boardOptions.pinSliderLS;
-	doc["RS"] = boardOptions.pinSliderRS;
-	doc["TurboShotCount"] = boardOptions.turboShotCount;
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	doc["turboPin"] = boardOptions.pinButtonTurbo == 0xFF ? -1 : boardOptions.pinButtonTurbo;
+	doc["turboPinLED"] = boardOptions.pinTurboLED == 0xFF ? -1 : boardOptions.pinTurboLED;
+	doc["sliderLSPin"] = boardOptions.pinSliderLS == 0xFF ? -1 : boardOptions.pinSliderLS;
+	doc["sliderRSPin"] = boardOptions.pinSliderRS == 0xFF ? -1 : boardOptions.pinSliderRS;
+	doc["turboShotCount"] = boardOptions.turboShotCount;
+
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	auto usedPins = doc.createNestedArray("usedPins");
+	usedPins.add(gamepad->mapDpadUp->pin);
+	usedPins.add(gamepad->mapDpadDown->pin);
+	usedPins.add(gamepad->mapDpadLeft->pin);
+	usedPins.add(gamepad->mapDpadRight->pin);
+	usedPins.add(gamepad->mapButtonB1->pin);
+	usedPins.add(gamepad->mapButtonB2->pin);
+	usedPins.add(gamepad->mapButtonB3->pin);
+	usedPins.add(gamepad->mapButtonB4->pin);
+	usedPins.add(gamepad->mapButtonL1->pin);
+	usedPins.add(gamepad->mapButtonR1->pin);
+	usedPins.add(gamepad->mapButtonL2->pin);
+	usedPins.add(gamepad->mapButtonR2->pin);
+	usedPins.add(gamepad->mapButtonS1->pin);
+	usedPins.add(gamepad->mapButtonS2->pin);
+	usedPins.add(gamepad->mapButtonL3->pin);
+	usedPins.add(gamepad->mapButtonR3->pin);
+	usedPins.add(gamepad->mapButtonA1->pin);
+	usedPins.add(gamepad->mapButtonA2->pin);
 
 	return serialize_json(doc);
 }
@@ -426,8 +450,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setLedOptions());
 		if (!memcmp(http_post_uri, API_SET_PIN_MAPPINGS, sizeof(API_SET_PIN_MAPPINGS)))
 			return set_file_data(file, setPinMappings());
-		if (!memcmp(http_post_uri, API_SET_ADDON_MAPPINGS, sizeof(API_SET_ADDON_MAPPINGS)))
-			return set_file_data(file, setAddonMappings());
+		if (!memcmp(http_post_uri, API_SET_ADDON_OPTIONS, sizeof(API_SET_ADDON_OPTIONS)))
+			return set_file_data(file, setAddonOptions());
 	}
 	else
 	{
@@ -439,8 +463,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getLedOptions());
 		if (!memcmp(name, API_GET_PIN_MAPPINGS, sizeof(API_GET_PIN_MAPPINGS)))
 			return set_file_data(file, getPinMappings());
-		if (!memcmp(name, API_GET_ADDON_MAPPINGS, sizeof(API_GET_ADDON_MAPPINGS)))
-			return set_file_data(file, getAddonMappings());
+		if (!memcmp(name, API_GET_ADDON_OPTIONS, sizeof(API_GET_ADDON_OPTIONS)))
+			return set_file_data(file, getAddonOptions());
 		if (!memcmp(name, API_RESET_SETTINGS, sizeof(API_RESET_SETTINGS)))
 			return set_file_data(file, resetSettings());
 	}

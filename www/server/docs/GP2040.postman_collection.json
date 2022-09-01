@@ -42,6 +42,24 @@
 			"response": []
 		},
 		{
+			"name": "/api/getAddonsOptions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/getAddonsOptions",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"getAddonsOptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/api/resetSettings",
 			"request": {
 				"method": "GET",

@@ -26,7 +26,6 @@ GP2040::~GP2040() {
 
 void GP2040::setup() {	
     // Setup Gamepad and Gamepad Storage
-	GamepadStore.start();
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->setup();
 

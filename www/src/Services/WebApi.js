@@ -117,6 +117,24 @@ async function setPinMappings(mappings) {
 		});
 }
 
+async function getAddonsOptions() {
+	return axios.get(`${baseUrl}/api/getAddonsOptions`)
+		.then((response) => response.data)
+		.catch(console.error);
+}
+
+async function setAddonsOptions(options) {
+	return axios.post(`${baseUrl}/api/setAddonsOptions`, options)
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
 const WebApi = {
 	resetSettings,
 	getDisplayOptions,
@@ -127,6 +145,8 @@ const WebApi = {
 	setLedOptions,
 	getPinMappings,
 	setPinMappings,
+	getAddonsOptions,
+	setAddonsOptions
 };
 
 export default WebApi;
