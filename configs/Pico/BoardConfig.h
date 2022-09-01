@@ -158,7 +158,7 @@
 // 9 - BUTTON_LAYOUT_NOIR8 - This is the standard 8 button Noir layout
 // 10 - BUTTON_LAYOUT_KEYBOARDB - This is a WASD keyboard layout that is straight
 // 11 - BUTTON_LAYOUT_DANCEPADB - This is a dance pad layout (must be used with `BUTTON_LAYOUT_DANCEPADA` in `BUTTON_LAYOUT`)
-// The defualt `SPLASH_MODE` is `STATICSPLASH`.  
+// The default `SPLASH_MODE` is `NOSPLASH`.  
 // There are four options for `SPLASH_MODE` currently:
 // 1 - `STATICSPLASH` - This will display the static splash image
 // 2 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
