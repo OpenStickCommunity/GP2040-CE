@@ -328,6 +328,7 @@ std::string setPinMappings()
 	DynamicJsonDocument doc = get_post_data();
 
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	boardOptions.hasBoardOptions = true;
 	boardOptions.pinDpadUp    = doc["Up"];
 	boardOptions.pinDpadDown  = doc["Down"];
 	boardOptions.pinDpadLeft  = doc["Left"];

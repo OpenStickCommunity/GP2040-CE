@@ -49,7 +49,7 @@ export default function PinMappingPage() {
 		}
 
 		const success = await WebApi.setPinMappings(mappings);
-		setSaveMessage(success ? 'Saved!' : 'Unable to Save');
+		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
 
 	const validateMappings = (mappings) => {

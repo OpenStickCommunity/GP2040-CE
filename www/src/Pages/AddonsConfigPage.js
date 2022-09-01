@@ -57,7 +57,7 @@ export default function AddonsConfigPage() {
 
 	const onSuccess = async (values) => {
 		const success = WebApi.setAddonsOptions(values);
-		setSaveMessage(success ? 'Saved!' : 'Unable to Save');
+		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
 
 	return (

@@ -81,7 +81,7 @@ void Storage::setDefaultBoardOptions()
 
 void Storage::setBoardOptions(BoardOptions options)
 {
-	if (memcmp(&options, &boardOptions, sizeof(BoardOptions)))
+	if (memcmp(&options, &boardOptions, sizeof(BoardOptions)) != 0)
 	{
 		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
 		options.checksum = CRC32::calculate(&options);
@@ -138,7 +138,7 @@ void Storage::setDefaultLEDOptions()
 
 void Storage::setLEDOptions(LEDOptions options)
 {
-	if (memcmp(&options, &ledOptions, sizeof(LEDOptions)))
+	if (memcmp(&options, &ledOptions, sizeof(LEDOptions)) != 0)
 	{
 		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
 		options.checksum = CRC32::calculate(&options);
@@ -234,7 +234,7 @@ void AnimationStorage::save()
 	bool dirty = false;
 	AnimationOptions savedOptions = getAnimationOptions();
 
-	if (memcmp(&savedOptions, &AnimationStation::options, sizeof(AnimationOptions)))
+	if (memcmp(&savedOptions, &AnimationStation::options, sizeof(AnimationOptions)) != 0)
 	{
 		this->setAnimationOptions(AnimationStation::options);
 		dirty = true;

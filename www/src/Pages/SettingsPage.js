@@ -56,7 +56,7 @@ export default function SettingsPage() {
 
 	const onSuccess = async (values) => {
 		const success = WebApi.setGamepadOptions(values);
-		setSaveMessage(success ? 'Saved!' : 'Unable to Save');
+		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
 
 	return (
