@@ -132,7 +132,10 @@
 // The defualt `I2C_SPEED` is `400000`.  
 // This should be more than fast enough for most displays.
 // Some smaller displays (like 0.96" and 1.31") can go up to `800000` or even `1000000`.
-// Some larger dipsays (like 2.42") should be set around `100000` to avoid artifacting issues.
+// The default `DISPLAY_FLIP` is `0`.
+// This can be changed to `1` to have the dispaly output flipped.
+// The default `DISPLAY_INVERY` is `0`.
+// This can be changed to `1` to have the color on the display inverted.
 // The default `BUTTON_LAYOUT` is `BUTTON_LAYOUT_STICK` which will show an arcade stick on the left hand side of the display.
 // There are seven options for `BUTTON_LAYOUT` currently:
 // 1 - BUTTON_LAYOUT_STICK - This is a basic joystick layout
@@ -158,9 +161,10 @@
 // The defualt `SPLASH_MODE` is `STATICSPLASH`.  
 // There are four options for `SPLASH_MODE` currently:
 // 1 - `STATICSPLASH` - This will display the static splash image
-// 2 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
-// 3 - `CLOSEINCUSTOM` - This will display the custom splash image as a top and bottom coming together animation
-// 4 - `NOSPLASH` - This will not display a splash screen on boot
+// 2 - `SPLASHCUSTOM` - This will display the custom splash image
+// 3 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
+// 4 - `CLOSEINCUSTOM` - This will display the custom splash image as a top and bottom coming together animation
+// 5 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
 #define HAS_I2C_DISPLAY 1
@@ -168,6 +172,9 @@
 #define I2C_SCL_PIN 1
 #define I2C_BLOCK i2c0
 #define I2C_SPEED 400000
+#define DISPLAY_FLIP 0
+#define DISPLAY_INVERT 0
+
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX
 #define SPLASH_MODE STATICSPLASH
