@@ -34,3 +34,10 @@ jobs:
       run: |
         pio run -e raspberry-pi-pico
         mv .pio/build/raspberry-pi-pico/APPLICATION.uf2 .pio/build/raspberry-pi-pico/GP2040-CE-RaspberryPiPico.uf2
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        # Artifact name
+        name: GP2040-CE-RaspberryPiPico.uf2
+        # A file, directory or wildcard pattern that describes what to upload
+        path: .pio/build/raspberry-pi-pico/GP2040-CE-RaspberryPiPico.uf2
