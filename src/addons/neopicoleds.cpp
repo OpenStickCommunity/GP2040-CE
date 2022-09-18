@@ -122,6 +122,8 @@ void NeoPicoLEDAddon::process()
 		switch (gamepad->options.inputMode) {
 			case INPUT_MODE_XINPUT:
 				animationState = getXInputAnimationNEOPICO(featureData);
+				if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
+					neoPLEDs->animate(animationState);
 				break;
 		}
 	}
