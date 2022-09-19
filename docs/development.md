@@ -10,7 +10,7 @@ The recommended setup is to develop using the [PlatformIO IDE](https://platformi
 1. Follow the [installation instructions for the PlatformIO IDE](https://platformio.org/install/ide?install=vscode).
 1. Open VS Code and you should be greeted with the PlatformIO Home screen.
 1. Select the PlatformIO tab in the activity bar (bug icon), then go to `PIO Home > Platforms`.
-1. On the Platforms tab click the `Advanced Installation` button, then type `https://github.com/Wiz-IO/wizio-pico` and click `Install`.
+1. On the Platforms tab click the `Advanced Installation` button, then type `https://github.com/OpenStickFoundation/wizio-pico` and click `Install`.
 1. Open the `GP2040` (`GP2040-main` if from zip) folder in VS Code and it should automatically get picked up as a Platform IO project.
 1. Click on the VS Code Explorer tab (or Ctrl+Shift+E) and expand the folders and files in your project.
 
