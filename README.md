@@ -112,7 +112,7 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 
 ### Discussions
 
-Join the [OpenStick GP2040-CE Discord channel](https://discord.gg/KyQCHcjwJ2) to participate!
+Join the [OpenStick GP2040-CE Discord channel](https://discord.gg/qVcrGVDj2h) to participate!
 
 ## Acknowledgements
 
