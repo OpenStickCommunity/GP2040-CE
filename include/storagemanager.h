@@ -44,6 +44,7 @@ struct BoardOptions
 	uint8_t pinButtonA1;
 	uint8_t pinButtonA2;
 	uint8_t pinButtonTurbo;
+	uint8_t pinButtonReverse;
 	uint8_t pinSliderLS;
 	uint8_t pinSliderRS;
 	ButtonLayout buttonLayout;
@@ -58,6 +59,11 @@ struct BoardOptions
 	bool displayInvert;
 	uint8_t turboShotCount; // Turbo
 	uint8_t pinTurboLED;    // Turbo LED
+	uint8_t pinReverseLED;    // Reverse LED
+	uint8_t reverseActionUp;
+	uint8_t reverseActionDown;
+	uint8_t reverseActionLeft;
+	uint8_t reverseActionRight;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };

@@ -61,6 +61,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.pinButtonA1       = PIN_BUTTON_A1;
 	boardOptions.pinButtonA2       = PIN_BUTTON_A2;
 	boardOptions.pinButtonTurbo    = PIN_BUTTON_TURBO;
+	boardOptions.pinButtonReverse  = PIN_BUTTON_REVERSE;
 	boardOptions.pinSliderLS       = PIN_SLIDER_LS;
 	boardOptions.pinSliderRS       = PIN_SLIDER_RS;
 	boardOptions.buttonLayout      = BUTTON_LAYOUT;
@@ -75,6 +76,11 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.displayInvert     = DISPLAY_INVERT;
 	boardOptions.turboShotCount    = DEFAULT_SHOT_PER_SEC;
 	boardOptions.pinTurboLED       = TURBO_LED_PIN;
+	boardOptions.pinReverseLED     = REVERSE_LED_PIN;
+	boardOptions.reverseActionUp         = REVERSE_UP_DEFAULT;
+	boardOptions.reverseActionDown       = REVERSE_DOWN_DEFAULT;
+	boardOptions.reverseActionLeft       = REVERSE_LEFT_DEFAULT;
+	boardOptions.reverseActionRight      = REVERSE_RIGHT_DEFAULT;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }

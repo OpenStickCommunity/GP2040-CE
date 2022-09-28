@@ -36,6 +36,7 @@
 #define PIN_BUTTON_A1   20          // A1 / Guide / Home / ~ / 13 / ~
 #define PIN_BUTTON_A2   19          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO -1         // Turbo
+#define PIN_BUTTON_REVERSE -1         // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
 
