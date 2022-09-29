@@ -24,6 +24,8 @@ private:
 
 	bool state;
 
+	bool useLED;
+
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;

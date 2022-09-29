@@ -14,6 +14,13 @@ void ReverseInput::setup()
     gpio_init(boardOptions.pinButtonReverse);             // Initialize pin
     gpio_set_dir(boardOptions.pinButtonReverse, GPIO_IN); // Set as INPUT
     gpio_pull_up(boardOptions.pinButtonReverse);          // Set as PULLUP
+    
+    pinLED = boardOptions.pinReverseLED;
+    if (pinLED != -1) {
+        gpio_init(boardOptions.pinReverseLED);
+        gpio_set_dir(boardOptions.pinReverseLED, GPIO_OUT);
+        gpio_put(boardOptions.pinReverseLED, 1);
+    }
 
     actionUp = boardOptions.reverseActionUp;
     actionDown = boardOptions.reverseActionDown;
@@ -59,4 +66,8 @@ void ReverseInput::process()
         | input(values & mapDpadLeft->pinMask,  mapDpadLeft->buttonMask,    mapDpadRight->buttonMask,   actionLeft,     invertXAxis)
         | input(values & mapDpadRight->pinMask, mapDpadRight->buttonMask,   mapDpadLeft->buttonMask,    actionRight,    invertXAxis)
     ;
+    
+    if (pinLED != -1) {
+        gpio_put(pinLED, state);
+    }
 }
