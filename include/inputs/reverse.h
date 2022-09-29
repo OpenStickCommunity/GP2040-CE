@@ -24,7 +24,7 @@ private:
 
 	bool state;
 
-	bool useLED;
+	uint8_t pinLED;
 
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
