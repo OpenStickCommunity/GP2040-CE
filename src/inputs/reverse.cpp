@@ -68,6 +68,6 @@ void ReverseInput::process()
     ;
     
     if (pinLED != -1) {
-        gpio_put(pinLED, state);
+        gpio_put(pinLED, !state);
     }
 }
