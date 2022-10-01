@@ -391,6 +391,12 @@ std::string setAddonOptions()
 	boardOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
 	boardOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
 	boardOptions.turboShotCount 	= doc["turboShotCount"];
+	boardOptions.pinButtonReverse  	= doc["reversePin"] == -1 ? 0xFF : doc["reversePin"];
+	boardOptions.pinReverseLED  	= doc["reversePinLED"] == -1 ? 0xFF : doc["reversePinLED"];
+	boardOptions.reverseActionUp  	= doc["reverseActionUp"] == -1 ? 0xFF : doc["reverseActionUp"];
+	boardOptions.reverseActionDown  = doc["reverseActionDown"] == -1 ? 0xFF : doc["reverseActionDown"];
+	boardOptions.reverseActionLeft  = doc["reverseActionLeft"] == -1 ? 0xFF : doc["reverseActionLeft"];
+	boardOptions.reverseActionRight = doc["reverseActionRight"] == -1 ? 0xFF : doc["reverseActionRight"];
 	Storage::getInstance().setBoardOptions(boardOptions);
 
 	return serialize_json(doc);
@@ -405,6 +411,12 @@ std::string getAddonOptions()
 	doc["sliderLSPin"] = boardOptions.pinSliderLS == 0xFF ? -1 : boardOptions.pinSliderLS;
 	doc["sliderRSPin"] = boardOptions.pinSliderRS == 0xFF ? -1 : boardOptions.pinSliderRS;
 	doc["turboShotCount"] = boardOptions.turboShotCount;
+	doc["reversePin"] = boardOptions.pinButtonReverse == 0xFF ? -1 : boardOptions.pinButtonReverse;
+	doc["reversePinLED"] = boardOptions.pinReverseLED == 0xFF ? -1 : boardOptions.pinReverseLED;
+	doc["reverseActionUp"] = boardOptions.reverseActionUp == 0xFF ? -1 : boardOptions.reverseActionUp;
+	doc["reverseActionDown"] = boardOptions.reverseActionDown == 0xFF ? -1 : boardOptions.reverseActionDown;
+	doc["reverseActionLeft"] = boardOptions.reverseActionLeft == 0xFF ? -1 : boardOptions.reverseActionLeft;
+	doc["reverseActionRight"] = boardOptions.reverseActionRight == 0xFF ? -1 : boardOptions.reverseActionRight;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");

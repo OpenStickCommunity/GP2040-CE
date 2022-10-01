@@ -7,6 +7,7 @@
 #include "inputs/analog.h" // Inputs
 #include "inputs/jslider.h"
 #include "inputs/turbo.h"
+#include "inputs/reverse.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -59,6 +60,7 @@ void GP2040::setup() {
 	setupInput(new AnalogInput());
 	setupInput(new JSliderInput());
 	setupInput(new TurboInput());
+	setupInput(new ReverseInput());
 }
 
 void GP2040::run() {
