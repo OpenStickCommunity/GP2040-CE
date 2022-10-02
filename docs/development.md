@@ -6,7 +6,7 @@ GP2040 is written in C++ and set up as a [PlatformIO](https://platformio.org/) p
 
 The recommended setup is to develop using the [PlatformIO IDE](https://platformio.org/platformio-ide), which is an extension to the excellent [Visual Studio Code (VS Code)](https://code.visualstudio.com/) editor. If a dedicated IDE for embedded development isn't your thing, you can easily build the project using the [PlatformIO CLI](https://platformio.org/install/cli) instead. This section will cover using the PlatformIO IDE.
 
-1. Use Git to clone the [GP2040 repository](https://github.com/FeralAI/GP2040.git), or [download the latest version](https://github.com/FeralAI/GP2040/archive/refs/heads/main.zip) and extract it.
+1. Use Git to clone the [GP2040-CE repository](https://github.com/OpenStickFoundation/GP2040-CE).
 1. Follow the [installation instructions for the PlatformIO IDE](https://platformio.org/install/ide?install=vscode).
 1. Open VS Code and you should be greeted with the PlatformIO Home screen.
 1. Select the PlatformIO tab in the activity bar (bug icon), then go to `PIO Home > Platforms`.
@@ -18,11 +18,11 @@ PlatformIO will download any dependencies not already included with the project.
 
 ## Configuration
 
-There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it. Several example configurations are located in the repository **[configs](https://github.com/FeralAI/GP2040/tree/main/configs)** folder. This document will outline setting up a new build configuration.
+There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
 
 ### Board Configuration Folder
 
-Each subfolder in [`configs`](https://github.com/FeralAI/GP2040/tree/main/configs) contains a separate PlatformIO build configuration, which consists of the following:
+Each subfolder in [`configs`](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs) contains a separate PlatformIO build configuration, which consists of the following:
 
 | Name | Required? | Description |
 | ----------- | --------- | ----------- |
