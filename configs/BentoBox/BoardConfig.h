@@ -36,7 +36,7 @@
 #define PIN_BUTTON_A1   20          // A1 / Guide / Home / ~ / 13 / ~
 #define PIN_BUTTON_A2   19          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO -1         // Turbo
-#define PIN_BUTTON_REVERSE -1         // UDLR Reverse
+#define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
 
@@ -74,6 +74,7 @@
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
 #define TURBO_LED_PIN -1
+#define REVERSE_LED_PIN -1
 
 #define BOARD_LEDS_PIN 15
 
@@ -174,6 +175,11 @@
 #define I2C_SPEED 800000
 #define DISPLAY_FLIP 0
 #define DISPLAY_INVERT 0
+
+#define REVERSE_UP_DEFAULT 1
+#define REVERSE_DOWN_DEFAULT 1
+#define REVERSE_LEFT_DEFAULT 1
+#define REVERSE_RIGHT_DEFAULT 1
 
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESSB
