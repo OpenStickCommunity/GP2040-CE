@@ -57,6 +57,7 @@
 #define PIN_BUTTON_R3   FLATBOX_SW6_PIN          // R3 / RS / RS / R3 / 12 / RS
 #define PIN_BUTTON_A1   FLATBOX_SW3_PIN          // A1 / Guide / Home / ~ / 13 / ~
 #define PIN_BUTTON_A2   FLATBOX_SW4_PIN          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
@@ -96,6 +97,7 @@
 
 #define TURBO_LED_PIN -1
 #define BOARD_LEDS_PIN -1
+#define REVERSE_LED_PIN -1
 
 
 // This is the Player LED section.
@@ -179,5 +181,10 @@
 
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESS
+
+#define REVERSE_UP_DEFAULT 1
+#define REVERSE_DOWN_DEFAULT 1
+#define REVERSE_LEFT_DEFAULT 1
+#define REVERSE_RIGHT_DEFAULT 1
 
 #endif
