@@ -17,10 +17,11 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "build": "react-scripts build && npm run makefsdata",
+    "makefsdata": "node makefsdata.js",
     "start": "react-scripts start",
     "dev": "concurrently --kill-others \"npm run dev-server\" \"npm start\"",
     "dev-server": "nodemon --exec node ./server/app.js",
-    "build": "react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
