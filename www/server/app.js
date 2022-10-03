@@ -122,6 +122,12 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		sliderLSPin: -1,
 		sliderRSPin: -1,
 		turboShotCount: 20,
+		reversePin: -1,
+		reverseLED: -1,
+		reverseActionUp: 1,
+		reverseActionDown: 1,
+		reverseActionLeft: 1,
+		reverseActionRight: 1,
 		usedPins,
 	});
 });
