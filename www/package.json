@@ -19,7 +19,6 @@
   "scripts": {
     "build": "react-scripts build && npm run makefsdata",
     "makefsdata": "node makefsdata.js",
-    "install": "npm install",
     "start": "react-scripts start",
     "dev": "concurrently --kill-others \"npm run dev-server\" \"npm start\"",
     "dev-server": "nodemon --exec node ./server/app.js",
