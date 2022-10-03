@@ -123,7 +123,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		sliderRSPin: -1,
 		turboShotCount: 20,
 		reversePin: -1,
-		reverseLED: -1,
+		reversePinLED: -1,
 		reverseActionUp: 1,
 		reverseActionDown: 1,
 		reverseActionLeft: 1,
