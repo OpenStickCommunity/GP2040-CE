@@ -484,7 +484,7 @@ void I2CDisplayAddon::drawSplashScreen(int splashMode, int splashSpeed)
             if ((sizeof(splashCustom) / sizeof(*splashCustom)) > 0) {
                 obdDrawSprite(&obd, (uint8_t *)splashCustom, 128, 64, 16, 0, 0, 1);
             } else {
-			    obdDrawSprite(&obd, (uint8_t *)splashImage, 128, 64, 16, 0, 0, 1);
+			    obdDrawSprite(&obd, (uint8_t *)splashImageMain, 128, 64, 16, 0, 0, 1);
             }
 			break;
 		case CLOSEIN: // Close-in. Animate the GP2040 logo
