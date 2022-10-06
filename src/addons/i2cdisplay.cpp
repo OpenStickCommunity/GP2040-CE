@@ -75,6 +75,9 @@ void I2CDisplayAddon::process() {
 			case BUTTON_LAYOUT_DANCEPADA:
 				drawDancepadA(39, 12, 15, 2);
 				break;
+			case BUTTON_LAYOUT_TWINSTICKA:
+				drawTwinStickA(8, 28, 8, 2);
+				break;
 		}
 
 		switch (BUTTON_LAYOUT_RIGHT)
@@ -111,6 +114,9 @@ void I2CDisplayAddon::process() {
 				break;
 			case BUTTON_LAYOUT_DANCEPADB:
 				drawDancepadB(39, 12, 15, 2);
+				break;
+			case BUTTON_LAYOUT_TWINSTICKB:
+				drawTwinStickB(100, 28, 8, 2);
 				break;
 		}
 	}
@@ -197,6 +203,70 @@ void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, 
 	} else if (pGamepad->pressedLeft()) {
 		obdPreciseEllipse(&obd, startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
 	} else if (pGamepad->pressedRight()) {
+		obdPreciseEllipse(&obd, startX + buttonMargin, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	} else {
+		obdPreciseEllipse(&obd, startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	}
+}
+
+void I2CDisplayAddon::drawTwinStickA(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// Stick
+	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
+	
+	if (pGamepad->pressedUp()) {
+		if (pGamepad->pressedLeft()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
+		} else if (pGamepad->pressedRight()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
+		} else {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY, buttonRadius, buttonRadius, 1, 1);
+		}
+	} else if (pGamepad->pressedDown()) {
+		if (pGamepad->pressedLeft()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
+		} else if (pGamepad->pressedRight()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
+		} else {
+			obdPreciseEllipse(&obd, startX + buttonMargin / 2, startY + buttonMargin, buttonRadius, buttonRadius, 1, 1);
+		}
+	} else if (pGamepad->pressedLeft()) {
+		obdPreciseEllipse(&obd, startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	} else if (pGamepad->pressedRight()) {
+		obdPreciseEllipse(&obd, startX + buttonMargin, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	} else {
+		obdPreciseEllipse(&obd, startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	}
+}
+
+void I2CDisplayAddon::drawTwinStickB(int startX, int startY, int buttonRadius, int buttonPadding)
+{
+	const int buttonMargin = buttonPadding + (buttonRadius * 2);
+
+	// Stick
+	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
+	
+	if (pGamepad->pressedB4()) {
+		if (pGamepad->pressedB3()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
+		} else if (pGamepad->pressedB2()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
+		} else {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY, buttonRadius, buttonRadius, 1, 1);
+		}
+	} else if (pGamepad->pressedB1()) {
+		if (pGamepad->pressedB3()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
+		} else if (pGamepad->pressedB2()) {
+			obdPreciseEllipse(&obd, startX + (buttonMargin * 0.875), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
+		} else {
+			obdPreciseEllipse(&obd, startX + buttonMargin / 2, startY + buttonMargin, buttonRadius, buttonRadius, 1, 1);
+		}
+	} else if (pGamepad->pressedB3()) {
+		obdPreciseEllipse(&obd, startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
+	} else if (pGamepad->pressedB2()) {
 		obdPreciseEllipse(&obd, startX + buttonMargin, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
 	} else {
 		obdPreciseEllipse(&obd, startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
