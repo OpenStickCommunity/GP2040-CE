@@ -64,6 +64,11 @@ struct BoardOptions
 	uint8_t reverseActionDown;
 	uint8_t reverseActionLeft;
 	uint8_t reverseActionRight;
+	int i2cAnalog1219SDAPin;
+	int i2cAnalog1219SCLPin;
+	int i2cAnalog1219Block;
+	uint32_t i2cAnalog1219Speed;
+	uint8_t i2cAnalog1219Address;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };

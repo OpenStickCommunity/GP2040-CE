@@ -128,6 +128,11 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		reverseActionDown: 1,
 		reverseActionLeft: 1,
 		reverseActionRight: 1,
+		i2cAnalog1219SDAPin: -1,
+		i2cAnalog1219SCLPin: -1,
+		i2cAnalog1219Block: 0,
+		i2cAnalog1219Speed: 400000,
+		i2cAnalog1219Address: 0x40,
 		usedPins,
 	});
 });
