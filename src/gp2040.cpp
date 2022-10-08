@@ -5,9 +5,10 @@
 #include "storagemanager.h"
 
 #include "inputs/analog.h" // Inputs
+#include "inputs/i2canalog1219.h"
 #include "inputs/jslider.h"
-#include "inputs/turbo.h"
 #include "inputs/reverse.h"
+#include "inputs/turbo.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -58,9 +59,11 @@ void GP2040::setup() {
 
 	// Setup Add-on Inputs
 	setupInput(new AnalogInput());
+	setupInput(new I2CAnalog1219Input());
 	setupInput(new JSliderInput());
-	setupInput(new TurboInput());
 	setupInput(new ReverseInput());
+	setupInput(new TurboInput());
+	
 }
 
 void GP2040::run() {

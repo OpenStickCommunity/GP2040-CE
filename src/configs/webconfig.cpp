@@ -397,6 +397,11 @@ std::string setAddonOptions()
 	boardOptions.reverseActionDown  = doc["reverseActionDown"] == -1 ? 0xFF : doc["reverseActionDown"];
 	boardOptions.reverseActionLeft  = doc["reverseActionLeft"] == -1 ? 0xFF : doc["reverseActionLeft"];
 	boardOptions.reverseActionRight = doc["reverseActionRight"] == -1 ? 0xFF : doc["reverseActionRight"];
+	boardOptions.i2cAnalog1219SDAPin = doc["i2cAnalog1219SDAPin"] == -1 ? 0xFF : doc["i2cAnalog1219SDAPin"];
+	boardOptions.i2cAnalog1219SCLPin = doc["i2cAnalog1219SCLPin"] == -1 ? 0xFF : doc["i2cAnalog1219SCLPin"];
+	boardOptions.i2cAnalog1219Block = doc["i2cAnalog1219Block"];
+	boardOptions.i2cAnalog1219Speed = doc["i2cAnalog1219Speed"];
+	boardOptions.i2cAnalog1219Address = doc["i2cAnalog1219Address"];
 	Storage::getInstance().setBoardOptions(boardOptions);
 
 	return serialize_json(doc);
@@ -417,6 +422,11 @@ std::string getAddonOptions()
 	doc["reverseActionDown"] = boardOptions.reverseActionDown == 0xFF ? -1 : boardOptions.reverseActionDown;
 	doc["reverseActionLeft"] = boardOptions.reverseActionLeft == 0xFF ? -1 : boardOptions.reverseActionLeft;
 	doc["reverseActionRight"] = boardOptions.reverseActionRight == 0xFF ? -1 : boardOptions.reverseActionRight;
+	doc["i2cAnalog1219SDAPin"] = boardOptions.i2cAnalog1219SDAPin == 0xFF ? -1 : boardOptions.i2cAnalog1219SDAPin;
+	doc["i2cAnalog1219SCLPin"] = boardOptions.i2cAnalog1219SCLPin == 0xFF ? -1 : boardOptions.i2cAnalog1219SCLPin;
+	doc["i2cAnalog1219Block"] = boardOptions.i2cAnalog1219Block;
+	doc["i2cAnalog1219Speed"] = boardOptions.i2cAnalog1219Speed;
+	doc["i2cAnalog1219Address"] = boardOptions.i2cAnalog1219Address;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");

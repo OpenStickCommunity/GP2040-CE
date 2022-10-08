@@ -7,6 +7,11 @@ import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 
+const I2C_BLOCKS = [
+	{ label: 'i2c0', value: 0 },
+	{ label: 'i2c1', value: 1 },
+];
+
 const schema = yup.object().shape({
 	turboPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Turbo Pin'),
 	turboPinLED: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Turbo Pin LED'),
@@ -15,6 +20,11 @@ const schema = yup.object().shape({
 	turboShotCount: yup.number().required().min(5).max(30).label('Turbo Shot Count'),
 	reversePin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Reverse Pin'),
 	reversePinLED: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Reverse Pin LED'),
+	i2cAnalog1219SDAPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('I2C Analog1219 SDA Pin'),
+	i2cAnalog1219SCLPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('I2C Analog1219 SCL Pin'),
+	i2cAnalog1219Block: yup.number().required().oneOf(I2C_BLOCKS.map(o => o.value)).label('I2C Analog1219 Block'),
+	i2cAnalog1219Speed: yup.number().required().label('I2C Analog1219 Speed'),
+	i2cAnalog1219Address: yup.number().required().label('I2C Analog1219 Address'),
 });
 
 const defaultValues = {
@@ -24,7 +34,12 @@ const defaultValues = {
 	sliderRSPin: -1,
 	turboShotCount: 5,
 	reversePin: -1,
-	reversePinLED: -1
+	reversePinLED: -1,
+	i2cAnalog1219SDAPin: -1,
+	i2cAnalog1219SCLPin: -1,
+	i2cAnalog1219Block: 0,
+	i2cAnalog1219Speed: 400000,
+	i2cAnalog1219Address: 0x40,
 };
 
 const REVERSE_ACTION = [
@@ -70,6 +85,16 @@ const FormContext = () => {
 			values.reverseActionLeft = parseInt(values.reverseActionLeft);
 		if (!!values.reverseActionRight)
 			values.reverseActionRight = parseInt(values.reverseActionRight);
+		if (!!values.i2cAnalog1219SDAPin)
+			values.i2cAnalog1219SDAPin = parseInt(values.i2cAnalog1219SDAPin);
+		if (!!values.i2cAnalog1219SCLPin)
+			values.i2cAnalog1219SCLPin = parseInt(values.i2cAnalog1219SCLPin);
+		if (!!values.i2cAnalog1219Block)
+			values.i2cAnalog1219Block = parseInt(values.i2cAnalog1219Block);
+		if (!!values.i2cAnalog1219Speed)
+			values.i2cAnalog1219Speed = parseInt(values.i2cAnalog1219Speed);
+		if (!!values.i2cAnalog1219Address)
+			values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
 	}, [values, setValues]);
 
 	return null;
@@ -138,7 +163,7 @@ export default function AddonsConfigPage() {
 							/>
 						</Col>
 					</Section>
-					<Section title="Slider">
+					<Section title="Joystick Selection Slider">
 						<Col>
 							<FormControl type="number"
 								label="Slider LS Pin"
@@ -240,6 +265,68 @@ export default function AddonsConfigPage() {
 							>
 								{REVERSE_ACTION.map((o, i) => <option key={`reverseActionRight-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
+						</Col>
+					</Section>
+					<Section title="I2C Analog ADS1219">
+						<Col>
+							<FormControl type="number"
+								label="I2C Analog ADS1219 SDA Pin"
+								name="i2cAnalog1219SDAPin"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.i2cAnalog1219SDAPin}
+								error={errors.i2cAnalog1219SDAPin}
+								isInvalid={errors.i2cAnalog1219SDAPin}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormControl type="number"
+								label="I2C Analog ADS1219 SCL Pin"
+								name="i2cAnalog1219SCLPin"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.i2cAnalog1219SCLPin}
+								error={errors.i2cAnalog1219SCLPin}
+								isInvalid={errors.i2cAnalog1219SCLPin}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormSelect
+								label="I2C Analog ADS1219 Block"
+								name="i2cAnalog1219Block"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.i2cAnalog1219Block}
+								error={errors.i2cAnalog1219Block}
+								isInvalid={errors.i2cAnalog1219Block}
+								onChange={handleChange}
+							>
+								{I2C_BLOCKS.map((o, i) => <option key={`i2cBlock-option-${i}`} value={o.value}>{o.label}</option>)}
+							</FormSelect>
+							<FormControl
+								label="I2C Analog ADS1219 Speed"
+								name="i2cAnalog1219Speed"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.i2cAnalog1219Speed}
+								error={errors.i2cAnalog1219Speed}
+								isInvalid={errors.i2cAnalog1219Speed}
+								onChange={handleChange}
+								min={100000}
+							/>
+							<FormControl
+								label="I2C Analog ADS1219 Address"
+								name="i2cAnalog1219Address"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.i2cAnalog1219Address}
+								error={errors.i2cAnalog1219Address}
+								isInvalid={errors.i2cAnalog1219Address}
+								onChange={handleChange}
+								maxLength={4}
+							/>
 						</Col>
 					</Section>
 					<div className="mt-3">
