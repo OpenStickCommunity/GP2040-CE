@@ -82,7 +82,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.reverseActionLeft       = REVERSE_LEFT_DEFAULT;
 	boardOptions.reverseActionRight      = REVERSE_RIGHT_DEFAULT;
 	boardOptions.i2cAnalog1219SDAPin     = I2C_ANALOG1219_SDA_PIN;
-	boardOptions.i2cAnalog1219SCLPin     = I2C_ANALOG1219_SDA_PIN;
+	boardOptions.i2cAnalog1219SCLPin     = I2C_ANALOG1219_SCL_PIN;
 	boardOptions.i2cAnalog1219Block      = (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1;
 	boardOptions.i2cAnalog1219Speed      = I2C_ANALOG1219_SPEED;
 	boardOptions.i2cAnalog1219Address    = I2C_ANALOG1219_ADDRESS;
