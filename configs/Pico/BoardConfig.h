@@ -36,7 +36,7 @@
 #define PIN_BUTTON_A1   20          // A1 / Guide / Home / ~ / 13 / ~
 #define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO 14         // Turbo
-#define PIN_BUTTON_REVERSE 22       // UDLR Reverse
+#define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
 
@@ -122,10 +122,6 @@
 #define ANALOG_ADC_VRY -1
 
 
-// Reverse Button section
-#define REVERSE_LED_PIN 12
-
-
 // This is the I2C Display section (commonly known as the OLED display section).
 // In this section you can specify if a display as been enabled, which pins are assined to it, the block address and speed.
 // The default for `HAS_I2C_DISPLAY` is `1` which enables it.
@@ -186,6 +182,8 @@
 #define I2C_ANALOG1219_SPEED 400000
 #define I2C_ANALOG1219_ADDRESS 0x40
 
+// Reverse Button section
+#define REVERSE_LED_PIN -1
 #define REVERSE_UP_DEFAULT 1
 #define REVERSE_DOWN_DEFAULT 1
 #define REVERSE_LEFT_DEFAULT 1
