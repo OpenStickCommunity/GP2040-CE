@@ -10,7 +10,7 @@
 #endif
 
 #ifndef ANALOG_ADC_VRY
-#define ANALOG_ADC_VRX    -1
+#define ANALOG_ADC_VRY    -1
 #endif
 
 // Analog Module Name

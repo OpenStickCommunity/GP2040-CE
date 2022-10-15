@@ -19,6 +19,7 @@
 #include "addons/neopicoleds.h"
 #include "addons/playerleds.h"
 
+#include "inputs/i2canalog1219.h"
 #include "inputs/turbo.h"
 
 #include "helper.h"
