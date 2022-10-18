@@ -1,7 +1,10 @@
 // GP2040 includes
 #include "gp2040aux.h"
 #include "gamepad.h"
-#include "storagemanager.h" // Managers
+
+#include "storagemanager.h" // Global Managers
+#include "addonmanager.h"
+
 #include "addons/i2cdisplay.h" // Add-Ons
 #include "addons/neopicoleds.h"
 #include "addons/playerleds.h"
@@ -15,22 +18,18 @@ GP2040Aux::~GP2040Aux() {
 }
 
 void GP2040Aux::setup() {
-	setupAddon(new I2CDisplayAddon());
-	setupAddon(new NeoPicoLEDAddon());
-	setupAddon(new PlayerLEDAddon());
+	AddonManager::getInstance().LoadAddon(new I2CDisplayAddon(), CORE1_LOOP);
+	AddonManager::getInstance().LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
+	AddonManager::getInstance().LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 }
 
 void GP2040Aux::run() {
 	while (1) {
-		for (std::vector<GPAddon*>::iterator it = Storage::getInstance().Addons.begin(); it != Storage::getInstance().Addons.end(); it++) {
-			(*it)->process();
+		if (nextRuntime > getMicro()) { // fix for unsigned
+			sleep_us(50); // Give some time back to our CPU (lower power consumption)
+			continue;
 		}
-	}
-}
-
-void GP2040Aux::setupAddon(GPAddon* addon) {
-	if (addon->available()) {
-		addon->setup();
-		Storage::getInstance().Addons.push_back(addon);
+		AddonManager::getInstance().ProcessAddons(CORE1_LOOP);
+		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}
 }

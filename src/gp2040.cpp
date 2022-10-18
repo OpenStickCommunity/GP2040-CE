@@ -1,14 +1,16 @@
 // GP2040 includes
 #include "gp2040.h"
 #include "helper.h"
-#include "configmanager.h" // Managers
-#include "storagemanager.h"
 
-#include "inputs/analog.h" // Inputs
-#include "inputs/i2canalog1219.h"
-#include "inputs/jslider.h"
-#include "inputs/reverse.h"
-#include "inputs/turbo.h"
+#include "configmanager.h" // Global Managers
+#include "storagemanager.h"
+#include "addonmanager.h"
+
+#include "addons/analog.h" // Inputs for Core0
+#include "addons/i2canalog1219.h"
+#include "addons/jslider.h"
+#include "addons/reverse.h"
+#include "addons/turbo.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -27,7 +29,7 @@ GP2040::GP2040() : nextRuntime(0) {
 GP2040::~GP2040() {
 }
 
-void GP2040::setup() {	
+void GP2040::setup() {
     // Setup Gamepad and Gamepad Storage
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->setup();
@@ -57,13 +59,12 @@ void GP2040::setup() {
 		initialize_driver(inputMode);
 	}
 
-	// Setup Add-on Inputs
-	setupInput(new AnalogInput());
-	setupInput(new I2CAnalog1219Input());
-	setupInput(new JSliderInput());
-	setupInput(new ReverseInput());
-	setupInput(new TurboInput());
-	
+	// Setup Add-ons
+	AddonManager::getInstance().LoadAddon(new AnalogInput(), CORE0_INPUT);
+	AddonManager::getInstance().LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
+	AddonManager::getInstance().LoadAddon(new JSliderInput(), CORE0_INPUT);
+	AddonManager::getInstance().LoadAddon(new ReverseInput(), CORE0_INPUT);
+	AddonManager::getInstance().LoadAddon(new TurboInput(), CORE0_INPUT);
 }
 
 void GP2040::run() {
@@ -90,12 +91,9 @@ void GP2040::run() {
 		gamepad->hotkey(); 	// check for MPGS hotkeys
 		gamepad->process(); // process through MPGS
 
-		// Loop through all input modifiers/features (Analog Sticks, Turbo Buttons, Macro Inputs, Touch Screens, etc.) 
-		for (std::vector<GPAddon*>::iterator it = Storage::getInstance().Inputs.begin(); it != Storage::getInstance().Inputs.end(); it++) {
-			(*it)->process();
-		}
+		AddonManager::getInstance().ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
 
-		// Copy Processed Gamepad
+		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
@@ -105,12 +103,5 @@ void GP2040::run() {
 		tud_task(); // TinyUSB Task update
 
 		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
-	}
-}
-
-void GP2040::setupInput(GPAddon* input) {
-	if (input->available()) {
-		input->setup();
-		Storage::getInstance().Inputs.push_back(input);
 	}
 }

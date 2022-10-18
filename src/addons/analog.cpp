@@ -1,4 +1,4 @@
-#include "inputs/analog.h"
+#include "addons/analog.h"
 #include "storagemanager.h"
 
 #include "hardware/adc.h"

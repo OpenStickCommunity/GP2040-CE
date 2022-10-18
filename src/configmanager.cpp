@@ -1,4 +1,6 @@
 #include "configmanager.h"
+
+#include "addonmanager.h"
 #include "configs/webconfig.h"
 #include "addons/neopicoleds.h"
 
@@ -28,13 +30,10 @@ void ConfigManager::setLedOptions(LEDOptions ledOptions) {
 	Storage::getInstance().setLEDOptions(ledOptions);
 
     // Configure LEDs in the neopico
-	for (std::vector<GPAddon*>::iterator it = Storage::getInstance().Addons.begin(); it != Storage::getInstance().Addons.end(); it++) {
-		if ((*it)->name() == NeoPicoLEDName) {
-			NeoPicoLEDAddon * neopicoled = (NeoPicoLEDAddon*)(*it);
-			neopicoled->configureLEDs();
-			break; // trigger LED configuration
-		}
-	} 
+	NeoPicoLEDAddon * neopicoled = (NeoPicoLEDAddon*)AddonManager::getInstance().GetAddon(NeoPicoLEDName);
+	if ( neopicoled != nullptr ) {
+		neopicoled->configureLEDs();
+	}
 }
 
 void ConfigManager::setBoardOptions(BoardOptions boardOptions) {

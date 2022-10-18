@@ -17,7 +17,6 @@ public:
     void setup();           // setup core0
     void run();             // loop core0
 private:
-    void setupInput(GPAddon*);
     uint64_t nextRuntime;
     Gamepad snapshot;
 };

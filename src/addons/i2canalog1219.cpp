@@ -1,4 +1,4 @@
-#include "inputs/i2canalog1219.h"
+#include "addons/i2canalog1219.h"
 #include "storagemanager.h"
 
 #define ADS_MAX (float)((1 << 23) - 1)

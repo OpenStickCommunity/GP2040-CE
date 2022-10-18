@@ -19,7 +19,7 @@ public:
     void setup();           // setup core1
     void run();             // loop core1
 private:
-    void setupAddon(GPAddon*);
+    uint64_t nextRuntime;
 };
 
 #endif

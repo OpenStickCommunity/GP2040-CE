@@ -13,7 +13,6 @@
 #include "enums.h"
 #include "helper.h"
 #include "gamepad.h"
-#include "gpaddon.h"
 
 #define GAMEPAD_STORAGE_INDEX      0 // 1024 bytes for gamepad options
 #define BOARD_STORAGE_INDEX     1024 //  512 bytes for hardware options
@@ -139,9 +138,6 @@ public:
 	uint8_t * GetFeatureData();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
-	
-	std::vector<GPAddon*> Addons;		// Modular Features
-	std::vector<GPAddon*> Inputs;
 
 private:
 	Storage() : gamepad(0) {
