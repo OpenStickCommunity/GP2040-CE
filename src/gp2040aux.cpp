@@ -11,16 +11,16 @@
 
 #include <iterator>
 
-GP2040Aux::GP2040Aux() {
+GP2040Aux::GP2040Aux() : nextRuntime(0) {
 }
 
 GP2040Aux::~GP2040Aux() {
 }
 
 void GP2040Aux::setup() {
-	AddonManager::getInstance().LoadAddon(new I2CDisplayAddon(), CORE1_LOOP);
-	AddonManager::getInstance().LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
-	AddonManager::getInstance().LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
+	addons.LoadAddon(new I2CDisplayAddon(), CORE1_LOOP);
+	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
+	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 }
 
 void GP2040Aux::run() {
@@ -29,7 +29,7 @@ void GP2040Aux::run() {
 			sleep_us(50); // Give some time back to our CPU (lower power consumption)
 			continue;
 		}
-		AddonManager::getInstance().ProcessAddons(CORE1_LOOP);
+		addons.ProcessAddons(CORE1_LOOP);
 		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}
 }

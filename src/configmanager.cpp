@@ -28,12 +28,6 @@ void ConfigManager::setGamepadOptions(Gamepad* gamepad) {
 
 void ConfigManager::setLedOptions(LEDOptions ledOptions) {
 	Storage::getInstance().setLEDOptions(ledOptions);
-
-    // Configure LEDs in the neopico
-	NeoPicoLEDAddon * neopicoled = (NeoPicoLEDAddon*)AddonManager::getInstance().GetAddon(NeoPicoLEDName);
-	if ( neopicoled != nullptr ) {
-		neopicoled->configureLEDs();
-	}
 }
 
 void ConfigManager::setBoardOptions(BoardOptions boardOptions) {

@@ -1,17 +1,16 @@
 #include "addonmanager.h"
 
 void AddonManager::LoadAddon(GPAddon* addon, ADDON_PROCESS processAt, bool enabled) {
-    mutex_enter_blocking(&loadMutex);
-    AddonBlock * block = new AddonBlock;
     if (addon->available()) {
+        AddonBlock * block = new AddonBlock;
 		addon->setup();
         block->ptr = addon;
         block->process = processAt;
         block->enabled = enabled;
         addons.push_back(block);
-	}
-
-    mutex_exit(&loadMutex);
+	} else {
+        delete addon; // Don't use the memory if we don't have to
+    }
 }
 
 void AddonManager::ProcessAddons(ADDON_PROCESS processType) {

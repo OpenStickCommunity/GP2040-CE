@@ -60,11 +60,11 @@ void GP2040::setup() {
 	}
 
 	// Setup Add-ons
-	AddonManager::getInstance().LoadAddon(new AnalogInput(), CORE0_INPUT);
-	AddonManager::getInstance().LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
-	AddonManager::getInstance().LoadAddon(new JSliderInput(), CORE0_INPUT);
-	AddonManager::getInstance().LoadAddon(new ReverseInput(), CORE0_INPUT);
-	AddonManager::getInstance().LoadAddon(new TurboInput(), CORE0_INPUT);
+	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
+	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
+	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
+	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
+	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
 }
 
 void GP2040::run() {
@@ -91,7 +91,7 @@ void GP2040::run() {
 		gamepad->hotkey(); 	// check for MPGS hotkeys
 		gamepad->process(); // process through MPGS
 
-		AddonManager::getInstance().ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+		addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
 
 		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));

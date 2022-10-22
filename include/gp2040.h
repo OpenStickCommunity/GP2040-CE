@@ -8,7 +8,7 @@
 
 // GP2040 Classes
 #include "gamepad.h"
-#include "gpaddon.h"
+#include "addonmanager.h"
 
 class GP2040 {
 public:
@@ -19,6 +19,7 @@ public:
 private:
     uint64_t nextRuntime;
     Gamepad snapshot;
+    AddonManager addons;
 };
 
 #endif

@@ -8,9 +8,8 @@
 
 #include <vector>
 
-#include "addons/i2cdisplay.h"
-#include "addons/neopicoleds.h"
-#include "addons/playerleds.h"
+#include "gpaddon.h"
+#include "addonmanager.h"
 
 class GP2040Aux {
 public:
@@ -20,6 +19,7 @@ public:
     void run();             // loop core1
 private:
     uint64_t nextRuntime;
+    AddonManager addons;
 };
 
 #endif
