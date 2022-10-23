@@ -1,4 +1,4 @@
-#include "inputs/reverse.h"
+#include "addons/reverse.h"
 #include "storagemanager.h"
 #include "GamepadEnums.h"
 

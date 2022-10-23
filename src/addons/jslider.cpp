@@ -1,4 +1,4 @@
-#include "inputs/jslider.h"
+#include "addons/jslider.h"
 
 #include "storagemanager.h"
 

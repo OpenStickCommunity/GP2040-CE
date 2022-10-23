@@ -1,4 +1,4 @@
-#include "inputs/i2canalog1219.h"
+#include "addons/i2canalog1219.h"
 #include "storagemanager.h"
 
 #define ADS_MAX (float)((1 << 23) - 1)
@@ -6,7 +6,7 @@
 
 bool I2CAnalog1219Input::available() {
     BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	return (boardOptions.i2cAnalog1219SDAPin != -1 ||
+	return (boardOptions.i2cAnalog1219SDAPin != -1 &&
         boardOptions.i2cAnalog1219SCLPin != -1);
 }
 

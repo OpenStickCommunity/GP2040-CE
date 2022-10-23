@@ -18,9 +18,8 @@
 #include "addons/i2cdisplay.h"
 #include "addons/neopicoleds.h"
 #include "addons/playerleds.h"
-
-#include "inputs/i2canalog1219.h"
-#include "inputs/turbo.h"
+#include "addons/i2canalog1219.h"
+#include "addons/turbo.h"
 
 #include "helper.h"
 
