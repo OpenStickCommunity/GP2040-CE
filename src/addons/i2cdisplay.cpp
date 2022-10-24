@@ -55,11 +55,9 @@ void I2CDisplayAddon::process() {
 			case BUTTON_LAYOUT_STICK:
 				drawArcadeStick(8, 28, 8, 2);
 				break;
-
 			case BUTTON_LAYOUT_STICKLESS:
 				drawStickless(8, 20, 8, 2);
 				break;
-
 			case BUTTON_LAYOUT_BUTTONS_ANGLED:
 				drawWasdBox(8, 28, 7, 3);
 				break;
@@ -77,6 +75,9 @@ void I2CDisplayAddon::process() {
 				break;
 			case BUTTON_LAYOUT_TWINSTICKA:
 				drawTwinStickA(8, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_BLANKA:
+				drawBlankA(0, 0, 0, 0);
 				break;
 		}
 
@@ -117,6 +118,9 @@ void I2CDisplayAddon::process() {
 				break;
 			case BUTTON_LAYOUT_TWINSTICKB:
 				drawTwinStickB(100, 28, 8, 2);
+				break;
+			case BUTTON_LAYOUT_BLANKB:
+				drawSticklessButtons(0, 0, 0, 0);
 				break;
 		}
 	}
@@ -473,6 +477,14 @@ void I2CDisplayAddon::drawDancepadB(int startX, int startY, int buttonSize, int 
 	obdRectangle(&obd, startX, startY + buttonMargin * 2, startX + buttonSize, startY + buttonSize + buttonMargin * 2, 1, pGamepad->pressedB4()); // Down/Left
 	obdRectangle(&obd, startX + buttonMargin * 2, startY, startX + buttonSize + buttonMargin * 2, startY + buttonSize, 1, pGamepad->pressedB1()); // Up/Right
 	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin * 2, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin * 2, 1, pGamepad->pressedB3()); // Down/Right
+}
+
+void I2CDisplayAddon::drawBlankA(int startX, int startY, int buttonSize, int buttonPadding)
+{
+}
+
+void I2CDisplayAddon::drawBlankB(int startX, int startY, int buttonSize, int buttonPadding)
+{
 }
 
 void I2CDisplayAddon::drawSplashScreen(int splashMode, int splashSpeed)
