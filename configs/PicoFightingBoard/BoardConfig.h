@@ -19,8 +19,8 @@
 
 #define PIN_DPAD_UP     1           // UP
 #define PIN_DPAD_DOWN   2           // DOWN
-#define PIN_DPAD_RIGHT  0           // RIGHT
-#define PIN_DPAD_LEFT   3           // LEFT
+#define PIN_DPAD_RIGHT  3           // RIGHT
+#define PIN_DPAD_LEFT   0           // LEFT
 #define PIN_BUTTON_B1   11          // B1 / A / B / Cross / 2 / K1
 #define PIN_BUTTON_B2   12          // B2 / B / A / Circle / 3 / K2
 #define PIN_BUTTON_R2   13          // R2 / RT / ZR / R2 / 8 / K3
