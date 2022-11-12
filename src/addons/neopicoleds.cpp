@@ -369,6 +369,9 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 
 		case BUTTON_LAYOUT_BUTTONS_ANGLED:
 			return generatedLEDWasd(&positions);
+
+		case BUTTON_LAYOUT_VLXA:
+			return generatedLEDButtons(&positions);
 	}
 }
 
