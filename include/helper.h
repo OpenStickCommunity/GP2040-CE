@@ -11,7 +11,7 @@
 #include "xinput_driver.h"
 
 // GP2040-CE Version (32 character limit)
-#define GP2040VERSION "v0.5.2"
+#define GP2040VERSION "v0.5.3"
 
 const std::string BUTTON_LABEL_UP = "Up";
 const std::string BUTTON_LABEL_DOWN = "Down";
