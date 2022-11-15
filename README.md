@@ -2,7 +2,7 @@
 
 GP2040-CE is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontroller, and provides high performance with a rich feature set across multiple platforms. GP2040-CE is compatible with PC, MiSTer, Android, Raspberry Pi, Nintendo Switch, PS3 and PS4 (legacy controller support).
 
-Full documentation can be found at <https://gp2040.info>.
+Full documentation can be found at <https://www.gp2040-ce.info>.
 
 ## Features
 
@@ -15,9 +15,9 @@ Full documentation can be found at <https://gp2040.info>.
 * PWM Player indicator LED support (XInput only)
 * Multiple profile support
 * Support for 128x64 monochrome I2C displays - SSD1306, SH1106, and SH1107 compatible
-* [Built-in, embedded web configuration](https://gp2040.info/#/web-configurator) - no download required!
+* [Built-in, embedded web configuration](https://www.gp2040-ce.info/#/web-configurator) - no download required!
 
-Visit the [GP2040-CE Usage](https://gp2040.info/#/usage) page for more details.
+Visit the [GP2040-CE Usage](https://www.gp2040-ce.info/#/usage) page for more details.
 
 ## Performance
 
@@ -85,7 +85,7 @@ No! GP2040-CE dedicates a processing core to just reading and writing player inp
 
 #### Why do the buttons have weird labels like B3, A1, S2, etc.?
 
-GP2040-CE uses a generic system for handling button inputs that resembles a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040-CE documentation and web configurator have a dropdown to change the labels to more familiar controller layouts. You can refer to the button mapping table on the [GP2040 Usage](https://gp2040.info/#/usage?id=buttons) page.
+GP2040-CE uses a generic system for handling button inputs that resembles a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040-CE documentation and web configurator have a dropdown to change the labels to more familiar controller layouts. You can refer to the button mapping table on the [GP2040 Usage](https://www.gp2040-ce.info/#/usage?id=buttons) page.
 
 #### Why use PlatformIO instead of \<insert favorite project setup\>?
 
