@@ -93,6 +93,8 @@ public:
 	void drawTwinStickB(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawBlankA(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawBlankB(int startX, int startY, int buttonSize, int buttonPadding);
+	void drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
 	uint8_t ucBackBuffer[1024];
 	OBDISP obd;
 	std::string statusBar;

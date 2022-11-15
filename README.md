@@ -47,7 +47,7 @@ The instructions will slightly vary based on your device. These instructions are
 
 > If the device has been previously used for something other than GP2040-CE, please flash this file first to clear the on-board storage: [flash_nuke.uf2](docs/downloads/flash_nuke.uf2). After flashing the nuke file, wait a minute for the clear program to run and the RPI-RP2 drive to reappear.
 
-1. Download the latest `GP2040.uf2` file from the [Releases](releases) section for your board (e.g. `GP2040-PiPico.uf2` for the Raspberry Pi Pico).
+1. Download the latest `GP2040.uf2` file from the [Releases](https://github.com/OpenStickFoundation/GP2040-CE/releases) section for your board (e.g. `GP2040-PiPico.uf2` for the Raspberry Pi Pico).
 1. Unplug your Pico.
 1. Hold the BOOTSEL button on the Pico and plug into your computer. A new removable drive named `RPI-RP2` should appear in your file explorer.
 1. Drag and drop the `GP2040.uf2` file into the removable drive. This will flash the board.
