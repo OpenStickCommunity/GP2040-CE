@@ -77,7 +77,7 @@
 
 #define BOARD_LEDS_PIN 15
 
-#define LED_BRIGHTNESS_MAXIMUM 200
+#define LED_BRIGHTNESS_MAXIMUM 150
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 2
@@ -112,7 +112,7 @@
 // 2 - `PLED_TYPE_PWM` - This will enable the Player LEDs ( it is recommended to run through 3V3(OUT) with a resistor)
 // 3 - `PLED_TYPE_RGB` - This will enable the Player LEDs as addressible RGB LEDs (please not that this has not been implemented yet)
 
-#define PLED_TYPE PLED_TYPE_NONE
+#define PLED_TYPE PLED_TYPE_PWM
 #define PLED1_PIN 16
 #define PLED2_PIN 17
 #define PLED3_PIN 18
