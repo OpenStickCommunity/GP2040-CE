@@ -43,6 +43,16 @@ typedef enum
 
 typedef enum
 {
+    MAIN,
+    X,
+    Y,
+    Z,
+	CUSTOM,
+	LEGACY
+} SplashChoice;
+
+typedef enum
+{
 	CONFIG_TYPE_WEB = 0,
 	CONFIG_TYPE_SERIAL,
 	CONFIG_TYPE_DISPLAY

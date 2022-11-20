@@ -48,6 +48,8 @@ struct BoardOptions
 	uint8_t pinSliderRS;
 	ButtonLayout buttonLayout;
 	ButtonLayoutRight buttonLayoutRight;
+	SplashMode splashMode;
+	SplashChoice splashChoice;
 	int i2cSDAPin;
 	int i2cSCLPin;
 	int i2cBlock;
@@ -141,8 +143,10 @@ public:
 	void ResetSettings(); 				// EEPROM Reset Feature
 
 	int GetButtonLayout();
-
 	int GetButtonLayoutRight();
+
+	int GetSplashMode();
+	int GetSplashChoice();
 
 private:
 	Storage() : gamepad(0) {
