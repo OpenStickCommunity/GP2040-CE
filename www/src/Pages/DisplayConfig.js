@@ -17,6 +17,36 @@ const I2C_BLOCKS = [
 	{ label: 'i2c1', value: 1 },
 ];
 
+const BUTTON_LAYOUT = [
+	{ label: 'Stick', value: 0 },			// BUTTON_LAYOUT_STICK
+	{ label: 'Stickless', value: 1 },		// BUTTON_LAYOUT_STICKLESS
+	{ label: 'Buttons Angled', value: 2 },  // BUTTON_LAYOUT_BUTTONS_ANGLED
+	{ label: 'Buttons Basic', value: 3 },   // BUTTON_LAYOUT_BUTTONS_BASIC
+	{ label: 'Keyboard Angled', value: 4 }, // BUTTON_LAYOUT_KEYBOARD_ANGLED
+	{ label: 'Keyboard', value: 5 },        // BUTTON_LAYOUT_KEYBOARDA
+	{ label: 'Dancepad', value: 6 },        // BUTTON_LAYOUT_DANCEPADA
+	{ label: 'Twinstick', value: 7 },       // BUTTON_LAYOUT_TWINSTICKA
+	{ label: 'Blank', value: 8 },           // BUTTON_LAYOUT_BLANKA
+	{ label: 'VLX', value: 9 }              // BUTTON_LAYOUT_VLXA
+];
+
+const BUTTON_LAYOUT_RIGHT = [
+	{ label: 'Arcade', value: 0 },			 // BUTTON_LAYOUT_ARCADE
+	{ label: 'Stickless', value: 1 },        // BUTTON_LAYOUT_STICKLESSB
+	{ label: 'Buttons Anbled', value: 2 },   // BUTTON_LAYOUT_BUTTONS_ANGLEDB
+	{ label: 'Viewlix', value: 3 },			 // BUTTON_LAYOUT_VEWLIX
+	{ label: 'Viewlix 7', value: 4 },        // BUTTON_LAYOUT_VEWLIX7
+	{ label: 'Capcom', value: 5 },           // BUTTON_LAYOUT_CAPCOM
+	{ label: 'Capcom 6', value: 6 },		 // BUTTON_LAYOUT_CAPCOM6
+	{ label: 'Sega 2P', value: 7 },			 // BUTTON_LAYOUT_SEGA2P
+	{ label: 'Noir 8', value: 8 },			 // BUTTON_LAYOUT_NOIR8
+	{ label: 'Keyboard', value: 9 },		 // BUTTON_LAYOUT_KEYBOARDB
+	{ label: 'Dancepad', value: 10 },		 // BUTTON_LAYOUT_DANCEPADB
+	{ label: 'Thumbstick', value: 11 },	     // BUTTON_LAYOUT_TWINSTICKB
+	{ label: 'Blank', value: 12 },		     // BUTTON_LAYOUT_BLANKB
+	{ label: 'VLX', value: 13 }		         // BUTTON_LAYOUT_VLXB
+];
+
 const defaultValues = {
 	enabled: false,
 	sdaPin: -1,
@@ -26,6 +56,8 @@ const defaultValues = {
 	i2cSpeed: 400000,
 	flipDisplay: false,
 	invertDisplay: false,
+	buttonLayout: 0,
+	buttonLayoutRight: 0
 };
 
 let usedPins = [];
@@ -41,6 +73,8 @@ const schema = yup.object().shape({
 	i2cSpeed: yup.number().required().label('I2C Speed'),
 	flipDisplay: yup.number().label('Flip Display'),
 	invertDisplay: yup.number().label('Invert Display'),
+	buttonLayout: yup.number().required().oneOf(BUTTON_LAYOUT.map(o => o.value)).label('Button Layout Left'),
+	buttonLayoutRight: yup.number().required().oneOf(BUTTON_LAYOUT_RIGHT.map(o => o.value)).label('Button Layout Right'),
 });
 
 const FormContext = () => {
@@ -64,6 +98,10 @@ const FormContext = () => {
 			values.flipDisplay = parseInt(values.flipDisplay);
 		if (!!values.invertDisplay)
 			values.invertDisplay = parseInt(values.invertDisplay);
+		if (!!values.buttonLayout)
+			values.buttonLayout = parseInt(values.buttonLayout);
+		if (!!values.buttonLayoutRight)
+			values.buttonLayoutRight = parseInt(values.buttonLayoutRight);
 	}, [values, setValues]);
 
 	return null;
@@ -235,6 +273,32 @@ export default function DisplayConfigPage() {
 								onChange={handleChange}
 							>
 								{ON_OFF_OPTIONS.map((o, i) => <option key={`invertDisplay-option-${i}`} value={o.value}>{o.label}</option>)}
+							</FormSelect>
+						</Row>
+						<Row className="mb-3">
+						<FormSelect
+								label="Button Layout (Left)"
+								name="buttonLayout"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.buttonLayout}
+								error={errors.buttonLayout}
+								isInvalid={errors.buttonLayout}
+								onChange={handleChange}
+							>
+								{BUTTON_LAYOUT.map((o, i) => <option key={`buttonLayout-option-${i}`} value={o.value}>{o.label}</option>)}
+							</FormSelect>
+							<FormSelect
+								label="Button Layout (Right)"
+								name="buttonLayoutRight"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.buttonLayoutRight}
+								error={errors.buttonLayoutRight}
+								isInvalid={errors.buttonLayoutRight}
+								onChange={handleChange}
+							>
+								{BUTTON_LAYOUT_RIGHT.map((o, i) => <option key={`buttonLayoutRight-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 						</Row>
 						<div className="mt-3">

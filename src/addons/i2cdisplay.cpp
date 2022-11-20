@@ -50,7 +50,7 @@ void I2CDisplayAddon::process() {
 		drawSplashScreen(SPLASH_MODE, 90);
 	} else {
 		drawStatusBar(gamepad);
-		switch (BUTTON_LAYOUT)
+		switch (Storage::getInstance().GetButtonLayout())
 		{
 			case BUTTON_LAYOUT_STICK:
 				drawArcadeStick(8, 28, 8, 2);
@@ -84,7 +84,7 @@ void I2CDisplayAddon::process() {
 				break;
 		}
 
-		switch (BUTTON_LAYOUT_RIGHT)
+		switch (Storage::getInstance().GetButtonLayoutRight())
 		{
 			case BUTTON_LAYOUT_ARCADE:
 				drawArcadeButtons(8, 28, 8, 2);

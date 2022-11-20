@@ -49,6 +49,8 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		i2cSpeed: 400000,
 		flipDisplay: 0,
 		invertDisplay: 1,
+		buttonLayout: 0,
+		buttonLayoutRight: 0
 	});
 });
 
