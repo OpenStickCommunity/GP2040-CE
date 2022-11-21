@@ -48,9 +48,9 @@ const BUTTON_LAYOUTS_RIGHT = [
 ];
 
 const SPLASH_MODES = [
-	{ label: 'Static', value: 0 },			 // STATICSPLASH
-	{ label: 'Close In', value: 1 },		 // CLOSEIN
-	{ label: 'None', value: 3 },             // NOSPLASH
+	{ label: 'Enabled', value: 0 },			 // STATICSPLASH
+//	{ label: 'Close In', value: 1 },		 // CLOSEIN
+	{ label: 'Disabled', value: 3 },         // NOSPLASH
 ];
 
 const SPLASH_CHOICES = [
@@ -92,8 +92,8 @@ const schema = yup.object().shape({
 	invertDisplay: yup.number().label('Invert Display'),
 	buttonLayout: yup.number().required().oneOf(BUTTON_LAYOUTS.map(o => o.value)).label('Button Layout Left'),
 	buttonLayoutRight: yup.number().required().oneOf(BUTTON_LAYOUTS_RIGHT.map(o => o.value)).label('Button Layout Right'),
-	splashMode: yup.number().required().oneOf(SPLASH_MODES.map(o => o.value)).label('Splash Mode'),
-	splashChoice: yup.number().required().oneOf(SPLASH_CHOICES.map(o => o.value)).label('Splash Choice'),
+	splashMode: yup.number().required().oneOf(SPLASH_MODES.map(o => o.value)).label('Splash Screen'),
+	splashChoice: yup.number().required().oneOf(SPLASH_CHOICES.map(o => o.value)).label('Splash Screen Choice'),
 });
 
 const FormContext = () => {
