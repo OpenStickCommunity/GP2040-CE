@@ -17,7 +17,7 @@ const I2C_BLOCKS = [
 	{ label: 'i2c1', value: 1 },
 ];
 
-const BUTTON_LAYOUT = [
+const BUTTON_LAYOUTS = [
 	{ label: 'Stick', value: 0 },			// BUTTON_LAYOUT_STICK
 	{ label: 'Stickless', value: 1 },		// BUTTON_LAYOUT_STICKLESS
 	{ label: 'Buttons Angled', value: 2 },  // BUTTON_LAYOUT_BUTTONS_ANGLED
@@ -30,7 +30,7 @@ const BUTTON_LAYOUT = [
 	{ label: 'VLX', value: 9 }              // BUTTON_LAYOUT_VLXA
 ];
 
-const BUTTON_LAYOUT_RIGHT = [
+const BUTTON_LAYOUTS_RIGHT = [
 	{ label: 'Arcade', value: 0 },			 // BUTTON_LAYOUT_ARCADE
 	{ label: 'Stickless', value: 1 },        // BUTTON_LAYOUT_STICKLESSB
 	{ label: 'Buttons Angled', value: 2 },   // BUTTON_LAYOUT_BUTTONS_ANGLEDB
@@ -47,6 +47,21 @@ const BUTTON_LAYOUT_RIGHT = [
 	{ label: 'VLX', value: 13 }		         // BUTTON_LAYOUT_VLXB
 ];
 
+const SPLASH_MODES = [
+	{ label: 'Enabled', value: 0 },			 // STATICSPLASH
+//	{ label: 'Close In', value: 1 },		 // CLOSEIN
+	{ label: 'Disabled', value: 3 },         // NOSPLASH
+];
+
+const SPLASH_CHOICES = [
+	{ label: 'Main', value: 0 },			 // MAIN
+	{ label: 'X', value: 1 },		         // X
+	{ label: 'Y', value: 2 },                // Y
+	{ label: 'Z', value: 3 },                // Z
+	{ label: 'Custom', value: 4 },           // CUSTOM
+	{ label: 'Legacy', value: 5 },           // LEGACY
+];
+
 const defaultValues = {
 	enabled: false,
 	sdaPin: -1,
@@ -57,7 +72,9 @@ const defaultValues = {
 	flipDisplay: false,
 	invertDisplay: false,
 	buttonLayout: 0,
-	buttonLayoutRight: 0
+	buttonLayoutRight: 3,
+	splashMode: 3,
+	splashChoice: 0
 };
 
 let usedPins = [];
@@ -73,8 +90,10 @@ const schema = yup.object().shape({
 	i2cSpeed: yup.number().required().label('I2C Speed'),
 	flipDisplay: yup.number().label('Flip Display'),
 	invertDisplay: yup.number().label('Invert Display'),
-	buttonLayout: yup.number().required().oneOf(BUTTON_LAYOUT.map(o => o.value)).label('Button Layout Left'),
-	buttonLayoutRight: yup.number().required().oneOf(BUTTON_LAYOUT_RIGHT.map(o => o.value)).label('Button Layout Right'),
+	buttonLayout: yup.number().required().oneOf(BUTTON_LAYOUTS.map(o => o.value)).label('Button Layout Left'),
+	buttonLayoutRight: yup.number().required().oneOf(BUTTON_LAYOUTS_RIGHT.map(o => o.value)).label('Button Layout Right'),
+	splashMode: yup.number().required().oneOf(SPLASH_MODES.map(o => o.value)).label('Splash Screen'),
+	splashChoice: yup.number().required().oneOf(SPLASH_CHOICES.map(o => o.value)).label('Splash Screen Choice'),
 });
 
 const FormContext = () => {
@@ -102,6 +121,10 @@ const FormContext = () => {
 			values.buttonLayout = parseInt(values.buttonLayout);
 		if (!!values.buttonLayoutRight)
 			values.buttonLayoutRight = parseInt(values.buttonLayoutRight);
+		if (!!values.splashMode)
+			values.splashMode = parseInt(values.splashMode);
+		if (!!values.splashChoice)
+			values.splashChoice = parseInt(values.splashChoice);
 	}, [values, setValues]);
 
 	return null;
@@ -276,7 +299,7 @@ export default function DisplayConfigPage() {
 							</FormSelect>
 						</Row>
 						<Row className="mb-3">
-						<FormSelect
+							<FormSelect
 								label="Button Layout (Left)"
 								name="buttonLayout"
 								className="form-select-sm"
@@ -286,7 +309,7 @@ export default function DisplayConfigPage() {
 								isInvalid={errors.buttonLayout}
 								onChange={handleChange}
 							>
-								{BUTTON_LAYOUT.map((o, i) => <option key={`buttonLayout-option-${i}`} value={o.value}>{o.label}</option>)}
+								{BUTTON_LAYOUTS.map((o, i) => <option key={`buttonLayout-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 							<FormSelect
 								label="Button Layout (Right)"
@@ -298,7 +321,31 @@ export default function DisplayConfigPage() {
 								isInvalid={errors.buttonLayoutRight}
 								onChange={handleChange}
 							>
-								{BUTTON_LAYOUT_RIGHT.map((o, i) => <option key={`buttonLayoutRight-option-${i}`} value={o.value}>{o.label}</option>)}
+								{BUTTON_LAYOUTS_RIGHT.map((o, i) => <option key={`buttonLayoutRight-option-${i}`} value={o.value}>{o.label}</option>)}
+							</FormSelect>
+							<FormSelect
+								label="Splash Mode"
+								name="splashMode"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.splashMode}
+								error={errors.splashMode}
+								isInvalid={errors.splashMode}
+								onChange={handleChange}
+							>
+								{SPLASH_MODES.map((o, i) => <option key={`splashMode-option-${i}`} value={o.value}>{o.label}</option>)}
+							</FormSelect>
+							<FormSelect
+								label="Splash Choice"
+								name="splashChoice"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.splashChoice}
+								error={errors.splashChoice}
+								isInvalid={errors.splashChoice}
+								onChange={handleChange}
+							>
+								{SPLASH_CHOICES.map((o, i) => <option key={`splashChoice-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 						</Row>
 						<div className="mt-3">

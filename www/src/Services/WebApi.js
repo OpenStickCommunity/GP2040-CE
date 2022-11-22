@@ -45,6 +45,8 @@ async function setDisplayOptions(options) {
 	newOptions.i2cAddress = parseInt(options.i2cAddress);
 	newOptions.buttonLayout = parseInt(options.buttonLayout);
 	newOptions.buttonLayoutRight = parseInt(options.buttonLayoutRight);
+	newOptions.splashMode = parseInt(options.splashMode);
+	newOptions.splashChoice = parseInt(options.splashChoice);
 	return axios.post(`${baseUrl}/api/setDisplayOptions`, newOptions)
 		.then((response) => {
 			console.log(response.data);

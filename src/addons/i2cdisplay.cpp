@@ -46,8 +46,28 @@ void I2CDisplayAddon::process() {
 		drawStatusBar(gamepad);
 		drawText(0, 3, "[Web Config Mode]");
 		drawText(0, 4, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
-	} else if (getMillis() < 7500 && SPLASH_MODE != NOSPLASH) {
-		drawSplashScreen(SPLASH_MODE, 90);
+	} else if (getMillis() < 7500 && Storage::getInstance().GetSplashMode() != NOSPLASH) {
+		const uint8_t* splashChoice = splashImageMain;
+		switch (Storage::getInstance().GetSplashChoice()) {
+			case MAIN:
+				break;
+			case X:
+				splashChoice = splashImage01;
+				break;
+			case Y:
+				splashChoice = splashImage02;
+				break;
+			case Z:
+				splashChoice = splashImage03;
+				break;
+			case CUSTOM:
+				splashChoice = splashCustom;
+				break;
+			case LEGACY:
+				splashChoice = splashImageLegacy;
+				break;
+		}
+		drawSplashScreen(Storage::getInstance().GetSplashMode(), (uint8_t *)splashChoice, 90);
 	} else {
 		drawStatusBar(gamepad);
 		switch (Storage::getInstance().GetButtonLayout())
@@ -543,26 +563,20 @@ void I2CDisplayAddon::drawBlankB(int startX, int startY, int buttonSize, int but
 {
 }
 
-void I2CDisplayAddon::drawSplashScreen(int splashMode, int splashSpeed)
+void I2CDisplayAddon::drawSplashScreen(int splashMode, uint8_t * splashChoice, int splashSpeed)
 {
     int mils = getMillis();
     switch (splashMode)
 	{
 		case STATICSPLASH: // Default, display static or custom image
-            if ((sizeof(splashCustom) / sizeof(*splashCustom)) > 0) {
-                obdDrawSprite(&obd, (uint8_t *)splashCustom, 128, 64, 16, 0, 0, 1);
-            } else {
-			    obdDrawSprite(&obd, (uint8_t *)splashImageMain, 128, 64, 16, 0, 0, 1);
-            }
+			obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
 			break;
 		case CLOSEIN: // Close-in. Animate the GP2040 logo
 			obdDrawSprite(&obd, (uint8_t *)bootLogoTop, 43, 39, 6, 43, std::min<int>((mils / splashSpeed) - 39, 0), 1);
 			obdDrawSprite(&obd, (uint8_t *)bootLogoBottom, 80, 21, 10, 24, std::max<int>(64 - (mils / (splashSpeed * 2)), 44), 1);
 			break;
         case CLOSEINCUSTOM: // Close-in on custom image or delayed close-in if custom image does not exist
-            if ((sizeof(splashCustom) / sizeof(*splashCustom)) > 0) {
-               obdDrawSprite(&obd, (uint8_t *)splashCustom, 128, 64, 16, 0, 0, 1);
-            }
+            obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
             if (mils > 2500) {
                 int milss = mils - 2500;
                 obdRectangle(&obd, 0, 0, 127, 1 + (milss / splashSpeed), 0, 1);

@@ -50,7 +50,9 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		flipDisplay: 0,
 		invertDisplay: 1,
 		buttonLayout: 0,
-		buttonLayoutRight: 0
+		buttonLayoutRight: 3,
+		splashMode: 3,
+		splashChoice: 0
 	});
 });
 

@@ -169,6 +169,8 @@ std::string setDisplayOptions()
 	boardOptions.displayInvert         = doc["invertDisplay"];
 	boardOptions.buttonLayout      	   = doc["buttonLayout"];
 	boardOptions.buttonLayoutRight     = doc["buttonLayoutRight"];
+	boardOptions.splashMode      	   = doc["splashMode"];
+	boardOptions.splashChoice          = doc["splashChoice"];
 	ConfigManager::getInstance().setBoardOptions(boardOptions);
 	return serialize_json(doc);
 }
@@ -187,6 +189,8 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["invertDisplay"] 	 = boardOptions.displayInvert ? 1 : 0;
 	doc["buttonLayout"]  	 = boardOptions.buttonLayout;
 	doc["buttonLayoutRight"] = boardOptions.buttonLayoutRight;
+	doc["splashMode"]  	     = boardOptions.splashMode;
+	doc["splashChoice"]      = boardOptions.splashChoice;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
