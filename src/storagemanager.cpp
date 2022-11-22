@@ -65,6 +65,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.pinSliderLS       = PIN_SLIDER_LS;
 	boardOptions.pinSliderRS       = PIN_SLIDER_RS;
 	boardOptions.buttonLayout      = BUTTON_LAYOUT;
+	boardOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
 	boardOptions.i2cSDAPin         = I2C_SDA_PIN;
 	boardOptions.i2cSCLPin         = I2C_SCL_PIN;
 	boardOptions.i2cBlock          = (I2C_BLOCK == i2c0) ? 0 : 1;
@@ -207,6 +208,16 @@ void Storage::ClearFeatureData()
 uint8_t * Storage::GetFeatureData()
 {
 	return featureData;
+}
+
+int Storage::GetButtonLayout()
+{
+	return boardOptions.buttonLayout;
+}
+
+int Storage::GetButtonLayoutRight()
+{
+	return boardOptions.buttonLayoutRight;
 }
 
 /* Animation stuffs */
