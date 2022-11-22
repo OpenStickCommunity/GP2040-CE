@@ -12,7 +12,9 @@
 
 bool I2CDisplayAddon::available() {
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	return boardOptions.hasI2CDisplay && boardOptions.i2cSDAPin != -1 && boardOptions.i2cSCLPin != -1;
+	return boardOptions.hasI2CDisplay && 
+		boardOptions.i2cSDAPin != (uint8_t)-1 && 
+		boardOptions.i2cSCLPin != (uint8_t)-1;
 }
 
 void I2CDisplayAddon::setup() {
