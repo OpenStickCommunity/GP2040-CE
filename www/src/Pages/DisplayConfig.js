@@ -33,7 +33,7 @@ const BUTTON_LAYOUT = [
 const BUTTON_LAYOUT_RIGHT = [
 	{ label: 'Arcade', value: 0 },			 // BUTTON_LAYOUT_ARCADE
 	{ label: 'Stickless', value: 1 },        // BUTTON_LAYOUT_STICKLESSB
-	{ label: 'Buttons Anbled', value: 2 },   // BUTTON_LAYOUT_BUTTONS_ANGLEDB
+	{ label: 'Buttons Angled', value: 2 },   // BUTTON_LAYOUT_BUTTONS_ANGLEDB
 	{ label: 'Viewlix', value: 3 },			 // BUTTON_LAYOUT_VEWLIX
 	{ label: 'Viewlix 7', value: 4 },        // BUTTON_LAYOUT_VEWLIX7
 	{ label: 'Capcom', value: 5 },           // BUTTON_LAYOUT_CAPCOM
@@ -42,7 +42,7 @@ const BUTTON_LAYOUT_RIGHT = [
 	{ label: 'Noir 8', value: 8 },			 // BUTTON_LAYOUT_NOIR8
 	{ label: 'Keyboard', value: 9 },		 // BUTTON_LAYOUT_KEYBOARDB
 	{ label: 'Dancepad', value: 10 },		 // BUTTON_LAYOUT_DANCEPADB
-	{ label: 'Thumbstick', value: 11 },	     // BUTTON_LAYOUT_TWINSTICKB
+	{ label: 'Twinstick', value: 11 },	     // BUTTON_LAYOUT_TWINSTICKB
 	{ label: 'Blank', value: 12 },		     // BUTTON_LAYOUT_BLANKB
 	{ label: 'VLX', value: 13 }		         // BUTTON_LAYOUT_VLXB
 ];
