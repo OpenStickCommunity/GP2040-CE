@@ -153,7 +153,8 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define SPLASH_CHOICE NOSPLASH
+#define SPLASH_MODE NOSPLASH
+#define SPLASH_CHOICE MAIN
 
 
 // The default `BUTTON_LAYOUT` is `BUTTON_LAYOUT_STICK` which will show an arcade stick on the left hand side of the display.
