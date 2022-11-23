@@ -48,8 +48,7 @@ typedef enum
     Y,
     Z,
 	CUSTOM,
-	LEGACY,
-	NOSPLASH
+	LEGACY
 } SplashChoice;
 
 typedef enum
