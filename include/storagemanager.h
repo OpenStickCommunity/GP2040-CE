@@ -51,8 +51,8 @@ struct BoardOptions
 	ButtonLayoutRight buttonLayoutRight;
 	SplashMode splashMode;
 	SplashChoice splashChoice;
-	int i2cSDAPin;
-	int i2cSCLPin;
+	uint8_t i2cSDAPin;
+	uint8_t i2cSCLPin;
 	int i2cBlock;
 	uint32_t i2cSpeed;
 	bool hasI2CDisplay;
@@ -67,8 +67,8 @@ struct BoardOptions
 	uint8_t reverseActionDown;
 	uint8_t reverseActionLeft;
 	uint8_t reverseActionRight;
-	int i2cAnalog1219SDAPin;
-	int i2cAnalog1219SCLPin;
+	uint8_t i2cAnalog1219SDAPin;
+	uint8_t i2cAnalog1219SCLPin;
 	int i2cAnalog1219Block;
 	uint32_t i2cAnalog1219Speed;
 	uint8_t i2cAnalog1219Address;

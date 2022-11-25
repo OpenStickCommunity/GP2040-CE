@@ -3,38 +3,38 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef DURAL_CONFIG_H_
-#define DURAL_CONFIG_H_
+#ifndef PICO_BOARD_CONFIG_H_
+#define PICO_BOARD_CONFIG_H_
 
 #include <GamepadEnums.h>
 
 
 // This is the main pin definition section.
-// This will let you specify which GPIO pin each button is assigned too. 
+// This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.
 // The Turbo pin and LS + RS slider pins can also be set to `-1` to disable that functionality.
 // Please note that only when `PIN_BUTTON_TURBO` is set to `-1` will the `T##` be removed from a connected display.
 // Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
-#define PIN_DPAD_UP     9           // UP
-#define PIN_DPAD_DOWN   7           // DOWN
-#define PIN_DPAD_RIGHT  8           // RIGHT
-#define PIN_DPAD_LEFT   6           // LEFT
-#define PIN_BUTTON_B1   21          // B1 / A / B / Cross / 2 / K1
-#define PIN_BUTTON_B2   20          // B2 / B / A / Circle / 3 / K2
-#define PIN_BUTTON_R2   28          // R2 / RT / ZR / R2 / 8 / K3
-#define PIN_BUTTON_L2   26          // L2 / LT / ZL / L2 / 7 / K4
-#define PIN_BUTTON_B3   23          // B3 / X / Y / Square / 1 / P1
-#define PIN_BUTTON_B4   22          // B4 / Y / X / Triangle / 4 / P2
-#define PIN_BUTTON_R1   29          // R1 / RB / R / R1 / 6 / P3
-#define PIN_BUTTON_L1   27          // L1 / LB / L / L1 / 5 / P4
+#define PIN_DPAD_UP     1           // UP
+#define PIN_DPAD_DOWN   2           // DOWN
+#define PIN_DPAD_RIGHT  3           // RIGHT
+#define PIN_DPAD_LEFT   0           // LEFT
+#define PIN_BUTTON_B1   11          // B1 / A / B / Cross / 2 / K1
+#define PIN_BUTTON_B2   12          // B2 / B / A / Circle / 3 / K2
+#define PIN_BUTTON_R2   13          // R2 / RT / ZR / R2 / 8 / K3
+#define PIN_BUTTON_L2   14          // L2 / LT / ZL / L2 / 7 / K4
+#define PIN_BUTTON_B3   7           // B3 / X / Y / Square / 1 / P1
+#define PIN_BUTTON_B4   8           // B4 / Y / X / Triangle / 4 / P2
+#define PIN_BUTTON_R1   9           // R1 / RB / R / R1 / 6 / P3
+#define PIN_BUTTON_L1   10          // L1 / LB / L / L1 / 5 / P4
 #define PIN_BUTTON_S1   5           // S1 / Back / Minus / Select / 9 / Coin
-#define PIN_BUTTON_S2   4           // S2 / Start / Plus / Start / 10 / Start
-#define PIN_BUTTON_L3   1           // L3 / LS / LS / L3 / 11 / LS
-#define PIN_BUTTON_R3   0           // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   3           // A1 / Guide / Home / ~ / 13 / ~
-#define PIN_BUTTON_A2   2           // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_S2   6           // S2 / Start / Plus / Start / 10 / Start
+#define PIN_BUTTON_L3   21          // L3 / LS / LS / L3 / 11 / LS
+#define PIN_BUTTON_R3   22          // R3 / RS / RS / R3 / 12 / RS
+#define PIN_BUTTON_A1   4           // A1 / Guide / Home / ~ / 13 / ~
+#define PIN_BUTTON_A2   20          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
@@ -48,7 +48,7 @@
 // 2 - `SOCD_MODE_UP_PRIORITY` - This is up priority SOCD.  EG. when you press `up` + `down` `up` will be registered.
 // 3 - `SOCD_MODE_SECOND_INPUT_PRIORITY` - This is last priority SOCD.  EG. when you press and hold `up` then press `down` `down` will be registered.
 
-#define DEFAULT_SOCD_MODE SOCD_MODE_UP_PRIORITY
+#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 
 // This is the LEDs section.
@@ -59,7 +59,7 @@
 // The board LED pin will allow you to connect addressible RGB LEDs on the Pico.
 // Addressible RGB LEDs should be connected to the `VBUS` pin (#40), an avalible ground pin and the defined `BOARD_LEDS_PIN`.
 // Special note - You should only ever use addressible RGB LEDs that are rated for 5v operation on the Pico.
-// The defualt `LED_BRIGHTNESS_MAXIMUM` value is `50`.  
+// The defualt `LED_BRIGHTNESS_MAXIMUM` value is `50`.
 // This will change how bright the LEDs are with `0` being off and `100` being full brightness.
 // The minimum `LED_BRIGHTNESS_MAXIMUM` value is `0`.
 // The maximum `LED_BRIGHTNESS_MAXIMUM` value is `100`.
@@ -75,54 +75,58 @@
 
 #define TURBO_LED_PIN -1
 
-#define BOARD_LEDS_PIN -1
+#define BOARD_LEDS_PIN 15
 
-#define LED_BRIGHTNESS_MAXIMUM 50
+#define LED_BRIGHTNESS_MAXIMUM 150
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
-#define LEDS_PER_PIXEL 1
+#define LEDS_PER_PIXEL 2
 
-#define LEDS_DPAD_LEFT   0
-#define LEDS_DPAD_DOWN   1
-#define LEDS_DPAD_RIGHT  2
-#define LEDS_DPAD_UP     3
-#define LEDS_BUTTON_B3   4
-#define LEDS_BUTTON_B4   5
+#define LEDS_DPAD_LEFT   11
+#define LEDS_DPAD_DOWN   10
+#define LEDS_DPAD_RIGHT  9
+#define LEDS_DPAD_UP     0
+#define LEDS_BUTTON_B3   8
+#define LEDS_BUTTON_B4   7
 #define LEDS_BUTTON_R1   6
-#define LEDS_BUTTON_L1   7
-#define LEDS_BUTTON_B1   8
-#define LEDS_BUTTON_B2   9
-#define LEDS_BUTTON_R2   10
-#define LEDS_BUTTON_L2   11
+#define LEDS_BUTTON_L1   5
+#define LEDS_BUTTON_B1   1
+#define LEDS_BUTTON_B2   2
+#define LEDS_BUTTON_R2   3
+#define LEDS_BUTTON_L2   4
+#define LEDS_BUTTON_S1   -1
+#define LEDS_BUTTON_S2   -1
+#define LEDS_BUTTON_L3   -1
+#define LEDS_BUTTON_R3   -1
+#define LEDS_BUTTON_A1   -1
+#define LEDS_BUTTON_A2   -1
 
 
-// This is the Player LED section.  
+// This is the Player LED section.
 // In this section you can specify if Player LEDs will be active, and, if active, which pins will be used for them.
 // The defualt is `PLED_TYPE_NONE` which will turn the Player LEDs off.
-// The default pin for each Player LED is `-1` which disables it.  
-// To enable a `PLED#_PIN`, replace the `-1` with the GPIO pin number that is desired. 
+// The default pin for each Player LED is `-1` which disables it.
+// To enable a `PLED#_PIN`, replace the `-1` with the GPIO pin number that is desired.
 // There are three options for `PLED_TYPE` currently:
 // 1 - `PLED_TYPE_NONE` - This will disable the Player LEDs
 // 2 - `PLED_TYPE_PWM` - This will enable the Player LEDs ( it is recommended to run through 3V3(OUT) with a resistor)
-// 3 - `PLED_TYPE_RGB` - This will enable the Player LEDs as addressible RGB LEDs (please not that this has not been implemented yet) 
+// 3 - `PLED_TYPE_RGB` - This will enable the Player LEDs as addressible RGB LEDs (please not that this has not been implemented yet)
 
-#define PLED_TYPE PLED_TYPE_NONE
-#define PLED1_PIN -1
-#define PLED2_PIN -1
-#define PLED3_PIN -1
-#define PLED4_PIN -1
+#define PLED_TYPE PLED_TYPE_PWM
+#define PLED1_PIN 16
+#define PLED2_PIN 17
+#define PLED3_PIN 18
+#define PLED4_PIN 19
 
 
 // This is the Analog section.
 // In this section you can specify if Analog is enabled, and, if endabled, which pins will be used for it.
 // The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
-// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
+// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired.
 
 #define ANALOG_ADC_VRX -1
 #define ANALOG_ADC_VRY -1
 
-// Reverse Button section
-#define REVERSE_LED_PIN -1
 
 // This is the I2C Display section (commonly known as the OLED display section).
 // In this section you can specify if a display as been enabled, which pins are assined to it, the block address and speed.
@@ -130,9 +134,9 @@
 // To disable the display you can change `HAS_I2C_DISPLAY` to `-1`.
 // The default `I2C_SDA_PIN` is `0`.
 // The defualt `I2C_SCL_PIN` is `1`.
-// The defualt `I2C_BLOCK` is `12c0`.  
+// The defualt `I2C_BLOCK` is `12c0`.
 // If you change the `I2C_SDA_PIN` and `I2C_SCL_PIN` pin mapping, you may need to change the `I2C_BLOCK` as well.
-// The defualt `I2C_SPEED` is `400000`.  
+// The defualt `I2C_SPEED` is `400000`.
 // This should be more than fast enough for most displays.
 // Some smaller displays (like 0.96" and 1.31") can go up to `800000` or even `1000000`.
 // The default `DISPLAY_FLIP` is `0`.
@@ -161,7 +165,7 @@
 // 9 - BUTTON_LAYOUT_NOIR8 - This is the standard 8 button Noir layout
 // 10 - BUTTON_LAYOUT_KEYBOARDB - This is a WASD keyboard layout that is straight
 // 11 - BUTTON_LAYOUT_DANCEPADB - This is a dance pad layout (must be used with `BUTTON_LAYOUT_DANCEPADA` in `BUTTON_LAYOUT`)
-// The default `SPLASH_MODE` is `NOSPLASH`.  
+// The default `SPLASH_MODE` is `NOSPLASH`.
 // There are four options for `SPLASH_MODE` currently:
 // 1 - `STATICSPLASH` - This will display the static splash image
 // 2 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
@@ -169,14 +173,23 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define HAS_I2C_DISPLAY -1
-#define I2C_SDA_PIN 0
-#define I2C_SCL_PIN 1
-#define I2C_BLOCK i2c0
+#define HAS_I2C_DISPLAY 1
+#define I2C_SDA_PIN 26
+#define I2C_SCL_PIN 27
+#define I2C_BLOCK i2c1
 #define I2C_SPEED 400000
 #define DISPLAY_FLIP 0
 #define DISPLAY_INVERT 0
 
+// I2C Analog ADS1219 Add-on Options
+#define I2C_ANALOG1219_SDA_PIN -1
+#define I2C_ANALOG1219_SCL_PIN -1
+#define I2C_ANALOG1219_BLOCK i2c0
+#define I2C_ANALOG1219_SPEED 400000
+#define I2C_ANALOG1219_ADDRESS 0x40
+
+// Reverse Button section
+#define REVERSE_LED_PIN -1
 #define REVERSE_UP_DEFAULT 1
 #define REVERSE_DOWN_DEFAULT 1
 #define REVERSE_LEFT_DEFAULT 1

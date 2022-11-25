@@ -6,8 +6,8 @@
 
 bool I2CAnalog1219Input::available() {
     BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	return (boardOptions.i2cAnalog1219SDAPin != -1 &&
-        boardOptions.i2cAnalog1219SCLPin != -1);
+	return (boardOptions.i2cAnalog1219SDAPin != (uint8_t)-1 &&
+        boardOptions.i2cAnalog1219SCLPin != (uint8_t)-1);
 }
 
 void I2CAnalog1219Input::setup() {

@@ -154,6 +154,7 @@
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
 #define SPLASH_MODE NOSPLASH
+#define SPLASH_CHOICE MAIN
 
 
 // The default `BUTTON_LAYOUT` is `BUTTON_LAYOUT_STICK` which will show an arcade stick on the left hand side of the display.
@@ -180,7 +181,7 @@
 // 11 - BUTTON_LAYOUT_DANCEPADB - This is a dance pad layout (must be used with `BUTTON_LAYOUT_DANCEPADA` in `BUTTON_LAYOUT`)
 
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
-#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESS
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESSB
 
 #define REVERSE_UP_DEFAULT 1
 #define REVERSE_DOWN_DEFAULT 1
