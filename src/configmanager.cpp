@@ -32,6 +32,7 @@ void ConfigManager::setLedOptions(LEDOptions ledOptions) {
 
 void ConfigManager::setBoardOptions(BoardOptions boardOptions) {
 	Storage::getInstance().setBoardOptions(boardOptions);
+	// Storage::getInstance().setSplashImage(boardOptions.splashImage);
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->mapDpadUp->setPin(boardOptions.pinDpadUp);
@@ -54,4 +55,8 @@ void ConfigManager::setBoardOptions(BoardOptions boardOptions) {
 	gamepad->mapButtonA2->setPin(boardOptions.pinButtonA2);
 
 	GamepadStore.save();
+}
+
+void ConfigManager::setSplashImage(SplashImage image) {
+	Storage::getInstance().setSplashImage(image);
 }

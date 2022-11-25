@@ -40,7 +40,7 @@ app.get('/api/resetSettings', (req, res) => {
 
 app.get('/api/getDisplayOptions', (req, res) => {
 	console.log('/api/getDisplayOptions');
-	return res.send({
+	const data = {
 		enabled: 1,
 		sdaPin: 0,
 		sclPin: 1,
@@ -52,8 +52,20 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		buttonLayout: 0,
 		buttonLayoutRight: 3,
 		splashMode: 3,
-		splashChoice: 0
-	});
+		splashChoice: 0,
+		splashImage: Array(16*64).fill(255)
+	}
+	console.log('data', data);
+	return res.send(data);
+});
+
+app.get('/api/getSplashImage', (req, res) => {
+	console.log('/api/getSplashImage');
+	const data = {
+		splashImage: Array(16*64).fill(255)
+	}
+	console.log('data', data);
+	return res.send(data);
 });
 
 app.get('/api/getGamepadOptions', (req, res) => {

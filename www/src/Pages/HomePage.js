@@ -18,7 +18,7 @@ export default function HomePage() {
 				setLatestTag(sortedData[0].tag_name);
 			})
 			.catch(console.error);
-	}, [setLatestVersion, setLatestTag]);
+	}, []);
 
 	return (
 		<div>

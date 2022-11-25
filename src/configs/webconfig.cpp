@@ -18,6 +18,8 @@
 #include "lwip/mem.h"
 #include "rndis/rndis.h"
 
+#include "bitmaps.h"
+
 #define PATH_CGI_ACTION "/cgi/action"
 
 #define API_RESET_SETTINGS "/api/resetSettings"
@@ -31,6 +33,8 @@
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
 #define API_GET_ADDON_OPTIONS "/api/getAddonsOptions"
 #define API_SET_ADDON_OPTIONS "/api/setAddonsOptions"
+#define API_GET_SPLASH_IMAGE "/api/getSplashImage"
+#define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
@@ -212,6 +216,50 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	usedPins.add(gamepad->mapButtonR3->pin);
 	usedPins.add(gamepad->mapButtonA1->pin);
 	usedPins.add(gamepad->mapButtonA2->pin);
+
+	return serialize_json(doc);
+}
+
+SplashImage splashTemp;
+int indexTemp = 0;
+
+std::string getSplashImage()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10);
+	SplashImage splashImage = Storage::getInstance().getSplashImage();
+	JsonArray splashImageArray = doc.createNestedArray("splashImage");
+	doc["temp"] = indexTemp;
+	doc["isTemp"] = indexTemp == 15;
+	copyArray((indexTemp == 15) ? splashTemp.data : splashImage.data, splashImageArray);
+
+	return serialize_json(doc);
+}
+
+std::string setSplashImage()
+{
+	DynamicJsonDocument doc = get_post_data();
+	doc["indexTemp"] = indexTemp;
+	int index = doc["index"];
+	indexTemp = index;
+
+	if (index == 0) {
+		for (int i = 0; i < 1024; i++) {
+			splashTemp.data[i] = 0;
+		}
+	}
+
+	JsonArray indexArray = doc.createNestedArray("indexArray");
+	JsonArray array = doc["splashImage"].as<JsonArray>();
+	doc["arraySize"] = array.size();
+	for (int i = 0; i < 64; i++) {
+		if (index != 15) indexArray[i] = (64 * index) + i;
+		splashTemp.data[(64 * index) + i] = array[i];
+	}
+	if (index == 15) {
+		doc["attemptCommit"] = true;
+		ConfigManager::getInstance().setSplashImage(splashTemp);
+		doc["commitDone"] = true;
+	}
 
 	return serialize_json(doc);
 }
@@ -483,6 +531,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setPinMappings());
 		if (!memcmp(http_post_uri, API_SET_ADDON_OPTIONS, sizeof(API_SET_ADDON_OPTIONS)))
 			return set_file_data(file, setAddonOptions());
+		if (!memcmp(http_post_uri, API_SET_SPLASH_IMAGE, sizeof(API_SET_SPLASH_IMAGE)))
+			return set_file_data(file, setSplashImage());
 	}
 	else
 	{
@@ -498,6 +548,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getAddonOptions());
 		if (!memcmp(name, API_RESET_SETTINGS, sizeof(API_RESET_SETTINGS)))
 			return set_file_data(file, resetSettings());
+		if (!memcmp(name, API_GET_SPLASH_IMAGE, sizeof(API_GET_SPLASH_IMAGE)))
+			return set_file_data(file, getSplashImage());
 	}
 
 	bool isExclude = false;

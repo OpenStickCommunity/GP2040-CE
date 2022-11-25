@@ -14,10 +14,11 @@
 #include "helper.h"
 #include "gamepad.h"
 
-#define GAMEPAD_STORAGE_INDEX      0 // 1024 bytes for gamepad options
-#define BOARD_STORAGE_INDEX     1024 //  512 bytes for hardware options
-#define LED_STORAGE_INDEX       1536 //  512 bytes for LED configuration
-#define ANIMATION_STORAGE_INDEX 2048 // ???? bytes for LED animations
+#define GAMEPAD_STORAGE_INDEX      		0    // 1024 bytes for gamepad options
+#define BOARD_STORAGE_INDEX     		1024 //  512 bytes for hardware options
+#define LED_STORAGE_INDEX       		1536 //  512 bytes for LED configuration
+#define ANIMATION_STORAGE_INDEX 		2048 // 1024 bytes for LED animations
+#define SPLASH_IMAGE_STORAGE_INDEX		2560
 
 #define CHECKSUM_MAGIC          0 	// Checksum CRC
 
@@ -75,6 +76,11 @@ struct BoardOptions
 	uint32_t checksum;
 };
 
+struct SplashImage {
+	uint8_t data[16*64];
+	uint32_t checksum;
+};
+
 struct LEDOptions
 {
 	bool useUserDefinedLEDs;
@@ -122,6 +128,10 @@ public:
 	void setBoardOptions(BoardOptions);	// Board Options
 	void setDefaultBoardOptions();
 	BoardOptions getBoardOptions();
+	
+	void setSplashImage(SplashImage);
+	void setDefaultSplashImage();
+	SplashImage getSplashImage();
 
 	void setLEDOptions(LEDOptions);		// LED Options
 	void setDefaultLEDOptions();
@@ -153,15 +163,18 @@ private:
 		EEPROM.start(); // init EEPROM
 		initBoardOptions();
 		initLEDOptions();
+		initSplashImage();
 	}
 	void initBoardOptions();
 	void initLEDOptions();
+	void initSplashImage();
 	bool CONFIG_MODE; 			// Config mode (boot)
 	Gamepad * gamepad;    		// Gamepad data
 	Gamepad * processedGamepad; // Gamepad with ONLY processed data
 	BoardOptions boardOptions;
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
+	SplashImage splashImage;
 };
 
 #endif

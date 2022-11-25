@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 const baseUrl = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
 
@@ -47,6 +48,7 @@ async function setDisplayOptions(options) {
 	newOptions.buttonLayoutRight = parseInt(options.buttonLayoutRight);
 	newOptions.splashMode = parseInt(options.splashMode);
 	newOptions.splashChoice = parseInt(options.splashChoice);
+	newOptions.splashImage = '';
 	return axios.post(`${baseUrl}/api/setDisplayOptions`, newOptions)
 		.then((response) => {
 			console.log(response.data);
@@ -56,6 +58,43 @@ async function setDisplayOptions(options) {
 			console.error(err);
 			return false;
 		});
+}
+
+async function getSplashImage() {
+	return axios.get(`${baseUrl}/api/getSplashImage`)
+		.then((response) => {
+			return response.data;
+		})
+		.catch(console.error);
+}
+
+async function setSplashImage({splashImage}) {
+	const data = splashImage;
+
+	let size = 0;
+	// let result = fflate.zlibSync(new Uint8Array(splashImage), {
+	// 	level: 9
+	// })
+
+	// while (size < data.length) {
+	// 	const item = data[size];
+	// 	const run = _.takeWhile(_.slice(data, size), a => a === item);
+	// 	size = size + run.length;
+	// 	result = result.concat([run.length, item])
+	// }
+
+	// let newOptions = { splashImage: result };
+	return await _.chunk(splashImage, 64).reduce(async (acc, chunk, index) => {
+		return axios.post(`${baseUrl}/api/setSplashImage`, { splashImage: chunk, index})
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		}).then(acc);
+	}, Promise.resolve({splashImage}));
 }
 
 async function getGamepadOptions() {
@@ -150,7 +189,9 @@ const WebApi = {
 	getPinMappings,
 	setPinMappings,
 	getAddonsOptions,
-	setAddonsOptions
+	setAddonsOptions,
+	getSplashImage,
+	setSplashImage
 };
 
 export default WebApi;

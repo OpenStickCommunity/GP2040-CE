@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { Formik, useFormikContext } from 'formik';
+import { Formik, useFormikContext, ErrorMessage, Field } from 'formik';
 import * as yup from 'yup';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
+import _ from 'lodash';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'Disabled', value: 0 },
@@ -49,7 +50,7 @@ const BUTTON_LAYOUTS_RIGHT = [
 
 const SPLASH_MODES = [
 	{ label: 'Enabled', value: 0 },			 // STATICSPLASH
-//	{ label: 'Close In', value: 1 },		 // CLOSEIN
+	//	{ label: 'Close In', value: 1 },		 // CLOSEIN
 	{ label: 'Disabled', value: 3 },         // NOSPLASH
 ];
 
@@ -74,7 +75,8 @@ const defaultValues = {
 	buttonLayout: 0,
 	buttonLayoutRight: 3,
 	splashMode: 3,
-	splashChoice: 0
+	splashChoice: 0,
+	splashImage: Array(16*64).fill(0)
 };
 
 let usedPins = [];
@@ -83,9 +85,9 @@ const schema = yup.object().shape({
 	enabled: yup.number().label('Enabled?'),
 	i2cAddress: yup.string().required().label('I2C Address'),
 	// eslint-disable-next-line no-template-curly-in-string
-	sdaPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('SDA Pin'),
+	sdaPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => true).label('SDA Pin'),
 	// eslint-disable-next-line no-template-curly-in-string
-	sclPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('SCL Pin'),
+	sclPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => true).label('SCL Pin'),
 	i2cBlock: yup.number().required().oneOf(I2C_BLOCKS.map(o => o.value)).label('I2C Block'),
 	i2cSpeed: yup.number().required().label('I2C Speed'),
 	flipDisplay: yup.number().label('Flip Display'),
@@ -93,7 +95,7 @@ const schema = yup.object().shape({
 	buttonLayout: yup.number().required().oneOf(BUTTON_LAYOUTS.map(o => o.value)).label('Button Layout Left'),
 	buttonLayoutRight: yup.number().required().oneOf(BUTTON_LAYOUTS_RIGHT.map(o => o.value)).label('Button Layout Right'),
 	splashMode: yup.number().required().oneOf(SPLASH_MODES.map(o => o.value)).label('Splash Screen'),
-	splashChoice: yup.number().required().oneOf(SPLASH_CHOICES.map(o => o.value)).label('Splash Screen Choice'),
+	splashChoice: yup.number().required().oneOf(SPLASH_CHOICES.map(o => o.value)).label('Splash Screen Choice')
 });
 
 const FormContext = () => {
@@ -103,6 +105,8 @@ const FormContext = () => {
 		async function fetchData() {
 			const data = await WebApi.getDisplayOptions();
 			usedPins = data.usedPins;
+			const splashImageResponse = await WebApi.getSplashImage();
+			data.splashImage = splashImageResponse.splashImage;
 			setValues(data);
 		}
 		fetchData();
@@ -134,10 +138,14 @@ export default function DisplayConfigPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const onSuccess = async (values) => {
-		const success = WebApi.setDisplayOptions(values);
+		const success = WebApi.setDisplayOptions(values).then(() => WebApi.setSplashImage(values));
 		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
 
+	const onChangeCanvas = (base64, form, field) => {
+		return form.setFieldValue(field.name, base64)
+	}
+	
 	return (
 		<Formik validationSchema={schema} onSubmit={onSuccess} initialValues={defaultValues}>
 			{({
@@ -147,7 +155,7 @@ export default function DisplayConfigPage() {
 				values,
 				touched,
 				errors,
-			}) => (
+			}) => console.log('errors', errors) || (console.log('values', values) ||
 				<Section title="Display Configuration">
 					<p>
 						A monochrome display can be used to show controller status and button activity. Ensure your display module
@@ -348,6 +356,17 @@ export default function DisplayConfigPage() {
 								{SPLASH_CHOICES.map((o, i) => <option key={`splashChoice-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 						</Row>
+							<Field name="splashImage">
+								{({
+									field, // { name, value, onChange, onBlur }
+									form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+									meta,
+								}) => (
+									<div className="mt-3">
+										<Canvas onChange={base64 => onChangeCanvas(base64, form, field)} value={field.value} />
+									</div>
+								)}
+							</Field>
 						<div className="mt-3">
 							<Button type="submit">Save</Button>
 							{saveMessage ? <span className="alert">{saveMessage}</span> : null}
@@ -358,4 +377,115 @@ export default function DisplayConfigPage() {
 			)}
 		</Formik>
 	);
+}
+
+const Canvas = ({value, onChange}) => {
+	const [image, setImage] = useState(null);
+	const [bitsArray, setBitsArray] = useState(Array(16*64).fill(255));
+	const [canvasContext, setCanvasContext] = useState(null);
+	const canvasRef = useRef();
+
+	useEffect(() => {
+		setCanvasContext(canvasRef.current.getContext('2d'));
+	}, []);
+
+	useEffect(() => {
+		setBitsArray(value)
+	}, [value])
+
+	// image to bitsArray (binary)
+	useEffect(() => {
+		if (canvasContext == null || image == null) return
+
+		const ctxWidth = canvasContext.canvas.width,
+			ctxHeight = canvasContext.canvas.height;
+		const imgWidth = image.width,
+			imgHeight = image.height;
+		const ratioWidth = imgWidth / ctxWidth,
+			ratioHeight = imgHeight / ctxHeight,
+			ratioAspect = ratioWidth > 1 ? ratioWidth : ratioHeight > 1 ? ratioHeight : 1;
+		const newWidth = imgWidth / ratioAspect,
+			newHeight = imgHeight / ratioAspect;
+		const offsetX = (ctxWidth / 2) - (newWidth / 2),
+			offsetY = (ctxHeight / 2) - (newHeight / 2);
+		canvasContext.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+		canvasContext.drawImage(image, offsetX, offsetY, newWidth, newHeight);
+
+		var imgPixels = canvasContext.getImageData(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
+
+		// Convert to monochrome
+		for (var i = 0; i < imgPixels.data.length; i = i + 4) {
+			var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
+			if (avg > 123) avg = 255
+			else avg = 0;
+			imgPixels.data[i] = avg;
+			imgPixels.data[i + 1] = avg;
+			imgPixels.data[i + 2] = avg;
+		}
+		
+		console.log('rgba',  [...(new Uint8Array(imgPixels.data))].filter((x, y) => (y + 1) % 4))
+
+		// Pick only first channel
+		const bitsArray = _.chunk([...(new Uint8Array(imgPixels.data))]
+			.filter((x, y) => (y % 4) === 0).map((a) => 255 - a), 8)
+			.map(chunks => chunks.reduce((acc, curr, i) => {
+				return acc + ((curr === 255 ? 1 : 0) << (7 - i))
+			}, 0));
+
+		console.log('bits setup for the unit', bitsArray);
+
+		onChange(bitsArray);
+
+	}, [image, canvasContext]);
+
+	// binary to RGBA
+	useEffect(() => {
+		if (canvasContext == null) return;
+		
+		const w = canvasContext.canvas.width;
+		const h = canvasContext.canvas.height;
+		const rgbToRgba = [];
+
+		// expand bytes to individual binary bits and then bits to 255 or 0, because monochrome
+		const bitsArrayArray = bitsArray.flatMap((a) => {
+			const bits = a.toString(2).split('').map(Number);
+			const full = Array(8 - bits.length).fill(0).concat(bits);
+			return full.map(a => a == 1 ? 255 : 0)
+		})
+		
+		// fill up the new array as RGBA
+		bitsArrayArray.forEach((x) => {
+			rgbToRgba.push(x);
+			rgbToRgba.push(x);
+			rgbToRgba.push(x);
+			rgbToRgba.push(255);
+		})
+		const imageDataCopy = new ImageData(
+			new Uint8ClampedArray(rgbToRgba),
+			w,
+			h
+		)
+		canvasContext.putImageData(imageDataCopy, 0, 0, 0, 0, w, h);
+	}, [bitsArray, canvasContext])
+
+	const onImageAdd = (ev) => {
+		var file = ev.target.files[0];
+		var fr = new FileReader();
+		fr.onload = () => {
+			const img = new Image();
+			img.onload = () => {
+				setImage(img);
+			};
+			img.src = fr.result;
+		};   // onload fires after reading is complete
+		fr.readAsDataURL(file);
+	}
+
+	return (<div style={{ display: "flex", alignItems: "center" }}>
+		<canvas ref={canvasRef} width="128" height="64" style={{ background: 'black' }} />
+		<div style={{ marginLeft: "11px" }}>
+			<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" onChange={onImageAdd} />
+			{/* <ErrorMessage name="splashImage" /> */}
+		</div>
+	</div>)
 }
