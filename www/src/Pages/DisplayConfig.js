@@ -6,7 +6,7 @@ import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
-import _ from 'lodash';
+import { chunk } from 'lodash';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'Disabled', value: 0 },
@@ -76,7 +76,8 @@ const defaultValues = {
 	buttonLayoutRight: 3,
 	splashMode: 3,
 	splashChoice: 0,
-	splashImage: Array(16*64).fill(0)
+	splashImage: Array(16*64).fill(0), // 128 columns represented by bytes so 16 and 64 rows
+	invertSplash: false
 };
 
 let usedPins = [];
@@ -138,7 +139,7 @@ export default function DisplayConfigPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const onSuccess = async (values) => {
-		const success = WebApi.setDisplayOptions(values).then(() => WebApi.setSplashImage(values));
+		const success = await WebApi.setDisplayOptions(values).then(() => WebApi.setSplashImage(values));
 		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
 
@@ -356,6 +357,7 @@ export default function DisplayConfigPage() {
 								{SPLASH_CHOICES.map((o, i) => <option key={`splashChoice-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 						</Row>
+						<Row>
 							<Field name="splashImage">
 								{({
 									field, // { name, value, onChange, onBlur }
@@ -367,6 +369,7 @@ export default function DisplayConfigPage() {
 									</div>
 								)}
 							</Field>
+						</Row>
 						<div className="mt-3">
 							<Button type="submit">Save</Button>
 							{saveMessage ? <span className="alert">{saveMessage}</span> : null}
@@ -379,19 +382,15 @@ export default function DisplayConfigPage() {
 	);
 }
 
-const Canvas = ({value, onChange}) => {
+const Canvas = ({value: bitsArray, onChange}) => {
 	const [image, setImage] = useState(null);
-	const [bitsArray, setBitsArray] = useState(Array(16*64).fill(255));
 	const [canvasContext, setCanvasContext] = useState(null);
+	const [inverted, setInverted] = useState(false);
 	const canvasRef = useRef();
 
 	useEffect(() => {
 		setCanvasContext(canvasRef.current.getContext('2d'));
 	}, []);
-
-	useEffect(() => {
-		setBitsArray(value)
-	}, [value])
 
 	// image to bitsArray (binary)
 	useEffect(() => {
@@ -422,19 +421,15 @@ const Canvas = ({value, onChange}) => {
 			imgPixels.data[i + 1] = avg;
 			imgPixels.data[i + 2] = avg;
 		}
-		
-		console.log('rgba',  [...(new Uint8Array(imgPixels.data))].filter((x, y) => (y + 1) % 4))
 
-		// Pick only first channel
-		const bitsArray = _.chunk([...(new Uint8Array(imgPixels.data))]
-			.filter((x, y) => (y % 4) === 0).map((a) => 255 - a), 8)
+		// Pick only first channel because all of them are same
+		const bitsArray = chunk([...(new Uint8Array(imgPixels.data))]
+			.filter((x, y) => (y % 4) === 0), 8)
 			.map(chunks => chunks.reduce((acc, curr, i) => {
 				return acc + ((curr === 255 ? 1 : 0) << (7 - i))
 			}, 0));
 
-		console.log('bits setup for the unit', bitsArray);
-
-		onChange(bitsArray);
+		onChange(bitsArray.map(a => inverted ? 255 - a : a));
 
 	}, [image, canvasContext]);
 
@@ -450,7 +445,7 @@ const Canvas = ({value, onChange}) => {
 		const bitsArrayArray = bitsArray.flatMap((a) => {
 			const bits = a.toString(2).split('').map(Number);
 			const full = Array(8 - bits.length).fill(0).concat(bits);
-			return full.map(a => a == 1 ? 255 : 0)
+			return full.map(a => a === 1 ? 255 : 0)
 		})
 		
 		// fill up the new array as RGBA
@@ -477,14 +472,21 @@ const Canvas = ({value, onChange}) => {
 				setImage(img);
 			};
 			img.src = fr.result;
-		};   // onload fires after reading is complete
+		};
 		fr.readAsDataURL(file);
+	}
+
+	const toggleInverted = () => {
+		onChange(bitsArray.map(a => 255 - a))
+		setInverted(!inverted);
 	}
 
 	return (<div style={{ display: "flex", alignItems: "center" }}>
 		<canvas ref={canvasRef} width="128" height="64" style={{ background: 'black' }} />
 		<div style={{ marginLeft: "11px" }}>
 			<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" onChange={onImageAdd} />
+			<br/>
+			<input type="checkbox" checked={inverted} onChange={toggleInverted}/> Invert
 			{/* <ErrorMessage name="splashImage" /> */}
 		</div>
 	</div>)

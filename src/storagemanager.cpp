@@ -129,14 +129,14 @@ void Storage::setDefaultSplashImage()
 
 void Storage::setSplashImage(SplashImage image)
 {
-	// if (memcmp(&splashImage, &boardOptions.splashImage, 16*64*sizeof(uint8_t)) != 0)
-	// {
+	if (memcmp(&splashImage, &image, sizeof(SplashImage)) != 0)
+	{
 		image.checksum = CHECKSUM_MAGIC; // set checksum to magic number
 		image.checksum = CRC32::calculate(&image);
 		EEPROM.set(SPLASH_IMAGE_STORAGE_INDEX, image);
 		EEPROM.commit();
 		memcpy(&splashImage, &image, sizeof(SplashImage));
-	// }
+	}
 }
 
 /* LED stuffs */

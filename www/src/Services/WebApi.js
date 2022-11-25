@@ -1,5 +1,5 @@
 import axios from 'axios';
-import _ from 'lodash';
+import { chunk } from 'lodash';
 
 const baseUrl = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
 
@@ -69,22 +69,7 @@ async function getSplashImage() {
 }
 
 async function setSplashImage({splashImage}) {
-	const data = splashImage;
-
-	let size = 0;
-	// let result = fflate.zlibSync(new Uint8Array(splashImage), {
-	// 	level: 9
-	// })
-
-	// while (size < data.length) {
-	// 	const item = data[size];
-	// 	const run = _.takeWhile(_.slice(data, size), a => a === item);
-	// 	size = size + run.length;
-	// 	result = result.concat([run.length, item])
-	// }
-
-	// let newOptions = { splashImage: result };
-	return await _.chunk(splashImage, 64).reduce(async (acc, chunk, index) => {
+	return await chunk(splashImage, 64).reduce(async (acc, chunk, index) => {
 		return axios.post(`${baseUrl}/api/setSplashImage`, { splashImage: chunk, index})
 		.then((response) => {
 			console.log(response.data);

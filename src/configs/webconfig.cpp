@@ -220,45 +220,38 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	return serialize_json(doc);
 }
 
-SplashImage splashTemp;
-int indexTemp = 0;
+SplashImage splashImageTemp; // For splash image upload
 
 std::string getSplashImage()
 {
-	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10);
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10); // TODO: Figoure out correct length
 	SplashImage splashImage = Storage::getInstance().getSplashImage();
 	JsonArray splashImageArray = doc.createNestedArray("splashImage");
-	doc["temp"] = indexTemp;
-	doc["isTemp"] = indexTemp == 15;
-	copyArray((indexTemp == 15) ? splashTemp.data : splashImage.data, splashImageArray);
+	copyArray(splashImage.data, splashImageArray);
 
 	return serialize_json(doc);
 }
 
-std::string setSplashImage()
-{
+std::string setSplashImage() // Expects 16 chunked requests because
+{							 // it can't handle all the payload at once
 	DynamicJsonDocument doc = get_post_data();
-	doc["indexTemp"] = indexTemp;
 	int index = doc["index"];
-	indexTemp = index;
-
+	
+	// Clean temp array, just in case
 	if (index == 0) {
 		for (int i = 0; i < 1024; i++) {
-			splashTemp.data[i] = 0;
+			splashImageTemp.data[i] = 0;
 		}
 	}
 
-	JsonArray indexArray = doc.createNestedArray("indexArray");
 	JsonArray array = doc["splashImage"].as<JsonArray>();
-	doc["arraySize"] = array.size();
 	for (int i = 0; i < 64; i++) {
-		if (index != 15) indexArray[i] = (64 * index) + i;
-		splashTemp.data[(64 * index) + i] = array[i];
+		splashImageTemp.data[(64 * index) + i] = array[i];
 	}
+	
+	// Persist data, all data bits should be set
 	if (index == 15) {
-		doc["attemptCommit"] = true;
-		ConfigManager::getInstance().setSplashImage(splashTemp);
-		doc["commitDone"] = true;
+		ConfigManager::getInstance().setSplashImage(splashImageTemp);
 	}
 
 	return serialize_json(doc);

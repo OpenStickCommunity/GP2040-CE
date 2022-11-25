@@ -32,7 +32,6 @@ void ConfigManager::setLedOptions(LEDOptions ledOptions) {
 
 void ConfigManager::setBoardOptions(BoardOptions boardOptions) {
 	Storage::getInstance().setBoardOptions(boardOptions);
-	// Storage::getInstance().setSplashImage(boardOptions.splashImage);
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->mapDpadUp->setPin(boardOptions.pinDpadUp);
