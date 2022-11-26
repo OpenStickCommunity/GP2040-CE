@@ -56,7 +56,6 @@ void GP2040::setup() {
 			gamepad->options.inputMode = inputMode;
 			gamepad->save();
 		}
-		initialize_driver(inputMode);
 	}
 
 	// Setup Add-ons
