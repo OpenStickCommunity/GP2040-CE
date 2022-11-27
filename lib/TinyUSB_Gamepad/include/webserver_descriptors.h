@@ -22,13 +22,15 @@ static const uint8_t webserver_string_language[]     = { 0x09, 0x04 };
 static const uint8_t webserver_string_manufacturer[] = "TinyUSB";
 static const uint8_t webserver_string_product[]      = "USB Webserver";
 static const uint8_t webserver_string_version[]      = "1.0";
+static const uint8_t webserver_string_interface[]    = "TinyUSB Network Interface";
 
 static const uint8_t *webserver_string_descriptors[] =
 {
 	webserver_string_language,
 	webserver_string_manufacturer,
 	webserver_string_product,
-	webserver_string_version
+	webserver_string_version,
+	webserver_string_interface
 };
 
 static const tusb_desc_device_t webserver_device_descriptor =
@@ -45,7 +47,7 @@ static const tusb_desc_device_t webserver_device_descriptor =
 	.bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
 
 	.idVendor           = 0xCAFE,
-	.idProduct          = 0x4001,
+	.idProduct          = 0x4021,
 	.bcdDevice          = 0x0101,
 
 	.iManufacturer      = 0x01,
