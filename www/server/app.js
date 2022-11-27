@@ -141,6 +141,13 @@ app.get('/api/getAddonsOptions', (req, res) => {
 	});
 });
 
+app.get('/api/getFirmwareVersion', (req, res) => {
+	console.log('/api/getFirmwareVersion');
+	return res.send({
+		version: '0.5.X',
+	});
+});
+
 app.post('/api/*', (req, res) => {
 	console.log(req.url);
 	return res.send(req.body);
