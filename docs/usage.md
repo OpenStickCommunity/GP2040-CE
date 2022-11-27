@@ -35,6 +35,14 @@ If you do not have a dedicated Home button, you can activate it via the <hotkey 
 
 Please note that the documentation for these new features is yet to be written. A future version will include updated docs.
 
+## Bootsel Mode
+
+To boot into Bootsel mode (to flash your controller for example), hold the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> button combination then plug in your controller.
+
+## Webconfig Mode
+
+To boot into [Webconfig mode](web-configurator.md) (to flash your controller for example), hold the <hotkey v-bind:buttons='["S2"]'></hotkey> button then plug in your controller.
+
 ## Input Modes
 
 To change the input mode, **hold one of the following buttons as the controller is plugged in:**
