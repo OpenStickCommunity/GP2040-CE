@@ -63,7 +63,7 @@ void I2CDisplayAddon::process() {
 				splashChoice = splashImage03;
 				break;
 			case CUSTOM:
-				splashChoice = splashCustom;
+				splashChoice = Storage::getInstance().getSplashImage().data;
 				break;
 			case LEGACY:
 				splashChoice = splashImageLegacy;

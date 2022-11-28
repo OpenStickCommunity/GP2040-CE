@@ -55,3 +55,7 @@ void ConfigManager::setBoardOptions(BoardOptions boardOptions) {
 
 	GamepadStore.save();
 }
+
+void ConfigManager::setSplashImage(SplashImage image) {
+	Storage::getInstance().setSplashImage(image);
+}

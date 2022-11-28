@@ -18,6 +18,7 @@ public:
     void setGamepadOptions(Gamepad*);
     void setBoardOptions(BoardOptions);
     void setLedOptions(LEDOptions);
+    void setSplashImage(SplashImage);
 private:
     ConfigManager() {}
     void setupConfig(GPConfig*);

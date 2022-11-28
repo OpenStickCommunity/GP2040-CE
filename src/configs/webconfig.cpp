@@ -18,6 +18,8 @@
 #include "lwip/mem.h"
 #include "rndis/rndis.h"
 
+#include "bitmaps.h"
+
 #define PATH_CGI_ACTION "/cgi/action"
 
 #define API_RESET_SETTINGS "/api/resetSettings"
@@ -31,6 +33,8 @@
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
 #define API_GET_ADDON_OPTIONS "/api/getAddonsOptions"
 #define API_SET_ADDON_OPTIONS "/api/setAddonsOptions"
+#define API_GET_SPLASH_IMAGE "/api/getSplashImage"
+#define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
@@ -213,6 +217,43 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	usedPins.add(gamepad->mapButtonR3->pin);
 	usedPins.add(gamepad->mapButtonA1->pin);
 	usedPins.add(gamepad->mapButtonA2->pin);
+
+	return serialize_json(doc);
+}
+
+SplashImage splashImageTemp; // For splash image upload
+
+std::string getSplashImage()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10); // TODO: Figoure out correct length
+	SplashImage splashImage = Storage::getInstance().getSplashImage();
+	JsonArray splashImageArray = doc.createNestedArray("splashImage");
+	copyArray(splashImage.data, splashImageArray);
+
+	return serialize_json(doc);
+}
+
+std::string setSplashImage() // Expects 16 chunked requests because
+{							 // it can't handle all the payload at once
+	DynamicJsonDocument doc = get_post_data();
+	int index = doc["index"];
+	
+	// Clean temp array, just in case
+	if (index == 0) {
+		for (int i = 0; i < 1024; i++) {
+			splashImageTemp.data[i] = 0;
+		}
+	}
+
+	JsonArray array = doc["splashImage"].as<JsonArray>();
+	for (int i = 0; i < 64; i++) {
+		splashImageTemp.data[(64 * index) + i] = array[i];
+	}
+	
+	// Persist data, all data bits should be set
+	if (index == 15) {
+		ConfigManager::getInstance().setSplashImage(splashImageTemp);
+	}
 
 	return serialize_json(doc);
 }
@@ -492,6 +533,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setPinMappings());
 		if (!memcmp(http_post_uri, API_SET_ADDON_OPTIONS, sizeof(API_SET_ADDON_OPTIONS)))
 			return set_file_data(file, setAddonOptions());
+		if (!memcmp(http_post_uri, API_SET_SPLASH_IMAGE, sizeof(API_SET_SPLASH_IMAGE)))
+			return set_file_data(file, setSplashImage());
 	}
 	else
 	{
@@ -507,6 +550,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getAddonOptions());
 		if (!memcmp(name, API_RESET_SETTINGS, sizeof(API_RESET_SETTINGS)))
 			return set_file_data(file, resetSettings());
+		if (!memcmp(name, API_GET_SPLASH_IMAGE, sizeof(API_GET_SPLASH_IMAGE)))
+			return set_file_data(file, getSplashImage());
 		if (!memcmp(name, API_GET_FIRMWARE_VERSION, sizeof(API_GET_FIRMWARE_VERSION)))
 			return set_file_data(file, getFirmwareVersion());
 	}

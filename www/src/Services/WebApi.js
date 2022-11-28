@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { chunk } from 'lodash';
 
 const baseUrl = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
 
@@ -47,6 +48,7 @@ async function setDisplayOptions(options) {
 	newOptions.buttonLayoutRight = parseInt(options.buttonLayoutRight);
 	newOptions.splashMode = parseInt(options.splashMode);
 	newOptions.splashChoice = parseInt(options.splashChoice);
+	newOptions.splashImage = '';
 	return axios.post(`${baseUrl}/api/setDisplayOptions`, newOptions)
 		.then((response) => {
 			console.log(response.data);
@@ -56,6 +58,28 @@ async function setDisplayOptions(options) {
 			console.error(err);
 			return false;
 		});
+}
+
+async function getSplashImage() {
+	return axios.get(`${baseUrl}/api/getSplashImage`)
+		.then((response) => {
+			return response.data;
+		})
+		.catch(console.error);
+}
+
+async function setSplashImage({splashImage}) {
+	return await chunk(splashImage, 64).reduce(async (acc, chunk, index) => {
+		return axios.post(`${baseUrl}/api/setSplashImage`, { splashImage: chunk, index})
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		}).then(acc);
+	}, Promise.resolve({splashImage}));
 }
 
 async function getGamepadOptions() {
@@ -157,6 +181,8 @@ const WebApi = {
 	setPinMappings,
 	getAddonsOptions,
 	setAddonsOptions,
+	getSplashImage,
+	setSplashImage,
 	getFirmwareVersion
 };
 

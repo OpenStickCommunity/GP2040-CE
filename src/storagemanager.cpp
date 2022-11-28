@@ -21,6 +21,8 @@
 #include "addons/i2canalog1219.h"
 #include "addons/turbo.h"
 
+#include "bitmaps.h"
+
 #include "helper.h"
 
 /* Board stuffs */
@@ -30,6 +32,15 @@ void Storage::initBoardOptions() {
 	boardOptions.checksum = CHECKSUM_MAGIC;
 	if (lastCRC != CRC32::calculate(&boardOptions)) {
 		setDefaultBoardOptions();
+	}
+}
+
+void Storage::initSplashImage() {
+	EEPROM.get(SPLASH_IMAGE_STORAGE_INDEX, splashImage);
+	uint32_t lastCRC = splashImage.checksum;
+	splashImage.checksum = CHECKSUM_MAGIC;
+	if (lastCRC != CRC32::calculate(&splashImage)) {
+		setDefaultSplashImage();
 	}
 }
 
@@ -102,6 +113,29 @@ void Storage::setBoardOptions(BoardOptions options)
 		EEPROM.set(BOARD_STORAGE_INDEX, options);
 		EEPROM.commit();
 		memcpy(&boardOptions, &options, sizeof(BoardOptions));
+	}
+}
+
+SplashImage Storage::getSplashImage()
+{
+	return splashImage;
+}
+
+void Storage::setDefaultSplashImage()
+{
+	memcpy(&splashImage.data, &splashImageMain, sizeof(splashImageMain));
+	setSplashImage(splashImage);
+}
+
+void Storage::setSplashImage(SplashImage image)
+{
+	if (memcmp(&splashImage, &image, sizeof(SplashImage)) != 0)
+	{
+		image.checksum = CHECKSUM_MAGIC; // set checksum to magic number
+		image.checksum = CRC32::calculate(&image);
+		EEPROM.set(SPLASH_IMAGE_STORAGE_INDEX, image);
+		EEPROM.commit();
+		memcpy(&splashImage, &image, sizeof(SplashImage));
 	}
 }
 
