@@ -144,7 +144,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 app.get('/api/getFirmwareVersion', (req, res) => {
 	console.log('/api/getFirmwareVersion');
 	return res.send({
-		version: '0.5.X',
+		version: process.env.REACT_APP_CURRENT_VERSION,
 	});
 });
 
