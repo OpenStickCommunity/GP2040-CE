@@ -2,7 +2,7 @@
 
 GP2040-CE is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontroller, and provides high performance with a rich feature set across multiple platforms. GP2040-CE is compatible with PC, MiSTer, Android, Raspberry Pi, Nintendo Switch, PS3 and PS4 (legacy controller support).
 
-Full documentation can be found at <https://www.gp2040-ce.info>.
+Full documentation can be found at <http://www.gp2040-ce.info>.
 
 ## Features
 
