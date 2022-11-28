@@ -61,3 +61,4 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 ## DANGER ZONE
 
 ![GP2040 Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
+
