@@ -4,13 +4,19 @@ import { orderBy } from 'lodash';
 
 import Section from '../Components/Section';
 
-const currentVersion = process.env.REACT_APP_CURRENT_VERSION;
+import WebApi from '../Services/WebApi';
 
 export default function HomePage() {
 	const [latestVersion, setLatestVersion] = useState('');
 	const [latestTag, setLatestTag] = useState('');
+	const [currentVersion, setCurrentVersion] = useState(process.env.REACT_APP_CURRENT_VERSION);
 
 	useEffect(() => {
+		WebApi.getFirmwareVersion().then(response => {
+			setCurrentVersion(response.version);
+		})
+		.catch(console.error);
+		
 		axios.get('https://api.github.com/repos/OpenStickFoundation/GP2040-CE/releases')
 			.then((response) => {
 				const sortedData = orderBy(response.data, 'published_at', 'desc');

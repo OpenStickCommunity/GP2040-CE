@@ -163,6 +163,12 @@ async function setAddonsOptions(options) {
 		});
 }
 
+async function getFirmwareVersion() {
+	return axios.get(`${baseUrl}/api/getFirmwareVersion`)
+		.then((response) => response.data)
+		.catch(console.error);
+}
+
 const WebApi = {
 	resetSettings,
 	getDisplayOptions,
@@ -176,7 +182,8 @@ const WebApi = {
 	getAddonsOptions,
 	setAddonsOptions,
 	getSplashImage,
-	setSplashImage
+	setSplashImage,
+	getFirmwareVersion
 };
 
 export default WebApi;

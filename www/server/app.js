@@ -153,6 +153,13 @@ app.get('/api/getAddonsOptions', (req, res) => {
 	});
 });
 
+app.get('/api/getFirmwareVersion', (req, res) => {
+	console.log('/api/getFirmwareVersion');
+	return res.send({
+		version: process.env.REACT_APP_CURRENT_VERSION,
+	});
+});
+
 app.post('/api/*', (req, res) => {
 	console.log(req.url);
 	return res.send(req.body);

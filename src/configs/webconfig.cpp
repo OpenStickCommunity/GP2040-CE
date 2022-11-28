@@ -35,6 +35,7 @@
 #define API_SET_ADDON_OPTIONS "/api/setAddonsOptions"
 #define API_GET_SPLASH_IMAGE "/api/getSplashImage"
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
+#define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
@@ -501,6 +502,14 @@ std::string getAddonOptions()
 	return serialize_json(doc);
 }
 
+std::string getFirmwareVersion()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	doc["version"] = GP2040VERSION;
+
+	return serialize_json(doc);
+}
+
 // This should be a storage feature
 std::string resetSettings()
 {
@@ -543,6 +552,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, resetSettings());
 		if (!memcmp(name, API_GET_SPLASH_IMAGE, sizeof(API_GET_SPLASH_IMAGE)))
 			return set_file_data(file, getSplashImage());
+		if (!memcmp(name, API_GET_FIRMWARE_VERSION, sizeof(API_GET_FIRMWARE_VERSION)))
+			return set_file_data(file, getFirmwareVersion());
 	}
 
 	bool isExclude = false;
