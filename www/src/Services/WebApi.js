@@ -139,6 +139,12 @@ async function setAddonsOptions(options) {
 		});
 }
 
+async function getFirmwareVersion() {
+	return axios.get(`${baseUrl}/api/getFirmwareVersion`)
+		.then((response) => response.data)
+		.catch(console.error);
+}
+
 const WebApi = {
 	resetSettings,
 	getDisplayOptions,
@@ -150,7 +156,8 @@ const WebApi = {
 	getPinMappings,
 	setPinMappings,
 	getAddonsOptions,
-	setAddonsOptions
+	setAddonsOptions,
+	getFirmwareVersion
 };
 
 export default WebApi;
