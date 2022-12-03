@@ -1,6 +1,6 @@
 #include "addons/buzzerspeaker.h"
 
-const Tone capcom[] = {
+const Tone intro_capcom[] = {
 E5,
 E5,
 G5,
