@@ -34,38 +34,39 @@ void BuzzerSpeakerAddon::setup() {
 	gpio_set_function(boardOptions.buzzerPin, GPIO_FUNC_PWM);
 	buzzerPinSlice = pwm_gpio_to_slice_num (boardOptions.buzzerPin); 
 	buzzerPinChannel = pwm_gpio_to_channel (boardOptions.buzzerPin);
-
-	int i = 1;
-
-	while (i <= 2000) {
-		pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, i, 75);
-		pwm_set_enabled (buzzerPinSlice, true); 
-		sleep_ms(100);
-		i++;
-		if (i >= 2000) {
-			i=1;
-		}
-    }
-
-	
 }
 
 void BuzzerSpeakerAddon::process() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 
+	if (configMode == false) {
+		Tone song[] = {E5,G5,A5,P,E5,G5,B5,A5,P,E5,G5,A5,P,G5,E5};
+
+		for (Tone tone : song)
+			playTone(tone,300);
+	}
 }
 
-uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice_num, uint chan, uint32_t f, int d) {
+void BuzzerSpeakerAddon::playTone(Tone tone, uint32_t durationMs) {
+	if (tone != P) {
+		pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, tone, 75);
+		pwm_set_enabled (buzzerPinSlice, true);
+	}
+	sleep_ms(durationMs);
+	pwm_set_enabled (buzzerPinSlice, false);
+}
+
+uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, int duty) {
 	uint32_t clock = 125000000;
-	uint32_t divider16 = clock / f / 4096 + 
-							(clock % (f * 4096) != 0);
+	uint32_t divider16 = clock / frequency / 4096 + 
+							(clock % (frequency * 4096) != 0);
 	if (divider16 / 16 == 0)
 	divider16 = 16;
-	uint32_t wrap = clock * 16 / divider16 / f - 1;
-	pwm_set_clkdiv_int_frac(slice_num, divider16/16,
+	uint32_t wrap = clock * 16 / divider16 / frequency - 1;
+	pwm_set_clkdiv_int_frac(slice, divider16/16,
 										divider16 & 0xF);
-	pwm_set_wrap(slice_num, wrap);
-	pwm_set_chan_level(slice_num, chan, wrap * d / 100);
+	pwm_set_wrap(slice, wrap);
+	pwm_set_chan_level(slice, channel, wrap * duty / 100);
 	return wrap;
 }
 
