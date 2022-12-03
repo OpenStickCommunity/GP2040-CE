@@ -194,4 +194,13 @@
 #define SPLASH_MODE NOSPLASH
 #define SPLASH_CHOICE MAIN
 
+// This is the Buzzer Speaker section.  
+// In this section you can specify if Buzzer Speaker will be active, and, if active, which pin will be used for them.
+// The default is `HAS_BUZZER_SPEAKER` which will turn the Buzzer Speaker off.
+// The default pin for Buzzer Speaker is `-1` which disables it.  
+#define HAS_BUZZER_SPEAKER -1
+#define BUZZER_PIN -1
+#define BUZZER_VOLUME 100
+#define BUZZER_SPEED 100
+
 #endif

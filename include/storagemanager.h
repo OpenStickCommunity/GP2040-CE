@@ -74,6 +74,9 @@ struct BoardOptions
 	uint8_t i2cAnalog1219Address;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
+	bool hasBuzzerSpeaker;
+	uint8_t buzzerPin;
+	uint8_t buzzerVolume;
 };
 
 struct SplashImage {

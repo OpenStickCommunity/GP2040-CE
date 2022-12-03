@@ -20,6 +20,7 @@
 #include "addons/playerleds.h"
 #include "addons/i2canalog1219.h"
 #include "addons/turbo.h"
+#include "addons/buzzerspeaker.h"
 
 #include "bitmaps.h"
 
@@ -100,6 +101,9 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.i2cAnalog1219Block      = (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1;
 	boardOptions.i2cAnalog1219Speed      = I2C_ANALOG1219_SPEED;
 	boardOptions.i2cAnalog1219Address    = I2C_ANALOG1219_ADDRESS;
+	boardOptions.hasBuzzerSpeaker        = HAS_BUZZER_SPEAKER;
+	boardOptions.buzzerPin               = BUZZER_PIN;
+	boardOptions.buzzerVolume            = BUZZER_VOLUME;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }
