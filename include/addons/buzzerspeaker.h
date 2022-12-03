@@ -118,6 +118,8 @@ enum Tone {
 	NOTE_PAUSE = 0
 };
 
+
+
 // Buzzer Speaker
 class BuzzerSpeakerAddon : public GPAddon
 {

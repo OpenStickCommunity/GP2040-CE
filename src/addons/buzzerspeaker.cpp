@@ -1,4 +1,5 @@
 #include "addons/buzzerspeaker.h"
+#include "songs.h"
 #include "enums.h"
 #include "helper.h"
 #include "storagemanager.h"
@@ -32,25 +33,7 @@ void BuzzerSpeakerAddon::process() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 
 	if (configMode == false) {
-		Tone song[] = {
-			NOTE_E5,
-			NOTE_G5,
-			NOTE_A5,
-			NOTE_PAUSE,
-			NOTE_E5,
-			NOTE_G5,
-			NOTE_B5,
-			NOTE_A5,
-			NOTE_PAUSE,
-			NOTE_E5,
-			NOTE_G5,
-			NOTE_A5,
-			NOTE_PAUSE,
-			NOTE_G5,
-			NOTE_E5
-		};
-
-		for (Tone tone : song)
+		for (Tone tone : song1)
 			playTone(tone,300);
 	}
 }
