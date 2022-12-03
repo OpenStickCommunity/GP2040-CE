@@ -127,6 +127,7 @@ public:
 	virtual bool available();  // GPAddon
 	virtual void setup();
 	virtual void process();
+	virtual void startUp();
 	virtual std::string name() { return BuzzerSpeakerName; }
 	void playTone(Tone tone, uint16_t durationMs);
 	uint32_t pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty);

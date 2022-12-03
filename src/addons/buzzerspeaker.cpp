@@ -6,8 +6,6 @@
 #include "pico/stdlib.h"
 #include "bitmaps.h"
 
-const uint LED_PIN = 25;
-
 bool BuzzerSpeakerAddon::available() {
 	// BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	// return boardOptions.hasBuzzerSpeaker && 
@@ -31,9 +29,14 @@ void BuzzerSpeakerAddon::setup() {
 	buzzerPinChannel = pwm_gpio_to_channel (boardOptions.buzzerPin);
 	buzzerVolume = boardOptions.buzzerVolume;
 	buzzerNoteDuration = boardOptions.buzzerNoteDuration;
+
+	startUp();
 }
 
 void BuzzerSpeakerAddon::process() {
+}
+
+void BuzzerSpeakerAddon::startUp() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 
 	if (configMode == false) {
