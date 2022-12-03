@@ -32,15 +32,31 @@ void BuzzerSpeakerAddon::process() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 
 	if (configMode == false) {
-		Tone song[] = {E5,G5,A5,P,E5,G5,B5,A5,P,E5,G5,A5,P,G5,E5};
+		Tone song[] = {
+			NOTE_E5,
+			NOTE_G5,
+			NOTE_A5,
+			NOTE_PAUSE,
+			NOTE_E5,
+			NOTE_G5,
+			NOTE_B5,
+			NOTE_A5,
+			NOTE_PAUSE,
+			NOTE_E5,
+			NOTE_G5,
+			NOTE_A5,
+			NOTE_PAUSE,
+			NOTE_G5,
+			NOTE_E5
+		};
 
 		for (Tone tone : song)
 			playTone(tone,300);
 	}
 }
 
-void BuzzerSpeakerAddon::playTone(Tone tone, uint32_t durationMs) {
-	if (tone != P) {
+void BuzzerSpeakerAddon::playTone(Tone tone, uint16_t durationMs) {
+	if (tone != NOTE_PAUSE) {
 		pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, tone, 75);
 		pwm_set_enabled (buzzerPinSlice, true);
 	}
