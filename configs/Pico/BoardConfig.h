@@ -201,6 +201,6 @@
 #define HAS_BUZZER_SPEAKER -1
 #define BUZZER_PIN -1
 #define BUZZER_VOLUME 100
-#define BUZZER_SPEED 100
+#define BUZZER_NOTE_DURATION 300
 
 #endif

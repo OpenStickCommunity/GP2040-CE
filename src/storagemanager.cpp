@@ -104,6 +104,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.hasBuzzerSpeaker        = HAS_BUZZER_SPEAKER;
 	boardOptions.buzzerPin               = BUZZER_PIN;
 	boardOptions.buzzerVolume            = BUZZER_VOLUME;
+	boardOptions.buzzerNoteDuration      = BUZZER_NOTE_DURATION;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }

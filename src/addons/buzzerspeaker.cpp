@@ -21,33 +21,37 @@ void BuzzerSpeakerAddon::setup() {
 	// begin - test
 	boardOptions.hasBuzzerSpeaker = true;
 	boardOptions.buzzerPin = 14;
+	boardOptions.buzzerVolume = BUZZER_VOLUME;
+	boardOptions.buzzerNoteDuration = BUZZER_NOTE_DURATION;
 	Storage::getInstance().setBoardOptions(boardOptions);
 	// end - test
 
 	gpio_set_function(boardOptions.buzzerPin, GPIO_FUNC_PWM);
 	buzzerPinSlice = pwm_gpio_to_slice_num (boardOptions.buzzerPin); 
 	buzzerPinChannel = pwm_gpio_to_channel (boardOptions.buzzerPin);
+	buzzerVolume = boardOptions.buzzerVolume;
+	buzzerNoteDuration = boardOptions.buzzerNoteDuration;
 }
 
 void BuzzerSpeakerAddon::process() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 
 	if (configMode == false) {
-		for (Tone tone : song1)
-			playTone(tone,300);
+		for (Tone tone : capcom)
+			playTone(tone, buzzerNoteDuration);
 	}
 }
 
 void BuzzerSpeakerAddon::playTone(Tone tone, uint16_t durationMs) {
-	if (tone != NOTE_PAUSE) {
-		pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, tone, 75);
+	if (tone != PAUSE) {
+		pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, tone, 0.03 * ((float) buzzerVolume));
 		pwm_set_enabled (buzzerPinSlice, true);
 	}
 	sleep_ms(durationMs);
 	pwm_set_enabled (buzzerPinSlice, false);
 }
 
-uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, int duty) {
+uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty) {
 	uint32_t clock = 125000000;
 	uint32_t divider16 = clock / frequency / 4096 + 
 							(clock % (frequency * 4096) != 0);
