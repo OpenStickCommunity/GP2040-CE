@@ -31,7 +31,7 @@ void BuzzerSpeakerAddon::startUp() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 
 	if (configMode == false) {
-		for (Tone tone : intro_capcom)
+		for (Tone tone : intro)
 			playTone(tone, buzzerNoteDuration);
 	}
 }
