@@ -7,22 +7,13 @@
 #include "bitmaps.h"
 
 bool BuzzerSpeakerAddon::available() {
-	// BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	// return boardOptions.hasBuzzerSpeaker && 
-	// 	boardOptions.buzzerPin != (uint8_t)-1;
-	return true;
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	return boardOptions.hasBuzzerSpeaker && 
+		boardOptions.buzzerPin != (uint8_t)-1;
 }
 
 void BuzzerSpeakerAddon::setup() {
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	
-	// begin - test
-	boardOptions.hasBuzzerSpeaker = true;
-	boardOptions.buzzerPin = 14;
-	boardOptions.buzzerVolume = BUZZER_VOLUME;
-	boardOptions.buzzerNoteDuration = BUZZER_NOTE_DURATION;
-	Storage::getInstance().setBoardOptions(boardOptions);
-	// end - test
 
 	gpio_set_function(boardOptions.buzzerPin, GPIO_FUNC_PWM);
 	buzzerPinSlice = pwm_gpio_to_slice_num (boardOptions.buzzerPin); 

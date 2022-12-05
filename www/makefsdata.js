@@ -3,10 +3,10 @@ const fs = require('fs');
 
 const exec = require('child_process').execFile;
 
-const root = path.dirname(require.main.filename).replace("\\www", "");
+const root = path.dirname(require.main.filename).replace(path.normalize("www"), "");
 const rootwww = path.dirname(require.main.filename);
 
-const fsdata_filename = "\\lib\\httpd\\fsdata.c";
+const fsdata_filename = path.normalize("/lib/httpd/fsdata.c");
 
 function correctincludes() {
     fs.readFile(root + fsdata_filename, "utf8", function (error, data) {
@@ -27,7 +27,7 @@ function correctincludes() {
 }
 
 function makefsdata() {
-      exec(`${root}\\tools\\makefsdata`, [`${rootwww}\\build`, `-f:${root}\\lib\\httpd\\fsdata.c`], function(error, data) {
+      exec(path.normalize(`${root}/tools/makefsdata`), [path.normalize(`${rootwww}/build`), `-f:`+ path.normalize(`${root}/lib/httpd/fsdata.c`)], function(error, data) {
         if (error) {
             console.error(error);
         } else {
