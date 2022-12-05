@@ -20,7 +20,7 @@
 #endif
 
 #ifndef BUZZER_NOTE_DURATION
-#define BUZZER_NOTE_DURATION 300
+#define BUZZER_NOTE_DURATION 200
 #endif
 
 // Buzzer Speaker Module

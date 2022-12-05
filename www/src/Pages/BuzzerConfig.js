@@ -16,7 +16,7 @@ const defaultValues = {
 	enabled: false,
 	buzzerPin: -1,
 	buzzerVolume: 100,
-	buzzerNoteDuration: 300
+	buzzerNoteDuration: 200
 };
 
 let usedPins = [];
@@ -24,7 +24,7 @@ let usedPins = [];
 const schema = yup.object().shape({
 	enabled: yup.number().label('Enabled?'),
 	// eslint-disable-next-line no-template-curly-in-string
-	buzzerPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => true).label('Buzzer Pin'),
+	buzzerPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Buzzer Pin'),
 	buzzerVolume: yup.number().required().min(0).max(100).label('Buzzer Volume'),
 	buzzerNoteDuration: yup.number().required().label('Buzzer Note Duration'),
 });
