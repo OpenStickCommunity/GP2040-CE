@@ -197,7 +197,7 @@
 // This is the Buzzer Speaker section.  
 // In this section you can specify if Buzzer Speaker will be active, and, if active, which pin will be used for them.
 // The default is `HAS_BUZZER_SPEAKER` which will turn the Buzzer Speaker off.
-// The default pin for Buzzer Speaker is `-1` which disables it.  
+// The default pin for Buzzer Speaker is `1` which enables it.  
 // The default volume for Buzzer Speaker is 100 (max).  
 // The default note duration for Buzzer Speaker is 200.  
 #define HAS_BUZZER_SPEAKER 1
