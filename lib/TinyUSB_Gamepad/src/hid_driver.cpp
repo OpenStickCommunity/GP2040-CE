@@ -30,7 +30,7 @@ bool hid_device_control_request(uint8_t rhport, tusb_control_request_t const * r
 		request->wValue == 0x0300
 	)
 	{
-		return tud_hid_report(0, magic_init_bytes, sizeof(magic_init_bytes));
+		return tud_control_xfer(rhport, request, (void *) magic_init_bytes, sizeof(magic_init_bytes));
 	}
 	else
 	{
