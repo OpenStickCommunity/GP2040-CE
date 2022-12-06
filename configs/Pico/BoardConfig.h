@@ -200,7 +200,7 @@
 // The default pin for Buzzer Speaker is `-1` which disables it.  
 // The default volume for Buzzer Speaker is 100 (max).  
 // The default note duration for Buzzer Speaker is 200.  
-#define HAS_BUZZER_SPEAKER -1
+#define HAS_BUZZER_SPEAKER 1
 #define BUZZER_PIN -1
 #define BUZZER_VOLUME 100
 #define BUZZER_NOTE_DURATION 200
