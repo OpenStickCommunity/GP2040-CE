@@ -42,7 +42,7 @@ Currently we offer the main RaspBerry Pi Pico setup as well as those from commun
 > * [Crush Counter](configs/CrushCounter) (formerly the [OSFRD](configs/OSFRD))
 > * [DURAL](configs/DURAL)
 > * [Flatbox Rev 4/Rev 5](configs/FlatboxRev4)
-> * [WaveShare RP2040 Zero]
+> * [WaveShare RP2040 Zero](configs/WaveshareZero)
 
 Several other working example configurations are located in the [configs](configs) folder.
 
