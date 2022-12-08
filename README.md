@@ -8,13 +8,16 @@ Full documentation can be found at <https://www.gp2040-ce.info>.
 
 * Selectable input modes - XInput, DirectInput, and Nintendo Switch
 * Overclocked polling rate for less than 1 ms of input latency in all modes
-* Multiple SOCD cleaning modes - Neutral, Up Priority (a.k.a. Hitbox), and Second Input Priority
+* Multiple SOCD cleaning modes - Neutral, Up Priority (a.k.a. Stickless), and Second Input Priority
 * Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches
+* Dual direction via D-pad + LS/RS
+* Reverse input via button
 * Turbo and Turbo LED with selectable speed
 * Per-button RGB LED support
 * PWM Player indicator LED support (XInput only)
 * Multiple profile support
 * Support for 128x64 monochrome I2C displays - SSD1306, SH1106, and SH1107 compatible
+* Custom startup splash screen and easy image upload via web configuration
 * [Built-in, embedded web configuration](https://www.gp2040-ce.info/#/web-configurator) - no download required!
 
 Visit the [GP2040-CE Usage](https://www.gp2040-ce.info/#/usage) page for more details.
@@ -33,13 +36,13 @@ Full results can be found in the [GP2040-CE Firmware Latency Test Results](https
 
 Prebuilt `uf2` files are available in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section.
 
-Currently only a basic RaspBerry Pi Pico setup is supported.  
+Currently we offer the main RaspBerry Pi Pico setup as well as those from community members that have verified its operation. Some of these additional configurations include:
 
-> **If you have any of the following products or setups we would recommend waiting until their devices are tested with this new firmware**
 > * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
 > * [Crush Counter](configs/CrushCounter) (formerly the [OSFRD](configs/OSFRD))
 > * [DURAL](configs/DURAL)
-> * [Flatbox Rev 4](configs/FlatboxRev4)
+> * [Flatbox Rev 4/Rev 5](configs/FlatboxRev4)
+> * [WaveShare RP2040 Zero]
 
 Several other working example configurations are located in the [configs](configs) folder.
 
@@ -47,10 +50,10 @@ The instructions will slightly vary based on your device. These instructions are
 
 > If the device has been previously used for something other than GP2040-CE, please flash this file first to clear the on-board storage: [flash_nuke.uf2](docs/downloads/flash_nuke.uf2). After flashing the nuke file, wait a minute for the clear program to run and the RPI-RP2 drive to reappear.
 
-1. Download the latest `GP2040.uf2` file from the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section for your board (e.g. `GP2040-PiPico.uf2` for the Raspberry Pi Pico).
+1. Download the latest `GP2040-CE.uf2` file from the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section for your board (e.g. `GP2040-CE-PicoFightingBoard_vX.X.X.uf2` for the Raspberry Pi Pico).
 1. Unplug your Pico.
 1. Hold the BOOTSEL button on the Pico and plug into your computer. A new removable drive named `RPI-RP2` should appear in your file explorer.
-1. Drag and drop the `GP2040.uf2` file into the removable drive. This will flash the board.
+1. Drag and drop the `GP2040-CE.uf2` file into the removable drive. This will flash the board.
 1. The board is now running the GP2040-CE firmware and will appear as a controller on your computer.
 
 ## Support
@@ -123,4 +126,5 @@ Join the [OpenStick GP2040-CE Discord channel](https://discord.gg/XEhfAnwt) to p
 * [bitbank2](https://github.com/bitbank2) for the [OneBitDisplay](https://github.com/bitbank2/OneBitDisplay) and [BitBang_I2C](https://github.com/bitbank2/BitBang_I2C) libraries, which were ported for use with the Pico SDK
 * [arntsonl](https://github.com/arntsonl) for the amazing cleanup and feature additions that brought us to v0.5.0
 * [alirin222](https://github.com/alirin222) for the awesome turbo code ([@alirin222](https://twitter.com/alirin222) on Twitter)
+* [DeBug] for improvments to the web-UI and fixing the PS3 homebutton issue
 * [TheTrain](https://github.com/TheTrainGoes/GP2040-Projects) and [Fortinbra](https://github.com/Fortinbra) for helping keep our community chugging along
