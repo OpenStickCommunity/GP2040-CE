@@ -10,6 +10,24 @@ Generally speaking, XInput will be the mode of choice for everything except Nint
 
 GP2040 will work on PS4 games that implement support for legacy PS3 controllers. Many of the popular PS4 fighting games have this support.
 
+Supported:
+* BlazBlue Central Fiction
+* Guilty Gear Xrd
+* The King of Fighters XIV
+* Mortal Kombat X
+* Mortal Kombat 11
+* Skull Girls
+* Soul Calibur VI
+* Street Fighter V
+* Tekken 7
+
+Unsupported:
+* Dragon Ball Fighter Z
+* Granblue Fantasy Versus
+* Guilty Gear Strive
+* The King of Fighters XV
+* Street Fighter 30th Anniversary Collection
+
 ### Does/can/will GP2040 natively support the PS4, PS5, Xbox One or Xbox Series consoles?
 
 These consoles implement security to prevent unauthorized accessories from being used. The process of cracking or bypassing that security may not be legal everywhere. These consoles could be supported in the future if a user-friendly and completely legal implementation method is found.
