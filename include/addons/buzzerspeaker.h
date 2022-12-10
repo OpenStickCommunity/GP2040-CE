@@ -1,3 +1,6 @@
+#include <vector>
+using namespace std;
+
 #ifndef BUZZER_H_
 #define BUZZER_H_
 
@@ -118,7 +121,14 @@ enum Tone {
 	PAUSE = 0
 };
 
-
+struct Song {
+	uint16_t toneDuration;
+	vector<Tone> song;
+	Song(uint16_t t, vector<Tone> s){
+		toneDuration = t;
+		song = s;
+	};
+};
 
 // Buzzer Speaker
 class BuzzerSpeakerAddon : public GPAddon
@@ -127,14 +137,16 @@ public:
 	virtual bool available();  // GPAddon
 	virtual void setup();
 	virtual void process();
-	virtual void startUp();
 	virtual std::string name() { return BuzzerSpeakerName; }
-	void playTone(Tone tone, uint16_t durationMs);
+	void processBuzzer();
+	void play(Song *song);
+	void stop();
 	uint32_t pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty);
 	uint8_t buzzerPinSlice;
 	uint8_t buzzerPinChannel;
 	uint8_t buzzerVolume;
-	uint16_t buzzerNoteDuration;
+	uint32_t startedSongMils;
+	Song *currentSong;
 };
 
 #endif

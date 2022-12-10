@@ -5,6 +5,7 @@
 #include "storagemanager.h"
 #include "pico/stdlib.h"
 #include "bitmaps.h"
+#include "math.h"
 
 bool BuzzerSpeakerAddon::available() {
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
@@ -19,30 +20,47 @@ void BuzzerSpeakerAddon::setup() {
 	buzzerPinSlice = pwm_gpio_to_slice_num (boardOptions.buzzerPin); 
 	buzzerPinChannel = pwm_gpio_to_channel (boardOptions.buzzerPin);
 	buzzerVolume = boardOptions.buzzerVolume;
-	buzzerNoteDuration = boardOptions.buzzerNoteDuration;
 
-	startUp();
+	play(&intro);
 }
 
 void BuzzerSpeakerAddon::process() {
+	processBuzzer();
 }
 
-void BuzzerSpeakerAddon::startUp() {
-	bool configMode = Storage::getInstance().GetConfigMode();
+void BuzzerSpeakerAddon::processBuzzer() {
 
-	if (configMode == false) {
-		for (Tone tone : intro)
-			playTone(tone, buzzerNoteDuration);
+	if (currentSong == NULL) {
+		return;
 	}
+
+	uint32_t currentTimeSong = getMillis() - startedSongMils;
+	uint32_t totalTimeSong = currentSong->song.size() * currentSong->toneDuration;
+	uint16_t currentTonePosition = floor((currentTimeSong * currentSong->song.size()) / totalTimeSong);
+	Tone currentTone = currentSong->song[currentTonePosition];
+
+	if (currentTonePosition > currentSong->song.size()) {
+		stop();
+		return;
+	}
+
+	if (currentTone == PAUSE) {
+		pwm_set_enabled (buzzerPinSlice, false);
+		return;
+	}
+
+	pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, currentTone, 0.03 * ((float) buzzerVolume));
+	pwm_set_enabled (buzzerPinSlice, true);
 }
 
-void BuzzerSpeakerAddon::playTone(Tone tone, uint16_t durationMs) {
-	if (tone != PAUSE) {
-		pwmSetFreqDuty(buzzerPinSlice, buzzerPinChannel, tone, 0.03 * ((float) buzzerVolume));
-		pwm_set_enabled (buzzerPinSlice, true);
-	}
-	sleep_ms(durationMs);
+void BuzzerSpeakerAddon::play(Song *song) {
+	startedSongMils = getMillis();
+	currentSong = song;
+}
+
+void BuzzerSpeakerAddon::stop() {
 	pwm_set_enabled (buzzerPinSlice, false);
+	currentSong = NULL;
 }
 
 uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty) {
