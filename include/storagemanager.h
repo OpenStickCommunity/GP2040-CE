@@ -77,7 +77,6 @@ struct BoardOptions
 	bool hasBuzzerSpeaker;
 	uint8_t buzzerPin;
 	uint8_t buzzerVolume;
-	uint16_t buzzerNoteDuration;
 };
 
 struct SplashImage {

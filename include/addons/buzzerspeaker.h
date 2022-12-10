@@ -22,10 +22,6 @@ using namespace std;
 #define BUZZER_VOLUME 100
 #endif
 
-#ifndef BUZZER_NOTE_DURATION
-#define BUZZER_NOTE_DURATION 200
-#endif
-
 // Buzzer Speaker Module
 #define BuzzerSpeakerName "BuzzerSpeaker"
 

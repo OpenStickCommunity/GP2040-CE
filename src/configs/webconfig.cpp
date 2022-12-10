@@ -230,7 +230,6 @@ std::string setBuzzerOptions()
 	boardOptions.hasBuzzerSpeaker      = doc["enabled"];
 	boardOptions.buzzerPin             = doc["buzzerPin"];
 	boardOptions.buzzerVolume          = doc["buzzerVolume"];
-	boardOptions.buzzerNoteDuration    = doc["buzzerNoteDuration"];
 	ConfigManager::getInstance().setBoardOptions(boardOptions);
 	return serialize_json(doc);
 }
@@ -242,7 +241,6 @@ std::string getBuzzerOptions() // Manually set Document Attributes for the buzze
 	doc["enabled"]       	 = boardOptions.hasBuzzerSpeaker ? 1 : 0;
 	doc["buzzerPin"]      	 = boardOptions.buzzerPin == 0xFF ? -1 : boardOptions.buzzerPin;
 	doc["buzzerVolume"]    	 = boardOptions.buzzerVolume;
-	doc["buzzerNoteDuration"]= boardOptions.buzzerNoteDuration;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");

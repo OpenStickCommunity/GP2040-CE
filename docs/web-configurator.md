@@ -65,7 +65,6 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Use buzzer` - Turns on/off the buzzer module.
 * `Buzzer Pin` - The GPIO pin used for the buzzer.
 * `Buzzer Volume` - Audio volume of buzzer. 0-100.
-* `Note duration` - Time in milliseconds of the duration of each note. Default is 200.
 
 ## DANGER ZONE
 
