@@ -15,8 +15,7 @@ const ON_OFF_OPTIONS = [
 const defaultValues = {
 	enabled: false,
 	buzzerPin: -1,
-	buzzerVolume: 100,
-	buzzerNoteDuration: 200
+	buzzerVolume: 100
 };
 
 let usedPins = [];
@@ -26,7 +25,6 @@ const schema = yup.object().shape({
 	// eslint-disable-next-line no-template-curly-in-string
 	buzzerPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Buzzer Pin'),
 	buzzerVolume: yup.number().required().min(0).max(100).label('Buzzer Volume'),
-	buzzerNoteDuration: yup.number().required().label('Buzzer Note Duration'),
 });
 
 const FormContext = () => {
@@ -48,8 +46,6 @@ const FormContext = () => {
 			values.buzzerPin = parseInt(values.buzzerPin);
 		if (!!values.buzzerVolume)
 			values.buzzerVolume = parseInt(values.buzzerVolume);
-		if (!!values.buzzerNoteDuration)
-			values.buzzerNoteDuration = parseInt(values.buzzerNoteDuration);
 	}, [values, setValues]);
 
 	return null;
@@ -88,7 +84,7 @@ export default function BuzzerConfigPage() {
 								label="Use Buzzer"
 								name="enabled"
 								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
+								groupClassName="col-sm-4 mb-4"
 								value={values.enabled}
 								error={errors.enabled}
 								isInvalid={errors.enabled}
@@ -100,7 +96,7 @@ export default function BuzzerConfigPage() {
 								label="Buzzer Pin"
 								name="buzzerPin"
 								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
+								groupClassName="col-sm-4 mb-4"
 								value={values.buzzerPin}
 								error={errors.buzzerPin}
 								isInvalid={errors.buzzerPin}
@@ -112,24 +108,13 @@ export default function BuzzerConfigPage() {
 								label="Buzzer Volume"
 								name="buzzerVolume"
 								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
+								groupClassName="col-sm-4 mb-4"
 								value={values.buzzerVolume}
 								error={errors.buzzerVolume}
 								isInvalid={errors.buzzerVolume}
 								onChange={handleChange}
 								min={0}
 								max={100}
-							/>
-							<FormControl type="number"
-								label="Note Duration"
-								name="buzzerNoteDuration"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.buzzerNoteDuration}
-								error={errors.buzzerNoteDuration}
-								isInvalid={errors.buzzerNoteDuration}
-								onChange={handleChange}
-								min={1}
 							/>
 						</Row>
 						<div className="mt-3">

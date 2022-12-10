@@ -95,7 +95,6 @@ async function setBuzzerOptions(options) {
 	let newOptions = { ...options };
 	newOptions.buzzerPin = parseInt(options.buzzerPin);
 	newOptions.buzzerVolume = parseInt(options.buzzerVolume);
-	newOptions.buzzerNoteDuration = parseInt(options.buzzerNoteDuration);
 	return axios.post(`${baseUrl}/api/setBuzzerOptions`, newOptions)
 		.then((response) => {
 			console.log(response.data);
