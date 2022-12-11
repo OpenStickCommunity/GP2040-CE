@@ -27,7 +27,7 @@ function correctincludes() {
 }
 
 function makefsdata() {
-      exec(`${root}\\tools\\makefsdata`, [`${rootwww}\\build`, `-f:${root}\\lib\\httpd\\fsdata.c`], function(error, data) {
+      exec(`${root}\\tools\\makefsdata`, [`${rootwww}\\build`, '-defl:1', '-xc:png,ico,json', `-f:${root}\\lib\\httpd\\fsdata.c`], function(error, data) {
         if (error) {
             console.error(error);
         } else {
