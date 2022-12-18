@@ -107,12 +107,10 @@ I2C Analog ADS1219
 
 ## Data Backup and Restoration
 
-![GP2040 Configurator - Add-Ons Backup and Restore](assets/images/gpc-add-ons-backup-and-restore.png)
+![GP2040 Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
 
 * `Backup To File` - Allows you to select what to backup to a file (default is all selected).
 * `Restore From File` - Allows you to select what to restore from a file (default is all selected).
-
-![GP2040 Configurator - Data Backup and Restoration](assets/images/gpc-data-backup-and-restoration.png)
 
 ## DANGER ZONE
 
