@@ -74,6 +74,7 @@ struct BoardOptions
 	uint8_t i2cAnalog1219Address;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
+	OnBoardLedMode onBoardLedMode;
 };
 
 struct SplashImage {

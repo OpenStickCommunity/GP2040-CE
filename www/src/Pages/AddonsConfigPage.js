@@ -12,6 +12,12 @@ const I2C_BLOCKS = [
 	{ label: 'i2c1', value: 1 },
 ];
 
+const ON_BOARD_LED_MODES = [
+	{ label: 'Off', value: 0 },
+	{ label: 'Mode Indicator', value: 1 },
+	{ label: 'Input Test', value: 2 }
+];
+
 const schema = yup.object().shape({
 	turboPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Turbo Pin'),
 	turboPinLED: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Turbo Pin LED'),
@@ -25,6 +31,7 @@ const schema = yup.object().shape({
 	i2cAnalog1219Block: yup.number().required().oneOf(I2C_BLOCKS.map(o => o.value)).label('I2C Analog1219 Block'),
 	i2cAnalog1219Speed: yup.number().required().label('I2C Analog1219 Speed'),
 	i2cAnalog1219Address: yup.number().required().label('I2C Analog1219 Address'),
+	onBoardLedMode: yup.number().required().oneOf(ON_BOARD_LED_MODES.map(o => o.value)).label('On-Board LED Mode'),
 });
 
 const defaultValues = {
@@ -40,6 +47,7 @@ const defaultValues = {
 	i2cAnalog1219Block: 0,
 	i2cAnalog1219Speed: 400000,
 	i2cAnalog1219Address: 0x40,
+	onBoardLedMode: 0,
 };
 
 const REVERSE_ACTION = [
@@ -95,6 +103,8 @@ const FormContext = () => {
 			values.i2cAnalog1219Speed = parseInt(values.i2cAnalog1219Speed);
 		if (!!values.i2cAnalog1219Address)
 			values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
+		if (!!values.onBoardLedMode)
+			values.onBoardLedMode = parseInt(values.onBoardLedMode);
 	}, [values, setValues]);
 
 	return null;
@@ -122,6 +132,19 @@ export default function AddonsConfigPage() {
 					<Section title="Add-Ons Configuration">
 						<p>Use the form below to reconfigure experimental options in GP2040-CE.</p>
 						<p>Please note: these options are experimental for the time being.</p>
+					</Section>
+					<Section title="On-Board LED Configuration">
+							<FormSelect
+								label="LED Mode"
+								name="onBoardLedMode"
+								className="form-select-sm"
+								groupClassName="col-sm-4 mb-3"
+								value={values.onBoardLedMode}
+								error={errors.onBoardLedMode}
+								isInvalid={errors.onBoardLedMode}
+								onChange={handleChange}>
+								{ON_BOARD_LED_MODES.map((o, i) => <option key={`onBoardLedMode-option-${i}`} value={o.value}>{o.label}</option>)}
+							</FormSelect>
 					</Section>
 					<Section title="Turbo">
 						<Col>
