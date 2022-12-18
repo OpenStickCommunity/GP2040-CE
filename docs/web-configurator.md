@@ -16,6 +16,9 @@ The options in the main menu are:
 * [Settings](#settings) - Adjust settings like input mode, d-pad mode, etc.
 * [Configuration > Pin Mapping](#pin-mapping) - Allows for remapping of GPIO pins to different buttons.
 * [Configuration > LED Configuration](#led-configuration) - Enable and configure RGB LEDs here.
+* [Configuration > Display Configuration](#display-configuration) - Enable and configure display options
+* [Configuration > Add-Ons Configuration](#add-ons-configuration) - Enable and configure available add-ons
+* [Configuration > Data Backup and Restoration](#data-backup-and-restoration) - Backup and restore settings
 * Links - Useful links to the project and documentation
 * [DANGER ZONE](#danger-zone) - Don't be afraid of the big red button. If something becomes misconfigured, you can reset your settings here.
 
@@ -57,6 +60,44 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
 * `Flip Display` - Rotates the display 180°.
 * `Invert Display` - Inverts the pixel colors, effectively giving you a negative image when enabled.
+* `Button Layout (Left)` - Changes the onscreen layout for the left side of the display and stick.
+* `Button Layout (Right)` - Changes the onscreen layout for the right side of the display and stick.
+* `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
+* `Splash Choice` - Choose the splash screen that is displayed when the unit is turned on.
+
+## Add-Ons Configuration
+
+![GP2040 Configurator - Add-Ons Configuration](assets/images/gpc-add-ons-configuration.png)
+
+Turbo
+* `Turbo Pin` - The GPIO pin used for the Turbo button.
+* `Turbo Pin LED` - The GPIO pin used for the Turbo LED.
+* `Turbo Shot Count` - The number of of presses per second that the Turbo will activate at.
+
+Joystick Selection Slider
+* `Slider LS Pin` - The GPIO pin used to activate the Left Stick while held.
+* `Slider RS Pin` - The GPIO pin used to activate the Right Stick while held.
+
+Input Reverse
+* `Reverse Input Pin` - The GPIO pin used for the Reverse Input button.
+* `Reverse Input Pin LED` - The GPIO pin used for the Reverse Input LED.
+* `Reverse Up` - Enables the up direction to be reversed when the Reverse Input button is pressed or held.
+* `Reverse Down` - Enables the down direction to be reversed when the Reverse Input button is pressed or held.
+* `Reverse Left` - Enables the left direction to be reversed when the Reverse Input button is pressed or held.
+* `Reverse Right` - Enables the right direction to be reversed when the Reverse Input button is pressed or held.
+
+I2C Analog ADS1219
+* `I2C Analog ADS1219 SDA Pin` - The GPIO pin used for I2C Analog ADS1219 SDA.
+* `I2C Analog ADS1219 SCL Pin` - The GPIO pin used for I2C Analog ADS1219 SCL.
+* `I2C Analog ADS1219 Block` - The block of I2C to use (i2c0 or i2c1).
+* `I2C Analog ADS1219 Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
+* `I2C Analog ADS1219 Address` - Sets the address for the I2C Analog ADS1219.
+
+## Data Backup and Restoration
+* `Backup To File` - Allows you to select what to backup to a file (default is all selected).
+* `Restore From File` - Allows you to select what to restore from a file (default is all selected).
+
+![GP2040 Configurator - Data Backup and Restoration](assets/images/gpc-data-backup-and-restoration.png)
 
 ## DANGER ZONE
 
