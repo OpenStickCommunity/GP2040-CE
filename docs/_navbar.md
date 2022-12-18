@@ -1,5 +1,5 @@
 * [Home](/)
 * [Usage](usage)
-* [GP2040-CE Shortcuts](GP2040-CE Shortcuts)
+* [GP2040-CE Shortcuts](gp2040-ce-shortcuts)
 * [Configuration](web-configurator)
 * [Development](development)
