@@ -67,18 +67,27 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 
 ## Add-Ons Configuration
 
-![GP2040 Configurator - Add-Ons Configuration](assets/images/gpc-add-ons-configuration.png)
+This section is for custom add-ons that can be enabled to exand the functionality of GP2040-CE.  Please not that not all add-ons may work together.  These should be considered experminental.
 
 Turbo
+
+![GP2040 Configurator - Add-Ons Turbo](assets/images/gpc-add-ons-turbo.png)
+
 * `Turbo Pin` - The GPIO pin used for the Turbo button.
 * `Turbo Pin LED` - The GPIO pin used for the Turbo LED.
 * `Turbo Shot Count` - The number of of presses per second that the Turbo will activate at.
 
 Joystick Selection Slider
+
+![GP2040 Configurator - Add-Ons Joystick Slider](assets/images/gpc-add-ons-joystick-slider.png)
+
 * `Slider LS Pin` - The GPIO pin used to activate the Left Stick while held.
 * `Slider RS Pin` - The GPIO pin used to activate the Right Stick while held.
 
 Input Reverse
+
+![GP2040 Configurator - Add-Ons Input Reverse](assets/images/gpc-add-ons-input-reverse.png)
+
 * `Reverse Input Pin` - The GPIO pin used for the Reverse Input button.
 * `Reverse Input Pin LED` - The GPIO pin used for the Reverse Input LED.
 * `Reverse Up` - Enables the up direction to be reversed when the Reverse Input button is pressed or held.
@@ -87,6 +96,9 @@ Input Reverse
 * `Reverse Right` - Enables the right direction to be reversed when the Reverse Input button is pressed or held.
 
 I2C Analog ADS1219
+
+![GP2040 Configurator - Add-Ons ADS1219](assets/images/gpc-add-ons-ads1219.png)
+
 * `I2C Analog ADS1219 SDA Pin` - The GPIO pin used for I2C Analog ADS1219 SDA.
 * `I2C Analog ADS1219 SCL Pin` - The GPIO pin used for I2C Analog ADS1219 SCL.
 * `I2C Analog ADS1219 Block` - The block of I2C to use (i2c0 or i2c1).
@@ -94,6 +106,9 @@ I2C Analog ADS1219
 * `I2C Analog ADS1219 Address` - Sets the address for the I2C Analog ADS1219.
 
 ## Data Backup and Restoration
+
+![GP2040 Configurator - Add-Ons Backup and Restore](assets/images/gpc-add-ons-backup-and-restore.png)
+
 * `Backup To File` - Allows you to select what to backup to a file (default is all selected).
 * `Restore From File` - Allows you to select what to restore from a file (default is all selected).
 
