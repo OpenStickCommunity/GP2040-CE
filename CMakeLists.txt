@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
-# add_subdirectory(configs)
+add_subdirectory(lib)
 add_subdirectory(MPG)
 
 add_executable(${PROJECT_NAME}
@@ -81,6 +81,7 @@ lib/httpd/fs.c
 ${PICO_SDK_PATH}/lib/lwip/src/netif/ethernet.c
 )
 target_link_libraries(MPG)
+target_link_libraries(ADS1219)
 target_include_directories(${PROJECT_NAME} PUBLIC
 configs/Pico
 src
@@ -115,7 +116,6 @@ lib/lwip-port/server
 lib/rndis
 lib/httpd
 configs/${PROJECT_NAME}
-lib/ADS1219
 )
 
 link_libraries(${PROJECT_NAME} 

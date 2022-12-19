@@ -1,0 +1,2 @@
+add_subdirectory(ADS1219)
+add_subdirectory(BitBang_I2C)

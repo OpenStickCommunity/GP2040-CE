@@ -1,0 +1,2 @@
+add_library(BitBang_I2C BitBang_I2C.c)
+target_include_directories(BitBang_I2C INTERFACE)
