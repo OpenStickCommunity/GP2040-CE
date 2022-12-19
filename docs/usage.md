@@ -26,7 +26,7 @@ GP2040 uses a generic button labeling for gamepad state, which is then converted
 | S2      | Start  | Plus    | Start        | 10           | Start  |
 | L3      | LS     | LS      | L3           | 11           | LS     |
 | R3      | RS     | RS      | R3           | 12           | RS     |
-| A1      | Guide  | Home    | -            | 13           | -      |
+| A1      | Guide  | Home    | PS           | 13           | -      |
 | A2      | -      | Capture | -            | 14           | -      |
 
 If you do not have a dedicated Home button, you can activate it via the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> button combination.
