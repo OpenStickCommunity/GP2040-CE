@@ -149,6 +149,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		i2cAnalog1219Block: 0,
 		i2cAnalog1219Speed: 400000,
 		i2cAnalog1219Address: 0x40,
+		onBoardLedMode: 0,
 		usedPins,
 	});
 });

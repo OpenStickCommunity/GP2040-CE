@@ -452,6 +452,7 @@ std::string setAddonOptions()
 	boardOptions.i2cAnalog1219Block = doc["i2cAnalog1219Block"];
 	boardOptions.i2cAnalog1219Speed = doc["i2cAnalog1219Speed"];
 	boardOptions.i2cAnalog1219Address = doc["i2cAnalog1219Address"];
+	boardOptions.onBoardLedMode = doc["onBoardLedMode"];
 	Storage::getInstance().setBoardOptions(boardOptions);
 
 	return serialize_json(doc);
@@ -477,6 +478,7 @@ std::string getAddonOptions()
 	doc["i2cAnalog1219Block"] = boardOptions.i2cAnalog1219Block;
 	doc["i2cAnalog1219Speed"] = boardOptions.i2cAnalog1219Speed;
 	doc["i2cAnalog1219Address"] = boardOptions.i2cAnalog1219Address;
+	doc["onBoardLedMode"] = boardOptions.onBoardLedMode;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
