@@ -5,6 +5,10 @@
 #include "pico/stdlib.h"
 #include "storagemanager.h"
 
+#ifndef BOARD_LED_TYPE 
+#define BOARD_LED_TYPE BOARD_LED_OFF
+#endif  
+
 // BoardLed Module Name
 #define OnBoardLedName "OnBoardLed"
 
