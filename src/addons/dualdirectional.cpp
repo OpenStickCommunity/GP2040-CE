@@ -1,8 +1,6 @@
 #include "addons/dualdirectional.h"
 #include "storagemanager.h"
 
-#define DUAL_DEBOUNCE_MILLIS 5
-
 bool DualDirectionalInput::available() {
     BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
     return (boardOptions.pinDualDirDown != (uint8_t)-1 &&
