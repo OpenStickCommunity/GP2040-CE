@@ -11,7 +11,12 @@ endif()
 project(GP2040-CE C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
-
+include(FetchContent)
+FetchContent_Declare(ArduinoJson
+    GIT_REPOSITORY https://github.com/bblanchon/ArduinoJson.git
+    GIT_TAG        v6.19.4
+)
+FetchContent_MakeAvailable(ArduinoJson)
 
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
@@ -24,23 +29,6 @@ src/gp2040aux.cpp
 src/gamepad.cpp
 src/configmanager.cpp
 src/storagemanager.cpp
-lib/FlashPROM/src/FlashPROM.cpp
-MPG/src/GamepadDebouncer.cpp
-MPG/src/MPG.cpp
-MPG/src/MPGS.cpp
-MPG/src/GamepadDescriptors.cpp
-lib/CRC32/src/CRC32.cpp
-${PICO_SDK_PATH}/lib/tinyusb/src/class/net/ecm_rndis_device.c
-${PICO_SDK_PATH}/lib/tinyusb/src/class/net/ncm_device.c
-${PICO_SDK_PATH}/lib/tinyusb/src/class/hid/hid_device.c
-${PICO_SDK_PATH}/lib/tinyusb/src/device/usbd.c
-${PICO_SDK_PATH}/lib/tinyusb/src/device/usbd_control.c
-${PICO_SDK_PATH}/lib/tinyusb/src/tusb.c
-lib/TinyUSB_Gamepad/src/tusb_driver.cpp
-lib/TinyUSB_Gamepad/src/usb_descriptors.cpp
-lib/TinyUSB_Gamepad/src/net_driver.cpp
-lib/TinyUSB_Gamepad/src/hid_driver.cpp
-lib/TinyUSB_Gamepad/src/xinput_driver.cpp
 src/configs/webconfig.cpp
 src/addons/analog.cpp
 src/addons/turbo.cpp
@@ -48,44 +36,6 @@ src/addons/jslider.cpp
 src/addons/i2cdisplay.cpp
 src/addons/neopicoleds.cpp
 src/addons/playerleds.cpp
-lib/NeoPico/src/NeoPico.cpp
-lib/AnimationStation/src/AnimationStation.cpp
-lib/AnimationStation/src/Animation.cpp
-lib/AnimationStation/src/AnimationStation.hpp
-lib/AnimationStation/src/Animation.hpp
-lib/AnimationStation/src/Effects/Chase.cpp
-lib/AnimationStation/src/Effects/Rainbow.cpp
-lib/AnimationStation/src/Effects/StaticColor.cpp
-lib/AnimationStation/src/Effects/StaticTheme.cpp
-lib/OneBitDisplay/obd.inl
-lib/OneBitDisplay/OneBitDisplay.cpp
-lib/BitBang_I2C/BitBang_I2C.c
-${PICO_SDK_PATH}/lib/tinyusb/lib/networking/rndis_reports.c
-lib/rndis/rndis.c
-lib/lwip-port/server/dhserver.c
-lib/lwip-port/server/dnserver.c
-${PICO_SDK_PATH}/lib/lwip/src/core/pbuf.c
-${PICO_SDK_PATH}/lib/lwip/src/core/memp.c
-${PICO_SDK_PATH}/lib/lwip/src/core/mem.c
-${PICO_SDK_PATH}/lib/lwip/src/core/stats.c
-${PICO_SDK_PATH}/lib/lwip/src/core/ipv4/etharp.c
-${PICO_SDK_PATH}/lib/lwip/src/core/init.c
-${PICO_SDK_PATH}/lib/lwip/src/core/netif.c
-lib/httpd/httpd.c
-${PICO_SDK_PATH}/lib/lwip/src/core/ipv4/ip4.c
-${PICO_SDK_PATH}/lib/lwip/src/core/ip.c
-${PICO_SDK_PATH}/lib/lwip/src/core/tcp_in.c
-${PICO_SDK_PATH}/lib/lwip/src/core/tcp.c
-${PICO_SDK_PATH}/lib/lwip/src/core/tcp_out.c
-${PICO_SDK_PATH}/lib/lwip/src/core/def.c
-${PICO_SDK_PATH}/lib/lwip/src/core/inet_chksum.c
-${PICO_SDK_PATH}/lib/lwip/src/core/timeouts.c
-${PICO_SDK_PATH}/lib/lwip/src/core/ipv4/ip4_frag.c
-${PICO_SDK_PATH}/lib/lwip/src/core/ipv4/icmp.c
-${PICO_SDK_PATH}/lib/lwip/src/core/ipv4/ip4_addr.c
-${PICO_SDK_PATH}/lib/lwip/src/core/udp.c
-lib/httpd/fs.c
-${PICO_SDK_PATH}/lib/lwip/src/netif/ethernet.c
 )
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
@@ -96,7 +46,17 @@ MPG
 pico_stdlib
 AnimationStation
 TinyUSB_Gamepad
+FlashPROM
+ADS1219
+PlayerLEDs
+NeoPico
+OneBitDisplay
+CRC32
+ArduinoJson
+rndis
+hardware_adc
 )
+
 target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons

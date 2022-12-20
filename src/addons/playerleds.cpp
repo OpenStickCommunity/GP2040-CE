@@ -11,7 +11,7 @@
 #include "xinput_driver.h"
 
 // GP2040 Includes
-#include "addons/playerleds.h"
+#include "addons/pleds.h"
 #include "helper.h"
 #include "storagemanager.h"
 

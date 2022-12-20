@@ -7,7 +7,7 @@
 
 #include "addons/i2cdisplay.h" // Add-Ons
 #include "addons/neopicoleds.h"
-#include "addons/playerleds.h"
+#include "addons/pleds.h"
 
 #include <iterator>
 
