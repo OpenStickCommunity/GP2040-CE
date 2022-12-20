@@ -80,6 +80,7 @@ struct BoardOptions
 	uint8_t dualDirCombineMode; // Mix/Gamepad/Dual/None
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
+	OnBoardLedMode onBoardLedMode;
 };
 
 struct SplashImage {

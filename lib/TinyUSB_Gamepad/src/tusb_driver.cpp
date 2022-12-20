@@ -19,10 +19,16 @@
 
 UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
+bool usb_mounted = false;
 
 InputMode get_input_mode(void)
 {
 	return input_mode;
+}
+
+bool get_usb_mounted(void)
+{
+	return usb_mounted;
 }
 
 void initialize_driver(InputMode mode)
@@ -140,11 +146,13 @@ void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t rep
 // Invoked when device is mounted
 void tud_mount_cb(void)
 {
+	usb_mounted = true;
 }
 
 // Invoked when device is unmounted
 void tud_umount_cb(void)
 {
+	usb_mounted = false;
 }
 
 // Invoked when usb bus is suspended

@@ -58,7 +58,7 @@ The instructions will slightly vary based on your device. These instructions are
 
 ## Support
 
-If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](issues/new) or join the [OpenStick GP2040-CE Discord channel](https://discord.gg/XEhfAnwt).
+If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](issues/new) or join the [OpenStick GP2040-CE Discord channel](https://discord.gg/k2pxhke7q8).
 
 ### Frequently Asked Questions
 
@@ -115,7 +115,7 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 
 ### Discussions
 
-Join the [OpenStick GP2040-CE Discord channel](https://discord.gg/XEhfAnwt) to participate!
+Join the [OpenStick GP2040-CE channel](https://discord.gg/k2pxhke7q8) to participate!
 
 ## Acknowledgements
 

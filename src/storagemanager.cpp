@@ -21,6 +21,7 @@
 #include "addons/playerleds.h"
 #include "addons/i2canalog1219.h"
 #include "addons/turbo.h"
+#include "addons/board_led.h"
 
 #include "bitmaps.h"
 
@@ -105,6 +106,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.i2cAnalog1219Block      = (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1;
 	boardOptions.i2cAnalog1219Speed      = I2C_ANALOG1219_SPEED;
 	boardOptions.i2cAnalog1219Address    = I2C_ANALOG1219_ADDRESS;
+	boardOptions.onBoardLedMode			 = BOARD_LED_TYPE;
 	boardOptions.dualDirDpadMode         = DUAL_DIRECTIONAL_STICK_MODE;
 	boardOptions.dualDirCombineMode      = DUAL_DIRECTIONAL_COMBINE_MODE;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
