@@ -52,6 +52,10 @@ private:
     void debounce();
     uint8_t dDebState;          // Debounce State (stored)
     uint8_t dualState;          // Dual Directional State
+    DpadDirection lastGPUD; // Gamepad Last Up-Down
+	DpadDirection lastGPLR; // Gamepad Last Left-Right
+    DpadDirection lastDualUD; // Dual Last Up-Down
+    DpadDirection lastDualLR; // Gamepad Last Left-Right
     uint32_t dpadTime[4];
 };
 

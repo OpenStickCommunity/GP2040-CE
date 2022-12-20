@@ -16,6 +16,8 @@ const ON_BOARD_LED_MODES = [
 	{ label: 'Off', value: 0 },
 	{ label: 'Mode Indicator', value: 1 },
 	{ label: 'Input Test', value: 2 }
+];
+
 const DUAL_STICK_MODES = [
 	{ label: 'D-Pad', value: 0 },
 	{ label: 'Left Analog', value: 1 },

@@ -28,6 +28,12 @@ void DualDirectionalInput::setup() {
     dDebState = 0;
     dualState = 0;
 
+    lastGPUD = DIRECTION_NONE;
+	lastGPLR = DIRECTION_NONE;
+
+    lastDualUD = DIRECTION_NONE;
+    lastDualLR = DIRECTION_NONE;
+
     uint32_t now = getMillis();
     for(int i = 0; i < 4; i++) {
         dpadTime[i] = now;
@@ -69,7 +75,84 @@ void DualDirectionalInput::preprocess()
 
     // Combined Mode
     if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_MIXED ) {
-        gamepadState = gamepadState | dualState;
+        uint8_t dualOut = dualState;
+
+        // If Left Gamepad AND Left Dual are both pressed in last-win, override
+        if ( gamepad->options.socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY ) {
+            // Gamepad SOCD Last-Win Clean
+            switch (gamepadState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
+                case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
+                   gamepadState ^= (lastGPUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+	        	   break;
+		        case GAMEPAD_MASK_UP:
+                    gamepadState |= GAMEPAD_MASK_UP;
+			        lastGPUD = DIRECTION_UP;
+			        break;
+		        case GAMEPAD_MASK_DOWN:
+                    gamepadState |= GAMEPAD_MASK_DOWN;
+			        lastGPUD = DIRECTION_DOWN;
+			        break;
+		        default:
+			        lastGPUD = DIRECTION_NONE;
+			        break;
+            }
+            switch (gamepadState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
+                case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
+                    if (lastGPLR != DIRECTION_NONE)
+                        gamepadState ^= (lastGPLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
+                    else
+                        lastGPLR = DIRECTION_NONE;
+                    break;
+                case GAMEPAD_MASK_LEFT:
+                    gamepadState |= GAMEPAD_MASK_LEFT;
+                    lastGPLR = DIRECTION_LEFT;
+                    break;
+                case GAMEPAD_MASK_RIGHT:
+                    gamepadState |= GAMEPAD_MASK_RIGHT;
+                    lastGPLR = DIRECTION_RIGHT;
+                    break;
+                default:
+                    lastGPLR = DIRECTION_NONE;
+                    break;
+            }
+            // Dual SOCD Last-Win Clean
+            switch (dualOut & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
+                case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
+                   dualOut ^= (lastDualUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+	        	   break;
+		        case GAMEPAD_MASK_UP:
+                    dualOut |= GAMEPAD_MASK_UP;
+			        lastDualUD = DIRECTION_UP;
+			        break;
+		        case GAMEPAD_MASK_DOWN:
+                    dualOut |= GAMEPAD_MASK_DOWN;
+			        lastDualUD = DIRECTION_DOWN;
+			        break;
+		        default:
+			        lastDualUD = DIRECTION_NONE;
+			        break;
+            }
+            switch (dualOut & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
+                case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
+                    if (lastDualLR != DIRECTION_NONE)
+                        dualOut ^= (lastDualLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
+                    else
+                        lastDualLR = DIRECTION_NONE;
+                    break;
+                case GAMEPAD_MASK_LEFT:
+                    dualOut |= GAMEPAD_MASK_LEFT;
+                    lastDualLR = DIRECTION_LEFT;
+                    break;
+                case GAMEPAD_MASK_RIGHT:
+                    dualOut |= GAMEPAD_MASK_RIGHT;
+                    lastDualLR = DIRECTION_RIGHT;
+                    break;
+                default:
+                    lastDualLR = DIRECTION_NONE;
+                    break;
+            }
+        }
+        gamepadState = gamepadState | dualOut;
     }
     // Gamepad Overwrite Mode
     else if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
