@@ -91,52 +91,17 @@ ${PICO_SDK_PATH}/lib/lwip/src/netif/ethernet.c
 pico_set_program_name(GP2040-CE "GP2040-CE")
 pico_set_program_version(GP2040-CE "0.7.0")
 
-
-target_link_libraries(MPG)
-target_link_libraries(ADS1219)
-target_link_libraries(CRC32)
+target_link_libraries(${PROJECT_NAME} 
+MPG
+pico_stdlib
+AnimationStation
+TinyUSB_Gamepad
+)
 target_include_directories(${PROJECT_NAME} PUBLIC
-src
-src/addons
 headers
 headers/addons
-lib/AnimationStation/src
-lib/AnimationStation/src/Effects
-lib/PlayerLEDs
-lib/PlayerLEDs/include
-lib/PlayerLEDs/src
-lib/TinyUSB_Gamepad/include
-lib/TinyUSB_Gamepad/src
-${PICO_SDK_PATH}/lib/tinyusb/lib/networking
-${PICO_SDK_PATH}/lib/tinyusb/src/device/
-${PICO_SDK_PATH}/lib/tinyusb/src/class/hid/
-${PICO_SDK_PATH}/lib/tinyusb/src/
-${PICO_SDK_PATH}/lib/tinyusb/src/class/
-${PICO_SDK_PATH}/lib/tinyusb/src/class/net/
-${PICO_SDK_PATH}/lib/tinyusb/lib/networking
-${PICO_SDK_PATH}/lib/lwip/src/include/
-${PICO_SDK_PATH}/lib/lwip/src/include/netif
-lib/lwip-port/
-lib/lwip-port/server
-lib/rndis
-lib/httpd
-configs/${PROJECT_NAME}
+configs/Pico
 )
-
-link_libraries(${PROJECT_NAME} 
-    pico_stdlib
-    pico_multicore
-    pico_time
-    hardware_i2c
-    hardware_spi
-    hardware_pio
-    tinyusb_device
-    tinyusb_board
-    hardware_flash
-    hardware_adc
-    hardware_pwm
-    hardware_clocks
-    )
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}

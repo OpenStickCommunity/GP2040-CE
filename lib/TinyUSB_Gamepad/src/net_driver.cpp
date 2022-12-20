@@ -7,8 +7,7 @@ const usbd_class_driver_t net_driver = {
 	.init             = netd_init,
 	.reset            = netd_reset,
 	.open             = netd_open,
-	.control_request  = netd_control_request,
-	.control_complete = netd_control_complete,
+	.control_xfer_cb  = netd_control_xfer_cb,
 	.xfer_cb          = netd_xfer_cb,
 	.sof              = NULL,
 };
