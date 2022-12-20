@@ -55,7 +55,7 @@
 #define PIN_BUTTON_S2   FLATBOX_SW1_PIN          // S2 / Start / Plus / Start / 10 / Start
 #define PIN_BUTTON_L3   FLATBOX_SW5_PIN          // L3 / LS / LS / L3 / 11 / LS
 #define PIN_BUTTON_R3   FLATBOX_SW6_PIN          // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   FLATBOX_SW3_PIN          // A1 / Guide / Home / ~ / 13 / ~
+#define PIN_BUTTON_A1   FLATBOX_SW3_PIN          // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   FLATBOX_SW4_PIN          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_BUTTON_TURBO -1         // Turbo

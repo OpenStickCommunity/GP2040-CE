@@ -33,7 +33,7 @@
 #define PIN_BUTTON_S2   1           // S2 / Start / Plus / Start / 10 / Start
 #define PIN_BUTTON_L3   26          // L3 / LS / LS / L3 / 11 / LS
 #define PIN_BUTTON_R3   27          // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   14          // A1 / Guide / Home / ~ / 13 / ~
+#define PIN_BUTTON_A1   14          // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   15          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO 29         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
