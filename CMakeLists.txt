@@ -3,9 +3,16 @@ cmake_minimum_required(VERSION 3.13)
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
+
+if (PICO_SDK_VERSION_STRING VERSION_LESS "1.4.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.4.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+endif()
+
 project(GP2040-CE C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+
+
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 add_subdirectory(lib)
@@ -80,29 +87,27 @@ ${PICO_SDK_PATH}/lib/lwip/src/core/udp.c
 lib/httpd/fs.c
 ${PICO_SDK_PATH}/lib/lwip/src/netif/ethernet.c
 )
+
+pico_set_program_name(GP2040-CE "GP2040-CE")
+pico_set_program_version(GP2040-CE "0.7.0")
+
+
 target_link_libraries(MPG)
 target_link_libraries(ADS1219)
+target_link_libraries(CRC32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-configs/Pico
 src
 src/addons
 headers
 headers/addons
-lib
-lib/OneBitDisplay
-lib/BitBang_I2C
 lib/AnimationStation/src
 lib/AnimationStation/src/Effects
-lib/NeoPico/src
 lib/PlayerLEDs
 lib/PlayerLEDs/include
 lib/PlayerLEDs/src
 lib/TinyUSB_Gamepad/include
 lib/TinyUSB_Gamepad/src
-lib/FlashPROM/include
-lib/FlashPROM/src
 ${PICO_SDK_PATH}/lib/tinyusb/lib/networking
-lib/CRC32/src
 ${PICO_SDK_PATH}/lib/tinyusb/src/device/
 ${PICO_SDK_PATH}/lib/tinyusb/src/class/hid/
 ${PICO_SDK_PATH}/lib/tinyusb/src/
@@ -132,6 +137,11 @@ link_libraries(${PROJECT_NAME}
     hardware_pwm
     hardware_clocks
     )
+
+target_include_directories(${PROJECT_NAME}  PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
+  )
 
 pico_add_extra_outputs(${PROJECT_NAME})
 

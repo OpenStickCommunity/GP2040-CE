@@ -1,2 +1,5 @@
 add_subdirectory(ADS1219)
 add_subdirectory(BitBang_I2C)
+add_subdirectory(CRC32)
+add_subdirectory(FlashPROM)
+add_subdirectory(NeoPico)
