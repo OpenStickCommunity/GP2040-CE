@@ -26,7 +26,7 @@ void DualDirectionalInput::setup() {
     }
 
     dDebState = 0;
-    dpadState = 0;
+    dualState = 0;
 
     uint32_t now = getMillis();
     for(int i = 0; i < 4; i++) {
@@ -41,22 +41,22 @@ void DualDirectionalInput::debounce()
 
 	for (int i = 0; i < 4; i++)
 	{
-		if ((dDebState & dpadMasks[i]) != (dpadState & dpadMasks[i]) && (now - dpadTime[i]) > gamepad->debounceMS)
+		if ((dDebState & dpadMasks[i]) != (dualState & dpadMasks[i]) && (now - dpadTime[i]) > gamepad->debounceMS)
 		{
 			dDebState ^= dpadMasks[i];
 			dpadTime[i] = now;
 		}
 	}
-    dpadState = dDebState;
+    dualState = dDebState;
 }
 
-void DualDirectionalInput::process()
+void DualDirectionalInput::preprocess()
 {
     BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
  	// Need to invert since we're using pullups
-	dpadState = (!gpio_get(boardOptions.pinDualDirUp) ? gamepad->mapDpadUp->buttonMask : 0)
+	dualState = (!gpio_get(boardOptions.pinDualDirUp) ? gamepad->mapDpadUp->buttonMask : 0)
 		| (!gpio_get(boardOptions.pinDualDirDown) ? gamepad->mapDpadDown->buttonMask : 0)
 		| (!gpio_get(boardOptions.pinDualDirLeft) ? gamepad->mapDpadLeft->buttonMask  : 0)
 		| (!gpio_get(boardOptions.pinDualDirRight) ? gamepad->mapDpadRight->buttonMask : 0);
@@ -64,54 +64,84 @@ void DualDirectionalInput::process()
     // Debounce our directional pins
     debounce();
 
-    // Dual Direction Mixed Combinational Logic
-    uint8_t combinedGamepad = gamepad->state.dpad;
-    uint8_t combinedDual = runSOCDCleaner(gamepad->options.socdMode, dpadState);
+    // Convert gamepad from process() output to uint8 value
+    uint8_t gamepadState = gamepad->state.dpad;
+
+    // Combined Mode
     if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_MIXED ) {
-        // Combined SOCD(Gamepad) and SOCD(Dual) and SOCD clean it
-        combinedGamepad = runSOCDCleaner(gamepad->options.socdMode, combinedGamepad | combinedDual);
-        combinedDual = combinedGamepad;
-    } else if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
-        if ( combinedGamepad != 0 && (combinedGamepad != combinedDual)) {
-            combinedDual = combinedGamepad;
+        gamepadState = gamepadState | dualState;
+    }
+    // Gamepad Overwrite Mode
+    else if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
+        if ( gamepadState != 0 && (gamepadState != dualState)) {
+            dualState = gamepadState;
         }
-    } else if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_DUAL ) {
-        if ( combinedDual != 0 && (combinedGamepad != combinedDual)) {
-            combinedGamepad = combinedDual;
+    }
+    // Dual Overwrite Mode
+    else if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_DUAL ) {
+        if ( dualState != 0 && gamepadState != dualState) {
+            gamepadState = dualState;
         }
-    } 
+    }
     
-    // Modify Gamepad if the state was changed
-    if ( gamepad->state.dpad != combinedGamepad ) {
-        switch (gamepad->options.dpadMode)
-        {
+    gamepad->state.dpad = gamepadState;
+}
+
+void DualDirectionalInput::process()
+{
+    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
+    uint8_t dualOut = 0;
+
+    // If we're in mixed mode
+    if (boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_MIXED) {
+        switch(gamepad->options.dpadMode) { // Convert gamepad to dual if we're in mixed
+            case DPAD_MODE_DIGITAL:
+                dualOut = gamepad->state.dpad;
+                break;
             case DPAD_MODE_LEFT_ANALOG:
-                gamepad->state.lx = dpadToAnalogX(combinedGamepad);
-                gamepad->state.ly = dpadToAnalogY(combinedGamepad);
+                if ( gamepad->state.lx == GAMEPAD_JOYSTICK_MIN) {
+                    dualOut = dualOut | GAMEPAD_MASK_LEFT;
+                } else if ( gamepad->state.lx == GAMEPAD_JOYSTICK_MAX) {
+                    dualOut = dualOut | GAMEPAD_MASK_RIGHT;
+                }
+                if ( gamepad->state.ly == GAMEPAD_JOYSTICK_MIN) {
+                    dualOut = dualOut | GAMEPAD_MASK_UP;
+                } else if ( gamepad->state.ly == GAMEPAD_JOYSTICK_MAX) {
+                    dualOut = dualOut | GAMEPAD_MASK_DOWN;
+                }
                 break;
             case DPAD_MODE_RIGHT_ANALOG:
-                gamepad->state.rx = dpadToAnalogX(combinedGamepad);
-                gamepad->state.ry = dpadToAnalogY(combinedGamepad);
-                break;
-            case DPAD_MODE_DIGITAL:
-                gamepad->state.dpad = combinedGamepad;
+                if ( gamepad->state.rx == GAMEPAD_JOYSTICK_MIN) {
+                    dualOut = dualOut | GAMEPAD_MASK_LEFT;
+                } else if ( gamepad->state.rx == GAMEPAD_JOYSTICK_MAX) {
+                    dualOut = dualOut | GAMEPAD_MASK_RIGHT;
+                }
+                if ( gamepad->state.ry == GAMEPAD_JOYSTICK_MIN) {
+                    dualOut = dualOut | GAMEPAD_MASK_UP;
+                } else if ( gamepad->state.ry == GAMEPAD_JOYSTICK_MAX) {
+                    dualOut = dualOut | GAMEPAD_MASK_DOWN;
+                }
                 break;
         }
+    } else {
+        dualOut = dualState;
     }
 
     // Modify the Dual Directional if the state is not correct
     switch (boardOptions.dualDirDpadMode)
     {
         case DPAD_MODE_LEFT_ANALOG:
-            gamepad->state.lx = dpadToAnalogX(combinedDual);
-            gamepad->state.ly = dpadToAnalogY(combinedDual);
+            gamepad->state.lx = dpadToAnalogX(dualOut);
+            gamepad->state.ly = dpadToAnalogY(dualOut);
             break;
         case DPAD_MODE_RIGHT_ANALOG:
-            gamepad->state.rx = dpadToAnalogX(combinedDual);
-            gamepad->state.ry = dpadToAnalogY(combinedDual);
+            gamepad->state.rx = dpadToAnalogX(dualOut);
+            gamepad->state.ry = dpadToAnalogY(dualOut);
             break;
         case DPAD_MODE_DIGITAL:
-            gamepad->state.dpad = combinedDual;
+            gamepad->state.dpad = dualOut;
             break;
     }
 }

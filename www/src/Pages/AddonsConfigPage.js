@@ -12,6 +12,19 @@ const I2C_BLOCKS = [
 	{ label: 'i2c1', value: 1 },
 ];
 
+const DUAL_STICK_MODES = [
+	{ label: 'D-Pad', value: 0 },
+	{ label: 'Left Analog', value: 1 },
+	{ label: 'Right Analog', value: 2 },
+];
+
+const DUAL_COMBINE_MODES = [
+    { label: 'Mixed', value: 0 },
+	{ label: 'Gamepad', value: 1},
+	{ label: 'Dual Directional', value: 2 },
+	{ label: 'None', value: 3 }
+];
+
 const schema = yup.object().shape({
 	turboPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Turbo Pin'),
 	turboPinLED: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Turbo Pin LED'),
@@ -25,6 +38,12 @@ const schema = yup.object().shape({
 	i2cAnalog1219Block: yup.number().required().oneOf(I2C_BLOCKS.map(o => o.value)).label('I2C Analog1219 Block'),
 	i2cAnalog1219Speed: yup.number().required().label('I2C Analog1219 Speed'),
 	i2cAnalog1219Address: yup.number().required().label('I2C Analog1219 Address'),
+	dualDirUpPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Dual Directional Up Pin'),
+	dualDirDownPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Dual Directional Down Pin'),
+	dualDirLeftPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Dual Directional Left Pin'),
+	dualDirRightPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Dual Directional Right Pin'),
+	dualDirDpadMode : yup.number().required().oneOf(DUAL_STICK_MODES.map(o => o.value)).label('Dual Stick Mode'), 
+	dualDirCombineMode : yup.number().required().oneOf(DUAL_COMBINE_MODES.map(o => o.value)).label('Dual Combination Mode'),
 });
 
 const defaultValues = {
@@ -40,6 +59,12 @@ const defaultValues = {
 	i2cAnalog1219Block: 0,
 	i2cAnalog1219Speed: 400000,
 	i2cAnalog1219Address: 0x40,
+	dualUpPin: -1,
+	dualDownPin: -1,
+	dualLeftPin: -1,
+	dualRightPin: -1,
+	dualDirDpadMode: 0,
+	dualDirCombineMode: 0
 };
 
 const REVERSE_ACTION = [
@@ -95,6 +120,16 @@ const FormContext = () => {
 			values.i2cAnalog1219Speed = parseInt(values.i2cAnalog1219Speed);
 		if (!!values.i2cAnalog1219Address)
 			values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
+		if (!!values.dualDownPin)
+			values.dualDownPin = parseInt(values.dualDownPin);
+		if (!!values.dualUpPin)
+			values.dualUpPin = parseInt(values.dualUpPin);
+		if (!!values.dualLeftPin)
+			values.dualLeftPin = parseInt(values.dualLeftPin);
+		if (!!values.dualRightPin)
+			values.dualRightPin = parseInt(values.dualRightPin);
+		if (!!values.dualDirMode)
+			values.dualDirMode = parseInt(values.dualDirMode);
 	}, [values, setValues]);
 
 	return null;
@@ -327,6 +362,76 @@ export default function AddonsConfigPage() {
 								onChange={handleChange}
 								maxLength={4}
 							/>
+						</Col>
+					</Section>
+					<Section title="Dual Directional Input">
+						<Col>
+							<FormControl type="number"
+								label="Dual Directional Up Pin"
+								name="dualDirUpPin"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.dualDirUpPin}
+								error={errors.dualDirUpPin}
+								isInvalid={errors.dualDirUpPin}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormControl type="number"
+								label="Dual Directional Down Pin"
+								name="dualDirDownPin"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.dualDirDownPin}
+								error={errors.dualDirDownPin}
+								isInvalid={errors.dualDirDownPin}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormControl type="number"
+								label="Dual Directional Left Pin"
+								name="dualDirLeftPin"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.dualDirLeftPin}
+								error={errors.dualDirLeftPin}
+								isInvalid={errors.dualDirLeftPin}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormControl type="number"
+								label="Dual Directional Right Pin"
+								name="dualDirRightPin"
+								className="form-select-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.dualDirRightPin}
+								error={errors.dualDirRightPin}
+								isInvalid={errors.dualDirRightPin}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<Form.Group className="row mb-3">
+								<Form.Label>Dual Directional D-Pad Mode</Form.Label>
+								<div className="col-sm-3">
+									<Form.Select name="dualDirDpadMode" className="form-select-sm" value={values.dualDirDpadMode} onChange={handleChange} isInvalid={errors.dualDirDpadMode}>
+										{DUAL_STICK_MODES.map((o, i) => <option key={`button-dualDirDpadMode-option-${i}`} value={o.value}>{o.label}</option>)}
+									</Form.Select>
+									<Form.Control.Feedback type="invalid">{errors.dualDirDpadMode}</Form.Control.Feedback>
+								</div>
+							</Form.Group>
+							<Form.Group className="row mb-3">
+								<Form.Label>Dual Directional Combination Mode</Form.Label>
+								<div className="col-sm-3">
+									<Form.Select name="dualDirCombineMode" className="form-select-sm" value={values.dualDirCombineMode} onChange={handleChange} isInvalid={errors.dualDirCombineMode}>
+										{DUAL_COMBINE_MODES.map((o, i) => <option key={`button-dualDirCombineMode-option-${i}`} value={o.value}>{o.label}</option>)}
+									</Form.Select>
+									<Form.Control.Feedback type="invalid">{errors.dualDirCombineMode}</Form.Control.Feedback>
+								</div>
+							</Form.Group>
 						</Col>
 					</Section>
 					<div className="mt-3">

@@ -15,6 +15,7 @@
 #include "CRC32.h"
 #include <sstream>
 
+#include "addons/dualdirectional.h"
 #include "addons/i2cdisplay.h"
 #include "addons/neopicoleds.h"
 #include "addons/playerleds.h"

@@ -91,8 +91,13 @@ void GP2040::run() {
 		gamepad->debounce();
 	#endif
 		gamepad->hotkey(); 	// check for MPGS hotkeys
+
+		// Pre-Process add-ons for MPGS
+		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+		
 		gamepad->process(); // process through MPGS
 
+		// (Post) Process for add-ons
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
 
 		// Copy Processed Gamepad for Core1 (race condition otherwise)

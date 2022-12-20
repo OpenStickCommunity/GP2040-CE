@@ -46,11 +46,12 @@ public:
 	virtual bool available();   // GPAddon available
 	virtual void setup();       // Dual Directional Setup
 	virtual void process();     // Dual Directional Process
+    virtual void preprocess();  // Dual Directional Pre-Process (Cheat)
     virtual std::string name() { return DualDirectionalName; }
 private:
     void debounce();
     uint8_t dDebState;          // Debounce State (stored)
-    uint8_t dpadState;          // Dual Directional State
+    uint8_t dualState;          // Dual Directional State
     uint32_t dpadTime[4];
 };
 
