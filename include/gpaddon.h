@@ -11,6 +11,7 @@ public:
 	virtual bool available() = 0;
 	virtual void setup() = 0;
 	virtual void process() = 0;
+	virtual void preprocess() {}
 	virtual std::string name() = 0;
 private:
 };

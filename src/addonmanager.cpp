@@ -13,6 +13,15 @@ void AddonManager::LoadAddon(GPAddon* addon, ADDON_PROCESS processAt, bool enabl
     }
 }
 
+
+void AddonManager::PreprocessAddons(ADDON_PROCESS processType) {
+    // Loop through all addons and process any that match our type
+    for (std::vector<AddonBlock*>::iterator it = addons.begin(); it != addons.end(); it++) {
+        if ( (*it)->process == processType && (*it)->enabled == true)
+            (*it)->ptr->preprocess();
+    }
+}
+
 void AddonManager::ProcessAddons(ADDON_PROCESS processType) {
     // Loop through all addons and process any that match our type
     for (std::vector<AddonBlock*>::iterator it = addons.begin(); it != addons.end(); it++) {

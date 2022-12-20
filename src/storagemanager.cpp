@@ -15,6 +15,7 @@
 #include "CRC32.h"
 #include <sstream>
 
+#include "addons/dualdirectional.h"
 #include "addons/i2cdisplay.h"
 #include "addons/neopicoleds.h"
 #include "addons/playerleds.h"
@@ -76,6 +77,10 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.pinButtonReverse  = PIN_BUTTON_REVERSE;
 	boardOptions.pinSliderLS       = PIN_SLIDER_LS;
 	boardOptions.pinSliderRS       = PIN_SLIDER_RS;
+	boardOptions.pinDualDirDown    = PIN_DUAL_DIRECTIONAL_DOWN;
+	boardOptions.pinDualDirUp      = PIN_DUAL_DIRECTIONAL_UP;
+	boardOptions.pinDualDirLeft    = PIN_DUAL_DIRECTIONAL_LEFT;
+	boardOptions.pinDualDirRight   = PIN_DUAL_DIRECTIONAL_RIGHT;
 	boardOptions.buttonLayout      = BUTTON_LAYOUT;
 	boardOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
 	boardOptions.splashMode        = SPLASH_MODE;
@@ -102,6 +107,8 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.i2cAnalog1219Speed      = I2C_ANALOG1219_SPEED;
 	boardOptions.i2cAnalog1219Address    = I2C_ANALOG1219_ADDRESS;
 	boardOptions.onBoardLedMode			 = BOARD_LED_TYPE;
+	boardOptions.dualDirDpadMode         = DUAL_DIRECTIONAL_STICK_MODE;
+	boardOptions.dualDirCombineMode      = DUAL_DIRECTIONAL_COMBINE_MODE;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }
