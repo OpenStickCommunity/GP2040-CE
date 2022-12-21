@@ -44,8 +44,6 @@ Currently we offer the main RaspBerry Pi Pico setup as well as those from commun
 > * [Flatbox Rev 4/Rev 5](configs/FlatboxRev4)
 > * [WaveShare RP2040 Zero](configs/WaveshareZero)
 
-Several other working example configurations are located in the [configs](configs) folder.
-
 The instructions will slightly vary based on your device. These instructions are for a Raspberry Pi Pico.
 
 > If the device has been previously used for something other than GP2040-CE, please flash this file first to clear the on-board storage: [flash_nuke.uf2](docs/downloads/flash_nuke.uf2). After flashing the nuke file, wait a minute for the clear program to run and the RPI-RP2 drive to reappear.
