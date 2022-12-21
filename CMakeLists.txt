@@ -24,9 +24,11 @@ add_subdirectory(lib)
 add_subdirectory(MPG)
 
 add_executable(${PROJECT_NAME}
+src/main.cpp
 src/gp2040.cpp
 src/gp2040aux.cpp
 src/gamepad.cpp
+src/addonmanager.cpp
 src/configmanager.cpp
 src/storagemanager.cpp
 src/configs/webconfig.cpp
@@ -36,6 +38,10 @@ src/addons/jslider.cpp
 src/addons/i2cdisplay.cpp
 src/addons/neopicoleds.cpp
 src/addons/playerleds.cpp
+src/addons/board_led.cpp
+src/addons/dualdirectional.cpp
+src/addons/reverse.cpp
+src/addons/i2canalog1219.cpp
 )
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
