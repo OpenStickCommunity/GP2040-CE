@@ -5,6 +5,7 @@
 
 #include "hid_driver.h"
 #include "usb_driver.h"
+#include "device/usbd.h"
 
 #include "device/usbd_pvt.h"
 #include "class/hid/hid_device.h"
@@ -21,19 +22,20 @@ bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
 	return false;
 }
 
-bool hid_device_control_request(uint8_t rhport, tusb_control_request_t const *request)
+bool hid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
 	if (
 		get_input_mode() == INPUT_MODE_HID &&
 		request->bmRequestType == 0xA1 &&
 		request->bRequest == HID_REQ_CONTROL_GET_REPORT &&
-		request->wValue == 0x0300)
+		request->wValue == 0x0300
+	)
 	{
 		return tud_control_xfer(rhport, request, (void *) magic_init_bytes, sizeof(magic_init_bytes));
 	}
 	else
 	{
-		return hidd_control_xfer_cb(rhport, 0, request);
+		return hidd_control_xfer_cb(rhport, stage, request);
 	}
 }
 
@@ -44,6 +46,6 @@ const usbd_class_driver_t hid_driver = {
 	.init = hidd_init,
 	.reset = hidd_reset,
 	.open = hidd_open,
-	.control_xfer_cb = hidd_control_xfer_cb,
+	.control_xfer_cb = hid_control_xfer_cb,
 	.xfer_cb = hidd_xfer_cb,
 	.sof = NULL};
