@@ -25,6 +25,8 @@
 #define API_RESET_SETTINGS "/api/resetSettings"
 #define API_GET_DISPLAY_OPTIONS "/api/getDisplayOptions"
 #define API_SET_DISPLAY_OPTIONS "/api/setDisplayOptions"
+#define API_GET_BUZZER_OPTIONS "/api/getBuzzerOptions"
+#define API_SET_BUZZER_OPTIONS "/api/setBuzzerOptions"
 #define API_GET_GAMEPAD_OPTIONS "/api/getGamepadOptions"
 #define API_SET_GAMEPAD_OPTIONS "/api/setGamepadOptions"
 #define API_GET_LED_OPTIONS "/api/getLedOptions"
@@ -44,7 +46,7 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
+const static vector<string> spaPaths = { "/display-config", "/buzzer-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
 static char *http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
@@ -196,6 +198,49 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutRight"] = boardOptions.buttonLayoutRight;
 	doc["splashMode"]  	     = boardOptions.splashMode;
 	doc["splashChoice"]      = boardOptions.splashChoice;
+
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	auto usedPins = doc.createNestedArray("usedPins");
+	usedPins.add(gamepad->mapDpadUp->pin);
+	usedPins.add(gamepad->mapDpadDown->pin);
+	usedPins.add(gamepad->mapDpadLeft->pin);
+	usedPins.add(gamepad->mapDpadRight->pin);
+	usedPins.add(gamepad->mapButtonB1->pin);
+	usedPins.add(gamepad->mapButtonB2->pin);
+	usedPins.add(gamepad->mapButtonB3->pin);
+	usedPins.add(gamepad->mapButtonB4->pin);
+	usedPins.add(gamepad->mapButtonL1->pin);
+	usedPins.add(gamepad->mapButtonR1->pin);
+	usedPins.add(gamepad->mapButtonL2->pin);
+	usedPins.add(gamepad->mapButtonR2->pin);
+	usedPins.add(gamepad->mapButtonS1->pin);
+	usedPins.add(gamepad->mapButtonS2->pin);
+	usedPins.add(gamepad->mapButtonL3->pin);
+	usedPins.add(gamepad->mapButtonR3->pin);
+	usedPins.add(gamepad->mapButtonA1->pin);
+	usedPins.add(gamepad->mapButtonA2->pin);
+
+	return serialize_json(doc);
+}
+
+std::string setBuzzerOptions()
+{
+	DynamicJsonDocument doc = get_post_data();
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	boardOptions.hasBuzzerSpeaker      = doc["enabled"];
+	boardOptions.buzzerPin             = doc["buzzerPin"];
+	boardOptions.buzzerVolume          = doc["buzzerVolume"];
+	ConfigManager::getInstance().setBoardOptions(boardOptions);
+	return serialize_json(doc);
+}
+
+std::string getBuzzerOptions() // Manually set Document Attributes for the buzzer speaker
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	doc["enabled"]       	 = boardOptions.hasBuzzerSpeaker ? 1 : 0;
+	doc["buzzerPin"]      	 = boardOptions.buzzerPin == 0xFF ? -1 : boardOptions.buzzerPin;
+	doc["buzzerVolume"]    	 = boardOptions.buzzerVolume;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
@@ -550,6 +595,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setAddonOptions());
 		if (!memcmp(http_post_uri, API_SET_SPLASH_IMAGE, sizeof(API_SET_SPLASH_IMAGE)))
 			return set_file_data(file, setSplashImage());
+		if (!memcmp(http_post_uri, API_SET_BUZZER_OPTIONS, sizeof(API_SET_BUZZER_OPTIONS)))
+			return set_file_data(file, setBuzzerOptions());
 	}
 	else
 	{
@@ -569,6 +616,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getSplashImage());
 		if (!memcmp(name, API_GET_FIRMWARE_VERSION, sizeof(API_GET_FIRMWARE_VERSION)))
 			return set_file_data(file, getFirmwareVersion());
+		if (!memcmp(name, API_GET_BUZZER_OPTIONS, sizeof(API_GET_BUZZER_OPTIONS)))
+			return set_file_data(file, getBuzzerOptions());
 	}
 
 	bool isExclude = false;

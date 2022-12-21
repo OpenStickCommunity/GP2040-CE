@@ -82,6 +82,30 @@ async function setSplashImage({splashImage}) {
 	}, Promise.resolve({splashImage}));
 }
 
+async function getBuzzerOptions() {
+	return axios.get(`${baseUrl}/api/getBuzzerOptions`)
+		.then((response) => {
+
+			return response.data;
+		})
+		.catch(console.error);
+}
+
+async function setBuzzerOptions(options) {
+	let newOptions = { ...options };
+	newOptions.buzzerPin = parseInt(options.buzzerPin);
+	newOptions.buzzerVolume = parseInt(options.buzzerVolume);
+	return axios.post(`${baseUrl}/api/setBuzzerOptions`, newOptions)
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
 async function getGamepadOptions() {
 	return axios.get(`${baseUrl}/api/getGamepadOptions`)
 		.then((response) => response.data)
@@ -183,6 +207,8 @@ const WebApi = {
 	setAddonsOptions,
 	getSplashImage,
 	setSplashImage,
+	getBuzzerOptions,
+	setBuzzerOptions,
 	getFirmwareVersion
 };
 

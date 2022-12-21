@@ -28,6 +28,7 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} exact={true} to="/pin-mapping">Pin Mapping</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact={true} to="/led-config">LED Configuration</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact={true} to="/display-config">Display Configuration</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} exact={true} to="/buzzer-config">Buzzer Speaker Configuration</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact={true} to="/add-ons">Add-Ons Configuration</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact={true} to="/backup">Data Backup and Restoration</NavDropdown.Item>
 					</NavDropdown>

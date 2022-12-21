@@ -211,4 +211,13 @@
 #define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
 #define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
 
+// This is the Buzzer Speaker section.  
+// In this section you can specify if Buzzer Speaker will be active, and, if active, which pin will be used for them.
+// The default is `HAS_BUZZER_SPEAKER` which will turn the Buzzer Speaker off.
+// The default pin for Buzzer Speaker is `1` which enables it.  
+// The default volume for Buzzer Speaker is 100 (max).  
+#define HAS_BUZZER_SPEAKER 1
+#define BUZZER_PIN -1
+#define BUZZER_VOLUME 100
+
 #endif

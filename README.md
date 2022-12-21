@@ -18,6 +18,7 @@ Full documentation can be found at <https://www.gp2040-ce.info>.
 * Multiple profile support
 * Support for 128x64 monochrome I2C displays - SSD1306, SH1106, and SH1107 compatible
 * Custom startup splash screen and easy image upload via web configuration
+* Support for passive buzzer speaker (3v or 5v)
 * [Built-in, embedded web configuration](https://www.gp2040-ce.info/#/web-configurator) - no download required!
 
 Visit the [GP2040-CE Usage](https://www.gp2040-ce.info/#/usage) page for more details.

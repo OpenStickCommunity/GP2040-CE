@@ -112,6 +112,14 @@ I2C Analog ADS1219
 * `Backup To File` - Allows you to select what to backup to a file (default is all selected).
 * `Restore From File` - Allows you to select what to restore from a file (default is all selected).
 
+## Buzzer Speaker Configuration
+
+![GP2040 Configurator - Buzzer Speaker Configuration](assets/images/gpc-buzzer-config.png)
+
+* `Use buzzer` - Turns on/off the buzzer module.
+* `Buzzer Pin` - The GPIO pin used for the buzzer.
+* `Buzzer Volume` - Audio volume of buzzer. 0-100.
+
 ## DANGER ZONE
 
 ![GP2040 Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
