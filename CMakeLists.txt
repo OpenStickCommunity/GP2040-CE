@@ -50,6 +50,7 @@ pico_set_program_version(GP2040-CE "0.7.0")
 target_link_libraries(${PROJECT_NAME} 
 MPG
 pico_stdlib
+pico_bootsel_via_double_reset
 AnimationStation
 TinyUSB_Gamepad
 FlashPROM
