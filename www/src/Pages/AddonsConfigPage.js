@@ -31,6 +31,11 @@ const DUAL_COMBINE_MODES = [
 	{ label: 'None', value: 3 }
 ];
 
+const BUZZER_MODE = [
+	{ label: 'Disabled', value: 0 },
+	{ label: 'Enabled', value: 1 },
+];
+
 const schema = yup.object().shape({
 	turboPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Turbo Pin'),
 	turboPinLED: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Turbo Pin LED'),
@@ -51,6 +56,9 @@ const schema = yup.object().shape({
 	dualDirRightPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Dual Directional Right Pin'),
 	dualDirDpadMode : yup.number().required().oneOf(DUAL_STICK_MODES.map(o => o.value)).label('Dual Stick Mode'), 
 	dualDirCombineMode : yup.number().required().oneOf(DUAL_COMBINE_MODES.map(o => o.value)).label('Dual Combination Mode'),
+	buzzerEnabled: yup.number().required().min(0).max(1).label('Enabled?'),
+	buzzerPin: yup.number().required().min(-1).max(29).test('', '${originalValue} is already assigned!', (value) => usedPins.indexOf(value) === -1).label('Buzzer Pin'),
+	buzzerVolume: yup.number().required().min(0).max(100).label('Buzzer Volume'),
 });
 
 const defaultValues = {
@@ -72,7 +80,10 @@ const defaultValues = {
 	dualLeftPin: -1,
 	dualRightPin: -1,
 	dualDirDpadMode: 0,
-	dualDirCombineMode: 0
+	dualDirCombineMode: 0,
+	buzzerEnabled: 0,
+	buzzerPin: -1,
+	buzzerVolume: 100
 };
 
 const REVERSE_ACTION = [
@@ -140,6 +151,12 @@ const FormContext = () => {
 			values.dualRightPin = parseInt(values.dualRightPin);
 		if (!!values.dualDirMode)
 			values.dualDirMode = parseInt(values.dualDirMode);
+		if (!!values.buzzerEnabled)
+			values.buzzerEnabled = parseInt(values.buzzerEnabled);
+		if (!!values.buzzerPin)
+			values.buzzerPin = parseInt(values.buzzerPin);
+		if (!!values.buzzerVolume)
+			values.buzzerVolume = parseInt(values.buzzerVolume);
 	}, [values, setValues]);
 
 	return null;
@@ -455,6 +472,43 @@ export default function AddonsConfigPage() {
 									<Form.Control.Feedback type="invalid">{errors.dualDirCombineMode}</Form.Control.Feedback>
 								</div>
 							</Form.Group>
+						</Col>
+					</Section>
+					<Section title="Buzzer Speaker">
+						<Col>
+							<Form.Group className="row mb-3">
+								<Form.Label>Use Buzzer</Form.Label>
+								<div className="col-sm-3">
+									<Form.Select name="buzzerEnabled" className="form-select-sm" value={values.buzzerEnabled} onChange={handleChange} isInvalid={errors.buzzerEnabled}>
+										{BUZZER_MODE.map((o, i) => <option key={`button-buzzerEnabled-option-${i}`} value={o.value}>{o.label}</option>)}
+									</Form.Select>
+									<Form.Control.Feedback type="invalid">{errors.buzzerEnabled}</Form.Control.Feedback>
+								</div>
+							</Form.Group>
+							<FormControl type="number"
+								label="Buzzer Pin"
+								name="buzzerPin"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.buzzerPin}
+								error={errors.buzzerPin}
+								isInvalid={errors.buzzerPin}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormControl type="number"
+								label="Buzzer Volume"
+								name="buzzerVolume"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.buzzerVolume}
+								error={errors.buzzerVolume}
+								isInvalid={errors.buzzerVolume}
+								onChange={handleChange}
+								min={0}
+								max={100}
+							/>
 						</Col>
 					</Section>
 					<div className="mt-3">

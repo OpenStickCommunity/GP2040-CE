@@ -156,6 +156,9 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		dualDirRightPin: -1,
 		dualDirDpadMode: 0,
 		dualDirCombineMode: 0,
+		buzzerEnabled: 0,
+		buzzerPin: -1,
+		buzzerVolume: 100,
 		usedPins,
 	});
 });

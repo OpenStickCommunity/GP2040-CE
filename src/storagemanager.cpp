@@ -110,7 +110,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.onBoardLedMode			 = BOARD_LED_TYPE;
 	boardOptions.dualDirDpadMode         = DUAL_DIRECTIONAL_STICK_MODE;
 	boardOptions.dualDirCombineMode      = DUAL_DIRECTIONAL_COMBINE_MODE;
-	boardOptions.hasBuzzerSpeaker        = HAS_BUZZER_SPEAKER;
+	boardOptions.buzzerEnabled           = BUZZER_ENABLED;
 	boardOptions.buzzerPin               = BUZZER_PIN;
 	boardOptions.buzzerVolume            = BUZZER_VOLUME;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));

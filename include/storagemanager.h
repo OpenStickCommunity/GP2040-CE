@@ -81,7 +81,7 @@ struct BoardOptions
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 	OnBoardLedMode onBoardLedMode;
-	bool hasBuzzerSpeaker;
+	bool buzzerEnabled;
 	uint8_t buzzerPin;
 	uint8_t buzzerVolume;
 };

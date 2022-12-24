@@ -9,7 +9,7 @@
 
 bool BuzzerSpeakerAddon::available() {
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	return boardOptions.hasBuzzerSpeaker && 
+	return boardOptions.buzzerEnabled && 
 		boardOptions.buzzerPin != (uint8_t)-1;
 }
 

@@ -8,7 +8,6 @@ import PinMappingPage from "./Pages/PinMapping";
 import ResetSettingsPage from './Pages/ResetSettingsPage';
 import SettingsPage from './Pages/SettingsPage';
 import DisplayConfigPage from './Pages/DisplayConfig';
-import BuzzerConfigPage from './Pages/BuzzerConfig';
 import LEDConfigPage from './Pages/LEDConfigPage';
 import AddonsConfigPage from './Pages/AddonsConfigPage';
 import BackupPage from './Pages/BackupPage';
@@ -47,9 +46,6 @@ const App = () => {
 						</Route>
 						<Route path="/display-config">
 							<DisplayConfigPage />
-						</Route>
-						<Route path="/buzzer-config">
-							<BuzzerConfigPage />
 						</Route>
 						<Route path="/add-ons">
 							<AddonsConfigPage />

@@ -10,8 +10,8 @@ using namespace std;
 #include "gpaddon.h"
 #include "gamepad.h"
 
-#ifndef HAS_BUZZER_SPEAKER
-#define HAS_BUZZER_SPEAKER -1
+#ifndef BUZZER_ENABLED
+#define BUZZER_ENABLED -1
 #endif
 
 #ifndef BUZZER_PIN
