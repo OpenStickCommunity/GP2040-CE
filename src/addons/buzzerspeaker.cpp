@@ -6,6 +6,7 @@
 #include "pico/stdlib.h"
 #include "bitmaps.h"
 #include "math.h"
+#include "usb_driver.h"
 
 bool BuzzerSpeakerAddon::available() {
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
@@ -20,12 +21,26 @@ void BuzzerSpeakerAddon::setup() {
 	buzzerPinSlice = pwm_gpio_to_slice_num (boardOptions.buzzerPin); 
 	buzzerPinChannel = pwm_gpio_to_channel (boardOptions.buzzerPin);
 	buzzerVolume = boardOptions.buzzerVolume;
-
-	play(&intro);
+	introPlayed = false;
 }
 
 void BuzzerSpeakerAddon::process() {
+	if (!introPlayed) playIntro();
+
 	processBuzzer();
+}
+
+void BuzzerSpeakerAddon::playIntro() {
+	if (getMillis() < 1000) return;
+
+	bool isConfigMode = Storage::getInstance().GetConfigMode();
+	
+	if (!get_usb_mounted() || isConfigMode) {
+		play(&configModeSong);
+	} else {
+		play(&introSong);
+	}
+	introPlayed = true;
 }
 
 void BuzzerSpeakerAddon::processBuzzer() {

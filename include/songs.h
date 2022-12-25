@@ -1,7 +1,7 @@
 #include "addons/buzzerspeaker.h"
 
 // Intro example
-Song intro{
+Song introSong{
     100,
     {
         D5,
@@ -20,5 +20,16 @@ Song intro{
         F7,
         D8,
         DS8,
+    }
+};
+
+Song configModeSong{
+    150,
+    {
+        E5,
+        E5,
+        G4,
+        FS5,
+        E5
     }
 };

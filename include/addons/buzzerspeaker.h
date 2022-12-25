@@ -132,6 +132,7 @@ class BuzzerSpeakerAddon : public GPAddon
 private:
 	void processBuzzer();
 	void play(Song *song);
+	void playIntro();
 	void stop();
 	uint32_t pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty);
 	uint8_t buzzerPinSlice;
@@ -139,6 +140,7 @@ private:
 	uint8_t buzzerVolume;
 	uint32_t startedSongMils;
 	Song *currentSong;
+	bool introPlayed;
 public:
 	virtual bool available();  // GPAddon
 	virtual void setup();
