@@ -1,14 +1,10 @@
-#include <vector>
-using namespace std;
-
 #ifndef BUZZER_H_
 #define BUZZER_H_
 
+#include <vector>
 #include <string>
-#include "hardware/pwm.h"
-#include "BoardConfig.h"
 #include "gpaddon.h"
-#include "gamepad.h"
+using namespace std;
 
 #ifndef BUZZER_ENABLED
 #define BUZZER_ENABLED -1

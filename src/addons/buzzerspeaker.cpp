@@ -1,10 +1,7 @@
+#include "hardware/pwm.h"
 #include "addons/buzzerspeaker.h"
 #include "songs.h"
-#include "enums.h"
-#include "helper.h"
 #include "storagemanager.h"
-#include "pico/stdlib.h"
-#include "bitmaps.h"
 #include "math.h"
 #include "usb_driver.h"
 
