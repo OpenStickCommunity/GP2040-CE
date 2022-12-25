@@ -129,11 +129,7 @@ struct Song {
 // Buzzer Speaker
 class BuzzerSpeakerAddon : public GPAddon
 {
-public:
-	virtual bool available();  // GPAddon
-	virtual void setup();
-	virtual void process();
-	virtual std::string name() { return BuzzerSpeakerName; }
+private:
 	void processBuzzer();
 	void play(Song *song);
 	void stop();
@@ -143,6 +139,11 @@ public:
 	uint8_t buzzerVolume;
 	uint32_t startedSongMils;
 	Song *currentSong;
+public:
+	virtual bool available();  // GPAddon
+	virtual void setup();
+	virtual void process();
+	virtual std::string name() { return BuzzerSpeakerName; }
 };
 
 #endif
