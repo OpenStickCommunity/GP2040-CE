@@ -20,7 +20,7 @@ public:
 protected:
   int currentFrame = 0;
   bool reverse = false;
-  absolute_time_t nextRunTime = 0;
+  uint64_t nextRunTime = 0;
 };
 
 #endif

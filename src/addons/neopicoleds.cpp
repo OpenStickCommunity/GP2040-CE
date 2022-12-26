@@ -10,7 +10,7 @@
 #include "PlayerLEDs.h"
 #include "gp2040.h"
 #include "addons/neopicoleds.h"
-#include "addons/playerleds.h"
+#include "addons/pleds.h"
 #include "themes.h"
 
 #include "enums.h"
