@@ -24,6 +24,10 @@ jobs:
     - name: Checkout GP2040-CE
       uses: actions/checkout@v2
     
+    - name: Checkout submodules
+      working-directory: ${{github.workspace}}
+      run: git submodule update --init
+    
     - name: Checkout pico-sdk/develop
       uses: actions/checkout@v2
       with:
