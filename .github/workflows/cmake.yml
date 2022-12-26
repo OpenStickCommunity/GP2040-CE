@@ -20,6 +20,7 @@ jobs:
     steps:
     - name: arm-none-eabi-gcc
       uses: fiam/arm-none-eabi-gcc@v1.0.2
+      release: 12.2.Rel1
 
     - name: Checkout GP2040-CE
       uses: actions/checkout@v2
