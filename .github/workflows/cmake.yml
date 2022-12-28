@@ -49,7 +49,7 @@ jobs:
       shell: bash
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -E env --modify GP2040_BOARDCONFIG=set:Pico
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Pico Build
       shell: bash
@@ -57,13 +57,13 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} -E env --modify GP2040_BOARDCONFIG=set:Pico
     
     # #BentoBox
-    # - name: Configure CMake
+    # - name: BentoBox Configure CMake
     #   shell: bash
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
     #   # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
     #   run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:BentoBox
     
-    # - name: Build
+    # - name: BentoBox Build
     #   shell: bash
     #   # Build your program with the given configuration
     #   run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:BentoBox
