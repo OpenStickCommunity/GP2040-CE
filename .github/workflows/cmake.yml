@@ -69,7 +69,7 @@ jobs:
     
     - name: BentoBox Build
       shell: bash
-      run: GP2040_BOARDCONFIG=BentoBox cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} GP2040_BOARDCONFIG=set:BentoBox
+      run: GP2040_BOARDCONFIG=BentoBox cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
     
     # #DURAL
     # - name: Configure CMake
