@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    #Global Setup
     - name: arm-none-eabi-gcc GNU Arm Embedded Toolchain
       uses: carlosperate/arm-none-eabi-gcc-action@v1.5.2
 
@@ -38,21 +39,107 @@ jobs:
     - name: Checkout pico-sdk submodules
       working-directory: ${{github.workspace}}/pico-sdk
       run: git submodule update --init
-      
+    
+    - name: Get core count
+      id: core_count
+      run : cat /proc/cpuinfo  | grep processor | wc -l
+      #End Global Setup
+
+      #Pico Build
     - name: Configure CMake
       shell: bash
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      
-    - name: Get core count
-      id: core_count
-      run : cat /proc/cpuinfo  | grep processor | wc -l
-      
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:Pico
+
     - name: Build
       shell: bash
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:Pico
+    
+    #BentoBox
+    - name: Configure CMake
+      shell: bash
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:BentoBox
+    
+    - name: Build
+      shell: bash
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:BentoBox
+    
+    #DURAL
+    - name: Configure CMake
+      shell: bash
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:DURAL
+    
+    - name: Build
+      shell: bash
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:DURAL
+
+    #FlatboxRev4
+    - name: Configure CMake
+      shell: bash
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:FlatboxRev4
+    
+    - name: Build
+      shell: bash
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:FlatBoxRev4
+
+    #FlatboxRev5
+    - name: Configure CMake
+      shell: bash
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:FlatboxRev5
+    
+    - name: Build
+      shell: bash
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:FlatBoxRev5
+
+    #PicoFightingBoard
+    - name: Configure CMake
+      shell: bash
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:PicoFightingBoard
+    
+    - name: Build
+      shell: bash
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:PicoFightingBoard
+    
+    #SparkFunProMicro    
+    - name: Configure CMake
+      shell: bash
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:SparkFunProMicro
+    
+    - name: Build
+      shell: bash
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:SparkFunProMicro
+    
+    #WaveshareZero
+    - name: Configure CMake
+      shell: bash
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: PICO_SDK_PATH=../pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} --modify GP2040_BOARDCONFIG=set:WaveshareZero
+    
+    - name: Build
+      shell: bash
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} --modify GP2040_BOARDCONFIG=set:WaveShareZero    
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.1
@@ -60,5 +147,5 @@ jobs:
         # Artifact name
         name: GP2040-CE
         # A file, directory or wildcard pattern that describes what to upload
-        path: ${{github.workspace}}/build/GP2040-CE.uf2
+        path: ${{github.workspace}}/build/GP2040-CE_*.uf2
         if-no-files-found: error
