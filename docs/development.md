@@ -1,61 +1,60 @@
 # GP2040 Development
 
-GP2040 is written in C++ and set up as a [PlatformIO](https://platformio.org/) project, using the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package in the `baremetal` (Pico SDK) configuration.
+GP2040 is written in C++ and set up as a standard Pico SDK project.
+See [Getting Started with the Raspberry Pi Pico](https://rptl.io/pico-get-started).
 
 ## Environment Setup
 
-The recommended setup is to develop using the [PlatformIO IDE](https://platformio.org/platformio-ide), which is an extension to the excellent [Visual Studio Code (VS Code)](https://code.visualstudio.com/) editor. If a dedicated IDE for embedded development isn't your thing, you can easily build the project using the [PlatformIO CLI](https://platformio.org/install/cli) instead. This section will cover using the PlatformIO IDE.
+Most of this will be parroting the above linked PDF from the Raspberry Pi Foundation.
 
-1. Use Git to clone the [GP2040-CE repository](https://github.com/OpenStickFoundation/GP2040-CE).
-1. Follow the [installation instructions for the PlatformIO IDE](https://platformio.org/install/ide?install=vscode).
-1. Open VS Code and you should be greeted with the PlatformIO Home screen.
-1. Select the PlatformIO tab in the activity bar (bug icon), then go to `PIO Home > Platforms`.
-1. On the Platforms tab click the `Advanced Installation` button, then type `https://github.com/OpenStickFoundation/wizio-pico` and click `Install`.
-1. Open the `GP2040` (`GP2040-main` if from zip) folder in VS Code and it should automatically get picked up as a Platform IO project.
-1. Click on the VS Code Explorer tab (or Ctrl+Shift+E) and expand the folders and files in your project.
+### Windows Setup
 
-PlatformIO will download any dependencies not already included with the project.
+1. Install the latest ARM GNU Toolcahin
+    - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+1. Install latest version of CMake
+    - [CMake](https://cmake.org/download/)
+1. Install Visual Studio Build tools, or the full Visual Studio IDE
+    - Make sure to select the Desktop development with C++ workload
+    - Select the latest Windows 10 or Windows 11 SDK from the Individual Components
+    - [Visual Studio Build tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022)
+    - [Visual Studio Community Edition](https://visualstudio.microsoft.com/downloads/#visual-studio-community-2022)
+1. Install Python 3.10
+    - At the end of the installation, there is an option to disable max file path length. You want to select this.
+    - [Python](https://www.python.org/downloads/windows/)
+1. Install Visual Studio Code
+     - [Visual Studio Code](https://code.visualstudio.com/)
+1. Install git
+     - Set default editor to anything other than VIM, such as Visual Studio Code
+1. Clone the Pico SDK to your local computer
+
+    ```powershell
+    git clone https://github.com/raspberrypi/pico-sdk.git
+    cd pico-sdk
+    git submodule update --init
+    cd ..
+    ```
+
+1. Clone GP2040-CE to your local computer
+
+```powershell
+git clone https://github.com/OpenStickCommunity/GP2040-CE.git
+cd GP2040-CE
+git submodule update --init
+```
 
 ## Configuration
 
-There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own and configure PlatformIO to build it. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
+There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
 
 ### Board Configuration Folder
 
-Each subfolder in [`configs`](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs) contains a separate PlatformIO build configuration, which consists of the following:
+Each subfolder in [`configs`](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs) contains a separate board configuration, which consists of the following:
 
 | Name | Required? | Description |
 | ----------- | --------- | ----------- |
 | `BoardConfig.h` | Yes | The configuration file used when building GP2040 for a specific controller/board. Contains initial pin mappings, LED configuration, etc. |
-| `env.ini` | Yes | A partial PlatformIO project configuration file which defines the build parameters for this board. All `env.ini` files in subfolders of `configs` will be parsed and selectable when loading the project in the PlatformIO IDE (may require a restart to pick up the new build config).
 | `README.md` | No | Provides information related to this board configuration. Not required for the build process, but suggested for pull requests of new board configurations. |
 | `assets/` | No | Folder for containing assets included in the `README.md`. Not required for the build process.
-
-### Build Configuration (`env.ini`)
-
-1. Create a new folder in `configs` for your board, e.g. `configs/NewBoard`.
-1. Create `configs/NewBoard/env.ini` using the following template:
-
-    ```ini
-    [env:new-board]
-    upload_port = .pio/build/new-board/
-    build_flags =
-        ${env.build_flags}
-        -I configs/NewBoard/
-    ```
-
-    a. If you're not using a Pico or bare RP2040, check the `include/pico/config_autogen.h` file to see if there is a define for your board. If so, add or update the `-D BOARD_...` option in `build_flags`, for example if using the SparkFun Pro Micro RP2040:
-
-    ```ini
-    [env:sparkfun-pro-micro]
-    upload_port = .pio/build/sparkfun-pro-micro/
-    build_flags =
-        ${env.build_flags}
-        -D BOARD_SPARKFUN_MICRO_RP2040
-        -I configs/SparkFunProMicro/
-    ```
-
-This will create a new PlatformIO build environment named `new-board`. Select the new environment from the VS Code status bar menu. You may need to restart VS Code in order for PlatformIO to pick up on the `env.ini` changes.
 
 ### Board Configuration (`BoardConfig.h`)
 
@@ -212,4 +211,23 @@ An example I2C display setup in the `BoardConfig.h` file:
 
 ## Building
 
-You should now be able to build or upload the project to your RP2040 board from the Build and Upload status bar icons. You can also open the PlatformIO tab and select the actions to execute for a particular environment. Output folders are defined in the `platformio.ini` file and should default to a path under `.pio/build/${env:NAME}`.
+### Windows
+
+Start in the GP2040-CE folder
+From a Developer Powershell or Developer Command Command Prompt:
+> Note: A new session will be required after setting an environment variable.
+
+1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
+1. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
+    - Default value is `Pico`
+
+1. Create a build directory, configure the build, and execute the build.
+
+    ```powershell
+    mkdir build
+    cd build
+    cmake -G "NMake Makefiles" ..
+    nmake
+    ```
+
+1. Your UF2 file should be in the build directory.
