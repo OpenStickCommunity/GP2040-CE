@@ -27,7 +27,7 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
      - Set default editor to anything other than VIM, such as Visual Studio Code
 1. Clone the Pico SDK to your local computer
 
-    ```powershell
+    ```bash
     git clone https://github.com/raspberrypi/pico-sdk.git
     cd pico-sdk
     git submodule update --init
@@ -36,7 +36,7 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 
 1. Clone GP2040-CE to your local computer
 
-```powershell
+```bash
 git clone https://github.com/OpenStickCommunity/GP2040-CE.git
 cd GP2040-CE
 git submodule update --init
@@ -223,7 +223,7 @@ From a Developer Powershell or Developer Command Command Prompt:
 
 1. Create a build directory, configure the build, and execute the build.
 
-    ```powershell
+    ```bash
     mkdir build
     cd build
     cmake -G "NMake Makefiles" ..
