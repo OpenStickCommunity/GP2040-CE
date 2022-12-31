@@ -11,6 +11,12 @@ endif()
 project(GP2040-CE C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+if(DEFINED ENV{GP2040_BOARDCONFIG})
+  set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
+else()
+  set(GP2040_BOARDCONFIG Pico)
+endif()
+
 include(FetchContent)
 FetchContent_Declare(ArduinoJson
     GIT_REPOSITORY https://github.com/bblanchon/ArduinoJson.git
@@ -44,6 +50,8 @@ src/addons/reverse.cpp
 src/addons/i2canalog1219.cpp
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${GP2040_BOARDCONFIG})
+
 pico_set_program_name(GP2040-CE "GP2040-CE")
 pico_set_program_version(GP2040-CE "0.7.0")
 
@@ -67,7 +75,7 @@ hardware_adc
 target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons
-configs/Pico
+configs/${GP2040_BOARDCONFIG}
 )
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
@@ -84,7 +92,7 @@ add_compile_options(-Wall
         )
 
         install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.uf2
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_${GP2040_BOARDCONFIG}.uf2
     ${CMAKE_CURRENT_LIST_DIR}/README.md
     DESTINATION .
 )
