@@ -53,7 +53,8 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		buttonLayoutRight: 3,
 		splashMode: 3,
 		splashChoice: 0,
-		splashImage: Array(16*64).fill(255)
+		splashImage: Array(16*64).fill(255),
+		displaySaverTimeout: 0,
 	}
 	console.log('data', data);
 	return res.send(data);

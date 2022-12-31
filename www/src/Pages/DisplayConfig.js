@@ -63,6 +63,16 @@ const SPLASH_CHOICES = [
 	{ label: 'Legacy', value: 5 },           // LEGACY
 ];
 
+const DISPLAY_SAVE_TIMEOUT_CHOICES = [
+	{ label: 'Off', value: 0 },
+	{ label: '1 minute', value: 1 },
+	{ label: '2 minutes', value: 2 },
+	{ label: '5 minutes', value: 5 },
+	{ label: '10 minutes', value: 10 },
+	{ label: '20 minutes', value: 20 },
+	{ label: '30 minutes', value: 30 },
+];
+
 const defaultValues = {
 	enabled: false,
 	sdaPin: -1,
@@ -77,7 +87,8 @@ const defaultValues = {
 	splashMode: 3,
 	splashChoice: 0,
 	splashImage: Array(16*64).fill(0), // 128 columns represented by bytes so 16 and 64 rows
-	invertSplash: false
+	invertSplash: false,
+	displaySaverTimeout: 0,
 };
 
 let usedPins = [];
@@ -96,7 +107,8 @@ const schema = yup.object().shape({
 	buttonLayout: yup.number().required().oneOf(BUTTON_LAYOUTS.map(o => o.value)).label('Button Layout Left'),
 	buttonLayoutRight: yup.number().required().oneOf(BUTTON_LAYOUTS_RIGHT.map(o => o.value)).label('Button Layout Right'),
 	splashMode: yup.number().required().oneOf(SPLASH_MODES.map(o => o.value)).label('Splash Screen'),
-	splashChoice: yup.number().required().oneOf(SPLASH_CHOICES.map(o => o.value)).label('Splash Screen Choice')
+	splashChoice: yup.number().required().oneOf(SPLASH_CHOICES.map(o => o.value)).label('Splash Screen Choice'),
+	displaySaverTimeout: yup.number().required().oneOf(DISPLAY_SAVE_TIMEOUT_CHOICES.map(o => o.value)).label('Display Saver'),
 });
 
 const FormContext = () => {
@@ -355,6 +367,20 @@ export default function DisplayConfigPage() {
 								onChange={handleChange}
 							>
 								{SPLASH_CHOICES.map((o, i) => <option key={`splashChoice-option-${i}`} value={o.value}>{o.label}</option>)}
+							</FormSelect>
+						</Row>
+						<Row className="mb-3">
+							<FormSelect
+									label="Display Saver Timeout"
+									name="displaySaverTimeout"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.displaySaverTimeout}
+									error={errors.displaySaverTimeout}
+									isInvalid={errors.displaySaverTimeout}
+									onChange={handleChange}
+								>
+									{DISPLAY_SAVE_TIMEOUT_CHOICES.map((o, i) => <option key={`displaySaverTimeout-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 						</Row>
 						<Row>

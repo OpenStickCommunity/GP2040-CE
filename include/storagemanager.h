@@ -60,6 +60,7 @@ struct BoardOptions
 	uint8_t displaySize;
 	bool displayFlip;
 	bool displayInvert;
+	int displaySaverTimeout;
 	uint8_t turboShotCount; // Turbo
 	uint8_t pinTurboLED;    // Turbo LED
 	uint8_t pinReverseLED;    // Reverse LED

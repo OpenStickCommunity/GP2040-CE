@@ -94,6 +94,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.displaySize       = DISPLAY_SIZE;
 	boardOptions.displayFlip       = DISPLAY_FLIP;
 	boardOptions.displayInvert     = DISPLAY_INVERT;
+	boardOptions.displaySaverTimeout     = DISPLAY_SAVER_TIMEOUT;
 	boardOptions.turboShotCount    = DEFAULT_SHOT_PER_SEC;
 	boardOptions.pinTurboLED       = TURBO_LED_PIN;
 	boardOptions.pinReverseLED     = REVERSE_LED_PIN;
