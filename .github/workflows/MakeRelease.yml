@@ -1,7 +1,7 @@
-name: Release
+name: MakeRelease
 
 on:
-	release:
+  release:
   	types: [published]
 	workflow_dispatch
 
