@@ -63,7 +63,7 @@ const SPLASH_CHOICES = [
 	{ label: 'Legacy', value: 5 },           // LEGACY
 ];
 
-const DISPLAY_SAVE_TIMEOUT_CHOICES = [
+const DISPLAY_SAVER_TIMEOUT_CHOICES = [
 	{ label: 'Off', value: 0 },
 	{ label: '1 minute', value: 1 },
 	{ label: '2 minutes', value: 2 },
@@ -108,7 +108,7 @@ const schema = yup.object().shape({
 	buttonLayoutRight: yup.number().required().oneOf(BUTTON_LAYOUTS_RIGHT.map(o => o.value)).label('Button Layout Right'),
 	splashMode: yup.number().required().oneOf(SPLASH_MODES.map(o => o.value)).label('Splash Screen'),
 	splashChoice: yup.number().required().oneOf(SPLASH_CHOICES.map(o => o.value)).label('Splash Screen Choice'),
-	displaySaverTimeout: yup.number().required().oneOf(DISPLAY_SAVE_TIMEOUT_CHOICES.map(o => o.value)).label('Display Saver'),
+	displaySaverTimeout: yup.number().required().oneOf(DISPLAY_SAVER_TIMEOUT_CHOICES.map(o => o.value)).label('Display Saver'),
 });
 
 const FormContext = () => {
@@ -380,7 +380,7 @@ export default function DisplayConfigPage() {
 									isInvalid={errors.displaySaverTimeout}
 									onChange={handleChange}
 								>
-									{DISPLAY_SAVE_TIMEOUT_CHOICES.map((o, i) => <option key={`displaySaverTimeout-option-${i}`} value={o.value}>{o.label}</option>)}
+									{DISPLAY_SAVER_TIMEOUT_CHOICES.map((o, i) => <option key={`displaySaverTimeout-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 						</Row>
 						<Row>
