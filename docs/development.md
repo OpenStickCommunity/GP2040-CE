@@ -21,7 +21,7 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 1. Install Python 3.10
     - At the end of the installation, there is an option to disable max file path length. You want to select this.
     - [Python](https://www.python.org/downloads/windows/)
-1. Install Visual Studio Code
+1. Install Visual Studio Code - Optional
      - [Visual Studio Code](https://code.visualstudio.com/)
 1. Install git
      - Set default editor to anything other than VIM, such as Visual Studio Code
@@ -36,11 +36,97 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 
 1. Clone GP2040-CE to your local computer
 
-```bash
-git clone https://github.com/OpenStickCommunity/GP2040-CE.git
-cd GP2040-CE
-git submodule update --init
-```
+    ```bash
+    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
+    cd GP2040-CE
+    git submodule update --init
+    ```
+
+### Linux Setup (Ubuntu)
+
+This setup assumes an understanding of Linux terminal usage.
+
+1. Get the SDK
+
+    ```bash
+    cd ~/
+    mkdir pico
+    cd pico
+    git clone https://github.com/raspberrypi/pico-sdk.git --branch master
+    cd pico-sdk
+    git submodule update --init
+    cd ..
+    ```
+
+1. Install the toolchain
+
+    ```bash
+    sudo apt update
+    sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential
+    ```
+
+    - May additionally need to install `libstdc++-arm-none-eabi-newlib`
+
+1. Get GP2040-CE
+
+    ```bash
+    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
+    cd GP2040-CE
+    git submodule update --init
+    ```
+
+### Linux Setup (Raspberry Pi)
+
+This setup script requires approximately 2.5GB of disk space on your SD card.
+
+1. Download the setup script
+
+    ```bash
+    wget https://raw.githubusercontent.com/raspberrypi/pico-setup/master/pico_setup.sh
+    ```
+
+1. Make script executable and Run it.
+
+    ```bash
+    chmod +x pico_setup.sh
+    ```
+
+1. Reboot your Pi
+
+    ```bash
+    sudo reboot
+    ```
+
+1. Get GP2040-CE
+
+    ```bash
+    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
+    cd GP2040-CE
+    git submodule update --init
+    ```
+
+## Building
+
+### Windows
+
+Start in the GP2040-CE folder
+From a Developer Powershell or Developer Command Command Prompt:
+> Note: A new session will be required after setting an environment variable.
+
+1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
+1. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
+    - Default value is `Pico`
+
+1. Create a build directory, configure the build, and execute the build.
+
+    ```bash
+    mkdir build
+    cd build
+    cmake -G "NMake Makefiles" ..
+    nmake
+    ```
+
+1. Your UF2 file should be in the build directory.
 
 ## Configuration
 
@@ -208,26 +294,3 @@ An example I2C display setup in the `BoardConfig.h` file:
 #define I2C_BLOCK i2c0
 #define I2C_SPEED 800000
 ```
-
-## Building
-
-### Windows
-
-Start in the GP2040-CE folder
-From a Developer Powershell or Developer Command Command Prompt:
-> Note: A new session will be required after setting an environment variable.
-
-1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
-1. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
-    - Default value is `Pico`
-
-1. Create a build directory, configure the build, and execute the build.
-
-    ```bash
-    mkdir build
-    cd build
-    cmake -G "NMake Makefiles" ..
-    nmake
-    ```
-
-1. Your UF2 file should be in the build directory.
