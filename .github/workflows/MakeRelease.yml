@@ -1,10 +1,8 @@
 name: MakeRelease
 
 on:
-  release:
-  	types: [published]
-	workflow_dispatch
-
+  release
+  
 env:
   BUILD_TYPE: Release
 
@@ -18,5 +16,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           version: 'inherit'
           description: 'inherit'
-          repo: 'alice-biometrics/release-creator-example'
-  
