@@ -1,0 +1,22 @@
+name: Release
+
+on:
+	release:
+  	types: [published]
+	workflow_dispatch
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+	update:
+    runs-on: ubuntu-latest
+    name: Create a release
+    steps:
+      - uses: alice-biometrics/release-creator/@v1.0.5
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version: 'inherit'
+          description: 'inherit'
+          repo: 'alice-biometrics/release-creator-example'
+  
