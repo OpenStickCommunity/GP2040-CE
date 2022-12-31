@@ -7,7 +7,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-	update:
+  update:
     runs-on: ubuntu-latest
     name: Create a release
     steps:
