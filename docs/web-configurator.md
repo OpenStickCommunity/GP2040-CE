@@ -105,6 +105,14 @@ I2C Analog ADS1219
 * `I2C Analog ADS1219 Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
 * `I2C Analog ADS1219 Address` - Sets the address for the I2C Analog ADS1219.
 
+Buzzer Speaker
+
+![GP2040 Configurator - Add-Ons Buzzer](assets/images/gpc-add-ons-buzzer.png)
+
+* `Use buzzer` - Turns on/off the buzzer module.
+* `Buzzer Pin` - The GPIO pin used for the buzzer.
+* `Buzzer Volume` - Audio volume of buzzer. 0-100.
+
 ## Data Backup and Restoration
 
 ![GP2040 Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)

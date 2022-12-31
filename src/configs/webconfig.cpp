@@ -459,6 +459,9 @@ std::string setAddonOptions()
 	boardOptions.pinDualDirRight 	= doc["dualDirRightPin"] == -1 ? 0xFF : doc["dualDirRightPin"];
 	boardOptions.dualDirDpadMode    = doc["dualDirDpadMode"];
 	boardOptions.dualDirCombineMode = doc["dualDirCombineMode"];
+	boardOptions.buzzerEnabled    = doc["buzzerEnabled"];
+	boardOptions.buzzerPin        = doc["buzzerPin"] == -1 ? 0xFF : doc["buzzerPin"];
+	boardOptions.buzzerVolume     = doc["buzzerVolume"];
 
 	Storage::getInstance().setBoardOptions(boardOptions);
 
@@ -492,6 +495,9 @@ std::string getAddonOptions()
 	doc["dualDirRightPin"] = boardOptions.pinDualDirRight == 0xFF ? -1 : boardOptions.pinDualDirRight;
 	doc["dualDirDpadMode"] = boardOptions.dualDirDpadMode;
 	doc["dualDirCombineMode"] = boardOptions.dualDirCombineMode;
+	doc["buzzerEnabled"] = boardOptions.buzzerEnabled ? 1 : 0;
+	doc["buzzerPin"] = boardOptions.buzzerPin == 0xFF ? -1 : boardOptions.buzzerPin;
+	doc["buzzerVolume"] = boardOptions.buzzerVolume;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
