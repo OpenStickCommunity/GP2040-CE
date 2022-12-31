@@ -128,6 +128,24 @@ From a Developer Powershell or Developer Command Command Prompt:
 
 1. Your UF2 file should be in the build directory.
 
+### Linux
+
+Start in the GP2040-CE folder
+
+1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
+1. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
+    - Default value is `Pico`
+1. Create a build directory, configure the build, and execute the build.
+
+    ```bash
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ```
+
+1. Your UF2 file should be in the build directory.
+
 ## Configuration
 
 There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
