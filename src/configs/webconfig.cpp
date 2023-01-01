@@ -9,14 +9,13 @@
 
 // HTTPD Includes
 #include <ArduinoJson.h>
-#include "rndis/rndis.h"
-#include "httpd/fs.h"
-#include "httpd/fscustom.h"
-#include "httpd/fsdata.h"
-#include "httpd/httpd.h"
+#include "rndis.h"
+#include "fs.h"
+#include "fscustom.h"
+#include "fsdata.h"
+#include "httpd.h"
 #include "lwip/def.h"
 #include "lwip/mem.h"
-#include "rndis/rndis.h"
 
 #include "bitmaps.h"
 

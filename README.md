@@ -89,10 +89,6 @@ No! GP2040-CE dedicates a processing core to just reading and writing player inp
 
 GP2040-CE uses a generic system for handling button inputs that resembles a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040-CE documentation and web configurator have a dropdown to change the labels to more familiar controller layouts. You can refer to the button mapping table on the [GP2040 Usage](http://www.gp2040-ce.info/#/usage?id=buttons) page.
 
-#### Why use PlatformIO instead of \<insert favorite project setup\>?
-
-Setting up a development environment to build Pico SDK projects is a manual process which requires several components to be installed and configured. Using PlatformIO allows easy installation and updating of build and project dependencies. This makes for a less confusing experience for new developers and people that just want to make a few tweaks for a custom build.
-
 #### What kind of voodoo is that embedded web configurator?
 
 There's no magic here, just some useful libraries working together:

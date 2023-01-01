@@ -8,7 +8,7 @@
 #include "BoardConfig.h"
 #include <GamepadStorage.h>
 #include "AnimationStorage.hpp"
-#include "AnimationStation/src/Effects/StaticColor.hpp"
+#include "Effects/StaticColor.hpp"
 #include "FlashPROM.h"
 #include "hardware/watchdog.h"
 #include "Animation.hpp"
@@ -18,7 +18,7 @@
 #include "addons/dualdirectional.h"
 #include "addons/i2cdisplay.h"
 #include "addons/neopicoleds.h"
-#include "addons/playerleds.h"
+#include "addons/pleds.h"
 #include "addons/i2canalog1219.h"
 #include "addons/turbo.h"
 #include "addons/board_led.h"

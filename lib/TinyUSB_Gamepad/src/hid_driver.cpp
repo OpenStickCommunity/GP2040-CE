@@ -5,13 +5,14 @@
 
 #include "hid_driver.h"
 #include "usb_driver.h"
+#include "device/usbd.h"
 
 #include "device/usbd_pvt.h"
 #include "class/hid/hid_device.h"
 #include "GamepadDescriptors.h"
 
 // Magic byte sequence to enable PS button on PS3
-static const uint8_t magic_init_bytes[8] = { 0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00 };
+static const uint8_t magic_init_bytes[8] = {0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00};
 
 bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
 {
@@ -21,7 +22,7 @@ bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
 	return false;
 }
 
-bool hid_device_control_request(uint8_t rhport, tusb_control_request_t const * request)
+bool hid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
 	if (
 		get_input_mode() == INPUT_MODE_HID &&
@@ -34,7 +35,7 @@ bool hid_device_control_request(uint8_t rhport, tusb_control_request_t const * r
 	}
 	else
 	{
-		return hidd_control_request(rhport, request);
+		return hidd_control_xfer_cb(rhport, stage, request);
 	}
 }
 
@@ -45,8 +46,6 @@ const usbd_class_driver_t hid_driver = {
 	.init = hidd_init,
 	.reset = hidd_reset,
 	.open = hidd_open,
-	.control_request = hid_device_control_request,
-	.control_complete = hidd_control_complete,
+	.control_xfer_cb = hid_control_xfer_cb,
 	.xfer_cb = hidd_xfer_cb,
-	.sof = NULL
-};
+	.sof = NULL};
