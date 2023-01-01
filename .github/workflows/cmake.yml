@@ -47,19 +47,14 @@ jobs:
 
     - name: Pico Build Configure CMake
       shell: bash
- 
       run: cmake --help -version
-
 
     - name: Pico Build Configure CMake
       shell: bash
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=Pico cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Pico Build
       shell: bash
-      # Build your program with the given configuration
       run: GP2040_BOARDCONFIG=Pico cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
     
     # #BentoBox
@@ -129,7 +124,7 @@ jobs:
       uses: actions/upload-artifact@v3.1.1
       with:
         # Artifact name
-        name: GP2040-CE
+        name: GP2040-CE - Pico
         # A file, directory or wildcard pattern that describes what to upload
-        path: ${{github.workspace}}/build/GP2040-CE_*.uf2
+        path: ${{github.workspace}}/build/GP2040-CE_*_Pico.uf2
         if-no-files-found: error
