@@ -173,5 +173,5 @@ jobs:
       uses: actions/upload-artifact@v3.1.1
       with:
         name: GP2040-CE - WaveshareZero
-        path: ${{github.workspace}}/build/GP2040-CE_*_--WaveshareZero.uf2
+        path: ${{github.workspace}}/build/GP2040-CE_*_WaveshareZero.uf2
         if-no-files-found: error
