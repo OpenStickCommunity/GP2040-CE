@@ -22,6 +22,7 @@
 #include "addons/i2canalog1219.h"
 #include "addons/turbo.h"
 #include "addons/board_led.h"
+#include "addons/buzzerspeaker.h"
 
 #include "bitmaps.h"
 
@@ -109,6 +110,9 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.onBoardLedMode			 = BOARD_LED_TYPE;
 	boardOptions.dualDirDpadMode         = DUAL_DIRECTIONAL_STICK_MODE;
 	boardOptions.dualDirCombineMode      = DUAL_DIRECTIONAL_COMBINE_MODE;
+	boardOptions.buzzerEnabled           = BUZZER_ENABLED;
+	boardOptions.buzzerPin               = BUZZER_PIN;
+	boardOptions.buzzerVolume            = BUZZER_VOLUME;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }
