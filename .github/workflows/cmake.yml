@@ -56,7 +56,16 @@ jobs:
     - name: Pico Build
       shell: bash
       run: GP2040_BOARDCONFIG=Pico cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-    
+   
+    - name: Upload Pico Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        # Artifact name
+        name: GP2040-CE - Pico
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{github.workspace}}/build/GP2040-CE_*_Pico.uf2
+        if-no-files-found: error
+        
     # #BentoBox
     - name: BentoBox Configure CMake
       shell: bash
@@ -66,6 +75,15 @@ jobs:
       shell: bash
       run: GP2040_BOARDCONFIG=BentoBox cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
     
+    - name: Upload BentoBox Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        # Artifact name
+        name: GP2040-CE - BentoBox
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{github.workspace}}/build/GP2040-CE_*_BentoBox.uf2
+        if-no-files-found: error
+        
     #DURAL
     - name: DURAL Configure CMake
       shell: bash
@@ -74,7 +92,15 @@ jobs:
     - name: DURAL Build
       shell: bash
       run: GP2040_BOARDCONFIG=DURAL cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-
+    
+    - name: Upload DURAL Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        # Artifact name
+        name: GP2040-CE - DURAL
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{github.workspace}}/build/GP2040-CE_*_DURAL.uf2
+        if-no-files-found: error
     #FlatboxRev4
     - name: FlatboxRev4 Configure CMake
       shell: bash
