@@ -29,11 +29,11 @@ jobs:
       working-directory: ${{github.workspace}}
       run: git submodule update --init
     
-    - name: Checkout pico-sdk/develop
+    - name: Checkout pico-sdk/1.4.0
       uses: actions/checkout@v2
       with:
         repository: raspberrypi/pico-sdk
-        ref: develop
+        ref: 1.4.0
         path: pico-sdk
         
     - name: Checkout pico-sdk submodules
