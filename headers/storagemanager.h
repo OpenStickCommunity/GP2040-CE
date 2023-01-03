@@ -78,12 +78,9 @@ struct BoardOptions
 	uint8_t pinDualDirRight;
 	uint8_t dualDirDpadMode;    // LS/DP/RS
 	uint8_t dualDirCombineMode; // Mix/Gamepad/Dual/None
+	OnBoardLedMode onBoardLedMode;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
-	OnBoardLedMode onBoardLedMode;
-	bool buzzerEnabled;
-	uint8_t buzzerPin;
-	uint8_t buzzerVolume;
 };
 
 struct SplashImage {
