@@ -29,8 +29,8 @@
 #define PIN_BUTTON_B4     8         // B4 / Y / X / Triangle / 4 / P2
 #define PIN_BUTTON_R1     9         // R1 / RB / R / R1 / 6 / P3
 #define PIN_BUTTON_L1     10        // L1 / LB / L / L1 / 5 / P4
-#define PIN_BUTTON_S1     5         // S1 / Back / Minus / Select / 9 / Coin
-#define PIN_BUTTON_S2     6         // S2 / Start / Plus / Start / 10 / Start
+#define PIN_BUTTON_S1     6         // S1 / Back / Minus / Select / 9 / Coin
+#define PIN_BUTTON_S2     5         // S2 / Start / Plus / Start / 10 / Start
 #define PIN_BUTTON_L3     21        // L3 / LS / LS / L3 / 11 / LS
 #define PIN_BUTTON_R3     22        // R3 / RS / RS / R3 / 12 / RS
 #define PIN_BUTTON_A1     4         // A1 / Guide / Home / PS / 13 / ~
@@ -106,11 +106,11 @@
 // 2 - `PLED_TYPE_PWM` - This will enable the Player LEDs ( it is recommended to run through 3V3(OUT) with a resistor)
 // 3 - `PLED_TYPE_RGB` - This will enable the Player LEDs as addressible RGB LEDs (please not that this has not been implemented yet) 
 
-#define PLED_TYPE PLED_TYPE_NONE
-#define PLED1_PIN -1
-#define PLED2_PIN -1
-#define PLED3_PIN -1
-#define PLED4_PIN -1
+#define PLED_TYPE PLED_TYPE_PWM
+#define PLED1_PIN 16
+#define PLED2_PIN 17
+#define PLED3_PIN 18
+#define PLED4_PIN 19
 
 
 // This is the Analog section.
@@ -169,9 +169,9 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define HAS_I2C_DISPLAY -1
-#define I2C_SDA_PIN 0
-#define I2C_SCL_PIN 1
+#define HAS_I2C_DISPLAY 1
+#define I2C_SDA_PIN 26
+#define I2C_SCL_PIN 27
 #define I2C_BLOCK i2c0
 #define I2C_SPEED 400000
 #define DISPLAY_FLIP 0
