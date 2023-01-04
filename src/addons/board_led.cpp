@@ -21,8 +21,16 @@ void BoardLedAddon::process() {
     Gamepad * gamepad;
     switch (onBoardLedMode) {
         case OnBoardLedMode::INPUT_TEST: // Blinks on input
-            gamepad = Storage::getInstance().GetProcessedGamepad();
-            state = (gamepad->state.buttons != 0) || (gamepad->state.dpad != 0);
+            gamepad = Storage::getInstance().GetGamepad();
+            state =    (gamepad->rawState.buttons != 0)
+                    || (gamepad->rawState.dpad    != 0)
+                    || (gamepad->rawState.lx      != GAMEPAD_JOYSTICK_MID)
+                    || (gamepad->rawState.rx      != GAMEPAD_JOYSTICK_MID)
+                    || (gamepad->rawState.ly      != GAMEPAD_JOYSTICK_MID)
+                    || (gamepad->rawState.ry      != GAMEPAD_JOYSTICK_MID)
+                    || (gamepad->rawState.lt      != 0)
+                    || (gamepad->rawState.rt      != 0)
+                    || (gamepad->rawState.aux     != 0);
             if (prevState != state) {
                 gpio_put(BOARD_LED_PIN, state ? 1 : 0);
             }
@@ -55,5 +63,5 @@ void BoardLedAddon::process() {
         case OnBoardLedMode::BOARD_LED_OFF:
             return;
             break;
-    }    
+    }
 }
