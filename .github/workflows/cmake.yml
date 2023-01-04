@@ -127,7 +127,23 @@ jobs:
         name: GP2040-CE - FlatboxRev5
         path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev5.uf2
         if-no-files-found: error
-        
+
+    #PicoAnn
+    - name: PicoAnn Configure CMake
+      shell: bash
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoAnn cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    
+    - name: PicoAnn Build
+      shell: bash
+      run: GP2040_BOARDCONFIG=PicoAnn cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+   
+    - name: Upload PicoAnn Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: GP2040-CE - PicoAnn
+        path: ${{github.workspace}}/build/GP2040-CE_*_PicoAnn.uf2
+        if-no-files-found: error
+
     #PicoFightingBoard
     - name: PicoFightingBoard Configure CMake
       shell: bash
