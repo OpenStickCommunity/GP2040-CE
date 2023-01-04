@@ -50,6 +50,11 @@ public:
     virtual std::string name() { return DualDirectionalName; }
 private:
     void debounce();
+    uint8_t gpadToBinary(DpadMode, GamepadState);
+    void SOCDDualClean(SOCDMode);
+    uint8_t SOCDCombine(SOCDMode, uint8_t);
+    uint8_t SOCDGamepadClean(uint8_t);
+    void OverrideGamepad(Gamepad *, DpadMode, uint8_t);
     uint8_t dDebState;          // Debounce State (stored)
     uint8_t dualState;          // Dual Directional State
     DpadDirection lastGPUD; // Gamepad Last Up-Down
