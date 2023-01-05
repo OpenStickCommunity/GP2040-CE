@@ -59,6 +59,13 @@
 // i2C OLED Display
 class I2CDisplayAddon : public GPAddon
 {
+private:
+	bool isDisplayPowerOff();
+	void setDisplayPower(uint8_t status);
+	uint32_t displaySaverTimeout = 0;
+	int32_t displaySaverTimer;
+	uint8_t displayIsPowerOn = 1;
+	uint32_t prevMillis;
 public:
 	virtual bool available();  // GPAddon
 	virtual void setup();
