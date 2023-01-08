@@ -64,6 +64,7 @@ public:
 	virtual void setup();
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
+private:
 	void clearScreen(int render); // DisplayModule
 	void drawStickless(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
@@ -95,6 +96,10 @@ public:
 	void drawBlankB(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
+	bool pressedUp();
+	bool pressedDown();
+	bool pressedLeft();
+	bool pressedRight();
 	uint8_t ucBackBuffer[1024];
 	OBDISP obd;
 	std::string statusBar;
