@@ -23,7 +23,7 @@ protected:
   int currentFrame = 0;
   int currentPixel = 0;
   bool reverse = false;
-  uint64_t nextRunTime = 0;
+  absolute_time_t nextRunTime = nil_time;
 };
 
 #endif
