@@ -13,14 +13,19 @@ int64_t writeToFlash(alarm_id_t id, void *flashCache)
 {
 	while (is_spin_locked(flashLock));
 
-	multicore_lockout_start_blocking();
+	// We use a very long timeout (> 30,000 years) instead of multicore_lockout_start_blocking() because the latter
+	// asserts in debug builds.
+	multicore_lockout_start_timeout_us(0xfffffffffffffff);
 	uint32_t interrupts = spin_lock_blocking(flashLock);
 
 	flash_range_erase((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, EEPROM_SIZE_BYTES);
 	flash_range_program((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, reinterpret_cast<uint8_t *>(flashCache), EEPROM_SIZE_BYTES);
 
 	flashWriteAlarm = 0;
-	multicore_lockout_end_blocking();
+
+	// We use a very long timeout (> 30,000 years) instead of multicore_lockout_end_blocking() because the latter
+	// asserts in debug builds.
+	multicore_lockout_end_timeout_us(0xfffffffffffffff);
 	spin_unlock(flashLock, interrupts);
 
 	return 0;
@@ -55,7 +60,8 @@ void FlashPROM::start()
 void FlashPROM::commit()
 {
 	while (is_spin_locked(flashLock));
-	cancel_alarm(flashWriteAlarm);
+	if (flashWriteAlarm != 0)
+		cancel_alarm(flashWriteAlarm);
 	flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, cache, true);
 }
 
