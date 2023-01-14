@@ -69,6 +69,9 @@ struct RGB {
             | (uint32_t)(w * brightnessX);
       }
     }
+
+    assert(false);
+    return 0;
   }
 };
 

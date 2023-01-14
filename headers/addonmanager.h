@@ -6,12 +6,12 @@
 #include <vector>
 #include <pico/mutex.h>
 
-typedef enum ADDON_PROCESS {
+enum ADDON_PROCESS {
     CORE0_INPUT,
     CORE1_LOOP
-} _ADDON_PROCESS;
+};
 
-typedef struct AddonBlock {
+struct AddonBlock {
     GPAddon * ptr;
     ADDON_PROCESS process;
     bool enabled;
