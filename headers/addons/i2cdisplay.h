@@ -7,6 +7,7 @@
 #define DISPLAY_H_
 
 #include <string>
+#include <deque>
 #include <hardware/i2c.h>
 #include "OneBitDisplay.h"
 #include "BoardConfig.h"
@@ -69,6 +70,7 @@ public:
 	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawStatusBar(Gamepad*);
+	void drawHistory(Gamepad*);
 	void drawText(int startX, int startY, std::string text);
 	void initMenu(char**);
 	//Adding my stuff here, remember to sort before PR
@@ -100,6 +102,8 @@ public:
 	std::string statusBar;
 	Gamepad* gamepad;
 	Gamepad* pGamepad;
+    std::deque<std::string> history;
+    bool last[17];
 };
 
 #endif
