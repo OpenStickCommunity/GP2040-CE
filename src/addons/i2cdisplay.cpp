@@ -93,6 +93,8 @@ void I2CDisplayAddon::process() {
 		drawSplashScreen(Storage::getInstance().GetSplashMode(), (uint8_t *)splashChoice, 90);
 	} else {
 		drawStatusBar(gamepad);
+		ButtonLayoutCustomOptions options = Storage::getInstance().getBoardOptions().buttonLayoutCustomOptions;
+
 		switch (Storage::getInstance().GetButtonLayout())
 		{
 			case BUTTON_LAYOUT_STICK:
@@ -125,6 +127,9 @@ void I2CDisplayAddon::process() {
 			case BUTTON_LAYOUT_VLXA:
 				drawVLXA(7, 28, 7, 2);
 				break;
+			case BUTTON_LAYOUT_CUSTOMA:
+				drawButtonLayoutLeft(options);
+			break;
 		}
 
 		switch (Storage::getInstance().GetButtonLayoutRight())
@@ -171,6 +176,9 @@ void I2CDisplayAddon::process() {
 			case BUTTON_LAYOUT_VLXB:
 				drawVLXB(6, 28, 7, 2);
 				break;
+			case BUTTON_LAYOUT_CUSTOMB:
+				drawButtonLayoutRight(options);
+			break;
 		}
 	}
 
@@ -179,6 +187,102 @@ void I2CDisplayAddon::process() {
 
 void I2CDisplayAddon::clearScreen(int render) {
 	obdFill(&obd, 0, render);
+}
+
+void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutCustomOptions options)
+{
+	int& startX = options.params.startX;
+	int& startY = options.params.startY;
+	int& buttonRadius = options.params.buttonRadius;
+	int& buttonPadding = options.params.buttonPadding;
+
+	switch (options.params.layout)
+		{
+			case BUTTON_LAYOUT_STICK:
+				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_STICKLESS:
+				drawStickless(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BUTTONS_ANGLED:
+				drawWasdBox(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BUTTONS_BASIC:
+				drawUDLR(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_KEYBOARD_ANGLED:
+				drawKeyboardAngled(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_KEYBOARDA:
+				drawMAMEA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_DANCEPADA:
+				drawDancepadA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_TWINSTICKA:
+				drawTwinStickA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BLANKA:
+				drawBlankA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_VLXA:
+				drawVLXA(startX, startY, buttonRadius, buttonPadding);
+				break;
+		}
+}
+
+void I2CDisplayAddon::drawButtonLayoutRight(ButtonLayoutCustomOptions options)
+{
+	int& startX = options.paramsRight.startX;
+	int& startY = options.paramsRight.startY;
+	int& buttonRadius = options.paramsRight.buttonRadius;
+	int& buttonPadding = options.paramsRight.buttonPadding;
+
+	switch (options.paramsRight.layoutRight)
+		{
+			case BUTTON_LAYOUT_ARCADE:
+				drawArcadeButtons(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_STICKLESSB:
+				drawSticklessButtons(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
+				drawWasdButtons(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_VEWLIX:
+				drawVewlix(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_VEWLIX7:
+				drawVewlix7(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_CAPCOM:
+				drawCapcom(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_CAPCOM6:
+				drawCapcom6(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_SEGA2P:
+				drawSega2p(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_NOIR8:
+				drawNoir8(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_KEYBOARDB:
+				drawMAMEB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_DANCEPADB:
+				drawDancepadB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_TWINSTICKB:
+				drawTwinStickB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BLANKB:
+				drawSticklessButtons(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_VLXB:
+				drawVLXB(startX, startY, buttonRadius, buttonPadding);
+				break;
+		}
 }
 
 void I2CDisplayAddon::drawDiamond(int cx, int cy, int size, uint8_t colour, uint8_t filled)

@@ -22,8 +22,29 @@
 
 #define CHECKSUM_MAGIC          0 	// Checksum CRC
 
+struct ButtonLayoutParams
+{
+	union {
+		ButtonLayout layout;
+		ButtonLayoutRight layoutRight;
+	};
+	int startX;
+	int startY;
+	int buttonRadius;
+	int buttonPadding;
+};
+
+struct ButtonLayoutCustomOptions
+{
+	ButtonLayoutParams params;
+	ButtonLayoutParams paramsRight;
+}; // 76 bytes
+
+
 struct BoardOptions
 {
+	char boardVersion[32]; // 32-char limit to board name
+	uint32_t checksum;
 	bool hasBoardOptions;
 	uint8_t pinDpadUp;
 	uint8_t pinDpadDown;
@@ -79,8 +100,7 @@ struct BoardOptions
 	DpadMode dualDirDpadMode;    // LS/DP/RS
 	uint8_t dualDirCombineMode; // Mix/Gamepad/Dual/None
 	OnBoardLedMode onBoardLedMode;
-	char boardVersion[32]; // 32-char limit to board name
-	uint32_t checksum;
+	ButtonLayoutCustomOptions buttonLayoutCustomOptions;
 };
 
 struct SplashImage {
@@ -132,7 +152,7 @@ public:
 		return instance;
 	}
 	
-	void setBoardOptions(BoardOptions);	// Board Options
+	void setBoardOptions(BoardOptions, bool);	// Board Options
 	void setDefaultBoardOptions();
 	BoardOptions getBoardOptions();
 	
@@ -182,6 +202,7 @@ private:
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;
+	bool isCommitPending;
 };
 
 #endif

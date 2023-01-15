@@ -30,8 +30,9 @@ void ConfigManager::setLedOptions(LEDOptions ledOptions) {
 	Storage::getInstance().setLEDOptions(ledOptions);
 }
 
-void ConfigManager::setBoardOptions(BoardOptions boardOptions) {
-	Storage::getInstance().setBoardOptions(boardOptions);
+void ConfigManager::setBoardOptions(BoardOptions boardOptions, bool commit) {
+	Storage::getInstance().setBoardOptions(boardOptions, commit);
+	if (!commit) return;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->mapDpadUp->setPin(boardOptions.pinDpadUp);

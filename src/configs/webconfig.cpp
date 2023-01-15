@@ -175,7 +175,22 @@ std::string setDisplayOptions()
 	boardOptions.buttonLayoutRight     = doc["buttonLayoutRight"];
 	boardOptions.splashMode      	   = doc["splashMode"];
 	boardOptions.splashChoice          = doc["splashChoice"];
-	ConfigManager::getInstance().setBoardOptions(boardOptions);
+
+	boardOptions.buttonLayoutCustomOptions.params.layout 		 	       = doc["buttonLayoutCustomOptions"]["params"]["layout"];
+	boardOptions.buttonLayoutCustomOptions.params.startX 		 	       = doc["buttonLayoutCustomOptions"]["params"]["startX"];
+	boardOptions.buttonLayoutCustomOptions.params.startY 		 	       = doc["buttonLayoutCustomOptions"]["params"]["startY"];
+	boardOptions.buttonLayoutCustomOptions.params.buttonRadius      	   = doc["buttonLayoutCustomOptions"]["params"]["buttonRadius"];
+	boardOptions.buttonLayoutCustomOptions.params.buttonPadding     	   = doc["buttonLayoutCustomOptions"]["params"]["buttonPadding"];
+	
+	boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight 	   	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["layout"];
+	boardOptions.buttonLayoutCustomOptions.paramsRight.startX 		 	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["startX"];
+	boardOptions.buttonLayoutCustomOptions.paramsRight.startY 		 	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["startY"];
+	boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius  	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonRadius"];
+	boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding       = doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonPadding"];
+
+	bool commit = doc["commit"];
+
+	ConfigManager::getInstance().setBoardOptions(boardOptions, commit);
 	return serialize_json(doc);
 }
 
@@ -195,6 +210,18 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutRight"] = boardOptions.buttonLayoutRight;
 	doc["splashMode"]  	     = boardOptions.splashMode;
 	doc["splashChoice"]      = boardOptions.splashChoice;
+
+	doc["buttonLayoutCustomOptions"]["params"]["layout"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.layout;
+	doc["buttonLayoutCustomOptions"]["params"]["startX"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.startX;
+	doc["buttonLayoutCustomOptions"]["params"]["startY"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.startY;
+	doc["buttonLayoutCustomOptions"]["params"]["buttonRadius"]  	 = boardOptions.buttonLayoutCustomOptions.params.buttonRadius;
+	doc["buttonLayoutCustomOptions"]["params"]["buttonPadding"] 	 = boardOptions.buttonLayoutCustomOptions.params.buttonPadding;
+	
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["layout"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight;
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["startX"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.startX;
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["startY"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.startY;
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonRadius"]  = boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius;
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonPadding"] = boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
@@ -397,7 +424,7 @@ std::string setPinMappings()
 	boardOptions.pinButtonA1  = doc["A1"];
 	boardOptions.pinButtonA2  = doc["A2"];
 
-	Storage::getInstance().setBoardOptions(boardOptions);
+	Storage::getInstance().setBoardOptions(boardOptions, true);
 
 	return serialize_json(doc);
 }
@@ -459,7 +486,7 @@ std::string setAddonOptions()
 	boardOptions.dualDirDpadMode    = doc["dualDirDpadMode"];
 	boardOptions.dualDirCombineMode = doc["dualDirCombineMode"];
 
-	Storage::getInstance().setBoardOptions(boardOptions);
+	Storage::getInstance().setBoardOptions(boardOptions, true);
 
 	return serialize_json(doc);
 }

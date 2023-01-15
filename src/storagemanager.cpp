@@ -37,15 +37,6 @@ void Storage::initBoardOptions() {
 	}
 }
 
-void Storage::initSplashImage() {
-	EEPROM.get(SPLASH_IMAGE_STORAGE_INDEX, splashImage);
-	uint32_t lastCRC = splashImage.checksum;
-	splashImage.checksum = CHECKSUM_MAGIC;
-	if (lastCRC != CRC32::calculate(&splashImage)) {
-		setDefaultSplashImage();
-	}
-}
-
 BoardOptions Storage::getBoardOptions()
 {
 	return boardOptions;
@@ -109,19 +100,50 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.onBoardLedMode			 = BOARD_LED_TYPE;
 	boardOptions.dualDirDpadMode         = DUAL_DIRECTIONAL_STICK_MODE;
 	boardOptions.dualDirCombineMode      = DUAL_DIRECTIONAL_COMBINE_MODE;
+
+	ButtonLayoutParams params = {
+		.layout = BUTTON_LAYOUT,
+		.startX = 8,
+		.startY = 28,
+		.buttonRadius = 8,
+		.buttonPadding = 2
+	};
+	boardOptions.buttonLayoutCustomOptions.params = params;
+	
+	ButtonLayoutParams paramsRight = {
+		.layoutRight = BUTTON_LAYOUT_RIGHT,
+		.startX = 8,
+		.startY = 28,
+		.buttonRadius = 8,
+		.buttonPadding = 2
+	};
+	boardOptions.buttonLayoutCustomOptions.paramsRight = paramsRight;
+
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
-	setBoardOptions(boardOptions);
+	setBoardOptions(boardOptions, true);
 }
 
-void Storage::setBoardOptions(BoardOptions options)
+void Storage::setBoardOptions(BoardOptions options, bool commit)
 {
-	if (memcmp(&options, &boardOptions, sizeof(BoardOptions)) != 0)
+	if ((isCommitPending && commit) || (memcmp(&options, &boardOptions, sizeof(BoardOptions)) != 0))
 	{
 		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
 		options.checksum = CRC32::calculate(&options);
-		EEPROM.set(BOARD_STORAGE_INDEX, options);
-		EEPROM.commit();
+		if (commit) {
+			EEPROM.set(BOARD_STORAGE_INDEX, options);
+			EEPROM.commit();
+		}
+		isCommitPending = !commit;
 		memcpy(&boardOptions, &options, sizeof(BoardOptions));
+	}
+}
+
+void Storage::initSplashImage() {
+	EEPROM.get(SPLASH_IMAGE_STORAGE_INDEX, splashImage);
+	uint32_t lastCRC = splashImage.checksum;
+	splashImage.checksum = CHECKSUM_MAGIC;
+	if (lastCRC != CRC32::calculate(&splashImage)) {
+		setDefaultSplashImage();
 	}
 }
 

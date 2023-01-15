@@ -77,13 +77,13 @@ void TurboInput::process()
         if (dpadPressed & GAMEPAD_MASK_DOWN && (lastDpad != dpadPressed)) {
             if ( boardOptions.turboShotCount > TURBO_SHOT_MIN ) { // can't go lower than 2-shots per second
                 boardOptions.turboShotCount--;
-                Storage::getInstance().setBoardOptions(boardOptions);
+                Storage::getInstance().setBoardOptions(boardOptions, true);
                 uIntervalMS = (uint32_t)(1000.0 / boardOptions.turboShotCount);
             }
         } else if ( dpadPressed & GAMEPAD_MASK_UP && (lastDpad != dpadPressed)) {
             if ( boardOptions.turboShotCount < TURBO_SHOT_MAX ) { // can't go higher than 60-shots per second
                 boardOptions.turboShotCount++;
-                Storage::getInstance().setBoardOptions(boardOptions);
+                Storage::getInstance().setBoardOptions(boardOptions, true);
                 uIntervalMS = (uint32_t)(1000.0 / boardOptions.turboShotCount);
             }
         }
