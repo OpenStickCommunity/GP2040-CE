@@ -18,6 +18,8 @@ bool I2CDisplayAddon::available() {
 }
 
 void I2CDisplayAddon::setup() {
+	displayPreviewMode = PREVIEW_MODE_NONE;
+	prevButtonState = 0;
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	obdI2CInit(&obd,
 	    boardOptions.displaySize,
@@ -44,12 +46,30 @@ void I2CDisplayAddon::process() {
 
 	clearScreen(0);
 	bool configMode = Storage::getInstance().GetConfigMode();
-	if (configMode == true ) {
+	if (configMode) {
+		gamepad->read();
+		uint16_t buttonState = gamepad->state.buttons;
+		if (prevButtonState && !buttonState) {
+				if (prevButtonState == GAMEPAD_MASK_B1)
+					displayPreviewMode = displayPreviewMode == PREVIEW_MODE_BUTTONS ? PREVIEW_MODE_NONE : PREVIEW_MODE_BUTTONS;
+				else if (prevButtonState == GAMEPAD_MASK_B2)
+					displayPreviewMode = displayPreviewMode == PREVIEW_MODE_SPLASH ? PREVIEW_MODE_NONE : PREVIEW_MODE_SPLASH;
+				else
+					displayPreviewMode = PREVIEW_MODE_NONE;
+		}
+		prevButtonState = buttonState;
+	}
+
+	if (configMode && displayPreviewMode == PREVIEW_MODE_NONE) {
 		drawStatusBar(gamepad);
-		drawText(0, 3, "[Web Config Mode]");
-		drawText(0, 4, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
-		drawText(0, 5, "[http://192.168.7.1]");
-	} else if (getMillis() < 7500 && Storage::getInstance().GetSplashMode() != NOSPLASH) {
+		drawText(0, 2, "[Web Config Mode]");
+		drawText(0, 3, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
+		drawText(0, 4, "[http://192.168.7.1]");
+		drawText(0, 5, "Preview:");
+		drawText(5, 6, "B1 > Button");
+		drawText(5, 7, "B2 > Splash");
+	} else if ((configMode && displayPreviewMode == PREVIEW_MODE_SPLASH) ||
+			   (!configMode && getMillis() < 7500 && Storage::getInstance().GetSplashMode() != NOSPLASH)) {
 		const uint8_t* splashChoice = splashImageMain;
 		switch (Storage::getInstance().GetSplashChoice()) {
 			case MAIN:
