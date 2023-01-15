@@ -36,4 +36,5 @@ GPAddon * AddonManager::GetAddon(std::string name) { // hack for NeoPicoLED
         if ( (*it)->ptr->name() == name )
             return (*it)->ptr;
     }
+    return nullptr;
 }
