@@ -642,10 +642,10 @@ void I2CDisplayAddon::drawHistory(Gamepad *gamepad)
 
     // Get key states
     bool current[] = {
-        gamepad->pressedUp(), 
-        gamepad->pressedDown(),
-        gamepad->pressedLeft(),
-        gamepad->pressedRight(),
+        pressedUp(), 
+        pressedDown(),
+        pressedLeft(),
+        pressedRight(),
         gamepad->pressedB1(),
         gamepad->pressedB2(),
         gamepad->pressedR2(),
