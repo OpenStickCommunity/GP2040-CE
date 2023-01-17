@@ -372,6 +372,12 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 
 		case BUTTON_LAYOUT_VLXA:
 			return generatedLEDButtons(&positions);
+
+		case BUTTON_LAYOUT_FIGHTBOARD_STICK:
+			return generatedLEDButtons(&positions);
+
+		case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
+			return generatedLEDButtons(&positions);
 	}
 
 	assert(false);
