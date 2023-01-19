@@ -8,14 +8,16 @@
 #define ANALOG_DEADZONE 0.05f // move to config (future release)
 
 bool AnalogInput::available() {
-	return (ANALOG_ADC_VRX != -1 && ANALOG_ADC_VRY != -1);
+	analogAdcPinX = Storage::getInstance().getBoardOptions().analogAdcPinX;
+	analogAdcPinY = Storage::getInstance().getBoardOptions().analogAdcPinY;
+    return sizeof(ANALOG_ADC_PINS) != 0 && analogAdcPinX != 0xFF && analogAdcPinY != 0xFF;
 }
 
 void AnalogInput::setup() {
     adc_init();
     // Make sure GPIO is high-impedance, no pullups etc
-    adc_gpio_init(ANALOG_ADC_VRX);
-    adc_gpio_init(ANALOG_ADC_VRY);
+    adc_gpio_init(analogAdcPinX);
+    adc_gpio_init(analogAdcPinY);
 }
 
 void AnalogInput::process()

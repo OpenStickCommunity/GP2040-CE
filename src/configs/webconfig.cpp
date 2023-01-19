@@ -458,6 +458,8 @@ std::string setAddonOptions()
 	boardOptions.pinDualDirRight 	= doc["dualDirRightPin"] == -1 ? 0xFF : doc["dualDirRightPin"];
 	boardOptions.dualDirDpadMode    = doc["dualDirDpadMode"];
 	boardOptions.dualDirCombineMode = doc["dualDirCombineMode"];
+	boardOptions.analogAdcPinX = doc["analogAdcPinX"] == -1 ? 0xFF : doc["analogAdcPinX"];
+	boardOptions.analogAdcPinY = doc["analogAdcPinY"] == -1 ? 0xFF : doc["analogAdcPinY"];
 
 	Storage::getInstance().setBoardOptions(boardOptions);
 
@@ -491,6 +493,13 @@ std::string getAddonOptions()
 	doc["dualDirRightPin"] = boardOptions.pinDualDirRight == 0xFF ? -1 : boardOptions.pinDualDirRight;
 	doc["dualDirDpadMode"] = boardOptions.dualDirDpadMode;
 	doc["dualDirCombineMode"] = boardOptions.dualDirCombineMode;
+	JsonArray pins = doc.createNestedArray("boardConfigAnalogPins");
+	pins.add(-1);
+	for (uint8_t p : ANALOG_ADC_PINS) {
+    	pins.add(p);
+	}
+	doc["analogAdcPinX"] = boardOptions.analogAdcPinX == 0xFF ? -1 : boardOptions.analogAdcPinX;
+	doc["analogAdcPinY"] = boardOptions.analogAdcPinY == 0xFF ? -1 : boardOptions.analogAdcPinY;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
@@ -512,6 +521,8 @@ std::string getAddonOptions()
 	usedPins.add(gamepad->mapButtonR3->pin);
 	usedPins.add(gamepad->mapButtonA1->pin);
 	usedPins.add(gamepad->mapButtonA2->pin);
+	usedPins.add(boardOptions.analogAdcPinX);
+	usedPins.add(boardOptions.analogAdcPinY);
 
 	return serialize_json(doc);
 }

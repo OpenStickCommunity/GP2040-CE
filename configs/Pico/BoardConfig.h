@@ -7,6 +7,7 @@
 #define PICO_BOARD_CONFIG_H_
 
 #include <GamepadEnums.h>
+#include <stdint.h>
 
 
 // This is the main pin definition section.
@@ -115,12 +116,13 @@
 
 // This is the Analog section.
 // In this section you can specify if Analog is enabled, and, if endabled, which pins will be used for it.
-// The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
-// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
+// The default is set to empty which disables them.
+// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, add the valid pin numbers to the array. 
 
-#define ANALOG_ADC_VRX -1
-#define ANALOG_ADC_VRY -1
-
+#ifndef ANALOG_ADC_PINS_DEF
+#define ANALOG_ADC_PINS_DEF
+const uint8_t ANALOG_ADC_PINS[2] = {26, 27};
+#endif
 
 // This is the I2C Display section (commonly known as the OLED display section).
 // In this section you can specify if a display as been enabled, which pins are assined to it, the block address and speed.
