@@ -49,13 +49,21 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version:'18.x'
-    - run: npm ci
-    - run: npm run build --if-present
+    - name: clean install
+      working-directory: ${{github.workspace}}
+      run: npm ci
+
+    - name: Build WWW
+      working-directory: ${{github.workspace}}
+      run: npm run build --if-present
+
     - name: Delete old FSData
       uses: JesseTG/rm@rm1.0.3
       with:
         path: ${{github.workspace}}/lib/httpd/fsdata.c
-    - run: npm makefsdata
+    - name: MakefsData
+      working-directory: ${{github.workspace}}
+      run: npm makefsdata
       #End WWW
     - name: Pico Build Configure CMake
       shell: bash
