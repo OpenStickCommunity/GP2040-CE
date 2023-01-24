@@ -118,10 +118,8 @@
 // The default is set to empty which disables them.
 // To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, add the valid pin numbers to the array. 
 
-#ifndef ANALOG_ADC_PINS_DEF
-#define ANALOG_ADC_PINS_DEF
-const uint8_t ANALOG_ADC_PINS[] = {};
-#endif
+#define ANALOG_ADC_VRX -1
+#define ANALOG_ADC_VRY -1
 
 // Reverse Button section
 #define REVERSE_LED_PIN -1
