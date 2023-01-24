@@ -48,6 +48,7 @@ src/addons/board_led.cpp
 src/addons/dualdirectional.cpp
 src/addons/reverse.cpp
 src/addons/i2canalog1219.cpp
+src/addons/bootsel_button.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
