@@ -56,6 +56,12 @@
 // i2c Display Module
 #define I2CDisplayName "I2CDisplay"
 
+enum DisplayPreviewMode {
+	PREVIEW_MODE_NONE,
+	PREVIEW_MODE_BUTTONS,
+	PREVIEW_MODE_SPLASH
+};
+
 // i2C OLED Display
 class I2CDisplayAddon : public GPAddon
 {
@@ -107,6 +113,9 @@ private:
 	std::string statusBar;
 	Gamepad* gamepad;
 	Gamepad* pGamepad;
+	private:
+	DisplayPreviewMode displayPreviewMode;
+	uint16_t prevButtonState;
 };
 
 #endif
