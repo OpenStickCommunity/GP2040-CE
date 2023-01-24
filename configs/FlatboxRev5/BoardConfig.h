@@ -205,4 +205,7 @@
 #define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
 #define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
 
+// BOOTSEL Button Add-on setting
+#define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+
 #endif

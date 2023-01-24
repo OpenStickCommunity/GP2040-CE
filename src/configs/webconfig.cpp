@@ -2,6 +2,7 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
+#include "system.h"
 
 #include <cstring>
 #include <string>
@@ -35,6 +36,7 @@
 #define API_GET_SPLASH_IMAGE "/api/getSplashImage"
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
+#define API_GET_MEMORY_REPORT "/api/getMemoryReport"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
@@ -369,6 +371,11 @@ std::string getLedOptions()
 	if (boardOptions.i2cSCLPin != -1)
 		usedPins.add(boardOptions.i2cSCLPin);
 
+	if (boardOptions.analogAdcPinX != -1)
+		usedPins.add(boardOptions.analogAdcPinX);
+	if (boardOptions.analogAdcPinY != -1)
+		usedPins.add(boardOptions.analogAdcPinY);
+
 	return serialize_json(doc);
 }
 
@@ -460,6 +467,7 @@ std::string setAddonOptions()
 	boardOptions.dualDirCombineMode = doc["dualDirCombineMode"];
 	boardOptions.analogAdcPinX = doc["analogAdcPinX"] == -1 ? 0xFF : doc["analogAdcPinX"];
 	boardOptions.analogAdcPinY = doc["analogAdcPinY"] == -1 ? 0xFF : doc["analogAdcPinY"];
+	boardOptions.bootselButtonMap = doc["bootselButtonMap"];
 
 	Storage::getInstance().setBoardOptions(boardOptions);
 
@@ -495,6 +503,7 @@ std::string getAddonOptions()
 	doc["dualDirCombineMode"] = boardOptions.dualDirCombineMode;
 	doc["analogAdcPinX"] = boardOptions.analogAdcPinX == 0xFF ? -1 : boardOptions.analogAdcPinX;
 	doc["analogAdcPinY"] = boardOptions.analogAdcPinY == 0xFF ? -1 : boardOptions.analogAdcPinY;
+	doc["bootselButtonMap"] = boardOptions.bootselButtonMap;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
@@ -516,8 +525,6 @@ std::string getAddonOptions()
 	usedPins.add(gamepad->mapButtonR3->pin);
 	usedPins.add(gamepad->mapButtonA1->pin);
 	usedPins.add(gamepad->mapButtonA2->pin);
-	usedPins.add(boardOptions.analogAdcPinX);
-	usedPins.add(boardOptions.analogAdcPinY);
 
 	return serialize_json(doc);
 }
@@ -527,6 +534,17 @@ std::string getFirmwareVersion()
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	doc["version"] = GP2040VERSION;
 
+	return serialize_json(doc);
+}
+
+std::string getMemoryReport()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	doc["totalFlash"] = System::getTotalFlash();
+	doc["usedFlash"] = System::getUsedFlash();
+	doc["staticAllocs"] = System::getStaticAllocs();
+	doc["totalHeap"] = System::getTotalHeap();
+	doc["usedHeap"] = System::getUsedHeap();
 	return serialize_json(doc);
 }
 
@@ -574,6 +592,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getSplashImage());
 		if (!memcmp(name, API_GET_FIRMWARE_VERSION, sizeof(API_GET_FIRMWARE_VERSION)))
 			return set_file_data(file, getFirmwareVersion());
+		if (!memcmp(name, API_GET_MEMORY_REPORT, sizeof(API_GET_MEMORY_REPORT)))
+			return set_file_data(file, getMemoryReport());
 	}
 
 	bool isExclude = false;

@@ -81,6 +81,7 @@ struct BoardOptions
 	OnBoardLedMode onBoardLedMode;
 	uint8_t analogAdcPinX;
 	uint8_t analogAdcPinY;
+	uint16_t bootselButtonMap;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };

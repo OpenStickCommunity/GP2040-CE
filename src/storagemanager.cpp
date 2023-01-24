@@ -111,6 +111,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.dualDirCombineMode      = DUAL_DIRECTIONAL_COMBINE_MODE;
 	boardOptions.analogAdcPinX      	 = ANALOG_ADC_VRX;
 	boardOptions.analogAdcPinY      	 = ANALOG_ADC_VRY;
+	boardOptions.bootselButtonMap		 = BOOTSEL_BUTTON_MASK;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }

@@ -18,24 +18,21 @@ bool I2CDisplayAddon::available() {
 }
 
 void I2CDisplayAddon::setup() {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	obdI2CInit(&obd,
-	    boardOptions.displaySize,
-		boardOptions.displayI2CAddress,
-		boardOptions.displayFlip,
-		boardOptions.displayInvert,
-		DISPLAY_USEWIRE,
-		boardOptions.i2cSDAPin,
-		boardOptions.i2cSCLPin,
-		boardOptions.i2cBlock == 0 ? i2c0 : i2c1,
-		-1,
-		boardOptions.i2cSpeed);
+	const int detectedDisplay = initDisplay(0);
+	if (isSH1106(detectedDisplay)) {
+		// The display is actually a SH1106 that was misdetected as a SSD1306 by OneBitDisplay.
+		// Reinitialize as SH1106.
+		initDisplay(OLED_132x64);
+	}
+ 
+  displayPreviewMode = PREVIEW_MODE_NONE;
+	prevButtonState = 0;
+	
 	obdSetContrast(&obd, 0xFF);
 	obdSetBackBuffer(&obd, ucBackBuffer);
 	clearScreen(1);
 	gamepad = Storage::getInstance().GetGamepad();
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
-
 }
 
 void I2CDisplayAddon::process() {
@@ -44,12 +41,30 @@ void I2CDisplayAddon::process() {
 
 	clearScreen(0);
 	bool configMode = Storage::getInstance().GetConfigMode();
-	if (configMode == true ) {
+	if (configMode) {
+		gamepad->read();
+		uint16_t buttonState = gamepad->state.buttons;
+		if (prevButtonState && !buttonState) {
+				if (prevButtonState == GAMEPAD_MASK_B1)
+					displayPreviewMode = displayPreviewMode == PREVIEW_MODE_BUTTONS ? PREVIEW_MODE_NONE : PREVIEW_MODE_BUTTONS;
+				else if (prevButtonState == GAMEPAD_MASK_B2)
+					displayPreviewMode = displayPreviewMode == PREVIEW_MODE_SPLASH ? PREVIEW_MODE_NONE : PREVIEW_MODE_SPLASH;
+				else
+					displayPreviewMode = PREVIEW_MODE_NONE;
+		}
+		prevButtonState = buttonState;
+	}
+
+	if (configMode && displayPreviewMode == PREVIEW_MODE_NONE) {
 		drawStatusBar(gamepad);
-		drawText(0, 3, "[Web Config Mode]");
-		drawText(0, 4, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
-		drawText(0, 5, "[http://192.168.7.1]");
-	} else if (getMillis() < 7500 && Storage::getInstance().GetSplashMode() != NOSPLASH) {
+		drawText(0, 2, "[Web Config Mode]");
+		drawText(0, 3, std::string("GP2040-CE : ") + std::string(GP2040VERSION));
+		drawText(0, 4, "[http://192.168.7.1]");
+		drawText(0, 5, "Preview:");
+		drawText(5, 6, "B1 > Button");
+		drawText(5, 7, "B2 > Splash");
+	} else if ((configMode && displayPreviewMode == PREVIEW_MODE_SPLASH) ||
+			   (!configMode && getMillis() < 7500 && Storage::getInstance().GetSplashMode() != NOSPLASH)) {
 		const uint8_t* splashChoice = splashImageMain;
 		switch (Storage::getInstance().GetSplashChoice()) {
 			case MAIN:
@@ -155,6 +170,73 @@ void I2CDisplayAddon::process() {
 	}
 
 	obdDumpBuffer(&obd, NULL);
+}
+
+int I2CDisplayAddon::initDisplay(int typeOverride) {
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	return obdI2CInit(&obd,
+	    typeOverride > 0 ? typeOverride : boardOptions.displaySize,
+		boardOptions.displayI2CAddress,
+		boardOptions.displayFlip,
+		boardOptions.displayInvert,
+		DISPLAY_USEWIRE,
+		boardOptions.i2cSDAPin,
+		boardOptions.i2cSCLPin,
+		boardOptions.i2cBlock == 0 ? i2c0 : i2c1,
+		-1,
+		boardOptions.i2cSpeed);
+}
+
+bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
+	// Only attempt detection if we think we are using a SSD1306 or if auto-detection failed.
+	if (detectedDisplay != OLED_SSD1306_3C &&
+		detectedDisplay != OLED_SSD1306_3D &&
+		detectedDisplay != OLED_NOT_FOUND) {
+		return false;
+	}
+
+	// To detect an SH1106 we make use of the fact that SH1106 supports read-modify-write operations over I2C, whereas
+	// SSD1306 does not.
+	// We perform a number of read-modify-write operations and check whether the data we read back matches the data we
+	// previously wrote. If it does we can be reasonably confident that we are using a SH1106.
+
+	// We turn the display off for the remainder of this function, we do not want users to observe the random data we
+	// are writing.
+	obdPower(&obd, false);
+
+	const uint8_t RANDOM_DATA[] = { 0xbf, 0x88, 0x13, 0x41, 0x00 };
+	uint8_t buffer[4];
+	int i = 0;
+	for (; i < sizeof(RANDOM_DATA); ++i) {
+		buffer[0] = 0x80; // one command
+		buffer[1] = 0xE0; // read-modify-write
+		buffer[2] = 0xC0; // one data
+		if (I2CWrite(&obd.bbi2c, obd.oled_addr, buffer, 3) == 0) {
+			break;
+		}
+
+		// Read two bytes back, the first byte is a dummy read and the second byte is the byte was actually want.
+		if (I2CRead(&obd.bbi2c, obd.oled_addr, buffer, 2) == 0) {
+			break;
+		}
+
+		// Check whether the byte we read is the byte we previously wrote.
+		if (i > 0 && buffer[1] != RANDOM_DATA[i - 1]) {
+			break;
+		}
+
+		// Write the current byte, we will attempt to read it in the next loop iteration.
+		buffer[0] = 0xc0; // one data
+		buffer[1] = RANDOM_DATA[i]; // data byte
+		buffer[2] = 0x80; // one command
+		buffer[3] = 0xEE; // end read-modify-write
+		if (I2CWrite(&obd.bbi2c, obd.oled_addr, buffer, 4) == 0) {
+			break;
+		}
+	}
+
+	obdPower(&obd, true);
+	return i == sizeof(RANDOM_DATA);
 }
 
 void I2CDisplayAddon::clearScreen(int render) {
