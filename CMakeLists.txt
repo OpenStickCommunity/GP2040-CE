@@ -11,12 +11,13 @@ endif()
 project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.6.0)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 else()
   set(GP2040_BOARDCONFIG Pico)
 endif()
-
+set(PICO_BOARD_HEADER_DIRS ${CMAKE_SOURCE_DIR}/configs/${GP2040_BOARDCONFIG})
 include(FetchContent)
 FetchContent_Declare(ArduinoJson
     GIT_REPOSITORY https://github.com/bblanchon/ArduinoJson.git
