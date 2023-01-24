@@ -48,6 +48,9 @@ jobs:
     - name: NodeJS build
       uses: actions/setup-node@v3
       with:
+        node-version: '18.x'
+    - run: npm ci
+    - run: npm run build --if-present
         node-version:'18.x'
     - name: clean install
       working-directory: ${{github.workspace}}
@@ -58,7 +61,7 @@ jobs:
       run: npm run build --if-present
 
     - name: Delete old FSData
-      uses: JesseTG/rm@rm1.0.3
+      uses: JesseTG/rm@v1.0.3
       with:
         path: ${{github.workspace}}/lib/httpd/fsdata.c
     - name: MakefsData
