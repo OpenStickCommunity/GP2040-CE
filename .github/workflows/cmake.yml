@@ -48,10 +48,7 @@ jobs:
     - name: NodeJS build
       uses: actions/setup-node@v3
       with:
-        node-version: '18.x'
-    - run: npm ci
-    - run: npm run build --if-present
-        node-version:'18.x'
+        node-version: '18.x'sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
     - name: clean install
       working-directory: ${{github.workspace}}/www
       run: npm ci
