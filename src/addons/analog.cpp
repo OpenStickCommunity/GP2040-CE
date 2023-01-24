@@ -10,7 +10,7 @@
 bool AnalogInput::available() {
 	analogAdcPinX = Storage::getInstance().getBoardOptions().analogAdcPinX;
 	analogAdcPinY = Storage::getInstance().getBoardOptions().analogAdcPinY;
-    return sizeof(ANALOG_ADC_PINS) != 0 && analogAdcPinX != 0xFF && analogAdcPinY != 0xFF;
+    return analogAdcPinX != (uint8_t)-1 && analogAdcPinY != (uint8_t)-1;
 }
 
 void AnalogInput::setup() {
