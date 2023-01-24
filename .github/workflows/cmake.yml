@@ -53,11 +53,11 @@ jobs:
     - run: npm run build --if-present
         node-version:'18.x'
     - name: clean install
-      working-directory: ${{github.workspace}}
+      working-directory: ${{github.workspace}}/www
       run: npm ci
 
     - name: Build WWW
-      working-directory: ${{github.workspace}}
+      working-directory: ${{github.workspace}}/www
       run: npm run build --if-present
 
     - name: Delete old FSData
@@ -65,7 +65,7 @@ jobs:
       with:
         path: ${{github.workspace}}/lib/httpd/fsdata.c
     - name: MakefsData
-      working-directory: ${{github.workspace}}
+      working-directory: ${{github.workspace}}/www
       run: npm makefsdata
       #End WWW
     - name: Pico Build Configure CMake
