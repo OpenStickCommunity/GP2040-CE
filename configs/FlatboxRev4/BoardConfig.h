@@ -7,8 +7,6 @@
 #define FLATBOX_REV4_CONFIG_H_
 
 #include <GamepadEnums.h>
-
-
 // Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin
 
 #define FLATBOX_SW1_PIN    6
@@ -120,7 +118,7 @@
 // This is the Analog section.
 // In this section you can specify if Analog is enabled, and, if endabled, which pins will be used for it.
 // The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
-// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired.
+// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
 
 #define ANALOG_ADC_VRX -1
 #define ANALOG_ADC_VRY -1

@@ -8,7 +8,6 @@
 
 #include <GamepadEnums.h>
 
-
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too. 
 // You can set any of the main pins as `-1` to disable it.
@@ -37,8 +36,8 @@
 #define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO 14         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
-#define PIN_SLIDER_LS    -1         // Left Stick Slider
-#define PIN_SLIDER_RS    -1         // Right Stick Slider
+#define PIN_SLIDER_LS    26         // Left Stick Slider
+#define PIN_SLIDER_RS    27         // Right Stick Slider
 
 
 // This is the SOCD section.
@@ -120,7 +119,6 @@
 
 #define ANALOG_ADC_VRX -1
 #define ANALOG_ADC_VRY -1
-
 
 // This is the I2C Display section (commonly known as the OLED display section).
 // In this section you can specify if a display as been enabled, which pins are assined to it, the block address and speed.
