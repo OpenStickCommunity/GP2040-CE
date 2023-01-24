@@ -37,6 +37,7 @@ src/gamepad.cpp
 src/addonmanager.cpp
 src/configmanager.cpp
 src/storagemanager.cpp
+src/system.cpp
 src/configs/webconfig.cpp
 src/addons/analog.cpp
 src/addons/turbo.cpp

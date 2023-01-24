@@ -2,6 +2,7 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
+#include "system.h"
 
 #include <cstring>
 #include <string>
@@ -35,6 +36,7 @@
 #define API_GET_SPLASH_IMAGE "/api/getSplashImage"
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
+#define API_GET_MEMORY_REPORT "/api/getMemoryReport"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
@@ -526,6 +528,17 @@ std::string getFirmwareVersion()
 	return serialize_json(doc);
 }
 
+std::string getMemoryReport()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	doc["totalFlash"] = System::getTotalFlash();
+	doc["usedFlash"] = System::getUsedFlash();
+	doc["staticAllocs"] = System::getStaticAllocs();
+	doc["totalHeap"] = System::getTotalHeap();
+	doc["usedHeap"] = System::getUsedHeap();
+	return serialize_json(doc);
+}
+
 // This should be a storage feature
 std::string resetSettings()
 {
@@ -570,6 +583,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getSplashImage());
 		if (!memcmp(name, API_GET_FIRMWARE_VERSION, sizeof(API_GET_FIRMWARE_VERSION)))
 			return set_file_data(file, getFirmwareVersion());
+		if (!memcmp(name, API_GET_MEMORY_REPORT, sizeof(API_GET_MEMORY_REPORT)))
+			return set_file_data(file, getMemoryReport());
 	}
 
 	bool isExclude = false;
