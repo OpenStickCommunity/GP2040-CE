@@ -52,7 +52,7 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - name: Delete old FSData
-      uses: JesseTG/rm@rm1.0.3
+      uses: JesseTG/rm@1.0.3
       with:
         path: ${{github.workspace}}/lib/httpd/fsdata.c
     - run: npm makefsdata
