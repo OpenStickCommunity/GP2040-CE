@@ -38,8 +38,8 @@
 #define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO 14         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
-#define PIN_SLIDER_LS    -1         // Left Stick Slider
-#define PIN_SLIDER_RS    -1         // Right Stick Slider
+#define PIN_SLIDER_LS    26         // Left Stick Slider
+#define PIN_SLIDER_RS    27         // Right Stick Slider
 
 
 // This is the SOCD section.
@@ -116,13 +116,11 @@
 
 // This is the Analog section.
 // In this section you can specify if Analog is enabled, and, if endabled, which pins will be used for it.
-// The default is set to empty which disables them.
-// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, add the valid pin numbers to the array. 
+// The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
+// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
 
-#ifndef ANALOG_ADC_PINS_DEF
-#define ANALOG_ADC_PINS_DEF
-const uint8_t ANALOG_ADC_PINS[2] = {26, 27};
-#endif
+#define ANALOG_ADC_VRX -1
+#define ANALOG_ADC_VRY -1
 
 // This is the I2C Display section (commonly known as the OLED display section).
 // In this section you can specify if a display as been enabled, which pins are assined to it, the block address and speed.
