@@ -37,7 +37,9 @@ Full results can be found in the [GP2040-CE Firmware Latency Test Results](https
 
 Prebuilt `uf2` files are available in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section.
 
-Currently we offer the main RaspBerry Pi Pico setup as well as those from community members that have verified its operation. Some of these additional configurations include:
+The default pinnout for GP2040-CE is based on an official RaspBerry Pi Pico. That pinnout can be found HERE [PinMapping.png](configs/Pico/assets/PinMapping.png).  This can be found in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section under Pico.
+
+In addition to the default UF2 we also offer pre-compiled UF2s from community members that have verified its operation with their own devices. Some of these additional configurations include:
 
 > * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
 > * [Crush Counter](configs/CrushCounter) (formerly the [OSFRD](configs/OSFRD))
