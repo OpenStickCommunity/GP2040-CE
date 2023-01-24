@@ -7,8 +7,6 @@
 #define FLATBOX_REV5_CONFIG_H_
 
 #include <GamepadEnums.h>
-#include <stdint.h>
-
 // Mapping between Flatbox rev5 switch number (as silkscreened) and GPIO pin
 
 #define FLATBOX_SW1_PIN    14
