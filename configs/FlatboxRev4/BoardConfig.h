@@ -119,8 +119,8 @@
 
 // This is the Analog section.
 // In this section you can specify if Analog is enabled, and, if endabled, which pins will be used for it.
-// The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
-// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired.
+// The default is set to empty which disables them.
+// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, add the valid pin numbers to the array. 
 
 #define ANALOG_ADC_VRX -1
 #define ANALOG_ADC_VRY -1

@@ -109,6 +109,8 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.onBoardLedMode			 = BOARD_LED_TYPE;
 	boardOptions.dualDirDpadMode         = DUAL_DIRECTIONAL_STICK_MODE;
 	boardOptions.dualDirCombineMode      = DUAL_DIRECTIONAL_COMBINE_MODE;
+	boardOptions.analogAdcPinX      	 = ANALOG_ADC_VRX;
+	boardOptions.analogAdcPinY      	 = ANALOG_ADC_VRY;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }
