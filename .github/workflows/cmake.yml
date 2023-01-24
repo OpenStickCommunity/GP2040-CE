@@ -44,7 +44,19 @@ jobs:
       id: core_count
       run : cat /proc/cpuinfo  | grep processor | wc -l
       #End Global Setup
-
+      #Build WWW project
+    - name: NodeJS build
+      uses: actions/setup-node@v3
+      with:
+        node-version:'18.x'
+    - run: npm ci
+    - run: npm run build --if-present
+    - name: Delete old FSData
+      uses: JesseTG/rm@rm1.0.3
+      with:
+        path: ${{github.workspace}}/lib/httpd/fsdata.c
+    - run: npm makefsdata
+      #End WWW
     - name: Pico Build Configure CMake
       shell: bash
       run: cmake --help -version
