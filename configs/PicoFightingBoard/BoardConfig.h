@@ -7,8 +7,6 @@
 #define PICO_BOARD_CONFIG_H_
 
 #include <GamepadEnums.h>
-
-
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.
@@ -122,7 +120,7 @@
 // This is the Analog section.
 // In this section you can specify if Analog is enabled, and, if endabled, which pins will be used for it.
 // The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
-// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired.
+// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
 
 #define ANALOG_ADC_VRX -1
 #define ANALOG_ADC_VRY -1
@@ -216,5 +214,8 @@
 #define PIN_DUAL_DIRECTIONAL_RIGHT -1
 #define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
 #define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
+
+// BOOTSEL Button Add-on setting
+#define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 
 #endif

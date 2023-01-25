@@ -194,6 +194,11 @@
 #define SPLASH_MODE NOSPLASH
 #define SPLASH_CHOICE MAIN
 
+// Default theme
+#define LEDS_BASE_ANIMATION_INDEX 3
+#define LEDS_THEME_INDEX 19
+#define LEDS_BUTTON_COLOR_INDEX 0
+
 // Board LED Add-on Setting
 // BOARD_LED_OFF  - Turns the on-board LED off
 // MODE_INDICATOR - On-board LED blinks on various frequencies depending

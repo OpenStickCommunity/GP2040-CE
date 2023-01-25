@@ -5,6 +5,8 @@
 
 #include "GamepadEnums.h"
 
+#include "BoardConfig.h"
+
 #ifndef ANALOG_ADC_VRX
 #define ANALOG_ADC_VRX    -1
 #endif
@@ -23,6 +25,8 @@ public:
 	virtual void process();     // Analog Process
     virtual std::string name() { return AnalogName; }
 private:
+	uint8_t analogAdcPinX;
+	uint8_t analogAdcPinY;
 };
 
 #endif  // _Analog_H_
