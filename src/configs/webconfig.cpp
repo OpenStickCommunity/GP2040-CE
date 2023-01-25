@@ -190,7 +190,8 @@ std::string setDisplayOptions()
 
 	bool commit = doc["commit"];
 
-	ConfigManager::getInstance().setBoardOptions(boardOptions, commit);
+	if (commit) ConfigManager::getInstance().setBoardOptions(boardOptions);
+	else ConfigManager::getInstance().setPreviewBoardOptions(boardOptions); 
 	return serialize_json(doc);
 }
 
@@ -424,7 +425,7 @@ std::string setPinMappings()
 	boardOptions.pinButtonA1  = doc["A1"];
 	boardOptions.pinButtonA2  = doc["A2"];
 
-	Storage::getInstance().setBoardOptions(boardOptions, true);
+	Storage::getInstance().setBoardOptions(boardOptions);
 
 	return serialize_json(doc);
 }
@@ -486,7 +487,7 @@ std::string setAddonOptions()
 	boardOptions.dualDirDpadMode    = doc["dualDirDpadMode"];
 	boardOptions.dualDirCombineMode = doc["dualDirCombineMode"];
 
-	Storage::getInstance().setBoardOptions(boardOptions, true);
+	Storage::getInstance().setBoardOptions(boardOptions);
 
 	return serialize_json(doc);
 }

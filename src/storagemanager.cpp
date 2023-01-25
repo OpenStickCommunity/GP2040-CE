@@ -120,20 +120,17 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.buttonLayoutCustomOptions.paramsRight = paramsRight;
 
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
-	setBoardOptions(boardOptions, true);
+	setBoardOptions(boardOptions);
 }
 
-void Storage::setBoardOptions(BoardOptions options, bool commit)
+void Storage::setBoardOptions(BoardOptions options)
 {
-	if ((isCommitPending && commit) || (memcmp(&options, &boardOptions, sizeof(BoardOptions)) != 0))
+	if (memcmp(&options, &boardOptions, sizeof(BoardOptions)) != 0)
 	{
 		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
 		options.checksum = CRC32::calculate(&options);
-		if (commit) {
-			EEPROM.set(BOARD_STORAGE_INDEX, options);
-			EEPROM.commit();
-		}
-		isCommitPending = !commit;
+		EEPROM.set(BOARD_STORAGE_INDEX, options);
+		EEPROM.commit();
 		memcpy(&boardOptions, &options, sizeof(BoardOptions));
 	}
 }
@@ -233,8 +230,24 @@ void Storage::ResetSettings()
 	watchdog_reboot(0, SRAM_END, 2000);
 }
 
+void Storage::initPreviewBoardOptions()
+{
+	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
+}
+
+void Storage::setPreviewBoardOptions(const BoardOptions& boardOptions)
+{
+	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
+}
+
+BoardOptions Storage::getPreviewBoardOptions()
+{
+	return previewBoardOptions;
+}
+
 void Storage::SetConfigMode(bool mode) { // hack for config mode
 	CONFIG_MODE = mode;
+	initPreviewBoardOptions();
 }
 
 bool Storage::GetConfigMode()
@@ -279,12 +292,12 @@ uint8_t * Storage::GetFeatureData()
 
 int Storage::GetButtonLayout()
 {
-	return boardOptions.buttonLayout;
+	return (CONFIG_MODE ? previewBoardOptions : boardOptions).buttonLayout;
 }
 
 int Storage::GetButtonLayoutRight()
 {
-	return boardOptions.buttonLayoutRight;
+	return (CONFIG_MODE ? previewBoardOptions : boardOptions).buttonLayoutRight;
 }
 
 int Storage::GetSplashMode()

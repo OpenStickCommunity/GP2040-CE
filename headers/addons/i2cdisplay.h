@@ -109,6 +109,7 @@ private:
 	bool pressedDown();
 	bool pressedLeft();
 	bool pressedRight();
+	BoardOptions getBoardOptions();
 	uint8_t ucBackBuffer[1024];
 	OBDISP obd;
 	std::string statusBar;

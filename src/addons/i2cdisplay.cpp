@@ -11,7 +11,7 @@
 #include "bitmaps.h"
 
 bool I2CDisplayAddon::available() {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	BoardOptions boardOptions = getBoardOptions();
 	return boardOptions.hasI2CDisplay && 
 		boardOptions.i2cSDAPin != (uint8_t)-1 && 
 		boardOptions.i2cSCLPin != (uint8_t)-1;
@@ -20,7 +20,7 @@ bool I2CDisplayAddon::available() {
 void I2CDisplayAddon::setup() {
 	displayPreviewMode = PREVIEW_MODE_NONE;
 	prevButtonState = 0;
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	BoardOptions boardOptions = getBoardOptions();
 	obdI2CInit(&obd,
 	    boardOptions.displaySize,
 		boardOptions.displayI2CAddress,
@@ -93,7 +93,7 @@ void I2CDisplayAddon::process() {
 		drawSplashScreen(Storage::getInstance().GetSplashMode(), (uint8_t *)splashChoice, 90);
 	} else {
 		drawStatusBar(gamepad);
-		ButtonLayoutCustomOptions options = Storage::getInstance().getBoardOptions().buttonLayoutCustomOptions;
+		ButtonLayoutCustomOptions options = getBoardOptions().buttonLayoutCustomOptions;
 
 		switch (Storage::getInstance().GetButtonLayout())
 		{
@@ -183,6 +183,11 @@ void I2CDisplayAddon::process() {
 	}
 
 	obdDumpBuffer(&obd, NULL);
+}
+
+BoardOptions I2CDisplayAddon::getBoardOptions() {
+	bool configMode = Storage::getInstance().GetConfigMode();	
+	return configMode ? Storage::getInstance().getPreviewBoardOptions() : Storage::getInstance().getBoardOptions();
 }
 
 void I2CDisplayAddon::clearScreen(int render) {
@@ -721,7 +726,7 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	BoardOptions boardOptions = getBoardOptions();
 
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();

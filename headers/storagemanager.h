@@ -152,10 +152,13 @@ public:
 		return instance;
 	}
 	
-	void setBoardOptions(BoardOptions, bool);	// Board Options
+	void setBoardOptions(BoardOptions);	// Board Options
 	void setDefaultBoardOptions();
 	BoardOptions getBoardOptions();
 	
+	void setPreviewBoardOptions(const BoardOptions&);	// Board Options
+	BoardOptions getPreviewBoardOptions();
+
 	void setSplashImage(SplashImage);
 	void setDefaultSplashImage();
 	SplashImage getSplashImage();
@@ -193,16 +196,17 @@ private:
 		initSplashImage();
 	}
 	void initBoardOptions();
+	void initPreviewBoardOptions();
 	void initLEDOptions();
 	void initSplashImage();
 	bool CONFIG_MODE; 			// Config mode (boot)
 	Gamepad * gamepad;    		// Gamepad data
 	Gamepad * processedGamepad; // Gamepad with ONLY processed data
 	BoardOptions boardOptions;
+	BoardOptions previewBoardOptions;
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;
-	bool isCommitPending;
 };
 
 #endif
