@@ -98,6 +98,9 @@ struct BoardOptions
 	DpadMode dualDirDpadMode;    // LS/DP/RS
 	uint8_t dualDirCombineMode; // Mix/Gamepad/Dual/None
 	OnBoardLedMode onBoardLedMode;
+	uint8_t analogAdcPinX;
+	uint8_t analogAdcPinY;
+	uint16_t bootselButtonMap;
 	ButtonLayoutCustomOptions buttonLayoutCustomOptions;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;

@@ -72,6 +72,8 @@ public:
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
 private:
+	int initDisplay(int typeOverride);
+	bool isSH1106(int detectedDisplay);
 	void clearScreen(int render); // DisplayModule
 	void drawStickless(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
