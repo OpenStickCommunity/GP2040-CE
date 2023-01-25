@@ -107,6 +107,10 @@ private:
 	void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawButtonLayoutLeft(ButtonLayoutCustomOptions options);
 	void drawButtonLayoutRight(ButtonLayoutCustomOptions options);
+	void drawFightboard(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawFightboardMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawFightboardStick(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawFightboardStickMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
 	bool pressedUp();
 	bool pressedDown();
 	bool pressedLeft();

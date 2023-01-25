@@ -176,6 +176,7 @@ private:
 	std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
 	std::vector<std::vector<Pixel>> generatedLEDHitbox(std::vector<std::vector<uint8_t>> *positions);
 	std::vector<std::vector<Pixel>> generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions);
+	std::vector<std::vector<Pixel>> generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions);
 	std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);
 	uint8_t setupButtonPositions();
 	const uint32_t intervalMS = 10;
