@@ -14,6 +14,18 @@ namespace System {
     uint32_t getTotalHeap();
     // Returns the about of heap memory currently allocated in bytes
     uint32_t getUsedHeap();
+
+    enum class BootMode : uint32_t {
+        DEFAULT = 0,
+        WEBCONFIG = 0xe77784a5,
+        USB = 0xf737e4e1,
+    };
+
+    // Reboots the device and places the supplied BootMode value in a watchdog scratch register
+    // This value can be retrieved after reboot by client code, which can then take the required actions
+    void reboot(BootMode bootMode);
+    // Retrieves the BootMode value from the watchdog scratch register and resets its value to BootMode::DEFAULT
+    BootMode takeBootMode();
 }
 
 #endif

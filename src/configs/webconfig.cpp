@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include <pico/types.h>
+
 // HTTPD Includes
 #include <ArduinoJson.h>
 #include "rndis.h"
@@ -37,6 +39,7 @@
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
 #define API_GET_MEMORY_REPORT "/api/getMemoryReport"
+#define API_REBOOT "/api/reboot"
 
 #define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
@@ -47,10 +50,12 @@ extern struct fsdata_file file__index_html[];
 
 const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
+const static uint32_t rebootDelayMs = 500;
 static char *http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
 static uint16_t http_post_payload_len = 0;
 static bool is_post = false;
+static absolute_time_t rebootDelayTimeout = nil_time;
 
 void WebConfig::setup() {
 	rndis_init();
@@ -59,6 +64,10 @@ void WebConfig::setup() {
 void WebConfig::loop() {
 	// rndis http server requires inline functions (non-class)
 	rndis_task();
+
+	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+		System::reboot(System::BootMode::DEFAULT);
+	}
 }
 
 // **** WEB SERVER Overrides and Special Functionality ****
@@ -557,6 +566,15 @@ std::string resetSettings()
 	return serialize_json(doc);
 }
 
+std::string reboot()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	doc["success"] = true;
+	// We need to wait for a bit before we actually reboot to leave the webclient some time to receive the response
+	rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+	return serialize_json(doc);
+}
+
 int fs_open_custom(struct fs_file *file, const char *name)
 {
 	if (is_post)
@@ -594,6 +612,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getFirmwareVersion());
 		if (!memcmp(name, API_GET_MEMORY_REPORT, sizeof(API_GET_MEMORY_REPORT)))
 			return set_file_data(file, getMemoryReport());
+		if (!memcmp(name, API_REBOOT, sizeof(API_REBOOT)))
+			return set_file_data(file, reboot());
 	}
 
 	bool isExclude = false;

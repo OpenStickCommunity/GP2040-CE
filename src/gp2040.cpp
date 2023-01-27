@@ -1,6 +1,7 @@
 // GP2040 includes
 #include "gp2040.h"
 #include "helper.h"
+#include "system.h"
 
 #include "configmanager.h" // Global Managers
 #include "storagemanager.h"
@@ -16,6 +17,7 @@
 
 // Pico includes
 #include "pico/bootrom.h"
+#include "pico/time.h"
 
 // TinyUSB
 #include "usb_driver.h"
@@ -23,7 +25,9 @@
 
 #define GAMEPAD_DEBOUNCE_MILLIS 5 // make this a class object
 
-GP2040::GP2040() : nextRuntime(0) {
+static const uint32_t WEBCONFIG_HOTKEY_HOLD_TIME_MS = 4000;
+
+GP2040::GP2040() : nextRuntime(0), webConfigHotkeyHoldTimeout(nil_time) {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 }
@@ -36,29 +40,45 @@ void GP2040::setup() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->setup();
 
-	// Check for Config or Regular Input (w/ Button Combos)
-	InputMode inputMode = gamepad->options.inputMode;
-	gamepad->read();
-	if (gamepad->pressedF1() && gamepad->pressedUp()) { // BOOTSEL - Go to UF2 Flasher
-		reset_usb_boot(0, 0);
-	} else if (gamepad->pressedS2()) { 					// START - Config Mode
-		Storage::getInstance().SetConfigMode(true);
-		inputMode = INPUT_MODE_CONFIG; // force config
-        initialize_driver(inputMode);
-		ConfigManager::getInstance().setup(CONFIG_TYPE_WEB);
-	} else { 											// Gamepad Mode
-		Storage::getInstance().SetConfigMode(false);
-		if (gamepad->pressedB3())                       // HOLD B3 - D-INPUT
-			inputMode = INPUT_MODE_HID;
-		else if (gamepad->pressedB1())                  // HOLD B1 - SWITCH
-			inputMode = INPUT_MODE_SWITCH;
-		else if (gamepad->pressedB2())                  // HOLD B2 - X-INPUT
-			inputMode = INPUT_MODE_XINPUT;
-		if (inputMode != gamepad->options.inputMode ) { // Save changes
-			gamepad->options.inputMode = inputMode;
-			gamepad->save();
-		}
-		initialize_driver(inputMode);
+	const BootAction bootAction = getBootAction();
+	switch (bootAction) {
+		case BootAction::ENTER_WEBCONFIG_MODE:
+			{
+				Storage::getInstance().SetConfigMode(true);
+				initialize_driver(INPUT_MODE_CONFIG);
+				ConfigManager::getInstance().setup(CONFIG_TYPE_WEB);
+				break;	
+			}
+
+		case BootAction::ENTER_USB_MODE:
+			{
+				reset_usb_boot(0, 0);
+				break;	
+			}
+
+		case BootAction::SET_INPUT_MODE_HID:
+		case BootAction::SET_INPUT_MODE_SWITCH:
+		case BootAction::SET_INPUT_MODE_XINPUT:
+		case BootAction::NONE:
+			{
+				InputMode inputMode = gamepad->options.inputMode;
+				if (bootAction == BootAction::SET_INPUT_MODE_HID) {
+					inputMode = INPUT_MODE_HID;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_SWITCH) {
+					inputMode = INPUT_MODE_SWITCH;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_XINPUT) {
+					inputMode = INPUT_MODE_XINPUT;
+				}
+
+				if (inputMode != gamepad->options.inputMode) {
+					// Save the changed input mode
+					gamepad->options.inputMode = inputMode;
+					gamepad->save();
+				}
+
+				initialize_driver(inputMode);
+				break;
+			}
 	}
 
 	// Setup Add-ons
@@ -69,6 +89,8 @@ void GP2040::setup() {
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
 	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
+
+	webConfigHotkeyMask = GAMEPAD_MASK_S2;
 }
 
 void GP2040::run() {
@@ -78,6 +100,7 @@ void GP2040::run() {
 	while (1) { // LOOP
 		// Config Loop (Web-Config does not require gamepad)
 		if (configMode == true ) {
+			ConfigManager& configManager = ConfigManager::getInstance();
 			ConfigManager::getInstance().loop();
 			continue;
 		}
@@ -93,6 +116,19 @@ void GP2040::run() {
 		gamepad->debounce();
 	#endif
 		gamepad->hotkey(); 	// check for MPGS hotkeys
+
+		// Restart in webconfig mode if the hotkey is held for a period of time
+		if (gamepad->state.buttons == webConfigHotkeyMask) {
+			if (is_nil_time(webConfigHotkeyHoldTimeout)) {
+				webConfigHotkeyHoldTimeout = make_timeout_time_ms(WEBCONFIG_HOTKEY_HOLD_TIME_MS);
+			}
+
+			if (time_reached(webConfigHotkeyHoldTimeout)) {
+				System::reboot(System::BootMode::WEBCONFIG);
+			}
+		} else {
+			webConfigHotkeyHoldTimeout = nil_time;
+		}
 
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
@@ -112,5 +148,32 @@ void GP2040::run() {
 		tud_task(); // TinyUSB Task update
 
 		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
+	}
+}
+
+GP2040::BootAction GP2040::getBootAction() {
+	switch (System::takeBootMode()) {
+		case System::BootMode::WEBCONFIG: return BootAction::ENTER_WEBCONFIG_MODE;
+		case System::BootMode::USB: return BootAction::ENTER_USB_MODE;
+		default:
+			{
+				// Determine boot action based on gamepad state during boot
+				Gamepad * gamepad = Storage::getInstance().GetGamepad();
+				gamepad->read();
+
+				if (gamepad->pressedF1() && gamepad->pressedUp()) {
+					return BootAction::ENTER_USB_MODE;
+				} else if (gamepad->pressedS2()) {
+					return BootAction::ENTER_WEBCONFIG_MODE;
+				} else if (gamepad->pressedB3()) {
+					return BootAction::SET_INPUT_MODE_HID;
+				} else if (gamepad->pressedB1()) {
+					return BootAction::SET_INPUT_MODE_SWITCH;
+				} else if (gamepad->pressedB2()) {
+					return BootAction::SET_INPUT_MODE_XINPUT;
+				} else {
+					return BootAction::NONE;
+				}
+			}
 	}
 }

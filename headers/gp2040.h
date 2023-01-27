@@ -10,6 +10,8 @@
 #include "gamepad.h"
 #include "addonmanager.h"
 
+#include "pico/types.h"
+
 class GP2040 {
 public:
 	GP2040();
@@ -20,6 +22,19 @@ private:
     uint64_t nextRuntime;
     Gamepad snapshot;
     AddonManager addons;
+
+    uint16_t webConfigHotkeyMask;
+    absolute_time_t webConfigHotkeyHoldTimeout;
+
+    enum class BootAction {
+        NONE,
+        ENTER_WEBCONFIG_MODE,
+        ENTER_USB_MODE,
+        SET_INPUT_MODE_HID,
+        SET_INPUT_MODE_SWITCH,
+        SET_INPUT_MODE_XINPUT,
+    };
+    static BootAction getBootAction();
 };
 
 #endif
