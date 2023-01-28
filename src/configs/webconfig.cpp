@@ -66,7 +66,7 @@ void WebConfig::loop() {
 	rndis_task();
 
 	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-		System::reboot(System::BootMode::DEFAULT);
+		System::reboot(System::BootMode::GAMEPAD);
 	}
 }
 

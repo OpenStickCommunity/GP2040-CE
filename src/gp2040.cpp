@@ -25,9 +25,10 @@
 
 #define GAMEPAD_DEBOUNCE_MILLIS 5 // make this a class object
 
+static const uint32_t WEBCONFIG_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t WEBCONFIG_HOTKEY_HOLD_TIME_MS = 4000;
 
-GP2040::GP2040() : nextRuntime(0), webConfigHotkeyHoldTimeout(nil_time) {
+GP2040::GP2040() : nextRuntime(0) {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 }
@@ -89,8 +90,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
 	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
-
-	webConfigHotkeyMask = GAMEPAD_MASK_S2;
 }
 
 void GP2040::run() {
@@ -99,9 +98,13 @@ void GP2040::run() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 	while (1) { // LOOP
 		// Config Loop (Web-Config does not require gamepad)
-		if (configMode == true ) {
+		if (configMode == true) {
 			ConfigManager& configManager = ConfigManager::getInstance();
 			ConfigManager::getInstance().loop();
+
+			gamepad->read();
+			webConfigHotkey.process(gamepad, configMode);
+
 			continue;
 		}
 
@@ -116,19 +119,7 @@ void GP2040::run() {
 		gamepad->debounce();
 	#endif
 		gamepad->hotkey(); 	// check for MPGS hotkeys
-
-		// Restart in webconfig mode if the hotkey is held for a period of time
-		if (gamepad->state.buttons == webConfigHotkeyMask) {
-			if (is_nil_time(webConfigHotkeyHoldTimeout)) {
-				webConfigHotkeyHoldTimeout = make_timeout_time_ms(WEBCONFIG_HOTKEY_HOLD_TIME_MS);
-			}
-
-			if (time_reached(webConfigHotkeyHoldTimeout)) {
-				System::reboot(System::BootMode::WEBCONFIG);
-			}
-		} else {
-			webConfigHotkeyHoldTimeout = nil_time;
-		}
+		webConfigHotkey.process(gamepad, configMode);
 
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
@@ -153,9 +144,10 @@ void GP2040::run() {
 
 GP2040::BootAction GP2040::getBootAction() {
 	switch (System::takeBootMode()) {
+		case System::BootMode::GAMEPAD: return BootAction::NONE;
 		case System::BootMode::WEBCONFIG: return BootAction::ENTER_WEBCONFIG_MODE;
 		case System::BootMode::USB: return BootAction::ENTER_USB_MODE;
-		default:
+		case System::BootMode::DEFAULT:
 			{
 				// Determine boot action based on gamepad state during boot
 				Gamepad * gamepad = Storage::getInstance().GetGamepad();
@@ -174,6 +166,47 @@ GP2040::BootAction GP2040::getBootAction() {
 				} else {
 					return BootAction::NONE;
 				}
+
+				break;
 			}
+	}
+}
+
+GP2040::WebConfigHotkey::WebConfigHotkey() :
+	active(false),
+	noButtonsPressedTimeout(nil_time),
+	webConfigHotkeyMask(GAMEPAD_MASK_S2 | GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4),
+	webConfigHotkeyHoldTimeout(nil_time) {
+}
+
+void GP2040::WebConfigHotkey::process(Gamepad* gamepad, bool configMode) {
+	// We only allow the hotkey to trigger after we observed no buttons pressed for a certain period of time.
+	// We do this to avoid detecting buttons that are held during the boot process. In particular we want to avoid
+	// oscillating between webconfig and default mode when the user keeps holding the hotkey buttons.
+	if (!active) {
+		if (gamepad->state.buttons == 0) {
+			if (is_nil_time(noButtonsPressedTimeout)) {
+				noButtonsPressedTimeout = make_timeout_time_us(WEBCONFIG_HOTKEY_ACTIVATION_TIME_MS);
+			}
+
+			if (time_reached(noButtonsPressedTimeout)) {
+				active = true;
+			}
+		} else {
+			noButtonsPressedTimeout = nil_time;
+		}
+	} else {
+		if (gamepad->state.buttons == webConfigHotkeyMask) {
+			if (is_nil_time(webConfigHotkeyHoldTimeout)) {
+				webConfigHotkeyHoldTimeout = make_timeout_time_ms(WEBCONFIG_HOTKEY_HOLD_TIME_MS);
+			}
+
+			if (time_reached(webConfigHotkeyHoldTimeout)) {
+				// If we are in webconfig mode we go to gamepad mode and vice versa
+				System::reboot(configMode ? System::BootMode::GAMEPAD : System::BootMode::WEBCONFIG);
+			}
+		} else {
+			webConfigHotkeyHoldTimeout = nil_time;
+		}
 	}
 }

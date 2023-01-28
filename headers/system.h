@@ -17,6 +17,7 @@ namespace System {
 
     enum class BootMode : uint32_t {
         DEFAULT = 0,
+        GAMEPAD = 0x43d566cd,
         WEBCONFIG = 0xe77784a5,
         USB = 0xf737e4e1,
     };

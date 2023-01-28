@@ -23,8 +23,17 @@ private:
     Gamepad snapshot;
     AddonManager addons;
 
-    uint16_t webConfigHotkeyMask;
-    absolute_time_t webConfigHotkeyHoldTimeout;
+    struct WebConfigHotkey {
+        WebConfigHotkey();
+        void process(Gamepad* gamepad, bool configMode);
+
+        bool active;
+
+        absolute_time_t noButtonsPressedTimeout;
+        uint16_t webConfigHotkeyMask;
+        absolute_time_t webConfigHotkeyHoldTimeout;
+    };
+    WebConfigHotkey webConfigHotkey;
 
     enum class BootAction {
         NONE,

@@ -41,11 +41,11 @@ uint32_t System::getUsedHeap() {
 }
 
 void System::reboot(BootMode bootMode) {
-	watchdog_hw->scratch[5] = static_cast<uint32_t>(bootMode);
-
     // Make sure that the other core is halted
     // We do not want it to be talking to devices (e.g. OLED display) while we reboot
 	multicore_lockout_start_timeout_us(0xfffffffffffffff);
+
+	watchdog_hw->scratch[5] = static_cast<uint32_t>(bootMode);
 
     // This is based on MicroPythons machine.reset()
 	watchdog_reboot(0, 0, 0);
@@ -61,7 +61,7 @@ System::BootMode System::takeBootMode() {
     }
 
     BootMode bootMode = static_cast<BootMode>(watchdog_hw->scratch[5]);
-    if (bootMode != BootMode::WEBCONFIG && bootMode != BootMode::USB) {
+    if (bootMode != BootMode::GAMEPAD && bootMode != BootMode::WEBCONFIG && bootMode != BootMode::USB) {
         bootMode = BootMode::DEFAULT;
     }
 
