@@ -226,7 +226,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDButtons(std::vector
 /**
  * @brief Create an LED layout using a 3x8 matrix.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDHitbox(vector<vector<uint8_t>> *positions)
+std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDStickless(vector<vector<uint8_t>> *positions)
 {
 	std::vector<std::vector<Pixel>> pixels =
 	{
@@ -331,6 +331,54 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDWasd(std::vector<st
 	return pixels;
 }
 
+/**
+ * @brief Create an LED layout using a 2x7 matrix for the mirrored Fightboard.
+ */
+std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions)
+{
+	std::vector<std::vector<Pixel>> pixels =
+	{
+		{
+			PIXEL(BUTTON_LABEL_L1, GAMEPAD_MASK_L1),
+			PIXEL(BUTTON_LABEL_L2, GAMEPAD_MASK_L2),
+		},
+		{
+			PIXEL(BUTTON_LABEL_R1, GAMEPAD_MASK_R1),
+			PIXEL(BUTTON_LABEL_R2, GAMEPAD_MASK_R2),
+		},
+		{
+			PIXEL(BUTTON_LABEL_B4, GAMEPAD_MASK_B4),
+			PIXEL(BUTTON_LABEL_B2, GAMEPAD_MASK_B2),
+		},
+		{
+			PIXEL(BUTTON_LABEL_B3, GAMEPAD_MASK_B3),
+			PIXEL(BUTTON_LABEL_B1, GAMEPAD_MASK_B1),
+		},
+		{
+			NO_PIXEL,
+			PIXEL(BUTTON_LABEL_LEFT, GAMEPAD_MASK_DL),
+		},
+		{
+			PIXEL(BUTTON_LABEL_UP, GAMEPAD_MASK_DU),
+			PIXEL(BUTTON_LABEL_DOWN, GAMEPAD_MASK_DD),
+		},
+		{
+			NO_PIXEL,
+			PIXEL(BUTTON_LABEL_RIGHT, GAMEPAD_MASK_DR),
+		},
+		{
+			PIXEL(BUTTON_LABEL_S1, GAMEPAD_MASK_S1),
+			PIXEL(BUTTON_LABEL_S2, GAMEPAD_MASK_S2),
+			PIXEL(BUTTON_LABEL_L3, GAMEPAD_MASK_L3),
+			PIXEL(BUTTON_LABEL_R3, GAMEPAD_MASK_R3),
+			PIXEL(BUTTON_LABEL_A1, GAMEPAD_MASK_A1),
+			PIXEL(BUTTON_LABEL_A2, GAMEPAD_MASK_A2),
+		},
+	};
+
+	return pixels;
+}
+
 std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount)
 {
 	vector<vector<uint8_t>> positions(ledButtonCount);
@@ -365,13 +413,19 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 			return generatedLEDButtons(&positions);
 
 		case BUTTON_LAYOUT_STICKLESS:
-			return generatedLEDHitbox(&positions);
+			return generatedLEDStickless(&positions);
 
 		case BUTTON_LAYOUT_BUTTONS_ANGLED:
 			return generatedLEDWasd(&positions);
 
 		case BUTTON_LAYOUT_VLXA:
 			return generatedLEDButtons(&positions);
+
+		case BUTTON_LAYOUT_FIGHTBOARD_STICK:
+			return generatedLEDWasd(&positions);
+
+		case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
+			return generatedLEDWasdFBM(&positions);
 	}
 
 	assert(false);

@@ -57,6 +57,12 @@
 // i2c Display Module
 #define I2CDisplayName "I2CDisplay"
 
+enum DisplayPreviewMode {
+	PREVIEW_MODE_NONE,
+	PREVIEW_MODE_BUTTONS,
+	PREVIEW_MODE_SPLASH
+};
+
 // i2C OLED Display
 class I2CDisplayAddon : public GPAddon
 {
@@ -66,6 +72,8 @@ public:
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
 private:
+	int initDisplay(int typeOverride);
+	bool isSH1106(int detectedDisplay);
 	void clearScreen(int render); // DisplayModule
 	void drawStickless(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
@@ -98,6 +106,10 @@ private:
 	void drawBlankB(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawFightboard(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawFightboardMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawFightboardStick(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawFightboardStickMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
 	bool pressedUp();
 	bool pressedDown();
 	bool pressedLeft();
@@ -109,6 +121,9 @@ private:
 	Gamepad* pGamepad;
     std::deque<std::string> history;
     bool last[17];
+	private:
+	DisplayPreviewMode displayPreviewMode;
+	uint16_t prevButtonState;
 };
 
 #endif
