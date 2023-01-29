@@ -25,12 +25,13 @@ void I2CDisplayAddon::setup() {
 		initDisplay(OLED_132x64);
 	}
  
-  displayPreviewMode = PREVIEW_MODE_NONE;
+    displayPreviewMode = PREVIEW_MODE_NONE;
 	prevButtonState = 0;
 	
 	obdSetContrast(&obd, 0xFF);
 	obdSetBackBuffer(&obd, ucBackBuffer);
 	clearScreen(1);
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	displaySaverTimeout = displaySaverTimer = boardOptions.displaySaverTimeout * 60000; // minute to ms
 	gamepad = Storage::getInstance().GetGamepad();
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
@@ -64,11 +65,11 @@ void I2CDisplayAddon::setDisplayPower(uint8_t status)
 }
 
 void I2CDisplayAddon::process() {
+	bool configMode = Storage::getInstance().GetConfigMode();
 
-	if (isDisplayPowerOff()) return;
+	if (!configMode && isDisplayPowerOff()) return;
 
 	clearScreen(0);
-	bool configMode = Storage::getInstance().GetConfigMode();
 	if (configMode) {
 		gamepad->read();
 		uint16_t buttonState = gamepad->state.buttons;

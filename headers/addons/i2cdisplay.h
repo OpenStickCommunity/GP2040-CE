@@ -53,6 +53,10 @@
 #define DISPLAY_USEWIRE 1
 #endif
 
+#ifndef DISPLAY_SAVER_TIMEOUT
+#define DISPLAY_SAVER_TIMEOUT 0
+#endif
+
 // i2c Display Module
 #define I2CDisplayName "I2CDisplay"
 
