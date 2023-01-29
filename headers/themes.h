@@ -267,9 +267,24 @@ static map<uint32_t, RGB> themeXboxAll({
 	{ GAMEPAD_MASK_L2, ColorWhite },
 });
 
+static map<uint32_t, RGB> themeFightboard({
+	{ GAMEPAD_MASK_DU, ColorWhite },
+	{ GAMEPAD_MASK_DD, ColorWhite },
+	{ GAMEPAD_MASK_DL, ColorWhite },
+	{ GAMEPAD_MASK_DR, ColorWhite },
+	{ GAMEPAD_MASK_B1, ColorGreen },
+	{ GAMEPAD_MASK_B2, ColorRed },
+	{ GAMEPAD_MASK_B3, ColorBlue },
+	{ GAMEPAD_MASK_B4, ColorYellow },
+	{ GAMEPAD_MASK_R1, ColorPurple },
+	{ GAMEPAD_MASK_R2, ColorAqua },
+	{ GAMEPAD_MASK_L1, ColorOrange },
+	{ GAMEPAD_MASK_L2, ColorPink },
+});
+
 void addStaticThemes(LEDOptions options)
 {
-	// Rainbow theme on a Hitbox layout should use green for up button
+	// Rainbow theme on a Stickless layout should use green for up button
 	themeStaticRainbow[GAMEPAD_MASK_DU] = (options.ledLayout == BUTTON_LAYOUT_STICKLESS) ? ColorGreen : ColorOrange;
 
 	StaticTheme::ClearThemes();
@@ -296,6 +311,8 @@ void addStaticThemes(LEDOptions options)
 	StaticTheme::AddTheme(themeGuiltyGearTypeC);
 	StaticTheme::AddTheme(themeGuiltyGearTypeD);
 	StaticTheme::AddTheme(themeGuiltyGearTypeE);
+
+	StaticTheme::AddTheme(themeFightboard);
 }
 
 #endif

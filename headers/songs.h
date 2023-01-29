@@ -1,3 +1,6 @@
+#ifndef SONGS_H_
+#define SONGS_H_
+
 #include "addons/buzzerspeaker.h"
 
 // Intro example
@@ -33,3 +36,5 @@ Song configModeSong{
         E5
     }
 };
+
+#endif

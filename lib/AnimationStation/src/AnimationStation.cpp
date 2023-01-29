@@ -10,7 +10,7 @@
 uint8_t AnimationStation::brightnessMax = 100;
 uint8_t AnimationStation::brightnessSteps = 5;
 float AnimationStation::brightnessX = 0;
-absolute_time_t AnimationStation::nextChange = 0;
+absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions AnimationStation::options = {};
 
 

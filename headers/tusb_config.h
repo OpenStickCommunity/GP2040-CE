@@ -100,7 +100,7 @@
 #define CFG_TUD_HID               2
 #define CFG_TUD_MIDI              0
 #define CFG_TUD_VENDOR            0
-#define CFG_TUD_NET               1
+#define CFG_TUD_ECM_RNDIS         1
 
 // HID buffer size Should be sufficient to hold ID (if any) + Data
 #define CFG_TUD_HID_EP_BUFSIZE    64
