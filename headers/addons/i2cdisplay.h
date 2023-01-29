@@ -68,7 +68,7 @@ enum DisplayPreviewMode {
 
 // i2C OLED Display
 class I2CDisplayAddon : public GPAddon
-{	
+{
 public:
 	virtual bool available();  // GPAddon
 	virtual void setup();
