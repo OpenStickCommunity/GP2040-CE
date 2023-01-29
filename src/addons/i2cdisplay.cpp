@@ -25,7 +25,7 @@ void I2CDisplayAddon::setup() {
 		initDisplay(OLED_132x64);
 	}
  
-    displayPreviewMode = PREVIEW_MODE_NONE;
+	displayPreviewMode = PREVIEW_MODE_NONE;
 	prevButtonState = 0;
 	
 	obdSetContrast(&obd, 0xFF);
