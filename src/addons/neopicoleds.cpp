@@ -226,7 +226,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDButtons(std::vector
 /**
  * @brief Create an LED layout using a 3x8 matrix.
  */
-std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDHitbox(vector<vector<uint8_t>> *positions)
+std::vector<std::vector<Pixel>> NeoPicoLEDAddon::generatedLEDStickless(vector<vector<uint8_t>> *positions)
 {
 	std::vector<std::vector<Pixel>> pixels =
 	{
@@ -413,7 +413,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 			return generatedLEDButtons(&positions);
 
 		case BUTTON_LAYOUT_STICKLESS:
-			return generatedLEDHitbox(&positions);
+			return generatedLEDStickless(&positions);
 
 		case BUTTON_LAYOUT_BUTTONS_ANGLED:
 			return generatedLEDWasd(&positions);
