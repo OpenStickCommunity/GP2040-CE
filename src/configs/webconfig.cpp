@@ -177,6 +177,7 @@ std::string setDisplayOptions()
 	boardOptions.buttonLayoutRight     = doc["buttonLayoutRight"];
 	boardOptions.splashMode      	   = doc["splashMode"];
 	boardOptions.splashChoice          = doc["splashChoice"];
+	boardOptions.displaySaverTimeout   = doc["displaySaverTimeout"];
 	ConfigManager::getInstance().setBoardOptions(boardOptions);
 	return serialize_json(doc);
 }
@@ -197,6 +198,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutRight"] = boardOptions.buttonLayoutRight;
 	doc["splashMode"]  	     = boardOptions.splashMode;
 	doc["splashChoice"]      = boardOptions.splashChoice;
+	doc["displaySaverTimeout"] = boardOptions.displaySaverTimeout;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
