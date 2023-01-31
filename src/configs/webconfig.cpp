@@ -65,8 +65,17 @@ void WebConfig::loop() {
 int set_file_data(struct fs_file *file, string data)
 {
 	static string returnData;
+	returnData.clear();
+	returnData.append(
+		"HTTP/1.0 200 OK\r\n"
+		"Server: GP2040-CE " GP2040VERSION "\r\n"
+		"Content-Type: application/json\r\n"
+		"Content-Length: "
+	);
+	returnData.append(std::to_string(data.length()));
+	returnData.append("\r\n\r\n");
+	returnData.append(data);
 
-	returnData = data;
 	file->data = returnData.c_str();
 	file->len = returnData.size();
 	file->index = file->len;
