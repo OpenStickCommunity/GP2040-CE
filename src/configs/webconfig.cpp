@@ -1,4 +1,5 @@
 #include "configs/webconfig.h"
+#include "configs/base64.h"
 
 #include "storagemanager.h"
 #include "configmanager.h"
@@ -248,24 +249,11 @@ std::string getSplashImage()
 std::string setSplashImage() // Expects 16 chunked requests because
 {							 // it can't handle all the payload at once
 	DynamicJsonDocument doc = get_post_data();
-	int index = doc["index"];
-	
-	// Clean temp array, just in case
-	if (index == 0) {
-		for (int i = 0; i < 1024; i++) {
-			splashImageTemp.data[i] = 0;
-		}
-	}
-
-	JsonArray array = doc["splashImage"].as<JsonArray>();
-	for (int i = 0; i < 64; i++) {
-		splashImageTemp.data[(64 * index) + i] = array[i];
-	}
-	
-	// Persist data, all data bits should be set
-	if (index == 15) {
-		ConfigManager::getInstance().setSplashImage(splashImageTemp);
-	}
+	std::string decoded;
+	std::string base64String = doc["splashImage"];
+	Base64::Decode(base64String, decoded);
+	memcpy(splashImageTemp.data, decoded.data(), decoded.length());
+	ConfigManager::getInstance().setSplashImage(splashImageTemp);
 
 	return serialize_json(doc);
 }
