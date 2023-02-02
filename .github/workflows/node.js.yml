@@ -19,6 +19,9 @@ jobs:
     - name: Make Executable
       working-directory: ${{github.workspace}}/tools
       run: sudo chmod +x makefsdata
+    - name: Delete existing file
+      working-directory: ${{github.workspace}}/lib/httpd/
+      run: rm fsdata.c
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
