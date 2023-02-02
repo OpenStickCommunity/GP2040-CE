@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.13)
 
+
+
+
+
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
@@ -11,6 +15,38 @@ endif()
 project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.6.0)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+
+find_package(Git QUIET)
+
+if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                    RESULT_VARIABLE GIT_SUBMOD_RESULT)
+    if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+        message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+    else()
+        message("Submodules updated")
+    endif()
+endif()
+
+include(${CMAKE_SOURCE_DIR}/modules/FindNodeJS.cmake)
+include(${CMAKE_SOURCE_DIR}/modules/FindNPM.cmake)
+if(NODEJS_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/www")
+  if(NPM_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/www/package.json")
+    execute_process(COMMAND ${NPM_EXECUTABLE} ci 
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/www
+                    RESULT_VARIABLE NPM_CI_RESULT)
+    if(NOT NPM_CI_RESULT EQUAL "0")
+      message(FATAL_ERROR "npm ci failed with ${NPM_CI_RESULT}")
+    endif()
+    execute_process(COMMAND ${NPM_EXECUTABLE} run build
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/www
+                    RESULT_VARIABLE NPM_BUILD_RESULT)
+    if(NOT NPM_BUILD_RESULT EQUAL "0")
+      message(FATAL_ERROR "npm run build failed with ${NPM_BUILD_RESULT}")
+    endif()
+  endif()
+endif()
 
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})

@@ -6,3 +6,4 @@ configs/MyBoard
 /www/package-lock.json
 build/
 **/generated
+lib/httpd/fsdata.c
