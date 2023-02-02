@@ -37,8 +37,10 @@
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
 #define API_GET_MEMORY_REPORT "/api/getMemoryReport"
+#if !defined(NDEBUG)
+#define API_POST_ECHO "/api/echo"
+#endif
 
-#define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
 
 using namespace std;
@@ -47,10 +49,9 @@ extern struct fsdata_file file__index_html[];
 
 const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
-static char *http_post_uri;
+static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
 static uint16_t http_post_payload_len = 0;
-static bool is_post = false;
 
 void WebConfig::setup() {
 	rndis_init();
@@ -65,8 +66,17 @@ void WebConfig::loop() {
 int set_file_data(struct fs_file *file, string data)
 {
 	static string returnData;
+	returnData.clear();
+	returnData.append(
+		"HTTP/1.0 200 OK\r\n"
+		"Server: GP2040-CE " GP2040VERSION "\r\n"
+		"Content-Type: application/json\r\n"
+		"Content-Length: "
+	);
+	returnData.append(std::to_string(data.length()));
+	returnData.append("\r\n\r\n");
+	returnData.append(data);
 
-	returnData = data;
 	file->data = returnData.c_str();
 	file->len = returnData.size();
 	file->index = file->len;
@@ -99,11 +109,13 @@ err_t httpd_post_begin(void *connection, const char *uri, const char *http_reque
 	LWIP_UNUSED_ARG(response_uri_len);
 	LWIP_UNUSED_ARG(post_auto_wnd);
 
-	if (!uri || (uri[0] == '\0') || memcmp(uri, "/api", 4))
+	if (!uri || strncmp(uri, "/api", 4) != 0) {
 		return ERR_ARG;
+	}
 
-	http_post_uri = (char *)uri;
-	is_post = true;
+	http_post_uri = uri;
+	http_post_payload_len = 0;
+	memset(http_post_payload, 0, LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	return ERR_OK;
 }
 
@@ -112,12 +124,7 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 {
 	LWIP_UNUSED_ARG(connection);
 
-	int count;
-	uint32_t http_post_payload_full_flag = 0;
-
 	// Cache the received data to http_post_payload
-	http_post_payload_len = 0;
-	memset(http_post_payload, 0, LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	while (p != NULL)
 	{
 		if (http_post_payload_len + p->len <= LWIP_HTTPD_POST_MAX_PAYLOAD_LEN)
@@ -125,9 +132,9 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 			MEMCPY(http_post_payload + http_post_payload_len, p->payload, p->len);
 			http_post_payload_len += p->len;
 		}
-		else // Buffer overflow Set overflow flag
+		else // Buffer overflow
 		{
-			http_post_payload_full_flag = 1;
+			http_post_payload_len = 0xffff;
 			break;
 		}
 
@@ -138,8 +145,9 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 	pbuf_free(p);
 
 	// If the buffer overflows, error out
-	if (http_post_payload_full_flag)
+	if (http_post_payload_len == 0xffff) {
 		return ERR_BUF;
+	}
 
 	return ERR_OK;
 }
@@ -148,10 +156,11 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 void httpd_post_finished(void *connection, char *response_uri, uint16_t response_uri_len)
 {
 	LWIP_UNUSED_ARG(connection);
-	LWIP_UNUSED_ARG(response_uri);
-	LWIP_UNUSED_ARG(response_uri_len);
 
-	response_uri = http_post_uri;
+	if (http_post_payload_len != 0xffff) {
+		strncpy(response_uri, http_post_uri.c_str(), response_uri_len);
+		response_uri[response_uri_len - 1] = '\0';
+	}
 }
 
 std::string serialize_json(DynamicJsonDocument &doc)
@@ -177,6 +186,7 @@ std::string setDisplayOptions()
 	boardOptions.buttonLayoutRight     = doc["buttonLayoutRight"];
 	boardOptions.splashMode      	   = doc["splashMode"];
 	boardOptions.splashChoice          = doc["splashChoice"];
+	boardOptions.displaySaverTimeout   = doc["displaySaverTimeout"];
 	ConfigManager::getInstance().setBoardOptions(boardOptions);
 	return serialize_json(doc);
 }
@@ -197,6 +207,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutRight"] = boardOptions.buttonLayoutRight;
 	doc["splashMode"]  	     = boardOptions.splashMode;
 	doc["splashChoice"]      = boardOptions.splashChoice;
+	doc["displaySaverTimeout"] = boardOptions.displaySaverTimeout;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
@@ -557,44 +568,50 @@ std::string resetSettings()
 	return serialize_json(doc);
 }
 
+#if !defined(NDEBUG)
+std::string echo()
+{
+	DynamicJsonDocument doc = get_post_data();
+	return serialize_json(doc);
+}
+#endif
+
 int fs_open_custom(struct fs_file *file, const char *name)
 {
-	if (is_post)
-	{
-		if (!memcmp(http_post_uri, API_SET_DISPLAY_OPTIONS, sizeof(API_SET_DISPLAY_OPTIONS)))
+	if (strcmp(name, API_SET_DISPLAY_OPTIONS) == 0)
 			return set_file_data(file, setDisplayOptions());
-		if (!memcmp(http_post_uri, API_SET_GAMEPAD_OPTIONS, sizeof(API_SET_GAMEPAD_OPTIONS)))
+	if (strcmp(name, API_SET_GAMEPAD_OPTIONS) == 0)
 			return set_file_data(file, setGamepadOptions());
-		if (!memcmp(http_post_uri, API_SET_LED_OPTIONS, sizeof(API_SET_LED_OPTIONS)))
+	if (strcmp(name, API_SET_LED_OPTIONS) == 0)
 			return set_file_data(file, setLedOptions());
-		if (!memcmp(http_post_uri, API_SET_PIN_MAPPINGS, sizeof(API_SET_PIN_MAPPINGS)))
+	if (strcmp(name, API_SET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, setPinMappings());
-		if (!memcmp(http_post_uri, API_SET_ADDON_OPTIONS, sizeof(API_SET_ADDON_OPTIONS)))
+	if (strcmp(name, API_SET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, setAddonOptions());
-		if (!memcmp(http_post_uri, API_SET_SPLASH_IMAGE, sizeof(API_SET_SPLASH_IMAGE)))
+	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, setSplashImage());
-	}
-	else
-	{
-		if (!memcmp(name, API_GET_DISPLAY_OPTIONS, sizeof(API_GET_DISPLAY_OPTIONS)))
+#if !defined(NDEBUG)
+	if (strcmp(name, API_POST_ECHO) == 0)
+		return set_file_data(file, echo());
+#endif
+	if (strcmp(name, API_GET_DISPLAY_OPTIONS) == 0)
 			return set_file_data(file, getDisplayOptions());
-		if (!memcmp(name, API_GET_GAMEPAD_OPTIONS, sizeof(API_GET_GAMEPAD_OPTIONS)))
+	if (strcmp(name, API_GET_GAMEPAD_OPTIONS) == 0)
 			return set_file_data(file, getGamepadOptions());
-		if (!memcmp(name, API_GET_LED_OPTIONS, sizeof(API_GET_LED_OPTIONS)))
+	if (strcmp(name, API_GET_LED_OPTIONS) == 0)
 			return set_file_data(file, getLedOptions());
-		if (!memcmp(name, API_GET_PIN_MAPPINGS, sizeof(API_GET_PIN_MAPPINGS)))
+	if (strcmp(name, API_GET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, getPinMappings());
-		if (!memcmp(name, API_GET_ADDON_OPTIONS, sizeof(API_GET_ADDON_OPTIONS)))
+	if (strcmp(name, API_GET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, getAddonOptions());
-		if (!memcmp(name, API_RESET_SETTINGS, sizeof(API_RESET_SETTINGS)))
+	if (strcmp(name, API_RESET_SETTINGS) == 0)
 			return set_file_data(file, resetSettings());
-		if (!memcmp(name, API_GET_SPLASH_IMAGE, sizeof(API_GET_SPLASH_IMAGE)))
+	if (strcmp(name, API_GET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, getSplashImage());
-		if (!memcmp(name, API_GET_FIRMWARE_VERSION, sizeof(API_GET_FIRMWARE_VERSION)))
+	if (strcmp(name, API_GET_FIRMWARE_VERSION) == 0)
 			return set_file_data(file, getFirmwareVersion());
-		if (!memcmp(name, API_GET_MEMORY_REPORT, sizeof(API_GET_MEMORY_REPORT)))
+	if (strcmp(name, API_GET_MEMORY_REPORT) == 0)
 			return set_file_data(file, getMemoryReport());
-	}
 
 	bool isExclude = false;
 	for (auto &excludePath : excludePaths)
@@ -624,6 +641,4 @@ void fs_close_custom(struct fs_file *file)
 		mem_free(file->pextension);
 		file->pextension = NULL;
 	}
-
-	is_post = false;
 }
