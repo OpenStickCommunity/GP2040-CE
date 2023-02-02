@@ -33,5 +33,5 @@ jobs:
       uses: actions/upload-artifact@v3.1.1
       with:
         name: fsData
-        path: ${{github.workspace}}/build/httpd/fsdata.c
+        path: ${{github.workspace}}/lib/httpd/fsdata.c
         if-no-files-found: error
