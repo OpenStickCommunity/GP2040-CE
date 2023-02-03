@@ -170,6 +170,8 @@ GP2040::BootAction GP2040::getBootAction() {
 				break;
 			}
 	}
+
+	return BootAction::NONE;
 }
 
 GP2040::WebConfigHotkey::WebConfigHotkey() :
