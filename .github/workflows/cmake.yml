@@ -28,9 +28,9 @@ jobs:
     - name: Checkout GP2040-CE
       uses: actions/checkout@v3
     
-    - name: Checkout submodules
-      working-directory: ${{github.workspace}}
-      run: git submodule update --init
+    # - name: Checkout submodules
+    #   working-directory: ${{github.workspace}}
+    #   run: git submodule update --init
 
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3.0.2
