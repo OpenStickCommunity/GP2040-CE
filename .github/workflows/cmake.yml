@@ -70,129 +70,129 @@ jobs:
         if-no-files-found: error
         
     # #BentoBox
-    - name: BentoBox Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=BentoBox cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+    # - name: BentoBox Configure CMake
+    #   shell: bash
+    #   run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=BentoBox cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
-    - name: BentoBox Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=BentoBox cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+    # - name: BentoBox Build
+    #   shell: bash
+    #   run: GP2040_BOARDCONFIG=BentoBox cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
     
-    - name: Upload BentoBox Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - BentoBox
-        path: ${{github.workspace}}/build/GP2040-CE_*_BentoBox.uf2
-        if-no-files-found: error
+    # - name: Upload BentoBox Artifact
+    #   uses: actions/upload-artifact@v3.1.1
+    #   with:
+    #     name: GP2040-CE - BentoBox
+    #     path: ${{github.workspace}}/build/GP2040-CE_*_BentoBox.uf2
+    #     if-no-files-found: error
         
-    #DURAL
-    - name: DURAL Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=DURAL cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+    # #DURAL
+    # - name: DURAL Configure CMake
+    #   shell: bash
+    #   run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=DURAL cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
-    - name: DURAL Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=DURAL cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+    # - name: DURAL Build
+    #   shell: bash
+    #   run: GP2040_BOARDCONFIG=DURAL cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
     
-    - name: Upload DURAL Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - DURAL
-        path: ${{github.workspace}}/build/GP2040-CE_*_DURAL.uf2
-        if-no-files-found: error
+    # - name: Upload DURAL Artifact
+    #   uses: actions/upload-artifact@v3.1.1
+    #   with:
+    #     name: GP2040-CE - DURAL
+    #     path: ${{github.workspace}}/build/GP2040-CE_*_DURAL.uf2
+    #     if-no-files-found: error
 
-    #FlatboxRev4
-    - name: FlatboxRev4 Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=flatboxrev4
+    # #FlatboxRev4
+    # - name: FlatboxRev4 Configure CMake
+    #   shell: bash
+    #   run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=flatboxrev4
     
-    - name: FlatboxRev4 Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=FlatboxRev4 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+    # - name: FlatboxRev4 Build
+    #   shell: bash
+    #   run: GP2040_BOARDCONFIG=FlatboxRev4 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
    
-    - name: Upload FlatboxRev4 Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - FlatboxRev4
-        path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev4.uf2
-        if-no-files-found: error
+    # - name: Upload FlatboxRev4 Artifact
+    #   uses: actions/upload-artifact@v3.1.1
+    #   with:
+    #     name: GP2040-CE - FlatboxRev4
+    #     path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev4.uf2
+    #     if-no-files-found: error
         
-    #FlatboxRev5
-    - name: FlatboxRev5 Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=flatboxrev5
+    # #FlatboxRev5
+    # - name: FlatboxRev5 Configure CMake
+    #   shell: bash
+    #   run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=flatboxrev5
     
-    - name: FlatboxRev5 Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=FlatboxRev5 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+    # - name: FlatboxRev5 Build
+    #   shell: bash
+    #   run: GP2040_BOARDCONFIG=FlatboxRev5 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
    
-    - name: Upload FlatboxRev5 Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - FlatboxRev5
-        path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev5.uf2
-        if-no-files-found: error
+    # - name: Upload FlatboxRev5 Artifact
+    #   uses: actions/upload-artifact@v3.1.1
+    #   with:
+    #     name: GP2040-CE - FlatboxRev5
+    #     path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev5.uf2
+    #     if-no-files-found: error
 
-    #PicoAnn
-    - name: PicoAnn Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoAnn cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+    # #PicoAnn
+    # - name: PicoAnn Configure CMake
+    #   shell: bash
+    #   run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoAnn cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
-    - name: PicoAnn Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=PicoAnn cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+    # - name: PicoAnn Build
+    #   shell: bash
+    #   run: GP2040_BOARDCONFIG=PicoAnn cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
    
-    - name: Upload PicoAnn Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - PicoAnn
-        path: ${{github.workspace}}/build/GP2040-CE_*_PicoAnn.uf2
-        if-no-files-found: error
+    # - name: Upload PicoAnn Artifact
+    #   uses: actions/upload-artifact@v3.1.1
+    #   with:
+    #     name: GP2040-CE - PicoAnn
+    #     path: ${{github.workspace}}/build/GP2040-CE_*_PicoAnn.uf2
+    #     if-no-files-found: error
 
-    #PicoFightingBoard
-    - name: PicoFightingBoard Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+    # #PicoFightingBoard
+    # - name: PicoFightingBoard Configure CMake
+    #   shell: bash
+    #   run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
-    - name: PicoFightingBoard Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=PicoFightingBoard cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+    # - name: PicoFightingBoard Build
+    #   shell: bash
+    #   run: GP2040_BOARDCONFIG=PicoFightingBoard cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
    
-    - name: Upload PicoFightingBoard Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - PicoFightingBoard
-        path: ${{github.workspace}}/build/GP2040-CE_*_PicoFightingBoard.uf2
-        if-no-files-found: error
+    # - name: Upload PicoFightingBoard Artifact
+    #   uses: actions/upload-artifact@v3.1.1
+    #   with:
+    #     name: GP2040-CE - PicoFightingBoard
+    #     path: ${{github.workspace}}/build/GP2040-CE_*_PicoFightingBoard.uf2
+    #     if-no-files-found: error
             
-    #SparkFunProMicro    
-    - name: SparkFunProMicro Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+    # #SparkFunProMicro    
+    # - name: SparkFunProMicro Configure CMake
+    #   shell: bash
+    #   run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
-    - name: SparkFunProMicro Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=SparkFunProMicro cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+    # - name: SparkFunProMicro Build
+    #   shell: bash
+    #   run: GP2040_BOARDCONFIG=SparkFunProMicro cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
        
-    - name: Upload SparkFunProMicro Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - SparkFunProMicro
-        path: ${{github.workspace}}/build/GP2040-CE_*_SparkFunProMicro.uf2
-        if-no-files-found: error
+    # - name: Upload SparkFunProMicro Artifact
+    #   uses: actions/upload-artifact@v3.1.1
+    #   with:
+    #     name: GP2040-CE - SparkFunProMicro
+    #     path: ${{github.workspace}}/build/GP2040-CE_*_SparkFunProMicro.uf2
+    #     if-no-files-found: error
             
-    #WaveshareZero
-    - name: WaveshareZero Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=WaveshareZero cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+    # #WaveshareZero
+    # - name: WaveshareZero Configure CMake
+    #   shell: bash
+    #   run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=WaveshareZero cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
-    - name: WaveshareZero Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=WaveshareZero cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+    # - name: WaveshareZero Build
+    #   shell: bash
+    #   run: GP2040_BOARDCONFIG=WaveshareZero cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
            
-    - name: Upload WaveshareZero Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - WaveshareZero
-        path: ${{github.workspace}}/build/GP2040-CE_*_WaveshareZero.uf2
-        if-no-files-found: error
+    # - name: Upload WaveshareZero Artifact
+    #   uses: actions/upload-artifact@v3.1.1
+    #   with:
+    #     name: GP2040-CE - WaveshareZero
+    #     path: ${{github.workspace}}/build/GP2040-CE_*_WaveshareZero.uf2
+    #     if-no-files-found: error
