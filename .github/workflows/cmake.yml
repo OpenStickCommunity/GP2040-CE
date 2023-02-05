@@ -72,7 +72,7 @@ jobs:
     #BentoBox
     - name: BentoBox Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=BentoBox cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=BentoBox  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
     - name: BentoBox Build
       shell: bash
@@ -88,7 +88,7 @@ jobs:
     #DURAL
     - name: DURAL Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=DURAL cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=DURAL SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
     - name: DURAL Build
       shell: bash
@@ -104,7 +104,7 @@ jobs:
     #FlatboxRev4
     - name: FlatboxRev4 Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=flatboxrev4
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=flatboxrev4
     
     - name: FlatboxRev4 Build
       shell: bash
@@ -120,7 +120,7 @@ jobs:
     #FlatboxRev5
     - name: FlatboxRev5 Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=flatboxrev5
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=flatboxrev5
     
     - name: FlatboxRev5 Build
       shell: bash
@@ -136,7 +136,7 @@ jobs:
     #PicoAnn
     - name: PicoAnn Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoAnn cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoAnn  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
     - name: PicoAnn Build
       shell: bash
@@ -152,7 +152,7 @@ jobs:
     #PicoFightingBoard
     - name: PicoFightingBoard Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
     - name: PicoFightingBoard Build
       shell: bash
@@ -168,7 +168,7 @@ jobs:
     #SparkFunProMicro    
     - name: SparkFunProMicro Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
     
     - name: SparkFunProMicro Build
       shell: bash
@@ -184,7 +184,7 @@ jobs:
     #WaveshareZero
     - name: WaveshareZero Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=WaveshareZero cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=wavesharezero
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=WaveshareZero SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=wavesharezero
     
     - name: WaveshareZero Build
       shell: bash
