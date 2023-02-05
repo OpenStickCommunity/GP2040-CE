@@ -56,7 +56,7 @@ jobs:
 
     - name: Pico Build Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=Pico SKIP_SUBMODULES=TRUE SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=Pico SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=pico
 
     - name: Pico Build
       shell: bash
