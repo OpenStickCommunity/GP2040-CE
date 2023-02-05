@@ -107,6 +107,24 @@ This setup script requires approximately 2.5GB of disk space on your SD card.
 
 ## Building
 
+### Environment Variables
+
+A number of new environment variables have been setup to control parts of the build flow.
+
+| Name | Default | Description |
+| ----------- | --------- | ----------- |
+|GP2040_BOARDCONFIG |Pico |The boards.h config file to use for the build.|
+|SKIP_WEBBUILD|FALSE|Determines whether the web configurator is built during the cmake configuration step.|
+|SKIP_SUBMODULES|FALSE|Determines whether the submodule init command is run automatically during the cmake configuration step.|
+
+#### SDK Variables
+
+There are a few SDK variables we take advantage of for our builds.
+
+| Name | Default | Description |
+| ----------- | --------- | ----------- |
+|PICO_BOARD|pico| This is the embeded board that the RP2040 chip is part of. By default, it assumes the Pico. This variable would match the `<boardname.h>` file in the board's configs folder.|
+
 ### Windows
 
 Start in the GP2040-CE folder
