@@ -148,6 +148,10 @@ headers/addons
 configs/${GP2040_BOARDCONFIG}
 )
 
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+  PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
+)
+
 target_include_directories(${PROJECT_NAME}  PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
