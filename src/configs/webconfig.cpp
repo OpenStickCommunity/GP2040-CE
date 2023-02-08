@@ -1,4 +1,5 @@
 #include "configs/webconfig.h"
+#include "configs/base64.h"
 
 #include "storagemanager.h"
 #include "configmanager.h"
@@ -7,6 +8,8 @@
 #include <cstring>
 #include <string>
 #include <vector>
+
+#include <pico/types.h>
 
 // HTTPD Includes
 #include <ArduinoJson.h>
@@ -40,6 +43,7 @@
 #if !defined(NDEBUG)
 #define API_POST_ECHO "/api/echo"
 #endif
+#define API_REBOOT "/api/reboot"
 
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
 
@@ -49,9 +53,11 @@ extern struct fsdata_file file__index_html[];
 
 const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
+const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
 static uint16_t http_post_payload_len = 0;
+static absolute_time_t rebootDelayTimeout = nil_time;
 
 void WebConfig::setup() {
 	rndis_init();
@@ -60,6 +66,10 @@ void WebConfig::setup() {
 void WebConfig::loop() {
 	// rndis http server requires inline functions (non-class)
 	rndis_task();
+
+	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+		System::reboot(System::BootMode::GAMEPAD);
+	}
 }
 
 // **** WEB SERVER Overrides and Special Functionality ****
@@ -248,24 +258,11 @@ std::string getSplashImage()
 std::string setSplashImage() // Expects 16 chunked requests because
 {							 // it can't handle all the payload at once
 	DynamicJsonDocument doc = get_post_data();
-	int index = doc["index"];
-	
-	// Clean temp array, just in case
-	if (index == 0) {
-		for (int i = 0; i < 1024; i++) {
-			splashImageTemp.data[i] = 0;
-		}
-	}
-
-	JsonArray array = doc["splashImage"].as<JsonArray>();
-	for (int i = 0; i < 64; i++) {
-		splashImageTemp.data[(64 * index) + i] = array[i];
-	}
-	
-	// Persist data, all data bits should be set
-	if (index == 15) {
-		ConfigManager::getInstance().setSplashImage(splashImageTemp);
-	}
+	std::string decoded;
+	std::string base64String = doc["splashImage"];
+	Base64::Decode(base64String, decoded);
+	memcpy(splashImageTemp.data, decoded.data(), decoded.length());
+	ConfigManager::getInstance().setSplashImage(splashImageTemp);
 
 	return serialize_json(doc);
 }
@@ -576,6 +573,15 @@ std::string echo()
 }
 #endif
 
+std::string reboot()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	doc["success"] = true;
+	// We need to wait for a bit before we actually reboot to leave the webclient some time to receive the response
+	rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+	return serialize_json(doc);
+}
+
 int fs_open_custom(struct fs_file *file, const char *name)
 {
 	if (strcmp(name, API_SET_DISPLAY_OPTIONS) == 0)
@@ -612,6 +618,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getFirmwareVersion());
 	if (strcmp(name, API_GET_MEMORY_REPORT) == 0)
 			return set_file_data(file, getMemoryReport());
+	if (strcmp(name, API_REBOOT) == 0)
+			return set_file_data(file, reboot());
 
 	bool isExclude = false;
 	for (auto &excludePath : excludePaths)
