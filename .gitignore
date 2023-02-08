@@ -5,4 +5,5 @@ configs/MyBoard
 .DS_Store
 /www/package-lock.json
 build/
-**/generated
+
+lib/httpd/fsdata.c
