@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "gpaddon.h"
-using namespace std;
 
 #ifndef BUZZER_ENABLED
 #define BUZZER_ENABLED -1
@@ -115,8 +114,8 @@ enum Tone {
 
 struct Song {
 	uint16_t toneDuration;
-	vector<Tone> song;
-	Song(uint16_t t, vector<Tone> s){
+	std::vector<Tone> song;
+	Song(uint16_t t, std::vector<Tone> s){
 		toneDuration = t;
 		song = s;
 	};
@@ -125,23 +124,25 @@ struct Song {
 // Buzzer Speaker
 class BuzzerSpeakerAddon : public GPAddon
 {
+public:
+	virtual bool available();
+	virtual void setup();
+	virtual void preprocess() {}
+	virtual void process();
+	virtual std::string name() { return BuzzerSpeakerName; }
 private:
 	void processBuzzer();
 	void play(Song *song);
 	void playIntro();
 	void stop();
 	uint32_t pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty);
+	uint8_t buzzerPin;
 	uint8_t buzzerPinSlice;
 	uint8_t buzzerPinChannel;
 	uint8_t buzzerVolume;
 	uint32_t startedSongMils;
 	Song *currentSong;
 	bool introPlayed;
-public:
-	virtual bool available();  // GPAddon
-	virtual void setup();
-	virtual void process();
-	virtual std::string name() { return BuzzerSpeakerName; }
 };
 
 #endif

@@ -5,6 +5,10 @@
 #include "pico/stdlib.h"
 #include "storagemanager.h"
 
+#ifndef BOARD_LED_ENABLED
+#define BOARD_LED_ENABLED true
+#endif
+
 #ifndef BOARD_LED_TYPE 
 #define BOARD_LED_TYPE BOARD_LED_OFF
 #endif  
@@ -18,9 +22,10 @@
 
 class BoardLedAddon : public GPAddon {
 public:
-	virtual bool available();   // GPAddon available
+	virtual bool available();
 	virtual void setup();       // BoardLed Setup
 	virtual void process();     // BoardLed Process
+	virtual void preprocess() {}
 	virtual std::string name() { return OnBoardLedName; }
 private:
 	OnBoardLedMode onBoardLedMode;

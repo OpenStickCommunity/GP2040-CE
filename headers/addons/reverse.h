@@ -5,6 +5,10 @@
 
 #include "GamepadEnums.h"
 
+#ifndef REVERSE_ENABLED
+#define REVERSE_ENABLED true
+#endif
+
 #ifndef PIN_REVERSE
 #define PIN_REVERSE     -1
 #endif
@@ -14,8 +18,9 @@
 
 class ReverseInput : public GPAddon {
 public:
-	virtual bool available();   // GPAddon available
+	virtual bool available();
 	virtual void setup();       // Reverse Button Setup
+	virtual void preprocess() {}
 	virtual void process();     // Reverse process
     virtual std::string name() { return ReverseName; }
 private:
@@ -39,6 +44,8 @@ private:
     uint8_t actionDown;
     uint8_t actionLeft;
     uint8_t actionRight;
+
+	uint8_t pinButtonReverse;
 };
 
 #endif // _Reverse_H_

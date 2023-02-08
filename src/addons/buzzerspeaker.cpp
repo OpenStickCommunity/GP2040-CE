@@ -6,29 +6,35 @@
 #include "usb_driver.h"
 
 bool BuzzerSpeakerAddon::available() {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	return boardOptions.buzzerEnabled && 
-		boardOptions.buzzerPin != (uint8_t)-1;
+	AddonOptions options = Storage::getInstance().getAddonOptions();
+	buzzerPin = options.buzzerPin;
+	return options.BuzzerSpeakerEnabled &&
+		buzzerPin != (uint8_t)-1;
 }
 
 void BuzzerSpeakerAddon::setup() {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	AddonOptions options = Storage::getInstance().getAddonOptions();
 
-	gpio_set_function(boardOptions.buzzerPin, GPIO_FUNC_PWM);
-	buzzerPinSlice = pwm_gpio_to_slice_num (boardOptions.buzzerPin); 
-	buzzerPinChannel = pwm_gpio_to_channel (boardOptions.buzzerPin);
-	buzzerVolume = boardOptions.buzzerVolume;
+	gpio_set_function(buzzerPin, GPIO_FUNC_PWM);
+	buzzerPinSlice = pwm_gpio_to_slice_num (buzzerPin); 
+	buzzerPinChannel = pwm_gpio_to_channel (buzzerPin);
+
+	buzzerVolume = options.buzzerVolume;
 	introPlayed = false;
 }
 
 void BuzzerSpeakerAddon::process() {
-	if (!introPlayed) playIntro();
+	if (!introPlayed) {
+		playIntro();
+	}
 
 	processBuzzer();
 }
 
 void BuzzerSpeakerAddon::playIntro() {
-	if (getMillis() < 1000) return;
+	if (getMillis() < 1000) {
+		return;
+	}
 
 	bool isConfigMode = Storage::getInstance().GetConfigMode();
 	
@@ -41,7 +47,6 @@ void BuzzerSpeakerAddon::playIntro() {
 }
 
 void BuzzerSpeakerAddon::processBuzzer() {
-
 	if (currentSong == NULL) {
 		return;
 	}
