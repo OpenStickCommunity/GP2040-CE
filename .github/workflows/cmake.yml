@@ -11,7 +11,10 @@ env:
   BUILD_TYPE: Release
 
 jobs:
+  call-node-workflow:
+    uses: ./.github/workflows/node.js.yml
   build:
+    needs: call-node-workflow
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
@@ -23,14 +26,20 @@ jobs:
       uses: carlosperate/arm-none-eabi-gcc-action@v1.5.2
 
     - name: Checkout GP2040-CE
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     
-    - name: Checkout submodules
-      working-directory: ${{github.workspace}}
-      run: git submodule update --init
-    
+    # - name: Checkout submodules
+    #   working-directory: ${{github.workspace}}
+    #   run: git submodule update --init
+
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v3.0.2
+      with:
+        name: fsData
+        path: ${{github.workspace}}/lib/httpd/
+
     - name: Checkout pico-sdk/1.4.0
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: raspberrypi/pico-sdk
         ref: 1.4.0
@@ -47,11 +56,7 @@ jobs:
 
     - name: Pico Build Configure CMake
       shell: bash
-      run: cmake --help -version
-
-    - name: Pico Build Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=Pico cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=Pico SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Pico Build
       shell: bash
@@ -64,10 +69,10 @@ jobs:
         path: ${{github.workspace}}/build/GP2040-CE_*_Pico.uf2
         if-no-files-found: error
         
-    # #BentoBox
+    #BentoBox
     - name: BentoBox Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=BentoBox cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=BentoBox  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: BentoBox Build
       shell: bash
@@ -83,7 +88,7 @@ jobs:
     #DURAL
     - name: DURAL Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=DURAL cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=DURAL SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: DURAL Build
       shell: bash
@@ -99,7 +104,7 @@ jobs:
     #FlatboxRev4
     - name: FlatboxRev4 Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: FlatboxRev4 Build
       shell: bash
@@ -115,7 +120,7 @@ jobs:
     #FlatboxRev5
     - name: FlatboxRev5 Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: FlatboxRev5 Build
       shell: bash
@@ -131,7 +136,7 @@ jobs:
     #PicoAnn
     - name: PicoAnn Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoAnn cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoAnn  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: PicoAnn Build
       shell: bash
@@ -147,7 +152,7 @@ jobs:
     #PicoFightingBoard
     - name: PicoFightingBoard Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: PicoFightingBoard Build
       shell: bash
@@ -163,7 +168,7 @@ jobs:
     #SparkFunProMicro    
     - name: SparkFunProMicro Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=sparkfun_promicro
     
     - name: SparkFunProMicro Build
       shell: bash
@@ -179,7 +184,7 @@ jobs:
     #WaveshareZero
     - name: WaveshareZero Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=WaveshareZero cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=WaveshareZero SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=waveshare_rp2040_zero
     
     - name: WaveshareZero Build
       shell: bash

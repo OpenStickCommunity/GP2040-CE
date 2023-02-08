@@ -1,0 +1,40 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+   
+    steps:
+    - uses: actions/checkout@v3
+    - name: Checkout submodules
+      working-directory: ${{github.workspace}}
+      run: git submodule update --init
+    - name: Make Executable
+      working-directory: ${{github.workspace}}/tools
+      run: sudo chmod +x makefsdata
+    # - name: Delete existing file
+    #   working-directory: ${{github.workspace}}/lib/httpd/
+    #   run: rm fsdata.c
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+    - name: clean install
+      working-directory: ${{github.workspace}}/www
+      run: npm ci
+    - name: Build WWW
+      working-directory: ${{github.workspace}}/www
+      run: CI=false npm run build --if-present
+    - name: Upload www Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: fsData
+        path: ${{github.workspace}}/lib/httpd/fsdata.c
+        if-no-files-found: error
