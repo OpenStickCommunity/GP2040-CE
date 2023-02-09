@@ -1,6 +1,10 @@
 #include "system.h"
 
 #include <hardware/flash.h>
+#include <hardware/sync.h>
+#include <hardware/watchdog.h>
+#include <pico/multicore.h>
+
 #include <malloc.h>
 
 extern char __flash_binary_start;
@@ -34,4 +38,36 @@ uint32_t System::getTotalHeap() {
 
 uint32_t System::getUsedHeap() {
     return mallinfo().uordblks;
+}
+
+void System::reboot(BootMode bootMode) {
+    // Make sure that the other core is halted
+    // We do not want it to be talking to devices (e.g. OLED display) while we reboot
+	multicore_lockout_start_timeout_us(0xfffffffffffffff);
+
+	watchdog_hw->scratch[5] = static_cast<uint32_t>(bootMode);
+
+    // This is based on MicroPythons machine.reset()
+	watchdog_reboot(0, 0, 0);
+	for (;;) {
+		__wfi();
+	}
+}
+
+System::BootMode System::takeBootMode() {
+    // If the boot was not caused by software we don't enter any of the special modes
+    if (!watchdog_caused_reboot()) {
+        return BootMode::DEFAULT;
+    }
+
+    BootMode bootMode = static_cast<BootMode>(watchdog_hw->scratch[5]);
+    if (bootMode != BootMode::GAMEPAD && bootMode != BootMode::WEBCONFIG && bootMode != BootMode::USB) {
+        bootMode = BootMode::DEFAULT;
+    }
+
+    // Reset the scratch register
+    // Subsequent reboots should revert to BootMode::DEFAULT
+    watchdog_hw->scratch[5] = static_cast<uint32_t>(BootMode::DEFAULT);
+
+    return bootMode;
 }

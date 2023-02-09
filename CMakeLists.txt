@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
+include(CMakePrintHelpers)
+
+
+
 
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
@@ -11,12 +15,76 @@ endif()
 project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.6.0)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 else()
   set(GP2040_BOARDCONFIG Pico)
 endif()
 
+if(DEFINED ENV{SKIP_SUBMODULES})
+  set(SKIP_SUBMODULES $ENV{SKIP_SUBMODULES})
+else()
+  set(SKIP_SUBMODULES FALSE)
+endif()
+
+
+if(DEFINED ENV{SKIP_WEBBUILD})
+  set(SKIP_WEBBUILD $ENV{SKIP_WEBBUILD})
+else()
+  set(SKIP_WEBBUILD FALSE)
+endif()
+
+
+if(SKIP_SUBMODULES)
+  cmake_print_variables(SKIP_SUBMODULES)
+else()
+  find_package(Git)
+  if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+      execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                      RESULT_VARIABLE GIT_SUBMOD_RESULT)
+      if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+          message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+      else()
+          message("Submodules updated")
+      endif()
+  endif()
+endif()
+
+if(SKIP_WEBBUILD)
+  cmake_print_variables(SKIP_WEBBUILD)
+else()
+  message(STATUS "Not Skipping WebBuild")
+  include(${CMAKE_SOURCE_DIR}/modules/FindNodeJS.cmake)
+  include(${CMAKE_SOURCE_DIR}/modules/FindNPM.cmake)
+  if(NODEJS_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/www")
+    if(NPM_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/www/package.json")
+      execute_process(COMMAND ${NPM_EXECUTABLE} ci 
+                      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/www
+                      RESULT_VARIABLE NPM_CI_RESULT)
+      if(NOT NPM_CI_RESULT EQUAL "0")
+        message(FATAL_ERROR "npm ci failed with ${NPM_CI_RESULT}")
+      endif()
+      execute_process(COMMAND ${NPM_EXECUTABLE} run build
+                      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/www
+                      RESULT_VARIABLE NPM_BUILD_RESULT)
+      if(NOT NPM_BUILD_RESULT EQUAL "0")
+        message(FATAL_ERROR "npm run build failed with ${NPM_BUILD_RESULT}")
+      endif()
+    endif()
+  endif()
+endif()
+
+
+
+
+if(DEFINED ENV{GP2040_BOARDCONFIG})
+  set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
+else()
+  set(GP2040_BOARDCONFIG Pico)
+endif()
+set(PICO_BOARD_HEADER_DIRS ${CMAKE_SOURCE_DIR}/configs/${GP2040_BOARDCONFIG})
 include(FetchContent)
 FetchContent_Declare(ArduinoJson
     GIT_REPOSITORY https://github.com/bblanchon/ArduinoJson.git
@@ -78,6 +146,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons
 configs/${GP2040_BOARDCONFIG}
+)
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+  PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
 )
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
