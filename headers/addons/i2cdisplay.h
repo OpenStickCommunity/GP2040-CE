@@ -8,6 +8,7 @@
 
 #include <string>
 #include <deque>
+#include <array>
 #include <hardware/i2c.h>
 #include "OneBitDisplay.h"
 #include "BoardConfig.h"
@@ -130,7 +131,7 @@ private:
 	Gamepad* gamepad;
 	Gamepad* pGamepad;
     std::deque<std::string> history;
-    bool last[17];
+	std::array<bool, 17> last;
 	private:
 	DisplayPreviewMode displayPreviewMode;
 	uint16_t prevButtonState;

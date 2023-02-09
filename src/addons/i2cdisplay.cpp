@@ -809,7 +809,7 @@ void I2CDisplayAddon::drawHistory(Gamepad *gamepad)
 	std::deque<std::string> pressed;
 
     // Get key states
-    bool current[] = {
+	std::array<bool, 17> current = {
         pressedUp(), 
         pressedDown(),
         pressedLeft(),
@@ -859,13 +859,16 @@ void I2CDisplayAddon::drawHistory(Gamepad *gamepad)
 		case INPUT_MODE_XINPUT: mode=2; break;
 	}
 
-    // Iterate through key list and add any pressed keys
-    for (uint8_t x=0; x<17; x++) {
-        if (current[x] != last[x]){
-            if (current[x]) pressed.push_back(displayNames[mode][x]);
-            last[x] = current[x];
-        }
-    }
+	// Check if any new keys have been pressed
+	if (last != current) {
+		// Iterate through array
+		for (uint8_t x=0; x<17; x++) {
+			// Add any pressed keys to deque
+			if (current[x]) pressed.push_back(displayNames[mode][x]);
+		}
+		// Update the last keypress array
+		last = current;
+	}
 
 	if (pressed.size() > 0) {
 	    std::string newInput;
