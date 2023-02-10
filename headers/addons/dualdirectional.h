@@ -14,6 +14,10 @@ enum DualDirectionalCombinationMode
     DUAL_COMBINE_MODE_NONE
 };
 
+#ifndef DUAL_DIRECTIONAL_ENABLED
+#define DUAL_DIRECTIONAL_ENABLED true
+#endif
+
 #ifndef PIN_DUAL_DIRECTIONAL_UP
 #define PIN_DUAL_DIRECTIONAL_UP -1
 #endif
@@ -43,7 +47,7 @@ enum DualDirectionalCombinationMode
 
 class DualDirectionalInput : public GPAddon {
 public:
-	virtual bool available();   // GPAddon available
+    virtual bool available();
 	virtual void setup();       // Dual Directional Setup
 	virtual void process();     // Dual Directional Process
     virtual void preprocess();  // Dual Directional Pre-Process (Cheat)
@@ -62,6 +66,12 @@ private:
     DpadDirection lastDualUD; // Dual Last Up-Down
     DpadDirection lastDualLR; // Gamepad Last Left-Right
     uint32_t dpadTime[4];
+    uint8_t pinDualDirDown;
+    uint8_t pinDualDirUp;
+    uint8_t pinDualDirLeft;
+    uint8_t pinDualDirRight;
+    uint8_t combineMode;
+    DpadMode dpadMode;
 };
 
 #endif  // _DualDirectional_H

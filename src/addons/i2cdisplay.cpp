@@ -765,7 +765,7 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
@@ -778,11 +778,11 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
-	if ( boardOptions.pinButtonTurbo != (uint8_t)-1 ) {
+	if ( addonOptions.pinButtonTurbo != (uint8_t)-1 ) {
 		statusBar += " T";
-		if ( boardOptions.turboShotCount < 10 ) // padding
+		if ( addonOptions.turboShotCount < 10 ) // padding
 			statusBar += "0";
-		statusBar += std::to_string(boardOptions.turboShotCount);
+		statusBar += std::to_string(addonOptions.turboShotCount);
 	} else {
 		statusBar += "    "; // no turbo, don't show Txx setting
 	}

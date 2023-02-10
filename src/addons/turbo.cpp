@@ -8,22 +8,25 @@
 #define TURBO_SHOT_MAX 30
 
 bool TurboInput::available() {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    return (boardOptions.pinButtonTurbo != (uint8_t)-1);
+	AddonOptions options = Storage::getInstance().getAddonOptions();
+    pinButtonTurbo = options.pinButtonTurbo;
+    return (options.TurboInputEnabled &&
+        pinButtonTurbo != (uint8_t)-1);
 }
 
 void TurboInput::setup()
 {
     // Setup TURBO Key
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    gpio_init(boardOptions.pinButtonTurbo);             // Initialize pin
-    gpio_set_dir(boardOptions.pinButtonTurbo, GPIO_IN); // Set as INPUT
-    gpio_pull_up(boardOptions.pinButtonTurbo);          // Set as PULLUP
+    gpio_init(pinButtonTurbo);             // Initialize pin
+    gpio_set_dir(pinButtonTurbo, GPIO_IN); // Set as INPUT
+    gpio_pull_up(pinButtonTurbo);          // Set as PULLUP
     
-    if (boardOptions.pinTurboLED != -1) {
-        gpio_init(boardOptions.pinTurboLED);
-        gpio_set_dir(boardOptions.pinTurboLED, GPIO_OUT);
-        gpio_put(boardOptions.pinTurboLED, 1);
+    // Setup Turbo LED if available
+    AddonOptions options = Storage::getInstance().getAddonOptions();
+    if (options.pinTurboLED != -1) {
+        gpio_init(options.pinTurboLED);
+        gpio_set_dir(options.pinTurboLED, GPIO_OUT);
+        gpio_put(options.pinTurboLED, 1);
     }
 
     bDebState = false;
@@ -31,7 +34,7 @@ void TurboInput::setup()
     lastPressed = 0;
     lastDpad = 0;
     buttonsEnabled = 0;
-    uIntervalMS = (uint32_t)(1000.0 / boardOptions.turboShotCount);
+    uIntervalMS = (uint32_t)(1000.0 / options.turboShotCount);
     bTurboState = false;
     bTurboFlicker = false;
     nextTimer = getMillis();
@@ -40,8 +43,7 @@ void TurboInput::setup()
 bool TurboInput::read()
 {
     // Get TURBO Key State
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    return(!gpio_get(boardOptions.pinButtonTurbo));
+    return(!gpio_get(pinButtonTurbo));
 }
 
 void TurboInput::debounce()
@@ -57,7 +59,7 @@ void TurboInput::debounce()
 void TurboInput::process()
 {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+    AddonOptions options = Storage::getInstance().getAddonOptions();
     uint16_t buttonsPressed = gamepad->state.buttons & TURBO_BUTTON_MASK;
     uint16_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
@@ -75,16 +77,16 @@ void TurboInput::process()
             gamepad->state.buttons &= ~(TURBO_BUTTON_MASK);
         }
         if (dpadPressed & GAMEPAD_MASK_DOWN && (lastDpad != dpadPressed)) {
-            if ( boardOptions.turboShotCount > TURBO_SHOT_MIN ) { // can't go lower than 2-shots per second
-                boardOptions.turboShotCount--;
-                Storage::getInstance().setBoardOptions(boardOptions);
-                uIntervalMS = (uint32_t)(1000.0 / boardOptions.turboShotCount);
+            if ( options.turboShotCount > TURBO_SHOT_MIN ) { // can't go lower than 2-shots per second
+                options.turboShotCount--;
+                Storage::getInstance().setAddonOptions(options);
+                uIntervalMS = (uint32_t)(1000.0 / options.turboShotCount);
             }
         } else if ( dpadPressed & GAMEPAD_MASK_UP && (lastDpad != dpadPressed)) {
-            if ( boardOptions.turboShotCount < TURBO_SHOT_MAX ) { // can't go higher than 60-shots per second
-                boardOptions.turboShotCount++;
-                Storage::getInstance().setBoardOptions(boardOptions);
-                uIntervalMS = (uint32_t)(1000.0 / boardOptions.turboShotCount);
+            if ( options.turboShotCount < TURBO_SHOT_MAX ) { // can't go higher than 60-shots per second
+                options.turboShotCount++;
+                Storage::getInstance().setAddonOptions(options);
+                uIntervalMS = (uint32_t)(1000.0 / options.turboShotCount);
             }
         }
         lastPressed = buttonsPressed; // save last pressed
@@ -97,11 +99,11 @@ void TurboInput::process()
 
 
     // Set TURBO LED if a button is going or turbo is too fast
-    if ( boardOptions.pinTurboLED != -1 ) {
+    if ( options.pinTurboLED != -1 ) {
         if ((gamepad->state.buttons & buttonsEnabled) && !bTurboFlicker) {
-            gpio_put(boardOptions.pinTurboLED, 0);
+            gpio_put(options.pinTurboLED, 0);
         } else {
-            gpio_put(boardOptions.pinTurboLED, 1);
+            gpio_put(options.pinTurboLED, 1);
         }	
     }
 

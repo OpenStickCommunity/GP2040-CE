@@ -2,15 +2,15 @@
 #include "usb_driver.h" // Required to check USB state
 
 bool BoardLedAddon::available() {
-    BoardOptions options = Storage::getInstance().getBoardOptions();
-    return options.onBoardLedMode != OnBoardLedMode::BOARD_LED_OFF; // Available only when it's not set to off
+    AddonOptions options = Storage::getInstance().getAddonOptions();
+    onBoardLedMode = options.onBoardLedMode;
+    return options.BoardLedAddonEnabled &&
+        onBoardLedMode != OnBoardLedMode::BOARD_LED_OFF; // Available only when it's not set to off
 }
 
 void BoardLedAddon::setup() {
     gpio_init(BOARD_LED_PIN);
     gpio_set_dir(BOARD_LED_PIN, GPIO_OUT);
-    BoardOptions options = Storage::getInstance().getBoardOptions();
-    onBoardLedMode = options.onBoardLedMode;
     isConfigMode = Storage::getInstance().GetConfigMode();
     timeSinceBlink = getMillis();
     prevState = -1;

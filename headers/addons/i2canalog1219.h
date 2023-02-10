@@ -7,6 +7,10 @@
 
 #include "GamepadEnums.h"
 
+#ifndef I2C_ANALOG1219_ENABLED
+#define I2C_ANALOG1219_ENABLED true
+#endif
+
 #ifndef I2C_ANALOG1219_SDA_PIN
 #define I2C_ANALOG1219_SDA_PIN    -1
 #endif
@@ -36,8 +40,9 @@ typedef struct {
 
 class I2CAnalog1219Input : public GPAddon {
 public:
-	virtual bool available();   // GPAddon available
+	virtual bool available();
 	virtual void setup();       // Analog Setup
+	virtual void preprocess() {}
 	virtual void process();     // Analog Process
     virtual std::string name() { return I2CAnalog1219Name; }
 private:

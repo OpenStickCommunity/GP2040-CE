@@ -3,29 +3,32 @@
 #include "GamepadEnums.h"
 
 bool ReverseInput::available() {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	return (boardOptions.pinButtonReverse != (uint8_t)-1);
+    AddonOptions options = Storage::getInstance().getAddonOptions();
+    pinButtonReverse = options.pinButtonReverse;
+	return (options.ReverseInputEnabled &&
+        pinButtonReverse != (uint8_t)-1);
 }
 
 void ReverseInput::setup()
 {
     // Setup Reverse Input Button
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    gpio_init(boardOptions.pinButtonReverse);             // Initialize pin
-    gpio_set_dir(boardOptions.pinButtonReverse, GPIO_IN); // Set as INPUT
-    gpio_pull_up(boardOptions.pinButtonReverse);          // Set as PULLUP
+    gpio_init(pinButtonReverse);             // Initialize pin
+    gpio_set_dir(pinButtonReverse, GPIO_IN); // Set as INPUT
+    gpio_pull_up(pinButtonReverse);          // Set as PULLUP
     
-    pinLED = boardOptions.pinReverseLED;
+    // Setup Reverse LED if available
+    AddonOptions options = Storage::getInstance().getAddonOptions();
+    pinLED = options.pinReverseLED;
     if (pinLED != -1) {
-        gpio_init(boardOptions.pinReverseLED);
-        gpio_set_dir(boardOptions.pinReverseLED, GPIO_OUT);
-        gpio_put(boardOptions.pinReverseLED, 1);
+        gpio_init(options.pinReverseLED);
+        gpio_set_dir(options.pinReverseLED, GPIO_OUT);
+        gpio_put(options.pinReverseLED, 1);
     }
 
-    actionUp = boardOptions.reverseActionUp;
-    actionDown = boardOptions.reverseActionDown;
-    actionLeft = boardOptions.reverseActionLeft;
-    actionRight = boardOptions.reverseActionDown;
+    actionUp = options.reverseActionUp;
+    actionDown = options.reverseActionDown;
+    actionLeft = options.reverseActionLeft;
+    actionRight = options.reverseActionDown;
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	mapDpadUp    = gamepad->mapDpadUp;
@@ -40,8 +43,7 @@ void ReverseInput::setup()
 }
 
 void ReverseInput::update() {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    state = !gpio_get(boardOptions.pinButtonReverse);
+    state = !gpio_get(pinButtonReverse);
 }
 
 uint8_t ReverseInput::input(uint8_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis) {
