@@ -136,7 +136,6 @@ struct LEDOptions
 	int indexR3;
 	int indexA1;
 	int indexA2;
-	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };
 
