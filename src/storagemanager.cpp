@@ -170,7 +170,7 @@ void Storage::setAddonOptions(AddonOptions options)
 		options.checksum = CRC32::calculate(&options);
 		EEPROM.set(ADDON_STORAGE_INDEX, options);
 		EEPROM.commit();
-		memcpy(&addonOptions, &options, sizeof(AddonOptions));
+		addonOptions = options;
 	}
 }
 

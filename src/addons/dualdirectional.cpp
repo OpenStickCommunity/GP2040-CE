@@ -8,11 +8,7 @@ bool DualDirectionalInput::available() {
     pinDualDirLeft = options.pinDualDirLeft;
     pinDualDirRight = options.pinDualDirRight;
 
-    return (options.DualDirectionalInputEnabled &&
-        pinDualDirDown != (uint8_t)-1 &&
-        pinDualDirUp != (uint8_t)-1 &&
-        pinDualDirLeft != (uint8_t)-1 &&
-        pinDualDirRight != (uint8_t)-1);
+    return options.DualDirectionalInputEnabled;
 }
 
 void DualDirectionalInput::setup() {
@@ -28,9 +24,11 @@ void DualDirectionalInput::setup() {
                         pinDualDirRight};
 
     for (int i = 0; i < 4; i++) {
-        gpio_init(pinDualDir[i]);             // Initialize pin
-        gpio_set_dir(pinDualDir[i], GPIO_IN); // Set as INPUT
-        gpio_pull_up(pinDualDir[i]);          // Set as PULLUP
+        if ( pinDualDir[i] != (uint8_t)-1 ) {
+            gpio_init(pinDualDir[i]);             // Initialize pin
+            gpio_set_dir(pinDualDir[i], GPIO_IN); // Set as INPUT
+            gpio_pull_up(pinDualDir[i]);          // Set as PULLUP
+        }
     }
 
     dDebState = 0;
@@ -69,10 +67,19 @@ void DualDirectionalInput::preprocess()
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
  	// Need to invert since we're using pullups
-	dualState = (!gpio_get(pinDualDirUp) ? gamepad->mapDpadUp->buttonMask : 0)
-		| (!gpio_get(pinDualDirDown) ? gamepad->mapDpadDown->buttonMask : 0)
-		| (!gpio_get(pinDualDirLeft) ? gamepad->mapDpadLeft->buttonMask  : 0)
-		| (!gpio_get(pinDualDirRight) ? gamepad->mapDpadRight->buttonMask : 0);
+    dualState = 0;
+    if ( pinDualDirUp != (uint8_t)-1 ) {
+        dualState |= (!gpio_get(pinDualDirUp) ? gamepad->mapDpadUp->buttonMask : 0);
+    }
+    if ( pinDualDirDown != (uint8_t)-1 ) {
+        dualState |= (!gpio_get(pinDualDirDown) ? gamepad->mapDpadDown->buttonMask : 0);
+    }
+    if ( pinDualDirLeft != (uint8_t)-1 ) {
+        dualState |= (!gpio_get(pinDualDirLeft) ? gamepad->mapDpadLeft->buttonMask  : 0);
+    }
+    if ( pinDualDirRight != (uint8_t)-1 ) {
+        dualState |= (!gpio_get(pinDualDirRight) ? gamepad->mapDpadRight->buttonMask : 0);
+    }
 
     // Debounce our directional pins
     debounce();
