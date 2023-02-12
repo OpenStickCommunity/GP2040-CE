@@ -384,6 +384,8 @@ std::string getLedOptions()
 		usedPins.add(addonOptions.analogAdcPinX);
 	if (addonOptions.analogAdcPinY != -1)
 		usedPins.add(addonOptions.analogAdcPinY);
+	if (addonOptions.buzzerPin != -1)
+		usedPins.add(addonOptions.buzzerPin);
 
 	return serialize_json(doc);
 }
@@ -476,6 +478,8 @@ std::string setAddonOptions()
 	addonOptions.analogAdcPinX = doc["analogAdcPinX"] == -1 ? 0xFF : doc["analogAdcPinX"];
 	addonOptions.analogAdcPinY = doc["analogAdcPinY"] == -1 ? 0xFF : doc["analogAdcPinY"];
 	addonOptions.bootselButtonMap = doc["bootselButtonMap"];
+	addonOptions.buzzerPin        = doc["buzzerPin"] == -1 ? 0xFF : doc["buzzerPin"];
+	addonOptions.buzzerVolume     = doc["buzzerVolume"];
 	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
 	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
 	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
@@ -521,6 +525,8 @@ std::string getAddonOptions()
 	doc["analogAdcPinX"] = addonOptions.analogAdcPinX == 0xFF ? -1 : addonOptions.analogAdcPinX;
 	doc["analogAdcPinY"] = addonOptions.analogAdcPinY == 0xFF ? -1 : addonOptions.analogAdcPinY;
 	doc["bootselButtonMap"] = addonOptions.bootselButtonMap;
+	doc["buzzerPin"] = addonOptions.buzzerPin == 0xFF ? -1 : addonOptions.buzzerPin;
+	doc["buzzerVolume"] = addonOptions.buzzerVolume;
 	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
 	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
 	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;

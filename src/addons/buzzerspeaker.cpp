@@ -8,7 +8,7 @@
 bool BuzzerSpeakerAddon::available() {
 	AddonOptions options = Storage::getInstance().getAddonOptions();
 	buzzerPin = options.buzzerPin;
-	return options.BuzzerSpeakerEnabled &&
+	return options.BuzzerSpeakerAddonEnabled &&
 		buzzerPin != (uint8_t)-1;
 }
 
