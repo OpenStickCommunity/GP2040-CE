@@ -103,7 +103,6 @@ struct AddonOptions {
 	//bool PlayerLEDAddonEnabled; // PlayerLED is special case
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
-	uint8_t BuzzerEnabled;
 	uint32_t checksum;
 };
 
