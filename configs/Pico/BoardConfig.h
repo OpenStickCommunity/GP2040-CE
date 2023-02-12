@@ -215,4 +215,13 @@
 // BOOTSEL Button Add-on setting
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 
+// This is the Buzzer Speaker section.  
+// In this section you can specify if Buzzer Speaker will be active, and, if active, which pin will be used for them.
+// The default is `BUZZER_ENABLED` which will turn the Buzzer Speaker off.
+// The default pin for Buzzer Speaker is `-1` which will turn the Buzzer Speaker off.  
+// The default volume for Buzzer Speaker is 100 (max).  
+#define BUZZER_ENABLED 0
+#define BUZZER_PIN -1
+#define BUZZER_VOLUME 100
+
 #endif

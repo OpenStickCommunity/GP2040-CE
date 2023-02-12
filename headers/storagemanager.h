@@ -89,6 +89,8 @@ struct AddonOptions {
 	uint8_t analogAdcPinX;
 	uint8_t analogAdcPinY;
 	uint16_t bootselButtonMap;
+	uint8_t buzzerPin;
+	uint8_t buzzerVolume;
 	uint8_t AnalogInputEnabled;
 	uint8_t BoardLedAddonEnabled;
 	uint8_t BootselButtonAddonEnabled;
@@ -101,6 +103,7 @@ struct AddonOptions {
 	//bool PlayerLEDAddonEnabled; // PlayerLED is special case
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
+	bool BuzzerEnabled;
 	uint32_t checksum;
 };
 

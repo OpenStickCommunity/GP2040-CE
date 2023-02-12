@@ -150,6 +150,8 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.analogAdcPinX      	= ANALOG_ADC_VRX;
 	addonOptions.analogAdcPinY      	= ANALOG_ADC_VRY;
 	addonOptions.bootselButtonMap		= BOOTSEL_BUTTON_MASK;
+	addonOptions.buzzerPin              = BUZZER_PIN;
+	addonOptions.buzzerVolume           = BUZZER_VOLUME;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
