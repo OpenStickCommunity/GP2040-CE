@@ -94,26 +94,7 @@ void I2CDisplayAddon::process() {
 		drawText(5, 7, "B2 > Splash");
 	} else if ((configMode && displayPreviewMode == PREVIEW_MODE_SPLASH) ||
 			   (!configMode && getMillis() < 7500 && Storage::getInstance().GetSplashMode() != NOSPLASH)) {
-		const uint8_t* splashChoice = splashImageMain;
-		switch (Storage::getInstance().GetSplashChoice()) {
-			case MAIN:
-				break;
-			case X:
-				splashChoice = splashImage01;
-				break;
-			case Y:
-				splashChoice = splashImage02;
-				break;
-			case Z:
-				splashChoice = splashImage03;
-				break;
-			case CUSTOM:
-				splashChoice = Storage::getInstance().getSplashImage().data;
-				break;
-			case LEGACY:
-				splashChoice = splashImageLegacy;
-				break;
-		}
+		const uint8_t* splashChoice = Storage::getInstance().getSplashImage().data;
 		drawSplashScreen(Storage::getInstance().GetSplashMode(), (uint8_t *)splashChoice, 90);
 	} else {
 		drawStatusBar(gamepad);
