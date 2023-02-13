@@ -66,6 +66,7 @@
 // The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
+#define TURBO_ENABLED 1
 #define TURBO_LED_PIN 17
 
 #define BOARD_LEDS_PIN 16
