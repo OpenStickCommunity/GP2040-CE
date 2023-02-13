@@ -72,8 +72,9 @@ enum DisplayPreviewMode {
 class I2CDisplayAddon : public GPAddon
 {
 public:
-	virtual bool available();  // GPAddon
+	virtual bool available();
 	virtual void setup();
+	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
 private:

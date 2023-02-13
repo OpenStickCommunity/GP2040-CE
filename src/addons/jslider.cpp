@@ -9,27 +9,29 @@
 #define DPAD_MODE_MASK (DPAD_MODE_LEFT_ANALOG & DPAD_MODE_RIGHT_ANALOG & DPAD_MODE_DIGITAL)
 
 bool JSliderInput::available() {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	return ( boardOptions.pinSliderLS != (uint8_t)-1 && boardOptions.pinSliderRS != (uint8_t)-1);
+    AddonOptions options = Storage::getInstance().getAddonOptions();
+    pinSliderLS = options.pinSliderLS;
+    pinSliderRS = options.pinSliderRS;
+	return ( options.JSliderInputEnabled &&
+        pinSliderLS != (uint8_t)-1 &&
+        pinSliderRS != (uint8_t)-1);
 }
 
 void JSliderInput::setup()
 {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    gpio_init(boardOptions.pinSliderLS);             // Initialize pin
-    gpio_set_dir(boardOptions.pinSliderLS, GPIO_IN); // Set as INPUT
-    gpio_pull_up(boardOptions.pinSliderLS);          // Set as PULLUP
-    gpio_init(boardOptions.pinSliderRS);
-    gpio_set_dir(boardOptions.pinSliderRS, GPIO_IN); // Set as INPUT
-    gpio_pull_up(boardOptions.pinSliderRS);          // Set as PULLUP
+    gpio_init(pinSliderLS);             // Initialize pin
+    gpio_set_dir(pinSliderLS, GPIO_IN); // Set as INPUT
+    gpio_pull_up(pinSliderLS);          // Set as PULLUP
+    gpio_init(pinSliderRS);
+    gpio_set_dir(pinSliderRS, GPIO_IN); // Set as INPUT
+    gpio_pull_up(pinSliderRS);          // Set as PULLUP
 }
 
 DpadMode JSliderInput::read() {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    if ( boardOptions.pinSliderLS != (uint8_t)-1 && boardOptions.pinSliderRS != (uint8_t)-1) {
-        if ( !gpio_get(boardOptions.pinSliderLS)) {
+    if ( pinSliderLS != (uint8_t)-1 && pinSliderRS != (uint8_t)-1) {
+        if ( !gpio_get(pinSliderLS)) {
             return DPAD_MODE_LEFT_ANALOG;
-        } else if ( !gpio_get(boardOptions.pinSliderRS)) {
+        } else if ( !gpio_get(pinSliderRS)) {
             return DPAD_MODE_RIGHT_ANALOG;
         }  
     }

@@ -14,14 +14,13 @@ enum ADDON_PROCESS {
 struct AddonBlock {
     GPAddon * ptr;
     ADDON_PROCESS process;
-    bool enabled;
 };
 
 class AddonManager {
 public:
     AddonManager() {}
     ~AddonManager() {}
-    void LoadAddon(GPAddon*, ADDON_PROCESS, bool enabled=true);
+    void LoadAddon(GPAddon*, ADDON_PROCESS);
     void PreprocessAddons(ADDON_PROCESS);
     void ProcessAddons(ADDON_PROCESS);
     GPAddon * GetAddon(std::string); // hack for NeoPicoLED

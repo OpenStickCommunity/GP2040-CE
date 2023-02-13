@@ -15,13 +15,18 @@
 #include "CRC32.h"
 #include <sstream>
 
+#include "addons/analog.h"
+#include "addons/board_led.h"
+#include "addons/bootsel_button.h"
+#include "addons/buzzerspeaker.h"
 #include "addons/dualdirectional.h"
+#include "addons/i2canalog1219.h"
 #include "addons/i2cdisplay.h"
+#include "addons/jslider.h"
 #include "addons/neopicoleds.h"
 #include "addons/pleds.h"
-#include "addons/i2canalog1219.h"
+#include "addons/reverse.h"
 #include "addons/turbo.h"
-#include "addons/board_led.h"
 
 #include "bitmaps.h"
 
@@ -34,6 +39,15 @@ void Storage::initBoardOptions() {
 	boardOptions.checksum = CHECKSUM_MAGIC;
 	if (lastCRC != CRC32::calculate(&boardOptions)) {
 		setDefaultBoardOptions();
+	}
+}
+
+void Storage::initAddonOptions() {
+	EEPROM.get(ADDON_STORAGE_INDEX, addonOptions);
+	uint32_t lastCRC = addonOptions.checksum;
+	addonOptions.checksum = CHECKSUM_MAGIC;
+	if (lastCRC != CRC32::calculate(&addonOptions)) {
+		setDefaultAddonOptions();
 	}
 }
 
@@ -73,14 +87,6 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.pinButtonR3       = PIN_BUTTON_R3;
 	boardOptions.pinButtonA1       = PIN_BUTTON_A1;
 	boardOptions.pinButtonA2       = PIN_BUTTON_A2;
-	boardOptions.pinButtonTurbo    = PIN_BUTTON_TURBO;
-	boardOptions.pinButtonReverse  = PIN_BUTTON_REVERSE;
-	boardOptions.pinSliderLS       = PIN_SLIDER_LS;
-	boardOptions.pinSliderRS       = PIN_SLIDER_RS;
-	boardOptions.pinDualDirDown    = PIN_DUAL_DIRECTIONAL_DOWN;
-	boardOptions.pinDualDirUp      = PIN_DUAL_DIRECTIONAL_UP;
-	boardOptions.pinDualDirLeft    = PIN_DUAL_DIRECTIONAL_LEFT;
-	boardOptions.pinDualDirRight   = PIN_DUAL_DIRECTIONAL_RIGHT;
 	boardOptions.buttonLayout      = BUTTON_LAYOUT;
 	boardOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
 	boardOptions.splashMode        = SPLASH_MODE;
@@ -95,24 +101,6 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.displayFlip       = DISPLAY_FLIP;
 	boardOptions.displayInvert     = DISPLAY_INVERT;
 	boardOptions.displaySaverTimeout     = DISPLAY_SAVER_TIMEOUT;
-	boardOptions.turboShotCount    = DEFAULT_SHOT_PER_SEC;
-	boardOptions.pinTurboLED       = TURBO_LED_PIN;
-	boardOptions.pinReverseLED     = REVERSE_LED_PIN;
-	boardOptions.reverseActionUp         = REVERSE_UP_DEFAULT;
-	boardOptions.reverseActionDown       = REVERSE_DOWN_DEFAULT;
-	boardOptions.reverseActionLeft       = REVERSE_LEFT_DEFAULT;
-	boardOptions.reverseActionRight      = REVERSE_RIGHT_DEFAULT;
-	boardOptions.i2cAnalog1219SDAPin     = I2C_ANALOG1219_SDA_PIN;
-	boardOptions.i2cAnalog1219SCLPin     = I2C_ANALOG1219_SCL_PIN;
-	boardOptions.i2cAnalog1219Block      = (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1;
-	boardOptions.i2cAnalog1219Speed      = I2C_ANALOG1219_SPEED;
-	boardOptions.i2cAnalog1219Address    = I2C_ANALOG1219_ADDRESS;
-	boardOptions.onBoardLedMode			 = BOARD_LED_TYPE;
-	boardOptions.dualDirDpadMode         = DUAL_DIRECTIONAL_STICK_MODE;
-	boardOptions.dualDirCombineMode      = DUAL_DIRECTIONAL_COMBINE_MODE;
-	boardOptions.analogAdcPinX      	 = ANALOG_ADC_VRX;
-	boardOptions.analogAdcPinY      	 = ANALOG_ADC_VRY;
-	boardOptions.bootselButtonMap		 = BOOTSEL_BUTTON_MASK;
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }
@@ -126,6 +114,65 @@ void Storage::setBoardOptions(BoardOptions options)
 		EEPROM.set(BOARD_STORAGE_INDEX, options);
 		EEPROM.commit();
 		memcpy(&boardOptions, &options, sizeof(BoardOptions));
+	}
+}
+
+AddonOptions Storage::getAddonOptions()
+{
+	return addonOptions;
+}
+
+void Storage::setDefaultAddonOptions()
+{
+	addonOptions.pinButtonTurbo    		= PIN_BUTTON_TURBO;
+	addonOptions.pinButtonReverse  		= PIN_BUTTON_REVERSE;
+	addonOptions.pinSliderLS       		= PIN_SLIDER_LS;
+	addonOptions.pinSliderRS       		= PIN_SLIDER_RS;
+	addonOptions.pinDualDirDown    		= PIN_DUAL_DIRECTIONAL_DOWN;
+	addonOptions.pinDualDirUp      		= PIN_DUAL_DIRECTIONAL_UP;
+	addonOptions.pinDualDirLeft    		= PIN_DUAL_DIRECTIONAL_LEFT;
+	addonOptions.pinDualDirRight   		= PIN_DUAL_DIRECTIONAL_RIGHT;
+	addonOptions.turboShotCount    		= DEFAULT_SHOT_PER_SEC;
+	addonOptions.pinTurboLED       		= TURBO_LED_PIN;
+	addonOptions.pinReverseLED     		= REVERSE_LED_PIN;
+	addonOptions.reverseActionUp        = REVERSE_UP_DEFAULT;
+	addonOptions.reverseActionDown      = REVERSE_DOWN_DEFAULT;
+	addonOptions.reverseActionLeft      = REVERSE_LEFT_DEFAULT;
+	addonOptions.reverseActionRight     = REVERSE_RIGHT_DEFAULT;
+	addonOptions.i2cAnalog1219SDAPin    = I2C_ANALOG1219_SDA_PIN;
+	addonOptions.i2cAnalog1219SCLPin    = I2C_ANALOG1219_SCL_PIN;
+	addonOptions.i2cAnalog1219Block     = (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1;
+	addonOptions.i2cAnalog1219Speed     = I2C_ANALOG1219_SPEED;
+	addonOptions.i2cAnalog1219Address   = I2C_ANALOG1219_ADDRESS;
+	addonOptions.onBoardLedMode			= BOARD_LED_TYPE;
+	addonOptions.dualDirDpadMode        = DUAL_DIRECTIONAL_STICK_MODE;
+	addonOptions.dualDirCombineMode     = DUAL_DIRECTIONAL_COMBINE_MODE;
+	addonOptions.analogAdcPinX      	= ANALOG_ADC_VRX;
+	addonOptions.analogAdcPinY      	= ANALOG_ADC_VRY;
+	addonOptions.bootselButtonMap		= BOOTSEL_BUTTON_MASK;
+	addonOptions.buzzerPin              = BUZZER_PIN;
+	addonOptions.buzzerVolume           = BUZZER_VOLUME;
+	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
+	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
+	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
+	addonOptions.BuzzerSpeakerAddonEnabled = BUZZER_ENABLED;
+	addonOptions.DualDirectionalInputEnabled = DUAL_DIRECTIONAL_ENABLED;
+	addonOptions.I2CAnalog1219InputEnabled = I2C_ANALOG1219_ENABLED;
+	addonOptions.JSliderInputEnabled    = JSLIDER_ENABLED;
+	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
+	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
+	setAddonOptions(addonOptions);
+}
+
+void Storage::setAddonOptions(AddonOptions options)
+{
+	if (memcmp(&options, &addonOptions, sizeof(AddonOptions)) != 0)
+	{
+		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
+		options.checksum = CRC32::calculate(&options);
+		EEPROM.set(ADDON_STORAGE_INDEX, options);
+		EEPROM.commit();
+		addonOptions = options;
 	}
 }
 

@@ -9,6 +9,7 @@
 #include "addons/neopicoleds.h"
 #include "addons/pleds.h"
 #include "addons/board_led.h"
+#include "addons/buzzerspeaker.h"
 
 #include <iterator>
 
@@ -23,6 +24,7 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
+	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 }
 
 void GP2040Aux::run() {

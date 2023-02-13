@@ -94,26 +94,7 @@ void I2CDisplayAddon::process() {
 		drawText(5, 7, "B2 > Splash");
 	} else if ((configMode && displayPreviewMode == PREVIEW_MODE_SPLASH) ||
 			   (!configMode && getMillis() < 7500 && Storage::getInstance().GetSplashMode() != NOSPLASH)) {
-		const uint8_t* splashChoice = splashImageMain;
-		switch (Storage::getInstance().GetSplashChoice()) {
-			case MAIN:
-				break;
-			case X:
-				splashChoice = splashImage01;
-				break;
-			case Y:
-				splashChoice = splashImage02;
-				break;
-			case Z:
-				splashChoice = splashImage03;
-				break;
-			case CUSTOM:
-				splashChoice = Storage::getInstance().getSplashImage().data;
-				break;
-			case LEGACY:
-				splashChoice = splashImageLegacy;
-				break;
-		}
+		const uint8_t* splashChoice = Storage::getInstance().getSplashImage().data;
 		drawSplashScreen(Storage::getInstance().GetSplashMode(), (uint8_t *)splashChoice, 90);
 	} else {
 		drawStatusBar(gamepad);
@@ -766,7 +747,7 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
@@ -779,11 +760,11 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
-	if ( boardOptions.pinButtonTurbo != (uint8_t)-1 ) {
+	if ( addonOptions.pinButtonTurbo != (uint8_t)-1 ) {
 		statusBar += " T";
-		if ( boardOptions.turboShotCount < 10 ) // padding
+		if ( addonOptions.turboShotCount < 10 ) // padding
 			statusBar += "0";
-		statusBar += std::to_string(boardOptions.turboShotCount);
+		statusBar += std::to_string(addonOptions.turboShotCount);
 	} else {
 		statusBar += "    "; // no turbo, don't show Txx setting
 	}

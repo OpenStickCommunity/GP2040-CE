@@ -7,6 +7,10 @@
 
 #include "BoardConfig.h"
 
+#ifndef ANALOG_INPUT_ENABLED
+#define ANALOG_INPUT_ENABLED true
+#endif
+
 #ifndef ANALOG_ADC_VRX
 #define ANALOG_ADC_VRX    -1
 #endif
@@ -20,9 +24,10 @@
 
 class AnalogInput : public GPAddon {
 public:
-	virtual bool available();   // GPAddon available
+	virtual bool available();
 	virtual void setup();       // Analog Setup
 	virtual void process();     // Analog Process
+	virtual void preprocess() {}
     virtual std::string name() { return AnalogName; }
 private:
 	uint8_t analogAdcPinX;
