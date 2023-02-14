@@ -480,6 +480,7 @@ std::string setAddonOptions()
 	addonOptions.bootselButtonMap = doc["bootselButtonMap"];
 	addonOptions.buzzerPin        = doc["buzzerPin"] == -1 ? 0xFF : doc["buzzerPin"];
 	addonOptions.buzzerVolume     = doc["buzzerVolume"];
+	addonOptions.playerNumber     = doc["playerNumber"];
 	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
 	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
 	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
@@ -487,6 +488,7 @@ std::string setAddonOptions()
 	addonOptions.DualDirectionalInputEnabled = doc["DualDirectionalInputEnabled"];
 	addonOptions.I2CAnalog1219InputEnabled = doc["I2CAnalog1219InputEnabled"];
 	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
+	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
 	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
 	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
 
@@ -527,6 +529,7 @@ std::string getAddonOptions()
 	doc["bootselButtonMap"] = addonOptions.bootselButtonMap;
 	doc["buzzerPin"] = addonOptions.buzzerPin == 0xFF ? -1 : addonOptions.buzzerPin;
 	doc["buzzerVolume"] = addonOptions.buzzerVolume;
+	doc["playerNumber"] = addonOptions.playerNumber;
 	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
 	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
 	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;
@@ -534,6 +537,7 @@ std::string getAddonOptions()
 	doc["DualDirectionalInputEnabled"] = addonOptions.DualDirectionalInputEnabled;
 	doc["I2CAnalog1219InputEnabled"] = addonOptions.I2CAnalog1219InputEnabled;
 	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
+	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
 

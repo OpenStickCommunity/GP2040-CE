@@ -24,6 +24,7 @@
 #include "addons/i2cdisplay.h"
 #include "addons/jslider.h"
 #include "addons/neopicoleds.h"
+#include "addons/playernum.h"
 #include "addons/pleds.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
@@ -152,6 +153,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.bootselButtonMap		= BOOTSEL_BUTTON_MASK;
 	addonOptions.buzzerPin              = BUZZER_PIN;
 	addonOptions.buzzerVolume           = BUZZER_VOLUME;
+	addonOptions.playerNumber           = PLAYER_NUMBER;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -159,6 +161,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.DualDirectionalInputEnabled = DUAL_DIRECTIONAL_ENABLED;
 	addonOptions.I2CAnalog1219InputEnabled = I2C_ANALOG1219_ENABLED;
 	addonOptions.JSliderInputEnabled    = JSLIDER_ENABLED;
+	addonOptions.PlayerNumAddonEnabled  = PLAYERNUM_ADDON_ENABLED;
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
 	setAddonOptions(addonOptions);

@@ -91,6 +91,7 @@ struct AddonOptions {
 	uint16_t bootselButtonMap;
 	uint8_t buzzerPin;
 	uint8_t buzzerVolume;
+	uint8_t playerNumber;
 	uint8_t AnalogInputEnabled;
 	uint8_t BoardLedAddonEnabled;
 	uint8_t BootselButtonAddonEnabled;
@@ -101,6 +102,7 @@ struct AddonOptions {
 	uint8_t JSliderInputEnabled;
 	//bool NeoPicoLEDAddonEnabled; // NeoPico is special case
 	//bool PlayerLEDAddonEnabled; // PlayerLED is special case
+	uint8_t PlayerNumAddonEnabled;
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
 	uint32_t checksum;
