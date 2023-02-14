@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
+set(PICO_BOARD pico)
+
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
 include(pico_sdk_import.cmake)
@@ -16,6 +18,7 @@ if(DEFINED ENV{GP2040_BOARDCONFIG})
 else()
   set(GP2040_BOARDCONFIG Pico)
 endif()
+
 
 include(FetchContent)
 FetchContent_Declare(ArduinoJson

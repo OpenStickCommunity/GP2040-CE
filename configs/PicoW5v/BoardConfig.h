@@ -18,8 +18,8 @@
 
 #define PIN_DPAD_UP     3           // UP
 #define PIN_DPAD_DOWN   2           // DOWN
-#define PIN_DPAD_RIGHT  1           // RIGHT
-#define PIN_DPAD_LEFT   0           // LEFT
+#define PIN_DPAD_RIGHT  0           // RIGHT
+#define PIN_DPAD_LEFT   1           // LEFT
 #define PIN_BUTTON_B1   5           // B1 / A / B / Cross / 2 / K1
 #define PIN_BUTTON_B2   6           // B2 / B / A / Circle / 3 / K2
 #define PIN_BUTTON_R2   12          // R2 / RT / ZR / R2 / 8 / K3
@@ -28,13 +28,13 @@
 #define PIN_BUTTON_B4   8           // B4 / Y / X / Triangle / 4 / P2
 #define PIN_BUTTON_R1   10          // R1 / RB / R / R1 / 6 / P3
 #define PIN_BUTTON_L1   9           // L1 / LB / L / L1 / 5 / P4
-#define PIN_BUTTON_S1   -1          // S1 / Back / Minus / Select / 9 / Coin
-#define PIN_BUTTON_S2   22          // S2 / Start / Plus / Start / 10 / Start
-#define PIN_BUTTON_L3   -1          // L3 / LS / LS / L3 / 11 / LS
-#define PIN_BUTTON_R3   -1          // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   -1          // A1 / Guide / Home / ~ / 13 / ~
+#define PIN_BUTTON_S1   16          // S1 / Back / Minus / Select / 9 / Coin
+#define PIN_BUTTON_S2   26          // S2 / Start / Plus / Start / 10 / Start
+#define PIN_BUTTON_L3   20          // L3 / LS / LS / L3 / 11 / LS
+#define PIN_BUTTON_R3   19          // R3 / RS / RS / R3 / 12 / RS
+#define PIN_BUTTON_A1   13          // A1 / Guide / Home / ~ / 13 / ~
 #define PIN_BUTTON_A2   -1          // A2 / ~ / Capture / ~ / 14 / ~
-#define PIN_BUTTON_TURBO -1          // Turbo
+#define PIN_BUTTON_TURBO 4          // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
@@ -168,8 +168,8 @@
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
 #define HAS_I2C_DISPLAY -1
-#define I2C_SDA_PIN -1
-#define I2C_SCL_PIN -1
+#define I2C_SDA_PIN 0
+#define I2C_SCL_PIN 1
 #define I2C_BLOCK i2c0
 #define I2C_SPEED 400000
 #define DISPLAY_FLIP 0
