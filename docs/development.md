@@ -107,6 +107,24 @@ This setup script requires approximately 2.5GB of disk space on your SD card.
 
 ## Building
 
+### Environment Variables
+
+A number of new environment variables have been setup to control parts of the build flow.
+
+| Name | Default | Description |
+| ----------- | --------- | ----------- |
+|GP2040_BOARDCONFIG |Pico |The boards.h config file to use for the build.|
+|SKIP_WEBBUILD|FALSE|Determines whether the web configurator is built during the cmake configuration step.|
+|SKIP_SUBMODULES|FALSE|Determines whether the submodule init command is run automatically during the cmake configuration step.|
+
+#### SDK Variables
+
+There are a few SDK variables we take advantage of for our builds.
+
+| Name | Default | Description |
+| ----------- | --------- | ----------- |
+|PICO_BOARD|pico| This is the embeded board that the RP2040 chip is part of. By default, it assumes the Pico. This variable would match the `<boardname.h>` file in the board's configs folder.|
+
 ### Windows
 
 Start in the GP2040-CE folder
@@ -148,6 +166,8 @@ Start in the GP2040-CE folder
 
 ## Configuration
 
+> Note: We're moving away from compile time configuration, in favor of runtime configuration. 
+
 There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
 
 ### Board Configuration Folder
@@ -159,6 +179,7 @@ Each subfolder in [`configs`](https://github.com/OpenStickFoundation/GP2040-CE/t
 | `BoardConfig.h` | Yes | The configuration file used when building GP2040 for a specific controller/board. Contains initial pin mappings, LED configuration, etc. |
 | `README.md` | No | Provides information related to this board configuration. Not required for the build process, but suggested for pull requests of new board configurations. |
 | `assets/` | No | Folder for containing assets included in the `README.md`. Not required for the build process.
+|'<boardname.h>'|No| Board definition file, named after the board itself, used by the Pico SDK for configuring board specific SDK features. [Pico Example](https://github.com/raspberrypi/pico-sdk/blob/master/src/boards/include/boards/pico.h)
 
 ### Board Configuration (`BoardConfig.h`)
 
@@ -168,7 +189,7 @@ The following board options are available in the `BoardConfig.h` file:
 | ---------------- | ---------------------------- | --------- |
 | **PIN_DPAD_*X***<br>**PIN_BUTTON_*X*** | The GPIO pin for the button. Replace the *`X`* with GP2040 button or D-pad direction. | Yes |
 | **DEFAULT_SOCD_MODE** | The default SOCD mode to use, defaults to `SOCD_MODE_NEUTRAL`.<br>Available options are:<br>`SOCD_MODE_NEUTRAL`<br>`SOCD_MODE_UP_PRIORITY`<br>`SOCD_MODE_SECOND_INPUT_PRIORITY` | No |
-| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_WASD` | Yes |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_STICKLESS`<br>`BUTTON_LAYOUT_WASD` | Yes |
 
 Create `configs/NewBoard/BoardConfig.h` and add your pin configuration and options. An example `BoardConfig.h` file:
 
@@ -211,7 +232,7 @@ The following RGB LED options are available in the `BoardConfig.h` file:
 
 | Name             | Description                  | Required? |
 | ---------------- | ---------------------------- | --------- |
-| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_WASD` | Yes |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_STICKLESS`<br>`BUTTON_LAYOUT_WASD` | Yes |
 | **BOARD_LEDS_PIN** | Data PIN for your LED strand | Yes       |
 | **LED_FORMAT** | The color data format for the LED chain.<br>Available options are:<br>`LED_FORMAT_GRB`<br>`LED_FORMAT_RGB`<br>`LED_FORMAT_GRBW`<br>`LED_FORMAT_RGBW` | No, default value `LED_FORMAT_GRB` |
 | **LEDS_PER_PIXEL** | The number of LEDs per button. | Yes |
@@ -233,7 +254,7 @@ An example RGB LED setup in the `BoardConfig.h` file:
 #include "gp2040.h"
 #include "NeoPico.hpp"
 
-#define BUTTON_LAYOUT BUTTON_LAYOUT_HITBOX
+#define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
 
 #define BOARD_LEDS_PIN 22
 
@@ -292,7 +313,7 @@ GP2040 supports 128x64 monochrome displays that run on the SSD1306, SH1106 or SH
 
 | Name | Description | Required? |
 | - | - | - |
-| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_HITBOX`<br>`BUTTON_LAYOUT_WASD` | Yes |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_STICKLESS`<br>`BUTTON_LAYOUT_WASD` | Yes |
 | **HAS_I2C_DISPLAY** | Flag to indicate the controller contains an I2C display module. | No |
 | **DISPLAY_I2C_ADDR** | The I2C address of the display. | No, defaults to `0x3C` |
 | **I2C_SDA_PIN** | The GPIO pin for the I2C SDA line. | If `HAS_I2C_DISPLAY` is enabled |

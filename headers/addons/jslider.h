@@ -5,6 +5,10 @@
 
 #include "GamepadEnums.h"
 
+#ifndef JSLIDER_ENABLED
+#define JSLIDER_ENABLED true
+#endif
+
 #ifndef PIN_SLIDER_LS
 #define PIN_SLIDER_LS    -1
 #endif
@@ -18,8 +22,9 @@
 
 class JSliderInput : public GPAddon {
 public:
-	virtual bool available();   // GPAddon available
+    virtual bool available();
 	virtual void setup();       // JSlider Button Setup
+    virtual void preprocess() {}
 	virtual void process();     // JSlider process
     virtual std::string name() { return JSliderName; }
 private:
@@ -28,6 +33,8 @@ private:
     DpadMode dpadState;           // Saved locally for debounce
     DpadMode dDebState;          // Debounce JSlider State
     uint32_t uDebTime;          // Debounce JSlider Time
+    uint8_t pinSliderLS;
+    uint8_t pinSliderRS;
 };
 
 #endif  // _JSlider_H_

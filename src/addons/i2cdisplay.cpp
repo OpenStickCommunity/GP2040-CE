@@ -39,8 +39,9 @@ void I2CDisplayAddon::setup() {
 		initDisplay(OLED_132x64);
 	}
  
-  	displayPreviewMode = PREVIEW_MODE_NONE;
+	displayPreviewMode = PREVIEW_MODE_NONE;
 	prevButtonState = 0;
+	displaySaverTimeout = displaySaverTimer = boardOptions.displaySaverTimeout * 60000; // minute to ms
 	
 	obdSetContrast(&obd, 0xFF);
 	obdSetBackBuffer(&obd, ucBackBuffer);
@@ -49,12 +50,39 @@ void I2CDisplayAddon::setup() {
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
 }
 
+bool I2CDisplayAddon::isDisplayPowerOff()
+{
+	if (!displaySaverTimeout) return false;
+	
+	float diffTime = getMillis() - prevMillis;
+	displaySaverTimer -= diffTime;
+
+	if (gamepad->state.buttons || gamepad->state.dpad) {
+		displaySaverTimer = displaySaverTimeout;
+		setDisplayPower(1);
+	} else if (displaySaverTimer <= 0) {
+		setDisplayPower(0);
+	}
+
+	prevMillis = getMillis();
+
+	return displaySaverTimer <= 0;
+}
+
+void I2CDisplayAddon::setDisplayPower(uint8_t status)
+{
+	if (displayIsPowerOn != status) {
+		displayIsPowerOn = status;
+		obdPower(&obd, status);
+	}
+}
+
 void I2CDisplayAddon::process() {
-	//Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	//Gamepad * pGamepad = Storage::getInstance().GetProcessedGamepad();
+	bool configMode = Storage::getInstance().GetConfigMode();
+
+	if (!configMode && isDisplayPowerOff()) return;
 
 	clearScreen(0);
-	bool configMode = Storage::getInstance().GetConfigMode();
 	if (configMode) {
 		gamepad->read();
 		uint16_t buttonState = gamepad->state.buttons;
@@ -79,26 +107,7 @@ void I2CDisplayAddon::process() {
 		drawText(5, 7, "B2 > Splash");
 	} else if ((configMode && displayPreviewMode == PREVIEW_MODE_SPLASH) ||
 			   (!configMode && getMillis() < 7500 && Storage::getInstance().GetSplashMode() != NOSPLASH)) {
-		const uint8_t* splashChoice = splashImageMain;
-		switch (Storage::getInstance().GetSplashChoice()) {
-			case MAIN:
-				break;
-			case X:
-				splashChoice = splashImage01;
-				break;
-			case Y:
-				splashChoice = splashImage02;
-				break;
-			case Z:
-				splashChoice = splashImage03;
-				break;
-			case CUSTOM:
-				splashChoice = Storage::getInstance().getSplashImage().data;
-				break;
-			case LEGACY:
-				splashChoice = splashImageLegacy;
-				break;
-		}
+		const uint8_t* splashChoice = Storage::getInstance().getSplashImage().data;
 		drawSplashScreen(Storage::getInstance().GetSplashMode(), (uint8_t *)splashChoice, 90);
 	} else {
 		drawStatusBar(gamepad);
@@ -138,7 +147,7 @@ void I2CDisplayAddon::process() {
 				break;
 			case BUTTON_LAYOUT_CUSTOMA:
 				drawButtonLayoutLeft(options);
-			break;
+				break;
 			case BUTTON_LAYOUT_FIGHTBOARD_STICK:
 				drawArcadeStick(18, 22, 8, 2);
 				break;
@@ -193,7 +202,7 @@ void I2CDisplayAddon::process() {
 				break;
 			case BUTTON_LAYOUT_CUSTOMB:
 				drawButtonLayoutRight(options);
-			break;
+				break;
 			case BUTTON_LAYOUT_FIGHTBOARD:
 				drawFightboard(8, 22, 7, 3);
 				break;
@@ -321,6 +330,12 @@ void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutCustomOptions options)
 			case BUTTON_LAYOUT_VLXA:
 				drawVLXA(startX, startY, buttonRadius, buttonPadding);
 				break;
+			case BUTTON_LAYOUT_FIGHTBOARD_STICK:
+				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
+				drawFightboardMirrored(startX, startY, buttonRadius, buttonPadding);
+				break;
 		}
 }
 
@@ -374,6 +389,12 @@ void I2CDisplayAddon::drawButtonLayoutRight(ButtonLayoutCustomOptions options)
 				break;
 			case BUTTON_LAYOUT_VLXB:
 				drawVLXB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_FIGHTBOARD:
+				drawFightboard(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
+				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
 				break;
 		}
 }
@@ -860,6 +881,7 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
 	BoardOptions boardOptions = getBoardOptions();
+	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
@@ -872,11 +894,11 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
-	if ( boardOptions.pinButtonTurbo != (uint8_t)-1 ) {
+	if ( addonOptions.pinButtonTurbo != (uint8_t)-1 ) {
 		statusBar += " T";
-		if ( boardOptions.turboShotCount < 10 ) // padding
+		if ( addonOptions.turboShotCount < 10 ) // padding
 			statusBar += "0";
-		statusBar += std::to_string(boardOptions.turboShotCount);
+		statusBar += std::to_string(addonOptions.turboShotCount);
 	} else {
 		statusBar += "    "; // no turbo, don't show Txx setting
 	}

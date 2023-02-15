@@ -3,6 +3,10 @@
 
 #include "gpaddon.h"
 
+#ifndef TURBO_ENABLED
+#define TURBO_ENABLED true
+#endif
+
 #ifndef DEFAULT_SHOT_PER_SEC
 #define DEFAULT_SHOT_PER_SEC 15
 #endif  // DEFAULT_SHOT_PER_SEC
@@ -17,12 +21,13 @@
 #endif
 
 // Turbo Module Name
-#define TurboName "TURBO"
+#define TurboName "Turbo"
 
 class TurboInput : public GPAddon {
 public:
-	virtual bool available();   // GPAddon available
+    virtual bool available();
 	virtual void setup();       // TURBO Button Setup
+    virtual void preprocess() {}
 	virtual void process();     // TURBO Setting of buttons (Enable/Disable)
     virtual std::string name() { return TurboName; }
 private:
@@ -37,5 +42,6 @@ private:
     bool bTurboState;           // Turbo Buttons State
     bool bTurboFlicker;         // Turbo Enable Buttons Toggle OFF Flag ??
     uint32_t nextTimer;         // Turbo Timer
+    uint8_t pinButtonTurbo;     // Turbo Button Pin
 };
 #endif  // TURBO_H_

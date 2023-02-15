@@ -165,8 +165,9 @@ public:
 // NeoPico LED Addon
 class NeoPicoLEDAddon : public GPAddon {
 public:
-	virtual bool available();  // GPAddon
+	virtual bool available();
 	virtual void setup();
+	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return NeoPicoLEDName; }
 	void configureLEDs();
@@ -174,7 +175,7 @@ public:
 private:
 	std::vector<uint8_t> * getLEDPositions(std::string button, std::vector<std::vector<uint8_t>> *positions);
 	std::vector<std::vector<Pixel>> generatedLEDButtons(std::vector<std::vector<uint8_t>> *positions);
-	std::vector<std::vector<Pixel>> generatedLEDHitbox(std::vector<std::vector<uint8_t>> *positions);
+	std::vector<std::vector<Pixel>> generatedLEDStickless(std::vector<std::vector<uint8_t>> *positions);
 	std::vector<std::vector<Pixel>> generatedLEDWasd(std::vector<std::vector<uint8_t>> *positions);
 	std::vector<std::vector<Pixel>> generatedLEDWasdFBM(std::vector<std::vector<uint8_t>> *positions);
 	std::vector<std::vector<Pixel>> createLEDLayout(ButtonLayout layout, uint8_t ledsPerPixel, uint8_t ledButtonCount);

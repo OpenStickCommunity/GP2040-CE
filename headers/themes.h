@@ -284,7 +284,7 @@ static map<uint32_t, RGB> themeFightboard({
 
 void addStaticThemes(LEDOptions options)
 {
-	// Rainbow theme on a Hitbox layout should use green for up button
+	// Rainbow theme on a Stickless layout should use green for up button
 	themeStaticRainbow[GAMEPAD_MASK_DU] = (options.ledLayout == BUTTON_LAYOUT_STICKLESS) ? ColorGreen : ColorOrange;
 
 	StaticTheme::ClearThemes();

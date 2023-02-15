@@ -198,6 +198,7 @@
 #define LEDS_BASE_ANIMATION_INDEX 3
 #define LEDS_THEME_INDEX 19
 #define LEDS_BUTTON_COLOR_INDEX 0
+#define LEDS_BRIGHTNESS 2
 
 // Board LED Add-on Setting
 // BOARD_LED_OFF  - Turns the on-board LED off
@@ -208,12 +209,14 @@
 #define BOARD_LED_TYPE BOARD_LED_OFF
 
 // Dual Directional Add-on Options
-
 #define PIN_DUAL_DIRECTIONAL_UP -1
 #define PIN_DUAL_DIRECTIONAL_DOWN -1
 #define PIN_DUAL_DIRECTIONAL_LEFT -1
 #define PIN_DUAL_DIRECTIONAL_RIGHT -1
 #define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
 #define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
+
+// BOOTSEL Button Add-on setting
+#define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 
 #endif

@@ -18,7 +18,8 @@
 #define BOARD_STORAGE_INDEX     		1024 //  512 bytes for hardware options
 #define LED_STORAGE_INDEX       		1536 //  512 bytes for LED configuration
 #define ANIMATION_STORAGE_INDEX 		2048 // 1024 bytes for LED animations
-#define SPLASH_IMAGE_STORAGE_INDEX		2560
+#define ADDON_STORAGE_INDEX             3072 // 1024 bytes for Add-Ons
+#define SPLASH_IMAGE_STORAGE_INDEX		4096 // 1032 bytes for Display Config
 
 #define CHECKSUM_MAGIC          0 	// Checksum CRC
 
@@ -62,10 +63,6 @@ struct BoardOptions
 	uint8_t pinButtonR3;
 	uint8_t pinButtonA1;
 	uint8_t pinButtonA2;
-	uint8_t pinButtonTurbo;
-	uint8_t pinButtonReverse;
-	uint8_t pinSliderLS;
-	uint8_t pinSliderRS;
 	ButtonLayout buttonLayout;
 	ButtonLayoutRight buttonLayoutRight;
 	SplashMode splashMode;
@@ -79,6 +76,17 @@ struct BoardOptions
 	uint8_t displaySize;
 	bool displayFlip;
 	bool displayInvert;
+	int displaySaverTimeout;
+	ButtonLayoutCustomOptions buttonLayoutCustomOptions;
+	char boardVersion[32]; // 32-char limit to board name
+	uint32_t checksum;
+};
+
+struct AddonOptions {
+	uint8_t pinButtonTurbo;
+	uint8_t pinButtonReverse;
+	uint8_t pinSliderLS;
+	uint8_t pinSliderRS;
 	uint8_t turboShotCount; // Turbo
 	uint8_t pinTurboLED;    // Turbo LED
 	uint8_t pinReverseLED;    // Reverse LED
@@ -101,8 +109,20 @@ struct BoardOptions
 	uint8_t analogAdcPinX;
 	uint8_t analogAdcPinY;
 	uint16_t bootselButtonMap;
-	ButtonLayoutCustomOptions buttonLayoutCustomOptions;
-	char boardVersion[32]; // 32-char limit to board name
+	uint8_t buzzerPin;
+	uint8_t buzzerVolume;
+	uint8_t AnalogInputEnabled;
+	uint8_t BoardLedAddonEnabled;
+	uint8_t BootselButtonAddonEnabled;
+	uint8_t BuzzerSpeakerAddonEnabled;
+	uint8_t DualDirectionalInputEnabled;
+	uint8_t I2CAnalog1219InputEnabled;
+	//bool I2CDisplayAddonEnabled; // I2C is special case
+	uint8_t JSliderInputEnabled;
+	//bool NeoPicoLEDAddonEnabled; // NeoPico is special case
+	//bool PlayerLEDAddonEnabled; // PlayerLED is special case
+	uint8_t ReverseInputEnabled;
+	uint8_t TurboInputEnabled;
 	uint32_t checksum;
 };
 
@@ -138,7 +158,6 @@ struct LEDOptions
 	int indexR3;
 	int indexA1;
 	int indexA2;
-	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };
 
@@ -161,6 +180,9 @@ public:
 	
 	void setPreviewBoardOptions(const BoardOptions&);	// Board Options
 	BoardOptions getPreviewBoardOptions();
+	void setAddonOptions(AddonOptions); // Add-On Options
+	void setDefaultAddonOptions();
+	AddonOptions getAddonOptions();
 
 	void setSplashImage(SplashImage);
 	void setDefaultSplashImage();
@@ -195,11 +217,13 @@ private:
 	Storage() : gamepad(0) {
 		EEPROM.start(); // init EEPROM
 		initBoardOptions();
+		initAddonOptions();
 		initLEDOptions();
 		initSplashImage();
 	}
 	void initBoardOptions();
 	void initPreviewBoardOptions();
+	void initAddonOptions();
 	void initLEDOptions();
 	void initSplashImage();
 	bool CONFIG_MODE; 			// Config mode (boot)
@@ -207,6 +231,7 @@ private:
 	Gamepad * processedGamepad; // Gamepad with ONLY processed data
 	BoardOptions boardOptions;
 	BoardOptions previewBoardOptions;
+	AddonOptions addonOptions;
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;

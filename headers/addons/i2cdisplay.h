@@ -54,6 +54,10 @@
 #define DISPLAY_USEWIRE 1
 #endif
 
+#ifndef DISPLAY_SAVER_TIMEOUT
+#define DISPLAY_SAVER_TIMEOUT 0
+#endif
+
 // i2c Display Module
 #define I2CDisplayName "I2CDisplay"
 
@@ -67,8 +71,9 @@ enum DisplayPreviewMode {
 class I2CDisplayAddon : public GPAddon
 {
 public:
-	virtual bool available();  // GPAddon
+	virtual bool available();
 	virtual void setup();
+	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
 private:
@@ -116,6 +121,12 @@ private:
 	bool pressedLeft();
 	bool pressedRight();
 	BoardOptions getBoardOptions();
+	bool isDisplayPowerOff();
+	void setDisplayPower(uint8_t status);
+	uint32_t displaySaverTimeout = 0;
+	int32_t displaySaverTimer;
+	uint8_t displayIsPowerOn = 1;
+	uint32_t prevMillis;
 	uint8_t ucBackBuffer[1024];
 	OBDISP obd;
 	std::string statusBar;

@@ -31,8 +31,9 @@ public:
 class PlayerLEDAddon : public GPAddon
 {
 public:
-	virtual bool available(); // GPAddon
+	virtual bool available();
 	virtual void setup();
+	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return PLEDName; }
 	PlayerLEDAddon() : type(PLED_TYPE) {}

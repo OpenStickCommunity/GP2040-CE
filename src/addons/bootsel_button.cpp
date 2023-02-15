@@ -36,15 +36,16 @@ bool __no_inline_not_in_flash_func(BootselButtonAddon::isBootselPressed)() {
 }
 
 bool BootselButtonAddon::available() {
-	bootselButtonMap = Storage::getInstance().getBoardOptions().bootselButtonMap;
-	return bootselButtonMap != 0;
+	AddonOptions options = Storage::getInstance().getAddonOptions();
+	bootselButtonMap = options.bootselButtonMap;
+	return options.BootselButtonAddonEnabled &&
+		bootselButtonMap != 0;
 }
 
-void BootselButtonAddon::setup() {
-	gamepad = Storage::getInstance().GetGamepad();
-}
+void BootselButtonAddon::setup() {}
 
 void BootselButtonAddon::process() {
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	if (isBootselPressed()) {
 		if (bootselButtonMap > (GAMEPAD_MASK_A2)) {
 			switch (bootselButtonMap) {

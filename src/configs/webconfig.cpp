@@ -1,4 +1,5 @@
 #include "configs/webconfig.h"
+#include "configs/base64.h"
 
 #include "storagemanager.h"
 #include "configmanager.h"
@@ -7,6 +8,8 @@
 #include <cstring>
 #include <string>
 #include <vector>
+
+#include <pico/types.h>
 
 // HTTPD Includes
 #include <ArduinoJson.h>
@@ -37,8 +40,11 @@
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
 #define API_GET_MEMORY_REPORT "/api/getMemoryReport"
+#if !defined(NDEBUG)
+#define API_POST_ECHO "/api/echo"
+#endif
+#define API_REBOOT "/api/reboot"
 
-#define LWIP_HTTPD_POST_MAX_URI_LEN 128
 #define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
 
 using namespace std;
@@ -47,10 +53,11 @@ extern struct fsdata_file file__index_html[];
 
 const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
-static char *http_post_uri;
+const static uint32_t rebootDelayMs = 500;
+static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
 static uint16_t http_post_payload_len = 0;
-static bool is_post = false;
+static absolute_time_t rebootDelayTimeout = nil_time;
 
 void WebConfig::setup() {
 	rndis_init();
@@ -59,14 +66,27 @@ void WebConfig::setup() {
 void WebConfig::loop() {
 	// rndis http server requires inline functions (non-class)
 	rndis_task();
+
+	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
+		System::reboot(System::BootMode::GAMEPAD);
+	}
 }
 
 // **** WEB SERVER Overrides and Special Functionality ****
 int set_file_data(struct fs_file *file, string data)
 {
 	static string returnData;
+	returnData.clear();
+	returnData.append(
+		"HTTP/1.0 200 OK\r\n"
+		"Server: GP2040-CE " GP2040VERSION "\r\n"
+		"Content-Type: application/json\r\n"
+		"Content-Length: "
+	);
+	returnData.append(std::to_string(data.length()));
+	returnData.append("\r\n\r\n");
+	returnData.append(data);
 
-	returnData = data;
 	file->data = returnData.c_str();
 	file->len = returnData.size();
 	file->index = file->len;
@@ -99,11 +119,13 @@ err_t httpd_post_begin(void *connection, const char *uri, const char *http_reque
 	LWIP_UNUSED_ARG(response_uri_len);
 	LWIP_UNUSED_ARG(post_auto_wnd);
 
-	if (!uri || (uri[0] == '\0') || memcmp(uri, "/api", 4))
+	if (!uri || strncmp(uri, "/api", 4) != 0) {
 		return ERR_ARG;
+	}
 
-	http_post_uri = (char *)uri;
-	is_post = true;
+	http_post_uri = uri;
+	http_post_payload_len = 0;
+	memset(http_post_payload, 0, LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	return ERR_OK;
 }
 
@@ -112,12 +134,7 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 {
 	LWIP_UNUSED_ARG(connection);
 
-	int count;
-	uint32_t http_post_payload_full_flag = 0;
-
 	// Cache the received data to http_post_payload
-	http_post_payload_len = 0;
-	memset(http_post_payload, 0, LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	while (p != NULL)
 	{
 		if (http_post_payload_len + p->len <= LWIP_HTTPD_POST_MAX_PAYLOAD_LEN)
@@ -125,9 +142,9 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 			MEMCPY(http_post_payload + http_post_payload_len, p->payload, p->len);
 			http_post_payload_len += p->len;
 		}
-		else // Buffer overflow Set overflow flag
+		else // Buffer overflow
 		{
-			http_post_payload_full_flag = 1;
+			http_post_payload_len = 0xffff;
 			break;
 		}
 
@@ -138,8 +155,9 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 	pbuf_free(p);
 
 	// If the buffer overflows, error out
-	if (http_post_payload_full_flag)
+	if (http_post_payload_len == 0xffff) {
 		return ERR_BUF;
+	}
 
 	return ERR_OK;
 }
@@ -148,10 +166,11 @@ err_t httpd_post_receive_data(void *connection, struct pbuf *p)
 void httpd_post_finished(void *connection, char *response_uri, uint16_t response_uri_len)
 {
 	LWIP_UNUSED_ARG(connection);
-	LWIP_UNUSED_ARG(response_uri);
-	LWIP_UNUSED_ARG(response_uri_len);
 
-	response_uri = http_post_uri;
+	if (http_post_payload_len != 0xffff) {
+		strncpy(response_uri, http_post_uri.c_str(), response_uri_len);
+		response_uri[response_uri_len - 1] = '\0';
+	}
 }
 
 std::string serialize_json(DynamicJsonDocument &doc)
@@ -177,6 +196,7 @@ std::string setDisplayOptions()
 	boardOptions.buttonLayoutRight     = doc["buttonLayoutRight"];
 	boardOptions.splashMode      	   = doc["splashMode"];
 	boardOptions.splashChoice          = doc["splashChoice"];
+	boardOptions.displaySaverTimeout   = doc["displaySaverTimeout"];
 
 	boardOptions.buttonLayoutCustomOptions.params.layout 		 	       = doc["buttonLayoutCustomOptions"]["params"]["layout"];
 	boardOptions.buttonLayoutCustomOptions.params.startX 		 	       = doc["buttonLayoutCustomOptions"]["params"]["startX"];
@@ -213,6 +233,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutRight"] = boardOptions.buttonLayoutRight;
 	doc["splashMode"]  	     = boardOptions.splashMode;
 	doc["splashChoice"]      = boardOptions.splashChoice;
+	doc["displaySaverTimeout"] = boardOptions.displaySaverTimeout;
 
 	doc["buttonLayoutCustomOptions"]["params"]["layout"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.layout;
 	doc["buttonLayoutCustomOptions"]["params"]["startX"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.startX;
@@ -265,24 +286,11 @@ std::string getSplashImage()
 std::string setSplashImage() // Expects 16 chunked requests because
 {							 // it can't handle all the payload at once
 	DynamicJsonDocument doc = get_post_data();
-	int index = doc["index"];
-	
-	// Clean temp array, just in case
-	if (index == 0) {
-		for (int i = 0; i < 1024; i++) {
-			splashImageTemp.data[i] = 0;
-		}
-	}
-
-	JsonArray array = doc["splashImage"].as<JsonArray>();
-	for (int i = 0; i < 64; i++) {
-		splashImageTemp.data[(64 * index) + i] = array[i];
-	}
-	
-	// Persist data, all data bits should be set
-	if (index == 15) {
-		ConfigManager::getInstance().setSplashImage(splashImageTemp);
-	}
+	std::string decoded;
+	std::string base64String = doc["splashImage"];
+	Base64::Decode(base64String, decoded);
+	memcpy(splashImageTemp.data, decoded.data(), decoded.length());
+	ConfigManager::getInstance().setSplashImage(splashImageTemp);
 
 	return serialize_json(doc);
 }
@@ -399,10 +407,13 @@ std::string getLedOptions()
 	if (boardOptions.i2cSCLPin != -1)
 		usedPins.add(boardOptions.i2cSCLPin);
 
-	if (boardOptions.analogAdcPinX != -1)
-		usedPins.add(boardOptions.analogAdcPinX);
-	if (boardOptions.analogAdcPinY != -1)
-		usedPins.add(boardOptions.analogAdcPinY);
+	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	if (addonOptions.analogAdcPinX != -1)
+		usedPins.add(addonOptions.analogAdcPinX);
+	if (addonOptions.analogAdcPinY != -1)
+		usedPins.add(addonOptions.analogAdcPinY);
+	if (addonOptions.buzzerPin != -1)
+		usedPins.add(addonOptions.buzzerPin);
 
 	return serialize_json(doc);
 }
@@ -468,36 +479,46 @@ std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	boardOptions.hasBoardOptions    = true;
-	boardOptions.pinButtonTurbo    	= doc["turboPin"] == -1 ? 0xFF : doc["turboPin"];
-	boardOptions.pinTurboLED        = doc["turboPinLED"] == -1 ? 0xFF : doc["turboPinLED"];
-	boardOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
-	boardOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
-	boardOptions.turboShotCount 	= doc["turboShotCount"];
-	boardOptions.pinButtonReverse  	= doc["reversePin"] == -1 ? 0xFF : doc["reversePin"];
-	boardOptions.pinReverseLED  	= doc["reversePinLED"] == -1 ? 0xFF : doc["reversePinLED"];
-	boardOptions.reverseActionUp  	= doc["reverseActionUp"] == -1 ? 0xFF : doc["reverseActionUp"];
-	boardOptions.reverseActionDown  = doc["reverseActionDown"] == -1 ? 0xFF : doc["reverseActionDown"];
-	boardOptions.reverseActionLeft  = doc["reverseActionLeft"] == -1 ? 0xFF : doc["reverseActionLeft"];
-	boardOptions.reverseActionRight = doc["reverseActionRight"] == -1 ? 0xFF : doc["reverseActionRight"];
-	boardOptions.i2cAnalog1219SDAPin = doc["i2cAnalog1219SDAPin"] == -1 ? 0xFF : doc["i2cAnalog1219SDAPin"];
-	boardOptions.i2cAnalog1219SCLPin = doc["i2cAnalog1219SCLPin"] == -1 ? 0xFF : doc["i2cAnalog1219SCLPin"];
-	boardOptions.i2cAnalog1219Block = doc["i2cAnalog1219Block"];
-	boardOptions.i2cAnalog1219Speed = doc["i2cAnalog1219Speed"];
-	boardOptions.i2cAnalog1219Address = doc["i2cAnalog1219Address"];
-	boardOptions.onBoardLedMode = doc["onBoardLedMode"];
-	boardOptions.pinDualDirDown 	= doc["dualDirDownPin"] == -1 ? 0xFF : doc["dualDirDownPin"];
-	boardOptions.pinDualDirUp 		= doc["dualDirUpPin"] == -1 ? 0xFF : doc["dualDirUpPin"];
-	boardOptions.pinDualDirLeft 	= doc["dualDirLeftPin"] == -1 ? 0xFF : doc["dualDirLeftPin"];
-	boardOptions.pinDualDirRight 	= doc["dualDirRightPin"] == -1 ? 0xFF : doc["dualDirRightPin"];
-	boardOptions.dualDirDpadMode    = doc["dualDirDpadMode"];
-	boardOptions.dualDirCombineMode = doc["dualDirCombineMode"];
-	boardOptions.analogAdcPinX = doc["analogAdcPinX"] == -1 ? 0xFF : doc["analogAdcPinX"];
-	boardOptions.analogAdcPinY = doc["analogAdcPinY"] == -1 ? 0xFF : doc["analogAdcPinY"];
-	boardOptions.bootselButtonMap = doc["bootselButtonMap"];
+	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	addonOptions.pinButtonTurbo    	= doc["turboPin"] == -1 ? 0xFF : doc["turboPin"];
+	addonOptions.pinTurboLED        = doc["turboPinLED"] == -1 ? 0xFF : doc["turboPinLED"];
+	addonOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
+	addonOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
+	addonOptions.turboShotCount 	= doc["turboShotCount"];
+	addonOptions.pinButtonReverse  	= doc["reversePin"] == -1 ? 0xFF : doc["reversePin"];
+	addonOptions.pinReverseLED  	= doc["reversePinLED"] == -1 ? 0xFF : doc["reversePinLED"];
+	addonOptions.reverseActionUp  	= doc["reverseActionUp"] == -1 ? 0xFF : doc["reverseActionUp"];
+	addonOptions.reverseActionDown  = doc["reverseActionDown"] == -1 ? 0xFF : doc["reverseActionDown"];
+	addonOptions.reverseActionLeft  = doc["reverseActionLeft"] == -1 ? 0xFF : doc["reverseActionLeft"];
+	addonOptions.reverseActionRight = doc["reverseActionRight"] == -1 ? 0xFF : doc["reverseActionRight"];
+	addonOptions.i2cAnalog1219SDAPin = doc["i2cAnalog1219SDAPin"] == -1 ? 0xFF : doc["i2cAnalog1219SDAPin"];
+	addonOptions.i2cAnalog1219SCLPin = doc["i2cAnalog1219SCLPin"] == -1 ? 0xFF : doc["i2cAnalog1219SCLPin"];
+	addonOptions.i2cAnalog1219Block = doc["i2cAnalog1219Block"];
+	addonOptions.i2cAnalog1219Speed = doc["i2cAnalog1219Speed"];
+	addonOptions.i2cAnalog1219Address = doc["i2cAnalog1219Address"];
+	addonOptions.onBoardLedMode = doc["onBoardLedMode"];
+	addonOptions.pinDualDirDown 	= doc["dualDirDownPin"] == -1 ? 0xFF : doc["dualDirDownPin"];
+	addonOptions.pinDualDirUp 		= doc["dualDirUpPin"] == -1 ? 0xFF : doc["dualDirUpPin"];
+	addonOptions.pinDualDirLeft 	= doc["dualDirLeftPin"] == -1 ? 0xFF : doc["dualDirLeftPin"];
+	addonOptions.pinDualDirRight 	= doc["dualDirRightPin"] == -1 ? 0xFF : doc["dualDirRightPin"];
+	addonOptions.dualDirDpadMode    = doc["dualDirDpadMode"];
+	addonOptions.dualDirCombineMode = doc["dualDirCombineMode"];
+	addonOptions.analogAdcPinX = doc["analogAdcPinX"] == -1 ? 0xFF : doc["analogAdcPinX"];
+	addonOptions.analogAdcPinY = doc["analogAdcPinY"] == -1 ? 0xFF : doc["analogAdcPinY"];
+	addonOptions.bootselButtonMap = doc["bootselButtonMap"];
+	addonOptions.buzzerPin        = doc["buzzerPin"] == -1 ? 0xFF : doc["buzzerPin"];
+	addonOptions.buzzerVolume     = doc["buzzerVolume"];
+	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
+	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
+	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
+	addonOptions.BootselButtonAddonEnabled = doc["BootselButtonAddonEnabled"];
+	addonOptions.DualDirectionalInputEnabled = doc["DualDirectionalInputEnabled"];
+	addonOptions.I2CAnalog1219InputEnabled = doc["I2CAnalog1219InputEnabled"];
+	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
+	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
+	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
 
-	Storage::getInstance().setBoardOptions(boardOptions);
+	Storage::getInstance().setAddonOptions(addonOptions);
 
 	return serialize_json(doc);
 }
@@ -505,33 +526,44 @@ std::string setAddonOptions()
 std::string getAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	doc["turboPin"] = boardOptions.pinButtonTurbo == 0xFF ? -1 : boardOptions.pinButtonTurbo;
-	doc["turboPinLED"] = boardOptions.pinTurboLED == 0xFF ? -1 : boardOptions.pinTurboLED;
-	doc["sliderLSPin"] = boardOptions.pinSliderLS == 0xFF ? -1 : boardOptions.pinSliderLS;
-	doc["sliderRSPin"] = boardOptions.pinSliderRS == 0xFF ? -1 : boardOptions.pinSliderRS;
-	doc["turboShotCount"] = boardOptions.turboShotCount;
-	doc["reversePin"] = boardOptions.pinButtonReverse == 0xFF ? -1 : boardOptions.pinButtonReverse;
-	doc["reversePinLED"] = boardOptions.pinReverseLED == 0xFF ? -1 : boardOptions.pinReverseLED;
-	doc["reverseActionUp"] = boardOptions.reverseActionUp == 0xFF ? -1 : boardOptions.reverseActionUp;
-	doc["reverseActionDown"] = boardOptions.reverseActionDown == 0xFF ? -1 : boardOptions.reverseActionDown;
-	doc["reverseActionLeft"] = boardOptions.reverseActionLeft == 0xFF ? -1 : boardOptions.reverseActionLeft;
-	doc["reverseActionRight"] = boardOptions.reverseActionRight == 0xFF ? -1 : boardOptions.reverseActionRight;
-	doc["i2cAnalog1219SDAPin"] = boardOptions.i2cAnalog1219SDAPin == 0xFF ? -1 : boardOptions.i2cAnalog1219SDAPin;
-	doc["i2cAnalog1219SCLPin"] = boardOptions.i2cAnalog1219SCLPin == 0xFF ? -1 : boardOptions.i2cAnalog1219SCLPin;
-	doc["i2cAnalog1219Block"] = boardOptions.i2cAnalog1219Block;
-	doc["i2cAnalog1219Speed"] = boardOptions.i2cAnalog1219Speed;
-	doc["i2cAnalog1219Address"] = boardOptions.i2cAnalog1219Address;
-	doc["onBoardLedMode"] = boardOptions.onBoardLedMode;
-	doc["dualDirDownPin"] = boardOptions.pinDualDirDown == 0xFF ? -1 : boardOptions.pinDualDirDown;
-	doc["dualDirUpPin"] = boardOptions.pinDualDirUp == 0xFF ? -1 : boardOptions.pinDualDirUp;
-	doc["dualDirLeftPin"] = boardOptions.pinDualDirLeft == 0xFF ? -1 : boardOptions.pinDualDirLeft;
-	doc["dualDirRightPin"] = boardOptions.pinDualDirRight == 0xFF ? -1 : boardOptions.pinDualDirRight;
-	doc["dualDirDpadMode"] = boardOptions.dualDirDpadMode;
-	doc["dualDirCombineMode"] = boardOptions.dualDirCombineMode;
-	doc["analogAdcPinX"] = boardOptions.analogAdcPinX == 0xFF ? -1 : boardOptions.analogAdcPinX;
-	doc["analogAdcPinY"] = boardOptions.analogAdcPinY == 0xFF ? -1 : boardOptions.analogAdcPinY;
-	doc["bootselButtonMap"] = boardOptions.bootselButtonMap;
+	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	doc["turboPin"] = addonOptions.pinButtonTurbo == 0xFF ? -1 : addonOptions.pinButtonTurbo;
+	doc["turboPinLED"] = addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED;
+	doc["sliderLSPin"] = addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS;
+	doc["sliderRSPin"] = addonOptions.pinSliderRS == 0xFF ? -1 : addonOptions.pinSliderRS;
+	doc["turboShotCount"] = addonOptions.turboShotCount;
+	doc["reversePin"] = addonOptions.pinButtonReverse == 0xFF ? -1 : addonOptions.pinButtonReverse;
+	doc["reversePinLED"] = addonOptions.pinReverseLED == 0xFF ? -1 : addonOptions.pinReverseLED;
+	doc["reverseActionUp"] = addonOptions.reverseActionUp == 0xFF ? -1 : addonOptions.reverseActionUp;
+	doc["reverseActionDown"] = addonOptions.reverseActionDown == 0xFF ? -1 : addonOptions.reverseActionDown;
+	doc["reverseActionLeft"] = addonOptions.reverseActionLeft == 0xFF ? -1 : addonOptions.reverseActionLeft;
+	doc["reverseActionRight"] = addonOptions.reverseActionRight == 0xFF ? -1 : addonOptions.reverseActionRight;
+	doc["i2cAnalog1219SDAPin"] = addonOptions.i2cAnalog1219SDAPin == 0xFF ? -1 : addonOptions.i2cAnalog1219SDAPin;
+	doc["i2cAnalog1219SCLPin"] = addonOptions.i2cAnalog1219SCLPin == 0xFF ? -1 : addonOptions.i2cAnalog1219SCLPin;
+	doc["i2cAnalog1219Block"] = addonOptions.i2cAnalog1219Block;
+	doc["i2cAnalog1219Speed"] = addonOptions.i2cAnalog1219Speed;
+	doc["i2cAnalog1219Address"] = addonOptions.i2cAnalog1219Address;
+	doc["onBoardLedMode"] = addonOptions.onBoardLedMode;
+	doc["dualDirDownPin"] = addonOptions.pinDualDirDown == 0xFF ? -1 : addonOptions.pinDualDirDown;
+	doc["dualDirUpPin"] = addonOptions.pinDualDirUp == 0xFF ? -1 : addonOptions.pinDualDirUp;
+	doc["dualDirLeftPin"] = addonOptions.pinDualDirLeft == 0xFF ? -1 : addonOptions.pinDualDirLeft;
+	doc["dualDirRightPin"] = addonOptions.pinDualDirRight == 0xFF ? -1 : addonOptions.pinDualDirRight;
+	doc["dualDirDpadMode"] = addonOptions.dualDirDpadMode;
+	doc["dualDirCombineMode"] = addonOptions.dualDirCombineMode;
+	doc["analogAdcPinX"] = addonOptions.analogAdcPinX == 0xFF ? -1 : addonOptions.analogAdcPinX;
+	doc["analogAdcPinY"] = addonOptions.analogAdcPinY == 0xFF ? -1 : addonOptions.analogAdcPinY;
+	doc["bootselButtonMap"] = addonOptions.bootselButtonMap;
+	doc["buzzerPin"] = addonOptions.buzzerPin == 0xFF ? -1 : addonOptions.buzzerPin;
+	doc["buzzerVolume"] = addonOptions.buzzerVolume;
+	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
+	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
+	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;
+	doc["BootselButtonAddonEnabled"] = addonOptions.BootselButtonAddonEnabled;
+	doc["DualDirectionalInputEnabled"] = addonOptions.DualDirectionalInputEnabled;
+	doc["I2CAnalog1219InputEnabled"] = addonOptions.I2CAnalog1219InputEnabled;
+	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
+	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
+	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
@@ -585,44 +617,61 @@ std::string resetSettings()
 	return serialize_json(doc);
 }
 
+#if !defined(NDEBUG)
+std::string echo()
+{
+	DynamicJsonDocument doc = get_post_data();
+	return serialize_json(doc);
+}
+#endif
+
+std::string reboot()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	doc["success"] = true;
+	// We need to wait for a bit before we actually reboot to leave the webclient some time to receive the response
+	rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+	return serialize_json(doc);
+}
+
 int fs_open_custom(struct fs_file *file, const char *name)
 {
-	if (is_post)
-	{
-		if (!memcmp(http_post_uri, API_SET_DISPLAY_OPTIONS, sizeof(API_SET_DISPLAY_OPTIONS)))
+	if (strcmp(name, API_SET_DISPLAY_OPTIONS) == 0)
 			return set_file_data(file, setDisplayOptions());
-		if (!memcmp(http_post_uri, API_SET_GAMEPAD_OPTIONS, sizeof(API_SET_GAMEPAD_OPTIONS)))
+	if (strcmp(name, API_SET_GAMEPAD_OPTIONS) == 0)
 			return set_file_data(file, setGamepadOptions());
-		if (!memcmp(http_post_uri, API_SET_LED_OPTIONS, sizeof(API_SET_LED_OPTIONS)))
+	if (strcmp(name, API_SET_LED_OPTIONS) == 0)
 			return set_file_data(file, setLedOptions());
-		if (!memcmp(http_post_uri, API_SET_PIN_MAPPINGS, sizeof(API_SET_PIN_MAPPINGS)))
+	if (strcmp(name, API_SET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, setPinMappings());
-		if (!memcmp(http_post_uri, API_SET_ADDON_OPTIONS, sizeof(API_SET_ADDON_OPTIONS)))
+	if (strcmp(name, API_SET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, setAddonOptions());
-		if (!memcmp(http_post_uri, API_SET_SPLASH_IMAGE, sizeof(API_SET_SPLASH_IMAGE)))
+	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, setSplashImage());
-	}
-	else
-	{
-		if (!memcmp(name, API_GET_DISPLAY_OPTIONS, sizeof(API_GET_DISPLAY_OPTIONS)))
+#if !defined(NDEBUG)
+	if (strcmp(name, API_POST_ECHO) == 0)
+		return set_file_data(file, echo());
+#endif
+	if (strcmp(name, API_GET_DISPLAY_OPTIONS) == 0)
 			return set_file_data(file, getDisplayOptions());
-		if (!memcmp(name, API_GET_GAMEPAD_OPTIONS, sizeof(API_GET_GAMEPAD_OPTIONS)))
+	if (strcmp(name, API_GET_GAMEPAD_OPTIONS) == 0)
 			return set_file_data(file, getGamepadOptions());
-		if (!memcmp(name, API_GET_LED_OPTIONS, sizeof(API_GET_LED_OPTIONS)))
+	if (strcmp(name, API_GET_LED_OPTIONS) == 0)
 			return set_file_data(file, getLedOptions());
-		if (!memcmp(name, API_GET_PIN_MAPPINGS, sizeof(API_GET_PIN_MAPPINGS)))
+	if (strcmp(name, API_GET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, getPinMappings());
-		if (!memcmp(name, API_GET_ADDON_OPTIONS, sizeof(API_GET_ADDON_OPTIONS)))
+	if (strcmp(name, API_GET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, getAddonOptions());
-		if (!memcmp(name, API_RESET_SETTINGS, sizeof(API_RESET_SETTINGS)))
+	if (strcmp(name, API_RESET_SETTINGS) == 0)
 			return set_file_data(file, resetSettings());
-		if (!memcmp(name, API_GET_SPLASH_IMAGE, sizeof(API_GET_SPLASH_IMAGE)))
+	if (strcmp(name, API_GET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, getSplashImage());
-		if (!memcmp(name, API_GET_FIRMWARE_VERSION, sizeof(API_GET_FIRMWARE_VERSION)))
+	if (strcmp(name, API_GET_FIRMWARE_VERSION) == 0)
 			return set_file_data(file, getFirmwareVersion());
-		if (!memcmp(name, API_GET_MEMORY_REPORT, sizeof(API_GET_MEMORY_REPORT)))
+	if (strcmp(name, API_GET_MEMORY_REPORT) == 0)
 			return set_file_data(file, getMemoryReport());
-	}
+	if (strcmp(name, API_REBOOT) == 0)
+			return set_file_data(file, reboot());
 
 	bool isExclude = false;
 	for (auto &excludePath : excludePaths)
@@ -652,6 +701,4 @@ void fs_close_custom(struct fs_file *file)
 		mem_free(file->pextension);
 		file->pextension = NULL;
 	}
-
-	is_post = false;
 }

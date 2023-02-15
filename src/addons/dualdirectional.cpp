@@ -2,25 +2,33 @@
 #include "storagemanager.h"
 
 bool DualDirectionalInput::available() {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    return (boardOptions.pinDualDirDown != (uint8_t)-1 &&
-        boardOptions.pinDualDirUp != (uint8_t)-1 &&
-        boardOptions.pinDualDirLeft != (uint8_t)-1 &&
-        boardOptions.pinDualDirRight != (uint8_t)-1);
+    AddonOptions options = Storage::getInstance().getAddonOptions();
+    pinDualDirDown = options.pinDualDirDown;
+    pinDualDirUp = options.pinDualDirUp;
+    pinDualDirLeft = options.pinDualDirLeft;
+    pinDualDirRight = options.pinDualDirRight;
+
+    return options.DualDirectionalInputEnabled;
 }
 
 void DualDirectionalInput::setup() {
+    AddonOptions options = Storage::getInstance().getAddonOptions();
+    combineMode = options.dualDirCombineMode;
+
+    dpadMode = options.dualDirDpadMode;
+
     // Setup TURBO Key
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-    uint8_t pinDualDir[4] = {boardOptions.pinDualDirDown,
-                        boardOptions.pinDualDirUp,
-                        boardOptions.pinDualDirLeft,
-                        boardOptions.pinDualDirRight};
+    uint8_t pinDualDir[4] = {pinDualDirDown,
+                        pinDualDirUp,
+                        pinDualDirLeft,
+                        pinDualDirRight};
 
     for (int i = 0; i < 4; i++) {
-        gpio_init(pinDualDir[i]);             // Initialize pin
-        gpio_set_dir(pinDualDir[i], GPIO_IN); // Set as INPUT
-        gpio_pull_up(pinDualDir[i]);          // Set as PULLUP
+        if ( pinDualDir[i] != (uint8_t)-1 ) {
+            gpio_init(pinDualDir[i]);             // Initialize pin
+            gpio_set_dir(pinDualDir[i], GPIO_IN); // Set as INPUT
+            gpio_pull_up(pinDualDir[i]);          // Set as PULLUP
+        }
     }
 
     dDebState = 0;
@@ -56,14 +64,22 @@ void DualDirectionalInput::debounce()
 
 void DualDirectionalInput::preprocess()
 {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
  	// Need to invert since we're using pullups
-	dualState = (!gpio_get(boardOptions.pinDualDirUp) ? gamepad->mapDpadUp->buttonMask : 0)
-		| (!gpio_get(boardOptions.pinDualDirDown) ? gamepad->mapDpadDown->buttonMask : 0)
-		| (!gpio_get(boardOptions.pinDualDirLeft) ? gamepad->mapDpadLeft->buttonMask  : 0)
-		| (!gpio_get(boardOptions.pinDualDirRight) ? gamepad->mapDpadRight->buttonMask : 0);
+    dualState = 0;
+    if ( pinDualDirUp != (uint8_t)-1 ) {
+        dualState |= (!gpio_get(pinDualDirUp) ? gamepad->mapDpadUp->buttonMask : 0);
+    }
+    if ( pinDualDirDown != (uint8_t)-1 ) {
+        dualState |= (!gpio_get(pinDualDirDown) ? gamepad->mapDpadDown->buttonMask : 0);
+    }
+    if ( pinDualDirLeft != (uint8_t)-1 ) {
+        dualState |= (!gpio_get(pinDualDirLeft) ? gamepad->mapDpadLeft->buttonMask  : 0);
+    }
+    if ( pinDualDirRight != (uint8_t)-1 ) {
+        dualState |= (!gpio_get(pinDualDirRight) ? gamepad->mapDpadRight->buttonMask : 0);
+    }
 
     // Debounce our directional pins
     debounce();
@@ -72,7 +88,7 @@ void DualDirectionalInput::preprocess()
     uint8_t gamepadState = gamepad->state.dpad;
 
     // Combined Mode
-    if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_MIXED ) {
+    if ( combineMode == DUAL_COMBINE_MODE_MIXED ) {
         SOCDDualClean(gamepad->options.socdMode); // Clean up Dual SOCD based on the mode
 
         // Second Input (Last Input Priority) needs to happen before we MPG clean
@@ -81,13 +97,13 @@ void DualDirectionalInput::preprocess()
         }
     }
     // Gamepad Overwrite Mode
-    else if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
+    else if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
         if ( gamepadState != 0 && (gamepadState != dualState)) {
             dualState = gamepadState;
         }
     }
     // Dual Overwrite Mode
-    else if ( boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_DUAL ) {
+    else if ( combineMode == DUAL_COMBINE_MODE_DUAL ) {
         if ( dualState != 0 && gamepadState != dualState) {
             gamepadState = dualState;
         }
@@ -98,13 +114,11 @@ void DualDirectionalInput::preprocess()
 
 void DualDirectionalInput::process()
 {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-
     uint8_t dualOut = dualState;
 
     // If we're in mixed mode
-    if (boardOptions.dualDirCombineMode == DUAL_COMBINE_MODE_MIXED) {
+    if (combineMode == DUAL_COMBINE_MODE_MIXED) {
         uint8_t gamepadDpad = gpadToBinary(gamepad->options.dpadMode, gamepad->state);
         // Up-Win or Neutral Modify AFTER SOCD(gamepad), Last-Win Modifies BEFORE SOCD(gamepad)
         if ( gamepad->options.socdMode == SOCD_MODE_UP_PRIORITY ||
@@ -123,7 +137,7 @@ void DualDirectionalInput::process()
     }
 
     // Set Dual Directional Output
-    OverrideGamepad(gamepad, boardOptions.dualDirDpadMode, dualOut);
+    OverrideGamepad(gamepad, dpadMode, dualOut);
 }
 
 void DualDirectionalInput::OverrideGamepad(Gamepad * gamepad, DpadMode mode, uint8_t dpad) {

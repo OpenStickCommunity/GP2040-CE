@@ -36,8 +36,8 @@
 #define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO 14         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
-#define PIN_SLIDER_LS    26         // Left Stick Slider
-#define PIN_SLIDER_RS    27         // Right Stick Slider
+#define PIN_SLIDER_LS    -1         // Left Stick Slider
+#define PIN_SLIDER_RS    -1         // Right Stick Slider
 
 
 // This is the SOCD section.
@@ -133,8 +133,10 @@
 // Some smaller displays (like 0.96" and 1.31") can go up to `800000` or even `1000000`.
 // The default `DISPLAY_FLIP` is `0`.
 // This can be changed to `1` to have the dispaly output flipped.
-// The default `DISPLAY_INVERY` is `0`.
+// The default `DISPLAY_INVERT` is `0`.
 // This can be changed to `1` to have the color on the display inverted.
+// The default `DISPLAY_SAVER_TIMEOUT` is `0`.
+// This can be changed to a number in minutes which will be the inactivity timeout for the display to turn off.
 // The default `BUTTON_LAYOUT` is `BUTTON_LAYOUT_STICK` which will show an arcade stick on the left hand side of the display.
 // There are seven options for `BUTTON_LAYOUT` currently:
 // 1 - BUTTON_LAYOUT_STICK - This is a basic joystick layout
@@ -172,6 +174,7 @@
 #define I2C_SPEED 400000
 #define DISPLAY_FLIP 0
 #define DISPLAY_INVERT 0
+#define DISPLAY_SAVER_TIMEOUT 0
 
 // I2C Analog ADS1219 Add-on Options
 #define I2C_ANALOG1219_SDA_PIN -1
@@ -211,5 +214,14 @@
 
 // BOOTSEL Button Add-on setting
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+
+// This is the Buzzer Speaker section.  
+// In this section you can specify if Buzzer Speaker will be active, and, if active, which pin will be used for them.
+// The default is `BUZZER_ENABLED` which will turn the Buzzer Speaker off.
+// The default pin for Buzzer Speaker is `-1` which will turn the Buzzer Speaker off.  
+// The default volume for Buzzer Speaker is 100 (max).  
+#define BUZZER_ENABLED 0
+#define BUZZER_PIN -1
+#define BUZZER_VOLUME 100
 
 #endif

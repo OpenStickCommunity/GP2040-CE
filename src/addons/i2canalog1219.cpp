@@ -5,13 +5,14 @@
 #define VREF_VOLTAGE 2.048f
 
 bool I2CAnalog1219Input::available() {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	return (boardOptions.i2cAnalog1219SDAPin != (uint8_t)-1 &&
-        boardOptions.i2cAnalog1219SCLPin != (uint8_t)-1);
+    AddonOptions options = Storage::getInstance().getAddonOptions();
+	return (options.I2CAnalog1219InputEnabled &&
+        options.i2cAnalog1219SDAPin != (uint8_t)-1 &&
+        options.i2cAnalog1219SCLPin != (uint8_t)-1);
 }
 
 void I2CAnalog1219Input::setup() {
-    BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+    AddonOptions options = Storage::getInstance().getAddonOptions();
 
     memset(&pins, 0, sizeof(ADS_PINS));
     channelHop = 0;
@@ -21,11 +22,11 @@ void I2CAnalog1219Input::setup() {
 
     // Init our ADS1219 library
     ads = new ADS1219(1,
-        boardOptions.i2cAnalog1219SDAPin,
-        boardOptions.i2cAnalog1219SCLPin,
-        boardOptions.i2cAnalog1219Block == 0 ? i2c0 : i2c1,
-        boardOptions.i2cAnalog1219Speed,
-        boardOptions.i2cAnalog1219Address);
+        options.i2cAnalog1219SDAPin,
+        options.i2cAnalog1219SCLPin,
+        options.i2cAnalog1219Block == 0 ? i2c0 : i2c1,
+        options.i2cAnalog1219Speed,
+        options.i2cAnalog1219Address);
     ads->begin();                               // setup I2C and chip start
     ads->setChannel(0);                         // Start on Channel 0
     ads->setConversionMode(CONTINUOUS);         // Read analog continuously
