@@ -137,6 +137,13 @@ enum {
   ANGLE_FLIPY
 };
 
+enum {
+  FLIP_NONE=0,
+  FLIP_BOTH,
+  FLIP_HORIZONTAL,
+  FLIP_VERTICAL
+};
+
 // Return value from obd obdI2CInit()
 enum {
   OLED_NOT_FOUND = -1, // no display found

@@ -55,7 +55,7 @@ struct BoardOptions
 	bool hasI2CDisplay;
 	int displayI2CAddress;
 	uint8_t displaySize;
-	bool displayFlip;
+	uint8_t displayFlip;
 	bool displayInvert;
 	int displaySaverTimeout;
 	char boardVersion[32]; // 32-char limit to board name

@@ -373,12 +373,16 @@ void obdSPIInit(OBDISP *pOBD, int iType, int iDC, int iCS, int iReset, int iMOSI
 		}
 		if (bFlip) // rotate display 180
 		{
-			uc[0] = 0; // command
-			uc[1] = 0xa0;
-			_I2CWrite(pOBD, uc, 2);
-			uc[0] = 0;
-			uc[1] = 0xc0;
-			_I2CWrite(pOBD, uc, 2);
+			if (bFlip == FLIP_HORIZONTAL || bFlip == FLIP_BOTH) {
+				uc[0] = 0; // command
+				uc[1] = 0xa0;
+				_I2CWrite(pOBD, uc, 2);
+			}
+			if (bFlip == FLIP_VERTICAL || bFlip == FLIP_BOTH) {
+				uc[0] = 0;
+				uc[1] = 0xc0;
+				_I2CWrite(pOBD, uc, 2);
+			}
 		}
 	} // OLED
 	if (iType == LCD_UC1701 || iType == LCD_HX1230)
@@ -393,8 +397,12 @@ void obdSPIInit(OBDISP *pOBD, int iType, int iDC, int iCS, int iReset, int iMOSI
 		}
 		if (bFlip) // flip horizontal + vertical
 		{
-			obdWriteCommand(pOBD, 0xa1); // set SEG direction (A1 to flip horizontal)
-			obdWriteCommand(pOBD, cCOM); // set COM direction (C0 to flip vert)
+			if (bFlip == FLIP_HORIZONTAL || bFlip == FLIP_BOTH) {
+				obdWriteCommand(pOBD, 0xa1); // set SEG direction (A1 to flip horizontal)
+			}
+			if (bFlip == FLIP_VERTICAL || bFlip == FLIP_BOTH) {
+				obdWriteCommand(pOBD, cCOM); // set COM direction (C0 to flip vert)
+			}
 		}
 		if (bInvert)
 		{
@@ -413,8 +421,12 @@ void obdSPIInit(OBDISP *pOBD, int iType, int iDC, int iCS, int iReset, int iMOSI
 		obdWriteCommand(pOBD, 0xaf); // display enable
 		if (bFlip)                   // flip horizontal + vertical
 		{
-			obdWriteCommand(pOBD, 0xa1); // set SEG direction (A1 to flip horizontal)
-			obdWriteCommand(pOBD, 0xc2); // set COM direction (C0 to flip vert)
+			if (bFlip == FLIP_HORIZONTAL || bFlip == FLIP_BOTH) {
+				obdWriteCommand(pOBD, 0xa1); // set SEG direction (A1 to flip horizontal)
+			}
+			if (bFlip == FLIP_VERTICAL || bFlip == FLIP_BOTH) {
+				obdWriteCommand(pOBD, 0xc2); // set COM direction (C0 to flip vert)
+			}
 		}
 		if (bInvert)
 		{
@@ -534,10 +546,14 @@ int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int b
 	if (bFlip) // rotate display 180
 	{
 		uc[0] = 0; // command
-		uc[1] = 0xa0;
-		_I2CWrite(pOBD, uc, 2);
-		uc[1] = 0xc0;
-		_I2CWrite(pOBD, uc, 2);
+		if (bFlip == FLIP_HORIZONTAL || bFlip == FLIP_BOTH) {
+			uc[1] = 0xa0;
+			_I2CWrite(pOBD, uc, 2);
+		}
+		if (bFlip == FLIP_VERTICAL || bFlip == FLIP_BOTH) {
+			uc[1] = 0xc0;
+			_I2CWrite(pOBD, uc, 2);
+		}
 	}
 	pOBD->width = 128; // assume 128x64
 	pOBD->height = 64;
