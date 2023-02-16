@@ -6,7 +6,7 @@
 #include "GamepadEnums.h"
 
 #ifndef REVERSE_ENABLED
-#define REVERSE_ENABLED true
+#define REVERSE_ENABLED 0
 #endif
 
 #ifndef PIN_REVERSE

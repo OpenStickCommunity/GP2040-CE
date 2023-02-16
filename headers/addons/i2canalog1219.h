@@ -8,7 +8,7 @@
 #include "GamepadEnums.h"
 
 #ifndef I2C_ANALOG1219_ENABLED
-#define I2C_ANALOG1219_ENABLED true
+#define I2C_ANALOG1219_ENABLED 0
 #endif
 
 #ifndef I2C_ANALOG1219_SDA_PIN
