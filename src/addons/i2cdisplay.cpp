@@ -101,34 +101,34 @@ void I2CDisplayAddon::process() {
 		switch (Storage::getInstance().GetButtonLayout())
 		{
 			case BUTTON_LAYOUT_STICK:
-				drawArcadeStick(8, 28, 8, 2);
+				drawArcadeStick(8, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_STICKLESS:
 				drawStickless(8, 20, 8, 2);
 				break;
 			case BUTTON_LAYOUT_BUTTONS_ANGLED:
-				drawWasdBox(8, 28, 7, 3);
+				drawWasdBox(8, 22, 7, 3);
 				break;
 			case BUTTON_LAYOUT_BUTTONS_BASIC:
-				drawUDLR(8, 28, 8, 2);
+				drawUDLR(8, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_KEYBOARD_ANGLED:
-				drawKeyboardAngled(18, 28, 5, 2);
+				drawKeyboardAngled(18, 24, 5, 2);
 				break;
 			case BUTTON_LAYOUT_KEYBOARDA:
-				drawMAMEA(8, 28, 10, 1);
+				drawMAMEA(8, 22, 10, 1);
 				break;
 			case BUTTON_LAYOUT_DANCEPADA:
 				drawDancepadA(39, 12, 15, 2);
 				break;
 			case BUTTON_LAYOUT_TWINSTICKA:
-				drawTwinStickA(8, 28, 8, 2);
+				drawTwinStickA(8, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_BLANKA:
 				drawBlankA(0, 0, 0, 0);
 				break;
 			case BUTTON_LAYOUT_VLXA:
-				drawVLXA(7, 28, 7, 2);
+				drawVLXA(7, 22, 7, 2);
 				break;
 			case BUTTON_LAYOUT_FIGHTBOARD_STICK:
 				drawArcadeStick(18, 22, 8, 2);
@@ -141,46 +141,46 @@ void I2CDisplayAddon::process() {
 		switch (Storage::getInstance().GetButtonLayoutRight())
 		{
 			case BUTTON_LAYOUT_ARCADE:
-				drawArcadeButtons(8, 28, 8, 2);
+				drawArcadeButtons(8, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_STICKLESSB:
 				drawSticklessButtons(8, 20, 8, 2);
 				break;
 			case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
-				drawWasdButtons(8, 28, 7, 3);
+				drawWasdButtons(8, 22, 7, 3);
 				break;
 			case BUTTON_LAYOUT_VEWLIX:
-				drawVewlix(8, 28, 8, 2);
+				drawVewlix(8, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_VEWLIX7:
-				drawVewlix7(8, 28, 8, 2);
+				drawVewlix7(8, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_CAPCOM:
-				drawCapcom(6, 28, 8, 2);
+				drawCapcom(6, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_CAPCOM6:
-				drawCapcom6(16, 28, 8, 2);
+				drawCapcom6(16, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_SEGA2P:
-				drawSega2p(8, 28, 8, 2);
+				drawSega2p(8, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_NOIR8:
-				drawNoir8(8, 28, 8, 2);
+				drawNoir8(8, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_KEYBOARDB:
-				drawMAMEB(68, 28, 10, 1);
+				drawMAMEB(68, 22, 10, 1);
 				break;
 			case BUTTON_LAYOUT_DANCEPADB:
 				drawDancepadB(39, 12, 15, 2);
 				break;
 			case BUTTON_LAYOUT_TWINSTICKB:
-				drawTwinStickB(100, 28, 8, 2);
+				drawTwinStickB(100, 22, 8, 2);
 				break;
 			case BUTTON_LAYOUT_BLANKB:
 				drawSticklessButtons(0, 0, 0, 0);
 				break;
 			case BUTTON_LAYOUT_VLXB:
-				drawVLXB(6, 28, 7, 2);
+				drawVLXB(6, 22, 7, 2);
 				break;
 			case BUTTON_LAYOUT_FIGHTBOARD:
 				drawFightboard(8, 22, 7, 3);
