@@ -8,6 +8,7 @@
 
 enum ADDON_PROCESS {
     CORE0_INPUT,
+    CORE0_USBREPORT,
     CORE1_LOOP
 };
 
