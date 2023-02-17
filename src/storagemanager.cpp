@@ -20,6 +20,7 @@
 #include "addons/bootsel_button.h"
 #include "addons/buzzerspeaker.h"
 #include "addons/dualdirectional.h"
+#include "addons/extra_button.h"
 #include "addons/i2canalog1219.h"
 #include "addons/i2cdisplay.h"
 #include "addons/jslider.h"
@@ -153,12 +154,15 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.bootselButtonMap		= BOOTSEL_BUTTON_MASK;
 	addonOptions.buzzerPin              = BUZZER_PIN;
 	addonOptions.buzzerVolume           = BUZZER_VOLUME;
+	addonOptions.extraButtonMap		    = EXTRA_BUTTON_MASK;
+	addonOptions.extraButtonPin		    = EXTRA_BUTTON_PIN;
 	addonOptions.playerNumber           = PLAYER_NUMBER;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
 	addonOptions.BuzzerSpeakerAddonEnabled = BUZZER_ENABLED;
 	addonOptions.DualDirectionalInputEnabled = DUAL_DIRECTIONAL_ENABLED;
+	addonOptions.ExtraButtonAddonEnabled = EXTRA_BUTTON_ENABLED;
 	addonOptions.I2CAnalog1219InputEnabled = I2C_ANALOG1219_ENABLED;
 	addonOptions.JSliderInputEnabled    = JSLIDER_ENABLED;
 	addonOptions.PlayerNumAddonEnabled  = PLAYERNUM_ADDON_ENABLED;
