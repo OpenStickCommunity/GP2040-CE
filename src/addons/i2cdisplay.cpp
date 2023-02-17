@@ -119,7 +119,7 @@ void I2CDisplayAddon::process() {
 				drawMAMEA(8, 22, 10, 1);
 				break;
 			case BUTTON_LAYOUT_DANCEPADA:
-				drawDancepadA(39, 12, 15, 2);
+				drawDancepadA(39, 10, 13, 2);
 				break;
 			case BUTTON_LAYOUT_TWINSTICKA:
 				drawTwinStickA(8, 22, 8, 2);
@@ -171,7 +171,7 @@ void I2CDisplayAddon::process() {
 				drawMAMEB(68, 22, 10, 1);
 				break;
 			case BUTTON_LAYOUT_DANCEPADB:
-				drawDancepadB(39, 12, 15, 2);
+				drawDancepadB(39, 10, 13, 2);
 				break;
 			case BUTTON_LAYOUT_TWINSTICKB:
 				drawTwinStickB(100, 22, 8, 2);
@@ -290,7 +290,7 @@ void I2CDisplayAddon::drawStickless(int startX, int startY, int buttonRadius, in
 	obdPreciseEllipse(&obd, startX, startY, buttonRadius, buttonRadius, 1, pressedLeft());
 	obdPreciseEllipse(&obd, startX + buttonMargin, startY, buttonRadius, buttonRadius, 1, pressedDown());
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 1.875), startY + (buttonMargin / 2), buttonRadius, buttonRadius, 1, pressedRight());
-	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.25), startY + buttonMargin * 1.875, buttonRadius, buttonRadius, 1, pressedUp());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * 1.875), startY + (buttonMargin * 1.5), buttonRadius, buttonRadius, 1, pressedUp());
 }
 
 void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding)
