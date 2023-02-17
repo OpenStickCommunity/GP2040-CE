@@ -26,6 +26,7 @@ public:
 	virtual void preprocess() {}
     virtual std::string name() { return PlayerNumName; }
 private:
+	void handleLED(int);
 	uint8_t assigned;
 	uint8_t playerNum;
 	uint8_t xinputIDs[4];

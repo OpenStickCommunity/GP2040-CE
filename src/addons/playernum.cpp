@@ -28,13 +28,27 @@ void PlayerNumAddon::process()
         if ( inputMode == INPUT_MODE_XINPUT ) {
             uint8_t * featureData = Storage::getInstance().GetFeatureData();
             if (featureData[0] == 0x01) {
-                if ( (featureData[2] != xinputIDs[playerNum-1]) ) {
-                    sleep_ms(1000 * (playerNum-1)); // Wait Player_Num * 1-second for reboot
-                    System::reboot(System::BootMode::GAMEPAD);
-                } else {
-                    assigned = 1;
-                }
+                XInputPLEDPattern ledAction = (XInputPLEDPattern)featureData[2];
+                if ( ledAction == XINPUT_PLED_ON1 )
+                    handleLED(1);
+                else if ( ledAction == XINPUT_PLED_ON2 )
+                    handleLED(2);
+                else if ( ledAction == XINPUT_PLED_ON3 )
+                    handleLED(3);
+                else if ( ledAction == XINPUT_PLED_ON4 )
+                    handleLED(4);
             }
+        } else {
+            assigned = 1;
         }
+    }
+}
+
+void PlayerNumAddon::handleLED(int num) {
+    if ( playerNum != num ) {
+        sleep_ms(2000 * (playerNum-1));
+        System::reboot(System::BootMode::GAMEPAD);
+    } else {
+        assigned = 1;
     }
 }
