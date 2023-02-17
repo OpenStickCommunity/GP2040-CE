@@ -118,6 +118,7 @@ src/addons/dualdirectional.cpp
 src/addons/reverse.cpp
 src/addons/i2canalog1219.cpp
 src/addons/bootsel_button.cpp
+src/addons/extra_button.cpp
 src/addons/buzzerspeaker.cpp
 )
 
