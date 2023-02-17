@@ -108,18 +108,19 @@ src/storagemanager.cpp
 src/system.cpp
 src/configs/webconfig.cpp
 src/addons/analog.cpp
-src/addons/turbo.cpp
+src/addons/board_led.cpp
+src/addons/bootsel_button.cpp
+src/addons/buzzerspeaker.cpp
+src/addons/dualdirectional.cpp
+src/addons/extra_button.cpp
+src/addons/i2canalog1219.cpp
 src/addons/jslider.cpp
 src/addons/i2cdisplay.cpp
 src/addons/neopicoleds.cpp
+src/addons/playernum.cpp
 src/addons/playerleds.cpp
-src/addons/board_led.cpp
-src/addons/dualdirectional.cpp
 src/addons/reverse.cpp
-src/addons/i2canalog1219.cpp
-src/addons/bootsel_button.cpp
-src/addons/extra_button.cpp
-src/addons/buzzerspeaker.cpp
+src/addons/turbo.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
