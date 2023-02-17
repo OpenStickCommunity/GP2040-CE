@@ -89,6 +89,8 @@ struct AddonOptions {
 	uint8_t analogAdcPinX;
 	uint8_t analogAdcPinY;
 	uint16_t bootselButtonMap;
+	uint8_t extraButtonPin;
+	uint16_t extraButtonMap;
 	uint8_t buzzerPin;
 	uint8_t buzzerVolume;
 	uint8_t AnalogInputEnabled;
@@ -96,6 +98,7 @@ struct AddonOptions {
 	uint8_t BootselButtonAddonEnabled;
 	uint8_t BuzzerSpeakerAddonEnabled;
 	uint8_t DualDirectionalInputEnabled;
+	uint8_t ExtraButtonAddonEnabled;
 	uint8_t I2CAnalog1219InputEnabled;
 	//bool I2CDisplayAddonEnabled; // I2C is special case
 	uint8_t JSliderInputEnabled;

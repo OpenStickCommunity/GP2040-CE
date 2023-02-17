@@ -39,7 +39,6 @@
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
 
-
 // This is the SOCD section.
 // SOCD stands for `simultaneous opposing cardinal directions`.
 // There are three options for `DEFAULT_SOCD_MODE` currently:
@@ -48,7 +47,6 @@
 // 3 - `SOCD_MODE_SECOND_INPUT_PRIORITY` - This is last priority SOCD.  EG. when you press and hold `up` then press `down` `down` will be registered.
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
-
 
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
@@ -224,5 +222,9 @@
 #define BUZZER_ENABLED 0
 #define BUZZER_PIN -1
 #define BUZZER_VOLUME 100
+
+// Extra Button Add-on setting
+#define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+#define EXTRA_BUTTON_PIN -1
 
 #endif

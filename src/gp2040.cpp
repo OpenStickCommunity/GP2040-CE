@@ -14,6 +14,7 @@
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 #include "addons/bootsel_button.h"
+#include "addons/extra_button.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -90,6 +91,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
 	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
+	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
 }
 
 void GP2040::run() {
