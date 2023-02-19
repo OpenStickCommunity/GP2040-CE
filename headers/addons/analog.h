@@ -8,7 +8,7 @@
 #include "BoardConfig.h"
 
 #ifndef ANALOG_INPUT_ENABLED
-#define ANALOG_INPUT_ENABLED true
+#define ANALOG_INPUT_ENABLED 0
 #endif
 
 #ifndef ANALOG_ADC_VRX

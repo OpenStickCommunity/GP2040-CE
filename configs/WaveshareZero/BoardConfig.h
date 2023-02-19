@@ -71,6 +71,7 @@
 // The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
+#define TURBO_ENABLED 1
 #define TURBO_LED_PIN -1
 
 #define BOARD_LEDS_PIN 28
@@ -204,5 +205,9 @@
 
 // BOOTSEL Button Add-on setting
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+
+// Extra Button Add-on setting
+#define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+#define EXTRA_BUTTON_PIN -1
 
 #endif

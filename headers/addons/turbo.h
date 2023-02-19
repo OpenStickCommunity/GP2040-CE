@@ -4,7 +4,7 @@
 #include "gpaddon.h"
 
 #ifndef TURBO_ENABLED
-#define TURBO_ENABLED true
+#define TURBO_ENABLED 0
 #endif
 
 #ifndef DEFAULT_SHOT_PER_SEC

@@ -508,13 +508,18 @@ std::string setAddonOptions()
 	addonOptions.bootselButtonMap = doc["bootselButtonMap"];
 	addonOptions.buzzerPin        = doc["buzzerPin"] == -1 ? 0xFF : doc["buzzerPin"];
 	addonOptions.buzzerVolume     = doc["buzzerVolume"];
+	addonOptions.extraButtonPin        = doc["extraButtonPin"] == -1 ? 0xFF : doc["extraButtonPin"];
+	addonOptions.extraButtonMap = doc["extraButtonMap"];
+	addonOptions.playerNumber     = doc["playerNumber"];
 	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
 	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
 	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
 	addonOptions.BootselButtonAddonEnabled = doc["BootselButtonAddonEnabled"];
 	addonOptions.DualDirectionalInputEnabled = doc["DualDirectionalInputEnabled"];
+	addonOptions.ExtraButtonAddonEnabled = doc["ExtraButtonAddonEnabled"];
 	addonOptions.I2CAnalog1219InputEnabled = doc["I2CAnalog1219InputEnabled"];
 	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
+	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
 	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
 	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
 
@@ -555,13 +560,18 @@ std::string getAddonOptions()
 	doc["bootselButtonMap"] = addonOptions.bootselButtonMap;
 	doc["buzzerPin"] = addonOptions.buzzerPin == 0xFF ? -1 : addonOptions.buzzerPin;
 	doc["buzzerVolume"] = addonOptions.buzzerVolume;
+	doc["extraButtonPin"] = addonOptions.extraButtonPin == 0xFF ? -1 : addonOptions.extraButtonPin;
+	doc["extraButtonMap"] = addonOptions.extraButtonMap;
+	doc["playerNumber"] = addonOptions.playerNumber;
 	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
 	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
 	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;
 	doc["BootselButtonAddonEnabled"] = addonOptions.BootselButtonAddonEnabled;
 	doc["DualDirectionalInputEnabled"] = addonOptions.DualDirectionalInputEnabled;
+	doc["ExtraButtonAddonEnabled"] = addonOptions.ExtraButtonAddonEnabled;
 	doc["I2CAnalog1219InputEnabled"] = addonOptions.I2CAnalog1219InputEnabled;
 	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
+	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
 

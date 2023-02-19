@@ -6,7 +6,7 @@
 #include "storagemanager.h"
 
 #ifndef BOARD_LED_ENABLED
-#define BOARD_LED_ENABLED true
+#define BOARD_LED_ENABLED 0
 #endif
 
 #ifndef BOARD_LED_TYPE 

@@ -6,7 +6,7 @@
 #include "gpaddon.h"
 
 #ifndef BUZZER_ENABLED
-#define BUZZER_ENABLED -1
+#define BUZZER_ENABLED 0
 #endif
 
 #ifndef BUZZER_PIN

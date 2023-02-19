@@ -206,4 +206,8 @@
 // BOOTSEL Button Add-on setting
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 
+// Extra Button Add-on setting
+#define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+#define EXTRA_BUTTON_PIN -1
+
 #endif

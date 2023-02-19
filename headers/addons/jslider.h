@@ -6,7 +6,7 @@
 #include "GamepadEnums.h"
 
 #ifndef JSLIDER_ENABLED
-#define JSLIDER_ENABLED true
+#define JSLIDER_ENABLED 0
 #endif
 
 #ifndef PIN_SLIDER_LS
