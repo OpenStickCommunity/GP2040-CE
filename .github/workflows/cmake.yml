@@ -165,6 +165,22 @@ jobs:
         path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev5.uf2
         if-no-files-found: error
 
+    #MAVERCADEKEEBFIGHTER
+    - name: MavercadeKeebfighter Configure CMake
+      shell: bash
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=MavercadeKeebfighter SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    
+    - name: MavercadeKeebfighter Build
+      shell: bash
+      run: GP2040_BOARDCONFIG=MavercadeKeebfighter cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+   
+    - name: Upload MavercadeKeebfighter Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: GP2040-CE - MavercadeKeebfighter
+        path: ${{github.workspace}}/build/GP2040-CE_*_MavercadeKeebfighter.uf2
+        if-no-files-found: error
+
     #PicoAnn
     - name: PicoAnn Configure CMake
       shell: bash
