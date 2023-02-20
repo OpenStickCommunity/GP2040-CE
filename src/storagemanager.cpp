@@ -93,6 +93,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
 	boardOptions.splashMode        = SPLASH_MODE;
 	boardOptions.splashChoice      = SPLASH_CHOICE;
+	boardOptions.splashDuration    = SPLASH_CHOICE;
 	boardOptions.i2cSDAPin         = I2C_SDA_PIN;
 	boardOptions.i2cSCLPin         = I2C_SCL_PIN;
 	boardOptions.i2cBlock          = (I2C_BLOCK == i2c0) ? 0 : 1;
@@ -331,6 +332,11 @@ int Storage::GetSplashMode()
 int Storage::GetSplashChoice()
 {
 	return boardOptions.splashChoice;
+}
+
+int Storage::GetSplashDuration()
+{
+	return boardOptions.splashDuration;
 }
 
 /* Animation stuffs */

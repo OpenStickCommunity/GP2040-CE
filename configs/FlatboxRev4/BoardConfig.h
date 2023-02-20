@@ -153,6 +153,7 @@
 
 #define SPLASH_MODE NOSPLASH
 #define SPLASH_CHOICE MAIN
+#define SPLASH_DURATION 7500 // Duration in milliseconds
 
 
 // The default `BUTTON_LAYOUT` is `BUTTON_LAYOUT_STICK` which will show an arcade stick on the left hand side of the display.

@@ -48,6 +48,7 @@ struct BoardOptions
 	ButtonLayoutRight buttonLayoutRight;
 	SplashMode splashMode;
 	SplashChoice splashChoice;
+	int splashDuration; // -1 = Always on
 	uint8_t i2cSDAPin;
 	uint8_t i2cSCLPin;
 	int i2cBlock;
@@ -195,6 +196,7 @@ public:
 
 	int GetSplashMode();
 	int GetSplashChoice();
+	int GetSplashDuration();
 
 private:
 	Storage() : gamepad(0) {

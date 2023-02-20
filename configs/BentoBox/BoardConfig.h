@@ -184,6 +184,7 @@
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESSB
 #define SPLASH_MODE NOSPLASH
 #define SPLASH_CHOICE MAIN
+#define SPLASH_DURATION 7500 // Duration in milliseconds
 
 // Board LED Add-on Setting
 // BOARD_LED_OFF  - Turns the on-board LED off
