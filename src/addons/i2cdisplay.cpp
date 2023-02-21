@@ -11,13 +11,27 @@
 #include "bitmaps.h"
 
 bool I2CDisplayAddon::available() {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	BoardOptions boardOptions = getBoardOptions();
 	return boardOptions.hasI2CDisplay && 
 		boardOptions.i2cSDAPin != (uint8_t)-1 && 
 		boardOptions.i2cSCLPin != (uint8_t)-1;
 }
 
 void I2CDisplayAddon::setup() {
+	displayPreviewMode = PREVIEW_MODE_NONE;
+	prevButtonState = 0;
+	BoardOptions boardOptions = getBoardOptions();
+	obdI2CInit(&obd,
+	    boardOptions.displaySize,
+		boardOptions.displayI2CAddress,
+		boardOptions.displayFlip,
+		boardOptions.displayInvert,
+		DISPLAY_USEWIRE,
+		boardOptions.i2cSDAPin,
+		boardOptions.i2cSCLPin,
+		boardOptions.i2cBlock == 0 ? i2c0 : i2c1,
+		-1,
+		boardOptions.i2cSpeed);
 	const int detectedDisplay = initDisplay(0);
 	if (isSH1106(detectedDisplay)) {
 		// The display is actually a SH1106 that was misdetected as a SSD1306 by OneBitDisplay.
@@ -27,12 +41,11 @@ void I2CDisplayAddon::setup() {
  
 	displayPreviewMode = PREVIEW_MODE_NONE;
 	prevButtonState = 0;
+	displaySaverTimeout = displaySaverTimer = boardOptions.displaySaverTimeout * 60000; // minute to ms
 	
 	obdSetContrast(&obd, 0xFF);
 	obdSetBackBuffer(&obd, ucBackBuffer);
 	clearScreen(1);
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	displaySaverTimeout = displaySaverTimer = boardOptions.displaySaverTimeout * 60000; // minute to ms
 	gamepad = Storage::getInstance().GetGamepad();
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
 }
@@ -102,6 +115,8 @@ void I2CDisplayAddon::process() {
 		drawSplashScreen(Storage::getInstance().GetSplashMode(), (uint8_t *)splashChoice, 90);
 	} else {
 		drawStatusBar(gamepad);
+		ButtonLayoutCustomOptions options = getBoardOptions().buttonLayoutCustomOptions;
+
 		switch (Storage::getInstance().GetButtonLayout())
 		{
 			case BUTTON_LAYOUT_STICK:
@@ -133,6 +148,9 @@ void I2CDisplayAddon::process() {
 				break;
 			case BUTTON_LAYOUT_VLXA:
 				drawVLXA(7, 28, 7, 2);
+				break;
+			case BUTTON_LAYOUT_CUSTOMA:
+				drawButtonLayoutLeft(options);
 				break;
 			case BUTTON_LAYOUT_FIGHTBOARD_STICK:
 				drawArcadeStick(18, 22, 8, 2);
@@ -186,6 +204,9 @@ void I2CDisplayAddon::process() {
 			case BUTTON_LAYOUT_VLXB:
 				drawVLXB(6, 28, 7, 2);
 				break;
+			case BUTTON_LAYOUT_CUSTOMB:
+				drawButtonLayoutRight(options);
+				break;
 			case BUTTON_LAYOUT_FIGHTBOARD:
 				drawFightboard(8, 22, 7, 3);
 				break;
@@ -196,6 +217,11 @@ void I2CDisplayAddon::process() {
 	}
 
 	obdDumpBuffer(&obd, NULL);
+}
+
+BoardOptions I2CDisplayAddon::getBoardOptions() {
+	bool configMode = Storage::getInstance().GetConfigMode();	
+	return configMode ? Storage::getInstance().getPreviewBoardOptions() : Storage::getInstance().getBoardOptions();
 }
 
 int I2CDisplayAddon::initDisplay(int typeOverride) {
@@ -267,6 +293,114 @@ bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
 
 void I2CDisplayAddon::clearScreen(int render) {
 	obdFill(&obd, 0, render);
+}
+
+void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutCustomOptions options)
+{
+	int& startX = options.params.startX;
+	int& startY = options.params.startY;
+	int& buttonRadius = options.params.buttonRadius;
+	int& buttonPadding = options.params.buttonPadding;
+
+	switch (options.params.layout)
+		{
+			case BUTTON_LAYOUT_STICK:
+				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_STICKLESS:
+				drawStickless(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BUTTONS_ANGLED:
+				drawWasdBox(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BUTTONS_BASIC:
+				drawUDLR(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_KEYBOARD_ANGLED:
+				drawKeyboardAngled(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_KEYBOARDA:
+				drawMAMEA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_DANCEPADA:
+				drawDancepadA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_TWINSTICKA:
+				drawTwinStickA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BLANKA:
+				drawBlankA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_VLXA:
+				drawVLXA(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_FIGHTBOARD_STICK:
+				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
+				drawFightboardMirrored(startX, startY, buttonRadius, buttonPadding);
+				break;
+		}
+}
+
+void I2CDisplayAddon::drawButtonLayoutRight(ButtonLayoutCustomOptions options)
+{
+	int& startX = options.paramsRight.startX;
+	int& startY = options.paramsRight.startY;
+	int& buttonRadius = options.paramsRight.buttonRadius;
+	int& buttonPadding = options.paramsRight.buttonPadding;
+
+	switch (options.paramsRight.layoutRight)
+		{
+			case BUTTON_LAYOUT_ARCADE:
+				drawArcadeButtons(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_STICKLESSB:
+				drawSticklessButtons(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
+				drawWasdButtons(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_VEWLIX:
+				drawVewlix(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_VEWLIX7:
+				drawVewlix7(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_CAPCOM:
+				drawCapcom(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_CAPCOM6:
+				drawCapcom6(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_SEGA2P:
+				drawSega2p(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_NOIR8:
+				drawNoir8(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_KEYBOARDB:
+				drawMAMEB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_DANCEPADB:
+				drawDancepadB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_TWINSTICKB:
+				drawTwinStickB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_BLANKB:
+				drawSticklessButtons(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_VLXB:
+				drawVLXB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_FIGHTBOARD:
+				drawFightboard(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
+				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
+				break;
+		}
 }
 
 void I2CDisplayAddon::drawDiamond(int cx, int cy, int size, uint8_t colour, uint8_t filled)
@@ -750,6 +884,7 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
+	BoardOptions boardOptions = getBoardOptions();
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
 	// Limit to 21 chars with 6x8 font for now

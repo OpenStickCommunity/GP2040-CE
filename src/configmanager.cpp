@@ -56,6 +56,10 @@ void ConfigManager::setBoardOptions(BoardOptions boardOptions) {
 	GamepadStore.save();
 }
 
+void ConfigManager::setPreviewBoardOptions(BoardOptions boardOptions) {
+	Storage::getInstance().setPreviewBoardOptions(boardOptions);
+}
+
 void ConfigManager::setSplashImage(SplashImage image) {
 	Storage::getInstance().setSplashImage(image);
 }

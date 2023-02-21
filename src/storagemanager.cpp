@@ -104,6 +104,25 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.displayFlip       = DISPLAY_FLIP;
 	boardOptions.displayInvert     = DISPLAY_INVERT;
 	boardOptions.displaySaverTimeout     = DISPLAY_SAVER_TIMEOUT;
+
+	ButtonLayoutParams params = {
+		.layout = BUTTON_LAYOUT,
+		.startX = 8,
+		.startY = 28,
+		.buttonRadius = 8,
+		.buttonPadding = 2
+	};
+	boardOptions.buttonLayoutCustomOptions.params = params;
+	
+	ButtonLayoutParams paramsRight = {
+		.layoutRight = BUTTON_LAYOUT_RIGHT,
+		.startX = 8,
+		.startY = 28,
+		.buttonRadius = 8,
+		.buttonPadding = 2
+	};
+	boardOptions.buttonLayoutCustomOptions.paramsRight = paramsRight;
+
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }
@@ -270,8 +289,24 @@ void Storage::ResetSettings()
 	watchdog_reboot(0, SRAM_END, 2000);
 }
 
+void Storage::initPreviewBoardOptions()
+{
+	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
+}
+
+void Storage::setPreviewBoardOptions(const BoardOptions& boardOptions)
+{
+	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
+}
+
+BoardOptions Storage::getPreviewBoardOptions()
+{
+	return previewBoardOptions;
+}
+
 void Storage::SetConfigMode(bool mode) { // hack for config mode
 	CONFIG_MODE = mode;
+	initPreviewBoardOptions();
 }
 
 bool Storage::GetConfigMode()
@@ -316,12 +351,12 @@ uint8_t * Storage::GetFeatureData()
 
 int Storage::GetButtonLayout()
 {
-	return boardOptions.buttonLayout;
+	return (CONFIG_MODE ? previewBoardOptions : boardOptions).buttonLayout;
 }
 
 int Storage::GetButtonLayoutRight()
 {
-	return boardOptions.buttonLayoutRight;
+	return (CONFIG_MODE ? previewBoardOptions : boardOptions).buttonLayoutRight;
 }
 
 int Storage::GetSplashMode()

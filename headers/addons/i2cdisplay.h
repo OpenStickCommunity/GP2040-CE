@@ -12,6 +12,7 @@
 #include "BoardConfig.h"
 #include "gpaddon.h"
 #include "gamepad.h"
+#include "storagemanager.h"
 
 #ifndef HAS_I2C_DISPLAY
 #define HAS_I2C_DISPLAY -1
@@ -113,6 +114,8 @@ private:
 	void drawBlankB(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawButtonLayoutLeft(ButtonLayoutCustomOptions options);
+	void drawButtonLayoutRight(ButtonLayoutCustomOptions options);
 	void drawFightboard(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawFightboardMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawFightboardStick(int startX, int startY, int buttonRadius, int buttonPadding);
@@ -121,6 +124,7 @@ private:
 	bool pressedDown();
 	bool pressedLeft();
 	bool pressedRight();
+	BoardOptions getBoardOptions();
 	bool isDisplayPowerOff();
 	void setDisplayPower(uint8_t status);
 	uint32_t displaySaverTimeout = 0;

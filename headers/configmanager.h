@@ -17,6 +17,7 @@ public:
     void loop(); // If anything needs to update in the gpconfig driver
     void setGamepadOptions(Gamepad*);
     void setBoardOptions(BoardOptions);
+    void setPreviewBoardOptions(BoardOptions);
     void setLedOptions(LEDOptions);
     void setSplashImage(SplashImage);
 private:

@@ -23,6 +23,25 @@
 
 #define CHECKSUM_MAGIC          0 	// Checksum CRC
 
+struct ButtonLayoutParams
+{
+	union {
+		ButtonLayout layout;
+		ButtonLayoutRight layoutRight;
+	};
+	int startX;
+	int startY;
+	int buttonRadius;
+	int buttonPadding;
+};
+
+struct ButtonLayoutCustomOptions
+{
+	ButtonLayoutParams params;
+	ButtonLayoutParams paramsRight;
+}; // 76 bytes
+
+
 struct BoardOptions
 {
 	bool hasBoardOptions;
@@ -59,6 +78,7 @@ struct BoardOptions
 	uint8_t displayFlip;
 	bool displayInvert;
 	int displaySaverTimeout;
+	ButtonLayoutCustomOptions buttonLayoutCustomOptions;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };
@@ -164,6 +184,8 @@ public:
 	void setDefaultBoardOptions();
 	BoardOptions getBoardOptions();
 	
+	void setPreviewBoardOptions(const BoardOptions&);	// Board Options
+	BoardOptions getPreviewBoardOptions();
 	void setAddonOptions(AddonOptions); // Add-On Options
 	void setDefaultAddonOptions();
 	AddonOptions getAddonOptions();
@@ -207,6 +229,7 @@ private:
 		initSplashImage();
 	}
 	void initBoardOptions();
+	void initPreviewBoardOptions();
 	void initAddonOptions();
 	void initLEDOptions();
 	void initSplashImage();
@@ -214,6 +237,7 @@ private:
 	Gamepad * gamepad;    		// Gamepad data
 	Gamepad * processedGamepad; // Gamepad with ONLY processed data
 	BoardOptions boardOptions;
+	BoardOptions previewBoardOptions;
 	AddonOptions addonOptions;
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
