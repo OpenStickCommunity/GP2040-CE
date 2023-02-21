@@ -65,7 +65,7 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
 * `Splash Choice` - Choose the splash screen that is displayed when the unit is turned on.
 
-Check out our collection of great custom splash screens from the community [HERE](docs/assets/images/community-splash-screens)
+Check out our collection of great custom splash screens from the community [HERE](community-splash-screens.md)
 
 ## Add-Ons Configuration
 
