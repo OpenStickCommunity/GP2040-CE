@@ -57,6 +57,10 @@
 #define DISPLAY_SAVER_TIMEOUT 0
 #endif
 
+#ifndef SPLASH_DURATION
+#define SPLASH_DURATION 7500 // Duration in milliseconds
+#endif
+
 // i2c Display Module
 #define I2CDisplayName "I2CDisplay"
 

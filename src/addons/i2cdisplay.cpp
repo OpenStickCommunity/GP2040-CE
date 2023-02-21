@@ -69,6 +69,9 @@ void I2CDisplayAddon::process() {
 
 	if (!configMode && isDisplayPowerOff()) return;
 
+	int splashDuration = Storage::getInstance().GetSplashDuration();
+	splashDuration = splashDuration == 0 ? SPLASH_DURATION : splashDuration;
+
 	clearScreen(0);
 	if (configMode) {
 		gamepad->read();
@@ -93,7 +96,7 @@ void I2CDisplayAddon::process() {
 		drawText(5, 6, "B1 > Button");
 		drawText(5, 7, "B2 > Splash");
 	} else if ((configMode && displayPreviewMode == PREVIEW_MODE_SPLASH) ||
-			   (!configMode && (Storage::getInstance().GetSplashDuration() == -1 || getMillis() < Storage::getInstance().GetSplashDuration())
+			   (!configMode && (splashDuration == -1 || getMillis() < splashDuration)
 			    && Storage::getInstance().GetSplashMode() != NOSPLASH)) {
 		const uint8_t* splashChoice = Storage::getInstance().getSplashImage().data;
 		drawSplashScreen(Storage::getInstance().GetSplashMode(), (uint8_t *)splashChoice, 90);
