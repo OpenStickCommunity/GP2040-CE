@@ -38,11 +38,11 @@ jobs:
         name: fsData
         path: ${{github.workspace}}/lib/httpd/
 
-    - name: Checkout pico-sdk/1.4.0
+    - name: Checkout pico-sdk/1.5.0
       uses: actions/checkout@v3
       with:
         repository: raspberrypi/pico-sdk
-        ref: 1.4.0
+        ref: 1.5.0
         path: pico-sdk
         
     - name: Checkout pico-sdk submodules
@@ -148,22 +148,6 @@ jobs:
         name: GP2040-CE - FlatboxRev4
         path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev4.uf2
         if-no-files-found: error
-        
-    #FlatboxRev5
-    - name: FlatboxRev5 Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    
-    - name: FlatboxRev5 Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=FlatboxRev5 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
-    - name: Upload FlatboxRev5 Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - FlatboxRev5
-        path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev5.uf2
-        if-no-files-found: error
 
     #PicoAnn
     - name: PicoAnn Configure CMake
@@ -227,4 +211,36 @@ jobs:
       with:
         name: GP2040-CE - WaveshareZero
         path: ${{github.workspace}}/build/GP2040-CE_*_WaveshareZero.uf2
+        if-no-files-found: error
+    
+ #FlatboxRev5
+    - name: FlatboxRev5 Configure CMake
+      shell: bash
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
+    
+    - name: FlatboxRev5 Build
+      shell: bash
+      run: GP2040_BOARDCONFIG=FlatboxRev5 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+   
+    - name: Upload FlatboxRev5 Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: GP2040-CE - FlatboxRev5
+        path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev5.uf2
+        if-no-files-found: error
+
+    #MAVERCADEKEEBFIGHTER
+    - name: MavercadeKeebfighter Configure CMake
+      shell: bash
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=MavercadeKeebfighter SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
+    
+    - name: MavercadeKeebfighter Build
+      shell: bash
+      run: GP2040_BOARDCONFIG=MavercadeKeebfighter cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+   
+    - name: Upload MavercadeKeebfighter Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: GP2040-CE - MavercadeKeebfighter
+        path: ${{github.workspace}}/build/GP2040-CE_*_MavercadeKeebfighter.uf2
         if-no-files-found: error
