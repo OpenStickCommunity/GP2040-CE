@@ -88,7 +88,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
-  addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
+  	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
 	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
