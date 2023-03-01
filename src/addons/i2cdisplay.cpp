@@ -46,7 +46,8 @@ void I2CDisplayAddon::setup() {
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
 
 	prevButtonState = 0;
-	displaySaverTimeout = displaySaverTimer = boardOptions.displaySaverTimeout * 60000; // minute to ms
+	displaySaverTimer = boardOptions.displaySaverTimeout * 60000; // minute to ms
+	displaySaverTimeout = displaySaverTimer;
 	configMode = Storage::getInstance().GetConfigMode();
 }
 
