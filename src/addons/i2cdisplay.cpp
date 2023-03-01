@@ -46,7 +46,7 @@ void I2CDisplayAddon::setup() {
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
 
 	prevButtonState = 0;
-	displaySaverTimer = boardOptions.displaySaverTimeout * 60000; // minute to ms
+	displaySaverTimer = boardOptions.displaySaverTimeout;
 	displaySaverTimeout = displaySaverTimer;
 	configMode = Storage::getInstance().GetConfigMode();
 }
@@ -231,7 +231,7 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 	} else {
 		if (Storage::getInstance().getBoardOptions().splashMode != NOSPLASH) {
 			int splashDuration = getBoardOptions().splashDuration;
-			if (splashDuration == -1 || getMillis() < splashDuration) {
+			if (splashDuration == 0 || getMillis() < splashDuration) {
 				return I2CDisplayAddon::DisplayMode::SPLASH;
 			}				
 		}
