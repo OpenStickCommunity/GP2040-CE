@@ -184,8 +184,9 @@ public:
 	void setDefaultBoardOptions();
 	BoardOptions getBoardOptions();
 	
-	void setPreviewBoardOptions(const BoardOptions&);	// Board Options
+	void setPreviewBoardOptions(const BoardOptions&);	// Preview Board Options
 	BoardOptions getPreviewBoardOptions();
+	
 	void setAddonOptions(AddonOptions); // Add-On Options
 	void setDefaultAddonOptions();
 	AddonOptions getAddonOptions();
@@ -212,13 +213,6 @@ public:
 	uint8_t * GetFeatureData();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
-
-	int GetButtonLayout();
-	int GetButtonLayoutRight();
-
-	int GetSplashMode();
-	int GetSplashChoice();
-	int GetSplashDuration();
 
 private:
 	Storage() : gamepad(0) {

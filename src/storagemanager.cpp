@@ -349,31 +349,6 @@ uint8_t * Storage::GetFeatureData()
 	return featureData;
 }
 
-int Storage::GetButtonLayout()
-{
-	return (CONFIG_MODE ? previewBoardOptions : boardOptions).buttonLayout;
-}
-
-int Storage::GetButtonLayoutRight()
-{
-	return (CONFIG_MODE ? previewBoardOptions : boardOptions).buttonLayoutRight;
-}
-
-int Storage::GetSplashMode()
-{
-	return boardOptions.splashMode;
-}
-
-int Storage::GetSplashChoice()
-{
-	return boardOptions.splashChoice;
-}
-
-int Storage::GetSplashDuration()
-{
-	return boardOptions.splashDuration;
-}
-
 /* Animation stuffs */
 AnimationOptions AnimationStorage::getAnimationOptions()
 {
