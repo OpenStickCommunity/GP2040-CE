@@ -17,7 +17,6 @@ bool AnalogInput::available() {
 }
 
 void AnalogInput::setup() {
-    adc_init();
     // Make sure GPIO is high-impedance, no pullups etc
     adc_gpio_init(analogAdcPinX);
     adc_gpio_init(analogAdcPinY);
@@ -26,9 +25,9 @@ void AnalogInput::setup() {
 void AnalogInput::process()
 {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    adc_select_input(0); // ANALOG-X
+    adc_select_input(26-analogAdcPinX); // ANALOG-X
     float adc_x = ((float)adc_read())/ADC_MAX;
-    adc_select_input(1); // ANALOG-Y
+    adc_select_input(26-analogAdcPinY); // ANALOG-Y
     float adc_y = ((float)adc_read())/ADC_MAX;
     if ( abs(adc_x - ANALOG_CENTER) < ANALOG_DEADZONE ) // deadzones
         adc_x = ANALOG_CENTER;
