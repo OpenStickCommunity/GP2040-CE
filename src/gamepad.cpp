@@ -122,7 +122,7 @@ void Gamepad::read()
 /* Gamepad stuffs */
 void GamepadStorage::start()
 {
-	EEPROM.start();
+	//EEPROM.start();
 }
 
 void GamepadStorage::save()
@@ -146,6 +146,8 @@ GamepadOptions GamepadStorage::getGamepadOptions()
 #else
 		options.socdMode = SOCD_MODE_NEUTRAL;
 #endif
+		options.invertXAxis = false;
+		options.invertYAxis = false;
 		setGamepadOptions(options);
 	}
 

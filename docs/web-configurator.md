@@ -65,6 +65,8 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
 * `Splash Choice` - Choose the splash screen that is displayed when the unit is turned on.
 
+Check out our collection of great custom splash screens from the community [HERE](community-splash-screens.md)
+
 ## Add-Ons Configuration
 
 This section is for custom add-ons that can be enabled to exand the functionality of GP2040-CE.  Please not that not all add-ons may work together.  These should be considered experminental.

@@ -12,6 +12,7 @@
 #include "BoardConfig.h"
 #include "gpaddon.h"
 #include "gamepad.h"
+#include "storagemanager.h"
 
 #ifndef HAS_I2C_DISPLAY
 #define HAS_I2C_DISPLAY -1
@@ -57,14 +58,12 @@
 #define DISPLAY_SAVER_TIMEOUT 0
 #endif
 
+#ifndef SPLASH_DURATION
+#define SPLASH_DURATION 7500 // Duration in milliseconds
+#endif
+
 // i2c Display Module
 #define I2CDisplayName "I2CDisplay"
-
-enum DisplayPreviewMode {
-	PREVIEW_MODE_NONE,
-	PREVIEW_MODE_BUTTONS,
-	PREVIEW_MODE_SPLASH
-};
 
 // i2C OLED Display
 class I2CDisplayAddon : public GPAddon
@@ -109,6 +108,8 @@ private:
 	void drawBlankB(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawButtonLayoutLeft(ButtonLayoutCustomOptions options);
+	void drawButtonLayoutRight(ButtonLayoutCustomOptions options);
 	void drawFightboard(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawFightboardMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawFightboardStick(int startX, int startY, int buttonRadius, int buttonPadding);
@@ -117,6 +118,7 @@ private:
 	bool pressedDown();
 	bool pressedLeft();
 	bool pressedRight();
+	BoardOptions getBoardOptions();
 	bool isDisplayPowerOff();
 	void setDisplayPower(uint8_t status);
 	uint32_t displaySaverTimeout = 0;
@@ -128,8 +130,16 @@ private:
 	std::string statusBar;
 	Gamepad* gamepad;
 	Gamepad* pGamepad;
-	private:
-	DisplayPreviewMode displayPreviewMode;
+	bool configMode;
+
+	enum DisplayMode {
+		CONFIG_INSTRUCTION,
+		BUTTONS,
+		SPLASH
+	};
+
+	DisplayMode getDisplayMode();
+	DisplayMode prevDisplayMode;
 	uint16_t prevButtonState;
 };
 

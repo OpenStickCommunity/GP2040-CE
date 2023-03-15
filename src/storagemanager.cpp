@@ -93,6 +93,7 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
 	boardOptions.splashMode        = SPLASH_MODE;
 	boardOptions.splashChoice      = SPLASH_CHOICE;
+	boardOptions.splashDuration    = SPLASH_DURATION;
 	boardOptions.i2cSDAPin         = I2C_SDA_PIN;
 	boardOptions.i2cSCLPin         = I2C_SCL_PIN;
 	boardOptions.i2cBlock          = (I2C_BLOCK == i2c0) ? 0 : 1;
@@ -103,6 +104,25 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.displayFlip       = DISPLAY_FLIP;
 	boardOptions.displayInvert     = DISPLAY_INVERT;
 	boardOptions.displaySaverTimeout     = DISPLAY_SAVER_TIMEOUT;
+
+	ButtonLayoutParams params = {
+		.layout = BUTTON_LAYOUT,
+		.startX = 8,
+		.startY = 28,
+		.buttonRadius = 8,
+		.buttonPadding = 2
+	};
+	boardOptions.buttonLayoutCustomOptions.params = params;
+	
+	ButtonLayoutParams paramsRight = {
+		.layoutRight = BUTTON_LAYOUT_RIGHT,
+		.startX = 8,
+		.startY = 28,
+		.buttonRadius = 8,
+		.buttonPadding = 2
+	};
+	boardOptions.buttonLayoutCustomOptions.paramsRight = paramsRight;
+
 	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
 	setBoardOptions(boardOptions);
 }
@@ -269,8 +289,24 @@ void Storage::ResetSettings()
 	watchdog_reboot(0, SRAM_END, 2000);
 }
 
+void Storage::initPreviewBoardOptions()
+{
+	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
+}
+
+void Storage::setPreviewBoardOptions(const BoardOptions& boardOptions)
+{
+	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
+}
+
+BoardOptions Storage::getPreviewBoardOptions()
+{
+	return previewBoardOptions;
+}
+
 void Storage::SetConfigMode(bool mode) { // hack for config mode
 	CONFIG_MODE = mode;
+	initPreviewBoardOptions();
 }
 
 bool Storage::GetConfigMode()
@@ -311,26 +347,6 @@ void Storage::ClearFeatureData()
 uint8_t * Storage::GetFeatureData()
 {
 	return featureData;
-}
-
-int Storage::GetButtonLayout()
-{
-	return boardOptions.buttonLayout;
-}
-
-int Storage::GetButtonLayoutRight()
-{
-	return boardOptions.buttonLayoutRight;
-}
-
-int Storage::GetSplashMode()
-{
-	return boardOptions.splashMode;
-}
-
-int Storage::GetSplashChoice()
-{
-	return boardOptions.splashChoice;
 }
 
 /* Animation stuffs */

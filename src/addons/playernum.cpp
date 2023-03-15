@@ -46,7 +46,8 @@ void PlayerNumAddon::process()
 
 void PlayerNumAddon::handleLED(int num) {
     if ( playerNum != num ) {
-        sleep_ms(2000 * (playerNum-1));
+        tud_disconnect();
+        sleep_ms(2000 * playerNum);
         System::reboot(System::BootMode::GAMEPAD);
     } else {
         assigned = 1;

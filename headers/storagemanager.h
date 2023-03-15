@@ -23,6 +23,25 @@
 
 #define CHECKSUM_MAGIC          0 	// Checksum CRC
 
+struct ButtonLayoutParams
+{
+	union {
+		ButtonLayout layout;
+		ButtonLayoutRight layoutRight;
+	};
+	int startX;
+	int startY;
+	int buttonRadius;
+	int buttonPadding;
+};
+
+struct ButtonLayoutCustomOptions
+{
+	ButtonLayoutParams params;
+	ButtonLayoutParams paramsRight;
+}; // 76 bytes
+
+
 struct BoardOptions
 {
 	bool hasBoardOptions;
@@ -48,6 +67,7 @@ struct BoardOptions
 	ButtonLayoutRight buttonLayoutRight;
 	SplashMode splashMode;
 	SplashChoice splashChoice;
+	int splashDuration; // -1 = Always on
 	uint8_t i2cSDAPin;
 	uint8_t i2cSCLPin;
 	int i2cBlock;
@@ -58,6 +78,7 @@ struct BoardOptions
 	uint8_t displayFlip;
 	bool displayInvert;
 	int displaySaverTimeout;
+	ButtonLayoutCustomOptions buttonLayoutCustomOptions;
 	char boardVersion[32]; // 32-char limit to board name
 	uint32_t checksum;
 };
@@ -178,6 +199,9 @@ public:
 	void setDefaultBoardOptions();
 	BoardOptions getBoardOptions();
 	
+	void setPreviewBoardOptions(const BoardOptions&);	// Preview Board Options
+	BoardOptions getPreviewBoardOptions();
+	
 	void setAddonOptions(AddonOptions); // Add-On Options
 	void setDefaultAddonOptions();
 	AddonOptions getAddonOptions();
@@ -205,12 +229,6 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
-	int GetButtonLayout();
-	int GetButtonLayoutRight();
-
-	int GetSplashMode();
-	int GetSplashChoice();
-
 private:
 	Storage() : gamepad(0) {
 		EEPROM.start(); // init EEPROM
@@ -220,6 +238,7 @@ private:
 		initSplashImage();
 	}
 	void initBoardOptions();
+	void initPreviewBoardOptions();
 	void initAddonOptions();
 	void initLEDOptions();
 	void initSplashImage();
@@ -227,6 +246,7 @@ private:
 	Gamepad * gamepad;    		// Gamepad data
 	Gamepad * processedGamepad; // Gamepad with ONLY processed data
 	BoardOptions boardOptions;
+	BoardOptions previewBoardOptions;
 	AddonOptions addonOptions;
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data

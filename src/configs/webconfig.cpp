@@ -28,6 +28,7 @@
 #define API_RESET_SETTINGS "/api/resetSettings"
 #define API_GET_DISPLAY_OPTIONS "/api/getDisplayOptions"
 #define API_SET_DISPLAY_OPTIONS "/api/setDisplayOptions"
+#define API_SET_PREVIEW_DISPLAY_OPTIONS "/api/setPreviewDisplayOptions"
 #define API_GET_GAMEPAD_OPTIONS "/api/getGamepadOptions"
 #define API_SET_GAMEPAD_OPTIONS "/api/setGamepadOptions"
 #define API_GET_LED_OPTIONS "/api/getLedOptions"
@@ -180,10 +181,9 @@ std::string serialize_json(DynamicJsonDocument &doc)
 	return data;
 }
 
-std::string setDisplayOptions()
+std::string setDisplayOptions(BoardOptions& boardOptions)
 {
 	DynamicJsonDocument doc = get_post_data();
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	boardOptions.hasI2CDisplay         = doc["enabled"];
 	boardOptions.i2cSDAPin             = doc["sdaPin"] == -1 ? 0xFF : doc["sdaPin"];
 	boardOptions.i2cSCLPin             = doc["sclPin"] == -1 ? 0xFF : doc["sclPin"];
@@ -196,10 +196,40 @@ std::string setDisplayOptions()
 	boardOptions.buttonLayoutRight     = doc["buttonLayoutRight"];
 	boardOptions.splashMode      	   = doc["splashMode"];
 	boardOptions.splashChoice          = doc["splashChoice"];
+	boardOptions.splashDuration        = doc["splashDuration"];
 	boardOptions.displaySaverTimeout   = doc["displaySaverTimeout"];
-	ConfigManager::getInstance().setBoardOptions(boardOptions);
+
+	boardOptions.buttonLayoutCustomOptions.params.layout 		 	       = doc["buttonLayoutCustomOptions"]["params"]["layout"];
+	boardOptions.buttonLayoutCustomOptions.params.startX 		 	       = doc["buttonLayoutCustomOptions"]["params"]["startX"];
+	boardOptions.buttonLayoutCustomOptions.params.startY 		 	       = doc["buttonLayoutCustomOptions"]["params"]["startY"];
+	boardOptions.buttonLayoutCustomOptions.params.buttonRadius      	   = doc["buttonLayoutCustomOptions"]["params"]["buttonRadius"];
+	boardOptions.buttonLayoutCustomOptions.params.buttonPadding     	   = doc["buttonLayoutCustomOptions"]["params"]["buttonPadding"];
+	
+	boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight 	   	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["layout"];
+	boardOptions.buttonLayoutCustomOptions.paramsRight.startX 		 	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["startX"];
+	boardOptions.buttonLayoutCustomOptions.paramsRight.startY 		 	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["startY"];
+	boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius  	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonRadius"];
+	boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding       = doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonPadding"];
+
 	return serialize_json(doc);
 }
+
+std::string setDisplayOptions()
+{
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	std::string response = setDisplayOptions(boardOptions);
+	ConfigManager::getInstance().setBoardOptions(boardOptions);
+	return response;
+}
+
+std::string setPreviewDisplayOptions()
+{
+	BoardOptions boardOptions = Storage::getInstance().getPreviewBoardOptions();
+	std::string response = setDisplayOptions(boardOptions);
+	ConfigManager::getInstance().setPreviewBoardOptions(boardOptions); 
+	return response;
+}
+
 
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
@@ -217,7 +247,20 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutRight"] = boardOptions.buttonLayoutRight;
 	doc["splashMode"]  	     = boardOptions.splashMode;
 	doc["splashChoice"]      = boardOptions.splashChoice;
+	doc["splashDuration"]    = boardOptions.splashDuration;
 	doc["displaySaverTimeout"] = boardOptions.displaySaverTimeout;
+
+	doc["buttonLayoutCustomOptions"]["params"]["layout"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.layout;
+	doc["buttonLayoutCustomOptions"]["params"]["startX"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.startX;
+	doc["buttonLayoutCustomOptions"]["params"]["startY"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.startY;
+	doc["buttonLayoutCustomOptions"]["params"]["buttonRadius"]  	 = boardOptions.buttonLayoutCustomOptions.params.buttonRadius;
+	doc["buttonLayoutCustomOptions"]["params"]["buttonPadding"] 	 = boardOptions.buttonLayoutCustomOptions.params.buttonPadding;
+	
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["layout"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight;
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["startX"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.startX;
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["startY"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.startY;
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonRadius"]  = boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius;
+	doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonPadding"] = boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");
@@ -620,6 +663,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 {
 	if (strcmp(name, API_SET_DISPLAY_OPTIONS) == 0)
 			return set_file_data(file, setDisplayOptions());
+	if (strcmp(name, API_SET_PREVIEW_DISPLAY_OPTIONS) == 0)
+			return set_file_data(file, setPreviewDisplayOptions());
 	if (strcmp(name, API_SET_GAMEPAD_OPTIONS) == 0)
 			return set_file_data(file, setGamepadOptions());
 	if (strcmp(name, API_SET_LED_OPTIONS) == 0)
