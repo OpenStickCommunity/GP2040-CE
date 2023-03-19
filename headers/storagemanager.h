@@ -116,7 +116,7 @@ struct AddonOptions {
 	uint8_t buzzerVolume;
 	uint8_t playerNumber;
 	uint8_t shmupMode; // Turbo SHMUP Mode
-	ShmupMixMode shmupMixMode; // How we mix turbo and non-turbo buttons
+	uint8_t shmupMixMode; // How we mix turbo and non-turbo buttons
 	uint16_t shmupAlwaysOn1;
 	uint16_t shmupAlwaysOn2;
 	uint16_t shmupAlwaysOn3;
