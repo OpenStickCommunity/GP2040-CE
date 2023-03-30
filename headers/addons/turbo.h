@@ -2,6 +2,7 @@
 #define TURBO_H_
 
 #include "gpaddon.h"
+#include "storagemanager.h"
 
 #ifndef TURBO_ENABLED
 #define TURBO_ENABLED 0
@@ -97,25 +98,26 @@ public:
 	virtual void process();     // TURBO Setting of buttons (Enable/Disable)
     virtual std::string name() { return TurboName; }
 private:
-    void read();                // Read TURBO Buttons and Dials
+    void read(AddonOptions&);                // Read TURBO Buttons and Dials
     void debounce();            // TURBO Button Debouncer
     bool bDebState;             // Debounce TURBO Button State
     uint32_t uDebTime;          // Debounce TURBO Button Time
+    uint32_t debChargeState;    // Debounce Charge Button State
+    uint32_t debChargeTime[4];  // Debounce Charge Button Time
+    uint32_t debounceMS;        // Debounce MS from Gamepad
     uint16_t lastPressed;       // Last buttons pressed (for Turbo Enable)
     uint16_t lastDpad;          // Last d-pad pressed (for Turbo Change)
     uint16_t turboButtonsPressed;    // Turbo Buttons Enabled
     uint16_t alwaysEnabled;     // Turbo SHMUP Always Enabled
     uint32_t uIntervalMS;       // Turbo Interval
     bool bTurboState;           // Turbo Buttons State
-    bool bChargeState[4];       // Turbo Charge Button States
+    uint32_t chargeState;       // Turbo Charge Button States
     bool bTurboFlicker;         // Turbo Enable Buttons Toggle OFF Flag ??
     uint32_t nextTimer;         // Turbo Timer
-    uint8_t pinButtonTurbo;     // Turbo Button Pin
-    uint8_t pinDialTurbo;       // Turbo Dial Pin
+    uint8_t adcShmupDial;       // Turbo ADC Dial Input
     uint16_t dialValue;         // Turbo Dial Value (Raw)
     uint16_t incrementValue;    // Turbo Dial Increment Value
     uint8_t turboDialIncrements;    // Turbo Increments based on max/min
-    uint8_t shmupMode;          // Turbo SHMUP Mode
     uint8_t shmupBtnPin[4];     // Turbo SHMUP Non-Turbo Pins
     uint16_t shmupBtnMask[4]; // Turbo SHMUP Non-Turbo Button Masks
 };
