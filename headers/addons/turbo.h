@@ -22,13 +22,17 @@
 
 // TURBO SHMUP MODE
 #ifndef TURBO_SHMUP_MODE
-#define TURBO_SHMUP_MODE -1
+#define TURBO_SHMUP_MODE 0
 #endif
 
 enum ShmupMixMode { 
     TURBO_PRIORITY = 0,
     CHARGE_PRIORITY
 };
+
+#ifndef SHMUP_MIX_MODE
+#define SHMUP_MIX_MODE TURBO_PRIORITY
+#endif
 
 #ifndef SHMUP_ALWAYS_ON1
 #define SHMUP_ALWAYS_ON1 0
