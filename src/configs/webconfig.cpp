@@ -59,6 +59,7 @@ static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
 static uint16_t http_post_payload_len = 0;
 static absolute_time_t rebootDelayTimeout = nil_time;
+static System::BootMode rebootMode = System::BootMode::DEFAULT;
 
 void WebConfig::setup() {
 	rndis_init();
@@ -69,7 +70,7 @@ void WebConfig::loop() {
 	rndis_task();
 
 	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-		System::reboot(System::BootMode::GAMEPAD);
+		System::reboot(rebootMode);
 	}
 }
 
@@ -682,10 +683,24 @@ std::string echo()
 
 std::string reboot()
 {
-	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	DynamicJsonDocument doc = get_post_data();
 	doc["success"] = true;
 	// We need to wait for a bit before we actually reboot to leave the webclient some time to receive the response
 	rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+	WebConfig::BootModes bootMode = doc["bootMode"];
+	switch (bootMode) {
+		case WebConfig::BootModes::GAMEPAD:
+			rebootMode = System::BootMode::GAMEPAD;
+		break;
+		case WebConfig::BootModes::WEBCONFIG:
+			rebootMode = System::BootMode::WEBCONFIG;
+		break;
+		case WebConfig::BootModes::BOOTSEL:
+			rebootMode = System::BootMode::USB;
+		break;
+		default:
+			rebootMode = System::BootMode::DEFAULT;
+	}
 	return serialize_json(doc);
 }
 
@@ -705,6 +720,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setAddonOptions());
 	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, setSplashImage());
+	if (strcmp(name, API_REBOOT) == 0)
+			return set_file_data(file, reboot());
 #if !defined(NDEBUG)
 	if (strcmp(name, API_POST_ECHO) == 0)
 		return set_file_data(file, echo());
@@ -727,8 +744,6 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getFirmwareVersion());
 	if (strcmp(name, API_GET_MEMORY_REPORT) == 0)
 			return set_file_data(file, getMemoryReport());
-	if (strcmp(name, API_REBOOT) == 0)
-			return set_file_data(file, reboot());
 
 	bool isExclude = false;
 	for (auto &excludePath : excludePaths)
