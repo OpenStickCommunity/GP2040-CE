@@ -9,6 +9,7 @@
 #include "storagemanager.h"
 #include "pico/stdlib.h"
 #include "bitmaps.h"
+#include <cmath>
 
 bool I2CDisplayAddon::available() {
 	BoardOptions boardOptions = getBoardOptions();
@@ -46,6 +47,7 @@ void I2CDisplayAddon::setup() {
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
 
 	prevButtonState = 0;
+	prevDpadState = 0;
 	displaySaverTimer = boardOptions.displaySaverTimeout;
 	displaySaverTimeout = displaySaverTimer;
 	configMode = Storage::getInstance().GetConfigMode();
@@ -82,8 +84,11 @@ void I2CDisplayAddon::process() {
 	if (!configMode && isDisplayPowerOff()) return;
 
 	clearScreen(0);
-
-	switch (getDisplayMode()) {
+	
+	gamepad->read();
+	uint16_t buttonState = gamepad->state.buttons;
+	uint16_t dpadState = gamepad->state.dpad;
+	switch (getDisplayMode(prevButtonState, buttonState)) {
 		case I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION:
 			drawStatusBar(gamepad);
 			drawText(0, 2, "[Web Config Mode]");
@@ -93,6 +98,49 @@ void I2CDisplayAddon::process() {
 			drawText(5, 6, "B1 > Button");
 			drawText(5, 7, "B2 > Splash");
 			break;
+		case I2CDisplayAddon::DisplayMode::CALCULATOR: {
+			drawText(0, 1, "[Calculator]");
+			drawText(0, 2, std::to_string(firstOp), calcState == FIRST_OP);
+			drawText(0, 3, std::string(1, getOpChar(opChoice)), calcState == OP_PICK);
+			drawText(0, 4, std::to_string(secondOp), calcState == SECOND_OP);
+			drawText(0, 5, "---------------------------------------");
+
+			std::string calcResultStr = std::to_string (calcResult);
+			calcResultStr.erase ( calcResultStr.find_last_not_of('0') + 1, std::string::npos );
+			calcResultStr.erase ( calcResultStr.find_last_not_of('.') + 1, std::string::npos );
+			drawText(0, 6, calcResultStr, calcState == RESULT);			
+
+			uint8_t pressedDigit = getPressedDigit();
+			switch (pressedDigit) {
+			  case ((uint8_t)-1): break;
+			  case 11:
+			    if (calcState == SECOND_OP) {
+			      switch (opChoice) {
+				case SUM: calcResult = ((double) firstOp) + secondOp; break;
+				case DIFF: calcResult = ((double) firstOp) - secondOp; break;
+				case MUL: calcResult = ((double) firstOp) * secondOp; break;
+				case DIV: calcResult = ((double) firstOp) / (secondOp == 0 ? 1 : secondOp); break;
+			      }
+			    }
+			    if (calcState == RESULT) { calcResult = 0; firstOp = 0; secondOp = 0; opChoice = SUM; }
+			    currentDigit = 0;
+			    nextCalcState();
+			    break;
+			  case 10:
+			    currentDigit--;
+			    if (calcState == FIRST_OP) firstOp /= 10;
+			    else if (calcState == SECOND_OP) secondOp /= 10;
+			    else if (calcState == OP_PICK) nextOpChoice();
+			    break;
+			  default:
+			    if (calcState == FIRST_OP) { firstOp *= 10; firstOp += pressedDigit; }
+			    else if (calcState == SECOND_OP) { secondOp *= 10; secondOp += pressedDigit; }
+			    else if (calcState == OP_PICK) nextOpChoice();
+			    currentDigit++;
+			    break;
+			}
+		}
+		break;
 		case I2CDisplayAddon::DisplayMode::SPLASH:
 			if (getBoardOptions().splashMode == NOSPLASH) {
 				drawText(0, 4, " Splash NOT enabled.");
@@ -104,7 +152,6 @@ void I2CDisplayAddon::process() {
 			drawStatusBar(gamepad);
 			BoardOptions boardOptions = getBoardOptions();
 			ButtonLayoutCustomOptions buttonLayoutCustomOptions = boardOptions.buttonLayoutCustomOptions;
-
 			switch (boardOptions.buttonLayout) {
 				case BUTTON_LAYOUT_STICK:
 					drawArcadeStick(8, 28, 8, 2);
@@ -202,31 +249,40 @@ void I2CDisplayAddon::process() {
 			}
 			break;
 	}
+	
+	prevButtonState = buttonState;
+	prevDpadState = dpadState;
 
 	obdDumpBuffer(&obd, NULL);
 }
 
-I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
+I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode(uint16_t prevButtonState, uint16_t buttonState) {
 	if (configMode) {
-		gamepad->read();
-		uint16_t buttonState = gamepad->state.buttons;
 		if (prevButtonState && !buttonState) { // has button been pressed (held and released)?
 			switch (prevButtonState) {
 				case (GAMEPAD_MASK_B1):
-					prevDisplayMode =
+					if (prevDisplayMode != I2CDisplayAddon::DisplayMode::CALCULATOR)
+					  prevDisplayMode =
 						prevDisplayMode == I2CDisplayAddon::DisplayMode::BUTTONS ?
 							I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION : I2CDisplayAddon::DisplayMode::BUTTONS;
 						break;
 				case (GAMEPAD_MASK_B2):
-					prevDisplayMode =
+					if (prevDisplayMode != I2CDisplayAddon::DisplayMode::CALCULATOR)
+					    prevDisplayMode =
 						prevDisplayMode == I2CDisplayAddon::DisplayMode::SPLASH ?
 							I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION : I2CDisplayAddon::DisplayMode::SPLASH;
 					break;
+				case (GAMEPAD_MASK_S2):
+					if (getMillis() < 1000) break;
+					prevDisplayMode =
+						prevDisplayMode == I2CDisplayAddon::DisplayMode::CALCULATOR ?
+							I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION : I2CDisplayAddon::DisplayMode::CALCULATOR;
+					break;
 				default:
-					prevDisplayMode = I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION;
+					if (prevDisplayMode != I2CDisplayAddon::DisplayMode::CALCULATOR)
+					  prevDisplayMode = I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION;
 			}
 		}
-		prevButtonState = buttonState;
 		return prevDisplayMode;
 	} else {
 		if (Storage::getInstance().getBoardOptions().splashMode != NOSPLASH) {
@@ -903,6 +959,10 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 	obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, 0, 0);
 }
 
+void I2CDisplayAddon::drawText(int x, int y, std::string text, bool invert) {
+	obdWriteString(&obd, 0, x, y, (char*)text.c_str(), FONT_6x8, invert, 0);
+}
+
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
 	BoardOptions boardOptions = getBoardOptions();
@@ -990,4 +1050,48 @@ bool I2CDisplayAddon::pressedRight()
 	}
 
 	return false;
+}
+
+char I2CDisplayAddon::getOpChar(OpChoice opChoice) {
+  switch (opChoice) {
+    case SUM:  return '+';
+    case DIFF: return '-';
+    case MUL:  return '*';
+    case DIV:  return '/';
+  }
+  return '+';
+}
+
+uint8_t I2CDisplayAddon::getPressedDigit() {
+  uint16_t buttonState = gamepad->state.buttons;
+  uint16_t dpadState = gamepad->state.dpad;
+  if (prevDpadState && !dpadState) { // has button been pressed (held and released)?
+	switch (prevDpadState) {
+		case (GAMEPAD_MASK_UP   ): return 11;
+	        case (GAMEPAD_MASK_DOWN ): return 9;
+	        case (GAMEPAD_MASK_LEFT ): return 10;
+	        case (GAMEPAD_MASK_RIGHT): return 0;
+	}
+  }
+  if (prevButtonState && !buttonState) { // has button been pressed (held and released)?
+	  switch (prevButtonState) {
+		  case (GAMEPAD_MASK_B1):	   return 1;
+		  case (GAMEPAD_MASK_B2):	   return 2;
+		  case (GAMEPAD_MASK_B3):	   return 5;
+		  case (GAMEPAD_MASK_B4):	   return 6;
+		  case (GAMEPAD_MASK_L1):	   return 8;
+		  case (GAMEPAD_MASK_R1):	   return 7;
+		  case (GAMEPAD_MASK_L2):	   return 4;
+		  case (GAMEPAD_MASK_R2):	   return 3;		
+	}
+  }
+  return (uint8_t) -1;
+}
+
+void I2CDisplayAddon::nextCalcState() {
+  calcState = static_cast<I2CDisplayAddon::CalculatorState>((static_cast<int>(calcState) + 1) % 4);    
+}
+
+void I2CDisplayAddon::nextOpChoice() {
+  opChoice = static_cast<I2CDisplayAddon::OpChoice>((static_cast<int>(opChoice) + 1) % 4);    
 }
