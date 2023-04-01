@@ -83,6 +83,7 @@ private:
 	void drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawStatusBar(Gamepad*);
 	void drawText(int startX, int startY, std::string text);
+	void drawText(int startX, int startY, std::string text, bool invert);
 	void initMenu(char**);
 	//Adding my stuff here, remember to sort before PR
 	void drawDiamond(int cx, int cy, int size, uint8_t colour, uint8_t filled);
@@ -135,12 +136,41 @@ private:
 	enum DisplayMode {
 		CONFIG_INSTRUCTION,
 		BUTTONS,
-		SPLASH
+		SPLASH,
+		CALCULATOR
 	};
 
-	DisplayMode getDisplayMode();
+	DisplayMode getDisplayMode(uint16_t prevButtonState, uint16_t buttonState);
 	DisplayMode prevDisplayMode;
 	uint16_t prevButtonState;
+	uint16_t prevDpadState;
+
+	// CALCULATOR
+	uint32_t firstOp;
+	uint32_t secondOp;
+
+	enum CalculatorState {
+	  FIRST_OP,
+	  OP_PICK,
+	  SECOND_OP,
+	  RESULT
+	};
+
+	enum OpChoice {
+	  SUM,
+	  DIFF,
+	  MUL,
+	  DIV
+	};
+
+	CalculatorState calcState;
+	uint8_t currentDigit;
+	OpChoice opChoice;
+	double calcResult;
+	char getOpChar(OpChoice opChoice);
+	void nextCalcState();
+	void nextOpChoice();
+	uint8_t getPressedDigit();
 };
 
 #endif
