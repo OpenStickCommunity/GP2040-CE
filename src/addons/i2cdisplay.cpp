@@ -133,8 +133,8 @@ void I2CDisplayAddon::process() {
 			    else if (calcState == OP_PICK) nextOpChoice();
 			    break;
 			  default:
-			    if (calcState == FIRST_OP) firstOp += pressedDigit * (std::pow(10, currentDigit));
-			    else if (calcState == SECOND_OP) secondOp += pressedDigit * (std::pow(10, currentDigit));
+			    if (calcState == FIRST_OP) { firstOp *= 10; firstOp += pressedDigit; }
+			    else if (calcState == SECOND_OP) { secondOp *= 10; secondOp += pressedDigit; }
 			    else if (calcState == OP_PICK) nextOpChoice();
 			    currentDigit++;
 			    break;
@@ -279,7 +279,8 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode(uint16_t prevButton
 							I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION : I2CDisplayAddon::DisplayMode::CALCULATOR;
 					break;
 				default:
-					prevDisplayMode = I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION;
+					if (prevDisplayMode != I2CDisplayAddon::DisplayMode::CALCULATOR)
+					  prevDisplayMode = I2CDisplayAddon::DisplayMode::CONFIG_INSTRUCTION;
 			}
 		}
 		return prevDisplayMode;
@@ -1078,8 +1079,8 @@ uint8_t I2CDisplayAddon::getPressedDigit() {
 		  case (GAMEPAD_MASK_B2):	   return 2;
 		  case (GAMEPAD_MASK_B3):	   return 5;
 		  case (GAMEPAD_MASK_B4):	   return 6;
-		  case (GAMEPAD_MASK_L1):	   return 7;
-		  case (GAMEPAD_MASK_R1):	   return 6;
+		  case (GAMEPAD_MASK_L1):	   return 8;
+		  case (GAMEPAD_MASK_R1):	   return 7;
 		  case (GAMEPAD_MASK_L2):	   return 4;
 		  case (GAMEPAD_MASK_R2):	   return 3;		
 	}
