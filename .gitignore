@@ -5,6 +5,4 @@ configs/MyBoard
 .DS_Store
 /www/package-lock.json
 build/
-
-lib/httpd/fsdata.c
 lib/httpd/fsdata.cZone.Identifier
