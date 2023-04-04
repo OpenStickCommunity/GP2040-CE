@@ -117,6 +117,17 @@ message LEDOptions
 	optional int32 indexA2 = 25;
 };
 
+message AnimationOptions_Proto
+{
+	optional uint32 baseAnimationIndex = 1;
+	optional uint32 brightness = 2;
+	optional uint32 staticColorIndex = 3;
+	optional uint32 buttonColorIndex = 4;
+	optional int32 chaseCycleTime = 5;
+	optional int32 rainbowCycleTime = 6;
+	optional uint32 themeIndex = 7;
+}
+
 message BootselButtonOptions
 {
 	optional bool enabled = 1;
@@ -251,5 +262,6 @@ message Config
 	optional PinMappings pinMappings = 3;
 	optional DisplayOptions displayOptions = 4;
 	optional LEDOptions ledOptions = 5;
-	optional AddonOptions addonOptions = 6;
+	optional AnimationOptions_Proto animationOptions = 6;
+	optional AddonOptions addonOptions = 7;
 }
