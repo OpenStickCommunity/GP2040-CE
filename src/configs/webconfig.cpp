@@ -59,6 +59,7 @@ static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
 static uint16_t http_post_payload_len = 0;
 static absolute_time_t rebootDelayTimeout = nil_time;
+static System::BootMode rebootMode = System::BootMode::DEFAULT;
 
 void WebConfig::setup() {
 	rndis_init();
@@ -69,7 +70,7 @@ void WebConfig::loop() {
 	rndis_task();
 
 	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-		System::reboot(System::BootMode::GAMEPAD);
+		System::reboot(rebootMode);
 	}
 }
 
@@ -526,6 +527,21 @@ std::string setAddonOptions()
 	addonOptions.extraButtonPin        = doc["extraButtonPin"] == -1 ? 0xFF : doc["extraButtonPin"];
 	addonOptions.extraButtonMap = doc["extraButtonMap"];
 	addonOptions.playerNumber     = doc["playerNumber"];
+	addonOptions.shmupMode     = doc["shmupMode"];
+	addonOptions.shmupMixMode     = doc["shmupMixMode"];
+	addonOptions.shmupAlwaysOn1     = doc["shmupAlwaysOn1"];
+	addonOptions.shmupAlwaysOn2     = doc["shmupAlwaysOn2"];
+	addonOptions.shmupAlwaysOn3     = doc["shmupAlwaysOn3"];
+	addonOptions.shmupAlwaysOn4     = doc["shmupAlwaysOn4"];
+	addonOptions.pinShmupBtn1     = doc["pinShmupBtn1"] == -1 ? 0xFF : doc["pinShmupBtn1"];
+	addonOptions.pinShmupBtn2     = doc["pinShmupBtn2"] == -1 ? 0xFF : doc["pinShmupBtn2"];
+	addonOptions.pinShmupBtn3     = doc["pinShmupBtn3"] == -1 ? 0xFF : doc["pinShmupBtn3"];
+	addonOptions.pinShmupBtn4     = doc["pinShmupBtn4"] == -1 ? 0xFF : doc["pinShmupBtn4"];
+	addonOptions.shmupBtnMask1     = doc["shmupBtnMask1"];
+	addonOptions.shmupBtnMask2     = doc["shmupBtnMask2"];
+	addonOptions.shmupBtnMask3     = doc["shmupBtnMask3"];
+	addonOptions.shmupBtnMask4     = doc["shmupBtnMask4"];
+	addonOptions.pinShmupDial     = doc["pinShmupDial"] == -1 ? 0xFF : doc["pinShmupDial"];
 	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
 	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
 	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
@@ -578,6 +594,21 @@ std::string getAddonOptions()
 	doc["extraButtonPin"] = addonOptions.extraButtonPin == 0xFF ? -1 : addonOptions.extraButtonPin;
 	doc["extraButtonMap"] = addonOptions.extraButtonMap;
 	doc["playerNumber"] = addonOptions.playerNumber;
+	doc["shmupMode"] = addonOptions.shmupMode;
+	doc["shmupMixMode"] = addonOptions.shmupMixMode;
+	doc["shmupAlwaysOn1"] = addonOptions.shmupAlwaysOn1;
+	doc["shmupAlwaysOn2"] = addonOptions.shmupAlwaysOn2;
+	doc["shmupAlwaysOn3"] = addonOptions.shmupAlwaysOn3;
+	doc["shmupAlwaysOn4"] = addonOptions.shmupAlwaysOn4;
+	doc["pinShmupBtn1"] = addonOptions.pinShmupBtn1 == 0xFF ? -1 : addonOptions.pinShmupBtn1;
+	doc["pinShmupBtn2"] = addonOptions.pinShmupBtn2 == 0xFF ? -1 : addonOptions.pinShmupBtn2;
+	doc["pinShmupBtn3"] = addonOptions.pinShmupBtn3 == 0xFF ? -1 : addonOptions.pinShmupBtn3;
+	doc["pinShmupBtn4"] = addonOptions.pinShmupBtn4 == 0xFF ? -1 : addonOptions.pinShmupBtn4;
+	doc["shmupBtnMask1"] = addonOptions.shmupBtnMask1;
+	doc["shmupBtnMask2"] = addonOptions.shmupBtnMask2;
+	doc["shmupBtnMask3"] = addonOptions.shmupBtnMask3;
+	doc["shmupBtnMask4"] = addonOptions.shmupBtnMask4;
+	doc["pinShmupDial"] = addonOptions.pinShmupDial == 0xFF ? -1 : addonOptions.pinShmupDial;
 	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
 	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
 	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;
@@ -652,10 +683,24 @@ std::string echo()
 
 std::string reboot()
 {
-	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	DynamicJsonDocument doc = get_post_data();
 	doc["success"] = true;
 	// We need to wait for a bit before we actually reboot to leave the webclient some time to receive the response
 	rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+	WebConfig::BootModes bootMode = doc["bootMode"];
+	switch (bootMode) {
+		case WebConfig::BootModes::GAMEPAD:
+			rebootMode = System::BootMode::GAMEPAD;
+		break;
+		case WebConfig::BootModes::WEBCONFIG:
+			rebootMode = System::BootMode::WEBCONFIG;
+		break;
+		case WebConfig::BootModes::BOOTSEL:
+			rebootMode = System::BootMode::USB;
+		break;
+		default:
+			rebootMode = System::BootMode::DEFAULT;
+	}
 	return serialize_json(doc);
 }
 
@@ -675,6 +720,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setAddonOptions());
 	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, setSplashImage());
+	if (strcmp(name, API_REBOOT) == 0)
+			return set_file_data(file, reboot());
 #if !defined(NDEBUG)
 	if (strcmp(name, API_POST_ECHO) == 0)
 		return set_file_data(file, echo());
@@ -697,8 +744,6 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getFirmwareVersion());
 	if (strcmp(name, API_GET_MEMORY_REPORT) == 0)
 			return set_file_data(file, getMemoryReport());
-	if (strcmp(name, API_REBOOT) == 0)
-			return set_file_data(file, reboot());
 
 	bool isExclude = false;
 	for (auto &excludePath : excludePaths)
