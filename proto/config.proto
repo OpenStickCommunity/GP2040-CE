@@ -1,0 +1,255 @@
+syntax = "proto2";
+
+import "nanopb.proto";
+import "enums.proto";
+
+message GamepadOptions_Proto
+{
+	optional InputMode_Proto inputMode = 1;
+	optional DpadMode_Proto dpadMode = 2;
+	optional SOCDMode_Proto socdMode = 3;
+	optional bool invertXAxis = 4;
+	optional bool invertYAxis = 5;
+}
+
+message ButtonLayoutParamsCommon
+{
+	optional int32 startX = 1;
+	optional int32 startY = 2;
+	optional int32 buttonRadius = 3;
+	optional int32 buttonPadding = 4;
+}
+
+message ButtonLayoutParamsLeft
+{
+	optional ButtonLayout layout = 1;
+	optional ButtonLayoutParamsCommon common = 2;
+}
+
+message ButtonLayoutParamsRight
+{
+	optional ButtonLayoutRight layout = 1;
+	optional ButtonLayoutParamsCommon common = 2;
+}
+
+message ButtonLayoutCustomOptions
+{
+	optional ButtonLayoutParamsLeft paramsLeft = 1;
+	optional ButtonLayoutParamsRight paramsRight = 2;
+}
+
+message PinMappings
+{
+	optional int32 pinDpadUp = 1;
+	optional int32 pinDpadDown = 2;
+	optional int32 pinDpadLeft = 3;
+	optional int32 pinDpadRight = 4;
+	optional int32 pinButtonB1 = 5;
+	optional int32 pinButtonB2 = 6;
+	optional int32 pinButtonB3 = 7;
+	optional int32 pinButtonB4 = 8;
+	optional int32 pinButtonL1 = 9;
+	optional int32 pinButtonR1 = 10;
+	optional int32 pinButtonL2 = 11;
+	optional int32 pinButtonR2 = 12;
+	optional int32 pinButtonS1 = 13;
+	optional int32 pinButtonS2 = 14;
+	optional int32 pinButtonL3 = 15;
+	optional int32 pinButtonR3 = 16;
+	optional int32 pinButtonA1 = 17;
+	optional int32 pinButtonA2 = 18;
+}
+
+message DisplayOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 i2cBlock = 2;
+	optional int32 i2cSDAPin = 3;
+	optional int32 i2cSCLPin = 4;
+	optional int32 i2cAddress = 5;
+	optional int32 i2cSpeed = 6;
+
+	optional ButtonLayout buttonLayout = 7;
+	optional ButtonLayoutRight buttonLayoutRight = 8;
+	optional ButtonLayoutCustomOptions buttonLayoutCustomOptions = 9;
+
+	optional SplashMode splashMode = 10;
+	optional SplashChoice splashChoice = 11;
+	optional int32 splashDuration = 12;
+	optional string splashImage = 13 [(nanopb).max_length = 1500];
+
+	optional int32 size = 14;
+	optional int32 flip = 15;
+	optional bool invert = 16;
+
+	optional int32 displaySaverTimeout = 17;
+}
+
+message LEDOptions
+{
+	optional bool enabled = 1;
+	
+	optional int32 dataPin = 2;
+	optional LEDFormat_Proto ledFormat = 3;
+	optional ButtonLayout ledLayout = 4;
+	optional uint32 ledsPerButton = 5;
+	optional uint32 brightnessMaximum = 6;
+	optional uint32 brightnessSteps = 7;
+
+	optional int32 indexUp = 8;
+	optional int32 indexDown = 9;
+	optional int32 indexLeft = 10;
+	optional int32 indexRight = 11;
+	optional int32 indexB1 = 12;
+	optional int32 indexB2 = 13;
+	optional int32 indexB3 = 14;
+	optional int32 indexB4 = 15;
+	optional int32 indexL1 = 16;
+	optional int32 indexR1 = 17;
+	optional int32 indexL2 = 18;
+	optional int32 indexR2 = 19;
+	optional int32 indexS1 = 20;
+	optional int32 indexS2 = 21;
+	optional int32 indexL3 = 22;
+	optional int32 indexR3 = 23;
+	optional int32 indexA1 = 24;
+	optional int32 indexA2 = 25;
+};
+
+message BootselButtonOptions
+{
+	optional bool enabled = 1;
+	optional uint32 buttonMap = 2;
+}
+
+message OnBoardLedOptions
+{
+	optional OnBoardLedMode mode = 1;
+}
+
+message AnalogOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 analogAdcPinX = 2;
+	optional int32 analogAdcPinY = 3;
+}
+
+message TurboOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 buttonPin = 2;
+	optional int32 ledPin = 3;
+	optional uint32 shotCount = 4;
+	optional int32 shmupDialPin = 5;
+
+	optional bool shmupModeEnabled = 6;
+	optional uint32 shmupAlwaysOn1 = 7;
+	optional uint32 shmupAlwaysOn2 = 8;
+	optional uint32 shmupAlwaysOn3 = 9;
+	optional uint32 shmupAlwaysOn4 = 10;
+	optional int32 shmupBtn1Pin = 11;
+	optional int32 shmupBtn2Pin = 12;
+	optional int32 shmupBtn3Pin = 13;
+	optional int32 shmupBtn4Pin = 14;
+	optional uint32 shmupBtnMask1 = 15;
+	optional uint32 shmupBtnMask2 = 16;
+	optional uint32 shmupBtnMask3 = 17;
+	optional uint32 shmupBtnMask4 = 18;
+	optional ShmupMixMode shmupMixMode = 19;
+}
+
+message SliderOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 pinLS = 2;
+	optional int32 pinRS = 3;
+}
+
+message ReverseOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 buttonPin = 2;
+	optional int32 ledPin = 3;
+
+	optional uint32 actionUp = 4;
+	optional uint32 actionDown = 5;
+	optional uint32 actionLeft = 6;
+	optional uint32 actionRight = 7;
+}
+
+message AnalogADS1219Options
+{
+	optional bool enabled = 1;
+
+	optional int32 i2cBlock = 2;
+	optional int32 i2cSDAPin = 3;
+	optional int32 i2cSCLPin = 4;
+	optional int32 i2cAddress = 5;
+	optional int32 i2cSpeed = 6;
+}
+
+message DualDirectionalOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 upPin = 2;
+	optional int32 downPin = 3;
+	optional int32 leftPin = 4;
+	optional int32 rightPin = 5;
+	
+	optional DpadMode_Proto dpadMode = 6;
+	optional uint32 combineMode = 7;
+}
+
+message BuzzerOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 pin = 2;
+	optional uint32 volume = 3;
+}
+
+message ExtraOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 pin = 2;
+	optional uint32 buttonMap = 3;
+}
+
+message PlayerNumberOptions
+{
+	optional bool enabled = 1;
+	optional uint32 number = 2;
+}
+
+message AddonOptions
+{
+	optional BootselButtonOptions bootselButtonOptions = 1;
+	optional OnBoardLedOptions onBoardLedOptions = 2;
+	optional AnalogOptions analogOptions = 3;
+	optional TurboOptions turboOptions = 4;
+	optional SliderOptions sliderOptions = 5;
+	optional ReverseOptions reverseOptions = 6;
+	optional AnalogADS1219Options analogADS1219Options = 7;
+	optional DualDirectionalOptions dualDirectionalOptions = 8;
+	optional BuzzerOptions buzzerOptions = 9;
+	optional ExtraOptions extraOptions = 10;
+	optional PlayerNumberOptions playerNumberOptions = 11;
+}
+
+message Config
+{
+	optional string boardVersion = 1 [(nanopb).max_length = 31];
+
+	optional GamepadOptions_Proto gamepadOptions = 2;
+	optional PinMappings pinMappings = 3;
+	optional DisplayOptions displayOptions = 4;
+	optional LEDOptions ledOptions = 5;
+	optional AddonOptions addonOptions = 6;
+}

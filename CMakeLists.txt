@@ -97,6 +97,9 @@ pico_sdk_init()
 add_subdirectory(lib)
 add_subdirectory(MPG)
 
+include(compile_proto.cmake)
+compile_proto()
+
 add_executable(${PROJECT_NAME}
 src/main.cpp
 src/gp2040.cpp
@@ -121,6 +124,8 @@ src/addons/playernum.cpp
 src/addons/playerleds.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
+${PROTO_OUTPUT_DIR}/enums.pb.c
+${PROTO_OUTPUT_DIR}/config.pb.c
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
@@ -143,12 +148,14 @@ CRC32
 ArduinoJson
 rndis
 hardware_adc
+nanopb
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons
 configs/${GP2040_BOARDCONFIG}
+${PROTO_OUTPUT_DIR}
 )
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC

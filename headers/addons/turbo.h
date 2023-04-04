@@ -3,6 +3,7 @@
 
 #include "gpaddon.h"
 #include "storagemanager.h"
+#include "enums.pb.h"
 
 #ifndef TURBO_ENABLED
 #define TURBO_ENABLED 0
@@ -25,11 +26,6 @@
 #ifndef TURBO_SHMUP_MODE
 #define TURBO_SHMUP_MODE 0
 #endif
-
-enum ShmupMixMode { 
-    TURBO_PRIORITY = 0,
-    CHARGE_PRIORITY
-};
 
 #ifndef SHMUP_MIX_MODE
 #define SHMUP_MIX_MODE TURBO_PRIORITY

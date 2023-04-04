@@ -1,0 +1,118 @@
+syntax = "proto2";
+
+import "nanopb.proto";
+
+enum ButtonLayout
+{
+	option (nanopb_enumopt).long_names = false;
+
+	BUTTON_LAYOUT_STICK = 0;
+	BUTTON_LAYOUT_STICKLESS = 1;
+	BUTTON_LAYOUT_BUTTONS_ANGLED = 2;
+	BUTTON_LAYOUT_BUTTONS_BASIC = 3;
+	BUTTON_LAYOUT_KEYBOARD_ANGLED = 4;
+	BUTTON_LAYOUT_KEYBOARDA = 5;
+	BUTTON_LAYOUT_DANCEPADA = 6;
+	BUTTON_LAYOUT_TWINSTICKA = 7;
+	BUTTON_LAYOUT_BLANKA = 8;
+	BUTTON_LAYOUT_VLXA = 9;
+	BUTTON_LAYOUT_FIGHTBOARD_STICK = 10;
+	BUTTON_LAYOUT_FIGHTBOARD_MIRRORED = 11;
+	BUTTON_LAYOUT_CUSTOMA = 12;
+}
+
+enum ButtonLayoutRight
+{
+	option (nanopb_enumopt).long_names = false;
+
+	BUTTON_LAYOUT_ARCADE = 0;
+	BUTTON_LAYOUT_STICKLESSB = 1;
+	BUTTON_LAYOUT_BUTTONS_ANGLEDB = 2;
+	BUTTON_LAYOUT_VEWLIX = 3;
+	BUTTON_LAYOUT_VEWLIX7 = 4;
+	BUTTON_LAYOUT_CAPCOM = 5;
+	BUTTON_LAYOUT_CAPCOM6 = 6;
+	BUTTON_LAYOUT_SEGA2P = 7;
+	BUTTON_LAYOUT_NOIR8 = 8;
+	BUTTON_LAYOUT_KEYBOARDB = 9;
+	BUTTON_LAYOUT_DANCEPADB = 10;
+	BUTTON_LAYOUT_TWINSTICKB = 11;
+	BUTTON_LAYOUT_BLANKB = 12;
+	BUTTON_LAYOUT_VLXB = 13;
+	BUTTON_LAYOUT_FIGHTBOARD = 14;
+	BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED = 15;
+	BUTTON_LAYOUT_CUSTOMB = 16;
+}
+
+enum SplashMode
+{
+	option (nanopb_enumopt).long_names = false;
+
+	STATICSPLASH = 0;
+	CLOSEIN = 1;
+	CLOSEINCUSTOM = 2;
+	NOSPLASH = 3;
+}
+
+enum SplashChoice
+{
+	option (nanopb_enumopt).long_names = false;
+
+	MAIN = 0;
+	X = 1;
+	Y = 2;
+	Z = 3;
+	CUSTOM = 4;
+	LEGACY = 5;
+}
+
+enum OnBoardLedMode
+{
+	option (nanopb_enumopt).long_names = false;
+	
+	BOARD_LED_OFF = 0;
+	MODE_INDICATOR = 1;
+	INPUT_TEST = 2;
+}
+
+// This has to be kept in sync with InputMode in GamepadEnums.h
+enum InputMode_Proto
+{
+	INPUT_MODE_XINPUT = 0;
+	INPUT_MODE_SWITCH = 1;
+	INPUT_MODE_HID = 2;
+	INPUT_MODE_CONFIG = 255;
+}
+
+// This has to be kept in sync with DpadMode in GamepadEnums.h
+enum DpadMode_Proto
+{
+	DPAD_MODE_DIGITAL = 0;
+	DPAD_MODE_LEFT_ANALOG = 1;
+	DPAD_MODE_RIGHT_ANALOG = 2;
+}
+
+// This has to be kept in sync with SOCDMode in GamepadEnums.h
+enum SOCDMode_Proto
+{
+	SOCD_MODE_UP_PRIORITY = 0;
+	SOCD_MODE_NEUTRAL = 1;
+	SOCD_MODE_SECOND_INPUT_PRIORITY = 2;
+}
+
+// This has to be kept in sync with LEDFormat in NeoPico.hpp
+enum LEDFormat_Proto
+{
+	LED_FORMAT_GRB = 0;
+	LED_FORMAT_RGB = 1;
+	LED_FORMAT_GRBW = 2;
+	LED_FORMAT_RGBW = 3;
+}
+
+enum ShmupMixMode
+{
+	option (nanopb_enumopt).long_names = false;
+
+	TURBO_PRIORITY = 0;
+	CHARGE_PRIORITY = 1;
+}
