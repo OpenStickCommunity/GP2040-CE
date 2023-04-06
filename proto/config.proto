@@ -32,7 +32,7 @@ message ButtonLayoutParamsRight
 	optional ButtonLayoutParamsCommon common = 2;
 }
 
-message ButtonLayoutCustomOptions
+message ButtonLayoutCustomOptions_Proto
 {
 	optional ButtonLayoutParamsLeft paramsLeft = 1;
 	optional ButtonLayoutParamsRight paramsRight = 2;
@@ -72,7 +72,7 @@ message DisplayOptions
 
 	optional ButtonLayout buttonLayout = 7;
 	optional ButtonLayoutRight buttonLayoutRight = 8;
-	optional ButtonLayoutCustomOptions buttonLayoutCustomOptions = 9;
+	optional ButtonLayoutCustomOptions_Proto buttonLayoutCustomOptions = 9;
 
 	optional SplashMode splashMode = 10;
 	optional SplashChoice splashChoice = 11;
@@ -86,7 +86,7 @@ message DisplayOptions
 	optional int32 displaySaverTimeout = 17;
 }
 
-message LEDOptions
+message LEDOptions_Proto
 {
 	optional bool enabled = 1;
 	
@@ -239,7 +239,7 @@ message PlayerNumberOptions
 	optional uint32 number = 2;
 }
 
-message AddonOptions
+message AddonOptions_Proto
 {
 	optional BootselButtonOptions bootselButtonOptions = 1;
 	optional OnBoardLedOptions onBoardLedOptions = 2;
@@ -261,7 +261,7 @@ message Config
 	optional GamepadOptions_Proto gamepadOptions = 2;
 	optional PinMappings pinMappings = 3;
 	optional DisplayOptions displayOptions = 4;
-	optional LEDOptions ledOptions = 5;
+	optional LEDOptions_Proto ledOptions = 5;
 	optional AnimationOptions_Proto animationOptions = 6;
-	optional AddonOptions addonOptions = 7;
+	optional AddonOptions_Proto addonOptions = 7;
 }

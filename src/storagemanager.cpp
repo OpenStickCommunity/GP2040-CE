@@ -34,6 +34,8 @@
 
 #include "helper.h"
 
+#include "config.pb.h"
+
 /* Board stuffs */
 void Storage::initBoardOptions() {
 	EEPROM.get(BOARD_STORAGE_INDEX, boardOptions);
@@ -408,4 +410,45 @@ void AnimationStorage::save()
 
 	if (dirty)
 		EEPROM.commit();
+}
+
+#include <sstream>
+
+#define PREPROCESSOR_JOIN2(x, y) x ## y
+#define PREPROCESSOR_JOIN(x, y) PREPROCESSOR_JOIN2(x, y)
+
+#define TO_JSON_UENUM(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << s.fieldname;
+#define TO_JSON_INT32(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << s.fieldname;
+#define TO_JSON_UINT32(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << s.fieldname;
+#define TO_JSON_BOOL(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << (s.fieldname ? "true" : "false");
+#define TO_JSON_STRING(fieldname, submessageType) oss << ("\"" #fieldname "\": \"") << s.fieldname << "\"";
+#define TO_JSON_MESSAGE(fieldname, submessageType) oss << ("\"" #fieldname "\": "); PREPROCESSOR_JOIN(toJSON, submessageType)(oss, s.fieldname);
+
+#define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
+	if (!firstField) oss << ",\n"; \
+	firstField = false; \
+	PREPROCESSOR_JOIN(TO_JSON_, ltype)(fieldname, parenttype ## _ ## fieldname ## _MSGTYPE)
+
+#define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::ostringstream& oss, const structtype& s);
+
+#define GEN_TO_JSON_FUNCTION(structtype) \
+	static void toJSON ## structtype(std::ostringstream& oss, const structtype& s) \
+	{ \
+		bool firstField = true; \
+		oss << "{ "; \
+		structtype ## _FIELDLIST(TO_JSON_FIELD, structtype) \
+		oss << "}"; \
+	}
+
+CONFIG_MESSAGES_GP2040(GEN_TO_JSON_FUNCTION_DECL)
+CONFIG_MESSAGES_GP2040(GEN_TO_JSON_FUNCTION)
+
+std::string Storage::toJSON() const
+{
+	Config config = Config_init_default;
+
+	std::ostringstream oss;
+	toJSONConfig(oss, config);
+
+	return oss.str();
 }

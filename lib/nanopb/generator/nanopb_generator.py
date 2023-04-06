@@ -2047,6 +2047,13 @@ class ProtoFile:
                       yield '#define %s_msgid %d\n' % (msg.name, msg.msgid)
               yield '\n'
 
+            yield '/* List of all messages (GP2040-CE extension) */\n'
+            yield '#define %s_MESSAGES_GP2040(X) \\\n' % make_identifier(headername.split('.')[0])
+
+            for msg in self.messages:
+                yield '\tX(%s) \\\n' % msg.name
+            yield '\n'
+
         # Check if there is any name mangling active
         pairs = [x for x in self.manglenames.reverse_name_mapping.items() if str(x[0]) != str(x[1])]
         if pairs:

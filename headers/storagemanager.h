@@ -229,6 +229,8 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
+	std::string toJSON() const;
+
 private:
 	Storage() : gamepad(0) {
 		EEPROM.start(); // init EEPROM
