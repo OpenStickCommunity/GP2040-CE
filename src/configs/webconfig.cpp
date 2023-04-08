@@ -500,6 +500,8 @@ std::string setAddonOptions()
 	addonOptions.pinTurboLED        = doc["turboPinLED"] == -1 ? 0xFF : doc["turboPinLED"];
 	addonOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
 	addonOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
+	addonOptions.pinSliderSOCDUp  		= doc["sliderSOCDUpPin"] == -1 ? 0xFF : doc["sliderSOCDUpPin"];
+	addonOptions.pinSliderSOCDSecond    = doc["sliderSOCDSecondPin"] == -1 ? 0xFF : doc["sliderSOCDSecondPin"];
 	addonOptions.turboShotCount 	= doc["turboShotCount"];
 	addonOptions.pinButtonReverse  	= doc["reversePin"] == -1 ? 0xFF : doc["reversePin"];
 	addonOptions.pinReverseLED  	= doc["reversePinLED"] == -1 ? 0xFF : doc["reversePinLED"];
@@ -550,6 +552,7 @@ std::string setAddonOptions()
 	addonOptions.ExtraButtonAddonEnabled = doc["ExtraButtonAddonEnabled"];
 	addonOptions.I2CAnalog1219InputEnabled = doc["I2CAnalog1219InputEnabled"];
 	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
+	addonOptions.SliderSOCDInputEnabled = doc["SliderSOCDInputEnabled"];
 	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
 	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
 	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
@@ -567,6 +570,8 @@ std::string getAddonOptions()
 	doc["turboPinLED"] = addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED;
 	doc["sliderLSPin"] = addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS;
 	doc["sliderRSPin"] = addonOptions.pinSliderRS == 0xFF ? -1 : addonOptions.pinSliderRS;
+	doc["sliderSOCDUpPin"] = addonOptions.pinSliderSOCDUp == 0xFF ? -1 : addonOptions.pinSliderSOCDUp;
+	doc["sliderSOCDSecondPin"] = addonOptions.pinSliderSOCDSecond == 0xFF ? -1 : addonOptions.pinSliderSOCDSecond;
 	doc["turboShotCount"] = addonOptions.turboShotCount;
 	doc["reversePin"] = addonOptions.pinButtonReverse == 0xFF ? -1 : addonOptions.pinButtonReverse;
 	doc["reversePinLED"] = addonOptions.pinReverseLED == 0xFF ? -1 : addonOptions.pinReverseLED;
@@ -617,6 +622,7 @@ std::string getAddonOptions()
 	doc["ExtraButtonAddonEnabled"] = addonOptions.ExtraButtonAddonEnabled;
 	doc["I2CAnalog1219InputEnabled"] = addonOptions.I2CAnalog1219InputEnabled;
 	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
+	doc["SliderSOCDInputEnabled"] = addonOptions.SliderSOCDInputEnabled;
 	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;

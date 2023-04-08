@@ -121,6 +121,7 @@ src/addons/playernum.cpp
 src/addons/playerleds.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
+src/addons/slider_socd.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
