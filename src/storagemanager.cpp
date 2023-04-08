@@ -29,6 +29,7 @@
 #include "addons/pleds.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
+#include "addons/slider_socd.h"
 
 #include "bitmaps.h"
 
@@ -150,6 +151,8 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.pinButtonReverse  		= PIN_BUTTON_REVERSE;
 	addonOptions.pinSliderLS       		= PIN_SLIDER_LS;
 	addonOptions.pinSliderRS       		= PIN_SLIDER_RS;
+	addonOptions.pinSliderSOCDUp        = PIN_SLIDER_SOCD_UP;
+	addonOptions.pinSliderSOCDSecond    = PIN_SLIDER_SOCD_SECOND;
 	addonOptions.pinDualDirDown    		= PIN_DUAL_DIRECTIONAL_DOWN;
 	addonOptions.pinDualDirUp      		= PIN_DUAL_DIRECTIONAL_UP;
 	addonOptions.pinDualDirLeft    		= PIN_DUAL_DIRECTIONAL_LEFT;
@@ -200,6 +203,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.ExtraButtonAddonEnabled = EXTRA_BUTTON_ENABLED;
 	addonOptions.I2CAnalog1219InputEnabled = I2C_ANALOG1219_ENABLED;
 	addonOptions.JSliderInputEnabled    = JSLIDER_ENABLED;
+	addonOptions.SliderSOCDInputEnabled    = SLIDER_SOCD_ENABLED;
 	addonOptions.PlayerNumAddonEnabled  = PLAYERNUM_ADDON_ENABLED;
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;

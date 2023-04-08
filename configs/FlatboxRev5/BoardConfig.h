@@ -59,6 +59,8 @@
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
+#define PIN_SLIDER_SOCD_NEUTRAL    -1         // SOCD Up Priority Slider
+#define PIN_SLIDER_SOCD_SECOND    -1         // SOCD Second Input Priority Slider
 
 
 // This is the SOCD section.
