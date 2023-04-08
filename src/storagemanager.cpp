@@ -412,48 +412,38 @@ void AnimationStorage::save()
 		EEPROM.commit();
 }
 
-#include <sstream>
-#include <algorithm>
-
-static void writeIndentation(std::ostringstream& oss, int level)
+static void writeIndentation(std::string& str, int level)
 {
-	static const char tabs[] = "\t\t\t\t\t\t\t\t";
-
-	while (level > 0)
-	{
-		const int tabsToWrite = std::min(level, 8);
-		level -= tabsToWrite;
-		oss.write(tabs, tabsToWrite);
-	}
+	str.append(static_cast<std::string::size_type>(level), '\t');
 }
 
 #define PREPROCESSOR_JOIN2(x, y) x ## y
 #define PREPROCESSOR_JOIN(x, y) PREPROCESSOR_JOIN2(x, y)
 
-#define TO_JSON_UENUM(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << s.fieldname;
-#define TO_JSON_INT32(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << s.fieldname;
-#define TO_JSON_UINT32(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << s.fieldname;
-#define TO_JSON_BOOL(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << (s.fieldname ? "true" : "false");
-#define TO_JSON_STRING(fieldname, submessageType) oss << ("\"" #fieldname "\": \"") << s.fieldname << "\"";
-#define TO_JSON_MESSAGE(fieldname, submessageType) oss << ("\"" #fieldname "\": "); PREPROCESSOR_JOIN(toJSON, submessageType)(oss, s.fieldname, indentLevel + 1);
+#define TO_JSON_UENUM(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.append(std::to_string(s.fieldname));
+#define TO_JSON_INT32(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.append(std::to_string(s.fieldname));
+#define TO_JSON_UINT32(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.append(std::to_string(s.fieldname));
+#define TO_JSON_BOOL(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.append(s.fieldname ? "true" : "false");
+#define TO_JSON_STRING(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.push_back('"'); str.append(s.fieldname); str.push_back('"');
+#define TO_JSON_MESSAGE(fieldname, submessageType) str.append("\"" #fieldname "\": "); PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname, indentLevel + 1);
 
 #define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
-	if (!firstField) oss << ",\n"; \
+	if (!firstField) str.append(",\n"); \
 	firstField = false; \
-	writeIndentation(oss, indentLevel); \
+	writeIndentation(str, indentLevel); \
 	PREPROCESSOR_JOIN(TO_JSON_, ltype)(fieldname, parenttype ## _ ## fieldname ## _MSGTYPE)
 
 #define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::ostringstream& oss, const structtype& s, int indentLevel);
 
 #define GEN_TO_JSON_FUNCTION(structtype) \
-	static void toJSON ## structtype(std::ostringstream& oss, const structtype& s, int indentLevel) \
+	static void toJSON ## structtype(std::string& str, const structtype& s, int indentLevel) \
 	{ \
 		bool firstField = true; \
-		oss << "{\n"; \
+		str.append("{\n"); \
 		structtype ## _FIELDLIST(TO_JSON_FIELD, structtype) \
-		oss << '\n'; \
-		writeIndentation(oss, indentLevel - 1); \
-		oss << '}'; \
+		str.push_back('\n'); \
+		writeIndentation(str, indentLevel - 1); \
+		str.push_back('}'); \
 	}
 
 CONFIG_MESSAGES_GP2040(GEN_TO_JSON_FUNCTION_DECL)
@@ -463,9 +453,13 @@ std::string Storage::toJSON() const
 {
 	Config config = Config_init_default;
 
-	std::ostringstream oss;
-	toJSONConfig(oss, config, 1);
-	oss << '\n';
+	strncpy(config.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
+	config.boardVersion[sizeof(config.boardVersion) - 1] = '\0';
 
-	return oss.str();
+	std::string str;
+	str.reserve(1024 * 4);
+	toJSONConfig(str, config, 1);
+	str.push_back('\n');
+
+	return str;
 }
