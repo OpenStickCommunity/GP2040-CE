@@ -413,6 +413,19 @@ void AnimationStorage::save()
 }
 
 #include <sstream>
+#include <algorithm>
+
+static void writeIndentation(std::ostringstream& oss, int level)
+{
+	static const char tabs[] = "\t\t\t\t\t\t\t\t";
+
+	while (level > 0)
+	{
+		const int tabsToWrite = std::min(level, 8);
+		level -= tabsToWrite;
+		oss.write(tabs, tabsToWrite);
+	}
+}
 
 #define PREPROCESSOR_JOIN2(x, y) x ## y
 #define PREPROCESSOR_JOIN(x, y) PREPROCESSOR_JOIN2(x, y)
@@ -422,22 +435,25 @@ void AnimationStorage::save()
 #define TO_JSON_UINT32(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << s.fieldname;
 #define TO_JSON_BOOL(fieldname, submessageType) oss << ("\"" #fieldname "\": ") << (s.fieldname ? "true" : "false");
 #define TO_JSON_STRING(fieldname, submessageType) oss << ("\"" #fieldname "\": \"") << s.fieldname << "\"";
-#define TO_JSON_MESSAGE(fieldname, submessageType) oss << ("\"" #fieldname "\": "); PREPROCESSOR_JOIN(toJSON, submessageType)(oss, s.fieldname);
+#define TO_JSON_MESSAGE(fieldname, submessageType) oss << ("\"" #fieldname "\": "); PREPROCESSOR_JOIN(toJSON, submessageType)(oss, s.fieldname, indentLevel + 1);
 
 #define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
 	if (!firstField) oss << ",\n"; \
 	firstField = false; \
+	writeIndentation(oss, indentLevel); \
 	PREPROCESSOR_JOIN(TO_JSON_, ltype)(fieldname, parenttype ## _ ## fieldname ## _MSGTYPE)
 
-#define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::ostringstream& oss, const structtype& s);
+#define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::ostringstream& oss, const structtype& s, int indentLevel);
 
 #define GEN_TO_JSON_FUNCTION(structtype) \
-	static void toJSON ## structtype(std::ostringstream& oss, const structtype& s) \
+	static void toJSON ## structtype(std::ostringstream& oss, const structtype& s, int indentLevel) \
 	{ \
 		bool firstField = true; \
-		oss << "{ "; \
+		oss << "{\n"; \
 		structtype ## _FIELDLIST(TO_JSON_FIELD, structtype) \
-		oss << "}"; \
+		oss << '\n'; \
+		writeIndentation(oss, indentLevel - 1); \
+		oss << '}'; \
 	}
 
 CONFIG_MESSAGES_GP2040(GEN_TO_JSON_FUNCTION_DECL)
@@ -448,7 +464,8 @@ std::string Storage::toJSON() const
 	Config config = Config_init_default;
 
 	std::ostringstream oss;
-	toJSONConfig(oss, config);
+	toJSONConfig(oss, config, 1);
+	oss << '\n';
 
 	return oss.str();
 }
