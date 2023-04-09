@@ -420,18 +420,49 @@ static void writeIndentation(std::string& str, int level)
 #define PREPROCESSOR_JOIN2(x, y) x ## y
 #define PREPROCESSOR_JOIN(x, y) PREPROCESSOR_JOIN2(x, y)
 
-#define TO_JSON_UENUM(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.append(std::to_string(s.fieldname));
-#define TO_JSON_INT32(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.append(std::to_string(s.fieldname));
-#define TO_JSON_UINT32(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.append(std::to_string(s.fieldname));
-#define TO_JSON_BOOL(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.append(s.fieldname ? "true" : "false");
-#define TO_JSON_STRING(fieldname, submessageType) str.append("\"" #fieldname "\": "); str.push_back('"'); str.append(s.fieldname); str.push_back('"');
-#define TO_JSON_MESSAGE(fieldname, submessageType) str.append("\"" #fieldname "\": "); PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname, indentLevel + 1);
+#define TO_JSON_UENUM(fieldname, submessageType) str.append(std::to_string(s.fieldname));
+#define TO_JSON_INT32(fieldname, submessageType) str.append(std::to_string(s.fieldname));
+#define TO_JSON_UINT32(fieldname, submessageType) str.append(std::to_string(s.fieldname));
+#define TO_JSON_BOOL(fieldname, submessageType) str.append((s.fieldname) ? "true" : "false");
+#define TO_JSON_STRING(fieldname, submessageType) str.push_back('"'); str.append(s.fieldname); str.push_back('"');
+#define TO_JSON_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname, indentLevel + 1);
+
+#define TO_JSON_REPEATED_UENUM(fieldname, submessageType) str.append(std::to_string(s.fieldname[i]));
+#define TO_JSON_REPEATED_INT32(fieldname, submessageType) str.append(std::to_string(s.fieldname[i]));
+#define TO_JSON_REPEATED_UINT32(fieldname, submessageType) str.append(std::to_string(s.fieldname[i]));
+#define TO_JSON_REPEATED_BOOL(fieldname, submessageType) str.append((s.fieldname[i]) ? "true" : "false");
+#define TO_JSON_REPEATED_STRING(fieldname, submessageType) str.push_back('"'); str.append(s.fieldname[i]); str.push_back('"');
+#define TO_JSON_REPEATED_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname[i], indentLevel + 1);
+
+#define TO_JSON_REPEATED(ltype, fieldname, submessageType) \
+	str.append("["); \
+	for (int i = 0; i < s.PREPROCESSOR_JOIN(fieldname, _count); ++i) \
+	{ \
+		if (i != 0) str.append(",");\
+		str.append("\n"); \
+		writeIndentation(str, indentLevel + 1); \
+		PREPROCESSOR_JOIN(TO_JSON_REPEATED_, ltype)(fieldname, submessageType) \
+	} \
+	str.append("\n"); \
+	writeIndentation(str, indentLevel); \
+	str.append("]"); \
+
+#define TO_JSON_REQUIRED(ltype, fieldname, submessageType) PREPROCESSOR_JOIN(TO_JSON_, ltype)(fieldname, submessageType)
+#define TO_JSON_OPTIONAL(ltype, fieldname, submessageType) PREPROCESSOR_JOIN(TO_JSON_, ltype)(fieldname, submessageType)
+#define TO_JSON_SINGULAR(ltype, fieldname, submessageType) static_assert(false, "not supported");
+#define TO_JSON_FIXARRAY(ltype, fieldname, submessageType) static_assert(false, "not supported");
+#define TO_JSON_ONEOF(ltype, fieldname, submessageType) static_assert(false, "not supported");
+
+#define TO_JSON_STATIC(htype, ltype, fieldname, submessageType) PREPROCESSOR_JOIN(TO_JSON_, htype)(ltype, fieldname, submessageType)
+#define TO_JSON_POINTER(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
+#define TO_JSON_CALLBACK(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 
 #define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
 	if (!firstField) str.append(",\n"); \
 	firstField = false; \
 	writeIndentation(str, indentLevel); \
-	PREPROCESSOR_JOIN(TO_JSON_, ltype)(fieldname, parenttype ## _ ## fieldname ## _MSGTYPE)
+	str.append("\"" #fieldname "\": "); \
+	PREPROCESSOR_JOIN(TO_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname ## _MSGTYPE)
 
 #define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::ostringstream& oss, const structtype& s, int indentLevel);
 
