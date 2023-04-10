@@ -10,7 +10,7 @@ Select the button labels to be displayed in the usage guide: <label-selector></l
 
 ## Buttons
 
-GP2040 uses a generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. This table provides a map of GP2040 buttons to the supported input types and layouts:
+GP2040 uses generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. This table provides a map of GP2040 buttons to the supported input types and layouts:
 
 | GP2040  | XInput | Switch  | PS3          | DirectInput  | Arcade |
 | ------- | ------ | ------- | ------------ | ------------ | ------ |
@@ -41,7 +41,7 @@ To boot into Bootsel mode (to flash your controller for example), hold the <hotk
 
 ## Webconfig Mode
 
-To boot into [Webconfig mode](web-configurator.md) (to flash your controller for example), hold the <hotkey v-bind:buttons='["S2"]'></hotkey> button then plug in your controller.
+To boot into [Webconfig mode](web-configurator.md) (to access the web configurator), hold the <hotkey v-bind:buttons='["S2"]'></hotkey> button combination then plug in your controller.
 
 ## Input Modes
 
@@ -65,13 +65,13 @@ D-Pad mode is saved across power cycles.
 
 ## SOCD Modes
 
-Simultaneous Opposite Cardinal Direction (SOCD) cleaning will ensure the controller doesn't send invalid directional inputs to the computer/console, like Left + Right at the same time. There are 3 modes to choose from **while the controller is in use by pressing one of the following combinations:**
+[Simultaneous Opposite Cardinal Direction (SOCD)(https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040 users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button combinations:**
 
-* <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Stickless behavior)
-* <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral
+* <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Standard stickless behavior).
+* <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.
 * <hotkey v-bind:buttons='["S2", "A1", "Left"]'></hotkey> - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
 
-SOCD mode is saved across power cycles.
+The selected SOCD mode is saved across power cycles.
 
 ## Invert D-Pad Y-axis
 
