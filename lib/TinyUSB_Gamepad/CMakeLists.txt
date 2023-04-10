@@ -12,6 +12,5 @@ ${CMAKE_SOURCE_DIR}/headers
 target_link_libraries(TinyUSB_Gamepad 
 pico_stdlib
 tinyusb_device
-MPG
 rndis
 )

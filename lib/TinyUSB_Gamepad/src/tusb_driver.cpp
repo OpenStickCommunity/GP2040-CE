@@ -10,7 +10,7 @@
 #include "class/hid/hid.h"
 #include "device/usbd_pvt.h"
 
-#include "GamepadDescriptors.h"
+#include "gamepad/GamepadDescriptors.h"
 
 #include "usb_driver.h"
 #include "net_driver.h"

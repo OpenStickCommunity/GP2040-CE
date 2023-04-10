@@ -7,7 +7,7 @@
 #include <wchar.h>
 #include "tusb.h"
 #include "usb_driver.h"
-#include "GamepadDescriptors.h"
+#include "gamepad/GamepadDescriptors.h"
 #include "webserver_descriptors.h"
 
 // Invoked when received GET STRING DESCRIPTOR request

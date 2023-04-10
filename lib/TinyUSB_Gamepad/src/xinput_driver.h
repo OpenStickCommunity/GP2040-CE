@@ -9,7 +9,7 @@
 #include "tusb.h"
 #include "device/usbd_pvt.h"
 
-#include "descriptors/XInputDescriptors.h"
+#include "gamepad/descriptors/XInputDescriptors.h"
 
 #define XINPUT_OUT_SIZE 32
 
