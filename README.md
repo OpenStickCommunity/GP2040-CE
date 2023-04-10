@@ -1,25 +1,25 @@
 # GP2040-CE | Community Edition Firmware
 
-GP2040-CE is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontroller, and provides high performance with a rich feature set across multiple platforms. GP2040-CE is compatible with PC, MiSTer, Android, Raspberry Pi, Nintendo Switch, PS3 and PS4 (legacy controller support).
+GP2040-CE is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontroller, and provides high performance with a rich feature set across multiple platforms. GP2040-CE is compatible with PC, MiSTer, Android, Raspberry Pi, Nintendo Switch, PS3 and PS4 (legacy controller support) platforms.
 
 Full documentation can be found at <https://gp2040-ce.info>.
 
 ## Features
 
-* Selectable input modes - XInput, DirectInput, and Nintendo Switch
-* Overclocked polling rate for less than 1 ms of input latency in all modes
-* Multiple SOCD cleaning modes - Neutral, Up Priority (a.k.a. Stickless), and Second Input Priority
-* Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches
-* Dual direction via D-pad + LS/RS
-* Reverse input via button
+* Selectable input modes - XInput, DirectInput, and Nintendo Switch.
+* Overclocked polling rate for less than 1 ms of input latency in all modes.
+* Multiple SOCD cleaning modes - Up Priority (a.k.a. Stickless), Neutral, and Second Input Priority.
+* Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches.
+* Dual direction via D-pad + LS/RS.
+* Reversed input via a button.
 * Turbo and Turbo LED with selectable speed
-* Per-button RGB LED support
-* PWM Player indicator LED support (XInput only)
-* Multiple profile support
-* Support for 128x64 monochrome I2C displays - SSD1306, SH1106, and SH1107 compatible
-* Custom startup splash screen and easy image upload via web configuration
-* Support for passive buzzer speaker (3v or 5v)
-* [Built-in, embedded web configuration](https://gp2040-ce.info/#/web-configurator) - no download required!
+* Per-button RGB LED support.
+* PWM Player indicator LED support (XInput only).
+* Multiple profiles support.
+* Support for 128x64 monochrome I2C displays - SSD1306, SH1106, and SH1107 compatible.
+* Custom startup splash screen and easy image upload via web configuration.
+* Support for passive buzzer speaker (3v or 5v).
+* [Built-in, embedded web configuration](https://gp2040-ce.info/#/web-configurator) - No download required!
 
 Visit the [GP2040-CE Usage](https://gp2040-ce.info/#/usage) page for more details.
 
@@ -29,17 +29,17 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 
 | Version | Mode | Poll Rate | Min | Max | Avg | Stdev | % on time | %1f skip | %2f skip |
 | - | - | - | - | - | - | - | - | - | - |
-| v0.3.1 | All | 1 ms | 0.56 ms | 1.32 ms | 0.85 ms | 0.24 ms | 95.95% | 4.05% | 0% |
+| v0.4.3 | All | 1 ms | 0.46 ms | 1.24 ms | 0.77 ms | 0.24 ms | 96.37% | 3.63% | 0% |
 
 Full results can be found in the [GP2040-CE Firmware Latency Test Results](https://docs.google.com/spreadsheets/d/1eeX0SCOYnUDZMYzt_69wDpjnB_XUtvsfvHJYxxgTj28/edit#gid=1559471406) Google Sheet.
 
 ## Installation
 
-Prebuilt `uf2` files are available in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section.
+Prebuilt MicroPython `UF2` files are available in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section.
 
-The default pinnout for GP2040-CE is based on an official RaspBerry Pi Pico. That pinnout can be found [HERE](configs/Pico/assets/PinMapping.png).  This can be found in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section under Pico.
+The default pinout for GP2040-CE is based on an official RaspBerry Pi Pico. That pinout can be found [HERE](configs/Pico/assets/PinMapping.png).  This can be found in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section under Pico.
 
-In addition to the default UF2 we also offer pre-compiled UF2s from community members that have verified its operation with their own devices. Some of these additional configurations include:
+In addition to the default UF2 we also offer pre-compiled UF2s from community members that have verified operation with their own devices. Some of these additional configurations include:
 
 > * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
 > * [Crush Counter](configs/CrushCounter) (formerly the [OSFRD](configs/OSFRD))
@@ -65,11 +65,11 @@ If you would like to discuss features, issues or anything else related to GP2040
 
 #### Which input mode should I use?
 
-Generally speaking, XInput will be the mode of choice for everything except Nintendo Switch and PlayStation 3. XInput mode is the most fully-featured, has the best compatibility with PC games, and is compatible with console adapters like the Brook Wingman product line. All things being equal, performance is the same in all modes.
+Generally speaking, XInput will be the mode of choice for everything except Nintendo Switch and PlayStation 3. XInput mode is the most fully-featured, has the best compatibility with PC games, and is compatible with console adapters like the Brook Wingman product line. All else being equal, performance is the same in all modes.
 
 #### What is the extent of PS4 support in GP2040-CE?
 
-GP2040-CE will work on PS4 games that implement support for legacy PS3 controllers. Many of the popular PS4 fighting games support them.
+GP2040 will work on PS4 games that implement support for legacy PS3 controllers. Many of the popular PS4 fighting games have this support.
 
 #### Will GP2040-CE natively support PS4, PS5, Xbox One, or Xbox Series consoles?
 
@@ -81,7 +81,7 @@ Yes! Each GP2040-CE board is treated as a separate controller. However, be sure 
 
 #### Does GP2040-CE really have less than 1 ms of input latency?
 
-Yes! If your platform supports 1000 Hz USB polling, input latency is less than 1ms. GP2040-CE is configured for 1000 Hz / 1 ms polling by default in all modes, however some systems override or ignore the polling rate the controller requests. The 1000 Hz polling rate is confirmed to work on PC and MiSTer. Even if your platform doesn't support high rate USB polling, GP2040-CE is still reading and processing your inputs as fast as the target system will allow.
+Yes! If your platform supports 1000 Hz USB polling, input latency will be less than 1ms. GP2040-CE is configured for 1000 Hz / 1 ms polling by default in all modes, however some systems override or ignore the polling rate the controller requests. The 1000 Hz polling rate is confirmed to work on PC and MiSTer. Even if your platform doesn't support high rate USB polling, GP2040-CE is still reading and processing your inputs as fast as the target system will allow.
 
 #### Do the additional features like RGB LEDs, Player LEDs, and OLED displays affect performance?
 
@@ -89,16 +89,16 @@ No! GP2040-CE dedicates a processing core to just reading and writing player inp
 
 #### Why do the buttons have weird labels like B3, A1, S2, etc.?
 
-GP2040-CE uses a generic system for handling button inputs that resembles a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040-CE documentation and web configurator have a dropdown to change the labels to more familiar controller layouts. You can refer to the button mapping table on the [GP2040 Usage](http://gp2040-ce.info/#/usage?id=buttons) page.
+GP2040-CE uses a generic system for handling button inputs that resembles a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040-CE documentation and web configurator both provide a dropdown to change the button labels to more familiar controller layouts. You can refer to the button mapping table on the [GP2040 Usage](http://gp2040-ce.info/#/usage?id=buttons) page.
 
 #### What kind of voodoo is that embedded web configurator?
 
 There's no magic here, just some useful libraries working together:
 
-* Single page application using React and Bootstrap is embedded in the GP2040-CE firmware
-* TinyUSB library provides virtual network connection over USB via RNDIS
-* lwIP library provides an HTTP server for the embedded React app and the web configuration API
-* ArduinoJson library is used for serialization and deserialization of web API requests
+* Single page application using React and Bootstrap is embedded in the GP2040-CE firmware.
+* TinyUSB library provides virtual network connection over USB via RNDIS.
+* lwIP library provides an HTTP server for the embedded React app and the web configuration API.
+* ArduinoJson library is used for serialization and deserialization of web API requests.
 
 ## Contributing
 
