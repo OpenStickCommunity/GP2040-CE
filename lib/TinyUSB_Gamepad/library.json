@@ -9,8 +9,5 @@
 			"url": "https://mytechtoybox.com"
 		}
 	],
-	"dependencies": {
-		"MPG": "https://github.com/FeralAI/MPG.git#e529c802b679b2bee8ec93b2ac4ed72edb9cf369"
-	},
 	"license": "MIT"
 }

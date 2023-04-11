@@ -95,7 +95,6 @@ FetchContent_MakeAvailable(ArduinoJson)
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 add_subdirectory(lib)
-add_subdirectory(MPG)
 
 add_executable(${PROJECT_NAME}
 src/main.cpp
@@ -122,6 +121,8 @@ src/addons/playerleds.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
+src/gamepad/GamepadDebouncer.cpp
+src/gamepad/GamepadDescriptors.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
@@ -130,7 +131,6 @@ pico_set_program_name(GP2040-CE "GP2040-CE")
 pico_set_program_version(GP2040-CE "0.6.2")
 
 target_link_libraries(${PROJECT_NAME} 
-MPG
 pico_stdlib
 pico_bootsel_via_double_reset
 AnimationStation
@@ -149,6 +149,8 @@ hardware_adc
 target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons
+headers/configs
+headers/gamepad
 configs/${GP2040_BOARDCONFIG}
 )
 
