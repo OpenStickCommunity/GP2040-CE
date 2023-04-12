@@ -14,6 +14,8 @@
 #include "helper.h"
 #include "gamepad.h"
 
+#include "config.pb.h"
+
 #define GAMEPAD_STORAGE_INDEX      		0    // 1024 bytes for gamepad options
 #define BOARD_STORAGE_INDEX     		1024 //  512 bytes for hardware options
 #define LED_STORAGE_INDEX       		1536 //  512 bytes for LED configuration
@@ -253,6 +255,8 @@ private:
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;
+
+	static void initMissingPropertiesWithDefaults(Config& config);
 };
 
 #endif

@@ -88,33 +88,31 @@ message DisplayOptions
 
 message LEDOptions_Proto
 {
-	optional bool enabled = 1;
+	optional int32 dataPin = 1;
+	optional LEDFormat_Proto ledFormat = 2;
+	optional ButtonLayout ledLayout = 3;
+	optional uint32 ledsPerButton = 4;
+	optional uint32 brightnessMaximum = 5;
+	optional uint32 brightnessSteps = 6;
 	
-	optional int32 dataPin = 2;
-	optional LEDFormat_Proto ledFormat = 3;
-	optional ButtonLayout ledLayout = 4;
-	optional uint32 ledsPerButton = 5;
-	optional uint32 brightnessMaximum = 6;
-	optional uint32 brightnessSteps = 7;
-
-	optional int32 indexUp = 8;
-	optional int32 indexDown = 9;
-	optional int32 indexLeft = 10;
-	optional int32 indexRight = 11;
-	optional int32 indexB1 = 12;
-	optional int32 indexB2 = 13;
-	optional int32 indexB3 = 14;
-	optional int32 indexB4 = 15;
-	optional int32 indexL1 = 16;
-	optional int32 indexR1 = 17;
-	optional int32 indexL2 = 18;
-	optional int32 indexR2 = 19;
-	optional int32 indexS1 = 20;
-	optional int32 indexS2 = 21;
-	optional int32 indexL3 = 22;
-	optional int32 indexR3 = 23;
-	optional int32 indexA1 = 24;
-	optional int32 indexA2 = 25;
+	optional int32 indexUp = 7;
+	optional int32 indexDown = 8;
+	optional int32 indexLeft = 9;
+	optional int32 indexRight = 10;
+	optional int32 indexB1 = 11;
+	optional int32 indexB2 = 12;
+	optional int32 indexB3 = 13;
+	optional int32 indexB4 = 14;
+	optional int32 indexL1 = 15;
+	optional int32 indexR1 = 16;
+	optional int32 indexL2 = 17;
+	optional int32 indexR2 = 18;
+	optional int32 indexS1 = 19;
+	optional int32 indexS2 = 20;
+	optional int32 indexL3 = 21;
+	optional int32 indexR3 = 22;
+	optional int32 indexA1 = 23;
+	optional int32 indexA2 = 24;
 };
 
 message AnimationOptions_Proto

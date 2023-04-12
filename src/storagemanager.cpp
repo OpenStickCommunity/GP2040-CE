@@ -483,9 +483,8 @@ CONFIG_MESSAGES_GP2040(GEN_TO_JSON_FUNCTION)
 std::string Storage::toJSON() const
 {
 	Config config = Config_init_default;
-
-	strncpy(config.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
-	config.boardVersion[sizeof(config.boardVersion) - 1] = '\0';
+	
+	initMissingPropertiesWithDefaults(config);
 
 	std::string str;
 	str.reserve(1024 * 4);
@@ -493,4 +492,202 @@ std::string Storage::toJSON() const
 	str.push_back('\n');
 
 	return str;
+}
+
+#define INIT_MISSING_PROPERTY(parent, property, value) \
+	if (!parent.PREPROCESSOR_JOIN(has_, property)) \
+	{ \
+		parent.property = value; \
+		parent.PREPROCESSOR_JOIN(has_, property) = true; \
+	} \
+
+#define INIT_MISSING_PROPERTY_STR(parent, property, str) \
+	if (!parent.PREPROCESSOR_JOIN(has_, property)) \
+	{ \
+		strncpy(parent.property, str, sizeof(parent.property)); \
+		parent.property[sizeof(parent.property) - 1] = '\0'; \
+		parent.PREPROCESSOR_JOIN(has_, property) = true; \
+	} \
+
+void Storage::initMissingPropertiesWithDefaults(Config& config)
+{
+	INIT_MISSING_PROPERTY_STR(config, boardVersion, GP2040VERSION);
+
+	// gamepadOptions
+	INIT_MISSING_PROPERTY(config.gamepadOptions, inputMode, InputMode_Proto_INPUT_MODE_XINPUT);
+	INIT_MISSING_PROPERTY(config.gamepadOptions, dpadMode, DpadMode_Proto_DPAD_MODE_DIGITAL);
+#ifdef DEFAULT_SOCD_MODE
+	INIT_MISSING_PROPERTY(config.gamepadOptions, socdMode, static_cast<SOCDMode_Proto>(DEFAULT_SOCD_MODE));
+#else
+	INIT_MISSING_PROPERTY(config.gamepadOptions, socdMode, SOCDMode_Proto_SOCD_MODE_NEUTRAL);
+#endif
+	INIT_MISSING_PROPERTY(config.gamepadOptions, invertXAxis, false);
+	INIT_MISSING_PROPERTY(config.gamepadOptions, invertYAxis, false);
+
+	// pinMappings
+	INIT_MISSING_PROPERTY(config.pinMappings, pinDpadUp, PIN_DPAD_UP);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinDpadDown, PIN_DPAD_DOWN);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinDpadLeft, PIN_DPAD_LEFT);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinDpadRight, PIN_DPAD_RIGHT);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonB1, PIN_BUTTON_B1);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonB2, PIN_BUTTON_B2);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonB3, PIN_BUTTON_B3);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonB4, PIN_BUTTON_B4);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonL1, PIN_BUTTON_L1);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonR1, PIN_BUTTON_R1);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonL2, PIN_BUTTON_L2);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonR2, PIN_BUTTON_R2);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonS1, PIN_BUTTON_S1);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonS2, PIN_BUTTON_S2);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonL3, PIN_BUTTON_L3);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonR3, PIN_BUTTON_R3);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonA1, PIN_BUTTON_A1);
+	INIT_MISSING_PROPERTY(config.pinMappings, pinButtonA2, PIN_BUTTON_A2);
+
+	// displayOptions
+	INIT_MISSING_PROPERTY(config.displayOptions, enabled, !!HAS_I2C_DISPLAY);
+	INIT_MISSING_PROPERTY(config.displayOptions, i2cBlock, (I2C_BLOCK == i2c0) ? 0 : 1);
+	INIT_MISSING_PROPERTY(config.displayOptions, i2cSDAPin, I2C_SDA_PIN);
+	INIT_MISSING_PROPERTY(config.displayOptions, i2cSCLPin, I2C_SCL_PIN);
+	INIT_MISSING_PROPERTY(config.displayOptions, i2cAddress, DISPLAY_I2C_ADDR);
+	INIT_MISSING_PROPERTY(config.displayOptions, i2cSpeed, I2C_SPEED);
+	INIT_MISSING_PROPERTY(config.displayOptions, buttonLayout, BUTTON_LAYOUT);
+	INIT_MISSING_PROPERTY(config.displayOptions, buttonLayoutRight, BUTTON_LAYOUT_RIGHT);
+
+	ButtonLayoutParamsLeft& paramsLeft = config.displayOptions.buttonLayoutCustomOptions.paramsLeft;
+	INIT_MISSING_PROPERTY(paramsLeft, layout, BUTTON_LAYOUT);
+	INIT_MISSING_PROPERTY(paramsLeft.common, startX, 8);
+	INIT_MISSING_PROPERTY(paramsLeft.common, startY, 28);
+	INIT_MISSING_PROPERTY(paramsLeft.common, buttonRadius, 8);
+	INIT_MISSING_PROPERTY(paramsLeft.common, buttonPadding, 2);
+
+	ButtonLayoutParamsRight& paramsRight = config.displayOptions.buttonLayoutCustomOptions.paramsRight;
+	INIT_MISSING_PROPERTY(paramsRight, layout, BUTTON_LAYOUT_RIGHT);
+	INIT_MISSING_PROPERTY(paramsRight.common, startX, 8);
+	INIT_MISSING_PROPERTY(paramsRight.common, startY, 28);
+	INIT_MISSING_PROPERTY(paramsRight.common, buttonRadius, 8);
+	INIT_MISSING_PROPERTY(paramsRight.common, buttonPadding, 2);
+
+	INIT_MISSING_PROPERTY(config.displayOptions, splashMode, SPLASH_MODE);
+	INIT_MISSING_PROPERTY(config.displayOptions, splashChoice, SPLASH_CHOICE);
+	INIT_MISSING_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
+	INIT_MISSING_PROPERTY_STR(config.displayOptions, splashImage, "");
+	INIT_MISSING_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
+	INIT_MISSING_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
+	INIT_MISSING_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
+	INIT_MISSING_PROPERTY(config.displayOptions, displaySaverTimeout, DISPLAY_SAVER_TIMEOUT);
+
+	// ledOptions
+	INIT_MISSING_PROPERTY(config.ledOptions, dataPin, BOARD_LEDS_PIN);
+	INIT_MISSING_PROPERTY(config.ledOptions, ledFormat, static_cast<LEDFormat_Proto>(LED_FORMAT));
+	INIT_MISSING_PROPERTY(config.ledOptions, ledLayout, BUTTON_LAYOUT);
+	INIT_MISSING_PROPERTY(config.ledOptions, ledsPerButton, LEDS_PER_PIXEL);
+	INIT_MISSING_PROPERTY(config.ledOptions, brightnessMaximum, LED_BRIGHTNESS_MAXIMUM);
+	INIT_MISSING_PROPERTY(config.ledOptions, brightnessSteps, LED_BRIGHTNESS_STEPS);
+
+	INIT_MISSING_PROPERTY(config.ledOptions, indexUp, LEDS_DPAD_UP);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexDown, LEDS_DPAD_DOWN);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexLeft, LEDS_DPAD_LEFT);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexRight, LEDS_DPAD_RIGHT);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexB1, LEDS_BUTTON_B1);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexB2, LEDS_BUTTON_B2);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexB3, LEDS_BUTTON_B3);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexB4, LEDS_BUTTON_B4);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexL1, LEDS_BUTTON_L1);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexR1, LEDS_BUTTON_R1);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexL2, LEDS_BUTTON_L2);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexR2, LEDS_BUTTON_R2);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexS1, LEDS_BUTTON_S1);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexS2, LEDS_BUTTON_S2);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexL3, LEDS_BUTTON_L3);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexR3, LEDS_BUTTON_R3);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexA1, LEDS_BUTTON_A1);
+	INIT_MISSING_PROPERTY(config.ledOptions, indexA2, LEDS_BUTTON_A2);
+
+	// animationOptions
+	INIT_MISSING_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
+	INIT_MISSING_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
+	INIT_MISSING_PROPERTY(config.animationOptions, staticColorIndex, LEDS_STATIC_COLOR_INDEX);
+	INIT_MISSING_PROPERTY(config.animationOptions, buttonColorIndex, LEDS_BUTTON_COLOR_INDEX);
+	INIT_MISSING_PROPERTY(config.animationOptions, chaseCycleTime, LEDS_CHASE_CYCLE_TIME);
+	INIT_MISSING_PROPERTY(config.animationOptions, rainbowCycleTime, LEDS_RAINBOW_CYCLE_TIME);
+	INIT_MISSING_PROPERTY(config.animationOptions, themeIndex, LEDS_THEME_INDEX);
+
+	// addonOptions.bootselButtonOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.bootselButtonOptions, buttonMap, BOOTSEL_BUTTON_MASK);
+
+	// addonOptions.onBoardLedOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.onBoardLedOptions, mode, BOARD_LED_TYPE);
+
+	// addonOptions.analogOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.analogOptions, enabled, !!ANALOG_INPUT_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.analogOptions, analogAdcPinX, ANALOG_ADC_VRX);
+	INIT_MISSING_PROPERTY(config.addonOptions.analogOptions, analogAdcPinY, ANALOG_ADC_VRY);
+
+	// addonOptions.turboOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, enabled, !!TURBO_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, buttonPin, PIN_BUTTON_TURBO);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, ledPin, TURBO_LED_PIN);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shotCount, DEFAULT_SHOT_PER_SEC);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupDialPin, PIN_SHMUP_DIAL);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupModeEnabled, !!TURBO_SHMUP_MODE);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupAlwaysOn1, SHMUP_ALWAYS_ON1);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupAlwaysOn2, SHMUP_ALWAYS_ON2);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupAlwaysOn3, SHMUP_ALWAYS_ON3);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupAlwaysOn4, SHMUP_ALWAYS_ON4);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupBtn1Pin, PIN_SHMUP_BUTTON1);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupBtn2Pin, PIN_SHMUP_BUTTON2);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupBtn3Pin, PIN_SHMUP_BUTTON3);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupBtn4Pin, PIN_SHMUP_BUTTON4);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask1, SHMUP_BUTTON1);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask2, SHMUP_BUTTON2);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask3, SHMUP_BUTTON3);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask4, SHMUP_BUTTON4);
+	INIT_MISSING_PROPERTY(config.addonOptions.turboOptions, shmupMixMode, SHMUP_MIX_MODE);
+
+	// addonOptions.sliderOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.sliderOptions, enabled, !!JSLIDER_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.sliderOptions, pinLS, PIN_SLIDER_LS);
+	INIT_MISSING_PROPERTY(config.addonOptions.sliderOptions, pinRS, PIN_SLIDER_RS);
+
+	// addonOptions.reverseOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.reverseOptions, buttonPin, PIN_REVERSE);
+	INIT_MISSING_PROPERTY(config.addonOptions.reverseOptions, ledPin, REVERSE_LED_PIN);
+	INIT_MISSING_PROPERTY(config.addonOptions.reverseOptions, actionUp, REVERSE_UP_DEFAULT);
+	INIT_MISSING_PROPERTY(config.addonOptions.reverseOptions, actionDown, REVERSE_DOWN_DEFAULT);
+	INIT_MISSING_PROPERTY(config.addonOptions.reverseOptions, actionLeft, REVERSE_LEFT_DEFAULT);
+	INIT_MISSING_PROPERTY(config.addonOptions.reverseOptions, actionRight, REVERSE_RIGHT_DEFAULT);
+
+	// addonOptions.analogADS1219Options
+	INIT_MISSING_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.analogADS1219Options, i2cBlock, (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1)
+	INIT_MISSING_PROPERTY(config.addonOptions.analogADS1219Options, i2cSDAPin, I2C_ANALOG1219_SDA_PIN);
+	INIT_MISSING_PROPERTY(config.addonOptions.analogADS1219Options, i2cSCLPin, I2C_ANALOG1219_SCL_PIN);
+	INIT_MISSING_PROPERTY(config.addonOptions.analogADS1219Options, i2cAddress, I2C_ANALOG1219_ADDRESS);
+	INIT_MISSING_PROPERTY(config.addonOptions.analogADS1219Options, i2cSpeed, I2C_ANALOG1219_SPEED);
+
+	// addonOptions.dualDirectionalOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.dualDirectionalOptions, upPin, PIN_DUAL_DIRECTIONAL_UP);
+	INIT_MISSING_PROPERTY(config.addonOptions.dualDirectionalOptions, downPin, PIN_DUAL_DIRECTIONAL_DOWN)
+	INIT_MISSING_PROPERTY(config.addonOptions.dualDirectionalOptions, leftPin, PIN_DUAL_DIRECTIONAL_LEFT);
+	INIT_MISSING_PROPERTY(config.addonOptions.dualDirectionalOptions, rightPin, PIN_DUAL_DIRECTIONAL_RIGHT);
+	INIT_MISSING_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode_Proto>(DUAL_DIRECTIONAL_STICK_MODE));
+	INIT_MISSING_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
+
+	// addonOptions.buzzerOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.buzzerOptions, pin, BUZZER_PIN);
+	INIT_MISSING_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
+
+	// addonOptions.extraOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.extraOptions, enabled, !!EXTRA_BUTTON_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.extraOptions, pin, EXTRA_BUTTON_PIN);
+	INIT_MISSING_PROPERTY(config.addonOptions.extraOptions, buttonMap, EXTRA_BUTTON_MASK);
+
+	// addonOptions.playerNumberOptions
+	INIT_MISSING_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);
+	INIT_MISSING_PROPERTY(config.addonOptions.playerNumberOptions, number, PLAYER_NUMBER);
 }
