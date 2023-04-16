@@ -101,13 +101,6 @@ struct AddonOptions {
 	int i2cAnalog1219Block;
 	uint32_t i2cAnalog1219Speed;
 	uint8_t i2cAnalog1219Address;
-	uint8_t gpDaughterSDAPin;
-	uint8_t gpDaughterSCLPin;
-	int gpDaughterBlock;
-	uint32_t gpDaughterSpeed;
-	uint8_t gpDaughterAddress;
-	std::array<char, 33> gpDaughterADCMap;
-	std::array<char, 33> gpDaughterPinMap;
 	uint8_t pinDualDirUp;    // Pins for Dual Directional Input
 	uint8_t pinDualDirDown;
 	uint8_t pinDualDirLeft;
@@ -130,7 +123,6 @@ struct AddonOptions {
 	uint8_t DualDirectionalInputEnabled;
 	uint8_t ExtraButtonAddonEnabled;
 	uint8_t I2CAnalog1219InputEnabled;
-	uint8_t GPDaughterInputEnabled;
 	//bool I2CDisplayAddonEnabled; // I2C is special case
 	uint8_t JSliderInputEnabled;
 	//bool NeoPicoLEDAddonEnabled; // NeoPico is special case
@@ -138,6 +130,14 @@ struct AddonOptions {
 	uint8_t PlayerNumAddonEnabled;
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
+	uint8_t gpDaughterSDAPin;
+	uint8_t gpDaughterSCLPin;
+	int gpDaughterBlock;
+	uint32_t gpDaughterSpeed;
+	uint8_t gpDaughterAddress;
+	std::array<char, 33> gpDaughterADCMap;
+	std::array<char, 33> gpDaughterPinMap;
+	uint8_t GPDaughterInputEnabled;
 	uint32_t checksum;
 };
 
@@ -188,14 +188,14 @@ public:
 		static Storage instance;
 		return instance;
 	}
-	
+
 	void setBoardOptions(BoardOptions);	// Board Options
 	void setDefaultBoardOptions();
 	BoardOptions getBoardOptions();
-	
+
 	void setPreviewBoardOptions(const BoardOptions&);	// Preview Board Options
 	BoardOptions getPreviewBoardOptions();
-	
+
 	void setAddonOptions(AddonOptions); // Add-On Options
 	void setDefaultAddonOptions();
 	AddonOptions getAddonOptions();
