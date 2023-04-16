@@ -107,6 +107,19 @@ I2C Analog ADS1219
 * `I2C Analog ADS1219 Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
 * `I2C Analog ADS1219 Address` - Sets the address for the I2C Analog ADS1219.
 
+Daughter Board
+
+![GP2040 Configurator - Add-Ons Daughter Board](assets/images/gpc-add-ons-daughter.png)
+
+* `Daughter Board SDA Pin` - The GPIO pin used for Daughter Board SDA.
+* `Daughter Board SCL Pin` - The GPIO pin used for Daughter Board SCL.
+* `Daughter Board Block` - The block of I2C to use (i2c0 or i2c1).
+* `Daughter Board Speed` - Sets the speed of I2C communication. The standard value of `100000`
+should work for most hardware.
+* `Daughter Board Address` - The I2C address of the Daughter Board.
+* `Daughter Board Analog Map` - Comma-separated list of analog inputs published by the Daughter Board.
+* `Daughter Board Digital Map` - Comma-separated list of digital inputs published by the Daughter Board.
+
 Buzzer Speaker
 
 ![GP2040 Configurator - Add-Ons Buzzer](assets/images/gpc-add-ons-buzzer.png)

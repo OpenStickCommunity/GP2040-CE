@@ -114,6 +114,7 @@ src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/extra_button.cpp
 src/addons/i2canalog1219.cpp
+src/addons/gpdaughter.cpp
 src/addons/jslider.cpp
 src/addons/i2cdisplay.cpp
 src/addons/neopicoleds.cpp
@@ -136,6 +137,7 @@ AnimationStation
 TinyUSB_Gamepad
 FlashPROM
 ADS1219
+GPDaughter
 PlayerLEDs
 NeoPico
 OneBitDisplay

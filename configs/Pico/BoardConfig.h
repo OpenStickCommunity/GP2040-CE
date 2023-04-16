@@ -182,6 +182,15 @@
 #define I2C_ANALOG1219_SPEED 400000
 #define I2C_ANALOG1219_ADDRESS 0x40
 
+// Daughter Board Add-on Options
+#define GP_DAUGHTER_SDA_PIN -1
+#define GP_DAUGHTER_SCL_PIN -1
+#define GP_DAUGHTER_BLOCK i2c1
+#define GP_DAUGHTER_SPEED 100000
+#define GP_DAUGHTER_ADDRESS 0x37
+#define GP_DAUGHTER_ADC_MAP "lx,ly,rx,ry,l2,r2"
+#define GP_DAUGHTER_PIN_MAP ""
+
 // Reverse Button section
 #define REVERSE_LED_PIN -1
 #define REVERSE_UP_DEFAULT 1

@@ -511,6 +511,13 @@ std::string setAddonOptions()
 	addonOptions.i2cAnalog1219Block = doc["i2cAnalog1219Block"];
 	addonOptions.i2cAnalog1219Speed = doc["i2cAnalog1219Speed"];
 	addonOptions.i2cAnalog1219Address = doc["i2cAnalog1219Address"];
+	addonOptions.gpDaughterSDAPin   = doc["gpDaughterSDAPin"] == -1 ? 0xFF : doc["gpDaughterSDAPin"];
+	addonOptions.gpDaughterSCLPin   = doc["gpDaughterSCLPin"] == -1 ? 0xFF : doc["gpDaughterSCLPin"];
+	addonOptions.gpDaughterBlock    = doc["gpDaughterBlock"];
+	addonOptions.gpDaughterSpeed    = doc["gpDaughterSpeed"];
+	addonOptions.gpDaughterAddress  = doc["gpDaughterAddress"];
+	strcpy(addonOptions.gpDaughterADCMap.data(), (const char*)doc["gpDaughterADCMap"]);
+	strcpy(addonOptions.gpDaughterPinMap.data(), (const char*)doc["gpDaughterPinMap"]);
 	addonOptions.onBoardLedMode = doc["onBoardLedMode"];
 	addonOptions.pinDualDirDown 	= doc["dualDirDownPin"] == -1 ? 0xFF : doc["dualDirDownPin"];
 	addonOptions.pinDualDirUp 		= doc["dualDirUpPin"] == -1 ? 0xFF : doc["dualDirUpPin"];
@@ -533,6 +540,7 @@ std::string setAddonOptions()
 	addonOptions.DualDirectionalInputEnabled = doc["DualDirectionalInputEnabled"];
 	addonOptions.ExtraButtonAddonEnabled = doc["ExtraButtonAddonEnabled"];
 	addonOptions.I2CAnalog1219InputEnabled = doc["I2CAnalog1219InputEnabled"];
+	addonOptions.GPDaughterInputEnabled = doc["GPDaughterInputEnabled"];
 	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
 	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
 	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
@@ -563,6 +571,13 @@ std::string getAddonOptions()
 	doc["i2cAnalog1219Block"] = addonOptions.i2cAnalog1219Block;
 	doc["i2cAnalog1219Speed"] = addonOptions.i2cAnalog1219Speed;
 	doc["i2cAnalog1219Address"] = addonOptions.i2cAnalog1219Address;
+	doc["gpDaughterSDAPin"] = addonOptions.gpDaughterSDAPin == 0xFF ? -1 : addonOptions.gpDaughterSDAPin;
+	doc["gpDaughterSCLPin"] = addonOptions.gpDaughterSCLPin == 0xFF ? -1 : addonOptions.gpDaughterSCLPin;
+	doc["gpDaughterBlock"] = addonOptions.gpDaughterBlock;
+	doc["gpDaughterSpeed"] = addonOptions.gpDaughterSpeed;
+	doc["gpDaughterAddress"] = addonOptions.gpDaughterAddress;
+	doc["gpDaughterADCMap"].set(addonOptions.gpDaughterADCMap.data());
+	doc["gpDaughterPinMap"].set(addonOptions.gpDaughterPinMap.data());
 	doc["onBoardLedMode"] = addonOptions.onBoardLedMode;
 	doc["dualDirDownPin"] = addonOptions.pinDualDirDown == 0xFF ? -1 : addonOptions.pinDualDirDown;
 	doc["dualDirUpPin"] = addonOptions.pinDualDirUp == 0xFF ? -1 : addonOptions.pinDualDirUp;
@@ -585,6 +600,7 @@ std::string getAddonOptions()
 	doc["DualDirectionalInputEnabled"] = addonOptions.DualDirectionalInputEnabled;
 	doc["ExtraButtonAddonEnabled"] = addonOptions.ExtraButtonAddonEnabled;
 	doc["I2CAnalog1219InputEnabled"] = addonOptions.I2CAnalog1219InputEnabled;
+	doc["GPDaughterInputEnabled"] = addonOptions.GPDaughterInputEnabled;
 	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
 	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
