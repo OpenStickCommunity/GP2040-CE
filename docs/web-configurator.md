@@ -58,12 +58,14 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `SCL Pin` - The GPIO pin used for the I2C SCL channel.
 * `I2C Address` - The I2C address of your device, defaults to the very commonly used `0x3C`
 * `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
-* `Flip Display` - Rotates the display 180°.
+* `Flip Display` - Allows you to flip or mirror the display in a variety of ways.
 * `Invert Display` - Inverts the pixel colors, effectively giving you a negative image when enabled.
 * `Button Layout (Left)` - Changes the onscreen layout for the left side of the display and stick.
 * `Button Layout (Right)` - Changes the onscreen layout for the right side of the display and stick.
 * `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
-* `Splash Choice` - Choose the splash screen that is displayed when the unit is turned on.
+* `Splash Duration` - Sets the amount of time the splash screen displays for on boot.
+* `Display Saver Timeout` - Will cause the display to turn off afer the specified number of minuites.  Pressing any input will cause the diplay to turn back on.
+* `Choose File` - This will allow you to upload your own image to be used for the splash screen.  It is recommend that you use a two color 128x64 image (or one that is sized appropiatly for your display).  Uploading any other type of image will result in a conversion and sizing of the image automatically.  If the image is inverted upon upload, just check off the `Invert` box.
 
 Check out our collection of great custom splash screens from the community [HERE](community-splash-screens.md)
 
