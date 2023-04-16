@@ -418,17 +418,17 @@ std::string getLedOptions()
 	usedPins.add(gamepad->mapButtonA2->pin);
 
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	if (boardOptions.i2cSDAPin != -1)
+	if (boardOptions.i2cSDAPin != (uint8_t)-1)
 		usedPins.add(boardOptions.i2cSDAPin);
-	if (boardOptions.i2cSCLPin != -1)
+	if (boardOptions.i2cSCLPin != (uint8_t)-1)
 		usedPins.add(boardOptions.i2cSCLPin);
 
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
-	if (addonOptions.analogAdcPinX != -1)
+	if (addonOptions.analogAdcPinX != (uint8_t)-1)
 		usedPins.add(addonOptions.analogAdcPinX);
-	if (addonOptions.analogAdcPinY != -1)
+	if (addonOptions.analogAdcPinY != (uint8_t)-1)
 		usedPins.add(addonOptions.analogAdcPinY);
-	if (addonOptions.buzzerPin != -1)
+	if (addonOptions.buzzerPin != (uint8_t)-1)
 		usedPins.add(addonOptions.buzzerPin);
 
 	return serialize_json(doc);

@@ -4,7 +4,7 @@
 
 #include "storagemanager.h"
 
-#define TURBO_SHOT_MIN 5
+#define TURBO_SHOT_MIN 2
 #define TURBO_SHOT_MAX 30
 
 bool TurboInput::available() {
@@ -19,14 +19,14 @@ void TurboInput::setup()
     uint32_t now = getMillis();
 
     // Setup TURBO Key GPIO
-    if (  options.pinButtonTurbo != -1 ) {
+    if (  options.pinButtonTurbo != (uint8_t)-1 ) {
         gpio_init( options.pinButtonTurbo);             // Initialize pin
         gpio_set_dir( options.pinButtonTurbo, GPIO_IN); // Set as INPUT
         gpio_pull_up( options.pinButtonTurbo);          // Set as PULLUP
     }
-    
+
     // Turbo Dial
-    if ( options.pinShmupDial != -1 ) {     
+    if ( options.pinShmupDial != (uint8_t)-1 ) {     
         adc_gpio_init(options.pinShmupDial);
         adcShmupDial = 26 - options.pinShmupDial;
         adc_select_input(adcShmupDial);
@@ -37,7 +37,7 @@ void TurboInput::setup()
     }
 
     // Setup Turbo LED if available
-    if (options.pinTurboLED != -1) {
+    if (options.pinTurboLED != (uint8_t)-1) {
         gpio_init(options.pinTurboLED);
         gpio_set_dir(options.pinTurboLED, GPIO_OUT);
         gpio_put(options.pinTurboLED, 1);
@@ -50,7 +50,7 @@ void TurboInput::setup()
         shmupBtnPin[2] = options.pinShmupBtn3;
         shmupBtnPin[3] = options.pinShmupBtn4;
         for (uint8_t i = 0; i < 4; i++) {
-            if ( shmupBtnPin[i] != -1 ) {
+            if ( shmupBtnPin[i] != (uint8_t)-1 ) {
                 gpio_init(shmupBtnPin[i]);
                 gpio_set_dir(shmupBtnPin[i], GPIO_IN);
                 gpio_pull_up(shmupBtnPin[i]);
@@ -89,7 +89,7 @@ void TurboInput::setup()
 void TurboInput::read(AddonOptions & options)
 {
     // Get Charge Buttons
-    if ( options.shmupMode ) {
+    if ( options.shmupMode == 1 ) {
         chargeState = 0;
         for (uint8_t i = 0; i < 4; i++) {
             if ( shmupBtnPin[i] != -1 ) { // if pin, get the GPIO
@@ -168,7 +168,7 @@ void TurboInput::process()
     }
 
     // Use the dial to modify our turbo shot speed (don't save on dial modify)
-    if ( options.pinShmupDial != -1 ) {
+    if ( options.pinShmupDial != (uint8_t)-1 ) {
         adc_select_input(adcShmupDial);
         uint16_t rawValue = adc_read();
         if ( rawValue != dialValue ) {
@@ -180,7 +180,7 @@ void TurboInput::process()
     }
 
     // Set TURBO LED if a button is going or turbo is too fast
-    if ( options.pinTurboLED != -1 ) {
+    if ( options.pinTurboLED != (uint8_t)-1 ) {
         if ((gamepad->state.buttons & turboButtonsPressed) && !bTurboFlicker) {
             gpio_put(options.pinTurboLED, 0);
         } else {
