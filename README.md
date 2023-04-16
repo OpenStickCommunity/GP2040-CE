@@ -37,7 +37,7 @@ Full results can be found in the [GP2040-CE Firmware Latency Test Results](https
 
 Prebuilt `uf2` files are available in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section.
 
-The default pinout for GP2040-CE is based on an official RaspBerry Pi Pico. That pinout can be found [HERE](main/configs/Pico/assets/PinMapping.png).  This can be found in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section under Pico.
+The default pinout for GP2040-CE is based on an official RaspBerry Pi Pico. That pinout can be found [HERE](configs/Pico/assets/PinMapping.png).  This can be found in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section under Pico.
 
 In addition to the default UF2 we also offer pre-compiled UF2s from community members that have verified its operation with their own devices. Some of these additional configurations include:
 
