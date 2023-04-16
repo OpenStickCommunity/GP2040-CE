@@ -24,7 +24,7 @@ void TurboInput::setup()
         gpio_set_dir( options.pinButtonTurbo, GPIO_IN); // Set as INPUT
         gpio_pull_up( options.pinButtonTurbo);          // Set as PULLUP
     }
-    
+    /*
     // Turbo Dial
     if ( options.pinShmupDial != -1 ) {     
         adc_gpio_init(options.pinShmupDial);
@@ -34,7 +34,7 @@ void TurboInput::setup()
         options.turboShotCount = (dialValue / turboDialIncrements) + TURBO_SHOT_MIN;
     } else {
         dialValue = 0;
-    }
+    }*/
 
     // Setup Turbo LED if available
     if (options.pinTurboLED != -1) {
@@ -166,7 +166,7 @@ void TurboInput::process()
         lastPressed = 0; // disable last pressed
         lastDpad = 0; // disable last dpad
     }
-
+    /*
     // Use the dial to modify our turbo shot speed (don't save on dial modify)
     if ( options.pinShmupDial != -1 ) {
         adc_select_input(adcShmupDial);
@@ -178,6 +178,7 @@ void TurboInput::process()
         }
         dialValue = rawValue;
     }
+    */
 
     // Set TURBO LED if a button is going or turbo is too fast
     if ( options.pinTurboLED != -1 ) {
