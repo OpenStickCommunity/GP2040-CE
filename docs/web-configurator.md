@@ -73,6 +73,28 @@ Check out our collection of great custom splash screens from the community [HERE
 
 This section is for custom add-ons that can be enabled to exand the functionality of GP2040-CE.  Please not that not all add-ons may work together.  These should be considered experminental.
 
+BOOTSEL Button Configuration
+
+![GP2040 Configurator - Add-Ons BOOTSEL Button Configuration](assets/images/gpc-add-ons-bootsel-button.png)
+
+* `BOOTSEL Button` - Choose an input to be mapped tot he BOOTSEL button. 
+
+Please note that this can only be used on devices that have a BOOTSEL button.  Please also note that the OLED might become unresponsive if this button is set.  You can unset it to restore OLED fuctionality.
+
+On-board LED Configuration
+
+![GP2040 Configurator - Add-Ons On-Board LED Configuration](assets/images/gpc-add-ons-onboard-led.png)
+
+* `Mode Indicator` - The LED will blink to show the current mode GP2040-CE is in.
+* `Input Test` - Pressing any of the main mapped buttons will cause the LED to light up.
+
+Analog
+
+![GP2040 Configurator - Add-Ons Analog](assets/images/gpc-add-ons-analog.png)
+
+* `Analog Stick X Pin` - The GPIO pin used for the Analog Stick X value.
+* `Analog Stick Y Pin` - The GPIO pin used for the Analog Stick Y value.
+
 Turbo
 
 ![GP2040 Configurator - Add-Ons Turbo](assets/images/gpc-add-ons-turbo.png)
@@ -80,6 +102,25 @@ Turbo
 * `Turbo Pin` - The GPIO pin used for the Turbo button.
 * `Turbo Pin LED` - The GPIO pin used for the Turbo LED.
 * `Turbo Shot Count` - The number of of presses per second that the Turbo will activate at.
+* `Turbo Dial (ADC ONLY)` - The GPIO pin used for the Turbo dial.  Must be one of the ADC pins.
+
+Turbo - SHMUP MODE
+
+![GP2040 Configurator - Add-Ons Turbo SHMUP MODE](assets/images/gpc-add-ons-turbo-shmup.png)
+
+* `Turbo Always On 1` - The GPIO pin used for a Turbo button that will always be on.
+* `Turbo Always On 2` - The GPIO pin used for a Turbo button that will always be on.
+* `Turbo Always On 3` - The GPIO pin used for a Turbo button that will always be on.
+* `Turbo Always On 4` - The GPIO pin used for a Turbo button that will always be on.
+* `Charge Button 1 Pin` - The GPIO pin used for a button that needs to be able to do a charged shot.
+* `Charge Button 2 Pin` - The GPIO pin used for a button that needs to be able to do a charged shot.
+* `Charge Button 3 Pin` - The GPIO pin used for a button that needs to be able to do a charged shot.
+* `Charge Button 4 Pin` - The GPIO pin used for a button that needs to be able to do a charged shot.
+* `Charge Button 1 Assignment` - The button that will be able to charge shot regardless of Turbo status.
+* `Charge Button 2 Assignment` - The button that will be able to charge shot regardless of Turbo status.
+* `Charge Button 3 Assignment` - The button that will be able to charge shot regardless of Turbo status.
+* `Charge Button 4 Assignment` - The button that will be able to charge shot regardless of Turbo status.
+* `SimSimultaneous Priority Mode` - In the event both the Turbo and charged buttons are pressed at the time same, which should take priority.
 
 Joystick Selection Slider
 
@@ -109,6 +150,17 @@ I2C Analog ADS1219
 * `I2C Analog ADS1219 Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
 * `I2C Analog ADS1219 Address` - Sets the address for the I2C Analog ADS1219.
 
+Dual Directional Input
+
+![GP2040 Configuration - Add-Ons Dual Directional Input](assets/images/gpc-add-ons-dual-directional.png)
+
+* `Dual Up Pin` - The GPIO pin used for the secondary Up direction.
+* `Dual Down Pin` - The GPIO pin used for the secondary Down direction.
+* `Dual Left Pin` - The GPIO pin used for the secondary Left direction.
+* `Dual Right Pin` - The GPIO pin used for the secondary Right direction.
+* `Dual D-Pad Mode` - Choose if this should act as an additional instance of the D-Pad or as the Left or Right stick.
+* `Combination Mode` - Choose how these inputs should be combined.
+
 Buzzer Speaker
 
 ![GP2040 Configurator - Add-Ons Buzzer](assets/images/gpc-add-ons-buzzer.png)
@@ -117,12 +169,32 @@ Buzzer Speaker
 * `Buzzer Pin` - The GPIO pin used for the buzzer.
 * `Buzzer Volume` - Audio volume of buzzer. 0-100.
 
+Extra Button Configuration
+
+![GP2040 Configurator - Extra Button](assets/images/gpc-add-ons-extra-button.png)
+
+* `Extra Button Pin` - The GPIO pin used for the extra instance of a button.
+* `Extra Button` - The button that will have an extra instance.
+
+Player Number (X-INPUT ONLY)
+
+![GP2040 Configurator - Player Number](assets/images/gpc-add-ons-player-number.png)
+
+* `Player Number` - Choose what player number this RP2040 based device will be representing.  This is only for X-INPUT mode.
+
+SOCD Selection Slider
+
+![GP2040 Configurator - SOCD Selection Slider](assets/images/gpc-add-ons-socd-slider.png)
+
+* `Extra Button Pin` - The GPIO pin used for the extra instance of a button.
+* `Extra Button` - The button that will have an extra instance.
+
 ## Data Backup and Restoration
 
 ![GP2040 Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
 
-* `Backup To File` - Allows you to select what to backup to a file (default is all selected).
-* `Restore From File` - Allows you to select what to restore from a file (default is all selected).
+* `Slider SOCD Up Priority Pin` - The GPIO pin used for SOCD Up Priority.
+* `Slider SOCD Second Input Priority Pin` - The GPIO pin used for SOCD Second Input Priority.
 
 ## DANGER ZONE
 
