@@ -1,16 +1,16 @@
-#include "addons/gpdaughter.h"
+#include "addons/i2cinputexpansion.h"
 #include "storagemanager.h"
 
 #include <string>
 
-bool GPDaughterInput::available() {
+bool I2CInputExpansionAddon::available() {
     AddonOptions options = Storage::getInstance().getAddonOptions();
-	return (options.GPDaughterInputEnabled &&
-        options.gpDaughterSDAPin != (uint8_t)-1 &&
-        options.gpDaughterSCLPin != (uint8_t)-1);
+	return (options.I2CInputExpansionEnabled &&
+        options.i2cInputExpansionSDAPin != (uint8_t)-1 &&
+        options.i2cInputExpansionSCLPin != (uint8_t)-1);
 }
 
-void GPDaughterInput::decode_adc_map(const std::string& cfg)
+void I2CInputExpansionAddon::decode_adc_map(const std::string& cfg)
 {
     for (size_t i = 0; (i + 1) < cfg.size(); i += 3)
     {
@@ -29,7 +29,7 @@ void GPDaughterInput::decode_adc_map(const std::string& cfg)
     }
 }
 
-void GPDaughterInput::decode_pin_map(const std::string& cfg)
+void I2CInputExpansionAddon::decode_pin_map(const std::string& cfg)
 {
     for (size_t i = 0; (i + 1) < cfg.size(); i += 3)
     {
@@ -58,7 +58,7 @@ void GPDaughterInput::decode_pin_map(const std::string& cfg)
     }
 }
 
-void GPDaughterInput::setup() {
+void I2CInputExpansionAddon::setup() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     AddonOptions options = Storage::getInstance().getAddonOptions();
 
@@ -66,8 +66,8 @@ void GPDaughterInput::setup() {
     gamepad->hasLeftAnalogStick = true;
     gamepad->hasRightAnalogStick = true;
 
-    const std::string adc_str = options.gpDaughterADCMap.data();
-    const std::string pin_str = options.gpDaughterPinMap.data();
+    const std::string adc_str = options.i2cInputExpansionAnalogMap.data();
+    const std::string pin_str = options.i2cInputExpansionDigitalMap.data();
 
     decode_adc_map(adc_str);
     decode_pin_map(pin_str);
@@ -75,21 +75,21 @@ void GPDaughterInput::setup() {
     uIntervalMS = 1;
     nextTimer = getMillis();
 
-    // Init the daughter board library
-    daughter = new GPDaughter(1,
-        options.gpDaughterSDAPin,
-        options.gpDaughterSCLPin,
-        options.gpDaughterBlock == 0 ? i2c0 : i2c1,
-        options.gpDaughterSpeed,
-        options.gpDaughterAddress);
-    daughter->begin();
+    // Init the expansion library
+    expansion = new I2CInputExpansion(1,
+        options.i2cInputExpansionSDAPin,
+        options.i2cInputExpansionSCLPin,
+        options.i2cInputExpansionBlock == 0 ? i2c0 : i2c1,
+        options.i2cInputExpansionSpeed,
+        options.i2cInputExpansionAddress);
+    expansion->begin();
 }
 
-void GPDaughterInput::process()
+void I2CInputExpansionAddon::process()
 {
     if (nextTimer < getMillis())
     {
-        daughter->read();
+        expansion->read();
         nextTimer = getMillis() + uIntervalMS; // throttle down updates
     }
 
@@ -99,7 +99,7 @@ void GPDaughterInput::process()
 
     for (channel = 0; channel < adc_map.size(); channel++)
     {
-        const auto adc_value = daughter->get_value(channel);
+        const auto adc_value = expansion->get_value(channel);
 
         switch (adc_map[channel])
         {
@@ -117,7 +117,7 @@ void GPDaughterInput::process()
     while (pin < pin_map.size())
     {
         const auto pin_channel = channel + (pin / 16);
-        const auto value = daughter->get_value(pin_channel);
+        const auto value = expansion->get_value(pin_channel);
 
         for (unsigned int pin_mask = 1;
             pin_mask != 0 && pin < pin_map.size();

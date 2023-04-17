@@ -130,14 +130,14 @@ struct AddonOptions {
 	uint8_t PlayerNumAddonEnabled;
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
-	uint8_t gpDaughterSDAPin;
-	uint8_t gpDaughterSCLPin;
-	int gpDaughterBlock;
-	uint32_t gpDaughterSpeed;
-	uint8_t gpDaughterAddress;
-	std::array<char, 33> gpDaughterADCMap;
-	std::array<char, 33> gpDaughterPinMap;
-	uint8_t GPDaughterInputEnabled;
+	uint8_t i2cInputExpansionSDAPin;
+	uint8_t i2cInputExpansionSCLPin;
+	int i2cInputExpansionBlock;
+	uint32_t i2cInputExpansionSpeed;
+	uint8_t i2cInputExpansionAddress;
+	std::array<char, 33> i2cInputExpansionAnalogMap;
+	std::array<char, 33> i2cInputExpansionDigitalMap;
+	uint8_t I2CInputExpansionEnabled;
 	uint32_t checksum;
 };
 

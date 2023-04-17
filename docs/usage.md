@@ -131,30 +131,30 @@ The `LED Parameter` hotkeys may affect color, speed or theme depending on the cu
 | **Guilty Gear Type-D** | ![Guilty Gear Type-D](./assets/images/led-themes/guilty-gear-type-d.png) |
 | **Guilty Gear Type-E** | ![Guilty Gear Type-E](./assets/images/led-themes/guilty-gear-type-e.png) |
 
-## Daughter Board
+## I2C Input Expansion
 
-The daughter board allows a second microcontroller to extend the number of analog and digital
-inputs of the main board though I2C. The mapping between the daughter board data and the actual
-inputs is defined by the Daughter Board Add-on.
+The input expansion allows a second microcontroller to extend the number of analog and digital
+inputs of the main board though I2C. The mapping between the microcontroller data and the actual
+inputs is defined by the I2C Input Expansion Add-on.
 
 ### Protocol
 
 The data protocol is defined as it follows:
 
-- Each data response from the daughter board has 16 words.
+- Each data response from the microcontroller has 16 words.
 - Each word is a 2-byte little-endian unsigned integer.
 - The first words are the analog values, and the rest are the digital values.
 - Each analog value uses exactly one word (0-65535).
 - Each digital value uses one bit of a word.
 - Each word can fit 16 digital values.
 
-The configuration of the daughter board is not covered by the protocol and it
+The configuration of the microcontroller is not covered by the protocol and it
 is done separately.
 
 ### Input Mapping
 
-The input is mapped using the `Daughter Board Analog Map` and
-`Daughter Board Digital Map` fields of the Daughter Board Add-on. These are
+The input is mapped using the `I2C Input Expansion Analog Map` and
+`I2C Input Expansion Digital Map` fields of the I2C Input Expansion Add-on. These are
 comma-separated values of the MPG inputs that will be associated with each
 word / bit of the response data, in the order as they appear.
 Analog inputs are handled first, then the digital inputs.

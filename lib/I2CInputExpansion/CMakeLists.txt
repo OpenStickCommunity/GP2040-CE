@@ -1,0 +1,6 @@
+add_library(I2CInputExpansion I2CInputExpansion.cpp)
+target_link_libraries(I2CInputExpansion PUBLIC BitBang_I2C)
+target_include_directories(I2CInputExpansion INTERFACE .)
+target_include_directories(I2CInputExpansion PUBLIC
+BitBang_I2C
+)

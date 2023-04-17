@@ -1,4 +1,4 @@
-#include "GPDaughter.h"
+#include "I2CInputExpansion.h"
 
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
@@ -6,7 +6,7 @@
 
 #include <cstring>
 
-GPDaughter::GPDaughter(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t speed, uint8_t addr)
+I2CInputExpansion::I2CInputExpansion(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t speed, uint8_t addr)
 {
     _i2c.iSDA = sda;
     _i2c.iSCL = scl;
@@ -18,17 +18,17 @@ GPDaughter::GPDaughter(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t
     memset(_buff, 0, sizeof(_buff));
 }
 
-void GPDaughter::begin()
+void I2CInputExpansion::begin()
 {
     I2CInit(&_i2c, _i2c_speed);
 }
 
-void GPDaughter::read()
+void I2CInputExpansion::read()
 {
     I2CRead(&_i2c, _i2c_addr, _buff, 32);
 }
 
-uint16_t GPDaughter::get_value(unsigned int channel)
+uint16_t I2CInputExpansion::get_value(unsigned int channel)
 {
     constexpr auto n_chan = sizeof(_buff) / 2;
 

@@ -22,7 +22,7 @@
 #include "addons/dualdirectional.h"
 #include "addons/extra_button.h"
 #include "addons/i2canalog1219.h"
-#include "addons/gpdaughter.h"
+#include "addons/i2cinputexpansion.h"
 #include "addons/i2cdisplay.h"
 #include "addons/jslider.h"
 #include "addons/neopicoleds.h"
@@ -167,13 +167,13 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.i2cAnalog1219Block     = (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1;
 	addonOptions.i2cAnalog1219Speed     = I2C_ANALOG1219_SPEED;
 	addonOptions.i2cAnalog1219Address   = I2C_ANALOG1219_ADDRESS;
-	addonOptions.gpDaughterSDAPin       = GP_DAUGHTER_SDA_PIN;
-	addonOptions.gpDaughterSCLPin       = GP_DAUGHTER_SCL_PIN;
-	addonOptions.gpDaughterBlock        = (GP_DAUGHTER_BLOCK == i2c0) ? 0 : 1;
-	addonOptions.gpDaughterSpeed        = GP_DAUGHTER_SPEED;
-	addonOptions.gpDaughterAddress      = GP_DAUGHTER_ADDRESS;
-	strcpy(addonOptions.gpDaughterADCMap.data(), GP_DAUGHTER_ADC_MAP);
-	strcpy(addonOptions.gpDaughterPinMap.data(), GP_DAUGHTER_PIN_MAP);
+	addonOptions.i2cInputExpansionSDAPin       = I2C_INPUT_EXPANSION_SDA_PIN;
+	addonOptions.i2cInputExpansionSCLPin       = I2C_INPUT_EXPANSION_SCL_PIN;
+	addonOptions.i2cInputExpansionBlock        = (I2C_INPUT_EXPANSION_BLOCK == i2c0) ? 0 : 1;
+	addonOptions.i2cInputExpansionSpeed        = I2C_INPUT_EXPANSION_SPEED;
+	addonOptions.i2cInputExpansionAddress      = I2C_INPUT_EXPANSION_ADDRESS;
+	strcpy(addonOptions.i2cInputExpansionAnalogMap.data(), I2C_INPUT_EXPANSION_ANALOG_MAP);
+	strcpy(addonOptions.i2cInputExpansionDigitalMap.data(), I2C_INPUT_EXPANSION_DIGITAL_MAP);
 	addonOptions.onBoardLedMode			= BOARD_LED_TYPE;
 	addonOptions.dualDirDpadMode        = DUAL_DIRECTIONAL_STICK_MODE;
 	addonOptions.dualDirCombineMode     = DUAL_DIRECTIONAL_COMBINE_MODE;
@@ -192,7 +192,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.DualDirectionalInputEnabled = DUAL_DIRECTIONAL_ENABLED;
 	addonOptions.ExtraButtonAddonEnabled = EXTRA_BUTTON_ENABLED;
 	addonOptions.I2CAnalog1219InputEnabled = I2C_ANALOG1219_ENABLED;
-	addonOptions.GPDaughterInputEnabled = GP_DAUGHTER_ENABLED;
+	addonOptions.I2CInputExpansionEnabled = I2C_INPUT_EXPANSION_ENABLED;
 	addonOptions.JSliderInputEnabled    = JSLIDER_ENABLED;
 	addonOptions.PlayerNumAddonEnabled  = PLAYERNUM_ADDON_ENABLED;
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;

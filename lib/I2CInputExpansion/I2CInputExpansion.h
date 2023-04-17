@@ -3,7 +3,7 @@
 
 #include <BitBang_I2C.h>
 
-class GPDaughter
+class I2CInputExpansion
 {
 private:
 
@@ -14,7 +14,7 @@ private:
 
 public:
 
-    GPDaughter(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t iSpeed, uint8_t addr = 0x37);
+    I2CInputExpansion(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t iSpeed, uint8_t addr = 0x37);
 
     void begin();
     void read();
