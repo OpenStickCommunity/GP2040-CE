@@ -1454,6 +1454,9 @@ class Message(ProtoElement):
 
         return result
 
+    def has_enum_field(self):
+        return any([field.pbtype in ['ENUM', "UENUM"] for field in self.all_fields()])
+
     def enumtype_defines(self):
         '''Defines to allow user code to refer to enum type of a specific field'''
         result = ''
@@ -1937,13 +1940,17 @@ class ProtoFile:
         yield '#endif\n\n'
 
         if self.enums:
-                yield '/* Helper constants for enums */\n'
-                for enum in self.enums:
-                    yield enum.auxiliary_defines() + '\n'
+            yield '/* Helper constants for enums */\n'
+            for enum in self.enums:
+                yield enum.auxiliary_defines() + '\n'
+            yield '\n'
 
-                for msg in self.messages:
-                    yield msg.enumtype_defines() + '\n'
-                yield '\n'
+        if any(msg.has_enum_field() for msg in self.messages):
+            yield '/* Defines to allow user code to refer to enum type of a specific field */\n'
+            for msg in self.messages:
+                if msg.has_enum_field():
+                    yield msg.enumtype_defines()
+            yield '\n'
 
         if self.messages:
             yield '/* Initializer values for message structs */\n'
