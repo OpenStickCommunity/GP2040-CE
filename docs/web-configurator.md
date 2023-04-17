@@ -71,7 +71,7 @@ Check out our collection of great custom splash screens from the community [HERE
 
 ## Add-Ons Configuration
 
-This section is for custom add-ons that can be enabled to exand the functionality of GP2040-CE.  Please not that not all add-ons may work together.  These should be considered experminental.
+This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE.  Please note that not all add-ons may work together.  These should be considered experimental.
 
 BOOTSEL Button Configuration
 
@@ -120,7 +120,7 @@ Turbo - SHMUP MODE
 * `Charge Button 2 Assignment` - The button that will be able to charge shot regardless of Turbo status.
 * `Charge Button 3 Assignment` - The button that will be able to charge shot regardless of Turbo status.
 * `Charge Button 4 Assignment` - The button that will be able to charge shot regardless of Turbo status.
-* `SimSimultaneous Priority Mode` - In the event both the Turbo and charged buttons are pressed at the time same, which should take priority.
+* `Simultaneous Priority Mode` - In the event both the Turbo and charged buttons are pressed at the time same, which should take priority.
 
 Joystick Selection Slider
 
@@ -158,8 +158,18 @@ Dual Directional Input
 * `Dual Down Pin` - The GPIO pin used for the secondary Down direction.
 * `Dual Left Pin` - The GPIO pin used for the secondary Left direction.
 * `Dual Right Pin` - The GPIO pin used for the secondary Right direction.
-* `Dual D-Pad Mode` - Choose if this should act as an additional instance of the D-Pad or as the Left or Right stick.
-* `Combination Mode` - Choose how these inputs should be combined.
+* `Dual D-Pad Mode` - Choose if this should act as an additional instance of the D-Pad or as the Left or Right stick.  
+Values are:
+`D-PAD` for D-PAd mode.
+`Left Analog` for Left Analog stick mode.
+`Right Analog` for Right Analog stick mode.
+* `Combination Mode` - Choose how these inputs should be combined.  
+Values are:
+`Mixed` - Combines both the Gamepad input and Dual Directional and allows for all 3 SOCD modes.
+`Gamepad` - Gamepad always takes over when pressed, otherwise Gamepad and Dual act independently.
+`Dual Directional` - Dual always takes over when pressed, otherwise Gamepad and Dual act indepedently.
+`None` - Gamepad input and dual directional act independently of each other.
+
 
 Buzzer Speaker
 
@@ -186,15 +196,15 @@ SOCD Selection Slider
 
 ![GP2040 Configurator - SOCD Selection Slider](assets/images/gpc-add-ons-socd-slider.png)
 
-* `Extra Button Pin` - The GPIO pin used for the extra instance of a button.
-* `Extra Button` - The button that will have an extra instance.
+* `Slider SOCD Up Priority Pin` - The GPIO pin used for SOCD Up Priority.
+* `Slider SOCD Second Input Priority Pin` - The GPIO pin used for SOCD Second Input Priority.
 
 ## Data Backup and Restoration
 
 ![GP2040 Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
 
-* `Slider SOCD Up Priority Pin` - The GPIO pin used for SOCD Up Priority.
-* `Slider SOCD Second Input Priority Pin` - The GPIO pin used for SOCD Second Input Priority.
+* `Backup To File` - Allows you to select what to backup to a file (default is all selected).
+* `Restore From File` - Allows you to select what to restore from a file (default is all selected).
 
 ## DANGER ZONE
 
