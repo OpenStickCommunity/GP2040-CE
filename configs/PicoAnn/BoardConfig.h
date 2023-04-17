@@ -213,4 +213,23 @@
 #define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 #define EXTRA_BUTTON_PIN -1
 
+#define KEY_DPAD_UP     HID_KEY_W          // UP
+#define KEY_DPAD_DOWN   HID_KEY_S          // DOWN
+#define KEY_DPAD_RIGHT  HID_KEY_D          // RIGHT
+#define KEY_DPAD_LEFT   HID_KEY_A          // LEFT
+#define KEY_BUTTON_B1   HID_KEY_H          // B1 / A / B / Cross / 2 / K1
+#define KEY_BUTTON_B2   HID_KEY_J          // B2 / B / A / Circle / 3 / K2
+#define KEY_BUTTON_R2   HID_KEY_K          // R2 / RT / ZR / R2 / 8 / K3
+#define KEY_BUTTON_L2   HID_KEY_I          // L2 / LT / ZL / L2 / 7 / K4
+#define KEY_BUTTON_B3   HID_KEY_Y          // B3 / X / Y / Square / 1 / P1
+#define KEY_BUTTON_B4   HID_KEY_U          // B4 / Y / X / Triangle / 4 / P2
+#define KEY_BUTTON_R1   HID_KEY_L          // R1 / RB / R / R1 / 6 / P3
+#define KEY_BUTTON_L1   HID_KEY_O          // L1 / LB / L / L1 / 5 / P4
+#define KEY_BUTTON_S1   HID_KEY_BACKSPACE  // S1 / Back / Minus / Select / 9 / Coin
+#define KEY_BUTTON_S2   HID_KEY_ENTER      // S2 / Start / Plus / Start / 10 / Start
+#define KEY_BUTTON_L3   HID_KEY_P          // L3 / LS / LS / L3 / 11 / LS
+#define KEY_BUTTON_R3   HID_KEY_SEMICOLON  // R3 / RS / RS / R3 / 12 / RS
+#define KEY_BUTTON_A1   HID_KEY_NONE       // A1 / Guide / Home / PS / 13 / ~
+#define KEY_BUTTON_A2   HID_KEY_NONE       // A2 / ~ / Capture / ~ / 14 / ~
+
 #endif

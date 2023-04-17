@@ -42,6 +42,7 @@ private:
         SET_INPUT_MODE_HID,
         SET_INPUT_MODE_SWITCH,
         SET_INPUT_MODE_XINPUT,
+        SET_INPUT_MODE_KEYBOARD
     };
     static BootAction getBootAction();
 };

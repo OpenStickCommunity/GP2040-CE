@@ -114,11 +114,17 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 	uint8_t report_size = 0;
 	SwitchReport switch_report;
 	HIDReport hid_report;
+	KeyboardReport keyboard_report;
 	switch (input_mode)
 	{
 		case INPUT_MODE_SWITCH:
 			report_size = sizeof(SwitchReport);
 			memcpy(buffer, &switch_report, report_size);
+			break;
+
+		case INPUT_MODE_KEYBOARD:
+			report_size = sizeof(KeyboardReport);
+			memcpy(buffer, &keyboard_report, report_size);
 			break;
 
 		default:
