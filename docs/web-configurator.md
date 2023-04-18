@@ -71,7 +71,7 @@ Check out our collection of great custom splash screens from the community [HERE
 
 ## Add-Ons Configuration
 
-This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE. Please note that not all add-ons may work together. These should be considered experminental.
+This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE. Please note that not all add-ons may work together. These should be considered experminental. 
 
 Turbo
 
