@@ -15,7 +15,7 @@ Full documentation can be found at <https://gp2040-ce.info>.
 * Turbo and Turbo LED with selectable speed
 * Per-button RGB LED support.
 * PWM Player indicator LED support (XInput only).
-* Multiple profiles support.
+* Multiple LED profiles support.
 * Support for 128x64 monochrome I2C displays - SSD1306, SH1106, and SH1107 compatible.
 * Custom startup splash screen and easy image upload via web configuration.
 * Support for passive buzzer speaker (3v or 5v).
