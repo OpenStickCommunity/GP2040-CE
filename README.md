@@ -65,11 +65,11 @@ If you would like to discuss features, issues or anything else related to GP2040
 
 #### Which input mode should I use?
 
-Generally speaking, XInput will be the mode of choice for everything except Nintendo Switch and PlayStation 3. XInput mode is the most fully-featured, has the best compatibility with PC games, and is compatible with console adapters like the Brook Wingman product line. All else being equal, performance is the same in all modes.
+Generally speaking, XInput will be the mode of choice for everything except Nintendo Switch and PlayStation 3. XInput mode is the most fully-featured, has the best compatibility with PC games, and is compatible with console adapters like the Brook Wingman product line.  All modes come with the same great performance!
 
-#### What is the extent of PS4 support in GP2040-CE?
+#### What is the extent of PS4 and PS5 support in GP2040-CE?
 
-GP2040 will work on PS4 games that implement support for legacy PS3 controllers. Many of the popular PS4 fighting games have this support.
+GP2040-CE will work on the PS4 in PS4 games that implement support for legacy PS3 controllers. Many of the popular PS4 fighting games have this support.  The PS5 does not support legacy PS3 controllers so you will need a converter like the Brook Wingman.
 
 #### Will GP2040-CE natively support PS4, PS5, Xbox One, or Xbox Series consoles?
 
