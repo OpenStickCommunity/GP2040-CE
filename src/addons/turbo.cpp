@@ -92,7 +92,7 @@ void TurboInput::read(AddonOptions & options)
     if ( options.shmupMode == 1 ) {
         chargeState = 0;
         for (uint8_t i = 0; i < 4; i++) {
-            if ( shmupBtnPin[i] != -1 ) { // if pin, get the GPIO
+            if ( shmupBtnPin[i] != (uint8_t)-1 ) { // if pin, get the GPIO
                 chargeState |= (!gpio_get(shmupBtnPin[i]) ? shmupBtnMask[i] : 0);
             }
         }
