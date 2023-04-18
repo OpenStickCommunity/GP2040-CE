@@ -29,7 +29,7 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 
 | Version | Mode | Poll Rate | Min | Max | Avg | Stdev | % on time | %1f skip | %2f skip |
 | - | - | - | - | - | - | - | - | - | - |
-| v0.4.3 | All | 1 ms | 0.46 ms | 1.24 ms | 0.77 ms | 0.24 ms | 96.37% | 3.63% | 0% |
+| v0.6.3 | All | 1 ms | 0.46 ms | 1.64 ms | 0.89 ms | 0.29 ms | 95.59% | 4.41% | 0% |
 
 Full results can be found in the [GP2040-CE Firmware Latency Test Results](https://docs.google.com/spreadsheets/d/1eeX0SCOYnUDZMYzt_69wDpjnB_XUtvsfvHJYxxgTj28/edit#gid=1559471406) Google Sheet.
 
