@@ -96,8 +96,6 @@ FetchContent_MakeAvailable(ArduinoJson)
 pico_sdk_init()
 add_subdirectory(lib)
 
-add_compile_options(-Wtype-limits)
-
 add_executable(${PROJECT_NAME}
 src/main.cpp
 src/gp2040.cpp
@@ -168,6 +166,7 @@ target_include_directories(${PROJECT_NAME}  PRIVATE
 pico_add_extra_outputs(${PROJECT_NAME})
 
 add_compile_options(-Wall
+        -Wtype-limits
         -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
         -Wno-unused-function # we have some for the docs that aren't called
         -Wno-maybe-uninitialized
