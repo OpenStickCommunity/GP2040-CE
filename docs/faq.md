@@ -16,7 +16,7 @@ These consoles implement security measures that prevent unauthorized accessories
 
 ### Can I use multiple controllers on the same system?
 
-Yes! Each GP2040-CE board is treated as a separate controller. However, be sure to only run the embedded web configurator for each controller one at a time.
+Yes! Each GP2040-CE device is treated as a separate controller. However, you will only be able to run the embedded web configurator on one device at a time.
 
 ### Does GP2040-CE really have less than 1 ms of latency?
 
