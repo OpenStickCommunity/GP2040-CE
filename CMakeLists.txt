@@ -96,6 +96,8 @@ FetchContent_MakeAvailable(ArduinoJson)
 pico_sdk_init()
 add_subdirectory(lib)
 
+add_compile_options(-Wtype-limits)
+
 add_executable(${PROJECT_NAME}
 src/main.cpp
 src/gp2040.cpp
