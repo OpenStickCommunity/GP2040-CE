@@ -492,6 +492,12 @@ class Enum(ProtoElement):
 
         return result
 
+    def valuelist(self):
+        result = '#define %s_VALUELIST(X) \\\n' % (Globals.naming_style.define_name(self.names))
+        result += ' \\\n'.join('X(%s, %d)' % (x[0], x[1]) for x in self.values)
+        result += '\n'
+        return result
+
     def enum_to_string_definition(self):
         if not self.options.enum_to_string:
             return ""
@@ -1945,6 +1951,12 @@ class ProtoFile:
                 yield enum.auxiliary_defines() + '\n'
             yield '\n'
 
+        if self.enums:
+            yield '/* Enum values (GP2040-CE extension) */\n'
+            for enum in self.enums:
+                yield enum.valuelist() + '\n'
+            yield '\n'
+
         if any(msg.has_enum_field() for msg in self.messages):
             yield '/* Defines to allow user code to refer to enum type of a specific field */\n'
             for msg in self.messages:
@@ -2058,7 +2070,14 @@ class ProtoFile:
             yield '#define %s_MESSAGES_GP2040(X) \\\n' % make_identifier(headername.split('.')[0])
 
             for msg in self.messages:
-                yield '\tX(%s) \\\n' % msg.name
+                yield 'X(%s) \\\n' % msg.name
+            yield '\n'
+
+        if self.enums:
+            yield '/* List of all enums (GP2040-CE extension) */\n'
+            yield '#define %s_ENUMS_GP2040(X) \\\n' % make_identifier(headername.split('.')[0])
+            for enum in self.enums:
+                yield 'X(%s) \\\n' % enum.names
             yield '\n'
 
         # Check if there is any name mangling active

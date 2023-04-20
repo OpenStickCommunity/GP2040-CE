@@ -16,6 +16,8 @@
 
 #include "config.pb.h"
 
+#include <vector>
+
 #define GAMEPAD_STORAGE_INDEX      		0    // 1024 bytes for gamepad options
 #define BOARD_STORAGE_INDEX     		1024 //  512 bytes for hardware options
 #define LED_STORAGE_INDEX       		1536 //  512 bytes for LED configuration
@@ -231,8 +233,6 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
-	std::string toJSON() const;
-
 private:
 	Storage() : gamepad(0) {
 		EEPROM.start(); // init EEPROM
@@ -255,8 +255,6 @@ private:
 	LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;
-
-	static void initMissingPropertiesWithDefaults(Config& config);
 };
 
 #endif

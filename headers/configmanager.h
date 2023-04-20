@@ -1,5 +1,5 @@
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef CONFIGMANAGER_H
+#define CONFIGMANAGER_H
 
 #include "enums.h"
 #include "gpconfig.h"
