@@ -456,8 +456,26 @@ XInputReport *Gamepad::getXInputReport()
 	return &xinputReport;
 }
 
+
+uint8_t Gamepad::getModifier(uint8_t code) {
+	switch (code) {
+		case HID_KEY_CONTROL_LEFT : return KEYBOARD_MODIFIER_LEFTCTRL  ;
+		case HID_KEY_SHIFT_LEFT   : return KEYBOARD_MODIFIER_LEFTSHIFT ;
+		case HID_KEY_ALT_LEFT     : return KEYBOARD_MODIFIER_LEFTALT   ;
+		case HID_KEY_GUI_LEFT     : return KEYBOARD_MODIFIER_LEFTGUI   ;
+		case HID_KEY_CONTROL_RIGHT: return KEYBOARD_MODIFIER_RIGHTCTRL ;
+		case HID_KEY_SHIFT_RIGHT  : return KEYBOARD_MODIFIER_RIGHTSHIFT;
+		case HID_KEY_ALT_RIGHT    : return KEYBOARD_MODIFIER_RIGHTALT  ;
+		case HID_KEY_GUI_RIGHT    : return KEYBOARD_MODIFIER_RIGHTGUI  ;
+	}
+
+	return 0;
+}
+
 void Gamepad::pressKey(uint8_t code) {
-	if ((code >> 3) < KEY_COUNT - 2) {
+	if (code >= HID_KEY_CONTROL_LEFT) {
+		keyboardReport.keycode[0] |= getModifier(code);
+	} else if ((code >> 3) < KEY_COUNT - 2) {
 		keyboardReport.keycode[(code >> 3) + 1] |= 1 << (code & 7);
 	}
 }
