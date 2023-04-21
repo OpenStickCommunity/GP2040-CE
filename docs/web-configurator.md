@@ -1,44 +1,44 @@
-# GP2040 Web Configurator
+# GP2040-CE Web Configurator
 
 Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>
 
-GP2040 contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> to begin configuration.
+GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> to begin configuration.
 
 ## Home
 
-![GP2040 Configurator - Home](assets/images/gpc-home.png)
+![GP2040-CE Configurator - Home](assets/images/gpc-home.png)
 
 Here you can see the current version of your firmware and the latest version available on Github in the releases section. If a firmware update is available, a link to that release will appear.
 
 The options in the main menu are:
 
-* [Home](#home) - The start page
+* [Home](#home) - The start page.
 * [Settings](#settings) - Adjust settings like input mode, d-pad mode, etc.
 * [Configuration > Pin Mapping](#pin-mapping) - Allows for remapping of GPIO pins to different buttons.
 * [Configuration > LED Configuration](#led-configuration) - Enable and configure RGB LEDs here.
-* [Configuration > Display Configuration](#display-configuration) - Enable and configure display options
-* [Configuration > Add-Ons Configuration](#add-ons-configuration) - Enable and configure available add-ons
-* [Configuration > Data Backup and Restoration](#data-backup-and-restoration) - Backup and restore settings
+* [Configuration > Display Configuration](#display-configuration) - Enable and configure display options.
+* [Configuration > Add-Ons Configuration](#add-ons-configuration) - Enable and configure available add-ons.
+* [Configuration > Data Backup and Restoration](#data-backup-and-restoration) - Backup and restore settings.
 * Links - Useful links to the project and documentation
 * [DANGER ZONE](#danger-zone) - Don't be afraid of the big red button. If something becomes misconfigured, you can reset your settings here.
 
 ## Settings
 
-![GP2040 Configurator - Settings](assets/images/gpc-settings.png)
+![GP2040-CE Configurator - Settings](assets/images/gpc-settings.png)
 
 Here you can select the basic settings which are normally available via hotkeys.
 
 ## Pin Mapping
 
-![GP2040 Configurator - Pin Mapping](assets/images/gpc-pin-mapping.png)
+![GP2040-CE Configurator - Pin Mapping](assets/images/gpc-pin-mapping.png)
 
-Here you can remap the GP2040 buttons to different GPIO pins on the RP2040 chip. This can be used to simply remap buttons, or bypass a GPIO pin that may have issues on your device.
+Here you can remap the GP2040-CE buttons to different GPIO pins on the RP2040 chip. This can be used to simply remap buttons, or bypass a GPIO pin that may have issues on your device.
 
 ## LED Configuration
 
 If you have a setup with per-button RGB LEDs, they can be configured here.
 
-![GP2040 Configurator - LED Configuration](assets/images/gpc-rgb-led-config.png)
+![GP2040-CE Configurator - LED Configuration](assets/images/gpc-rgb-led-config.png)
 
 * `Data Pin` - The GPIO pin that will drive the data line for your RGB LED chain. Set to `-1` to disable RGB LEDs.
 * `LED Format` - The data format used to communicate with your RGB LEDs. If unsure the default `GRB` value is usually safe.
@@ -50,13 +50,13 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 
 ## Display Configuration
 
-![GP2040 Configurator - Display Configuration](assets/images/gpc-display-config.png)
+![GP2040-CE Configurator - Display Configuration](assets/images/gpc-display-config.png)
 
 * `Use Display` - Turns on/off the display module.
 * `I2C Block` - The Pico I2C block that will be used. Set based on pins, refer to table on page.
 * `SDA Pin` - The GPIO pin used for the I2C SDA channel.
 * `SCL Pin` - The GPIO pin used for the I2C SCL channel.
-* `I2C Address` - The I2C address of your device, defaults to the very commonly used `0x3C`
+* `I2C Address` - The I2C address of your device, defaults to the very commonly used `0x3C`.
 * `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
 * `Flip Display` - Allows you to flip or mirror the display in a variety of ways.
 * `Invert Display` - Inverts the pixel colors, effectively giving you a negative image when enabled.
@@ -98,7 +98,7 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ### Turbo
 
-![GP2040 Configurator - Add-Ons Turbo](assets/images/gpc-add-ons-turbo.png)
+![GP2040-CE Configurator - Add-Ons Turbo](assets/images/gpc-add-ons-turbo.png)
 
 * `Turbo Pin` - The GPIO pin used for the Turbo button.
 * `Turbo Pin LED` - The GPIO pin used for the Turbo LED.
@@ -125,14 +125,14 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ### Joystick Selection Slider
 
-![GP2040 Configurator - Add-Ons Joystick Slider](assets/images/gpc-add-ons-joystick-slider.png)
+![GP2040-CE Configurator - Add-Ons Joystick Slider](assets/images/gpc-add-ons-joystick-slider.png)
 
 * `Slider LS Pin` - The GPIO pin used to activate the Left Stick while held.
 * `Slider RS Pin` - The GPIO pin used to activate the Right Stick while held.
 
 ### Input Reverse
 
-![GP2040 Configurator - Add-Ons Input Reverse](assets/images/gpc-add-ons-input-reverse.png)
+![GP2040-CE Configurator - Add-Ons Input Reverse](assets/images/gpc-add-ons-input-reverse.png)
 
 * `Reverse Input Pin` - The GPIO pin used for the Reverse Input button.
 * `Reverse Input Pin LED` - The GPIO pin used for the Reverse Input LED.
@@ -143,7 +143,7 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ### I2C Analog ADS1219
 
-![GP2040 Configurator - Add-Ons ADS1219](assets/images/gpc-add-ons-ads1219.png)
+![GP2040-CE Configurator - Add-Ons ADS1219](assets/images/gpc-add-ons-ads1219.png)
 
 * `I2C Analog ADS1219 SDA Pin` - The GPIO pin used for I2C Analog ADS1219 SDA.
 * `I2C Analog ADS1219 SCL Pin` - The GPIO pin used for I2C Analog ADS1219 SCL.
@@ -173,11 +173,11 @@ Values are:
 
 ### Buzzer Speaker
 
-![GP2040 Configurator - Add-Ons Buzzer](assets/images/gpc-add-ons-buzzer.png)
+![GP2040-CE Configurator - Add-Ons Buzzer](assets/images/gpc-add-ons-buzzer.png)
 
 * `Use buzzer` - Turns on/off the buzzer module.
 * `Buzzer Pin` - The GPIO pin used for the buzzer.
-* `Buzzer Volume` - Audio volume of buzzer. 0-100.
+* `Buzzer Volume` - Audio volume of buzzer. Ranges from 0-100.
 
 ### Extra Button Configuration
 
@@ -201,12 +201,12 @@ Values are:
 
 ## Data Backup and Restoration
 
-![GP2040 Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
+![GP2040-CE Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
 
 * `Backup To File` - Allows you to select what to backup to a file (default is all selected).
 * `Restore From File` - Allows you to select what to restore from a file (default is all selected).
 
 ## DANGER ZONE
 
-![GP2040 Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
+![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
 

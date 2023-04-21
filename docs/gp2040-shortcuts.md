@@ -21,7 +21,7 @@ Select the button labels to be displayed in the usage guide: <label-selector></l
 | A1      | Guide  | Home    | -            | 13           | -      | 9           |
 | A2      | -      | Capture | -            | 14           | -      | F2          |
 
-Home button shortcut if you do not have a home button - <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey>.
+Home button shortcut if you do not have a Home button - <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey>.
 
 Unlike other controllers, Keyboard gets different keys for directional buttons.
 | Direction | Keyboard   |
@@ -55,8 +55,8 @@ D-Pad mode **while the controller is in use by pressing one of the following com
 
 SOCD mode **while the controller is in use by pressing one of the following combinations:**
 
-* <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Stickless behavior)
-* <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral
+* <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Stickless behavior).
+* <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.
 * <hotkey v-bind:buttons='["S2", "A1", "Left"]'></hotkey> - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
 
 
