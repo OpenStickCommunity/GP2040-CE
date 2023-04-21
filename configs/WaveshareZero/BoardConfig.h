@@ -33,7 +33,7 @@
 #define PIN_BUTTON_R3   27          // R3 / RS / RS / R3 / 12 / RS
 #define PIN_BUTTON_A1   14          // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   15          // A2 / ~ / Capture / ~ / 14 / ~
-#define PIN_BUTTON_TURBO 29         // Turbo
+#define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
@@ -73,7 +73,6 @@
 // The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
-#define TURBO_ENABLED 1
 #define TURBO_LED_PIN -1
 
 #define BOARD_LEDS_PIN 28
