@@ -42,6 +42,9 @@ uint8_t const *tud_descriptor_device_cb(void)
 		case INPUT_MODE_SWITCH:
 			return switch_device_descriptor;
 
+		case INPUT_MODE_KEYBOARD:
+			return keyboard_device_descriptor;
+
 		default:
 			return hid_device_descriptor;
 	}
@@ -57,6 +60,9 @@ uint8_t const *tud_hid_descriptor_report_cb(uint8_t itf)
 	{
 		case INPUT_MODE_SWITCH:
 			return switch_report_descriptor;
+
+		case INPUT_MODE_KEYBOARD:
+			return keyboard_report_descriptor;
 
 		default:
 			return hid_report_descriptor;
@@ -78,6 +84,9 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 
 		case INPUT_MODE_SWITCH:
 			return switch_configuration_descriptor;
+
+		case INPUT_MODE_KEYBOARD:
+			return keyboard_configuration_descriptor;
 
 		default:
 			return hid_configuration_descriptor;

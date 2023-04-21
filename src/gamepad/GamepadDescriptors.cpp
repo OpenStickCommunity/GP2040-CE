@@ -1,4 +1,4 @@
-#include "gamepad/GamepadDescriptors.h"
+#include "GamepadDescriptors.h"
 
 static uint16_t getConfigurationDescriptor(const uint8_t *buffer, InputMode mode)
 {
@@ -11,6 +11,10 @@ static uint16_t getConfigurationDescriptor(const uint8_t *buffer, InputMode mode
 		case INPUT_MODE_SWITCH:
 			buffer = switch_configuration_descriptor;
 			return sizeof(switch_configuration_descriptor);
+
+		case INPUT_MODE_KEYBOARD:
+			buffer = keyboard_configuration_descriptor;
+			return sizeof(keyboard_configuration_descriptor);
 
 		default:
 			buffer = hid_configuration_descriptor;
@@ -30,6 +34,10 @@ static uint16_t getDeviceDescriptor(const uint8_t *buffer, InputMode mode)
 			buffer = switch_device_descriptor;
 			return sizeof(switch_device_descriptor);
 
+		case INPUT_MODE_KEYBOARD:
+			buffer = keyboard_device_descriptor;
+			return sizeof(keyboard_device_descriptor);
+
 		default:
 			buffer = hid_device_descriptor;
 			return sizeof(hid_device_descriptor);
@@ -44,6 +52,10 @@ static uint16_t getHIDDescriptor(const uint8_t *buffer, InputMode mode)
 			buffer = switch_hid_descriptor;
 			return sizeof(switch_hid_descriptor);
 
+		case INPUT_MODE_KEYBOARD:
+			buffer = keyboard_hid_descriptor;
+			return sizeof(keyboard_hid_descriptor);
+
 		default:
 			buffer = hid_hid_descriptor;
 			return sizeof(hid_hid_descriptor);
@@ -57,6 +69,10 @@ static uint16_t getHIDReport(const uint8_t *buffer, InputMode mode)
 		case INPUT_MODE_SWITCH:
 			buffer = switch_report_descriptor;
 			return sizeof(switch_report_descriptor);
+
+		case INPUT_MODE_KEYBOARD:
+			buffer = keyboard_report_descriptor;
+			return sizeof(keyboard_report_descriptor);
 
 		default:
 			buffer = hid_report_descriptor;
@@ -82,6 +98,11 @@ static uint16_t getStringDescriptor(const uint16_t *buffer, InputMode mode, uint
 		case INPUT_MODE_SWITCH:
 			value = (const char *)switch_string_descriptors[index];
 			size = sizeof(switch_string_descriptors[index]);
+			break;
+
+		case INPUT_MODE_KEYBOARD:
+			value = (const char *)keyboard_string_descriptors[index];
+			size = sizeof(keyboard_string_descriptors[index]);
 			break;
 
 		default:

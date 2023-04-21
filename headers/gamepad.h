@@ -11,6 +11,7 @@
 #include "gamepad/descriptors/HIDDescriptors.h"
 #include "gamepad/descriptors/SwitchDescriptors.h"
 #include "gamepad/descriptors/XInputDescriptors.h"
+#include "gamepad/descriptors/KeyboardDescriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -78,6 +79,7 @@ public:
 	HIDReport *getHIDReport();
 	SwitchReport *getSwitchReport();
 	XInputReport *getXInputReport();
+	KeyboardReport *getKeyboardReport();
 
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
@@ -138,6 +140,11 @@ public:
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping **gamepadMappings;
+
+private:
+	void releaseAllKeys(void);
+	void pressKey(uint8_t code);
+	uint8_t getModifier(uint8_t code);
 };
 
 #endif

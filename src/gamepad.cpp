@@ -58,6 +58,11 @@ static XInputReport xinputReport
 	._reserved = { },
 };
 
+static KeyboardReport keyboardReport
+{
+	.keycode = { 0 }
+};
+
 void Gamepad::setup()
 {
 	//load(); // MPGS loads
@@ -301,6 +306,9 @@ void * Gamepad::getReport()
 		case INPUT_MODE_SWITCH:
 			return getSwitchReport();
 
+		case INPUT_MODE_KEYBOARD:
+			return getKeyboardReport();
+
 		default:
 			return getHIDReport();
 	}
@@ -316,6 +324,9 @@ uint16_t Gamepad::getReportSize()
 
 		case INPUT_MODE_SWITCH:
 			return sizeof(SwitchReport);
+
+		case INPUT_MODE_KEYBOARD:
+			return sizeof(KeyboardReport);
 
 		default:
 			return sizeof(HIDReport);
@@ -445,6 +456,61 @@ XInputReport *Gamepad::getXInputReport()
 	return &xinputReport;
 }
 
+
+uint8_t Gamepad::getModifier(uint8_t code) {
+	switch (code) {
+		case HID_KEY_CONTROL_LEFT : return KEYBOARD_MODIFIER_LEFTCTRL  ;
+		case HID_KEY_SHIFT_LEFT   : return KEYBOARD_MODIFIER_LEFTSHIFT ;
+		case HID_KEY_ALT_LEFT     : return KEYBOARD_MODIFIER_LEFTALT   ;
+		case HID_KEY_GUI_LEFT     : return KEYBOARD_MODIFIER_LEFTGUI   ;
+		case HID_KEY_CONTROL_RIGHT: return KEYBOARD_MODIFIER_RIGHTCTRL ;
+		case HID_KEY_SHIFT_RIGHT  : return KEYBOARD_MODIFIER_RIGHTSHIFT;
+		case HID_KEY_ALT_RIGHT    : return KEYBOARD_MODIFIER_RIGHTALT  ;
+		case HID_KEY_GUI_RIGHT    : return KEYBOARD_MODIFIER_RIGHTGUI  ;
+	}
+
+	return 0;
+}
+
+void Gamepad::pressKey(uint8_t code) {
+	if (code >= HID_KEY_CONTROL_LEFT) {
+		keyboardReport.keycode[0] |= getModifier(code);
+	} else if ((code >> 3) < KEY_COUNT - 2) {
+		keyboardReport.keycode[(code >> 3) + 1] |= 1 << (code & 7);
+	}
+}
+
+void Gamepad::releaseAllKeys(void) {
+	for (uint8_t i = 0; i < (sizeof(keyboardReport.keycode) / sizeof(keyboardReport.keycode[0])); i++) {
+		keyboardReport.keycode[i] = 0;
+	}
+}
+
+KeyboardReport *Gamepad::getKeyboardReport()
+{
+	releaseAllKeys();
+	if(pressedUp())     { pressKey(options.keyDpadUp); }
+	if(pressedDown())   { pressKey(options.keyDpadDown); }
+	if(pressedLeft())	{ pressKey(options.keyDpadLeft); }
+	if(pressedRight()) 	{ pressKey(options.keyDpadRight); }
+	if(pressedB1()) 	{ pressKey(options.keyButtonB1); }
+	if(pressedB2()) 	{ pressKey(options.keyButtonB2); }
+	if(pressedB3()) 	{ pressKey(options.keyButtonB3); }
+	if(pressedB4()) 	{ pressKey(options.keyButtonB4); }
+	if(pressedL1()) 	{ pressKey(options.keyButtonL1); }
+	if(pressedR1()) 	{ pressKey(options.keyButtonR1); }
+	if(pressedL2()) 	{ pressKey(options.keyButtonL2); }
+	if(pressedR2()) 	{ pressKey(options.keyButtonR2); }
+	if(pressedS1()) 	{ pressKey(options.keyButtonS1); }
+	if(pressedS2()) 	{ pressKey(options.keyButtonS2); }
+	if(pressedL3()) 	{ pressKey(options.keyButtonL3); }
+	if(pressedR3()) 	{ pressKey(options.keyButtonR3); }
+	if(pressedA1()) 	{ pressKey(options.keyButtonA1); }
+	if(pressedA2()) 	{ pressKey(options.keyButtonA2); }
+	return &keyboardReport;
+}
+
+
 /* Gamepad stuffs */
 void GamepadStorage::start()
 {
@@ -474,6 +540,24 @@ GamepadOptions GamepadStorage::getGamepadOptions()
 #endif
 		options.invertXAxis = false;
 		options.invertYAxis = false;
+		options.keyDpadUp    = KEY_DPAD_UP;
+		options.keyDpadDown  = KEY_DPAD_DOWN;
+		options.keyDpadRight = KEY_DPAD_RIGHT;
+		options.keyDpadLeft  = KEY_DPAD_LEFT;
+		options.keyButtonB1  = KEY_BUTTON_B1;
+		options.keyButtonB2  = KEY_BUTTON_B2;
+		options.keyButtonR2  = KEY_BUTTON_R2;
+		options.keyButtonL2  = KEY_BUTTON_L2;
+		options.keyButtonB3  = KEY_BUTTON_B3;
+		options.keyButtonB4  = KEY_BUTTON_B4;
+		options.keyButtonR1  = KEY_BUTTON_R1;
+		options.keyButtonL1  = KEY_BUTTON_L1;
+		options.keyButtonS1  = KEY_BUTTON_S1;
+		options.keyButtonS2  = KEY_BUTTON_S2;
+		options.keyButtonL3  = KEY_BUTTON_L3;
+		options.keyButtonR3  = KEY_BUTTON_R3;
+		options.keyButtonA1  = KEY_BUTTON_A1;
+		options.keyButtonA2  = KEY_BUTTON_A2;
 		setGamepadOptions(options);
 	}
 
