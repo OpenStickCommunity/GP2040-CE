@@ -121,6 +121,7 @@ src/addons/playerleds.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
+src/addons/wiiext.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
 )
@@ -144,6 +145,7 @@ CRC32
 ArduinoJson
 rndis
 hardware_adc
+WiiExtension
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
