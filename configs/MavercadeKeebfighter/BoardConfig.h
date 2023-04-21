@@ -230,7 +230,8 @@
 // Extra Button Add-on setting
 
 #define EXTRA_BUTTON_ENABLED 1
-#define EXTRA_BUTTON_MASK (1U << 14) // 0 means none, get other mask from GamepadState.h
+#define EXTRA_BUTTON_MASK GAMEPAD_MASK_DU // 0 means none, get other mask from GamepadState.h
+                                          // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN 1
 
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP

@@ -22,16 +22,16 @@ void ExtraButtonAddon::process() {
 	if (!gpio_get(extraButtonPin)) {
 		if (extraButtonMap > (GAMEPAD_MASK_A2)) {
 			switch (extraButtonMap) {
-				case (1U << 14):
+				case (GAMEPAD_MASK_DU):
 					gamepad->state.dpad |= GAMEPAD_MASK_UP;
 					break;
-				case (1U << 15):
+				case (GAMEPAD_MASK_DD):
 					gamepad->state.dpad |= GAMEPAD_MASK_DOWN;
 					break;
-				case (1U << 16):
+				case (GAMEPAD_MASK_DL):
 					gamepad->state.dpad |= GAMEPAD_MASK_LEFT;
 					break;
-				case (1U << 17):
+				case (GAMEPAD_MASK_DR):
 					gamepad->state.dpad |= GAMEPAD_MASK_RIGHT;
 					break;
 			}
