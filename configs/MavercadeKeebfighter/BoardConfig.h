@@ -96,8 +96,27 @@
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
 #define TURBO_LED_PIN -1
-#define BOARD_LEDS_PIN -1
+#define BOARD_LEDS_PIN 0
 #define REVERSE_LED_PIN -1
+
+#define LED_BRIGHTNESS_MAXIMUM 50
+#define LED_BRIGHTNESS_STEPS 5
+#define LED_FORMAT LED_FORMAT_GRB
+#define LEDS_PER_PIXEL 1
+
+#define LEDS_DPAD_UP     0
+#define LEDS_DPAD_LEFT   1
+#define LEDS_DPAD_DOWN   2
+#define LEDS_DPAD_RIGHT  3
+#define LEDS_BUTTON_B3   4
+#define LEDS_BUTTON_B4   5
+#define LEDS_BUTTON_R1   6
+#define LEDS_BUTTON_L1   7
+#define LEDS_BUTTON_B1   8
+#define LEDS_BUTTON_B2   9
+#define LEDS_BUTTON_R2   10
+#define LEDS_BUTTON_L2   11
+#define LEDS_BUTTON_A2   12
 
 
 // This is the Player LED section.
@@ -209,7 +228,9 @@
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 
 // Extra Button Add-on setting
-#define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
-#define EXTRA_BUTTON_PIN -1
+
+#define EXTRA_BUTTON_ENABLED 1
+#define EXTRA_BUTTON_MASK (1U << 14) // 0 means none, get other mask from GamepadState.h
+#define EXTRA_BUTTON_PIN 1
 
 #endif
