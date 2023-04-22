@@ -345,6 +345,7 @@ std::string setLedOptions()
 	ledOptions.ledsPerButton      = doc["ledsPerButton"];
 	ledOptions.brightnessMaximum  = doc["brightnessMaximum"];
 	ledOptions.brightnessSteps    = doc["brightnessSteps"];
+
 	ledOptions.indexUp            = (doc["ledButtonMap"]["Up"]    == nullptr) ? -1 : doc["ledButtonMap"]["Up"];
 	ledOptions.indexDown          = (doc["ledButtonMap"]["Down"]  == nullptr) ? -1 : doc["ledButtonMap"]["Down"];
 	ledOptions.indexLeft          = (doc["ledButtonMap"]["Left"]  == nullptr) ? -1 : doc["ledButtonMap"]["Left"];
@@ -363,6 +364,45 @@ std::string setLedOptions()
 	ledOptions.indexR3            = (doc["ledButtonMap"]["R3"]    == nullptr) ? -1 : doc["ledButtonMap"]["R3"];
 	ledOptions.indexA1            = (doc["ledButtonMap"]["A1"]    == nullptr) ? -1 : doc["ledButtonMap"]["A1"];
 	ledOptions.indexA2            = (doc["ledButtonMap"]["A2"]    == nullptr) ? -1 : doc["ledButtonMap"]["A2"];
+
+	ledOptions.useCustomLeds            = doc["useCustomLeds"];
+	ledOptions.customColorUp            = (doc["customLeds"]["Up"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["Up"]["normal"];
+	ledOptions.customColorDown          = (doc["customLeds"]["Down"]["normal"]   == nullptr) ? 0 : doc["customLeds"]["Down"]["normal"];
+	ledOptions.customColorLeft          = (doc["customLeds"]["Left"]["normal"]   == nullptr) ? 0 : doc["customLeds"]["Left"]["normal"];
+	ledOptions.customColorRight         = (doc["customLeds"]["Right"]["normal"]  == nullptr) ? 0 : doc["customLeds"]["Right"]["normal"];
+	ledOptions.customColorB1            = (doc["customLeds"]["B1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["B1"]["normal"];
+	ledOptions.customColorB2            = (doc["customLeds"]["B2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["B2"]["normal"];
+	ledOptions.customColorB3            = (doc["customLeds"]["B3"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["B3"]["normal"];
+	ledOptions.customColorB4            = (doc["customLeds"]["B4"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["B4"]["normal"];
+	ledOptions.customColorL1            = (doc["customLeds"]["L1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["L1"]["normal"];
+	ledOptions.customColorR1            = (doc["customLeds"]["R1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["R1"]["normal"];
+	ledOptions.customColorL2            = (doc["customLeds"]["L2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["L2"]["normal"];
+	ledOptions.customColorR2            = (doc["customLeds"]["R2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["R2"]["normal"];
+	ledOptions.customColorS1            = (doc["customLeds"]["S1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["S1"]["normal"];
+	ledOptions.customColorS2            = (doc["customLeds"]["S2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["S2"]["normal"];
+	ledOptions.customColorL3            = (doc["customLeds"]["L3"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["L3"]["normal"];
+	ledOptions.customColorR3            = (doc["customLeds"]["R3"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["R3"]["normal"];
+	ledOptions.customColorA1            = (doc["customLeds"]["A1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["A1"]["normal"];
+	ledOptions.customColorA2            = (doc["customLeds"]["A2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["A2"]["normal"];
+	ledOptions.customColorUpPressed     = (doc["customLeds"]["Up"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["Up"]["pressed"];
+	ledOptions.customColorDownPressed   = (doc["customLeds"]["Down"]["pressed"]  == nullptr) ? 0 : doc["customLeds"]["Down"]["pressed"];
+	ledOptions.customColorLeftPressed   = (doc["customLeds"]["Left"]["pressed"]  == nullptr) ? 0 : doc["customLeds"]["Left"]["pressed"];
+	ledOptions.customColorRightPressed  = (doc["customLeds"]["Right"]["pressed"] == nullptr) ? 0 : doc["customLeds"]["Right"]["pressed"];
+	ledOptions.customColorB1Pressed     = (doc["customLeds"]["B1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["B1"]["pressed"];
+	ledOptions.customColorB2Pressed     = (doc["customLeds"]["B2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["B2"]["pressed"];
+	ledOptions.customColorB3Pressed     = (doc["customLeds"]["B3"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["B3"]["pressed"];
+	ledOptions.customColorB4Pressed     = (doc["customLeds"]["B4"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["B4"]["pressed"];
+	ledOptions.customColorL1Pressed     = (doc["customLeds"]["L1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["L1"]["pressed"];
+	ledOptions.customColorR1Pressed     = (doc["customLeds"]["R1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["R1"]["pressed"];
+	ledOptions.customColorL2Pressed     = (doc["customLeds"]["L2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["L2"]["pressed"];
+	ledOptions.customColorR2Pressed     = (doc["customLeds"]["R2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["R2"]["pressed"];
+	ledOptions.customColorS1Pressed     = (doc["customLeds"]["S1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["S1"]["pressed"];
+	ledOptions.customColorS2Pressed     = (doc["customLeds"]["S2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["S2"]["pressed"];
+	ledOptions.customColorL3Pressed     = (doc["customLeds"]["L3"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["L3"]["pressed"];
+	ledOptions.customColorR3Pressed     = (doc["customLeds"]["R3"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["R3"]["pressed"];
+	ledOptions.customColorA1Pressed     = (doc["customLeds"]["A1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["A1"]["pressed"];
+	ledOptions.customColorA2Pressed     = (doc["customLeds"]["A2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["A2"]["pressed"];
+
 	ConfigManager::getInstance().setLedOptions(ledOptions);
 	return serialize_json(doc);
 }
@@ -432,6 +472,45 @@ std::string getLedOptions()
 		usedPins.add(addonOptions.analogAdcPinY);
 	if (addonOptions.buzzerPin != (uint8_t)-1)
 		usedPins.add(addonOptions.buzzerPin);
+
+	doc["useCustomLeds"] = ledOptions.useCustomLeds;
+	auto customLeds = doc.createNestedObject("customLeds");
+	customLeds["Up"]["normal"]     = ledOptions.customColorUp;
+	customLeds["Up"]["pressed"]    = ledOptions.customColorUpPressed;
+	customLeds["Down"]["normal"]   = ledOptions.customColorDown;
+	customLeds["Down"]["pressed"]  = ledOptions.customColorDownPressed;
+	customLeds["Left"]["normal"]   = ledOptions.customColorLeft;
+	customLeds["Left"]["pressed"]  = ledOptions.customColorLeftPressed;
+	customLeds["Right"]["normal"]  = ledOptions.customColorRight;
+	customLeds["Right"]["pressed"] = ledOptions.customColorRightPressed;
+	customLeds["B1"]["normal"]     = ledOptions.customColorB1;
+	customLeds["B1"]["pressed"]    = ledOptions.customColorB1Pressed;
+	customLeds["B2"]["normal"]     = ledOptions.customColorB2;
+	customLeds["B2"]["pressed"]    = ledOptions.customColorB2Pressed;
+	customLeds["B3"]["normal"]     = ledOptions.customColorB3;
+	customLeds["B3"]["pressed"]    = ledOptions.customColorB3Pressed;
+	customLeds["B4"]["normal"]     = ledOptions.customColorB4;
+	customLeds["B4"]["pressed"]    = ledOptions.customColorB4Pressed;
+	customLeds["L1"]["normal"]     = ledOptions.customColorL1;
+	customLeds["L1"]["pressed"]    = ledOptions.customColorL1Pressed;
+	customLeds["R1"]["normal"]     = ledOptions.customColorR1;
+	customLeds["R1"]["pressed"]    = ledOptions.customColorR1Pressed;
+	customLeds["L2"]["normal"]     = ledOptions.customColorL2;
+	customLeds["L2"]["pressed"]    = ledOptions.customColorL2Pressed;
+	customLeds["R2"]["normal"]     = ledOptions.customColorR2;
+	customLeds["R2"]["pressed"]    = ledOptions.customColorR2Pressed;
+	customLeds["S1"]["normal"]     = ledOptions.customColorS1;
+	customLeds["S1"]["pressed"]    = ledOptions.customColorS1Pressed;
+	customLeds["S2"]["normal"]     = ledOptions.customColorS2;
+	customLeds["S2"]["pressed"]    = ledOptions.customColorS2Pressed;
+	customLeds["A1"]["normal"]     = ledOptions.customColorA1;
+	customLeds["A1"]["pressed"]    = ledOptions.customColorA1Pressed;
+	customLeds["A2"]["normal"]     = ledOptions.customColorA2;
+	customLeds["A2"]["pressed"]    = ledOptions.customColorA2Pressed;
+	customLeds["L3"]["normal"]     = ledOptions.customColorL3;
+	customLeds["L3"]["pressed"]    = ledOptions.customColorL3Pressed;
+	customLeds["R3"]["normal"]     = ledOptions.customColorR3;
+	customLeds["R3"]["pressed"]    = ledOptions.customColorR3Pressed;
 
 	return serialize_json(doc);
 }

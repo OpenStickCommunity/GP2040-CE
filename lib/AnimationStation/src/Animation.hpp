@@ -17,6 +17,9 @@ struct RGB {
   RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
     : r(r), g(g), b(b), w(w) { }
 
+  RGB(uint32_t c)
+    : r((c >> 16) & 255), g((c >> 8) & 255), b((c >> 0) & 255) { }
+
   uint8_t r;
   uint8_t g;
   uint8_t b;

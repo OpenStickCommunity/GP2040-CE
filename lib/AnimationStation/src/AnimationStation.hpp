@@ -11,6 +11,8 @@
 #include "NeoPico.hpp"
 #include "Animation.hpp"
 #include "Effects/Chase.hpp"
+#include "Effects/CustomTheme.hpp"
+#include "Effects/CustomThemePressed.hpp"
 #include "Effects/Rainbow.hpp"
 #include "Effects/StaticColor.hpp"
 #include "Effects/StaticTheme.hpp"
@@ -20,11 +22,12 @@ typedef enum
   EFFECT_STATIC_COLOR,
   EFFECT_RAINBOW,
   EFFECT_CHASE,
-  EFFECT_STATIC_THEME
+  EFFECT_STATIC_THEME,
+  EFFECT_CUSTOM_THEME,
 } AnimationEffects;
 
 // We can't programmatically determine how many elements are in an enum. Yes, that's dumb.
-const int TOTAL_EFFECTS = 4;
+const int TOTAL_EFFECTS = 5;
 
 typedef enum
 {

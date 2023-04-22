@@ -281,6 +281,9 @@ static map<uint32_t, RGB> themeFightboard({
 	{ GAMEPAD_MASK_L2, ColorPink },
 });
 
+static map<uint32_t, RGB> customTheme;
+static map<uint32_t, RGB> customThemePressed;
+
 void addStaticThemes(LEDOptions options)
 {
 	// Rainbow theme on a Stickless layout should use green for up button
@@ -312,6 +315,49 @@ void addStaticThemes(LEDOptions options)
 	StaticTheme::AddTheme(themeGuiltyGearTypeE);
 
 	StaticTheme::AddTheme(themeFightboard);
+
+	if (options.useCustomLeds)
+	{
+		customTheme[GAMEPAD_MASK_DU] = RGB(options.customColorUp);
+		customTheme[GAMEPAD_MASK_DD] = RGB(options.customColorDown);
+		customTheme[GAMEPAD_MASK_DL] = RGB(options.customColorLeft);
+		customTheme[GAMEPAD_MASK_DR] = RGB(options.customColorRight);
+		customTheme[GAMEPAD_MASK_B1] = RGB(options.customColorB1);
+		customTheme[GAMEPAD_MASK_B2] = RGB(options.customColorB2);
+		customTheme[GAMEPAD_MASK_B3] = RGB(options.customColorB3);
+		customTheme[GAMEPAD_MASK_B4] = RGB(options.customColorB4);
+		customTheme[GAMEPAD_MASK_L1] = RGB(options.customColorL1);
+		customTheme[GAMEPAD_MASK_R1] = RGB(options.customColorR1);
+		customTheme[GAMEPAD_MASK_L2] = RGB(options.customColorL2);
+		customTheme[GAMEPAD_MASK_R2] = RGB(options.customColorR2);
+		customTheme[GAMEPAD_MASK_S1] = RGB(options.customColorS1);
+		customTheme[GAMEPAD_MASK_S2] = RGB(options.customColorS2);
+		customTheme[GAMEPAD_MASK_A1] = RGB(options.customColorA1);
+		customTheme[GAMEPAD_MASK_A2] = RGB(options.customColorA2);
+		customTheme[GAMEPAD_MASK_L3] = RGB(options.customColorL3);
+		customTheme[GAMEPAD_MASK_R3] = RGB(options.customColorR3);
+		CustomTheme::SetCustomTheme(customTheme);
+
+		customThemePressed[GAMEPAD_MASK_DU] = RGB(options.customColorUpPressed);
+		customThemePressed[GAMEPAD_MASK_DD] = RGB(options.customColorDownPressed);
+		customThemePressed[GAMEPAD_MASK_DL] = RGB(options.customColorLeftPressed);
+		customThemePressed[GAMEPAD_MASK_DR] = RGB(options.customColorRightPressed);
+		customThemePressed[GAMEPAD_MASK_B1] = RGB(options.customColorB1Pressed);
+		customThemePressed[GAMEPAD_MASK_B2] = RGB(options.customColorB2Pressed);
+		customThemePressed[GAMEPAD_MASK_B3] = RGB(options.customColorB3Pressed);
+		customThemePressed[GAMEPAD_MASK_B4] = RGB(options.customColorB4Pressed);
+		customThemePressed[GAMEPAD_MASK_L1] = RGB(options.customColorL1Pressed);
+		customThemePressed[GAMEPAD_MASK_R1] = RGB(options.customColorR1Pressed);
+		customThemePressed[GAMEPAD_MASK_L2] = RGB(options.customColorL2Pressed);
+		customThemePressed[GAMEPAD_MASK_R2] = RGB(options.customColorR2Pressed);
+		customThemePressed[GAMEPAD_MASK_S1] = RGB(options.customColorS1Pressed);
+		customThemePressed[GAMEPAD_MASK_S2] = RGB(options.customColorS2Pressed);
+		customThemePressed[GAMEPAD_MASK_A1] = RGB(options.customColorA1Pressed);
+		customThemePressed[GAMEPAD_MASK_A2] = RGB(options.customColorA2Pressed);
+		customThemePressed[GAMEPAD_MASK_L3] = RGB(options.customColorL3Pressed);
+		customThemePressed[GAMEPAD_MASK_R3] = RGB(options.customColorR3Pressed);
+		CustomThemePressed::SetCustomTheme(customThemePressed);
+	}
 }
 
 #endif
