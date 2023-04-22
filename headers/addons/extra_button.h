@@ -15,8 +15,8 @@ class ExtraButtonAddon : public GPAddon {
 public:
 	virtual bool available();
 	virtual void setup();       // ExtraButton Setup
-	virtual void process();     // ExtraButton Process
-	virtual void preprocess() {}
+	virtual void process() {}     // ExtraButton Process
+	virtual void preprocess();
 	virtual std::string name() { return ExtraButtonName; }
 private:
 	uint32_t extraButtonMap;
