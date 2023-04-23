@@ -35,16 +35,20 @@
 // Pass the pin numbers used for SDA and SCL
 // as well as the clock rate in Hz
 //
+bool isInit = false;
 void I2CInit(BBI2C *pI2C, uint32_t iClock)
 {
 	if (pI2C == NULL) return;
 	if ((pI2C->iSDA + 2 * i2c_hw_index(pI2C->picoI2C))%4 != 0) return ;
 	if ((pI2C->iSCL + 3 + 2 * i2c_hw_index(pI2C->picoI2C))%4 != 0) return ;
+    if (!isInit) {
       i2c_init(pI2C->picoI2C, iClock);
       gpio_set_function(pI2C->iSDA, GPIO_FUNC_I2C);
       gpio_set_function(pI2C->iSCL, GPIO_FUNC_I2C);
       gpio_pull_up(pI2C->iSDA);
       gpio_pull_up(pI2C->iSCL);
+      isInit = true;
+    }
       return;
 }
 //

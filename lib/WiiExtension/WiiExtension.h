@@ -24,8 +24,10 @@
 #define WII_DATA_TYPE_2             2
 #define WII_DATA_TYPE_3             3
 
+#define WII_ENCRYPTION false
+
 #ifndef HAS_WII_EXTENSION
-#define HAS_WII_EXTENSION -1
+#define HAS_WII_EXTENSION 1
 #endif
 
 #ifndef WII_EXTENSION_DEBUG
@@ -41,11 +43,11 @@
 #endif
 
 #ifndef WII_EXTENSION_I2C_SDA_PIN
-#define WII_EXTENSION_I2C_SDA_PIN -1
+#define WII_EXTENSION_I2C_SDA_PIN 16
 #endif
 
 #ifndef WII_EXTENSION_I2C_SCL_PIN
-#define WII_EXTENSION_I2C_SCL_PIN -1
+#define WII_EXTENSION_I2C_SCL_PIN 17
 #endif
 
 #ifndef WII_EXTENSION_I2C_BLOCK
@@ -71,33 +73,33 @@ class WiiExtension {
     int16_t accelY       = 0;
     int16_t accelZ       = 0;
 
-    bool buttonZ         = 0;
-    bool buttonC         = 0;
-    bool buttonZR        = 0;
-    bool buttonZL        = 0;
-    bool buttonA         = 0;
-    bool buttonB         = 0;
-    bool buttonX         = 0;
-    bool buttonY         = 0;
-    bool buttonPlus      = 0;
-    bool buttonHome      = 0;
-    bool buttonMinus     = 0;
-    bool buttonLT        = 0;
-    bool buttonRT        = 0;
+    bool buttonZ         = false;
+    bool buttonC         = false;
+    bool buttonZR        = false;
+    bool buttonZL        = false;
+    bool buttonA         = false;
+    bool buttonB         = false;
+    bool buttonX         = false;
+    bool buttonY         = false;
+    bool buttonPlus      = false;
+    bool buttonHome      = false;
+    bool buttonMinus     = false;
+    bool buttonLT        = false;
+    bool buttonRT        = false;
 
-    bool directionUp     = 0;
-    bool directionDown   = 0;
-    bool directionLeft   = 0;
-    bool directionRight  = 0;
+    bool directionUp     = false;
+    bool directionDown   = false;
+    bool directionLeft   = false;
+    bool directionRight  = false;
 
     int16_t triggerLeft  = 0;
     int16_t triggerRight = 0;
 
-    bool fretGreen       = 0;
-    bool fretRed         = 0;
-    bool fretYellow      = 0;
-    bool fretBlue        = 0;
-    bool fretOrange      = 0;
+    bool fretGreen       = false;
+    bool fretRed         = false;
+    bool fretYellow      = false;
+    bool fretBlue        = false;
+    bool fretOrange      = false;
 
     int16_t whammyBar    = 0;
 

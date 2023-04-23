@@ -37,15 +37,16 @@ void WiiExtension::start(){
 
     regWrite[0] = 0xFA;
     //result = I2CWrite(&bbi2c, address, regWrite, 1);
-    result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 1, false);
-    //sleep_us(WII_EXTENSION_DELAY);
+    result = i2c_write_blocking(bbi2c.picoI2C, address, &regWrite[0], 1, false);
+    sleep_us(WII_EXTENSION_DELAY);
 
     extensionType = WII_EXTENSION_NONE;
 
     // continue if the write was successful
     if (result > -1) {
-        I2CRead(&bbi2c, address, idRead, 6);
-        //sleep_us(WII_EXTENSION_DELAY);
+        //I2CRead(&bbi2c, address, idRead, 6);
+        i2c_read_blocking(bbi2c.picoI2C, address, idRead, 6, false);
+        sleep_us(WII_EXTENSION_DELAY);
 
         if (idRead[5] == 0x00) {
             extensionType = WII_EXTENSION_NUNCHUCK;
@@ -78,27 +79,28 @@ void WiiExtension::start(){
             if (extensionType == WII_EXTENSION_NUNCHUCK) {
                 // read calibration
                 regWrite[0] = 0x20;
-                i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 1, true);
-                //sleep_us(WII_EXTENSION_DELAY);
-
-                I2CRead(&bbi2c, address, idRead, 16);
-                //sleep_us(WII_EXTENSION_DELAY);
-
-                _maxX = idRead[8];
-                _minX = idRead[9];
-                _cenX = idRead[10];
-
-                _maxY = idRead[11];
-                _minY = idRead[12];
-                _cenY = idRead[13];
-
-                _accelX0G = ((idRead[0] << 2) | ((idRead[3] >> 2) & 0x03));
-                _accelY0G = ((idRead[1] << 2) | ((idRead[3] >> 4) & 0x03));
-                _accelZ0G = ((idRead[2] << 2) | ((idRead[3] >> 6) & 0x03));
-
-                _accelX1G = ((idRead[4] << 2) | ((idRead[7] >> 2) & 0x03));
-                _accelY1G = ((idRead[5] << 2) | ((idRead[7] >> 4) & 0x03));
-                _accelZ1G = ((idRead[6] << 2) | ((idRead[7] >> 6) & 0x03));
+//                i2c_write_blocking(bbi2c.picoI2C, address, &regWrite[0], 1, false);
+//                sleep_us(WII_EXTENSION_DELAY);
+//
+//                //I2CRead(&bbi2c, address, idRead, 16);
+//                i2c_read_blocking(bbi2c.picoI2C, address, idRead, 6, false);
+//                sleep_us(WII_EXTENSION_DELAY);
+//
+//                _maxX = idRead[8];
+//                _minX = idRead[9];
+//                _cenX = idRead[10];
+//
+//                _maxY = idRead[11];
+//                _minY = idRead[12];
+//                _cenY = idRead[13];
+//
+//                _accelX0G = ((idRead[0] << 2) | ((idRead[3] >> 2) & 0x03));
+//                _accelY0G = ((idRead[1] << 2) | ((idRead[3] >> 4) & 0x03));
+//                _accelZ0G = ((idRead[2] << 2) | ((idRead[3] >> 6) & 0x03));
+//
+//                _accelX1G = ((idRead[4] << 2) | ((idRead[7] >> 2) & 0x03));
+//                _accelY1G = ((idRead[5] << 2) | ((idRead[7] >> 4) & 0x03));
+//                _accelZ1G = ((idRead[6] << 2) | ((idRead[7] >> 6) & 0x03));
 
 #if WII_EXTENSION_DEBUG==true
                 //printf("Calibration:\n");
@@ -118,48 +120,53 @@ void WiiExtension::start(){
             }
 
             // reset to default input values in the event of a removal/hotswap
-            joy1X           = 0;
-            joy1Y           = 0;
-            joy2X           = 0;
-            joy2Y           = 0;
-            accelX          = 0;
-            accelY          = 0;
-            accelZ          = 0;
-
-            buttonZ         = 0;
-            buttonC         = 0;
-            buttonZR        = 0;
-            buttonZL        = 0;
-            buttonA         = 0;
-            buttonB         = 0;
-            buttonX         = 0;
-            buttonY         = 0;
-            buttonPlus      = 0;
-            buttonHome      = 0;
-            buttonMinus     = 0;
-            buttonLT        = 0;
-            buttonRT        = 0;
-
-            directionUp     = 0;
-            directionDown   = 0;
-            directionLeft   = 0;
-            directionRight  = 0;
-
-            triggerLeft     = 0;
-            triggerRight    = 0;
-
-            fretGreen       = 0;
-            fretRed         = 0;
-            fretYellow      = 0;
-            fretBlue        = 0;
-            fretOrange      = 0;
-
-            whammyBar       = 0;
+//            joy1X           = 0;
+//            joy1Y           = 0;
+//            joy2X           = 0;
+//            joy2Y           = 0;
+//            accelX          = 0;
+//            accelY          = 0;
+//            accelZ          = 0;
+//
+//            buttonZ         = 0;
+//            buttonC         = 0;
+//            buttonZR        = 0;
+//            buttonZL        = 0;
+//            buttonA         = 0;
+//            buttonB         = 0;
+//            buttonX         = 0;
+//            buttonY         = 0;
+//            buttonPlus      = 0;
+//            buttonHome      = 0;
+//            buttonMinus     = 0;
+//            buttonLT        = 0;
+//            buttonRT        = 0;
+//
+//            directionUp     = 0;
+//            directionDown   = 0;
+//            directionLeft   = 0;
+//            directionRight  = 0;
+//
+//            triggerLeft     = 0;
+//            triggerRight    = 0;
+//
+//            fretGreen       = 0;
+//            fretRed         = 0;
+//            fretYellow      = 0;
+//            fretBlue        = 0;
+//            fretOrange      = 0;
+//
+//            whammyBar       = 0;
         } else {
 #if WII_EXTENSION_DEBUG==true
             printf("Unknown Extension: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
 #endif
         }
+
+        regWrite[0] = 0x00;
+        //I2CWrite(&bbi2c, address, regWrite, 2);
+        result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 1, false);
+        sleep_us(WII_EXTENSION_DELAY);
     }
 }
 
@@ -178,44 +185,46 @@ void WiiExtension::reset(){
     printf("WiiExtension::reset\n");
 #endif
 
+#if WII_ENCRYPTION==false
     if (canContinue) {
         regWrite[0] = 0xF0;
         regWrite[1] = 0x55;
         //result = I2CWrite(&bbi2c, address, regWrite, 2);
-        result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 2, true);
-        //sleep_us(WII_EXTENSION_DELAY);
+        result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 2, false);
+        sleep_us(WII_EXTENSION_DELAY);
         canContinue = (result > -1);
     }
-
-#if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::reset F0? %1d\n", result);
-#endif
 
     if (canContinue) {
         regWrite[0] = 0xFB;
         regWrite[1] = 0x00;
         //result = I2CWrite(&bbi2c, address, regWrite, 2);
-        result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 2, true);
-        //sleep_us(WII_EXTENSION_DELAY);
+        result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 2, false);
+        sleep_us(WII_EXTENSION_DELAY);
         canContinue = (result > -1);
     }
-
-#if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::reset FB? %1d\n", result);
-#endif
 
     if (canContinue) {
         // set data format
         regWrite[0] = 0xFE;
-        regWrite[1] = 0x00;
+        regWrite[1] = 0x03;
         //result = I2CWrite(&bbi2c, address, regWrite, 2);
-        result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 2, true);
-        //sleep_us(WII_EXTENSION_DELAY);
+        result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 2, false);
+        sleep_us(WII_EXTENSION_DELAY);
         canContinue = (result > -1);
     }
+#elif WII_ENCRYPTION==true
+    if (canContinue) {
+        regWrite[0] = 0x40;
+        regWrite[1] = 0x00;
+        //result = I2CWrite(&bbi2c, address, regWrite, 2);
+        result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 2, false);
+        sleep_us(WII_EXTENSION_DELAY);
+        canContinue = (result > -1);
+    }
+#endif
 
 #if WII_EXTENSION_DEBUG==true
-    printf("WiiExtension::reset FE? %1d\n", result);
     printf("WiiExtension::reset canContinue? %1d\n", canContinue);
 #endif
 
@@ -232,7 +241,7 @@ void WiiExtension::reset(){
 }
 
 void WiiExtension::poll() {
-
+    uint8_t reg = _u(0x08);
     uint8_t regWrite[16];
     uint8_t regRead[16];
     int8_t result;
@@ -242,13 +251,18 @@ void WiiExtension::poll() {
     printf("WiiExtension::poll isReady? %1d\n", isReady);
 #endif
 
+    buttonZ = (extensionType == WII_EXTENSION_NUNCHUCK);
+
     if (!isReady) return;
 
     if (extensionType != WII_EXTENSION_NONE) {
         switch (extensionType) {
             case WII_EXTENSION_NUNCHUCK:
-                result = I2CRead(&bbi2c, address, regRead, 6);
-                if (result != 1) break;
+                result = i2c_read_blocking(bbi2c.picoI2C, address, regRead, 6, false);
+                //result = I2CRead(&bbi2c, address, regRead, 6);
+                //result = i2c_read_blocking(bbi2c.picoI2C, address, regRead, 6, true);
+                sleep_us(WII_EXTENSION_DELAY);
+                if (result < 0) break;
 
                 joy1X   = regRead[0]-_cenX;
                 joy1Y   = regRead[1]-_cenY;
@@ -268,8 +282,11 @@ void WiiExtension::poll() {
                 // write data format to return
                 // see wiki for data types
                 if (dataType == 0x01) {
-                    result = I2CRead(&bbi2c, address, regRead, 6);
-                    if (result != 1) break;
+                    //result = I2CRead(&bbi2c, address, regRead, 6);
+                    //result = i2c_read_blocking(bbi2c.picoI2C, address, regRead, 6, true);
+                    result = i2c_read_blocking(bbi2c.picoI2C, address, regRead, 6, false);
+                    sleep_us(WII_EXTENSION_DELAY);
+                    if (result < 0) break;
 
                     joy1X =          (regRead[0] & 0x3F);
                     joy1Y =          (regRead[1] & 0x3F);
@@ -297,8 +314,10 @@ void WiiExtension::poll() {
                     directionLeft =  !((regRead[5] & 0x02) >> 1);
                     directionUp =    !((regRead[5] & 0x01) >> 0);
                 } else if (dataType == 0x02) {
-                    result = I2CRead(&bbi2c, address, regRead, 9);
-                    if (result != 1) break;
+                    //result = I2CRead(&bbi2c, address, regRead, 9);
+                    result = i2c_read_blocking(bbi2c.picoI2C, address, regRead, 9, false);
+                    sleep_us(WII_EXTENSION_DELAY);
+                    if (result < 0) break;
 
                     joy1X =          ((regRead[0] << 2) | ((regRead[4] & 0x03) >> 0));
                     joy1Y =          ((regRead[2] << 2) | ((regRead[4] & 0x30) >> 4));
@@ -326,8 +345,10 @@ void WiiExtension::poll() {
                     directionLeft =  !((regRead[8] & 0x02) >> 1);
                     directionUp =    !((regRead[8] & 0x01) >> 0);
                 } else if (dataType == 0x03) {
-                    result = I2CRead(&bbi2c, address, regRead, 8);
-                    if (result != 1) break;
+                    //result = I2CRead(&bbi2c, address, regRead, 8);
+                    result = i2c_read_blocking(bbi2c.picoI2C, address, regRead, 8, false);
+                    sleep_us(WII_EXTENSION_DELAY);
+                    if (result < 0) break;
 
                     joy1X =          regRead[0];
                     joy1Y =          regRead[2];
@@ -365,8 +386,10 @@ void WiiExtension::poll() {
 
                 break;
             case WII_EXTENSION_GUITAR:
-                result = I2CRead(&bbi2c, address, regRead, 6);
-                if (result != 1) break;
+                //result = I2CRead(&bbi2c, address, regRead, 6);
+                result = i2c_read_blocking(bbi2c.picoI2C, address, regRead, 6, false);
+                sleep_us(WII_EXTENSION_DELAY);
+                if (result < 0) break;
 
                 joy1X =          (regRead[0] & 0x3F);
                 joy1Y =          (regRead[1] & 0x3F);
@@ -394,18 +417,18 @@ void WiiExtension::poll() {
         if (result > 0) {
             // continue poll
             regWrite[0] = 0x00;
-            //I2CWrite(&bbi2c, address, regWrite, 2);
-            result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 1, true);
-            //sleep_us(WII_EXTENSION_DELAY);
+            //result = I2CWrite(&bbi2c, address, regWrite, 2);
+            result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 1, false);
+            sleep_us(WII_EXTENSION_DELAY);
         } else {
             // device disconnected
             extensionType = WII_EXTENSION_NONE;
-            reset();
-            start();
+            //reset();
+            //start();
         }
     } else {
-        reset();
-        start();
+        //reset();
+        //start();
     }
 }
 

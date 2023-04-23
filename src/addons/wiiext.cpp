@@ -31,33 +31,33 @@ void WiiExtensionInput::setup() {
 }
 
 void WiiExtensionInput::process() {
-    Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    
-    if (buttonA) gamepad->state.buttons |= GAMEPAD_MASK_B1;
-
     if (nextTimer < getMillis()) {
         wii->poll();
         
-        //buttonA = wii->buttonA;
-        buttonA = !buttonA;
-        //if (wii->buttonZ) gamepad->state.buttons |= GAMEPAD_MASK_B3;
+        buttonZ = wii->buttonZ;
+        buttonC = wii->buttonC;
+        buttonA = wii->buttonA;
+        buttonB = wii->buttonB;
+        buttonX = wii->buttonX;
+        buttonY = wii->buttonY;
 
-        //gamepad->state.lx = wii->joy1X;
-        //gamepad->state.ly = wii->joy1Y;
-        
+        leftX = map(wii->joy1X,35,228,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        leftY = map(wii->joy1Y,27,220,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+               
         nextTimer = getMillis() + uIntervalMS;
-
-        //float result;
-        //uint32_t readValue;
-        //if ( ads->readRegister(STATUS) & REGISTER_STATUS_DRDY ) {
-        //    readValue = ads->readConversionResult();
-        //    result = readValue / float(ADS_MAX); // gives us 0.0f to 1.0f (actual voltage is times voltage)
-        //    pins.A[channelHop] = result;
-        //    channelHop = (channelHop+1) % 4; // Loop 0-3
-        //    ads->setChannel(channelHop);
-        //    nextTimer = getMillis() + uIntervalMS; // interval for read (we can't be too fast)
-        //}
     }
+
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
+    if (buttonC) gamepad->state.buttons |= GAMEPAD_MASK_B1;
+    if (buttonZ) gamepad->state.buttons |= GAMEPAD_MASK_B2;
+    if (buttonA) gamepad->state.buttons |= GAMEPAD_MASK_B3;
+    if (buttonB) gamepad->state.buttons |= GAMEPAD_MASK_B4;
+    if (buttonX) gamepad->state.buttons |= GAMEPAD_MASK_L1;
+    if (buttonY) gamepad->state.buttons |= GAMEPAD_MASK_R1;
+
+    gamepad->state.lx = leftX;
+    gamepad->state.ly = leftY;
 }
 
 int16_t WiiExtensionInput::map(int16_t x, int16_t in_min, int16_t in_max, int16_t out_min, int16_t out_max) {
