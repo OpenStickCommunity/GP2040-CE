@@ -11,9 +11,7 @@
 #include "addons/board_led.h"
 #include "addons/buzzerspeaker.h"
 
-#include <iterator>
-
-GP2040Aux::GP2040Aux() : nextRuntime(0) {
+GP2040Aux::GP2040Aux() {
 }
 
 GP2040Aux::~GP2040Aux() {
@@ -29,11 +27,6 @@ void GP2040Aux::setup() {
 
 void GP2040Aux::run() {
 	while (1) {
-		if (nextRuntime > getMicro()) { // fix for unsigned
-			sleep_us(50); // Give some time back to our CPU (lower power consumption)
-			continue;
-		}
 		addons.ProcessAddons(CORE1_LOOP);
-		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}
 }

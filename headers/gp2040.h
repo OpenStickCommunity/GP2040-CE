@@ -19,7 +19,6 @@ public:
     void setup();           // setup core0
     void run();             // loop core0
 private:
-    uint64_t nextRuntime;
     Gamepad snapshot;
     AddonManager addons;
 

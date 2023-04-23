@@ -32,7 +32,7 @@
 static const uint32_t WEBCONFIG_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t WEBCONFIG_HOTKEY_HOLD_TIME_MS = 4000;
 
-GP2040::GP2040() : nextRuntime(0) {
+GP2040::GP2040() {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 }
@@ -121,11 +121,6 @@ void GP2040::run() {
 			continue;
 		}
 
-		if (nextRuntime > getMicro()) { // fix for unsigned
-			sleep_us(50); // Give some time back to our CPU (lower power consumption)
-			continue;
-		}
-
 		// Gamepad Features
 		gamepad->read(); 	// gpio pin reads
 	#if GAMEPAD_DEBOUNCE_MILLIS > 0
@@ -154,8 +149,6 @@ void GP2040::run() {
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
 
 		tud_task(); // TinyUSB Task update
-
-		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}
 }
 
