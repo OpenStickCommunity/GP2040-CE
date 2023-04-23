@@ -2,7 +2,7 @@
 #include "storagemanager.h"
 
 bool DualDirectionalInput::available() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
     pinDualDirDown = options.pinDualDirDown;
     pinDualDirUp = options.pinDualDirUp;
     pinDualDirLeft = options.pinDualDirLeft;
@@ -12,7 +12,7 @@ bool DualDirectionalInput::available() {
 }
 
 void DualDirectionalInput::setup() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
     combineMode = options.dualDirCombineMode;
 
     dpadMode = options.dualDirDpadMode;
@@ -108,7 +108,7 @@ void DualDirectionalInput::preprocess()
             gamepadState = dualState;
         }
     }
-    
+
     gamepad->state.dpad = gamepadState;
 }
 
@@ -123,10 +123,10 @@ void DualDirectionalInput::process()
         // Up-Win or Neutral Modify AFTER SOCD(gamepad), Last-Win Modifies BEFORE SOCD(gamepad)
         if ( gamepad->options.socdMode == SOCD_MODE_UP_PRIORITY ||
                 gamepad->options.socdMode == SOCD_MODE_NEUTRAL ) {
-            
+
             // Up-Win or Neutral: SOCD(gamepad) *already done* | SOCD(dual) *done in preprocess()*
             dualOut = SOCDCombine(gamepad->options.socdMode, gamepadDpad);
-            
+
             // Modify Gamepad if we're in mixed Up-Win or Neutral and dual != gamepad
             if ( dualOut != gamepadDpad ) {
                 OverrideGamepad(gamepad, gamepad->options.dpadMode, dualOut);
@@ -152,7 +152,7 @@ void DualDirectionalInput::OverrideGamepad(Gamepad * gamepad, DpadMode mode, uin
             break;
         case DPAD_MODE_DIGITAL:
             gamepad->state.dpad = dpad;
-            break;        
+            break;
     }
 }
 
@@ -253,7 +253,7 @@ void DualDirectionalInput::SOCDDualClean(SOCDMode socdMode) {
                 if (lastDualLR != DIRECTION_NONE)
                     dualState ^= (lastDualLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
                 else
-                    lastDualLR = DIRECTION_NONE; 
+                    lastDualLR = DIRECTION_NONE;
             }
             break;
         case GAMEPAD_MASK_LEFT:

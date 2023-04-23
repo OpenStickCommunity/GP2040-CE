@@ -118,7 +118,7 @@ private:
 	bool pressedDown();
 	bool pressedLeft();
 	bool pressedRight();
-	BoardOptions getBoardOptions();
+	const BoardOptions& getBoardOptions();
 	bool isDisplayPowerOff();
 	void setDisplayPower(uint8_t status);
 	uint32_t displaySaverTimeout = 0;

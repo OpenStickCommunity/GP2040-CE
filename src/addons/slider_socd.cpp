@@ -9,7 +9,7 @@
 #define SOCD_MODE_MASK (SOCD_MODE_UP_PRIORITY & SOCD_MODE_SECOND_INPUT_PRIORITY & SOCD_MODE_NEUTRAL)
 
 bool SliderSOCDInput::available() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
     pinSliderSOCDUp = options.pinSliderSOCDUp;
     pinSliderSOCDSecond = options.pinSliderSOCDSecond;
 	return ( options.SliderSOCDInputEnabled &

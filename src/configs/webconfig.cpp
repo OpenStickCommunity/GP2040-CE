@@ -207,7 +207,7 @@ std::string setDisplayOptions(BoardOptions& boardOptions)
 	boardOptions.buttonLayoutCustomOptions.params.startY 		 	       = doc["buttonLayoutCustomOptions"]["params"]["startY"];
 	boardOptions.buttonLayoutCustomOptions.params.buttonRadius      	   = doc["buttonLayoutCustomOptions"]["params"]["buttonRadius"];
 	boardOptions.buttonLayoutCustomOptions.params.buttonPadding     	   = doc["buttonLayoutCustomOptions"]["params"]["buttonPadding"];
-	
+
 	boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight 	   	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["layout"];
 	boardOptions.buttonLayoutCustomOptions.paramsRight.startX 		 	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["startX"];
 	boardOptions.buttonLayoutCustomOptions.paramsRight.startY 		 	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["startY"];
@@ -229,7 +229,7 @@ std::string setPreviewDisplayOptions()
 {
 	BoardOptions boardOptions = Storage::getInstance().getPreviewBoardOptions();
 	std::string response = setDisplayOptions(boardOptions);
-	ConfigManager::getInstance().setPreviewBoardOptions(boardOptions); 
+	ConfigManager::getInstance().setPreviewBoardOptions(boardOptions);
 	return response;
 }
 
@@ -237,7 +237,7 @@ std::string setPreviewDisplayOptions()
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	doc["enabled"]       	 = boardOptions.hasI2CDisplay ? 1 : 0;
 	doc["sdaPin"]        	 = boardOptions.i2cSDAPin == 0xFF ? -1 : boardOptions.i2cSDAPin;
 	doc["sclPin"]        	 = boardOptions.i2cSCLPin == 0xFF ? -1 : boardOptions.i2cSCLPin;
@@ -258,7 +258,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutCustomOptions"]["params"]["startY"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.startY;
 	doc["buttonLayoutCustomOptions"]["params"]["buttonRadius"]  	 = boardOptions.buttonLayoutCustomOptions.params.buttonRadius;
 	doc["buttonLayoutCustomOptions"]["params"]["buttonPadding"] 	 = boardOptions.buttonLayoutCustomOptions.params.buttonPadding;
-	
+
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["layout"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight;
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["startX"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.startX;
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["startY"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.startY;
@@ -294,7 +294,7 @@ SplashImage splashImageTemp; // For splash image upload
 std::string getSplashImage()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10); // TODO: Figoure out correct length
-	SplashImage splashImage = Storage::getInstance().getSplashImage();
+	const SplashImage& splashImage = Storage::getInstance().getSplashImage();
 	JsonArray splashImageArray = doc.createNestedArray("splashImage");
 	copyArray(splashImage.data, splashImageArray);
 
@@ -370,7 +370,7 @@ std::string setLedOptions()
 std::string getLedOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	doc["dataPin"]           = ledOptions.dataPin;
 	doc["ledFormat"]         = ledOptions.ledFormat;
 	doc["ledLayout"]         = ledOptions.ledLayout;
@@ -419,13 +419,13 @@ std::string getLedOptions()
 	usedPins.add(gamepad->mapButtonA1->pin);
 	usedPins.add(gamepad->mapButtonA2->pin);
 
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	if (boardOptions.i2cSDAPin != (uint8_t)-1)
 		usedPins.add(boardOptions.i2cSDAPin);
 	if (boardOptions.i2cSCLPin != (uint8_t)-1)
 		usedPins.add(boardOptions.i2cSCLPin);
 
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	if (addonOptions.analogAdcPinX != (uint8_t)-1)
 		usedPins.add(addonOptions.analogAdcPinX);
 	if (addonOptions.analogAdcPinY != (uint8_t)-1)
@@ -469,7 +469,7 @@ std::string setPinMappings()
 std::string getPinMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	
+
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	doc["Up"]    = gamepad->mapDpadUp->pin;
 	doc["Down"]  = gamepad->mapDpadDown->pin;
@@ -525,7 +525,7 @@ std::string setKeyMappings()
 std::string getKeyMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	
+
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	doc["Up"]    = gamepad->options.keyDpadUp;
 	doc["Down"]  = gamepad->options.keyDpadDown;
@@ -623,7 +623,7 @@ std::string setAddonOptions()
 std::string getAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	doc["turboPin"] = addonOptions.pinButtonTurbo == 0xFF ? -1 : addonOptions.pinButtonTurbo;
 	doc["turboPinLED"] = addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED;
 	doc["sliderLSPin"] = addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS;
