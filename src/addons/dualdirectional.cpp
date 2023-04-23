@@ -136,8 +136,10 @@ void DualDirectionalInput::process()
     } else { // We are not mixed mode, don't change dual output
         dualOut = dualState;
 
-        // Set Dual Directional Output
-        OverrideGamepad(gamepad, dpadMode, dualOut);
+        if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
+            // Set Dual Directional Output
+            OverrideGamepad(gamepad, dpadMode, dualOut);
+        }
     }
 }
 
