@@ -24,6 +24,11 @@
 #define WII_DATA_TYPE_2             2
 #define WII_DATA_TYPE_3             3
 
+#define WII_ANALOG_PRECISION_0      32
+#define WII_ANALOG_PRECISION_1      64
+#define WII_ANALOG_PRECISION_2      256
+#define WII_ANALOG_PRECISION_3      1024
+
 #define WII_ENCRYPTION false
 
 #ifndef HAS_WII_EXTENSION
@@ -65,13 +70,13 @@ class WiiExtension {
     int8_t extensionType = WII_EXTENSION_NONE;
     int8_t dataType = WII_DATA_TYPE_0;
 
-    int16_t joy1X        = 0;
-    int16_t joy1Y        = 0;
-    int16_t joy2X        = 0;
-    int16_t joy2Y        = 0;
-    int16_t accelX       = 0;
-    int16_t accelY       = 0;
-    int16_t accelZ       = 0;
+    uint16_t joy1X        = 0;
+    uint16_t joy1Y        = 0;
+    uint16_t joy2X        = 0;
+    uint16_t joy2Y        = 0;
+    uint16_t accelX       = 0;
+    uint16_t accelY       = 0;
+    uint16_t accelZ       = 0;
 
     bool buttonZ         = false;
     bool buttonC         = false;
@@ -124,22 +129,24 @@ class WiiExtension {
 
     int8_t doWait = 0;
 
-    int8_t _minX;
-    int8_t _maxX;
-    int8_t _cenX;
+    uint16_t _minX;
+    uint16_t _maxX;
+    uint16_t _cenX;
 
-    int8_t _minY;
-    int8_t _maxY;
-    int8_t _cenY;
+    uint16_t _minY;
+    uint16_t _maxY;
+    uint16_t _cenY;
 
-    int8_t _accelX0G;
-    int8_t _accelY0G;
-    int8_t _accelZ0G;
-    int8_t _accelX1G;
-    int8_t _accelY1G;
-    int8_t _accelZ1G;
+    uint16_t _accelX0G;
+    uint16_t _accelY0G;
+    uint16_t _accelZ0G;
+    uint16_t _accelX1G;
+    uint16_t _accelY1G;
+    uint16_t _accelZ1G;
 
     int8_t decodeByte(int8_t val);
+    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+    uint16_t calibrate(uint16_t pos, uint16_t min, uint16_t max, uint16_t center);
 };
 
 #endif

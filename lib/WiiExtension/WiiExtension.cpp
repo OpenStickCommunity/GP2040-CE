@@ -79,28 +79,28 @@ void WiiExtension::start(){
             if (extensionType == WII_EXTENSION_NUNCHUCK) {
                 // read calibration
                 regWrite[0] = 0x20;
-//                i2c_write_blocking(bbi2c.picoI2C, address, &regWrite[0], 1, false);
-//                sleep_us(WII_EXTENSION_DELAY);
-//
-//                //I2CRead(&bbi2c, address, idRead, 16);
-//                i2c_read_blocking(bbi2c.picoI2C, address, idRead, 6, false);
-//                sleep_us(WII_EXTENSION_DELAY);
-//
-//                _maxX = idRead[8];
-//                _minX = idRead[9];
-//                _cenX = idRead[10];
-//
-//                _maxY = idRead[11];
-//                _minY = idRead[12];
-//                _cenY = idRead[13];
-//
-//                _accelX0G = ((idRead[0] << 2) | ((idRead[3] >> 2) & 0x03));
-//                _accelY0G = ((idRead[1] << 2) | ((idRead[3] >> 4) & 0x03));
-//                _accelZ0G = ((idRead[2] << 2) | ((idRead[3] >> 6) & 0x03));
-//
-//                _accelX1G = ((idRead[4] << 2) | ((idRead[7] >> 2) & 0x03));
-//                _accelY1G = ((idRead[5] << 2) | ((idRead[7] >> 4) & 0x03));
-//                _accelZ1G = ((idRead[6] << 2) | ((idRead[7] >> 6) & 0x03));
+                i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 1, false);
+                sleep_us(WII_EXTENSION_DELAY);
+
+                //I2CRead(&bbi2c, address, idRead, 16);
+                i2c_read_blocking(bbi2c.picoI2C, address, idRead, 16, false);
+                sleep_us(WII_EXTENSION_DELAY);
+
+                _maxX = idRead[8];
+                _minX = idRead[9];
+                _cenX = idRead[10];
+
+                _maxY = idRead[11];
+                _minY = idRead[12];
+                _cenY = idRead[13];
+
+                _accelX0G = ((idRead[0] << 2) | ((idRead[3] >> 2) & 0x03));
+                _accelY0G = ((idRead[1] << 2) | ((idRead[3] >> 4) & 0x03));
+                _accelZ0G = ((idRead[2] << 2) | ((idRead[3] >> 6) & 0x03));
+
+                _accelX1G = ((idRead[4] << 2) | ((idRead[7] >> 2) & 0x03));
+                _accelY1G = ((idRead[5] << 2) | ((idRead[7] >> 4) & 0x03));
+                _accelZ1G = ((idRead[6] << 2) | ((idRead[7] >> 6) & 0x03));
 
 #if WII_EXTENSION_DEBUG==true
                 //printf("Calibration:\n");
@@ -117,6 +117,14 @@ void WiiExtension::start(){
                 //printf("Y Max: %d\n", _maxY);
                 //printf("Y Center: %d\n", _cenY);
 #endif
+            } else if (extensionType == WII_EXTENSION_CLASSIC) {
+                //regWrite[0] = 0x20;
+                //i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 1, false);
+                //sleep_us(WII_EXTENSION_DELAY);
+                //
+                ////I2CRead(&bbi2c, address, idRead, 16);
+                //i2c_read_blocking(bbi2c.picoI2C, address, idRead, 20, false);
+                //sleep_us(WII_EXTENSION_DELAY);
             }
 
             // reset to default input values in the event of a removal/hotswap
@@ -264,8 +272,20 @@ void WiiExtension::poll() {
                 sleep_us(WII_EXTENSION_DELAY);
                 if (result < 0) break;
 
-                joy1X   = regRead[0]-_cenX;
-                joy1Y   = regRead[1]-_cenY;
+                joy1X   = map(
+                    calibrate(regRead[0], _minX, _maxX, _cenX),
+                    0,
+                    (WII_ANALOG_PRECISION_2-1),
+                    0,
+                    (WII_ANALOG_PRECISION_3-1)
+                );
+                joy1Y   = map(
+                    calibrate(regRead[1], _minY, _maxY, _cenY),
+                    0,
+                    (WII_ANALOG_PRECISION_2-1),
+                    0,
+                    (WII_ANALOG_PRECISION_3-1)
+                );
                 accelX = (((regRead[2] << 2) | ((regRead[5] >> 2) & 0x03)));
                 accelY = (((regRead[3] << 2) | ((regRead[5] >> 4) & 0x03)));
                 accelZ = (((regRead[4] << 2) | ((regRead[5] >> 6) & 0x03)));
@@ -290,9 +310,42 @@ void WiiExtension::poll() {
 
                     joy1X =          (regRead[0] & 0x3F);
                     joy1Y =          (regRead[1] & 0x3F);
-
                     joy2X =          ((regRead[0] & 0xC0) >> 3) | ((regRead[1] & 0xC0) >> 5) | ((regRead[2] & 0x80) >> 7);
                     joy2Y =          (regRead[2] & 0x1F);
+
+                    joy1X   = map(
+                        joy1X,
+                        //calibrate(joy1X, _minX, _maxX, _cenX),
+                        0,
+                        (WII_ANALOG_PRECISION_1-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+                    joy1Y   = map(
+                        joy1Y,
+                        //calibrate(joy1Y, _minY, _maxY, _cenY),
+                        0,
+                        (WII_ANALOG_PRECISION_1-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+
+                    joy2X   = map(
+                        joy2X,
+                        //calibrate(joy1X, _minX, _maxX, _cenX),
+                        0,
+                        (WII_ANALOG_PRECISION_0-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+                    joy2Y   = map(
+                        joy2Y,
+                        //calibrate(joy1Y, _minY, _maxY, _cenY),
+                        0,
+                        (WII_ANALOG_PRECISION_0-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
 
                     triggerLeft =    (((regRead[2] & 0x60) >> 2) | ((regRead[3] & 0xE0) >> 5));
                     triggerRight =   ((regRead[3] & 0x1F) >> 0);
@@ -321,9 +374,42 @@ void WiiExtension::poll() {
 
                     joy1X =          ((regRead[0] << 2) | ((regRead[4] & 0x03) >> 0));
                     joy1Y =          ((regRead[2] << 2) | ((regRead[4] & 0x30) >> 4));
-
                     joy2X =          ((regRead[1] << 2) | ((regRead[4] & 0x0C) >> 2));
                     joy2Y =          ((regRead[3] << 2) | ((regRead[4] & 0xC0) >> 6));
+
+                    joy1X   = map(
+                        joy1X,
+                        //calibrate(joy1X, _minX, _maxX, _cenX),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+                    joy1Y   = map(
+                        joy1Y,
+                        //calibrate(joy1Y, _minY, _maxY, _cenY),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+
+                    joy2X   = map(
+                        joy2X,
+                        //calibrate(joy1X, _minX, _maxX, _cenX),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+                    joy2Y   = map(
+                        joy2Y,
+                        //calibrate(joy1Y, _minY, _maxY, _cenY),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
 
                     triggerLeft =    regRead[5];
                     triggerRight =   regRead[6];
@@ -352,9 +438,42 @@ void WiiExtension::poll() {
 
                     joy1X =          regRead[0];
                     joy1Y =          regRead[2];
-
                     joy2X =          regRead[1];
                     joy2Y =          regRead[3];
+
+                    joy1X   = map(
+                        joy1X,
+                        //calibrate(joy1X, _minX, _maxX, _cenX),
+                        0,
+                        (WII_ANALOG_PRECISION_2-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+                    joy1Y   = map(
+                        joy1Y,
+                        //calibrate(joy1Y, _minY, _maxY, _cenY),
+                        0,
+                        (WII_ANALOG_PRECISION_2-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+
+                    joy2X   = map(
+                        joy2X,
+                        //calibrate(joy1X, _minX, _maxX, _cenX),
+                        0,
+                        (WII_ANALOG_PRECISION_2-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
+                    joy2Y   = map(
+                        joy2Y,
+                        //calibrate(joy1Y, _minY, _maxY, _cenY),
+                        0,
+                        (WII_ANALOG_PRECISION_2-1),
+                        0,
+                        (WII_ANALOG_PRECISION_3-1)
+                    );
 
                     triggerLeft =    regRead[4];
                     triggerRight =   regRead[5];
@@ -434,4 +553,31 @@ void WiiExtension::poll() {
 
 int8_t WiiExtension::decodeByte(int8_t val) {
     return (val ^ 0x17) + 0x17;
+}
+
+uint16_t WiiExtension::map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+uint16_t WiiExtension::calibrate(uint16_t pos, uint16_t min, uint16_t max, uint16_t cen) {
+    uint16_t result;
+
+    uint16_t range = max - min;
+    uint16_t half = range / 2;
+    uint16_t center = pos - cen;
+    uint16_t absCenter = center >= 0 ? center : -center;
+
+    if (pos < min) {
+        result = min;
+    } else if (pos > max) {
+        result = max;
+    } else if (absCenter <= half) {
+        result = pos;
+    } else if (center > 0) {
+        result = ((range - half) * center / half) + cen;
+    } else {
+        result = ((range - half) * -center / half) + cen;
+    }
+
+    return result;
 }

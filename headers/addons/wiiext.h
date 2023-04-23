@@ -26,15 +26,29 @@ private:
 
     bool buttonC = true;
     bool buttonZ = false;
+
     bool buttonA = true;
     bool buttonB = true;
     bool buttonX = true;
     bool buttonY = true;
+    bool buttonL = true;
+    bool buttonZL = true;
+    bool buttonR = true;
+    bool buttonZR = true;
 
-    int16_t leftX;
-    int16_t leftY;
+    bool buttonSelect = true;
+    bool buttonStart = true;
+    bool buttonHome = true;
 
-    int16_t map(int16_t x, int16_t in_min, int16_t in_max, int16_t out_min, int16_t out_max);
+    bool dpadUp     = false;
+    bool dpadDown   = false;
+    bool dpadLeft   = false;
+    bool dpadRight  = false;
+
+    uint16_t leftX;
+    uint16_t leftY;
+
+    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
 };
 
 #endif  // _WIIExtensionAddon_H
