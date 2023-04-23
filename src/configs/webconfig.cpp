@@ -183,7 +183,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 
 	const auto addPinIfValid = [&](int pin)
 	{ 
-		if (pin >= 0 && pin < 30)
+		if (pin >= 0 && pin < NUM_BANK0_GPIOS)
 		{
 			usedPins.add(pin);
 		}
@@ -459,7 +459,7 @@ std::string getPinMappings()
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
 	// Webconfig uses -1 to denote unassigned pins
-	const auto convertPin = [] (uint8_t pin) -> int { return pin < 30 ? pin : -1; };
+	const auto convertPin = [] (uint8_t pin) -> int { return pin < NUM_BANK0_GPIOS ? pin : -1; };
 
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	doc["Up"]    = convertPin(boardOptions.pinDpadUp);
