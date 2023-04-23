@@ -320,6 +320,15 @@ std::string setGamepadOptions()
 	gamepad->options.dpadMode  = doc["dpadMode"];
 	gamepad->options.inputMode = doc["inputMode"];
 	gamepad->options.socdMode  = doc["socdMode"];
+
+	gamepad->options.hotkeyF1Up.action    = doc["hotkeyF1"][0]["action"];
+	gamepad->options.hotkeyF1Down.action  = doc["hotkeyF1"][1]["action"];
+	gamepad->options.hotkeyF1Left.action  = doc["hotkeyF1"][2]["action"];
+	gamepad->options.hotkeyF1Right.action = doc["hotkeyF1"][3]["action"];
+	gamepad->options.hotkeyF2Up.action    = doc["hotkeyF2"][0]["action"];
+	gamepad->options.hotkeyF2Down.action  = doc["hotkeyF2"][1]["action"];
+	gamepad->options.hotkeyF2Left.action  = doc["hotkeyF2"][2]["action"];
+	gamepad->options.hotkeyF2Right.action = doc["hotkeyF2"][3]["action"];
 	ConfigManager::getInstance().setGamepadOptions(gamepad);
 	return serialize_json(doc);
 }
@@ -331,6 +340,34 @@ std::string getGamepadOptions()
 	doc["dpadMode"]  = options.dpadMode;
 	doc["inputMode"] = options.inputMode;
 	doc["socdMode"]  = options.socdMode;
+
+	auto hotkeyF1 = doc.createNestedArray("hotkeyF1");
+	auto f1Up = hotkeyF1.createNestedObject();
+	f1Up["action"] = options.hotkeyF1Up.action;
+	f1Up["mask"]   = options.hotkeyF1Up.dpadMask;
+	auto f1Down = hotkeyF1.createNestedObject();
+	f1Down["action"] = options.hotkeyF1Down.action;
+	f1Down["mask"]   = options.hotkeyF1Down.dpadMask;
+	auto f1Left = hotkeyF1.createNestedObject();
+	f1Left["action"] = options.hotkeyF1Left.action;
+	f1Left["mask"]   = options.hotkeyF1Left.dpadMask;
+	auto f1Right = hotkeyF1.createNestedObject();
+	f1Right["action"] = options.hotkeyF1Right.action;
+	f1Right["mask"]   = options.hotkeyF1Right.dpadMask;
+
+	auto hotkeyF2 = doc.createNestedArray("hotkeyF2");
+	auto f2Up = hotkeyF2.createNestedObject();
+	f2Up["action"] = options.hotkeyF2Up.action;
+	f2Up["mask"]   = options.hotkeyF2Up.dpadMask;
+	auto f2Down = hotkeyF2.createNestedObject();
+	f2Down["action"] = options.hotkeyF2Down.action;
+	f2Down["mask"]   = options.hotkeyF2Down.dpadMask;
+	auto f2Left = hotkeyF2.createNestedObject();
+	f2Left["action"] = options.hotkeyF2Left.action;
+	f2Left["mask"]   = options.hotkeyF2Left.dpadMask;
+	auto f2Right = hotkeyF2.createNestedObject();
+	f2Right["action"] = options.hotkeyF2Right.action;
+	f2Right["mask"]   = options.hotkeyF2Right.dpadMask;
 	return serialize_json(doc);
 }
 
