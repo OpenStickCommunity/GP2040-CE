@@ -177,6 +177,46 @@ void httpd_post_finished(void *connection, char *response_uri, uint16_t response
 	}
 }
 
+void addUsedPinsArray(DynamicJsonDocument& doc)
+{
+	auto usedPins = doc.createNestedArray("usedPins");
+
+	const auto addPinIfValid = [&](int pin)
+	{ 
+		if (pin >= 0 && pin < 30)
+		{
+			usedPins.add(pin);
+		}
+	};
+
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	addPinIfValid(boardOptions.pinDpadUp);
+	addPinIfValid(boardOptions.pinDpadDown);
+	addPinIfValid(boardOptions.pinDpadLeft);
+	addPinIfValid(boardOptions.pinDpadRight);
+	addPinIfValid(boardOptions.pinButtonB1);
+	addPinIfValid(boardOptions.pinButtonB2);
+	addPinIfValid(boardOptions.pinButtonB3);
+	addPinIfValid(boardOptions.pinButtonB4);
+	addPinIfValid(boardOptions.pinButtonL1);
+	addPinIfValid(boardOptions.pinButtonR1);
+	addPinIfValid(boardOptions.pinButtonL2);
+	addPinIfValid(boardOptions.pinButtonR2);
+	addPinIfValid(boardOptions.pinButtonS1);
+	addPinIfValid(boardOptions.pinButtonS2);
+	addPinIfValid(boardOptions.pinButtonL3);
+	addPinIfValid(boardOptions.pinButtonR3);
+	addPinIfValid(boardOptions.pinButtonA1);
+	addPinIfValid(boardOptions.pinButtonA2);
+	addPinIfValid(boardOptions.i2cSDAPin);
+	addPinIfValid(boardOptions.i2cSCLPin);
+
+	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	addPinIfValid(addonOptions.analogAdcPinX);
+	addPinIfValid(addonOptions.analogAdcPinY);
+	addPinIfValid(addonOptions.buzzerPin);
+}
+
 std::string serialize_json(DynamicJsonDocument &doc)
 {
 	string data;
@@ -265,26 +305,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonRadius"]  = boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius;
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonPadding"] = boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding;
 
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	auto usedPins = doc.createNestedArray("usedPins");
-	usedPins.add(gamepad->mapDpadUp->pin);
-	usedPins.add(gamepad->mapDpadDown->pin);
-	usedPins.add(gamepad->mapDpadLeft->pin);
-	usedPins.add(gamepad->mapDpadRight->pin);
-	usedPins.add(gamepad->mapButtonB1->pin);
-	usedPins.add(gamepad->mapButtonB2->pin);
-	usedPins.add(gamepad->mapButtonB3->pin);
-	usedPins.add(gamepad->mapButtonB4->pin);
-	usedPins.add(gamepad->mapButtonL1->pin);
-	usedPins.add(gamepad->mapButtonR1->pin);
-	usedPins.add(gamepad->mapButtonL2->pin);
-	usedPins.add(gamepad->mapButtonR2->pin);
-	usedPins.add(gamepad->mapButtonS1->pin);
-	usedPins.add(gamepad->mapButtonS2->pin);
-	usedPins.add(gamepad->mapButtonL3->pin);
-	usedPins.add(gamepad->mapButtonR3->pin);
-	usedPins.add(gamepad->mapButtonA1->pin);
-	usedPins.add(gamepad->mapButtonA2->pin);
+	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
@@ -398,40 +419,7 @@ std::string getLedOptions()
 	if (ledOptions.indexA1 == -1)    ledButtonMap["A1"]    = nullptr;  else ledButtonMap["A1"]    = ledOptions.indexA1;
 	if (ledOptions.indexA2 == -1)    ledButtonMap["A2"]    = nullptr;  else ledButtonMap["A2"]    = ledOptions.indexA2;
 
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	auto usedPins = doc.createNestedArray("usedPins");
-	usedPins.add(gamepad->mapDpadUp->pin);
-	usedPins.add(gamepad->mapDpadDown->pin);
-	usedPins.add(gamepad->mapDpadLeft->pin);
-	usedPins.add(gamepad->mapDpadRight->pin);
-	usedPins.add(gamepad->mapButtonB1->pin);
-	usedPins.add(gamepad->mapButtonB2->pin);
-	usedPins.add(gamepad->mapButtonB3->pin);
-	usedPins.add(gamepad->mapButtonB4->pin);
-	usedPins.add(gamepad->mapButtonL1->pin);
-	usedPins.add(gamepad->mapButtonR1->pin);
-	usedPins.add(gamepad->mapButtonL2->pin);
-	usedPins.add(gamepad->mapButtonR2->pin);
-	usedPins.add(gamepad->mapButtonS1->pin);
-	usedPins.add(gamepad->mapButtonS2->pin);
-	usedPins.add(gamepad->mapButtonL3->pin);
-	usedPins.add(gamepad->mapButtonR3->pin);
-	usedPins.add(gamepad->mapButtonA1->pin);
-	usedPins.add(gamepad->mapButtonA2->pin);
-
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	if (boardOptions.i2cSDAPin != (uint8_t)-1)
-		usedPins.add(boardOptions.i2cSDAPin);
-	if (boardOptions.i2cSCLPin != (uint8_t)-1)
-		usedPins.add(boardOptions.i2cSCLPin);
-
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
-	if (addonOptions.analogAdcPinX != (uint8_t)-1)
-		usedPins.add(addonOptions.analogAdcPinX);
-	if (addonOptions.analogAdcPinY != (uint8_t)-1)
-		usedPins.add(addonOptions.analogAdcPinY);
-	if (addonOptions.buzzerPin != (uint8_t)-1)
-		usedPins.add(addonOptions.buzzerPin);
+	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
@@ -469,26 +457,29 @@ std::string setPinMappings()
 std::string getPinMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	doc["Up"]    = gamepad->mapDpadUp->pin;
-	doc["Down"]  = gamepad->mapDpadDown->pin;
-	doc["Left"]  = gamepad->mapDpadLeft->pin;
-	doc["Right"] = gamepad->mapDpadRight->pin;
-	doc["B1"]    = gamepad->mapButtonB1->pin;
-	doc["B2"]    = gamepad->mapButtonB2->pin;
-	doc["B3"]    = gamepad->mapButtonB3->pin;
-	doc["B4"]    = gamepad->mapButtonB4->pin;
-	doc["L1"]    = gamepad->mapButtonL1->pin;
-	doc["R1"]    = gamepad->mapButtonR1->pin;
-	doc["L2"]    = gamepad->mapButtonL2->pin;
-	doc["R2"]    = gamepad->mapButtonR2->pin;
-	doc["S1"]    = gamepad->mapButtonS1->pin;
-	doc["S2"]    = gamepad->mapButtonS2->pin;
-	doc["L3"]    = gamepad->mapButtonL3->pin;
-	doc["R3"]    = gamepad->mapButtonR3->pin;
-	doc["A1"]    = gamepad->mapButtonA1->pin;
-	doc["A2"]    = gamepad->mapButtonA2->pin;
+
+	// Webconfig uses -1 to denote unassigned pins
+	const auto convertPin = [] (uint8_t pin) -> int { return pin < 30 ? pin : -1; };
+
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	doc["Up"]    = convertPin(boardOptions.pinDpadUp);
+	doc["Down"]  = convertPin(boardOptions.pinDpadDown);
+	doc["Left"]  = convertPin(boardOptions.pinDpadLeft);
+	doc["Right"] = convertPin(boardOptions.pinDpadRight);
+	doc["B1"]    = convertPin(boardOptions.pinButtonB1);
+	doc["B2"]    = convertPin(boardOptions.pinButtonB2);
+	doc["B3"]    = convertPin(boardOptions.pinButtonB3);
+	doc["B4"]    = convertPin(boardOptions.pinButtonB4);
+	doc["L1"]    = convertPin(boardOptions.pinButtonL1);
+	doc["R1"]    = convertPin(boardOptions.pinButtonR1);
+	doc["L2"]    = convertPin(boardOptions.pinButtonL2);
+	doc["R2"]    = convertPin(boardOptions.pinButtonR2);
+	doc["S1"]    = convertPin(boardOptions.pinButtonS1);
+	doc["S2"]    = convertPin(boardOptions.pinButtonS2);
+	doc["L3"]    = convertPin(boardOptions.pinButtonL3);
+	doc["R3"]    = convertPin(boardOptions.pinButtonR3);
+	doc["A1"]    = convertPin(boardOptions.pinButtonA1);
+	doc["A2"]    = convertPin(boardOptions.pinButtonA2);
 
 	return serialize_json(doc);
 }
@@ -685,26 +676,7 @@ std::string getAddonOptions()
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
 
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	auto usedPins = doc.createNestedArray("usedPins");
-	usedPins.add(gamepad->mapDpadUp->pin);
-	usedPins.add(gamepad->mapDpadDown->pin);
-	usedPins.add(gamepad->mapDpadLeft->pin);
-	usedPins.add(gamepad->mapDpadRight->pin);
-	usedPins.add(gamepad->mapButtonB1->pin);
-	usedPins.add(gamepad->mapButtonB2->pin);
-	usedPins.add(gamepad->mapButtonB3->pin);
-	usedPins.add(gamepad->mapButtonB4->pin);
-	usedPins.add(gamepad->mapButtonL1->pin);
-	usedPins.add(gamepad->mapButtonR1->pin);
-	usedPins.add(gamepad->mapButtonL2->pin);
-	usedPins.add(gamepad->mapButtonR2->pin);
-	usedPins.add(gamepad->mapButtonS1->pin);
-	usedPins.add(gamepad->mapButtonS2->pin);
-	usedPins.add(gamepad->mapButtonL3->pin);
-	usedPins.add(gamepad->mapButtonR3->pin);
-	usedPins.add(gamepad->mapButtonA1->pin);
-	usedPins.add(gamepad->mapButtonA2->pin);
+	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
