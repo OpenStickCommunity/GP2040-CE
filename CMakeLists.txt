@@ -12,7 +12,7 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.0")
   message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
-project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.6.2)
+project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.6.3)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -95,7 +95,6 @@ FetchContent_MakeAvailable(ArduinoJson)
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 add_subdirectory(lib)
-add_subdirectory(MPG)
 
 include(compile_proto.cmake)
 compile_proto()
@@ -124,6 +123,9 @@ src/addons/playernum.cpp
 src/addons/playerleds.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
+src/addons/slider_socd.cpp
+src/gamepad/GamepadDebouncer.cpp
+src/gamepad/GamepadDescriptors.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -131,10 +133,9 @@ ${PROTO_OUTPUT_DIR}/config.pb.c
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
-pico_set_program_version(GP2040-CE "0.6.2")
+pico_set_program_version(GP2040-CE "0.6.3")
 
 target_link_libraries(${PROJECT_NAME} 
-MPG
 pico_stdlib
 pico_bootsel_via_double_reset
 AnimationStation
@@ -154,6 +155,8 @@ nanopb
 target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons
+headers/configs
+headers/gamepad
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}
 )
@@ -170,6 +173,7 @@ target_include_directories(${PROJECT_NAME}  PRIVATE
 pico_add_extra_outputs(${PROJECT_NAME})
 
 add_compile_options(-Wall
+        -Wtype-limits
         -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
         -Wno-unused-function # we have some for the docs that aren't called
         -Wno-maybe-uninitialized

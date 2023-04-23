@@ -35,6 +35,8 @@
 #define API_SET_LED_OPTIONS "/api/setLedOptions"
 #define API_GET_PIN_MAPPINGS "/api/getPinMappings"
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
+#define API_GET_KEY_MAPPINGS "/api/getKeyMappings"
+#define API_SET_KEY_MAPPINGS "/api/setKeyMappings"
 #define API_GET_ADDON_OPTIONS "/api/getAddonsOptions"
 #define API_SET_ADDON_OPTIONS "/api/setAddonsOptions"
 #define API_GET_SPLASH_IMAGE "/api/getSplashImage"
@@ -52,7 +54,7 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
+const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -418,17 +420,17 @@ std::string getLedOptions()
 	usedPins.add(gamepad->mapButtonA2->pin);
 
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	if (boardOptions.i2cSDAPin != -1)
+	if (boardOptions.i2cSDAPin != (uint8_t)-1)
 		usedPins.add(boardOptions.i2cSDAPin);
-	if (boardOptions.i2cSCLPin != -1)
+	if (boardOptions.i2cSCLPin != (uint8_t)-1)
 		usedPins.add(boardOptions.i2cSCLPin);
 
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
-	if (addonOptions.analogAdcPinX != -1)
+	if (addonOptions.analogAdcPinX != (uint8_t)-1)
 		usedPins.add(addonOptions.analogAdcPinX);
-	if (addonOptions.analogAdcPinY != -1)
+	if (addonOptions.analogAdcPinY != (uint8_t)-1)
 		usedPins.add(addonOptions.analogAdcPinY);
-	if (addonOptions.buzzerPin != -1)
+	if (addonOptions.buzzerPin != (uint8_t)-1)
 		usedPins.add(addonOptions.buzzerPin);
 
 	return serialize_json(doc);
@@ -491,6 +493,62 @@ std::string getPinMappings()
 	return serialize_json(doc);
 }
 
+std::string setKeyMappings()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+	gamepad->options.keyDpadUp    = doc["Up"];
+	gamepad->options.keyDpadDown  = doc["Down"];
+	gamepad->options.keyDpadLeft  = doc["Left"];
+	gamepad->options.keyDpadRight = doc["Right"];
+	gamepad->options.keyButtonB1  = doc["B1"];
+	gamepad->options.keyButtonB2  = doc["B2"];
+	gamepad->options.keyButtonB3  = doc["B3"];
+	gamepad->options.keyButtonB4  = doc["B4"];
+	gamepad->options.keyButtonL1  = doc["L1"];
+	gamepad->options.keyButtonR1  = doc["R1"];
+	gamepad->options.keyButtonL2  = doc["L2"];
+	gamepad->options.keyButtonR2  = doc["R2"];
+	gamepad->options.keyButtonS1  = doc["S1"];
+	gamepad->options.keyButtonS2  = doc["S2"];
+	gamepad->options.keyButtonL3  = doc["L3"];
+	gamepad->options.keyButtonR3  = doc["R3"];
+	gamepad->options.keyButtonA1  = doc["A1"];
+	gamepad->options.keyButtonA2  = doc["A2"];
+
+	gamepad->save();
+
+	return serialize_json(doc);
+}
+
+std::string getKeyMappings()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	doc["Up"]    = gamepad->options.keyDpadUp;
+	doc["Down"]  = gamepad->options.keyDpadDown;
+	doc["Left"]  = gamepad->options.keyDpadLeft;
+	doc["Right"] = gamepad->options.keyDpadRight;
+	doc["B1"]    = gamepad->options.keyButtonB1;
+	doc["B2"]    = gamepad->options.keyButtonB2;
+	doc["B3"]    = gamepad->options.keyButtonB3;
+	doc["B4"]    = gamepad->options.keyButtonB4;
+	doc["L1"]    = gamepad->options.keyButtonL1;
+	doc["R1"]    = gamepad->options.keyButtonR1;
+	doc["L2"]    = gamepad->options.keyButtonL2;
+	doc["R2"]    = gamepad->options.keyButtonR2;
+	doc["S1"]    = gamepad->options.keyButtonS1;
+	doc["S2"]    = gamepad->options.keyButtonS2;
+	doc["L3"]    = gamepad->options.keyButtonL3;
+	doc["R3"]    = gamepad->options.keyButtonR3;
+	doc["A1"]    = gamepad->options.keyButtonA1;
+	doc["A2"]    = gamepad->options.keyButtonA2;
+
+	return serialize_json(doc);
+}
+
 std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
@@ -500,6 +558,8 @@ std::string setAddonOptions()
 	addonOptions.pinTurboLED        = doc["turboPinLED"] == -1 ? 0xFF : doc["turboPinLED"];
 	addonOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
 	addonOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
+	addonOptions.pinSliderSOCDUp  		= doc["sliderSOCDUpPin"] == -1 ? 0xFF : doc["sliderSOCDUpPin"];
+	addonOptions.pinSliderSOCDSecond    = doc["sliderSOCDSecondPin"] == -1 ? 0xFF : doc["sliderSOCDSecondPin"];
 	addonOptions.turboShotCount 	= doc["turboShotCount"];
 	addonOptions.pinButtonReverse  	= doc["reversePin"] == -1 ? 0xFF : doc["reversePin"];
 	addonOptions.pinReverseLED  	= doc["reversePinLED"] == -1 ? 0xFF : doc["reversePinLED"];
@@ -550,6 +610,7 @@ std::string setAddonOptions()
 	addonOptions.ExtraButtonAddonEnabled = doc["ExtraButtonAddonEnabled"];
 	addonOptions.I2CAnalog1219InputEnabled = doc["I2CAnalog1219InputEnabled"];
 	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
+	addonOptions.SliderSOCDInputEnabled = doc["SliderSOCDInputEnabled"];
 	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
 	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
 	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
@@ -567,6 +628,8 @@ std::string getAddonOptions()
 	doc["turboPinLED"] = addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED;
 	doc["sliderLSPin"] = addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS;
 	doc["sliderRSPin"] = addonOptions.pinSliderRS == 0xFF ? -1 : addonOptions.pinSliderRS;
+	doc["sliderSOCDUpPin"] = addonOptions.pinSliderSOCDUp == 0xFF ? -1 : addonOptions.pinSliderSOCDUp;
+	doc["sliderSOCDSecondPin"] = addonOptions.pinSliderSOCDSecond == 0xFF ? -1 : addonOptions.pinSliderSOCDSecond;
 	doc["turboShotCount"] = addonOptions.turboShotCount;
 	doc["reversePin"] = addonOptions.pinButtonReverse == 0xFF ? -1 : addonOptions.pinButtonReverse;
 	doc["reversePinLED"] = addonOptions.pinReverseLED == 0xFF ? -1 : addonOptions.pinReverseLED;
@@ -617,6 +680,7 @@ std::string getAddonOptions()
 	doc["ExtraButtonAddonEnabled"] = addonOptions.ExtraButtonAddonEnabled;
 	doc["I2CAnalog1219InputEnabled"] = addonOptions.I2CAnalog1219InputEnabled;
 	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
+	doc["SliderSOCDInputEnabled"] = addonOptions.SliderSOCDInputEnabled;
 	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
@@ -716,6 +780,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setLedOptions());
 	if (strcmp(name, API_SET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, setPinMappings());
+	if (strcmp(name, API_SET_KEY_MAPPINGS) == 0)
+			return set_file_data(file, setKeyMappings());
 	if (strcmp(name, API_SET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, setAddonOptions());
 	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
@@ -734,6 +800,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getLedOptions());
 	if (strcmp(name, API_GET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, getPinMappings());
+	if (strcmp(name, API_GET_KEY_MAPPINGS) == 0)
+			return set_file_data(file, getKeyMappings());
 	if (strcmp(name, API_GET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, getAddonOptions());
 	if (strcmp(name, API_RESET_SETTINGS) == 0)

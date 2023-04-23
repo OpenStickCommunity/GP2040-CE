@@ -88,6 +88,8 @@ struct AddonOptions {
 	uint8_t pinButtonReverse;
 	uint8_t pinSliderLS;
 	uint8_t pinSliderRS;
+	uint8_t pinSliderSOCDUp;
+	uint8_t pinSliderSOCDSecond;
 	uint8_t turboShotCount; // Turbo
 	uint8_t pinTurboLED;    // Turbo LED
 	uint8_t pinReverseLED;    // Reverse LED
@@ -144,6 +146,7 @@ struct AddonOptions {
 	uint8_t PlayerNumAddonEnabled;
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
+	uint8_t SliderSOCDInputEnabled;
 	uint32_t checksum;
 };
 

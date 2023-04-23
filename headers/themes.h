@@ -8,7 +8,6 @@
 
 #include "BoardConfig.h"
 #include <vector>
-#include <MPG.h>
 #include "AnimationStation.hpp"
 #include "helper.h"
 

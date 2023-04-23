@@ -19,7 +19,7 @@ void ReverseInput::setup()
     // Setup Reverse LED if available
     AddonOptions options = Storage::getInstance().getAddonOptions();
     pinLED = options.pinReverseLED;
-    if (pinLED != -1) {
+    if (pinLED != (uint8_t)-1) {
         gpio_init(options.pinReverseLED);
         gpio_set_dir(options.pinReverseLED, GPIO_OUT);
         gpio_put(options.pinReverseLED, 1);
@@ -69,7 +69,7 @@ void ReverseInput::process()
         | input(values & mapDpadRight->pinMask, mapDpadRight->buttonMask,   mapDpadLeft->buttonMask,    actionRight,    invertXAxis)
     ;
     
-    if (pinLED != -1) {
+    if (pinLED != (uint8_t)-1) {
         gpio_put(pinLED, !state);
     }
 }
