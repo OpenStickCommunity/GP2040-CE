@@ -34,10 +34,6 @@
 
 #include "helper.h"
 
-#include "config.pb.h"
-
-#include <ArduinoJson.h>
-
 /* Board stuffs */
 void Storage::initBoardOptions() {
 	EEPROM.get(BOARD_STORAGE_INDEX, boardOptions);
