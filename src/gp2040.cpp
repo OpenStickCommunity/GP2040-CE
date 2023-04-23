@@ -16,10 +16,12 @@
 #include "addons/playernum.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
+#include "addons/slider_socd.h"
 
 // Pico includes
 #include "pico/bootrom.h"
 #include "pico/time.h"
+#include "hardware/adc.h"
 
 // TinyUSB
 #include "usb_driver.h"
@@ -62,6 +64,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_HID:
 		case BootAction::SET_INPUT_MODE_SWITCH:
 		case BootAction::SET_INPUT_MODE_XINPUT:
+		case BootAction::SET_INPUT_MODE_KEYBOARD:
 		case BootAction::NONE:
 			{
 				InputMode inputMode = gamepad->options.inputMode;
@@ -71,6 +74,8 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_SWITCH;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_XINPUT) {
 					inputMode = INPUT_MODE_XINPUT;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_KEYBOARD) {
+					inputMode = INPUT_MODE_KEYBOARD;
 				}
 
 				if (inputMode != gamepad->options.inputMode) {
@@ -84,16 +89,20 @@ void GP2040::setup() {
 			}
 	}
 
+	// Initialize our ADC (various add-ons)
+	adc_init();
+
 	// Setup Add-ons
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
-  	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
+  addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
 	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
 	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
+	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 }
 
 void GP2040::run() {
@@ -171,6 +180,8 @@ GP2040::BootAction GP2040::getBootAction() {
 					return BootAction::SET_INPUT_MODE_SWITCH;
 				} else if (gamepad->pressedB2()) {
 					return BootAction::SET_INPUT_MODE_XINPUT;
+				} else if (gamepad->pressedB4()) {
+					return BootAction::SET_INPUT_MODE_KEYBOARD;
 				} else {
 					return BootAction::NONE;
 				}

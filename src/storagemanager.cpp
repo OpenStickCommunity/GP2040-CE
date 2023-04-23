@@ -29,6 +29,7 @@
 #include "addons/pleds.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
+#include "addons/slider_socd.h"
 
 #include "bitmaps.h"
 
@@ -150,6 +151,8 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.pinButtonReverse  		= PIN_BUTTON_REVERSE;
 	addonOptions.pinSliderLS       		= PIN_SLIDER_LS;
 	addonOptions.pinSliderRS       		= PIN_SLIDER_RS;
+	addonOptions.pinSliderSOCDUp        = PIN_SLIDER_SOCD_UP;
+	addonOptions.pinSliderSOCDSecond    = PIN_SLIDER_SOCD_SECOND;
 	addonOptions.pinDualDirDown    		= PIN_DUAL_DIRECTIONAL_DOWN;
 	addonOptions.pinDualDirUp      		= PIN_DUAL_DIRECTIONAL_UP;
 	addonOptions.pinDualDirLeft    		= PIN_DUAL_DIRECTIONAL_LEFT;
@@ -177,6 +180,21 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.extraButtonMap		    = EXTRA_BUTTON_MASK;
 	addonOptions.extraButtonPin		    = EXTRA_BUTTON_PIN;
 	addonOptions.playerNumber           = PLAYER_NUMBER;
+	addonOptions.shmupMode = TURBO_SHMUP_MODE; // Turbo SHMUP Mode
+	addonOptions.shmupMixMode = SHMUP_MIX_MODE; // How we mix turbo and non-turbo buttons
+	addonOptions.shmupAlwaysOn1 = SHMUP_ALWAYS_ON1;
+	addonOptions.shmupAlwaysOn2 = SHMUP_ALWAYS_ON2;
+	addonOptions.shmupAlwaysOn3 = SHMUP_ALWAYS_ON3;
+	addonOptions.shmupAlwaysOn4 = SHMUP_ALWAYS_ON4;
+	addonOptions.pinShmupBtn1 = PIN_SHMUP_BUTTON1;
+	addonOptions.pinShmupBtn2 = PIN_SHMUP_BUTTON2;
+	addonOptions.pinShmupBtn3 = PIN_SHMUP_BUTTON3;
+	addonOptions.pinShmupBtn4 = PIN_SHMUP_BUTTON4;
+	addonOptions.shmupBtnMask1 = SHMUP_BUTTON1;
+	addonOptions.shmupBtnMask2 = SHMUP_BUTTON2;
+	addonOptions.shmupBtnMask3 = SHMUP_BUTTON3;
+	addonOptions.shmupBtnMask4 = SHMUP_BUTTON4;
+	addonOptions.pinShmupDial = PIN_SHMUP_DIAL;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -185,6 +203,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.ExtraButtonAddonEnabled = EXTRA_BUTTON_ENABLED;
 	addonOptions.I2CAnalog1219InputEnabled = I2C_ANALOG1219_ENABLED;
 	addonOptions.JSliderInputEnabled    = JSLIDER_ENABLED;
+	addonOptions.SliderSOCDInputEnabled    = SLIDER_SOCD_ENABLED;
 	addonOptions.PlayerNumAddonEnabled  = PLAYERNUM_ADDON_ENABLED;
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;

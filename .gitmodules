@@ -4,6 +4,3 @@
 [submodule "www"]
 	path = www
 	url = https://github.com/OpenStickCommunity/WebConfigurator.git
-[submodule "MPG"]
-	path = MPG
-	url = https://github.com/OpenStickCommunity/MPG.git

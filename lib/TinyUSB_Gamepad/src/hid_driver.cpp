@@ -9,7 +9,7 @@
 
 #include "device/usbd_pvt.h"
 #include "class/hid/hid_device.h"
-#include "GamepadDescriptors.h"
+#include "gamepad/GamepadDescriptors.h"
 
 // Magic byte sequence to enable PS button on PS3
 static const uint8_t magic_init_bytes[8] = {0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00};

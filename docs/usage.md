@@ -10,24 +10,24 @@ Select the button labels to be displayed in the usage guide: <label-selector></l
 
 ## Buttons
 
-GP2040 uses a generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. This table provides a map of GP2040 buttons to the supported input types and layouts:
+GP2040-CE uses generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. This table provides a map of GP2040-CE buttons to the supported input types and layouts:
 
-| GP2040  | XInput | Switch  | PS3          | DirectInput  | Arcade |
-| ------- | ------ | ------- | ------------ | ------------ | ------ |
-| B1      | A      | B       | Cross        | 2            | K1     |
-| B2      | B      | A       | Circle       | 3            | K2     |
-| B3      | X      | Y       | Square       | 1            | P1     |
-| B4      | Y      | X       | Triangle     | 4            | P2     |
-| L1      | LB     | L       | L1           | 5            | P4     |
-| R1      | RB     | R       | R1           | 6            | P3     |
-| L2      | LT     | ZL      | L2           | 7            | K4     |
-| R2      | RT     | ZR      | R2           | 8            | K3     |
-| S1      | Back   | Minus   | Select       | 9            | Coin   |
-| S2      | Start  | Plus    | Start        | 10           | Start  |
-| L3      | LS     | LS      | L3           | 11           | LS     |
-| R3      | RS     | RS      | R3           | 12           | RS     |
-| A1      | Guide  | Home    | PS           | 13           | -      |
-| A2      | -      | Capture | -            | 14           | -      |
+| GP2040-CE  | XInput | Switch  | PS3          | DirectInput  | Arcade |
+| ---------- | ------ | ------- | ------------ | ------------ | ------ |
+| B1         | A      | B       | Cross        | 2            | K1     |
+| B2         | B      | A       | Circle       | 3            | K2     |
+| B3         | X      | Y       | Square       | 1            | P1     |
+| B4         | Y      | X       | Triangle     | 4            | P2     |
+| L1         | LB     | L       | L1           | 5            | P4     |
+| R1         | RB     | R       | R1           | 6            | P3     |
+| L2         | LT     | ZL      | L2           | 7            | K4     |
+| R2         | RT     | ZR      | R2           | 8            | K3     |
+| S1         | Back   | Minus   | Select       | 9            | Coin   |
+| S2         | Start  | Plus    | Start        | 10           | Start  |
+| L3         | LS     | LS      | L3           | 11           | LS     |
+| R3         | RS     | RS      | R3           | 12           | RS     |
+| A1         | Guide  | Home    | PS           | 13           | -      |
+| A2         | -      | Capture | -            | 14           | -      |
 
 If you do not have a dedicated Home button, you can activate it via the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> button combination.
 
@@ -41,7 +41,7 @@ To boot into Bootsel mode (to flash your controller for example), hold the <hotk
 
 ## Webconfig Mode
 
-To boot into [Webconfig mode](web-configurator.md) (to flash your controller for example), hold the <hotkey v-bind:buttons='["S2"]'></hotkey> button then plug in your controller.
+To boot into [Webconfig mode](web-configurator.md) (to access the web configurator), hold the <hotkey v-bind:buttons='["S2"]'></hotkey> button combination then plug in your controller.
 
 ## Input Modes
 
@@ -65,13 +65,13 @@ D-Pad mode is saved across power cycles.
 
 ## SOCD Modes
 
-Simultaneous Opposite Cardinal Direction (SOCD) cleaning will ensure the controller doesn't send invalid directional inputs to the computer/console, like Left + Right at the same time. There are 3 modes to choose from **while the controller is in use by pressing one of the following combinations:**
+[Simultaneous Opposite Cardinal Direction (SOCD)(https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040 users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button combinations:**
 
-* <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Stickless behavior)
-* <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral
+* <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Standard stickless behavior).
+* <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.
 * <hotkey v-bind:buttons='["S2", "A1", "Left"]'></hotkey> - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
 
-SOCD mode is saved across power cycles.
+The selected SOCD mode is saved across power cycles.
 
 ## Invert D-Pad Y-axis
 

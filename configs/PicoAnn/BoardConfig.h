@@ -33,10 +33,12 @@
 #define PIN_BUTTON_R3     22        // R3 / RS / RS / R3 / 12 / RS
 #define PIN_BUTTON_A1     4         // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2     20        // A2 / ~ / Capture / ~ / 14 / ~
-#define PIN_BUTTON_TURBO  28        // Turbo
+#define PIN_BUTTON_TURBO  -1        // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
+#define PIN_SLIDER_SOCD_UP    -1         // SOCD Up Priority Slider
+#define PIN_SLIDER_SOCD_SECOND    -1         // SOCD Second Input Priority Slider
 
 
 // This is the SOCD section.
@@ -71,8 +73,7 @@
 // The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
-#define TURBO_ENABLED 1
-#define TURBO_LED_PIN 25
+#define TURBO_LED_PIN -1
 
 #define BOARD_LEDS_PIN 15
 
@@ -210,5 +211,24 @@
 // Extra Button Add-on setting
 #define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 #define EXTRA_BUTTON_PIN -1
+
+#define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP
+#define KEY_DPAD_DOWN   HID_KEY_ARROW_DOWN    // DOWN
+#define KEY_DPAD_RIGHT  HID_KEY_ARROW_RIGHT   // RIGHT
+#define KEY_DPAD_LEFT   HID_KEY_ARROW_LEFT    // LEFT
+#define KEY_BUTTON_B1   HID_KEY_SHIFT_LEFT    // B1 / A / B / Cross / 2 / K1
+#define KEY_BUTTON_B2   HID_KEY_Z             // B2 / B / A / Circle / 3 / K2
+#define KEY_BUTTON_R2   HID_KEY_X             // R2 / RT / ZR / R2 / 8 / K3
+#define KEY_BUTTON_L2   HID_KEY_V             // L2 / LT / ZL / L2 / 7 / K4
+#define KEY_BUTTON_B3   HID_KEY_CONTROL_LEFT  // B3 / X / Y / Square / 1 / P1
+#define KEY_BUTTON_B4   HID_KEY_ALT_LEFT      // B4 / Y / X / Triangle / 4 / P2
+#define KEY_BUTTON_R1   HID_KEY_SPACE         // R1 / RB / R / R1 / 6 / P3
+#define KEY_BUTTON_L1   HID_KEY_C             // L1 / LB / L / L1 / 5 / P4
+#define KEY_BUTTON_S1   HID_KEY_5             // S1 / Back / Minus / Select / 9 / Coin
+#define KEY_BUTTON_S2   HID_KEY_1             // S2 / Start / Plus / Start / 10 / Start
+#define KEY_BUTTON_L3   HID_KEY_EQUAL         // L3 / LS / LS / L3 / 11 / LS
+#define KEY_BUTTON_R3   HID_KEY_MINUS         // R3 / RS / RS / R3 / 12 / RS
+#define KEY_BUTTON_A1   HID_KEY_9             // A1 / Guide / Home / PS / 13 / ~
+#define KEY_BUTTON_A2   HID_KEY_F2            // A2 / ~ / Capture / ~ / 14 / ~
 
 #endif
