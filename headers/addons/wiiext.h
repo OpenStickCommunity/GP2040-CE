@@ -24,21 +24,21 @@ private:
     uint32_t uIntervalMS;
     uint32_t nextTimer;
 
-    bool buttonC = true;
+    bool buttonC = false;
     bool buttonZ = false;
 
-    bool buttonA = true;
-    bool buttonB = true;
-    bool buttonX = true;
-    bool buttonY = true;
-    bool buttonL = true;
-    bool buttonZL = true;
-    bool buttonR = true;
-    bool buttonZR = true;
+    bool buttonA = false;
+    bool buttonB = false;
+    bool buttonX = false;
+    bool buttonY = false;
+    bool buttonL = false;
+    bool buttonZL = false;
+    bool buttonR = false;
+    bool buttonZR = false;
 
-    bool buttonSelect = true;
-    bool buttonStart = true;
-    bool buttonHome = true;
+    bool buttonSelect = false;
+    bool buttonStart = false;
+    bool buttonHome = false;
 
     bool dpadUp     = false;
     bool dpadDown   = false;
@@ -47,6 +47,8 @@ private:
 
     uint16_t leftX;
     uint16_t leftY;
+    uint16_t rightX;
+    uint16_t rightY;
 
     uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
 };

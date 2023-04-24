@@ -215,7 +215,7 @@ void WiiExtension::reset(){
     if (canContinue) {
         // set data format
         regWrite[0] = 0xFE;
-        regWrite[1] = 0x03;
+        regWrite[1] = 0x01;
         //result = I2CWrite(&bbi2c, address, regWrite, 2);
         result = i2c_write_blocking(bbi2c.picoI2C, address, regWrite, 2, false);
         sleep_us(WII_EXTENSION_DELAY);
@@ -512,6 +512,23 @@ void WiiExtension::poll() {
 
                 joy1X =          (regRead[0] & 0x3F);
                 joy1Y =          (regRead[1] & 0x3F);
+
+                joy1X   = map(
+                    joy1X,
+                    //calibrate(joy1X, _minX, _maxX, _cenX),
+                    0,
+                    (WII_ANALOG_PRECISION_1-1),
+                    0,
+                    (WII_ANALOG_PRECISION_3-1)
+                );
+                joy1Y   = map(
+                    joy1Y,
+                    //calibrate(joy1Y, _minY, _maxY, _cenY),
+                    0,
+                    (WII_ANALOG_PRECISION_1-1),
+                    0,
+                    (WII_ANALOG_PRECISION_3-1)
+                );
 
                 whammyBar =      (regRead[3] & 0x1F);
 
