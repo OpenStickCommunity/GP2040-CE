@@ -10,12 +10,10 @@ WiiExtension::WiiExtension(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int
     bbi2c.bWire = bWire;
     iSpeed = speed;
     address = addr;
-    config = 0x00;
-    singleShot = true;
 }
 
 void WiiExtension::begin() {
-    I2CInit(&bbi2c, iSpeed);
+    doI2CInit();
 #if WII_EXTENSION_DEBUG==true
     printf("WiiExtension::begin\n");
 #endif
@@ -78,7 +76,6 @@ void WiiExtension::start(){
                 regWrite[0] = 0x20;
                 doI2CWrite(regWrite, 1);
 
-                //I2CRead(&bbi2c, address, idRead, 16);
                 doI2CRead(idRead, 16);
 
                 _maxX1 = idRead[8];
@@ -116,7 +113,6 @@ void WiiExtension::start(){
                 regWrite[0] = 0x20;
                 doI2CWrite(regWrite, 1);
                 
-                //I2CRead(&bbi2c, address, idRead, 16);
                 doI2CRead(idRead, 16);
 
                 _maxX1 = idRead[0];
@@ -182,7 +178,6 @@ void WiiExtension::start(){
         }
 
         regWrite[0] = 0x00;
-        //I2CWrite(&bbi2c, address, regWrite, 2);
         result = doI2CWrite(regWrite, 1);
     }
 }
@@ -193,8 +188,7 @@ void WiiExtension::reset(){
     bool canContinue = true;
 
     if (canContinue) {
-        result = I2CTest(&bbi2c, address);
-        sleep_us(WII_EXTENSION_DELAY);
+        result = doI2CTest();
         canContinue = (result == 1);
     }
 
@@ -551,4 +545,24 @@ int WiiExtension::doI2CRead(uint8_t *pData, int iLen) {
     int result = i2c_read_blocking(bbi2c.picoI2C, address, pData, iLen, false);
     sleep_us(WII_EXTENSION_DELAY);
     return result;
+}
+
+uint8_t WiiExtension::doI2CTest() {
+	int result;
+    uint8_t rxdata;
+    result = doI2CRead(&rxdata, 1);
+    return (result >= 0);
+}
+
+void WiiExtension::doI2CInit() {
+	if ((bbi2c.iSDA + 2 * i2c_hw_index(bbi2c.picoI2C))%4 != 0) return;
+	if ((bbi2c.iSCL + 3 + 2 * i2c_hw_index(bbi2c.picoI2C))%4 != 0) return;
+
+    i2c_init(bbi2c.picoI2C, iSpeed);
+    gpio_set_function(bbi2c.iSDA, GPIO_FUNC_I2C);
+    gpio_set_function(bbi2c.iSCL, GPIO_FUNC_I2C);
+    gpio_pull_up(bbi2c.iSDA);
+    gpio_pull_up(bbi2c.iSCL);
+
+    return;
 }

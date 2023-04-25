@@ -128,10 +128,6 @@ class WiiExtension {
 	
 	BBI2C bbi2c;
 	int32_t iSpeed;
-	uint8_t config;
-	bool singleShot;
-	int data_ready;
-	unsigned char uc[128];
 
     int8_t doWait = 0;
 
@@ -163,6 +159,8 @@ class WiiExtension {
 
     int doI2CWrite(uint8_t *pData, int iLen);
     int doI2CRead(uint8_t *pData, int iLen);
+    uint8_t doI2CTest();
+    void doI2CInit();
 };
 
 #endif
