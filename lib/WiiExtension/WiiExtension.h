@@ -41,6 +41,10 @@
 #define WII_EXTENSION_DELAY 100
 #endif
 
+#ifndef WII_EXTENSION_TIMEOUT
+#define WII_EXTENSION_TIMEOUT 2
+#endif
+
 #ifndef WII_EXTENSION_I2C_ADDR
 #define WII_EXTENSION_I2C_ADDR 0x52
 #endif
@@ -156,6 +160,9 @@ class WiiExtension {
 
     uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
     uint16_t calibrate(uint16_t pos, uint16_t min, uint16_t max, uint16_t center);
+
+    int doI2CWrite(uint8_t *pData, int iLen);
+    int doI2CRead(uint8_t *pData, int iLen);
 };
 
 #endif
