@@ -29,8 +29,6 @@
 #define WII_ANALOG_PRECISION_2      256
 #define WII_ANALOG_PRECISION_3      1024
 
-#define WII_ENCRYPTION false
-
 #ifndef HAS_WII_EXTENSION
 #define HAS_WII_EXTENSION 1
 #endif
@@ -61,6 +59,10 @@
 
 #ifndef WII_EXTENSION_I2C_SPEED
 #define WII_EXTENSION_I2C_SPEED 400000
+#endif
+
+#ifndef WII_EXTENSION_CALIBRATION
+#define WII_EXTENSION_CALIBRATION false
 #endif
 
 class WiiExtension {
@@ -97,8 +99,8 @@ class WiiExtension {
     bool directionLeft   = false;
     bool directionRight  = false;
 
-    int16_t triggerLeft  = 0;
-    int16_t triggerRight = 0;
+    uint16_t triggerLeft  = 0;
+    uint16_t triggerRight = 0;
 
     bool fretGreen       = false;
     bool fretRed         = false;
@@ -129,13 +131,21 @@ class WiiExtension {
 
     int8_t doWait = 0;
 
-    uint16_t _minX;
-    uint16_t _maxX;
-    uint16_t _cenX;
+    uint16_t _minX1;
+    uint16_t _maxX1;
+    uint16_t _cenX1;
 
-    uint16_t _minY;
-    uint16_t _maxY;
-    uint16_t _cenY;
+    uint16_t _minY1;
+    uint16_t _maxY1;
+    uint16_t _cenY1;
+
+    uint16_t _minX2;
+    uint16_t _maxX2;
+    uint16_t _cenX2;
+
+    uint16_t _minY2;
+    uint16_t _maxY2;
+    uint16_t _cenY2;
 
     uint16_t _accelX0G;
     uint16_t _accelY0G;
@@ -144,7 +154,6 @@ class WiiExtension {
     uint16_t _accelY1G;
     uint16_t _accelZ1G;
 
-    int8_t decodeByte(int8_t val);
     uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
     uint16_t calibrate(uint16_t pos, uint16_t min, uint16_t max, uint16_t center);
 };

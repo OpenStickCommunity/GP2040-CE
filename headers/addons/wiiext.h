@@ -45,10 +45,13 @@ private:
     bool dpadLeft   = false;
     bool dpadRight  = false;
 
-    uint16_t leftX;
-    uint16_t leftY;
-    uint16_t rightX;
-    uint16_t rightY;
+    uint16_t triggerLeft  = 0;
+    uint16_t triggerRight = 0;
+
+    uint16_t leftX = 0;
+    uint16_t leftY = 0;
+    uint16_t rightX = 0;
+    uint16_t rightY = 0;
 
     uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
 };

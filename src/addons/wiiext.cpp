@@ -42,6 +42,9 @@ void WiiExtensionInput::process() {
             leftY = map(wii->joy1Y,1023,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             rightX = GAMEPAD_JOYSTICK_MID;
             rightY = GAMEPAD_JOYSTICK_MID;
+
+            triggerLeft = 0;
+            triggerRight = 0;
         } else if ((wii->extensionType == WII_EXTENSION_CLASSIC) || (wii->extensionType == WII_EXTENSION_CLASSIC_PRO)) {
             buttonA = wii->buttonA;
             buttonB = wii->buttonB;
@@ -58,6 +61,11 @@ void WiiExtensionInput::process() {
             buttonSelect = wii->buttonMinus;
             buttonStart = wii->buttonPlus;
             buttonHome = wii->buttonHome;
+
+            if (wii->extensionType == WII_EXTENSION_CLASSIC) {
+                triggerLeft  = wii->triggerLeft;
+                triggerRight = wii->triggerRight;
+            }
 
             leftX = map(wii->joy1X,0,1023,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             leftY = map(wii->joy1Y,1023,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
@@ -80,10 +88,10 @@ void WiiExtensionInput::process() {
             leftY = map(wii->joy1Y,1023,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             rightX = GAMEPAD_JOYSTICK_MID;
             rightY = GAMEPAD_JOYSTICK_MID;
-        }
 
-        //leftX = wii->joy1X;
-        //leftY = wii->joy1Y;
+            triggerLeft = 0;
+            triggerRight = 0;
+        }
                
         nextTimer = getMillis() + uIntervalMS;
     }
@@ -94,6 +102,14 @@ void WiiExtensionInput::process() {
     gamepad->state.ly = leftY;
     gamepad->state.rx = rightX;
     gamepad->state.ry = rightY;
+
+    if (wii->extensionType == WII_EXTENSION_CLASSIC) {
+        gamepad->hasAnalogTriggers = true;
+        gamepad->state.lt = triggerLeft;
+        gamepad->state.rt = triggerRight;
+    } else {
+        gamepad->hasAnalogTriggers = false;
+    }
 
     if (buttonC) gamepad->state.buttons |= GAMEPAD_MASK_B1;
     if (buttonZ) gamepad->state.buttons |= GAMEPAD_MASK_B2;
