@@ -531,13 +531,21 @@ GamepadOptions GamepadStorage::getGamepadOptions()
 	options.checksum = CHECKSUM_MAGIC;
 	if (CRC32::calculate(&options) != lastCRC)
 	{
+		#ifdef DEFAULT_INPUT_MODE
+		options.inputMode = DEFAULT_INPUT_MODE;
+		#else
 		options.inputMode = InputMode::INPUT_MODE_XINPUT; // Default?
+		#endif
+		#ifdef DEFAULT_DPAD_MODE
+		options.dpadMode = DEFAULT_DPAD_MODE;
+		#else
 		options.dpadMode = DpadMode::DPAD_MODE_DIGITAL; // Default?
-#ifdef DEFAULT_SOCD_MODE
+		#endif
+		#ifdef DEFAULT_SOCD_MODE
 		options.socdMode = DEFAULT_SOCD_MODE;
-#else
+		#else
 		options.socdMode = SOCD_MODE_NEUTRAL;
-#endif
+		#endif
 		options.invertXAxis = false;
 		options.invertYAxis = false;
 		options.keyDpadUp    = KEY_DPAD_UP;
