@@ -42,7 +42,7 @@ The default pinout for GP2040-CE is based on an official RaspBerry Pi Pico. That
 In addition to the default UF2 we also offer pre-compiled UF2s from community members that have verified operation with their own devices. Some of these additional configurations include:
 
 > * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
-> * [DURAL]([configs/DURAL](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/DURAL)
+> * [DURAL](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/DURAL)
 > * [Flatbox Rev 4](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/FlatboxRev4)
 > * [Flatbox Rev 5](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/FlatboxRev5)
 > * [WaveShare RP2040 Zero](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/WaveshareZero)
