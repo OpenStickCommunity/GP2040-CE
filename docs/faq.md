@@ -14,6 +14,10 @@ GP2040-CE will work on PS4 games that implement support for legacy PS3 controlle
 
 These consoles implement security measures that prevent unauthorized accessories from being used. The process of cracking or bypassing that security may not be legal everywhere. These consoles could be supported in the future if a user-friendly and completely legal implementation method is found.
 
+### Does GP2040-CE support wireless connectivity?
+
+Not yet! But the team is working on a proof of concept for the Raspberry Pi Pico W.  We cannot provice any timeline on when support will be implimented into the firmware, or any info regarding latency.  Plese also note that the normal Pico configuration will not work on the Pico W.
+
 ### Can I use multiple controllers on the same system?
 
 Yes! Each GP2040-CE device is treated as a separate controller. However, you will only be able to run the embedded web configurator on one device at a time.
