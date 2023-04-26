@@ -24,7 +24,7 @@ static HIDReport hidReport
 {
 	.square_btn = 0, .cross_btn = 0, .circle_btn = 0, .triangle_btn = 0,
 	.l1_btn = 0, .r1_btn = 0, .l2_btn = 0, .r2_btn = 0,
-	.select_btn = 0, .start_btn = 0, .l3_btn = 0, .r3_btn = 0, .ps_btn = 0,
+	.select_btn = 0, .start_btn = 0, .l3_btn = 0, .r3_btn = 0, .ps_btn = 0, .tp_btn = 0,
 	.direction = 0x08,
 	.l_x_axis = 0x80, .l_y_axis = 0x80, .r_x_axis = 0x80, .r_y_axis = 0x80,
 	.right_axis = 0x00, .left_axis = 0x00, .up_axis = 0x00, .down_axis = 0x00,
@@ -362,7 +362,7 @@ HIDReport *Gamepad::getHIDReport()
 	hidReport.l3_btn       = pressedL3();
 	hidReport.r3_btn       = pressedR3();
 	hidReport.ps_btn       = pressedA1();
-//	hidReport.cross_btn = pressedA2();
+	hidReport.tp_btn       = pressedA2();
 
 	hidReport.l_x_axis = static_cast<uint8_t>(state.lx >> 8);
 	hidReport.l_y_axis = static_cast<uint8_t>(state.ly >> 8);
