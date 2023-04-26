@@ -25,6 +25,8 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
      - [Visual Studio Code](https://code.visualstudio.com/)
 1. Install git
      - Set default editor to anything other than VIM, such as Visual Studio Code
+1. Install NodeJS and NPM
+    - [Download and install NodeJS](https://nodejs.org/en/download)
 1. Clone the Pico SDK to your local computer
 
     ```bash
@@ -67,6 +69,13 @@ This setup assumes an understanding of Linux terminal usage.
 
     - May additionally need to install `libstdc++-arm-none-eabi-newlib`
 
+1. Install NodeJS and NPM
+
+    ```bash
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
+    sudo apt-get install -y nodejs
+    ```
+
 1. Get GP2040-CE
 
     ```bash
@@ -89,6 +98,13 @@ This setup script requires approximately 2.5GB of disk space on your SD card.
 
     ```bash
     chmod +x pico_setup.sh
+    ```
+
+1. Install NodeJS and NPM
+
+    ```bash
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
+    sudo apt-get install -y nodejs
     ```
 
 1. Reboot your Pi
