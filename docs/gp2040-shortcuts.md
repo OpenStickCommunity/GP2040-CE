@@ -21,9 +21,14 @@ Select the button labels to be displayed in the usage guide: <label-selector></l
 | A1      | Guide  | Home    | -            | 13           | -      | 9           |
 | A2      | -      | Capture | -            | 14           | -      | F2          |
 
+## Button Input Hotkeys
+
+The RGB LED hotkeys can be found [HERE](https://gp2040-ce.info/#/usage?id=rgb-led-hotkeys).
+
 Home button shortcut if you do not have a Home button - <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey>.
 
 Unlike other controllers, Keyboard gets different keys for directional buttons.
+
 | Direction | Keyboard   |
 | --------- | ---------- |
 | Up        | Up Arrow   |
@@ -62,8 +67,7 @@ SOCD mode **while the controller is in use by pressing one of the following comb
 
 Invert the Y-axis input of the D-pad.  Press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey>.
 
-
-RGB LED hotkeys
+## LED Control Kotkeys
 
 | Hotkey | Description |
 | - | - |

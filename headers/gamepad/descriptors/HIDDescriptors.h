@@ -83,6 +83,7 @@ typedef struct __attribute((packed, aligned(1)))
 	uint8_t r3_btn : 1;
 	
 	uint8_t ps_btn : 1;
+	uint8_t tp_btn : 1;
 //	uint8_t l2_btn_alt : 1;
 	
 //	uint8_t r2_btn_alt : 1;
