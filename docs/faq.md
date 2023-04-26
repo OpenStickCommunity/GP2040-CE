@@ -16,7 +16,7 @@ These consoles implement security measures that prevent unauthorized accessories
 
 ### Does GP2040-CE support wireless connectivity?
 
-Not yet! But it is being worked on. We're afriad we can't provide any timeline on when support will be implimented into the firmware, or any info regarding latency.
+Not yet! But the team is working on a proof of concept for the Raspberry Pi Pico W.  We cannot provice any timeline on when support will be implimented into the firmware, or any info regarding latency.  Plese also note that the normal Pico configuration will not work on the Pico W.
 
 ### Can I use multiple controllers on the same system?
 
