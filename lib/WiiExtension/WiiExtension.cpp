@@ -537,13 +537,13 @@ uint16_t WiiExtension::calibrate(uint16_t pos, uint16_t min, uint16_t max, uint1
 
 int WiiExtension::doI2CWrite(uint8_t *pData, int iLen) {
     int result = i2c_write_blocking(picoI2C, address, pData, iLen, false);
-    sleep_us(WII_EXTENSION_DELAY);
+    waitUntil_us(WII_EXTENSION_DELAY);
     return result;
 }
 
 int WiiExtension::doI2CRead(uint8_t *pData, int iLen) {
     int result = i2c_read_blocking(picoI2C, address, pData, iLen, false);
-    sleep_us(WII_EXTENSION_DELAY);
+    waitUntil_us(WII_EXTENSION_DELAY);
     return result;
 }
 
@@ -565,4 +565,36 @@ void WiiExtension::doI2CInit() {
     gpio_pull_up(iSCL);
 
     return;
+}
+
+void WiiExtension::waitUntil_us(uint64_t us) {
+    WiiExtension_alarmFired = false;
+
+    // Enable the interrupt for our alarm (the timer outputs 4 alarm irqs)
+    hw_set_bits(&timer_hw->inte, 1u << WII_ALARM_NUM);
+    // Set irq handler for alarm irq
+    irq_set_exclusive_handler(WII_ALARM_IRQ, alarmIRQ);
+    // Enable the alarm irq
+    irq_set_enabled(WII_ALARM_IRQ, true);
+    // Enable interrupt in block and at processor
+
+    // Alarm is only 32 bits so if trying to delay more
+    // than that need to be careful and keep track of the upper
+    // bits
+    uint64_t target = timer_hw->timerawl + us;
+
+    // Write the lower 32 bits of the target time to the alarm which
+    // will arm it
+    timer_hw->alarm[WII_ALARM_NUM] = (uint32_t) target;
+
+    while (!WiiExtension_alarmFired);
+}
+
+void WiiExtension::alarmIRQ() {
+    // Clear the alarm irq
+    hw_clear_bits(&timer_hw->intr, 1u << WII_ALARM_NUM);
+
+    // Assume alarm 0 has fired
+    printf("Alarm IRQ fired\n");
+    WiiExtension_alarmFired = true;
 }

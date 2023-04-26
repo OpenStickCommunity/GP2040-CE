@@ -39,7 +39,7 @@
 #endif
 
 #ifndef WII_EXTENSION_DELAY
-#define WII_EXTENSION_DELAY 100
+#define WII_EXTENSION_DELAY 50
 #endif
 
 #ifndef WII_EXTENSION_TIMEOUT
@@ -69,6 +69,11 @@
 #ifndef WII_EXTENSION_CALIBRATION
 #define WII_EXTENSION_CALIBRATION false
 #endif
+
+#define WII_ALARM_NUM 0
+#define WII_ALARM_IRQ TIMER_IRQ_0
+
+static volatile bool WiiExtension_alarmFired;
 
 class WiiExtension {
   protected:
@@ -164,6 +169,9 @@ class WiiExtension {
     int doI2CRead(uint8_t *pData, int iLen);
     uint8_t doI2CTest();
     void doI2CInit();
+
+    void waitUntil_us(uint64_t us);
+    static void alarmIRQ();
 };
 
 #endif

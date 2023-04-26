@@ -19,7 +19,7 @@ void WiiExtensionInput::setup() {
     stdio_init_all();
 #endif
 
-    uIntervalMS = 1;
+    uIntervalMS = 0;
     
     wii = new WiiExtension(
         WII_EXTENSION_I2C_SDA_PIN,
