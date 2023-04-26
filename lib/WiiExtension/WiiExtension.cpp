@@ -3,11 +3,11 @@
 #include <cstring>
 #include <cstdio>
 
-WiiExtension::WiiExtension(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t speed, uint8_t addr) {
-    bbi2c.iSDA = sda;
-    bbi2c.iSCL = scl;
-    bbi2c.picoI2C = picoI2C;
-    bbi2c.bWire = bWire;
+WiiExtension::WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr) {
+    iSDA = sda;
+    iSCL = scl;
+    picoI2C = i2cCtl;
+    bWire = bWire;
     iSpeed = speed;
     address = addr;
 }
@@ -536,13 +536,13 @@ uint16_t WiiExtension::calibrate(uint16_t pos, uint16_t min, uint16_t max, uint1
 }
 
 int WiiExtension::doI2CWrite(uint8_t *pData, int iLen) {
-    int result = i2c_write_blocking(bbi2c.picoI2C, address, pData, iLen, false);
+    int result = i2c_write_blocking(picoI2C, address, pData, iLen, false);
     sleep_us(WII_EXTENSION_DELAY);
     return result;
 }
 
 int WiiExtension::doI2CRead(uint8_t *pData, int iLen) {
-    int result = i2c_read_blocking(bbi2c.picoI2C, address, pData, iLen, false);
+    int result = i2c_read_blocking(picoI2C, address, pData, iLen, false);
     sleep_us(WII_EXTENSION_DELAY);
     return result;
 }
@@ -555,14 +555,14 @@ uint8_t WiiExtension::doI2CTest() {
 }
 
 void WiiExtension::doI2CInit() {
-	if ((bbi2c.iSDA + 2 * i2c_hw_index(bbi2c.picoI2C))%4 != 0) return;
-	if ((bbi2c.iSCL + 3 + 2 * i2c_hw_index(bbi2c.picoI2C))%4 != 0) return;
+	if ((iSDA + 2 * i2c_hw_index(picoI2C))%4 != 0) return;
+	if ((iSCL + 3 + 2 * i2c_hw_index(picoI2C))%4 != 0) return;
 
-    i2c_init(bbi2c.picoI2C, iSpeed);
-    gpio_set_function(bbi2c.iSDA, GPIO_FUNC_I2C);
-    gpio_set_function(bbi2c.iSCL, GPIO_FUNC_I2C);
-    gpio_pull_up(bbi2c.iSDA);
-    gpio_pull_up(bbi2c.iSCL);
+    i2c_init(picoI2C, iSpeed);
+    gpio_set_function(iSDA, GPIO_FUNC_I2C);
+    gpio_set_function(iSCL, GPIO_FUNC_I2C);
+    gpio_pull_up(iSDA);
+    gpio_pull_up(iSCL);
 
     return;
 }

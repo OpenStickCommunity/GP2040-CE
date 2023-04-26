@@ -21,7 +21,7 @@ void WiiExtensionInput::setup() {
 
     uIntervalMS = 1;
     
-    wii = new WiiExtension(1,
+    wii = new WiiExtension(
         WII_EXTENSION_I2C_SDA_PIN,
         WII_EXTENSION_I2C_SCL_PIN,
         WII_EXTENSION_I2C_BLOCK,

@@ -4,7 +4,8 @@
 #ifndef _WIIEXTENSION_H_
 #define _WIIEXTENSION_H_
 
-#include <BitBang_I2C.h>
+#include "pico/stdlib.h"
+#include "hardware/i2c.h"
 
 #define WII_EXTENSION_NONE          -1
 #define WII_EXTENSION_NUNCHUCK      0
@@ -117,7 +118,7 @@ class WiiExtension {
     bool isReady         = false;
 
     // Constructor 
-	WiiExtension(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t iSpeed, uint8_t addr = WII_EXTENSION_I2C_ADDR);
+	WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr = WII_EXTENSION_I2C_ADDR);
 
     // Methods
     void begin();
@@ -126,10 +127,12 @@ class WiiExtension {
   	void poll();
   private:
 	
-	BBI2C bbi2c;
-	int32_t iSpeed;
+    uint8_t iSDA;
+    uint8_t iSCL;
+    uint8_t bWire;
+    i2c_inst_t *picoI2C;
 
-    int8_t doWait = 0;
+	int32_t iSpeed;
 
     uint16_t _minX1;
     uint16_t _maxX1;
