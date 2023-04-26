@@ -66,3 +66,16 @@ SOCD mode **while the controller is in use by pressing one of the following comb
 
 
 Invert the Y-axis input of the D-pad.  Press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey>.
+
+## LED Control Kotkeys
+
+| Hotkey | Description |
+| - | - |
+| <hotkey v-bind:buttons='["S1", "S2", "B3"]'></hotkey> | Next Animation |
+| <hotkey v-bind:buttons='["S1", "S2", "B1"]'></hotkey> | Previous Animation |
+| <hotkey v-bind:buttons='["S1", "S2", "B4"]'></hotkey> | Brightness Up |
+| <hotkey v-bind:buttons='["S1", "S2", "B2"]'></hotkey> | Brightness Down |
+| <hotkey v-bind:buttons='["S1", "S2", "R1"]'></hotkey> | LED Parameter Up |
+| <hotkey v-bind:buttons='["S1", "S2", "R2"]'></hotkey> | LED Parameter Down |
+| <hotkey v-bind:buttons='["S1", "S2", "L1"]'></hotkey> | Pressed Parameter Up |
+| <hotkey v-bind:buttons='["S1", "S2", "L2"]'></hotkey> | Pressed Parameter Down |
