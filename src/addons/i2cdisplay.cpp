@@ -4,6 +4,7 @@
  */
 
 #include "addons/i2cdisplay.h"
+#include "GamepadState.h"
 #include "enums.h"
 #include "helper.h"
 #include "storagemanager.h"
@@ -941,6 +942,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
 		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
 		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
+		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
 	}
 	drawText(0, 0, statusBar);
 }

@@ -113,7 +113,7 @@ struct AddonOptions {
 	uint8_t analogAdcPinY;
 	uint16_t bootselButtonMap;
 	uint8_t extraButtonPin;
-	uint16_t extraButtonMap;
+	uint32_t extraButtonMap;
 	uint8_t buzzerPin;
 	uint8_t buzzerVolume;
 	uint8_t playerNumber;

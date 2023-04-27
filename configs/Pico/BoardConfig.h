@@ -49,6 +49,8 @@
 // 3 - `SOCD_MODE_SECOND_INPUT_PRIORITY` - This is last priority SOCD.  EG. when you press and hold `up` then press `down` `down` will be registered.
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+#define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT //INPUT_MODE_XINPUT (XInput), INPUT_MODE_SWITCH (Nintendo Switch), INPUT_MODE_HID (D-Input), INPUT_MODE_KEYBOARD (Keyboard)
+#define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL  //DPAD_MODE_DIGITAL, DPAD_MODE_LEFT_ANALOG, DPAD_MODE_RIGHT_ANALOG, 
 
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
@@ -226,6 +228,7 @@
 
 // Extra Button Add-on setting
 #define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+                            // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN -1
 
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP
@@ -246,5 +249,24 @@
 #define KEY_BUTTON_R3   HID_KEY_MINUS         // R3 / RS / RS / R3 / 12 / RS
 #define KEY_BUTTON_A1   HID_KEY_9             // A1 / Guide / Home / PS / 13 / ~
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2 / ~ / Capture / ~ / 14 / ~
+
+// Hotkey Action Mapping
+#define HOTKEY_F1_UP_MASK      GAMEPAD_MASK_UP
+#define HOTKEY_F1_UP_ACTION    HOTKEY_HOME_BUTTON
+#define HOTKEY_F1_DOWN_MASK    GAMEPAD_MASK_DOWN
+#define HOTKEY_F1_DOWN_ACTION  HOTKEY_DPAD_DIGITAL
+#define HOTKEY_F1_LEFT_MASK    GAMEPAD_MASK_LEFT
+#define HOTKEY_F1_LEFT_ACTION  HOTKEY_DPAD_LEFT_ANALOG
+#define HOTKEY_F1_RIGHT_MASK   GAMEPAD_MASK_RIGHT
+#define HOTKEY_F1_RIGHT_ACTION HOTKEY_DPAD_RIGHT_ANALOG
+
+#define HOTKEY_F2_UP_MASK      GAMEPAD_MASK_UP
+#define HOTKEY_F2_UP_ACTION    HOTKEY_SOCD_UP_PRIORITY
+#define HOTKEY_F2_DOWN_MASK    GAMEPAD_MASK_DOWN
+#define HOTKEY_F2_DOWN_ACTION  HOTKEY_SOCD_NEUTRAL
+#define HOTKEY_F2_LEFT_MASK    GAMEPAD_MASK_LEFT
+#define HOTKEY_F2_LEFT_ACTION  HOTKEY_SOCD_LAST_INPUT
+#define HOTKEY_F2_RIGHT_MASK   GAMEPAD_MASK_RIGHT
+#define HOTKEY_F2_RIGHT_ACTION HOTKEY_INVERT_Y_AXIS
 
 #endif

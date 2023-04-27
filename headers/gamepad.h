@@ -159,6 +159,15 @@ private:
 	void releaseAllKeys(void);
 	void pressKey(uint8_t code);
 	uint8_t getModifier(uint8_t code);
+
+	GamepadHotkeyEntry hotkeyF1Up;
+	GamepadHotkeyEntry hotkeyF1Down;
+	GamepadHotkeyEntry hotkeyF1Left;
+	GamepadHotkeyEntry hotkeyF1Right;
+	GamepadHotkeyEntry hotkeyF2Up;
+	GamepadHotkeyEntry hotkeyF2Down;
+	GamepadHotkeyEntry hotkeyF2Left;
+	GamepadHotkeyEntry hotkeyF2Right;
 };
 
 #endif
