@@ -465,26 +465,29 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
+	// BoardOptions uses 0xff to denote unassigned pins
+	const auto convertPin = [] (int pin) -> uint8_t { return pin >= 0 && pin < NUM_BANK0_GPIOS ? pin : 0xff; };
+
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	boardOptions.hasBoardOptions = true;
-	boardOptions.pinDpadUp    = doc["Up"];
-	boardOptions.pinDpadDown  = doc["Down"];
-	boardOptions.pinDpadLeft  = doc["Left"];
-	boardOptions.pinDpadRight = doc["Right"];
-	boardOptions.pinButtonB1  = doc["B1"];
-	boardOptions.pinButtonB2  = doc["B2"];
-	boardOptions.pinButtonB3  = doc["B3"];
-	boardOptions.pinButtonB4  = doc["B4"];
-	boardOptions.pinButtonL1  = doc["L1"];
-	boardOptions.pinButtonR1  = doc["R1"];
-	boardOptions.pinButtonL2  = doc["L2"];
-	boardOptions.pinButtonR2  = doc["R2"];
-	boardOptions.pinButtonS1  = doc["S1"];
-	boardOptions.pinButtonS2  = doc["S2"];
-	boardOptions.pinButtonL3  = doc["L3"];
-	boardOptions.pinButtonR3  = doc["R3"];
-	boardOptions.pinButtonA1  = doc["A1"];
-	boardOptions.pinButtonA2  = doc["A2"];
+	boardOptions.pinDpadUp    = convertPin(doc["Up"]);
+	boardOptions.pinDpadDown  = convertPin(doc["Down"]);
+	boardOptions.pinDpadLeft  = convertPin(doc["Left"]);
+	boardOptions.pinDpadRight = convertPin(doc["Right"]);
+	boardOptions.pinButtonB1  = convertPin(doc["B1"]);
+	boardOptions.pinButtonB2  = convertPin(doc["B2"]);
+	boardOptions.pinButtonB3  = convertPin(doc["B3"]);
+	boardOptions.pinButtonB4  = convertPin(doc["B4"]);
+	boardOptions.pinButtonL1  = convertPin(doc["L1"]);
+	boardOptions.pinButtonR1  = convertPin(doc["R1"]);
+	boardOptions.pinButtonL2  = convertPin(doc["L2"]);
+	boardOptions.pinButtonR2  = convertPin(doc["R2"]);
+	boardOptions.pinButtonS1  = convertPin(doc["S1"]);
+	boardOptions.pinButtonS2  = convertPin(doc["S2"]);
+	boardOptions.pinButtonL3  = convertPin(doc["L3"]);
+	boardOptions.pinButtonR3  = convertPin(doc["R3"]);
+	boardOptions.pinButtonA1  = convertPin(doc["A1"]);
+	boardOptions.pinButtonA2  = convertPin(doc["A2"]);
 
 	Storage::getInstance().setBoardOptions(boardOptions);
 
