@@ -57,7 +57,7 @@ private:
     uint8_t gpadToBinary(DpadMode, GamepadState);
     void SOCDDualClean(SOCDMode);
     uint8_t SOCDCombine(SOCDMode, uint8_t);
-    uint8_t SOCDGamepadClean(uint8_t);
+    uint8_t SOCDGamepadClean(uint8_t, bool isLastWin);
     void OverrideGamepad(Gamepad *, DpadMode, uint8_t);
     uint8_t dDebState;          // Debounce State (stored)
     uint8_t dualState;          // Dual Directional State

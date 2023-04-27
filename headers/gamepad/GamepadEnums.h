@@ -32,6 +32,7 @@ typedef enum
 	SOCD_MODE_UP_PRIORITY,           // U+D=U, L+R=N
 	SOCD_MODE_NEUTRAL,               // U+D=N, L+R=N
 	SOCD_MODE_SECOND_INPUT_PRIORITY, // U>D=D, L>R=R (Last Input Priority, aka Last Win)
+	SOCD_MODE_FIRST_INPUT_PRIORITY, // U>D=U, L>R=L (First Input Priority, aka First Win)
 } SOCDMode;
 
 // Enum for tracking last direction state of Second Input SOCD method

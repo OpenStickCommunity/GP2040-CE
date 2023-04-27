@@ -15,8 +15,8 @@ class BootselButtonAddon : public GPAddon {
 public:
 	virtual bool available();
 	virtual void setup();       // BootselButton Setup
-	virtual void process();     // BootselButton Process
-	virtual void preprocess() {}
+	virtual void process() {}     // BootselButton Process
+	virtual void preprocess();
 	virtual std::string name() { return BootselButtonName; }
 private:	
 	bool isBootselPressed();

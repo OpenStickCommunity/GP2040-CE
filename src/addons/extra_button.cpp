@@ -17,7 +17,7 @@ void ExtraButtonAddon::setup() {
 	gpio_pull_up(extraButtonPin);          // Set as PULLUP
 }
 
-void ExtraButtonAddon::process() {
+void ExtraButtonAddon::preprocess() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	if (!gpio_get(extraButtonPin)) {
 		if (extraButtonMap > (GAMEPAD_MASK_A2)) {
