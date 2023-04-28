@@ -118,6 +118,7 @@ src/addons/i2cdisplay.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
+src/addons/ps4mode.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
@@ -134,16 +135,19 @@ target_link_libraries(${PROJECT_NAME}
 pico_stdlib
 pico_bootsel_via_double_reset
 AnimationStation
-TinyUSB_Gamepad
+CRC32
+mbedcrypto
+mbedx509
+mbedtls
 FlashPROM
 ADS1219
 PlayerLEDs
 NeoPico
 OneBitDisplay
-CRC32
 ArduinoJson
 rndis
 hardware_adc
+TinyUSB_Gamepad
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

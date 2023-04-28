@@ -125,3 +125,4 @@ Join the [OpenStick GP2040-CE channel](https://discord.gg/k2pxhke7q8) to partici
 * [alirin222](https://github.com/alirin222) for the awesome turbo code ([@alirin222](https://twitter.com/alirin222) on Twitter)
 * [DeBug] for improvments to the web-UI and fixing the PS3 homebutton issue
 * [TheTrain](https://github.com/TheTrainGoes/GP2040-Projects) and [Fortinbra](https://github.com/Fortinbra) for helping keep our community chugging along
+* [PassingLink](https://github.com/passinglink/passinglink) for the technical details and code for PS4 implementation

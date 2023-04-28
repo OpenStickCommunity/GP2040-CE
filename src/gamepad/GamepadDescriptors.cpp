@@ -16,6 +16,10 @@ static uint16_t getConfigurationDescriptor(const uint8_t *buffer, InputMode mode
 			buffer = keyboard_configuration_descriptor;
 			return sizeof(keyboard_configuration_descriptor);
 
+		case INPUT_MODE_PS4:
+			buffer = ps4_configuration_descriptor;
+			return sizeof(ps4_configuration_descriptor);
+
 		default:
 			buffer = hid_configuration_descriptor;
 			return sizeof(hid_configuration_descriptor);
@@ -37,6 +41,10 @@ static uint16_t getDeviceDescriptor(const uint8_t *buffer, InputMode mode)
 		case INPUT_MODE_KEYBOARD:
 			buffer = keyboard_device_descriptor;
 			return sizeof(keyboard_device_descriptor);
+
+		case INPUT_MODE_PS4:
+			buffer = ps4_device_descriptor;
+			return sizeof(ps4_device_descriptor);
 
 		default:
 			buffer = hid_device_descriptor;
@@ -103,6 +111,11 @@ static uint16_t getStringDescriptor(const uint16_t *buffer, InputMode mode, uint
 		case INPUT_MODE_KEYBOARD:
 			value = (const char *)keyboard_string_descriptors[index];
 			size = sizeof(keyboard_string_descriptors[index]);
+			break;
+
+		case INPUT_MODE_PS4:
+			value = (const char *)ps4_string_descriptors[index];
+			size = sizeof(ps4_string_descriptors[index]);
 			break;
 
 		default:
