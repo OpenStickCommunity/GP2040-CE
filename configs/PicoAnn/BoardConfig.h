@@ -213,6 +213,9 @@
                             // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN -1
 
+// Keyboard Mapping Configuration
+// List of HID keycodes can be located here: https://github.com/hathach/tinyusb/blob/3623ba1884ddff23e9b64766cb6dd032f1425846/src/class/hid/hid.h#L356
+// Even for the modifier keys, HID_KEY entries should be used as the implementation expects those and will convert as necessary.
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP
 #define KEY_DPAD_DOWN   HID_KEY_ARROW_DOWN    // DOWN
 #define KEY_DPAD_RIGHT  HID_KEY_ARROW_RIGHT   // RIGHT
@@ -233,6 +236,7 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2 / ~ / Capture / ~ / 14 / ~
 
 // Hotkey Action Mapping
+// Find the list of hotkey actions in GamepadEnums.h
 #define HOTKEY_F1_UP_MASK      GAMEPAD_MASK_UP
 #define HOTKEY_F1_UP_ACTION    HOTKEY_HOME_BUTTON
 #define HOTKEY_F1_DOWN_MASK    GAMEPAD_MASK_DOWN
