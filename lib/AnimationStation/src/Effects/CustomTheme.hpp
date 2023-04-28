@@ -1,12 +1,7 @@
 #ifndef CUSTOM_THEME_H_
 #define CUSTOM_THEME_H_
 
-#include <iterator>
 #include <map>
-#include <vector>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "../Animation.hpp"
 #include "../AnimationStation.hpp"
 

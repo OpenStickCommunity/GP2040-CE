@@ -114,7 +114,7 @@ void Storage::setDefaultBoardOptions()
 		.buttonPadding = 2
 	};
 	boardOptions.buttonLayoutCustomOptions.params = params;
-	
+
 	ButtonLayoutParams paramsRight = {
 		.layoutRight = BUTTON_LAYOUT_RIGHT,
 		.startX = 8,
@@ -287,6 +287,43 @@ void Storage::setDefaultLEDOptions()
 	ledOptions.indexR3 = LEDS_BUTTON_R3;
 	ledOptions.indexA1 = LEDS_BUTTON_A1;
 	ledOptions.indexA2 = LEDS_BUTTON_A2;
+	ledOptions.useCustomLeds = false;
+	ledOptions.customColorUp = 0;
+	ledOptions.customColorDown = 0;
+	ledOptions.customColorLeft = 0;
+	ledOptions.customColorRight = 0;
+	ledOptions.customColorB1 = 0;
+	ledOptions.customColorB2 = 0;
+	ledOptions.customColorB3 = 0;
+	ledOptions.customColorB4 = 0;
+	ledOptions.customColorL1 = 0;
+	ledOptions.customColorR1 = 0;
+	ledOptions.customColorL2 = 0;
+	ledOptions.customColorR2 = 0;
+	ledOptions.customColorS1 = 0;
+	ledOptions.customColorS2 = 0;
+	ledOptions.customColorA1 = 0;
+	ledOptions.customColorA2 = 0;
+	ledOptions.customColorL3 = 0;
+	ledOptions.customColorR3 = 0;
+	ledOptions.customColorUpPressed = 0;
+	ledOptions.customColorDownPressed = 0;
+	ledOptions.customColorLeftPressed = 0;
+	ledOptions.customColorRightPressed = 0;
+	ledOptions.customColorB1Pressed = 0;
+	ledOptions.customColorB2Pressed = 0;
+	ledOptions.customColorB3Pressed = 0;
+	ledOptions.customColorB4Pressed = 0;
+	ledOptions.customColorL1Pressed = 0;
+	ledOptions.customColorR1Pressed = 0;
+	ledOptions.customColorL2Pressed = 0;
+	ledOptions.customColorR2Pressed = 0;
+	ledOptions.customColorS1Pressed = 0;
+	ledOptions.customColorS2Pressed = 0;
+	ledOptions.customColorA1Pressed = 0;
+	ledOptions.customColorA2Pressed = 0;
+	ledOptions.customColorL3Pressed = 0;
+	ledOptions.customColorR3Pressed = 0;
 	setLEDOptions(ledOptions);
 }
 

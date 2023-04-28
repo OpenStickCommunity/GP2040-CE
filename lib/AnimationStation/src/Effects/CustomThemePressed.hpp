@@ -1,9 +1,8 @@
 #ifndef _CUSTOM_THEME_PRESSED_H_
 #define _CUSTOM_THEME_PRESSED_H_
 
+#include <map>
 #include <vector>
-#include <stdio.h>
-#include <stdlib.h>
 #include "../Animation.hpp"
 #include "../AnimationStation.hpp"
 
