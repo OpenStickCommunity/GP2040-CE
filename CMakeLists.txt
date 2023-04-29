@@ -136,9 +136,6 @@ pico_stdlib
 pico_bootsel_via_double_reset
 AnimationStation
 CRC32
-mbedcrypto
-mbedx509
-mbedtls
 FlashPROM
 ADS1219
 PlayerLEDs
@@ -147,6 +144,7 @@ OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
+pico_mbedtls
 TinyUSB_Gamepad
 )
 
