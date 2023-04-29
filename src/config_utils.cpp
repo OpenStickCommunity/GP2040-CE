@@ -1,6 +1,9 @@
 #include "config_utils.h"
 
 #include "enums.pb.h"
+#include "pb_encode.h"
+#include "pb_decode.h"
+#include "pb_common.h"
 
 #include "BoardConfig.h"
 #include "helper.h"
@@ -19,18 +22,13 @@
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 
+#include "CRC32.h"
 #include "FlashPROM.h"
 
 #include <ArduinoJson.h>
 
-// Verify that the maximum size of the serialized Config object fits into the allocated flash block
-#if defined(Config_size)
-	#if Config_size > EEPROM_SIZE_BYTES
-		#error "Maximum size of Config exceeds the maximum size allocated for FlashPROM"
-	#endif
-#else
-	#error "Maximum size of Config cannot be determined statically, make sure that you do not use any dynamically sized arrays or strings"
-#endif
+#include <memory>
+#include <string.h>
 
 // -----------------------------------------------------
 // Default values
@@ -235,6 +233,150 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 	// addonOptions.playerNumberOptions
 	INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);
 	INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, number, PLAYER_NUMBER);
+}
+
+// -----------------------------------------------------
+// Loading / Saving
+// -----------------------------------------------------
+
+// We put a ConfigFooter struct at the end of the flash area reserved for FlashPROM. It contains a magicvalue , the size
+// of the serialized config data and a CRC of that data. This information allows us to both locate and verify the stored
+// data. The serialized data is located directly before the footer:
+//
+//                       FlashPROM block
+// ┌────────────────────────────┴─────────────────────────────┐
+// ┌──────────────┬────────────────────────────────────┬──────┐
+// │Unused memory │Protobuf data                       │Footer│
+// └──────────────┴────────────────────────────────────┴──────┘
+//
+struct ConfigFooter
+{
+    uint32_t dataSize;
+    uint32_t dataCrc;
+    uint32_t magic;
+};
+
+static const uint32_t FOOTER_MAGIC = 0x34325047; // GP24
+
+// Verify that the maximum size of the serialized Config object fits into the allocated flash block
+#if defined(Config_size)
+	static_assert(Config_size + sizeof(ConfigFooter) <= EEPROM_SIZE_BYTES, "Maximum size of Config exceeds the maximum size allocated for FlashPROM");
+#else
+	#error "Maximum size of Config cannot be determined statically, make sure that you do not use any dynamically sized arrays or strings"
+#endif
+
+static bool loadConfigInner(Config& config)
+{
+	config = Config_init_zero;
+
+	const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
+	const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
+
+	// Check for presence of magic value
+	if (footer.magic != FOOTER_MAGIC)
+	{
+		return false;
+	}
+
+		// Check if dataSize exceeds the reserved space
+	if (footer.dataSize + sizeof(ConfigFooter) > EEPROM_SIZE_BYTES)
+	{
+		return false;
+	}
+
+	const uint8_t* dataPtr = flashEnd - sizeof(ConfigFooter) - footer.dataSize;
+
+	// Verify CRC32 hash
+	if (CRC32::calculate(dataPtr, footer.dataSize) != footer.dataCrc)
+	{
+		return false;
+	}
+
+	// We are now sufficiently confident that the data is valid so we run the deserialization
+	pb_istream_t inputStream = pb_istream_from_buffer(dataPtr, footer.dataSize);
+	return pb_decode(&inputStream, Config_fields, &config);
+}
+
+Config ConfigUtils::load()
+{
+	Config config;
+	if (loadConfigInner(config))
+	{
+		// Make sure that fields that were not deserialized are properly initialized.
+		// They were probably added with a newer version of the firmware.
+		initUnsetPropertiesWithDefaults(config);
+
+		// Further migrations can be performed here
+
+		return config;
+	}
+
+	// TODO: Check for legacy config and migrate
+
+	// We could neither deserialize Protobuf config data not legacy config data.
+	// We are probably dealing with a new device and therefore initialize the config to default values.
+	config = Config_init_default;
+	initUnsetPropertiesWithDefaults(config);
+
+	return config;
+}
+
+static void setHasFlags(const pb_msgdesc_t* fields, void* s)
+{
+    pb_field_iter_t iter;
+    if (!pb_field_iter_begin(&iter, fields, s))
+    {
+        return;
+    }
+    
+    do
+    {
+        // Not implemented for extension fields
+        assert(PB_LTYPE(iter.type) != PB_LTYPE_EXTENSION);
+
+        if (PB_HTYPE(iter.type) == PB_HTYPE_OPTIONAL && iter.pSize)
+        {
+            *reinterpret_cast<char*>(iter.pSize) = true;
+        }
+
+		// Recurse into sub-messages
+        if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
+        {
+            assert(iter.submsg_desc);
+            assert(iter.pData);
+
+            setHasFlags(iter.submsg_desc, iter.pData);
+        }
+    } while (pb_field_iter_next(&iter));
+}
+
+bool ConfigUtils::save(Config& config)
+{
+    // Set all has_XXX flags to true, we want to save all fields.
+	// If we didn't do this we would have to remember to set the has_XXX flag manually whenever we change a field from
+	// its default value.
+    setHasFlags(Config_fields, &config);
+
+    // Encode the data directly into the cache of FlashPROM
+    pb_ostream_t outputStream = pb_ostream_from_buffer(EEPROM.cache, EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    if (!pb_encode(&outputStream, Config_fields, &config))
+    {
+        return false;
+    }
+
+	// Write the footer
+    ConfigFooter& footer = *reinterpret_cast<ConfigFooter*>(EEPROM.cache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+	footer.dataSize = outputStream.bytes_written;
+	footer.dataCrc = CRC32::calculate(EEPROM.cache, footer.dataSize);
+	footer.magic = FOOTER_MAGIC;
+
+	// Move the encoded data in memory down to the footer
+	memmove(EEPROM.cache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - footer.dataSize, EEPROM.cache, footer.dataSize);
+	memset(EEPROM.cache, 0, EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - footer.dataSize);
+
+	EEPROM.commit();
+
+	return true;
 }
 
 // -----------------------------------------------------
