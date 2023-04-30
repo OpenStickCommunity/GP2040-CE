@@ -23,7 +23,7 @@ jobs:
     steps:
     #Global Setup
     - name: Setup SDK pipeline
-      uses: Fortinbra/RaspberryPiPicoBuild@v1.1
+      uses: Fortinbra/RaspberryPiPicoBuild@v1.2
 
     #- name: Checkout GP2040-CE
     #  uses: actions/checkout@v3
