@@ -151,8 +151,8 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.pinButtonReverse  		= PIN_BUTTON_REVERSE;
 	addonOptions.pinSliderLS       		= PIN_SLIDER_LS;
 	addonOptions.pinSliderRS       		= PIN_SLIDER_RS;
-	addonOptions.pinSliderSOCDUp        = PIN_SLIDER_SOCD_UP;
-	addonOptions.pinSliderSOCDSecond    = PIN_SLIDER_SOCD_SECOND;
+	addonOptions.pinSliderSOCDOne     	= PIN_SLIDER_SOCD_ONE;
+	addonOptions.pinSliderSOCDTwo    	= PIN_SLIDER_SOCD_TWO;
 	addonOptions.pinDualDirDown    		= PIN_DUAL_DIRECTIONAL_DOWN;
 	addonOptions.pinDualDirUp      		= PIN_DUAL_DIRECTIONAL_UP;
 	addonOptions.pinDualDirLeft    		= PIN_DUAL_DIRECTIONAL_LEFT;
@@ -195,6 +195,9 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.shmupBtnMask3 = SHMUP_BUTTON3;
 	addonOptions.shmupBtnMask4 = SHMUP_BUTTON4;
 	addonOptions.pinShmupDial = PIN_SHMUP_DIAL;
+    addonOptions.sliderSOCDModeOne = SLIDER_SOCD_SLOT_ONE;
+    addonOptions.sliderSOCDModeTwo  = SLIDER_SOCD_SLOT_TWO;
+    addonOptions.sliderSOCDModeDefault = SLIDER_SOCD_SLOT_DEFAULT;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;

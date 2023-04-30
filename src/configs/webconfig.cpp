@@ -589,8 +589,8 @@ std::string setAddonOptions()
 	addonOptions.pinTurboLED        = doc["turboPinLED"] == -1 ? 0xFF : doc["turboPinLED"];
 	addonOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
 	addonOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
-	addonOptions.pinSliderSOCDUp  		= doc["sliderSOCDUpPin"] == -1 ? 0xFF : doc["sliderSOCDUpPin"];
-	addonOptions.pinSliderSOCDSecond    = doc["sliderSOCDSecondPin"] == -1 ? 0xFF : doc["sliderSOCDSecondPin"];
+	addonOptions.pinSliderSOCDOne  		= doc["sliderSOCDPinOne"] == -1 ? 0xFF : doc["sliderSOCDPinOne"];
+	addonOptions.pinSliderSOCDTwo    = doc["sliderSOCDPinTwo"] == -1 ? 0xFF : doc["sliderSOCDPinTwo"];
 	addonOptions.turboShotCount 	= doc["turboShotCount"];
 	addonOptions.pinButtonReverse  	= doc["reversePin"] == -1 ? 0xFF : doc["reversePin"];
 	addonOptions.pinReverseLED  	= doc["reversePinLED"] == -1 ? 0xFF : doc["reversePinLED"];
@@ -633,6 +633,9 @@ std::string setAddonOptions()
 	addonOptions.shmupBtnMask3     = doc["shmupBtnMask3"];
 	addonOptions.shmupBtnMask4     = doc["shmupBtnMask4"];
 	addonOptions.pinShmupDial     = doc["pinShmupDial"] == -1 ? 0xFF : doc["pinShmupDial"];
+	addonOptions.sliderSOCDModeOne     = doc["sliderSOCDModeOne"];
+	addonOptions.sliderSOCDModeTwo     = doc["sliderSOCDModeTwo"];
+	addonOptions.sliderSOCDModeDefault     = doc["sliderSOCDModeDefault"];
 	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
 	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
 	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
@@ -659,8 +662,8 @@ std::string getAddonOptions()
 	doc["turboPinLED"] = addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED;
 	doc["sliderLSPin"] = addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS;
 	doc["sliderRSPin"] = addonOptions.pinSliderRS == 0xFF ? -1 : addonOptions.pinSliderRS;
-	doc["sliderSOCDUpPin"] = addonOptions.pinSliderSOCDUp == 0xFF ? -1 : addonOptions.pinSliderSOCDUp;
-	doc["sliderSOCDSecondPin"] = addonOptions.pinSliderSOCDSecond == 0xFF ? -1 : addonOptions.pinSliderSOCDSecond;
+	doc["sliderSOCDPinOne"] = addonOptions.pinSliderSOCDOne == 0xFF ? -1 : addonOptions.pinSliderSOCDOne;
+	doc["sliderSOCDPinTwo"] = addonOptions.pinSliderSOCDTwo == 0xFF ? -1 : addonOptions.pinSliderSOCDTwo;
 	doc["turboShotCount"] = addonOptions.turboShotCount;
 	doc["reversePin"] = addonOptions.pinButtonReverse == 0xFF ? -1 : addonOptions.pinButtonReverse;
 	doc["reversePinLED"] = addonOptions.pinReverseLED == 0xFF ? -1 : addonOptions.pinReverseLED;
@@ -703,6 +706,9 @@ std::string getAddonOptions()
 	doc["shmupBtnMask3"] = addonOptions.shmupBtnMask3;
 	doc["shmupBtnMask4"] = addonOptions.shmupBtnMask4;
 	doc["pinShmupDial"] = addonOptions.pinShmupDial == 0xFF ? -1 : addonOptions.pinShmupDial;
+	doc["sliderSOCDModeOne"] = addonOptions.sliderSOCDModeOne;
+	doc["sliderSOCDModeTwo"] = addonOptions.sliderSOCDModeTwo;
+	doc["sliderSOCDModeDefault"] = addonOptions.sliderSOCDModeDefault;
 	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
 	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
 	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;
