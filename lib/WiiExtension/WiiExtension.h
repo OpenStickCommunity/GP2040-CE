@@ -30,10 +30,6 @@
 #define WII_ANALOG_PRECISION_2      256
 #define WII_ANALOG_PRECISION_3      1024
 
-#ifndef HAS_WII_EXTENSION
-#define HAS_WII_EXTENSION 1
-#endif
-
 #ifndef WII_EXTENSION_DEBUG
 #define WII_EXTENSION_DEBUG false
 #endif
@@ -44,26 +40,6 @@
 
 #ifndef WII_EXTENSION_TIMEOUT
 #define WII_EXTENSION_TIMEOUT 2
-#endif
-
-#ifndef WII_EXTENSION_I2C_ADDR
-#define WII_EXTENSION_I2C_ADDR 0x52
-#endif
-
-#ifndef WII_EXTENSION_I2C_SDA_PIN
-#define WII_EXTENSION_I2C_SDA_PIN 16
-#endif
-
-#ifndef WII_EXTENSION_I2C_SCL_PIN
-#define WII_EXTENSION_I2C_SCL_PIN 17
-#endif
-
-#ifndef WII_EXTENSION_I2C_BLOCK
-#define WII_EXTENSION_I2C_BLOCK i2c0
-#endif
-
-#ifndef WII_EXTENSION_I2C_SPEED
-#define WII_EXTENSION_I2C_SPEED 400000
 #endif
 
 #ifndef WII_EXTENSION_CALIBRATION
@@ -123,7 +99,7 @@ class WiiExtension {
     bool isReady         = false;
 
     // Constructor 
-	WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr = WII_EXTENSION_I2C_ADDR);
+	WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr);
 
     // Methods
     void begin();

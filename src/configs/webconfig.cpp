@@ -602,6 +602,10 @@ std::string setAddonOptions()
 	addonOptions.shmupBtnMask3     = doc["shmupBtnMask3"];
 	addonOptions.shmupBtnMask4     = doc["shmupBtnMask4"];
 	addonOptions.pinShmupDial     = doc["pinShmupDial"] == -1 ? 0xFF : doc["pinShmupDial"];
+	addonOptions.wiiExtensionSDAPin = doc["wiiExtensionSDAPin"] == -1 ? 0xFF : doc["wiiExtensionSDAPin"];
+	addonOptions.wiiExtensionSCLPin = doc["wiiExtensionSCLPin"] == -1 ? 0xFF : doc["wiiExtensionSCLPin"];
+	addonOptions.wiiExtensionBlock = doc["wiiExtensionBlock"];
+	addonOptions.wiiExtensionSpeed = doc["wiiExtensionSpeed"];
 	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
 	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
 	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
@@ -614,6 +618,7 @@ std::string setAddonOptions()
 	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
 	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
 	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
+	addonOptions.WiiExtensionAddonEnabled = doc["WiiExtensionAddonEnabled"];
 
 	Storage::getInstance().setAddonOptions(addonOptions);
 
@@ -672,6 +677,10 @@ std::string getAddonOptions()
 	doc["shmupBtnMask3"] = addonOptions.shmupBtnMask3;
 	doc["shmupBtnMask4"] = addonOptions.shmupBtnMask4;
 	doc["pinShmupDial"] = addonOptions.pinShmupDial == 0xFF ? -1 : addonOptions.pinShmupDial;
+	doc["wiiExtensionSDAPin"] = addonOptions.wiiExtensionSDAPin == 0xFF ? -1 : addonOptions.wiiExtensionSDAPin;
+	doc["wiiExtensionSCLPin"] = addonOptions.wiiExtensionSCLPin == 0xFF ? -1 : addonOptions.wiiExtensionSCLPin;
+	doc["wiiExtensionBlock"] = addonOptions.wiiExtensionBlock;
+	doc["wiiExtensionSpeed"] = addonOptions.wiiExtensionSpeed;
 	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
 	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
 	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;
@@ -684,6 +693,7 @@ std::string getAddonOptions()
 	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
+	doc["WiiExtensionAddonEnabled"] = addonOptions.WiiExtensionAddonEnabled;
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	auto usedPins = doc.createNestedArray("usedPins");

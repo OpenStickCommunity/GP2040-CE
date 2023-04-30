@@ -30,6 +30,7 @@
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
+#include "addons/wiiext.h"
 
 #include "bitmaps.h"
 
@@ -195,6 +196,10 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.shmupBtnMask3 = SHMUP_BUTTON3;
 	addonOptions.shmupBtnMask4 = SHMUP_BUTTON4;
 	addonOptions.pinShmupDial = PIN_SHMUP_DIAL;
+	addonOptions.wiiExtensionSDAPin    = WII_EXTENSION_I2C_SDA_PIN;
+	addonOptions.wiiExtensionSCLPin    = WII_EXTENSION_I2C_SCL_PIN;
+	addonOptions.wiiExtensionBlock     = (WII_EXTENSION_I2C_BLOCK == i2c0) ? 0 : 1;
+	addonOptions.wiiExtensionSpeed     = WII_EXTENSION_I2C_SPEED;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -207,6 +212,8 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.PlayerNumAddonEnabled  = PLAYERNUM_ADDON_ENABLED;
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
+	addonOptions.WiiExtensionAddonEnabled      = WII_EXTENSION_ENABLED;
+
 	setAddonOptions(addonOptions);
 }
 

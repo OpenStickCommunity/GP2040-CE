@@ -4,15 +4,13 @@
 
 bool WiiExtensionInput::available() {
 	AddonOptions options = Storage::getInstance().getAddonOptions();
-    return true;
-//	extraButtonMap = options.extraButtonMap;
-//	extraButtonPin = options.extraButtonPin;
-//	return options.ExtraButtonAddonEnabled &&
-//		extraButtonMap != 0 &&
-//		extraButtonPin != (uint8_t)-1;
+    return (options.WiiExtensionAddonEnabled &&
+        options.wiiExtensionSDAPin != (uint8_t)-1 &&
+        options.wiiExtensionSCLPin != (uint8_t)-1);
 }
 
 void WiiExtensionInput::setup() {
+    AddonOptions options = Storage::getInstance().getAddonOptions();
     nextTimer = getMillis();
 
 #if WII_EXTENSION_DEBUG==true
@@ -22,10 +20,11 @@ void WiiExtensionInput::setup() {
     uIntervalMS = 0;
     
     wii = new WiiExtension(
-        WII_EXTENSION_I2C_SDA_PIN,
-        WII_EXTENSION_I2C_SCL_PIN,
-        WII_EXTENSION_I2C_BLOCK,
-        WII_EXTENSION_I2C_SPEED);
+        options.wiiExtensionSDAPin,
+        options.wiiExtensionSCLPin,
+        options.wiiExtensionBlock == 0 ? i2c0 : i2c1,
+        options.wiiExtensionSpeed,
+        WII_EXTENSION_I2C_ADDR);
     wii->begin();
     wii->start();
 }
