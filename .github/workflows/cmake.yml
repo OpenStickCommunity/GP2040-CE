@@ -22,8 +22,8 @@ jobs:
 
     steps:
     #Global Setup
-    - name: arm-none-eabi-gcc GNU Arm Embedded Toolchain
-      uses: carlosperate/arm-none-eabi-gcc-action@v1.5.2
+    - name: Setup SDK pipeline
+      uses: Fortinbra/RaspberryPiPicoBuild@v1
 
     - name: Checkout GP2040-CE
       uses: actions/checkout@v3
@@ -37,17 +37,6 @@ jobs:
       with:
         name: fsData
         path: ${{github.workspace}}/lib/httpd/
-
-    - name: Checkout pico-sdk/1.5.0
-      uses: actions/checkout@v3
-      with:
-        repository: raspberrypi/pico-sdk
-        ref: 1.5.0
-        path: pico-sdk
-        
-    - name: Checkout pico-sdk submodules
-      working-directory: ${{github.workspace}}/pico-sdk
-      run: git submodule update --init
     
     - name: Get core count
       id: core_count
