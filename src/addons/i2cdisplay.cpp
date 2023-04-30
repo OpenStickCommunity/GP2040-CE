@@ -4,11 +4,13 @@
  */
 
 #include "addons/i2cdisplay.h"
+#include "GamepadState.h"
 #include "enums.h"
 #include "helper.h"
 #include "storagemanager.h"
 #include "pico/stdlib.h"
 #include "bitmaps.h"
+#include "ps4_driver.h"
 
 bool I2CDisplayAddon::available() {
 	BoardOptions boardOptions = getBoardOptions();
@@ -916,6 +918,13 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_HID:    statusBar += "DINPUT"; break;
 		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
 		case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
+		case INPUT_MODE_PS4:
+			if (PS4Data::getInstance().authsent == true ) {
+				statusBar += "PS4:AS";
+			} else {
+				statusBar += "PS4   ";
+			}
+			break;
 		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
@@ -941,6 +950,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
 		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
 		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
+		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
 	}
 	drawText(0, 0, statusBar);
 }

@@ -7,3 +7,4 @@ configs/MyBoard
 build/
 
 lib/httpd/fsdata.c
+modules/Custom.cmake
