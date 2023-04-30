@@ -4,7 +4,3 @@
 [submodule "www"]
 	path = www
 	url = https://github.com/OpenStickCommunity/WebConfigurator.git
-[submodule "lib/mbedtls"]
-	path = lib/mbedtls
-	url = https://github.com/Mbed-TLS/mbedtls.git
-	branch = mbedtls-2.28
