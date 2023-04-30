@@ -102,9 +102,12 @@ void Gamepad::setup()
 
 	for (int i = 0; i < GAMEPAD_DIGITAL_INPUT_COUNT; i++)
 	{
-		gpio_init(gamepadMappings[i]->pin);             // Initialize pin
-		gpio_set_dir(gamepadMappings[i]->pin, GPIO_IN); // Set as INPUT
-		gpio_pull_up(gamepadMappings[i]->pin);          // Set as PULLUP
+		if (gamepadMappings[i]->isAssigned())
+		{
+			gpio_init(gamepadMappings[i]->pin);             // Initialize pin
+			gpio_set_dir(gamepadMappings[i]->pin, GPIO_IN); // Set as INPUT
+			gpio_pull_up(gamepadMappings[i]->pin);          // Set as PULLUP
+		}
 	}
 
 	#ifdef PIN_SETTINGS
