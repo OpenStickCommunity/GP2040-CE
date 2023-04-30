@@ -32,6 +32,20 @@ static HIDReport hidReport
 	.l1_axis = 0x00, .r1_axis = 0x00, .l2_axis = 0x00, .r2_axis = 0x00
 };
 
+static PS4Report ps4Report
+{
+	.report_id = 0x01,
+	.left_stick_x = 0x80, .left_stick_y = 0x80, .right_stick_x = 0x80, .right_stick_y = 0x80,
+	.dpad = 0x08,
+	.button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
+	.button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
+	.button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,	
+	.padding = 0,
+	.mystery = { },
+	.touchpad_data = TouchpadData(),
+	.mystery_2 = { }
+};
+
 static SwitchReport switchReport
 {
 	.buttons = 0,
@@ -57,6 +71,10 @@ static XInputReport xinputReport
 	.ry = GAMEPAD_JOYSTICK_MID,
 	._reserved = { },
 };
+
+static TouchpadData touchpadData;
+static uint8_t last_report_counter = 0;
+
 
 static KeyboardReport keyboardReport
 {
@@ -286,6 +304,9 @@ void * Gamepad::getReport()
 		case INPUT_MODE_SWITCH:
 			return getSwitchReport();
 
+		case INPUT_MODE_PS4:
+			return getPS4Report();
+
 		case INPUT_MODE_KEYBOARD:
 			return getKeyboardReport();
 
@@ -304,6 +325,9 @@ uint16_t Gamepad::getReportSize()
 
 		case INPUT_MODE_SWITCH:
 			return sizeof(SwitchReport);
+
+		case INPUT_MODE_PS4:
+			return sizeof(PS4Report);
 
 		case INPUT_MODE_KEYBOARD:
 			return sizeof(KeyboardReport);
@@ -436,6 +460,55 @@ XInputReport *Gamepad::getXInputReport()
 	return &xinputReport;
 }
 
+
+PS4Report *Gamepad::getPS4Report()
+{
+	switch (state.dpad & GAMEPAD_MASK_DPAD)
+	{
+		case GAMEPAD_MASK_UP:                        ps4Report.dpad = HID_HAT_UP;        break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   ps4Report.dpad = HID_HAT_UPRIGHT;   break;
+		case GAMEPAD_MASK_RIGHT:                     ps4Report.dpad = HID_HAT_RIGHT;     break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: ps4Report.dpad = HID_HAT_DOWNRIGHT; break;
+		case GAMEPAD_MASK_DOWN:                      ps4Report.dpad = HID_HAT_DOWN;      break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  ps4Report.dpad = HID_HAT_DOWNLEFT;  break;
+		case GAMEPAD_MASK_LEFT:                      ps4Report.dpad = HID_HAT_LEFT;      break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    ps4Report.dpad = HID_HAT_UPLEFT;    break;
+		default:                                     ps4Report.dpad = PS4_HAT_NOTHING;   break;
+	}
+
+	ps4Report.button_south    = pressedB1();
+	ps4Report.button_east     = pressedB2();
+	ps4Report.button_west     = pressedB3();
+	ps4Report.button_north    = pressedB4();
+	ps4Report.button_l1       = pressedL1();
+	ps4Report.button_r1       = pressedR1();
+	ps4Report.button_l2       = pressedL2();
+	ps4Report.button_r2       = pressedR2();
+	ps4Report.button_select   = pressedS1();
+	ps4Report.button_start    = pressedS2();
+	ps4Report.button_l3       = pressedL3();
+	ps4Report.button_r3       = pressedR3();
+	ps4Report.button_home     = pressedA1();
+	ps4Report.button_touchpad = pressedA2();
+
+	// report counter is 6 bits, but we circle 0-255
+	ps4Report.report_counter = last_report_counter++;
+
+	ps4Report.left_stick_x = static_cast<uint8_t>(state.lx >> 8);
+	ps4Report.left_stick_y = static_cast<uint8_t>(state.ly >> 8);
+	ps4Report.right_stick_x = static_cast<uint8_t>(state.rx >> 8);
+	ps4Report.right_stick_y = static_cast<uint8_t>(state.ry >> 8);
+
+	ps4Report.left_trigger = 0;
+	ps4Report.right_trigger = 0;
+
+	// set touchpad to nothing
+	touchpadData.p1.unpressed = 1;
+	touchpadData.p2.unpressed = 1;
+	ps4Report.touchpad_data = touchpadData;
+
+	return &ps4Report;
+}
 
 uint8_t Gamepad::getModifier(uint8_t code) {
 	switch (code) {

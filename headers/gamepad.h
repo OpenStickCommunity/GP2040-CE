@@ -12,6 +12,7 @@
 #include "gamepad/descriptors/SwitchDescriptors.h"
 #include "gamepad/descriptors/XInputDescriptors.h"
 #include "gamepad/descriptors/KeyboardDescriptors.h"
+#include "gamepad/descriptors/PS4Descriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -94,6 +95,7 @@ public:
 	SwitchReport *getSwitchReport();
 	XInputReport *getXInputReport();
 	KeyboardReport *getKeyboardReport();
+	PS4Report *getPS4Report();
 
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.

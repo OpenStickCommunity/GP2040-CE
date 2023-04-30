@@ -39,6 +39,7 @@
 #define API_SET_KEY_MAPPINGS "/api/setKeyMappings"
 #define API_GET_ADDON_OPTIONS "/api/getAddonsOptions"
 #define API_SET_ADDON_OPTIONS "/api/setAddonsOptions"
+#define API_SET_PS4_OPTIONS "/api/setPS4Options"
 #define API_GET_SPLASH_IMAGE "/api/getSplashImage"
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
@@ -646,12 +647,108 @@ std::string setAddonOptions()
 	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
 	addonOptions.SliderSOCDInputEnabled = doc["SliderSOCDInputEnabled"];
 	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
+	addonOptions.PS4ModeAddonEnabled = doc["PS4ModeAddonEnabled"];
 	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
 	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
 
 	Storage::getInstance().setAddonOptions(addonOptions);
 
 	return serialize_json(doc);
+}
+
+std::string setPS4Options()
+{
+	DynamicJsonDocument doc = get_post_data();
+	PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+	std::string decoded;
+	std::size_t len;
+
+	// RSA Context
+	if ( doc.containsKey("N") ) {
+		std::string decoded;
+		Base64::Decode(doc["N"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_n ) ) {
+			memcpy(ps4Options->rsa_n, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("E") ) {
+		std::string decoded;
+		Base64::Decode(doc["E"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_e ) ) {
+			memcpy(ps4Options->rsa_e, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("D") ) {
+		std::string decoded;
+		Base64::Decode(doc["D"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_d ) ) {
+			memcpy(ps4Options->rsa_d, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("P") ) {
+		std::string decoded;
+		Base64::Decode(doc["P"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_p ) ) {
+			memcpy(ps4Options->rsa_p, decoded.data(), decoded.length());
+		}			
+	}
+	if ( doc.containsKey("Q") ) {
+		std::string decoded;
+		Base64::Decode(doc["Q"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_q ) ) {
+			memcpy(ps4Options->rsa_q, decoded.data(), decoded.length());
+		}			
+	}
+	if ( doc.containsKey("DP") ) {
+		std::string decoded;
+		Base64::Decode(doc["DP"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_dp ) ) {
+			memcpy(ps4Options->rsa_dp, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("DQ") ) {
+		std::string decoded;
+		Base64::Decode(doc["DQ"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_dq ) ) {
+			memcpy(ps4Options->rsa_dq, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("QP") ) {	
+		std::string decoded;
+		Base64::Decode(doc["QP"], decoded);	
+		if ( decoded.length() == sizeof(ps4Options->rsa_qp ) ) {
+			memcpy(ps4Options->rsa_qp, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("RN") ) {
+		std::string decoded;
+		Base64::Decode(doc["RN"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_rn ) ) {
+			memcpy(ps4Options->rsa_rn, decoded.data(), decoded.length());
+		}
+	}
+	// Serial & Signature
+	if ( doc.containsKey("serial") ) {
+		std::string decoded;
+		Base64::Decode(doc["serial"], decoded);
+		const char * testDecode = decoded.c_str();
+		if ( decoded.length() == sizeof(ps4Options->serial ) ) {
+			memcpy(ps4Options->serial, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("signature") ) {
+		std::string decoded;
+		Base64::Decode(doc["signature"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->signature ) ) {
+			memcpy(ps4Options->signature, decoded.data(), decoded.length());
+		}
+	}
+
+	Storage::getInstance().savePS4Options();
+
+	DynamicJsonDocument rdoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	rdoc["success"] = true;
+	return serialize_json(rdoc);
 }
 
 std::string getAddonOptions()
@@ -719,6 +816,7 @@ std::string getAddonOptions()
 	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
 	doc["SliderSOCDInputEnabled"] = addonOptions.SliderSOCDInputEnabled;
 	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
+	doc["PS4ModeAddonEnabled"] = addonOptions.PS4ModeAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
 
@@ -802,6 +900,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setKeyMappings());
 	if (strcmp(name, API_SET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, setAddonOptions());
+	if (strcmp(name, API_SET_PS4_OPTIONS) == 0)
+			return set_file_data(file, setPS4Options());
 	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, setSplashImage());
 	if (strcmp(name, API_REBOOT) == 0)

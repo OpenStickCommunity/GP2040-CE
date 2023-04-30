@@ -16,6 +16,7 @@
 #include "net_driver.h"
 #include "hid_driver.h"
 #include "xinput_driver.h"
+#include "ps4_driver.h"
 
 UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
@@ -92,6 +93,9 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 			case INPUT_MODE_XINPUT:
 				return &xinput_driver;
 
+			case INPUT_MODE_PS4:
+				return &ps4_driver;
+
 			default:
 				return &hid_driver;
 		}
@@ -107,26 +111,31 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 {
 	// TODO: Handle the correct report type, if required
 	(void)itf;
-	(void)report_id;
-	(void)report_type;
-	(void)reqlen;
 
 	uint8_t report_size = 0;
 	SwitchReport switch_report;
 	HIDReport hid_report;
 	KeyboardReport keyboard_report;
+	PS4Report ps4_report;
 	switch (input_mode)
 	{
 		case INPUT_MODE_SWITCH:
 			report_size = sizeof(SwitchReport);
 			memcpy(buffer, &switch_report, report_size);
 			break;
-
 		case INPUT_MODE_KEYBOARD:
 			report_size = sizeof(KeyboardReport);
 			memcpy(buffer, &keyboard_report, report_size);
 			break;
-
+		case INPUT_MODE_PS4:
+			if ( report_type == HID_REPORT_TYPE_FEATURE ) {
+				// Get feature report (for Auth)
+				report_size = get_ps4_report(report_id, buffer, reqlen);
+			} else {
+				report_size = sizeof(PS4Report);
+				memcpy(buffer, &ps4_report, report_size);
+			}
+			break;
 		default:
 			report_size = sizeof(HIDReport);
 			memcpy(buffer, &hid_report, report_size);
@@ -141,6 +150,14 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize)
 {
 	(void) itf;
+	switch (input_mode)
+	{
+		case INPUT_MODE_PS4:
+			if ( report_type == HID_REPORT_TYPE_FEATURE ) {
+				set_ps4_report(report_id, buffer, bufsize);
+			}
+			break;
+	}
 
 	// echo back anything we received from host
 	tud_hid_report(report_id, buffer, bufsize);

@@ -12,22 +12,22 @@ Select the button labels to be displayed in the usage guide: <label-selector></l
 
 GP2040-CE uses generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. This table provides a map of GP2040-CE buttons to the supported input types and layouts:
 
-| GP2040-CE  | XInput | Switch  | PS3          | DirectInput  | Arcade |
-| ---------- | ------ | ------- | ------------ | ------------ | ------ |
-| B1         | A      | B       | Cross        | 2            | K1     |
-| B2         | B      | A       | Circle       | 3            | K2     |
-| B3         | X      | Y       | Square       | 1            | P1     |
-| B4         | Y      | X       | Triangle     | 4            | P2     |
-| L1         | LB     | L       | L1           | 5            | P4     |
-| R1         | RB     | R       | R1           | 6            | P3     |
-| L2         | LT     | ZL      | L2           | 7            | K4     |
-| R2         | RT     | ZR      | R2           | 8            | K3     |
-| S1         | Back   | Minus   | Select       | 9            | Coin   |
-| S2         | Start  | Plus    | Start        | 10           | Start  |
-| L3         | LS     | LS      | L3           | 11           | LS     |
-| R3         | RS     | RS      | R3           | 12           | RS     |
-| A1         | Guide  | Home    | PS           | 13           | -      |
-| A2         | -      | Capture | -            | 14           | -      |
+| GP2040-CE  | XInput | Switch  | PS3          | PS4          | DirectInput  | Arcade | 
+| ---------- | ------ | ------- | ------------ | ------------ | ------------ | ------ |
+| B1         | A      | B       | Cross        | Cross        | 2            | K1     |
+| B2         | B      | A       | Circle       | Circle       | 3            | K2     |
+| B3         | X      | Y       | Square       | Square       | 1            | P1     |
+| B4         | Y      | X       | Triangle     | Triangle     | 4            | P2     |
+| L1         | LB     | L       | L1           | L1           | 5            | P4     |
+| R1         | RB     | R       | R1           | R1           | 6            | P3     |
+| L2         | LT     | ZL      | L2           | L2           | 7            | K4     |
+| R2         | RT     | ZR      | R2           | R2           | 8            | K3     |
+| S1         | Back   | Minus   | Select       | Share        | 9            | Coin   |
+| S2         | Start  | Plus    | Start        | Options      | 10           | Start  |
+| L3         | LS     | LS      | L3           | L3           | 11           | LS     |
+| R3         | RS     | RS      | R3           | R3           | 12           | RS     |
+| A1         | Guide  | Home    | PS           | PS           | 13           | -      |
+| A2         | -      | Capture | -            | Touchpad     | 14           | -      |
 
 If you do not have a dedicated Home button, you can activate it via the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> button combination.
 
@@ -50,6 +50,8 @@ To change the input mode, **hold one of the following buttons as the controller 
 * <hotkey v-bind:buttons='["B1"]'></hotkey> for Nintendo Switch
 * <hotkey v-bind:buttons='["B2"]'></hotkey> for XInput
 * <hotkey v-bind:buttons='["B3"]'></hotkey> for DirectInput/PS3
+* <hotkey v-bind:buttons='["B4"]'></hotkey> for PS4
+* <hotkey v-bind:buttons='["R2"]'></hotkey> for Keyboard
 
 Input mode is saved across power cycles.
 
