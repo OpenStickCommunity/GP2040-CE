@@ -32,11 +32,11 @@ jobs:
       working-directory: ${{github.workspace}}
       run: git submodule update --init
 
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v3.0.2
-      with:
-        name: fsData
-        path: ${{github.workspace}}/lib/httpd/
+    #- name: Download a Build Artifact
+    #  uses: actions/download-artifact@v3.0.2
+    #  with:
+    #    name: fsData
+    #    path: ${{github.workspace}}/lib/httpd/
     
     - name: Get core count
       id: core_count
