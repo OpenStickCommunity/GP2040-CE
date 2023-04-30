@@ -11,10 +11,10 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  #call-node-workflow:
-  #  uses: ./.github/workflows/node.js.yml
+  call-node-workflow:
+    uses: ./.github/workflows/node.js.yml
   build:
-  #  needs: call-node-workflow
+    needs: call-node-workflow
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
@@ -32,11 +32,11 @@ jobs:
       working-directory: ${{github.workspace}}
       run: git submodule update --init
 
-    #- name: Download a Build Artifact
-    #  uses: actions/download-artifact@v3.0.2
-    #  with:
-    #    name: fsData
-    #    path: ${{github.workspace}}/lib/httpd/
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v3.0.2
+      with:
+        name: fsData
+        path: ${{github.workspace}}/lib/httpd/
     
     - name: Get core count
       id: core_count
