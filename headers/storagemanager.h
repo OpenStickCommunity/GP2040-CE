@@ -88,8 +88,8 @@ struct AddonOptions {
 	uint8_t pinButtonReverse;
 	uint8_t pinSliderLS;
 	uint8_t pinSliderRS;
-	uint8_t pinSliderSOCDUp;
-	uint8_t pinSliderSOCDSecond;
+	uint8_t pinSliderSOCDOne;
+	uint8_t pinSliderSOCDTwo;
 	uint8_t turboShotCount; // Turbo
 	uint8_t pinTurboLED;    // Turbo LED
 	uint8_t pinReverseLED;    // Reverse LED
@@ -132,6 +132,9 @@ struct AddonOptions {
 	uint16_t shmupBtnMask3;
 	uint16_t shmupBtnMask4;
 	uint8_t pinShmupDial;
+	SOCDMode sliderSOCDModeOne;
+	SOCDMode sliderSOCDModeTwo;
+	SOCDMode sliderSOCDModeDefault;
 	uint8_t AnalogInputEnabled;
 	uint8_t BoardLedAddonEnabled;
 	uint8_t BootselButtonAddonEnabled;
