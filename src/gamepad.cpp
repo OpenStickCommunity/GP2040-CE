@@ -256,15 +256,19 @@ GamepadHotkey Gamepad::hotkey()
 		if (state.dpad == hotkeyF1Down .dpadMask) action = hotkeyF1Down .action;
 		if (state.dpad == hotkeyF1Left .dpadMask) action = hotkeyF1Left .action;
 		if (state.dpad == hotkeyF1Right.dpadMask) action = hotkeyF1Right.action;
-		state.dpad = 0;
-		state.buttons &= ~(f1Mask);	
+		if (action != HOTKEY_NONE) {
+			state.dpad = 0;
+			state.buttons &= ~(f1Mask);
+		}
 	} else if (pressedF2()) {
 		if (state.dpad == hotkeyF2Up   .dpadMask) action = hotkeyF2Up   .action;
 		if (state.dpad == hotkeyF2Down .dpadMask) action = hotkeyF2Down .action;
 		if (state.dpad == hotkeyF2Left .dpadMask) action = hotkeyF2Left .action;
 		if (state.dpad == hotkeyF2Right.dpadMask) action = hotkeyF2Right.action;
-		state.dpad = 0;
-		state.buttons &= ~(f2Mask);	
+		if (action != HOTKEY_NONE) {
+			state.dpad = 0;
+			state.buttons &= ~(f2Mask);
+		}
 	}
 
 	switch (action) {
