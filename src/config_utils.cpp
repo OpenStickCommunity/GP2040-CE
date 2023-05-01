@@ -57,8 +57,16 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 	INIT_UNSET_PROPERTY_STR(config, boardVersion, GP2040VERSION);
 
 	// gamepadOptions
+#ifdef DEFAULT_INPUT_MODE
+	INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
+#else
 	INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, INPUT_MODE_XINPUT);
+#endif
+#ifdef DEFAULT_DPAD_MODE
+	INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DEFAULT_DPAD_MODE);
+#else
 	INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DPAD_MODE_DIGITAL);
+#endif
 #ifdef DEFAULT_SOCD_MODE
 	INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, static_cast<SOCDMode>(DEFAULT_SOCD_MODE));
 #else
