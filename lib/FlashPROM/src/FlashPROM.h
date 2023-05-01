@@ -43,7 +43,7 @@ class FlashPROM
 				memcpy(&cache[index], &value, sizeof(T));
 		}
 
-	private:
+	// private:
 		static uint8_t cache[EEPROM_SIZE_BYTES];
 };
 
