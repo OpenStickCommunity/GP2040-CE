@@ -195,7 +195,7 @@ void TurboInput::process()
 
     // Disable button during turbo flicker
     if (bTurboFlicker) { 
-        if ( options.shmupMode && options.shmupMixMode == CHARGE_PRIORITY) {
+        if ( options.shmupMode && options.shmupMixMode == SHMUP_MIX_MODE_CHARGE_PRIORITY) {
             gamepad->state.buttons &= ~(turboButtonsPressed & ~(chargeState));  // Do not flicker charge buttons
         } else {
             gamepad->state.buttons &= ~(turboButtonsPressed);

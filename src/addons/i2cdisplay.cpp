@@ -14,8 +14,8 @@
 
 bool I2CDisplayAddon::available() {
 	BoardOptions boardOptions = getBoardOptions();
-	return boardOptions.hasI2CDisplay && 
-		boardOptions.i2cSDAPin != (uint8_t)-1 && 
+	return boardOptions.hasI2CDisplay &&
+		boardOptions.i2cSDAPin != (uint8_t)-1 &&
 		boardOptions.i2cSCLPin != (uint8_t)-1;
 }
 
@@ -33,14 +33,14 @@ void I2CDisplayAddon::setup() {
 		boardOptions.i2cBlock == 0 ? i2c0 : i2c1,
 		-1,
 		boardOptions.i2cSpeed);
-		
+
 	const int detectedDisplay = initDisplay(0);
 	if (isSH1106(detectedDisplay)) {
 		// The display is actually a SH1106 that was misdetected as a SSD1306 by OneBitDisplay.
 		// Reinitialize as SH1106.
 		initDisplay(OLED_132x64);
 	}
-	
+
 	obdSetContrast(&obd, 0xFF);
 	obdSetBackBuffer(&obd, ucBackBuffer);
 	clearScreen(1);
@@ -56,7 +56,7 @@ void I2CDisplayAddon::setup() {
 bool I2CDisplayAddon::isDisplayPowerOff()
 {
 	if (!displaySaverTimeout) return false;
-	
+
 	float diffTime = getMillis() - prevMillis;
 	displaySaverTimer -= diffTime;
 
@@ -96,7 +96,7 @@ void I2CDisplayAddon::process() {
 			drawText(5, 7, "B2 > Splash");
 			break;
 		case I2CDisplayAddon::DisplayMode::SPLASH:
-			if (getBoardOptions().splashMode == NOSPLASH) {
+			if (getBoardOptions().splashMode == SPLASH_MODE_NONE) {
 				drawText(0, 4, " Splash NOT enabled.");
 				break;
 			}
@@ -231,11 +231,11 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 		prevButtonState = buttonState;
 		return prevDisplayMode;
 	} else {
-		if (Storage::getInstance().getBoardOptions().splashMode != NOSPLASH) {
+		if (Storage::getInstance().getBoardOptions().splashMode != SPLASH_MODE_NONE) {
 			int splashDuration = getBoardOptions().splashDuration;
 			if (splashDuration == 0 || getMillis() < splashDuration) {
 				return I2CDisplayAddon::DisplayMode::SPLASH;
-			}				
+			}
 		}
 	}
 
@@ -481,7 +481,7 @@ void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, 
 
 	// Stick
 	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-	
+
 	if (pressedUp()) {
 		if (pressedLeft()) {
 			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
@@ -513,7 +513,7 @@ void I2CDisplayAddon::drawVLXA(int startX, int startY, int buttonRadius, int but
 
 	// Stick
 	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-	
+
 	if (pressedUp()) {
 		if (pressedLeft()) {
 			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
@@ -568,7 +568,7 @@ void I2CDisplayAddon::drawTwinStickA(int startX, int startY, int buttonRadius, i
 
 	// Stick
 	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-	
+
 	if (pressedUp()) {
 		if (pressedLeft()) {
 			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
@@ -600,7 +600,7 @@ void I2CDisplayAddon::drawTwinStickB(int startX, int startY, int buttonRadius, i
 
 	// Stick
 	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-	
+
 	if (pGamepad->pressedB4()) {
 		if (pGamepad->pressedB3()) {
 			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
@@ -861,7 +861,7 @@ void I2CDisplayAddon::drawDancepadA(int startX, int startY, int buttonSize, int 
 void I2CDisplayAddon::drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding)
 {
 	const int buttonMargin = buttonPadding + buttonSize;
-	
+
 	obdRectangle(&obd, startX, startY, startX + buttonSize, startY + buttonSize, 1, pGamepad->pressedB2()); // Up/Left
 	obdRectangle(&obd, startX, startY + buttonMargin * 2, startX + buttonSize, startY + buttonSize + buttonMargin * 2, 1, pGamepad->pressedB4()); // Down/Left
 	obdRectangle(&obd, startX + buttonMargin * 2, startY, startX + buttonSize + buttonMargin * 2, startY + buttonSize, 1, pGamepad->pressedB1()); // Up/Right
@@ -881,14 +881,14 @@ void I2CDisplayAddon::drawSplashScreen(int splashMode, uint8_t * splashChoice, i
     int mils = getMillis();
     switch (splashMode)
 	{
-		case STATICSPLASH: // Default, display static or custom image
+		case SPLASH_MODE_STATIC: // Default, display static or custom image
 			obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
 			break;
-		case CLOSEIN: // Close-in. Animate the GP2040 logo
+		case SPLASH_MODE_CLOSEIN: // Close-in. Animate the GP2040 logo
 			obdDrawSprite(&obd, (uint8_t *)bootLogoTop, 43, 39, 6, 43, std::min<int>((mils / splashSpeed) - 39, 0), 1);
 			obdDrawSprite(&obd, (uint8_t *)bootLogoBottom, 80, 21, 10, 24, std::max<int>(64 - (mils / (splashSpeed * 2)), 44), 1);
 			break;
-        case CLOSEINCUSTOM: // Close-in on custom image or delayed close-in if custom image does not exist
+        case SPLASH_MODE_CLOSEINCUSTOM: // Close-in on custom image or delayed close-in if custom image does not exist
             obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
             if (mils > 2500) {
                 int milss = mils - 2500;

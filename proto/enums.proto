@@ -48,31 +48,31 @@ enum SplashMode
 {
 	option (nanopb_enumopt).long_names = false;
 
-	STATICSPLASH = 0;
-	CLOSEIN = 1;
-	CLOSEINCUSTOM = 2;
-	NOSPLASH = 3;
+	SPLASH_MODE_STATIC = 0;
+	SPLASH_MODE_CLOSEIN = 1;
+	SPLASH_MODE_CLOSEINCUSTOM = 2;
+	SPLASH_MODE_NONE = 3;
 }
 
 enum SplashChoice
 {
 	option (nanopb_enumopt).long_names = false;
 
-	MAIN = 0;
-	X = 1;
-	Y = 2;
-	Z = 3;
-	CUSTOM = 4;
-	LEGACY = 5;
+	SPLASH_CHOICE_MAIN = 0;
+	SPLASH_CHOICE_X = 1;
+	SPLASH_CHOICE_Y = 2;
+	SPLASH_CHOICE_Z = 3;
+	SPLASH_CHOICE_CUSTOM = 4;
+	SPLASH_CHOICE_LEGACY = 5;
 }
 
 enum OnBoardLedMode
 {
 	option (nanopb_enumopt).long_names = false;
 	
-	BOARD_LED_OFF = 0;
-	MODE_INDICATOR = 1;
-	INPUT_TEST = 2;
+	ON_BOARD_LED_MODE_OFF = 0;
+	ON_BOARD_LED_MODE_MODE_INDICATOR = 1;
+	ON_BOARD_LED_MODE_INPUT_TEST = 2;
 }
 
 enum InputMode
@@ -137,6 +137,6 @@ enum ShmupMixMode
 {
 	option (nanopb_enumopt).long_names = false;
 
-	TURBO_PRIORITY = 0;
-	CHARGE_PRIORITY = 1;
+	SHMUP_MIX_MODE_TURBO_PRIORITY = 0;
+	SHMUP_MIX_MODE_CHARGE_PRIORITY = 1;
 }

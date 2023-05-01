@@ -5,7 +5,7 @@ bool BoardLedAddon::available() {
     AddonOptions options = Storage::getInstance().getAddonOptions();
     onBoardLedMode = options.onBoardLedMode;
     return options.BoardLedAddonEnabled &&
-        onBoardLedMode != OnBoardLedMode::BOARD_LED_OFF; // Available only when it's not set to off
+        onBoardLedMode != OnBoardLedMode::ON_BOARD_LED_MODE_OFF; // Available only when it's not set to off
 }
 
 void BoardLedAddon::setup() {
@@ -20,7 +20,7 @@ void BoardLedAddon::process() {
     bool state = 0;
     Gamepad * gamepad;
     switch (onBoardLedMode) {
-        case OnBoardLedMode::INPUT_TEST: // Blinks on input
+        case OnBoardLedMode::ON_BOARD_LED_MODE_INPUT_TEST: // Blinks on input
             gamepad = Storage::getInstance().GetGamepad();
             state =    (gamepad->rawState.buttons != 0)
                     || (gamepad->rawState.dpad    != 0)
@@ -36,7 +36,7 @@ void BoardLedAddon::process() {
             }
             prevState = state;
             break;
-        case OnBoardLedMode::MODE_INDICATOR: // Blinks based on USB state and config mode
+        case OnBoardLedMode::ON_BOARD_LED_MODE_MODE_INDICATOR: // Blinks based on USB state and config mode
             if (!get_usb_mounted()) { // USB not mounted
                 uint32_t millis = getMillis();
                 if ((millis - timeSinceBlink) > BLINK_INTERVAL_USB_UNMOUNTED) {
@@ -60,7 +60,7 @@ void BoardLedAddon::process() {
                 }
             }
             break;
-        case OnBoardLedMode::BOARD_LED_OFF:
+        case OnBoardLedMode::ON_BOARD_LED_MODE_OFF:
             return;
             break;
     }
