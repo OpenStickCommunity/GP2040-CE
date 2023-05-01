@@ -37,19 +37,19 @@ Full results can be found in the [GP2040-CE Firmware Latency Test Results](https
 
 Prebuilt MicroPython `UF2` files are available in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section.
 
-The default pinout for GP2040-CE is based on an official RaspBerry Pi Pico. That pinout can be found [HERE](configs/Pico/assets/PinMapping.png).  This can be found in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section under Pico.
+The default pinout for GP2040-CE is based on an official RaspBerry Pi Pico. That pinout can be found [HERE](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/Pico/assets/PinMapping.png).  This can be found in the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section under Pico.
 
 In addition to the default UF2 we also offer pre-compiled UF2s from community members that have verified operation with their own devices. Some of these additional configurations include:
 
 > * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
-> * [Crush Counter](configs/CrushCounter) (formerly the [OSFRD](configs/OSFRD))
-> * [DURAL](configs/DURAL)
-> * [Flatbox Rev 4/Rev 5](configs/FlatboxRev4)
-> * [WaveShare RP2040 Zero](configs/WaveshareZero)
+> * [DURAL](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/DURAL)
+> * [Flatbox Rev 4](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/FlatboxRev4)
+> * [Flatbox Rev 5](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/FlatboxRev5)
+> * [WaveShare RP2040 Zero](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/WaveshareZero)
 
 The instructions will slightly vary based on your device. These instructions are for a Raspberry Pi Pico.
 
-> If the device has been previously used for something other than GP2040-CE, please flash this file first to clear the on-board storage: [flash_nuke.uf2](docs/downloads/flash_nuke.uf2). After flashing the nuke file, wait a minute for the clear program to run and the RPI-RP2 drive to reappear.
+> If the device has been previously used for something other than GP2040-CE, please flash this file first to clear the on-board storage: [flash_nuke.uf2](https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/docs/downloads/flash_nuke.uf2). After flashing the nuke file, wait a minute for the clear program to run and the RPI-RP2 drive to reappear.
 
 1. Download the latest `GP2040-CE.uf2` file from the [Releases](https://github.com/OpenStickCommunity/GP2040-CE/releases) section for your board (e.g. `GP2040-CE-PicoFightingBoard_vX.X.X.uf2` for the Raspberry Pi Pico).
 1. Unplug your Pico.
@@ -59,7 +59,7 @@ The instructions will slightly vary based on your device. These instructions are
 
 ## Support
 
-If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](issues/new) or join the [OpenStick GP2040-CE Discord channel](https://discord.gg/k2pxhke7q8).
+If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](https://github.com/OpenStickCommunity/GP2040-CE/issues/new) or join the [OpenStick GP2040-CE Discord channel](https://discord.gg/k2pxhke7q8).
 
 ### Frequently Asked Questions
 
@@ -125,3 +125,4 @@ Join the [OpenStick GP2040-CE channel](https://discord.gg/k2pxhke7q8) to partici
 * [alirin222](https://github.com/alirin222) for the awesome turbo code ([@alirin222](https://twitter.com/alirin222) on Twitter)
 * [DeBug] for improvments to the web-UI and fixing the PS3 homebutton issue
 * [TheTrain](https://github.com/TheTrainGoes/GP2040-Projects) and [Fortinbra](https://github.com/Fortinbra) for helping keep our community chugging along
+* [PassingLink](https://github.com/passinglink/passinglink) for the technical details and code for PS4 implementation

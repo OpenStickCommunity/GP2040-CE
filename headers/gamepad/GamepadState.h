@@ -167,6 +167,8 @@ inline uint8_t runSOCDCleaner(SOCDMode mode, uint8_t dpad)
 			}
 			else if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastUD != DIRECTION_NONE)
 				newDpad |= (lastUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
+			else if (mode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastUD != DIRECTION_NONE)
+				newDpad |= (lastUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
 			else
 				lastUD = DIRECTION_NONE;
 			break;
@@ -191,6 +193,8 @@ inline uint8_t runSOCDCleaner(SOCDMode mode, uint8_t dpad)
 		case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
 			if (mode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastLR != DIRECTION_NONE)
 				newDpad |= (lastLR == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
+			else if (mode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastLR != DIRECTION_NONE)
+				newDpad |= (lastLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
 			else
 				lastLR = DIRECTION_NONE;
 			break;

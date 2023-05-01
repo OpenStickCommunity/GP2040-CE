@@ -9,12 +9,24 @@
 #define SLIDER_SOCD_ENABLED 0
 #endif
 
-#ifndef PIN_SLIDER_SOCD_UP
-#define PIN_SLIDER_SOCD_UP    -1
+#ifndef PIN_SLIDER_SOCD_ONE
+#define PIN_SLIDER_SOCD_ONE    -1
 #endif
 
-#ifndef PIN_SLIDER_SOCD_SECOND
-#define PIN_SLIDER_SOCD_SECOND    -1
+#ifndef PIN_SLIDER_SOCD_TWO
+#define PIN_SLIDER_SOCD_TWO    -1
+#endif
+
+#ifndef SLIDER_SOCD_SLOT_ONE
+#define SLIDER_SOCD_SLOT_ONE SOCD_MODE_UP_PRIORITY
+#endif
+
+#ifndef SLIDER_SOCD_SLOT_TWO 
+#define SLIDER_SOCD_SLOT_TWO  SOCD_MODE_SECOND_INPUT_PRIORITY
+#endif
+
+#ifndef SLIDER_SOCD_SLOT_DEFAULT
+#define SLIDER_SOCD_SLOT_DEFAULT SOCD_MODE_NEUTRAL
 #endif
 
 // Slider Module Name
@@ -33,8 +45,11 @@ private:
     SOCDMode socdState;           // Saved locally for debounce
     SOCDMode dDebState;          // Debounce SliderSOCD State
     uint32_t uDebTime;          // Debounce SliderSOCD Time
-    uint8_t pinSliderSOCDUp;
-    uint8_t pinSliderSOCDSecond;
+    SOCDMode sliderSOCDModeOne;
+    SOCDMode sliderSOCDModeTwo;
+    SOCDMode sliderSOCDModeDefault;
+    uint8_t pinSliderSOCDOne;
+    uint8_t pinSliderSOCDTwo;
 };
 
 #endif  // _SliderSOCD_H_
