@@ -5,9 +5,9 @@ import "enums.proto";
 
 message GamepadOptions_Proto
 {
-	optional InputMode_Proto inputMode = 1;
-	optional DpadMode_Proto dpadMode = 2;
-	optional SOCDMode_Proto socdMode = 3;
+	optional InputMode inputMode = 1;
+	optional DpadMode dpadMode = 2;
+	optional SOCDMode socdMode = 3;
 	optional bool invertXAxis = 4;
 	optional bool invertYAxis = 5;
 }
@@ -211,7 +211,7 @@ message DualDirectionalOptions
 	optional int32 leftPin = 4;
 	optional int32 rightPin = 5;
 	
-	optional DpadMode_Proto dpadMode = 6;
+	optional DpadMode dpadMode = 6;
 	optional uint32 combineMode = 7;
 }
 

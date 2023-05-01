@@ -92,12 +92,12 @@ FetchContent_Declare(ArduinoJson
 )
 FetchContent_MakeAvailable(ArduinoJson)
 
+include(compile_proto.cmake)
+compile_proto()
+
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 add_subdirectory(lib)
-
-include(compile_proto.cmake)
-compile_proto()
 
 add_executable(${PROJECT_NAME}
 src/main.cpp

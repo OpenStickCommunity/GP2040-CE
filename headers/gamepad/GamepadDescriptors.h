@@ -13,6 +13,8 @@
 #include "descriptors/KeyboardDescriptors.h"
 #include "descriptors/PS4Descriptors.h"
 
+#include "enums.pb.h"
+
 // Default value used for networking, override if necessary
 static uint8_t macAddress[6] = { 0x02, 0x02, 0x84, 0x6A, 0x96, 0x00 };
 

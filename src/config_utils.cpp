@@ -57,12 +57,12 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 	INIT_UNSET_PROPERTY_STR(config, boardVersion, GP2040VERSION);
 
 	// gamepadOptions
-	INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, InputMode_Proto_INPUT_MODE_XINPUT);
-	INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DpadMode_Proto_DPAD_MODE_DIGITAL);
+	INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, INPUT_MODE_XINPUT);
+	INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DPAD_MODE_DIGITAL);
 #ifdef DEFAULT_SOCD_MODE
-	INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, static_cast<SOCDMode_Proto>(DEFAULT_SOCD_MODE));
+	INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, static_cast<SOCDMode>(DEFAULT_SOCD_MODE));
 #else
-	INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, SOCDMode_Proto_SOCD_MODE_NEUTRAL);
+	INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, SOCD_MODE_NEUTRAL);
 #endif
 	INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
 	INIT_UNSET_PROPERTY(config.gamepadOptions, invertYAxis, false);
@@ -217,7 +217,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 	INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, downPin, PIN_DUAL_DIRECTIONAL_DOWN)
 	INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, leftPin, PIN_DUAL_DIRECTIONAL_LEFT);
 	INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, rightPin, PIN_DUAL_DIRECTIONAL_RIGHT);
-	INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode_Proto>(DUAL_DIRECTIONAL_STICK_MODE));
+	INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode>(DUAL_DIRECTIONAL_STICK_MODE));
 	INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
 
 	// addonOptions.buzzerOptions

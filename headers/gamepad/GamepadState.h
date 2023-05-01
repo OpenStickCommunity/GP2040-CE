@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include "GamepadEnums.h"
+#include "enums.pb.h"
 
 #define GAMEPAD_BUTTON_COUNT 14
 
