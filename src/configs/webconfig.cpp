@@ -4,6 +4,7 @@
 #include "storagemanager.h"
 #include "configmanager.h"
 #include "system.h"
+#include "config_utils.h"
 
 #include <cstring>
 #include <string>
@@ -44,12 +45,14 @@
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
 #define API_GET_MEMORY_REPORT "/api/getMemoryReport"
+#define API_GET_CONFIG "/api/getConfig"
+#define API_SET_CONFIG "/api/setConfig"
 #if !defined(NDEBUG)
 #define API_POST_ECHO "/api/echo"
 #endif
 #define API_REBOOT "/api/reboot"
 
-#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
+#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 8)
 
 using namespace std;
 
@@ -77,20 +80,49 @@ void WebConfig::loop() {
 	}
 }
 
+enum class HttpStatusCode
+{
+	_200,
+	_400,
+	_500,
+};
+
+struct DataAndStatusCode
+{
+	DataAndStatusCode(string&& data, HttpStatusCode statusCode) :
+		data(std::move(data)),
+		statusCode(statusCode)
+	{}
+
+	string data;
+	HttpStatusCode statusCode;
+};
+
 // **** WEB SERVER Overrides and Special Functionality ****
-int set_file_data(struct fs_file *file, string data)
+int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 {
 	static string returnData;
+
+	const char* statusCodeStr = "";
+	switch (dataAndStatusCode.statusCode)
+	{
+		case HttpStatusCode::_200: statusCodeStr = "200 OK"; break;
+		case HttpStatusCode::_400: statusCodeStr = "400 Bad Request"; break;
+		case HttpStatusCode::_500: statusCodeStr = "500 Internal Server Error"; break;
+	}
+
 	returnData.clear();
+	returnData.append("HTTP/1.0 ");
+	returnData.append(statusCodeStr);
+	returnData.append("\r\n");
 	returnData.append(
-		"HTTP/1.0 200 OK\r\n"
 		"Server: GP2040-CE " GP2040VERSION "\r\n"
 		"Content-Type: application/json\r\n"
 		"Content-Length: "
 	);
-	returnData.append(std::to_string(data.length()));
+	returnData.append(std::to_string(dataAndStatusCode.data.length()));
 	returnData.append("\r\n\r\n");
-	returnData.append(data);
+	returnData.append(dataAndStatusCode.data);
 
 	file->data = returnData.c_str();
 	file->len = returnData.size();
@@ -99,6 +131,11 @@ int set_file_data(struct fs_file *file, string data)
 	file->pextension = NULL;
 
 	return 1;
+}
+
+int set_file_data(fs_file *file, string&& data)
+{
+	return set_file_data(file, DataAndStatusCode(std::move(data), HttpStatusCode::_200));
 }
 
 DynamicJsonDocument get_post_data()
@@ -844,6 +881,33 @@ std::string getMemoryReport()
 	return serialize_json(doc);
 }
 
+std::string getConfig()
+{
+	Config config = ConfigUtils::load();
+	return ConfigUtils::toJSON(config);
+}
+
+DataAndStatusCode setConfig()
+{
+	bool success = false;
+	Config config = ConfigUtils::fromJSON(http_post_payload, http_post_payload_len, success);
+	if (success)
+	{
+		if (ConfigUtils::save(config))
+		{
+			return DataAndStatusCode(ConfigUtils::toJSON(config), HttpStatusCode::_200);
+		}
+		else
+		{
+			return DataAndStatusCode("{ \"error\": \"internal error while saving config\" }", HttpStatusCode::_500);
+		}
+	}
+	else
+	{
+		return DataAndStatusCode("{ \"error\": \"invalid JSON document\" }", HttpStatusCode::_400);
+	}
+}
+
 // This should be a storage feature
 std::string resetSettings()
 {
@@ -887,49 +951,53 @@ std::string reboot()
 int fs_open_custom(struct fs_file *file, const char *name)
 {
 	if (strcmp(name, API_SET_DISPLAY_OPTIONS) == 0)
-			return set_file_data(file, setDisplayOptions());
+		return set_file_data(file, setDisplayOptions());
 	if (strcmp(name, API_SET_PREVIEW_DISPLAY_OPTIONS) == 0)
-			return set_file_data(file, setPreviewDisplayOptions());
+		return set_file_data(file, setPreviewDisplayOptions());
 	if (strcmp(name, API_SET_GAMEPAD_OPTIONS) == 0)
-			return set_file_data(file, setGamepadOptions());
+		return set_file_data(file, setGamepadOptions());
 	if (strcmp(name, API_SET_LED_OPTIONS) == 0)
-			return set_file_data(file, setLedOptions());
+		return set_file_data(file, setLedOptions());
 	if (strcmp(name, API_SET_PIN_MAPPINGS) == 0)
-			return set_file_data(file, setPinMappings());
+		return set_file_data(file, setPinMappings());
 	if (strcmp(name, API_SET_KEY_MAPPINGS) == 0)
-			return set_file_data(file, setKeyMappings());
+		return set_file_data(file, setKeyMappings());
 	if (strcmp(name, API_SET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, setAddonOptions());
 	if (strcmp(name, API_SET_PS4_OPTIONS) == 0)
 			return set_file_data(file, setPS4Options());
 	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
-			return set_file_data(file, setSplashImage());
+		return set_file_data(file, setSplashImage());
 	if (strcmp(name, API_REBOOT) == 0)
-			return set_file_data(file, reboot());
+		return set_file_data(file, reboot());
 #if !defined(NDEBUG)
 	if (strcmp(name, API_POST_ECHO) == 0)
 		return set_file_data(file, echo());
 #endif
 	if (strcmp(name, API_GET_DISPLAY_OPTIONS) == 0)
-			return set_file_data(file, getDisplayOptions());
+		return set_file_data(file, getDisplayOptions());
 	if (strcmp(name, API_GET_GAMEPAD_OPTIONS) == 0)
-			return set_file_data(file, getGamepadOptions());
+		return set_file_data(file, getGamepadOptions());
 	if (strcmp(name, API_GET_LED_OPTIONS) == 0)
-			return set_file_data(file, getLedOptions());
+		return set_file_data(file, getLedOptions());
 	if (strcmp(name, API_GET_PIN_MAPPINGS) == 0)
-			return set_file_data(file, getPinMappings());
+		return set_file_data(file, getPinMappings());
 	if (strcmp(name, API_GET_KEY_MAPPINGS) == 0)
-			return set_file_data(file, getKeyMappings());
+		return set_file_data(file, getKeyMappings());
 	if (strcmp(name, API_GET_ADDON_OPTIONS) == 0)
-			return set_file_data(file, getAddonOptions());
+		return set_file_data(file, getAddonOptions());
 	if (strcmp(name, API_RESET_SETTINGS) == 0)
-			return set_file_data(file, resetSettings());
+		return set_file_data(file, resetSettings());
 	if (strcmp(name, API_GET_SPLASH_IMAGE) == 0)
-			return set_file_data(file, getSplashImage());
+		return set_file_data(file, getSplashImage());
 	if (strcmp(name, API_GET_FIRMWARE_VERSION) == 0)
-			return set_file_data(file, getFirmwareVersion());
+		return set_file_data(file, getFirmwareVersion());
 	if (strcmp(name, API_GET_MEMORY_REPORT) == 0)
-			return set_file_data(file, getMemoryReport());
+		return set_file_data(file, getMemoryReport());
+	if (strcmp(name, API_GET_CONFIG) == 0)
+		return set_file_data(file, getConfig());
+	if (strcmp(name, API_SET_CONFIG) == 0)
+		return set_file_data(file, setConfig());
 
 	bool isExclude = false;
 	for (auto &excludePath : excludePaths)
