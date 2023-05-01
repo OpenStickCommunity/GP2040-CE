@@ -35,8 +35,11 @@
 #define API_SET_LED_OPTIONS "/api/setLedOptions"
 #define API_GET_PIN_MAPPINGS "/api/getPinMappings"
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
+#define API_GET_KEY_MAPPINGS "/api/getKeyMappings"
+#define API_SET_KEY_MAPPINGS "/api/setKeyMappings"
 #define API_GET_ADDON_OPTIONS "/api/getAddonsOptions"
 #define API_SET_ADDON_OPTIONS "/api/setAddonsOptions"
+#define API_SET_PS4_OPTIONS "/api/setPS4Options"
 #define API_GET_SPLASH_IMAGE "/api/getSplashImage"
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
@@ -52,13 +55,14 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/settings", "/reset-settings", "/add-ons" };
+const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
 static uint16_t http_post_payload_len = 0;
 static absolute_time_t rebootDelayTimeout = nil_time;
+static System::BootMode rebootMode = System::BootMode::DEFAULT;
 
 void WebConfig::setup() {
 	rndis_init();
@@ -69,7 +73,7 @@ void WebConfig::loop() {
 	rndis_task();
 
 	if (!is_nil_time(rebootDelayTimeout) && time_reached(rebootDelayTimeout)) {
-		System::reboot(System::BootMode::GAMEPAD);
+		System::reboot(rebootMode);
 	}
 }
 
@@ -174,6 +178,46 @@ void httpd_post_finished(void *connection, char *response_uri, uint16_t response
 	}
 }
 
+void addUsedPinsArray(DynamicJsonDocument& doc)
+{
+	auto usedPins = doc.createNestedArray("usedPins");
+
+	const auto addPinIfValid = [&](int pin)
+	{ 
+		if (pin >= 0 && pin < NUM_BANK0_GPIOS)
+		{
+			usedPins.add(pin);
+		}
+	};
+
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	addPinIfValid(boardOptions.pinDpadUp);
+	addPinIfValid(boardOptions.pinDpadDown);
+	addPinIfValid(boardOptions.pinDpadLeft);
+	addPinIfValid(boardOptions.pinDpadRight);
+	addPinIfValid(boardOptions.pinButtonB1);
+	addPinIfValid(boardOptions.pinButtonB2);
+	addPinIfValid(boardOptions.pinButtonB3);
+	addPinIfValid(boardOptions.pinButtonB4);
+	addPinIfValid(boardOptions.pinButtonL1);
+	addPinIfValid(boardOptions.pinButtonR1);
+	addPinIfValid(boardOptions.pinButtonL2);
+	addPinIfValid(boardOptions.pinButtonR2);
+	addPinIfValid(boardOptions.pinButtonS1);
+	addPinIfValid(boardOptions.pinButtonS2);
+	addPinIfValid(boardOptions.pinButtonL3);
+	addPinIfValid(boardOptions.pinButtonR3);
+	addPinIfValid(boardOptions.pinButtonA1);
+	addPinIfValid(boardOptions.pinButtonA2);
+	addPinIfValid(boardOptions.i2cSDAPin);
+	addPinIfValid(boardOptions.i2cSCLPin);
+
+	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	addPinIfValid(addonOptions.analogAdcPinX);
+	addPinIfValid(addonOptions.analogAdcPinY);
+	addPinIfValid(addonOptions.buzzerPin);
+}
+
 std::string serialize_json(DynamicJsonDocument &doc)
 {
 	string data;
@@ -262,26 +306,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonRadius"]  = boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius;
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["buttonPadding"] = boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding;
 
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	auto usedPins = doc.createNestedArray("usedPins");
-	usedPins.add(gamepad->mapDpadUp->pin);
-	usedPins.add(gamepad->mapDpadDown->pin);
-	usedPins.add(gamepad->mapDpadLeft->pin);
-	usedPins.add(gamepad->mapDpadRight->pin);
-	usedPins.add(gamepad->mapButtonB1->pin);
-	usedPins.add(gamepad->mapButtonB2->pin);
-	usedPins.add(gamepad->mapButtonB3->pin);
-	usedPins.add(gamepad->mapButtonB4->pin);
-	usedPins.add(gamepad->mapButtonL1->pin);
-	usedPins.add(gamepad->mapButtonR1->pin);
-	usedPins.add(gamepad->mapButtonL2->pin);
-	usedPins.add(gamepad->mapButtonR2->pin);
-	usedPins.add(gamepad->mapButtonS1->pin);
-	usedPins.add(gamepad->mapButtonS2->pin);
-	usedPins.add(gamepad->mapButtonL3->pin);
-	usedPins.add(gamepad->mapButtonR3->pin);
-	usedPins.add(gamepad->mapButtonA1->pin);
-	usedPins.add(gamepad->mapButtonA2->pin);
+	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
@@ -317,6 +342,15 @@ std::string setGamepadOptions()
 	gamepad->options.dpadMode  = doc["dpadMode"];
 	gamepad->options.inputMode = doc["inputMode"];
 	gamepad->options.socdMode  = doc["socdMode"];
+
+	gamepad->options.hotkeyF1Up.action    = doc["hotkeyF1"][0]["action"];
+	gamepad->options.hotkeyF1Down.action  = doc["hotkeyF1"][1]["action"];
+	gamepad->options.hotkeyF1Left.action  = doc["hotkeyF1"][2]["action"];
+	gamepad->options.hotkeyF1Right.action = doc["hotkeyF1"][3]["action"];
+	gamepad->options.hotkeyF2Up.action    = doc["hotkeyF2"][0]["action"];
+	gamepad->options.hotkeyF2Down.action  = doc["hotkeyF2"][1]["action"];
+	gamepad->options.hotkeyF2Left.action  = doc["hotkeyF2"][2]["action"];
+	gamepad->options.hotkeyF2Right.action = doc["hotkeyF2"][3]["action"];
 	ConfigManager::getInstance().setGamepadOptions(gamepad);
 	return serialize_json(doc);
 }
@@ -328,6 +362,34 @@ std::string getGamepadOptions()
 	doc["dpadMode"]  = options.dpadMode;
 	doc["inputMode"] = options.inputMode;
 	doc["socdMode"]  = options.socdMode;
+
+	auto hotkeyF1 = doc.createNestedArray("hotkeyF1");
+	auto f1Up = hotkeyF1.createNestedObject();
+	f1Up["action"] = options.hotkeyF1Up.action;
+	f1Up["mask"]   = options.hotkeyF1Up.dpadMask;
+	auto f1Down = hotkeyF1.createNestedObject();
+	f1Down["action"] = options.hotkeyF1Down.action;
+	f1Down["mask"]   = options.hotkeyF1Down.dpadMask;
+	auto f1Left = hotkeyF1.createNestedObject();
+	f1Left["action"] = options.hotkeyF1Left.action;
+	f1Left["mask"]   = options.hotkeyF1Left.dpadMask;
+	auto f1Right = hotkeyF1.createNestedObject();
+	f1Right["action"] = options.hotkeyF1Right.action;
+	f1Right["mask"]   = options.hotkeyF1Right.dpadMask;
+
+	auto hotkeyF2 = doc.createNestedArray("hotkeyF2");
+	auto f2Up = hotkeyF2.createNestedObject();
+	f2Up["action"] = options.hotkeyF2Up.action;
+	f2Up["mask"]   = options.hotkeyF2Up.dpadMask;
+	auto f2Down = hotkeyF2.createNestedObject();
+	f2Down["action"] = options.hotkeyF2Down.action;
+	f2Down["mask"]   = options.hotkeyF2Down.dpadMask;
+	auto f2Left = hotkeyF2.createNestedObject();
+	f2Left["action"] = options.hotkeyF2Left.action;
+	f2Left["mask"]   = options.hotkeyF2Left.dpadMask;
+	auto f2Right = hotkeyF2.createNestedObject();
+	f2Right["action"] = options.hotkeyF2Right.action;
+	f2Right["mask"]   = options.hotkeyF2Right.dpadMask;
 	return serialize_json(doc);
 }
 
@@ -395,40 +457,7 @@ std::string getLedOptions()
 	if (ledOptions.indexA1 == -1)    ledButtonMap["A1"]    = nullptr;  else ledButtonMap["A1"]    = ledOptions.indexA1;
 	if (ledOptions.indexA2 == -1)    ledButtonMap["A2"]    = nullptr;  else ledButtonMap["A2"]    = ledOptions.indexA2;
 
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	auto usedPins = doc.createNestedArray("usedPins");
-	usedPins.add(gamepad->mapDpadUp->pin);
-	usedPins.add(gamepad->mapDpadDown->pin);
-	usedPins.add(gamepad->mapDpadLeft->pin);
-	usedPins.add(gamepad->mapDpadRight->pin);
-	usedPins.add(gamepad->mapButtonB1->pin);
-	usedPins.add(gamepad->mapButtonB2->pin);
-	usedPins.add(gamepad->mapButtonB3->pin);
-	usedPins.add(gamepad->mapButtonB4->pin);
-	usedPins.add(gamepad->mapButtonL1->pin);
-	usedPins.add(gamepad->mapButtonR1->pin);
-	usedPins.add(gamepad->mapButtonL2->pin);
-	usedPins.add(gamepad->mapButtonR2->pin);
-	usedPins.add(gamepad->mapButtonS1->pin);
-	usedPins.add(gamepad->mapButtonS2->pin);
-	usedPins.add(gamepad->mapButtonL3->pin);
-	usedPins.add(gamepad->mapButtonR3->pin);
-	usedPins.add(gamepad->mapButtonA1->pin);
-	usedPins.add(gamepad->mapButtonA2->pin);
-
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	if (boardOptions.i2cSDAPin != -1)
-		usedPins.add(boardOptions.i2cSDAPin);
-	if (boardOptions.i2cSCLPin != -1)
-		usedPins.add(boardOptions.i2cSCLPin);
-
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
-	if (addonOptions.analogAdcPinX != -1)
-		usedPins.add(addonOptions.analogAdcPinX);
-	if (addonOptions.analogAdcPinY != -1)
-		usedPins.add(addonOptions.analogAdcPinY);
-	if (addonOptions.buzzerPin != -1)
-		usedPins.add(addonOptions.buzzerPin);
+	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
@@ -437,26 +466,29 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
+	// BoardOptions uses 0xff to denote unassigned pins
+	const auto convertPin = [] (int pin) -> uint8_t { return pin >= 0 && pin < NUM_BANK0_GPIOS ? pin : 0xff; };
+
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	boardOptions.hasBoardOptions = true;
-	boardOptions.pinDpadUp    = doc["Up"];
-	boardOptions.pinDpadDown  = doc["Down"];
-	boardOptions.pinDpadLeft  = doc["Left"];
-	boardOptions.pinDpadRight = doc["Right"];
-	boardOptions.pinButtonB1  = doc["B1"];
-	boardOptions.pinButtonB2  = doc["B2"];
-	boardOptions.pinButtonB3  = doc["B3"];
-	boardOptions.pinButtonB4  = doc["B4"];
-	boardOptions.pinButtonL1  = doc["L1"];
-	boardOptions.pinButtonR1  = doc["R1"];
-	boardOptions.pinButtonL2  = doc["L2"];
-	boardOptions.pinButtonR2  = doc["R2"];
-	boardOptions.pinButtonS1  = doc["S1"];
-	boardOptions.pinButtonS2  = doc["S2"];
-	boardOptions.pinButtonL3  = doc["L3"];
-	boardOptions.pinButtonR3  = doc["R3"];
-	boardOptions.pinButtonA1  = doc["A1"];
-	boardOptions.pinButtonA2  = doc["A2"];
+	boardOptions.pinDpadUp    = convertPin(doc["Up"]);
+	boardOptions.pinDpadDown  = convertPin(doc["Down"]);
+	boardOptions.pinDpadLeft  = convertPin(doc["Left"]);
+	boardOptions.pinDpadRight = convertPin(doc["Right"]);
+	boardOptions.pinButtonB1  = convertPin(doc["B1"]);
+	boardOptions.pinButtonB2  = convertPin(doc["B2"]);
+	boardOptions.pinButtonB3  = convertPin(doc["B3"]);
+	boardOptions.pinButtonB4  = convertPin(doc["B4"]);
+	boardOptions.pinButtonL1  = convertPin(doc["L1"]);
+	boardOptions.pinButtonR1  = convertPin(doc["R1"]);
+	boardOptions.pinButtonL2  = convertPin(doc["L2"]);
+	boardOptions.pinButtonR2  = convertPin(doc["R2"]);
+	boardOptions.pinButtonS1  = convertPin(doc["S1"]);
+	boardOptions.pinButtonS2  = convertPin(doc["S2"]);
+	boardOptions.pinButtonL3  = convertPin(doc["L3"]);
+	boardOptions.pinButtonR3  = convertPin(doc["R3"]);
+	boardOptions.pinButtonA1  = convertPin(doc["A1"]);
+	boardOptions.pinButtonA2  = convertPin(doc["A2"]);
 
 	Storage::getInstance().setBoardOptions(boardOptions);
 
@@ -466,26 +498,85 @@ std::string setPinMappings()
 std::string getPinMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+	// Webconfig uses -1 to denote unassigned pins
+	const auto convertPin = [] (uint8_t pin) -> int { return pin < NUM_BANK0_GPIOS ? pin : -1; };
+
+	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	doc["Up"]    = convertPin(boardOptions.pinDpadUp);
+	doc["Down"]  = convertPin(boardOptions.pinDpadDown);
+	doc["Left"]  = convertPin(boardOptions.pinDpadLeft);
+	doc["Right"] = convertPin(boardOptions.pinDpadRight);
+	doc["B1"]    = convertPin(boardOptions.pinButtonB1);
+	doc["B2"]    = convertPin(boardOptions.pinButtonB2);
+	doc["B3"]    = convertPin(boardOptions.pinButtonB3);
+	doc["B4"]    = convertPin(boardOptions.pinButtonB4);
+	doc["L1"]    = convertPin(boardOptions.pinButtonL1);
+	doc["R1"]    = convertPin(boardOptions.pinButtonR1);
+	doc["L2"]    = convertPin(boardOptions.pinButtonL2);
+	doc["R2"]    = convertPin(boardOptions.pinButtonR2);
+	doc["S1"]    = convertPin(boardOptions.pinButtonS1);
+	doc["S2"]    = convertPin(boardOptions.pinButtonS2);
+	doc["L3"]    = convertPin(boardOptions.pinButtonL3);
+	doc["R3"]    = convertPin(boardOptions.pinButtonR3);
+	doc["A1"]    = convertPin(boardOptions.pinButtonA1);
+	doc["A2"]    = convertPin(boardOptions.pinButtonA2);
+
+	return serialize_json(doc);
+}
+
+std::string setKeyMappings()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+	gamepad->options.keyDpadUp    = doc["Up"];
+	gamepad->options.keyDpadDown  = doc["Down"];
+	gamepad->options.keyDpadLeft  = doc["Left"];
+	gamepad->options.keyDpadRight = doc["Right"];
+	gamepad->options.keyButtonB1  = doc["B1"];
+	gamepad->options.keyButtonB2  = doc["B2"];
+	gamepad->options.keyButtonB3  = doc["B3"];
+	gamepad->options.keyButtonB4  = doc["B4"];
+	gamepad->options.keyButtonL1  = doc["L1"];
+	gamepad->options.keyButtonR1  = doc["R1"];
+	gamepad->options.keyButtonL2  = doc["L2"];
+	gamepad->options.keyButtonR2  = doc["R2"];
+	gamepad->options.keyButtonS1  = doc["S1"];
+	gamepad->options.keyButtonS2  = doc["S2"];
+	gamepad->options.keyButtonL3  = doc["L3"];
+	gamepad->options.keyButtonR3  = doc["R3"];
+	gamepad->options.keyButtonA1  = doc["A1"];
+	gamepad->options.keyButtonA2  = doc["A2"];
+
+	gamepad->save();
+
+	return serialize_json(doc);
+}
+
+std::string getKeyMappings()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	doc["Up"]    = gamepad->mapDpadUp->pin;
-	doc["Down"]  = gamepad->mapDpadDown->pin;
-	doc["Left"]  = gamepad->mapDpadLeft->pin;
-	doc["Right"] = gamepad->mapDpadRight->pin;
-	doc["B1"]    = gamepad->mapButtonB1->pin;
-	doc["B2"]    = gamepad->mapButtonB2->pin;
-	doc["B3"]    = gamepad->mapButtonB3->pin;
-	doc["B4"]    = gamepad->mapButtonB4->pin;
-	doc["L1"]    = gamepad->mapButtonL1->pin;
-	doc["R1"]    = gamepad->mapButtonR1->pin;
-	doc["L2"]    = gamepad->mapButtonL2->pin;
-	doc["R2"]    = gamepad->mapButtonR2->pin;
-	doc["S1"]    = gamepad->mapButtonS1->pin;
-	doc["S2"]    = gamepad->mapButtonS2->pin;
-	doc["L3"]    = gamepad->mapButtonL3->pin;
-	doc["R3"]    = gamepad->mapButtonR3->pin;
-	doc["A1"]    = gamepad->mapButtonA1->pin;
-	doc["A2"]    = gamepad->mapButtonA2->pin;
+	doc["Up"]    = gamepad->options.keyDpadUp;
+	doc["Down"]  = gamepad->options.keyDpadDown;
+	doc["Left"]  = gamepad->options.keyDpadLeft;
+	doc["Right"] = gamepad->options.keyDpadRight;
+	doc["B1"]    = gamepad->options.keyButtonB1;
+	doc["B2"]    = gamepad->options.keyButtonB2;
+	doc["B3"]    = gamepad->options.keyButtonB3;
+	doc["B4"]    = gamepad->options.keyButtonB4;
+	doc["L1"]    = gamepad->options.keyButtonL1;
+	doc["R1"]    = gamepad->options.keyButtonR1;
+	doc["L2"]    = gamepad->options.keyButtonL2;
+	doc["R2"]    = gamepad->options.keyButtonR2;
+	doc["S1"]    = gamepad->options.keyButtonS1;
+	doc["S2"]    = gamepad->options.keyButtonS2;
+	doc["L3"]    = gamepad->options.keyButtonL3;
+	doc["R3"]    = gamepad->options.keyButtonR3;
+	doc["A1"]    = gamepad->options.keyButtonA1;
+	doc["A2"]    = gamepad->options.keyButtonA2;
 
 	return serialize_json(doc);
 }
@@ -499,6 +590,8 @@ std::string setAddonOptions()
 	addonOptions.pinTurboLED        = doc["turboPinLED"] == -1 ? 0xFF : doc["turboPinLED"];
 	addonOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
 	addonOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
+	addonOptions.pinSliderSOCDOne  		= doc["sliderSOCDPinOne"] == -1 ? 0xFF : doc["sliderSOCDPinOne"];
+	addonOptions.pinSliderSOCDTwo    = doc["sliderSOCDPinTwo"] == -1 ? 0xFF : doc["sliderSOCDPinTwo"];
 	addonOptions.turboShotCount 	= doc["turboShotCount"];
 	addonOptions.pinButtonReverse  	= doc["reversePin"] == -1 ? 0xFF : doc["reversePin"];
 	addonOptions.pinReverseLED  	= doc["reversePinLED"] == -1 ? 0xFF : doc["reversePinLED"];
@@ -526,6 +619,24 @@ std::string setAddonOptions()
 	addonOptions.extraButtonPin        = doc["extraButtonPin"] == -1 ? 0xFF : doc["extraButtonPin"];
 	addonOptions.extraButtonMap = doc["extraButtonMap"];
 	addonOptions.playerNumber     = doc["playerNumber"];
+	addonOptions.shmupMode     = doc["shmupMode"];
+	addonOptions.shmupMixMode     = doc["shmupMixMode"];
+	addonOptions.shmupAlwaysOn1     = doc["shmupAlwaysOn1"];
+	addonOptions.shmupAlwaysOn2     = doc["shmupAlwaysOn2"];
+	addonOptions.shmupAlwaysOn3     = doc["shmupAlwaysOn3"];
+	addonOptions.shmupAlwaysOn4     = doc["shmupAlwaysOn4"];
+	addonOptions.pinShmupBtn1     = doc["pinShmupBtn1"] == -1 ? 0xFF : doc["pinShmupBtn1"];
+	addonOptions.pinShmupBtn2     = doc["pinShmupBtn2"] == -1 ? 0xFF : doc["pinShmupBtn2"];
+	addonOptions.pinShmupBtn3     = doc["pinShmupBtn3"] == -1 ? 0xFF : doc["pinShmupBtn3"];
+	addonOptions.pinShmupBtn4     = doc["pinShmupBtn4"] == -1 ? 0xFF : doc["pinShmupBtn4"];
+	addonOptions.shmupBtnMask1     = doc["shmupBtnMask1"];
+	addonOptions.shmupBtnMask2     = doc["shmupBtnMask2"];
+	addonOptions.shmupBtnMask3     = doc["shmupBtnMask3"];
+	addonOptions.shmupBtnMask4     = doc["shmupBtnMask4"];
+	addonOptions.pinShmupDial     = doc["pinShmupDial"] == -1 ? 0xFF : doc["pinShmupDial"];
+	addonOptions.sliderSOCDModeOne     = doc["sliderSOCDModeOne"];
+	addonOptions.sliderSOCDModeTwo     = doc["sliderSOCDModeTwo"];
+	addonOptions.sliderSOCDModeDefault     = doc["sliderSOCDModeDefault"];
 	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
 	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
 	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
@@ -534,13 +645,110 @@ std::string setAddonOptions()
 	addonOptions.ExtraButtonAddonEnabled = doc["ExtraButtonAddonEnabled"];
 	addonOptions.I2CAnalog1219InputEnabled = doc["I2CAnalog1219InputEnabled"];
 	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
+	addonOptions.SliderSOCDInputEnabled = doc["SliderSOCDInputEnabled"];
 	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
+	addonOptions.PS4ModeAddonEnabled = doc["PS4ModeAddonEnabled"];
 	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
 	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
 
 	Storage::getInstance().setAddonOptions(addonOptions);
 
 	return serialize_json(doc);
+}
+
+std::string setPS4Options()
+{
+	DynamicJsonDocument doc = get_post_data();
+	PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+	std::string decoded;
+	std::size_t len;
+
+	// RSA Context
+	if ( doc.containsKey("N") ) {
+		std::string decoded;
+		Base64::Decode(doc["N"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_n ) ) {
+			memcpy(ps4Options->rsa_n, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("E") ) {
+		std::string decoded;
+		Base64::Decode(doc["E"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_e ) ) {
+			memcpy(ps4Options->rsa_e, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("D") ) {
+		std::string decoded;
+		Base64::Decode(doc["D"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_d ) ) {
+			memcpy(ps4Options->rsa_d, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("P") ) {
+		std::string decoded;
+		Base64::Decode(doc["P"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_p ) ) {
+			memcpy(ps4Options->rsa_p, decoded.data(), decoded.length());
+		}			
+	}
+	if ( doc.containsKey("Q") ) {
+		std::string decoded;
+		Base64::Decode(doc["Q"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_q ) ) {
+			memcpy(ps4Options->rsa_q, decoded.data(), decoded.length());
+		}			
+	}
+	if ( doc.containsKey("DP") ) {
+		std::string decoded;
+		Base64::Decode(doc["DP"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_dp ) ) {
+			memcpy(ps4Options->rsa_dp, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("DQ") ) {
+		std::string decoded;
+		Base64::Decode(doc["DQ"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_dq ) ) {
+			memcpy(ps4Options->rsa_dq, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("QP") ) {	
+		std::string decoded;
+		Base64::Decode(doc["QP"], decoded);	
+		if ( decoded.length() == sizeof(ps4Options->rsa_qp ) ) {
+			memcpy(ps4Options->rsa_qp, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("RN") ) {
+		std::string decoded;
+		Base64::Decode(doc["RN"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_rn ) ) {
+			memcpy(ps4Options->rsa_rn, decoded.data(), decoded.length());
+		}
+	}
+	// Serial & Signature
+	if ( doc.containsKey("serial") ) {
+		std::string decoded;
+		Base64::Decode(doc["serial"], decoded);
+		const char * testDecode = decoded.c_str();
+		if ( decoded.length() == sizeof(ps4Options->serial ) ) {
+			memcpy(ps4Options->serial, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("signature") ) {
+		std::string decoded;
+		Base64::Decode(doc["signature"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->signature ) ) {
+			memcpy(ps4Options->signature, decoded.data(), decoded.length());
+		}
+	}
+
+	Storage::getInstance().savePS4Options();
+
+	DynamicJsonDocument rdoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	rdoc["success"] = true;
+	return serialize_json(rdoc);
 }
 
 std::string getAddonOptions()
@@ -551,6 +759,8 @@ std::string getAddonOptions()
 	doc["turboPinLED"] = addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED;
 	doc["sliderLSPin"] = addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS;
 	doc["sliderRSPin"] = addonOptions.pinSliderRS == 0xFF ? -1 : addonOptions.pinSliderRS;
+	doc["sliderSOCDPinOne"] = addonOptions.pinSliderSOCDOne == 0xFF ? -1 : addonOptions.pinSliderSOCDOne;
+	doc["sliderSOCDPinTwo"] = addonOptions.pinSliderSOCDTwo == 0xFF ? -1 : addonOptions.pinSliderSOCDTwo;
 	doc["turboShotCount"] = addonOptions.turboShotCount;
 	doc["reversePin"] = addonOptions.pinButtonReverse == 0xFF ? -1 : addonOptions.pinButtonReverse;
 	doc["reversePinLED"] = addonOptions.pinReverseLED == 0xFF ? -1 : addonOptions.pinReverseLED;
@@ -578,6 +788,24 @@ std::string getAddonOptions()
 	doc["extraButtonPin"] = addonOptions.extraButtonPin == 0xFF ? -1 : addonOptions.extraButtonPin;
 	doc["extraButtonMap"] = addonOptions.extraButtonMap;
 	doc["playerNumber"] = addonOptions.playerNumber;
+	doc["shmupMode"] = addonOptions.shmupMode;
+	doc["shmupMixMode"] = addonOptions.shmupMixMode;
+	doc["shmupAlwaysOn1"] = addonOptions.shmupAlwaysOn1;
+	doc["shmupAlwaysOn2"] = addonOptions.shmupAlwaysOn2;
+	doc["shmupAlwaysOn3"] = addonOptions.shmupAlwaysOn3;
+	doc["shmupAlwaysOn4"] = addonOptions.shmupAlwaysOn4;
+	doc["pinShmupBtn1"] = addonOptions.pinShmupBtn1 == 0xFF ? -1 : addonOptions.pinShmupBtn1;
+	doc["pinShmupBtn2"] = addonOptions.pinShmupBtn2 == 0xFF ? -1 : addonOptions.pinShmupBtn2;
+	doc["pinShmupBtn3"] = addonOptions.pinShmupBtn3 == 0xFF ? -1 : addonOptions.pinShmupBtn3;
+	doc["pinShmupBtn4"] = addonOptions.pinShmupBtn4 == 0xFF ? -1 : addonOptions.pinShmupBtn4;
+	doc["shmupBtnMask1"] = addonOptions.shmupBtnMask1;
+	doc["shmupBtnMask2"] = addonOptions.shmupBtnMask2;
+	doc["shmupBtnMask3"] = addonOptions.shmupBtnMask3;
+	doc["shmupBtnMask4"] = addonOptions.shmupBtnMask4;
+	doc["pinShmupDial"] = addonOptions.pinShmupDial == 0xFF ? -1 : addonOptions.pinShmupDial;
+	doc["sliderSOCDModeOne"] = addonOptions.sliderSOCDModeOne;
+	doc["sliderSOCDModeTwo"] = addonOptions.sliderSOCDModeTwo;
+	doc["sliderSOCDModeDefault"] = addonOptions.sliderSOCDModeDefault;
 	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
 	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
 	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;
@@ -586,30 +814,13 @@ std::string getAddonOptions()
 	doc["ExtraButtonAddonEnabled"] = addonOptions.ExtraButtonAddonEnabled;
 	doc["I2CAnalog1219InputEnabled"] = addonOptions.I2CAnalog1219InputEnabled;
 	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
+	doc["SliderSOCDInputEnabled"] = addonOptions.SliderSOCDInputEnabled;
 	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
+	doc["PS4ModeAddonEnabled"] = addonOptions.PS4ModeAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
 
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	auto usedPins = doc.createNestedArray("usedPins");
-	usedPins.add(gamepad->mapDpadUp->pin);
-	usedPins.add(gamepad->mapDpadDown->pin);
-	usedPins.add(gamepad->mapDpadLeft->pin);
-	usedPins.add(gamepad->mapDpadRight->pin);
-	usedPins.add(gamepad->mapButtonB1->pin);
-	usedPins.add(gamepad->mapButtonB2->pin);
-	usedPins.add(gamepad->mapButtonB3->pin);
-	usedPins.add(gamepad->mapButtonB4->pin);
-	usedPins.add(gamepad->mapButtonL1->pin);
-	usedPins.add(gamepad->mapButtonR1->pin);
-	usedPins.add(gamepad->mapButtonL2->pin);
-	usedPins.add(gamepad->mapButtonR2->pin);
-	usedPins.add(gamepad->mapButtonS1->pin);
-	usedPins.add(gamepad->mapButtonS2->pin);
-	usedPins.add(gamepad->mapButtonL3->pin);
-	usedPins.add(gamepad->mapButtonR3->pin);
-	usedPins.add(gamepad->mapButtonA1->pin);
-	usedPins.add(gamepad->mapButtonA2->pin);
+	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
@@ -652,10 +863,24 @@ std::string echo()
 
 std::string reboot()
 {
-	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	DynamicJsonDocument doc = get_post_data();
 	doc["success"] = true;
 	// We need to wait for a bit before we actually reboot to leave the webclient some time to receive the response
 	rebootDelayTimeout = make_timeout_time_ms(rebootDelayMs);
+	WebConfig::BootModes bootMode = doc["bootMode"];
+	switch (bootMode) {
+		case WebConfig::BootModes::GAMEPAD:
+			rebootMode = System::BootMode::GAMEPAD;
+		break;
+		case WebConfig::BootModes::WEBCONFIG:
+			rebootMode = System::BootMode::WEBCONFIG;
+		break;
+		case WebConfig::BootModes::BOOTSEL:
+			rebootMode = System::BootMode::USB;
+		break;
+		default:
+			rebootMode = System::BootMode::DEFAULT;
+	}
 	return serialize_json(doc);
 }
 
@@ -671,10 +896,16 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setLedOptions());
 	if (strcmp(name, API_SET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, setPinMappings());
+	if (strcmp(name, API_SET_KEY_MAPPINGS) == 0)
+			return set_file_data(file, setKeyMappings());
 	if (strcmp(name, API_SET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, setAddonOptions());
+	if (strcmp(name, API_SET_PS4_OPTIONS) == 0)
+			return set_file_data(file, setPS4Options());
 	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, setSplashImage());
+	if (strcmp(name, API_REBOOT) == 0)
+			return set_file_data(file, reboot());
 #if !defined(NDEBUG)
 	if (strcmp(name, API_POST_ECHO) == 0)
 		return set_file_data(file, echo());
@@ -687,6 +918,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getLedOptions());
 	if (strcmp(name, API_GET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, getPinMappings());
+	if (strcmp(name, API_GET_KEY_MAPPINGS) == 0)
+			return set_file_data(file, getKeyMappings());
 	if (strcmp(name, API_GET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, getAddonOptions());
 	if (strcmp(name, API_RESET_SETTINGS) == 0)
@@ -697,8 +930,6 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getFirmwareVersion());
 	if (strcmp(name, API_GET_MEMORY_REPORT) == 0)
 			return set_file_data(file, getMemoryReport());
-	if (strcmp(name, API_REBOOT) == 0)
-			return set_file_data(file, reboot());
 
 	bool isExclude = false;
 	for (auto &excludePath : excludePaths)

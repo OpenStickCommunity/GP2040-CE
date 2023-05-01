@@ -1,6 +1,6 @@
-# GP2040 Development
+# GP2040-CE Development
 
-GP2040 is written in C++ and set up as a standard Pico SDK project.
+GP2040-CE is written in C++ and set up as a standard Pico SDK project.
 See [Getting Started with the Raspberry Pi Pico](https://rptl.io/pico-get-started).
 
 ## Environment Setup
@@ -25,6 +25,8 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
      - [Visual Studio Code](https://code.visualstudio.com/)
 1. Install git
      - Set default editor to anything other than VIM, such as Visual Studio Code
+1. Install NodeJS and NPM
+    - [Download and install NodeJS](https://nodejs.org/en/download)
 1. Clone the Pico SDK to your local computer
 
     ```bash
@@ -67,6 +69,13 @@ This setup assumes an understanding of Linux terminal usage.
 
     - May additionally need to install `libstdc++-arm-none-eabi-newlib`
 
+1. Install NodeJS and NPM
+
+    ```bash
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
+    sudo apt-get install -y nodejs
+    ```
+
 1. Get GP2040-CE
 
     ```bash
@@ -89,6 +98,13 @@ This setup script requires approximately 2.5GB of disk space on your SD card.
 
     ```bash
     chmod +x pico_setup.sh
+    ```
+
+1. Install NodeJS and NPM
+
+    ```bash
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
+    sudo apt-get install -y nodejs
     ```
 
 1. Reboot your Pi
@@ -168,7 +184,7 @@ Start in the GP2040-CE folder
 
 > Note: We're moving away from compile time configuration, in favor of runtime configuration. 
 
-There are two simple options for building GP2040 for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
+There are two simple options for building GP2040-CE for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
 
 ### Board Configuration Folder
 
@@ -176,7 +192,7 @@ Each subfolder in [`configs`](https://github.com/OpenStickFoundation/GP2040-CE/t
 
 | Name | Required? | Description |
 | ----------- | --------- | ----------- |
-| `BoardConfig.h` | Yes | The configuration file used when building GP2040 for a specific controller/board. Contains initial pin mappings, LED configuration, etc. |
+| `BoardConfig.h` | Yes | The configuration file used when building GP2040-CE for a specific controller/board. Contains initial pin mappings, LED configuration, etc. |
 | `README.md` | No | Provides information related to this board configuration. Not required for the build process, but suggested for pull requests of new board configurations. |
 | `assets/` | No | Folder for containing assets included in the `README.md`. Not required for the build process.
 |'<boardname.h>'|No| Board definition file, named after the board itself, used by the Pico SDK for configuring board specific SDK features. [Pico Example](https://github.com/raspberrypi/pico-sdk/blob/master/src/boards/include/boards/pico.h)
@@ -187,7 +203,7 @@ The following board options are available in the `BoardConfig.h` file:
 
 | Name             | Description                  | Required? |
 | ---------------- | ---------------------------- | --------- |
-| **PIN_DPAD_*X***<br>**PIN_BUTTON_*X*** | The GPIO pin for the button. Replace the *`X`* with GP2040 button or D-pad direction. | Yes |
+| **PIN_DPAD_*X***<br>**PIN_BUTTON_*X*** | The GPIO pin for the button. Replace the *`X`* with GP2040-CE button or D-pad direction. | Yes |
 | **DEFAULT_SOCD_MODE** | The default SOCD mode to use, defaults to `SOCD_MODE_NEUTRAL`.<br>Available options are:<br>`SOCD_MODE_NEUTRAL`<br>`SOCD_MODE_UP_PRIORITY`<br>`SOCD_MODE_SECOND_INPUT_PRIORITY` | No |
 | **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_STICKLESS`<br>`BUTTON_LAYOUT_WASD` | Yes |
 
@@ -226,7 +242,7 @@ Create `configs/NewBoard/BoardConfig.h` and add your pin configuration and optio
 
 #### RGB LEDs
 
-GP2040 supports per-button WS2812 and similar RGB LEDs.
+GP2040-CE supports per-button WS2812 and similar RGB LEDs.
 
 The following RGB LED options are available in the `BoardConfig.h` file:
 
@@ -238,7 +254,7 @@ The following RGB LED options are available in the `BoardConfig.h` file:
 | **LEDS_PER_PIXEL** | The number of LEDs per button. | Yes |
 | **LED_BRIGHTNESS_MAXIMUM** | Max brightness value, `uint8_t` 0-255. | Yes |
 | **LED_BRIGHTNESS_STEPS** | The number of brightness steps when using the up/down hotkey. | Yes |
-| **LEDS_DPAD_*X***<br>**LEDS_BUTTON_*X*** | The index of the button on the LED chain. Replace the *`X`* with GP2040 button or D-pad direction. | Yes |
+| **LEDS_DPAD_*X***<br>**LEDS_BUTTON_*X*** | The index of the button on the LED chain. Replace the *`X`* with GP2040-CE button or D-pad direction. | Yes |
 | **LEDS_BASE_ANIMATION_INDEX** | The default LED animation index. | No, defaults to `1` |
 | **LEDS_STATIC_COLOR_INDEX** | The default color index for the static color theme  | No, defaults to `2` |
 | **LEDS_BUTTON_COLOR_INDEX** | The default color index for the pressed button color | No, defaults to `1` |
@@ -279,7 +295,7 @@ An example RGB LED setup in the `BoardConfig.h` file:
 
 #### Player LEDs
 
-GP2040 supports PWM and RGB player LEDs (PLEDs) and can be configured in the `BoardConfig.h` file.
+GP2040-CE supports PWM and RGB player LEDs (PLEDs) and can be configured in the `BoardConfig.h` file.
 
 > NOTE: RGB PLEDs require [RGB LEDs](#rgb-leds) to be configured.
 
@@ -309,7 +325,7 @@ An example PLED setup in the `BoardConfig.h` file:
 
 #### I2C Displays
 
-GP2040 supports 128x64 monochrome displays that run on the SSD1306, SH1106 or SH1107 drivers. The following options are available for displays:
+GP2040-CE supports 128x64 monochrome displays that run on the SSD1306, SH1106 or SH1107 drivers. The following options are available for displays:
 
 | Name | Description | Required? |
 | - | - | - |
