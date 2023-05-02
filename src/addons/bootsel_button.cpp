@@ -44,7 +44,7 @@ bool BootselButtonAddon::available() {
 
 void BootselButtonAddon::setup() {}
 
-void BootselButtonAddon::process() {
+void BootselButtonAddon::preprocess() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	if (isBootselPressed()) {
 		if (bootselButtonMap > (GAMEPAD_MASK_A2)) {

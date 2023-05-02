@@ -4,27 +4,31 @@
 
 ### Which input mode should I use?
 
-Generally speaking, XInput will be the mode of choice for everything except Nintendo Switch and PlayStation 3. XInput mode is the most fully-featured, has the best compatibility with PC games and is compatible with console adapters like the Brook Wingman product line.
+This will depend on the platform you will be playing on:
 
-### What is the extent of PS4 support in GP2040-CE?
+* Use `XInput Mode` as the preferred mode for compatibility with PC games and 3rd party console adapters
+* Use `PS4 Mode` on PS4, and on PS4 games on PS5 systems
+* Use `PS3 Mode` on PS3, and on PS4 with games that support legacy controllers
+* Use `Switch Mode` on Nintendo Switch
+* Use `Keyboard Mode` for MAME cabinets, PC rhythm games, etc.
 
-GP2040-CE will work on PS4 games that implement support for legacy PS3 controllers. Many of the popular PS4 fighting games have this support.
+### Will GP2040-CE natively support PS5, Xbox One, or Xbox Series consoles?
 
-### Will GP2040-CE natively support the PS4, PS5, Xbox One or Xbox Series consoles?
+These consoles implement security measures that prevent unauthorized accessories from being used. The process of cracking or bypassing that security may not be legal everywhere. These consoles could be supported in the future if a user-friendly and completely legal implementation method is found, such as the implementation of [PS4 Mode](https://gp2040-ce.info/#/web-configurator?id=ps4-mode).
 
-These consoles implement security measures that prevent unauthorized accessories from being used. The process of cracking or bypassing that security may not be legal everywhere. These consoles could be supported in the future if a user-friendly and completely legal implementation method is found.
+### Can I use multiple controllers with GP2040-CE on the same system?
 
-### Can I use multiple controllers on the same system?
+Yes! Each GP2040-CE board is treated as a separate controller. Be sure to only run the embedded web configurator for each controller one at a time.
 
-Yes! Each GP2040-CE device is treated as a separate controller. However, you will only be able to run the embedded web configurator on one device at a time.
+If you're installing boards with GP2040-CE in an arcade cabinet, check out the [Player Number addon](https://gp2040-ce.info/#/web-configurator?id=player-number-x-input-only) to force each board to a specific player number.
 
-### Does GP2040-CE really have less than 1 ms of latency?
+### Does GP2040-CE really have less than 1 ms of input latency?
 
 Yes! If your platform supports 1000 Hz USB polling, input latency will be less than 1ms. GP2040-CE is configured for 1000 Hz / 1 ms polling by default in all modes, however some systems override or ignore the polling rate the controller requests. The 1000 Hz polling rate is confirmed to work on PC and MiSTer. Even if your platform doesn't support high rate USB polling, GP2040-CE is still reading and processing your inputs as fast as the target system will allow.
 
-### Do the additional features like RGB LEDs, Player LEDs and OLED displays affect performance?
+### Do the additional features like RGB LEDs, Player LEDs, and OLED displays affect performance?
 
-No! GP2040-CE dedicates a processing core to just reading and writing player inputs. All secondary functions such as LEDs and displays are controlled by the secondary processor core. No matter how crazy the feature set becomes, GP2040-CE is unlikely to introduce any additional input latency.
+Not at all! The RP2040 processor of the Pico has two cores. GP2040-CE dedicates one of these cores strictly to reading, processing and sending player inputs. All secondary functions such as LEDs and displays are run on the secondary core. No matter how crazy the feature set becomes, GP2040-CE is unlikely to introduce any additional input latency.
 
 ### Why do the buttons have weird labels like B3, A1, S2, etc.?
 

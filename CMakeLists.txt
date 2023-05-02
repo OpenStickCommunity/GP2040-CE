@@ -12,7 +12,7 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.0")
   message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
-project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.6.3)
+project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.7.0)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -60,7 +60,7 @@ else()
   include(${CMAKE_SOURCE_DIR}/modules/FindNPM.cmake)
   if(NODEJS_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/www")
     if(NPM_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/www/package.json")
-      execute_process(COMMAND ${NPM_EXECUTABLE} ci 
+      execute_process(COMMAND ${NPM_EXECUTABLE} ci
                       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/www
                       RESULT_VARIABLE NPM_CI_RESULT)
       if(NOT NPM_CI_RESULT EQUAL "0")
@@ -118,6 +118,7 @@ src/addons/i2cdisplay.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
+src/addons/ps4mode.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
@@ -128,22 +129,23 @@ src/gamepad/GamepadDescriptors.cpp
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
-pico_set_program_version(GP2040-CE "0.6.3")
+pico_set_program_version(GP2040-CE "0.7.0")
 
-target_link_libraries(${PROJECT_NAME} 
+target_link_libraries(${PROJECT_NAME}
 pico_stdlib
 pico_bootsel_via_double_reset
 AnimationStation
-TinyUSB_Gamepad
+CRC32
 FlashPROM
 ADS1219
 PlayerLEDs
 NeoPico
 OneBitDisplay
-CRC32
 ArduinoJson
 rndis
 hardware_adc
+pico_mbedtls
+TinyUSB_Gamepad
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -177,3 +179,8 @@ add_compile_options(-Wall
     ${CMAKE_CURRENT_LIST_DIR}/README.md
     DESTINATION .
 )
+
+if (NOT (DEFINED ENV(CI)) AND (EXISTS ${CMAKE_SOURCE_DIR}/modules/Custom.cmake))
+  message(STATUS "Found custom script.")
+	include(${CMAKE_SOURCE_DIR}/modules/Custom.cmake)
+endif()

@@ -8,6 +8,12 @@
 #include <stdint.h>
 #include "GamepadEnums.h"
 
+typedef struct
+{
+	uint8_t dpadMask;
+	GamepadHotkey action;
+} GamepadHotkeyEntry;
+
 struct GamepadOptions
 {
 	InputMode inputMode {InputMode::INPUT_MODE_XINPUT}; 
@@ -34,6 +40,15 @@ struct GamepadOptions
 	uint8_t keyButtonR3;
 	uint8_t keyButtonA1;
 	uint8_t keyButtonA2;
+
+	GamepadHotkeyEntry hotkeyF1Up;
+	GamepadHotkeyEntry hotkeyF1Down;
+	GamepadHotkeyEntry hotkeyF1Left;
+	GamepadHotkeyEntry hotkeyF1Right;
+	GamepadHotkeyEntry hotkeyF2Up;
+	GamepadHotkeyEntry hotkeyF2Down;
+	GamepadHotkeyEntry hotkeyF2Left;
+	GamepadHotkeyEntry hotkeyF2Right;
 
 	uint32_t checksum;
 };

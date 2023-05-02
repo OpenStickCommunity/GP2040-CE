@@ -37,8 +37,8 @@
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
-#define PIN_SLIDER_SOCD_NEUTRAL    -1         // SOCD Up Priority Slider
-#define PIN_SLIDER_SOCD_SECOND    -1         // SOCD Second Input Priority Slider
+#define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
+#define PIN_SLIDER_SOCD_TWO    -1         // SOCD Slider Pin Two
 
 
 // This is the SOCD section.
@@ -47,8 +47,13 @@
 // 1 - `SOCD_MODE_NEUTRAL` - This is a neutral SOCD.  EG. when you press `up` + `down` no input will be registered.
 // 2 - `SOCD_MODE_UP_PRIORITY` - This is up priority SOCD.  EG. when you press `up` + `down` `up` will be registered.
 // 3 - `SOCD_MODE_SECOND_INPUT_PRIORITY` - This is last priority SOCD.  EG. when you press and hold `up` then press `down` `down` will be registered.
+// 4 - `SOCD_MODE_FIRST_INPUT_PRIORITY` - This is first priority SOCD.  EG. when you press and hold `up` then press `down` `up` will be registered.
 
 #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+// SOCD Slider Slot Defaults
+#define SLIDER_SOCD_SLOT_ONE SOCD_MODE_UP_PRIORITY
+#define SLIDER_SOCD_SLOT_TWO  SOCD_MODE_SECOND_INPUT_PRIORITY
+#define SLIDER_SOCD_SLOT_DEFAULT SOCD_MODE_NEUTRAL
 
 
 // This is the LEDs section.
@@ -223,8 +228,12 @@
 
 // Extra Button Add-on setting
 #define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+                            // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN -1
 
+// Keyboard Mapping Configuration
+// List of HID keycodes can be located here: https://github.com/hathach/tinyusb/blob/3623ba1884ddff23e9b64766cb6dd032f1425846/src/class/hid/hid.h#L356
+// Even for the modifier keys, HID_KEY entries should be used as the implementation expects those and will convert as necessary.
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP
 #define KEY_DPAD_DOWN   HID_KEY_ARROW_DOWN    // DOWN
 #define KEY_DPAD_RIGHT  HID_KEY_ARROW_RIGHT   // RIGHT
@@ -243,5 +252,25 @@
 #define KEY_BUTTON_R3   HID_KEY_MINUS         // R3 / RS / RS / R3 / 12 / RS
 #define KEY_BUTTON_A1   HID_KEY_9             // A1 / Guide / Home / PS / 13 / ~
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2 / ~ / Capture / ~ / 14 / ~
+
+// Hotkey Action Mapping
+// Find the list of hotkey actions in GamepadEnums.h
+#define HOTKEY_F1_UP_MASK      GAMEPAD_MASK_UP
+#define HOTKEY_F1_UP_ACTION    HOTKEY_HOME_BUTTON
+#define HOTKEY_F1_DOWN_MASK    GAMEPAD_MASK_DOWN
+#define HOTKEY_F1_DOWN_ACTION  HOTKEY_DPAD_DIGITAL
+#define HOTKEY_F1_LEFT_MASK    GAMEPAD_MASK_LEFT
+#define HOTKEY_F1_LEFT_ACTION  HOTKEY_DPAD_LEFT_ANALOG
+#define HOTKEY_F1_RIGHT_MASK   GAMEPAD_MASK_RIGHT
+#define HOTKEY_F1_RIGHT_ACTION HOTKEY_DPAD_RIGHT_ANALOG
+
+#define HOTKEY_F2_UP_MASK      GAMEPAD_MASK_UP
+#define HOTKEY_F2_UP_ACTION    HOTKEY_SOCD_UP_PRIORITY
+#define HOTKEY_F2_DOWN_MASK    GAMEPAD_MASK_DOWN
+#define HOTKEY_F2_DOWN_ACTION  HOTKEY_SOCD_NEUTRAL
+#define HOTKEY_F2_LEFT_MASK    GAMEPAD_MASK_LEFT
+#define HOTKEY_F2_LEFT_ACTION  HOTKEY_SOCD_LAST_INPUT
+#define HOTKEY_F2_RIGHT_MASK   GAMEPAD_MASK_RIGHT
+#define HOTKEY_F2_RIGHT_ACTION HOTKEY_INVERT_Y_AXIS
 
 #endif
