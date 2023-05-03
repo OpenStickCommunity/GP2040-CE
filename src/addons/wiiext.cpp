@@ -4,6 +4,7 @@
 
 bool WiiExtensionInput::available() {
 	AddonOptions options = Storage::getInstance().getAddonOptions();
+
     return (options.WiiExtensionAddonEnabled &&
         options.wiiExtensionSDAPin != (uint8_t)-1 &&
         options.wiiExtensionSCLPin != (uint8_t)-1);

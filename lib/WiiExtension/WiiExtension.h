@@ -35,7 +35,7 @@
 #endif
 
 #ifndef WII_EXTENSION_DELAY
-#define WII_EXTENSION_DELAY 50
+#define WII_EXTENSION_DELAY 100
 #endif
 
 #ifndef WII_EXTENSION_TIMEOUT

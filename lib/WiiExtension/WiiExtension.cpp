@@ -595,6 +595,5 @@ void WiiExtension::alarmIRQ() {
     hw_clear_bits(&timer_hw->intr, 1u << WII_ALARM_NUM);
 
     // Assume alarm 0 has fired
-    printf("Alarm IRQ fired\n");
     WiiExtension_alarmFired = true;
 }
