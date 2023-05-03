@@ -167,6 +167,7 @@ static const uint16_t *getStringDescriptor(uint16_t *size, InputMode mode, uint8
 
 			case INPUT_MODE_PS4:
 				str = (char *)ps4_string_descriptors[index];
+				break;
 
 			default:
 				str = (char *)hid_string_descriptors[index];
