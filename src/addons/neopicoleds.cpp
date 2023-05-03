@@ -83,14 +83,14 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
 }
 
 bool NeoPicoLEDAddon::available() {
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	return ledOptions.dataPin != -1;
 }
 
 void NeoPicoLEDAddon::setup()
 {
 	// Set Default LED Options
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	if (!ledOptions.useUserDefinedLEDs) {
 		Storage::getInstance().setDefaultLEDOptions();
 	}
@@ -110,7 +110,7 @@ void NeoPicoLEDAddon::setup()
 
 void NeoPicoLEDAddon::process()
 {
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	if (ledOptions.dataPin < 0 || !time_reached(this->nextRunTime))
 		return;
 
@@ -466,7 +466,7 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 
 void NeoPicoLEDAddon::configureLEDs()
 {
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	uint8_t buttonCount = setupButtonPositions();
 	vector<vector<Pixel>> pixels = createLEDLayout(ledOptions.ledLayout, ledOptions.ledsPerButton, buttonCount);
 	matrix.setup(pixels, ledOptions.ledsPerButton);
