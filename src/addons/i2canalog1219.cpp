@@ -5,14 +5,14 @@
 #define VREF_VOLTAGE 2.048f
 
 bool I2CAnalog1219Input::available() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
 	return (options.I2CAnalog1219InputEnabled &&
         options.i2cAnalog1219SDAPin != (uint8_t)-1 &&
         options.i2cAnalog1219SCLPin != (uint8_t)-1);
 }
 
 void I2CAnalog1219Input::setup() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
 
     memset(&pins, 0, sizeof(ADS_PINS));
     channelHop = 0;

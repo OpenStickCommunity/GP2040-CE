@@ -12,7 +12,7 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.0")
   message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
-project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.6.3)
+project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.7.0)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -130,7 +130,7 @@ src/gamepad/GamepadDescriptors.cpp
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
-pico_set_program_version(GP2040-CE "0.6.3")
+pico_set_program_version(GP2040-CE "0.7.0")
 
 target_link_libraries(${PROJECT_NAME}
 pico_stdlib

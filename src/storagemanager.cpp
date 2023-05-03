@@ -72,11 +72,6 @@ void Storage::initPS4Options() {
 	}
 }
 
-BoardOptions Storage::getBoardOptions()
-{
-	return boardOptions;
-}
-
 void Storage::setDefaultBoardOptions()
 {
 	// Set GP2040 version string and 0 mem after
@@ -123,7 +118,7 @@ void Storage::setDefaultBoardOptions()
 		.buttonPadding = 2
 	};
 	boardOptions.buttonLayoutCustomOptions.params = params;
-	
+
 	ButtonLayoutParams paramsRight = {
 		.layoutRight = BUTTON_LAYOUT_RIGHT,
 		.startX = 8,
@@ -147,11 +142,6 @@ void Storage::setBoardOptions(BoardOptions options)
 		EEPROM.commit();
 		memcpy(&boardOptions, &options, sizeof(BoardOptions));
 	}
-}
-
-AddonOptions Storage::getAddonOptions()
-{
-	return addonOptions;
 }
 
 void Storage::setDefaultAddonOptions()
@@ -241,11 +231,6 @@ void Storage::setAddonOptions(AddonOptions options)
 	}
 }
 
-SplashImage Storage::getSplashImage()
-{
-	return splashImage;
-}
-
 void Storage::setDefaultSplashImage()
 {
 	memcpy(&splashImage.data, &splashImageMain, sizeof(splashImageMain));
@@ -273,11 +258,6 @@ void Storage::initLEDOptions()
 	if (lastCRC != CRC32::calculate(&ledOptions)) {
 		setDefaultLEDOptions();
 	}
-}
-
-LEDOptions Storage::getLEDOptions()
-{
-	return ledOptions;
 }
 
 void Storage::setDefaultLEDOptions()
@@ -353,11 +333,6 @@ void Storage::initPreviewBoardOptions()
 void Storage::setPreviewBoardOptions(const BoardOptions& boardOptions)
 {
 	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
-}
-
-BoardOptions Storage::getPreviewBoardOptions()
-{
-	return previewBoardOptions;
 }
 
 void Storage::SetConfigMode(bool mode) { // hack for config mode

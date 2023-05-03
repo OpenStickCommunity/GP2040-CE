@@ -6,17 +6,17 @@
 #include "usb_driver.h"
 
 bool BuzzerSpeakerAddon::available() {
-	AddonOptions options = Storage::getInstance().getAddonOptions();
+	const AddonOptions& options = Storage::getInstance().getAddonOptions();
 	buzzerPin = options.buzzerPin;
 	return options.BuzzerSpeakerAddonEnabled &&
 		buzzerPin != (uint8_t)-1;
 }
 
 void BuzzerSpeakerAddon::setup() {
-	AddonOptions options = Storage::getInstance().getAddonOptions();
+	const AddonOptions& options = Storage::getInstance().getAddonOptions();
 
 	gpio_set_function(buzzerPin, GPIO_FUNC_PWM);
-	buzzerPinSlice = pwm_gpio_to_slice_num (buzzerPin); 
+	buzzerPinSlice = pwm_gpio_to_slice_num (buzzerPin);
 	buzzerPinChannel = pwm_gpio_to_channel (buzzerPin);
 
 	buzzerVolume = options.buzzerVolume;
@@ -37,7 +37,7 @@ void BuzzerSpeakerAddon::playIntro() {
 	}
 
 	bool isConfigMode = Storage::getInstance().GetConfigMode();
-	
+
 	if (!get_usb_mounted() || isConfigMode) {
 		play(&configModeSong);
 	} else {
@@ -82,7 +82,7 @@ void BuzzerSpeakerAddon::stop() {
 
 uint32_t BuzzerSpeakerAddon::pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty) {
 	uint32_t clock = 125000000;
-	uint32_t divider16 = clock / frequency / 4096 + 
+	uint32_t divider16 = clock / frequency / 4096 +
 							(clock % (frequency * 4096) != 0);
 	if (divider16 / 16 == 0)
 	divider16 = 16;

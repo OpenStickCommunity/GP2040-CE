@@ -88,7 +88,7 @@ void Gamepad::setup()
 
 	// Configure pin mapping
 	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 
 	mapDpadUp    = new GamepadButtonMapping(boardOptions.pinDpadUp,    GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(boardOptions.pinDpadDown,  GAMEPAD_MASK_DOWN);
@@ -108,7 +108,7 @@ void Gamepad::setup()
 	mapButtonR3  = new GamepadButtonMapping(boardOptions.pinButtonR3,  GAMEPAD_MASK_R3);
 	mapButtonA1  = new GamepadButtonMapping(boardOptions.pinButtonA1,  GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(boardOptions.pinButtonA2,  GAMEPAD_MASK_A2);
-	
+
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
 		mapDpadUp,   mapDpadDown, mapDpadLeft, mapDpadRight,
@@ -256,15 +256,19 @@ GamepadHotkey Gamepad::hotkey()
 		if (state.dpad == hotkeyF1Down .dpadMask) action = hotkeyF1Down .action;
 		if (state.dpad == hotkeyF1Left .dpadMask) action = hotkeyF1Left .action;
 		if (state.dpad == hotkeyF1Right.dpadMask) action = hotkeyF1Right.action;
-		state.dpad = 0;
-		state.buttons &= ~(f1Mask);	
+		if (action != HOTKEY_NONE) {
+			state.dpad = 0;
+			state.buttons &= ~(f1Mask);
+		}
 	} else if (pressedF2()) {
 		if (state.dpad == hotkeyF2Up   .dpadMask) action = hotkeyF2Up   .action;
 		if (state.dpad == hotkeyF2Down .dpadMask) action = hotkeyF2Down .action;
 		if (state.dpad == hotkeyF2Left .dpadMask) action = hotkeyF2Left .action;
 		if (state.dpad == hotkeyF2Right.dpadMask) action = hotkeyF2Right.action;
-		state.dpad = 0;
-		state.buttons &= ~(f2Mask);	
+		if (action != HOTKEY_NONE) {
+			state.dpad = 0;
+			state.buttons &= ~(f2Mask);
+		}
 	}
 
 	switch (action) {
