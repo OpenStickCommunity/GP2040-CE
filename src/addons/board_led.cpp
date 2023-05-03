@@ -2,7 +2,7 @@
 #include "usb_driver.h" // Required to check USB state
 
 bool BoardLedAddon::available() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
     onBoardLedMode = options.onBoardLedMode;
     return options.BoardLedAddonEnabled &&
         onBoardLedMode != OnBoardLedMode::ON_BOARD_LED_MODE_OFF; // Available only when it's not set to off
