@@ -3,7 +3,7 @@
 #include "hardware/gpio.h"
 
 bool WiiExtensionInput::available() {
-    const BoardOptions& boardOptions = getBoardOptions();
+    const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
     AddonOptions options = Storage::getInstance().getAddonOptions();
 
     return (!boardOptions.hasI2CDisplay && (options.WiiExtensionAddonEnabled &&
