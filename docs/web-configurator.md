@@ -213,6 +213,8 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 
 ### Wii Extensions
 
+![GP2040 Configurator - Wii Extensions](assets/images/gpc-add-ons-wii-extensions.png)
+
 * `I2C SDA Pin` - The GPIO pin used for Wii Extension SDA.
 * `I2C SCL Pin` - The GPIO pin used for Wii Extension SCL.
 * `I2C Block` - The block of I2C to use (i2c0 or i2c1).
