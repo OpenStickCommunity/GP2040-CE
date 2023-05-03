@@ -211,6 +211,35 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 * `Serial Number (16 Bytes in Hex Ascii)` - Choose your serial number file.
 * `Signature (256 Bytes in Binary)` - Choose your signature file.
 
+### Wii Extensions
+
+* `I2C SDA Pin` - The GPIO pin used for Wii Extension SDA.
+* `I2C SCL Pin` - The GPIO pin used for Wii Extension SCL.
+* `I2C Block` - The block of I2C to use (i2c0 or i2c1).
+* `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, or `400000` for fast.
+
+Supported Extension Controllers and their mapping is as follows:
+
+| GP2040-CE | Nunchuck | Classic      | Guitar Hero Guitar |
+|-----------|----------|--------------|--------------------|
+| B1        | C        | B            | Green              |
+| B2        | Z        | A            | Red                |
+| B3        |          | Y            | Blue               |
+| B4        |          | X            | Yellow             |
+| L1        |          | L            |                    |
+| L2        |          | ZL           |                    |
+| R1        |          | R            |                    |
+| R2        |          | ZR           |                    |
+| S1        |          | Select       |                    |
+| S2        |          | Start        |                    |
+| A1        |          | Home         |                    |
+| D-Pad     |          | D-Pad        | Strum Up/Down      |
+| Analog    | Left     | Left & Right | Left               |
+
+Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Controllers. 
+
+Original Classic Controller L & R triggers are analog sensitive, where Pro triggers are not.
+
 ## Data Backup and Restoration
 
 ![GP2040-CE Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
