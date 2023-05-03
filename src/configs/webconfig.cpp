@@ -49,7 +49,7 @@
 #endif
 #define API_REBOOT "/api/reboot"
 
-#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
+#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 4096
 
 using namespace std;
 
