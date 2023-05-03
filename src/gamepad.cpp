@@ -148,7 +148,7 @@ void Gamepad::process()
 {
 	memcpy(&rawState, &state, sizeof(GamepadState));
 
-	state.dpad = runSOCDCleaner(options.socdMode, state.dpad);
+	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
 
 	switch (options.dpadMode)
 	{
@@ -283,6 +283,7 @@ GamepadHotkey Gamepad::hotkey()
 		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; break;
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; break;
 		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY; break;
+		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; break;
 		case HOTKEY_INVERT_X_AXIS     : break;
 		case HOTKEY_INVERT_Y_AXIS     :
 			if (lastAction != HOTKEY_INVERT_Y_AXIS)
