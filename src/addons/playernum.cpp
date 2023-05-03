@@ -3,12 +3,12 @@
 #include "system.h"
 
 bool PlayerNumAddon::available() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
     return options.PlayerNumAddonEnabled;
 }
 
 void PlayerNumAddon::setup() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
     xinputIDs[0] = XINPUT_PLED_ON1;
     xinputIDs[1] = XINPUT_PLED_ON2;
     xinputIDs[2] = XINPUT_PLED_ON3;

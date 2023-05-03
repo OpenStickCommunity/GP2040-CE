@@ -88,7 +88,7 @@ void Gamepad::setup()
 
 	// Configure pin mapping
 	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 
 	mapDpadUp    = new GamepadButtonMapping(boardOptions.pinDpadUp,    GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(boardOptions.pinDpadDown,  GAMEPAD_MASK_DOWN);
@@ -108,7 +108,7 @@ void Gamepad::setup()
 	mapButtonR3  = new GamepadButtonMapping(boardOptions.pinButtonR3,  GAMEPAD_MASK_R3);
 	mapButtonA1  = new GamepadButtonMapping(boardOptions.pinButtonA1,  GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(boardOptions.pinButtonA2,  GAMEPAD_MASK_A2);
-	
+
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
 		mapDpadUp,   mapDpadDown, mapDpadLeft, mapDpadRight,
