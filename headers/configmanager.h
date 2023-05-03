@@ -5,6 +5,8 @@
 #include "gpconfig.h"
 #include "storagemanager.h"
 
+#include "config_legacy.h"
+
 class ConfigManager {
 public:
 	ConfigManager(ConfigManager const&) = delete;
@@ -16,10 +18,10 @@ public:
     void setup(ConfigType);
     void loop(); // If anything needs to update in the gpconfig driver
     void setGamepadOptions(Gamepad*);
-    void setBoardOptions(BoardOptions);
-    void setPreviewBoardOptions(BoardOptions);
-    void setLedOptions(LEDOptions);
-    void setSplashImage(SplashImage);
+    void setBoardOptions(ConfigLegacy::BoardOptions);
+    void setPreviewBoardOptions(ConfigLegacy::BoardOptions);
+    void setLedOptions(ConfigLegacy::LEDOptions);
+    void setSplashImage(ConfigLegacy::SplashImage);
 private:
     ConfigManager() {}
     void setupConfig(GPConfig*);

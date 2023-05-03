@@ -10,6 +10,8 @@
 #include "FlashPROM.h"
 #include "CRC32.h"
 
+#include "config_legacy.h"
+
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
 	return to_ms_since_boot(get_absolute_time());
@@ -88,7 +90,7 @@ void Gamepad::setup()
 
 	// Configure pin mapping
 	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
+	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 
 	mapDpadUp    = new GamepadButtonMapping(boardOptions.pinDpadUp,    GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(boardOptions.pinDpadDown,  GAMEPAD_MASK_DOWN);
@@ -576,72 +578,60 @@ void GamepadStorage::start()
 
 void GamepadStorage::save()
 {
-	EEPROM.commit();
 }
 
 GamepadOptions GamepadStorage::getGamepadOptions()
 {
 	GamepadOptions options;
-	EEPROM.get(GAMEPAD_STORAGE_INDEX, options);
 
-	uint32_t lastCRC = options.checksum;
-	options.checksum = CHECKSUM_MAGIC;
-	if (CRC32::calculate(&options) != lastCRC)
-	{
-		#ifdef DEFAULT_INPUT_MODE
-		options.inputMode = DEFAULT_INPUT_MODE;
-		#else
-		options.inputMode = InputMode::INPUT_MODE_XINPUT; // Default?
-		#endif
-		#ifdef DEFAULT_DPAD_MODE
-		options.dpadMode = DEFAULT_DPAD_MODE;
-		#else
-		options.dpadMode = DpadMode::DPAD_MODE_DIGITAL; // Default?
-		#endif
-		#ifdef DEFAULT_SOCD_MODE
-		options.socdMode = DEFAULT_SOCD_MODE;
-		#else
-		options.socdMode = SOCD_MODE_NEUTRAL;
-		#endif
-		options.invertXAxis = false;
-		options.invertYAxis = false;
-		options.keyDpadUp    = KEY_DPAD_UP;
-		options.keyDpadDown  = KEY_DPAD_DOWN;
-		options.keyDpadRight = KEY_DPAD_RIGHT;
-		options.keyDpadLeft  = KEY_DPAD_LEFT;
-		options.keyButtonB1  = KEY_BUTTON_B1;
-		options.keyButtonB2  = KEY_BUTTON_B2;
-		options.keyButtonR2  = KEY_BUTTON_R2;
-		options.keyButtonL2  = KEY_BUTTON_L2;
-		options.keyButtonB3  = KEY_BUTTON_B3;
-		options.keyButtonB4  = KEY_BUTTON_B4;
-		options.keyButtonR1  = KEY_BUTTON_R1;
-		options.keyButtonL1  = KEY_BUTTON_L1;
-		options.keyButtonS1  = KEY_BUTTON_S1;
-		options.keyButtonS2  = KEY_BUTTON_S2;
-		options.keyButtonL3  = KEY_BUTTON_L3;
-		options.keyButtonR3  = KEY_BUTTON_R3;
-		options.keyButtonA1  = KEY_BUTTON_A1;
-		options.keyButtonA2  = KEY_BUTTON_A2;
+#ifdef DEFAULT_INPUT_MODE
+	options.inputMode = DEFAULT_INPUT_MODE;
+#else
+	options.inputMode = InputMode::INPUT_MODE_XINPUT; // Default?
+#endif
+#ifdef DEFAULT_DPAD_MODE
+	options.dpadMode = DEFAULT_DPAD_MODE;
+#else
+	options.dpadMode = DpadMode::DPAD_MODE_DIGITAL; // Default?
+#endif
+#ifdef DEFAULT_SOCD_MODE
+	options.socdMode = DEFAULT_SOCD_MODE;
+#else
+	options.socdMode = SOCD_MODE_NEUTRAL;
+#endif
+	options.invertXAxis = false;
+	options.invertYAxis = false;
+	options.keyDpadUp    = KEY_DPAD_UP;
+	options.keyDpadDown  = KEY_DPAD_DOWN;
+	options.keyDpadRight = KEY_DPAD_RIGHT;
+	options.keyDpadLeft  = KEY_DPAD_LEFT;
+	options.keyButtonB1  = KEY_BUTTON_B1;
+	options.keyButtonB2  = KEY_BUTTON_B2;
+	options.keyButtonR2  = KEY_BUTTON_R2;
+	options.keyButtonL2  = KEY_BUTTON_L2;
+	options.keyButtonB3  = KEY_BUTTON_B3;
+	options.keyButtonB4  = KEY_BUTTON_B4;
+	options.keyButtonR1  = KEY_BUTTON_R1;
+	options.keyButtonL1  = KEY_BUTTON_L1;
+	options.keyButtonS1  = KEY_BUTTON_S1;
+	options.keyButtonS2  = KEY_BUTTON_S2;
+	options.keyButtonL3  = KEY_BUTTON_L3;
+	options.keyButtonR3  = KEY_BUTTON_R3;
+	options.keyButtonA1  = KEY_BUTTON_A1;
+	options.keyButtonA2  = KEY_BUTTON_A2;
 
-	    options.hotkeyF1Up = { HOTKEY_F1_UP_MASK, HOTKEY_F1_UP_ACTION };
-	    options.hotkeyF1Down = { HOTKEY_F1_DOWN_MASK, HOTKEY_F1_DOWN_ACTION };
-	    options.hotkeyF1Left = { HOTKEY_F1_LEFT_MASK, HOTKEY_F1_LEFT_ACTION };
-	    options.hotkeyF1Right = { HOTKEY_F1_RIGHT_MASK, HOTKEY_F1_RIGHT_ACTION };
-	    options.hotkeyF2Up = { HOTKEY_F2_UP_MASK, HOTKEY_F2_UP_ACTION };
-	    options.hotkeyF2Down = { HOTKEY_F2_DOWN_MASK, HOTKEY_F2_DOWN_ACTION };
-	    options.hotkeyF2Left = { HOTKEY_F2_LEFT_MASK, HOTKEY_F2_LEFT_ACTION };
-	    options.hotkeyF2Right = { HOTKEY_F2_RIGHT_MASK, HOTKEY_F2_RIGHT_ACTION };
-		setGamepadOptions(options);
-	}
+	options.hotkeyF1Up = { HOTKEY_F1_UP_MASK, HOTKEY_F1_UP_ACTION };
+	options.hotkeyF1Down = { HOTKEY_F1_DOWN_MASK, HOTKEY_F1_DOWN_ACTION };
+	options.hotkeyF1Left = { HOTKEY_F1_LEFT_MASK, HOTKEY_F1_LEFT_ACTION };
+	options.hotkeyF1Right = { HOTKEY_F1_RIGHT_MASK, HOTKEY_F1_RIGHT_ACTION };
+	options.hotkeyF2Up = { HOTKEY_F2_UP_MASK, HOTKEY_F2_UP_ACTION };
+	options.hotkeyF2Down = { HOTKEY_F2_DOWN_MASK, HOTKEY_F2_DOWN_ACTION };
+	options.hotkeyF2Left = { HOTKEY_F2_LEFT_MASK, HOTKEY_F2_LEFT_ACTION };
+	options.hotkeyF2Right = { HOTKEY_F2_RIGHT_MASK, HOTKEY_F2_RIGHT_ACTION };
 
 	return options;
 }
 
 void GamepadStorage::setGamepadOptions(GamepadOptions options)
 {
-	options.checksum = 0;
-	options.checksum = CRC32::calculate(&options);
-	EEPROM.set(GAMEPAD_STORAGE_INDEX, options);
 }
-

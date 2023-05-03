@@ -230,7 +230,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 		}
 	};
 
-	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
+	const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	addPinIfValid(boardOptions.pinDpadUp);
 	addPinIfValid(boardOptions.pinDpadDown);
 	addPinIfValid(boardOptions.pinDpadLeft);
@@ -252,7 +252,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(boardOptions.i2cSDAPin);
 	addPinIfValid(boardOptions.i2cSCLPin);
 
-	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	addPinIfValid(addonOptions.analogAdcPinX);
 	addPinIfValid(addonOptions.analogAdcPinY);
 	addPinIfValid(addonOptions.buzzerPin);
@@ -265,7 +265,7 @@ std::string serialize_json(DynamicJsonDocument &doc)
 	return data;
 }
 
-std::string setDisplayOptions(BoardOptions& boardOptions)
+std::string setDisplayOptions(ConfigLegacy::BoardOptions& boardOptions)
 {
 	DynamicJsonDocument doc = get_post_data();
 	boardOptions.hasI2CDisplay         = doc["enabled"];
@@ -300,7 +300,7 @@ std::string setDisplayOptions(BoardOptions& boardOptions)
 
 std::string setDisplayOptions()
 {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	std::string response = setDisplayOptions(boardOptions);
 	ConfigManager::getInstance().setBoardOptions(boardOptions);
 	return response;
@@ -308,7 +308,7 @@ std::string setDisplayOptions()
 
 std::string setPreviewDisplayOptions()
 {
-	BoardOptions boardOptions = Storage::getInstance().getPreviewBoardOptions();
+	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getPreviewBoardOptions();
 	std::string response = setDisplayOptions(boardOptions);
 	ConfigManager::getInstance().setPreviewBoardOptions(boardOptions);
 	return response;
@@ -318,7 +318,7 @@ std::string setPreviewDisplayOptions()
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
+	const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	doc["enabled"]       	 = boardOptions.hasI2CDisplay ? 1 : 0;
 	doc["sdaPin"]        	 = boardOptions.i2cSDAPin == 0xFF ? -1 : boardOptions.i2cSDAPin;
 	doc["sclPin"]        	 = boardOptions.i2cSCLPin == 0xFF ? -1 : boardOptions.i2cSCLPin;
@@ -351,12 +351,12 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	return serialize_json(doc);
 }
 
-SplashImage splashImageTemp; // For splash image upload
+ConfigLegacy::SplashImage splashImageTemp; // For splash image upload
 
 std::string getSplashImage()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10); // TODO: Figoure out correct length
-	const SplashImage& splashImage = Storage::getInstance().getSplashImage();
+	const ConfigLegacy::SplashImage& splashImage = Storage::getInstance().getSplashImage();
 	JsonArray splashImageArray = doc.createNestedArray("splashImage");
 	copyArray(splashImage.data, splashImageArray);
 
@@ -436,7 +436,7 @@ std::string getGamepadOptions()
 std::string setLedOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	ConfigLegacy::LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
 	ledOptions.useUserDefinedLEDs = true;
 	ledOptions.dataPin            = doc["dataPin"];
 	ledOptions.ledFormat          = doc["ledFormat"];
@@ -469,7 +469,7 @@ std::string setLedOptions()
 std::string getLedOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
+	const ConfigLegacy::LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	doc["dataPin"]           = ledOptions.dataPin;
 	doc["ledFormat"]         = ledOptions.ledFormat;
 	doc["ledLayout"]         = ledOptions.ledLayout;
@@ -509,7 +509,7 @@ std::string setPinMappings()
 	// BoardOptions uses 0xff to denote unassigned pins
 	const auto convertPin = [] (int pin) -> uint8_t { return pin >= 0 && pin < NUM_BANK0_GPIOS ? pin : 0xff; };
 
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	boardOptions.hasBoardOptions = true;
 	boardOptions.pinDpadUp    = convertPin(doc["Up"]);
 	boardOptions.pinDpadDown  = convertPin(doc["Down"]);
@@ -542,7 +542,7 @@ std::string getPinMappings()
 	// Webconfig uses -1 to denote unassigned pins
 	const auto convertPin = [] (uint8_t pin) -> int { return pin < NUM_BANK0_GPIOS ? pin : -1; };
 
-	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
+	const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	doc["Up"]    = convertPin(boardOptions.pinDpadUp);
 	doc["Down"]  = convertPin(boardOptions.pinDpadDown);
 	doc["Left"]  = convertPin(boardOptions.pinDpadLeft);
@@ -625,7 +625,7 @@ std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 	docToPin(addonOptions.pinButtonTurbo, "turboPin")
 	docToPin(addonOptions.pinTurboLED, "turboPinLED")
 	docToPin(addonOptions.pinSliderLS, "sliderLSPin")
@@ -699,7 +699,7 @@ std::string setAddonOptions()
 std::string setPS4Options()
 {
 	DynamicJsonDocument doc = get_post_data();
-	PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+	ConfigLegacy::PS4Options * ps4Options = Storage::getInstance().getPS4Options();
 	std::string decoded;
 	std::size_t len;
 
@@ -794,7 +794,7 @@ std::string setPS4Options()
 std::string getAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	doc["turboPin"] = addonOptions.pinButtonTurbo == 0xFF ? -1 : addonOptions.pinButtonTurbo;
 	doc["turboPinLED"] = addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED;
 	doc["sliderLSPin"] = addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS;

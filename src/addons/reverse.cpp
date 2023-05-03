@@ -3,7 +3,7 @@
 #include "GamepadEnums.h"
 
 bool ReverseInput::available() {
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
     pinButtonReverse = options.pinButtonReverse;
 	return (options.ReverseInputEnabled &&
         pinButtonReverse != (uint8_t)-1);
@@ -17,7 +17,7 @@ void ReverseInput::setup()
     gpio_pull_up(pinButtonReverse);          // Set as PULLUP
 
     // Setup Reverse LED if available
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
     pinLED = options.pinReverseLED;
     if (pinLED != (uint8_t)-1) {
         gpio_init(options.pinReverseLED);

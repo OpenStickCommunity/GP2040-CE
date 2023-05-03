@@ -2,7 +2,7 @@
 #include "storagemanager.h"
 
 bool DualDirectionalInput::available() {
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
     pinDualDirDown = options.pinDualDirDown;
     pinDualDirUp = options.pinDualDirUp;
     pinDualDirLeft = options.pinDualDirLeft;
@@ -12,10 +12,10 @@ bool DualDirectionalInput::available() {
 }
 
 void DualDirectionalInput::setup() {
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
     combineMode = options.dualDirCombineMode;
 
-    dpadMode = options.dualDirDpadMode;
+    dpadMode = static_cast<DpadMode>(options.dualDirDpadMode);
 
     // Setup TURBO Key
     uint8_t pinDualDir[4] = {pinDualDirDown,

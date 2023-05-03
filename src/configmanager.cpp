@@ -26,11 +26,11 @@ void ConfigManager::setGamepadOptions(Gamepad* gamepad) {
 	gamepad->save();
 }
 
-void ConfigManager::setLedOptions(LEDOptions ledOptions) {
+void ConfigManager::setLedOptions(ConfigLegacy::LEDOptions ledOptions) {
 	Storage::getInstance().setLEDOptions(ledOptions);
 }
 
-void ConfigManager::setBoardOptions(BoardOptions boardOptions) {
+void ConfigManager::setBoardOptions(ConfigLegacy::BoardOptions boardOptions) {
 	Storage::getInstance().setBoardOptions(boardOptions);
 
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
@@ -56,10 +56,10 @@ void ConfigManager::setBoardOptions(BoardOptions boardOptions) {
 	GamepadStore.save();
 }
 
-void ConfigManager::setPreviewBoardOptions(BoardOptions boardOptions) {
+void ConfigManager::setPreviewBoardOptions(ConfigLegacy::BoardOptions boardOptions) {
 	Storage::getInstance().setPreviewBoardOptions(boardOptions);
 }
 
-void ConfigManager::setSplashImage(SplashImage image) {
+void ConfigManager::setSplashImage(ConfigLegacy::SplashImage image) {
 	Storage::getInstance().setSplashImage(image);
 }

@@ -21,7 +21,7 @@ public:
 private:
 	struct mbedtls_rsa_context rsa_context;
     uint8_t hashed_nonce[32];
-    PS4Options ps4Options;
+    ConfigLegacy::PS4Options ps4Options;
 };
 
 #endif  // PS4MODE_H_

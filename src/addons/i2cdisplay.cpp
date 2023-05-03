@@ -13,14 +13,14 @@
 #include "ps4_driver.h"
 
 bool I2CDisplayAddon::available() {
-	const BoardOptions& boardOptions = getBoardOptions();
+	const ConfigLegacy::BoardOptions& boardOptions = getBoardOptions();
 	return boardOptions.hasI2CDisplay && 
 		boardOptions.i2cSDAPin != (uint8_t)-1 && 
 		boardOptions.i2cSCLPin != (uint8_t)-1;
 }
 
 void I2CDisplayAddon::setup() {
-	const BoardOptions& boardOptions = getBoardOptions();
+	const ConfigLegacy::BoardOptions& boardOptions = getBoardOptions();
 
 	obdI2CInit(&obd,
 	    boardOptions.displaySize,
@@ -96,7 +96,7 @@ void I2CDisplayAddon::process() {
 			drawText(5, 7, "B2 > Splash");
 			break;
 		case I2CDisplayAddon::DisplayMode::SPLASH:
-			if (getBoardOptions().splashMode == SPLASH_MODE_NONE) {
+			if (getBoardOptions().splashMode == static_cast<ConfigLegacy::SplashMode>(SPLASH_MODE_NONE)) {
 				drawText(0, 4, " Splash NOT enabled.");
 				break;
 			}
@@ -104,8 +104,8 @@ void I2CDisplayAddon::process() {
 			break;
 		case I2CDisplayAddon::DisplayMode::BUTTONS:
 			drawStatusBar(gamepad);
-			const BoardOptions& boardOptions = getBoardOptions();
-			ButtonLayoutCustomOptions buttonLayoutCustomOptions = boardOptions.buttonLayoutCustomOptions;
+			const ConfigLegacy::BoardOptions& boardOptions = getBoardOptions();
+			ConfigLegacy::ButtonLayoutCustomOptions buttonLayoutCustomOptions = boardOptions.buttonLayoutCustomOptions;
 
 			switch (boardOptions.buttonLayout) {
 				case BUTTON_LAYOUT_STICK:
@@ -231,7 +231,7 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 		prevButtonState = buttonState;
 		return prevDisplayMode;
 	} else {
-		if (Storage::getInstance().getBoardOptions().splashMode != SPLASH_MODE_NONE) {
+		if (Storage::getInstance().getBoardOptions().splashMode != static_cast<ConfigLegacy::SplashMode>(SPLASH_MODE_NONE)) {
 			int splashDuration = getBoardOptions().splashDuration;
 			if (splashDuration == 0 || getMillis() < splashDuration) {
 				return I2CDisplayAddon::DisplayMode::SPLASH;
@@ -242,13 +242,13 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 	return I2CDisplayAddon::DisplayMode::BUTTONS;
 }
 
-const BoardOptions& I2CDisplayAddon::getBoardOptions() {
+const ConfigLegacy::BoardOptions& I2CDisplayAddon::getBoardOptions() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 	return configMode ? Storage::getInstance().getPreviewBoardOptions() : Storage::getInstance().getBoardOptions();
 }
 
 int I2CDisplayAddon::initDisplay(int typeOverride) {
-	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
+	const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	return obdI2CInit(&obd,
 	    typeOverride > 0 ? typeOverride : boardOptions.displaySize,
 		boardOptions.displayI2CAddress,
@@ -318,7 +318,7 @@ void I2CDisplayAddon::clearScreen(int render) {
 	obdFill(&obd, 0, render);
 }
 
-void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutCustomOptions options)
+void I2CDisplayAddon::drawButtonLayoutLeft(ConfigLegacy::ButtonLayoutCustomOptions options)
 {
 	int& startX = options.params.startX;
 	int& startY = options.params.startY;
@@ -366,7 +366,7 @@ void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutCustomOptions options)
 		}
 }
 
-void I2CDisplayAddon::drawButtonLayoutRight(ButtonLayoutCustomOptions options)
+void I2CDisplayAddon::drawButtonLayoutRight(ConfigLegacy::ButtonLayoutCustomOptions options)
 {
 	int& startX = options.paramsRight.startX;
 	int& startY = options.paramsRight.startY;
@@ -907,8 +907,8 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
-	const BoardOptions& boardOptions = getBoardOptions();
-	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::BoardOptions& boardOptions = getBoardOptions();
+	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();

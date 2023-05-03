@@ -12,12 +12,12 @@
 #include "mbedtls/sha256.h"
 
 bool PS4ModeAddon::available() {
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	return addonOptions.PS4ModeAddonEnabled;
 }
 
 void PS4ModeAddon::setup() {
-    PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+    ConfigLegacy::PS4Options * ps4Options = Storage::getInstance().getPS4Options();
 
     rsa_context = {
       .ver = 0,
@@ -40,7 +40,7 @@ void PS4ModeAddon::setup() {
 }
 
 void PS4ModeAddon::process() {
-    PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+    ConfigLegacy::PS4Options * ps4Options = Storage::getInstance().getPS4Options();
 
     int rss_error = 0;
 

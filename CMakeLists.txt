@@ -108,6 +108,7 @@ src/addonmanager.cpp
 src/configmanager.cpp
 src/storagemanager.cpp
 src/system.cpp
+src/config_legacy.cpp
 src/config_utils.cpp
 src/configs/webconfig.cpp
 src/addons/analog.cpp

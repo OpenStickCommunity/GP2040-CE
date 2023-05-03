@@ -9,7 +9,7 @@
 #define DPAD_MODE_MASK (DPAD_MODE_LEFT_ANALOG & DPAD_MODE_RIGHT_ANALOG & DPAD_MODE_DIGITAL)
 
 bool JSliderInput::available() {
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
     pinSliderLS = options.pinSliderLS;
     pinSliderRS = options.pinSliderRS;
 	return ( options.JSliderInputEnabled &&

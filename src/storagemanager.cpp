@@ -38,37 +38,19 @@
 
 /* Board stuffs */
 void Storage::initBoardOptions() {
-	EEPROM.get(BOARD_STORAGE_INDEX, boardOptions);
-	uint32_t lastCRC = boardOptions.checksum;
-	boardOptions.checksum = CHECKSUM_MAGIC;
-	if (lastCRC != CRC32::calculate(&boardOptions)) {
-		setDefaultBoardOptions();
-	}
+	setDefaultBoardOptions();
 }
 
 void Storage::initAddonOptions() {
-	EEPROM.get(ADDON_STORAGE_INDEX, addonOptions);
-	uint32_t lastCRC = addonOptions.checksum;
-	addonOptions.checksum = CHECKSUM_MAGIC;
-	if (lastCRC != CRC32::calculate(&addonOptions)) {
-		setDefaultAddonOptions();
-	}
+	setDefaultAddonOptions();
 }
 
 void Storage::initSplashImage() {
-	EEPROM.get(SPLASH_IMAGE_STORAGE_INDEX, splashImage);
-	uint32_t lastCRC = splashImage.checksum;
-	splashImage.checksum = CHECKSUM_MAGIC;
-	if (lastCRC != CRC32::calculate(&splashImage)) {
-		setDefaultSplashImage();
-	}
+	setDefaultSplashImage();
 }
 
 void Storage::initPS4Options() {
-	EEPROM.get(PS4_STORAGE_INDEX, ps4Options);
-	if (ps4Options.checksum != NOCHECKSUM_MAGIC) {
-		setDefaultPS4Options();
-	}
+	setDefaultPS4Options();
 }
 
 void Storage::setDefaultBoardOptions()
@@ -93,10 +75,10 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.pinButtonR3       = PIN_BUTTON_R3;
 	boardOptions.pinButtonA1       = PIN_BUTTON_A1;
 	boardOptions.pinButtonA2       = PIN_BUTTON_A2;
-	boardOptions.buttonLayout      = BUTTON_LAYOUT;
-	boardOptions.buttonLayoutRight = BUTTON_LAYOUT_RIGHT;
-	boardOptions.splashMode        = SPLASH_MODE;
-	boardOptions.splashChoice      = SPLASH_CHOICE;
+	boardOptions.buttonLayout      = static_cast<ConfigLegacy::ButtonLayout>(BUTTON_LAYOUT);
+	boardOptions.buttonLayoutRight = static_cast<ConfigLegacy::ButtonLayoutRight>(BUTTON_LAYOUT_RIGHT);
+	boardOptions.splashMode        = static_cast<ConfigLegacy::SplashMode>(SPLASH_MODE);
+	boardOptions.splashChoice      = static_cast<ConfigLegacy::SplashChoice>(SPLASH_CHOICE);
 	boardOptions.splashDuration    = SPLASH_DURATION;
 	boardOptions.i2cSDAPin         = I2C_SDA_PIN;
 	boardOptions.i2cSCLPin         = I2C_SCL_PIN;
@@ -109,8 +91,8 @@ void Storage::setDefaultBoardOptions()
 	boardOptions.displayInvert     = DISPLAY_INVERT;
 	boardOptions.displaySaverTimeout     = DISPLAY_SAVER_TIMEOUT;
 
-	ButtonLayoutParams params = {
-		.layout = BUTTON_LAYOUT,
+	ConfigLegacy::ButtonLayoutParams params = {
+		.layout = static_cast<ConfigLegacy::ButtonLayout>(BUTTON_LAYOUT),
 		.startX = 8,
 		.startY = 28,
 		.buttonRadius = 8,
@@ -118,8 +100,8 @@ void Storage::setDefaultBoardOptions()
 	};
 	boardOptions.buttonLayoutCustomOptions.params = params;
 
-	ButtonLayoutParams paramsRight = {
-		.layoutRight = BUTTON_LAYOUT_RIGHT,
+	ConfigLegacy::ButtonLayoutParams paramsRight = {
+		.layoutRight = static_cast<ConfigLegacy::ButtonLayoutRight>(BUTTON_LAYOUT_RIGHT),
 		.startX = 8,
 		.startY = 28,
 		.buttonRadius = 8,
@@ -131,16 +113,8 @@ void Storage::setDefaultBoardOptions()
 	setBoardOptions(boardOptions);
 }
 
-void Storage::setBoardOptions(BoardOptions options)
+void Storage::setBoardOptions(ConfigLegacy::BoardOptions options)
 {
-	if (memcmp(&options, &boardOptions, sizeof(BoardOptions)) != 0)
-	{
-		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-		options.checksum = CRC32::calculate(&options);
-		EEPROM.set(BOARD_STORAGE_INDEX, options);
-		EEPROM.commit();
-		memcpy(&boardOptions, &options, sizeof(BoardOptions));
-	}
 }
 
 void Storage::setDefaultAddonOptions()
@@ -167,8 +141,8 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.i2cAnalog1219Block     = (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1;
 	addonOptions.i2cAnalog1219Speed     = I2C_ANALOG1219_SPEED;
 	addonOptions.i2cAnalog1219Address   = I2C_ANALOG1219_ADDRESS;
-	addonOptions.onBoardLedMode			= BOARD_LED_TYPE;
-	addonOptions.dualDirDpadMode        = DUAL_DIRECTIONAL_STICK_MODE;
+	addonOptions.onBoardLedMode			= static_cast<ConfigLegacy::OnBoardLedMode>(BOARD_LED_TYPE);
+	addonOptions.dualDirDpadMode        = static_cast<ConfigLegacy::DpadMode>(DUAL_DIRECTIONAL_STICK_MODE);
 	addonOptions.dualDirCombineMode     = DUAL_DIRECTIONAL_COMBINE_MODE;
 	addonOptions.analogAdcPinX      	= ANALOG_ADC_VRX;
 	addonOptions.analogAdcPinY      	= ANALOG_ADC_VRY;
@@ -193,9 +167,9 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.shmupBtnMask3 = SHMUP_BUTTON3;
 	addonOptions.shmupBtnMask4 = SHMUP_BUTTON4;
 	addonOptions.pinShmupDial = PIN_SHMUP_DIAL;
-    addonOptions.sliderSOCDModeOne = SLIDER_SOCD_SLOT_ONE;
-    addonOptions.sliderSOCDModeTwo  = SLIDER_SOCD_SLOT_TWO;
-    addonOptions.sliderSOCDModeDefault = SLIDER_SOCD_SLOT_DEFAULT;
+    addonOptions.sliderSOCDModeOne = static_cast<ConfigLegacy::SOCDMode>(SLIDER_SOCD_SLOT_ONE);
+    addonOptions.sliderSOCDModeTwo  = static_cast<ConfigLegacy::SOCDMode>(SLIDER_SOCD_SLOT_TWO);
+    addonOptions.sliderSOCDModeDefault = static_cast<ConfigLegacy::SOCDMode>(SLIDER_SOCD_SLOT_DEFAULT);
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -212,52 +186,29 @@ void Storage::setDefaultAddonOptions()
 	setAddonOptions(addonOptions);
 }
 
-void Storage::setAddonOptions(AddonOptions options)
+void Storage::setAddonOptions(ConfigLegacy::AddonOptions options)
 {
-	if (memcmp(&options, &addonOptions, sizeof(AddonOptions)) != 0)
-	{
-		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-		options.checksum = CRC32::calculate(&options);
-		EEPROM.set(ADDON_STORAGE_INDEX, options);
-		EEPROM.commit();
-		addonOptions = options;
-	}
 }
 
 void Storage::setDefaultSplashImage()
 {
-	memcpy(&splashImage.data, &splashImageMain, sizeof(splashImageMain));
-	setSplashImage(splashImage);
 }
 
-void Storage::setSplashImage(SplashImage image)
+void Storage::setSplashImage(ConfigLegacy::SplashImage image)
 {
-	if (memcmp(&splashImage, &image, sizeof(SplashImage)) != 0)
-	{
-		image.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-		image.checksum = CRC32::calculate(&image);
-		EEPROM.set(SPLASH_IMAGE_STORAGE_INDEX, image);
-		EEPROM.commit();
-		memcpy(&splashImage, &image, sizeof(SplashImage));
-	}
 }
 
 /* LED stuffs */
 void Storage::initLEDOptions()
 {
-	EEPROM.get(LED_STORAGE_INDEX, ledOptions);
-	uint32_t lastCRC = ledOptions.checksum;
-	ledOptions.checksum = CHECKSUM_MAGIC;
-	if (lastCRC != CRC32::calculate(&ledOptions)) {
-		setDefaultLEDOptions();
-	}
+	setDefaultLEDOptions();
 }
 
 void Storage::setDefaultLEDOptions()
 {
 	ledOptions.dataPin = BOARD_LEDS_PIN;
 	ledOptions.ledFormat = LED_FORMAT;
-	ledOptions.ledLayout = BUTTON_LAYOUT;
+	ledOptions.ledLayout = static_cast<ConfigLegacy::ButtonLayout>(BUTTON_LAYOUT);
 	ledOptions.ledsPerButton = LEDS_PER_PIXEL;
 	ledOptions.brightnessMaximum = LED_BRIGHTNESS_MAXIMUM;
 	ledOptions.brightnessSteps = LED_BRIGHTNESS_STEPS;
@@ -282,32 +233,21 @@ void Storage::setDefaultLEDOptions()
 	setLEDOptions(ledOptions);
 }
 
-void Storage::setLEDOptions(LEDOptions options)
+void Storage::setLEDOptions(ConfigLegacy::LEDOptions options)
 {
-	if (memcmp(&options, &ledOptions, sizeof(LEDOptions)) != 0)
-	{
-		options.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-		options.checksum = CRC32::calculate(&options);
-		EEPROM.set(LED_STORAGE_INDEX, options);
-		EEPROM.commit();
-		memcpy(&ledOptions, &options, sizeof(LEDOptions));
-	}
 }
 
 void Storage::savePS4Options()     // PS4 Options
 {
-	ps4Options.checksum = NOCHECKSUM_MAGIC;
-	EEPROM.set(PS4_STORAGE_INDEX, ps4Options);
-	EEPROM.commit();
 }
 
 void Storage::setDefaultPS4Options()
 {
 	// Zero everything out
-	memset(&ps4Options, 0, sizeof(PS4Options));
+	memset(&ps4Options, 0, sizeof(ConfigLegacy::PS4Options));
 }
 
-PS4Options * Storage::getPS4Options()
+ConfigLegacy::PS4Options * Storage::getPS4Options()
 {
 	return &ps4Options;
 }
@@ -320,12 +260,12 @@ void Storage::ResetSettings()
 
 void Storage::initPreviewBoardOptions()
 {
-	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
+	memcpy(&previewBoardOptions, &boardOptions, sizeof(ConfigLegacy::BoardOptions));
 }
 
-void Storage::setPreviewBoardOptions(const BoardOptions& boardOptions)
+void Storage::setPreviewBoardOptions(const ConfigLegacy::BoardOptions& boardOptions)
 {
-	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
+	memcpy(&previewBoardOptions, &boardOptions, sizeof(ConfigLegacy::BoardOptions));
 }
 
 void Storage::SetConfigMode(bool mode) { // hack for config mode
@@ -377,44 +317,21 @@ uint8_t * Storage::GetFeatureData()
 AnimationOptions AnimationStorage::getAnimationOptions()
 {
 	AnimationOptions options;
-	EEPROM.get(ANIMATION_STORAGE_INDEX, options);
-
-	uint32_t lastCRC = options.checksum;
-	options.checksum = CHECKSUM_MAGIC;
-	if (CRC32::calculate(&options) != lastCRC)
-	{
-		options.baseAnimationIndex = LEDS_BASE_ANIMATION_INDEX;
-		options.brightness         = LEDS_BRIGHTNESS;
-		options.staticColorIndex   = LEDS_STATIC_COLOR_INDEX;
-		options.buttonColorIndex   = LEDS_BUTTON_COLOR_INDEX;
-		options.chaseCycleTime     = LEDS_CHASE_CYCLE_TIME;
-		options.rainbowCycleTime   = LEDS_RAINBOW_CYCLE_TIME;
-		options.themeIndex         = LEDS_THEME_INDEX;
-
-		setAnimationOptions(options);
-	}
+	options.baseAnimationIndex = LEDS_BASE_ANIMATION_INDEX;
+	options.brightness         = LEDS_BRIGHTNESS;
+	options.staticColorIndex   = LEDS_STATIC_COLOR_INDEX;
+	options.buttonColorIndex   = LEDS_BUTTON_COLOR_INDEX;
+	options.chaseCycleTime     = LEDS_CHASE_CYCLE_TIME;
+	options.rainbowCycleTime   = LEDS_RAINBOW_CYCLE_TIME;
+	options.themeIndex         = LEDS_THEME_INDEX;
 
 	return options;
 }
 
 void AnimationStorage::setAnimationOptions(AnimationOptions options)
 {
-	options.checksum = CHECKSUM_MAGIC;
-	options.checksum = CRC32::calculate(&options);
-	EEPROM.set(ANIMATION_STORAGE_INDEX, options);
 }
 
 void AnimationStorage::save()
 {
-	bool dirty = false;
-	AnimationOptions savedOptions = getAnimationOptions();
-
-	if (memcmp(&savedOptions, &AnimationStation::options, sizeof(AnimationOptions)) != 0)
-	{
-		this->setAnimationOptions(AnimationStation::options);
-		dirty = true;
-	}
-
-	if (dirty)
-		EEPROM.commit();
 }
