@@ -27,29 +27,6 @@ int64_t writeToFlash(alarm_id_t id, void *flashCache)
 	return 0;
 }
 
-void FlashPROM::start()
-{
-	if (flashLock == nullptr)
-		flashLock = spin_lock_instance(spin_lock_claim_unused(true));
-
-	memcpy(cache, reinterpret_cast<uint8_t *>(EEPROM_ADDRESS_START), EEPROM_SIZE_BYTES);
-
-	// When flash is new/reset, all bits are set to 1.
-	// If all bits from the FlashPROM section are 1's then set to 0's.
-	bool reset = true;
-	for (int i = 0; i < EEPROM_SIZE_BYTES; i++)
-	{
-		if (cache[i] != 0xFF)
-		{
-			reset = false;
-			break;
-		}
-	}
-
-	if (reset)
-		this->reset();
-}
-
 /* We don't have an actual EEPROM, so we need to be extra careful about minimizing writes. Instead
 	of writing when a commit is requested, we update a time to actually commit. That way, if we receive multiple requests
 	to commit in that timeframe, we'll hold off until the user is done sending changes. */

@@ -66,13 +66,11 @@ public:
 
 private:
 	Storage() : gamepad(0) {
-		EEPROM.start(); // init EEPROM
 		initBoardOptions();
 		initAddonOptions();
 		initLEDOptions();
 		initSplashImage();
 		initPS4Options();
-
 	}
 	void initBoardOptions();
 	void initPreviewBoardOptions();
