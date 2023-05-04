@@ -68,7 +68,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_KEYBOARD:
 		case BootAction::NONE:
 			{
-				InputMode inputMode = gamepad->options.inputMode;
+				InputMode inputMode = static_cast<InputMode>(gamepad->options.inputMode);
 				if (bootAction == BootAction::SET_INPUT_MODE_HID) {
 					inputMode = INPUT_MODE_HID;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_SWITCH) {
@@ -81,9 +81,9 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_KEYBOARD;
 				}
 
-				if (inputMode != gamepad->options.inputMode) {
+				if (inputMode != static_cast<InputMode>(gamepad->options.inputMode)) {
 					// Save the changed input mode
-					gamepad->options.inputMode = inputMode;
+					gamepad->options.inputMode = static_cast<ConfigLegacy::InputMode>(inputMode);
 					gamepad->save();
 				}
 

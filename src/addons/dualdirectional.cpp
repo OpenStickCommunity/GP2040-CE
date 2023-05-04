@@ -89,12 +89,12 @@ void DualDirectionalInput::preprocess()
 
     // Combined Mode
     if ( combineMode == DUAL_COMBINE_MODE_MIXED ) {
-        SOCDDualClean(gamepad->options.socdMode); // Clean up Dual SOCD based on the mode
+        SOCDDualClean(static_cast<SOCDMode>(gamepad->options.socdMode)); // Clean up Dual SOCD based on the mode
 
         // Second Input (Last Input Priority) needs to happen before we MPG clean
-        if ( gamepad->options.socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY ||
-             gamepad->options.socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY ) {
-            gamepadState = SOCDGamepadClean(gamepadState, gamepad->options.socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) | dualState;
+        if ( gamepad->options.socdMode == static_cast<ConfigLegacy::SOCDMode>(SOCD_MODE_SECOND_INPUT_PRIORITY) ||
+             gamepad->options.socdMode == static_cast<ConfigLegacy::SOCDMode>(SOCD_MODE_FIRST_INPUT_PRIORITY) ) {
+            gamepadState = SOCDGamepadClean(gamepadState, gamepad->options.socdMode == static_cast<ConfigLegacy::SOCDMode>(SOCD_MODE_SECOND_INPUT_PRIORITY)) | dualState;
         }
     }
     // Gamepad Overwrite Mode
@@ -120,17 +120,17 @@ void DualDirectionalInput::process()
 
     // If we're in mixed mode
     if (combineMode == DUAL_COMBINE_MODE_MIXED) {
-        uint8_t gamepadDpad = gpadToBinary(gamepad->options.dpadMode, gamepad->state);
+        uint8_t gamepadDpad = gpadToBinary(static_cast<DpadMode>(gamepad->options.dpadMode), gamepad->state);
         // Up-Win or Neutral Modify AFTER SOCD(gamepad), Last-Win Modifies BEFORE SOCD(gamepad)
         if ( gamepad->options.socdMode == SOCD_MODE_UP_PRIORITY ||
                 gamepad->options.socdMode == SOCD_MODE_NEUTRAL ) {
 
             // Up-Win or Neutral: SOCD(gamepad) *already done* | SOCD(dual) *done in preprocess()*
-            dualOut = SOCDCombine(gamepad->options.socdMode, gamepadDpad);
+            dualOut = SOCDCombine(static_cast<SOCDMode>(gamepad->options.socdMode), gamepadDpad);
 
             // Modify Gamepad if we're in mixed Up-Win or Neutral and dual != gamepad
             if ( dualOut != gamepadDpad ) {
-                OverrideGamepad(gamepad, gamepad->options.dpadMode, dualOut);
+                OverrideGamepad(gamepad, static_cast<DpadMode>(gamepad->options.dpadMode), dualOut);
             }
         }
     } else { // We are not mixed mode, don't change dual output

@@ -5,7 +5,6 @@
 #include <string.h>
 
 #include "gamepad/GamepadDebouncer.h"
-#include "gamepad/GamepadOptions.h"
 #include "gamepad/GamepadState.h"
 #include "gamepad/GamepadStorage.h"
 #include "gamepad/descriptors/HIDDescriptors.h"
@@ -13,6 +12,8 @@
 #include "gamepad/descriptors/XInputDescriptors.h"
 #include "gamepad/descriptors/KeyboardDescriptors.h"
 #include "gamepad/descriptors/PS4Descriptors.h"
+
+#include "config_legacy.h"
 
 #include "pico/stdlib.h"
 
@@ -134,7 +135,7 @@ public:
 	const uint8_t debounceMS;
 	uint16_t f1Mask;
 	uint16_t f2Mask;
-	GamepadOptions options;
+	ConfigLegacy::GamepadOptions options;
 	GamepadState rawState;
 	GamepadState state;
 	GamepadButtonMapping *mapDpadUp;
@@ -162,14 +163,14 @@ private:
 	void pressKey(uint8_t code);
 	uint8_t getModifier(uint8_t code);
 
-	GamepadHotkeyEntry hotkeyF1Up;
-	GamepadHotkeyEntry hotkeyF1Down;
-	GamepadHotkeyEntry hotkeyF1Left;
-	GamepadHotkeyEntry hotkeyF1Right;
-	GamepadHotkeyEntry hotkeyF2Up;
-	GamepadHotkeyEntry hotkeyF2Down;
-	GamepadHotkeyEntry hotkeyF2Left;
-	GamepadHotkeyEntry hotkeyF2Right;
+	ConfigLegacy::GamepadHotkeyEntry hotkeyF1Up;
+	ConfigLegacy::GamepadHotkeyEntry hotkeyF1Down;
+	ConfigLegacy::GamepadHotkeyEntry hotkeyF1Left;
+	ConfigLegacy::GamepadHotkeyEntry hotkeyF1Right;
+	ConfigLegacy::GamepadHotkeyEntry hotkeyF2Up;
+	ConfigLegacy::GamepadHotkeyEntry hotkeyF2Down;
+	ConfigLegacy::GamepadHotkeyEntry hotkeyF2Left;
+	ConfigLegacy::GamepadHotkeyEntry hotkeyF2Right;
 };
 
 #endif

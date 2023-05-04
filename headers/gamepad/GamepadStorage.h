@@ -7,9 +7,7 @@
 
 #include <stdint.h>
 
-#include "GamepadOptions.h"
-
-#define STORAGE_FIRST_AVAILBLE_INDEX 2048
+#include "config_legacy.h"
 
 class GamepadStorage
 {
@@ -17,8 +15,8 @@ class GamepadStorage
 		virtual void start(); // TODO: Should be pure virtual.
 		virtual void save(); // TODO: Should be pure virtual.
 
-		GamepadOptions getGamepadOptions();
-		void setGamepadOptions(GamepadOptions options);
+		ConfigLegacy::GamepadOptions getGamepadOptions();
+		void setGamepadOptions(ConfigLegacy::GamepadOptions options);
 };
 
 static GamepadStorage GamepadStore;

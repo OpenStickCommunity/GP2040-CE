@@ -118,7 +118,7 @@ void NeoPicoLEDAddon::process()
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();
 	AnimationHotkey action = animationHotkeys(gamepad);
 	if (PLED_TYPE == PLED_TYPE_RGB) {
-		inputMode = gamepad->options.inputMode; // HACK
+		inputMode = static_cast<InputMode>(gamepad->options.inputMode); // HACK
 		switch (gamepad->options.inputMode) {
 			case INPUT_MODE_XINPUT:
 				animationState = getXInputAnimationNEOPICO(featureData);

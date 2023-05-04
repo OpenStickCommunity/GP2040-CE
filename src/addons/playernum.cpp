@@ -24,7 +24,7 @@ void PlayerNumAddon::process()
 {
     if ( assigned == 0 ) {
         Gamepad * gamepad = Storage::getInstance().GetGamepad();
-        InputMode inputMode = gamepad->options.inputMode;
+        InputMode inputMode = static_cast<InputMode>(gamepad->options.inputMode);
         if ( inputMode == INPUT_MODE_XINPUT ) {
             uint8_t * featureData = Storage::getInstance().GetFeatureData();
             if (featureData[0] == 0x01) {

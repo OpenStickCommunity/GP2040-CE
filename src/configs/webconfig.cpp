@@ -398,7 +398,7 @@ std::string setGamepadOptions()
 std::string getGamepadOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	GamepadOptions options = GamepadStore.getGamepadOptions();
+	const ConfigLegacy::GamepadOptions& options = GamepadStore.getGamepadOptions();
 	doc["dpadMode"]  = options.dpadMode;
 	doc["inputMode"] = options.inputMode;
 	doc["socdMode"]  = options.socdMode;
