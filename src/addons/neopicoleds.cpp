@@ -130,6 +130,7 @@ void NeoPicoLEDAddon::process()
 
 	if ( action != HOTKEY_LEDS_NONE ) {
 		as.HandleEvent(action);
+		AnimationStore.save();
 	}
 
 	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
@@ -165,7 +166,6 @@ void NeoPicoLEDAddon::process()
 
 	neopico->SetFrame(frame);
 	neopico->Show();
-	AnimationStore.save();
 
 	this->nextRunTime = make_timeout_time_ms(NeoPicoLEDAddon::intervalMS);
 }
@@ -393,7 +393,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 	{
 		case BUTTON_LAYOUT_BLANKA:
 			return generatedLEDButtons(&positions);
-		
+
 		case BUTTON_LAYOUT_BUTTONS_BASIC:
 			return generatedLEDButtons(&positions);
 
@@ -408,7 +408,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 
 		case BUTTON_LAYOUT_TWINSTICKA:
 			return generatedLEDButtons(&positions);
-		
+
 		case BUTTON_LAYOUT_ARCADE:
 			return generatedLEDButtons(&positions);
 
@@ -481,10 +481,11 @@ void NeoPicoLEDAddon::configureLEDs()
 
 	Animation::format = ledOptions.ledFormat;
 	as.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
-	as.SetOptions(AnimationStore.getAnimationOptions());
-	addStaticThemes(ledOptions);
-	as.SetMode(as.options.baseAnimationIndex);
+	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
+	addStaticThemes(ledOptions, animationOptions);
+	as.SetOptions(animationOptions);
 	as.SetMatrix(matrix);
+	as.SetMode(as.options.baseAnimationIndex);
 }
 
 AnimationHotkey animationHotkeys(Gamepad *gamepad)

@@ -3,6 +3,7 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
+#include "AnimationStorage.hpp"
 #include "system.h"
 
 #include <cstring>
@@ -33,6 +34,8 @@
 #define API_SET_GAMEPAD_OPTIONS "/api/setGamepadOptions"
 #define API_GET_LED_OPTIONS "/api/getLedOptions"
 #define API_SET_LED_OPTIONS "/api/setLedOptions"
+#define API_GET_CUSTOM_THEME "/api/getCustomTheme"
+#define API_SET_CUSTOM_THEME "/api/setCustomTheme"
 #define API_GET_PIN_MAPPINGS "/api/getPinMappings"
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
 #define API_GET_KEY_MAPPINGS "/api/getKeyMappings"
@@ -58,7 +61,7 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons" };
+const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -186,7 +189,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	auto usedPins = doc.createNestedArray("usedPins");
 
 	const auto addPinIfValid = [&](int pin)
-	{ 
+	{
 		if (pin >= 0 && pin < NUM_BANK0_GPIOS)
 		{
 			usedPins.add(pin);
@@ -427,44 +430,6 @@ std::string setLedOptions()
 	ledOptions.indexA1            = (doc["ledButtonMap"]["A1"]    == nullptr) ? -1 : doc["ledButtonMap"]["A1"];
 	ledOptions.indexA2            = (doc["ledButtonMap"]["A2"]    == nullptr) ? -1 : doc["ledButtonMap"]["A2"];
 
-	ledOptions.useCustomLeds            = doc["useCustomLeds"];
-	ledOptions.customColorUp            = (doc["customLeds"]["Up"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["Up"]["normal"];
-	ledOptions.customColorDown          = (doc["customLeds"]["Down"]["normal"]   == nullptr) ? 0 : doc["customLeds"]["Down"]["normal"];
-	ledOptions.customColorLeft          = (doc["customLeds"]["Left"]["normal"]   == nullptr) ? 0 : doc["customLeds"]["Left"]["normal"];
-	ledOptions.customColorRight         = (doc["customLeds"]["Right"]["normal"]  == nullptr) ? 0 : doc["customLeds"]["Right"]["normal"];
-	ledOptions.customColorB1            = (doc["customLeds"]["B1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["B1"]["normal"];
-	ledOptions.customColorB2            = (doc["customLeds"]["B2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["B2"]["normal"];
-	ledOptions.customColorB3            = (doc["customLeds"]["B3"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["B3"]["normal"];
-	ledOptions.customColorB4            = (doc["customLeds"]["B4"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["B4"]["normal"];
-	ledOptions.customColorL1            = (doc["customLeds"]["L1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["L1"]["normal"];
-	ledOptions.customColorR1            = (doc["customLeds"]["R1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["R1"]["normal"];
-	ledOptions.customColorL2            = (doc["customLeds"]["L2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["L2"]["normal"];
-	ledOptions.customColorR2            = (doc["customLeds"]["R2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["R2"]["normal"];
-	ledOptions.customColorS1            = (doc["customLeds"]["S1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["S1"]["normal"];
-	ledOptions.customColorS2            = (doc["customLeds"]["S2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["S2"]["normal"];
-	ledOptions.customColorL3            = (doc["customLeds"]["L3"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["L3"]["normal"];
-	ledOptions.customColorR3            = (doc["customLeds"]["R3"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["R3"]["normal"];
-	ledOptions.customColorA1            = (doc["customLeds"]["A1"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["A1"]["normal"];
-	ledOptions.customColorA2            = (doc["customLeds"]["A2"]["normal"]     == nullptr) ? 0 : doc["customLeds"]["A2"]["normal"];
-	ledOptions.customColorUpPressed     = (doc["customLeds"]["Up"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["Up"]["pressed"];
-	ledOptions.customColorDownPressed   = (doc["customLeds"]["Down"]["pressed"]  == nullptr) ? 0 : doc["customLeds"]["Down"]["pressed"];
-	ledOptions.customColorLeftPressed   = (doc["customLeds"]["Left"]["pressed"]  == nullptr) ? 0 : doc["customLeds"]["Left"]["pressed"];
-	ledOptions.customColorRightPressed  = (doc["customLeds"]["Right"]["pressed"] == nullptr) ? 0 : doc["customLeds"]["Right"]["pressed"];
-	ledOptions.customColorB1Pressed     = (doc["customLeds"]["B1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["B1"]["pressed"];
-	ledOptions.customColorB2Pressed     = (doc["customLeds"]["B2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["B2"]["pressed"];
-	ledOptions.customColorB3Pressed     = (doc["customLeds"]["B3"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["B3"]["pressed"];
-	ledOptions.customColorB4Pressed     = (doc["customLeds"]["B4"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["B4"]["pressed"];
-	ledOptions.customColorL1Pressed     = (doc["customLeds"]["L1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["L1"]["pressed"];
-	ledOptions.customColorR1Pressed     = (doc["customLeds"]["R1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["R1"]["pressed"];
-	ledOptions.customColorL2Pressed     = (doc["customLeds"]["L2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["L2"]["pressed"];
-	ledOptions.customColorR2Pressed     = (doc["customLeds"]["R2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["R2"]["pressed"];
-	ledOptions.customColorS1Pressed     = (doc["customLeds"]["S1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["S1"]["pressed"];
-	ledOptions.customColorS2Pressed     = (doc["customLeds"]["S2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["S2"]["pressed"];
-	ledOptions.customColorL3Pressed     = (doc["customLeds"]["L3"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["L3"]["pressed"];
-	ledOptions.customColorR3Pressed     = (doc["customLeds"]["R3"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["R3"]["pressed"];
-	ledOptions.customColorA1Pressed     = (doc["customLeds"]["A1"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["A1"]["pressed"];
-	ledOptions.customColorA2Pressed     = (doc["customLeds"]["A2"]["pressed"]    == nullptr) ? 0 : doc["customLeds"]["A2"]["pressed"];
-
 	ConfigManager::getInstance().setLedOptions(ledOptions);
 	return serialize_json(doc);
 }
@@ -502,44 +467,100 @@ std::string getLedOptions()
 
 	addUsedPinsArray(doc);
 
-	doc["useCustomLeds"] = ledOptions.useCustomLeds;
-	auto customLeds = doc.createNestedObject("customLeds");
-	customLeds["Up"]["normal"]     = ledOptions.customColorUp;
-	customLeds["Up"]["pressed"]    = ledOptions.customColorUpPressed;
-	customLeds["Down"]["normal"]   = ledOptions.customColorDown;
-	customLeds["Down"]["pressed"]  = ledOptions.customColorDownPressed;
-	customLeds["Left"]["normal"]   = ledOptions.customColorLeft;
-	customLeds["Left"]["pressed"]  = ledOptions.customColorLeftPressed;
-	customLeds["Right"]["normal"]  = ledOptions.customColorRight;
-	customLeds["Right"]["pressed"] = ledOptions.customColorRightPressed;
-	customLeds["B1"]["normal"]     = ledOptions.customColorB1;
-	customLeds["B1"]["pressed"]    = ledOptions.customColorB1Pressed;
-	customLeds["B2"]["normal"]     = ledOptions.customColorB2;
-	customLeds["B2"]["pressed"]    = ledOptions.customColorB2Pressed;
-	customLeds["B3"]["normal"]     = ledOptions.customColorB3;
-	customLeds["B3"]["pressed"]    = ledOptions.customColorB3Pressed;
-	customLeds["B4"]["normal"]     = ledOptions.customColorB4;
-	customLeds["B4"]["pressed"]    = ledOptions.customColorB4Pressed;
-	customLeds["L1"]["normal"]     = ledOptions.customColorL1;
-	customLeds["L1"]["pressed"]    = ledOptions.customColorL1Pressed;
-	customLeds["R1"]["normal"]     = ledOptions.customColorR1;
-	customLeds["R1"]["pressed"]    = ledOptions.customColorR1Pressed;
-	customLeds["L2"]["normal"]     = ledOptions.customColorL2;
-	customLeds["L2"]["pressed"]    = ledOptions.customColorL2Pressed;
-	customLeds["R2"]["normal"]     = ledOptions.customColorR2;
-	customLeds["R2"]["pressed"]    = ledOptions.customColorR2Pressed;
-	customLeds["S1"]["normal"]     = ledOptions.customColorS1;
-	customLeds["S1"]["pressed"]    = ledOptions.customColorS1Pressed;
-	customLeds["S2"]["normal"]     = ledOptions.customColorS2;
-	customLeds["S2"]["pressed"]    = ledOptions.customColorS2Pressed;
-	customLeds["A1"]["normal"]     = ledOptions.customColorA1;
-	customLeds["A1"]["pressed"]    = ledOptions.customColorA1Pressed;
-	customLeds["A2"]["normal"]     = ledOptions.customColorA2;
-	customLeds["A2"]["pressed"]    = ledOptions.customColorA2Pressed;
-	customLeds["L3"]["normal"]     = ledOptions.customColorL3;
-	customLeds["L3"]["pressed"]    = ledOptions.customColorL3Pressed;
-	customLeds["R3"]["normal"]     = ledOptions.customColorR3;
-	customLeds["R3"]["pressed"]    = ledOptions.customColorR3Pressed;
+	return serialize_json(doc);
+}
+
+std::string setCustomTheme()
+{
+	DynamicJsonDocument doc = get_post_data();
+	AnimationOptions options = AnimationStore.getAnimationOptions();
+	options.hasCustomTheme           = doc["hasCustomTheme"];
+	options.customThemeUp            = (doc["customTheme"]["Up"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["Up"]["normal"];
+	options.customThemeDown          = (doc["customTheme"]["Down"]["normal"]   == nullptr) ? 0 : doc["customTheme"]["Down"]["normal"];
+	options.customThemeLeft          = (doc["customTheme"]["Left"]["normal"]   == nullptr) ? 0 : doc["customTheme"]["Left"]["normal"];
+	options.customThemeRight         = (doc["customTheme"]["Right"]["normal"]  == nullptr) ? 0 : doc["customTheme"]["Right"]["normal"];
+	options.customThemeB1            = (doc["customTheme"]["B1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["B1"]["normal"];
+	options.customThemeB2            = (doc["customTheme"]["B2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["B2"]["normal"];
+	options.customThemeB3            = (doc["customTheme"]["B3"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["B3"]["normal"];
+	options.customThemeB4            = (doc["customTheme"]["B4"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["B4"]["normal"];
+	options.customThemeL1            = (doc["customTheme"]["L1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["L1"]["normal"];
+	options.customThemeR1            = (doc["customTheme"]["R1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["R1"]["normal"];
+	options.customThemeL2            = (doc["customTheme"]["L2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["L2"]["normal"];
+	options.customThemeR2            = (doc["customTheme"]["R2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["R2"]["normal"];
+	options.customThemeS1            = (doc["customTheme"]["S1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["S1"]["normal"];
+	options.customThemeS2            = (doc["customTheme"]["S2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["S2"]["normal"];
+	options.customThemeL3            = (doc["customTheme"]["L3"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["L3"]["normal"];
+	options.customThemeR3            = (doc["customTheme"]["R3"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["R3"]["normal"];
+	options.customThemeA1            = (doc["customTheme"]["A1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["A1"]["normal"];
+	options.customThemeA2            = (doc["customTheme"]["A2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["A2"]["normal"];
+	options.customThemeUpPressed     = (doc["customTheme"]["Up"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["Up"]["pressed"];
+	options.customThemeDownPressed   = (doc["customTheme"]["Down"]["pressed"]  == nullptr) ? 0 : doc["customTheme"]["Down"]["pressed"];
+	options.customThemeLeftPressed   = (doc["customTheme"]["Left"]["pressed"]  == nullptr) ? 0 : doc["customTheme"]["Left"]["pressed"];
+	options.customThemeRightPressed  = (doc["customTheme"]["Right"]["pressed"] == nullptr) ? 0 : doc["customTheme"]["Right"]["pressed"];
+	options.customThemeB1Pressed     = (doc["customTheme"]["B1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["B1"]["pressed"];
+	options.customThemeB2Pressed     = (doc["customTheme"]["B2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["B2"]["pressed"];
+	options.customThemeB3Pressed     = (doc["customTheme"]["B3"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["B3"]["pressed"];
+	options.customThemeB4Pressed     = (doc["customTheme"]["B4"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["B4"]["pressed"];
+	options.customThemeL1Pressed     = (doc["customTheme"]["L1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["L1"]["pressed"];
+	options.customThemeR1Pressed     = (doc["customTheme"]["R1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["R1"]["pressed"];
+	options.customThemeL2Pressed     = (doc["customTheme"]["L2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["L2"]["pressed"];
+	options.customThemeR2Pressed     = (doc["customTheme"]["R2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["R2"]["pressed"];
+	options.customThemeS1Pressed     = (doc["customTheme"]["S1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["S1"]["pressed"];
+	options.customThemeS2Pressed     = (doc["customTheme"]["S2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["S2"]["pressed"];
+	options.customThemeL3Pressed     = (doc["customTheme"]["L3"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["L3"]["pressed"];
+	options.customThemeR3Pressed     = (doc["customTheme"]["R3"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["R3"]["pressed"];
+	options.customThemeA1Pressed     = (doc["customTheme"]["A1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["A1"]["pressed"];
+	options.customThemeA2Pressed     = (doc["customTheme"]["A2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["A2"]["pressed"];
+
+	ConfigManager::getInstance().setAnimationOptions(options);
+
+	return serialize_json(doc);
+}
+
+std::string getCustomTheme()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	AnimationOptions options = AnimationStore.getAnimationOptions();
+
+	doc["hasCustomTheme"] = options.hasCustomTheme;
+
+	auto customTheme = doc.createNestedObject("customTheme");
+	customTheme["Up"]["normal"]     = options.customThemeUp;
+	customTheme["Up"]["pressed"]    = options.customThemeUpPressed;
+	customTheme["Down"]["normal"]   = options.customThemeDown;
+	customTheme["Down"]["pressed"]  = options.customThemeDownPressed;
+	customTheme["Left"]["normal"]   = options.customThemeLeft;
+	customTheme["Left"]["pressed"]  = options.customThemeLeftPressed;
+	customTheme["Right"]["normal"]  = options.customThemeRight;
+	customTheme["Right"]["pressed"] = options.customThemeRightPressed;
+	customTheme["B1"]["normal"]     = options.customThemeB1;
+	customTheme["B1"]["pressed"]    = options.customThemeB1Pressed;
+	customTheme["B2"]["normal"]     = options.customThemeB2;
+	customTheme["B2"]["pressed"]    = options.customThemeB2Pressed;
+	customTheme["B3"]["normal"]     = options.customThemeB3;
+	customTheme["B3"]["pressed"]    = options.customThemeB3Pressed;
+	customTheme["B4"]["normal"]     = options.customThemeB4;
+	customTheme["B4"]["pressed"]    = options.customThemeB4Pressed;
+	customTheme["L1"]["normal"]     = options.customThemeL1;
+	customTheme["L1"]["pressed"]    = options.customThemeL1Pressed;
+	customTheme["R1"]["normal"]     = options.customThemeR1;
+	customTheme["R1"]["pressed"]    = options.customThemeR1Pressed;
+	customTheme["L2"]["normal"]     = options.customThemeL2;
+	customTheme["L2"]["pressed"]    = options.customThemeL2Pressed;
+	customTheme["R2"]["normal"]     = options.customThemeR2;
+	customTheme["R2"]["pressed"]    = options.customThemeR2Pressed;
+	customTheme["S1"]["normal"]     = options.customThemeS1;
+	customTheme["S1"]["pressed"]    = options.customThemeS1Pressed;
+	customTheme["S2"]["normal"]     = options.customThemeS2;
+	customTheme["S2"]["pressed"]    = options.customThemeS2Pressed;
+	customTheme["A1"]["normal"]     = options.customThemeA1;
+	customTheme["A1"]["pressed"]    = options.customThemeA1Pressed;
+	customTheme["A2"]["normal"]     = options.customThemeA2;
+	customTheme["A2"]["pressed"]    = options.customThemeA2Pressed;
+	customTheme["L3"]["normal"]     = options.customThemeL3;
+	customTheme["L3"]["pressed"]    = options.customThemeL3Pressed;
+	customTheme["R3"]["normal"]     = options.customThemeR3;
+	customTheme["R3"]["pressed"]    = options.customThemeR3Pressed;
 
 	return serialize_json(doc);
 }
@@ -772,14 +793,14 @@ std::string setPS4Options()
 		Base64::Decode(doc["P"], decoded);
 		if ( decoded.length() == sizeof(ps4Options->rsa_p ) ) {
 			memcpy(ps4Options->rsa_p, decoded.data(), decoded.length());
-		}			
+		}
 	}
 	if ( doc.containsKey("Q") ) {
 		std::string decoded;
 		Base64::Decode(doc["Q"], decoded);
 		if ( decoded.length() == sizeof(ps4Options->rsa_q ) ) {
 			memcpy(ps4Options->rsa_q, decoded.data(), decoded.length());
-		}			
+		}
 	}
 	if ( doc.containsKey("DP") ) {
 		std::string decoded;
@@ -795,9 +816,9 @@ std::string setPS4Options()
 			memcpy(ps4Options->rsa_dq, decoded.data(), decoded.length());
 		}
 	}
-	if ( doc.containsKey("QP") ) {	
+	if ( doc.containsKey("QP") ) {
 		std::string decoded;
-		Base64::Decode(doc["QP"], decoded);	
+		Base64::Decode(doc["QP"], decoded);
 		if ( decoded.length() == sizeof(ps4Options->rsa_qp ) ) {
 			memcpy(ps4Options->rsa_qp, decoded.data(), decoded.length());
 		}
@@ -976,6 +997,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setGamepadOptions());
 	if (strcmp(name, API_SET_LED_OPTIONS) == 0)
 			return set_file_data(file, setLedOptions());
+	if (strcmp(name, API_SET_CUSTOM_THEME) == 0)
+			return set_file_data(file, setCustomTheme());
 	if (strcmp(name, API_SET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, setPinMappings());
 	if (strcmp(name, API_SET_KEY_MAPPINGS) == 0)
@@ -998,6 +1021,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getGamepadOptions());
 	if (strcmp(name, API_GET_LED_OPTIONS) == 0)
 			return set_file_data(file, getLedOptions());
+	if (strcmp(name, API_GET_CUSTOM_THEME) == 0)
+			return set_file_data(file, getCustomTheme());
 	if (strcmp(name, API_GET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, getPinMappings());
 	if (strcmp(name, API_GET_KEY_MAPPINGS) == 0)
