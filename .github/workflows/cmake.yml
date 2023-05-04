@@ -231,7 +231,7 @@ jobs:
         path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev5.uf2
         if-no-files-found: error
 
-    #MAVERCADEKEEBFIGHTER
+#MAVERCADEKEEBFIGHTER
     - name: MavercadeKeebfighter Configure CMake
       shell: bash
       run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=MavercadeKeebfighter SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
@@ -245,4 +245,20 @@ jobs:
       with:
         name: GP2040-CE - MavercadeKeebfighter
         path: ${{github.workspace}}/build/GP2040-CE_*_MavercadeKeebfighter.uf2
+        if-no-files-found: error
+        
+#SGFBridget
+    - name: SGFBridget Configure CMake
+      shell: bash
+      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=SGFBridget SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    
+    - name: SGFBridget Build
+      shell: bash
+      run: GP2040_BOARDCONFIG=SGFBridget cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+   
+    - name: Upload SGFBridget Artifact
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: GP2040-CE - SGFBridget
+        path: ${{github.workspace}}/build/GP2040-CE_*_SGFBridget.uf2
         if-no-files-found: error
