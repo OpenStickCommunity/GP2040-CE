@@ -14,14 +14,19 @@
 #include "helper.h"
 #include "gamepad.h"
 
+#include "mbedtls/rsa.h"
+
 #define GAMEPAD_STORAGE_INDEX      		0    // 1024 bytes for gamepad options
 #define BOARD_STORAGE_INDEX     		1024 //  512 bytes for hardware options
 #define LED_STORAGE_INDEX       		1536 //  512 bytes for LED configuration
 #define ANIMATION_STORAGE_INDEX 		2048 // 1024 bytes for LED animations
 #define ADDON_STORAGE_INDEX             3072 // 1024 bytes for Add-Ons
-#define SPLASH_IMAGE_STORAGE_INDEX		4096 // 1032 bytes for Display Config
+#define PS4_STORAGE_INDEX               4096 // 2048 bytes for PS4 options
+#define SPLASH_IMAGE_STORAGE_INDEX		6144 // 1032 bytes for Display Config
+
 
 #define CHECKSUM_MAGIC          0 	// Checksum CRC
+#define NOCHECKSUM_MAGIC        0xDEADBEEF // No checksum CRC
 
 struct ButtonLayoutParams
 {
@@ -88,8 +93,8 @@ struct AddonOptions {
 	uint8_t pinButtonReverse;
 	uint8_t pinSliderLS;
 	uint8_t pinSliderRS;
-	uint8_t pinSliderSOCDUp;
-	uint8_t pinSliderSOCDSecond;
+	uint8_t pinSliderSOCDOne;
+	uint8_t pinSliderSOCDTwo;
 	uint8_t turboShotCount; // Turbo
 	uint8_t pinTurboLED;    // Turbo LED
 	uint8_t pinReverseLED;    // Reverse LED
@@ -113,7 +118,7 @@ struct AddonOptions {
 	uint8_t analogAdcPinY;
 	uint16_t bootselButtonMap;
 	uint8_t extraButtonPin;
-	uint16_t extraButtonMap;
+	uint32_t extraButtonMap;
 	uint8_t buzzerPin;
 	uint8_t buzzerVolume;
 	uint8_t playerNumber;
@@ -132,6 +137,9 @@ struct AddonOptions {
 	uint16_t shmupBtnMask3;
 	uint16_t shmupBtnMask4;
 	uint8_t pinShmupDial;
+	SOCDMode sliderSOCDModeOne;
+	SOCDMode sliderSOCDModeTwo;
+	SOCDMode sliderSOCDModeDefault;
 	uint8_t AnalogInputEnabled;
 	uint8_t BoardLedAddonEnabled;
 	uint8_t BootselButtonAddonEnabled;
@@ -144,6 +152,7 @@ struct AddonOptions {
 	//bool NeoPicoLEDAddonEnabled; // NeoPico is special case
 	//bool PlayerLEDAddonEnabled; // PlayerLED is special case
 	uint8_t PlayerNumAddonEnabled;
+	uint8_t PS4ModeAddonEnabled;
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
 	uint8_t SliderSOCDInputEnabled;
@@ -152,6 +161,21 @@ struct AddonOptions {
 
 struct SplashImage {
 	uint8_t data[16*64];
+	uint32_t checksum;
+};
+
+struct PS4Options {
+	uint8_t serial[16];
+	uint8_t signature[256];
+	mbedtls_mpi_uint rsa_n[64];
+	mbedtls_mpi_uint rsa_e[1];
+	mbedtls_mpi_uint rsa_d[64];
+	mbedtls_mpi_uint rsa_p[32];
+	mbedtls_mpi_uint rsa_q[32];
+	mbedtls_mpi_uint rsa_dp[32];
+	mbedtls_mpi_uint rsa_dq[32];
+	mbedtls_mpi_uint rsa_qp[32];
+	mbedtls_mpi_uint rsa_rn[64];
 	uint32_t checksum;
 };
 
@@ -234,25 +258,26 @@ public:
 		static Storage instance;
 		return instance;
 	}
-	
+
 	void setBoardOptions(BoardOptions);	// Board Options
-	void setDefaultBoardOptions();
-	BoardOptions getBoardOptions();
-	
+	const BoardOptions& getBoardOptions() { return boardOptions; }
+
 	void setPreviewBoardOptions(const BoardOptions&);	// Preview Board Options
-	BoardOptions getPreviewBoardOptions();
-	
+	const BoardOptions& getPreviewBoardOptions() { return previewBoardOptions; }
+
 	void setAddonOptions(AddonOptions); // Add-On Options
-	void setDefaultAddonOptions();
-	AddonOptions getAddonOptions();
+	const AddonOptions& getAddonOptions() { return addonOptions; }
 
 	void setSplashImage(SplashImage);
-	void setDefaultSplashImage();
-	SplashImage getSplashImage();
+	const SplashImage& getSplashImage() { return splashImage; }
 
 	void setLEDOptions(LEDOptions);		// LED Options
 	void setDefaultLEDOptions();
-	LEDOptions getLEDOptions();
+	const LEDOptions& getLEDOptions() { return ledOptions; }
+
+	void savePS4Options();     // PS4 Options
+	void setDefaultPS4Options();
+	PS4Options * getPS4Options();
 
 	void SetConfigMode(bool); 			// Config Mode (on-boot)
 	bool GetConfigMode();
@@ -276,12 +301,18 @@ private:
 		initAddonOptions();
 		initLEDOptions();
 		initSplashImage();
+		initPS4Options();
+
 	}
 	void initBoardOptions();
 	void initPreviewBoardOptions();
 	void initAddonOptions();
 	void initLEDOptions();
 	void initSplashImage();
+	void setDefaultBoardOptions();
+	void setDefaultAddonOptions();
+	void setDefaultSplashImage();
+	void initPS4Options();
 	bool CONFIG_MODE; 			// Config mode (boot)
 	Gamepad * gamepad;    		// Gamepad data
 	Gamepad * processedGamepad; // Gamepad with ONLY processed data
@@ -289,6 +320,7 @@ private:
 	BoardOptions previewBoardOptions;
 	AddonOptions addonOptions;
 	LEDOptions ledOptions;
+	PS4Options ps4Options;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;
 };

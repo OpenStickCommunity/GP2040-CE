@@ -4,21 +4,23 @@
  */
 
 #include "addons/i2cdisplay.h"
+#include "GamepadState.h"
 #include "enums.h"
 #include "helper.h"
 #include "storagemanager.h"
 #include "pico/stdlib.h"
 #include "bitmaps.h"
+#include "ps4_driver.h"
 
 bool I2CDisplayAddon::available() {
-	BoardOptions boardOptions = getBoardOptions();
+	const BoardOptions& boardOptions = getBoardOptions();
 	return boardOptions.hasI2CDisplay && 
 		boardOptions.i2cSDAPin != (uint8_t)-1 && 
 		boardOptions.i2cSCLPin != (uint8_t)-1;
 }
 
 void I2CDisplayAddon::setup() {
-	BoardOptions boardOptions = getBoardOptions();
+	const BoardOptions& boardOptions = getBoardOptions();
 
 	obdI2CInit(&obd,
 	    boardOptions.displaySize,
@@ -102,7 +104,7 @@ void I2CDisplayAddon::process() {
 			break;
 		case I2CDisplayAddon::DisplayMode::BUTTONS:
 			drawStatusBar(gamepad);
-			BoardOptions boardOptions = getBoardOptions();
+			const BoardOptions& boardOptions = getBoardOptions();
 			ButtonLayoutCustomOptions buttonLayoutCustomOptions = boardOptions.buttonLayoutCustomOptions;
 
 			switch (boardOptions.buttonLayout) {
@@ -240,13 +242,13 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 	return I2CDisplayAddon::DisplayMode::BUTTONS;
 }
 
-BoardOptions I2CDisplayAddon::getBoardOptions() {
+const BoardOptions& I2CDisplayAddon::getBoardOptions() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 	return configMode ? Storage::getInstance().getPreviewBoardOptions() : Storage::getInstance().getBoardOptions();
 }
 
 int I2CDisplayAddon::initDisplay(int typeOverride) {
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	return obdI2CInit(&obd,
 	    typeOverride > 0 ? typeOverride : boardOptions.displaySize,
 		boardOptions.displayI2CAddress,
@@ -905,8 +907,8 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
-	BoardOptions boardOptions = getBoardOptions();
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	const BoardOptions& boardOptions = getBoardOptions();
+	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
@@ -916,6 +918,13 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_HID:    statusBar += "DINPUT"; break;
 		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
 		case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
+		case INPUT_MODE_PS4:
+			if (PS4Data::getInstance().authsent == true ) {
+				statusBar += "PS4:AS";
+			} else {
+				statusBar += "PS4   ";
+			}
+			break;
 		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
@@ -941,6 +950,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
 		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
 		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
+		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
 	}
 	drawText(0, 0, statusBar);
 }

@@ -39,6 +39,7 @@
 #define API_SET_KEY_MAPPINGS "/api/setKeyMappings"
 #define API_GET_ADDON_OPTIONS "/api/getAddonsOptions"
 #define API_SET_ADDON_OPTIONS "/api/setAddonsOptions"
+#define API_SET_PS4_OPTIONS "/api/setPS4Options"
 #define API_GET_SPLASH_IMAGE "/api/getSplashImage"
 #define API_SET_SPLASH_IMAGE "/api/setSplashImage"
 #define API_GET_FIRMWARE_VERSION "/api/getFirmwareVersion"
@@ -48,7 +49,10 @@
 #endif
 #define API_REBOOT "/api/reboot"
 
-#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 2048
+#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 4096
+
+#define docToPin(pin,name) if (doc.containsKey(name)) { pin = doc[name] == -1 ? 0xFF : doc[name]; }
+#define docToValue(pin,name) if (doc.containsKey(name)) { pin = doc[name]; }
 
 using namespace std;
 
@@ -189,7 +193,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 		}
 	};
 
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	addPinIfValid(boardOptions.pinDpadUp);
 	addPinIfValid(boardOptions.pinDpadDown);
 	addPinIfValid(boardOptions.pinDpadLeft);
@@ -211,7 +215,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(boardOptions.i2cSDAPin);
 	addPinIfValid(boardOptions.i2cSCLPin);
 
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	addPinIfValid(addonOptions.analogAdcPinX);
 	addPinIfValid(addonOptions.analogAdcPinY);
 	addPinIfValid(addonOptions.buzzerPin);
@@ -247,7 +251,7 @@ std::string setDisplayOptions(BoardOptions& boardOptions)
 	boardOptions.buttonLayoutCustomOptions.params.startY 		 	       = doc["buttonLayoutCustomOptions"]["params"]["startY"];
 	boardOptions.buttonLayoutCustomOptions.params.buttonRadius      	   = doc["buttonLayoutCustomOptions"]["params"]["buttonRadius"];
 	boardOptions.buttonLayoutCustomOptions.params.buttonPadding     	   = doc["buttonLayoutCustomOptions"]["params"]["buttonPadding"];
-	
+
 	boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight 	   	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["layout"];
 	boardOptions.buttonLayoutCustomOptions.paramsRight.startX 		 	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["startX"];
 	boardOptions.buttonLayoutCustomOptions.paramsRight.startY 		 	   = doc["buttonLayoutCustomOptions"]["paramsRight"]["startY"];
@@ -269,7 +273,7 @@ std::string setPreviewDisplayOptions()
 {
 	BoardOptions boardOptions = Storage::getInstance().getPreviewBoardOptions();
 	std::string response = setDisplayOptions(boardOptions);
-	ConfigManager::getInstance().setPreviewBoardOptions(boardOptions); 
+	ConfigManager::getInstance().setPreviewBoardOptions(boardOptions);
 	return response;
 }
 
@@ -277,7 +281,7 @@ std::string setPreviewDisplayOptions()
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	doc["enabled"]       	 = boardOptions.hasI2CDisplay ? 1 : 0;
 	doc["sdaPin"]        	 = boardOptions.i2cSDAPin == 0xFF ? -1 : boardOptions.i2cSDAPin;
 	doc["sclPin"]        	 = boardOptions.i2cSCLPin == 0xFF ? -1 : boardOptions.i2cSCLPin;
@@ -298,7 +302,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	doc["buttonLayoutCustomOptions"]["params"]["startY"] 		 	 = boardOptions.buttonLayoutCustomOptions.params.startY;
 	doc["buttonLayoutCustomOptions"]["params"]["buttonRadius"]  	 = boardOptions.buttonLayoutCustomOptions.params.buttonRadius;
 	doc["buttonLayoutCustomOptions"]["params"]["buttonPadding"] 	 = boardOptions.buttonLayoutCustomOptions.params.buttonPadding;
-	
+
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["layout"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight;
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["startX"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.startX;
 	doc["buttonLayoutCustomOptions"]["paramsRight"]["startY"] 		 = boardOptions.buttonLayoutCustomOptions.paramsRight.startY;
@@ -315,7 +319,7 @@ SplashImage splashImageTemp; // For splash image upload
 std::string getSplashImage()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10); // TODO: Figoure out correct length
-	SplashImage splashImage = Storage::getInstance().getSplashImage();
+	const SplashImage& splashImage = Storage::getInstance().getSplashImage();
 	JsonArray splashImageArray = doc.createNestedArray("splashImage");
 	copyArray(splashImage.data, splashImageArray);
 
@@ -341,6 +345,15 @@ std::string setGamepadOptions()
 	gamepad->options.dpadMode  = doc["dpadMode"];
 	gamepad->options.inputMode = doc["inputMode"];
 	gamepad->options.socdMode  = doc["socdMode"];
+
+	gamepad->options.hotkeyF1Up.action    = doc["hotkeyF1"][0]["action"];
+	gamepad->options.hotkeyF1Down.action  = doc["hotkeyF1"][1]["action"];
+	gamepad->options.hotkeyF1Left.action  = doc["hotkeyF1"][2]["action"];
+	gamepad->options.hotkeyF1Right.action = doc["hotkeyF1"][3]["action"];
+	gamepad->options.hotkeyF2Up.action    = doc["hotkeyF2"][0]["action"];
+	gamepad->options.hotkeyF2Down.action  = doc["hotkeyF2"][1]["action"];
+	gamepad->options.hotkeyF2Left.action  = doc["hotkeyF2"][2]["action"];
+	gamepad->options.hotkeyF2Right.action = doc["hotkeyF2"][3]["action"];
 	ConfigManager::getInstance().setGamepadOptions(gamepad);
 	return serialize_json(doc);
 }
@@ -352,6 +365,34 @@ std::string getGamepadOptions()
 	doc["dpadMode"]  = options.dpadMode;
 	doc["inputMode"] = options.inputMode;
 	doc["socdMode"]  = options.socdMode;
+
+	auto hotkeyF1 = doc.createNestedArray("hotkeyF1");
+	auto f1Up = hotkeyF1.createNestedObject();
+	f1Up["action"] = options.hotkeyF1Up.action;
+	f1Up["mask"]   = options.hotkeyF1Up.dpadMask;
+	auto f1Down = hotkeyF1.createNestedObject();
+	f1Down["action"] = options.hotkeyF1Down.action;
+	f1Down["mask"]   = options.hotkeyF1Down.dpadMask;
+	auto f1Left = hotkeyF1.createNestedObject();
+	f1Left["action"] = options.hotkeyF1Left.action;
+	f1Left["mask"]   = options.hotkeyF1Left.dpadMask;
+	auto f1Right = hotkeyF1.createNestedObject();
+	f1Right["action"] = options.hotkeyF1Right.action;
+	f1Right["mask"]   = options.hotkeyF1Right.dpadMask;
+
+	auto hotkeyF2 = doc.createNestedArray("hotkeyF2");
+	auto f2Up = hotkeyF2.createNestedObject();
+	f2Up["action"] = options.hotkeyF2Up.action;
+	f2Up["mask"]   = options.hotkeyF2Up.dpadMask;
+	auto f2Down = hotkeyF2.createNestedObject();
+	f2Down["action"] = options.hotkeyF2Down.action;
+	f2Down["mask"]   = options.hotkeyF2Down.dpadMask;
+	auto f2Left = hotkeyF2.createNestedObject();
+	f2Left["action"] = options.hotkeyF2Left.action;
+	f2Left["mask"]   = options.hotkeyF2Left.dpadMask;
+	auto f2Right = hotkeyF2.createNestedObject();
+	f2Right["action"] = options.hotkeyF2Right.action;
+	f2Right["mask"]   = options.hotkeyF2Right.dpadMask;
 	return serialize_json(doc);
 }
 
@@ -431,7 +472,7 @@ std::string setLedOptions()
 std::string getLedOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	doc["dataPin"]           = ledOptions.dataPin;
 	doc["ledFormat"]         = ledOptions.ledFormat;
 	doc["ledLayout"]         = ledOptions.ledLayout;
@@ -507,26 +548,29 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
+	// BoardOptions uses 0xff to denote unassigned pins
+	const auto convertPin = [] (int pin) -> uint8_t { return pin >= 0 && pin < NUM_BANK0_GPIOS ? pin : 0xff; };
+
 	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
 	boardOptions.hasBoardOptions = true;
-	boardOptions.pinDpadUp    = doc["Up"];
-	boardOptions.pinDpadDown  = doc["Down"];
-	boardOptions.pinDpadLeft  = doc["Left"];
-	boardOptions.pinDpadRight = doc["Right"];
-	boardOptions.pinButtonB1  = doc["B1"];
-	boardOptions.pinButtonB2  = doc["B2"];
-	boardOptions.pinButtonB3  = doc["B3"];
-	boardOptions.pinButtonB4  = doc["B4"];
-	boardOptions.pinButtonL1  = doc["L1"];
-	boardOptions.pinButtonR1  = doc["R1"];
-	boardOptions.pinButtonL2  = doc["L2"];
-	boardOptions.pinButtonR2  = doc["R2"];
-	boardOptions.pinButtonS1  = doc["S1"];
-	boardOptions.pinButtonS2  = doc["S2"];
-	boardOptions.pinButtonL3  = doc["L3"];
-	boardOptions.pinButtonR3  = doc["R3"];
-	boardOptions.pinButtonA1  = doc["A1"];
-	boardOptions.pinButtonA2  = doc["A2"];
+	boardOptions.pinDpadUp    = convertPin(doc["Up"]);
+	boardOptions.pinDpadDown  = convertPin(doc["Down"]);
+	boardOptions.pinDpadLeft  = convertPin(doc["Left"]);
+	boardOptions.pinDpadRight = convertPin(doc["Right"]);
+	boardOptions.pinButtonB1  = convertPin(doc["B1"]);
+	boardOptions.pinButtonB2  = convertPin(doc["B2"]);
+	boardOptions.pinButtonB3  = convertPin(doc["B3"]);
+	boardOptions.pinButtonB4  = convertPin(doc["B4"]);
+	boardOptions.pinButtonL1  = convertPin(doc["L1"]);
+	boardOptions.pinButtonR1  = convertPin(doc["R1"]);
+	boardOptions.pinButtonL2  = convertPin(doc["L2"]);
+	boardOptions.pinButtonR2  = convertPin(doc["R2"]);
+	boardOptions.pinButtonS1  = convertPin(doc["S1"]);
+	boardOptions.pinButtonS2  = convertPin(doc["S2"]);
+	boardOptions.pinButtonL3  = convertPin(doc["L3"]);
+	boardOptions.pinButtonR3  = convertPin(doc["R3"]);
+	boardOptions.pinButtonA1  = convertPin(doc["A1"]);
+	boardOptions.pinButtonA2  = convertPin(doc["A2"]);
 
 	Storage::getInstance().setBoardOptions(boardOptions);
 
@@ -540,7 +584,7 @@ std::string getPinMappings()
 	// Webconfig uses -1 to denote unassigned pins
 	const auto convertPin = [] (uint8_t pin) -> int { return pin < NUM_BANK0_GPIOS ? pin : -1; };
 
-	BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	doc["Up"]    = convertPin(boardOptions.pinDpadUp);
 	doc["Down"]  = convertPin(boardOptions.pinDpadDown);
 	doc["Left"]  = convertPin(boardOptions.pinDpadLeft);
@@ -595,7 +639,7 @@ std::string setKeyMappings()
 std::string getKeyMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	
+
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	doc["Up"]    = gamepad->options.keyDpadUp;
 	doc["Down"]  = gamepad->options.keyDpadDown;
@@ -624,82 +668,181 @@ std::string setAddonOptions()
 	DynamicJsonDocument doc = get_post_data();
 
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
-	addonOptions.pinButtonTurbo    	= doc["turboPin"] == -1 ? 0xFF : doc["turboPin"];
-	addonOptions.pinTurboLED        = doc["turboPinLED"] == -1 ? 0xFF : doc["turboPinLED"];
-	addonOptions.pinSliderLS  		= doc["sliderLSPin"] == -1 ? 0xFF : doc["sliderLSPin"];
-	addonOptions.pinSliderRS  		= doc["sliderRSPin"] == -1 ? 0xFF : doc["sliderRSPin"];
-	addonOptions.pinSliderSOCDUp  		= doc["sliderSOCDUpPin"] == -1 ? 0xFF : doc["sliderSOCDUpPin"];
-	addonOptions.pinSliderSOCDSecond    = doc["sliderSOCDSecondPin"] == -1 ? 0xFF : doc["sliderSOCDSecondPin"];
-	addonOptions.turboShotCount 	= doc["turboShotCount"];
-	addonOptions.pinButtonReverse  	= doc["reversePin"] == -1 ? 0xFF : doc["reversePin"];
-	addonOptions.pinReverseLED  	= doc["reversePinLED"] == -1 ? 0xFF : doc["reversePinLED"];
-	addonOptions.reverseActionUp  	= doc["reverseActionUp"] == -1 ? 0xFF : doc["reverseActionUp"];
-	addonOptions.reverseActionDown  = doc["reverseActionDown"] == -1 ? 0xFF : doc["reverseActionDown"];
-	addonOptions.reverseActionLeft  = doc["reverseActionLeft"] == -1 ? 0xFF : doc["reverseActionLeft"];
-	addonOptions.reverseActionRight = doc["reverseActionRight"] == -1 ? 0xFF : doc["reverseActionRight"];
-	addonOptions.i2cAnalog1219SDAPin = doc["i2cAnalog1219SDAPin"] == -1 ? 0xFF : doc["i2cAnalog1219SDAPin"];
-	addonOptions.i2cAnalog1219SCLPin = doc["i2cAnalog1219SCLPin"] == -1 ? 0xFF : doc["i2cAnalog1219SCLPin"];
-	addonOptions.i2cAnalog1219Block = doc["i2cAnalog1219Block"];
-	addonOptions.i2cAnalog1219Speed = doc["i2cAnalog1219Speed"];
-	addonOptions.i2cAnalog1219Address = doc["i2cAnalog1219Address"];
-	addonOptions.onBoardLedMode = doc["onBoardLedMode"];
-	addonOptions.pinDualDirDown 	= doc["dualDirDownPin"] == -1 ? 0xFF : doc["dualDirDownPin"];
-	addonOptions.pinDualDirUp 		= doc["dualDirUpPin"] == -1 ? 0xFF : doc["dualDirUpPin"];
-	addonOptions.pinDualDirLeft 	= doc["dualDirLeftPin"] == -1 ? 0xFF : doc["dualDirLeftPin"];
-	addonOptions.pinDualDirRight 	= doc["dualDirRightPin"] == -1 ? 0xFF : doc["dualDirRightPin"];
-	addonOptions.dualDirDpadMode    = doc["dualDirDpadMode"];
-	addonOptions.dualDirCombineMode = doc["dualDirCombineMode"];
-	addonOptions.analogAdcPinX = doc["analogAdcPinX"] == -1 ? 0xFF : doc["analogAdcPinX"];
-	addonOptions.analogAdcPinY = doc["analogAdcPinY"] == -1 ? 0xFF : doc["analogAdcPinY"];
-	addonOptions.bootselButtonMap = doc["bootselButtonMap"];
-	addonOptions.buzzerPin        = doc["buzzerPin"] == -1 ? 0xFF : doc["buzzerPin"];
-	addonOptions.buzzerVolume     = doc["buzzerVolume"];
-	addonOptions.extraButtonPin        = doc["extraButtonPin"] == -1 ? 0xFF : doc["extraButtonPin"];
-	addonOptions.extraButtonMap = doc["extraButtonMap"];
-	addonOptions.playerNumber     = doc["playerNumber"];
-	addonOptions.shmupMode     = doc["shmupMode"];
-	addonOptions.shmupMixMode     = doc["shmupMixMode"];
-	addonOptions.shmupAlwaysOn1     = doc["shmupAlwaysOn1"];
-	addonOptions.shmupAlwaysOn2     = doc["shmupAlwaysOn2"];
-	addonOptions.shmupAlwaysOn3     = doc["shmupAlwaysOn3"];
-	addonOptions.shmupAlwaysOn4     = doc["shmupAlwaysOn4"];
-	addonOptions.pinShmupBtn1     = doc["pinShmupBtn1"] == -1 ? 0xFF : doc["pinShmupBtn1"];
-	addonOptions.pinShmupBtn2     = doc["pinShmupBtn2"] == -1 ? 0xFF : doc["pinShmupBtn2"];
-	addonOptions.pinShmupBtn3     = doc["pinShmupBtn3"] == -1 ? 0xFF : doc["pinShmupBtn3"];
-	addonOptions.pinShmupBtn4     = doc["pinShmupBtn4"] == -1 ? 0xFF : doc["pinShmupBtn4"];
-	addonOptions.shmupBtnMask1     = doc["shmupBtnMask1"];
-	addonOptions.shmupBtnMask2     = doc["shmupBtnMask2"];
-	addonOptions.shmupBtnMask3     = doc["shmupBtnMask3"];
-	addonOptions.shmupBtnMask4     = doc["shmupBtnMask4"];
-	addonOptions.pinShmupDial     = doc["pinShmupDial"] == -1 ? 0xFF : doc["pinShmupDial"];
-	addonOptions.AnalogInputEnabled = doc["AnalogInputEnabled"];
-	addonOptions.BoardLedAddonEnabled = doc["BoardLedAddonEnabled"];
-	addonOptions.BuzzerSpeakerAddonEnabled = doc["BuzzerSpeakerAddonEnabled"];
-	addonOptions.BootselButtonAddonEnabled = doc["BootselButtonAddonEnabled"];
-	addonOptions.DualDirectionalInputEnabled = doc["DualDirectionalInputEnabled"];
-	addonOptions.ExtraButtonAddonEnabled = doc["ExtraButtonAddonEnabled"];
-	addonOptions.I2CAnalog1219InputEnabled = doc["I2CAnalog1219InputEnabled"];
-	addonOptions.JSliderInputEnabled = doc["JSliderInputEnabled"];
-	addonOptions.SliderSOCDInputEnabled = doc["SliderSOCDInputEnabled"];
-	addonOptions.PlayerNumAddonEnabled = doc["PlayerNumAddonEnabled"];
-	addonOptions.ReverseInputEnabled = doc["ReverseInputEnabled"];
-	addonOptions.TurboInputEnabled = doc["TurboInputEnabled"];
+	docToPin(addonOptions.pinButtonTurbo, "turboPin")
+	docToPin(addonOptions.pinTurboLED, "turboPinLED")
+	docToPin(addonOptions.pinSliderLS, "sliderLSPin")
+	docToPin(addonOptions.pinSliderRS, "sliderRSPin")
+	docToPin(addonOptions.pinSliderSOCDOne, "sliderSOCDPinOne")
+	docToPin(addonOptions.pinSliderSOCDTwo, "sliderSOCDPinTwo")
+	docToValue(addonOptions.turboShotCount, "turboShotCount")
+	docToPin(addonOptions.pinButtonReverse, "reversePin")
+	docToPin(addonOptions.pinReverseLED, "reversePinLED")
+	docToPin(addonOptions.reverseActionUp, "reverseActionUp")
+	docToPin(addonOptions.reverseActionDown, "reverseActionDown")
+	docToPin(addonOptions.reverseActionLeft, "reverseActionLeft")
+	docToPin(addonOptions.reverseActionRight, "reverseActionRight")
+	docToPin(addonOptions.i2cAnalog1219SDAPin, "i2cAnalog1219SDAPin")
+	docToPin(addonOptions.i2cAnalog1219SCLPin, "i2cAnalog1219SCLPin")
+	docToValue(addonOptions.i2cAnalog1219Block, "i2cAnalog1219Block")
+	docToValue(addonOptions.i2cAnalog1219Speed, "i2cAnalog1219Speed")
+	docToValue(addonOptions.i2cAnalog1219Address, "i2cAnalog1219Address")
+	docToValue(addonOptions.onBoardLedMode, "onBoardLedMode")
+	docToPin(addonOptions.pinDualDirDown, "dualDirDownPin")
+	docToPin(addonOptions.pinDualDirUp, "dualDirUpPin")
+	docToPin(addonOptions.pinDualDirLeft, "dualDirLeftPin")
+	docToPin(addonOptions.pinDualDirRight, "dualDirRightPin")
+	docToValue(addonOptions.dualDirDpadMode, "dualDirDpadMode")
+	docToValue(addonOptions.dualDirCombineMode, "dualDirCombineMode")
+	docToPin(addonOptions.analogAdcPinX, "analogAdcPinX")
+	docToPin(addonOptions.analogAdcPinY, "analogAdcPinY")
+	docToValue(addonOptions.bootselButtonMap, "bootselButtonMap")
+	docToPin(addonOptions.buzzerPin, "buzzerPin")
+	docToValue(addonOptions.buzzerVolume, "buzzerVolume")
+	docToPin(addonOptions.extraButtonPin, "extraButtonPin")
+	docToValue(addonOptions.extraButtonMap, "extraButtonMap")
+	docToValue(addonOptions.playerNumber, "playerNumber")
+	docToValue(addonOptions.shmupMode, "shmupMode")
+	docToValue(addonOptions.shmupMixMode, "shmupMixMode")
+	docToValue(addonOptions.shmupAlwaysOn1, "shmupAlwaysOn1")
+	docToValue(addonOptions.shmupAlwaysOn2, "shmupAlwaysOn2")
+	docToValue(addonOptions.shmupAlwaysOn3, "shmupAlwaysOn3")
+	docToValue(addonOptions.shmupAlwaysOn4, "shmupAlwaysOn4")
+	docToPin(addonOptions.pinShmupBtn1, "pinShmupBtn1")
+	docToPin(addonOptions.pinShmupBtn2, "pinShmupBtn2")
+	docToPin(addonOptions.pinShmupBtn3, "pinShmupBtn3")
+	docToPin(addonOptions.pinShmupBtn4, "pinShmupBtn4")
+	docToValue(addonOptions.shmupBtnMask1, "shmupBtnMask1")
+	docToValue(addonOptions.shmupBtnMask2, "shmupBtnMask2")
+	docToValue(addonOptions.shmupBtnMask3, "shmupBtnMask3")
+	docToValue(addonOptions.shmupBtnMask4, "shmupBtnMask4")
+	docToPin(addonOptions.pinShmupDial, "pinShmupDial")
+	docToValue(addonOptions.sliderSOCDModeOne, "sliderSOCDModeOne")
+	docToValue(addonOptions.sliderSOCDModeTwo, "sliderSOCDModeTwo")
+	docToValue(addonOptions.sliderSOCDModeDefault, "sliderSOCDModeDefault")
+	docToValue(addonOptions.AnalogInputEnabled, "AnalogInputEnabled")
+	docToValue(addonOptions.BoardLedAddonEnabled, "BoardLedAddonEnabled")
+	docToValue(addonOptions.BuzzerSpeakerAddonEnabled, "BuzzerSpeakerAddonEnabled")
+	docToValue(addonOptions.BootselButtonAddonEnabled, "BootselButtonAddonEnabled")
+	docToValue(addonOptions.DualDirectionalInputEnabled, "DualDirectionalInputEnabled")
+	docToValue(addonOptions.ExtraButtonAddonEnabled, "ExtraButtonAddonEnabled")
+	docToValue(addonOptions.I2CAnalog1219InputEnabled, "I2CAnalog1219InputEnabled")
+	docToValue(addonOptions.JSliderInputEnabled, "JSliderInputEnabled")
+	docToValue(addonOptions.SliderSOCDInputEnabled, "SliderSOCDInputEnabled")
+	docToValue(addonOptions.PlayerNumAddonEnabled, "PlayerNumAddonEnabled")
+	docToValue(addonOptions.PS4ModeAddonEnabled, "PS4ModeAddonEnabled")
+	docToValue(addonOptions.ReverseInputEnabled, "ReverseInputEnabled")
+	docToValue(addonOptions.TurboInputEnabled, "TurboInputEnabled")
 
 	Storage::getInstance().setAddonOptions(addonOptions);
 
 	return serialize_json(doc);
 }
 
+std::string setPS4Options()
+{
+	DynamicJsonDocument doc = get_post_data();
+	PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+	std::string decoded;
+	std::size_t len;
+
+	// RSA Context
+	if ( doc.containsKey("N") ) {
+		std::string decoded;
+		Base64::Decode(doc["N"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_n ) ) {
+			memcpy(ps4Options->rsa_n, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("E") ) {
+		std::string decoded;
+		Base64::Decode(doc["E"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_e ) ) {
+			memcpy(ps4Options->rsa_e, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("D") ) {
+		std::string decoded;
+		Base64::Decode(doc["D"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_d ) ) {
+			memcpy(ps4Options->rsa_d, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("P") ) {
+		std::string decoded;
+		Base64::Decode(doc["P"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_p ) ) {
+			memcpy(ps4Options->rsa_p, decoded.data(), decoded.length());
+		}			
+	}
+	if ( doc.containsKey("Q") ) {
+		std::string decoded;
+		Base64::Decode(doc["Q"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_q ) ) {
+			memcpy(ps4Options->rsa_q, decoded.data(), decoded.length());
+		}			
+	}
+	if ( doc.containsKey("DP") ) {
+		std::string decoded;
+		Base64::Decode(doc["DP"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_dp ) ) {
+			memcpy(ps4Options->rsa_dp, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("DQ") ) {
+		std::string decoded;
+		Base64::Decode(doc["DQ"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_dq ) ) {
+			memcpy(ps4Options->rsa_dq, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("QP") ) {	
+		std::string decoded;
+		Base64::Decode(doc["QP"], decoded);	
+		if ( decoded.length() == sizeof(ps4Options->rsa_qp ) ) {
+			memcpy(ps4Options->rsa_qp, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("RN") ) {
+		std::string decoded;
+		Base64::Decode(doc["RN"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->rsa_rn ) ) {
+			memcpy(ps4Options->rsa_rn, decoded.data(), decoded.length());
+		}
+	}
+	// Serial & Signature
+	if ( doc.containsKey("serial") ) {
+		std::string decoded;
+		Base64::Decode(doc["serial"], decoded);
+		const char * testDecode = decoded.c_str();
+		if ( decoded.length() == sizeof(ps4Options->serial ) ) {
+			memcpy(ps4Options->serial, decoded.data(), decoded.length());
+		}
+	}
+	if ( doc.containsKey("signature") ) {
+		std::string decoded;
+		Base64::Decode(doc["signature"], decoded);
+		if ( decoded.length() == sizeof(ps4Options->signature ) ) {
+			memcpy(ps4Options->signature, decoded.data(), decoded.length());
+		}
+	}
+
+	Storage::getInstance().savePS4Options();
+
+	DynamicJsonDocument rdoc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	rdoc["success"] = true;
+	return serialize_json(rdoc);
+}
+
 std::string getAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	doc["turboPin"] = addonOptions.pinButtonTurbo == 0xFF ? -1 : addonOptions.pinButtonTurbo;
 	doc["turboPinLED"] = addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED;
 	doc["sliderLSPin"] = addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS;
 	doc["sliderRSPin"] = addonOptions.pinSliderRS == 0xFF ? -1 : addonOptions.pinSliderRS;
-	doc["sliderSOCDUpPin"] = addonOptions.pinSliderSOCDUp == 0xFF ? -1 : addonOptions.pinSliderSOCDUp;
-	doc["sliderSOCDSecondPin"] = addonOptions.pinSliderSOCDSecond == 0xFF ? -1 : addonOptions.pinSliderSOCDSecond;
+	doc["sliderSOCDPinOne"] = addonOptions.pinSliderSOCDOne == 0xFF ? -1 : addonOptions.pinSliderSOCDOne;
+	doc["sliderSOCDPinTwo"] = addonOptions.pinSliderSOCDTwo == 0xFF ? -1 : addonOptions.pinSliderSOCDTwo;
 	doc["turboShotCount"] = addonOptions.turboShotCount;
 	doc["reversePin"] = addonOptions.pinButtonReverse == 0xFF ? -1 : addonOptions.pinButtonReverse;
 	doc["reversePinLED"] = addonOptions.pinReverseLED == 0xFF ? -1 : addonOptions.pinReverseLED;
@@ -742,6 +885,9 @@ std::string getAddonOptions()
 	doc["shmupBtnMask3"] = addonOptions.shmupBtnMask3;
 	doc["shmupBtnMask4"] = addonOptions.shmupBtnMask4;
 	doc["pinShmupDial"] = addonOptions.pinShmupDial == 0xFF ? -1 : addonOptions.pinShmupDial;
+	doc["sliderSOCDModeOne"] = addonOptions.sliderSOCDModeOne;
+	doc["sliderSOCDModeTwo"] = addonOptions.sliderSOCDModeTwo;
+	doc["sliderSOCDModeDefault"] = addonOptions.sliderSOCDModeDefault;
 	doc["AnalogInputEnabled"] = addonOptions.AnalogInputEnabled;
 	doc["BoardLedAddonEnabled"] = addonOptions.BoardLedAddonEnabled;
 	doc["BuzzerSpeakerAddonEnabled"] = addonOptions.BuzzerSpeakerAddonEnabled;
@@ -752,6 +898,7 @@ std::string getAddonOptions()
 	doc["JSliderInputEnabled"] = addonOptions.JSliderInputEnabled;
 	doc["SliderSOCDInputEnabled"] = addonOptions.SliderSOCDInputEnabled;
 	doc["PlayerNumAddonEnabled"] = addonOptions.PlayerNumAddonEnabled;
+	doc["PS4ModeAddonEnabled"] = addonOptions.PS4ModeAddonEnabled;
 	doc["ReverseInputEnabled"] = addonOptions.ReverseInputEnabled;
 	doc["TurboInputEnabled"] = addonOptions.TurboInputEnabled;
 
@@ -835,6 +982,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setKeyMappings());
 	if (strcmp(name, API_SET_ADDON_OPTIONS) == 0)
 			return set_file_data(file, setAddonOptions());
+	if (strcmp(name, API_SET_PS4_OPTIONS) == 0)
+			return set_file_data(file, setPS4Options());
 	if (strcmp(name, API_SET_SPLASH_IMAGE) == 0)
 			return set_file_data(file, setSplashImage());
 	if (strcmp(name, API_REBOOT) == 0)

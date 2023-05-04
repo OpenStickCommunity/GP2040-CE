@@ -6,48 +6,51 @@
 
 #define SLIDERSOCD_DEBOUNCE_MILLIS 5
 
-#define SOCD_MODE_MASK (SOCD_MODE_UP_PRIORITY & SOCD_MODE_SECOND_INPUT_PRIORITY & SOCD_MODE_NEUTRAL)
+#define SOCD_MODE_MASK (SOCD_MODE_UP_PRIORITY & SOCD_MODE_SECOND_INPUT_PRIORITY & SOCD_MODE_FIRST_INPUT_PRIORITY & SOCD_MODE_NEUTRAL)
 
 bool SliderSOCDInput::available() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
-    pinSliderSOCDUp = options.pinSliderSOCDUp;
-    pinSliderSOCDSecond = options.pinSliderSOCDSecond;
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
+    sliderSOCDModeOne = options.sliderSOCDModeOne;
+    sliderSOCDModeTwo  = options.sliderSOCDModeTwo;
+    sliderSOCDModeDefault = options.sliderSOCDModeDefault;
+    pinSliderSOCDOne = options.pinSliderSOCDOne;
+    pinSliderSOCDTwo = options.pinSliderSOCDTwo;
 	return ( options.SliderSOCDInputEnabled &
-        pinSliderSOCDUp != (uint8_t)-1 &&
-        pinSliderSOCDSecond != (uint8_t)-1);
+        pinSliderSOCDOne != (uint8_t)-1 &&
+        pinSliderSOCDTwo != (uint8_t)-1);
 }
 
 void SliderSOCDInput::setup()
 {
-    gpio_init(pinSliderSOCDUp);             // Initialize pin
-    gpio_set_dir(pinSliderSOCDUp, GPIO_IN); // Set as INPUT
-    gpio_pull_up(pinSliderSOCDUp);          // Set as PULLUP
-    gpio_init(pinSliderSOCDSecond);
-    gpio_set_dir(pinSliderSOCDSecond, GPIO_IN); // Set as INPUT
-    gpio_pull_up(pinSliderSOCDSecond);          // Set as PULLUP
+    gpio_init(pinSliderSOCDOne);             // Initialize pin
+    gpio_set_dir(pinSliderSOCDOne, GPIO_IN); // Set as INPUT
+    gpio_pull_up(pinSliderSOCDOne);          // Set as PULLUP
+    gpio_init(pinSliderSOCDTwo);
+    gpio_set_dir(pinSliderSOCDTwo, GPIO_IN); // Set as INPUT
+    gpio_pull_up(pinSliderSOCDTwo);          // Set as PULLUP
 }
 
 SOCDMode SliderSOCDInput::read() {
-    if ( pinSliderSOCDUp != (uint8_t)-1 && pinSliderSOCDSecond != (uint8_t)-1) {
-        if ( !gpio_get(pinSliderSOCDUp)) {
-            return SOCD_MODE_UP_PRIORITY;
-        } else if ( !gpio_get(pinSliderSOCDSecond)) {
-            return SOCD_MODE_SECOND_INPUT_PRIORITY;
+    if ( pinSliderSOCDOne != (uint8_t)-1 && pinSliderSOCDTwo != (uint8_t)-1) {
+        if ( !gpio_get(pinSliderSOCDOne)) {
+            return sliderSOCDModeOne;
+        } else if ( !gpio_get(pinSliderSOCDTwo)) {
+            return sliderSOCDModeTwo;
         }
     }
-    return  SOCD_MODE_NEUTRAL;
+    return  sliderSOCDModeDefault;
 }
 
 void SliderSOCDInput::debounce()
 {
     uint32_t uNowTime = getMillis();
     if ((dDebState != socdState) && ((uNowTime - uDebTime) > SLIDERSOCD_DEBOUNCE_MILLIS)) {
-        if ( (socdState ^ dDebState) == SOCD_MODE_SECOND_INPUT_PRIORITY )
-            dDebState = (SOCDMode)(dDebState ^ SOCD_MODE_SECOND_INPUT_PRIORITY); // Bounce Second Priority
-        else if ( (socdState ^ dDebState) & SOCD_MODE_UP_PRIORITY )
-            dDebState = (SOCDMode)(dDebState ^ SOCD_MODE_UP_PRIORITY); // Bounce Up Priority
+        if ( (socdState ^ dDebState) == sliderSOCDModeTwo )
+            dDebState = (SOCDMode)(dDebState ^ sliderSOCDModeTwo); // Bounce Second Priority
+        else if ( (socdState ^ dDebState) & sliderSOCDModeOne )
+            dDebState = (SOCDMode)(dDebState ^ sliderSOCDModeOne); // Bounce Up Priority
         else
-            dDebState = (SOCDMode)(dDebState ^ SOCD_MODE_NEUTRAL); // Bounce Neutral Priority
+            dDebState = (SOCDMode)(dDebState ^ sliderSOCDModeDefault); // Bounce Neutral Priority
         uDebTime = uNowTime;
     }
     socdState = dDebState;

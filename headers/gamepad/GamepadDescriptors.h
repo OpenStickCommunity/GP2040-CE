@@ -11,6 +11,7 @@
 #include "descriptors/SwitchDescriptors.h"
 #include "descriptors/XInputDescriptors.h"
 #include "descriptors/KeyboardDescriptors.h"
+#include "descriptors/PS4Descriptors.h"
 
 // Default value used for networking, override if necessary
 static uint8_t macAddress[6] = { 0x02, 0x02, 0x84, 0x6A, 0x96, 0x00 };
@@ -30,6 +31,10 @@ static const uint8_t *getConfigurationDescriptor(uint16_t *size, InputMode mode)
 		case INPUT_MODE_KEYBOARD:
 			*size = sizeof(keyboard_configuration_descriptor);
 			return keyboard_configuration_descriptor;
+
+		case INPUT_MODE_PS4:
+			*size = sizeof(ps4_configuration_descriptor);
+			return ps4_configuration_descriptor;
 
 		default:
 			*size = sizeof(hid_configuration_descriptor);
@@ -53,6 +58,10 @@ static const uint8_t *getDeviceDescriptor(uint16_t *size, InputMode mode)
 			*size = sizeof(keyboard_device_descriptor);
 			return keyboard_device_descriptor;
 
+		case INPUT_MODE_PS4:
+			*size = sizeof(ps4_device_descriptor);
+			return ps4_device_descriptor;
+
 		default:
 			*size = sizeof(hid_device_descriptor);
 			return hid_device_descriptor;
@@ -71,6 +80,10 @@ static const uint8_t *getHIDDescriptor(uint16_t *size, InputMode mode)
 			*size = sizeof(keyboard_hid_descriptor);
 			return keyboard_hid_descriptor;
 
+		case INPUT_MODE_PS4:
+			*size = sizeof(ps4_hid_descriptor);
+			return ps4_hid_descriptor;
+
 		default:
 			*size = sizeof(hid_hid_descriptor);
 			return hid_hid_descriptor;
@@ -88,6 +101,10 @@ static const uint8_t *getHIDReport(uint16_t *size, InputMode mode)
 		case INPUT_MODE_KEYBOARD:
 			*size = sizeof(keyboard_report_descriptor);
 			return keyboard_report_descriptor;
+
+		case INPUT_MODE_PS4:
+			*size = sizeof(ps4_report_descriptor);
+			return ps4_report_descriptor;
 
 		default:
 			*size = sizeof(hid_report_descriptor);
@@ -146,6 +163,10 @@ static const uint16_t *getStringDescriptor(uint16_t *size, InputMode mode, uint8
 
 			case INPUT_MODE_KEYBOARD:
 				str = (char *)keyboard_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_PS4:
+				str = (char *)ps4_string_descriptors[index];
 				break;
 
 			default:

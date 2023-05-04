@@ -2,7 +2,7 @@
 
 Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>
 
-GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> to begin configuration.
+GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS.
 
 ## Home
 
@@ -77,7 +77,7 @@ This section is for custom add-ons that can be enabled to expand the functionali
 
 ![GP2040 Configurator - Add-Ons BOOTSEL Button Configuration](assets/images/gpc-add-ons-bootsel-button.png)
 
-* `BOOTSEL Button` - Choose an input to be mapped tot he BOOTSEL button. 
+* `BOOTSEL Button` - Choose an input to be mapped to the BOOTSEL button.
 
 Please note that this can only be used on devices that have a BOOTSEL button.  Please also note that the OLED might become unresponsive if this button is set.  You can unset it to restore OLED fuctionality.
 
@@ -159,12 +159,12 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 * `Dual Down Pin` - The GPIO pin used for the secondary Down direction.
 * `Dual Left Pin` - The GPIO pin used for the secondary Left direction.
 * `Dual Right Pin` - The GPIO pin used for the secondary Right direction.
-* `Dual D-Pad Mode` - Choose if this should act as an additional instance of the D-Pad or as the Left or Right stick.  
+* `Dual D-Pad Mode` - Choose if this should act as an additional instance of the D-Pad or as the Left or Right stick.
 Values are:
 `D-PAD` for D-PAd mode.
 `Left Analog` for Left Analog stick mode.
 `Right Analog` for Right Analog stick mode.
-* `Combination Mode` - Choose how these inputs should be combined.  
+* `Combination Mode` - Choose how these inputs should be combined.
 Values are:
 `Mixed` - Combines both the Gamepad input and Dual Directional and allows for all 3 SOCD modes.
 `Gamepad` - Gamepad always takes over when pressed, otherwise Gamepad and Dual act independently.
@@ -198,6 +198,18 @@ Values are:
 
 * `Slider SOCD Up Priority Pin` - The GPIO pin used for SOCD Up Priority.
 * `Slider SOCD Second Input Priority Pin` - The GPIO pin used for SOCD Second Input Priority.
+
+### PS4 Mode
+
+![GP2040 Configurator - PS4 Mode](assets/images/gpc-add-ons-ps4-mode.png)
+
+Please note that GP2040-CE will never provide these files!
+
+Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute timeout.  If you have the necessary files to upload in this section it will authenticate to a native PS4 device and not time out after 8 minutes.
+
+* `Private Key (PEM)` - Choose your PEM file.
+* `Serial Number (16 Bytes in Hex Ascii)` - Choose your serial number file.
+* `Signature (256 Bytes in Binary)` - Choose your signature file.
 
 ## Data Backup and Restoration
 

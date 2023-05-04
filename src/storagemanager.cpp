@@ -26,6 +26,7 @@
 #include "addons/jslider.h"
 #include "addons/neopicoleds.h"
 #include "addons/playernum.h"
+#include "addons/ps4mode.h"
 #include "addons/pleds.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
@@ -63,9 +64,11 @@ void Storage::initSplashImage() {
 	}
 }
 
-BoardOptions Storage::getBoardOptions()
-{
-	return boardOptions;
+void Storage::initPS4Options() {
+	EEPROM.get(PS4_STORAGE_INDEX, ps4Options);
+	if (ps4Options.checksum != NOCHECKSUM_MAGIC) {
+		setDefaultPS4Options();
+	}
 }
 
 void Storage::setDefaultBoardOptions()
@@ -140,19 +143,14 @@ void Storage::setBoardOptions(BoardOptions options)
 	}
 }
 
-AddonOptions Storage::getAddonOptions()
-{
-	return addonOptions;
-}
-
 void Storage::setDefaultAddonOptions()
 {
 	addonOptions.pinButtonTurbo    		= PIN_BUTTON_TURBO;
 	addonOptions.pinButtonReverse  		= PIN_BUTTON_REVERSE;
 	addonOptions.pinSliderLS       		= PIN_SLIDER_LS;
 	addonOptions.pinSliderRS       		= PIN_SLIDER_RS;
-	addonOptions.pinSliderSOCDUp        = PIN_SLIDER_SOCD_UP;
-	addonOptions.pinSliderSOCDSecond    = PIN_SLIDER_SOCD_SECOND;
+	addonOptions.pinSliderSOCDOne     	= PIN_SLIDER_SOCD_ONE;
+	addonOptions.pinSliderSOCDTwo    	= PIN_SLIDER_SOCD_TWO;
 	addonOptions.pinDualDirDown    		= PIN_DUAL_DIRECTIONAL_DOWN;
 	addonOptions.pinDualDirUp      		= PIN_DUAL_DIRECTIONAL_UP;
 	addonOptions.pinDualDirLeft    		= PIN_DUAL_DIRECTIONAL_LEFT;
@@ -195,6 +193,9 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.shmupBtnMask3 = SHMUP_BUTTON3;
 	addonOptions.shmupBtnMask4 = SHMUP_BUTTON4;
 	addonOptions.pinShmupDial = PIN_SHMUP_DIAL;
+    addonOptions.sliderSOCDModeOne = SLIDER_SOCD_SLOT_ONE;
+    addonOptions.sliderSOCDModeTwo  = SLIDER_SOCD_SLOT_TWO;
+    addonOptions.sliderSOCDModeDefault = SLIDER_SOCD_SLOT_DEFAULT;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -205,6 +206,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.JSliderInputEnabled    = JSLIDER_ENABLED;
 	addonOptions.SliderSOCDInputEnabled    = SLIDER_SOCD_ENABLED;
 	addonOptions.PlayerNumAddonEnabled  = PLAYERNUM_ADDON_ENABLED;
+	addonOptions.PS4ModeAddonEnabled    = PS4MODE_ADDON_ENABLED;
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
 	setAddonOptions(addonOptions);
@@ -220,11 +222,6 @@ void Storage::setAddonOptions(AddonOptions options)
 		EEPROM.commit();
 		addonOptions = options;
 	}
-}
-
-SplashImage Storage::getSplashImage()
-{
-	return splashImage;
 }
 
 void Storage::setDefaultSplashImage()
@@ -254,11 +251,6 @@ void Storage::initLEDOptions()
 	if (lastCRC != CRC32::calculate(&ledOptions)) {
 		setDefaultLEDOptions();
 	}
-}
-
-LEDOptions Storage::getLEDOptions()
-{
-	return ledOptions;
 }
 
 void Storage::setDefaultLEDOptions()
@@ -339,6 +331,24 @@ void Storage::setLEDOptions(LEDOptions options)
 	}
 }
 
+void Storage::savePS4Options()     // PS4 Options
+{
+	ps4Options.checksum = NOCHECKSUM_MAGIC;
+	EEPROM.set(PS4_STORAGE_INDEX, ps4Options);
+	EEPROM.commit();
+}
+
+void Storage::setDefaultPS4Options()
+{
+	// Zero everything out
+	memset(&ps4Options, 0, sizeof(PS4Options));
+}
+
+PS4Options * Storage::getPS4Options()
+{
+	return &ps4Options;
+}
+
 void Storage::ResetSettings()
 {
 	EEPROM.reset();
@@ -353,11 +363,6 @@ void Storage::initPreviewBoardOptions()
 void Storage::setPreviewBoardOptions(const BoardOptions& boardOptions)
 {
 	memcpy(&previewBoardOptions, &boardOptions, sizeof(BoardOptions));
-}
-
-BoardOptions Storage::getPreviewBoardOptions()
-{
-	return previewBoardOptions;
 }
 
 void Storage::SetConfigMode(bool mode) { // hack for config mode
