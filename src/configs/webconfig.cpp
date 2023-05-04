@@ -512,7 +512,7 @@ std::string setCustomTheme()
 	options.customThemeA1Pressed     = (doc["customTheme"]["A1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["A1"]["pressed"];
 	options.customThemeA2Pressed     = (doc["customTheme"]["A2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["A2"]["pressed"];
 
-	ConfigManager::getInstance().setAnimationOptions(options);
+	AnimationStore.setAnimationOptions(options);
 
 	return serialize_json(doc);
 }
