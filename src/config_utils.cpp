@@ -52,28 +52,45 @@
 		parent.PREPROCESSOR_JOIN(has_, property) = true; \
 	} \
 
+#ifndef DEFAULT_INPUT_MODE
+    #define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT
+#endif
+#ifndef DEFAULT_DPAD_MODE
+    #define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL
+#endif
+#ifndef DEFAULT_SOCD_MODE
+    #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+#endif
+
 void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 {
 	INIT_UNSET_PROPERTY_STR(config, boardVersion, GP2040VERSION);
 
 	// gamepadOptions
-#ifdef DEFAULT_INPUT_MODE
 	INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
-#else
-	INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, INPUT_MODE_XINPUT);
-#endif
-#ifdef DEFAULT_DPAD_MODE
 	INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DEFAULT_DPAD_MODE);
-#else
-	INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DPAD_MODE_DIGITAL);
-#endif
-#ifdef DEFAULT_SOCD_MODE
-	INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, static_cast<SOCDMode>(DEFAULT_SOCD_MODE));
-#else
-	INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, SOCD_MODE_NEUTRAL);
-#endif
+    INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
 	INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
 	INIT_UNSET_PROPERTY(config.gamepadOptions, invertYAxis, false);
+
+    // hotkeyOptions
+    HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Up, dpadMask, HOTKEY_F1_UP_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Up, action, HOTKEY_F1_UP_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Down, dpadMask, HOTKEY_F1_DOWN_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Down, action, HOTKEY_F1_DOWN_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Left, dpadMask, HOTKEY_F1_LEFT_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Left, action, HOTKEY_F1_LEFT_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Right, dpadMask, HOTKEY_F1_RIGHT_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Right, action, HOTKEY_F1_RIGHT_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Up, dpadMask, HOTKEY_F2_UP_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Up, action, HOTKEY_F2_UP_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Down, dpadMask, HOTKEY_F2_DOWN_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Down, action, HOTKEY_F2_DOWN_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, dpadMask, HOTKEY_F2_LEFT_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, HOTKEY_F2_LEFT_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, HOTKEY_F2_RIGHT_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, HOTKEY_F2_RIGHT_ACTION);
 
 	// pinMappings
 	INIT_UNSET_PROPERTY(config.pinMappings, pinDpadUp, PIN_DPAD_UP);
@@ -94,6 +111,26 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 	INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR3, PIN_BUTTON_R3);
 	INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA1, PIN_BUTTON_A1);
 	INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA2, PIN_BUTTON_A2);
+
+    // keyboardMapping
+    INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadUp, KEY_DPAD_UP);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadDown, KEY_DPAD_DOWN);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadRight, KEY_DPAD_RIGHT);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadLeft, KEY_DPAD_LEFT);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonB1, KEY_BUTTON_B1);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonB2, KEY_BUTTON_B2);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonR2, KEY_BUTTON_R2);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonL2, KEY_BUTTON_L2);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonB3, KEY_BUTTON_B3);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonB4, KEY_BUTTON_B4);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonR1, KEY_BUTTON_R1);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonL1, KEY_BUTTON_L1);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonS1, KEY_BUTTON_S1);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonS2, KEY_BUTTON_S2);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonL3, KEY_BUTTON_L3);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonR3, KEY_BUTTON_R3);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA1, KEY_BUTTON_A1);
+	INIT_UNSET_PROPERTY(config.keyboardMapping, keyButtonA2, KEY_BUTTON_A2);
 
 	// displayOptions
 	INIT_UNSET_PROPERTY(config.displayOptions, enabled, !!HAS_I2C_DISPLAY);
@@ -241,6 +278,20 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 	// addonOptions.playerNumberOptions
 	INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);
 	INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, number, PLAYER_NUMBER);
+
+    // addonOptions.ps4Options
+    INIT_UNSET_PROPERTY(config.addonOptions.ps4Options, enabled, false);
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, serial, "");
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, signature, "");
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaN, "");
+    INIT_UNSET_PROPERTY(config.addonOptions.ps4Options, rsaE, 0);
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaD, "");
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaP, "");
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaQ, "");
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaDP, "");
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaDQ, "");
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaQP, "");
+    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaRN, "");
 }
 
 // -----------------------------------------------------

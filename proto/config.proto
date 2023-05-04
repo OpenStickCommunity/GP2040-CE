@@ -3,13 +3,53 @@ syntax = "proto2";
 import "nanopb.proto";
 import "enums.proto";
 
-message GamepadOptions_Proto
+message GamepadOptions
 {
 	optional InputMode inputMode = 1;
 	optional DpadMode dpadMode = 2;
 	optional SOCDMode socdMode = 3;
 	optional bool invertXAxis = 4;
 	optional bool invertYAxis = 5;
+}
+
+message KeyboardMapping
+{
+	optional uint32 keyDpadUp = 1;
+	optional uint32 keyDpadDown = 2;
+	optional uint32 keyDpadLeft = 3;
+	optional uint32 keyDpadRight = 4;
+	optional uint32 keyButtonB1 = 5;
+	optional uint32 keyButtonB2 = 6;
+	optional uint32 keyButtonB3 = 7;
+	optional uint32 keyButtonB4 = 8;
+	optional uint32 keyButtonL1 = 9;
+	optional uint32 keyButtonR1 = 10;
+	optional uint32 keyButtonL2 = 11;
+	optional uint32 keyButtonR2 = 12;
+	optional uint32 keyButtonS1 = 13;
+	optional uint32 keyButtonS2 = 14;
+	optional uint32 keyButtonL3 = 15;
+	optional uint32 keyButtonR3 = 16;
+	optional uint32 keyButtonA1 = 17;
+	optional uint32 keyButtonA2 = 18;
+}
+
+message HotkeyEntry
+{
+	optional uint32 dpadMask = 1;
+	optional GamepadHotkey action = 2;
+}
+
+message HotkeyOptions
+{
+	optional HotkeyEntry hotkeyF1Up = 1;
+	optional HotkeyEntry hotkeyF1Down = 2;
+	optional HotkeyEntry hotkeyF1Left = 3;
+	optional HotkeyEntry hotkeyF1Right = 4;
+	optional HotkeyEntry hotkeyF2Up = 5;
+	optional HotkeyEntry hotkeyF2Down = 6;
+	optional HotkeyEntry hotkeyF2Left = 7;
+	optional HotkeyEntry hotkeyF2Right = 8;
 }
 
 message ButtonLayoutParamsCommon
@@ -32,7 +72,7 @@ message ButtonLayoutParamsRight
 	optional ButtonLayoutParamsCommon common = 2;
 }
 
-message ButtonLayoutCustomOptions_Proto
+message ButtonLayoutCustomOptions
 {
 	optional ButtonLayoutParamsLeft paramsLeft = 1;
 	optional ButtonLayoutParamsRight paramsRight = 2;
@@ -72,12 +112,12 @@ message DisplayOptions
 
 	optional ButtonLayout buttonLayout = 7;
 	optional ButtonLayoutRight buttonLayoutRight = 8;
-	optional ButtonLayoutCustomOptions_Proto buttonLayoutCustomOptions = 9;
+	optional ButtonLayoutCustomOptions buttonLayoutCustomOptions = 9;
 
 	optional SplashMode splashMode = 10;
 	optional SplashChoice splashChoice = 11;
 	optional int32 splashDuration = 12;
-	optional string splashImage = 13 [(nanopb).max_length = 1500];
+	optional string splashImage = 13 [(nanopb).max_length = 1368];
 
 	optional int32 size = 14;
 	optional int32 flip = 15;
@@ -86,7 +126,7 @@ message DisplayOptions
 	optional int32 displaySaverTimeout = 17;
 }
 
-message LEDOptions_Proto
+message LEDOptions
 {
 	optional int32 dataPin = 1;
 	optional LEDFormat_Proto ledFormat = 2;
@@ -237,7 +277,23 @@ message PlayerNumberOptions
 	optional uint32 number = 2;
 }
 
-message AddonOptions_Proto
+message PS4Options
+{
+	optional bool enabled = 1;
+	optional string serial = 2 [(nanopb).max_length = 24];
+	optional string signature = 3 [(nanopb).max_length = 344];
+	optional string rsaN = 4 [(nanopb).max_length = 344];
+	optional uint32 rsaE = 5;
+	optional string rsaD = 6 [(nanopb).max_length = 344];
+	optional string rsaP = 7 [(nanopb).max_length = 172];
+	optional string rsaQ = 8 [(nanopb).max_length = 172];
+	optional string rsaDP = 9 [(nanopb).max_length = 172];
+	optional string rsaDQ = 10 [(nanopb).max_length = 172];
+	optional string rsaQP = 11 [(nanopb).max_length = 172];
+	optional string rsaRN = 12 [(nanopb).max_length = 344];
+}
+
+message AddonOptions
 {
 	optional BootselButtonOptions bootselButtonOptions = 1;
 	optional OnBoardLedOptions onBoardLedOptions = 2;
@@ -250,16 +306,19 @@ message AddonOptions_Proto
 	optional BuzzerOptions buzzerOptions = 9;
 	optional ExtraOptions extraOptions = 10;
 	optional PlayerNumberOptions playerNumberOptions = 11;
+	optional PS4Options ps4Options = 12;
 }
 
 message Config
 {
 	optional string boardVersion = 1 [(nanopb).max_length = 31];
 
-	optional GamepadOptions_Proto gamepadOptions = 2;
-	optional PinMappings pinMappings = 3;
-	optional DisplayOptions displayOptions = 4;
-	optional LEDOptions_Proto ledOptions = 5;
-	optional AnimationOptions_Proto animationOptions = 6;
-	optional AddonOptions_Proto addonOptions = 7;
+	optional GamepadOptions gamepadOptions = 2;
+	optional HotkeyOptions hotkeyOptions = 3;
+	optional PinMappings pinMappings = 4;
+	optional KeyboardMapping keyboardMapping = 5;
+	optional DisplayOptions displayOptions = 6;
+	optional LEDOptions ledOptions = 7;
+	optional AnimationOptions_Proto animationOptions = 8;
+	optional AddonOptions addonOptions = 9;
 }
