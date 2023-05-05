@@ -826,6 +826,9 @@ std::string setAddonOptions()
 	docToPin(addonOptions.wiiExtensionSDAPin, doc, "wiiExtensionSDAPin");
 	docToPin(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
 	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
+	docToPin(addonOptions.sidewinderGPPinTrigger, doc, "sidewinderGPPinTrigger");
+	docToPin(addonOptions.sidewinderGPPinClock, doc, "sidewinderGPPinClock");
+	docToPin(addonOptions.sidewinderGPPinData, doc, "sidewinderGPPinData");
 	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
 	docToValue(addonOptions.AnalogInputEnabled, doc, "AnalogInputEnabled");
 	docToValue(addonOptions.BoardLedAddonEnabled, doc, "BoardLedAddonEnabled");
@@ -841,6 +844,7 @@ std::string setAddonOptions()
 	docToValue(addonOptions.ReverseInputEnabled, doc, "ReverseInputEnabled");
 	docToValue(addonOptions.TurboInputEnabled, doc, "TurboInputEnabled");
 	docToValue(addonOptions.WiiExtensionAddonEnabled, doc, "WiiExtensionAddonEnabled");
+	docToValue(addonOptions.SidewinderGPEnabled, doc, "SidewinderGPEnabled");
 
 	Storage::getInstance().setAddonOptions(addonOptions);
 
@@ -1002,6 +1006,9 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionSCLPin", addonOptions.wiiExtensionSCLPin == 0xFF ? -1 : addonOptions.wiiExtensionSCLPin);
 	writeDoc(doc, "wiiExtensionBlock", addonOptions.wiiExtensionBlock);
 	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
+	writeDoc(doc, "sidewinderGPPinTrigger", addonOptions.sidewinderGPPinTrigger == 0xFF ? -1 : addonOptions.sidewinderGPPinTrigger);
+	writeDoc(doc, "sidewinderGPPinClock", addonOptions.sidewinderGPPinClock == 0xFF ? -1 : addonOptions.sidewinderGPPinClock);
+	writeDoc(doc, "sidewinderGPPinData", addonOptions.sidewinderGPPinData == 0xFF ? -1 : addonOptions.sidewinderGPPinData);
 	writeDoc(doc, "AnalogInputEnabled", addonOptions.AnalogInputEnabled);
 	writeDoc(doc, "BoardLedAddonEnabled", addonOptions.BoardLedAddonEnabled);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", addonOptions.BuzzerSpeakerAddonEnabled);
@@ -1016,6 +1023,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "ReverseInputEnabled", addonOptions.ReverseInputEnabled);
 	writeDoc(doc, "TurboInputEnabled", addonOptions.TurboInputEnabled);
 	writeDoc(doc, "WiiExtensionAddonEnabled", addonOptions.WiiExtensionAddonEnabled);
+	writeDoc(doc, "SidewinderGPEnabled", addonOptions.SidewinderGPEnabled);
 
 	return serialize_json(doc);
 }

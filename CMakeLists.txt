@@ -121,6 +121,7 @@ src/addons/playernum.cpp
 src/addons/playerleds.cpp
 src/addons/ps4mode.cpp
 src/addons/reverse.cpp
+src/addons/sidewindergp.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
 src/addons/wiiext.cpp

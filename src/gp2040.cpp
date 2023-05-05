@@ -18,6 +18,7 @@
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
+#include "addons/sidewindergp.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -108,6 +109,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
+	addons.LoadAddon(new SidewinderGPInput(), CORE0_INPUT);
 }
 
 void GP2040::run() {

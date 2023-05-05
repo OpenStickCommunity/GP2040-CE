@@ -29,6 +29,7 @@
 #include "addons/pleds.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
+#include "addons/sidewindergp.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 
@@ -200,6 +201,9 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.wiiExtensionSCLPin    = WII_EXTENSION_I2C_SCL_PIN;
 	addonOptions.wiiExtensionBlock     = (WII_EXTENSION_I2C_BLOCK == i2c0) ? 0 : 1;
 	addonOptions.wiiExtensionSpeed     = WII_EXTENSION_I2C_SPEED;
+	addonOptions.sidewinderGPPinTrigger = SIDEWINDERGP_PIN_TRIGGER;
+	addonOptions.sidewinderGPPinClock = SIDEWINDERGP_PIN_CLOCK;
+	addonOptions.sidewinderGPPinData = SIDEWINDERGP_PIN_DATA;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -214,6 +218,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
 	addonOptions.WiiExtensionAddonEnabled      = WII_EXTENSION_ENABLED;
+	addonOptions.SidewinderGPEnabled    = SIDEWINDERGP_INPUT_ENABLED;
 	setAddonOptions(addonOptions);
 }
 

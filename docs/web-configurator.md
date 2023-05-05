@@ -287,6 +287,37 @@ Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Cont
 
 Original Classic Controller L & R triggers are analog sensitive, where Pro triggers are not.
 
+### Sidewinder Gamepad
+
+![GP2040 Configurator - Sidewinder Gamepad](assets/images/gpc-add-ons-sidewindergp.png)
+
+Designed to be mapped on DA-15 gameport of the Sidewinder Gamepad.
+
+Connections:
+
+ - DA-15 pins 1, 8, 9, 15 to +5V
+ - DA-15 pins 4, 5, 12 to GND
+ - DA-15 pin 2 to Clock pin
+ - DA-15 pin 3 to Trigger pin
+ - DA-15 pin 7 to Data pin
+
+Mapping is a follows:
+
+| Sidewinder GP | GP2040-CE | 
+|---------------|-----------|
+| D-Pad         | Analog    | 
+| A             | B1        | 
+| B             | B2        | 
+| C             | L3        | 
+| X             | B3        | 
+| Y             | B4        | 
+| Z             | R3        | 
+| LT            | L1        | 
+| RT            | R1        | 
+| Start         | S2        | 
+| M             | S1        | 
+
+
 ## Data Backup and Restoration
 
 ![GP2040-CE Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)

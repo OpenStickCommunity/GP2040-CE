@@ -144,6 +144,9 @@ struct AddonOptions {
 	uint8_t wiiExtensionSCLPin;
 	int wiiExtensionBlock;
 	uint32_t wiiExtensionSpeed;
+	uint8_t sidewinderGPPinTrigger;
+	uint8_t sidewinderGPPinClock;
+	uint8_t sidewinderGPPinData;
 	uint8_t AnalogInputEnabled;
 	uint8_t BoardLedAddonEnabled;
 	uint8_t BootselButtonAddonEnabled;
@@ -161,6 +164,7 @@ struct AddonOptions {
 	uint8_t TurboInputEnabled;
 	uint8_t SliderSOCDInputEnabled;
 	uint8_t WiiExtensionAddonEnabled;
+	uint8_t SidewinderGPEnabled;
 	uint32_t checksum;
 };
 
