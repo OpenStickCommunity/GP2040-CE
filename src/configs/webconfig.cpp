@@ -17,7 +17,7 @@
 #include "fs.h"
 #include "fscustom.h"
 #include "fsdata.h"
-#include "httpd.h"
+#include "lwip/apps/httpd.h"
 #include "lwip/def.h"
 #include "lwip/mem.h"
 
