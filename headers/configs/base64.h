@@ -26,6 +26,7 @@
  */
 
 #include <string>
+#include <stdint.h>
 
 class Base64 {
  public:
