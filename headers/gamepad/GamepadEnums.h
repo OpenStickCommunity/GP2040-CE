@@ -34,6 +34,7 @@ typedef enum
 	SOCD_MODE_NEUTRAL,               // U+D=N, L+R=N
 	SOCD_MODE_SECOND_INPUT_PRIORITY, // U>D=D, L>R=R (Last Input Priority, aka Last Win)
 	SOCD_MODE_FIRST_INPUT_PRIORITY, // U>D=U, L>R=L (First Input Priority, aka First Win)
+	SOCD_MODE_BYPASS,                // U+D=UD, L+R=LR (No cleaning applied)
 } SOCDMode;
 
 // Enum for tracking last direction state of Second Input SOCD method
@@ -60,5 +61,6 @@ typedef enum
 	HOTKEY_SOCD_LAST_INPUT,
 	HOTKEY_INVERT_X_AXIS,
 	HOTKEY_INVERT_Y_AXIS,
-	HOTKEY_SOCD_FIRST_INPUT
+	HOTKEY_SOCD_FIRST_INPUT,
+	HOTKEY_SOCD_BYPASS
 } GamepadHotkey;

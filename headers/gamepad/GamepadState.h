@@ -153,6 +153,10 @@ inline uint16_t dpadToAnalogY(uint8_t dpad)
  */
 inline uint8_t runSOCDCleaner(SOCDMode mode, uint8_t dpad)
 {
+	if (mode == SOCD_MODE_BYPASS) {
+		return dpad;
+	}
+
 	static DpadDirection lastUD = DIRECTION_NONE;
 	static DpadDirection lastLR = DIRECTION_NONE;
 	uint8_t newDpad = 0;

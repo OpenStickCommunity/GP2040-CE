@@ -157,6 +157,12 @@ public:
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping **gamepadMappings;
 
+	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
+		 return ((options.socdMode == SOCD_MODE_BYPASS) && 
+		         (options.inputMode == INPUT_MODE_HID || options.inputMode == INPUT_MODE_SWITCH || options.inputMode == INPUT_MODE_PS4)) ?
+			    SOCD_MODE_NEUTRAL : options.socdMode;
+	};
+
 private:
 	void releaseAllKeys(void);
 	void pressKey(uint8_t code);
