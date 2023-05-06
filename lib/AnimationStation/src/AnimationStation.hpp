@@ -26,8 +26,7 @@ typedef enum
   EFFECT_CUSTOM_THEME,
 } AnimationEffects;
 
-// We can't programmatically determine how many elements are in an enum. Yes, that's dumb.
-const int TOTAL_EFFECTS = 5;
+const int TOTAL_EFFECTS = 4; // Exclude custom theme until verified present
 
 typedef enum
 {
@@ -121,6 +120,7 @@ public:
   std::vector<Pixel> lastPressed;
   static AnimationOptions options;
   static absolute_time_t nextChange;
+  static uint8_t effectCount;
   RGB frame[100];
 
 protected:

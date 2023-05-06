@@ -29,6 +29,7 @@ bool CustomTheme::HasTheme() {
 
 void CustomTheme::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
   CustomTheme::theme = customTheme;
+  AnimationStation::effectCount = TOTAL_EFFECTS + 1;
 }
 
 void CustomTheme::ParameterUp() {

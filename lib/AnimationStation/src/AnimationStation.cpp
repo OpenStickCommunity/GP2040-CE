@@ -12,6 +12,7 @@ uint8_t AnimationStation::brightnessSteps = 5;
 float AnimationStation::brightnessX = 0;
 absolute_time_t AnimationStation::nextChange = nil_time;
 AnimationOptions AnimationStation::options = {};
+uint8_t AnimationStation::effectCount = TOTAL_EFFECTS;
 
 
 AnimationStation::AnimationStation() {
@@ -68,18 +69,17 @@ void AnimationStation::ChangeAnimation(int changeSize) {
 }
 
 uint16_t AnimationStation::AdjustIndex(int changeSize) {
-  uint16_t newIndex = this->options.baseAnimationIndex + changeSize;
-  uint8_t effectCount = TOTAL_EFFECTS - (CustomTheme::HasTheme() ? 0 : 1);
+  int newIndex = (int)this->options.baseAnimationIndex + changeSize;
 
-  if (newIndex >= effectCount) {
+  if (newIndex >= AnimationStation::effectCount) {
     return 0;
   }
 
   if (newIndex < 0) {
-    return (effectCount - 1);
+    return (AnimationStation::effectCount - 1);
   }
 
-  return newIndex;
+  return (uint16_t)newIndex;
 }
 
 void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
@@ -129,7 +129,8 @@ void AnimationStation::SetMode(uint8_t mode) {
   if (this->buttonAnimation != nullptr) {
     delete this->buttonAnimation;
   }
-  this->ClearPressed();
+
+  this->Clear();
 
   switch (newEffect) {
   case AnimationEffects::EFFECT_RAINBOW:
