@@ -98,6 +98,11 @@ void DualDirectionalInput::preprocess()
             gamepadState = SOCDGamepadClean(gamepadState, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) | dualState;
         }
     }
+    // None Mode (no combination, no overwrite)
+    else if ( combineMode == DUAL_COMBINE_MODE_NONE ) {
+        // just SOCD clean the dual inputs based on the desired mode
+        SOCDDualClean(gamepad->options.socdMode);
+    }
     // Gamepad Overwrite Mode
     else if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
         if ( gamepadState != 0 && (gamepadState != dualState)) {
