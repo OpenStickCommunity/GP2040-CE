@@ -83,14 +83,14 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
 }
 
 bool NeoPicoLEDAddon::available() {
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	return ledOptions.dataPin != -1;
 }
 
 void NeoPicoLEDAddon::setup()
 {
 	// Set Default LED Options
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	if (!ledOptions.useUserDefinedLEDs) {
 		Storage::getInstance().setDefaultLEDOptions();
 	}
@@ -110,7 +110,7 @@ void NeoPicoLEDAddon::setup()
 
 void NeoPicoLEDAddon::process()
 {
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	if (ledOptions.dataPin < 0 || !time_reached(this->nextRunTime))
 		return;
 
@@ -393,7 +393,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 	{
 		case BUTTON_LAYOUT_BLANKA:
 			return generatedLEDButtons(&positions);
-		
+
 		case BUTTON_LAYOUT_BUTTONS_BASIC:
 			return generatedLEDButtons(&positions);
 
@@ -408,7 +408,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 
 		case BUTTON_LAYOUT_TWINSTICKA:
 			return generatedLEDButtons(&positions);
-		
+
 		case BUTTON_LAYOUT_ARCADE:
 			return generatedLEDButtons(&positions);
 
@@ -466,7 +466,7 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 
 void NeoPicoLEDAddon::configureLEDs()
 {
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
 	uint8_t buttonCount = setupButtonPositions();
 	vector<vector<Pixel>> pixels = createLEDLayout(ledOptions.ledLayout, ledOptions.ledsPerButton, buttonCount);
 	matrix.setup(pixels, ledOptions.ledsPerButton);
@@ -481,10 +481,11 @@ void NeoPicoLEDAddon::configureLEDs()
 
 	Animation::format = ledOptions.ledFormat;
 	as.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
-	as.SetOptions(AnimationStore.getAnimationOptions());
-	addStaticThemes(ledOptions);
-	as.SetMode(as.options.baseAnimationIndex);
+	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
+	addStaticThemes(ledOptions, animationOptions);
+	as.SetOptions(animationOptions);
 	as.SetMatrix(matrix);
+	as.SetMode(as.options.baseAnimationIndex);
 }
 
 AnimationHotkey animationHotkeys(Gamepad *gamepad)

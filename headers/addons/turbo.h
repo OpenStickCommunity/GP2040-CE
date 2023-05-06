@@ -26,7 +26,7 @@
 #define TURBO_SHMUP_MODE 0
 #endif
 
-enum ShmupMixMode { 
+enum ShmupMixMode {
     TURBO_PRIORITY = 0,
     CHARGE_PRIORITY
 };
@@ -98,8 +98,9 @@ public:
 	virtual void process();     // TURBO Setting of buttons (Enable/Disable)
     virtual std::string name() { return TurboName; }
 private:
-    void read(AddonOptions&);                // Read TURBO Buttons and Dials
+    void read(const AddonOptions&);                // Read TURBO Buttons and Dials
     void debounce();            // TURBO Button Debouncer
+    void updateTurboShotCount(uint8_t turboShotCount);
     bool bDebState;             // Debounce TURBO Button State
     uint32_t uDebTime;          // Debounce TURBO Button Time
     uint32_t debChargeState;    // Debounce Charge Button State

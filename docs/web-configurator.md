@@ -2,13 +2,13 @@
 
 Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>
 
-GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> to begin configuration.
+GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS. When using the web-based configuration on Windows and Mac, RNDIS works on a default install. Linux distributions may need some extra steps to access the web configurator; see [Linux Setup](#linux-setup).
 
 ## Home
 
 ![GP2040-CE Configurator - Home](assets/images/gpc-home.png)
 
-Here you can see the current version of your firmware and the latest version available on Github in the releases section. If a firmware update is available, a link to that release will appear.
+Here you can see the current version of your firmware and the latest version available on GitHub in the releases section. If a firmware update is available, a link to that release will appear.
 
 The options in the main menu are:
 
@@ -48,6 +48,17 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Brightness Steps` - The number of levels of brightness to cycle through when turning brightness up and down.
 * `LED Button Order` - Configure which buttons and what order they reside on the LED chain.
 
+## Custom LED Theme
+
+![GP2040-CE Configurator - Custom LED Theme](assets/images/gpc-rgb-led-custom-theme.png)
+
+* `Enable` - Enables the use of Custom LED Theme.
+* `Preview Layout` - Predefined layouts for previewing LED theme. **NOTE:** This is for preview only, does not affect controller operation.
+* `Clear All` - Prompts for confirmation to reset the current theme to all buttons black (LEDs off). Make sure you have saved and have a backup if you don't want to lose your customizations.
+* `Set All To Color` - Presents a color picker to set all buttons to the same normal or pressed color.
+
+If enabled, the Custom LED Theme will be available as another animation mode and will cycle with the `Previous Animation` and `Next Animation` shortcuts on your controller. You can also use the [Data Backup and Restoration](#data-backup-and-restoration) feature to create and share themes!
+
 ## Display Configuration
 
 ![GP2040-CE Configurator - Display Configuration](assets/images/gpc-display-config.png)
@@ -64,8 +75,8 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Button Layout (Right)` - Changes the onscreen layout for the right side of the display and stick.
 * `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
 * `Splash Duration` - Sets the amount of time the splash screen displays for on boot.
-* `Display Saver Timeout` - Will cause the display to turn off afer the specified number of minuites.  Pressing any input will cause the diplay to turn back on.
-* `Choose File` - This will allow you to upload your own image to be used for the splash screen.  It is recommend that you use a two color 128x64 image (or one that is sized appropiatly for your display).  Uploading any other type of image will result in a conversion and sizing of the image automatically.  If the image is inverted upon upload, just check off the `Invert` box.
+* `Display Saver Timeout` - Will cause the display to turn off after the specified number of minutes. Pressing any input will cause the display to turn back on.
+* `Choose File` - This will allow you to upload your own image to be used for the splash screen. It is recommend that you use a two color 128x64 image (or one that is sized appropriately for your display). Uploading any other type of image will result in a conversion and sizing of the image automatically. If the image is inverted upon upload, just check off the `Invert` box.
 
 Check out our collection of great custom splash screens from the community [HERE](community-splash-screens.md)
 
@@ -77,9 +88,9 @@ This section is for custom add-ons that can be enabled to expand the functionali
 
 ![GP2040 Configurator - Add-Ons BOOTSEL Button Configuration](assets/images/gpc-add-ons-bootsel-button.png)
 
-* `BOOTSEL Button` - Choose an input to be mapped tot he BOOTSEL button. 
+* `BOOTSEL Button` - Choose an input to be mapped to the BOOTSEL button.
 
-Please note that this can only be used on devices that have a BOOTSEL button.  Please also note that the OLED might become unresponsive if this button is set.  You can unset it to restore OLED fuctionality.
+Please note that this can only be used on devices that have a BOOTSEL button.  Please also note that the OLED might become unresponsive if this button is set. You can unset it to restore OLED functionality.
 
 ### On-board LED Configuration
 
@@ -159,16 +170,16 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 * `Dual Down Pin` - The GPIO pin used for the secondary Down direction.
 * `Dual Left Pin` - The GPIO pin used for the secondary Left direction.
 * `Dual Right Pin` - The GPIO pin used for the secondary Right direction.
-* `Dual D-Pad Mode` - Choose if this should act as an additional instance of the D-Pad or as the Left or Right stick.  
+* `Dual D-Pad Mode` - Choose if this should act as an additional instance of the D-Pad or as the Left or Right stick.
 Values are:
 `D-PAD` for D-PAd mode.
 `Left Analog` for Left Analog stick mode.
 `Right Analog` for Right Analog stick mode.
-* `Combination Mode` - Choose how these inputs should be combined.  
+* `Combination Mode` - Choose how these inputs should be combined.
 Values are:
 `Mixed` - Combines both the Gamepad input and Dual Directional and allows for all 3 SOCD modes.
 `Gamepad` - Gamepad always takes over when pressed, otherwise Gamepad and Dual act independently.
-`Dual Directional` - Dual always takes over when pressed, otherwise Gamepad and Dual act indepedently.
+`Dual Directional` - Dual always takes over when pressed, otherwise Gamepad and Dual act independently.
 `None` - Gamepad input and dual directional act independently of each other.
 
 ### Buzzer Speaker
@@ -199,6 +210,18 @@ Values are:
 * `Slider SOCD Up Priority Pin` - The GPIO pin used for SOCD Up Priority.
 * `Slider SOCD Second Input Priority Pin` - The GPIO pin used for SOCD Second Input Priority.
 
+### PS4 Mode
+
+![GP2040 Configurator - PS4 Mode](assets/images/gpc-add-ons-ps4-mode.png)
+
+Please note that GP2040-CE will never provide these files!
+
+Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute timeout.  If you have the necessary files to upload in this section it will authenticate to a native PS4 device and not time out after 8 minutes.
+
+* `Private Key (PEM)` - Choose your PEM file.
+* `Serial Number (16 Bytes in Hex Ascii)` - Choose your serial number file.
+* `Signature (256 Bytes in Binary)` - Choose your signature file.
+
 ## Data Backup and Restoration
 
 ![GP2040-CE Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
@@ -210,3 +233,34 @@ Values are:
 
 ![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
 
+=======
+
+# Linux Setup
+
+When you plug in your controller while holding <hotkey v-bind:buttons='["S2"]'></hotkey>, you should see it connect in the kernel logs if you run `dmesg`:
+
+```
+[   72.291060] usb 1-3: new full-speed USB device number 12 using xhci_hcd
+[   72.450166] usb 1-3: New USB device found, idVendor=cafe, idProduct=4028, bcdDevice= 1.01
+[   72.450172] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[   72.450174] usb 1-3: Product: TinyUSB Device
+[   72.450176] usb 1-3: Manufacturer: TinyUSB
+[   72.450177] usb 1-3: SerialNumber: 123456
+[   72.484285] rndis_host 1-3:1.0 usb0: register 'rndis_host' at usb-0000:06:00.1-3, RNDIS device, 02:02:84:6a:96:00
+[   72.498630] rndis_host 1-3:1.0 enp6s0f1u3: renamed from usb0
+```
+
+In the above example, **enp6s0f1u3** is the virtual Ethernet interface for your controller. If you don't see the first `rndis_host` line, make sure `CONFIG_USB_NET_RNDIS_HOST` is compiled in your kernel or as a module.
+
+The web configurator is automatically running, you just need to be able to reach it. Some configurations automatically set up the route, so try <http://192.168.7.1> in your browser now. If it doesn't load, try configuring an IP for the interface manually via: `sudo ifconfig enp6s0f1u3 192.168.7.2`.
+
+Whether or not you had to add an IP manually, you should end up with a route something like this:
+
+```
+% ip route
+default via 10.0.5.1 dev enp5s0 proto dhcp src 10.0.5.38 metric 2
+10.0.5.0/24 dev enp5s0 proto dhcp scope link src 10.0.5.38 metric 2
+192.168.7.0/24 dev enp6s0f1u3 proto kernel scope link src 192.168.7.2     <---
+```
+
+Then the configurator should be reachable in your browser.
