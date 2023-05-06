@@ -121,6 +121,7 @@ void DualDirectionalInput::preprocess()
 
 void DualDirectionalInput::process()
 {
+    const AddonOptions& options = Storage::getInstance().getAddonOptions();
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint8_t dualOut = dualState;
     const SOCDMode& socdMode = getSOCDMode(gamepad->options);
@@ -148,6 +149,17 @@ void DualDirectionalInput::process()
         if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
             // Set Dual Directional Output
             OverrideGamepad(gamepad, dpadMode, dualOut);
+        }
+        else if (combineMode == DUAL_COMBINE_MODE_NONE) {
+            // Set the configured directional mode to the value of the dual output
+            // if configured dual mode is the same mode as the gamepad mode, they
+            // need to be SOCD cleaned first
+            // this also avoids accidentally masking gamepad inputs with the lack of dual inputs
+            if (gamepad->options.dpadMode == options.dualDirDpadMode) {
+                uint8_t gamepadDpad = gpadToBinary(gamepad->options.dpadMode, gamepad->state);
+                dualOut = SOCDGamepadClean(dualOut | gamepadDpad, gamepad->options.socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
+            }
+            OverrideGamepad(gamepad, options.dualDirDpadMode, dualOut);
         }
     }
 }
