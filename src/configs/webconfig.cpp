@@ -109,9 +109,9 @@ int set_file_data(struct fs_file *file, string data)
 
 DynamicJsonDocument get_post_data()
 {
-	vector<char> raw;
-	for (int i = 0; i < http_post_payload_len; i++)
-		raw.push_back(http_post_payload[i]);
+	// Cache payload to char array so ArduinoJson will use "Zero-copy mode" to save memory
+	char raw[http_post_payload_len];
+	memcpy(raw, http_post_payload, http_post_payload_len);
 
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	deserializeJson(doc, raw);
@@ -224,7 +224,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(addonOptions.buzzerPin);
 }
 
-std::string serialize_json(DynamicJsonDocument &doc)
+std::string serialize_json(JsonDocument &doc)
 {
 	string data;
 	serializeJson(doc, data);
@@ -473,46 +473,49 @@ std::string getLedOptions()
 std::string setCustomTheme()
 {
 	DynamicJsonDocument doc = get_post_data();
-	AnimationOptions options = AnimationStore.getAnimationOptions();
-	options.hasCustomTheme           = doc["hasCustomTheme"];
-	options.customThemeUp            = (doc["customTheme"]["Up"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["Up"]["normal"];
-	options.customThemeDown          = (doc["customTheme"]["Down"]["normal"]   == nullptr) ? 0 : doc["customTheme"]["Down"]["normal"];
-	options.customThemeLeft          = (doc["customTheme"]["Left"]["normal"]   == nullptr) ? 0 : doc["customTheme"]["Left"]["normal"];
-	options.customThemeRight         = (doc["customTheme"]["Right"]["normal"]  == nullptr) ? 0 : doc["customTheme"]["Right"]["normal"];
-	options.customThemeB1            = (doc["customTheme"]["B1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["B1"]["normal"];
-	options.customThemeB2            = (doc["customTheme"]["B2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["B2"]["normal"];
-	options.customThemeB3            = (doc["customTheme"]["B3"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["B3"]["normal"];
-	options.customThemeB4            = (doc["customTheme"]["B4"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["B4"]["normal"];
-	options.customThemeL1            = (doc["customTheme"]["L1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["L1"]["normal"];
-	options.customThemeR1            = (doc["customTheme"]["R1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["R1"]["normal"];
-	options.customThemeL2            = (doc["customTheme"]["L2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["L2"]["normal"];
-	options.customThemeR2            = (doc["customTheme"]["R2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["R2"]["normal"];
-	options.customThemeS1            = (doc["customTheme"]["S1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["S1"]["normal"];
-	options.customThemeS2            = (doc["customTheme"]["S2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["S2"]["normal"];
-	options.customThemeL3            = (doc["customTheme"]["L3"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["L3"]["normal"];
-	options.customThemeR3            = (doc["customTheme"]["R3"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["R3"]["normal"];
-	options.customThemeA1            = (doc["customTheme"]["A1"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["A1"]["normal"];
-	options.customThemeA2            = (doc["customTheme"]["A2"]["normal"]     == nullptr) ? 0 : doc["customTheme"]["A2"]["normal"];
-	options.customThemeUpPressed     = (doc["customTheme"]["Up"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["Up"]["pressed"];
-	options.customThemeDownPressed   = (doc["customTheme"]["Down"]["pressed"]  == nullptr) ? 0 : doc["customTheme"]["Down"]["pressed"];
-	options.customThemeLeftPressed   = (doc["customTheme"]["Left"]["pressed"]  == nullptr) ? 0 : doc["customTheme"]["Left"]["pressed"];
-	options.customThemeRightPressed  = (doc["customTheme"]["Right"]["pressed"] == nullptr) ? 0 : doc["customTheme"]["Right"]["pressed"];
-	options.customThemeB1Pressed     = (doc["customTheme"]["B1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["B1"]["pressed"];
-	options.customThemeB2Pressed     = (doc["customTheme"]["B2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["B2"]["pressed"];
-	options.customThemeB3Pressed     = (doc["customTheme"]["B3"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["B3"]["pressed"];
-	options.customThemeB4Pressed     = (doc["customTheme"]["B4"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["B4"]["pressed"];
-	options.customThemeL1Pressed     = (doc["customTheme"]["L1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["L1"]["pressed"];
-	options.customThemeR1Pressed     = (doc["customTheme"]["R1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["R1"]["pressed"];
-	options.customThemeL2Pressed     = (doc["customTheme"]["L2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["L2"]["pressed"];
-	options.customThemeR2Pressed     = (doc["customTheme"]["R2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["R2"]["pressed"];
-	options.customThemeS1Pressed     = (doc["customTheme"]["S1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["S1"]["pressed"];
-	options.customThemeS2Pressed     = (doc["customTheme"]["S2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["S2"]["pressed"];
-	options.customThemeL3Pressed     = (doc["customTheme"]["L3"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["L3"]["pressed"];
-	options.customThemeR3Pressed     = (doc["customTheme"]["R3"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["R3"]["pressed"];
-	options.customThemeA1Pressed     = (doc["customTheme"]["A1"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["A1"]["pressed"];
-	options.customThemeA2Pressed     = (doc["customTheme"]["A2"]["pressed"]    == nullptr) ? 0 : doc["customTheme"]["A2"]["pressed"];
 
-	AnimationStore.setAnimationOptions(options);
+	AnimationOptions options = AnimationStore.getAnimationOptions();
+
+	options.hasCustomTheme           = doc["enabled"];
+	options.customThemeUp            = doc["Up"]["u"] | 0;
+	options.customThemeDown          = doc["Down"]["u"] | 0;
+	options.customThemeLeft          = doc["Left"]["u"] | 0;
+	options.customThemeRight         = doc["Right"]["u"] | 0;
+	options.customThemeB1            = doc["B1"]["u"] | 0;
+	options.customThemeB2            = doc["B2"]["u"] | 0;
+	options.customThemeB3            = doc["B3"]["u"] | 0;
+	options.customThemeB4            = doc["B4"]["u"] | 0;
+	options.customThemeL1            = doc["L1"]["u"] | 0;
+	options.customThemeR1            = doc["R1"]["u"] | 0;
+	options.customThemeL2            = doc["L2"]["u"] | 0;
+	options.customThemeR2            = doc["R2"]["u"] | 0;
+	options.customThemeS1            = doc["S1"]["u"] | 0;
+	options.customThemeS2            = doc["S2"]["u"] | 0;
+	options.customThemeL3            = doc["L3"]["u"] | 0;
+	options.customThemeR3            = doc["R3"]["u"] | 0;
+	options.customThemeA1            = doc["A1"]["u"] | 0;
+	options.customThemeA2            = doc["A2"]["u"] | 0;
+	options.customThemeUpPressed     = doc["Up"]["d"] | 0;
+	options.customThemeDownPressed   = doc["Down"]["d"] | 0;
+	options.customThemeLeftPressed   = doc["Left"]["d"] | 0;
+	options.customThemeRightPressed  = doc["Right"]["d"] | 0;
+	options.customThemeB1Pressed     = doc["B1"]["d"] | 0;
+	options.customThemeB2Pressed     = doc["B2"]["d"] | 0;
+	options.customThemeB3Pressed     = doc["B3"]["d"] | 0;
+	options.customThemeB4Pressed     = doc["B4"]["d"] | 0;
+	options.customThemeL1Pressed     = doc["L1"]["d"] | 0;
+	options.customThemeR1Pressed     = doc["R1"]["d"] | 0;
+	options.customThemeL2Pressed     = doc["L2"]["d"] | 0;
+	options.customThemeR2Pressed     = doc["R2"]["d"] | 0;
+	options.customThemeS1Pressed     = doc["S1"]["d"] | 0;
+	options.customThemeS2Pressed     = doc["S2"]["d"] | 0;
+	options.customThemeL3Pressed     = doc["L3"]["d"] | 0;
+	options.customThemeR3Pressed     = doc["R3"]["d"] | 0;
+	options.customThemeA1Pressed     = doc["A1"]["d"] | 0;
+	options.customThemeA2Pressed     = doc["A2"]["d"] | 0;
+
+	AnimationStation::SetOptions(options);
+	AnimationStore.save();
 
 	return serialize_json(doc);
 }
@@ -522,45 +525,44 @@ std::string getCustomTheme()
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	AnimationOptions options = AnimationStore.getAnimationOptions();
 
-	doc["hasCustomTheme"] = options.hasCustomTheme;
+	doc["enabled"] = options.hasCustomTheme;
 
-	auto customTheme = doc.createNestedObject("customTheme");
-	customTheme["Up"]["normal"]     = options.customThemeUp;
-	customTheme["Up"]["pressed"]    = options.customThemeUpPressed;
-	customTheme["Down"]["normal"]   = options.customThemeDown;
-	customTheme["Down"]["pressed"]  = options.customThemeDownPressed;
-	customTheme["Left"]["normal"]   = options.customThemeLeft;
-	customTheme["Left"]["pressed"]  = options.customThemeLeftPressed;
-	customTheme["Right"]["normal"]  = options.customThemeRight;
-	customTheme["Right"]["pressed"] = options.customThemeRightPressed;
-	customTheme["B1"]["normal"]     = options.customThemeB1;
-	customTheme["B1"]["pressed"]    = options.customThemeB1Pressed;
-	customTheme["B2"]["normal"]     = options.customThemeB2;
-	customTheme["B2"]["pressed"]    = options.customThemeB2Pressed;
-	customTheme["B3"]["normal"]     = options.customThemeB3;
-	customTheme["B3"]["pressed"]    = options.customThemeB3Pressed;
-	customTheme["B4"]["normal"]     = options.customThemeB4;
-	customTheme["B4"]["pressed"]    = options.customThemeB4Pressed;
-	customTheme["L1"]["normal"]     = options.customThemeL1;
-	customTheme["L1"]["pressed"]    = options.customThemeL1Pressed;
-	customTheme["R1"]["normal"]     = options.customThemeR1;
-	customTheme["R1"]["pressed"]    = options.customThemeR1Pressed;
-	customTheme["L2"]["normal"]     = options.customThemeL2;
-	customTheme["L2"]["pressed"]    = options.customThemeL2Pressed;
-	customTheme["R2"]["normal"]     = options.customThemeR2;
-	customTheme["R2"]["pressed"]    = options.customThemeR2Pressed;
-	customTheme["S1"]["normal"]     = options.customThemeS1;
-	customTheme["S1"]["pressed"]    = options.customThemeS1Pressed;
-	customTheme["S2"]["normal"]     = options.customThemeS2;
-	customTheme["S2"]["pressed"]    = options.customThemeS2Pressed;
-	customTheme["A1"]["normal"]     = options.customThemeA1;
-	customTheme["A1"]["pressed"]    = options.customThemeA1Pressed;
-	customTheme["A2"]["normal"]     = options.customThemeA2;
-	customTheme["A2"]["pressed"]    = options.customThemeA2Pressed;
-	customTheme["L3"]["normal"]     = options.customThemeL3;
-	customTheme["L3"]["pressed"]    = options.customThemeL3Pressed;
-	customTheme["R3"]["normal"]     = options.customThemeR3;
-	customTheme["R3"]["pressed"]    = options.customThemeR3Pressed;
+	doc["Up"]["u"]    = options.customThemeUp;
+	doc["Up"]["d"]    = options.customThemeUpPressed;
+	doc["Down"]["u"]  = options.customThemeDown;
+	doc["Down"]["d"]  = options.customThemeDownPressed;
+	doc["Left"]["u"]  = options.customThemeLeft;
+	doc["Left"]["d"]  = options.customThemeLeftPressed;
+	doc["Right"]["u"] = options.customThemeRight;
+	doc["Right"]["d"] = options.customThemeRightPressed;
+	doc["B1"]["u"]    = options.customThemeB1;
+	doc["B1"]["d"]    = options.customThemeB1Pressed;
+	doc["B2"]["u"]    = options.customThemeB2;
+	doc["B2"]["d"]    = options.customThemeB2Pressed;
+	doc["B3"]["u"]    = options.customThemeB3;
+	doc["B3"]["d"]    = options.customThemeB3Pressed;
+	doc["B4"]["u"]    = options.customThemeB4;
+	doc["B4"]["d"]    = options.customThemeB4Pressed;
+	doc["L1"]["u"]    = options.customThemeL1;
+	doc["L1"]["d"]    = options.customThemeL1Pressed;
+	doc["R1"]["u"]    = options.customThemeR1;
+	doc["R1"]["d"]    = options.customThemeR1Pressed;
+	doc["L2"]["u"]    = options.customThemeL2;
+	doc["L2"]["d"]    = options.customThemeL2Pressed;
+	doc["R2"]["u"]    = options.customThemeR2;
+	doc["R2"]["d"]    = options.customThemeR2Pressed;
+	doc["S1"]["u"]    = options.customThemeS1;
+	doc["S1"]["d"]    = options.customThemeS1Pressed;
+	doc["S2"]["u"]    = options.customThemeS2;
+	doc["S2"]["d"]    = options.customThemeS2Pressed;
+	doc["A1"]["u"]    = options.customThemeA1;
+	doc["A1"]["d"]    = options.customThemeA1Pressed;
+	doc["A2"]["u"]    = options.customThemeA2;
+	doc["A2"]["d"]    = options.customThemeA2Pressed;
+	doc["L3"]["u"]    = options.customThemeL3;
+	doc["L3"]["d"]    = options.customThemeL3Pressed;
+	doc["R3"]["u"]    = options.customThemeR3;
+	doc["R3"]["d"]    = options.customThemeR3Pressed;
 
 	return serialize_json(doc);
 }
