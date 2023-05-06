@@ -88,7 +88,7 @@ set(PICO_BOARD_HEADER_DIRS ${CMAKE_SOURCE_DIR}/configs/${GP2040_BOARDCONFIG})
 include(FetchContent)
 FetchContent_Declare(ArduinoJson
     GIT_REPOSITORY https://github.com/bblanchon/ArduinoJson.git
-    GIT_TAG        v6.19.4
+    GIT_TAG        v6.21.2
 )
 FetchContent_MakeAvailable(ArduinoJson)
 
@@ -125,6 +125,8 @@ src/addons/slider_socd.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
 )
+
+add_compile_definitions(PICO_STACK_SIZE=0x1000)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
 

@@ -3,6 +3,7 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
+#include "AnimationStorage.hpp"
 #include "system.h"
 
 #include <cstring>
@@ -33,6 +34,8 @@
 #define API_SET_GAMEPAD_OPTIONS "/api/setGamepadOptions"
 #define API_GET_LED_OPTIONS "/api/getLedOptions"
 #define API_SET_LED_OPTIONS "/api/setLedOptions"
+#define API_GET_CUSTOM_THEME "/api/getCustomTheme"
+#define API_SET_CUSTOM_THEME "/api/setCustomTheme"
 #define API_GET_PIN_MAPPINGS "/api/getPinMappings"
 #define API_SET_PIN_MAPPINGS "/api/setPinMappings"
 #define API_GET_KEY_MAPPINGS "/api/getKeyMappings"
@@ -58,7 +61,7 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons" };
+const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
 const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -106,9 +109,9 @@ int set_file_data(struct fs_file *file, string data)
 
 DynamicJsonDocument get_post_data()
 {
-	vector<char> raw;
-	for (int i = 0; i < http_post_payload_len; i++)
-		raw.push_back(http_post_payload[i]);
+	// Cache payload to char array so ArduinoJson will use "Zero-copy mode" to save memory
+	char raw[http_post_payload_len];
+	memcpy(raw, http_post_payload, http_post_payload_len);
 
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	deserializeJson(doc, raw);
@@ -186,7 +189,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	auto usedPins = doc.createNestedArray("usedPins");
 
 	const auto addPinIfValid = [&](int pin)
-	{ 
+	{
 		if (pin >= 0 && pin < NUM_BANK0_GPIOS)
 		{
 			usedPins.add(pin);
@@ -221,7 +224,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(addonOptions.buzzerPin);
 }
 
-std::string serialize_json(DynamicJsonDocument &doc)
+std::string serialize_json(JsonDocument &doc)
 {
 	string data;
 	serializeJson(doc, data);
@@ -407,6 +410,7 @@ std::string setLedOptions()
 	ledOptions.ledsPerButton      = doc["ledsPerButton"];
 	ledOptions.brightnessMaximum  = doc["brightnessMaximum"];
 	ledOptions.brightnessSteps    = doc["brightnessSteps"];
+
 	ledOptions.indexUp            = (doc["ledButtonMap"]["Up"]    == nullptr) ? -1 : doc["ledButtonMap"]["Up"];
 	ledOptions.indexDown          = (doc["ledButtonMap"]["Down"]  == nullptr) ? -1 : doc["ledButtonMap"]["Down"];
 	ledOptions.indexLeft          = (doc["ledButtonMap"]["Left"]  == nullptr) ? -1 : doc["ledButtonMap"]["Left"];
@@ -425,6 +429,7 @@ std::string setLedOptions()
 	ledOptions.indexR3            = (doc["ledButtonMap"]["R3"]    == nullptr) ? -1 : doc["ledButtonMap"]["R3"];
 	ledOptions.indexA1            = (doc["ledButtonMap"]["A1"]    == nullptr) ? -1 : doc["ledButtonMap"]["A1"];
 	ledOptions.indexA2            = (doc["ledButtonMap"]["A2"]    == nullptr) ? -1 : doc["ledButtonMap"]["A2"];
+
 	ConfigManager::getInstance().setLedOptions(ledOptions);
 	return serialize_json(doc);
 }
@@ -461,6 +466,103 @@ std::string getLedOptions()
 	if (ledOptions.indexA2 == -1)    ledButtonMap["A2"]    = nullptr;  else ledButtonMap["A2"]    = ledOptions.indexA2;
 
 	addUsedPinsArray(doc);
+
+	return serialize_json(doc);
+}
+
+std::string setCustomTheme()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	AnimationOptions options = AnimationStore.getAnimationOptions();
+
+	options.hasCustomTheme           = doc["enabled"];
+	options.customThemeUp            = doc["Up"]["u"] | 0;
+	options.customThemeDown          = doc["Down"]["u"] | 0;
+	options.customThemeLeft          = doc["Left"]["u"] | 0;
+	options.customThemeRight         = doc["Right"]["u"] | 0;
+	options.customThemeB1            = doc["B1"]["u"] | 0;
+	options.customThemeB2            = doc["B2"]["u"] | 0;
+	options.customThemeB3            = doc["B3"]["u"] | 0;
+	options.customThemeB4            = doc["B4"]["u"] | 0;
+	options.customThemeL1            = doc["L1"]["u"] | 0;
+	options.customThemeR1            = doc["R1"]["u"] | 0;
+	options.customThemeL2            = doc["L2"]["u"] | 0;
+	options.customThemeR2            = doc["R2"]["u"] | 0;
+	options.customThemeS1            = doc["S1"]["u"] | 0;
+	options.customThemeS2            = doc["S2"]["u"] | 0;
+	options.customThemeL3            = doc["L3"]["u"] | 0;
+	options.customThemeR3            = doc["R3"]["u"] | 0;
+	options.customThemeA1            = doc["A1"]["u"] | 0;
+	options.customThemeA2            = doc["A2"]["u"] | 0;
+	options.customThemeUpPressed     = doc["Up"]["d"] | 0;
+	options.customThemeDownPressed   = doc["Down"]["d"] | 0;
+	options.customThemeLeftPressed   = doc["Left"]["d"] | 0;
+	options.customThemeRightPressed  = doc["Right"]["d"] | 0;
+	options.customThemeB1Pressed     = doc["B1"]["d"] | 0;
+	options.customThemeB2Pressed     = doc["B2"]["d"] | 0;
+	options.customThemeB3Pressed     = doc["B3"]["d"] | 0;
+	options.customThemeB4Pressed     = doc["B4"]["d"] | 0;
+	options.customThemeL1Pressed     = doc["L1"]["d"] | 0;
+	options.customThemeR1Pressed     = doc["R1"]["d"] | 0;
+	options.customThemeL2Pressed     = doc["L2"]["d"] | 0;
+	options.customThemeR2Pressed     = doc["R2"]["d"] | 0;
+	options.customThemeS1Pressed     = doc["S1"]["d"] | 0;
+	options.customThemeS2Pressed     = doc["S2"]["d"] | 0;
+	options.customThemeL3Pressed     = doc["L3"]["d"] | 0;
+	options.customThemeR3Pressed     = doc["R3"]["d"] | 0;
+	options.customThemeA1Pressed     = doc["A1"]["d"] | 0;
+	options.customThemeA2Pressed     = doc["A2"]["d"] | 0;
+
+	AnimationStation::SetOptions(options);
+	AnimationStore.save();
+
+	return serialize_json(doc);
+}
+
+std::string getCustomTheme()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	AnimationOptions options = AnimationStore.getAnimationOptions();
+
+	doc["enabled"] = options.hasCustomTheme;
+
+	doc["Up"]["u"]    = options.customThemeUp;
+	doc["Up"]["d"]    = options.customThemeUpPressed;
+	doc["Down"]["u"]  = options.customThemeDown;
+	doc["Down"]["d"]  = options.customThemeDownPressed;
+	doc["Left"]["u"]  = options.customThemeLeft;
+	doc["Left"]["d"]  = options.customThemeLeftPressed;
+	doc["Right"]["u"] = options.customThemeRight;
+	doc["Right"]["d"] = options.customThemeRightPressed;
+	doc["B1"]["u"]    = options.customThemeB1;
+	doc["B1"]["d"]    = options.customThemeB1Pressed;
+	doc["B2"]["u"]    = options.customThemeB2;
+	doc["B2"]["d"]    = options.customThemeB2Pressed;
+	doc["B3"]["u"]    = options.customThemeB3;
+	doc["B3"]["d"]    = options.customThemeB3Pressed;
+	doc["B4"]["u"]    = options.customThemeB4;
+	doc["B4"]["d"]    = options.customThemeB4Pressed;
+	doc["L1"]["u"]    = options.customThemeL1;
+	doc["L1"]["d"]    = options.customThemeL1Pressed;
+	doc["R1"]["u"]    = options.customThemeR1;
+	doc["R1"]["d"]    = options.customThemeR1Pressed;
+	doc["L2"]["u"]    = options.customThemeL2;
+	doc["L2"]["d"]    = options.customThemeL2Pressed;
+	doc["R2"]["u"]    = options.customThemeR2;
+	doc["R2"]["d"]    = options.customThemeR2Pressed;
+	doc["S1"]["u"]    = options.customThemeS1;
+	doc["S1"]["d"]    = options.customThemeS1Pressed;
+	doc["S2"]["u"]    = options.customThemeS2;
+	doc["S2"]["d"]    = options.customThemeS2Pressed;
+	doc["A1"]["u"]    = options.customThemeA1;
+	doc["A1"]["d"]    = options.customThemeA1Pressed;
+	doc["A2"]["u"]    = options.customThemeA2;
+	doc["A2"]["d"]    = options.customThemeA2Pressed;
+	doc["L3"]["u"]    = options.customThemeL3;
+	doc["L3"]["d"]    = options.customThemeL3Pressed;
+	doc["R3"]["u"]    = options.customThemeR3;
+	doc["R3"]["d"]    = options.customThemeR3Pressed;
 
 	return serialize_json(doc);
 }
@@ -693,14 +795,14 @@ std::string setPS4Options()
 		Base64::Decode(doc["P"], decoded);
 		if ( decoded.length() == sizeof(ps4Options->rsa_p ) ) {
 			memcpy(ps4Options->rsa_p, decoded.data(), decoded.length());
-		}			
+		}
 	}
 	if ( doc.containsKey("Q") ) {
 		std::string decoded;
 		Base64::Decode(doc["Q"], decoded);
 		if ( decoded.length() == sizeof(ps4Options->rsa_q ) ) {
 			memcpy(ps4Options->rsa_q, decoded.data(), decoded.length());
-		}			
+		}
 	}
 	if ( doc.containsKey("DP") ) {
 		std::string decoded;
@@ -716,9 +818,9 @@ std::string setPS4Options()
 			memcpy(ps4Options->rsa_dq, decoded.data(), decoded.length());
 		}
 	}
-	if ( doc.containsKey("QP") ) {	
+	if ( doc.containsKey("QP") ) {
 		std::string decoded;
-		Base64::Decode(doc["QP"], decoded);	
+		Base64::Decode(doc["QP"], decoded);
 		if ( decoded.length() == sizeof(ps4Options->rsa_qp ) ) {
 			memcpy(ps4Options->rsa_qp, decoded.data(), decoded.length());
 		}
@@ -897,6 +999,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, setGamepadOptions());
 	if (strcmp(name, API_SET_LED_OPTIONS) == 0)
 			return set_file_data(file, setLedOptions());
+	if (strcmp(name, API_SET_CUSTOM_THEME) == 0)
+			return set_file_data(file, setCustomTheme());
 	if (strcmp(name, API_SET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, setPinMappings());
 	if (strcmp(name, API_SET_KEY_MAPPINGS) == 0)
@@ -919,6 +1023,8 @@ int fs_open_custom(struct fs_file *file, const char *name)
 			return set_file_data(file, getGamepadOptions());
 	if (strcmp(name, API_GET_LED_OPTIONS) == 0)
 			return set_file_data(file, getLedOptions());
+	if (strcmp(name, API_GET_CUSTOM_THEME) == 0)
+			return set_file_data(file, getCustomTheme());
 	if (strcmp(name, API_GET_PIN_MAPPINGS) == 0)
 			return set_file_data(file, getPinMappings());
 	if (strcmp(name, API_GET_KEY_MAPPINGS) == 0)
