@@ -2,7 +2,7 @@
 
 Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>
 
-GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS.
+GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS. When using the web-based configuration on Windows and Mac, RNDIS works on a default install. Linux distributions may need some extra steps to access the web configurator; see [Linux Setup](#linux-setup).
 
 ## Home
 
@@ -222,3 +222,32 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 
 ![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
 
+# Linux Setup
+
+When you plug in your controller while holding <hotkey v-bind:buttons='["S2"]'></hotkey>, you should see it connect in the kernel logs if you run `dmesg`:
+
+```
+[   72.291060] usb 1-3: new full-speed USB device number 12 using xhci_hcd
+[   72.450166] usb 1-3: New USB device found, idVendor=cafe, idProduct=4028, bcdDevice= 1.01
+[   72.450172] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[   72.450174] usb 1-3: Product: TinyUSB Device
+[   72.450176] usb 1-3: Manufacturer: TinyUSB
+[   72.450177] usb 1-3: SerialNumber: 123456
+[   72.484285] rndis_host 1-3:1.0 usb0: register 'rndis_host' at usb-0000:06:00.1-3, RNDIS device, 02:02:84:6a:96:00
+[   72.498630] rndis_host 1-3:1.0 enp6s0f1u3: renamed from usb0
+```
+
+In the above example, **enp6s0f1u3** is the virtual Ethernet interface for your controller. If you don't see the first `rndis_host` line, make sure `CONFIG_USB_NET_RNDIS_HOST` is compiled in your kernel or as a module.
+
+The web configurator is automatically running, you just need to be able to reach it. Some configurations automatically set up the route, so try <http://192.168.7.1> in your browser now. If it doesn't load, try configuring an IP for the interface manually via: `sudo ifconfig enp6s0f1u3 192.168.7.2`.
+
+Whether or not you had to add an IP manually, you should end up with a route something like this:
+
+```
+% ip route
+default via 10.0.5.1 dev enp5s0 proto dhcp src 10.0.5.38 metric 2
+10.0.5.0/24 dev enp5s0 proto dhcp scope link src 10.0.5.38 metric 2
+192.168.7.0/24 dev enp6s0f1u3 proto kernel scope link src 192.168.7.2     <---
+```
+
+Then the configurator should be reachable in your browser.
