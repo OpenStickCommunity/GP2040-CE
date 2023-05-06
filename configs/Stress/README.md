@@ -1,4 +1,4 @@
-# GP2040 Configuration for the FightPad using a WaveshareZero
+# GP2040 Configuration for the Stress fightpad using a WaveshareZero
 
 ![Pin Mapping](assets/WaveshareRP2040Zero.png)
 

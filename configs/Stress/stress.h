@@ -10,11 +10,11 @@
 // -----------------------------------------------------
 
 
-#ifndef _BOARDS_FIGHTPAD_H
-#define _BOARDS_FIGHTPAD_H
+#ifndef _BOARDS_STRESS_H
+#define _BOARDS_STRESS_H
 
 // For board detection
-#define FIGHTPAD
+#define STRESS
 
 //For crappy crystal
 #ifndef PICO_XOSC_STARTUP_DELAY_MULTIPLIER
