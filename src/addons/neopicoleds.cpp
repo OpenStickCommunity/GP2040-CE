@@ -130,7 +130,6 @@ void NeoPicoLEDAddon::process()
 
 	if ( action != HOTKEY_LEDS_NONE ) {
 		as.HandleEvent(action);
-		AnimationStore.save();
 	}
 
 	uint32_t buttonState = gamepad->state.dpad << 16 | gamepad->state.buttons;
@@ -166,6 +165,7 @@ void NeoPicoLEDAddon::process()
 
 	neopico->SetFrame(frame);
 	neopico->Show();
+	AnimationStore.save();
 
 	this->nextRunTime = make_timeout_time_ms(NeoPicoLEDAddon::intervalMS);
 }
