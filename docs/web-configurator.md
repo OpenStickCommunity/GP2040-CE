@@ -48,6 +48,17 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Brightness Steps` - The number of levels of brightness to cycle through when turning brightness up and down.
 * `LED Button Order` - Configure which buttons and what order they reside on the LED chain.
 
+## Custom LED Theme
+
+![GP2040-CE Configurator - Custom LED Theme](assets/images/gpc-rgb-led-custom-theme.png)
+
+* `Enable` - Enables the use of Custom LED Theme.
+* `Preview Layout` - Predefined layouts for previewing LED theme. **NOTE:** This is for preview only, does not affect controller operation.
+* `Clear All` - Prompts for confirmation to reset the current theme to all buttons black (LEDs off). Make sure you have saved and have a backup if you don't want to lose your customizations.
+* `Set All To Color` - Presents a color picker to set all buttons to the same normal or pressed color.
+
+If enabled, the Custom LED Theme will be available as another animation mode and will cycle with the `Previous Animation` and `Next Animation` shortcuts on your controller. You can also use the [Data Backup and Restoration](#data-backup-and-restoration) feature to create and share themes!
+
 ## Display Configuration
 
 ![GP2040-CE Configurator - Display Configuration](assets/images/gpc-display-config.png)
