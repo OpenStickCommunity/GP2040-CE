@@ -8,7 +8,7 @@ GP2040-CE contains a built-in web-based configuration application which can be s
 
 ![GP2040-CE Configurator - Home](assets/images/gpc-home.png)
 
-Here you can see the current version of your firmware and the latest version available on Github in the releases section. If a firmware update is available, a link to that release will appear.
+Here you can see the current version of your firmware and the latest version available on GitHub in the releases section. If a firmware update is available, a link to that release will appear.
 
 The options in the main menu are:
 
@@ -64,8 +64,8 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Button Layout (Right)` - Changes the onscreen layout for the right side of the display and stick.
 * `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
 * `Splash Duration` - Sets the amount of time the splash screen displays for on boot.
-* `Display Saver Timeout` - Will cause the display to turn off afer the specified number of minuites.  Pressing any input will cause the diplay to turn back on.
-* `Choose File` - This will allow you to upload your own image to be used for the splash screen.  It is recommend that you use a two color 128x64 image (or one that is sized appropiatly for your display).  Uploading any other type of image will result in a conversion and sizing of the image automatically.  If the image is inverted upon upload, just check off the `Invert` box.
+* `Display Saver Timeout` - Will cause the display to turn off after the specified number of minutes. Pressing any input will cause the display to turn back on.
+* `Choose File` - This will allow you to upload your own image to be used for the splash screen. It is recommend that you use a two color 128x64 image (or one that is sized appropriately for your display). Uploading any other type of image will result in a conversion and sizing of the image automatically. If the image is inverted upon upload, just check off the `Invert` box.
 
 Check out our collection of great custom splash screens from the community [HERE](community-splash-screens.md)
 
@@ -79,7 +79,7 @@ This section is for custom add-ons that can be enabled to expand the functionali
 
 * `BOOTSEL Button` - Choose an input to be mapped to the BOOTSEL button.
 
-Please note that this can only be used on devices that have a BOOTSEL button.  Please also note that the OLED might become unresponsive if this button is set.  You can unset it to restore OLED fuctionality.
+Please note that this can only be used on devices that have a BOOTSEL button.  Please also note that the OLED might become unresponsive if this button is set. You can unset it to restore OLED functionality.
 
 ### On-board LED Configuration
 
@@ -168,7 +168,7 @@ Values are:
 Values are:
 `Mixed` - Combines both the Gamepad input and Dual Directional and allows for all 3 SOCD modes.
 `Gamepad` - Gamepad always takes over when pressed, otherwise Gamepad and Dual act independently.
-`Dual Directional` - Dual always takes over when pressed, otherwise Gamepad and Dual act indepedently.
+`Dual Directional` - Dual always takes over when pressed, otherwise Gamepad and Dual act independently.
 `None` - Gamepad input and dual directional act independently of each other.
 
 ### Buzzer Speaker
@@ -221,4 +221,3 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 ## DANGER ZONE
 
 ![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
-
