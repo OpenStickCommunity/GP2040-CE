@@ -63,7 +63,7 @@ jobs:
     #BentoBox
     - name: BentoBox Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=BentoBox  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=BentoBox  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: BentoBox Build
       shell: bash
@@ -79,7 +79,7 @@ jobs:
     #DURAL
     - name: DURAL Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=DURAL SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=DURAL SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: DURAL Build
       shell: bash
@@ -95,7 +95,7 @@ jobs:
     #FightboardV3
     - name: FightboardV3 Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FightboardV3 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=FightboardV3 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: FightboardV3 Build
       shell: bash
@@ -111,7 +111,7 @@ jobs:
     #FightboardV3Mirrored
     - name: FightboardV3Mirrored Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FightboardV3Mirrored SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=FightboardV3Mirrored SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: FightboardV3Mirrored Build
       shell: bash
@@ -127,7 +127,7 @@ jobs:
     #FlatboxRev4
     - name: FlatboxRev4 Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: FlatboxRev4 Build
       shell: bash
@@ -143,7 +143,7 @@ jobs:
     #PicoAnn
     - name: PicoAnn Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoAnn  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=PicoAnn  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: PicoAnn Build
       shell: bash
@@ -159,7 +159,7 @@ jobs:
     #PicoFightingBoard
     - name: PicoFightingBoard Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: PicoFightingBoard Build
       shell: bash
@@ -175,7 +175,7 @@ jobs:
     #SparkFunProMicro    
     - name: SparkFunProMicro Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=sparkfun_promicro
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=sparkfun_promicro
     
     - name: SparkFunProMicro Build
       shell: bash
@@ -191,7 +191,7 @@ jobs:
     #WaveshareZero
     - name: WaveshareZero Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=WaveshareZero SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=waveshare_rp2040_zero
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=WaveshareZero SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=waveshare_rp2040_zero
     
     - name: WaveshareZero Build
       shell: bash
@@ -207,7 +207,7 @@ jobs:
  #FlatboxRev5
     - name: FlatboxRev5 Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
     
     - name: FlatboxRev5 Build
       shell: bash
@@ -223,7 +223,7 @@ jobs:
     #MAVERCADEKEEBFIGHTER
     - name: MavercadeKeebfighter Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=../pico-sdk GP2040_BOARDCONFIG=MavercadeKeebfighter SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=MavercadeKeebfighter SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
     
     - name: MavercadeKeebfighter Build
       shell: bash
