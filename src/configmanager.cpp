@@ -60,6 +60,6 @@ void ConfigManager::setPreviewBoardOptions(BoardOptions boardOptions) {
 	Storage::getInstance().setPreviewBoardOptions(boardOptions);
 }
 
-void ConfigManager::setSplashImage(SplashImage image) {
+void ConfigManager::setSplashImage(const SplashImage& image) {
 	Storage::getInstance().setSplashImage(image);
 }

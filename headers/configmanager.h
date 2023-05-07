@@ -19,7 +19,7 @@ public:
     void setBoardOptions(BoardOptions);
     void setPreviewBoardOptions(BoardOptions);
     void setLedOptions(LEDOptions);
-    void setSplashImage(SplashImage);
+    void setSplashImage(const SplashImage&);
 private:
     ConfigManager() {}
     void setupConfig(GPConfig*);
