@@ -233,8 +233,6 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 
 ![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
 
-=======
-
 # Linux Setup
 
 When you plug in your controller while holding <hotkey v-bind:buttons='["S2"]'></hotkey>, you should see it connect in the kernel logs if you run `dmesg`:
