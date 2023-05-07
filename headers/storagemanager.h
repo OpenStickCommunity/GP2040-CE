@@ -231,7 +231,7 @@ public:
 	void setAddonOptions(AddonOptions); // Add-On Options
 	const AddonOptions& getAddonOptions() { return addonOptions; }
 
-	void setSplashImage(SplashImage);
+	void setSplashImage(const SplashImage&);
 	const SplashImage& getSplashImage() { return splashImage; }
 
 	void setLEDOptions(LEDOptions);		// LED Options

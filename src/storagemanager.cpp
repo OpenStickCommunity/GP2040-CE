@@ -230,15 +230,19 @@ void Storage::setDefaultSplashImage()
 	setSplashImage(splashImage);
 }
 
-void Storage::setSplashImage(SplashImage image)
+void Storage::setSplashImage(const SplashImage& image)
 {
 	if (memcmp(&splashImage, &image, sizeof(SplashImage)) != 0)
 	{
-		image.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-		image.checksum = CRC32::calculate(&image);
-		EEPROM.set(SPLASH_IMAGE_STORAGE_INDEX, image);
-		EEPROM.commit();
 		memcpy(&splashImage, &image, sizeof(SplashImage));
+		splashImage.checksum = CHECKSUM_MAGIC; // set checksum to magic number
+		splashImage.checksum = CRC32::calculate(&splashImage);
+
+		EEPROM.set(SPLASH_IMAGE_STORAGE_INDEX, splashImage);
+		EEPROM.commit();
+
+		// Reset, so that the memcmp gives the correct result on the next call to this function
+		splashImage.checksum = CHECKSUM_MAGIC;
 	}
 }
 

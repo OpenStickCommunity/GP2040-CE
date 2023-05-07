@@ -329,13 +329,14 @@ std::string getSplashImage()
 	return serialize_json(doc);
 }
 
-std::string setSplashImage() // Expects 16 chunked requests because
-{							 // it can't handle all the payload at once
+std::string setSplashImage()
+{
 	DynamicJsonDocument doc = get_post_data();
 	std::string decoded;
 	std::string base64String = doc["splashImage"];
 	Base64::Decode(base64String, decoded);
 	memcpy(splashImageTemp.data, decoded.data(), decoded.length());
+	splashImageTemp.checksum = CHECKSUM_MAGIC;
 	ConfigManager::getInstance().setSplashImage(splashImageTemp);
 
 	return serialize_json(doc);
