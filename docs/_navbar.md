@@ -1,7 +1,8 @@
 * [Home](/)
 * [Download](download)
-* [Usage](usage)
-* [GP2040-CE Shortcuts](gp2040-shortcuts)
-* [Web Configurator](web-configurator)
-* [Development](development)
-* [FAQ](https://gp2040-ce.info/#/?id=frequently-asked-questions)
+* [Shortcuts](gp2040-shortcuts)
+* Manual
+  * [Usage](usage)
+  * [Web Configurator](web-configurator)
+  * [Development](development)
+  * [FAQ](faq)
