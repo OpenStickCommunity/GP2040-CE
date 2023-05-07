@@ -13,7 +13,6 @@
 #include "hardware/watchdog.h"
 #include "Animation.hpp"
 #include "CRC32.h"
-#include <sstream>
 
 #include "addons/analog.h"
 #include "addons/board_led.h"
