@@ -1,12 +1,8 @@
 # GP2040 Usage
 
-## v0.5 Warning
-
-The v0.5 release has some breaking changes to boards other than the RPi Pico. If you are using such a board, do not update from an older version unless you have a backup .uf2 from a known good version, or you know what you're doing.
-
----
-
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
+
+!> The v0.5 release has some breaking changes to boards other than the RPi Pico. If you are using such a board, do not update from an older version unless you have a backup .uf2 from a known good version, or you know what you're doing.
 
 ## Buttons
 
@@ -40,7 +36,7 @@ Unlike other controllers, Keyboard gets different keys for directional buttons.
 | Left      | Left Arrow |
 | Right     | Right Arrow|
 
-> You can change the key mappings for Keyboard mode in [Webconfig mode](web-configurator.md)
+?> You can change the key mappings for Keyboard mode in [Webconfig mode](web-configurator.md)
 
 ## Additional Features: Turbo & LS/RS Emulation
 
@@ -78,7 +74,7 @@ D-Pad mode is saved across power cycles.
 
 ## SOCD Modes
 
-[Simultaneous Opposite Cardinal Direction (SOCD)(https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040 users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button combinations:**
+[Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040 users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button combinations:**
 
 * <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Standard stickless behavior).
 * <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.
