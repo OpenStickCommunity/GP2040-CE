@@ -284,7 +284,7 @@ static map<uint32_t, RGB> themeFightboard({
 static map<uint32_t, RGB> customTheme;
 static map<uint32_t, RGB> customThemePressed;
 
-void addStaticThemes(LEDOptions options, AnimationOptions animationOptions)
+void addStaticThemes(const LEDOptions& options, const AnimationOptions& animationOptions)
 {
 	// Rainbow theme on a Stickless layout should use green for up button
 	themeStaticRainbow[GAMEPAD_MASK_DU] = (options.ledLayout == BUTTON_LAYOUT_STICKLESS) ? ColorGreen : ColorOrange;
