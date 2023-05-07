@@ -1,0 +1,7 @@
+- [Home](/)
+- [Download](download)
+- [Shortcuts](gp2040-shortcuts)
+- [Usage](usage)
+- [Web Configurator](web-configurator)
+- [Development](development)
+- [FAQ](faq)
