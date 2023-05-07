@@ -1,9 +1,9 @@
-# GP2040-CE Configuration for the Reflex Fighting Board
+# GP2040-CE Configuration for the Reflex Board by MiSTer Addons
 
 
-![Reflex Fighting Board](assets/ReflexFightingBoard_v1.2.jpeg)
+![Reflex Board](assets/ReflexBoard_v1.2.jpeg)
 
-Reflex Fighting Board
+Reflex Board
 Open source PCB for arcade sticks using Raspberry Pi Pico's RP2040 microcontroller.
 
 GitHub: https://github.com/misteraddons/ReflexFightingBoard
