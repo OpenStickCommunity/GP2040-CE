@@ -22,13 +22,9 @@
 
 ## Links
 
-Full documentation can be found at <https://gp2040-ce.info>.
+Full documentation can be found at <https://gp2040-ce.info>
 
-* [Downloads](https://gp2040-ce.info/#/download)
-* [Installation](https://gp2040-ce.info/#/installation)
-* [Wiring](https://gp2040-ce.info/#/wiring)
-* [Usage](https://gp2040-ce.info/#/usage)
-* [FAQ](https://gp2040-ce.info/#/faq)
+[Downloads](https://gp2040-ce.info/#/download) | [Installation](https://gp2040-ce.info/#/installation) | [Wiring](https://gp2040-ce.info/#/wiring) | [Usage](https://gp2040-ce.info/#/usage) | [FAQ](https://gp2040-ce.info/#/faq)
 
 ## Features
 
@@ -62,21 +58,21 @@ Full results can be found in the [GP2040-CE Firmware Latency Test Results](https
 
 ## Support
 
-If you would like to discuss features, issues or anything else related to GP2040-CE please [create an issue](https://github.com/OpenStickCommunity/GP2040-CE/issues/new) or join the [OpenStick GP2040-CE Discord channel](https://discord.gg/k2pxhke7q8).
+If you would like to discuss features, issues or anything else related to GP2040-CE please [create an issue](https://github.com/OpenStickCommunity/GP2040-CE/issues/new) or join the [OpenStick GP2040-CE Discord](https://discord.gg/k2pxhke7q8) support channel.
 
 ## Contributing
 
 Want to help improve GP2040-CE? There are a bunch of ways to contribute!
+
+### Community Participation
+
+Have an idea for a cool new feature, or just want to discuss some techincal details with the devs? Join the [OpenStick GP2040-CE Discord](https://discord.gg/k2pxhke7q8) server to participate in our active and ever-growing community!
 
 ### Pull Requests
 
 Pull requests are welcome and encouraged for enhancements, bug fixes and documentation updates.
 
 Please respect the coding style of the file(s) you are working in, and enforce the use of the `.editorconfig` file when present.
-
-### Discussions
-
-Join the [OpenStick GP2040-CE channel](https://discord.gg/k2pxhke7q8) to participate!
 
 ## Acknowledgements
 
