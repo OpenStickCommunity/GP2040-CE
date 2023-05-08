@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://docsify.js.org">
-    <img alt="docsify" src="./docs/assets/images/gp2040-ce-logo.png">
+  <a href="https://gp2040-ce.info">
+    <img alt="GP2040-CE" src="./docs/assets/images/gp2040-ce-logo.png">
   </a>
 </p>
 
@@ -14,17 +14,18 @@
 </p>
 
 <p>
-	GP2040-CE is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontrollers that combines multiplatform compatibility, low latency and a rich feature set to provide endless customization possibilities without sacrificing performance.
+	GP2040-CE (Community Edition) is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontrollers that combines multiplatform compatibility, low latency and a rich feature set to provide endless customization possibilities without sacrificing performance.
 </p>
+
 <p>
 	GP2040-CE is compatible with PC, PS3 and PS4, Nintendo Switch, Steam Deck, MiSTer and Android.
 </p>
 
 ## Links
 
-Full documentation can be found at <https://gp2040-ce.info>
-
 [Downloads](https://gp2040-ce.info/#/download) | [Installation](https://gp2040-ce.info/#/installation) | [Wiring](https://gp2040-ce.info/#/wiring) | [Usage](https://gp2040-ce.info/#/usage) | [FAQ](https://gp2040-ce.info/#/faq)
+
+Full documentation can be found at <https://gp2040-ce.info>
 
 ## Features
 
