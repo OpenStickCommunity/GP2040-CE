@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://gp2040-ce.info">
-    <img alt="GP2040-CE" src="./docs/assets/images/gp2040-ce-logo.png">
+    <img alt="GP2040-CE" src="assets/images/gp2040-ce-logo.png">
   </a>
 </p>
 
