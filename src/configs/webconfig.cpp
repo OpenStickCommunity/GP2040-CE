@@ -10,6 +10,7 @@
 #include <cstring>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <pico/types.h>
 
@@ -1056,19 +1057,21 @@ std::string getMemoryReport()
 
 std::string getConfig()
 {
-	Config config = ConfigUtils::load();
-	return ConfigUtils::toJSON(config);
+	// Store config struct on the heap to avoid stack overflow
+	std::unique_ptr<Config> config(new Config(ConfigUtils::load()));
+	return ConfigUtils::toJSON(*config.get());
 }
 
 DataAndStatusCode setConfig()
 {
 	bool success = false;
-	Config config = ConfigUtils::fromJSON(http_post_payload, http_post_payload_len, success);
+	// Store config struct on the heap to avoid stack overflow
+	std::unique_ptr<Config> config(new Config(ConfigUtils::fromJSON(http_post_payload, http_post_payload_len, success)));
 	if (success)
 	{
-		if (ConfigUtils::save(config))
+		if (ConfigUtils::save(*config.get()))
 		{
-			return DataAndStatusCode(ConfigUtils::toJSON(config), HttpStatusCode::_200);
+			return DataAndStatusCode(ConfigUtils::toJSON(*config.get()), HttpStatusCode::_200);
 		}
 		else
 		{
