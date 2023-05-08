@@ -5,12 +5,12 @@
 </p>
 
 <p align="center">
-	<img src="https://img.shields.io/github/license/OpenStickCommunity/GP2040-CE">
-	<img src="https://img.shields.io/github/actions/workflow/status/OpenStickCommunity/GP2040-CE/cmake.yml">
+  Multiplatform Gamepad Firmware for RP2040
 </p>
 
 <p align="center">
-  Multiplatform Gamepad Firmware for RP2040
+	<img src="https://img.shields.io/github/license/OpenStickCommunity/GP2040-CE">
+	<img src="https://img.shields.io/github/actions/workflow/status/OpenStickCommunity/GP2040-CE/cmake.yml">
 </p>
 
 <p>
