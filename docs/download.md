@@ -1,3 +1,3 @@
-# Download GP2040-CE
+# Downloads
 
 <download-page></download-page>

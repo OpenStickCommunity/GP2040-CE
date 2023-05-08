@@ -82,7 +82,7 @@
 					template: `
 						<div class="download-category">
 							<h3>{{ category }}</h3>
-							<p v-if="category === 'Legacy Devices'">The builds for these devices are no longer supported in GP2040-CE. They remain available as a convenience to the community.</p>
+							<p v-if="category === 'Legacy Devices'">The builds for these devices have been deprecated and are no longer supported by GP2040-CE. They may be removed from the releases at some point in the future.</p>
 							<div class="download-category-list">
 								<download-box
 									v-for="release in releases[category]"
@@ -90,7 +90,6 @@
 									:release="release">
 								</download-box>
 							</div>
-							<hr>
 						</div>
 					`,
 					data() {
@@ -104,12 +103,19 @@
 					template: `
 					<div v-if="fetched">
 						<version-name></version-name>
-						<h2>Select A Device</h2>
 						<download-category
-							v-for="category of configCategories"
-							:key="category"
-							:category="category">
+						v-for="category of configCategories"
+						:key="category"
+						:category="category">
 						</download-category>
+						<div>
+							<h3>Flash Nuke</h3>
+							<p>
+								Use the <a href="https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/docs/downloads/flash_nuke.uf2">flash_nuke.uf2</a>
+								file is used to completely erase the flash of the RP2040 board. <strong>THIS WILL ERASE ALL SAVED SETTINGS!</strong>
+								Use this prior to flashing GP2040-CE on your device if you want to start from a clean slate, or as a troubleshooting step before to reporting an issue.
+							</p>
+						</div>
 						<release-notes></release-notes>
 					</div>
 					`,
@@ -212,7 +218,7 @@
 				},
 
 				'version-name': {
-					template: `<p>Latest Version: <strong v-text="version" v-if="version"></strong></p>`,
+					template: `<h2>GP2040-CE <strong v-text="version" v-if="version"></strong></h2>`,
 					data() {
 						return {
 							version: this.$root.releaseVersion,
