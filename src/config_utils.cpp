@@ -321,6 +321,14 @@ struct ConfigFooter
     uint32_t dataSize;
     uint32_t dataCrc;
     uint32_t magic;
+
+    bool operator==(const ConfigFooter& other) const
+    {
+        return
+            dataSize == other.dataSize &&
+            dataCrc == other.dataCrc &&
+            magic == other.magic;
+    }
 };
 
 static const uint32_t FOOTER_MAGIC = 0x34325047; // GP24
@@ -364,9 +372,8 @@ static bool loadConfigInner(Config& config)
     return pb_decode(&inputStream, Config_fields, &config);
 }
 
-Config ConfigUtils::load()
+void ConfigUtils::load(Config& config)
 {
-    Config config;
     if (loadConfigInner(config))
     {
         // Make sure that fields that were not deserialized are properly initialized.
@@ -375,7 +382,7 @@ Config ConfigUtils::load()
 
         // Further migrations can be performed here
 
-        return config;
+        return;
     }
 
     // TODO: Check for legacy config and migrate
@@ -384,8 +391,6 @@ Config ConfigUtils::load()
     // We are probably dealing with a new device and therefore initialize the config to default values.
     config = Config_init_default;
     initUnsetPropertiesWithDefaults(config);
-
-    return config;
 }
 
 static void setHasFlags(const pb_msgdesc_t* fields, void* s)
@@ -431,15 +436,27 @@ bool ConfigUtils::save(Config& config)
         return false;
     }
 
+    // Create the new footer
+    ConfigFooter newFooter;
+    newFooter.dataSize = outputStream.bytes_written;
+    newFooter.dataCrc = CRC32::calculate(EEPROM.cache, newFooter.dataSize);
+    newFooter.magic = FOOTER_MAGIC;
+
+    // The data has changed when the footer content has changed. Only then do we acutally need to save.
+    const ConfigFooter& oldFooter = *reinterpret_cast<ConfigFooter*>(EEPROM_ADDRESS_START + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    if (newFooter == oldFooter)
+    {
+        // The data has not changed, no saving neccessary.
+        return true;
+    }
+
     // Write the footer
-    ConfigFooter& footer = *reinterpret_cast<ConfigFooter*>(EEPROM.cache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
-    footer.dataSize = outputStream.bytes_written;
-    footer.dataCrc = CRC32::calculate(EEPROM.cache, footer.dataSize);
-    footer.magic = FOOTER_MAGIC;
+    ConfigFooter* cacheFooter = reinterpret_cast<ConfigFooter*>(EEPROM.cache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    memcpy(cacheFooter, &newFooter, sizeof(ConfigFooter));
 
     // Move the encoded data in memory down to the footer
-    memmove(EEPROM.cache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - footer.dataSize, EEPROM.cache, footer.dataSize);
-    memset(EEPROM.cache, 0, EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - footer.dataSize);
+    memmove(EEPROM.cache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize, EEPROM.cache, newFooter.dataSize);
+    memset(EEPROM.cache, 0, EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize);
 
     EEPROM.commit();
 
@@ -455,16 +472,23 @@ static void writeIndentation(std::string& str, int level)
     str.append(static_cast<std::string::size_type>(level), '\t');
 }
 
-#define TO_JSON_UENUM(fieldname, submessageType) str.append(std::to_string(s.fieldname));
-#define TO_JSON_INT32(fieldname, submessageType) str.append(std::to_string(s.fieldname));
-#define TO_JSON_UINT32(fieldname, submessageType) str.append(std::to_string(s.fieldname));
+// Don't inline this function, we do not want to consume stack space in the calling function
+template <typename T>
+static void __attribute__((noinline)) appendAsString(std::string& str, const T& value)
+{
+    str.append(std::to_string(value));
+}
+
+#define TO_JSON_UENUM(fieldname, submessageType) appendAsString(str, s.fieldname);
+#define TO_JSON_INT32(fieldname, submessageType) appendAsString(str, s.fieldname);
+#define TO_JSON_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname);
 #define TO_JSON_BOOL(fieldname, submessageType) str.append((s.fieldname) ? "true" : "false");
 #define TO_JSON_STRING(fieldname, submessageType) str.push_back('"'); str.append(s.fieldname); str.push_back('"');
 #define TO_JSON_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname, indentLevel + 1);
 
-#define TO_JSON_REPEATED_UENUM(fieldname, submessageType) str.append(std::to_string(s.fieldname[i]));
-#define TO_JSON_REPEATED_INT32(fieldname, submessageType) str.append(std::to_string(s.fieldname[i]));
-#define TO_JSON_REPEATED_UINT32(fieldname, submessageType) str.append(std::to_string(s.fieldname[i]));
+#define TO_JSON_REPEATED_UENUM(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
+#define TO_JSON_REPEATED_INT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
+#define TO_JSON_REPEATED_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
 #define TO_JSON_REPEATED_BOOL(fieldname, submessageType) str.append((s.fieldname[i]) ? "true" : "false");
 #define TO_JSON_REPEATED_STRING(fieldname, submessageType) str.push_back('"'); str.append(s.fieldname[i]); str.push_back('"');
 #define TO_JSON_REPEATED_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname[i], indentLevel + 1);
@@ -766,24 +790,21 @@ std::string ConfigUtils::toJSON(const Config& config)
 
 // Missing properties are ignored and initialized with default values
 // Type mismatches, buffer overruns or illegal enum values cause an error
-Config ConfigUtils::fromJSON(const char* data, size_t dataLen, bool& success)
+bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
 {
-    success = false;
-
     DynamicJsonDocument doc(1024 * 10);
     if (deserializeJson(doc, data, dataLen) != DeserializationError::Ok || !doc.is<JsonObject>())
     {
-        return Config_init_default;
+        return false;
     }
 
-    Config config = Config_init_default;
+    // Store config struct on the heap to avoid stack overflow
     if (!fromJSONConfig(doc.as<JsonObjectConst>(), config))
     {
-        return Config_init_default;
+        return false;
     }
 
     initUnsetPropertiesWithDefaults(config);
 
-    success = true;
-    return config;
+    return true;
 }

@@ -14,7 +14,7 @@ const size_t SPLASH_IMAGE_STORAGE_INDEX = 6144; // 1032 bytes for Display Config
 const uint32_t CHECKSUM_MAGIC   = 0;
 const uint32_t NOCHECKSUM_MAGIC = 0xDEADBEEF;   // No checksum CRC;
 
-Config ConfigUtils::fromLegacyStorage(bool& success)
+bool ConfigUtils::fromLegacyStorage(Config& config)
 {
-    return Config_init_default;
+    return false;
 }

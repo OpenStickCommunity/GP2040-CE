@@ -5,14 +5,14 @@
 #include <string>
 
 namespace ConfigUtils {
-    Config load();
+    void load(Config& config);
     bool save(Config& config);
     
     void initUnsetPropertiesWithDefaults(Config& config);
 
     std::string toJSON(const Config& config);
-    Config fromJSON(const char* data, size_t dataLen, bool& success);
-    Config fromLegacyStorage(bool& success);
+    bool fromJSON(Config& config, const char* data, size_t dataLen);
+    bool fromLegacyStorage(Config& config);
 }
 
 #endif
