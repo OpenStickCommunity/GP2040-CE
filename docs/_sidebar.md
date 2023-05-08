@@ -1,5 +1,5 @@
 - [Home](/ "GP2040-CE | RP2040 Gamepad Firmware Documentation")
-- [Download](download "GP2040-CE | Download GP2040-CE Firmware")
+- [Download](download "GP2040-CE | Download")
 - [Usage](usage "GP2040-CE | Usage")
 - [Shortcuts](gp2040-shortcuts "GP2040-CE | Shortcuts")
 - [Web Configurator](web-configurator "GP2040-CE | Web Configurator")

@@ -12,42 +12,7 @@
 	<link rel="canonical" href="https://gp2040-ce.info/">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-coldark-dark.min.css">
-	<style>
-		.form-dropdown label {
-			display: none;
-			margin-right: 4px;
-		}
-
-		.hotkey {
-			text-transform: uppercase;
-		}
-
-		.label-select {
-			display: inline-block;
-			margin-left: 4px;
-		}
-
-		.sticky-label-select {
-			/* width: 100%; */
-			position: fixed!important;
-			top: var(--sidebar-toggle-offset-top);
-			height: var(--sidebar-toggle-height);
-			right: 0px;
-			background: var(--sidebar-toggle-background, transparent);
-			padding: 4px;
-			border-radius: 4px;
-			transform: translateY(-100%);
-			opacity: 0.8;
-			z-index: 10;
-		}
-
-		.sticky-label-select label {
-			display: block;
-			text-align: center;
-			margin-top: -4px;
-			margin-bottom: 4px;
-		}
-	</style>
+	<link rel="stylesheet" href="/site.css">
 </head>
 <body>
 	<div id="app"></div>
@@ -67,8 +32,6 @@
 	<script src="//cdn.jsdelivr.net/npm/prismjs@1.x/components/prism-ini.min.js"></script>
 
 	<script>
-		Vue.use(VScrollThreshold);
-
 		window.$docsify = {
 			name: 'GP2040-CE',
 			repo: 'https://github.com/OpenStickCommunity/GP2040-CE',
@@ -78,8 +41,8 @@
 			auto2top: true,
 			subMaxLevel: 3,
 			themeable: {
-					readyTransition : true, // default
-					responsiveTables: true  // default
+				readyTransition : true, // default
+				responsiveTables: true  // default
 			},
 			vueGlobalOptions: {
 				directives: {
@@ -98,30 +61,137 @@
 							"Arcade": { "name": "Arcade", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "K1", "B2": "K2", "B3": "P1", "B4": "P2", "L1": "P4", "R1": "P3", "L2": "K4", "R2": "K3", "S1": "Select", "S2": "Start", "L3": "LS", "R3": "RS", "A1": "Home", "A2": "(A2)" },
 						},
 						selectedLabels: localStorage.getItem('selectedLabels') || 'GP2040',
-					}
-				},
+					};
+				}
 			},
 			vueComponents: {
+				'download-box': {
+					props: ['release'],
+					template: `
+						<a :href="release.url">
+							<div>
+								<img :src="'/assets/boards/' + release.key + '.jpg'">
+								<span>{{ release.name }}</span>
+							</div>
+						</a>
+					`,
+				},
+
+				'download-category': {
+					props: ['category'],
+					template: `
+						<div class="download-category">
+							<h3>{{ category }}</h3>
+							<p v-if="category === 'Legacy Devices'">The builds for these devices are no longer supported in GP2040-CE. They remain available as a convenience to the community.</p>
+							<div class="download-category-list">
+								<download-box
+									v-for="release in releases[category]"
+									:key="release.title"
+									:release="release">
+								</download-box>
+							</div>
+							<hr>
+						</div>
+					`,
+					data() {
+						return {
+							releases: this.$root.releases,
+						};
+					},
+				},
+
+				'download-page': {
+					template: `
+					<div v-if="fetched">
+						<version-name></version-name>
+						<h2>Select A Device</h2>
+						<download-category
+							v-for="category of configCategories"
+							:key="category"
+							:category="category">
+						</download-category>
+						<release-notes></release-notes>
+					</div>
+					`,
+					data() {
+						return {
+							configCategories: ['Microcontroller Boards', 'Open Source Devices', 'Closed Source / Retail Devices', 'Legacy Devices'],
+							configNames: {
+								BentoBox                   : { name: 'ScrubTier BentoBox', category: 'Closed Source / Retail Devices', },
+								DURAL                      : { name: 'BatiKING DURAL', category: 'Legacy Devices', },
+								FightboardV3               : { name: 'thnikk Fightboard V3', category: 'Legacy Devices', },
+								FightboardV3Mirrored       : { name: 'thnikk Fightboard V3 (Mirrored)', category: 'Legacy Devices', },
+								FlatboxRev4                : { name: 'Flatbox Rev 4', category: 'Open Source Devices', },
+								FlatboxRev5                : { name: 'Flatbox Rev 5', category: 'Open Source Devices', },
+								MavercadeKeebfighter       : { name: 'Mavercade Keebfighter', category: 'Open Source Devices', },
+								Pico                       : { name: 'Raspberry Pi Pico', category: 'Microcontroller Boards', },
+								PicoFightingBoard          : { name: 'Pico Fighting Board', category: 'Open Source Devices', },
+								RP2040AdvancedBreakoutBoard: { name: 'RP2040 Advanced Breakout Board', category: 'Open Source Devices', },
+								ReflexEncoder              : { name: 'MiSTerAddons Reflex Arcade Encoder', category: 'Open Source Devices', },
+								SparkFunProMicro           : { name: 'SparkFun Pro Micro', category: 'Microcontroller Boards', },
+								WaveshareZero              : { name: 'Waveshare RP2040-Zero', category: 'Microcontroller Boards', },
+							},
+							fetched: false,
+							releaseNotes: this.$root.releaseNotes,
+							releaseVersion: this.$root.releaseVersion,
+							releases: this.$root.releases,
+						};
+					},
+					created() {
+						fetch("https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest", { method: "GET", cache: "force-cache" })
+							.then(response => response.json())
+							.then(data => {
+								const releaseInfo = data;
+
+								this.$root.releaseNotes = releaseInfo.body;
+								this.$root.releaseVersion = releaseInfo.name;
+								this.$root.releases = releaseInfo.assets
+									.filter(a => a.name.startsWith('GP2040-CE_'))
+									.sort(a => a.name)
+									.map(a => {
+										const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
+										return {
+											key,
+											name: this.configNames[key].name,
+											url: a.browser_download_url,
+											img: `/assets/boards/${key}.jpg`,
+											category: this.configNames[key].category,
+										};
+									})
+									.reduce((p, r) => {
+										let values = { ...p };
+										if (!values[r.category])
+											values[r.category] = [];
+
+										values[r.category].push(r);
+										return values;
+									}, { });
+
+								this.fetched = true;
+							});
+					},
+				},
+
 				'label-selector': {
 					template: `
 						<VueStickyElement visibleOnDirection="disabled" class="label-select" stuckClass="sticky-label-select">
 							<div class="form-dropdown">
-								<select name="labelSelect" v-model="state.selectedLabels" v-on:change="setSelectedLabels">
-									<option v-for="item in labelData" :key="item.name" v-bind:value="item.name">{{ item.name }}</option>
+								<select name="labelSelect" v-model="selectedLabels" v-on:change="setSelectedLabels">
+									<option v-for="item in labelData" :key="item.name" :value="item.name">{{ item.name }}</option>
 								</select>
 							</div>
 						</VueStickyElement>
 					`,
 					data() {
 						return {
-							state: this.$root.$data,
 							labelData: this.$root.labelData,
+							selectedLabels: this.$root.selectedLabels,
 						};
 					},
 					methods: {
 						setSelectedLabels($event) {
 							localStorage.setItem('selectedLabels', $event.target.value);
-							this.$root.$data.selectedLabels = $event.target.value;
+							this.$root.selectedLabels = $event.target.value;
 						},
 					},
 				},
@@ -138,6 +208,26 @@
 							state: this.$root.$data,
 							labelData: this.$root.labelData,
 						};
+					},
+				},
+
+				'version-name': {
+					template: `<p>Latest Version: <strong v-text="version" v-if="version"></strong></p>`,
+					data() {
+						return {
+							version: this.$root.releaseVersion,
+						};
+					},
+				},
+
+				'release-notes': {
+					template: `
+						<div v-html="body"></div>
+					`,
+					data() {
+						return {
+							body: marked.parse(this.$root.releaseNotes ? "## Release Notes\r\n" + this.$root.releaseNotes : ""),
+						}
 					},
 				},
 
