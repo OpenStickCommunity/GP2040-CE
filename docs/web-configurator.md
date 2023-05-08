@@ -233,13 +233,11 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 
 ![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
 
-=======
-
 # Linux Setup
 
 When you plug in your controller while holding <hotkey v-bind:buttons='["S2"]'></hotkey>, you should see it connect in the kernel logs if you run `dmesg`:
 
-```
+```sh
 [   72.291060] usb 1-3: new full-speed USB device number 12 using xhci_hcd
 [   72.450166] usb 1-3: New USB device found, idVendor=cafe, idProduct=4028, bcdDevice= 1.01
 [   72.450172] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
@@ -256,7 +254,7 @@ The web configurator is automatically running, you just need to be able to reach
 
 Whether or not you had to add an IP manually, you should end up with a route something like this:
 
-```
+```sh
 % ip route
 default via 10.0.5.1 dev enp5s0 proto dhcp src 10.0.5.38 metric 2
 10.0.5.0/24 dev enp5s0 proto dhcp scope link src 10.0.5.38 metric 2

@@ -143,15 +143,15 @@ There are a few SDK variables we take advantage of for our builds.
 
 ### Windows
 
-Start in the GP2040-CE folder
-From a Developer Powershell or Developer Command Command Prompt:
-> Note: A new session will be required after setting an environment variable.
+Start in the GP2040-CE folder. **From a Developer Powershell or Developer Command Command Prompt**:
+
+?> A new Powershell or Command Prompt session will be required after setting an environment variable.
 
 1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
-1. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
+2. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
     - Default value is `Pico`
 
-1. Create a build directory, configure the build, and execute the build.
+3. Create a build directory, configure the build, and execute the build.
 
     ```bash
     mkdir build
@@ -160,7 +160,7 @@ From a Developer Powershell or Developer Command Command Prompt:
     nmake
     ```
 
-1. Your UF2 file should be in the build directory.
+4. Your UF2 file should be in the build directory.
 
 ### Linux
 
@@ -182,7 +182,7 @@ Start in the GP2040-CE folder
 
 ## Configuration
 
-> Note: We're moving away from compile time configuration, in favor of runtime configuration. 
+?> We're moving away from compile time configuration, in favor of runtime configuration.
 
 There are two simple options for building GP2040-CE for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
 
@@ -297,7 +297,7 @@ An example RGB LED setup in the `BoardConfig.h` file:
 
 GP2040-CE supports PWM and RGB player LEDs (PLEDs) and can be configured in the `BoardConfig.h` file.
 
-> NOTE: RGB PLEDs require [RGB LEDs](#rgb-leds) to be configured.
+?> RGB PLEDs require [RGB LEDs](#rgb-leds) to be configured.
 
 The following PLED options are available in the `BoardConfig.h` file:
 
