@@ -14,7 +14,7 @@
 </p>
 
 <p>
-	GP2040-CE is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontrollers that combines multiplatform compatibility, low latency and a rich feature set to provide endless customization possiblities without sacrificing performance.
+	GP2040-CE is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontrollers that combines multiplatform compatibility, low latency and a rich feature set to provide endless customization possibilities without sacrificing performance.
 </p>
 <p>
 	GP2040-CE is compatible with PC, PS3 and PS4, Nintendo Switch, Steam Deck, MiSTer and Android.
@@ -66,7 +66,7 @@ Want to help improve GP2040-CE? There are a bunch of ways to contribute!
 
 ### Community Participation
 
-Have an idea for a cool new feature, or just want to discuss some techincal details with the devs? Join the [OpenStick GP2040-CE Discord](https://discord.gg/k2pxhke7q8) server to participate in our active and ever-growing community!
+Have an idea for a cool new feature, or just want to discuss some technical details with the devs? Join the [OpenStick GP2040-CE Discord](https://discord.gg/k2pxhke7q8) server to participate in our active and ever-growing community!
 
 ### Pull Requests
 
@@ -83,6 +83,6 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 * [bitbank2](https://github.com/bitbank2) for the [OneBitDisplay](https://github.com/bitbank2/OneBitDisplay) and [BitBang_I2C](https://github.com/bitbank2/BitBang_I2C) libraries, which were ported for use with the Pico SDK
 * [arntsonl](https://github.com/arntsonl) for the amazing cleanup and feature additions that brought us to v0.5.0
 * [alirin222](https://github.com/alirin222) for the awesome turbo code ([@alirin222](https://twitter.com/alirin222) on Twitter)
-* [deeebug](https://github.com/deeebug) for improvments to the web-UI and fixing the PS3 homebutton issue
+* [deeebug](https://github.com/deeebug) for improvements to the web-UI and fixing the PS3 homebutton issue
 * [TheTrain](https://github.com/TheTrainGoes/GP2040-Projects) and [Fortinbra](https://github.com/Fortinbra) for helping keep our community chugging along
 * [PassingLink](https://github.com/passinglink/passinglink) for the technical details and code for PS4 implementation
