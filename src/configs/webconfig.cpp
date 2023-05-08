@@ -28,7 +28,7 @@
 
 #define PATH_CGI_ACTION "/cgi/action"
 
-#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN 4096
+#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 8)
 
 using namespace std;
 
