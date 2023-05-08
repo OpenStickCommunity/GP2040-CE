@@ -70,7 +70,7 @@ class Base64 {
     return ret;
   }
 
-  static std::string Decode(const std::string& input, std::string& out) {
+  static bool Decode(const std::string& input, std::string& out) {
     static constexpr unsigned char kDecodingTable[] = {
       64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
       64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
@@ -91,7 +91,11 @@ class Base64 {
     };
 
     size_t in_len = input.size();
-    if (in_len % 4 != 0) return "Input data size is not a multiple of 4";
+    if (in_len % 4 != 0)
+    {
+      out.clear();
+      return false;
+    }
 
     size_t out_len = in_len / 4 * 3;
     if (input[in_len - 1] == '=') out_len--;
@@ -112,7 +116,7 @@ class Base64 {
       if (j < out_len) out[j++] = (triple >> 0 * 8) & 0xFF;
     }
 
-    return "";
+    return true;
   }
 
 };

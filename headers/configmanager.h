@@ -21,7 +21,7 @@ public:
     void setBoardOptions(ConfigLegacy::BoardOptions);
     void setPreviewBoardOptions(ConfigLegacy::BoardOptions);
     void setLedOptions(ConfigLegacy::LEDOptions);
-    void setSplashImage(ConfigLegacy::SplashImage);
+    void setSplashImage(const ConfigLegacy::SplashImage&);
 private:
     ConfigManager() {}
     void setupConfig(GPConfig*);
