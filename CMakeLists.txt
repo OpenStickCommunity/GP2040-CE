@@ -125,6 +125,7 @@ src/addons/ps4mode.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
+src/addons/wiiext.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
 )
@@ -147,6 +148,7 @@ OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
+WiiExtension
 pico_mbedtls
 TinyUSB_Gamepad
 )

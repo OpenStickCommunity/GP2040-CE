@@ -30,6 +30,7 @@
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
+#include "addons/wiiext.h"
 
 #include "bitmaps.h"
 
@@ -195,6 +196,10 @@ void Storage::setDefaultAddonOptions()
     addonOptions.sliderSOCDModeOne = SLIDER_SOCD_SLOT_ONE;
     addonOptions.sliderSOCDModeTwo  = SLIDER_SOCD_SLOT_TWO;
     addonOptions.sliderSOCDModeDefault = SLIDER_SOCD_SLOT_DEFAULT;
+	addonOptions.wiiExtensionSDAPin    = WII_EXTENSION_I2C_SDA_PIN;
+	addonOptions.wiiExtensionSCLPin    = WII_EXTENSION_I2C_SCL_PIN;
+	addonOptions.wiiExtensionBlock     = (WII_EXTENSION_I2C_BLOCK == i2c0) ? 0 : 1;
+	addonOptions.wiiExtensionSpeed     = WII_EXTENSION_I2C_SPEED;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -208,6 +213,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.PS4ModeAddonEnabled    = PS4MODE_ADDON_ENABLED;
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
+	addonOptions.WiiExtensionAddonEnabled      = WII_EXTENSION_ENABLED;
 	setAddonOptions(addonOptions);
 }
 
