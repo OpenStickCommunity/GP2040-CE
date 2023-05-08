@@ -140,6 +140,10 @@ struct AddonOptions {
 	SOCDMode sliderSOCDModeOne;
 	SOCDMode sliderSOCDModeTwo;
 	SOCDMode sliderSOCDModeDefault;
+	uint8_t wiiExtensionSDAPin;
+	uint8_t wiiExtensionSCLPin;
+	int wiiExtensionBlock;
+	uint32_t wiiExtensionSpeed;
 	uint8_t AnalogInputEnabled;
 	uint8_t BoardLedAddonEnabled;
 	uint8_t BootselButtonAddonEnabled;
@@ -156,6 +160,7 @@ struct AddonOptions {
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
 	uint8_t SliderSOCDInputEnabled;
+	uint8_t WiiExtensionAddonEnabled;
 	uint32_t checksum;
 };
 

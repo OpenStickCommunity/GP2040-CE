@@ -802,6 +802,10 @@ std::string setAddonOptions()
 	docToValue(addonOptions.sliderSOCDModeOne, doc, "sliderSOCDModeOne");
 	docToValue(addonOptions.sliderSOCDModeTwo, doc, "sliderSOCDModeTwo");
 	docToValue(addonOptions.sliderSOCDModeDefault, doc, "sliderSOCDModeDefault");
+	docToPin(addonOptions.wiiExtensionSDAPin, doc, "wiiExtensionSDAPin");
+	docToPin(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
+	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
+	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
 	docToValue(addonOptions.AnalogInputEnabled, doc, "AnalogInputEnabled");
 	docToValue(addonOptions.BoardLedAddonEnabled, doc, "BoardLedAddonEnabled");
 	docToValue(addonOptions.BuzzerSpeakerAddonEnabled, doc, "BuzzerSpeakerAddonEnabled");
@@ -815,6 +819,7 @@ std::string setAddonOptions()
 	docToValue(addonOptions.PS4ModeAddonEnabled, doc, "PS4ModeAddonEnabled");
 	docToValue(addonOptions.ReverseInputEnabled, doc, "ReverseInputEnabled");
 	docToValue(addonOptions.TurboInputEnabled, doc, "TurboInputEnabled");
+	docToValue(addonOptions.WiiExtensionAddonEnabled, doc, "WiiExtensionAddonEnabled");
 
 	Storage::getInstance().setAddonOptions(addonOptions);
 
@@ -972,6 +977,10 @@ std::string getAddonOptions()
 	writeDoc(doc, "sliderSOCDModeOne", addonOptions.sliderSOCDModeOne);
 	writeDoc(doc, "sliderSOCDModeTwo", addonOptions.sliderSOCDModeTwo);
 	writeDoc(doc, "sliderSOCDModeDefault", addonOptions.sliderSOCDModeDefault);
+	writeDoc(doc, "wiiExtensionSDAPin", addonOptions.wiiExtensionSDAPin == 0xFF ? -1 : addonOptions.wiiExtensionSDAPin);
+	writeDoc(doc, "wiiExtensionSCLPin", addonOptions.wiiExtensionSCLPin == 0xFF ? -1 : addonOptions.wiiExtensionSCLPin);
+	writeDoc(doc, "wiiExtensionBlock", addonOptions.wiiExtensionBlock);
+	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
 	writeDoc(doc, "AnalogInputEnabled", addonOptions.AnalogInputEnabled);
 	writeDoc(doc, "BoardLedAddonEnabled", addonOptions.BoardLedAddonEnabled);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", addonOptions.BuzzerSpeakerAddonEnabled);
@@ -985,6 +994,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "PS4ModeAddonEnabled", addonOptions.PS4ModeAddonEnabled);
 	writeDoc(doc, "ReverseInputEnabled", addonOptions.ReverseInputEnabled);
 	writeDoc(doc, "TurboInputEnabled", addonOptions.TurboInputEnabled);
+	writeDoc(doc, "WiiExtensionAddonEnabled", addonOptions.WiiExtensionAddonEnabled);
 
 	addUsedPinsArray(doc);
 
