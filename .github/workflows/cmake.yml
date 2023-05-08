@@ -21,6 +21,9 @@ jobs:
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        GP2040_BOARDCONFIG: [Pico, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, PicoAnn, PicoFightingBoard, SparkFunProMicro, WaveshareZero, FlatboxRev5, MavercadeKeebfighter ]
 
     steps:
     #Global Setup
@@ -47,191 +50,15 @@ jobs:
 
     - name: Pico Build Configure CMake
       shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=Pico SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Pico Build
       shell: bash
-      run: GP2040_BOARDCONFIG=Pico cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
+      run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
    
     - name: Upload Pico Artifact
       uses: actions/upload-artifact@v3.1.1
       with:
-        name: GP2040-CE - Pico
-        path: ${{github.workspace}}/build/GP2040-CE_*_Pico.uf2
-        if-no-files-found: error
-        
-    #BentoBox
-    - name: BentoBox Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=BentoBox  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    
-    - name: BentoBox Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=BentoBox cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-    
-    - name: Upload BentoBox Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - BentoBox
-        path: ${{github.workspace}}/build/GP2040-CE_*_BentoBox.uf2
-        if-no-files-found: error
-        
-    #DURAL
-    - name: DURAL Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=DURAL SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    
-    - name: DURAL Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=DURAL cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-    
-    - name: Upload DURAL Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - DURAL
-        path: ${{github.workspace}}/build/GP2040-CE_*_DURAL.uf2
-        if-no-files-found: error
-
-    #FightboardV3
-    - name: FightboardV3 Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=FightboardV3 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    
-    - name: FightboardV3 Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=FightboardV3 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
-    - name: Upload FightboardV3 Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - FightboardV3
-        path: ${{github.workspace}}/build/GP2040-CE_*_FightboardV3.uf2
-        if-no-files-found: error
-
-    #FightboardV3Mirrored
-    - name: FightboardV3Mirrored Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=FightboardV3Mirrored SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    
-    - name: FightboardV3Mirrored Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=FightboardV3Mirrored cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
-    - name: Upload FightboardV3Mirrored Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - FightboardV3Mirrored
-        path: ${{github.workspace}}/build/GP2040-CE_*_FightboardV3Mirrored.uf2
-        if-no-files-found: error
-
-    #FlatboxRev4
-    - name: FlatboxRev4 Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=FlatboxRev4 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    
-    - name: FlatboxRev4 Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=FlatboxRev4 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
-    - name: Upload FlatboxRev4 Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - FlatboxRev4
-        path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev4.uf2
-        if-no-files-found: error
-
-    #PicoAnn
-    - name: PicoAnn Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=PicoAnn  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    
-    - name: PicoAnn Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=PicoAnn cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
-    - name: Upload PicoAnn Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - PicoAnn
-        path: ${{github.workspace}}/build/GP2040-CE_*_PicoAnn.uf2
-        if-no-files-found: error
-
-    #PicoFightingBoard
-    - name: PicoFightingBoard Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=PicoFightingBoard  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    
-    - name: PicoFightingBoard Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=PicoFightingBoard cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
-    - name: Upload PicoFightingBoard Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - PicoFightingBoard
-        path: ${{github.workspace}}/build/GP2040-CE_*_PicoFightingBoard.uf2
-        if-no-files-found: error
-            
-    #SparkFunProMicro    
-    - name: SparkFunProMicro Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=SparkFunProMicro  SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=sparkfun_promicro
-    
-    - name: SparkFunProMicro Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=SparkFunProMicro cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-       
-    - name: Upload SparkFunProMicro Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - SparkFunProMicro
-        path: ${{github.workspace}}/build/GP2040-CE_*_SparkFunProMicro.uf2
-        if-no-files-found: error
-            
-    #WaveshareZero
-    - name: WaveshareZero Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=WaveshareZero SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DPICO_BOARD=waveshare_rp2040_zero
-    
-    - name: WaveshareZero Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=WaveshareZero cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-           
-    - name: Upload WaveshareZero Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - WaveshareZero
-        path: ${{github.workspace}}/build/GP2040-CE_*_WaveshareZero.uf2
-        if-no-files-found: error
-    
- #FlatboxRev5
-    - name: FlatboxRev5 Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=FlatboxRev5 SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
-    
-    - name: FlatboxRev5 Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=FlatboxRev5 cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
-    - name: Upload FlatboxRev5 Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - FlatboxRev5
-        path: ${{github.workspace}}/build/GP2040-CE_*_FlatboxRev5.uf2
-        if-no-files-found: error
-
-    #MAVERCADEKEEBFIGHTER
-    - name: MavercadeKeebfighter Configure CMake
-      shell: bash
-      run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=MavercadeKeebfighter SKIP_WEBBUILD=TRUE  cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPICO_BOARD=waveshare_rp2040_zero
-    
-    - name: MavercadeKeebfighter Build
-      shell: bash
-      run: GP2040_BOARDCONFIG=MavercadeKeebfighter cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
-    - name: Upload MavercadeKeebfighter Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: GP2040-CE - MavercadeKeebfighter
-        path: ${{github.workspace}}/build/GP2040-CE_*_MavercadeKeebfighter.uf2
+        name: GP2040-CE - ${{ matrix.GP2040_BOARDCONFIG }}
+        path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.uf2
         if-no-files-found: error
