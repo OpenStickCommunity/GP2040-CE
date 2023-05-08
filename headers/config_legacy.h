@@ -35,6 +35,7 @@ namespace ConfigLegacy
         SOCD_MODE_NEUTRAL,
         SOCD_MODE_SECOND_INPUT_PRIORITY,
         SOCD_MODE_FIRST_INPUT_PRIORITY,
+        SOCD_MODE_BYPASS,
     };
 
     enum DpadDirection
@@ -43,7 +44,7 @@ namespace ConfigLegacy
         DIRECTION_UP,
         DIRECTION_DOWN,
         DIRECTION_LEFT,
-        DIRECTION_RIGHT
+        DIRECTION_RIGHT,
     };
 
     enum GamepadHotkey
@@ -60,6 +61,7 @@ namespace ConfigLegacy
         HOTKEY_INVERT_X_AXIS,
         HOTKEY_INVERT_Y_AXIS,
         HOTKEY_SOCD_FIRST_INPUT,
+        HOTKEY_SOCD_BYPASS,
     };
 
     enum ButtonLayout
@@ -122,7 +124,7 @@ namespace ConfigLegacy
     {
         BOARD_LED_OFF,
         MODE_INDICATOR,
-        INPUT_TEST
+        INPUT_TEST,
     };
     
     struct ButtonLayoutParams
@@ -237,6 +239,10 @@ namespace ConfigLegacy
         SOCDMode sliderSOCDModeOne;
         SOCDMode sliderSOCDModeTwo;
         SOCDMode sliderSOCDModeDefault;
+        uint8_t wiiExtensionSDAPin;
+        uint8_t wiiExtensionSCLPin;
+        int wiiExtensionBlock;
+        uint32_t wiiExtensionSpeed;
         uint8_t AnalogInputEnabled;
         uint8_t BoardLedAddonEnabled;
         uint8_t BootselButtonAddonEnabled;
@@ -253,6 +259,7 @@ namespace ConfigLegacy
         uint8_t ReverseInputEnabled;
         uint8_t TurboInputEnabled;
         uint8_t SliderSOCDInputEnabled;
+        uint8_t WiiExtensionAddonEnabled;
         uint32_t checksum;
     };
 

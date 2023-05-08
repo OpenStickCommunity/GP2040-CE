@@ -3,8 +3,8 @@
 #include "hardware/gpio.h"
 
 bool WiiExtensionInput::available() {
-    const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
 
     return (!boardOptions.hasI2CDisplay && (options.WiiExtensionAddonEnabled &&
         options.wiiExtensionSDAPin != (uint8_t)-1 &&
@@ -12,7 +12,7 @@ bool WiiExtensionInput::available() {
 }
 
 void WiiExtensionInput::setup() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
     nextTimer = getMillis();
 
 #if WII_EXTENSION_DEBUG==true

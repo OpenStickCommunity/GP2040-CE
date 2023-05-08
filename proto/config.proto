@@ -293,6 +293,15 @@ message PS4Options
 	optional string rsaRN = 12 [(nanopb).max_length = 344];
 }
 
+message WiiOptions
+{
+	optional bool enabled = 1;
+	optional int32 i2cBlock = 2;
+	optional int32 i2cSDAPin = 3;
+	optional int32 i2cSCLPin = 4;
+	optional int32 i2cSpeed = 5;
+}
+
 message AddonOptions
 {
 	optional BootselButtonOptions bootselButtonOptions = 1;
@@ -307,6 +316,7 @@ message AddonOptions
 	optional ExtraOptions extraOptions = 10;
 	optional PlayerNumberOptions playerNumberOptions = 11;
 	optional PS4Options ps4Options = 12;
+	optional WiiOptions wiiOptions = 13;
 }
 
 message Config

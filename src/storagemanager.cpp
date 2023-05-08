@@ -201,18 +201,6 @@ void Storage::setDefaultSplashImage()
 
 void Storage::setSplashImage(const ConfigLegacy::SplashImage& image)
 {
-	if (memcmp(&splashImage, &image, sizeof(SplashImage)) != 0)
-	{
-		memcpy(&splashImage, &image, sizeof(SplashImage));
-		splashImage.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-		splashImage.checksum = CRC32::calculate(&splashImage);
-
-		EEPROM.set(SPLASH_IMAGE_STORAGE_INDEX, splashImage);
-		EEPROM.commit();
-
-		// Reset, so that the memcmp gives the correct result on the next call to this function
-		splashImage.checksum = CHECKSUM_MAGIC;
-	}
 }
 
 /* LED stuffs */
@@ -334,59 +322,53 @@ uint8_t * Storage::GetFeatureData()
 AnimationOptions AnimationStorage::getAnimationOptions()
 {
 	AnimationOptions options;
-	EEPROM.get(ANIMATION_STORAGE_INDEX, options);
 
-	uint32_t lastCRC = options.checksum;
-	options.checksum = CHECKSUM_MAGIC;
-	if (CRC32::calculate(&options) != lastCRC)
-	{
-		options.baseAnimationIndex = LEDS_BASE_ANIMATION_INDEX;
-		options.brightness         = LEDS_BRIGHTNESS;
-		options.staticColorIndex   = LEDS_STATIC_COLOR_INDEX;
-		options.buttonColorIndex   = LEDS_BUTTON_COLOR_INDEX;
-		options.chaseCycleTime     = LEDS_CHASE_CYCLE_TIME;
-		options.rainbowCycleTime   = LEDS_RAINBOW_CYCLE_TIME;
-		options.themeIndex         = LEDS_THEME_INDEX;
-		options.hasCustomTheme = false;
-		options.customThemeUp = 0;
-		options.customThemeDown = 0;
-		options.customThemeLeft = 0;
-		options.customThemeRight = 0;
-		options.customThemeB1 = 0;
-		options.customThemeB2 = 0;
-		options.customThemeB3 = 0;
-		options.customThemeB4 = 0;
-		options.customThemeL1 = 0;
-		options.customThemeR1 = 0;
-		options.customThemeL2 = 0;
-		options.customThemeR2 = 0;
-		options.customThemeS1 = 0;
-		options.customThemeS2 = 0;
-		options.customThemeA1 = 0;
-		options.customThemeA2 = 0;
-		options.customThemeL3 = 0;
-		options.customThemeR3 = 0;
-		options.customThemeUpPressed = 0;
-		options.customThemeDownPressed = 0;
-		options.customThemeLeftPressed = 0;
-		options.customThemeRightPressed = 0;
-		options.customThemeB1Pressed = 0;
-		options.customThemeB2Pressed = 0;
-		options.customThemeB3Pressed = 0;
-		options.customThemeB4Pressed = 0;
-		options.customThemeL1Pressed = 0;
-		options.customThemeR1Pressed = 0;
-		options.customThemeL2Pressed = 0;
-		options.customThemeR2Pressed = 0;
-		options.customThemeS1Pressed = 0;
-		options.customThemeS2Pressed = 0;
-		options.customThemeA1Pressed = 0;
-		options.customThemeA2Pressed = 0;
-		options.customThemeL3Pressed = 0;
-		options.customThemeR3Pressed = 0;
+	options.baseAnimationIndex = LEDS_BASE_ANIMATION_INDEX;
+	options.brightness         = LEDS_BRIGHTNESS;
+	options.staticColorIndex   = LEDS_STATIC_COLOR_INDEX;
+	options.buttonColorIndex   = LEDS_BUTTON_COLOR_INDEX;
+	options.chaseCycleTime     = LEDS_CHASE_CYCLE_TIME;
+	options.rainbowCycleTime   = LEDS_RAINBOW_CYCLE_TIME;
+	options.themeIndex         = LEDS_THEME_INDEX;
+	options.hasCustomTheme = false;
+	options.customThemeUp = 0;
+	options.customThemeDown = 0;
+	options.customThemeLeft = 0;
+	options.customThemeRight = 0;
+	options.customThemeB1 = 0;
+	options.customThemeB2 = 0;
+	options.customThemeB3 = 0;
+	options.customThemeB4 = 0;
+	options.customThemeL1 = 0;
+	options.customThemeR1 = 0;
+	options.customThemeL2 = 0;
+	options.customThemeR2 = 0;
+	options.customThemeS1 = 0;
+	options.customThemeS2 = 0;
+	options.customThemeA1 = 0;
+	options.customThemeA2 = 0;
+	options.customThemeL3 = 0;
+	options.customThemeR3 = 0;
+	options.customThemeUpPressed = 0;
+	options.customThemeDownPressed = 0;
+	options.customThemeLeftPressed = 0;
+	options.customThemeRightPressed = 0;
+	options.customThemeB1Pressed = 0;
+	options.customThemeB2Pressed = 0;
+	options.customThemeB3Pressed = 0;
+	options.customThemeB4Pressed = 0;
+	options.customThemeL1Pressed = 0;
+	options.customThemeR1Pressed = 0;
+	options.customThemeL2Pressed = 0;
+	options.customThemeR2Pressed = 0;
+	options.customThemeS1Pressed = 0;
+	options.customThemeS2Pressed = 0;
+	options.customThemeA1Pressed = 0;
+	options.customThemeA2Pressed = 0;
+	options.customThemeL3Pressed = 0;
+	options.customThemeR3Pressed = 0;
 
-		setAnimationOptions(options);
-	}
+	setAnimationOptions(options);
 
 	return options;
 }

@@ -404,7 +404,7 @@ std::string setSplashImage()
 	std::string base64String = doc["splashImage"];
 	Base64::Decode(base64String, decoded);
 	memcpy(splashImageTemp.data, decoded.data(), std::min(decoded.length(), sizeof(splashImageTemp.data)));
-	splashImageTemp.checksum = CHECKSUM_MAGIC;
+	splashImageTemp.checksum = 0;
 	ConfigManager::getInstance().setSplashImage(splashImageTemp);
 
 	return serialize_json(doc);
@@ -436,7 +436,7 @@ std::string setGamepadOptions()
 std::string getGamepadOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	GamepadOptions options = GamepadStore.getGamepadOptions();
+	const ConfigLegacy::GamepadOptions& options = GamepadStore.getGamepadOptions();
 
 	writeDoc(doc, "dpadMode", options.dpadMode);
 	writeDoc(doc, "inputMode", options.inputMode);
@@ -703,7 +703,7 @@ std::string getPinMappings()
 	// Webconfig uses -1 to denote unassigned pins
 	const auto convertPin = [] (uint8_t pin) -> int { return pin < NUM_BANK0_GPIOS ? pin : -1; };
 
-	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
+	const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
 	writeDoc(doc, "Up", convertPin(boardOptions.pinDpadUp));
 	writeDoc(doc, "Down", convertPin(boardOptions.pinDpadDown));
 	writeDoc(doc, "Left", convertPin(boardOptions.pinDpadLeft));
@@ -785,7 +785,7 @@ std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 	docToPin(addonOptions.pinButtonTurbo, doc, "turboPin");
 	docToPin(addonOptions.pinTurboLED, doc, "turboPinLED");
 	docToPin(addonOptions.pinSliderLS, doc, "sliderLSPin");
@@ -1153,7 +1153,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 };
 
 typedef DataAndStatusCode (*HandlerFuncStatusCodePtr)();
-static const std::pair<const char*, HandlerFuncPtr> handlerFuncsWithStatusCode[] =
+static const std::pair<const char*, HandlerFuncStatusCodePtr> handlerFuncsWithStatusCode[] =
 {
 	{ "/api/setConfig", setConfig },
 };

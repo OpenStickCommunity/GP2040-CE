@@ -39,7 +39,7 @@ public:
 	const ConfigLegacy::AddonOptions& getAddonOptions() { return addonOptions; }
 
 	void setSplashImage(const ConfigLegacy::SplashImage&);
-	const SplashImage& getSplashImage() { return splashImage; }
+	const ConfigLegacy::SplashImage& getSplashImage() { return splashImage; }
 
 	void setLEDOptions(ConfigLegacy::LEDOptions);		// LED Options
 	void setDefaultLEDOptions();

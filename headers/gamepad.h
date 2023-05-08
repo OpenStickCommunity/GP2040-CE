@@ -158,10 +158,12 @@ public:
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping **gamepadMappings;
 
-	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
-		 return ((options.socdMode == SOCD_MODE_BYPASS) && 
-		         (options.inputMode == INPUT_MODE_HID || options.inputMode == INPUT_MODE_SWITCH || options.inputMode == INPUT_MODE_PS4)) ?
-			    SOCD_MODE_NEUTRAL : options.socdMode;
+	inline static const SOCDMode resolveSOCDMode(const ConfigLegacy::GamepadOptions& options) {
+		 return ((options.socdMode == static_cast<ConfigLegacy::SOCDMode>(SOCD_MODE_BYPASS)) && 
+				 (options.inputMode == static_cast<ConfigLegacy::InputMode>(INPUT_MODE_HID) ||
+				  options.inputMode == static_cast<ConfigLegacy::InputMode>(INPUT_MODE_SWITCH) |
+				  options.inputMode == static_cast<ConfigLegacy::InputMode>(INPUT_MODE_PS4))) ?
+				SOCD_MODE_NEUTRAL : static_cast<SOCDMode>(options.socdMode);
 	};
 
 private:
