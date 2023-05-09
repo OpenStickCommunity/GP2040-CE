@@ -374,23 +374,31 @@ static bool loadConfigInner(Config& config)
 
 void ConfigUtils::load(Config& config)
 {
-    if (loadConfigInner(config))
+    // First try to load from Protobuf storage, if that fails fall back to legacy storage.
+    const bool loaded = loadConfigInner(config) | fromLegacyStorage(config);
+
+    if (!loaded)
     {
-        // Make sure that fields that were not deserialized are properly initialized.
-        // They were probably added with a newer version of the firmware.
-        initUnsetPropertiesWithDefaults(config);
-
-        // Further migrations can be performed here
-
-        return;
+        // We could neither deserialize Protobuf config data nor legacy config data.
+        // We are probably dealing with a new device and therefore initialize the config to default values.
+        config = Config_init_default;
     }
 
-    // TODO: Check for legacy config and migrate
-
-    // We could neither deserialize Protobuf config data not legacy config data.
-    // We are probably dealing with a new device and therefore initialize the config to default values.
-    config = Config_init_default;
+    // Make sure that fields that were not deserialized are properly initialized.
+    // They were probably added with a newer version of the firmware.
     initUnsetPropertiesWithDefaults(config);
+
+    // ----------------------------------------
+    // Further migrations can be performed here
+    // ----------------------------------------
+
+    // Update boardVersion, in case we migrated from an older version
+    strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
+    config.boardVersion[sizeof(config.boardVersion) - 1] = '\0';
+    config.has_boardVersion = true;
+
+    // Save, to make sure we persist any performed migration steps
+    save(config);
 }
 
 static void setHasFlags(const pb_msgdesc_t* fields, void* s)
