@@ -32,6 +32,12 @@
 	<script src="//cdn.jsdelivr.net/npm/prismjs@1.x/components/prism-ini.min.js"></script>
 
 	<script>
+		const renderer = {
+			heading(text, level) {
+				return `<h3>${text}</h3>`;
+			}
+		};
+
 		window.$docsify = {
 			name: 'GP2040-CE',
 			repo: 'https://github.com/OpenStickCommunity/GP2040-CE',
@@ -231,8 +237,9 @@
 						<div v-html="body"></div>
 					`,
 					data() {
+						marked.use({ renderer })
 						return {
-							body: marked.parse(this.$root.releaseNotes ? "## Release Notes\r\n" + this.$root.releaseNotes : ""),
+							body: marked.parse(this.$root.releaseNotes ? "---\r\n## Release Notes\r\n" + this.$root.releaseNotes : ""),
 						}
 					},
 				},
