@@ -90,26 +90,27 @@ void Gamepad::setup()
 
 	// Configure pin mapping
 	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
 
-	mapDpadUp    = new GamepadButtonMapping(boardOptions.pinDpadUp,    GAMEPAD_MASK_UP);
-	mapDpadDown  = new GamepadButtonMapping(boardOptions.pinDpadDown,  GAMEPAD_MASK_DOWN);
-	mapDpadLeft  = new GamepadButtonMapping(boardOptions.pinDpadLeft,  GAMEPAD_MASK_LEFT);
-	mapDpadRight = new GamepadButtonMapping(boardOptions.pinDpadRight, GAMEPAD_MASK_RIGHT);
-	mapButtonB1  = new GamepadButtonMapping(boardOptions.pinButtonB1,  GAMEPAD_MASK_B1);
-	mapButtonB2  = new GamepadButtonMapping(boardOptions.pinButtonB2,  GAMEPAD_MASK_B2);
-	mapButtonB3  = new GamepadButtonMapping(boardOptions.pinButtonB3,  GAMEPAD_MASK_B3);
-	mapButtonB4  = new GamepadButtonMapping(boardOptions.pinButtonB4,  GAMEPAD_MASK_B4);
-	mapButtonL1  = new GamepadButtonMapping(boardOptions.pinButtonL1,  GAMEPAD_MASK_L1);
-	mapButtonR1  = new GamepadButtonMapping(boardOptions.pinButtonR1,  GAMEPAD_MASK_R1);
-	mapButtonL2  = new GamepadButtonMapping(boardOptions.pinButtonL2,  GAMEPAD_MASK_L2);
-	mapButtonR2  = new GamepadButtonMapping(boardOptions.pinButtonR2,  GAMEPAD_MASK_R2);
-	mapButtonS1  = new GamepadButtonMapping(boardOptions.pinButtonS1,  GAMEPAD_MASK_S1);
-	mapButtonS2  = new GamepadButtonMapping(boardOptions.pinButtonS2,  GAMEPAD_MASK_S2);
-	mapButtonL3  = new GamepadButtonMapping(boardOptions.pinButtonL3,  GAMEPAD_MASK_L3);
-	mapButtonR3  = new GamepadButtonMapping(boardOptions.pinButtonR3,  GAMEPAD_MASK_R3);
-	mapButtonA1  = new GamepadButtonMapping(boardOptions.pinButtonA1,  GAMEPAD_MASK_A1);
-	mapButtonA2  = new GamepadButtonMapping(boardOptions.pinButtonA2,  GAMEPAD_MASK_A2);
+	const auto convertPin = [](int32_t pin) -> uint8_t { return isValidPin(pin) ? pin : 0xff; };
+	mapDpadUp    = new GamepadButtonMapping(convertPin(pinMappings.pinDpadUp),		GAMEPAD_MASK_UP);
+	mapDpadDown  = new GamepadButtonMapping(convertPin(pinMappings.pinDpadDown),	GAMEPAD_MASK_DOWN);
+	mapDpadLeft  = new GamepadButtonMapping(convertPin(pinMappings.pinDpadLeft),	GAMEPAD_MASK_LEFT);
+	mapDpadRight = new GamepadButtonMapping(convertPin(pinMappings.pinDpadRight),	GAMEPAD_MASK_RIGHT);
+	mapButtonB1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonB1),	GAMEPAD_MASK_B1);
+	mapButtonB2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonB2),	GAMEPAD_MASK_B2);
+	mapButtonB3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonB3),	GAMEPAD_MASK_B3);
+	mapButtonB4  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonB4),	GAMEPAD_MASK_B4);
+	mapButtonL1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonL1),	GAMEPAD_MASK_L1);
+	mapButtonR1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR1),	GAMEPAD_MASK_R1);
+	mapButtonL2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonL2),	GAMEPAD_MASK_L2);
+	mapButtonR2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR2),	GAMEPAD_MASK_R2);
+	mapButtonS1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonS1),	GAMEPAD_MASK_S1);
+	mapButtonS2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonS2),	GAMEPAD_MASK_S2);
+	mapButtonL3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonL3),	GAMEPAD_MASK_L3);
+	mapButtonR3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR3),	GAMEPAD_MASK_R3);
+	mapButtonA1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA1),	GAMEPAD_MASK_A1);
+	mapButtonA2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA2),	GAMEPAD_MASK_A2);
 
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{

@@ -663,36 +663,35 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	// BoardOptions uses 0xff to denote unassigned pins
-	const auto convertPin = [&] (const char* key) -> uint8_t
+	// PinMappings uses -1 to denote unassigned pins
+	const auto convertPin = [&] (const char* key) -> int32_t
 	{
 		int pin = 0;
 		readDoc(pin, doc, key);
-		return pin >= 0 && pin < NUM_BANK0_GPIOS ? pin : 0xff;
+		return isValidPin(pin) ? pin : -1;
 	};
 
-	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	boardOptions.hasBoardOptions = true;
-	boardOptions.pinDpadUp    = convertPin("Up");
-	boardOptions.pinDpadDown  = convertPin("Down");
-	boardOptions.pinDpadLeft  = convertPin("Left");
-	boardOptions.pinDpadRight = convertPin("Right");
-	boardOptions.pinButtonB1  = convertPin("B1");
-	boardOptions.pinButtonB2  = convertPin("B2");
-	boardOptions.pinButtonB3  = convertPin("B3");
-	boardOptions.pinButtonB4  = convertPin("B4");
-	boardOptions.pinButtonL1  = convertPin("L1");
-	boardOptions.pinButtonR1  = convertPin("R1");
-	boardOptions.pinButtonL2  = convertPin("L2");
-	boardOptions.pinButtonR2  = convertPin("R2");
-	boardOptions.pinButtonS1  = convertPin("S1");
-	boardOptions.pinButtonS2  = convertPin("S2");
-	boardOptions.pinButtonL3  = convertPin("L3");
-	boardOptions.pinButtonR3  = convertPin("R3");
-	boardOptions.pinButtonA1  = convertPin("A1");
-	boardOptions.pinButtonA2  = convertPin("A2");
+	PinMappings& pinMappings = Storage::getInstance().getPinMappings();
+	pinMappings.pinDpadUp    = convertPin("Up");
+	pinMappings.pinDpadDown  = convertPin("Down");
+	pinMappings.pinDpadLeft  = convertPin("Left");
+	pinMappings.pinDpadRight = convertPin("Right");
+	pinMappings.pinButtonB1  = convertPin("B1");
+	pinMappings.pinButtonB2  = convertPin("B2");
+	pinMappings.pinButtonB3  = convertPin("B3");
+	pinMappings.pinButtonB4  = convertPin("B4");
+	pinMappings.pinButtonL1  = convertPin("L1");
+	pinMappings.pinButtonR1  = convertPin("R1");
+	pinMappings.pinButtonL2  = convertPin("L2");
+	pinMappings.pinButtonR2  = convertPin("R2");
+	pinMappings.pinButtonS1  = convertPin("S1");
+	pinMappings.pinButtonS2  = convertPin("S2");
+	pinMappings.pinButtonL3  = convertPin("L3");
+	pinMappings.pinButtonR3  = convertPin("R3");
+	pinMappings.pinButtonA1  = convertPin("A1");
+	pinMappings.pinButtonA2  = convertPin("A2");
 
-	Storage::getInstance().setBoardOptions(boardOptions);
+	Storage::getInstance().save();
 
 	return serialize_json(doc);
 }
@@ -701,28 +700,25 @@ std::string getPinMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
-	// Webconfig uses -1 to denote unassigned pins
-	const auto convertPin = [] (uint8_t pin) -> int { return pin < NUM_BANK0_GPIOS ? pin : -1; };
-
-	const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
-	writeDoc(doc, "Up", convertPin(boardOptions.pinDpadUp));
-	writeDoc(doc, "Down", convertPin(boardOptions.pinDpadDown));
-	writeDoc(doc, "Left", convertPin(boardOptions.pinDpadLeft));
-	writeDoc(doc, "Right", convertPin(boardOptions.pinDpadRight));
-	writeDoc(doc, "B1", convertPin(boardOptions.pinButtonB1));
-	writeDoc(doc, "B2", convertPin(boardOptions.pinButtonB2));
-	writeDoc(doc, "B3", convertPin(boardOptions.pinButtonB3));
-	writeDoc(doc, "B4", convertPin(boardOptions.pinButtonB4));
-	writeDoc(doc, "L1", convertPin(boardOptions.pinButtonL1));
-	writeDoc(doc, "R1", convertPin(boardOptions.pinButtonR1));
-	writeDoc(doc, "L2", convertPin(boardOptions.pinButtonL2));
-	writeDoc(doc, "R2", convertPin(boardOptions.pinButtonR2));
-	writeDoc(doc, "S1", convertPin(boardOptions.pinButtonS1));
-	writeDoc(doc, "S2", convertPin(boardOptions.pinButtonS2));
-	writeDoc(doc, "L3", convertPin(boardOptions.pinButtonL3));
-	writeDoc(doc, "R3", convertPin(boardOptions.pinButtonR3));
-	writeDoc(doc, "A1", convertPin(boardOptions.pinButtonA1));
-	writeDoc(doc, "A2", convertPin(boardOptions.pinButtonA2));
+	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
+	writeDoc(doc, "Up", pinMappings.pinDpadUp);
+	writeDoc(doc, "Down", pinMappings.pinDpadDown);
+	writeDoc(doc, "Left", pinMappings.pinDpadLeft);
+	writeDoc(doc, "Right", pinMappings.pinDpadRight);
+	writeDoc(doc, "B1", pinMappings.pinButtonB1);
+	writeDoc(doc, "B2", pinMappings.pinButtonB2);
+	writeDoc(doc, "B3", pinMappings.pinButtonB3);
+	writeDoc(doc, "B4", pinMappings.pinButtonB4);
+	writeDoc(doc, "L1", pinMappings.pinButtonL1);
+	writeDoc(doc, "R1", pinMappings.pinButtonR1);
+	writeDoc(doc, "L2", pinMappings.pinButtonL2);
+	writeDoc(doc, "R2", pinMappings.pinButtonR2);
+	writeDoc(doc, "S1", pinMappings.pinButtonS1);
+	writeDoc(doc, "S2", pinMappings.pinButtonS2);
+	writeDoc(doc, "L3", pinMappings.pinButtonL3);
+	writeDoc(doc, "R3", pinMappings.pinButtonR3);
+	writeDoc(doc, "A1", pinMappings.pinButtonA1);
+	writeDoc(doc, "A2", pinMappings.pinButtonA2);
 
 	return serialize_json(doc);
 }
