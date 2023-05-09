@@ -14,7 +14,7 @@
 #define WiiExtensionName "WiiExtension"
 
 #ifndef WII_EXTENSION_ENABLED
-#define WII_EXTENSION_ENABLED 1
+#define WII_EXTENSION_ENABLED 0
 #endif
 
 #ifndef WII_EXTENSION_I2C_ADDR
@@ -22,11 +22,11 @@
 #endif
 
 #ifndef WII_EXTENSION_I2C_SDA_PIN
-#define WII_EXTENSION_I2C_SDA_PIN 16
+#define WII_EXTENSION_I2C_SDA_PIN -1
 #endif
 
 #ifndef WII_EXTENSION_I2C_SCL_PIN
-#define WII_EXTENSION_I2C_SCL_PIN 17
+#define WII_EXTENSION_I2C_SCL_PIN -1
 #endif
 
 #ifndef WII_EXTENSION_I2C_BLOCK
