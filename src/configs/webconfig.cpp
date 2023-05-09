@@ -1057,23 +1057,21 @@ std::string getMemoryReport()
 
 std::string getConfig()
 {
-	// Store config struct on the heap to avoid stack overflow
-	std::unique_ptr<Config> config(new Config);
-	ConfigUtils::load(*config.get());
-	return ConfigUtils::toJSON(*config.get());
+	return ConfigUtils::toJSON(Storage::getInstance().getConfig());
 }
 
 DataAndStatusCode setConfig()
 {
 	bool success = false;
+
 	// Store config struct on the heap to avoid stack overflow
 	std::unique_ptr<Config> config(new Config);
-	Config& configRef = *config.get();
-	if (ConfigUtils::fromJSON(configRef, http_post_payload, http_post_payload_len))
+	if (ConfigUtils::fromJSON(*config.get(), http_post_payload, http_post_payload_len))
 	{
-		if (ConfigUtils::save(configRef))
+		Storage::getInstance().getConfig() = *config.get();
+		if (Storage::getInstance().save())
 		{
-			return DataAndStatusCode(ConfigUtils::toJSON(configRef), HttpStatusCode::_200);
+			return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
 		}
 		else
 		{

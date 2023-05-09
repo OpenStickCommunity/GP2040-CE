@@ -32,9 +32,27 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 
+#include "config_utils.h"
+
 #include "bitmaps.h"
 
 #include "helper.h"
+
+Storage::Storage()
+{
+	initBoardOptions();
+	initAddonOptions();
+	initLEDOptions();
+	initSplashImage();
+	initPS4Options();
+
+	ConfigUtils::load(config);
+}
+
+bool Storage::save()
+{
+	return ConfigUtils::save(config);
+}
 
 /* Board stuffs */
 void Storage::initBoardOptions() {

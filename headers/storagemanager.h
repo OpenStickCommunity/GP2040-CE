@@ -15,6 +15,7 @@
 #include "gamepad.h"
 
 #include "config_legacy.h"
+#include "config.pb.h"
 
 #define SI Storage::getInstance()
 
@@ -28,6 +29,10 @@ public:
 		static Storage instance;
 		return instance;
 	}
+
+	Config& getConfig() { return config; }
+	
+	bool save();
 
 	void setBoardOptions(ConfigLegacy::BoardOptions);	// Board Options
 	const ConfigLegacy::BoardOptions& getBoardOptions() { return boardOptions; }
@@ -65,13 +70,7 @@ public:
 	void ResetSettings(); 				// EEPROM Reset Feature
 
 private:
-	Storage() : gamepad(0) {
-		initBoardOptions();
-		initAddonOptions();
-		initLEDOptions();
-		initSplashImage();
-		initPS4Options();
-	}
+	Storage();
 	void initBoardOptions();
 	void initPreviewBoardOptions();
 	void initAddonOptions();
@@ -81,9 +80,9 @@ private:
 	void setDefaultAddonOptions();
 	void setDefaultSplashImage();
 	void initPS4Options();
-	bool CONFIG_MODE; 			// Config mode (boot)
-	Gamepad * gamepad;    		// Gamepad data
-	Gamepad * processedGamepad; // Gamepad with ONLY processed data
+	bool CONFIG_MODE = false; 			// Config mode (boot)
+	Gamepad * gamepad = nullptr;    		// Gamepad data
+	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
 	ConfigLegacy::BoardOptions boardOptions;
 	ConfigLegacy::BoardOptions previewBoardOptions;
 	ConfigLegacy::AddonOptions addonOptions;
@@ -91,6 +90,8 @@ private:
 	ConfigLegacy::PS4Options ps4Options;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	ConfigLegacy::SplashImage splashImage;
+
+	Config config;
 };
 
 #endif

@@ -438,7 +438,7 @@ bool ConfigUtils::save(Config& config)
     setHasFlags(Config_fields, &config);
 
     // Encode the data directly into the cache of FlashPROM
-    pb_ostream_t outputStream = pb_ostream_from_buffer(EEPROM.cache, EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    pb_ostream_t outputStream = pb_ostream_from_buffer(EEPROM.writeCache, EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
     if (!pb_encode(&outputStream, Config_fields, &config))
     {
         return false;
@@ -447,7 +447,7 @@ bool ConfigUtils::save(Config& config)
     // Create the new footer
     ConfigFooter newFooter;
     newFooter.dataSize = outputStream.bytes_written;
-    newFooter.dataCrc = CRC32::calculate(EEPROM.cache, newFooter.dataSize);
+    newFooter.dataCrc = CRC32::calculate(EEPROM.writeCache, newFooter.dataSize);
     newFooter.magic = FOOTER_MAGIC;
 
     // The data has changed when the footer content has changed. Only then do we acutally need to save.
@@ -459,12 +459,12 @@ bool ConfigUtils::save(Config& config)
     }
 
     // Write the footer
-    ConfigFooter* cacheFooter = reinterpret_cast<ConfigFooter*>(EEPROM.cache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    ConfigFooter* cacheFooter = reinterpret_cast<ConfigFooter*>(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
     memcpy(cacheFooter, &newFooter, sizeof(ConfigFooter));
 
     // Move the encoded data in memory down to the footer
-    memmove(EEPROM.cache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize, EEPROM.cache, newFooter.dataSize);
-    memset(EEPROM.cache, 0, EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize);
+    memmove(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize, EEPROM.writeCache, newFooter.dataSize);
+    memset(EEPROM.writeCache, 0, EEPROM_SIZE_BYTES - sizeof(ConfigFooter) - newFooter.dataSize);
 
     EEPROM.commit();
 

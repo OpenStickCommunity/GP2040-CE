@@ -5,7 +5,7 @@
 
 #include "FlashPROM.h"
 
-uint8_t FlashPROM::cache[EEPROM_SIZE_BYTES] = { };
+uint8_t FlashPROM::writeCache[EEPROM_SIZE_BYTES];
 volatile static alarm_id_t flashWriteAlarm = 0;
 volatile static spin_lock_t *flashLock = nullptr;
 
@@ -35,11 +35,11 @@ void FlashPROM::commit()
 	while (is_spin_locked(flashLock));
 	if (flashWriteAlarm != 0)
 		cancel_alarm(flashWriteAlarm);
-	flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, cache, true);
+	flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, writeCache, true);
 }
 
 void FlashPROM::reset()
 {
-	memset(cache, 0, EEPROM_SIZE_BYTES);
+	memset(writeCache, 0, EEPROM_SIZE_BYTES);
 	commit();
 }
