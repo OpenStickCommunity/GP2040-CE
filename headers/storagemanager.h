@@ -31,10 +31,13 @@ public:
 	}
 
 	Config& getConfig() { return config; }
-	const AddonOptions& getAddonOptions() const { return config.addonOptions; }
-	const PinMappings& getPinMappings() const { return config.pinMappings; }
-	const KeyboardMapping& getKeyboardMapping() const { return config.keyboardMapping; }
-	const HotkeyOptions& getHotkeyOptions() const { return config.hotkeyOptions; }
+	GamepadOptions& getGamepadOptions() { return config.gamepadOptions; }
+	HotkeyOptions& getHotkeyOptions() { return config.hotkeyOptions; }
+	PinMappings& getPinMappings() { return config.pinMappings; }
+	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
+	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
+	LEDOptions& getLedOptions() { return config.ledOptions; }
+	AddonOptions& getAddonOptions() { return config.addonOptions; }
 
 	bool save();
 
