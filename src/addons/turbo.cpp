@@ -10,13 +10,13 @@
 #define TURBO_SHOT_MAX 30
 
 bool TurboInput::available() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
     return options.TurboInputEnabled;
 }
 
 void TurboInput::setup()
 {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint32_t now = getMillis();
 
@@ -131,7 +131,7 @@ void TurboInput::debounce()
 void TurboInput::process()
 {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
     uint16_t buttonsPressed = gamepad->state.buttons & TURBO_BUTTON_MASK;
     uint16_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
@@ -209,8 +209,8 @@ void TurboInput::process()
 
 void TurboInput::updateTurboShotCount(uint8_t turboShotCount)
 {
-    ConfigLegacy::AddonOptions options = Storage::getInstance().getAddonOptions();
+    ConfigLegacy::AddonOptions options = Storage::getInstance().getLegacyAddonOptions();
     options.turboShotCount = std::clamp<uint8_t>(turboShotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
-    Storage::getInstance().setAddonOptions(options);
+    Storage::getInstance().setLegacyAddonOptions(options);
     uIntervalMS = (uint32_t)(1000.0 / options.turboShotCount);
 }

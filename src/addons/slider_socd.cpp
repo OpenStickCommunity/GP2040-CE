@@ -9,7 +9,7 @@
 #define SOCD_MODE_MASK (SOCD_MODE_UP_PRIORITY & SOCD_MODE_SECOND_INPUT_PRIORITY & SOCD_MODE_FIRST_INPUT_PRIORITY & SOCD_MODE_NEUTRAL)
 
 bool SliderSOCDInput::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
     sliderSOCDModeOne = static_cast<SOCDMode>(options.sliderSOCDModeOne);
     sliderSOCDModeTwo  = static_cast<SOCDMode>(options.sliderSOCDModeTwo);
     sliderSOCDModeDefault = static_cast<SOCDMode>(options.sliderSOCDModeDefault);

@@ -908,7 +908,7 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
 	const ConfigLegacy::BoardOptions& boardOptions = getBoardOptions();
-	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
 
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();

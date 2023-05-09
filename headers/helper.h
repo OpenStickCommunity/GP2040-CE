@@ -54,4 +54,6 @@ const std::string BUTTON_LABEL_A2 = "A2";
 
 const int PLED_PINS[] = {PLED1_PIN, PLED2_PIN, PLED3_PIN, PLED4_PIN};
 
+static inline bool isValidPin(int32_t pin) { return pin >= 0 && pin < NUM_BANK0_GPIOS; }
+
 #endif

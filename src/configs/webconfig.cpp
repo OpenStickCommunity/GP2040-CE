@@ -288,7 +288,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(boardOptions.i2cSDAPin);
 	addPinIfValid(boardOptions.i2cSCLPin);
 
-	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	addPinIfValid(addonOptions.analogAdcPinX);
 	addPinIfValid(addonOptions.analogAdcPinY);
 	addPinIfValid(addonOptions.buzzerPin);
@@ -782,11 +782,11 @@ std::string getKeyMappings()
 	return serialize_json(doc);
 }
 
-std::string setAddonOptions()
+std::string setLegacyAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
+	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	docToPin(addonOptions.pinButtonTurbo, doc, "turboPin");
 	docToPin(addonOptions.pinTurboLED, doc, "turboPinLED");
 	docToPin(addonOptions.pinSliderLS, doc, "sliderLSPin");
@@ -857,7 +857,7 @@ std::string setAddonOptions()
 	docToValue(addonOptions.TurboInputEnabled, doc, "TurboInputEnabled");
 	docToValue(addonOptions.WiiExtensionAddonEnabled, doc, "WiiExtensionAddonEnabled");
 
-	Storage::getInstance().setAddonOptions(addonOptions);
+	Storage::getInstance().setLegacyAddonOptions(addonOptions);
 
 	return serialize_json(doc);
 }
@@ -958,10 +958,10 @@ std::string setPS4Options()
 	return "{\"success\":true}";
 }
 
-std::string getAddonOptions()
+std::string getLegacyAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	writeDoc(doc, "turboPin", addonOptions.pinButtonTurbo == 0xFF ? -1 : addonOptions.pinButtonTurbo);
 	writeDoc(doc, "turboPinLED", addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED);
 	writeDoc(doc, "sliderLSPin", addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS);
@@ -1135,7 +1135,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getCustomTheme", getCustomTheme },
 	{ "/api/setPinMappings", setPinMappings },
 	{ "/api/setKeyMappings", setKeyMappings },
-	{ "/api/setAddonsOptions", setAddonOptions },
+	{ "/api/setAddonsOptions", setLegacyAddonOptions },
 	{ "/api/setPS4Options", setPS4Options },
 	{ "/api/setSplashImage", setSplashImage },
 	{ "/api/reboot", reboot },
@@ -1144,7 +1144,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getLedOptions", getLedOptions },
 	{ "/api/getPinMappings", getPinMappings },
 	{ "/api/getKeyMappings", getKeyMappings },
-	{ "/api/getAddonsOptions", getAddonOptions },
+	{ "/api/getAddonsOptions", getLegacyAddonOptions },
 	{ "/api/resetSettings", resetSettings },
 	{ "/api/getSplashImage", getSplashImage },
 	{ "/api/getFirmwareVersion", getFirmwareVersion },

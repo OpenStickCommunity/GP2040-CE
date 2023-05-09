@@ -12,7 +12,7 @@
 #include "mbedtls/sha256.h"
 
 bool PS4ModeAddon::available() {
-	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	return addonOptions.PS4ModeAddonEnabled;
 }
 

@@ -206,10 +206,10 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
 	addonOptions.WiiExtensionAddonEnabled      = WII_EXTENSION_ENABLED;
-	setAddonOptions(addonOptions);
+	setLegacyAddonOptions(addonOptions);
 }
 
-void Storage::setAddonOptions(ConfigLegacy::AddonOptions options)
+void Storage::setLegacyAddonOptions(ConfigLegacy::AddonOptions options)
 {
 }
 

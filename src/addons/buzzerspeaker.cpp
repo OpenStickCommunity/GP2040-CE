@@ -6,14 +6,14 @@
 #include "usb_driver.h"
 
 bool BuzzerSpeakerAddon::available() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
 	buzzerPin = options.buzzerPin;
 	return options.BuzzerSpeakerAddonEnabled &&
 		buzzerPin != (uint8_t)-1;
 }
 
 void BuzzerSpeakerAddon::setup() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
 
 	gpio_set_function(buzzerPin, GPIO_FUNC_PWM);
 	buzzerPinSlice = pwm_gpio_to_slice_num (buzzerPin);

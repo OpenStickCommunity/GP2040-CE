@@ -2,7 +2,7 @@
 #include "storagemanager.h"
 
 bool DualDirectionalInput::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
     pinDualDirDown = options.pinDualDirDown;
     pinDualDirUp = options.pinDualDirUp;
     pinDualDirLeft = options.pinDualDirLeft;
@@ -12,7 +12,7 @@ bool DualDirectionalInput::available() {
 }
 
 void DualDirectionalInput::setup() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
     combineMode = options.dualDirCombineMode;
 
     dpadMode = static_cast<DpadMode>(options.dualDirDpadMode);
@@ -121,7 +121,7 @@ void DualDirectionalInput::preprocess()
 
 void DualDirectionalInput::process()
 {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint8_t dualOut = dualState;
     const SOCDMode& socdMode = getSOCDMode(gamepad->options);

@@ -8,9 +8,9 @@
 #define ANALOG_DEADZONE 0.05f // move to config (future release)
 
 bool AnalogInput::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
-	analogAdcPinX = Storage::getInstance().getAddonOptions().analogAdcPinX;
-	analogAdcPinY = Storage::getInstance().getAddonOptions().analogAdcPinY;
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
+	analogAdcPinX = Storage::getInstance().getLegacyAddonOptions().analogAdcPinX;
+	analogAdcPinY = Storage::getInstance().getLegacyAddonOptions().analogAdcPinY;
     return options.AnalogInputEnabled;
 }
 

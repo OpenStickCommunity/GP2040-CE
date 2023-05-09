@@ -36,7 +36,7 @@ bool __no_inline_not_in_flash_func(BootselButtonAddon::isBootselPressed)() {
 }
 
 bool BootselButtonAddon::available() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
 	bootselButtonMap = options.bootselButtonMap;
 	return options.BootselButtonAddonEnabled &&
 		bootselButtonMap != 0;

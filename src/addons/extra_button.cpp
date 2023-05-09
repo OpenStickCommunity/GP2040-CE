@@ -3,7 +3,7 @@
 #include "hardware/gpio.h"
 
 bool ExtraButtonAddon::available() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
 	extraButtonMap = options.extraButtonMap;
 	extraButtonPin = options.extraButtonPin;
 	return options.ExtraButtonAddonEnabled &&

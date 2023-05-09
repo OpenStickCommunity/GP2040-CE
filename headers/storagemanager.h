@@ -31,7 +31,11 @@ public:
 	}
 
 	Config& getConfig() { return config; }
-	
+	const AddonOptions& getAddonOptions() const { return config.addonOptions; }
+	const PinMappings& getPinMappings() const { return config.pinMappings; }
+	const KeyboardMapping& getKeyboardMapping() const { return config.keyboardMapping; }
+	const HotkeyOptions& getHotkeyOptions() const { return config.hotkeyOptions; }
+
 	bool save();
 
 	void setBoardOptions(ConfigLegacy::BoardOptions);	// Board Options
@@ -40,8 +44,8 @@ public:
 	void setPreviewBoardOptions(const ConfigLegacy::BoardOptions&);	// Preview Board Options
 	const ConfigLegacy::BoardOptions& getPreviewBoardOptions() { return previewBoardOptions; }
 
-	void setAddonOptions(ConfigLegacy::AddonOptions); // Add-On Options
-	const ConfigLegacy::AddonOptions& getAddonOptions() { return addonOptions; }
+	void setLegacyAddonOptions(ConfigLegacy::AddonOptions); // Add-On Options
+	const ConfigLegacy::AddonOptions& getLegacyAddonOptions() { return addonOptions; }
 
 	void setSplashImage(const ConfigLegacy::SplashImage&);
 	const ConfigLegacy::SplashImage& getSplashImage() { return splashImage; }

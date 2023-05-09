@@ -4,7 +4,7 @@
 
 bool WiiExtensionInput::available() {
     const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
 
     return (!boardOptions.hasI2CDisplay && (options.WiiExtensionAddonEnabled &&
         options.wiiExtensionSDAPin != (uint8_t)-1 &&
@@ -12,7 +12,7 @@ bool WiiExtensionInput::available() {
 }
 
 void WiiExtensionInput::setup() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
     nextTimer = getMillis();
 
 #if WII_EXTENSION_DEBUG==true
