@@ -778,7 +778,7 @@ std::string getKeyMappings()
 	return serialize_json(doc);
 }
 
-std::string setLegacyAddonOptions()
+std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
@@ -954,7 +954,7 @@ std::string setPS4Options()
 	return "{\"success\":true}";
 }
 
-std::string getLegacyAddonOptions()
+std::string getAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
@@ -1131,7 +1131,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getCustomTheme", getCustomTheme },
 	{ "/api/setPinMappings", setPinMappings },
 	{ "/api/setKeyMappings", setKeyMappings },
-	{ "/api/setAddonsOptions", setLegacyAddonOptions },
+	{ "/api/setAddonsOptions", setAddonOptions },
 	{ "/api/setPS4Options", setPS4Options },
 	{ "/api/setSplashImage", setSplashImage },
 	{ "/api/reboot", reboot },
@@ -1140,7 +1140,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getLedOptions", getLedOptions },
 	{ "/api/getPinMappings", getPinMappings },
 	{ "/api/getKeyMappings", getKeyMappings },
-	{ "/api/getAddonsOptions", getLegacyAddonOptions },
+	{ "/api/getAddonsOptions", getAddonOptions },
 	{ "/api/resetSettings", resetSettings },
 	{ "/api/getSplashImage", getSplashImage },
 	{ "/api/getFirmwareVersion", getFirmwareVersion },
