@@ -164,6 +164,44 @@ message AnimationOptions_Proto
 	optional int32 chaseCycleTime = 5;
 	optional int32 rainbowCycleTime = 6;
 	optional uint32 themeIndex = 7;
+
+	optional bool hasCustomTheme = 8;
+	optional uint32 customThemeUp = 9;
+	optional uint32 customThemeDown = 10;
+	optional uint32 customThemeLeft = 11;
+	optional uint32 customThemeRight = 12;
+	optional uint32 customThemeB1 = 13;
+	optional uint32 customThemeB2 = 14;
+	optional uint32 customThemeB3 = 15;
+	optional uint32 customThemeB4 = 16;
+	optional uint32 customThemeL1 = 17;
+	optional uint32 customThemeR1 = 18;
+	optional uint32 customThemeL2 = 19;
+	optional uint32 customThemeR2 = 20;
+	optional uint32 customThemeS1 = 21;
+	optional uint32 customThemeS2 = 22;
+	optional uint32 customThemeL3 = 23;
+	optional uint32 customThemeR3 = 24;
+	optional uint32 customThemeA1 = 25;
+	optional uint32 customThemeA2 = 26;
+	optional uint32 customThemeUpPressed = 27;
+	optional uint32 customThemeDownPressed = 28;
+	optional uint32 customThemeLeftPressed = 29;
+	optional uint32 customThemeRightPressed = 30;
+	optional uint32 customThemeB1Pressed = 31;
+	optional uint32 customThemeB2Pressed = 32;
+	optional uint32 customThemeB3Pressed = 33;
+	optional uint32 customThemeB4Pressed = 34;
+	optional uint32 customThemeL1Pressed = 35;
+	optional uint32 customThemeR1Pressed = 36;
+	optional uint32 customThemeL2Pressed = 37;
+	optional uint32 customThemeR2Pressed = 38;
+	optional uint32 customThemeS1Pressed = 39;
+	optional uint32 customThemeS2Pressed = 40;
+	optional uint32 customThemeL3Pressed = 41;
+	optional uint32 customThemeR3Pressed = 42;
+	optional uint32 customThemeA1Pressed = 43;
+	optional uint32 customThemeA2Pressed = 44;
 }
 
 message BootselButtonOptions
