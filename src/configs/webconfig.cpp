@@ -782,6 +782,23 @@ std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
+	ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
+	docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
+	docToValue(reverseOptions.buttonPin, doc, "reversePin");
+	if (!isValidPin(reverseOptions.buttonPin))
+	{
+		reverseOptions.buttonPin = -1;
+	}
+	docToValue(reverseOptions.ledPin, doc, "reversePinLED");
+	if (!isValidPin(reverseOptions.ledPin))
+	{
+		reverseOptions.ledPin = -1;
+	}
+	docToValue(reverseOptions.actionUp, doc, "reverseActionUp");
+	docToValue(reverseOptions.actionDown, doc, "reverseActionDown");
+	docToValue(reverseOptions.actionLeft, doc, "reverseActionLeft");
+	docToValue(reverseOptions.actionRight, doc, "reverseActionRight");
+
 	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	docToPin(addonOptions.pinButtonTurbo, doc, "turboPin");
 	docToPin(addonOptions.pinTurboLED, doc, "turboPinLED");
@@ -790,8 +807,6 @@ std::string setAddonOptions()
 	docToPin(addonOptions.pinSliderSOCDOne, doc, "sliderSOCDPinOne");
 	docToPin(addonOptions.pinSliderSOCDTwo, doc, "sliderSOCDPinTwo");
 	docToValue(addonOptions.turboShotCount, doc, "turboShotCount");
-	docToPin(addonOptions.pinButtonReverse, doc, "reversePin");
-	docToPin(addonOptions.pinReverseLED, doc, "reversePinLED");
 	docToPin(addonOptions.reverseActionUp, doc, "reverseActionUp");
 	docToPin(addonOptions.reverseActionDown, doc, "reverseActionDown");
 	docToPin(addonOptions.reverseActionLeft, doc, "reverseActionLeft");
@@ -849,11 +864,11 @@ std::string setAddonOptions()
 	docToValue(addonOptions.SliderSOCDInputEnabled, doc, "SliderSOCDInputEnabled");
 	docToValue(addonOptions.PlayerNumAddonEnabled, doc, "PlayerNumAddonEnabled");
 	docToValue(addonOptions.PS4ModeAddonEnabled, doc, "PS4ModeAddonEnabled");
-	docToValue(addonOptions.ReverseInputEnabled, doc, "ReverseInputEnabled");
 	docToValue(addonOptions.TurboInputEnabled, doc, "TurboInputEnabled");
 	docToValue(addonOptions.WiiExtensionAddonEnabled, doc, "WiiExtensionAddonEnabled");
 
 	Storage::getInstance().setLegacyAddonOptions(addonOptions);
+	Storage::getInstance().save();
 
 	return serialize_json(doc);
 }
@@ -957,6 +972,16 @@ std::string setPS4Options()
 std::string getAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+	const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
+	writeDoc(doc, "reversePin", isValidPin(reverseOptions.buttonPin) ? reverseOptions.buttonPin : -1);
+	writeDoc(doc, "reversePinLED", isValidPin(reverseOptions.ledPin) ? reverseOptions.ledPin : -1);
+	writeDoc(doc, "reverseActionUp", reverseOptions.actionUp);
+	writeDoc(doc, "reverseActionDown", reverseOptions.actionDown);
+	writeDoc(doc, "reverseActionLeft", reverseOptions.actionLeft);
+	writeDoc(doc, "reverseActionRight", reverseOptions.actionRight);
+	writeDoc(doc, "ReverseInputEnabled", reverseOptions.enabled);
+
 	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	writeDoc(doc, "turboPin", addonOptions.pinButtonTurbo == 0xFF ? -1 : addonOptions.pinButtonTurbo);
 	writeDoc(doc, "turboPinLED", addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED);
@@ -965,12 +990,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "sliderSOCDPinOne", addonOptions.pinSliderSOCDOne == 0xFF ? -1 : addonOptions.pinSliderSOCDOne);
 	writeDoc(doc, "sliderSOCDPinTwo", addonOptions.pinSliderSOCDTwo == 0xFF ? -1 : addonOptions.pinSliderSOCDTwo);
 	writeDoc(doc, "turboShotCount", addonOptions.turboShotCount);
-	writeDoc(doc, "reversePin", addonOptions.pinButtonReverse == 0xFF ? -1 : addonOptions.pinButtonReverse);
-	writeDoc(doc, "reversePinLED", addonOptions.pinReverseLED == 0xFF ? -1 : addonOptions.pinReverseLED);
-	writeDoc(doc, "reverseActionUp", addonOptions.reverseActionUp == 0xFF ? -1 : addonOptions.reverseActionUp);
-	writeDoc(doc, "reverseActionDown", addonOptions.reverseActionDown == 0xFF ? -1 : addonOptions.reverseActionDown);
-	writeDoc(doc, "reverseActionLeft", addonOptions.reverseActionLeft == 0xFF ? -1 : addonOptions.reverseActionLeft);
-	writeDoc(doc, "reverseActionRight", addonOptions.reverseActionRight == 0xFF ? -1 : addonOptions.reverseActionRight);
 	writeDoc(doc, "i2cAnalog1219SDAPin", addonOptions.i2cAnalog1219SDAPin == 0xFF ? -1 : addonOptions.i2cAnalog1219SDAPin);
 	writeDoc(doc, "i2cAnalog1219SCLPin", addonOptions.i2cAnalog1219SCLPin == 0xFF ? -1 : addonOptions.i2cAnalog1219SCLPin);
 	writeDoc(doc, "i2cAnalog1219Block", addonOptions.i2cAnalog1219Block);
@@ -1024,7 +1043,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "SliderSOCDInputEnabled", addonOptions.SliderSOCDInputEnabled);
 	writeDoc(doc, "PlayerNumAddonEnabled", addonOptions.PlayerNumAddonEnabled);
 	writeDoc(doc, "PS4ModeAddonEnabled", addonOptions.PS4ModeAddonEnabled);
-	writeDoc(doc, "ReverseInputEnabled", addonOptions.ReverseInputEnabled);
 	writeDoc(doc, "TurboInputEnabled", addonOptions.TurboInputEnabled);
 	writeDoc(doc, "WiiExtensionAddonEnabled", addonOptions.WiiExtensionAddonEnabled);
 
