@@ -106,6 +106,7 @@ message PinMappings
 	optional int32 pinButtonR3 = 16;
 	optional int32 pinButtonA1 = 17;
 	optional int32 pinButtonA2 = 18;
+	optional int32 pinButtonFn = 19;
 }
 
 message DisplayOptions

@@ -318,6 +318,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(pinMappings.pinButtonR3);
 	addPinIfValid(pinMappings.pinButtonA1);
 	addPinIfValid(pinMappings.pinButtonA2);
+	addPinIfValid(pinMappings.pinButtonFn);
 
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(boardOptions.i2cSDAPin);
@@ -759,6 +760,7 @@ std::string setPinMappings()
 	pinMappings.pinButtonR3  = convertPin("R3");
 	pinMappings.pinButtonA1  = convertPin("A1");
 	pinMappings.pinButtonA2  = convertPin("A2");
+	pinMappings.pinButtonFn  = convertPin("Fn");
 
 	Storage::getInstance().save();
 
@@ -788,6 +790,7 @@ std::string getPinMappings()
 	writeDoc(doc, "R3", cleanPin(pinMappings.pinButtonR3));
 	writeDoc(doc, "A1", cleanPin(pinMappings.pinButtonA1));
 	writeDoc(doc, "A2", cleanPin(pinMappings.pinButtonA2));
+	writeDoc(doc, "Fn", cleanPin(pinMappings.pinButtonFn));
 
 	return serialize_json(doc);
 }

@@ -56,6 +56,7 @@
 #define PIN_BUTTON_R3   FLATBOX_SW6_PIN          // R3 / RS / RS / R3 / 12 / RS
 #define PIN_BUTTON_A1   FLATBOX_SW3_PIN          // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   FLATBOX_SW4_PIN          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_FN   -1          // Hotkey Function
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_SLIDER_LS    -1         // Left Stick Slider

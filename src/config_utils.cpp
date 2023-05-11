@@ -136,6 +136,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR3, PIN_BUTTON_R3);
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA1, PIN_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA2, PIN_BUTTON_A2);
+    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonFn, PIN_BUTTON_FN);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadUp, KEY_DPAD_UP);

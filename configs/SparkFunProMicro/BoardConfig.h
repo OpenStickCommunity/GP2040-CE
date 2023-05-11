@@ -30,6 +30,7 @@
 #define PIN_BUTTON_R3 -1   // R3 / RS    / RS      / R3       / 12 / RS
 #define PIN_BUTTON_A1 7    // A1 / Guide / Home    / PS       / 13 / ~
 #define PIN_BUTTON_A2 8    // A2 / ~     / Capture / ~        / 14 / ~
+#define PIN_BUTTON_FN -1   // Hotkey Function
 #define PIN_BUTTON_REVERSE -1 // UDLR Reverse
 #define PIN_BUTTON_TURBO -1 // Turbo
 #define PIN_SLIDER_LS -1   // Left Stick Slider

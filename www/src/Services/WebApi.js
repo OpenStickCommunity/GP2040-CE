@@ -22,6 +22,7 @@ export const baseButtonMappings = {
 	R3:    { pin: -1, key: 0, error: null },
 	A1:    { pin: -1, key: 0, error: null },
 	A2:    { pin: -1, key: 0, error: null },
+	Fn:    { pin: -1, key: 0, error: null },
 };
 
 async function resetSettings() {
