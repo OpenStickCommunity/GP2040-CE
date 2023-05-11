@@ -18,6 +18,7 @@
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
+#include "addons/input_macro.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -97,6 +98,7 @@ void GP2040::setup() {
 	adc_init();
 
 	// Setup Add-ons
+	addons.LoadAddon(new InputMacro(), CORE0_INPUT);
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);

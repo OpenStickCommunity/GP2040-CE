@@ -126,6 +126,7 @@ src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
 src/addons/wiiext.cpp
+src/addons/input_macro.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
 )

@@ -23,7 +23,7 @@
 #define ADDON_STORAGE_INDEX             3072 // 1024 bytes for Add-Ons
 #define PS4_STORAGE_INDEX               4096 // 2048 bytes for PS4 options
 #define SPLASH_IMAGE_STORAGE_INDEX		6144 // 1032 bytes for Display Config
-
+#define MACRO_STORAGE_INDEX	            7180 // 1036 sizeof(size_t) for Splash image
 
 #define CHECKSUM_MAGIC          0 	// Checksum CRC
 #define NOCHECKSUM_MAGIC        0xDEADBEEF // No checksum CRC
@@ -214,6 +214,34 @@ struct LEDOptions
 	uint32_t checksum;
 };
 
+enum MacroType {
+    ON_RELEASE,
+    ON_HOLD,
+    ON_HOLD_REPEAT,
+    ON_RELEASE_TOGGLE
+};
+
+struct Input {
+    GamepadState state;
+    int duration = -1;
+};
+
+class Macro {
+    public:  
+        Input inputs[25];
+        uint8_t size;
+        std::string name;
+        MacroType type;
+};
+
+struct Macros {	
+	Macro list[5];
+	uint8_t size;
+	uint32_t checksum;
+};
+
+Macro* createMacro(Input*, const char*, MacroType, int);
+
 #define SI Storage::getInstance()
 
 // Storage manager for board, LED options, and thread-safe settings
@@ -262,6 +290,10 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
+	void setDefaultMacros();
+	Macros getMacrosForInit();
+	void setMacros(Macros);
+
 private:
 	Storage() : gamepad(0) {
 		EEPROM.start(); // init EEPROM
@@ -270,6 +302,7 @@ private:
 		initLEDOptions();
 		initSplashImage();
 		initPS4Options();
+		initMacros();
 
 	}
 	void initBoardOptions();
@@ -281,6 +314,7 @@ private:
 	void setDefaultAddonOptions();
 	void setDefaultSplashImage();
 	void initPS4Options();
+	void initMacros();
 	bool CONFIG_MODE; 			// Config mode (boot)
 	Gamepad * gamepad;    		// Gamepad data
 	Gamepad * processedGamepad; // Gamepad with ONLY processed data
@@ -291,6 +325,7 @@ private:
 	PS4Options ps4Options;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;
+	Macros macros;
 };
 
 #endif

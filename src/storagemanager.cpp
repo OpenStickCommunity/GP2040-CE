@@ -31,6 +31,7 @@
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
+#include "addons/input_macro.h"
 
 #include "bitmaps.h"
 
@@ -463,4 +464,107 @@ void AnimationStorage::save()
 
 	if (dirty)
 		EEPROM.commit();
+}
+
+void Storage::setMacros(Macros newMacros)
+{
+	if (memcmp(&newMacros, &macros, sizeof(Macros)) != 0)
+	{
+		newMacros.checksum = CHECKSUM_MAGIC; // set checksum to magic number
+		newMacros.checksum = CRC32::calculate(&newMacros);
+		EEPROM.set(MACRO_STORAGE_INDEX, newMacros);
+		EEPROM.commit();
+		memcpy(&macros, &newMacros, sizeof(Macros));
+	}
+}
+
+Macro *createMacro(Input* inputs, const char* name, MacroType type, int size) {
+    Macro* macro = new Macro;
+    for (int i = 0; i < size; i++) {
+        macro->inputs[i] = inputs[i];
+    }
+    macro->size = size;
+    macro->type = type;
+    macro->name = name;
+
+    return macro;
+}
+
+Input _inputsShoryuken[] = {
+    {{ .dpad = GAMEPAD_MASK_RIGHT }, .duration = 100},
+    {{ .dpad = GAMEPAD_MASK_DOWN }, .duration = 100},
+    {{ .dpad = GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT, .buttons = GAMEPAD_MASK_B4 }, .duration = 100}
+};
+
+const Macro* sampleMacro = createMacro(
+    _inputsShoryuken,
+    "Shoryuken",
+    ON_HOLD,
+	3
+);
+
+Input _inputsFf7[] = {
+    {{ .dpad = 0 }, .duration = 200},  {{ .dpad = GAMEPAD_MASK_RIGHT }, .duration = 500},
+    {{ .dpad = 0 }, .duration = 200},  {{ .dpad = GAMEPAD_MASK_LEFT }, .duration = 500},
+    {{ .dpad = 0 }, .duration = 500},  {{ .dpad = 0, .buttons = GAMEPAD_MASK_B2 }, .duration = 500},
+    {{ .dpad = 0 }, .duration = 500},  {{ .dpad = 0, .buttons = GAMEPAD_MASK_B2 }, .duration = 500},
+    {{ .dpad = 0 }, .duration = 500},  {{ .dpad = 0, .buttons = GAMEPAD_MASK_B2 }, .duration = 500},
+    {{ .dpad = 0 }, .duration = 500},  {{ .dpad = 0, .buttons = GAMEPAD_MASK_B2 }, .duration = 500}
+};
+
+const Macro* sampleMacro2 = createMacro(
+    _inputsFf7,
+    "Ff7",
+    ON_RELEASE_TOGGLE,
+    12
+);
+
+Input _inputsTatsu[] = {
+    {{ .dpad = GAMEPAD_MASK_DOWN }, .duration = 100},
+    {{ .dpad = GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT }, .duration = 100},
+    {{ .dpad = GAMEPAD_MASK_LEFT, .buttons = GAMEPAD_MASK_B2 }, .duration = 100}
+};
+
+const Macro* sampleMacro3 = createMacro(
+    _inputsTatsu,
+    "Tatsumaki Senpuukyaku",
+    ON_RELEASE,
+    3
+);
+
+Input _inputsHadouken[] = {
+    {{ .dpad = GAMEPAD_MASK_DOWN }, .duration = 100},
+    {{ .dpad = GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT }, .duration = 100},
+    {{ .dpad = GAMEPAD_MASK_RIGHT, .buttons = GAMEPAD_MASK_B4 }, .duration = 100}
+};
+
+const Macro* sampleMacro4 = createMacro(
+    _inputsHadouken,
+    "Hadouken",
+    ON_HOLD_REPEAT,
+    3
+);
+
+void Storage::setDefaultMacros()
+{
+	macros.size = 4;
+	macros.list[0] = (*sampleMacro);
+	macros.list[1] = (*sampleMacro2);
+	macros.list[2] = (*sampleMacro3);
+	macros.list[3] = (*sampleMacro4);
+	setMacros(macros);
+}
+
+void Storage::initMacros() {
+	EEPROM.get(MACRO_STORAGE_INDEX, macros);
+	uint32_t lastCRC = macros.checksum;
+	macros.checksum = CHECKSUM_MAGIC;
+	if (lastCRC != CRC32::calculate(&macros)) {
+		setDefaultMacros();
+	}
+}
+
+Macros Storage::getMacrosForInit()
+{
+	return macros;
 }
