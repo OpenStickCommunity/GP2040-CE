@@ -81,11 +81,24 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) docToPin(uint8_t& pin, const DynamicJsonDocument& doc, const char* key)
+static void __attribute__((noinline)) docToPinLegacy(uint8_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
 	if (doc.containsKey(key))
 	{
 		pin = doc[key] < 0 ? 0xff : doc[key];
+	}
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
+static void __attribute__((noinline)) docToPin(int32_t& pin, const DynamicJsonDocument& doc, const char* key)
+{
+	if (doc.containsKey(key))
+	{
+		pin = doc[key];
+	}
+	if (!isValidPin(pin))
+	{
+		pin = -1;
 	}
 }
 
@@ -305,8 +318,8 @@ std::string setDisplayOptions(ConfigLegacy::BoardOptions& boardOptions)
 {
 	DynamicJsonDocument doc = get_post_data();
 	readDoc(boardOptions.hasI2CDisplay, doc, "enabled");
-	docToPin(boardOptions.i2cSDAPin, doc, "sdaPin");
-	docToPin(boardOptions.i2cSCLPin, doc, "sclPin");
+	docToPinLegacy(boardOptions.i2cSDAPin, doc, "sdaPin");
+	docToPinLegacy(boardOptions.i2cSCLPin, doc, "sclPin");
 	readDoc(boardOptions.displayI2CAddress, doc, "i2cAddress");
 	readDoc(boardOptions.i2cBlock, doc, "i2cBlock");
 	readDoc(boardOptions.i2cSpeed, doc, "i2cSpeed");
@@ -791,51 +804,43 @@ std::string setAddonOptions()
 
 	ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
-	docToValue(reverseOptions.buttonPin, doc, "reversePin");
-	if (!isValidPin(reverseOptions.buttonPin))
-	{
-		reverseOptions.buttonPin = -1;
-	}
-	docToValue(reverseOptions.ledPin, doc, "reversePinLED");
-	if (!isValidPin(reverseOptions.ledPin))
-	{
-		reverseOptions.ledPin = -1;
-	}
+	docToPin(reverseOptions.buttonPin, doc, "reversePin");	
+	docToPin(reverseOptions.ledPin, doc, "reversePinLED");	
 	docToValue(reverseOptions.actionUp, doc, "reverseActionUp");
 	docToValue(reverseOptions.actionDown, doc, "reverseActionDown");
 	docToValue(reverseOptions.actionLeft, doc, "reverseActionLeft");
 	docToValue(reverseOptions.actionRight, doc, "reverseActionRight");
 
 	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getLegacyAddonOptions();
-	docToPin(addonOptions.pinButtonTurbo, doc, "turboPin");
-	docToPin(addonOptions.pinTurboLED, doc, "turboPinLED");
-	docToPin(addonOptions.pinSliderLS, doc, "sliderLSPin");
-	docToPin(addonOptions.pinSliderRS, doc, "sliderRSPin");
-	docToPin(addonOptions.pinSliderSOCDOne, doc, "sliderSOCDPinOne");
-	docToPin(addonOptions.pinSliderSOCDTwo, doc, "sliderSOCDPinTwo");
+	docToPinLegacy(addonOptions.pinButtonTurbo, doc, "turboPin");
+	docToPinLegacy(addonOptions.pinTurboLED, doc, "turboPinLED");
+	docToPinLegacy(addonOptions.pinSliderLS, doc, "sliderLSPin");
+	docToPinLegacy(addonOptions.pinSliderRS, doc, "sliderRSPin");
+	docToPinLegacy(addonOptions.pinSliderSOCDOne, doc, "sliderSOCDPinOne");
+	docToPinLegacy(addonOptions.pinSliderSOCDTwo, doc, "sliderSOCDPinTwo");
 	docToValue(addonOptions.turboShotCount, doc, "turboShotCount");
-	docToPin(addonOptions.reverseActionUp, doc, "reverseActionUp");
-	docToPin(addonOptions.reverseActionDown, doc, "reverseActionDown");
-	docToPin(addonOptions.reverseActionLeft, doc, "reverseActionLeft");
-	docToPin(addonOptions.reverseActionRight, doc, "reverseActionRight");
-	docToPin(addonOptions.i2cAnalog1219SDAPin, doc, "i2cAnalog1219SDAPin");
-	docToPin(addonOptions.i2cAnalog1219SCLPin, doc, "i2cAnalog1219SCLPin");
+	docToPinLegacy(addonOptions.reverseActionUp, doc, "reverseActionUp");
+	docToPinLegacy(addonOptions.reverseActionDown, doc, "reverseActionDown");
+	docToPinLegacy(addonOptions.reverseActionLeft, doc, "reverseActionLeft");
+	docToPinLegacy(addonOptions.reverseActionRight, doc, "reverseActionRight");
+	docToPinLegacy(addonOptions.i2cAnalog1219SDAPin, doc, "i2cAnalog1219SDAPin");
+	docToPinLegacy(addonOptions.i2cAnalog1219SCLPin, doc, "i2cAnalog1219SCLPin");
 	docToValue(addonOptions.i2cAnalog1219Block, doc, "i2cAnalog1219Block");
 	docToValue(addonOptions.i2cAnalog1219Speed, doc, "i2cAnalog1219Speed");
 	docToValue(addonOptions.i2cAnalog1219Address, doc, "i2cAnalog1219Address");
 	docToValue(addonOptions.onBoardLedMode, doc, "onBoardLedMode");
-	docToPin(addonOptions.pinDualDirDown, doc, "dualDirDownPin");
-	docToPin(addonOptions.pinDualDirUp, doc, "dualDirUpPin");
-	docToPin(addonOptions.pinDualDirLeft, doc, "dualDirLeftPin");
-	docToPin(addonOptions.pinDualDirRight, doc, "dualDirRightPin");
+	docToPinLegacy(addonOptions.pinDualDirDown, doc, "dualDirDownPin");
+	docToPinLegacy(addonOptions.pinDualDirUp, doc, "dualDirUpPin");
+	docToPinLegacy(addonOptions.pinDualDirLeft, doc, "dualDirLeftPin");
+	docToPinLegacy(addonOptions.pinDualDirRight, doc, "dualDirRightPin");
 	docToValue(addonOptions.dualDirDpadMode, doc, "dualDirDpadMode");
 	docToValue(addonOptions.dualDirCombineMode, doc, "dualDirCombineMode");
-	docToPin(addonOptions.analogAdcPinX, doc, "analogAdcPinX");
-	docToPin(addonOptions.analogAdcPinY, doc, "analogAdcPinY");
+	docToPinLegacy(addonOptions.analogAdcPinX, doc, "analogAdcPinX");
+	docToPinLegacy(addonOptions.analogAdcPinY, doc, "analogAdcPinY");
 	docToValue(addonOptions.bootselButtonMap, doc, "bootselButtonMap");
-	docToPin(addonOptions.buzzerPin, doc, "buzzerPin");
+	docToPinLegacy(addonOptions.buzzerPin, doc, "buzzerPin");
 	docToValue(addonOptions.buzzerVolume, doc, "buzzerVolume");
-	docToPin(addonOptions.extraButtonPin, doc, "extraButtonPin");
+	docToPinLegacy(addonOptions.extraButtonPin, doc, "extraButtonPin");
 	docToValue(addonOptions.extraButtonMap, doc, "extraButtonMap");
 	docToValue(addonOptions.playerNumber, doc, "playerNumber");
 	docToValue(addonOptions.shmupMode, doc, "shmupMode");
@@ -844,20 +849,20 @@ std::string setAddonOptions()
 	docToValue(addonOptions.shmupAlwaysOn2, doc, "shmupAlwaysOn2");
 	docToValue(addonOptions.shmupAlwaysOn3, doc, "shmupAlwaysOn3");
 	docToValue(addonOptions.shmupAlwaysOn4, doc, "shmupAlwaysOn4");
-	docToPin(addonOptions.pinShmupBtn1, doc, "pinShmupBtn1");
-	docToPin(addonOptions.pinShmupBtn2, doc, "pinShmupBtn2");
-	docToPin(addonOptions.pinShmupBtn3, doc, "pinShmupBtn3");
-	docToPin(addonOptions.pinShmupBtn4, doc, "pinShmupBtn4");
+	docToPinLegacy(addonOptions.pinShmupBtn1, doc, "pinShmupBtn1");
+	docToPinLegacy(addonOptions.pinShmupBtn2, doc, "pinShmupBtn2");
+	docToPinLegacy(addonOptions.pinShmupBtn3, doc, "pinShmupBtn3");
+	docToPinLegacy(addonOptions.pinShmupBtn4, doc, "pinShmupBtn4");
 	docToValue(addonOptions.shmupBtnMask1, doc, "shmupBtnMask1");
 	docToValue(addonOptions.shmupBtnMask2, doc, "shmupBtnMask2");
 	docToValue(addonOptions.shmupBtnMask3, doc, "shmupBtnMask3");
 	docToValue(addonOptions.shmupBtnMask4, doc, "shmupBtnMask4");
-	docToPin(addonOptions.pinShmupDial, doc, "pinShmupDial");
+	docToPinLegacy(addonOptions.pinShmupDial, doc, "pinShmupDial");
 	docToValue(addonOptions.sliderSOCDModeOne, doc, "sliderSOCDModeOne");
 	docToValue(addonOptions.sliderSOCDModeTwo, doc, "sliderSOCDModeTwo");
 	docToValue(addonOptions.sliderSOCDModeDefault, doc, "sliderSOCDModeDefault");
-	docToPin(addonOptions.wiiExtensionSDAPin, doc, "wiiExtensionSDAPin");
-	docToPin(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
+	docToPinLegacy(addonOptions.wiiExtensionSDAPin, doc, "wiiExtensionSDAPin");
+	docToPinLegacy(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
 	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
 	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
 	docToValue(addonOptions.AnalogInputEnabled, doc, "AnalogInputEnabled");
