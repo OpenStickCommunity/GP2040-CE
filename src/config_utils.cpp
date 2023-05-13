@@ -379,7 +379,7 @@ struct ConfigFooter
     }
 };
 
-static const uint32_t FOOTER_MAGIC = 0x34325047; // GP24
+static const uint32_t FOOTER_MAGIC = 0xd2f1e365;
 
 // Verify that the maximum size of the serialized Config object fits into the allocated flash block
 #if defined(Config_size)
