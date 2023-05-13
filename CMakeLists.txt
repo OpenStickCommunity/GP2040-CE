@@ -12,6 +12,9 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.0")
   message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
+# Uncomment the next line for an unomptimized build for debugging. Use in conjunction with the Debug build type.
+# set(PICO_DEOPTIMIZED_DEBUG 1)
+
 project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.7.1)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
