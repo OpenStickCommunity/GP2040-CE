@@ -386,14 +386,15 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	return serialize_json(doc);
 }
 
-ConfigLegacy::SplashImage splashImageTemp; // For splash image upload
-
 std::string getSplashImage()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN * 10); // TODO: Figoure out correct length
-	const ConfigLegacy::SplashImage& splashImage = Storage::getInstance().getSplashImage();
+
 	JsonArray splashImageArray = doc.createNestedArray("splashImage");
-	copyArray(splashImage.data, splashImageArray);
+	const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+	std::vector<char> temp(sizeof(displayOptions.splashImage.bytes), '\0');
+	memcpy(temp.data(), displayOptions.splashImage.bytes, displayOptions.splashImage.size);
+	copyArray(reinterpret_cast<const uint8_t*>(temp.data()), temp.size(), splashImageArray);
 
 	return serialize_json(doc);
 }
@@ -401,12 +402,18 @@ std::string getSplashImage()
 std::string setSplashImage()
 {
 	DynamicJsonDocument doc = get_post_data();
+
+	DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+
 	std::string decoded;
 	std::string base64String = doc["splashImage"];
 	Base64::Decode(base64String, decoded);
-	memcpy(splashImageTemp.data, decoded.data(), std::min(decoded.length(), sizeof(splashImageTemp.data)));
-	splashImageTemp.checksum = 0;
-	ConfigManager::getInstance().setSplashImage(splashImageTemp);
+	const size_t length = std::min(decoded.length(), sizeof(displayOptions.splashImage.bytes));
+
+	memcpy(displayOptions.splashImage.bytes, decoded.data(), length);
+	displayOptions.splashImage.size = length;
+
+	Storage::getInstance().save();
 
 	return serialize_json(doc);
 }
