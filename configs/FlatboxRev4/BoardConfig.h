@@ -6,7 +6,8 @@
 #ifndef FLATBOX_REV4_CONFIG_H_
 #define FLATBOX_REV4_CONFIG_H_
 
-#include <GamepadEnums.h>
+#include "enums.pb.h"
+
 // Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin
 
 #define FLATBOX_SW1_PIN    6
@@ -158,8 +159,8 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define SPLASH_MODE NOSPLASH
-#define SPLASH_CHOICE MAIN
+#define SPLASH_MODE SPLASH_MODE_NONE
+#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
 #define SPLASH_DURATION 7500 // Duration in milliseconds
 
 
@@ -200,7 +201,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_TYPE BOARD_LED_OFF
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
 
 // Dual Directional Add-on Options
 

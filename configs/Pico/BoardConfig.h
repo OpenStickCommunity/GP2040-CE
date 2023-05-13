@@ -6,7 +6,7 @@
 #ifndef PICO_BOARD_CONFIG_H_
 #define PICO_BOARD_CONFIG_H_
 
-#include <GamepadEnums.h>
+#include "enums.pb.h"
 
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too. 
