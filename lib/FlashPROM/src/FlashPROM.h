@@ -21,6 +21,7 @@
 class FlashPROM
 {
 	public:
+		void start();
 		void commit();
 		void reset();
 

@@ -40,6 +40,8 @@
 
 Storage::Storage()
 {
+	EEPROM.start();
+
 	initBoardOptions();
 	initAddonOptions();
 	initLEDOptions();

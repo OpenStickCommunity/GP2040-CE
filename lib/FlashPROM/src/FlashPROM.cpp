@@ -27,6 +27,12 @@ int64_t writeToFlash(alarm_id_t id, void *flashCache)
 	return 0;
 }
 
+void FlashPROM::start()
+{
+	if (flashLock == nullptr)
+		flashLock = spin_lock_instance(spin_lock_claim_unused(true));
+}
+
 /* We don't have an actual EEPROM, so we need to be extra careful about minimizing writes. Instead
 	of writing when a commit is requested, we update a time to actually commit. That way, if we receive multiple requests
 	to commit in that timeframe, we'll hold off until the user is done sending changes. */
