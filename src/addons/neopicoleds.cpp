@@ -157,7 +157,7 @@ void NeoPicoLEDAddon::process()
 				for (int i = 0; i < PLED_COUNT; i++) {
 					float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
 					float brightness = as.GetBrightnessX() * level;
-					rgbPLEDValues[i] = ((RGB)ColorGreen).value(neopico->GetFormat(), brightness);
+					rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico->GetFormat(), brightness);
 					frame[PLED_PINS[i]] = rgbPLEDValues[i];
 				}
 		}
