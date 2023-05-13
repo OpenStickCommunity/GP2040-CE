@@ -265,6 +265,13 @@ std::string serialize_json(JsonDocument &doc)
 	return data;
 }
 
+std::string getUsedPins()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	addUsedPinsArray(doc);
+	return serialize_json(doc);
+}
+
 std::string setDisplayOptions(BoardOptions& boardOptions)
 {
 	DynamicJsonDocument doc = get_post_data();
@@ -344,8 +351,6 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startY", boardOptions.buttonLayoutCustomOptions.paramsRight.startY);
 	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius", boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius);
 	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding", boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding);
-
-	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
@@ -525,8 +530,6 @@ std::string getLedOptions()
 	writeDoc(doc, "pledPin3", ledOptions.pledPin3);
 	writeDoc(doc, "pledPin4", ledOptions.pledPin4);
 	writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
-
-	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
@@ -1010,8 +1013,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "TurboInputEnabled", addonOptions.TurboInputEnabled);
 	writeDoc(doc, "WiiExtensionAddonEnabled", addonOptions.WiiExtensionAddonEnabled);
 
-	addUsedPinsArray(doc);
-
 	return serialize_json(doc);
 }
 
@@ -1098,6 +1099,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getSplashImage", getSplashImage },
 	{ "/api/getFirmwareVersion", getFirmwareVersion },
 	{ "/api/getMemoryReport", getMemoryReport },
+	{ "/api/getUsedPins", getUsedPins },
 #if !defined(NDEBUG)
 	{ "/api/echo", echo },
 #endif
