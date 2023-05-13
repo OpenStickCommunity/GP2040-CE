@@ -110,6 +110,14 @@ static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
+// Web-config frontend compatibility workaround
+template <typename K>
+static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K& key, const bool& var)
+{
+	doc[key] = var ? 1 : 0;
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
 template <typename T, typename K0, typename K1>
 static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K0& key0, const K1& key1, const T& var)
 {
