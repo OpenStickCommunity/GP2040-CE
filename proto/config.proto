@@ -117,7 +117,7 @@ message DisplayOptions
 	optional SplashMode splashMode = 10;
 	optional SplashChoice splashChoice = 11;
 	optional int32 splashDuration = 12;
-	optional string splashImage = 13 [(nanopb).max_length = 1368];
+	optional bytes splashImage = 13 [(nanopb).max_size = 1024];
 
 	optional int32 size = 14;
 	optional int32 flip = 15;
@@ -318,17 +318,17 @@ message PlayerNumberOptions
 message PS4Options
 {
 	optional bool enabled = 1;
-	optional string serial = 2 [(nanopb).max_length = 24];
-	optional string signature = 3 [(nanopb).max_length = 344];
-	optional string rsaN = 4 [(nanopb).max_length = 344];
-	optional uint32 rsaE = 5;
-	optional string rsaD = 6 [(nanopb).max_length = 344];
-	optional string rsaP = 7 [(nanopb).max_length = 172];
-	optional string rsaQ = 8 [(nanopb).max_length = 172];
-	optional string rsaDP = 9 [(nanopb).max_length = 172];
-	optional string rsaDQ = 10 [(nanopb).max_length = 172];
-	optional string rsaQP = 11 [(nanopb).max_length = 172];
-	optional string rsaRN = 12 [(nanopb).max_length = 344];
+	optional bytes serial = 2 [(nanopb).max_size = 16];
+	optional bytes signature = 3 [(nanopb).max_size = 256];
+	optional bytes rsaN = 4 [(nanopb).max_size = 256];
+	optional bytes rsaE = 5 [(nanopb).max_size = 4];
+	optional bytes rsaD = 6 [(nanopb).max_size = 256];
+	optional bytes rsaP = 7 [(nanopb).max_size = 128];
+	optional bytes rsaQ = 8 [(nanopb).max_size = 128];
+	optional bytes rsaDP = 9 [(nanopb).max_size = 128];
+	optional bytes rsaDQ = 10 [(nanopb).max_size = 128];
+	optional bytes rsaQP = 11 [(nanopb).max_size = 128];
+	optional bytes rsaRN = 12 [(nanopb).max_size = 256];
 }
 
 message WiiOptions

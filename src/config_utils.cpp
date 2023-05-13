@@ -25,6 +25,7 @@
 
 #include "CRC32.h"
 #include "FlashPROM.h"
+#include "configs/base64.h"
 
 #include <ArduinoJson.h>
 
@@ -53,6 +54,14 @@
         parent.PREPROCESSOR_JOIN(has_, property) = true; \
     } \
 
+#define INIT_UNSET_PROPERTY_BYTES(parent, property, byteArray) \
+    if (!parent.PREPROCESSOR_JOIN(has_, property)) \
+    { \
+        parent.property.size = sizeof(byteArray); \
+        memcpy(parent.property.bytes, byteArray, std::min(sizeof(byteArray), sizeof(parent.property.bytes))); \
+        parent.PREPROCESSOR_JOIN(has_, property) = true; \
+    } \
+
 #ifndef DEFAULT_INPUT_MODE
     #define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT
 #endif
@@ -65,6 +74,8 @@
 
 void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 {
+    const uint8_t emptyByteArray[0] = {};
+
     INIT_UNSET_PROPERTY_STR(config, boardVersion, GP2040VERSION);
 
     // gamepadOptions
@@ -160,7 +171,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, splashMode, SPLASH_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashChoice, SPLASH_CHOICE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
-    INIT_UNSET_PROPERTY_STR(config.displayOptions, splashImage, "");
+    INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, emptyByteArray);
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
@@ -319,17 +330,17 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.ps4Options
     INIT_UNSET_PROPERTY(config.addonOptions.ps4Options, enabled, false);
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, serial, "");
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, signature, "");
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaN, "");
-    INIT_UNSET_PROPERTY(config.addonOptions.ps4Options, rsaE, 0);
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaD, "");
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaP, "");
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaQ, "");
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaDP, "");
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaDQ, "");
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaQP, "");
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.ps4Options, rsaRN, "");
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, serial, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, signature, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaN, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaE, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaD, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaP, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaQ, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaDP, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaDQ, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaQP, emptyByteArray);
+    INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaRN, emptyByteArray);
 
     // addonOptions.wiiOptions
     INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, enabled, WII_EXTENSION_ENABLED);
@@ -534,6 +545,7 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname);
 #define TO_JSON_BOOL(fieldname, submessageType) str.append((s.fieldname) ? "true" : "false");
 #define TO_JSON_STRING(fieldname, submessageType) str.push_back('"'); str.append(s.fieldname); str.push_back('"');
+#define TO_JSON_BYTES(fieldname, submessageType) str.push_back('"'); str.append(Base64::Encode(reinterpret_cast<const char*>(s.fieldname.bytes), s.fieldname.size)); str.push_back('"');
 #define TO_JSON_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname, indentLevel + 1);
 
 #define TO_JSON_REPEATED_UENUM(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
@@ -541,6 +553,7 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_REPEATED_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
 #define TO_JSON_REPEATED_BOOL(fieldname, submessageType) str.append((s.fieldname[i]) ? "true" : "false");
 #define TO_JSON_REPEATED_STRING(fieldname, submessageType) str.push_back('"'); str.append(s.fieldname[i]); str.push_back('"');
+#define TO_JSON_REPEATED_BYTES(fieldname, submessageType) static_assert(false, "not supported");
 #define TO_JSON_REPEATED_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname[i], indentLevel + 1);
 
 #define TO_JSON_REPEATED(ltype, fieldname, submessageType) \
@@ -709,6 +722,46 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
+bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst value = jsonObject[fieldname];
+        if (!value.is<const char*>())
+        {
+            return false;
+        }
+        const char* str = value.as<const char*>();
+        const size_t strLength = strlen(str);
+
+        // Length of Base64 encoded data has to be divisible by 4
+        if (strLength % 4 != 0)
+        {
+            return false;
+        }
+
+        size_t decodedLength = strLength / 4 * 3;
+        if (strLength >= 1 && str[strLength - 1] == '=') --decodedLength;
+        if (strLength >= 2 && str[strLength - 2] == '=') --decodedLength;
+        if (decodedLength > maxSize)
+        {
+            return false;
+        }
+
+        std::string decoded;
+        if (!Base64::Decode(str, strLength, decoded))
+        {
+            return false;
+        }
+        memcpy(bytes, decoded.data(), decoded.length());
+        size = decoded.length();
+    }
+
+    return true;
+}
+
+#define FROM_JSON_BYTES(fieldname, submessageType) if (!fromJsonBytes(jsonObject, #fieldname, configStruct.fieldname.bytes, configStruct.fieldname.size, sizeof(configStruct.fieldname.bytes))) return false;
+
 #define FROM_JSON_MESSAGE(fieldname, submessageType) \
     if (jsonObject.containsKey(#fieldname)) \
     { \
@@ -779,6 +832,8 @@ std::string ConfigUtils::toJSON(const Config& config)
         configStruct.fieldname[index][sizeof(configStruct.fieldname[index]) - 1] = '\0'; \
         ++configStruct.fieldname ## _count; \
     }
+
+#define FROM_JSON_REPEATED_BYTES(fieldname, submessageType) static_assert(false, "not supported");
 
 #define FROM_JSON_REPEATED_MESSAGE(fieldname, submessageType) \
     configStruct.fieldname ## _count = 0; \
