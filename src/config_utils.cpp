@@ -379,7 +379,7 @@ static const uint32_t FOOTER_MAGIC = 0x34325047; // GP24
 
 static bool loadConfigInner(Config& config)
 {
-    config = Config_init_zero;
+    config = Config Config_init_zero;
 
     const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
     const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
@@ -418,7 +418,7 @@ void ConfigUtils::load(Config& config)
     {
         // We could neither deserialize Protobuf config data nor legacy config data.
         // We are probably dealing with a new device and therefore initialize the config to default values.
-        config = Config_init_default;
+        config = Config Config_init_default;
     }
 
     // Make sure that fields that were not deserialized are properly initialized.
