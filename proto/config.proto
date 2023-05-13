@@ -213,6 +213,7 @@ message BootselButtonOptions
 message OnBoardLedOptions
 {
 	optional OnBoardLedMode mode = 1;
+	optional bool enabled = 2;
 }
 
 message AnalogOptions

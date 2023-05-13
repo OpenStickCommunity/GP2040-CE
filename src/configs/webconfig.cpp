@@ -827,6 +827,10 @@ std::string setAddonOptions()
 	docToValue(socdSliderOptions.modeTwo, doc, "sliderSOCDModeTwo");
 	docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
 
+    OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
+	docToValue(onBoardLedOptions.mode, doc, "onBoardLedMode");
+	docToValue(onBoardLedOptions.enabled, doc, "BoardLedAddonEnabled");
+
 	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	docToPinLegacy(addonOptions.pinButtonTurbo, doc, "turboPin");
 	docToPinLegacy(addonOptions.pinTurboLED, doc, "turboPinLED");
@@ -842,7 +846,6 @@ std::string setAddonOptions()
 	docToValue(addonOptions.i2cAnalog1219Block, doc, "i2cAnalog1219Block");
 	docToValue(addonOptions.i2cAnalog1219Speed, doc, "i2cAnalog1219Speed");
 	docToValue(addonOptions.i2cAnalog1219Address, doc, "i2cAnalog1219Address");
-	docToValue(addonOptions.onBoardLedMode, doc, "onBoardLedMode");
 	docToPinLegacy(addonOptions.pinDualDirDown, doc, "dualDirDownPin");
 	docToPinLegacy(addonOptions.pinDualDirUp, doc, "dualDirUpPin");
 	docToPinLegacy(addonOptions.pinDualDirLeft, doc, "dualDirLeftPin");
@@ -877,7 +880,6 @@ std::string setAddonOptions()
 	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
 	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
 	docToValue(addonOptions.AnalogInputEnabled, doc, "AnalogInputEnabled");
-	docToValue(addonOptions.BoardLedAddonEnabled, doc, "BoardLedAddonEnabled");
 	docToValue(addonOptions.BuzzerSpeakerAddonEnabled, doc, "BuzzerSpeakerAddonEnabled");
 	docToValue(addonOptions.BootselButtonAddonEnabled, doc, "BootselButtonAddonEnabled");
 	docToValue(addonOptions.DualDirectionalInputEnabled, doc, "DualDirectionalInputEnabled");
@@ -1012,6 +1014,10 @@ std::string getAddonOptions()
 	writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
 	writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
 
+    const OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
+	writeDoc(doc, "onBoardLedMode", onBoardLedOptions.mode);
+	writeDoc(doc, "BoardLedAddonEnabled", onBoardLedOptions.enabled);
+
 	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	writeDoc(doc, "turboPin", addonOptions.pinButtonTurbo == 0xFF ? -1 : addonOptions.pinButtonTurbo);
 	writeDoc(doc, "turboPinLED", addonOptions.pinTurboLED == 0xFF ? -1 : addonOptions.pinTurboLED);
@@ -1023,7 +1029,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "i2cAnalog1219Block", addonOptions.i2cAnalog1219Block);
 	writeDoc(doc, "i2cAnalog1219Speed", addonOptions.i2cAnalog1219Speed);
 	writeDoc(doc, "i2cAnalog1219Address", addonOptions.i2cAnalog1219Address);
-	writeDoc(doc, "onBoardLedMode", addonOptions.onBoardLedMode);
 	writeDoc(doc, "dualDirDownPin", addonOptions.pinDualDirDown == 0xFF ? -1 : addonOptions.pinDualDirDown);
 	writeDoc(doc, "dualDirUpPin", addonOptions.pinDualDirUp == 0xFF ? -1 : addonOptions.pinDualDirUp);
 	writeDoc(doc, "dualDirLeftPin", addonOptions.pinDualDirLeft == 0xFF ? -1 : addonOptions.pinDualDirLeft);
@@ -1058,7 +1063,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionBlock", addonOptions.wiiExtensionBlock);
 	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
 	writeDoc(doc, "AnalogInputEnabled", addonOptions.AnalogInputEnabled);
-	writeDoc(doc, "BoardLedAddonEnabled", addonOptions.BoardLedAddonEnabled);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", addonOptions.BuzzerSpeakerAddonEnabled);
 	writeDoc(doc, "BootselButtonAddonEnabled", addonOptions.BootselButtonAddonEnabled);
 	writeDoc(doc, "DualDirectionalInputEnabled", addonOptions.DualDirectionalInputEnabled);
