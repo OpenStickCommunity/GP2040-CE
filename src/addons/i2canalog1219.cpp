@@ -1,18 +1,18 @@
 #include "addons/i2canalog1219.h"
 #include "storagemanager.h"
+#include "helper.h"
+#include "config.pb.h"
 
 #define ADS_MAX (float)((1 << 23) - 1)
 #define VREF_VOLTAGE 2.048f
 
 bool I2CAnalog1219Input::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-	return (options.I2CAnalog1219InputEnabled &&
-        options.i2cAnalog1219SDAPin != (uint8_t)-1 &&
-        options.i2cAnalog1219SCLPin != (uint8_t)-1);
+    const AnalogADS1219Options& options = Storage::getInstance().getAddonOptions().analogADS1219Options;
+	return (options.enabled && isValidPin(options.i2cSDAPin) && isValidPin(options.i2cSCLPin));
 }
 
 void I2CAnalog1219Input::setup() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
+    const AnalogADS1219Options& options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 
     memset(&pins, 0, sizeof(ADS_PINS));
     channelHop = 0;
@@ -22,11 +22,11 @@ void I2CAnalog1219Input::setup() {
 
     // Init our ADS1219 library
     ads = new ADS1219(1,
-        options.i2cAnalog1219SDAPin,
-        options.i2cAnalog1219SCLPin,
-        options.i2cAnalog1219Block == 0 ? i2c0 : i2c1,
-        options.i2cAnalog1219Speed,
-        options.i2cAnalog1219Address);
+        options.i2cSDAPin,
+        options.i2cSCLPin,
+        options.i2cBlock == 0 ? i2c0 : i2c1,
+        options.i2cSpeed,
+        options.i2cAddress);
     ads->begin();                               // setup I2C and chip start
     ads->setChannel(0);                         // Start on Channel 0
     ads->setConversionMode(CONTINUOUS);         // Read analog continuously

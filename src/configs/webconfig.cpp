@@ -838,6 +838,14 @@ std::string setAddonOptions()
 	docToValue(extraOptions.buttonMap, doc, "extraButtonMap");
 	docToValue(extraOptions.enabled, doc, "ExtraButtonAddonEnabled");
 
+    AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
+	docToPin(analogADS1219Options.i2cSDAPin, doc, "i2cAnalog1219SDAPin");
+	docToPin(analogADS1219Options.i2cSCLPin, doc, "i2cAnalog1219SCLPin");
+	docToValue(analogADS1219Options.i2cBlock, doc, "i2cAnalog1219Block");
+	docToValue(analogADS1219Options.i2cSpeed, doc, "i2cAnalog1219Speed");
+	docToValue(analogADS1219Options.i2cAddress, doc, "i2cAnalog1219Address");
+	docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
+
 	ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
 	docToPin(reverseOptions.buttonPin, doc, "reversePin");	
@@ -869,11 +877,6 @@ std::string setAddonOptions()
 	docToPinLegacy(addonOptions.reverseActionDown, doc, "reverseActionDown");
 	docToPinLegacy(addonOptions.reverseActionLeft, doc, "reverseActionLeft");
 	docToPinLegacy(addonOptions.reverseActionRight, doc, "reverseActionRight");
-	docToPinLegacy(addonOptions.i2cAnalog1219SDAPin, doc, "i2cAnalog1219SDAPin");
-	docToPinLegacy(addonOptions.i2cAnalog1219SCLPin, doc, "i2cAnalog1219SCLPin");
-	docToValue(addonOptions.i2cAnalog1219Block, doc, "i2cAnalog1219Block");
-	docToValue(addonOptions.i2cAnalog1219Speed, doc, "i2cAnalog1219Speed");
-	docToValue(addonOptions.i2cAnalog1219Address, doc, "i2cAnalog1219Address");
 	docToValue(addonOptions.playerNumber, doc, "playerNumber");
 	docToValue(addonOptions.shmupMode, doc, "shmupMode");
 	docToValue(addonOptions.shmupMixMode, doc, "shmupMixMode");
@@ -894,7 +897,6 @@ std::string setAddonOptions()
 	docToPinLegacy(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
 	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
 	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
-	docToValue(addonOptions.I2CAnalog1219InputEnabled, doc, "I2CAnalog1219InputEnabled");
 	docToValue(addonOptions.JSliderInputEnabled, doc, "JSliderInputEnabled");
 	docToValue(addonOptions.PlayerNumAddonEnabled, doc, "PlayerNumAddonEnabled");
 	docToValue(addonOptions.PS4ModeAddonEnabled, doc, "PS4ModeAddonEnabled");
@@ -1035,6 +1037,14 @@ std::string getAddonOptions()
 	writeDoc(doc, "extraButtonMap", extraOptions.buttonMap);
 	writeDoc(doc, "ExtraButtonAddonEnabled", extraOptions.enabled);
 
+    const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
+	writeDoc(doc, "i2cAnalog1219SDAPin", analogADS1219Options.i2cSDAPin == 0xFF ? -1 : analogADS1219Options.i2cSDAPin);
+	writeDoc(doc, "i2cAnalog1219SCLPin", analogADS1219Options.i2cSCLPin == 0xFF ? -1 : analogADS1219Options.i2cSCLPin);
+	writeDoc(doc, "i2cAnalog1219Block", analogADS1219Options.i2cBlock);
+	writeDoc(doc, "i2cAnalog1219Speed", analogADS1219Options.i2cSpeed);
+	writeDoc(doc, "i2cAnalog1219Address", analogADS1219Options.i2cAddress);
+	writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
+
 	const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	writeDoc(doc, "reversePin", isValidPin(reverseOptions.buttonPin) ? reverseOptions.buttonPin : -1);
 	writeDoc(doc, "reversePinLED", isValidPin(reverseOptions.ledPin) ? reverseOptions.ledPin : -1);
@@ -1062,11 +1072,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "sliderLSPin", addonOptions.pinSliderLS == 0xFF ? -1 : addonOptions.pinSliderLS);
 	writeDoc(doc, "sliderRSPin", addonOptions.pinSliderRS == 0xFF ? -1 : addonOptions.pinSliderRS);
 	writeDoc(doc, "turboShotCount", addonOptions.turboShotCount);
-	writeDoc(doc, "i2cAnalog1219SDAPin", addonOptions.i2cAnalog1219SDAPin == 0xFF ? -1 : addonOptions.i2cAnalog1219SDAPin);
-	writeDoc(doc, "i2cAnalog1219SCLPin", addonOptions.i2cAnalog1219SCLPin == 0xFF ? -1 : addonOptions.i2cAnalog1219SCLPin);
-	writeDoc(doc, "i2cAnalog1219Block", addonOptions.i2cAnalog1219Block);
-	writeDoc(doc, "i2cAnalog1219Speed", addonOptions.i2cAnalog1219Speed);
-	writeDoc(doc, "i2cAnalog1219Address", addonOptions.i2cAnalog1219Address);
 	writeDoc(doc, "playerNumber", addonOptions.playerNumber);
 	writeDoc(doc, "shmupMode", addonOptions.shmupMode);
 	writeDoc(doc, "shmupMixMode", addonOptions.shmupMixMode);
@@ -1087,7 +1092,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionSCLPin", addonOptions.wiiExtensionSCLPin == 0xFF ? -1 : addonOptions.wiiExtensionSCLPin);
 	writeDoc(doc, "wiiExtensionBlock", addonOptions.wiiExtensionBlock);
 	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
-	writeDoc(doc, "I2CAnalog1219InputEnabled", addonOptions.I2CAnalog1219InputEnabled);
 	writeDoc(doc, "JSliderInputEnabled", addonOptions.JSliderInputEnabled);
 	writeDoc(doc, "PlayerNumAddonEnabled", addonOptions.PlayerNumAddonEnabled);
 	writeDoc(doc, "PS4ModeAddonEnabled", addonOptions.PS4ModeAddonEnabled);
