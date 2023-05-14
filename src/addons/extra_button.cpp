@@ -1,17 +1,19 @@
 #include "addons/extra_button.h"
 #include "storagemanager.h"
 #include "hardware/gpio.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool ExtraButtonAddon::available() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-	extraButtonMap = options.extraButtonMap;
-	extraButtonPin = options.extraButtonPin;
-	return options.ExtraButtonAddonEnabled &&
-		extraButtonMap != 0 &&
-		extraButtonPin != (uint8_t)-1;
+    const ExtraOptions& options = Storage::getInstance().getAddonOptions().extraOptions;
+	return options.enabled && options.buttonMap != 0 && isValidPin(options.pin);
 }
 
 void ExtraButtonAddon::setup() {
+    const ExtraOptions& options = Storage::getInstance().getAddonOptions().extraOptions;
+	extraButtonMap = options.buttonMap;
+	extraButtonPin = options.pin;
+
 	gpio_init(extraButtonPin);             // Initialize pin
 	gpio_set_dir(extraButtonPin, GPIO_IN); // Set as INPUT
 	gpio_pull_up(extraButtonPin);          // Set as PULLUP
