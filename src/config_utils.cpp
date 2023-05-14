@@ -29,8 +29,11 @@
 
 #include <ArduinoJson.h>
 
+#include <cassert>
+#include <cstring>
 #include <memory>
-#include <string.h>
+
+#include "pico/platform.h"
 
 // -----------------------------------------------------
 // Default values
@@ -480,6 +483,13 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
 
 bool ConfigUtils::save(Config& config)
 {
+    // We only allow saves from core0. Saves from core1 have to be marshalled to core0.
+    assert(get_core_num() == 0);
+    if (get_core_num() != 0)
+    {
+        return false;
+    }
+
     // Set all has_XXX flags to true, we want to save all fields.
     // If we didn't do this we would have to remember to set the has_XXX flag manually whenever we change a field from
     // its default value.
