@@ -819,6 +819,11 @@ std::string setAddonOptions()
 	docToValue(bootselButtonOptions.buttonMap, doc, "bootselButtonMap");
 	docToValue(bootselButtonOptions.enabled, doc, "BootselButtonAddonEnabled");
 
+	BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
+	docToPin(buzzerOptions.pin, doc, "buzzerPin");
+	docToValue(buzzerOptions.volume, doc, "buzzerVolume");
+	docToValue(buzzerOptions.enabled, doc, "BuzzerSpeakerAddonEnabled");
+
 	ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
 	docToPin(reverseOptions.buttonPin, doc, "reversePin");	
@@ -861,8 +866,6 @@ std::string setAddonOptions()
 	docToPinLegacy(addonOptions.pinDualDirRight, doc, "dualDirRightPin");
 	docToValue(addonOptions.dualDirDpadMode, doc, "dualDirDpadMode");
 	docToValue(addonOptions.dualDirCombineMode, doc, "dualDirCombineMode");
-	docToPinLegacy(addonOptions.buzzerPin, doc, "buzzerPin");
-	docToValue(addonOptions.buzzerVolume, doc, "buzzerVolume");
 	docToPinLegacy(addonOptions.extraButtonPin, doc, "extraButtonPin");
 	docToValue(addonOptions.extraButtonMap, doc, "extraButtonMap");
 	docToValue(addonOptions.playerNumber, doc, "playerNumber");
@@ -885,7 +888,6 @@ std::string setAddonOptions()
 	docToPinLegacy(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
 	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
 	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
-	docToValue(addonOptions.BuzzerSpeakerAddonEnabled, doc, "BuzzerSpeakerAddonEnabled");
 	docToValue(addonOptions.DualDirectionalInputEnabled, doc, "DualDirectionalInputEnabled");
 	docToValue(addonOptions.ExtraButtonAddonEnabled, doc, "ExtraButtonAddonEnabled");
 	docToValue(addonOptions.I2CAnalog1219InputEnabled, doc, "I2CAnalog1219InputEnabled");
@@ -1010,6 +1012,11 @@ std::string getAddonOptions()
 	writeDoc(doc, "bootselButtonMap", bootselButtonOptions.buttonMap);
 	writeDoc(doc, "BootselButtonAddonEnabled", bootselButtonOptions.enabled);
 
+    const BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
+	writeDoc(doc, "buzzerPin", buzzerOptions.pin == 0xFF ? -1 : buzzerOptions.pin);
+	writeDoc(doc, "buzzerVolume", buzzerOptions.volume);
+	writeDoc(doc, "BuzzerSpeakerAddonEnabled", buzzerOptions.enabled);
+
 	const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	writeDoc(doc, "reversePin", isValidPin(reverseOptions.buttonPin) ? reverseOptions.buttonPin : -1);
 	writeDoc(doc, "reversePinLED", isValidPin(reverseOptions.ledPin) ? reverseOptions.ledPin : -1);
@@ -1048,8 +1055,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "dualDirRightPin", addonOptions.pinDualDirRight == 0xFF ? -1 : addonOptions.pinDualDirRight);
 	writeDoc(doc, "dualDirDpadMode", addonOptions.dualDirDpadMode);
 	writeDoc(doc, "dualDirCombineMode", addonOptions.dualDirCombineMode);
-	writeDoc(doc, "buzzerPin", addonOptions.buzzerPin == 0xFF ? -1 : addonOptions.buzzerPin);
-	writeDoc(doc, "buzzerVolume", addonOptions.buzzerVolume);
 	writeDoc(doc, "extraButtonPin", addonOptions.extraButtonPin == 0xFF ? -1 : addonOptions.extraButtonPin);
 	writeDoc(doc, "extraButtonMap", addonOptions.extraButtonMap);
 	writeDoc(doc, "playerNumber", addonOptions.playerNumber);
@@ -1072,7 +1077,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionSCLPin", addonOptions.wiiExtensionSCLPin == 0xFF ? -1 : addonOptions.wiiExtensionSCLPin);
 	writeDoc(doc, "wiiExtensionBlock", addonOptions.wiiExtensionBlock);
 	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
-	writeDoc(doc, "BuzzerSpeakerAddonEnabled", addonOptions.BuzzerSpeakerAddonEnabled);
 	writeDoc(doc, "DualDirectionalInputEnabled", addonOptions.DualDirectionalInputEnabled);
 	writeDoc(doc, "ExtraButtonAddonEnabled", addonOptions.ExtraButtonAddonEnabled);
 	writeDoc(doc, "I2CAnalog1219InputEnabled", addonOptions.I2CAnalog1219InputEnabled);
