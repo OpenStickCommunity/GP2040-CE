@@ -1,19 +1,20 @@
 #include "addons/playernum.h"
 #include "storagemanager.h"
 #include "system.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool PlayerNumAddon::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-    return options.PlayerNumAddonEnabled;
+    return Storage::getInstance().getAddonOptions().playerNumberOptions.enabled;
 }
 
 void PlayerNumAddon::setup() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
+    const PlayerNumberOptions& options = Storage::getInstance().getAddonOptions().playerNumberOptions;
     xinputIDs[0] = XINPUT_PLED_ON1;
     xinputIDs[1] = XINPUT_PLED_ON2;
     xinputIDs[2] = XINPUT_PLED_ON3;
     xinputIDs[3] = XINPUT_PLED_ON4;
-    playerNum = options.playerNumber;
+    playerNum = options.number;
     if ( playerNum < 1 || playerNum > 4 ) {
         playerNum = 1; // error checking, set to 1 if we're off
     }
