@@ -94,7 +94,7 @@ public:
 	virtual void process();     // TURBO Setting of buttons (Enable/Disable)
     virtual std::string name() { return TurboName; }
 private:
-    void read(const ConfigLegacy::AddonOptions&);                // Read TURBO Buttons and Dials
+    void read(const TurboOptions&);                // Read TURBO Buttons and Dials
     void debounce();            // TURBO Button Debouncer
     void updateTurboShotCount(uint8_t turboShotCount);
     bool bDebState;             // Debounce TURBO Button State
