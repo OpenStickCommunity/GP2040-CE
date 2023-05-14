@@ -30,7 +30,6 @@ private:
     mbedtls_mpi_uint bytesQP[32] = {};
     mbedtls_mpi_uint bytesRN[64] = {};
     uint8_t hashed_nonce[32] = {};
-    ConfigLegacy::PS4Options ps4Options;
 };
 
 #endif  // PS4MODE_H_

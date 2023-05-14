@@ -67,10 +67,6 @@ public:
 	void setDefaultLEDOptions();
 	const ConfigLegacy::LEDOptions& getLEDOptions() { return ledOptions; }
 
-	void savePS4Options();     // PS4 Options
-	void setDefaultPS4Options();
-	ConfigLegacy::PS4Options * getPS4Options();
-
 	void SetConfigMode(bool); 			// Config Mode (on-boot)
 	bool GetConfigMode();
 
@@ -104,7 +100,6 @@ private:
 	ConfigLegacy::BoardOptions previewBoardOptions;
 	ConfigLegacy::AddonOptions addonOptions;
 	ConfigLegacy::LEDOptions ledOptions;
-	ConfigLegacy::PS4Options ps4Options;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	ConfigLegacy::SplashImage splashImage;
 

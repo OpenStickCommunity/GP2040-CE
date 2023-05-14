@@ -46,7 +46,6 @@ Storage::Storage()
 	initAddonOptions();
 	initLEDOptions();
 	initSplashImage();
-	initPS4Options();
 
 	critical_section_init(&animationOptionsCs);
 
@@ -144,10 +143,6 @@ void Storage::initAddonOptions() {
 
 void Storage::initSplashImage() {
 	setDefaultSplashImage();
-}
-
-void Storage::initPS4Options() {
-	setDefaultPS4Options();
 }
 
 void Storage::setDefaultBoardOptions()
@@ -337,21 +332,6 @@ void Storage::setDefaultLEDOptions()
 
 void Storage::setLEDOptions(ConfigLegacy::LEDOptions options)
 {
-}
-
-void Storage::savePS4Options()     // PS4 Options
-{
-}
-
-void Storage::setDefaultPS4Options()
-{
-	// Zero everything out
-	memset(&ps4Options, 0, sizeof(ConfigLegacy::PS4Options));
-}
-
-ConfigLegacy::PS4Options * Storage::getPS4Options()
-{
-	return &ps4Options;
 }
 
 void Storage::ResetSettings()
