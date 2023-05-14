@@ -897,17 +897,19 @@ std::string setAddonOptions()
 	docToPin(turboOptions.shmupDialPin, doc, "pinShmupDial");
 	docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
+    WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
+	docToPin(wiiOptions.i2cSDAPin, doc, "wiiExtensionSDAPin");
+	docToPin(wiiOptions.i2cSCLPin, doc, "wiiExtensionSCLPin");
+	docToValue(wiiOptions.i2cBlock, doc, "wiiExtensionBlock");
+	docToValue(wiiOptions.i2cSpeed, doc, "wiiExtensionSpeed");
+	docToValue(wiiOptions.enabled, doc, "WiiExtensionAddonEnabled");
+
 	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	docToPinLegacy(addonOptions.reverseActionUp, doc, "reverseActionUp");
 	docToPinLegacy(addonOptions.reverseActionDown, doc, "reverseActionDown");
 	docToPinLegacy(addonOptions.reverseActionLeft, doc, "reverseActionLeft");
 	docToPinLegacy(addonOptions.reverseActionRight, doc, "reverseActionRight");
-	docToPinLegacy(addonOptions.wiiExtensionSDAPin, doc, "wiiExtensionSDAPin");
-	docToPinLegacy(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
-	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
-	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
 	docToValue(addonOptions.PS4ModeAddonEnabled, doc, "PS4ModeAddonEnabled");
-	docToValue(addonOptions.WiiExtensionAddonEnabled, doc, "WiiExtensionAddonEnabled");
 
 	Storage::getInstance().setLegacyAddonOptions(addonOptions);
 	Storage::getInstance().save();
@@ -1102,13 +1104,15 @@ std::string getAddonOptions()
 	writeDoc(doc, "pinShmupDial", turboOptions.shmupDialPin == 0xFF ? -1 : turboOptions.shmupDialPin);
 	writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
+    const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
+	writeDoc(doc, "wiiExtensionSDAPin", wiiOptions.i2cSDAPin == 0xFF ? -1 : wiiOptions.i2cSDAPin);
+	writeDoc(doc, "wiiExtensionSCLPin", wiiOptions.i2cSCLPin == 0xFF ? -1 : wiiOptions.i2cSCLPin);
+	writeDoc(doc, "wiiExtensionBlock", wiiOptions.i2cBlock);
+	writeDoc(doc, "wiiExtensionSpeed", wiiOptions.i2cSpeed);
+	writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
+
 	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
-	writeDoc(doc, "wiiExtensionSDAPin", addonOptions.wiiExtensionSDAPin == 0xFF ? -1 : addonOptions.wiiExtensionSDAPin);
-	writeDoc(doc, "wiiExtensionSCLPin", addonOptions.wiiExtensionSCLPin == 0xFF ? -1 : addonOptions.wiiExtensionSCLPin);
-	writeDoc(doc, "wiiExtensionBlock", addonOptions.wiiExtensionBlock);
-	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
 	writeDoc(doc, "PS4ModeAddonEnabled", addonOptions.PS4ModeAddonEnabled);
-	writeDoc(doc, "WiiExtensionAddonEnabled", addonOptions.WiiExtensionAddonEnabled);
 
 	addUsedPinsArray(doc);
 
