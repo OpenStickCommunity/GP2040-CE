@@ -1,0 +1,3 @@
+C:/Users/kanuk/clone/GP2040-CE/build2/_deps/arduinojson-subbuild/CMakeFiles/arduinojson-populate.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/_deps/arduinojson-subbuild/CMakeFiles/edit_cache.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/_deps/arduinojson-subbuild/CMakeFiles/rebuild_cache.dir

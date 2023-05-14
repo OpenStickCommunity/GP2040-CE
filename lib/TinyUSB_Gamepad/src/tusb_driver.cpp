@@ -19,7 +19,7 @@
 #include "ps4_driver.h"
 
 UsbMode usb_mode = USB_MODE_HID;
-InputMode input_mode = INPUT_MODE_XINPUT;
+InputMode input_mode = INPUT_MODE_SWITCH;
 bool usb_mounted = false;
 
 InputMode get_input_mode(void)

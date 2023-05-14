@@ -1,0 +1,2 @@
+C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\ARM-NO~2.EXE qc libMPG.a CMakeFiles/MPG.dir/src/MPG.cpp.obj CMakeFiles/MPG.dir/src/MPGS.cpp.obj CMakeFiles/MPG.dir/src/GamepadDebouncer.cpp.obj CMakeFiles/MPG.dir/src/GamepadDescriptors.cpp.obj
+C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR17F9~1.EXE libMPG.a

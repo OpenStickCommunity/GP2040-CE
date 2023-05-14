@@ -135,6 +135,8 @@ src/addons/wiiext.cpp
 src/addons/snes_input.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
+src/addons/tilt.cpp
+
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )

@@ -1,0 +1,3 @@
+file(REMOVE_RECURSE
+  "libADS1219.a"
+)
