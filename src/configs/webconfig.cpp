@@ -249,13 +249,15 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(boardOptions.pinButtonR3);
 	addPinIfValid(boardOptions.pinButtonA1);
 	addPinIfValid(boardOptions.pinButtonA2);
-	addPinIfValid(boardOptions.i2cSDAPin);
-	addPinIfValid(boardOptions.i2cSCLPin);
+	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
+	// addPinIfValid(boardOptions.i2cSDAPin);
+	// addPinIfValid(boardOptions.i2cSCLPin);
 
 	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	addPinIfValid(addonOptions.analogAdcPinX);
 	addPinIfValid(addonOptions.analogAdcPinY);
-	addPinIfValid(addonOptions.buzzerPin);
+	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
+	// addPinIfValid(addonOptions.buzzerPin);
 }
 
 std::string serialize_json(JsonDocument &doc)
