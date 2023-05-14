@@ -4,22 +4,22 @@
 #include "storagemanager.h"
 #include "math.h"
 #include "usb_driver.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool BuzzerSpeakerAddon::available() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-	buzzerPin = options.buzzerPin;
-	return options.BuzzerSpeakerAddonEnabled &&
-		buzzerPin != (uint8_t)-1;
+    const BuzzerOptions& options = Storage::getInstance().getAddonOptions().buzzerOptions;
+	return options.enabled && isValidPin(options.pin);
 }
 
 void BuzzerSpeakerAddon::setup() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-
+	const BuzzerOptions& options = Storage::getInstance().getAddonOptions().buzzerOptions;
+	buzzerPin = options.pin;
 	gpio_set_function(buzzerPin, GPIO_FUNC_PWM);
 	buzzerPinSlice = pwm_gpio_to_slice_num (buzzerPin);
 	buzzerPinChannel = pwm_gpio_to_channel (buzzerPin);
 
-	buzzerVolume = options.buzzerVolume;
+	buzzerVolume = options.volume;
 	introPlayed = false;
 }
 

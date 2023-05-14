@@ -9,19 +9,19 @@
 #define SOCD_MODE_MASK (SOCD_MODE_UP_PRIORITY & SOCD_MODE_SECOND_INPUT_PRIORITY & SOCD_MODE_FIRST_INPUT_PRIORITY & SOCD_MODE_NEUTRAL)
 
 bool SliderSOCDInput::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-    sliderSOCDModeOne = static_cast<SOCDMode>(options.sliderSOCDModeOne);
-    sliderSOCDModeTwo  = static_cast<SOCDMode>(options.sliderSOCDModeTwo);
-    sliderSOCDModeDefault = static_cast<SOCDMode>(options.sliderSOCDModeDefault);
-    pinSliderSOCDOne = options.pinSliderSOCDOne;
-    pinSliderSOCDTwo = options.pinSliderSOCDTwo;
-	return ( options.SliderSOCDInputEnabled &
-        pinSliderSOCDOne != (uint8_t)-1 &&
-        pinSliderSOCDTwo != (uint8_t)-1);
+    const SOCDSliderOptions& options = Storage::getInstance().getAddonOptions().socdSliderOptions;
+	return ( options.enabled && isValidPin(options.pinOne) && isValidPin(options.pinTwo) );
 }
 
 void SliderSOCDInput::setup()
 {
+    const SOCDSliderOptions& options = Storage::getInstance().getAddonOptions().socdSliderOptions;
+    sliderSOCDModeOne     = static_cast<SOCDMode>(options.modeOne);
+    sliderSOCDModeTwo     = static_cast<SOCDMode>(options.modeTwo);
+    sliderSOCDModeDefault = static_cast<SOCDMode>(options.modeDefault);
+    pinSliderSOCDOne = options.pinOne;
+    pinSliderSOCDTwo = options.pinTwo;
+
     gpio_init(pinSliderSOCDOne);             // Initialize pin
     gpio_set_dir(pinSliderSOCDOne, GPIO_IN); // Set as INPUT
     gpio_pull_up(pinSliderSOCDOne);          // Set as PULLUP

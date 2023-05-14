@@ -1,19 +1,22 @@
 #include "addons/board_led.h"
 #include "usb_driver.h" // Required to check USB state
+#include "helper.h"
+#include "config.pb.h"
 
 bool BoardLedAddon::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-    onBoardLedMode = static_cast<OnBoardLedMode>(options.onBoardLedMode);
-    return options.BoardLedAddonEnabled &&
-        onBoardLedMode != OnBoardLedMode::ON_BOARD_LED_MODE_OFF; // Available only when it's not set to off
+    const OnBoardLedOptions& options = Storage::getInstance().getAddonOptions().onBoardLedOptions;
+    return options.enabled && options.mode != OnBoardLedMode::ON_BOARD_LED_MODE_OFF; // Available only when it's not set to off
 }
 
 void BoardLedAddon::setup() {
-    gpio_init(BOARD_LED_PIN);
-    gpio_set_dir(BOARD_LED_PIN, GPIO_OUT);
+    const OnBoardLedOptions& options = Storage::getInstance().getAddonOptions().onBoardLedOptions;
+    onBoardLedMode = static_cast<OnBoardLedMode>(options.mode);
     isConfigMode = Storage::getInstance().GetConfigMode();
     timeSinceBlink = getMillis();
     prevState = -1;
+
+    gpio_init(BOARD_LED_PIN);
+    gpio_set_dir(BOARD_LED_PIN, GPIO_OUT);
 }
 
 void BoardLedAddon::process() {

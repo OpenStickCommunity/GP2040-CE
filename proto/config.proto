@@ -214,6 +214,7 @@ message BootselButtonOptions
 message OnBoardLedOptions
 {
 	optional OnBoardLedMode mode = 1;
+	optional bool enabled = 2;
 }
 
 message AnalogOptions
@@ -255,6 +256,18 @@ message SliderOptions
 
 	optional int32 pinLS = 2;
 	optional int32 pinRS = 3;
+}
+
+message SOCDSliderOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 pinOne = 2;
+	optional int32 pinTwo = 3;
+
+	optional SOCDMode modeDefault = 4;
+	optional SOCDMode modeOne = 5;
+	optional SOCDMode modeTwo = 6;
 }
 
 message ReverseOptions
@@ -356,6 +369,7 @@ message AddonOptions
 	optional PlayerNumberOptions playerNumberOptions = 11;
 	optional PS4Options ps4Options = 12;
 	optional WiiOptions wiiOptions = 13;
+	optional SOCDSliderOptions socdSliderOptions = 14;
 }
 
 message Config

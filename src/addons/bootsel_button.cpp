@@ -4,6 +4,8 @@
 #include "hardware/sync.h"
 #include "hardware/structs/ioqspi.h"
 #include "hardware/structs/sio.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool __no_inline_not_in_flash_func(BootselButtonAddon::isBootselPressed)() {
 	const uint CS_PIN_INDEX = 1;
@@ -36,13 +38,14 @@ bool __no_inline_not_in_flash_func(BootselButtonAddon::isBootselPressed)() {
 }
 
 bool BootselButtonAddon::available() {
-	const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-	bootselButtonMap = options.bootselButtonMap;
-	return options.BootselButtonAddonEnabled &&
-		bootselButtonMap != 0;
+    const BootselButtonOptions& options = Storage::getInstance().getAddonOptions().bootselButtonOptions;
+	return options.enabled && options.buttonMap != 0;
 }
 
-void BootselButtonAddon::setup() {}
+void BootselButtonAddon::setup() {
+    const BootselButtonOptions& options = Storage::getInstance().getAddonOptions().bootselButtonOptions;
+	bootselButtonMap = options.buttonMap;
+}
 
 void BootselButtonAddon::preprocess() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();

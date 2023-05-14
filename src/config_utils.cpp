@@ -20,6 +20,7 @@
 #include "addons/playernum.h"
 #include "addons/pleds.h"
 #include "addons/reverse.h"
+#include "addons/slider_socd.h"
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 
@@ -299,6 +300,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionDown, REVERSE_DOWN_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionLeft, REVERSE_LEFT_DEFAULT);
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, actionRight, REVERSE_RIGHT_DEFAULT);
+
+    // addonOptions.socdSliderOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, enabled, !!SLIDER_SOCD_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, pinOne, PIN_SLIDER_SOCD_ONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, pinTwo, PIN_SLIDER_SOCD_TWO);
+    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeDefault, SLIDER_SOCD_SLOT_DEFAULT);
+    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeOne, SLIDER_SOCD_SLOT_ONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeTwo, SLIDER_SOCD_SLOT_TWO);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);

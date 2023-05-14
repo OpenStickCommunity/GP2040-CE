@@ -1,21 +1,21 @@
 #include "addons/dualdirectional.h"
 #include "storagemanager.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool DualDirectionalInput::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-    pinDualDirDown = options.pinDualDirDown;
-    pinDualDirUp = options.pinDualDirUp;
-    pinDualDirLeft = options.pinDualDirLeft;
-    pinDualDirRight = options.pinDualDirRight;
-
-    return options.DualDirectionalInputEnabled;
+    return Storage::getInstance().getAddonOptions().dualDirectionalOptions.enabled;
 }
 
 void DualDirectionalInput::setup() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-    combineMode = options.dualDirCombineMode;
+    const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
+    combineMode = options.combineMode;
+    pinDualDirDown = options.downPin;
+    pinDualDirUp = options.upPin;
+    pinDualDirLeft = options.leftPin;
+    pinDualDirRight = options.rightPin;
 
-    dpadMode = static_cast<DpadMode>(options.dualDirDpadMode);
+    dpadMode = options.dpadMode;
 
     // Setup TURBO Key
     uint8_t pinDualDir[4] = {pinDualDirDown,
@@ -24,7 +24,7 @@ void DualDirectionalInput::setup() {
                         pinDualDirRight};
 
     for (int i = 0; i < 4; i++) {
-        if ( pinDualDir[i] != (uint8_t)-1 ) {
+        if ( isValidPin(pinDualDir[i]) ) {
             gpio_init(pinDualDir[i]);             // Initialize pin
             gpio_set_dir(pinDualDir[i], GPIO_IN); // Set as INPUT
             gpio_pull_up(pinDualDir[i]);          // Set as PULLUP
@@ -121,7 +121,7 @@ void DualDirectionalInput::preprocess()
 
 void DualDirectionalInput::process()
 {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
+    const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint8_t dualOut = dualState;
     const SOCDMode& socdMode = getSOCDMode(gamepad->options);
@@ -155,11 +155,11 @@ void DualDirectionalInput::process()
             // if configured dual mode is the same mode as the gamepad mode, they
             // need to be SOCD cleaned first
             // this also avoids accidentally masking gamepad inputs with the lack of dual inputs
-            if (gamepad->options.dpadMode == options.dualDirDpadMode) {
+            if (gamepad->options.dpadMode == options.dpadMode) {
                 uint8_t gamepadDpad = gpadToBinary(static_cast<DpadMode>(gamepad->options.dpadMode), gamepad->state);
                 dualOut = SOCDGamepadClean(dualOut | gamepadDpad, gamepad->options.socdMode == static_cast<ConfigLegacy::SOCDMode>(SOCD_MODE_SECOND_INPUT_PRIORITY));
             }
-            OverrideGamepad(gamepad, static_cast<DpadMode>(options.dualDirDpadMode), dualOut);
+            OverrideGamepad(gamepad, options.dpadMode, dualOut);
         }
     }
 }

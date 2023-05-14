@@ -4,6 +4,8 @@
  */
 
 #include "addons/ps4mode.h"
+#include "helper.h"
+#include "config.pb.h"
 
 #include "ps4_driver.h"
 
@@ -12,25 +14,44 @@
 #include "mbedtls/sha256.h"
 
 bool PS4ModeAddon::available() {
-	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
-	return addonOptions.PS4ModeAddonEnabled;
+  const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
+	return options.enabled
+      && options.rsaN.size == sizeof(options.rsaN.bytes)
+      && options.rsaE.size == sizeof(options.rsaE.bytes)
+      && options.rsaD.size == sizeof(options.rsaD.bytes)
+      && options.rsaP.size == sizeof(options.rsaP.bytes)
+      && options.rsaQ.size == sizeof(options.rsaQ.bytes)
+      && options.rsaDP.size == sizeof(options.rsaDP.bytes)
+      && options.rsaDQ.size == sizeof(options.rsaDQ.bytes)
+      && options.rsaQP.size == sizeof(options.rsaQP.bytes)
+      && options.rsaRN.size == sizeof(options.rsaRN.bytes);
 }
 
 void PS4ModeAddon::setup() {
-    ConfigLegacy::PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+    const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
+
+    memcpy(bytesN, options.rsaN.bytes, options.rsaN.size);
+    memcpy(bytesE, options.rsaE.bytes, options.rsaE.size);
+    memcpy(bytesD, options.rsaD.bytes, options.rsaD.size);
+    memcpy(bytesP, options.rsaP.bytes, options.rsaP.size);
+    memcpy(bytesQ, options.rsaQ.bytes, options.rsaQ.size);
+    memcpy(bytesDP, options.rsaDP.bytes, options.rsaDP.size);
+    memcpy(bytesDQ, options.rsaDQ.bytes, options.rsaDQ.size);
+    memcpy(bytesQP, options.rsaQP.bytes, options.rsaQP.size);
+    memcpy(bytesRN, options.rsaRN.bytes, options.rsaRN.size);
 
     rsa_context = {
       .ver = 0,
       .len = 256,
-      .N = { .s=1, .n=64, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_n) },
-      .E = { .s=1, .n=1, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_e) },
-      .D = { .s=1, .n=64, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_d) },
-      .P = { .s=1, .n=32, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_p) },
-      .Q = { .s=1, .n=32, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_q) },
-      .DP = { .s=1, .n=32, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_dp) },
-      .DQ = { .s=1, .n=32, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_dq) },
-      .QP = { .s=1, .n=32, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_qp) },
-      .RN = { .s=1, .n=64, .p=const_cast<mbedtls_mpi_uint*>(ps4Options->rsa_rn) },
+      .N =  { .s=1, .n=64, .p=bytesN  },
+      .E =  { .s=1, .n=1,  .p=bytesE  },
+      .D =  { .s=1, .n=64, .p=bytesD  },
+      .P =  { .s=1, .n=32, .p=bytesP  },
+      .Q =  { .s=1, .n=32, .p=bytesQ  },
+      .DP = { .s=1, .n=32, .p=bytesDP },
+      .DQ = { .s=1, .n=32, .p=bytesDQ },
+      .QP = { .s=1, .n=32, .p=bytesQP },
+      .RN = { .s=1, .n=64, .p=bytesRN },
       .RP = { .s=0, .n=0, .p=nullptr },
       .RQ = { .s=0, .n=0, .p=nullptr },
       .Vi = { .s=0, .n=0, .p=nullptr },
@@ -40,7 +61,7 @@ void PS4ModeAddon::setup() {
 }
 
 void PS4ModeAddon::process() {
-    ConfigLegacy::PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+    const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
 
     int rss_error = 0;
 
@@ -77,7 +98,7 @@ void PS4ModeAddon::process() {
       int offset = 0;
       memcpy(&ps4_auth_buffer[offset], nonce_signature, 256);
       offset += 256;
-      memcpy(&ps4_auth_buffer[offset], ps4Options->serial, 16);
+      memcpy(&ps4_auth_buffer[offset], options.serial.bytes, 16);
       offset += 16;
       mbedtls_mpi* mpi = static_cast<mbedtls_mpi*>(&rsa_context.N);
       mbedtls_mpi_write_binary(mpi, &ps4_auth_buffer[offset], 256);
@@ -85,7 +106,7 @@ void PS4ModeAddon::process() {
       mpi = static_cast<mbedtls_mpi*>(&rsa_context.E);
       mbedtls_mpi_write_binary(mpi, &ps4_auth_buffer[offset], 256);
       offset += 256;
-      memcpy(&ps4_auth_buffer[offset], ps4Options->signature, 256);
+      memcpy(&ps4_auth_buffer[offset], options.signature.bytes, 256);
       offset += 256;
       memset(&ps4_auth_buffer[offset], 0, 24);
 

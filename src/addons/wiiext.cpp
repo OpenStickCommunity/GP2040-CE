@@ -1,18 +1,18 @@
 #include "addons/wiiext.h"
 #include "storagemanager.h"
 #include "hardware/gpio.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool WiiExtensionInput::available() {
-    const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
+    const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
 
-    return (!boardOptions.hasI2CDisplay && (options.WiiExtensionAddonEnabled &&
-        options.wiiExtensionSDAPin != (uint8_t)-1 &&
-        options.wiiExtensionSCLPin != (uint8_t)-1));
+    return (!displayOptions.enabled && (options.enabled && isValidPin(options.i2cSDAPin) && isValidPin(options.i2cSCLPin)));
 }
 
 void WiiExtensionInput::setup() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
+    const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
     nextTimer = getMillis();
 
 #if WII_EXTENSION_DEBUG==true
@@ -22,10 +22,10 @@ void WiiExtensionInput::setup() {
     uIntervalMS = 0;
     
     wii = new WiiExtension(
-        options.wiiExtensionSDAPin,
-        options.wiiExtensionSCLPin,
-        options.wiiExtensionBlock == 0 ? i2c0 : i2c1,
-        options.wiiExtensionSpeed,
+        options.i2cSDAPin,
+        options.i2cSCLPin,
+        options.i2cBlock == 0 ? i2c0 : i2c1,
+        options.i2cSpeed,
         WII_EXTENSION_I2C_ADDR);
     wii->begin();
     wii->start();

@@ -3,22 +3,24 @@
 #include "storagemanager.h"
 
 #include "GamepadEnums.h"
+#include "helper.h"
+#include "config.pb.h"
 
 #define JSLIDER_DEBOUNCE_MILLIS 5
 
 #define DPAD_MODE_MASK (DPAD_MODE_LEFT_ANALOG & DPAD_MODE_RIGHT_ANALOG & DPAD_MODE_DIGITAL)
 
 bool JSliderInput::available() {
-    const ConfigLegacy::AddonOptions& options = Storage::getInstance().getLegacyAddonOptions();
-    pinSliderLS = options.pinSliderLS;
-    pinSliderRS = options.pinSliderRS;
-	return ( options.JSliderInputEnabled &&
-        pinSliderLS != (uint8_t)-1 &&
-        pinSliderRS != (uint8_t)-1);
+    const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
+	return ( options.enabled && isValidPin(options.pinLS) && isValidPin(options.pinRS) );
 }
 
 void JSliderInput::setup()
 {
+    const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
+    pinSliderLS = options.pinLS;
+    pinSliderRS = options.pinRS;
+
     gpio_init(pinSliderLS);             // Initialize pin
     gpio_set_dir(pinSliderLS, GPIO_IN); // Set as INPUT
     gpio_pull_up(pinSliderLS);          // Set as PULLUP
