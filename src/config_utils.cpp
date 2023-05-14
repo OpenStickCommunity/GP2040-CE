@@ -499,7 +499,7 @@ bool ConfigUtils::save(Config& config)
     newFooter.magic = FOOTER_MAGIC;
 
     // The data has changed when the footer content has changed. Only then do we acutally need to save.
-    const ConfigFooter& oldFooter = *reinterpret_cast<ConfigFooter*>(EEPROM_ADDRESS_START + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
+    const ConfigFooter& oldFooter = *reinterpret_cast<ConfigFooter*>(EEPROM.writeCache + EEPROM_SIZE_BYTES - sizeof(ConfigFooter));
     if (newFooter == oldFooter)
     {
         // The data has not changed, no saving neccessary.
