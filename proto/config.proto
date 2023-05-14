@@ -155,6 +155,7 @@ message LEDOptions
 	optional int32 indexA2 = 24;
 };
 
+// This has to be kept in sync with AnimationOptions in AnimationStation.hpp
 message AnimationOptions_Proto
 {
 	optional uint32 baseAnimationIndex = 1;

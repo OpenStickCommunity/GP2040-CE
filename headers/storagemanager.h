@@ -17,6 +17,10 @@
 #include "config_legacy.h"
 #include "config.pb.h"
 
+#include <atomic>
+
+#include "pico/critical_section.h"
+
 #define SI Storage::getInstance()
 
 // Storage manager for board, LED options, and thread-safe settings
@@ -38,8 +42,14 @@ public:
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
+	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
 
 	bool save();
+
+	// Perform saves that were enqueued from core1
+	void performEnqueuedSaves();
+
+	void enqueueAnimationOptionsSave(const AnimationOptions& animationOptions);
 
 	void setBoardOptions(ConfigLegacy::BoardOptions);	// Board Options
 	const ConfigLegacy::BoardOptions& getBoardOptions() { return boardOptions; }
@@ -99,6 +109,11 @@ private:
 	ConfigLegacy::SplashImage splashImage;
 
 	Config config;
+
+	std::atomic<bool> animationOptionsSavePending;
+	critical_section_t animationOptionsCs;
+	uint32_t animationOptionsCrc = 0;
+	AnimationOptions animationOptionsToSave = {};
 };
 
 #endif

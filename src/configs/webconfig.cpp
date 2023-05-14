@@ -564,7 +564,7 @@ std::string setCustomTheme()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	AnimationOptions options = AnimationStore.getAnimationOptions();
+	AnimationOptions options = AnimationStation::options;
 
 	const auto readDocDefaultToZero = [&](const char* key0, const char* key1) -> uint32_t
 	{
@@ -623,7 +623,7 @@ std::string setCustomTheme()
 std::string getCustomTheme()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	AnimationOptions options = AnimationStore.getAnimationOptions();
+	const AnimationOptions& options = AnimationStation::options;
 
 	writeDoc(doc, "enabled", options.hasCustomTheme);
 	writeDoc(doc, "Up", "u", options.customThemeUp);
@@ -1089,10 +1089,10 @@ DataAndStatusCode setConfig()
 	std::unique_ptr<Config> config(new Config);
 	if (ConfigUtils::fromJSON(*config.get(), http_post_payload, http_post_payload_len))
 	{
-		Storage::getInstance().getConfig() = *config.get();
+	Storage::getInstance().getConfig() = *config.get();
 		if (Storage::getInstance().save())
 		{
-			return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
+	return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
 		}
 		else
 		{
