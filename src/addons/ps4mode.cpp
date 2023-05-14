@@ -16,6 +16,8 @@
 bool PS4ModeAddon::available() {
   const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
 	return options.enabled
+      && options.serial.size == sizeof(options.serial.bytes)
+      && options.signature.size == sizeof(options.signature.bytes)
       && options.rsaN.size == sizeof(options.rsaN.bytes)
       && options.rsaE.size == sizeof(options.rsaE.bytes)
       && options.rsaD.size == sizeof(options.rsaD.bytes)
