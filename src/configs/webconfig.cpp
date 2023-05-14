@@ -904,12 +904,14 @@ std::string setAddonOptions()
 	docToValue(wiiOptions.i2cSpeed, doc, "wiiExtensionSpeed");
 	docToValue(wiiOptions.enabled, doc, "WiiExtensionAddonEnabled");
 
+    PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
+	docToValue(ps4Options.enabled, doc, "PS4ModeAddonEnabled");
+
 	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getLegacyAddonOptions();
 	docToPinLegacy(addonOptions.reverseActionUp, doc, "reverseActionUp");
 	docToPinLegacy(addonOptions.reverseActionDown, doc, "reverseActionDown");
 	docToPinLegacy(addonOptions.reverseActionLeft, doc, "reverseActionLeft");
 	docToPinLegacy(addonOptions.reverseActionRight, doc, "reverseActionRight");
-	docToValue(addonOptions.PS4ModeAddonEnabled, doc, "PS4ModeAddonEnabled");
 
 	Storage::getInstance().setLegacyAddonOptions(addonOptions);
 	Storage::getInstance().save();
@@ -920,9 +922,10 @@ std::string setAddonOptions()
 std::string setPS4Options()
 {
 	DynamicJsonDocument doc = get_post_data();
-	ConfigLegacy::PS4Options * ps4Options = Storage::getInstance().getPS4Options();
+	PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
 	std::string encoded;
 	std::string decoded;
+	size_t length;
 
 	const auto readEncoded = [&](const char* key) -> bool
 	{
@@ -941,74 +944,74 @@ std::string setPS4Options()
 
 	// RSA Context
 	if ( readEncoded("N") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_n ) ) {
-			memcpy(ps4Options->rsa_n, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaN.size) ) {
+			memcpy(ps4Options.rsaN.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaN.size = decoded.length();
 		}
 	}
 	if ( readEncoded("E") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_e ) ) {
-			memcpy(ps4Options->rsa_e, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaE.size) ) {
+			memcpy(ps4Options.rsaE.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaE.size = decoded.length();
 		}
 	}
 	if ( readEncoded("D") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_d ) ) {
-			memcpy(ps4Options->rsa_d, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaD.size) ) {
+			memcpy(ps4Options.rsaD.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaD.size = decoded.length();
 		}
 	}
 	if ( readEncoded("P") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_p ) ) {
-			memcpy(ps4Options->rsa_p, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaP.size) ) {
+			memcpy(ps4Options.rsaP.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("Q") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_q ) ) {
-			memcpy(ps4Options->rsa_q, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaQ.size) ) {
+			memcpy(ps4Options.rsaQ.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaQ.size = decoded.length();
 		}
 	}
 	if ( readEncoded("DP") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_dp ) ) {
-			memcpy(ps4Options->rsa_dp, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaDP.size) ) {
+			memcpy(ps4Options.rsaDP.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaDP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("DQ") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_dq ) ) {
-			memcpy(ps4Options->rsa_dq, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaDQ.size) ) {
+			memcpy(ps4Options.rsaDQ.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaDQ.size = decoded.length();
 		}
 	}
 	if ( readEncoded("QP") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_qp ) ) {
-			memcpy(ps4Options->rsa_qp, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaQP.size) ) {
+			memcpy(ps4Options.rsaQP.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaQP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("RN") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->rsa_rn ) ) {
-			memcpy(ps4Options->rsa_rn, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaRN.size) ) {
+			memcpy(ps4Options.rsaRN.bytes, decoded.data(), decoded.length());
+			ps4Options.rsaRN.size = decoded.length();
 		}
 	}
 	// Serial & Signature
 	if ( readEncoded("serial") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->serial ) ) {
-			memcpy(ps4Options->serial, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.serial.size) ) {
+			memcpy(ps4Options.serial.bytes, decoded.data(), decoded.length());
+			ps4Options.serial.size = decoded.length();
 		}
 	}
 	if ( readEncoded("signature") ) {
-		Base64::Decode(encoded, decoded);
-		if ( decoded.length() == sizeof(ps4Options->signature ) ) {
-			memcpy(ps4Options->signature, decoded.data(), decoded.length());
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.signature.size) ) {
+			memcpy(ps4Options.signature.bytes, decoded.data(), decoded.length());
+			ps4Options.signature.size = decoded.length();
 		}
 	}
 
-	Storage::getInstance().savePS4Options();
+	Storage::getInstance().save();
 
 	return "{\"success\":true}";
 }
@@ -1111,8 +1114,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionSpeed", wiiOptions.i2cSpeed);
 	writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
 
-	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
-	writeDoc(doc, "PS4ModeAddonEnabled", addonOptions.PS4ModeAddonEnabled);
+	const PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
+	writeDoc(doc, "PS4ModeAddonEnabled", ps4Options.enabled);
 
 	addUsedPinsArray(doc);
 
