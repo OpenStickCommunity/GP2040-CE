@@ -10,7 +10,7 @@ bool BoardLedAddon::available() {
 
 void BoardLedAddon::setup() {
     const OnBoardLedOptions& options = Storage::getInstance().getAddonOptions().onBoardLedOptions;
-    onBoardLedMode = static_cast<OnBoardLedMode>(options.mode);
+    onBoardLedMode = options.mode;
     isConfigMode = Storage::getInstance().GetConfigMode();
     timeSinceBlink = getMillis();
     prevState = -1;
