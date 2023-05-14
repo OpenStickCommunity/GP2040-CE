@@ -824,6 +824,15 @@ std::string setAddonOptions()
 	docToValue(buzzerOptions.volume, doc, "buzzerVolume");
 	docToValue(buzzerOptions.enabled, doc, "BuzzerSpeakerAddonEnabled");
 
+    DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
+	docToPin(dualDirectionalOptions.downPin, doc, "dualDirDownPin");
+	docToPin(dualDirectionalOptions.upPin, doc, "dualDirUpPin");
+	docToPin(dualDirectionalOptions.leftPin, doc, "dualDirLeftPin");
+	docToPin(dualDirectionalOptions.rightPin, doc, "dualDirRightPin");
+	docToValue(dualDirectionalOptions.dpadMode, doc, "dualDirDpadMode");
+	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
+	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
+
 	ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
 	docToPin(reverseOptions.buttonPin, doc, "reversePin");	
@@ -860,12 +869,6 @@ std::string setAddonOptions()
 	docToValue(addonOptions.i2cAnalog1219Block, doc, "i2cAnalog1219Block");
 	docToValue(addonOptions.i2cAnalog1219Speed, doc, "i2cAnalog1219Speed");
 	docToValue(addonOptions.i2cAnalog1219Address, doc, "i2cAnalog1219Address");
-	docToPinLegacy(addonOptions.pinDualDirDown, doc, "dualDirDownPin");
-	docToPinLegacy(addonOptions.pinDualDirUp, doc, "dualDirUpPin");
-	docToPinLegacy(addonOptions.pinDualDirLeft, doc, "dualDirLeftPin");
-	docToPinLegacy(addonOptions.pinDualDirRight, doc, "dualDirRightPin");
-	docToValue(addonOptions.dualDirDpadMode, doc, "dualDirDpadMode");
-	docToValue(addonOptions.dualDirCombineMode, doc, "dualDirCombineMode");
 	docToPinLegacy(addonOptions.extraButtonPin, doc, "extraButtonPin");
 	docToValue(addonOptions.extraButtonMap, doc, "extraButtonMap");
 	docToValue(addonOptions.playerNumber, doc, "playerNumber");
@@ -888,7 +891,6 @@ std::string setAddonOptions()
 	docToPinLegacy(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
 	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
 	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
-	docToValue(addonOptions.DualDirectionalInputEnabled, doc, "DualDirectionalInputEnabled");
 	docToValue(addonOptions.ExtraButtonAddonEnabled, doc, "ExtraButtonAddonEnabled");
 	docToValue(addonOptions.I2CAnalog1219InputEnabled, doc, "I2CAnalog1219InputEnabled");
 	docToValue(addonOptions.JSliderInputEnabled, doc, "JSliderInputEnabled");
@@ -1017,6 +1019,15 @@ std::string getAddonOptions()
 	writeDoc(doc, "buzzerVolume", buzzerOptions.volume);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", buzzerOptions.enabled);
 
+    const DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
+	writeDoc(doc, "dualDirDownPin", dualDirectionalOptions.downPin == 0xFF ? -1 : dualDirectionalOptions.downPin);
+	writeDoc(doc, "dualDirUpPin", dualDirectionalOptions.upPin == 0xFF ? -1 : dualDirectionalOptions.upPin);
+	writeDoc(doc, "dualDirLeftPin", dualDirectionalOptions.leftPin == 0xFF ? -1 : dualDirectionalOptions.leftPin);
+	writeDoc(doc, "dualDirRightPin", dualDirectionalOptions.rightPin == 0xFF ? -1 : dualDirectionalOptions.rightPin);
+	writeDoc(doc, "dualDirDpadMode", dualDirectionalOptions.dpadMode);
+	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
+	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
+
 	const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	writeDoc(doc, "reversePin", isValidPin(reverseOptions.buttonPin) ? reverseOptions.buttonPin : -1);
 	writeDoc(doc, "reversePinLED", isValidPin(reverseOptions.ledPin) ? reverseOptions.ledPin : -1);
@@ -1049,12 +1060,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "i2cAnalog1219Block", addonOptions.i2cAnalog1219Block);
 	writeDoc(doc, "i2cAnalog1219Speed", addonOptions.i2cAnalog1219Speed);
 	writeDoc(doc, "i2cAnalog1219Address", addonOptions.i2cAnalog1219Address);
-	writeDoc(doc, "dualDirDownPin", addonOptions.pinDualDirDown == 0xFF ? -1 : addonOptions.pinDualDirDown);
-	writeDoc(doc, "dualDirUpPin", addonOptions.pinDualDirUp == 0xFF ? -1 : addonOptions.pinDualDirUp);
-	writeDoc(doc, "dualDirLeftPin", addonOptions.pinDualDirLeft == 0xFF ? -1 : addonOptions.pinDualDirLeft);
-	writeDoc(doc, "dualDirRightPin", addonOptions.pinDualDirRight == 0xFF ? -1 : addonOptions.pinDualDirRight);
-	writeDoc(doc, "dualDirDpadMode", addonOptions.dualDirDpadMode);
-	writeDoc(doc, "dualDirCombineMode", addonOptions.dualDirCombineMode);
 	writeDoc(doc, "extraButtonPin", addonOptions.extraButtonPin == 0xFF ? -1 : addonOptions.extraButtonPin);
 	writeDoc(doc, "extraButtonMap", addonOptions.extraButtonMap);
 	writeDoc(doc, "playerNumber", addonOptions.playerNumber);
@@ -1077,7 +1082,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionSCLPin", addonOptions.wiiExtensionSCLPin == 0xFF ? -1 : addonOptions.wiiExtensionSCLPin);
 	writeDoc(doc, "wiiExtensionBlock", addonOptions.wiiExtensionBlock);
 	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
-	writeDoc(doc, "DualDirectionalInputEnabled", addonOptions.DualDirectionalInputEnabled);
 	writeDoc(doc, "ExtraButtonAddonEnabled", addonOptions.ExtraButtonAddonEnabled);
 	writeDoc(doc, "I2CAnalog1219InputEnabled", addonOptions.I2CAnalog1219InputEnabled);
 	writeDoc(doc, "JSliderInputEnabled", addonOptions.JSliderInputEnabled);
