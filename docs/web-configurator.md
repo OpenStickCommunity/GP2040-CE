@@ -69,7 +69,7 @@ Available selections for `Player LED Type` are `None`, `PWM` or `RGB`.
 
 #### RGB Player LEDs
 
-!> Please note that RGB Player LEDs must be located at an index after the RGB LED Buttons on the LED strip! We hope to remove this limitation in the future.
+!> Please note that RGB Player LEDs must be located at an index after the RGB LED Buttons on the LED strip! The Web Config interface will suggest a starting index based on the number of LED buttons mapped in [RGB LED Button Order](#rgb-led-button-order) and the select `LEDs Per Button` value. We hope to remove this limitation in the future.
 
 ![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-rgb.png)
 
