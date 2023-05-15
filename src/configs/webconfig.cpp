@@ -308,11 +308,6 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(boardOptions.pinButtonA2);
 	addPinIfValid(boardOptions.i2cSDAPin);
 	addPinIfValid(boardOptions.i2cSCLPin);
-
-	const ConfigLegacy::AddonOptions& addonOptions = Storage::getInstance().getLegacyAddonOptions();
-	addPinIfValid(addonOptions.analogAdcPinX);
-	addPinIfValid(addonOptions.analogAdcPinY);
-	addPinIfValid(addonOptions.buzzerPin);
 }
 
 std::string serialize_json(JsonDocument &doc)
@@ -907,13 +902,6 @@ std::string setAddonOptions()
     PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
 	docToValue(ps4Options.enabled, doc, "PS4ModeAddonEnabled");
 
-	ConfigLegacy::AddonOptions addonOptions = Storage::getInstance().getLegacyAddonOptions();
-	docToPinLegacy(addonOptions.reverseActionUp, doc, "reverseActionUp");
-	docToPinLegacy(addonOptions.reverseActionDown, doc, "reverseActionDown");
-	docToPinLegacy(addonOptions.reverseActionLeft, doc, "reverseActionLeft");
-	docToPinLegacy(addonOptions.reverseActionRight, doc, "reverseActionRight");
-
-	Storage::getInstance().setLegacyAddonOptions(addonOptions);
 	Storage::getInstance().save();
 
 	return serialize_json(doc);

@@ -57,9 +57,6 @@ public:
 	void setPreviewBoardOptions(const ConfigLegacy::BoardOptions&);	// Preview Board Options
 	const ConfigLegacy::BoardOptions& getPreviewBoardOptions() { return previewBoardOptions; }
 
-	void setLegacyAddonOptions(ConfigLegacy::AddonOptions); // Add-On Options
-	const ConfigLegacy::AddonOptions& getLegacyAddonOptions() { return addonOptions; }
-
 	void setLEDOptions(ConfigLegacy::LEDOptions);		// LED Options
 	void setDefaultLEDOptions();
 	const ConfigLegacy::LEDOptions& getLEDOptions() { return ledOptions; }
@@ -83,7 +80,6 @@ private:
 	Storage();
 	void initBoardOptions();
 	void initPreviewBoardOptions();
-	void initAddonOptions();
 	void initLEDOptions();
 	void setDefaultBoardOptions();
 	void setDefaultAddonOptions();
@@ -94,7 +90,6 @@ private:
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
 	ConfigLegacy::BoardOptions boardOptions;
 	ConfigLegacy::BoardOptions previewBoardOptions;
-	ConfigLegacy::AddonOptions addonOptions;
 	ConfigLegacy::LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 

@@ -43,7 +43,6 @@ Storage::Storage()
 	EEPROM.start();
 
 	initBoardOptions();
-	initAddonOptions();
 	initLEDOptions();
 
 	critical_section_init(&animationOptionsCs);
@@ -136,10 +135,6 @@ void Storage::initBoardOptions() {
 	setDefaultBoardOptions();
 }
 
-void Storage::initAddonOptions() {
-	setDefaultAddonOptions();
-}
-
 void Storage::setDefaultBoardOptions()
 {
 	// Set GP2040 version string and 0 mem after
@@ -201,84 +196,6 @@ void Storage::setDefaultBoardOptions()
 }
 
 void Storage::setBoardOptions(ConfigLegacy::BoardOptions options)
-{
-}
-
-void Storage::setDefaultAddonOptions()
-{
-	addonOptions.pinButtonTurbo    		= PIN_BUTTON_TURBO;
-	addonOptions.pinButtonReverse  		= PIN_BUTTON_REVERSE;
-	addonOptions.pinSliderLS       		= PIN_SLIDER_LS;
-	addonOptions.pinSliderRS       		= PIN_SLIDER_RS;
-	addonOptions.pinSliderSOCDOne     	= PIN_SLIDER_SOCD_ONE;
-	addonOptions.pinSliderSOCDTwo    	= PIN_SLIDER_SOCD_TWO;
-	addonOptions.pinDualDirDown    		= PIN_DUAL_DIRECTIONAL_DOWN;
-	addonOptions.pinDualDirUp      		= PIN_DUAL_DIRECTIONAL_UP;
-	addonOptions.pinDualDirLeft    		= PIN_DUAL_DIRECTIONAL_LEFT;
-	addonOptions.pinDualDirRight   		= PIN_DUAL_DIRECTIONAL_RIGHT;
-	addonOptions.turboShotCount    		= DEFAULT_SHOT_PER_SEC;
-	addonOptions.pinTurboLED       		= TURBO_LED_PIN;
-	addonOptions.pinReverseLED     		= REVERSE_LED_PIN;
-	addonOptions.reverseActionUp        = REVERSE_UP_DEFAULT;
-	addonOptions.reverseActionDown      = REVERSE_DOWN_DEFAULT;
-	addonOptions.reverseActionLeft      = REVERSE_LEFT_DEFAULT;
-	addonOptions.reverseActionRight     = REVERSE_RIGHT_DEFAULT;
-	addonOptions.i2cAnalog1219SDAPin    = I2C_ANALOG1219_SDA_PIN;
-	addonOptions.i2cAnalog1219SCLPin    = I2C_ANALOG1219_SCL_PIN;
-	addonOptions.i2cAnalog1219Block     = (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1;
-	addonOptions.i2cAnalog1219Speed     = I2C_ANALOG1219_SPEED;
-	addonOptions.i2cAnalog1219Address   = I2C_ANALOG1219_ADDRESS;
-	addonOptions.onBoardLedMode			= static_cast<ConfigLegacy::OnBoardLedMode>(BOARD_LED_TYPE);
-	addonOptions.dualDirDpadMode        = static_cast<ConfigLegacy::DpadMode>(DUAL_DIRECTIONAL_STICK_MODE);
-	addonOptions.dualDirCombineMode     = DUAL_DIRECTIONAL_COMBINE_MODE;
-	addonOptions.analogAdcPinX      	= ANALOG_ADC_VRX;
-	addonOptions.analogAdcPinY      	= ANALOG_ADC_VRY;
-	addonOptions.bootselButtonMap		= BOOTSEL_BUTTON_MASK;
-	addonOptions.buzzerPin              = BUZZER_PIN;
-	addonOptions.buzzerVolume           = BUZZER_VOLUME;
-	addonOptions.extraButtonMap		    = EXTRA_BUTTON_MASK;
-	addonOptions.extraButtonPin		    = EXTRA_BUTTON_PIN;
-	addonOptions.playerNumber           = PLAYER_NUMBER;
-	addonOptions.shmupMode = TURBO_SHMUP_MODE; // Turbo SHMUP Mode
-	addonOptions.shmupMixMode = SHMUP_MIX_MODE; // How we mix turbo and non-turbo buttons
-	addonOptions.shmupAlwaysOn1 = SHMUP_ALWAYS_ON1;
-	addonOptions.shmupAlwaysOn2 = SHMUP_ALWAYS_ON2;
-	addonOptions.shmupAlwaysOn3 = SHMUP_ALWAYS_ON3;
-	addonOptions.shmupAlwaysOn4 = SHMUP_ALWAYS_ON4;
-	addonOptions.pinShmupBtn1 = PIN_SHMUP_BUTTON1;
-	addonOptions.pinShmupBtn2 = PIN_SHMUP_BUTTON2;
-	addonOptions.pinShmupBtn3 = PIN_SHMUP_BUTTON3;
-	addonOptions.pinShmupBtn4 = PIN_SHMUP_BUTTON4;
-	addonOptions.shmupBtnMask1 = SHMUP_BUTTON1;
-	addonOptions.shmupBtnMask2 = SHMUP_BUTTON2;
-	addonOptions.shmupBtnMask3 = SHMUP_BUTTON3;
-	addonOptions.shmupBtnMask4 = SHMUP_BUTTON4;
-	addonOptions.pinShmupDial = PIN_SHMUP_DIAL;
-    addonOptions.sliderSOCDModeOne = static_cast<ConfigLegacy::SOCDMode>(SLIDER_SOCD_SLOT_ONE);
-    addonOptions.sliderSOCDModeTwo  = static_cast<ConfigLegacy::SOCDMode>(SLIDER_SOCD_SLOT_TWO);
-    addonOptions.sliderSOCDModeDefault = static_cast<ConfigLegacy::SOCDMode>(SLIDER_SOCD_SLOT_DEFAULT);
-	addonOptions.wiiExtensionSDAPin    = WII_EXTENSION_I2C_SDA_PIN;
-	addonOptions.wiiExtensionSCLPin    = WII_EXTENSION_I2C_SCL_PIN;
-	addonOptions.wiiExtensionBlock     = (WII_EXTENSION_I2C_BLOCK == i2c0) ? 0 : 1;
-	addonOptions.wiiExtensionSpeed     = WII_EXTENSION_I2C_SPEED;
-	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
-	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
-	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
-	addonOptions.BuzzerSpeakerAddonEnabled = BUZZER_ENABLED;
-	addonOptions.DualDirectionalInputEnabled = DUAL_DIRECTIONAL_ENABLED;
-	addonOptions.ExtraButtonAddonEnabled = EXTRA_BUTTON_ENABLED;
-	addonOptions.I2CAnalog1219InputEnabled = I2C_ANALOG1219_ENABLED;
-	addonOptions.JSliderInputEnabled    = JSLIDER_ENABLED;
-	addonOptions.SliderSOCDInputEnabled    = SLIDER_SOCD_ENABLED;
-	addonOptions.PlayerNumAddonEnabled  = PLAYERNUM_ADDON_ENABLED;
-	addonOptions.PS4ModeAddonEnabled    = PS4MODE_ADDON_ENABLED;
-	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
-	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
-	addonOptions.WiiExtensionAddonEnabled      = WII_EXTENSION_ENABLED;
-	setLegacyAddonOptions(addonOptions);
-}
-
-void Storage::setLegacyAddonOptions(ConfigLegacy::AddonOptions options)
 {
 }
 
