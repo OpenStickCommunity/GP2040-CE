@@ -287,32 +287,34 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 		}
 	};
 
-	const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
-	addPinIfValid(boardOptions.pinDpadUp);
-	addPinIfValid(boardOptions.pinDpadDown);
-	addPinIfValid(boardOptions.pinDpadLeft);
-	addPinIfValid(boardOptions.pinDpadRight);
-	addPinIfValid(boardOptions.pinButtonB1);
-	addPinIfValid(boardOptions.pinButtonB2);
-	addPinIfValid(boardOptions.pinButtonB3);
-	addPinIfValid(boardOptions.pinButtonB4);
-	addPinIfValid(boardOptions.pinButtonL1);
-	addPinIfValid(boardOptions.pinButtonR1);
-	addPinIfValid(boardOptions.pinButtonL2);
-	addPinIfValid(boardOptions.pinButtonR2);
-	addPinIfValid(boardOptions.pinButtonS1);
-	addPinIfValid(boardOptions.pinButtonS2);
-	addPinIfValid(boardOptions.pinButtonL3);
-	addPinIfValid(boardOptions.pinButtonR3);
-	addPinIfValid(boardOptions.pinButtonA1);
-	addPinIfValid(boardOptions.pinButtonA2);
+	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
+	addPinIfValid(pinMappings.pinDpadUp);
+	addPinIfValid(pinMappings.pinDpadDown);
+	addPinIfValid(pinMappings.pinDpadLeft);
+	addPinIfValid(pinMappings.pinDpadRight);
+	addPinIfValid(pinMappings.pinButtonB1);
+	addPinIfValid(pinMappings.pinButtonB2);
+	addPinIfValid(pinMappings.pinButtonB3);
+	addPinIfValid(pinMappings.pinButtonB4);
+	addPinIfValid(pinMappings.pinButtonL1);
+	addPinIfValid(pinMappings.pinButtonR1);
+	addPinIfValid(pinMappings.pinButtonL2);
+	addPinIfValid(pinMappings.pinButtonR2);
+	addPinIfValid(pinMappings.pinButtonS1);
+	addPinIfValid(pinMappings.pinButtonS2);
+	addPinIfValid(pinMappings.pinButtonL3);
+	addPinIfValid(pinMappings.pinButtonR3);
+	addPinIfValid(pinMappings.pinButtonA1);
+	addPinIfValid(pinMappings.pinButtonA2);
+
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(boardOptions.i2cSDAPin);
 	// addPinIfValid(boardOptions.i2cSCLPin);
 
-	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
-	addPinIfValid(addonOptions.analogAdcPinX);
-	addPinIfValid(addonOptions.analogAdcPinY);
+	const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+	addPinIfValid(analogOptions.analogAdcPinX);
+	addPinIfValid(analogOptions.analogAdcPinY);
+
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(addonOptions.buzzerPin);
 }
@@ -331,7 +333,7 @@ std::string getUsedPins()
 	return serialize_json(doc);
 }
 
-std::string setDisplayOptions(BoardOptions& boardOptions)
+std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
 	DynamicJsonDocument doc = get_post_data();
 	readDoc(displayOptions.enabled, doc, "enabled");
@@ -546,7 +548,7 @@ std::string setLedOptions()
 	uint32_t pledColor;
 	readDoc(pledColor, doc, "pledColor");
 	ledOptions.pledColor = RGB(pledColor);
-	ConfigManager::getInstance().setLedOptions(ledOptions);
+	Storage::getInstance().setLEDOptions(ledOptions);
 	return serialize_json(doc);
 }
 

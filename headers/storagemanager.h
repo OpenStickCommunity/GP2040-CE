@@ -107,7 +107,6 @@ private:
 	critical_section_t animationOptionsCs;
 	uint32_t animationOptionsCrc = 0;
 	AnimationOptions animationOptionsToSave = {};
-	SplashImage splashImage;
 
 	int pledPins[4];
 };

@@ -9,6 +9,7 @@
 
 #include "mbedtls/rsa.h"
 #include "NeoPico.hpp"
+#include "Animation.hpp"
 
 namespace ConfigLegacy
 {
@@ -207,6 +208,12 @@ namespace ConfigLegacy
         int indexR3;
         int indexA1;
         int indexA2;
+        int pledType;
+        int pledPin1;
+        int pledPin2;
+        int pledPin3;
+        int pledPin4;
+        RGB pledColor;
         uint32_t checksum;
     };
 
