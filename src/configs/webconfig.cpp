@@ -526,7 +526,7 @@ std::string setLedOptions()
 	readIndex(ledOptions.indexR3, "ledButtonMap", "R3");
 	readIndex(ledOptions.indexA1, "ledButtonMap", "A1");
 	readIndex(ledOptions.indexA2, "ledButtonMap", "A2");
-	ConfigManager::getInstance().setLedOptions(ledOptions);
+	Storage::getInstance().setLEDOptions(ledOptions);
 	return serialize_json(doc);
 }
 

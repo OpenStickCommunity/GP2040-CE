@@ -18,9 +18,7 @@ public:
     void setup(ConfigType);
     void loop(); // If anything needs to update in the gpconfig driver
     void setGamepadOptions(Gamepad*);
-    void setBoardOptions(ConfigLegacy::BoardOptions);
     void setPreviewBoardOptions(ConfigLegacy::BoardOptions);
-    void setLedOptions(ConfigLegacy::LEDOptions);
 private:
     ConfigManager() {}
     void setupConfig(GPConfig*);
