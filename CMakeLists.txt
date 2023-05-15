@@ -90,14 +90,12 @@ add_subdirectory(lib)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   # Activate some compiler / linker options to aid us with diagnosing stack space issues in Debug builds
-  add_compile_options(-fstack-usage)
+  add_compile_options(-fstack-usage -Wstack-usage=500)
   add_compile_definitions(PICO_USE_STACK_GUARDS=1)
 endif()
 
 # We want a larger stack of 4kb per core instead of the default 2kb
 add_compile_definitions(PICO_STACK_SIZE=0x1000)
-
-add_compile_options(-Wstack-usage=500)
 
 add_executable(${PROJECT_NAME}
 src/main.cpp

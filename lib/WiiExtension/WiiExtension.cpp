@@ -42,6 +42,8 @@ void WiiExtension::start(){
     if (result > -1) {
         doI2CRead(idRead, 6);
 
+        if (idRead[2] != 0xA4 || idRead[3] != 0x20) return;
+
         if (idRead[5] == 0x00) {
             extensionType = WII_EXTENSION_NUNCHUCK;
         } else if (idRead[5] == 0x01) {
@@ -63,8 +65,8 @@ void WiiExtension::start(){
         if (dataType == WII_DATA_TYPE_0) dataType = WII_DATA_TYPE_1;
 
 #if WII_EXTENSION_DEBUG==true
-        printf("Extension ID: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
-        printf("Data Format: %02x\n",idRead[4]);
+        printf("WiiExtension::Extension ID: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
+        printf("WiiExtension::Data Format: %02x\n",idRead[4]);
 #endif
 
         if (extensionType != WII_EXTENSION_NONE) {
@@ -73,7 +75,7 @@ void WiiExtension::start(){
 #endif
 
 #if WII_EXTENSION_DEBUG==true
-            printf("Calibration Data\n");
+            printf("WiiExtension::Calibration Data\n");
 #endif
             if (extensionType == WII_EXTENSION_NUNCHUCK) {
                 _analogPrecision1From = WII_ANALOG_PRECISION_2;
@@ -251,9 +253,12 @@ void WiiExtension::start(){
             drumRight       = 0;
 
             whammyBar       = 0;
+            touchBar        = 0;
+
+            _guitarType     = WII_GUITAR_UNSET;
         } else {
 #if WII_EXTENSION_DEBUG==true
-            printf("Unknown Extension: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
+            printf("WiiExtension::Unknown Extension: %02x%02x %02x%02x %02x%02x\n", idRead[0], idRead[1], idRead[2], idRead[3], idRead[4], idRead[5]);
 #endif
         }
 
@@ -457,70 +462,100 @@ void WiiExtension::poll() {
 
                     break;
                 case WII_EXTENSION_GUITAR:
-                    if (dataType == WII_DATA_TYPE_1) {
-                        joy1X =          (regRead[0] & 0x3F);
-                        joy1Y =          (regRead[1] & 0x3F);
-
-                        whammyBar =      (regRead[3] & 0x1F);
-                        joy2X =          (regRead[3] & 0x1F);
-
-                        directionDown =  !((regRead[4] & 0x40) >> 6);
-                        buttonMinus =    !((regRead[4] & 0x10) >> 4);
-                        buttonPlus =     !((regRead[4] & 0x04) >> 2);
-
-                        fretOrange =     !((regRead[5] & 0x80) >> 7);
-                        fretRed =        !((regRead[5] & 0x40) >> 6);
-                        fretBlue =       !((regRead[5] & 0x20) >> 5);
-                        fretGreen =      !((regRead[5] & 0x10) >> 4);
-                        fretYellow =     !((regRead[5] & 0x08) >> 3);
-                        pedalButton =    !((regRead[5] & 0x04) >> 2);
-                        directionUp =    !((regRead[5] & 0x01) >> 0);
-                    } else if (dataType == WII_DATA_TYPE_2) {
-                        joy1X =          ((regRead[0] << 2) | ((regRead[4] & 0x03) >> 0));
-                        joy1Y =          ((regRead[2] << 2) | ((regRead[4] & 0x30) >> 4));
-
-                        // analog 2 is not used but appears to not change?
-                        //joy2X =          ((regRead[1] << 2) | ((regRead[4] & 0x0C) >> 2));
-                        //joy2Y =          ((regRead[3] << 2) | ((regRead[4] & 0xC0) >> 6));
-
-                        whammyBar =      (regRead[6] & 0xFF);
-                        joy2X =          (regRead[6] & 0xFF);
-
-                        directionDown =  !((regRead[7] & 0x40) >> 6);
-                        buttonMinus =    !((regRead[7] & 0x10) >> 4);
-                        buttonPlus =     !((regRead[7] & 0x04) >> 2);
-
-                        fretOrange =     !((regRead[8] & 0x80) >> 7);
-                        fretRed =        !((regRead[8] & 0x40) >> 6);
-                        fretBlue =       !((regRead[8] & 0x20) >> 5);
-                        fretGreen =      !((regRead[8] & 0x10) >> 4);
-                        fretYellow =     !((regRead[8] & 0x08) >> 3);
-                        pedalButton =    !((regRead[8] & 0x04) >> 2);
-                        directionUp =    !((regRead[8] & 0x01) >> 0);
-                    } else if (dataType == WII_DATA_TYPE_3) {
-                        joy1X =          (regRead[0] & 0xFF);
-                        joy1Y =          (regRead[2] & 0xFF);
-
-                        // analog 2 is not used but appears to not change?
-                        //joy2X =          regRead[1];
-                        //joy2Y =          regRead[3];
-
-                        whammyBar =      (regRead[5] & 0xFF);
-                        joy2X =          (regRead[5] & 0xFF);
-
-                        directionDown =  !((regRead[6] & 0x40) >> 6);
-                        buttonMinus =    !((regRead[6] & 0x10) >> 4);
-                        buttonPlus =     !((regRead[6] & 0x04) >> 2);
-
-                        fretOrange =     !((regRead[7] & 0x80) >> 7);
-                        fretRed =        !((regRead[7] & 0x40) >> 6);
-                        fretBlue =       !((regRead[7] & 0x20) >> 5);
-                        fretGreen =      !((regRead[7] & 0x10) >> 4);
-                        fretYellow =     !((regRead[7] & 0x08) >> 3);
-                        pedalButton =    !((regRead[7] & 0x04) >> 2);
-                        directionUp =    !((regRead[7] & 0x01) >> 0);
+                    // on first read, check the status of the guitar flag
+                    if (_guitarType == WII_GUITAR_UNSET) {
+                        if (((regRead[0] & 0x80) >> 7) == 0) {
+                            _guitarType = WII_GUITAR_GHWT;
+                        } else {
+                            _guitarType = WII_GUITAR_GH3;
+                        }
+                        // force the data type to 1 when a World Tour guitar is detected
+                        if ((_guitarType == WII_GUITAR_GHWT) && (dataType != WII_DATA_TYPE_1)) {
+                            dataType = WII_DATA_TYPE_1;
+                            _analogPrecision1From = WII_ANALOG_PRECISION_1;
+                            _analogPrecision1To = WII_ANALOG_PRECISION_3;
+                            _analogPrecision2From = WII_ANALOG_PRECISION_0;
+                            _analogPrecision2To = WII_ANALOG_PRECISION_3;
+                        }
                     }
+                    if (_guitarType != WII_GUITAR_UNSET) {
+                        // as defined works for GH3 guitar
+                        if (dataType == WII_DATA_TYPE_1) {
+                            joy1X =          (regRead[0] & 0x3F);
+                            joy1Y =          (regRead[1] & 0x3F);
 
+                            touchBar =       ((_guitarType == WII_GUITAR_GHWT) ? (regRead[2] & 0x1F) : 0);
+
+                            whammyBar =      (regRead[3] & 0x1F);
+                            joy2X =          (regRead[3] & 0x1F);
+
+                            directionDown =  !((regRead[4] & 0x40) >> 6);
+                            buttonMinus =    !((regRead[4] & 0x10) >> 4);
+                            buttonPlus =     !((regRead[4] & 0x04) >> 2);
+
+                            fretOrange =     !((regRead[5] & 0x80) >> 7);
+                            fretRed =        !((regRead[5] & 0x40) >> 6);
+                            fretBlue =       !((regRead[5] & 0x20) >> 5);
+                            fretGreen =      !((regRead[5] & 0x10) >> 4);
+                            fretYellow =     !((regRead[5] & 0x08) >> 3);
+                            pedalButton =    !((regRead[5] & 0x04) >> 2);
+                            directionUp =    !((regRead[5] & 0x01) >> 0);
+
+                            isTouched        = (touchBar != WII_GUITAR_TOUCHPAD_NONE);
+
+                            // process the touch bar for button states
+                            // touch only seems to exist in GHWT, and GHWT always reports data type 1 format regardless of setting
+                            if (isTouched) {
+                                // touched
+                                fretGreen     = (TOUCH_BETWEEN_RANGE(touchBar,WII_GUITAR_TOUCHPAD_GREEN,WII_GUITAR_TOUCHPAD_RED));
+                                fretRed       = (TOUCH_BETWEEN_RANGE(touchBar,WII_GUITAR_TOUCHPAD_RED,WII_GUITAR_TOUCHPAD_YELLOW));
+                                fretYellow    = (TOUCH_BETWEEN_RANGE(touchBar,WII_GUITAR_TOUCHPAD_YELLOW,WII_GUITAR_TOUCHPAD_BLUE));
+                                fretBlue      = (TOUCH_BETWEEN_RANGE(touchBar,WII_GUITAR_TOUCHPAD_BLUE,WII_GUITAR_TOUCHPAD_ORANGE));
+                                fretOrange    = (TOUCH_BETWEEN_RANGE(touchBar,WII_GUITAR_TOUCHPAD_ORANGE,WII_GUITAR_TOUCHPAD_MAX));
+                                directionDown = isTouched;
+                            }
+                        } else if (dataType == WII_DATA_TYPE_2) {
+                            joy1X =          ((regRead[0] << 2) | ((regRead[4] & 0x03) >> 0));
+                            joy1Y =          ((regRead[2] << 2) | ((regRead[4] & 0x30) >> 4));
+
+                            touchBar =       0;
+
+                            whammyBar =      (regRead[6] & 0xFF);
+                            joy2X =          (regRead[6] & 0xFF);
+
+                            directionDown =  !((regRead[7] & 0x40) >> 6);
+                            buttonMinus =    !((regRead[7] & 0x10) >> 4);
+                            buttonPlus =     !((regRead[7] & 0x04) >> 2);
+
+                            fretOrange =     !((regRead[8] & 0x80) >> 7);
+                            fretRed =        !((regRead[8] & 0x40) >> 6);
+                            fretBlue =       !((regRead[8] & 0x20) >> 5);
+                            fretGreen =      !((regRead[8] & 0x10) >> 4);
+                            fretYellow =     !((regRead[8] & 0x08) >> 3);
+                            pedalButton =    !((regRead[8] & 0x04) >> 2);
+                            directionUp =    !((regRead[8] & 0x01) >> 0);
+                        } else if (dataType == WII_DATA_TYPE_3) {
+                            joy1X =          (regRead[0] & 0xFF);
+                            joy1Y =          (regRead[2] & 0xFF);
+
+                            touchBar =       0;
+
+                            whammyBar =      (regRead[5] & 0xFF);
+                            joy2X =          (regRead[5] & 0xFF);
+
+                            directionDown =  !((regRead[6] & 0x40) >> 6);
+                            buttonMinus =    !((regRead[6] & 0x10) >> 4);
+                            buttonPlus =     !((regRead[6] & 0x04) >> 2);
+
+                            fretOrange =     !((regRead[7] & 0x80) >> 7);
+                            fretRed =        !((regRead[7] & 0x40) >> 6);
+                            fretBlue =       !((regRead[7] & 0x20) >> 5);
+                            fretGreen =      !((regRead[7] & 0x10) >> 4);
+                            fretYellow =     !((regRead[7] & 0x08) >> 3);
+                            pedalButton =    !((regRead[7] & 0x04) >> 2);
+                            directionUp =    !((regRead[7] & 0x01) >> 0);
+                        }
+                    }
 #if WII_EXTENSION_DEBUG==true
 //                printf("Joy1 X=%4d Y=%4d  Whammy=%4d  U=%1d D=%1d -=%1d +=%1d\n", joy1X, joy1Y, whammyBar, directionUp, directionDown, buttonMinus, buttonPlus);
 //                printf("Joy1 X=%4d Y=%4d  Whammy=%4d  U=%1d D=%1d -=%1d +=%1d\n", joy1X, joy1Y, whammyBar, directionUp, directionDown, buttonMinus, buttonPlus);
