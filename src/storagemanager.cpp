@@ -45,7 +45,6 @@ Storage::Storage()
 	initBoardOptions();
 	initAddonOptions();
 	initLEDOptions();
-	initSplashImage();
 
 	critical_section_init(&animationOptionsCs);
 
@@ -139,10 +138,6 @@ void Storage::initBoardOptions() {
 
 void Storage::initAddonOptions() {
 	setDefaultAddonOptions();
-}
-
-void Storage::initSplashImage() {
-	setDefaultSplashImage();
 }
 
 void Storage::setDefaultBoardOptions()
@@ -284,14 +279,6 @@ void Storage::setDefaultAddonOptions()
 }
 
 void Storage::setLegacyAddonOptions(ConfigLegacy::AddonOptions options)
-{
-}
-
-void Storage::setDefaultSplashImage()
-{
-}
-
-void Storage::setSplashImage(const ConfigLegacy::SplashImage& image)
 {
 }
 

@@ -263,11 +263,6 @@ namespace ConfigLegacy
         uint32_t checksum;
     };
 
-    struct SplashImage {
-        uint8_t data[16*64];
-        uint32_t checksum;
-    };
-
     struct LEDOptions
     {
         bool useUserDefinedLEDs;

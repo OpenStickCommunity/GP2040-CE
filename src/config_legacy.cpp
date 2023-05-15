@@ -30,6 +30,11 @@ namespace ConfigLegacy
         mbedtls_mpi_uint rsa_rn[64];
         uint32_t checksum;
     };
+
+    struct SplashImage {
+        uint8_t data[16*64];
+        uint32_t checksum;
+    };
 }
 
 bool ConfigUtils::fromLegacyStorage(Config& config)

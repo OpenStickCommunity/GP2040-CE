@@ -60,9 +60,6 @@ public:
 	void setLegacyAddonOptions(ConfigLegacy::AddonOptions); // Add-On Options
 	const ConfigLegacy::AddonOptions& getLegacyAddonOptions() { return addonOptions; }
 
-	void setSplashImage(const ConfigLegacy::SplashImage&);
-	const ConfigLegacy::SplashImage& getSplashImage() { return splashImage; }
-
 	void setLEDOptions(ConfigLegacy::LEDOptions);		// LED Options
 	void setDefaultLEDOptions();
 	const ConfigLegacy::LEDOptions& getLEDOptions() { return ledOptions; }
@@ -88,7 +85,6 @@ private:
 	void initPreviewBoardOptions();
 	void initAddonOptions();
 	void initLEDOptions();
-	void initSplashImage();
 	void setDefaultBoardOptions();
 	void setDefaultAddonOptions();
 	void setDefaultSplashImage();
@@ -101,7 +97,6 @@ private:
 	ConfigLegacy::AddonOptions addonOptions;
 	ConfigLegacy::LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
-	ConfigLegacy::SplashImage splashImage;
 
 	Config config;
 
