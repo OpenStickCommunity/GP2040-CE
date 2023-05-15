@@ -119,13 +119,6 @@ namespace ConfigLegacy
         CUSTOM,
         LEGACY
     };
-
-    enum OnBoardLedMode
-    {
-        BOARD_LED_OFF,
-        MODE_INDICATOR,
-        INPUT_TEST,
-    };
     
     struct ButtonLayoutParams
     {

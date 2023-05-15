@@ -16,6 +16,13 @@ const uint32_t NOCHECKSUM_MAGIC = 0xDEADBEEF;   // No checksum CRC;
 
 namespace ConfigLegacy
 {
+    enum OnBoardLedMode
+    {
+        BOARD_LED_OFF,
+        MODE_INDICATOR,
+        INPUT_TEST,
+    };
+
     struct PS4Options {
         uint8_t serial[16];
         uint8_t signature[256];
