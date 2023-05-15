@@ -6,7 +6,6 @@
 #include "storagemanager.h"
 
 #include "BoardConfig.h"
-#include <GamepadStorage.h>
 #include "AnimationStorage.hpp"
 #include "Effects/StaticColor.hpp"
 #include "FlashPROM.h"

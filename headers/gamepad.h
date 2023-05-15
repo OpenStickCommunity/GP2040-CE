@@ -6,7 +6,6 @@
 
 #include "gamepad/GamepadDebouncer.h"
 #include "gamepad/GamepadState.h"
-#include "gamepad/GamepadStorage.h"
 #include "gamepad/descriptors/HIDDescriptors.h"
 #include "gamepad/descriptors/SwitchDescriptors.h"
 #include "gamepad/descriptors/XInputDescriptors.h"
@@ -16,6 +15,8 @@
 #include "config_legacy.h"
 
 #include "pico/stdlib.h"
+
+#include "config.pb.h"
 
 // MUST BE DEFINED FOR MPG
 extern uint32_t getMillis();
@@ -59,13 +60,7 @@ struct GamepadButtonMapping
 
 class Gamepad {
 public:
-	Gamepad(int debounceMS = 5, GamepadStorage *storage = &GamepadStore) :
-			debounceMS(debounceMS)
-			, f1Mask((GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2))
-			, f2Mask((GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3))
-			, debouncer(debounceMS)
-			, mpgStorage(storage)
-	{}
+	Gamepad(int debounceMS = 5);
 
 	void setup();
 	void process();
@@ -130,12 +125,16 @@ public:
 	inline bool __attribute__((always_inline)) pressedA2()    { return pressedButton(GAMEPAD_MASK_A2); }
 	inline bool __attribute__((always_inline)) pressedF1()    { return pressedButton(f1Mask); }
 	inline bool __attribute__((always_inline)) pressedF2()    { return pressedButton(f2Mask); }
+
+	const GamepadOptions& getOptions() const { return options; }
+
+	void setInputMode(InputMode inputMode) { options.inputMode = inputMode; }
+	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
+
 	GamepadDebouncer debouncer;
-	GamepadStorage *mpgStorage;
 	const uint8_t debounceMS;
 	uint16_t f1Mask;
 	uint16_t f2Mask;
-	ConfigLegacy::GamepadOptions options;
 	GamepadState rawState;
 	GamepadState state;
 	GamepadButtonMapping *mapDpadUp;
@@ -158,12 +157,12 @@ public:
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping **gamepadMappings;
 
-	inline static const SOCDMode resolveSOCDMode(const ConfigLegacy::GamepadOptions& options) {
-		 return ((options.socdMode == static_cast<ConfigLegacy::SOCDMode>(SOCD_MODE_BYPASS)) && 
-				 (options.inputMode == static_cast<ConfigLegacy::InputMode>(INPUT_MODE_HID) ||
-				  options.inputMode == static_cast<ConfigLegacy::InputMode>(INPUT_MODE_SWITCH) |
-				  options.inputMode == static_cast<ConfigLegacy::InputMode>(INPUT_MODE_PS4))) ?
-				SOCD_MODE_NEUTRAL : static_cast<SOCDMode>(options.socdMode);
+	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
+		 return (options.socdMode == SOCD_MODE_BYPASS &&
+				 (options.inputMode == INPUT_MODE_HID ||
+				  options.inputMode == INPUT_MODE_SWITCH ||
+				  options.inputMode == INPUT_MODE_PS4)) ?
+				SOCD_MODE_NEUTRAL : options.socdMode;
 	};
 
 private:
@@ -171,14 +170,16 @@ private:
 	void pressKey(uint8_t code);
 	uint8_t getModifier(uint8_t code);
 
-	ConfigLegacy::GamepadHotkeyEntry hotkeyF1Up;
-	ConfigLegacy::GamepadHotkeyEntry hotkeyF1Down;
-	ConfigLegacy::GamepadHotkeyEntry hotkeyF1Left;
-	ConfigLegacy::GamepadHotkeyEntry hotkeyF1Right;
-	ConfigLegacy::GamepadHotkeyEntry hotkeyF2Up;
-	ConfigLegacy::GamepadHotkeyEntry hotkeyF2Down;
-	ConfigLegacy::GamepadHotkeyEntry hotkeyF2Left;
-	ConfigLegacy::GamepadHotkeyEntry hotkeyF2Right;
+	GamepadOptions& options;
+
+	HotkeyEntry hotkeyF1Up;
+	HotkeyEntry hotkeyF1Down;
+	HotkeyEntry hotkeyF1Left;
+	HotkeyEntry hotkeyF1Right;
+	HotkeyEntry hotkeyF2Up;
+	HotkeyEntry hotkeyF2Down;
+	HotkeyEntry hotkeyF2Left;
+	HotkeyEntry hotkeyF2Right;
 };
 
 #endif

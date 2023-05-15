@@ -451,52 +451,55 @@ std::string setSplashImage()
 std::string setGamepadOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	
+	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+	readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
+	readDoc(gamepadOptions.inputMode, doc, "inputMode");
+	readDoc(gamepadOptions.socdMode, doc, "socdMode");
 
-	readDoc(gamepad->options.dpadMode, doc, "dpadMode");
-	readDoc(gamepad->options.inputMode, doc, "inputMode");
-	readDoc(gamepad->options.socdMode, doc, "socdMode");
+	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
+	readDoc(hotkeyOptions.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
+	readDoc(hotkeyOptions.hotkeyF1Down.action, doc, "hotkeyF1", 1, "action");
+	readDoc(hotkeyOptions.hotkeyF1Left.action, doc, "hotkeyF1", 2, "action");
+	readDoc(hotkeyOptions.hotkeyF1Right.action, doc, "hotkeyF1", 3, "action");
 
-	readDoc(gamepad->options.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
-	readDoc(gamepad->options.hotkeyF1Down.action, doc, "hotkeyF1", 1, "action");
-	readDoc(gamepad->options.hotkeyF1Left.action, doc, "hotkeyF1", 2, "action");
-	readDoc(gamepad->options.hotkeyF1Right.action, doc, "hotkeyF1", 3, "action");
+	readDoc(hotkeyOptions.hotkeyF2Up.action, doc, "hotkeyF2", 0, "action");
+	readDoc(hotkeyOptions.hotkeyF2Down.action, doc, "hotkeyF2", 1, "action");
+	readDoc(hotkeyOptions.hotkeyF2Left.action, doc, "hotkeyF2", 2, "action");
+	readDoc(hotkeyOptions.hotkeyF2Right.action, doc, "hotkeyF2", 3, "action");
 
-	readDoc(gamepad->options.hotkeyF2Up.action, doc, "hotkeyF2", 0, "action");
-	readDoc(gamepad->options.hotkeyF2Down.action, doc, "hotkeyF2", 1, "action");
-	readDoc(gamepad->options.hotkeyF2Left.action, doc, "hotkeyF2", 2, "action");
-	readDoc(gamepad->options.hotkeyF2Right.action, doc, "hotkeyF2", 3, "action");
+	Storage::getInstance().save();
 
-	ConfigManager::getInstance().setGamepadOptions(gamepad);
 	return serialize_json(doc);
 }
 
 std::string getGamepadOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	const ConfigLegacy::GamepadOptions& options = GamepadStore.getGamepadOptions();
 
-	writeDoc(doc, "dpadMode", options.dpadMode);
-	writeDoc(doc, "inputMode", options.inputMode);
-	writeDoc(doc, "socdMode", options.socdMode);
+	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+	writeDoc(doc, "dpadMode", gamepadOptions.dpadMode);
+	writeDoc(doc, "inputMode", gamepadOptions.inputMode);
+	writeDoc(doc, "socdMode", gamepadOptions.socdMode);
 
-	writeDoc(doc, "hotkeyF1", 0, "action", options.hotkeyF1Up.action);
-	writeDoc(doc, "hotkeyF1", 0, "mask", options.hotkeyF1Up.dpadMask);
-	writeDoc(doc, "hotkeyF1", 1, "action", options.hotkeyF1Down.action);
-	writeDoc(doc, "hotkeyF1", 1, "mask", options.hotkeyF1Down.dpadMask);
-	writeDoc(doc, "hotkeyF1", 2, "action", options.hotkeyF1Left.action);
-	writeDoc(doc, "hotkeyF1", 2, "mask", options.hotkeyF1Left.dpadMask);
-	writeDoc(doc, "hotkeyF1", 3, "action", options.hotkeyF1Right.action);
-	writeDoc(doc, "hotkeyF1", 3, "mask", options.hotkeyF1Right.dpadMask);
+	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
+	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);
+	writeDoc(doc, "hotkeyF1", 0, "mask", hotkeyOptions.hotkeyF1Up.dpadMask);
+	writeDoc(doc, "hotkeyF1", 1, "action", hotkeyOptions.hotkeyF1Down.action);
+	writeDoc(doc, "hotkeyF1", 1, "mask", hotkeyOptions.hotkeyF1Down.dpadMask);
+	writeDoc(doc, "hotkeyF1", 2, "action", hotkeyOptions.hotkeyF1Left.action);
+	writeDoc(doc, "hotkeyF1", 2, "mask", hotkeyOptions.hotkeyF1Left.dpadMask);
+	writeDoc(doc, "hotkeyF1", 3, "action", hotkeyOptions.hotkeyF1Right.action);
+	writeDoc(doc, "hotkeyF1", 3, "mask", hotkeyOptions.hotkeyF1Right.dpadMask);
 
-	writeDoc(doc, "hotkeyF2", 0, "action", options.hotkeyF2Up.action);
-	writeDoc(doc, "hotkeyF2", 0, "mask", options.hotkeyF2Up.dpadMask);
-	writeDoc(doc, "hotkeyF2", 1, "action", options.hotkeyF2Down.action);
-	writeDoc(doc, "hotkeyF2", 1, "mask", options.hotkeyF2Down.dpadMask);
-	writeDoc(doc, "hotkeyF2", 2, "action", options.hotkeyF2Left.action);
-	writeDoc(doc, "hotkeyF2", 2, "mask", options.hotkeyF2Left.dpadMask);
-	writeDoc(doc, "hotkeyF2", 3, "action", options.hotkeyF2Right.action);
-	writeDoc(doc, "hotkeyF2", 3, "mask", options.hotkeyF2Right.dpadMask);
+	writeDoc(doc, "hotkeyF2", 0, "action", hotkeyOptions.hotkeyF2Up.action);
+	writeDoc(doc, "hotkeyF2", 0, "mask", hotkeyOptions.hotkeyF2Up.dpadMask);
+	writeDoc(doc, "hotkeyF2", 1, "action", hotkeyOptions.hotkeyF2Down.action);
+	writeDoc(doc, "hotkeyF2", 1, "mask", hotkeyOptions.hotkeyF2Down.dpadMask);
+	writeDoc(doc, "hotkeyF2", 2, "action", hotkeyOptions.hotkeyF2Left.action);
+	writeDoc(doc, "hotkeyF2", 2, "mask", hotkeyOptions.hotkeyF2Left.dpadMask);
+	writeDoc(doc, "hotkeyF2", 3, "action", hotkeyOptions.hotkeyF2Right.action);
+	writeDoc(doc, "hotkeyF2", 3, "mask", hotkeyOptions.hotkeyF2Right.dpadMask);
 
 	return serialize_json(doc);
 }
@@ -775,54 +778,56 @@ std::string getPinMappings()
 std::string setKeyMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
-	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+	
+	KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
-	readDoc(gamepad->options.keyDpadUp, doc, "Up");
-	readDoc(gamepad->options.keyDpadDown, doc, "Down");
-	readDoc(gamepad->options.keyDpadLeft, doc, "Left");
-	readDoc(gamepad->options.keyDpadRight, doc, "Right");
-	readDoc(gamepad->options.keyButtonB1, doc, "B1");
-	readDoc(gamepad->options.keyButtonB2, doc, "B2");
-	readDoc(gamepad->options.keyButtonB3, doc, "B3");
-	readDoc(gamepad->options.keyButtonB4, doc, "B4");
-	readDoc(gamepad->options.keyButtonL1, doc, "L1");
-	readDoc(gamepad->options.keyButtonR1, doc, "R1");
-	readDoc(gamepad->options.keyButtonL2, doc, "L2");
-	readDoc(gamepad->options.keyButtonR2, doc, "R2");
-	readDoc(gamepad->options.keyButtonS1, doc, "S1");
-	readDoc(gamepad->options.keyButtonS2, doc, "S2");
-	readDoc(gamepad->options.keyButtonL3, doc, "L3");
-	readDoc(gamepad->options.keyButtonR3, doc, "R3");
-	readDoc(gamepad->options.keyButtonA1, doc, "A1");
-	readDoc(gamepad->options.keyButtonA2, doc, "A2");
+	readDoc(keyboardMapping.keyDpadUp, doc, "Up");
+	readDoc(keyboardMapping.keyDpadDown, doc, "Down");
+	readDoc(keyboardMapping.keyDpadLeft, doc, "Left");
+	readDoc(keyboardMapping.keyDpadRight, doc, "Right");
+	readDoc(keyboardMapping.keyButtonB1, doc, "B1");
+	readDoc(keyboardMapping.keyButtonB2, doc, "B2");
+	readDoc(keyboardMapping.keyButtonB3, doc, "B3");
+	readDoc(keyboardMapping.keyButtonB4, doc, "B4");
+	readDoc(keyboardMapping.keyButtonL1, doc, "L1");
+	readDoc(keyboardMapping.keyButtonR1, doc, "R1");
+	readDoc(keyboardMapping.keyButtonL2, doc, "L2");
+	readDoc(keyboardMapping.keyButtonR2, doc, "R2");
+	readDoc(keyboardMapping.keyButtonS1, doc, "S1");
+	readDoc(keyboardMapping.keyButtonS2, doc, "S2");
+	readDoc(keyboardMapping.keyButtonL3, doc, "L3");
+	readDoc(keyboardMapping.keyButtonR3, doc, "R3");
+	readDoc(keyboardMapping.keyButtonA1, doc, "A1");
+	readDoc(keyboardMapping.keyButtonA2, doc, "A2");
 
-	gamepad->save();
+	Storage::getInstance().save();
+
 	return serialize_json(doc);
 }
 
 std::string getKeyMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+	const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
-	writeDoc(doc, "Up", gamepad->options.keyDpadUp);
-	writeDoc(doc, "Down", gamepad->options.keyDpadDown);
-	writeDoc(doc, "Left", gamepad->options.keyDpadLeft);
-	writeDoc(doc, "Right", gamepad->options.keyDpadRight);
-	writeDoc(doc, "B1", gamepad->options.keyButtonB1);
-	writeDoc(doc, "B2", gamepad->options.keyButtonB2);
-	writeDoc(doc, "B3", gamepad->options.keyButtonB3);
-	writeDoc(doc, "B4", gamepad->options.keyButtonB4);
-	writeDoc(doc, "L1", gamepad->options.keyButtonL1);
-	writeDoc(doc, "R1", gamepad->options.keyButtonR1);
-	writeDoc(doc, "L2", gamepad->options.keyButtonL2);
-	writeDoc(doc, "R2", gamepad->options.keyButtonR2);
-	writeDoc(doc, "S1", gamepad->options.keyButtonS1);
-	writeDoc(doc, "S2", gamepad->options.keyButtonS2);
-	writeDoc(doc, "L3", gamepad->options.keyButtonL3);
-	writeDoc(doc, "R3", gamepad->options.keyButtonR3);
-	writeDoc(doc, "A1", gamepad->options.keyButtonA1);
-	writeDoc(doc, "A2", gamepad->options.keyButtonA2);
+	writeDoc(doc, "Up", keyboardMapping.keyDpadUp);
+	writeDoc(doc, "Down", keyboardMapping.keyDpadDown);
+	writeDoc(doc, "Left", keyboardMapping.keyDpadLeft);
+	writeDoc(doc, "Right", keyboardMapping.keyDpadRight);
+	writeDoc(doc, "B1", keyboardMapping.keyButtonB1);
+	writeDoc(doc, "B2", keyboardMapping.keyButtonB2);
+	writeDoc(doc, "B3", keyboardMapping.keyButtonB3);
+	writeDoc(doc, "B4", keyboardMapping.keyButtonB4);
+	writeDoc(doc, "L1", keyboardMapping.keyButtonL1);
+	writeDoc(doc, "R1", keyboardMapping.keyButtonR1);
+	writeDoc(doc, "L2", keyboardMapping.keyButtonL2);
+	writeDoc(doc, "R2", keyboardMapping.keyButtonR2);
+	writeDoc(doc, "S1", keyboardMapping.keyButtonS1);
+	writeDoc(doc, "S2", keyboardMapping.keyButtonS2);
+	writeDoc(doc, "L3", keyboardMapping.keyButtonL3);
+	writeDoc(doc, "R3", keyboardMapping.keyButtonR3);
+	writeDoc(doc, "A1", keyboardMapping.keyButtonA1);
+	writeDoc(doc, "A2", keyboardMapping.keyButtonA2);
 
 	return serialize_json(doc);
 }

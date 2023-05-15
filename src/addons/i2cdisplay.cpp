@@ -915,7 +915,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
 
-	switch (gamepad->options.inputMode)
+	switch (gamepad->getOptions().inputMode)
 	{
 		case INPUT_MODE_HID:    statusBar += "DINPUT"; break;
 		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
@@ -939,7 +939,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 	} else {
 		statusBar += "    "; // no turbo, don't show Txx setting
 	}
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 
 		case DPAD_MODE_DIGITAL:      statusBar += " DP"; break;
@@ -947,7 +947,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case DPAD_MODE_RIGHT_ANALOG: statusBar += " RS"; break;
 	}
 
-	switch (Gamepad::resolveSOCDMode(gamepad->options))
+	switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
 	{
 		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
 		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
@@ -960,7 +960,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 
 bool I2CDisplayAddon::pressedUp()
 {
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      return pGamepad->pressedUp();
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.ly == GAMEPAD_JOYSTICK_MIN;
@@ -972,7 +972,7 @@ bool I2CDisplayAddon::pressedUp()
 
 bool I2CDisplayAddon::pressedDown()
 {
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      return pGamepad->pressedDown();
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.ly == GAMEPAD_JOYSTICK_MAX;
@@ -984,7 +984,7 @@ bool I2CDisplayAddon::pressedDown()
 
 bool I2CDisplayAddon::pressedLeft()
 {
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      return pGamepad->pressedLeft();
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.lx == GAMEPAD_JOYSTICK_MIN;
@@ -996,7 +996,7 @@ bool I2CDisplayAddon::pressedLeft()
 
 bool I2CDisplayAddon::pressedRight()
 {
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      return pGamepad->pressedRight();
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.lx == GAMEPAD_JOYSTICK_MAX;

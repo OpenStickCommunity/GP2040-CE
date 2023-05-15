@@ -13,58 +13,6 @@
 
 namespace ConfigLegacy
 {
-    enum InputMode
-    {
-        INPUT_MODE_XINPUT,
-        INPUT_MODE_SWITCH,
-        INPUT_MODE_HID,
-        INPUT_MODE_KEYBOARD,
-        INPUT_MODE_PS4,
-        INPUT_MODE_CONFIG = 255,
-    };
-
-    enum DpadMode
-    {
-        DPAD_MODE_DIGITAL,
-        DPAD_MODE_LEFT_ANALOG,
-        DPAD_MODE_RIGHT_ANALOG,
-    };
-
-    enum SOCDMode
-    {
-        SOCD_MODE_UP_PRIORITY,
-        SOCD_MODE_NEUTRAL,
-        SOCD_MODE_SECOND_INPUT_PRIORITY,
-        SOCD_MODE_FIRST_INPUT_PRIORITY,
-        SOCD_MODE_BYPASS,
-    };
-
-    enum DpadDirection
-    {
-        DIRECTION_NONE,
-        DIRECTION_UP,
-        DIRECTION_DOWN,
-        DIRECTION_LEFT,
-        DIRECTION_RIGHT,
-    };
-
-    enum GamepadHotkey
-    {
-        HOTKEY_NONE,
-        HOTKEY_DPAD_DIGITAL,
-        HOTKEY_DPAD_LEFT_ANALOG,
-        HOTKEY_DPAD_RIGHT_ANALOG,
-        HOTKEY_HOME_BUTTON,
-        HOTKEY_CAPTURE_BUTTON,
-        HOTKEY_SOCD_UP_PRIORITY,
-        HOTKEY_SOCD_NEUTRAL,
-        HOTKEY_SOCD_LAST_INPUT,
-        HOTKEY_INVERT_X_AXIS,
-        HOTKEY_INVERT_Y_AXIS,
-        HOTKEY_SOCD_FIRST_INPUT,
-        HOTKEY_SOCD_BYPASS,
-    };
-
     enum ButtonLayout
     {
         BUTTON_LAYOUT_STICK,
@@ -146,7 +94,6 @@ namespace ConfigLegacy
         ButtonLayoutParams paramsRight;
     }; // 76 bytes
 
-
     struct BoardOptions
     {
         bool hasBoardOptions;
@@ -221,51 +168,6 @@ namespace ConfigLegacy
         int pledPin3;
         int pledPin4;
         RGB pledColor;
-        uint32_t checksum;
-    };
-
-    struct GamepadHotkeyEntry
-    {
-        uint8_t dpadMask;
-        GamepadHotkey action;
-    };
-
-    struct GamepadOptions
-    {
-        InputMode inputMode {InputMode::INPUT_MODE_XINPUT}; 
-        DpadMode dpadMode {DpadMode::DPAD_MODE_DIGITAL};
-        SOCDMode socdMode {SOCDMode::SOCD_MODE_NEUTRAL};
-        bool invertXAxis;
-        bool invertYAxis;
-
-        uint8_t keyDpadUp;
-        uint8_t keyDpadDown;
-        uint8_t keyDpadLeft;
-        uint8_t keyDpadRight;
-        uint8_t keyButtonB1;
-        uint8_t keyButtonB2;
-        uint8_t keyButtonB3;
-        uint8_t keyButtonB4;
-        uint8_t keyButtonL1;
-        uint8_t keyButtonR1;
-        uint8_t keyButtonL2;
-        uint8_t keyButtonR2;
-        uint8_t keyButtonS1;
-        uint8_t keyButtonS2;
-        uint8_t keyButtonL3;
-        uint8_t keyButtonR3;
-        uint8_t keyButtonA1;
-        uint8_t keyButtonA2;
-
-        GamepadHotkeyEntry hotkeyF1Up;
-        GamepadHotkeyEntry hotkeyF1Down;
-        GamepadHotkeyEntry hotkeyF1Left;
-        GamepadHotkeyEntry hotkeyF1Right;
-        GamepadHotkeyEntry hotkeyF2Up;
-        GamepadHotkeyEntry hotkeyF2Down;
-        GamepadHotkeyEntry hotkeyF2Left;
-        GamepadHotkeyEntry hotkeyF2Right;
-
         uint32_t checksum;
     };
 }

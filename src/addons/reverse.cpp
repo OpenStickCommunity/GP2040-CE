@@ -38,8 +38,8 @@ void ReverseInput::setup()
 	mapDpadLeft  = gamepad->mapDpadLeft;
 	mapDpadRight = gamepad->mapDpadRight;
 
-    invertXAxis = gamepad->options.invertXAxis;
-    invertYAxis = gamepad->options.invertYAxis;
+    invertXAxis = gamepad->getOptions().invertXAxis;
+    invertYAxis = gamepad->getOptions().invertYAxis;
 
     state = false;
 }

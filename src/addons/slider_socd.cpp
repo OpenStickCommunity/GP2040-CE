@@ -65,8 +65,8 @@ void SliderSOCDInput::process()
 #endif
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    if ( gamepad->options.socdMode != static_cast<ConfigLegacy::SOCDMode>(socdState)) {
-        gamepad->options.socdMode = static_cast<ConfigLegacy::SOCDMode>(socdState);
+    if ( gamepad->getOptions().socdMode != socdState) {
+        gamepad->setSOCDMode(socdState);
         gamepad->save();
     }
 }
