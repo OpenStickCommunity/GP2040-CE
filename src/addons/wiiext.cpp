@@ -87,10 +87,11 @@ void WiiExtensionInput::process() {
 
             // whammy currently maps to Joy2X in addition to the raw whammy value
             whammyBar = wii->whammyBar;
+            buttonR = wii->pedalButton;
 
             leftX = map(wii->joy1X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             leftY = map(wii->joy1Y,WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightX = map(wii->joy2X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MAX);
+            rightX = map(wii->joy2X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             rightY = GAMEPAD_JOYSTICK_MID;
 
             triggerLeft = 0;
@@ -99,7 +100,7 @@ void WiiExtensionInput::process() {
             buttonL = wii->rimLeft;
             buttonR = wii->rimRight;
 
-            dpadRight = wii->drumLeft;
+            dpadLeft = wii->drumLeft;
             buttonA = wii->drumRight;
         }
                

@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: [Pico, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5,  MavercadeKeebfighter, PicoAnn, PicoFightingBoard, ReflexEncoder, RP2040AdvancedBreakoutBoard, SparkFunProMicro, WaveshareZero ]
+        GP2040_BOARDCONFIG: [Pico, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, KB2040, MavercadeKeebfighter, PicoAnn, PicoFightingBoard, ReflexEncoder, RP2040AdvancedBreakoutBoard, SparkFunProMicro, WaveshareZero ]
 
     steps:
     #Global Setup
@@ -33,10 +33,6 @@ jobs:
     - name: Setup SDK pipeline
       uses: Fortinbra/RaspberryPiPicoBuild@v1
     
-    - name: Checkout submodules
-      working-directory: ${{github.workspace}}
-      run: git submodule update --init
-
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3.0.2
       with:

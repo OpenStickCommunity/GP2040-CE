@@ -15,3 +15,7 @@ These are the default pin mappings for each GP2040-CE supported microcontroller 
 ## Waveshare RP2040-Zero
 
 ![Waveshare RP2040-Zero Pinout](assets/wiring/WaveshareRP2040Zero_Pinout.png)
+
+## Adafruit KB2040
+
+![Adafruit KB2040 Pinout](assets/wiring/AdafruitKB2040_Pinout.png)
