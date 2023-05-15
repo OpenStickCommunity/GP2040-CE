@@ -30,6 +30,24 @@
 #define WII_ANALOG_PRECISION_2      256
 #define WII_ANALOG_PRECISION_3      1024
 
+#define WII_GUITAR_UNSET            0
+#define WII_GUITAR_GH3              1
+#define WII_GUITAR_GHWT             2
+#define WII_GUITAR_UNDEFINED        3
+
+#define WII_GUITAR_TOUCHPAD_GREEN   0x03
+#define WII_GUITAR_TOUCHPAD_RED     0x09
+#define WII_GUITAR_TOUCHPAD_YELLOW  0x0E
+#define WII_GUITAR_TOUCHPAD_BLUE    0x15
+#define WII_GUITAR_TOUCHPAD_ORANGE  0x1B
+#define WII_GUITAR_TOUCHPAD_MAX     0x1F
+#define WII_GUITAR_TOUCHPAD_NONE    0x0F
+#define WII_GUITAR_TOUCHPAD_OVERLAP 0x03
+
+#ifndef HAS_WII_EXTENSION
+#define HAS_WII_EXTENSION 1
+#endif
+
 #ifndef WII_EXTENSION_DEBUG
 #define WII_EXTENSION_DEBUG false
 #endif
@@ -61,6 +79,8 @@ static volatile bool WiiExtension_alarmFired;
   ((byte) & 0x04 ? '1' : '0'), \
   ((byte) & 0x02 ? '1' : '0'), \
   ((byte) & 0x01 ? '1' : '0') 
+
+#define TOUCH_BETWEEN_RANGE(val,beg,end) (((val) >= ((beg)-WII_GUITAR_TOUCHPAD_OVERLAP)) && ((val) < (end)))
 
 class WiiExtension {
   protected:
@@ -107,6 +127,8 @@ class WiiExtension {
     bool pedalButton     = false;
 
     uint16_t whammyBar   = 0;
+    int8_t touchBar      = 0;
+    bool isTouched       = 0;
 
     bool rimLeft         = false;
     bool rimRight        = false;
@@ -171,6 +193,8 @@ class WiiExtension {
     uint16_t _triggerPrecision1To = WII_ANALOG_PRECISION_0;
     uint16_t _triggerPrecision2From = WII_ANALOG_PRECISION_0;
     uint16_t _triggerPrecision2To = WII_ANALOG_PRECISION_0;
+
+    uint8_t _guitarType   = WII_GUITAR_UNSET;
 
     uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
     uint16_t calibrate(uint16_t pos, uint16_t min, uint16_t max, uint16_t center);
