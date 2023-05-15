@@ -825,6 +825,9 @@ std::string setAddonOptions()
 	docToPin(addonOptions.wiiExtensionSCLPin, doc, "wiiExtensionSCLPin");
 	docToValue(addonOptions.wiiExtensionBlock, doc, "wiiExtensionBlock");
 	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
+	docToPin(addonOptions.snesPadClockPin, doc, "snesPadClockPin");
+	docToPin(addonOptions.snesPadLatchPin, doc, "snesPadLatchPin");
+	docToPin(addonOptions.snesPadDataPin, doc, "snesPadDataPin");
 	docToValue(addonOptions.AnalogInputEnabled, doc, "AnalogInputEnabled");
 	docToValue(addonOptions.BoardLedAddonEnabled, doc, "BoardLedAddonEnabled");
 	docToValue(addonOptions.BuzzerSpeakerAddonEnabled, doc, "BuzzerSpeakerAddonEnabled");
@@ -839,6 +842,7 @@ std::string setAddonOptions()
 	docToValue(addonOptions.ReverseInputEnabled, doc, "ReverseInputEnabled");
 	docToValue(addonOptions.TurboInputEnabled, doc, "TurboInputEnabled");
 	docToValue(addonOptions.WiiExtensionAddonEnabled, doc, "WiiExtensionAddonEnabled");
+	docToValue(addonOptions.SNESpadAddonEnabled, doc, "SNESpadAddonEnabled");
 
 	Storage::getInstance().setAddonOptions(addonOptions);
 
@@ -1000,6 +1004,9 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionSCLPin", addonOptions.wiiExtensionSCLPin == 0xFF ? -1 : addonOptions.wiiExtensionSCLPin);
 	writeDoc(doc, "wiiExtensionBlock", addonOptions.wiiExtensionBlock);
 	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
+	writeDoc(doc, "snesPadClockPin", addonOptions.snesPadClockPin == 0xFF ? -1 : addonOptions.snesPadClockPin);
+	writeDoc(doc, "snesPadLatchPin", addonOptions.snesPadLatchPin == 0xFF ? -1 : addonOptions.snesPadLatchPin);
+	writeDoc(doc, "snesPadDataPin", addonOptions.snesPadDataPin == 0xFF ? -1 : addonOptions.snesPadDataPin);
 	writeDoc(doc, "AnalogInputEnabled", addonOptions.AnalogInputEnabled);
 	writeDoc(doc, "BoardLedAddonEnabled", addonOptions.BoardLedAddonEnabled);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", addonOptions.BuzzerSpeakerAddonEnabled);
@@ -1014,6 +1021,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "ReverseInputEnabled", addonOptions.ReverseInputEnabled);
 	writeDoc(doc, "TurboInputEnabled", addonOptions.TurboInputEnabled);
 	writeDoc(doc, "WiiExtensionAddonEnabled", addonOptions.WiiExtensionAddonEnabled);
+	writeDoc(doc, "SNESpadAddonEnabled", addonOptions.SNESpadAddonEnabled);
 
 	return serialize_json(doc);
 }

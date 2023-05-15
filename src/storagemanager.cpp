@@ -31,6 +31,7 @@
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
+#include "addons/snes_input.h"
 
 #include "bitmaps.h"
 
@@ -200,6 +201,9 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.wiiExtensionSCLPin    = WII_EXTENSION_I2C_SCL_PIN;
 	addonOptions.wiiExtensionBlock     = (WII_EXTENSION_I2C_BLOCK == i2c0) ? 0 : 1;
 	addonOptions.wiiExtensionSpeed     = WII_EXTENSION_I2C_SPEED;
+	addonOptions.snesPadClockPin = SNES_PAD_CLOCK_PIN;
+	addonOptions.snesPadLatchPin = SNES_PAD_LATCH_PIN;
+	addonOptions.snesPadDataPin  = SNES_PAD_DATA_PIN;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -214,6 +218,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
 	addonOptions.WiiExtensionAddonEnabled      = WII_EXTENSION_ENABLED;
+	addonOptions.SNESpadAddonEnabled	= SNES_PAD_ENABLED;
 	setAddonOptions(addonOptions);
 }
 
