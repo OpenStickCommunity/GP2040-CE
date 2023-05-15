@@ -260,6 +260,8 @@ void Storage::initLEDOptions()
 	if (lastCRC != CRC32::calculate(&ledOptions)) {
 		setDefaultLEDOptions();
 	}
+
+	setPLEDPins(ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4);
 }
 
 void Storage::setDefaultLEDOptions()

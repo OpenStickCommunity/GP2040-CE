@@ -268,6 +268,14 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
+	void setPLEDPins(int pin1, int pin2, int pin3, int pin4) {
+		pledPins[0] = pin1;
+		pledPins[1] = pin2;
+		pledPins[2] = pin3;
+		pledPins[3] = pin4;
+	}
+	const int * getPLEDPins() { return pledPins; }
+
 private:
 	Storage() : gamepad(0) {
 		EEPROM.start(); // init EEPROM
@@ -297,6 +305,7 @@ private:
 	PS4Options ps4Options;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;
+	int pledPins[4];
 };
 
 #endif
