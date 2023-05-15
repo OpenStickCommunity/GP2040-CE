@@ -504,8 +504,16 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.right_stick_x = static_cast<uint8_t>(state.rx >> 8);
 	ps4Report.right_stick_y = static_cast<uint8_t>(state.ry >> 8);
 
-	ps4Report.left_trigger = 0;
-	ps4Report.right_trigger = 0;
+	if (hasAnalogTriggers)
+	{
+		ps4Report.left_trigger = state.lt;
+		ps4Report.right_trigger = state.rt;
+	}
+	else
+	{
+		ps4Report.left_trigger = pressedL2() ? 0xFF : 0;
+		ps4Report.right_trigger = pressedR2() ? 0xFF : 0;
+	}
 
 	// set touchpad to nothing
 	touchpadData.p1.unpressed = 1;
