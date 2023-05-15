@@ -65,14 +65,14 @@ static void __attribute__((noinline)) readDoc(T& var, const DynamicJsonDocument&
 // Don't inline this function, we do not want to consume stack space in the calling function
 static bool __attribute__((noinline)) hasValue(const DynamicJsonDocument& doc, const char* key0, const char* key1)
 {
-	return doc[key0].containsKey(key1);
+	return doc[key0][key1] != nullptr;
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
 template <typename T>
 static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocument& doc, const char* key)
 {
-	if (doc.containsKey(key))
+	if (doc[key] != nullptr)
 	{
 		value = doc[key];
 	}
@@ -81,7 +81,7 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
 // Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPin(uint8_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
-	if (doc.containsKey(key))
+	if (doc[key] != nullptr)
 	{
 		pin = doc[key] < 0 ? 0xff : doc[key];
 	}
@@ -249,13 +249,15 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(boardOptions.pinButtonR3);
 	addPinIfValid(boardOptions.pinButtonA1);
 	addPinIfValid(boardOptions.pinButtonA2);
-	addPinIfValid(boardOptions.i2cSDAPin);
-	addPinIfValid(boardOptions.i2cSCLPin);
+	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
+	// addPinIfValid(boardOptions.i2cSDAPin);
+	// addPinIfValid(boardOptions.i2cSCLPin);
 
 	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 	addPinIfValid(addonOptions.analogAdcPinX);
 	addPinIfValid(addonOptions.analogAdcPinY);
-	addPinIfValid(addonOptions.buzzerPin);
+	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
+	// addPinIfValid(addonOptions.buzzerPin);
 }
 
 std::string serialize_json(JsonDocument &doc)
@@ -263,6 +265,13 @@ std::string serialize_json(JsonDocument &doc)
 	string data;
 	serializeJson(doc, data);
 	return data;
+}
+
+std::string getUsedPins()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	addUsedPinsArray(doc);
+	return serialize_json(doc);
 }
 
 std::string setDisplayOptions(BoardOptions& boardOptions)
@@ -344,8 +353,6 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startY", boardOptions.buttonLayoutCustomOptions.paramsRight.startY);
 	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius", boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius);
 	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding", boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding);
-
-	addUsedPinsArray(doc);
 
 	return serialize_json(doc);
 }
@@ -467,6 +474,14 @@ std::string setLedOptions()
 	readIndex(ledOptions.indexR3, "ledButtonMap", "R3");
 	readIndex(ledOptions.indexA1, "ledButtonMap", "A1");
 	readIndex(ledOptions.indexA2, "ledButtonMap", "A2");
+	readDoc(ledOptions.pledType, doc, "pledType");
+	readDoc(ledOptions.pledPin1, doc, "pledPin1");
+	readDoc(ledOptions.pledPin2, doc, "pledPin2");
+	readDoc(ledOptions.pledPin3, doc, "pledPin3");
+	readDoc(ledOptions.pledPin4, doc, "pledPin4");
+	uint32_t pledColor;
+	readDoc(pledColor, doc, "pledColor");
+	ledOptions.pledColor = RGB(pledColor);
 	ConfigManager::getInstance().setLedOptions(ledOptions);
 	return serialize_json(doc);
 }
@@ -511,8 +526,12 @@ std::string getLedOptions()
 	writeIndex("ledButtonMap", "R3", ledOptions.indexR3);
 	writeIndex("ledButtonMap", "A1", ledOptions.indexA1);
 	writeIndex("ledButtonMap", "A2", ledOptions.indexA2);
-
-	addUsedPinsArray(doc);
+	writeDoc(doc, "pledType", ledOptions.pledType);
+	writeDoc(doc, "pledPin1", ledOptions.pledPin1);
+	writeDoc(doc, "pledPin2", ledOptions.pledPin2);
+	writeDoc(doc, "pledPin3", ledOptions.pledPin3);
+	writeDoc(doc, "pledPin4", ledOptions.pledPin4);
+	writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
 
 	return serialize_json(doc);
 }
@@ -996,8 +1015,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "TurboInputEnabled", addonOptions.TurboInputEnabled);
 	writeDoc(doc, "WiiExtensionAddonEnabled", addonOptions.WiiExtensionAddonEnabled);
 
-	addUsedPinsArray(doc);
-
 	return serialize_json(doc);
 }
 
@@ -1084,6 +1101,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getSplashImage", getSplashImage },
 	{ "/api/getFirmwareVersion", getFirmwareVersion },
 	{ "/api/getMemoryReport", getMemoryReport },
+	{ "/api/getUsedPins", getUsedPins },
 #if !defined(NDEBUG)
 	{ "/api/echo", echo },
 #endif
