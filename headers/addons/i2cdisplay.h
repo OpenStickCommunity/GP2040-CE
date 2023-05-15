@@ -108,8 +108,8 @@ private:
 	void drawBlankB(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawButtonLayoutLeft(ConfigLegacy::ButtonLayoutCustomOptions options);
-	void drawButtonLayoutRight(ConfigLegacy::ButtonLayoutCustomOptions options);
+	void drawButtonLayoutLeft(ButtonLayoutParamsLeft& options);
+	void drawButtonLayoutRight(ButtonLayoutParamsRight& options);
 	void drawFightboard(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawFightboardMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawFightboardStick(int startX, int startY, int buttonRadius, int buttonPadding);
@@ -118,7 +118,7 @@ private:
 	bool pressedDown();
 	bool pressedLeft();
 	bool pressedRight();
-	const ConfigLegacy::BoardOptions& getBoardOptions();
+	const DisplayOptions& getDisplayOptions();
 	bool isDisplayPowerOff();
 	void setDisplayPower(uint8_t status);
 	uint32_t displaySaverTimeout = 0;

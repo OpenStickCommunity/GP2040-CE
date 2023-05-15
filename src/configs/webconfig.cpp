@@ -322,51 +322,51 @@ std::string serialize_json(JsonDocument &doc)
 	return data;
 }
 
-std::string setDisplayOptions(ConfigLegacy::BoardOptions& boardOptions)
+std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
 	DynamicJsonDocument doc = get_post_data();
-	readDoc(boardOptions.hasI2CDisplay, doc, "enabled");
-	docToPinLegacy(boardOptions.i2cSDAPin, doc, "sdaPin");
-	docToPinLegacy(boardOptions.i2cSCLPin, doc, "sclPin");
-	readDoc(boardOptions.displayI2CAddress, doc, "i2cAddress");
-	readDoc(boardOptions.i2cBlock, doc, "i2cBlock");
-	readDoc(boardOptions.i2cSpeed, doc, "i2cSpeed");
-	readDoc(boardOptions.displayFlip, doc, "flipDisplay");
-	readDoc(boardOptions.displayInvert, doc, "invertDisplay");
-	readDoc(boardOptions.buttonLayout, doc, "buttonLayout");
-	readDoc(boardOptions.buttonLayoutRight, doc, "buttonLayoutRight");
-	readDoc(boardOptions.splashMode, doc, "splashMode");
-	readDoc(boardOptions.splashChoice, doc, "splashChoice");
-	readDoc(boardOptions.splashDuration, doc, "splashDuration");
-	readDoc(boardOptions.displaySaverTimeout, doc, "displaySaverTimeout");
+	readDoc(displayOptions.enabled, doc, "enabled");
+	docToPin(displayOptions.i2cSDAPin, doc, "sdaPin");
+	docToPin(displayOptions.i2cSCLPin, doc, "sclPin");
+	readDoc(displayOptions.i2cAddress, doc, "i2cAddress");
+	readDoc(displayOptions.i2cBlock, doc, "i2cBlock");
+	readDoc(displayOptions.i2cSpeed, doc, "i2cSpeed");
+	readDoc(displayOptions.flip, doc, "flipDisplay");
+	readDoc(displayOptions.invert, doc, "invertDisplay");
+	readDoc(displayOptions.buttonLayout, doc, "buttonLayout");
+	readDoc(displayOptions.buttonLayoutRight, doc, "buttonLayoutRight");
+	readDoc(displayOptions.splashMode, doc, "splashMode");
+	readDoc(displayOptions.splashChoice, doc, "splashChoice");
+	readDoc(displayOptions.splashDuration, doc, "splashDuration");
+	readDoc(displayOptions.displaySaverTimeout, doc, "displaySaverTimeout");
 
-	readDoc(boardOptions.buttonLayoutCustomOptions.params.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
-	readDoc(boardOptions.buttonLayoutCustomOptions.params.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
-	readDoc(boardOptions.buttonLayoutCustomOptions.params.startY, doc, "buttonLayoutCustomOptions", "params", "startY");
-	readDoc(boardOptions.buttonLayoutCustomOptions.params.buttonRadius, doc, "buttonLayoutCustomOptions", "params", "buttonRadius");
-	readDoc(boardOptions.buttonLayoutCustomOptions.params.buttonPadding, doc, "buttonLayoutCustomOptions", "params", "buttonPadding");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startY, doc, "buttonLayoutCustomOptions", "params", "startY");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonRadius, doc, "buttonLayoutCustomOptions", "params", "buttonRadius");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonPadding, doc, "buttonLayoutCustomOptions", "params", "buttonPadding");
 
-	readDoc(boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight, doc, "buttonLayoutCustomOptions", "paramsRight", "layout");
-	readDoc(boardOptions.buttonLayoutCustomOptions.paramsRight.startX, doc, "buttonLayoutCustomOptions", "paramsRight", "startX");
-	readDoc(boardOptions.buttonLayoutCustomOptions.paramsRight.startY, doc, "buttonLayoutCustomOptions", "paramsRight", "startY");
-	readDoc(boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius");
-	readDoc(boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.layout, doc, "buttonLayoutCustomOptions", "paramsRight", "layout");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.startX, doc, "buttonLayoutCustomOptions", "paramsRight", "startX");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.startY, doc, "buttonLayoutCustomOptions", "paramsRight", "startY");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius");
+	readDoc(displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding, doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding");
 
 	return serialize_json(doc);
 }
 
 std::string setDisplayOptions()
 {
-	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	std::string response = setDisplayOptions(boardOptions);
-	ConfigManager::getInstance().setBoardOptions(boardOptions);
+	DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+	std::string response = setDisplayOptions(displayOptions);
+	Storage::getInstance().save();
 	return response;
 }
 
 std::string setPreviewDisplayOptions()
 {
-	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getPreviewBoardOptions();
-	std::string response = setDisplayOptions(boardOptions);
+	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
+	std::string response = ""; // TODO: Setup preview display
 	ConfigManager::getInstance().setPreviewBoardOptions(boardOptions);
 	return response;
 }
@@ -374,33 +374,33 @@ std::string setPreviewDisplayOptions()
 std::string getDisplayOptions() // Manually set Document Attributes for the display
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	const ConfigLegacy::BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
-	writeDoc(doc, "enabled", boardOptions.hasI2CDisplay ? 1 : 0);
-	writeDoc(doc, "sdaPin", boardOptions.i2cSDAPin == 0xFF ? -1 : boardOptions.i2cSDAPin);
-	writeDoc(doc, "sclPin", boardOptions.i2cSCLPin == 0xFF ? -1 : boardOptions.i2cSCLPin);
-	writeDoc(doc, "i2cAddress", boardOptions.displayI2CAddress);
-	writeDoc(doc, "i2cBlock", boardOptions.i2cBlock);
-	writeDoc(doc, "i2cSpeed", boardOptions.i2cSpeed);
-	writeDoc(doc, "flipDisplay", boardOptions.displayFlip ? 1 : 0);
-	writeDoc(doc, "invertDisplay", boardOptions.displayInvert ? 1 : 0);
-	writeDoc(doc, "buttonLayout", boardOptions.buttonLayout);
-	writeDoc(doc, "buttonLayoutRight", boardOptions.buttonLayoutRight);
-	writeDoc(doc, "splashMode", boardOptions.splashMode);
-	writeDoc(doc, "splashChoice", boardOptions.splashChoice);
-	writeDoc(doc, "splashDuration", boardOptions.splashDuration);
-	writeDoc(doc, "displaySaverTimeout", boardOptions.displaySaverTimeout);
+	const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+	writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
+	writeDoc(doc, "sdaPin", displayOptions.i2cSDAPin == 0xFF ? -1 : displayOptions.i2cSDAPin);
+	writeDoc(doc, "sclPin", displayOptions.i2cSCLPin == 0xFF ? -1 : displayOptions.i2cSCLPin);
+	writeDoc(doc, "i2cAddress", displayOptions.i2cAddress);
+	writeDoc(doc, "i2cBlock", displayOptions.i2cBlock);
+	writeDoc(doc, "i2cSpeed", displayOptions.i2cSpeed);
+	writeDoc(doc, "flipDisplay", displayOptions.flip ? 1 : 0);
+	writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
+	writeDoc(doc, "buttonLayout", displayOptions.buttonLayout);
+	writeDoc(doc, "buttonLayoutRight", displayOptions.buttonLayoutRight);
+	writeDoc(doc, "splashMode", displayOptions.splashMode);
+	writeDoc(doc, "splashChoice", displayOptions.splashChoice);
+	writeDoc(doc, "splashDuration", displayOptions.splashDuration);
+	writeDoc(doc, "displaySaverTimeout", displayOptions.displaySaverTimeout);
 
-	writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", boardOptions.buttonLayoutCustomOptions.params.layout);
-	writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", boardOptions.buttonLayoutCustomOptions.params.startX);
-	writeDoc(doc, "buttonLayoutCustomOptions", "params", "startY", boardOptions.buttonLayoutCustomOptions.params.startY);
-	writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonRadius", boardOptions.buttonLayoutCustomOptions.params.buttonRadius);
-	writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonPadding", boardOptions.buttonLayoutCustomOptions.params.buttonPadding);
+	writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
+	writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
+	writeDoc(doc, "buttonLayoutCustomOptions", "params", "startY", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startY);
+	writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonRadius", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonRadius);
+	writeDoc(doc, "buttonLayoutCustomOptions", "params", "buttonPadding", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.buttonPadding);
 
-	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "layout", boardOptions.buttonLayoutCustomOptions.paramsRight.layoutRight);
-	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startX", boardOptions.buttonLayoutCustomOptions.paramsRight.startX);
-	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startY", boardOptions.buttonLayoutCustomOptions.paramsRight.startY);
-	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius", boardOptions.buttonLayoutCustomOptions.paramsRight.buttonRadius);
-	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding", boardOptions.buttonLayoutCustomOptions.paramsRight.buttonPadding);
+	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "layout", displayOptions.buttonLayoutCustomOptions.paramsRight.layout);
+	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startX", displayOptions.buttonLayoutCustomOptions.paramsRight.common.startX);
+	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "startY", displayOptions.buttonLayoutCustomOptions.paramsRight.common.startY);
+	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonRadius", displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonRadius);
+	writeDoc(doc, "buttonLayoutCustomOptions", "paramsRight", "buttonPadding", displayOptions.buttonLayoutCustomOptions.paramsRight.common.buttonPadding);
 
 	addUsedPinsArray(doc);
 
