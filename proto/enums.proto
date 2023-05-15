@@ -142,3 +142,12 @@ enum ShmupMixMode
     SHMUP_MIX_MODE_TURBO_PRIORITY = 0;
     SHMUP_MIX_MODE_CHARGE_PRIORITY = 1;
 }
+
+enum PLEDType
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    PLED_TYPE_NONE = -1;
+    PLED_TYPE_PWM = 0;
+    PLED_TYPE_RGB = 1;
+};

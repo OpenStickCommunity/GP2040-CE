@@ -208,6 +208,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, indexA1, LEDS_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.ledOptions, indexA2, LEDS_BUTTON_A2);
 
+    INIT_UNSET_PROPERTY(config.ledOptions, pledType, PLED_TYPE);
+    INIT_UNSET_PROPERTY(config.ledOptions, pledPin1, PLED1_PIN);
+    INIT_UNSET_PROPERTY(config.ledOptions, pledPin2, PLED2_PIN);
+    INIT_UNSET_PROPERTY(config.ledOptions, pledPin3, PLED3_PIN);
+    INIT_UNSET_PROPERTY(config.ledOptions, pledPin4, PLED4_PIN);
+    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b)); 
+
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
     INIT_UNSET_PROPERTY(config.animationOptions, brightness, LEDS_BRIGHTNESS);
@@ -559,7 +566,8 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
     str.append(std::to_string(value));
 }
 
-#define TO_JSON_UENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname));
+#define TO_JSON_ENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname));
+#define TO_JSON_UENUM(fieldname, submessageType) appendAsString(str, static_cast<uint32_t>(s.fieldname));
 #define TO_JSON_INT32(fieldname, submessageType) appendAsString(str, s.fieldname);
 #define TO_JSON_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname);
 #define TO_JSON_BOOL(fieldname, submessageType) str.append((s.fieldname) ? "true" : "false");
@@ -567,7 +575,8 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_BYTES(fieldname, submessageType) str.push_back('"'); str.append(Base64::Encode(reinterpret_cast<const char*>(s.fieldname.bytes), s.fieldname.size)); str.push_back('"');
 #define TO_JSON_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname, indentLevel + 1);
 
-#define TO_JSON_REPEATED_UENUM(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
+#define TO_JSON_REPEATED_RENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname[i]));
+#define TO_JSON_REPEATED_UENUM(fieldname, submessageType) appendAsString(str, static_cast<uint32_t>(s.fieldname[i]));
 #define TO_JSON_REPEATED_INT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
 #define TO_JSON_REPEATED_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
 #define TO_JSON_REPEATED_BOOL(fieldname, submessageType) str.append((s.fieldname[i]) ? "true" : "false");
@@ -657,13 +666,36 @@ std::string ConfigUtils::toJSON(const Config& config)
     ENUMS_ENUMS_GP2040(GEN_IS_VALID_ENUM_VALUE_FUNCTION)
 #endif
 
-#define FROM_JSON_UENUM(fieldname, enumType) \
+#define FROM_JSON_ENUM(fieldname, enumType) \
     if (jsonObject.containsKey(#fieldname)) \
     { \
         JsonVariantConst value = jsonObject[#fieldname]; \
         if (value.is<int>()) \
         { \
             const int v = value.as<int>(); \
+            if (PREPROCESSOR_JOIN(isValid, PREPROCESSOR_JOIN(enumType, _ENUMTYPE))(v)) \
+            { \
+                configStruct.fieldname = static_cast<decltype(configStruct.fieldname)>(v); \
+                configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
+            } \
+            else \
+            { \
+                return false; \
+            } \
+        } \
+        else \
+        { \
+            return false; \
+        } \
+    }
+
+#define FROM_JSON_UENUM(fieldname, enumType) \
+    if (jsonObject.containsKey(#fieldname)) \
+    { \
+        JsonVariantConst value = jsonObject[#fieldname]; \
+        if (value.is<unsigned int>()) \
+        { \
+            const unsigned int v = value.as<unsigned int>(); \
             if (PREPROCESSOR_JOIN(isValid, PREPROCESSOR_JOIN(enumType, _ENUMTYPE))(v)) \
             { \
                 configStruct.fieldname = static_cast<decltype(configStruct.fieldname)>(v); \
@@ -791,7 +823,7 @@ bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* b
         } \
     }
 
-#define FROM_JSON_REPEATED_UENUM(fieldname, enumType) \
+#define FROM_JSON_REPEATED_ENUM(fieldname, enumType) \
     configStruct.fieldname ## _count = 0; \
     for (size_t index = 0; index < array.size(); ++index) \
     { \
@@ -800,6 +832,18 @@ bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* b
             return false; \
         } \
         configStruct.fieldname[index] = static_cast<PREPROCESSOR_JOIN(enumType, _ENUMTYPE)>(array[index].as<int>()); \
+        ++configStruct.fieldname ## _count; \
+    }
+
+#define FROM_JSON_REPEATED_UENUM(fieldname, enumType) \
+    configStruct.fieldname ## _count = 0; \
+    for (size_t index = 0; index < array.size(); ++index) \
+    { \
+        if (!array[index].is<unsigned int>() || !PREPROCESSOR_JOIN(isValid, PREPROCESSOR_JOIN(enumType, _ENUMTYPE))(array[index].as<unsigned int>())) \
+        { \
+            return false; \
+        } \
+        configStruct.fieldname[index] = static_cast<PREPROCESSOR_JOIN(enumType, _ENUMTYPE)>(array[index].as<unsigned int>()); \
         ++configStruct.fieldname ## _count; \
     }
 

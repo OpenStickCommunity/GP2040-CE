@@ -13,6 +13,8 @@
 #include "gpaddon.h"
 #include "helper.h"
 
+#include "enums.pb.h"
+
 // This needs to be moved to storage if we're going to share between modules
 extern NeoPico *neopico;
 extern AnimationStation as;
