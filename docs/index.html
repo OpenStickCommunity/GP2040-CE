@@ -118,7 +118,7 @@
 							<h3>Flash Nuke</h3>
 							<p>
 								Use the <a href="https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/docs/downloads/flash_nuke.uf2">flash_nuke.uf2</a>
-								file is used to completely erase the flash of the RP2040 board. <strong>THIS WILL ERASE ALL SAVED SETTINGS!</strong>
+								file to completely erase the flash of the RP2040 board. <strong>THIS WILL ERASE ALL SAVED SETTINGS!</strong>
 								Use this prior to flashing GP2040-CE on your device if you want to start from a clean slate, or as a troubleshooting step before to reporting an issue.
 							</p>
 						</div>
@@ -135,8 +135,10 @@
 								FightboardV3Mirrored       : { name: 'thnikk Fightboard V3 (Mirrored)', category: 'Legacy Devices', },
 								FlatboxRev4                : { name: 'Flatbox Rev 4', category: 'Open Source Devices', },
 								FlatboxRev5                : { name: 'Flatbox Rev 5', category: 'Open Source Devices', },
+								KB2040                     : { name: 'Adafruit KB2040', category: 'Microcontroller Boards'},
 								MavercadeKeebfighter       : { name: 'Mavercade Keebfighter', category: 'Closed Source Devices', },
-								Pico                       : { name: 'Raspberry Pi Pico', category: 'Microcontroller Boards', },
+								Pico                       : { name: 'Raspberry Pi Pico', category: 'Microcontroller Boards', pos: 1 },
+								PicoAnn                    : { name: 'PicoAnn', category: 'Closed Source Devices', },
 								PicoFightingBoard          : { name: 'Pico Fighting Board', category: 'Open Source Devices', },
 								RP2040AdvancedBreakoutBoard: { name: 'RP2040 Advanced Breakout Board', category: 'Open Source Devices', },
 								ReflexEncoder              : { name: 'MiSTerAddons Reflex Arcade Encoder', category: 'Open Source Devices', },
@@ -159,7 +161,10 @@
 								this.$root.releaseVersion = releaseInfo.name;
 								this.$root.releases = releaseInfo.assets
 									.filter(a => a.name.startsWith('GP2040-CE_'))
-									.sort(a => a.name)
+									.filter(a => {
+										const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
+										return Object.keys(this.configNames).indexOf(key) > -1;
+									})
 									.map(a => {
 										const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
 										return {
@@ -168,8 +173,10 @@
 											url: a.browser_download_url,
 											img: `/assets/boards/${key}.jpg`,
 											category: this.configNames[key].category,
+											pos: this.configNames[key].pos,
 										};
 									})
+									.sort((a, b) => (a.pos === undefined ? Number.MAX_VALUE : a.pos) - (b.pos === undefined ? Number.MAX_VALUE : b.pos))
 									.reduce((p, r) => {
 										let values = { ...p };
 										if (!values[r.category])
@@ -178,6 +185,8 @@
 										values[r.category].push(r);
 										return values;
 									}, { });
+
+								console.log(this.$root.releases);
 
 								this.fetched = true;
 							});
