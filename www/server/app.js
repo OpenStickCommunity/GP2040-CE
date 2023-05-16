@@ -79,6 +79,7 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		dpadMode: 0,
 		inputMode: 1,
 		socdMode: 2,
+		switchTpShareForDs4: 0,
 		hotkeyF1: [
 			{ action: 1, mask: 1<<0 },
 			{ action: 2, mask: 1<<1 },

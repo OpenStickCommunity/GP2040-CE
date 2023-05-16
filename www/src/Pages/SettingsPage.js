@@ -8,12 +8,13 @@ import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 import BUTTONS from '../Data/Buttons.json';
 
+const PS4Mode = 4;
 const INPUT_MODES = [
 	{ label: 'XInput', value: 0 },
 	{ label: 'Nintendo Switch', value: 1 },
 	{ label: 'PS3/DirectInput', value: 2 },
 	{ label: 'Keyboard', value: 3 },
-	{ label: 'PS4', value: 4 }
+	{ label: 'PS4', value: PS4Mode }
 ];
 
 const DPAD_MODES = [
@@ -65,6 +66,7 @@ const schema = yup.object().shape({
 	})),
 	inputMode: yup.number().required().oneOf(INPUT_MODES.map(o => o.value)).label('Input Mode'),
 	socdMode : yup.number().required().oneOf(SOCD_MODES.map(o => o.value)).label('SOCD Cleaning Mode'),
+	switchTpShareForDs4: yup.number().required().label('Switch Touchpad and Share'),
 });
 
 const FormContext = () => {
@@ -84,6 +86,8 @@ const FormContext = () => {
 			values.inputMode = parseInt(values.inputMode);
 		if (!!values.socdMode)
 			values.socdMode = parseInt(values.socdMode);
+		if (!!values.switchTpShareForDs4)
+			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
 		values.hotkeyF1 = values.hotkeyF1?.map( i => ({
 			action: parseInt(i.action),
 			mask: parseInt(i.mask)
@@ -113,6 +117,7 @@ export default function SettingsPage() {
 				handleChange,
 				values,
 				errors,
+				setFieldValue
 			}) => console.log('errors', errors) || (
 				<div>
 					<Form noValidate onSubmit={handleSubmit}>
@@ -125,6 +130,16 @@ export default function SettingsPage() {
 								</Form.Select>
 								<Form.Control.Feedback type="invalid">{errors.inputMode}</Form.Control.Feedback>
 							</div>
+							<div className="col-sm-3">
+								{values.inputMode === PS4Mode && <Form.Check
+									label="Switch Touchpad and Share"
+									type="switch"
+									name="switchTpShareForDs4"
+									isInvalid={false}
+									checked={Boolean(values.switchTpShareForDs4)}
+									onChange={(e) => { setFieldValue("switchTpShareForDs4", e.target.checked ? 1 : 0); }}
+								/>}
+							</div>
 						</Form.Group>
 						<Form.Group className="row mb-3">
 							<Form.Label>D-Pad Mode</Form.Label>
@@ -132,7 +147,7 @@ export default function SettingsPage() {
 								<Form.Select name="dpadMode" className="form-select-sm" value={values.dpadMode} onChange={handleChange} isInvalid={errors.dpadMode}>
 									{DPAD_MODES.map((o, i) => <option key={`button-dpadMode-option-${i}`} value={o.value}>{o.label}</option>)}
 								</Form.Select>
-								<Form.Control.Feedback type="invalid">{errors.dpadMode}</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">{errors.dpadMode}</Form.Control.Feedback>	
 							</div>
 						</Form.Group>
 						<Form.Group className="row mb-3">
