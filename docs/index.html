@@ -137,7 +137,7 @@
 								FlatboxRev5                : { name: 'Flatbox Rev 5', category: 'Open Source Devices', },
 								KB2040                     : { name: 'Adafruit KB2040', category: 'Microcontroller Boards'},
 								MavercadeKeebfighter       : { name: 'Mavercade Keebfighter', category: 'Closed Source Devices', },
-								Pico                       : { name: 'Raspberry Pi Pico', category: 'Microcontroller Boards', },
+								Pico                       : { name: 'Raspberry Pi Pico', category: 'Microcontroller Boards', pos: 1 },
 								PicoAnn                    : { name: 'PicoAnn', category: 'Closed Source Devices', },
 								PicoFightingBoard          : { name: 'Pico Fighting Board', category: 'Open Source Devices', },
 								RP2040AdvancedBreakoutBoard: { name: 'RP2040 Advanced Breakout Board', category: 'Open Source Devices', },
@@ -165,7 +165,6 @@
 										const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
 										return Object.keys(this.configNames).indexOf(key) > -1;
 									})
-									.sort(a => a.name)
 									.map(a => {
 										const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
 										return {
@@ -174,8 +173,10 @@
 											url: a.browser_download_url,
 											img: `/assets/boards/${key}.jpg`,
 											category: this.configNames[key].category,
+											pos: this.configNames[key].pos,
 										};
 									})
+									.sort((a, b) => (a.pos === undefined ? Number.MAX_VALUE : a.pos) - (b.pos === undefined ? Number.MAX_VALUE : b.pos))
 									.reduce((p, r) => {
 										let values = { ...p };
 										if (!values[r.category])
@@ -184,6 +185,8 @@
 										values[r.category].push(r);
 										return values;
 									}, { });
+
+								console.log(this.$root.releases);
 
 								this.fetched = true;
 							});
