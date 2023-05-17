@@ -50,5 +50,7 @@ struct GamepadOptions
 	GamepadHotkeyEntry hotkeyF2Left;
 	GamepadHotkeyEntry hotkeyF2Right;
 
+	bool switchTpShareForDs4;
+
 	uint32_t checksum;
 };
