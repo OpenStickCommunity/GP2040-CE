@@ -9,16 +9,19 @@
 </p>
 
 <p align="center">
-	<img src="https://img.shields.io/github/license/OpenStickCommunity/GP2040-CE">
-	<img src="https://img.shields.io/github/actions/workflow/status/OpenStickCommunity/GP2040-CE/cmake.yml">
+  <img src="https://img.shields.io/github/license/OpenStickCommunity/GP2040-CE">
+  <img src="https://img.shields.io/github/actions/workflow/status/OpenStickCommunity/GP2040-CE/cmake.yml">
+  <br>
+  <img src="https://img.shields.io/badge/inputlag.science-0.86%20ms-blue">
+  <img src="https://img.shields.io/badge/MiSTer%20latency-0.765%20ms-blue">
 </p>
 
 <p>
-	GP2040-CE (Community Edition) is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontrollers that combines multiplatform compatibility, low latency and a rich feature set to provide endless customization possibilities without sacrificing performance.
+  GP2040-CE (Community Edition) is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontrollers that combines multiplatform compatibility, low latency and a rich feature set to provide endless customization possibilities without sacrificing performance.
 </p>
 
 <p>
-	GP2040-CE is compatible with PC, PS3 and PS4, Nintendo Switch, Steam Deck, MiSTer and Android.
+  GP2040-CE is compatible with PC, PS3 and PS4, Nintendo Switch, Steam Deck, MiSTer and Android.
 </p>
 
 ## Links

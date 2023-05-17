@@ -49,9 +49,8 @@ const std::string BUTTON_LABEL_A2 = "A2";
 #ifndef PLED_TYPE
 #define PLED_TYPE PLED_TYPE_NONE
 #endif
-
-#define PLED_MASK_ALL ((1U << PLED1_PIN) | (1U << PLED2_PIN) | (1U << PLED3_PIN) | (1U << PLED4_PIN))
-
-const int PLED_PINS[] = {PLED1_PIN, PLED2_PIN, PLED3_PIN, PLED4_PIN};
+#ifndef PLED_COLOR
+#define PLED_COLOR ColorWhite // White
+#endif
 
 #endif

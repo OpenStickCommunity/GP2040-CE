@@ -95,7 +95,7 @@ void NeoPicoLEDAddon::setup()
 		Storage::getInstance().setDefaultLEDOptions();
 	}
 
-	if ( PLED_TYPE == PLED_TYPE_RGB ) {
+	if ( ledOptions.pledType == PLED_TYPE_RGB ) {
 		neoPLEDs = new NeoPicoPlayerLEDs();
 	}
 
@@ -117,7 +117,7 @@ void NeoPicoLEDAddon::process()
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();
 	AnimationHotkey action = animationHotkeys(gamepad);
-	if (PLED_TYPE == PLED_TYPE_RGB) {
+	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		inputMode = gamepad->options.inputMode; // HACK
 		switch (gamepad->options.inputMode) {
 			case INPUT_MODE_XINPUT:
@@ -151,14 +151,18 @@ void NeoPicoLEDAddon::process()
 	as.ApplyBrightness(frame);
 
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
-	if (PLED_TYPE == PLED_TYPE_RGB) {
+	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		switch (inputMode) { // HACK
 			case INPUT_MODE_XINPUT:
+				auto pledPins = Storage::getInstance().getPLEDPins();
 				for (int i = 0; i < PLED_COUNT; i++) {
+					if (pledPins[i] < 0)
+						continue;
+
 					float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
 					float brightness = as.GetBrightnessX() * level;
-					rgbPLEDValues[i] = ((RGB)ColorGreen).value(neopico->GetFormat(), brightness);
-					frame[PLED_PINS[i]] = rgbPLEDValues[i];
+					rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico->GetFormat(), brightness);
+					frame[pledPins[i]] = rgbPLEDValues[i];
 				}
 		}
 	}
@@ -457,7 +461,7 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 	uint8_t buttonCount = 0;
 	for (auto const buttonPosition : buttonPositions)
 	{
-		if (buttonPosition.second != -1)
+		if (buttonPosition.second > -1)
 			buttonCount++;
 	}
 
@@ -471,7 +475,7 @@ void NeoPicoLEDAddon::configureLEDs()
 	vector<vector<Pixel>> pixels = createLEDLayout(ledOptions.ledLayout, ledOptions.ledsPerButton, buttonCount);
 	matrix.setup(pixels, ledOptions.ledsPerButton);
 	ledCount = matrix.getLedCount();
-	if (PLED_TYPE == PLED_TYPE_RGB && PLED_COUNT > 0)
+	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0)
 		ledCount += PLED_COUNT;
 
 	// Remove the old neopico (config can call this)

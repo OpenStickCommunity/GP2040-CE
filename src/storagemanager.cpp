@@ -260,6 +260,8 @@ void Storage::initLEDOptions()
 	if (lastCRC != CRC32::calculate(&ledOptions)) {
 		setDefaultLEDOptions();
 	}
+
+	setPLEDPins(ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4);
 }
 
 void Storage::setDefaultLEDOptions()
@@ -288,6 +290,12 @@ void Storage::setDefaultLEDOptions()
 	ledOptions.indexR3 = LEDS_BUTTON_R3;
 	ledOptions.indexA1 = LEDS_BUTTON_A1;
 	ledOptions.indexA2 = LEDS_BUTTON_A2;
+	ledOptions.pledType = PLED_TYPE;
+	ledOptions.pledPin1 = PLED1_PIN;
+	ledOptions.pledPin2 = PLED2_PIN;
+	ledOptions.pledPin3 = PLED3_PIN;
+	ledOptions.pledPin4 = PLED4_PIN;
+	ledOptions.pledColor = ColorWhite;
 	setLEDOptions(ledOptions);
 }
 

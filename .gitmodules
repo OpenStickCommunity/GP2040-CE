@@ -1,6 +1,0 @@
-[submodule "configs/PicoFightingBoard"]
-	path = configs/PicoFightingBoard
-	url = https://github.com/FeralAI/GP2040-Config-PicoFightingBoard.git
-[submodule "www"]
-	path = www
-	url = https://github.com/OpenStickCommunity/WebConfigurator.git

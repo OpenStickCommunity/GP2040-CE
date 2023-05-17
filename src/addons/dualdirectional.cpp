@@ -101,7 +101,7 @@ void DualDirectionalInput::preprocess()
     // None Mode (no combination, no overwrite)
     else if ( combineMode == DUAL_COMBINE_MODE_NONE ) {
         // just SOCD clean the dual inputs based on the desired mode
-        SOCDDualClean(gamepad->options.socdMode);
+        SOCDDualClean(socdMode);
     }
     // Gamepad Overwrite Mode
     else if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
@@ -157,7 +157,13 @@ void DualDirectionalInput::process()
             // this also avoids accidentally masking gamepad inputs with the lack of dual inputs
             if (gamepad->options.dpadMode == options.dualDirDpadMode) {
                 uint8_t gamepadDpad = gpadToBinary(gamepad->options.dpadMode, gamepad->state);
-                dualOut = SOCDGamepadClean(dualOut | gamepadDpad, gamepad->options.socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
+                if ( socdMode == SOCD_MODE_NEUTRAL ) {
+                    dualOut = SOCDCombine(socdMode, gamepadDpad);
+                } else if ( socdMode != SOCD_MODE_BYPASS ) {
+                    dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
+                } else {
+                    dualOut |= gamepadDpad;
+                }
             }
             OverrideGamepad(gamepad, options.dualDirDpadMode, dualOut);
         }

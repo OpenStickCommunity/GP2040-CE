@@ -102,12 +102,18 @@ void Gamepad::setup()
 	mapButtonR1  = new GamepadButtonMapping(boardOptions.pinButtonR1,  GAMEPAD_MASK_R1);
 	mapButtonL2  = new GamepadButtonMapping(boardOptions.pinButtonL2,  GAMEPAD_MASK_L2);
 	mapButtonR2  = new GamepadButtonMapping(boardOptions.pinButtonR2,  GAMEPAD_MASK_R2);
-	mapButtonS1  = new GamepadButtonMapping(boardOptions.pinButtonS1,  GAMEPAD_MASK_S1);
 	mapButtonS2  = new GamepadButtonMapping(boardOptions.pinButtonS2,  GAMEPAD_MASK_S2);
 	mapButtonL3  = new GamepadButtonMapping(boardOptions.pinButtonL3,  GAMEPAD_MASK_L3);
 	mapButtonR3  = new GamepadButtonMapping(boardOptions.pinButtonR3,  GAMEPAD_MASK_R3);
 	mapButtonA1  = new GamepadButtonMapping(boardOptions.pinButtonA1,  GAMEPAD_MASK_A1);
-	mapButtonA2  = new GamepadButtonMapping(boardOptions.pinButtonA2,  GAMEPAD_MASK_A2);
+
+	uint16_t maskS1 = options.inputMode == INPUT_MODE_PS4 
+	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_A2 : GAMEPAD_MASK_S1;
+	mapButtonS1  = new GamepadButtonMapping(boardOptions.pinButtonS1,  maskS1);
+
+	uint16_t maskA2 = options.inputMode == INPUT_MODE_PS4 
+	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_S1 : GAMEPAD_MASK_A2;
+	mapButtonA2  = new GamepadButtonMapping(boardOptions.pinButtonA2, maskA2);
 
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
@@ -504,8 +510,16 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.right_stick_x = static_cast<uint8_t>(state.rx >> 8);
 	ps4Report.right_stick_y = static_cast<uint8_t>(state.ry >> 8);
 
-	ps4Report.left_trigger = 0;
-	ps4Report.right_trigger = 0;
+	if (hasAnalogTriggers)
+	{
+		ps4Report.left_trigger = state.lt;
+		ps4Report.right_trigger = state.rt;
+	}
+	else
+	{
+		ps4Report.left_trigger = pressedL2() ? 0xFF : 0;
+		ps4Report.right_trigger = pressedR2() ? 0xFF : 0;
+	}
 
 	// set touchpad to nothing
 	touchpadData.p1.unpressed = 1;

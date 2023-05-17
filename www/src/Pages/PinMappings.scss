@@ -1,0 +1,34 @@
+table.pin-mapping-table {
+	width: 100%;
+	vertical-align: middle;
+
+	.table-header-button-label {
+		width: 150px;
+	}
+
+	input.pin-input {
+		display: inline-block;
+		width: 80px;
+
+		+ .invalid-feedback {
+			display: inline;
+			margin-left: 20px;
+			margin-right: 10px;
+		}
+	}
+}
+
+.select-button-labels-container {
+	margin-bottom: 10px;
+
+	.select-button-labels {
+		display: inline-block;
+		width: 150px;
+	}
+
+	label {
+		line-height: 2rem;
+		margin-right: 10px;
+	}
+}
+
