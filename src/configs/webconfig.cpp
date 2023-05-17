@@ -456,8 +456,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
 	readDoc(gamepadOptions.inputMode, doc, "inputMode");
 	readDoc(gamepadOptions.socdMode, doc, "socdMode");
-	readDoc(gamepad->options.switchTpShareForDs4, doc, "switchTpShareForDs4");
-
+	readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	readDoc(hotkeyOptions.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
@@ -483,7 +482,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "dpadMode", gamepadOptions.dpadMode);
 	writeDoc(doc, "inputMode", gamepadOptions.inputMode);
 	writeDoc(doc, "socdMode", gamepadOptions.socdMode);
-	writeDoc(doc, "switchTpShareForDs4", options.switchTpShareForDs4);
+	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4);
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);

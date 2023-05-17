@@ -10,6 +10,7 @@ message GamepadOptions
 	optional SOCDMode socdMode = 3;
 	optional bool invertXAxis = 4;
 	optional bool invertYAxis = 5;
+	optional bool switchTpShareForDs4 = 6;
 }
 
 message KeyboardMapping
