@@ -79,6 +79,13 @@ namespace ConfigLegacy
         INPUT_TEST,
     };
 
+    enum PLEDType
+    {
+        PLED_TYPE_NONE = -1,
+        PLED_TYPE_PWM = 0,
+        PLED_TYPE_RGB = 1,
+    };
+
     struct LEDOptions
     {
         bool useUserDefinedLEDs;
@@ -419,6 +426,32 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
     return false;
 }
 
+static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayoutRight)
+{
+    switch (buttonLayoutRight)
+    {
+        case BUTTON_LAYOUT_ARCADE:
+        case BUTTON_LAYOUT_STICKLESSB:
+        case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
+        case BUTTON_LAYOUT_VEWLIX:
+        case BUTTON_LAYOUT_VEWLIX7:
+        case BUTTON_LAYOUT_CAPCOM:
+        case BUTTON_LAYOUT_CAPCOM6:
+        case BUTTON_LAYOUT_SEGA2P:
+        case BUTTON_LAYOUT_NOIR8:
+        case BUTTON_LAYOUT_KEYBOARDB:
+        case BUTTON_LAYOUT_DANCEPADB:
+        case BUTTON_LAYOUT_TWINSTICKB:
+        case BUTTON_LAYOUT_BLANKB:
+        case BUTTON_LAYOUT_VLXB:
+        case BUTTON_LAYOUT_FIGHTBOARD:
+        case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
+        case BUTTON_LAYOUT_CUSTOMB:
+            return true;
+    }
+    return false;
+}
+
 static bool isValidLEDFormat(LEDFormat ledFormat)
 {
     switch (ledFormat)
@@ -451,6 +484,34 @@ static bool isValidOnBoardLedMode(ConfigLegacy::OnBoardLedMode onBoardLedMode)
         case ConfigLegacy::BOARD_LED_OFF:
         case ConfigLegacy::MODE_INDICATOR:
         case ConfigLegacy::INPUT_TEST:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidSplashMode(ConfigLegacy::SplashMode splashMode)
+{
+    switch (splashMode)
+    {
+        case ConfigLegacy::STATICSPLASH:
+        case ConfigLegacy::CLOSEIN:
+        case ConfigLegacy::CLOSEINCUSTOM:
+        case ConfigLegacy::NOSPLASH:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidSplashChoice(ConfigLegacy::SplashChoice splashChoice)
+{
+    switch (splashChoice)
+    {
+        case ConfigLegacy::MAIN:
+        case ConfigLegacy::X:
+        case ConfigLegacy::Y:
+        case ConfigLegacy::Z:
+        case ConfigLegacy::CUSTOM:
+        case ConfigLegacy::LEGACY:
             return true;
     }
     return false;
@@ -554,6 +615,85 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         {
             SET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Right.action));
         }
+    }
+
+    const ConfigLegacy::BoardOptions& legacyBoardOptions = *reinterpret_cast<ConfigLegacy::BoardOptions*>(EEPROM_ADDRESS_START + BOARD_STORAGE_INDEX);
+    if (legacyBoardOptions.checksum == computeChecksum(reinterpret_cast<const char*>(&legacyBoardOptions), sizeof(ConfigLegacy::BoardOptions), offsetof(ConfigLegacy::BoardOptions, checksum)))
+    {
+        legacyConfigFound = true;
+
+        PinMappings& pinMappings = config.pinMappings;
+        config.has_pinMappings = true;
+        SET_PROPERTY(pinMappings, pinDpadUp, bytePinToIntPin(legacyBoardOptions.pinDpadUp));
+        SET_PROPERTY(pinMappings, pinDpadDown, bytePinToIntPin(legacyBoardOptions.pinDpadDown));
+        SET_PROPERTY(pinMappings, pinDpadLeft, bytePinToIntPin(legacyBoardOptions.pinDpadLeft));
+        SET_PROPERTY(pinMappings, pinDpadRight, bytePinToIntPin(legacyBoardOptions.pinDpadRight));
+        SET_PROPERTY(pinMappings, pinButtonB1, bytePinToIntPin(legacyBoardOptions.pinButtonB1));
+        SET_PROPERTY(pinMappings, pinButtonB2, bytePinToIntPin(legacyBoardOptions.pinButtonB2));
+        SET_PROPERTY(pinMappings, pinButtonB3, bytePinToIntPin(legacyBoardOptions.pinButtonB3));
+        SET_PROPERTY(pinMappings, pinButtonB4, bytePinToIntPin(legacyBoardOptions.pinButtonB4));
+        SET_PROPERTY(pinMappings, pinButtonL1, bytePinToIntPin(legacyBoardOptions.pinButtonL1));
+        SET_PROPERTY(pinMappings, pinButtonR1, bytePinToIntPin(legacyBoardOptions.pinButtonR1));
+        SET_PROPERTY(pinMappings, pinButtonL2, bytePinToIntPin(legacyBoardOptions.pinButtonL2));
+        SET_PROPERTY(pinMappings, pinButtonR2, bytePinToIntPin(legacyBoardOptions.pinButtonR2));
+        SET_PROPERTY(pinMappings, pinButtonS1, bytePinToIntPin(legacyBoardOptions.pinButtonS1));
+        SET_PROPERTY(pinMappings, pinButtonS2, bytePinToIntPin(legacyBoardOptions.pinButtonS2));
+        SET_PROPERTY(pinMappings, pinButtonL3, bytePinToIntPin(legacyBoardOptions.pinButtonL3));
+        SET_PROPERTY(pinMappings, pinButtonR3, bytePinToIntPin(legacyBoardOptions.pinButtonR3));
+        SET_PROPERTY(pinMappings, pinButtonA1, bytePinToIntPin(legacyBoardOptions.pinButtonA1));
+        SET_PROPERTY(pinMappings, pinButtonA2, bytePinToIntPin(legacyBoardOptions.pinButtonA2));
+
+        DisplayOptions& displayOptions = config.displayOptions;
+        config.has_displayOptions = true;
+        SET_PROPERTY(displayOptions, enabled, legacyBoardOptions.hasI2CDisplay);
+        SET_PROPERTY(displayOptions, i2cBlock, legacyBoardOptions.i2cBlock);
+        SET_PROPERTY(displayOptions, i2cSDAPin, legacyBoardOptions.i2cSDAPin);
+        SET_PROPERTY(displayOptions, i2cSCLPin, legacyBoardOptions.i2cSCLPin);
+        SET_PROPERTY(displayOptions, i2cAddress, legacyBoardOptions.displayI2CAddress);
+        SET_PROPERTY(displayOptions, i2cSpeed, legacyBoardOptions.i2cSpeed);
+        if (isValidButtonLayout(legacyBoardOptions.buttonLayout))
+        {
+            SET_PROPERTY(displayOptions, buttonLayout, static_cast<ButtonLayout>(legacyBoardOptions.buttonLayout));
+        }
+        if (isValidButtonLayoutRight(legacyBoardOptions.buttonLayoutRight))
+        {
+            SET_PROPERTY(displayOptions, buttonLayoutRight, static_cast<ButtonLayoutRight>(legacyBoardOptions.buttonLayoutRight));
+        }
+
+        const ConfigLegacy::ButtonLayoutParams& legacyParams = legacyBoardOptions.buttonLayoutCustomOptions.params;
+        ButtonLayoutParamsLeft& params = displayOptions.buttonLayoutCustomOptions.paramsLeft;
+        if (isValidButtonLayout(legacyParams.layout))
+        {
+            SET_PROPERTY(params, layout, static_cast<ButtonLayout>(legacyParams.layout));
+        }
+        SET_PROPERTY(params.common, startX, legacyParams.startX);
+        SET_PROPERTY(params.common, startY, legacyParams.startY);
+        SET_PROPERTY(params.common, buttonRadius, legacyParams.buttonRadius);
+        SET_PROPERTY(params.common, buttonPadding, legacyParams.buttonPadding);
+
+        const ConfigLegacy::ButtonLayoutParams& legacyParamsRight = legacyBoardOptions.buttonLayoutCustomOptions.paramsRight;
+        ButtonLayoutParamsRight& paramsRight = displayOptions.buttonLayoutCustomOptions.paramsRight;
+        if (isValidButtonLayoutRight(legacyParams.layoutRight))
+        {
+            SET_PROPERTY(paramsRight, layout, static_cast<ButtonLayoutRight>(legacyParams.layoutRight));
+        }
+        SET_PROPERTY(paramsRight.common, startX, legacyParamsRight.startX);
+        SET_PROPERTY(paramsRight.common, startY, legacyParamsRight.startY);
+        SET_PROPERTY(paramsRight.common, buttonRadius, legacyParamsRight.buttonRadius);
+        SET_PROPERTY(paramsRight.common, buttonPadding, legacyParamsRight.buttonPadding);
+        if (isValidSplashMode(legacyBoardOptions.splashMode))
+        {
+            SET_PROPERTY(displayOptions, splashMode, static_cast<SplashMode>(legacyBoardOptions.splashMode));
+        }
+        if (isValidSplashChoice(legacyBoardOptions.splashChoice))
+        {
+            SET_PROPERTY(displayOptions, splashChoice, static_cast<SplashChoice>(legacyBoardOptions.splashChoice));
+        }
+        SET_PROPERTY(displayOptions, splashDuration, legacyBoardOptions.splashDuration);
+        SET_PROPERTY(displayOptions, size, legacyBoardOptions.displaySize);
+        SET_PROPERTY(displayOptions, flip, legacyBoardOptions.displayFlip);
+        SET_PROPERTY(displayOptions, invert, legacyBoardOptions.displayInvert);
+        SET_PROPERTY(displayOptions, displaySaverTimeout, legacyBoardOptions.displaySaverTimeout);
     }
 
     const ConfigLegacy::LEDOptions& legacyLEDOptions = *reinterpret_cast<ConfigLegacy::LEDOptions*>(EEPROM_ADDRESS_START + LED_STORAGE_INDEX);
