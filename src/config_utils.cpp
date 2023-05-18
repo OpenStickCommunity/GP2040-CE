@@ -339,9 +339,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
 
     // addonOptions.extraOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.extraOptions, enabled, !!EXTRA_BUTTON_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.extraOptions, pin, EXTRA_BUTTON_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.extraOptions, buttonMap, EXTRA_BUTTON_MASK);
+    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, enabled, !!EXTRA_BUTTON_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, pin, EXTRA_BUTTON_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, buttonMap, EXTRA_BUTTON_MASK);
 
     // addonOptions.playerNumberOptions
     INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);
@@ -499,6 +499,10 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
 
 bool ConfigUtils::save(Config& config)
 {
+    // XXX
+    return true;
+    // XXX
+
     // We only allow saves from core0. Saves from core1 have to be marshalled to core0.
     assert(get_core_num() == 0);
     if (get_core_num() != 0)

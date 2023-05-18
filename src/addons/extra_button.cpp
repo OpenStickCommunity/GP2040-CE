@@ -5,12 +5,12 @@
 #include "config.pb.h"
 
 bool ExtraButtonAddon::available() {
-    const ExtraOptions& options = Storage::getInstance().getAddonOptions().extraOptions;
+    const ExtraButtonOptions& options = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	return options.enabled && options.buttonMap != 0 && isValidPin(options.pin);
 }
 
 void ExtraButtonAddon::setup() {
-    const ExtraOptions& options = Storage::getInstance().getAddonOptions().extraOptions;
+    const ExtraButtonOptions& options = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	extraButtonMap = options.buttonMap;
 	extraButtonPin = options.pin;
 

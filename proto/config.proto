@@ -323,7 +323,7 @@ message BuzzerOptions
 	optional uint32 volume = 3;
 }
 
-message ExtraOptions
+message ExtraButtonOptions
 {
 	optional bool enabled = 1;
 
@@ -373,7 +373,7 @@ message AddonOptions
 	optional AnalogADS1219Options analogADS1219Options = 7;
 	optional DualDirectionalOptions dualDirectionalOptions = 8;
 	optional BuzzerOptions buzzerOptions = 9;
-	optional ExtraOptions extraOptions = 10;
+	optional ExtraButtonOptions extraButtonOptions = 10;
 	optional PlayerNumberOptions playerNumberOptions = 11;
 	optional PS4Options ps4Options = 12;
 	optional WiiOptions wiiOptions = 13;

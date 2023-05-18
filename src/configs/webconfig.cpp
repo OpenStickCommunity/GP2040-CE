@@ -861,10 +861,10 @@ std::string setAddonOptions()
 	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
-    ExtraOptions& extraOptions = Storage::getInstance().getAddonOptions().extraOptions;
-	docToPin(extraOptions.pin, doc, "extraButtonPin");
-	docToValue(extraOptions.buttonMap, doc, "extraButtonMap");
-	docToValue(extraOptions.enabled, doc, "ExtraButtonAddonEnabled");
+    ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
+	docToPin(extraButtonOptions.pin, doc, "extraButtonPin");
+	docToValue(extraButtonOptions.buttonMap, doc, "extraButtonMap");
+	docToValue(extraButtonOptions.enabled, doc, "ExtraButtonAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 	docToPin(analogADS1219Options.i2cSDAPin, doc, "i2cAnalog1219SDAPin");
@@ -1064,10 +1064,10 @@ std::string getAddonOptions()
 	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
 	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
-    const ExtraOptions& extraOptions = Storage::getInstance().getAddonOptions().extraOptions;
-	writeDoc(doc, "extraButtonPin", extraOptions.pin == 0xFF ? -1 : extraOptions.pin);
-	writeDoc(doc, "extraButtonMap", extraOptions.buttonMap);
-	writeDoc(doc, "ExtraButtonAddonEnabled", extraOptions.enabled);
+    const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
+	writeDoc(doc, "extraButtonPin", extraButtonOptions.pin == 0xFF ? -1 : extraButtonOptions.pin);
+	writeDoc(doc, "extraButtonMap", extraButtonOptions.buttonMap);
+	writeDoc(doc, "ExtraButtonAddonEnabled", extraButtonOptions.enabled);
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 	writeDoc(doc, "i2cAnalog1219SDAPin", analogADS1219Options.i2cSDAPin == 0xFF ? -1 : analogADS1219Options.i2cSDAPin);
