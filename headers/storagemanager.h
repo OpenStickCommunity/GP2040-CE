@@ -57,10 +57,6 @@ public:
 	void setPreviewBoardOptions(const ConfigLegacy::BoardOptions&);	// Preview Board Options
 	const ConfigLegacy::BoardOptions& getPreviewBoardOptions() { return previewBoardOptions; }
 
-	void setLEDOptions(ConfigLegacy::LEDOptions);		// LED Options
-	void setDefaultLEDOptions();
-	const ConfigLegacy::LEDOptions& getLEDOptions() { return ledOptions; }
-
 	void SetConfigMode(bool); 			// Config Mode (on-boot)
 	bool GetConfigMode();
 
@@ -98,7 +94,6 @@ private:
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
 	ConfigLegacy::BoardOptions boardOptions;
 	ConfigLegacy::BoardOptions previewBoardOptions;
-	ConfigLegacy::LEDOptions ledOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 
 	Config config;

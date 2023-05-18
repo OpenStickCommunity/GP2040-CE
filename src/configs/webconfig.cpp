@@ -512,7 +512,7 @@ std::string setLedOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	const auto readIndex = [&](int& var, const char* key0, const char* key1)
+	const auto readIndex = [&](int32_t& var, const char* key0, const char* key1)
 	{
 		var = -1;
 		if (hasValue(doc, key0, key1))
@@ -521,9 +521,8 @@ std::string setLedOptions()
 		}
 	};
 
-	ConfigLegacy::LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
-	ledOptions.useUserDefinedLEDs = true;
-	readDoc(ledOptions.dataPin, doc, "dataPin");
+	LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	docToPin(ledOptions.dataPin, doc, "dataPin");
 	readDoc(ledOptions.ledFormat, doc, "ledFormat");
 	readDoc(ledOptions.ledLayout, doc, "ledLayout");
 	readDoc(ledOptions.ledsPerButton, doc, "ledsPerButton");
@@ -552,18 +551,17 @@ std::string setLedOptions()
 	readDoc(ledOptions.pledPin2, doc, "pledPin2");
 	readDoc(ledOptions.pledPin3, doc, "pledPin3");
 	readDoc(ledOptions.pledPin4, doc, "pledPin4");
-	uint32_t pledColor;
-	readDoc(pledColor, doc, "pledColor");
-	ledOptions.pledColor = RGB(pledColor);
-	Storage::getInstance().setLEDOptions(ledOptions);
+	readDoc(ledOptions.pledColor, doc, "pledColor");
+
+	Storage::getInstance().save();
 	return serialize_json(doc);
 }
 
 std::string getLedOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	const ConfigLegacy::LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
-	writeDoc(doc, "dataPin", ledOptions.dataPin);
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	writeDoc(doc, "dataPin", cleanPin(ledOptions.dataPin));
 	writeDoc(doc, "ledFormat", ledOptions.ledFormat);
 	writeDoc(doc, "ledLayout", ledOptions.ledLayout);
 	writeDoc(doc, "ledsPerButton", ledOptions.ledsPerButton);

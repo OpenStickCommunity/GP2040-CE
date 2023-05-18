@@ -40,7 +40,7 @@ public:
 	virtual void process();
 	virtual std::string name() { return PLEDName; }
 	PlayerLEDAddon() {
-		type = static_cast<PLEDType>(Storage::getInstance().getLEDOptions().pledType);
+		type = static_cast<PLEDType>(Storage::getInstance().getLedOptions().pledType);
 	}
 	PlayerLEDAddon(PLEDType type) : type(type) {}
 

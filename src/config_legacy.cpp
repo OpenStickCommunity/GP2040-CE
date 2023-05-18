@@ -3,6 +3,7 @@
 
 #include "FlashPROM.h"
 #include "CRC32.h"
+#include "helper.h"
 
 #include "config.pb.h"
 
@@ -76,6 +77,42 @@ namespace ConfigLegacy
         BOARD_LED_OFF,
         MODE_INDICATOR,
         INPUT_TEST,
+    };
+
+    struct LEDOptions
+    {
+        bool useUserDefinedLEDs;
+        int dataPin;
+        LEDFormat ledFormat;
+        ButtonLayout ledLayout;
+        uint8_t ledsPerButton;
+        uint8_t brightnessMaximum;
+        uint8_t brightnessSteps;
+        int indexUp;
+        int indexDown;
+        int indexLeft;
+        int indexRight;
+        int indexB1;
+        int indexB2;
+        int indexB3;
+        int indexB4;
+        int indexL1;
+        int indexR1;
+        int indexL2;
+        int indexR2;
+        int indexS1;
+        int indexS2;
+        int indexL3;
+        int indexR3;
+        int indexA1;
+        int indexA2;
+        int pledType;
+        int pledPin1;
+        int pledPin2;
+        int pledPin3;
+        int pledPin4;
+        RGB pledColor;
+        uint32_t checksum;
     };
 
     struct PS4Options {
@@ -359,6 +396,53 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Left.action));
         SET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, legacyGamepadOptions.hotkeyF2Right.dpadMask);
         SET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Right.action));
+    }
+
+    const ConfigLegacy::LEDOptions& legacyLEDOptions = *reinterpret_cast<ConfigLegacy::LEDOptions*>(EEPROM_ADDRESS_START + LED_STORAGE_INDEX);
+    if (legacyLEDOptions.checksum == computeChecksum(reinterpret_cast<const char*>(&legacyLEDOptions), sizeof(ConfigLegacy::LEDOptions), offsetof(ConfigLegacy::LEDOptions, checksum)) &&
+        legacyLEDOptions.useUserDefinedLEDs)
+    {
+        legacyConfigFound = true;
+
+        LEDOptions& ledOptions = config.ledOptions;
+        config.has_ledOptions = true;
+        SET_PROPERTY(ledOptions, dataPin, isValidPin(legacyLEDOptions.dataPin) ? legacyLEDOptions.dataPin : -1);
+        SET_PROPERTY(ledOptions, ledFormat, static_cast<LEDFormat_Proto>(legacyLEDOptions.ledFormat));
+        SET_PROPERTY(ledOptions, ledLayout, static_cast<ButtonLayout>(legacyLEDOptions.ledLayout));
+        SET_PROPERTY(ledOptions, ledsPerButton, legacyLEDOptions.ledsPerButton);
+        SET_PROPERTY(ledOptions, brightnessMaximum, legacyLEDOptions.brightnessMaximum);
+        SET_PROPERTY(ledOptions, brightnessSteps, legacyLEDOptions.brightnessSteps);
+        SET_PROPERTY(ledOptions, indexUp, legacyLEDOptions.indexUp);
+        SET_PROPERTY(ledOptions, indexDown, legacyLEDOptions.indexDown);
+        SET_PROPERTY(ledOptions, indexLeft, legacyLEDOptions.indexLeft);
+        SET_PROPERTY(ledOptions, indexRight, legacyLEDOptions.indexRight);
+        SET_PROPERTY(ledOptions, indexB1, legacyLEDOptions.indexB1);
+        SET_PROPERTY(ledOptions, indexB2, legacyLEDOptions.indexB2);
+        SET_PROPERTY(ledOptions, indexB3, legacyLEDOptions.indexB3);
+        SET_PROPERTY(ledOptions, indexB4, legacyLEDOptions.indexB4);
+        SET_PROPERTY(ledOptions, indexL1, legacyLEDOptions.indexL1);
+        SET_PROPERTY(ledOptions, indexR1, legacyLEDOptions.indexR1);
+        SET_PROPERTY(ledOptions, indexL2, legacyLEDOptions.indexL2);
+        SET_PROPERTY(ledOptions, indexR2, legacyLEDOptions.indexR2);
+        SET_PROPERTY(ledOptions, indexS1, legacyLEDOptions.indexS1);
+        SET_PROPERTY(ledOptions, indexS2, legacyLEDOptions.indexS2);
+        SET_PROPERTY(ledOptions, indexL3, legacyLEDOptions.indexL3);
+        SET_PROPERTY(ledOptions, indexR3, legacyLEDOptions.indexR3);
+        SET_PROPERTY(ledOptions, indexA1, legacyLEDOptions.indexA1);
+        SET_PROPERTY(ledOptions, indexA2, legacyLEDOptions.indexA2);
+        switch (legacyLEDOptions.pledType)
+        {
+            case PLED_TYPE_NONE:
+            case PLED_TYPE_PWM:
+            case PLED_TYPE_RGB:
+                SET_PROPERTY(ledOptions, pledType, static_cast<PLEDType>(legacyLEDOptions.pledType));
+                break;
+        }
+        SET_PROPERTY(ledOptions, pledPin1, legacyLEDOptions.pledPin1);
+        SET_PROPERTY(ledOptions, pledPin2, legacyLEDOptions.pledPin2);
+        SET_PROPERTY(ledOptions, pledPin3, legacyLEDOptions.pledPin3);
+        SET_PROPERTY(ledOptions, pledPin4, legacyLEDOptions.pledPin4);
+        SET_PROPERTY(ledOptions, pledColor, legacyLEDOptions.pledColor.value(LED_FORMAT_RGB));
     }
 
     const ConfigLegacy::AnimationOptions& legacyAnimationOptions = *reinterpret_cast<ConfigLegacy::AnimationOptions*>(EEPROM_ADDRESS_START + ANIMATION_STORAGE_INDEX);

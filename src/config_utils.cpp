@@ -373,7 +373,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 // Loading / Saving
 // -----------------------------------------------------
 
-// We put a ConfigFooter struct at the end of the flash area reserved for FlashPROM. It contains a magicvalue , the size
+// We put a ConfigFooter struct at the end of the flash area reserved for FlashPROM. It contains a magicvalue, the size
 // of the serialized config data and a CRC of that data. This information allows us to both locate and verify the stored
 // data. The serialized data is located directly before the footer:
 //

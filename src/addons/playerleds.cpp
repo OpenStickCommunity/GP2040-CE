@@ -78,11 +78,11 @@ PLEDAnimationState getXInputAnimationPWM(uint8_t *data)
 }
 
 bool PlayerLEDAddon::available() {
-	return Storage::getInstance().getLEDOptions().pledType != PLED_TYPE_NONE;
+	return Storage::getInstance().getLedOptions().pledType != PLED_TYPE_NONE;
 }
 
 void PlayerLEDAddon::setup() {
-	ConfigLegacy::LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	switch (ledOptions.pledType)
 	{
 		case PLED_TYPE_PWM:
@@ -100,7 +100,7 @@ void PlayerLEDAddon::setup() {
 void PlayerLEDAddon::process()
 {
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	ConfigLegacy::LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
 	// Player LEDs can be PWM or driven by NeoPixel
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();

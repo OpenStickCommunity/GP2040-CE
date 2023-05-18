@@ -83,17 +83,14 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
 }
 
 bool NeoPicoLEDAddon::available() {
-	const ConfigLegacy::LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
-	return ledOptions.dataPin != -1;
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	return isValidPin(ledOptions.dataPin);
 }
 
 void NeoPicoLEDAddon::setup()
 {
 	// Set Default LED Options
-	const ConfigLegacy::LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
-	if (!ledOptions.useUserDefinedLEDs) {
-		Storage::getInstance().setDefaultLEDOptions();
-	}
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
 	if ( ledOptions.pledType == PLED_TYPE_RGB ) {
 		neoPLEDs = new NeoPicoPlayerLEDs();
@@ -110,8 +107,8 @@ void NeoPicoLEDAddon::setup()
 
 void NeoPicoLEDAddon::process()
 {
-	const ConfigLegacy::LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
-	if (ledOptions.dataPin < 0 || !time_reached(this->nextRunTime))
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	if (!isValidPin(ledOptions.dataPin) || !time_reached(this->nextRunTime))
 		return;
 
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
@@ -438,7 +435,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 
 uint8_t NeoPicoLEDAddon::setupButtonPositions()
 {
-	ConfigLegacy::LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	buttonPositions.clear();
 	buttonPositions.emplace(BUTTON_LABEL_UP, ledOptions.indexUp);
 	buttonPositions.emplace(BUTTON_LABEL_DOWN, ledOptions.indexDown);
@@ -470,7 +467,7 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 
 void NeoPicoLEDAddon::configureLEDs()
 {
-	const ConfigLegacy::LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	uint8_t buttonCount = setupButtonPositions();
 	vector<vector<Pixel>> pixels = createLEDLayout(static_cast<ButtonLayout>(ledOptions.ledLayout), ledOptions.ledsPerButton, buttonCount);
 	matrix.setup(pixels, ledOptions.ledsPerButton);
@@ -480,10 +477,10 @@ void NeoPicoLEDAddon::configureLEDs()
 
 	// Remove the old neopico (config can call this)
 	delete neopico;
-	neopico = new NeoPico(ledOptions.dataPin, ledCount, ledOptions.ledFormat);
+	neopico = new NeoPico(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat));
 	neopico->Off();
 
-	Animation::format = ledOptions.ledFormat;
+	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	as.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
 	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
 	addStaticThemes(ledOptions, animationOptions);

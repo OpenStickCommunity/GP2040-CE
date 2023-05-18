@@ -134,42 +134,6 @@ namespace ConfigLegacy
         char boardVersion[32]; // 32-char limit to board name
         uint32_t checksum;
     };
-
-    struct LEDOptions
-    {
-        bool useUserDefinedLEDs;
-        int dataPin;
-        LEDFormat ledFormat;
-        ButtonLayout ledLayout;
-        uint8_t ledsPerButton;
-        uint8_t brightnessMaximum;
-        uint8_t brightnessSteps;
-        int indexUp;
-        int indexDown;
-        int indexLeft;
-        int indexRight;
-        int indexB1;
-        int indexB2;
-        int indexB3;
-        int indexB4;
-        int indexL1;
-        int indexR1;
-        int indexL2;
-        int indexR2;
-        int indexS1;
-        int indexS2;
-        int indexL3;
-        int indexR3;
-        int indexA1;
-        int indexA2;
-        int pledType;
-        int pledPin1;
-        int pledPin2;
-        int pledPin3;
-        int pledPin4;
-        RGB pledColor;
-        uint32_t checksum;
-    };
 }
 
 #endif

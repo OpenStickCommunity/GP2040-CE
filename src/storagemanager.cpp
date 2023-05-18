@@ -42,7 +42,6 @@ Storage::Storage()
 	EEPROM.start();
 
 	initBoardOptions();
-	initLEDOptions();
 
 	critical_section_init(&animationOptionsCs);
 
@@ -195,52 +194,6 @@ void Storage::setDefaultBoardOptions()
 }
 
 void Storage::setBoardOptions(ConfigLegacy::BoardOptions options)
-{
-}
-
-/* LED stuffs */
-void Storage::initLEDOptions()
-{
-	setDefaultLEDOptions();
-	setPLEDPins(ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4);
-}
-
-void Storage::setDefaultLEDOptions()
-{
-	ledOptions.dataPin = BOARD_LEDS_PIN;
-	ledOptions.ledFormat = LED_FORMAT;
-	ledOptions.ledLayout = static_cast<ConfigLegacy::ButtonLayout>(BUTTON_LAYOUT);
-	ledOptions.ledsPerButton = LEDS_PER_PIXEL;
-	ledOptions.brightnessMaximum = LED_BRIGHTNESS_MAXIMUM;
-	ledOptions.brightnessSteps = LED_BRIGHTNESS_STEPS;
-	ledOptions.indexUp = LEDS_DPAD_UP;
-	ledOptions.indexDown = LEDS_DPAD_DOWN;
-	ledOptions.indexLeft = LEDS_DPAD_LEFT;
-	ledOptions.indexRight = LEDS_DPAD_RIGHT;
-	ledOptions.indexB1 = LEDS_BUTTON_B1;
-	ledOptions.indexB2 = LEDS_BUTTON_B2;
-	ledOptions.indexB3 = LEDS_BUTTON_B3;
-	ledOptions.indexB4 = LEDS_BUTTON_B4;
-	ledOptions.indexL1 = LEDS_BUTTON_L1;
-	ledOptions.indexR1 = LEDS_BUTTON_R1;
-	ledOptions.indexL2 = LEDS_BUTTON_L2;
-	ledOptions.indexR2 = LEDS_BUTTON_R2;
-	ledOptions.indexS1 = LEDS_BUTTON_S1;
-	ledOptions.indexS2 = LEDS_BUTTON_S2;
-	ledOptions.indexL3 = LEDS_BUTTON_L3;
-	ledOptions.indexR3 = LEDS_BUTTON_R3;
-	ledOptions.indexA1 = LEDS_BUTTON_A1;
-	ledOptions.indexA2 = LEDS_BUTTON_A2;
-	ledOptions.pledType = PLED_TYPE;
-	ledOptions.pledPin1 = PLED1_PIN;
-	ledOptions.pledPin2 = PLED2_PIN;
-	ledOptions.pledPin3 = PLED3_PIN;
-	ledOptions.pledPin4 = PLED4_PIN;
-	ledOptions.pledColor = ColorWhite;
-	setLEDOptions(ledOptions);
-}
-
-void Storage::setLEDOptions(ConfigLegacy::LEDOptions options)
 {
 }
 
