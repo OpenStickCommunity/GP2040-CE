@@ -223,6 +223,9 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		wiiExtensionSCLPin: -1,
 		wiiExtensionBlock: 0,
 		wiiExtensionSpeed: 400000,
+		sidewinderGPPinTrigger: -1,
+		sidewinderGPPinClock: -1,
+		sidewinderGPPinData: -1,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		BuzzerSpeakerAddonEnabled: 1,
@@ -237,6 +240,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		SliderSOCDInputEnabled: 1,
 		TurboInputEnabled: 1,
 		WiiExtensionAddonEnabled: 1,
+		SidewinderGPEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });

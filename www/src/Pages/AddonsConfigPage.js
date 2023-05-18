@@ -270,6 +270,10 @@ const schema = yup.object().shape({
 	BootselButtonAddonEnabled:   yup.number().required().label('Boot Select Button Add-On Enabled'),
 	bootselButtonMap:            yup.number().label('BOOTSEL Button Map').validateSelectionWhenValue('BootselButtonAddonEnabled', BUTTON_MASKS),
 
+	sidewinderGPPinTrigger :     yup.number().required().test('', '${originalValue} is unavailable/already assigned!', (value) => usedPins.indexOf(value) === -1).label('Sidewinder GP Trigger Pin'),
+	sidewinderGPPinClock :       yup.number().required().test('', '${originalValue} is unavailable/already assigned!', (value) => usedPins.indexOf(value) === -1).label('Sidewinder GP Clock Pin'),
+	sidewinderGPPinData :        yup.number().required().test('', '${originalValue} is unavailable/already assigned!', (value) => usedPins.indexOf(value) === -1).label('Sidewinder GP Data Pin'),
+
 	BuzzerSpeakerAddonEnabled:   yup.number().required().label('Buzzer Speaker Add-On Enabled'),
 	buzzerPin:                   yup.number().label('Buzzer Pin').validatePinWhenValue('BuzzerSpeakerAddonEnabled'),
 	buzzerVolume:                yup.number().label('Buzzer Volume').validateRangeWhenValue('BuzzerSpeakerAddonEnabled', 0, 100),
@@ -331,6 +335,7 @@ const schema = yup.object().shape({
 	wiiExtensionSCLPin:          yup.number().required().label('WiiExtension I2C SCL Pin').validatePinWhenValue('WiiExtensionAddonEnabled'),
 	wiiExtensionBlock:           yup.number().required().label('WiiExtension I2C Block').validateSelectionWhenValue('WiiExtensionAddonEnabled', I2C_BLOCKS),
 	wiiExtensionSpeed:           yup.number().label('WiiExtension I2C Speed').validateNumberWhenValue('WiiExtensionAddonEnabled'),
+	SidewinderGPEnabled:         yup.number().required().label('Sidewinder GP Input Enabled'),
 });
 
 const defaultValues = {
@@ -385,6 +390,9 @@ const defaultValues = {
 	wiiExtensionSCLPin: -1,
 	wiiExtensionBlock: 0,
 	wiiExtensionSpeed: 400000,
+	sidewinderGPPinTrigger: -1,
+	sidewinderGPPinClock: -1,
+	sidewinderGPPinData: -1,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
 	BuzzerSpeakerAddonEnabled: 0,
@@ -399,6 +407,7 @@ const defaultValues = {
 	ReverseInputEnabled: 0,
 	TurboInputEnabled: 0,
 	WiiExtensionAddonEnabled: 0,
+	SidewinderGPEnabled: 0,
 };
 
 const FormContext = ({setStoredData}) => {
@@ -530,6 +539,12 @@ const sanitizeData = (values) => {
 			values.wiiExtensionBlock = parseInt(values.wiiExtensionBlock);
 		if (!!values.wiiExtensionSpeed)
 			values.wiiExtensionSpeed = parseInt(values.wiiExtensionSpeed);
+		if (!!values.sidewinderGPPinTrigger)
+			values.sidewinderGPPinTrigger = parseInt(values.sidewinderGPPinTrigger);
+		if (!!values.sidewinderGPPinClock)
+			values.sidewinderGPPinClock = parseInt(values.sidewinderGPPinClock);
+		if (!!values.sidewinderGPPinData)
+			values.sidewinderGPPinData = parseInt(values.sidewinderGPPinData);
 		if (!!values.AnalogInputEnabled)
 			values.AnalogInputEnabled = parseInt(values.AnalogInputEnabled);
 		if (!!values.BoardLedAddonEnabled)
@@ -558,6 +573,8 @@ const sanitizeData = (values) => {
 			values.TurboInputEnabled = parseInt(values.TurboInputEnabled);
 		if (!!values.WiiExtensionAddonEnabled)
 			values.WiiExtensionAddonEnabled = parseInt(values.WiiExtensionAddonEnabled);
+		if (!!values.SidewinderGPEnabled)
+			values.SidewinderGPEnabled = parseInt(values.SidewinderGPEnabled);
 }
 
 function flattenObject(object) {
@@ -1562,6 +1579,59 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.WiiExtensionAddonEnabled)}
 							onChange={(e) => {handleCheckbox("WiiExtensionAddonEnabled", values); handleChange(e);}}
+						/>
+					</Section>
+					<Section title="Sidewinder Gamepad">
+						<div
+							id="SidewinderGPInputOptions"
+							hidden={!values.SidewinderGPEnabled}>
+						<Row className="mb-3">
+							<FormControl type="number"
+								label="Trigger Pin"
+								name="sidewinderGPPinTrigger"
+								className="form-control-sm"
+								groupClassName="col-sm-1 mb-3"
+								value={values.sidewinderGPPinTrigger}
+								error={errors.sidewinderGPPinTrigger}
+								isInvalid={errors.sidewinderGPPinTrigger}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormControl type="number"
+								label="Clock Pin"
+								name="sidewinderGPPinClock"
+								className="form-control-sm"
+								groupClassName="col-sm-1 mb-3"
+								value={values.sidewinderGPPinClock}
+								error={errors.sidewinderGPPinClock}
+								isInvalid={errors.sidewinderGPPinClock}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+							<FormControl type="number"
+								label="Data Pin"
+								name="sidewinderGPPinData"
+								className="form-control-sm"
+								groupClassName="col-sm-1 mb-3"
+								value={values.sidewinderGPPinData}
+								error={errors.sidewinderGPPinData}
+								isInvalid={errors.sidewinderGPPinData}
+								onChange={handleChange}
+								min={-1}
+								max={29}
+							/>
+						</Row>
+						</div>
+						<FormCheck
+							label="Enabled"
+							type="switch"
+							id="SidewinderGPInputButoon"
+							reverse
+							isInvalid={false}
+							checked={Boolean(values.SidewinderGPEnabled)}
+							onChange={(e) => {handleCheckbox("SidewinderGPEnabled", values); handleChange(e);}}
 						/>
 					</Section>
 					<div className="mt-3">
