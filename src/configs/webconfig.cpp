@@ -131,6 +131,8 @@ static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K
 	doc[key0][key1][key2] = var;
 }
 
+static int32_t cleanPin(int32_t pin) { return isValidPin(pin) ? pin : -1; }
+
 void WebConfig::setup() {
 	rndis_init();
 }
@@ -387,8 +389,8 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
 	writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
-	writeDoc(doc, "sdaPin", displayOptions.i2cSDAPin == 0xFF ? -1 : displayOptions.i2cSDAPin);
-	writeDoc(doc, "sclPin", displayOptions.i2cSCLPin == 0xFF ? -1 : displayOptions.i2cSCLPin);
+	writeDoc(doc, "sdaPin", cleanPin(displayOptions.i2cSDAPin));
+	writeDoc(doc, "sclPin", cleanPin(displayOptions.i2cSCLPin));
 	writeDoc(doc, "i2cAddress", displayOptions.i2cAddress);
 	writeDoc(doc, "i2cBlock", displayOptions.i2cBlock);
 	writeDoc(doc, "i2cSpeed", displayOptions.i2cSpeed);
@@ -755,24 +757,24 @@ std::string getPinMappings()
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
 	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	writeDoc(doc, "Up", pinMappings.pinDpadUp);
-	writeDoc(doc, "Down", pinMappings.pinDpadDown);
-	writeDoc(doc, "Left", pinMappings.pinDpadLeft);
-	writeDoc(doc, "Right", pinMappings.pinDpadRight);
-	writeDoc(doc, "B1", pinMappings.pinButtonB1);
-	writeDoc(doc, "B2", pinMappings.pinButtonB2);
-	writeDoc(doc, "B3", pinMappings.pinButtonB3);
-	writeDoc(doc, "B4", pinMappings.pinButtonB4);
-	writeDoc(doc, "L1", pinMappings.pinButtonL1);
-	writeDoc(doc, "R1", pinMappings.pinButtonR1);
-	writeDoc(doc, "L2", pinMappings.pinButtonL2);
-	writeDoc(doc, "R2", pinMappings.pinButtonR2);
-	writeDoc(doc, "S1", pinMappings.pinButtonS1);
-	writeDoc(doc, "S2", pinMappings.pinButtonS2);
-	writeDoc(doc, "L3", pinMappings.pinButtonL3);
-	writeDoc(doc, "R3", pinMappings.pinButtonR3);
-	writeDoc(doc, "A1", pinMappings.pinButtonA1);
-	writeDoc(doc, "A2", pinMappings.pinButtonA2);
+	writeDoc(doc, "Up", cleanPin(pinMappings.pinDpadUp));
+	writeDoc(doc, "Down", cleanPin(pinMappings.pinDpadDown));
+	writeDoc(doc, "Left", cleanPin(pinMappings.pinDpadLeft));
+	writeDoc(doc, "Right", cleanPin(pinMappings.pinDpadRight));
+	writeDoc(doc, "B1", cleanPin(pinMappings.pinButtonB1));
+	writeDoc(doc, "B2", cleanPin(pinMappings.pinButtonB2));
+	writeDoc(doc, "B3", cleanPin(pinMappings.pinButtonB3));
+	writeDoc(doc, "B4", cleanPin(pinMappings.pinButtonB4));
+	writeDoc(doc, "L1", cleanPin(pinMappings.pinButtonL1));
+	writeDoc(doc, "R1", cleanPin(pinMappings.pinButtonR1));
+	writeDoc(doc, "L2", cleanPin(pinMappings.pinButtonL2));
+	writeDoc(doc, "R2", cleanPin(pinMappings.pinButtonR2));
+	writeDoc(doc, "S1", cleanPin(pinMappings.pinButtonS1));
+	writeDoc(doc, "S2", cleanPin(pinMappings.pinButtonS2));
+	writeDoc(doc, "L3", cleanPin(pinMappings.pinButtonL3));
+	writeDoc(doc, "R3", cleanPin(pinMappings.pinButtonR3));
+	writeDoc(doc, "A1", cleanPin(pinMappings.pinButtonA1));
+	writeDoc(doc, "A2", cleanPin(pinMappings.pinButtonA2));
 
 	return serialize_json(doc);
 }
@@ -1042,8 +1044,8 @@ std::string getAddonOptions()
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-	writeDoc(doc, "analogAdcPinX", analogOptions.analogAdcPinX == 0xFF ? -1 : analogOptions.analogAdcPinX);
-	writeDoc(doc, "analogAdcPinY", analogOptions.analogAdcPinY == 0xFF ? -1 : analogOptions.analogAdcPinY);
+	writeDoc(doc, "analogAdcPinX", cleanPin(analogOptions.analogAdcPinX));
+	writeDoc(doc, "analogAdcPinY", cleanPin(analogOptions.analogAdcPinY));
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1051,35 +1053,35 @@ std::string getAddonOptions()
 	writeDoc(doc, "BootselButtonAddonEnabled", bootselButtonOptions.enabled);
 
     const BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
-	writeDoc(doc, "buzzerPin", buzzerOptions.pin == 0xFF ? -1 : buzzerOptions.pin);
+	writeDoc(doc, "buzzerPin", cleanPin(buzzerOptions.pin));
 	writeDoc(doc, "buzzerVolume", buzzerOptions.volume);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", buzzerOptions.enabled);
 
     const DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
-	writeDoc(doc, "dualDirDownPin", dualDirectionalOptions.downPin == 0xFF ? -1 : dualDirectionalOptions.downPin);
-	writeDoc(doc, "dualDirUpPin", dualDirectionalOptions.upPin == 0xFF ? -1 : dualDirectionalOptions.upPin);
-	writeDoc(doc, "dualDirLeftPin", dualDirectionalOptions.leftPin == 0xFF ? -1 : dualDirectionalOptions.leftPin);
-	writeDoc(doc, "dualDirRightPin", dualDirectionalOptions.rightPin == 0xFF ? -1 : dualDirectionalOptions.rightPin);
+	writeDoc(doc, "dualDirDownPin", cleanPin(dualDirectionalOptions.downPin));
+	writeDoc(doc, "dualDirUpPin", cleanPin(dualDirectionalOptions.upPin));
+	writeDoc(doc, "dualDirLeftPin", cleanPin(dualDirectionalOptions.leftPin));
+	writeDoc(doc, "dualDirRightPin", cleanPin(dualDirectionalOptions.rightPin));
 	writeDoc(doc, "dualDirDpadMode", dualDirectionalOptions.dpadMode);
 	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
 	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
     const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
-	writeDoc(doc, "extraButtonPin", extraButtonOptions.pin == 0xFF ? -1 : extraButtonOptions.pin);
+	writeDoc(doc, "extraButtonPin", cleanPin(extraButtonOptions.pin));
 	writeDoc(doc, "extraButtonMap", extraButtonOptions.buttonMap);
 	writeDoc(doc, "ExtraButtonAddonEnabled", extraButtonOptions.enabled);
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-	writeDoc(doc, "i2cAnalog1219SDAPin", analogADS1219Options.i2cSDAPin == 0xFF ? -1 : analogADS1219Options.i2cSDAPin);
-	writeDoc(doc, "i2cAnalog1219SCLPin", analogADS1219Options.i2cSCLPin == 0xFF ? -1 : analogADS1219Options.i2cSCLPin);
+	writeDoc(doc, "i2cAnalog1219SDAPin", cleanPin(analogADS1219Options.i2cSDAPin));
+	writeDoc(doc, "i2cAnalog1219SCLPin", cleanPin(analogADS1219Options.i2cSCLPin));
 	writeDoc(doc, "i2cAnalog1219Block", analogADS1219Options.i2cBlock);
 	writeDoc(doc, "i2cAnalog1219Speed", analogADS1219Options.i2cSpeed);
 	writeDoc(doc, "i2cAnalog1219Address", analogADS1219Options.i2cAddress);
 	writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-	writeDoc(doc, "sliderLSPin", sliderOptions.pinLS == 0xFF ? -1 : sliderOptions.pinLS);
-	writeDoc(doc, "sliderRSPin", sliderOptions.pinRS == 0xFF ? -1 : sliderOptions.pinRS);
+	writeDoc(doc, "sliderLSPin", cleanPin(sliderOptions.pinLS));
+	writeDoc(doc, "sliderRSPin", cleanPin(sliderOptions.pinRS));
 	writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
 
     const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
@@ -1087,8 +1089,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "PlayerNumAddonEnabled", playerNumberOptions.enabled);
 
 	const ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
-	writeDoc(doc, "reversePin", isValidPin(reverseOptions.buttonPin) ? reverseOptions.buttonPin : -1);
-	writeDoc(doc, "reversePinLED", isValidPin(reverseOptions.ledPin) ? reverseOptions.ledPin : -1);
+	writeDoc(doc, "reversePin", cleanPin(reverseOptions.buttonPin));
+	writeDoc(doc, "reversePinLED", cleanPin(reverseOptions.ledPin));
 	writeDoc(doc, "reverseActionUp", reverseOptions.actionUp);
 	writeDoc(doc, "reverseActionDown", reverseOptions.actionDown);
 	writeDoc(doc, "reverseActionLeft", reverseOptions.actionLeft);
@@ -1096,8 +1098,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "ReverseInputEnabled", reverseOptions.enabled);
 
     const SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-	writeDoc(doc, "sliderSOCDPinOne", socdSliderOptions.pinOne == 0xFF ? -1 : socdSliderOptions.pinOne);
-	writeDoc(doc, "sliderSOCDPinTwo", socdSliderOptions.pinTwo == 0xFF ? -1 : socdSliderOptions.pinTwo);
+	writeDoc(doc, "sliderSOCDPinOne", cleanPin(socdSliderOptions.pinOne));
+	writeDoc(doc, "sliderSOCDPinTwo", cleanPin(socdSliderOptions.pinTwo));
 	writeDoc(doc, "sliderSOCDModeOne", socdSliderOptions.modeOne);
 	writeDoc(doc, "sliderSOCDModeTwo", socdSliderOptions.modeTwo);
 	writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
@@ -1108,8 +1110,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "BoardLedAddonEnabled", onBoardLedOptions.enabled);
 
     const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
-	writeDoc(doc, "turboPin", turboOptions.buttonPin == 0xFF ? -1 : turboOptions.buttonPin);
-	writeDoc(doc, "turboPinLED", turboOptions.ledPin == 0xFF ? -1 : turboOptions.ledPin);
+	writeDoc(doc, "turboPin", cleanPin(turboOptions.buttonPin));
+	writeDoc(doc, "turboPinLED", cleanPin(turboOptions.ledPin));
 	writeDoc(doc, "turboShotCount", turboOptions.shotCount);
 	writeDoc(doc, "shmupMode", turboOptions.shmupModeEnabled);
 	writeDoc(doc, "shmupMixMode", turboOptions.shmupMixMode);
@@ -1117,20 +1119,20 @@ std::string getAddonOptions()
 	writeDoc(doc, "shmupAlwaysOn2", turboOptions.shmupAlwaysOn2);
 	writeDoc(doc, "shmupAlwaysOn3", turboOptions.shmupAlwaysOn3);
 	writeDoc(doc, "shmupAlwaysOn4", turboOptions.shmupAlwaysOn4);
-	writeDoc(doc, "pinShmupBtn1", turboOptions.shmupBtn1Pin == 0xFF ? -1 : turboOptions.shmupBtn1Pin);
-	writeDoc(doc, "pinShmupBtn2", turboOptions.shmupBtn2Pin == 0xFF ? -1 : turboOptions.shmupBtn2Pin);
-	writeDoc(doc, "pinShmupBtn3", turboOptions.shmupBtn3Pin == 0xFF ? -1 : turboOptions.shmupBtn3Pin);
-	writeDoc(doc, "pinShmupBtn4", turboOptions.shmupBtn4Pin == 0xFF ? -1 : turboOptions.shmupBtn4Pin);
+	writeDoc(doc, "pinShmupBtn1", cleanPin(turboOptions.shmupBtn1Pin));
+	writeDoc(doc, "pinShmupBtn2", cleanPin(turboOptions.shmupBtn2Pin));
+	writeDoc(doc, "pinShmupBtn3", cleanPin(turboOptions.shmupBtn3Pin));
+	writeDoc(doc, "pinShmupBtn4", cleanPin(turboOptions.shmupBtn4Pin));
 	writeDoc(doc, "shmupBtnMask1", turboOptions.shmupBtnMask1);
 	writeDoc(doc, "shmupBtnMask2", turboOptions.shmupBtnMask2);
 	writeDoc(doc, "shmupBtnMask3", turboOptions.shmupBtnMask3);
 	writeDoc(doc, "shmupBtnMask4", turboOptions.shmupBtnMask4);
-	writeDoc(doc, "pinShmupDial", turboOptions.shmupDialPin == 0xFF ? -1 : turboOptions.shmupDialPin);
+	writeDoc(doc, "pinShmupDial", cleanPin(turboOptions.shmupDialPin));
 	writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-	writeDoc(doc, "wiiExtensionSDAPin", wiiOptions.i2cSDAPin == 0xFF ? -1 : wiiOptions.i2cSDAPin);
-	writeDoc(doc, "wiiExtensionSCLPin", wiiOptions.i2cSCLPin == 0xFF ? -1 : wiiOptions.i2cSCLPin);
+	writeDoc(doc, "wiiExtensionSDAPin", cleanPin(wiiOptions.i2cSDAPin));
+	writeDoc(doc, "wiiExtensionSCLPin", cleanPin(wiiOptions.i2cSCLPin));
 	writeDoc(doc, "wiiExtensionBlock", wiiOptions.i2cBlock);
 	writeDoc(doc, "wiiExtensionSpeed", wiiOptions.i2cSpeed);
 	writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
