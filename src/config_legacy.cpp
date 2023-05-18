@@ -337,6 +337,127 @@ static uint32_t computeChecksum(const char* obj, size_t size, size_t checksumOff
     return crc32.finalize();
 }
 
+static bool isValidInputMode(ConfigLegacy::InputMode inputMode)
+{
+    switch (inputMode)
+    {
+        case INPUT_MODE_XINPUT:
+        case INPUT_MODE_SWITCH:
+        case INPUT_MODE_HID:
+        case INPUT_MODE_KEYBOARD:
+        case INPUT_MODE_PS4:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidDpadMode(ConfigLegacy::DpadMode dpadMode)
+{
+    switch (dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:
+        case DPAD_MODE_LEFT_ANALOG:
+        case DPAD_MODE_RIGHT_ANALOG:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidSOCDMode(ConfigLegacy::SOCDMode socdMode)
+{
+    switch (socdMode)
+    {
+        case SOCD_MODE_UP_PRIORITY:
+        case SOCD_MODE_NEUTRAL:
+        case SOCD_MODE_SECOND_INPUT_PRIORITY:
+        case SOCD_MODE_FIRST_INPUT_PRIORITY:
+        case SOCD_MODE_BYPASS:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidGamepadHotkey(ConfigLegacy::GamepadHotkey hotkey)
+{
+    switch (hotkey)
+    {
+        case HOTKEY_NONE:
+        case HOTKEY_DPAD_DIGITAL:
+        case HOTKEY_DPAD_LEFT_ANALOG:
+        case HOTKEY_DPAD_RIGHT_ANALOG:
+        case HOTKEY_HOME_BUTTON:
+        case HOTKEY_CAPTURE_BUTTON:
+        case HOTKEY_SOCD_UP_PRIORITY:
+        case HOTKEY_SOCD_NEUTRAL:
+        case HOTKEY_SOCD_LAST_INPUT:
+        case HOTKEY_INVERT_X_AXIS:
+        case HOTKEY_INVERT_Y_AXIS:
+        case HOTKEY_SOCD_FIRST_INPUT:
+        case HOTKEY_SOCD_BYPASS:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
+{
+    switch (buttonLayout)
+    {
+        case BUTTON_LAYOUT_STICK:
+        case BUTTON_LAYOUT_STICKLESS:
+        case BUTTON_LAYOUT_BUTTONS_ANGLED:
+        case BUTTON_LAYOUT_BUTTONS_BASIC:
+        case BUTTON_LAYOUT_KEYBOARD_ANGLED:
+        case BUTTON_LAYOUT_KEYBOARDA:
+        case BUTTON_LAYOUT_DANCEPADA:
+        case BUTTON_LAYOUT_TWINSTICKA:
+        case BUTTON_LAYOUT_BLANKA:
+        case BUTTON_LAYOUT_VLXA:
+        case BUTTON_LAYOUT_FIGHTBOARD_STICK:
+        case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
+        case BUTTON_LAYOUT_CUSTOMA:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidLEDFormat(LEDFormat ledFormat)
+{
+    switch (ledFormat)
+    {
+        case LED_FORMAT_GRB:
+        case LED_FORMAT_RGB:
+        case LED_FORMAT_GRBW:
+        case LED_FORMAT_RGBW:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidPLEDType(PLEDType pledType)
+{
+    switch (pledType)
+    {
+        case PLED_TYPE_NONE:
+        case PLED_TYPE_PWM:
+        case PLED_TYPE_RGB:
+            return true;
+    }
+    return false;
+}
+
+static bool isValidOnBoardLedMode(ConfigLegacy::OnBoardLedMode onBoardLedMode)
+{
+    switch (onBoardLedMode)
+    {
+        case ConfigLegacy::BOARD_LED_OFF:
+        case ConfigLegacy::MODE_INDICATOR:
+        case ConfigLegacy::INPUT_TEST:
+            return true;
+    }
+    return false;
+}
+
 bool ConfigUtils::fromLegacyStorage(Config& config)
 {
     bool legacyConfigFound = false;
@@ -350,9 +471,18 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
 
         GamepadOptions& gamepadOptions = config.gamepadOptions;
         config.has_gamepadOptions = true;
-        SET_PROPERTY(gamepadOptions, inputMode, static_cast<InputMode>(legacyGamepadOptions.inputMode));
-        SET_PROPERTY(gamepadOptions, dpadMode, static_cast<DpadMode>(legacyGamepadOptions.dpadMode));
-        SET_PROPERTY(gamepadOptions, socdMode, static_cast<SOCDMode>(legacyGamepadOptions.socdMode));
+        if (isValidInputMode(legacyGamepadOptions.inputMode))
+        {
+            SET_PROPERTY(gamepadOptions, inputMode, static_cast<InputMode>(legacyGamepadOptions.inputMode));
+        }
+        if (isValidDpadMode(legacyGamepadOptions.dpadMode))
+        {
+            SET_PROPERTY(gamepadOptions, dpadMode, static_cast<DpadMode>(legacyGamepadOptions.dpadMode));
+        }
+        if (isValidSOCDMode(legacyGamepadOptions.socdMode))
+        {
+            SET_PROPERTY(gamepadOptions, socdMode, static_cast<SOCDMode>(legacyGamepadOptions.socdMode));
+        }
         SET_PROPERTY(gamepadOptions, invertXAxis, legacyGamepadOptions.invertXAxis);
         SET_PROPERTY(gamepadOptions, invertYAxis, legacyGamepadOptions.invertYAxis);
         SET_PROPERTY(gamepadOptions, switchTpShareForDs4, legacyGamepadOptions.switchTpShareForDs4);
@@ -381,21 +511,52 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
         config.has_hotkeyOptions = true;
         SET_PROPERTY(hotkeyOptions.hotkeyF1Up, dpadMask, legacyGamepadOptions.hotkeyF1Up.dpadMask);
-        SET_PROPERTY(hotkeyOptions.hotkeyF1Up, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Up.action));
+        if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF1Up.action))
+        {
+            SET_PROPERTY(hotkeyOptions.hotkeyF1Up, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Up.action));
+        }
+
         SET_PROPERTY(hotkeyOptions.hotkeyF1Down, dpadMask, legacyGamepadOptions.hotkeyF1Down.dpadMask);
-        SET_PROPERTY(hotkeyOptions.hotkeyF1Down, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Down.action));
+        if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF1Down.action))
+        {
+            SET_PROPERTY(hotkeyOptions.hotkeyF1Down, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Down.action));
+        }
+
         SET_PROPERTY(hotkeyOptions.hotkeyF1Left, dpadMask, legacyGamepadOptions.hotkeyF1Left.dpadMask);
-        SET_PROPERTY(hotkeyOptions.hotkeyF1Left, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Left.action));
+        if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF1Left.action))
+        {
+            SET_PROPERTY(hotkeyOptions.hotkeyF1Left, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Left.action));
+        }
+
         SET_PROPERTY(hotkeyOptions.hotkeyF1Right, dpadMask, legacyGamepadOptions.hotkeyF1Right.dpadMask);
-        SET_PROPERTY(hotkeyOptions.hotkeyF1Right, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Right.action));
+        if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF1Right.action))
+        {
+            SET_PROPERTY(hotkeyOptions.hotkeyF1Right, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Right.action));
+        }
+
         SET_PROPERTY(hotkeyOptions.hotkeyF2Up, dpadMask, legacyGamepadOptions.hotkeyF2Up.dpadMask);
-        SET_PROPERTY(hotkeyOptions.hotkeyF2Up, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Up.action));
+        if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF2Up.action))
+        {
+            SET_PROPERTY(hotkeyOptions.hotkeyF2Up, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Up.action));
+        }
+
         SET_PROPERTY(hotkeyOptions.hotkeyF2Down, dpadMask, legacyGamepadOptions.hotkeyF2Down.dpadMask);
-        SET_PROPERTY(hotkeyOptions.hotkeyF2Down, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Down.action));
+        if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF2Down.action))
+        {
+            SET_PROPERTY(hotkeyOptions.hotkeyF2Down, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Down.action));
+        }
+
         SET_PROPERTY(hotkeyOptions.hotkeyF2Left, dpadMask, legacyGamepadOptions.hotkeyF2Left.dpadMask);
-        SET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Left.action));
+        if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF2Left.action))
+        {
+            SET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Left.action));
+        }
+
         SET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, legacyGamepadOptions.hotkeyF2Right.dpadMask);
-        SET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Right.action));
+        if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF2Right.action))
+        {
+            SET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Right.action));
+        }
     }
 
     const ConfigLegacy::LEDOptions& legacyLEDOptions = *reinterpret_cast<ConfigLegacy::LEDOptions*>(EEPROM_ADDRESS_START + LED_STORAGE_INDEX);
@@ -407,8 +568,14 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         LEDOptions& ledOptions = config.ledOptions;
         config.has_ledOptions = true;
         SET_PROPERTY(ledOptions, dataPin, isValidPin(legacyLEDOptions.dataPin) ? legacyLEDOptions.dataPin : -1);
-        SET_PROPERTY(ledOptions, ledFormat, static_cast<LEDFormat_Proto>(legacyLEDOptions.ledFormat));
-        SET_PROPERTY(ledOptions, ledLayout, static_cast<ButtonLayout>(legacyLEDOptions.ledLayout));
+        if (isValidLEDFormat(legacyLEDOptions.ledFormat))
+        {
+            SET_PROPERTY(ledOptions, ledFormat, static_cast<LEDFormat_Proto>(legacyLEDOptions.ledFormat));
+        }
+        if (isValidButtonLayout(legacyLEDOptions.ledLayout))
+        {
+            SET_PROPERTY(ledOptions, ledLayout, static_cast<ButtonLayout>(legacyLEDOptions.ledLayout));
+        }
         SET_PROPERTY(ledOptions, ledsPerButton, legacyLEDOptions.ledsPerButton);
         SET_PROPERTY(ledOptions, brightnessMaximum, legacyLEDOptions.brightnessMaximum);
         SET_PROPERTY(ledOptions, brightnessSteps, legacyLEDOptions.brightnessSteps);
@@ -430,13 +597,9 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(ledOptions, indexR3, legacyLEDOptions.indexR3);
         SET_PROPERTY(ledOptions, indexA1, legacyLEDOptions.indexA1);
         SET_PROPERTY(ledOptions, indexA2, legacyLEDOptions.indexA2);
-        switch (legacyLEDOptions.pledType)
+        if (isValidPLEDType(static_cast<PLEDType>(legacyLEDOptions.pledType)))
         {
-            case PLED_TYPE_NONE:
-            case PLED_TYPE_PWM:
-            case PLED_TYPE_RGB:
-                SET_PROPERTY(ledOptions, pledType, static_cast<PLEDType>(legacyLEDOptions.pledType));
-                break;
+            SET_PROPERTY(ledOptions, pledType, static_cast<PLEDType>(legacyLEDOptions.pledType));
         }
         SET_PROPERTY(ledOptions, pledPin1, legacyLEDOptions.pledPin1);
         SET_PROPERTY(ledOptions, pledPin2, legacyLEDOptions.pledPin2);
@@ -529,7 +692,10 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(dualDirectionalOptions, downPin, bytePinToIntPin(legacyAddonOptions.pinDualDirDown));
         SET_PROPERTY(dualDirectionalOptions, leftPin, bytePinToIntPin(legacyAddonOptions.pinDualDirLeft));
         SET_PROPERTY(dualDirectionalOptions, rightPin, bytePinToIntPin(legacyAddonOptions.pinDualDirRight));
-        SET_PROPERTY(dualDirectionalOptions, dpadMode, static_cast<DpadMode>(legacyAddonOptions.dualDirDpadMode));
+        if (isValidDpadMode(legacyAddonOptions.dualDirDpadMode))
+        {
+            SET_PROPERTY(dualDirectionalOptions, dpadMode, static_cast<DpadMode>(legacyAddonOptions.dualDirDpadMode));
+        }
         SET_PROPERTY(dualDirectionalOptions, combineMode, legacyAddonOptions.dualDirCombineMode);
 
         ExtraButtonOptions& extraButtonOptions = config.addonOptions.extraButtonOptions;
@@ -573,14 +739,26 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(socdSliderOptions, enabled, legacyAddonOptions.SliderSOCDInputEnabled);
         SET_PROPERTY(socdSliderOptions, pinOne, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDOne));
         SET_PROPERTY(socdSliderOptions, pinTwo, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDTwo));
-        SET_PROPERTY(socdSliderOptions, modeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
-        SET_PROPERTY(socdSliderOptions, modeOne, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeOne));
-        SET_PROPERTY(socdSliderOptions, modeTwo, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeTwo));
+        if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeDefault))
+        {
+            SET_PROPERTY(socdSliderOptions, modeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
+        }
+        if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeOne))
+        {
+            SET_PROPERTY(socdSliderOptions, modeOne, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeOne));
+        }
+        if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeTwo))
+        {
+            SET_PROPERTY(socdSliderOptions, modeTwo, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeTwo));
+        }
 
         OnBoardLedOptions& onBoardLedOptions = config.addonOptions.onBoardLedOptions;
         config.addonOptions.has_onBoardLedOptions = true;
         SET_PROPERTY(onBoardLedOptions, enabled, legacyAddonOptions.BoardLedAddonEnabled);
-        SET_PROPERTY(onBoardLedOptions, mode, static_cast<OnBoardLedMode>(legacyAddonOptions.onBoardLedMode));
+        if (isValidOnBoardLedMode(legacyAddonOptions.onBoardLedMode))
+        {
+            SET_PROPERTY(onBoardLedOptions, mode, static_cast<OnBoardLedMode>(legacyAddonOptions.onBoardLedMode));
+        }
 
         TurboOptions& turboOptions = config.addonOptions.turboOptions;
         config.addonOptions.has_turboOptions = true;
