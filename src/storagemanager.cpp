@@ -40,11 +40,7 @@
 Storage::Storage()
 {
 	EEPROM.start();
-
-	initBoardOptions();
-
 	critical_section_init(&animationOptionsCs);
-
 	ConfigUtils::load(config);
 }
 
@@ -133,89 +129,15 @@ void Storage::initBoardOptions() {
 	setDefaultBoardOptions();
 }
 
-void Storage::setDefaultBoardOptions()
-{
-	// Set GP2040 version string and 0 mem after
-	boardOptions.hasBoardOptions   = false;
-	boardOptions.pinDpadUp         = PIN_DPAD_UP;
-	boardOptions.pinDpadDown       = PIN_DPAD_DOWN;
-	boardOptions.pinDpadLeft       = PIN_DPAD_LEFT;
-	boardOptions.pinDpadRight      = PIN_DPAD_RIGHT;
-	boardOptions.pinButtonB1       = PIN_BUTTON_B1;
-	boardOptions.pinButtonB2       = PIN_BUTTON_B2;
-	boardOptions.pinButtonB3       = PIN_BUTTON_B3;
-	boardOptions.pinButtonB4       = PIN_BUTTON_B4;
-	boardOptions.pinButtonL1       = PIN_BUTTON_L1;
-	boardOptions.pinButtonR1       = PIN_BUTTON_R1;
-	boardOptions.pinButtonL2       = PIN_BUTTON_L2;
-	boardOptions.pinButtonR2       = PIN_BUTTON_R2;
-	boardOptions.pinButtonS1       = PIN_BUTTON_S1;
-	boardOptions.pinButtonS2       = PIN_BUTTON_S2;
-	boardOptions.pinButtonL3       = PIN_BUTTON_L3;
-	boardOptions.pinButtonR3       = PIN_BUTTON_R3;
-	boardOptions.pinButtonA1       = PIN_BUTTON_A1;
-	boardOptions.pinButtonA2       = PIN_BUTTON_A2;
-	boardOptions.buttonLayout      = static_cast<ConfigLegacy::ButtonLayout>(BUTTON_LAYOUT);
-	boardOptions.buttonLayoutRight = static_cast<ConfigLegacy::ButtonLayoutRight>(BUTTON_LAYOUT_RIGHT);
-	boardOptions.splashMode        = static_cast<ConfigLegacy::SplashMode>(SPLASH_MODE);
-	boardOptions.splashChoice      = static_cast<ConfigLegacy::SplashChoice>(SPLASH_CHOICE);
-	boardOptions.splashDuration    = SPLASH_DURATION;
-	boardOptions.i2cSDAPin         = I2C_SDA_PIN;
-	boardOptions.i2cSCLPin         = I2C_SCL_PIN;
-	boardOptions.i2cBlock          = (I2C_BLOCK == i2c0) ? 0 : 1;
-	boardOptions.i2cSpeed          = I2C_SPEED;
-	boardOptions.hasI2CDisplay     = HAS_I2C_DISPLAY;
-	boardOptions.displayI2CAddress = DISPLAY_I2C_ADDR;
-	boardOptions.displaySize       = DISPLAY_SIZE;
-	boardOptions.displayFlip       = DISPLAY_FLIP;
-	boardOptions.displayInvert     = DISPLAY_INVERT;
-	boardOptions.displaySaverTimeout     = DISPLAY_SAVER_TIMEOUT;
-
-	ConfigLegacy::ButtonLayoutParams params = {
-		.layout = static_cast<ConfigLegacy::ButtonLayout>(BUTTON_LAYOUT),
-		.startX = 8,
-		.startY = 28,
-		.buttonRadius = 8,
-		.buttonPadding = 2
-	};
-	boardOptions.buttonLayoutCustomOptions.params = params;
-
-	ConfigLegacy::ButtonLayoutParams paramsRight = {
-		.layoutRight = static_cast<ConfigLegacy::ButtonLayoutRight>(BUTTON_LAYOUT_RIGHT),
-		.startX = 8,
-		.startY = 28,
-		.buttonRadius = 8,
-		.buttonPadding = 2
-	};
-	boardOptions.buttonLayoutCustomOptions.paramsRight = paramsRight;
-
-	strncpy(boardOptions.boardVersion, GP2040VERSION, strlen(GP2040VERSION));
-	setBoardOptions(boardOptions);
-}
-
-void Storage::setBoardOptions(ConfigLegacy::BoardOptions options)
-{
-}
-
 void Storage::ResetSettings()
 {
 	EEPROM.reset();
 	watchdog_reboot(0, SRAM_END, 2000);
 }
 
-void Storage::initPreviewBoardOptions()
-{
-	memcpy(&previewBoardOptions, &boardOptions, sizeof(ConfigLegacy::BoardOptions));
-}
-
-void Storage::setPreviewBoardOptions(const ConfigLegacy::BoardOptions& boardOptions)
-{
-	memcpy(&previewBoardOptions, &boardOptions, sizeof(ConfigLegacy::BoardOptions));
-}
-
 void Storage::SetConfigMode(bool mode) { // hack for config mode
 	CONFIG_MODE = mode;
-	initPreviewBoardOptions();
+	previewDisplayOptions = config.displayOptions;
 }
 
 bool Storage::GetConfigMode()

@@ -19,6 +19,7 @@
 #include "addons/neopicoleds.h"
 #include "addons/playernum.h"
 #include "addons/pleds.h"
+#include "addons/ps4mode.h"
 #include "addons/reverse.h"
 #include "addons/slider_socd.h"
 #include "addons/turbo.h"
@@ -348,7 +349,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, number, PLAYER_NUMBER);
 
     // addonOptions.ps4Options
-    INIT_UNSET_PROPERTY(config.addonOptions.ps4Options, enabled, false);
+    INIT_UNSET_PROPERTY(config.addonOptions.ps4Options, enabled, PS4MODE_ADDON_ENABLED);
     INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, serial, emptyByteArray);
     INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, signature, emptyByteArray);
     INIT_UNSET_PROPERTY_BYTES(config.addonOptions.ps4Options, rsaN, emptyByteArray);
@@ -499,10 +500,6 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
 
 bool ConfigUtils::save(Config& config)
 {
-    // XXX
-    return true;
-    // XXX
-
     // We only allow saves from core0. Saves from core1 have to be marshalled to core0.
     assert(get_core_num() == 0);
     if (get_core_num() != 0)

@@ -4,6 +4,8 @@
 #include "gpaddon.h"
 #include "storagemanager.h"
 
+#include "mbedtls/rsa.h"
+
 #ifndef PS4MODE_ADDON_ENABLED
 #define PS4MODE_ADDON_ENABLED 0
 #endif

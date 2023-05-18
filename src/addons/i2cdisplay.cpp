@@ -246,7 +246,7 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 
 const DisplayOptions& I2CDisplayAddon::getDisplayOptions() {
 	bool configMode = Storage::getInstance().GetConfigMode();
-	return configMode ? Storage::getInstance().getDisplayOptions() : Storage::getInstance().getDisplayOptions();
+	return configMode ? Storage::getInstance().getPreviewDisplayOptions() : Storage::getInstance().getDisplayOptions();
 }
 
 int I2CDisplayAddon::initDisplay(int typeOverride) {

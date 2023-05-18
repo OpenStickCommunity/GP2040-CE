@@ -25,8 +25,3 @@ void ConfigManager::setupConfig(GPConfig * gpconfig) {
 void ConfigManager::setGamepadOptions(Gamepad* gamepad) {
 	gamepad->save();
 }
-
-void ConfigManager::setPreviewBoardOptions(ConfigLegacy::BoardOptions boardOptions) {
-	Storage::getInstance().setPreviewBoardOptions(boardOptions);
-}
-

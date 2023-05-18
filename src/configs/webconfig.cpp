@@ -370,18 +370,14 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 
 std::string setDisplayOptions()
 {
-	DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
-	std::string response = setDisplayOptions(displayOptions);
+	std::string response = setDisplayOptions(Storage::getInstance().getDisplayOptions());
 	Storage::getInstance().save();
 	return response;
 }
 
 std::string setPreviewDisplayOptions()
 {
-	ConfigLegacy::BoardOptions boardOptions = Storage::getInstance().getBoardOptions();
-	std::string response = ""; // TODO: Setup preview display
-	ConfigManager::getInstance().setPreviewBoardOptions(boardOptions);
-	return response;
+	return setDisplayOptions(Storage::getInstance().getPreviewDisplayOptions());
 }
 
 std::string getDisplayOptions() // Manually set Document Attributes for the display

@@ -12,8 +12,6 @@
 #include "gamepad/descriptors/KeyboardDescriptors.h"
 #include "gamepad/descriptors/PS4Descriptors.h"
 
-#include "config_legacy.h"
-
 #include "pico/stdlib.h"
 
 #include "config.pb.h"

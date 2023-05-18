@@ -10,8 +10,6 @@
 #include "FlashPROM.h"
 #include "CRC32.h"
 
-#include "config_legacy.h"
-
 #include "storagemanager.h"
 
 // MUST BE DEFINED for mpgs

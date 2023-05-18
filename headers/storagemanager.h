@@ -14,7 +14,6 @@
 #include "helper.h"
 #include "gamepad.h"
 
-#include "config_legacy.h"
 #include "config.pb.h"
 
 #include <atomic>
@@ -40,6 +39,7 @@ public:
 	PinMappings& getPinMappings() { return config.pinMappings; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
+	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
 	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
@@ -50,12 +50,6 @@ public:
 	void performEnqueuedSaves();
 
 	void enqueueAnimationOptionsSave(const AnimationOptions& animationOptions);
-
-	void setBoardOptions(ConfigLegacy::BoardOptions);	// Board Options
-	const ConfigLegacy::BoardOptions& getBoardOptions() { return boardOptions; }
-
-	void setPreviewBoardOptions(const ConfigLegacy::BoardOptions&);	// Preview Board Options
-	const ConfigLegacy::BoardOptions& getPreviewBoardOptions() { return previewBoardOptions; }
 
 	void SetConfigMode(bool); 			// Config Mode (on-boot)
 	bool GetConfigMode();
@@ -92,9 +86,8 @@ private:
 	bool CONFIG_MODE = false; 			// Config mode (boot)
 	Gamepad * gamepad = nullptr;    		// Gamepad data
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
-	ConfigLegacy::BoardOptions boardOptions;
-	ConfigLegacy::BoardOptions previewBoardOptions;
 	uint8_t featureData[32]; // USB X-Input Feature Data
+	DisplayOptions previewDisplayOptions;
 
 	Config config;
 
