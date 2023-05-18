@@ -202,8 +202,8 @@
 #define JSLIDER_ENABLED 1
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX
-#define SPLASH_MODE NOSPLASH
-#define SPLASH_CHOICE MAIN
+#define SPLASH_MODE SPLASH_MODE_NONE
+#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
 #define SPLASH_DURATION 7500 // Duration in milliseconds
 
 // Board LED Add-on Setting
@@ -212,7 +212,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_TYPE BOARD_LED_OFF
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
 
 // Dual Directional Add-on Options
 
