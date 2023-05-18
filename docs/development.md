@@ -139,7 +139,7 @@ There are a few SDK variables we take advantage of for our builds.
 
 | Name | Default | Description |
 | ----------- | --------- | ----------- |
-|PICO_BOARD|pico| This is the embeded board that the RP2040 chip is part of. By default, it assumes the Pico. This variable would match the `<boardname.h>` file in the board's configs folder.|
+|PICO_BOARD|pico| This is the embedded board that the RP2040 chip is part of. By default, it assumes the Pico. This variable would match the `<boardname.h>` file in the board's configs folder.|
 
 ### Windows
 
