@@ -253,8 +253,6 @@ namespace ConfigLegacy
         GamepadHotkeyEntry hotkeyF2Left;
         GamepadHotkeyEntry hotkeyF2Right;
 
-        bool switchTpShareForDs4;
-
         uint32_t checksum;
     };
 
@@ -485,7 +483,6 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         }
         SET_PROPERTY(gamepadOptions, invertXAxis, legacyGamepadOptions.invertXAxis);
         SET_PROPERTY(gamepadOptions, invertYAxis, legacyGamepadOptions.invertYAxis);
-        SET_PROPERTY(gamepadOptions, switchTpShareForDs4, legacyGamepadOptions.switchTpShareForDs4);
 
         KeyboardMapping& keyboardMapping = config.keyboardMapping;
         config.has_keyboardMapping = true;
