@@ -30,7 +30,7 @@ Unlike other controllers, Keyboard gets different keys for directional buttons.
 | Left      | Left Arrow |
 | Right     | Right Arrow|
 
-> You can change the key mappings for Keyboard mode in [Webconfig mode](web-configurator.md)
+?> You can change the key mappings for Keyboard mode in [Webconfig mode](web-configurator.md)
 
 ## Mode Selection
 

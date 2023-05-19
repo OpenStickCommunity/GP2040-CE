@@ -1,0 +1,39 @@
+.color-picker {
+	user-select: none;
+	padding-bottom: 10px;
+
+	h6 {
+		margin-top: 8px;
+	}
+
+	.color-option {
+		justify-content: flex-start;
+		cursor: pointer;
+		font-size: 0.8rem;
+
+		label {
+			cursor: pointer;
+			margin: 0 auto 4px;
+			text-align: center;
+			width: 100%;
+			font-size: 0.85rem;
+		}
+
+		&.selected {
+			background-color: #DEDEDE;
+		}
+	}
+
+	.color {
+		display: flex;
+
+		height: 40px !important;
+		width: 40px !important;
+		margin: 0 auto 10px;
+		border: 1px solid black;
+	}
+
+	.sketch-picker {
+		margin-top: 10px;
+	}
+}

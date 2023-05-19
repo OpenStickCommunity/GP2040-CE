@@ -140,6 +140,10 @@ struct AddonOptions {
 	SOCDMode sliderSOCDModeOne;
 	SOCDMode sliderSOCDModeTwo;
 	SOCDMode sliderSOCDModeDefault;
+	uint8_t wiiExtensionSDAPin;
+	uint8_t wiiExtensionSCLPin;
+	int wiiExtensionBlock;
+	uint32_t wiiExtensionSpeed;
 	uint8_t AnalogInputEnabled;
 	uint8_t BoardLedAddonEnabled;
 	uint8_t BootselButtonAddonEnabled;
@@ -156,6 +160,7 @@ struct AddonOptions {
 	uint8_t ReverseInputEnabled;
 	uint8_t TurboInputEnabled;
 	uint8_t SliderSOCDInputEnabled;
+	uint8_t WiiExtensionAddonEnabled;
 	uint32_t checksum;
 };
 
@@ -206,6 +211,12 @@ struct LEDOptions
 	int indexR3;
 	int indexA1;
 	int indexA2;
+	int pledType;
+	int pledPin1;
+	int pledPin2;
+	int pledPin3;
+	int pledPin4;
+	RGB pledColor;
 	uint32_t checksum;
 };
 
@@ -231,7 +242,7 @@ public:
 	void setAddonOptions(AddonOptions); // Add-On Options
 	const AddonOptions& getAddonOptions() { return addonOptions; }
 
-	void setSplashImage(SplashImage);
+	void setSplashImage(const SplashImage&);
 	const SplashImage& getSplashImage() { return splashImage; }
 
 	void setLEDOptions(LEDOptions);		// LED Options
@@ -256,6 +267,14 @@ public:
 	uint8_t * GetFeatureData();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
+
+	void setPLEDPins(int pin1, int pin2, int pin3, int pin4) {
+		pledPins[0] = pin1;
+		pledPins[1] = pin2;
+		pledPins[2] = pin3;
+		pledPins[3] = pin4;
+	}
+	const int * getPLEDPins() { return pledPins; }
 
 private:
 	Storage() : gamepad(0) {
@@ -286,6 +305,7 @@ private:
 	PS4Options ps4Options;
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	SplashImage splashImage;
+	int pledPins[4];
 };
 
 #endif

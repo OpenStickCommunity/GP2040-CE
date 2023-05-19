@@ -1,0 +1,92 @@
+ :root {
+  --mono-hue: 0;
+  --mono-saturation : 0%;
+	--modular-scale   : 1.25;
+  --base-font-size: 0.875rem;
+  --theme-color   : #C73C8B;
+  --sidebar-width : 20rem;
+	--sidebar-padding: 0 0.75rem;
+	/* --content-max-width: 75em; */
+}
+
+hr {
+	margin: 1.5em 0;
+}
+
+.form-dropdown label {
+	display: none;
+	margin-right: 4px;
+}
+
+.hotkey {
+	text-transform: uppercase;
+}
+
+.label-select {
+	display: inline-block;
+	margin-left: 4px;
+}
+
+.sticky-label-select {
+	/* width: 100%; */
+	position: fixed!important;
+	top: var(--sidebar-toggle-offset-top);
+	height: var(--sidebar-toggle-height);
+	right: 0px;
+	background: var(--sidebar-toggle-background, transparent);
+	padding: 4px;
+	border-radius: 4px;
+	transform: translateY(-100%);
+	opacity: 0.8;
+	z-index: 10;
+}
+
+.sticky-label-select label {
+	display: block;
+	text-align: center;
+	margin-top: -4px;
+	margin-bottom: 4px;
+}
+
+/*************/
+/* Downloads */
+/*************/
+
+.download-category {
+	margin-bottom: 2rem;
+}
+
+.download-category h3 {
+	margin-bottom: 1rem;
+}
+
+.download-category-list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: start;
+	width: 100%;
+	padding-left: 1%;
+}
+
+.download-category-list a {
+	display: flex;
+	flex: 1 1 auto;
+	max-width: 31%;
+	margin: 0 1%;
+	align-items: center;
+	justify-content: center;
+}
+
+.download-category-list a > div {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+
+.download-category-list a > div span {
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+	font-size: 1rem;
+	font-weight: 600;
+}

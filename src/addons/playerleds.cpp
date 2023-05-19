@@ -78,12 +78,12 @@ PLEDAnimationState getXInputAnimationPWM(uint8_t *data)
 }
 
 bool PlayerLEDAddon::available() {
-	return PLED_TYPE != PLED_TYPE_NONE;
+	return Storage::getInstance().getLEDOptions().pledType != PLED_TYPE_NONE;
 }
 
 void PlayerLEDAddon::setup() {
-
-	switch (PLED_TYPE)
+	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	switch (ledOptions.pledType)
 	{
 		case PLED_TYPE_PWM:
 			pwmLEDs = new PWMPlayerLEDs();
@@ -100,10 +100,11 @@ void PlayerLEDAddon::setup() {
 void PlayerLEDAddon::process()
 {
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
 
 	// Player LEDs can be PWM or driven by NeoPixel
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();
-	if (PLED_TYPE == PLED_TYPE_PWM) { // only process the feature queue if we're on PWM
+	if (ledOptions.pledType == PLED_TYPE_PWM) { // only process the feature queue if we're on PWM
 		if (pwmLEDs != nullptr)
 			pwmLEDs->display();
 
@@ -125,13 +126,14 @@ void PWMPlayerLEDs::setup()
 
 	std::vector<uint> sliceNums;
 
+	auto pledPins = Storage::getInstance().getPLEDPins();
 	for (int i = 0; i < PLED_COUNT; i++)
 	{
-		if (PLED_PINS[i] > -1)
+		if (pledPins[i] > -1)
 		{
-			gpio_set_function(PLED_PINS[i], GPIO_FUNC_PWM);
-			uint sliceNum = pwm_gpio_to_slice_num(PLED_PINS[i]);
-			uint channelNum = pwm_gpio_to_channel(PLED_PINS[i]);
+			gpio_set_function(pledPins[i], GPIO_FUNC_PWM);
+			uint sliceNum = pwm_gpio_to_slice_num(pledPins[i]);
+			uint channelNum = pwm_gpio_to_channel(pledPins[i]);
 			sliceNums.push_back(sliceNum);
 			pwm_set_chan_level(sliceNum, channelNum, PLED_MAX_LEVEL);
 		}
@@ -143,8 +145,9 @@ void PWMPlayerLEDs::setup()
 
 void PWMPlayerLEDs::display()
 {
+	auto pledPins = Storage::getInstance().getPLEDPins();
 	for (int i = 0; i < PLED_COUNT; i++)
-		if (PLED_PINS[i] > -1)
-			pwm_set_gpio_level(PLED_PINS[i], ledLevels[i]);
+		if (pledPins[i] > -1)
+			pwm_set_gpio_level(pledPins[i], ledLevels[i]);
 }
 

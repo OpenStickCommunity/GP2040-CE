@@ -2,13 +2,13 @@
 
 Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>
 
-GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS.
+GP2040-CE contains a built-in web-based configuration application which can be started up by holding <hotkey v-bind:buttons='["S2"]'></hotkey> when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS. When using the web-based configuration on Windows and Mac, RNDIS works on a default install. Linux distributions may need some extra steps to access the web configurator; see [Linux Setup](#linux-setup).
 
 ## Home
 
 ![GP2040-CE Configurator - Home](assets/images/gpc-home.png)
 
-Here you can see the current version of your firmware and the latest version available on Github in the releases section. If a firmware update is available, a link to that release will appear.
+Here you can see the current version of your firmware and the latest version available on GitHub in the releases section. If a firmware update is available, a link to that release will appear.
 
 The options in the main menu are:
 
@@ -38,6 +38,8 @@ Here you can remap the GP2040-CE buttons to different GPIO pins on the RP2040 ch
 
 If you have a setup with per-button RGB LEDs, they can be configured here.
 
+### RGB LED Configuration
+
 ![GP2040-CE Configurator - LED Configuration](assets/images/gpc-rgb-led-config.png)
 
 * `Data Pin` - The GPIO pin that will drive the data line for your RGB LED chain. Set to `-1` to disable RGB LEDs.
@@ -46,7 +48,50 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `LEDs Per Button` - Set the number of LEDs in each button on your chain.
 * `Max Brightness` - Set the maximum brightness for the LEDs. Ranges from 0-255.
 * `Brightness Steps` - The number of levels of brightness to cycle through when turning brightness up and down.
+
+### RGB LED Button Order
+
+!> Please note that RGB Button LEDs must be the first LEDs configured. They will start at index 0 on the RGB LED strip.
+
+![GP2040-CE Configurator - RGB LED Button Order](assets/images/gpc-rgb-led-button-order.png)
+
 * `LED Button Order` - Configure which buttons and what order they reside on the LED chain.
+
+### Player LEDs (XInput)
+
+Available selections for `Player LED Type` are `None`, `PWM` or `RGB`.
+
+#### PWM Player LEDs
+
+![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-pwm.png)
+
+* `PLED #[1-4] Pin` - The GPIO pin the standard LED is connected to.
+
+#### RGB Player LEDs
+
+!> Please note that RGB Player LEDs must be located at an index after the RGB LED Buttons on the LED strip! The Web Config interface will suggest a starting index based on the number of LED buttons mapped in [RGB LED Button Order](#rgb-led-button-order) and the select `LEDs Per Button` value. We hope to remove this limitation in the future.
+
+![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-rgb.png)
+
+* `PLED #[1-4] Index` - The index of the LED module on the RGB strip.
+* `RGB PLED Color` - Click the box to reveal a color picker, or manually enter the color.
+
+## Custom LED Theme
+
+![GP2040-CE Configurator - Custom LED Theme](assets/images/gpc-rgb-led-custom-theme.png)
+
+* `Enable` - Enables the use of Custom LED Theme.
+* `Preview Layout` - Predefined layouts for previewing LED theme. **NOTE:** This is for preview only, does not affect controller operation.
+* `Clear All` - Prompts for confirmation to reset the current theme to all buttons black (LEDs off). Make sure you have saved and have a backup if you don't want to lose your customizations.
+* `Set All To Color` - Presents a color picker to set all buttons to the same normal or pressed color.
+* `Set Gradient` - Sets a horizontal gradient across the action buttons according to the `Preview Layout` selection.
+* `Set Pressed Gradient` - Same as `Set Gradient`, but for pressed button state.
+* `Save Color` - Save a custom color to the color picker palette.
+* `Delete Color` - Deletes a custom color from the color picker palette. Stock colors cannot be deleted.
+
+?> All saved colors and gradient selections are saved to your browser's local storage.
+
+If enabled, the Custom LED Theme will be available as another animation mode and will cycle with the `Previous Animation` and `Next Animation` shortcuts on your controller. You can also use the [Data Backup and Restoration](#data-backup-and-restoration) feature to create and share themes!
 
 ## Display Configuration
 
@@ -64,8 +109,8 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Button Layout (Right)` - Changes the onscreen layout for the right side of the display and stick.
 * `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
 * `Splash Duration` - Sets the amount of time the splash screen displays for on boot.
-* `Display Saver Timeout` - Will cause the display to turn off afer the specified number of minuites.  Pressing any input will cause the diplay to turn back on.
-* `Choose File` - This will allow you to upload your own image to be used for the splash screen.  It is recommend that you use a two color 128x64 image (or one that is sized appropiatly for your display).  Uploading any other type of image will result in a conversion and sizing of the image automatically.  If the image is inverted upon upload, just check off the `Invert` box.
+* `Display Saver Timeout` - Will cause the display to turn off after the specified number of minutes. Pressing any input will cause the display to turn back on.
+* `Choose File` - This will allow you to upload your own image to be used for the splash screen. It is recommend that you use a two color 128x64 image (or one that is sized appropriately for your display). Uploading any other type of image will result in a conversion and sizing of the image automatically. If the image is inverted upon upload, just check off the `Invert` box.
 
 Check out our collection of great custom splash screens from the community [HERE](community-splash-screens.md)
 
@@ -79,7 +124,7 @@ This section is for custom add-ons that can be enabled to expand the functionali
 
 * `BOOTSEL Button` - Choose an input to be mapped to the BOOTSEL button.
 
-Please note that this can only be used on devices that have a BOOTSEL button.  Please also note that the OLED might become unresponsive if this button is set.  You can unset it to restore OLED fuctionality.
+Please note that this can only be used on devices that have a BOOTSEL button.  Please also note that the OLED might become unresponsive if this button is set. You can unset it to restore OLED functionality.
 
 ### On-board LED Configuration
 
@@ -168,7 +213,7 @@ Values are:
 Values are:
 `Mixed` - Combines both the Gamepad input and Dual Directional and allows for all 3 SOCD modes.
 `Gamepad` - Gamepad always takes over when pressed, otherwise Gamepad and Dual act independently.
-`Dual Directional` - Dual always takes over when pressed, otherwise Gamepad and Dual act indepedently.
+`Dual Directional` - Dual always takes over when pressed, otherwise Gamepad and Dual act independently.
 `None` - Gamepad input and dual directional act independently of each other.
 
 ### Buzzer Speaker
@@ -211,6 +256,37 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 * `Serial Number (16 Bytes in Hex Ascii)` - Choose your serial number file.
 * `Signature (256 Bytes in Binary)` - Choose your signature file.
 
+### Wii Extensions
+
+![GP2040 Configurator - Wii Extensions](assets/images/gpc-add-ons-wii-extensions.png)
+
+* `I2C SDA Pin` - The GPIO pin used for Wii Extension SDA.
+* `I2C SCL Pin` - The GPIO pin used for Wii Extension SCL.
+* `I2C Block` - The block of I2C to use (i2c0 or i2c1).
+* `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, or `400000` for fast.
+
+Supported Extension Controllers and their mapping is as follows:
+
+| GP2040-CE | Nunchuck | Classic      | Guitar Hero Guitar |
+|-----------|----------|--------------|--------------------|
+| B1        | C        | B            | Green              |
+| B2        | Z        | A            | Red                |
+| B3        |          | Y            | Blue               |
+| B4        |          | X            | Yellow             |
+| L1        |          | L            |                    |
+| L2        |          | ZL           |                    |
+| R1        |          | R            |                    |
+| R2        |          | ZR           |                    |
+| S1        |          | Select       |                    |
+| S2        |          | Start        |                    |
+| A1        |          | Home         |                    |
+| D-Pad     |          | D-Pad        | Strum Up/Down      |
+| Analog    | Left     | Left & Right | Left               |
+
+Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Controllers. 
+
+Original Classic Controller L & R triggers are analog sensitive, where Pro triggers are not.
+
 ## Data Backup and Restoration
 
 ![GP2040-CE Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
@@ -222,3 +298,32 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 
 ![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
 
+# Linux Setup
+
+When you plug in your controller while holding <hotkey v-bind:buttons='["S2"]'></hotkey>, you should see it connect in the kernel logs if you run `dmesg`:
+
+```sh
+[   72.291060] usb 1-3: new full-speed USB device number 12 using xhci_hcd
+[   72.450166] usb 1-3: New USB device found, idVendor=cafe, idProduct=4028, bcdDevice= 1.01
+[   72.450172] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[   72.450174] usb 1-3: Product: TinyUSB Device
+[   72.450176] usb 1-3: Manufacturer: TinyUSB
+[   72.450177] usb 1-3: SerialNumber: 123456
+[   72.484285] rndis_host 1-3:1.0 usb0: register 'rndis_host' at usb-0000:06:00.1-3, RNDIS device, 02:02:84:6a:96:00
+[   72.498630] rndis_host 1-3:1.0 enp6s0f1u3: renamed from usb0
+```
+
+In the above example, **enp6s0f1u3** is the virtual Ethernet interface for your controller. If you don't see the first `rndis_host` line, make sure `CONFIG_USB_NET_RNDIS_HOST` is compiled in your kernel or as a module.
+
+The web configurator is automatically running, you just need to be able to reach it. Some configurations automatically set up the route, so try <http://192.168.7.1> in your browser now. If it doesn't load, try configuring an IP for the interface manually via: `sudo ifconfig enp6s0f1u3 192.168.7.2`.
+
+Whether or not you had to add an IP manually, you should end up with a route something like this:
+
+```sh
+% ip route
+default via 10.0.5.1 dev enp5s0 proto dhcp src 10.0.5.38 metric 2
+10.0.5.0/24 dev enp5s0 proto dhcp scope link src 10.0.5.38 metric 2
+192.168.7.0/24 dev enp6s0f1u3 proto kernel scope link src 192.168.7.2     <---
+```
+
+Then the configurator should be reachable in your browser.

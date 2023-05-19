@@ -13,7 +13,6 @@
 #include "hardware/watchdog.h"
 #include "Animation.hpp"
 #include "CRC32.h"
-#include <sstream>
 
 #include "addons/analog.h"
 #include "addons/board_led.h"
@@ -31,6 +30,7 @@
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
+#include "addons/wiiext.h"
 
 #include "bitmaps.h"
 
@@ -196,6 +196,10 @@ void Storage::setDefaultAddonOptions()
     addonOptions.sliderSOCDModeOne = SLIDER_SOCD_SLOT_ONE;
     addonOptions.sliderSOCDModeTwo  = SLIDER_SOCD_SLOT_TWO;
     addonOptions.sliderSOCDModeDefault = SLIDER_SOCD_SLOT_DEFAULT;
+	addonOptions.wiiExtensionSDAPin    = WII_EXTENSION_I2C_SDA_PIN;
+	addonOptions.wiiExtensionSCLPin    = WII_EXTENSION_I2C_SCL_PIN;
+	addonOptions.wiiExtensionBlock     = (WII_EXTENSION_I2C_BLOCK == i2c0) ? 0 : 1;
+	addonOptions.wiiExtensionSpeed     = WII_EXTENSION_I2C_SPEED;
 	addonOptions.AnalogInputEnabled     = ANALOG_INPUT_ENABLED;
 	addonOptions.BoardLedAddonEnabled   = BOARD_LED_ENABLED;
 	addonOptions.BootselButtonAddonEnabled = BOOTSEL_BUTTON_ENABLED;
@@ -209,6 +213,7 @@ void Storage::setDefaultAddonOptions()
 	addonOptions.PS4ModeAddonEnabled    = PS4MODE_ADDON_ENABLED;
 	addonOptions.ReverseInputEnabled    = REVERSE_ENABLED;
 	addonOptions.TurboInputEnabled      = TURBO_ENABLED;
+	addonOptions.WiiExtensionAddonEnabled      = WII_EXTENSION_ENABLED;
 	setAddonOptions(addonOptions);
 }
 
@@ -230,15 +235,19 @@ void Storage::setDefaultSplashImage()
 	setSplashImage(splashImage);
 }
 
-void Storage::setSplashImage(SplashImage image)
+void Storage::setSplashImage(const SplashImage& image)
 {
 	if (memcmp(&splashImage, &image, sizeof(SplashImage)) != 0)
 	{
-		image.checksum = CHECKSUM_MAGIC; // set checksum to magic number
-		image.checksum = CRC32::calculate(&image);
-		EEPROM.set(SPLASH_IMAGE_STORAGE_INDEX, image);
-		EEPROM.commit();
 		memcpy(&splashImage, &image, sizeof(SplashImage));
+		splashImage.checksum = CHECKSUM_MAGIC; // set checksum to magic number
+		splashImage.checksum = CRC32::calculate(&splashImage);
+
+		EEPROM.set(SPLASH_IMAGE_STORAGE_INDEX, splashImage);
+		EEPROM.commit();
+
+		// Reset, so that the memcmp gives the correct result on the next call to this function
+		splashImage.checksum = CHECKSUM_MAGIC;
 	}
 }
 
@@ -251,6 +260,8 @@ void Storage::initLEDOptions()
 	if (lastCRC != CRC32::calculate(&ledOptions)) {
 		setDefaultLEDOptions();
 	}
+
+	setPLEDPins(ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4);
 }
 
 void Storage::setDefaultLEDOptions()
@@ -279,6 +290,12 @@ void Storage::setDefaultLEDOptions()
 	ledOptions.indexR3 = LEDS_BUTTON_R3;
 	ledOptions.indexA1 = LEDS_BUTTON_A1;
 	ledOptions.indexA2 = LEDS_BUTTON_A2;
+	ledOptions.pledType = PLED_TYPE;
+	ledOptions.pledPin1 = PLED1_PIN;
+	ledOptions.pledPin2 = PLED2_PIN;
+	ledOptions.pledPin3 = PLED3_PIN;
+	ledOptions.pledPin4 = PLED4_PIN;
+	ledOptions.pledColor = ColorWhite;
 	setLEDOptions(ledOptions);
 }
 
@@ -390,6 +407,43 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 		options.chaseCycleTime     = LEDS_CHASE_CYCLE_TIME;
 		options.rainbowCycleTime   = LEDS_RAINBOW_CYCLE_TIME;
 		options.themeIndex         = LEDS_THEME_INDEX;
+		options.hasCustomTheme = false;
+		options.customThemeUp = 0;
+		options.customThemeDown = 0;
+		options.customThemeLeft = 0;
+		options.customThemeRight = 0;
+		options.customThemeB1 = 0;
+		options.customThemeB2 = 0;
+		options.customThemeB3 = 0;
+		options.customThemeB4 = 0;
+		options.customThemeL1 = 0;
+		options.customThemeR1 = 0;
+		options.customThemeL2 = 0;
+		options.customThemeR2 = 0;
+		options.customThemeS1 = 0;
+		options.customThemeS2 = 0;
+		options.customThemeA1 = 0;
+		options.customThemeA2 = 0;
+		options.customThemeL3 = 0;
+		options.customThemeR3 = 0;
+		options.customThemeUpPressed = 0;
+		options.customThemeDownPressed = 0;
+		options.customThemeLeftPressed = 0;
+		options.customThemeRightPressed = 0;
+		options.customThemeB1Pressed = 0;
+		options.customThemeB2Pressed = 0;
+		options.customThemeB3Pressed = 0;
+		options.customThemeB4Pressed = 0;
+		options.customThemeL1Pressed = 0;
+		options.customThemeR1Pressed = 0;
+		options.customThemeL2Pressed = 0;
+		options.customThemeR2Pressed = 0;
+		options.customThemeS1Pressed = 0;
+		options.customThemeS2Pressed = 0;
+		options.customThemeA1Pressed = 0;
+		options.customThemeA2Pressed = 0;
+		options.customThemeL3Pressed = 0;
+		options.customThemeR3Pressed = 0;
 
 		setAnimationOptions(options);
 	}
