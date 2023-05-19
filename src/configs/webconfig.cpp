@@ -414,7 +414,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "dpadMode", options.dpadMode);
 	writeDoc(doc, "inputMode", options.inputMode);
 	writeDoc(doc, "socdMode", options.socdMode);
-	writeDoc(doc, "switchTpShareForDs4", options.switchTpShareForDs4);
+	writeDoc(doc, "switchTpShareForDs4", options.switchTpShareForDs4 ? 1 : 0);
 
 	writeDoc(doc, "hotkeyF1", 0, "action", options.hotkeyF1Up.action);
 	writeDoc(doc, "hotkeyF1", 0, "mask", options.hotkeyF1Up.dpadMask);

@@ -15,7 +15,7 @@ import Section from '../Components/Section';
 import DraggableListGroup from '../Components/DraggableListGroup';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
-import BUTTONS from '../Data/Buttons.json';
+import { BUTTONS } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 import { hexToInt, rgbIntToHex } from '../Services/Utilities';
 import WebApi from '../Services/WebApi';
@@ -78,13 +78,22 @@ const schema = yup.object().shape({
 	pledIndex4        : yup.number().label('PLED Index 4').validateMinWhenEqualTo('pledType', 1, 0),
 });
 
-const getLedButtons = (buttonLabels, map, excludeNulls) => {
+const getLedButtons = (buttonLabels, map, excludeNulls, swapTpShareLabels) => {
 	return orderBy(
 		Object
 			.keys(BUTTONS[buttonLabels])
 			.filter(p => p !== 'label' && p !== 'value')
 			.filter(p => excludeNulls ? map[p] > -1 : true)
-			.map(p => ({ id: p, label: BUTTONS[buttonLabels][p], value: map[p] })),
+			.map(p => {
+				let label = BUTTONS[buttonLabels][p];
+				if (p === "S1" && swapTpShareLabels) {
+					label = BUTTONS[buttonLabels]["A2"];
+				}
+				if (p === "A2" && swapTpShareLabels) {
+					label = BUTTONS[buttonLabels]["S1"];
+				}
+				return ({ id: p, label: BUTTONS[buttonLabels][p], value: map[p] });
+			}),
 		"value"
 	);
 }
@@ -106,7 +115,7 @@ const getLedMap = (buttonLabels, ledButtons, excludeNulls) => {
 }
 
 const FormContext = ({
-	buttonLabels, ledButtonMap, ledFormat, pledColor, pledType,
+	buttonLabels, ledButtonMap, ledFormat, pledColor, pledType, swapTpShareLabels,
 	pledPin1, pledPin2, pledPin3, pledPin4,
 	pledIndex1, pledIndex2, pledIndex3, pledIndex4,
 	setDataSources
@@ -128,8 +137,8 @@ const FormContext = ({
 			});
 
 			const dataSources = [
-				getLedButtons(buttonLabels, available, true),
-				getLedButtons(buttonLabels, assigned, true),
+				getLedButtons(buttonLabels, available, true, swapTpShareLabels),
+				getLedButtons(buttonLabels, assigned, true, swapTpShareLabels),
 			];
 
 			data.pledIndex1 = data.pledType === 1 ? data.pledPin1 : -1;
@@ -141,7 +150,8 @@ const FormContext = ({
 			setValues(data);
 		}
 		fetchData();
-	}, [buttonLabels]);
+		console.log('update');
+	}, [buttonLabels, swapTpShareLabels]);
 
 	useEffect(() => {
 		if (!!ledFormat)
@@ -201,9 +211,11 @@ export default function LEDConfigPage() {
 	const [showPicker, setShowPicker] = useState(false);
 	const [rgbLedStartIndex, setRgbLedStartIndex] = useState(0);
 
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+
 	const ledOrderChanged = (ledOrderArrays, ledsPerButton) => {
 		if (ledOrderArrays.length === 2) {
-			setLedButtonMap(getLedMap(buttonLabels, ledOrderArrays[1]));
+			setLedButtonMap(getLedMap(buttonLabelType, ledOrderArrays[1]));
 			setRgbLedStartIndex(ledOrderArrays[1].length * (ledsPerButton || 0));
 			console.log('new start index: ', ledOrderArrays[1].length * (ledsPerButton || 0), ledOrderArrays);
 		}
@@ -525,7 +537,8 @@ export default function LEDConfigPage() {
 					<Button type="submit">Save</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 					<FormContext {...{
-						buttonLabels,
+						buttonLabels: buttonLabelType,
+						swapTpShareLabels,
 						ledButtonMap,
 						setDataSources,
 						ledFormat: values.ledFormat

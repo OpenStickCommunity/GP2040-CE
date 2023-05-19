@@ -77,7 +77,7 @@ app.get("/api/getSplashImage", (req, res) => {
 app.get("/api/getGamepadOptions", (req, res) => {
 	return res.send({
 		dpadMode: 0,
-		inputMode: 1,
+		inputMode: 4,
 		socdMode: 2,
 		switchTpShareForDs4: 0,
 		hotkeyF1: [

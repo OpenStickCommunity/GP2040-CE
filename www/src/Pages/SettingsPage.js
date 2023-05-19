@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
-import BUTTONS from '../Data/Buttons.json';
+import { BUTTONS } from '../Data/Buttons';
 
 const PS4Mode = 4;
 const INPUT_MODES = [
@@ -69,12 +69,14 @@ const schema = yup.object().shape({
 	switchTpShareForDs4: yup.number().required().label('Switch Touchpad and Share'),
 });
 
-const FormContext = () => {
+const FormContext = ({ setButtonLabels }) => {
 	const { values, setValues } = useFormikContext();
 
 	useEffect(() => {
 		async function fetchData() {
-			setValues(await WebApi.getGamepadOptions());
+			const options = await WebApi.getGamepadOptions()
+			setValues(options);
+			setButtonLabels({ swapTpShareLabels: (options.switchTpShareForDs4 === 1) && (options.inputMode === 4) });
 		}
 		fetchData();
 	}, [setValues]);
@@ -88,6 +90,9 @@ const FormContext = () => {
 			values.socdMode = parseInt(values.socdMode);
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
+
+		setButtonLabels({ swapTpShareLabels: (values.switchTpShareForDs4 === 1) && (values.inputMode === 4) });
+
 		values.hotkeyF1 = values.hotkeyF1?.map( i => ({
 			action: parseInt(i.action),
 			mask: parseInt(i.mask)
@@ -102,13 +107,19 @@ const FormContext = () => {
 };
 
 export default function SettingsPage() {
-	const { buttonLabels } = useContext(AppContext);
+	const { buttonLabels, setButtonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const onSuccess = async (values) => {
 		const success = await WebApi.setGamepadOptions(values);
 		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
+
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+
+	const buttonLabelS1 = BUTTONS[buttonLabelType][swapTpShareLabels ? "A2" : "S1"];
+	const buttonLabelS2 = BUTTONS[buttonLabelType]["S2"];
+	const buttonLabelA1 = BUTTONS[buttonLabelType]["A1"];
 
 	return (
 		<Formik validationSchema={schema} onSubmit={onSuccess} initialValues={{}}>
@@ -163,7 +174,7 @@ export default function SettingsPage() {
 					</Section>
 					<Section title="Hotkey Settings">
 						<div className='row'>
-							<Form.Label className='col'>{BUTTONS[buttonLabels]["S1"] + " + " + BUTTONS[buttonLabels]["S2"]}</Form.Label>
+							<Form.Label className='col'>{buttonLabelS1 + " + " + buttonLabelS2}</Form.Label>
 						</div>
 						{HOTKEY_MASKS.map((o, i) =>
 							<Form.Group key={`hotkey-${i}`} className="row mb-3">
@@ -177,7 +188,7 @@ export default function SettingsPage() {
 							</Form.Group>
 						)}	
 						<div className='row'>
-							<Form.Label className='col'>{BUTTONS[buttonLabels]["S2"] + " + " + BUTTONS[buttonLabels]["A1"]}</Form.Label>
+							<Form.Label className='col'>{buttonLabelS2 + " + " + buttonLabelA1}</Form.Label>
 						</div>
 						{HOTKEY_MASKS.map((o, i) =>
 							<Form.Group key={`hotkey-${i}`} className="row mb-3">
@@ -193,7 +204,7 @@ export default function SettingsPage() {
 					</Section>
 					<Button type="submit">Save</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}
-					<FormContext />
+					<FormContext  setButtonLabels={setButtonLabels}/>
 					</Form>
 				</div>
 			)}
