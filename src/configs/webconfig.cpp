@@ -1250,6 +1250,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getFirmwareVersion", getFirmwareVersion },
 	{ "/api/getMemoryReport", getMemoryReport },
 	{ "/api/getUsedPins", getUsedPins },
+	{ "/api/getConfig", getConfig },
 #if !defined(NDEBUG)
 	{ "/api/echo", echo },
 #endif
