@@ -17,7 +17,7 @@ const errorType = {
 };
 
 export default function PinMappingPage() {
-	const { buttonLabels, usedPins } = useContext(AppContext);
+	const { buttonLabels, usedPins, updateUsedPins } = useContext(AppContext);
 	const [validated, setValidated] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [buttonMappings, setButtonMappings] = useState(baseButtonMappings);
@@ -55,6 +55,8 @@ export default function PinMappingPage() {
 		}
 
 		const success = await WebApi.setPinMappings(mappings);
+		if (success)
+			updateUsedPins();
 		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
 
