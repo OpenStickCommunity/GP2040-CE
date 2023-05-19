@@ -1,5 +1,5 @@
 /**
- * GP2040 Configurator Development Server
+ * GP2040-CE Configurator Development Server
  */
 
 const express = require("express");
