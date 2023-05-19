@@ -63,7 +63,7 @@ void JSliderInput::process()
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     if ( gamepad->getOptions().dpadMode != dpadState) {
-        gamepad->getOptions().dpadMode == dpadState;
+        gamepad->setDpadMode(dpadState);
         gamepad->save();
     }
 }

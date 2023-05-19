@@ -128,6 +128,7 @@ public:
 
 	void setInputMode(InputMode inputMode) { options.inputMode = inputMode; }
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
+	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
 	GamepadDebouncer debouncer;
 	const uint8_t debounceMS;
