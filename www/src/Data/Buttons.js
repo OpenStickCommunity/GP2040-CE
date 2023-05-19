@@ -88,7 +88,7 @@ export const BUTTONS = {
 		A2: "Capture"
 	},
 	ps3: {
-		label: "PS3/PS4",
+		label: "PS3",
 		value: "ps3",
 		Up: "Up",
 		Down: "Down",
@@ -108,6 +108,28 @@ export const BUTTONS = {
 		R3: "R3",
 		A1: "PS",
 		A2: "-"
+	},
+	ps4: {
+		label: "PS4",
+		value: "ps4",
+		Up: "Up",
+		Down: "Down",
+		Left: "Left",
+		Right: "Right",
+		B1: "Cross",
+		B2: "Circle",
+		B3: "Square",
+		B4: "Triangle",
+		L1: "L1",
+		R1: "R1",
+		L2: "L2",
+		R2: "R2",
+		S1: "Share",
+		S2: "Options",
+		L3: "L3",
+		R3: "R3",
+		A1: "PS",
+		A2: "Touchpad"
 	},
 	dinput: {
 		label: "DirectInput",
