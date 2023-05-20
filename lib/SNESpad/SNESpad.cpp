@@ -95,8 +95,12 @@ void SNESpad::poll() {
 
                     buttonSelect =   (state & SNES_SELECT);
                     buttonStart =    (state & SNES_START);
-                    buttonB =        (state & SNES_B);
-                    buttonA =        (state & SNES_A);
+                    buttonA =        (state & SNES_B);
+                    buttonB =        (state & SNES_Y);
+                    buttonX =        false;
+                    buttonY =        false;
+                    buttonL =        false;
+                    buttonR =        false;
 
                     break;
                 case SNES_PAD_MOUSE:
