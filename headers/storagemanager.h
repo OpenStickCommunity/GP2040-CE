@@ -117,6 +117,8 @@ struct AddonOptions {
 	uint8_t analogAdcPinX;
 	uint8_t analogAdcPinY;
 	uint16_t bootselButtonMap;
+	uint8_t buttonLockPin;
+	uint32_t buttonLockMap;
 	uint8_t extraButtonPin;
 	uint32_t extraButtonMap;
 	uint8_t buzzerPin;
@@ -147,6 +149,7 @@ struct AddonOptions {
 	uint8_t AnalogInputEnabled;
 	uint8_t BoardLedAddonEnabled;
 	uint8_t BootselButtonAddonEnabled;
+	uint8_t ButtonLockAddonEnabled;
 	uint8_t BuzzerSpeakerAddonEnabled;
 	uint8_t DualDirectionalInputEnabled;
 	uint8_t ExtraButtonAddonEnabled;

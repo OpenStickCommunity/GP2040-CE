@@ -9,6 +9,7 @@
 
 #include "addons/analog.h" // Inputs for Core0
 #include "addons/bootsel_button.h"
+#include "addons/button_lock.h"
 #include "addons/dualdirectional.h"
 #include "addons/extra_button.h"
 #include "addons/i2canalog1219.h"
@@ -99,6 +100,7 @@ void GP2040::setup() {
 	// Setup Add-ons
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
+  	addons.LoadAddon(new ButtonLockAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
   	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);

@@ -270,6 +270,10 @@ const schema = yup.object().shape({
 	BootselButtonAddonEnabled:   yup.number().required().label('Boot Select Button Add-On Enabled'),
 	bootselButtonMap:            yup.number().label('BOOTSEL Button Map').validateSelectionWhenValue('BootselButtonAddonEnabled', BUTTON_MASKS),
 
+	ButtonLockAddonEnabled:     yup.number().required().label('Button Lock Add-On Enabled'),
+	buttonLockPin:              yup.number().label('Button Lock Pin').validatePinWhenValue('ButtonLockAddonEnabled'),
+	buttonLockMap:              yup.number().label('Button Lock Map').validateRangeWhenValue('ButtonLockAddonEnabled', 0, (1<<20) - 1),
+
 	BuzzerSpeakerAddonEnabled:   yup.number().required().label('Buzzer Speaker Add-On Enabled'),
 	buzzerPin:                   yup.number().label('Buzzer Pin').validatePinWhenValue('BuzzerSpeakerAddonEnabled'),
 	buzzerVolume:                yup.number().label('Buzzer Volume').validateRangeWhenValue('BuzzerSpeakerAddonEnabled', 0, 100),
@@ -387,6 +391,7 @@ const defaultValues = {
 	wiiExtensionSpeed: 400000,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
+	ButtonLockAddonEnabled: 0,
 	BuzzerSpeakerAddonEnabled: 0,
 	BootselButtonAddonEnabled: 0,
 	DualDirectionalInputEnabled: 0,
@@ -476,14 +481,18 @@ const sanitizeData = (values) => {
 			values.analogAdcPinY = parseInt(values.analogAdcPinY);
 		if (!!values.bootselButtonMap)
 			values.bootselButtonMap = parseInt(values.bootselButtonMap);
+		if (!!values.buttonLockMap)
+			values.buttonLockMap = parseInt(values.buttonLockMap);
+		if (!!values.buttonLockPin)
+			values.buttonLockPin = parseInt(values.buttonLockPin);
 		if (!!values.buzzerPin)
 			values.buzzerPin = parseInt(values.buzzerPin);
 		if (!!values.buzzerVolume)
 			values.buzzerVolume = parseInt(values.buzzerVolume);
 		if (!!values.extraButtonMap)
 			values.extraButtonMap = parseInt(values.extraButtonMap);
-		if (!!values.extrabuttonPin)
-			values.extrabuttonPin = parseInt(values.extrabuttonPin);
+		if (!!values.extraButtonPin)
+			values.extraButtonPin = parseInt(values.extraButtonPin);
 		if (!!values.playerNumber)
 			values.playerNumber = parseInt(values.playerNumber);
 		if (!!values.shmupMode)
@@ -617,6 +626,7 @@ export default function AddonsConfigPage() {
 				handleChange,
 				values,
 				errors,
+				setFieldValue
 			}) => (
 				<Form noValidate onSubmit={handleSubmit}>
 					<Section title="Add-Ons Configuration">
@@ -1562,6 +1572,60 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.WiiExtensionAddonEnabled)}
 							onChange={(e) => {handleCheckbox("WiiExtensionAddonEnabled", values); handleChange(e);}}
+						/>
+					</Section>
+					<Section title="Button Lock Configuration">
+						<div
+							id="ButtonLockAddonOptions"
+							hidden={!values.ButtonLockAddonEnabled}>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label="Button Lock Pin"
+									name="buttonLockPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.buttonLockPin || -1}
+									error={errors.buttonLockPin}
+									isInvalid={errors.buttonLockPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<p>Buttons</p>
+								<Row>
+								{BUTTON_MASKS.map(mask => (values.buttonLockMap & mask.value) ? <FormSelect
+									name="buttonLockMap"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.buttonLockMap & mask.value}
+									error={errors.buttonLockMap}
+									isInvalid={errors.buttonLockMap}
+									onChange={(e) => { setFieldValue("buttonLockMap", values.buttonLockMap ^ mask.value | e.target.value); }}
+								>
+									{BUTTON_MASKS.map((o, i) => <option key={`buttonLockMap-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect> : <></>)}
+								<FormSelect
+									name="buttonLockMap"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={0}
+									error={errors.buttonLockMap}
+									isInvalid={errors.buttonLockMap}
+									onChange={(e) => { setFieldValue("buttonLockMap", values.buttonLockMap | e.target.value); }}
+								>
+									{BUTTON_MASKS.map((o, i) => <option key={`buttonLockMap-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								</Row>
+							</Row>
+						</div>
+						<FormCheck
+							label="Enabled"
+							type="switch"
+							id="ButtonLockAddonButton"
+							reverse
+							isInvalid={false}
+							checked={Boolean(values.ButtonLockAddonEnabled)}
+							onChange={(e) => { handleCheckbox("ButtonLockAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
 					<div className="mt-3">

@@ -800,6 +800,8 @@ std::string setAddonOptions()
 	docToPin(addonOptions.analogAdcPinX, doc, "analogAdcPinX");
 	docToPin(addonOptions.analogAdcPinY, doc, "analogAdcPinY");
 	docToValue(addonOptions.bootselButtonMap, doc, "bootselButtonMap");
+	docToPin(addonOptions.buttonLockPin, doc, "buttonLockPin");
+	docToValue(addonOptions.buttonLockMap, doc, "buttonLockMap");
 	docToPin(addonOptions.buzzerPin, doc, "buzzerPin");
 	docToValue(addonOptions.buzzerVolume, doc, "buzzerVolume");
 	docToPin(addonOptions.extraButtonPin, doc, "extraButtonPin");
@@ -829,8 +831,9 @@ std::string setAddonOptions()
 	docToValue(addonOptions.wiiExtensionSpeed, doc, "wiiExtensionSpeed");
 	docToValue(addonOptions.AnalogInputEnabled, doc, "AnalogInputEnabled");
 	docToValue(addonOptions.BoardLedAddonEnabled, doc, "BoardLedAddonEnabled");
-	docToValue(addonOptions.BuzzerSpeakerAddonEnabled, doc, "BuzzerSpeakerAddonEnabled");
 	docToValue(addonOptions.BootselButtonAddonEnabled, doc, "BootselButtonAddonEnabled");
+	docToValue(addonOptions.ButtonLockAddonEnabled, doc, "ButtonLockAddonEnabled");
+	docToValue(addonOptions.BuzzerSpeakerAddonEnabled, doc, "BuzzerSpeakerAddonEnabled");
 	docToValue(addonOptions.DualDirectionalInputEnabled, doc, "DualDirectionalInputEnabled");
 	docToValue(addonOptions.ExtraButtonAddonEnabled, doc, "ExtraButtonAddonEnabled");
 	docToValue(addonOptions.I2CAnalog1219InputEnabled, doc, "I2CAnalog1219InputEnabled");
@@ -975,6 +978,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "analogAdcPinX", addonOptions.analogAdcPinX == 0xFF ? -1 : addonOptions.analogAdcPinX);
 	writeDoc(doc, "analogAdcPinY", addonOptions.analogAdcPinY == 0xFF ? -1 : addonOptions.analogAdcPinY);
 	writeDoc(doc, "bootselButtonMap", addonOptions.bootselButtonMap);
+	writeDoc(doc, "buttonLockPin", addonOptions.buttonLockPin == 0xFF ? -1 : addonOptions.buttonLockPin);
+	writeDoc(doc, "buttonLockMap", addonOptions.buttonLockMap);
 	writeDoc(doc, "buzzerPin", addonOptions.buzzerPin == 0xFF ? -1 : addonOptions.buzzerPin);
 	writeDoc(doc, "buzzerVolume", addonOptions.buzzerVolume);
 	writeDoc(doc, "extraButtonPin", addonOptions.extraButtonPin == 0xFF ? -1 : addonOptions.extraButtonPin);
@@ -1004,8 +1009,9 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionSpeed", addonOptions.wiiExtensionSpeed);
 	writeDoc(doc, "AnalogInputEnabled", addonOptions.AnalogInputEnabled);
 	writeDoc(doc, "BoardLedAddonEnabled", addonOptions.BoardLedAddonEnabled);
-	writeDoc(doc, "BuzzerSpeakerAddonEnabled", addonOptions.BuzzerSpeakerAddonEnabled);
 	writeDoc(doc, "BootselButtonAddonEnabled", addonOptions.BootselButtonAddonEnabled);
+	writeDoc(doc, "ButtonLockAddonEnabled", addonOptions.ButtonLockAddonEnabled);
+	writeDoc(doc, "BuzzerSpeakerAddonEnabled", addonOptions.BuzzerSpeakerAddonEnabled);
 	writeDoc(doc, "DualDirectionalInputEnabled", addonOptions.DualDirectionalInputEnabled);
 	writeDoc(doc, "ExtraButtonAddonEnabled", addonOptions.ExtraButtonAddonEnabled);
 	writeDoc(doc, "I2CAnalog1219InputEnabled", addonOptions.I2CAnalog1219InputEnabled);

@@ -237,6 +237,11 @@
                             // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN -1
 
+// Button Lock Add-on setting
+#define BUTTON_LOCK_MASK 0 // 0 means none, get other mask from GamepadState.h
+                            // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
+#define BUTTON_LOCK_PIN -1
+
 // Keyboard Mapping Configuration
 // List of HID keycodes can be located here: https://github.com/hathach/tinyusb/blob/3623ba1884ddff23e9b64766cb6dd032f1425846/src/class/hid/hid.h#L356
 // Even for the modifier keys, HID_KEY entries should be used as the implementation expects those and will convert as necessary.
