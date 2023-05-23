@@ -14,6 +14,14 @@ typedef struct
 	GamepadHotkey action;
 } GamepadHotkeyEntry;
 
+typedef enum
+{
+	FORCED_SETUP_MODE_OFF,
+	LOCK_MODE_SWITCH,
+	LOCK_WEB_CONFIG,
+	LOCK_BOTH
+} ForcedSetupMode;
+
 struct GamepadOptions
 {
 	InputMode inputMode {InputMode::INPUT_MODE_XINPUT}; 
@@ -51,6 +59,8 @@ struct GamepadOptions
 	GamepadHotkeyEntry hotkeyF2Right;
 
 	bool switchTpShareForDs4;
+	ForcedSetupMode forcedSetupMode;
+	bool lockHotkeys;
 
 	uint32_t checksum;
 };

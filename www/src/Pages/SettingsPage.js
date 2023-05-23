@@ -54,6 +54,13 @@ const HOTKEY_ACTIONS = [
 	{ label: 'Invert Y Axis', value: 10 },
 ];
 
+const FORCED_SETUP_MODES = [
+	{ label: 'Off', value: 0 },
+	{ label: 'Disable Input-Mode Switch', value: 1 },
+	{ label: 'Disable Web-Config', value: 2 },
+	{ label: 'Disable Input-Mode Switch and Web-Config', value: 3 },
+];
+
 const schema = yup.object().shape({
 	dpadMode : yup.number().required().oneOf(DPAD_MODES.map(o => o.value)).label('D-Pad Mode'),
 	hotkeyF1 : yup.array().of(yup.object({
@@ -67,6 +74,8 @@ const schema = yup.object().shape({
 	inputMode: yup.number().required().oneOf(INPUT_MODES.map(o => o.value)).label('Input Mode'),
 	socdMode : yup.number().required().oneOf(SOCD_MODES.map(o => o.value)).label('SOCD Cleaning Mode'),
 	switchTpShareForDs4: yup.number().required().label('Switch Touchpad and Share'),
+	forcedSetupMode : yup.number().required().oneOf(FORCED_SETUP_MODES.map(o => o.value)).label('SOCD Cleaning Mode'),
+	lockHotkeys: yup.number().required().label('Lock Hotkeys'),
 });
 
 const FormContext = ({ setButtonLabels }) => {
@@ -171,36 +180,57 @@ export default function SettingsPage() {
 							</div>
 						</Form.Group>
 						<p>Note: PS4, PS3 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.</p>
+						<Form.Group className="row mb-3">
+							<Form.Label>Forced Setup Mode</Form.Label>
+							<div className="col-sm-3">
+								<Form.Select name="forcedSetupMode" className="form-select-sm" value={values.forcedSetupMode} onChange={handleChange} isInvalid={errors.forcedSetupMode}>
+									{FORCED_SETUP_MODES.map((o, i) => <option key={`button-forcedSetupMode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</Form.Select>
+								<Form.Control.Feedback type="invalid">{errors.forcedSetupMode}</Form.Control.Feedback>
+							</div>
+						</Form.Group>
 					</Section>
 					<Section title="Hotkey Settings">
-						<div className='row'>
-							<Form.Label className='col'>{buttonLabelS1 + " + " + buttonLabelS2}</Form.Label>
-						</div>
-						{HOTKEY_MASKS.map((o, i) =>
-							<Form.Group key={`hotkey-${i}`} className="row mb-3">
-							<div className="col-sm-1">{o.label}</div>
-							<div className="col-sm-2">
-								<Form.Select name={`hotkeyF1[${i}].action`} className="form-select-sm" value={values?.hotkeyF1 && values?.hotkeyF1[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}>
-									{HOTKEY_ACTIONS.map((o, i) => <option key={`f1-option-${i}`} value={o.value}>{o.label}</option>)}
-								</Form.Select>
-								<Form.Control.Feedback type="invalid">{errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}</Form.Control.Feedback>
+						<div id="Hotkeys"
+							hidden={values.lockHotkeys}>
+							<div className='row'>
+								<Form.Label className='col'>{buttonLabelS1 + " + " + buttonLabelS2}</Form.Label>
 							</div>
-							</Form.Group>
-						)}	
-						<div className='row'>
-							<Form.Label className='col'>{buttonLabelS2 + " + " + buttonLabelA1}</Form.Label>
-						</div>
-						{HOTKEY_MASKS.map((o, i) =>
-							<Form.Group key={`hotkey-${i}`} className="row mb-3">
-							<div className="col-sm-1">{o.label}</div>
-							<div className="col-sm-2">
-								<Form.Select name={`hotkeyF2[${i}].action`} className="form-select-sm" value={values?.hotkeyF2 && values?.hotkeyF2[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}>
-									{HOTKEY_ACTIONS.map((o, i) => <option key={`f2-option-${i}`} value={o.value}>{o.label}</option>)}
-								</Form.Select>
-								<Form.Control.Feedback type="invalid">{errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}</Form.Control.Feedback>
+							{HOTKEY_MASKS.map((o, i) =>
+								<Form.Group key={`hotkey-${i}`} className="row mb-3">
+								<div className="col-sm-1">{o.label}</div>
+								<div className="col-sm-2">
+									<Form.Select name={`hotkeyF1[${i}].action`} className="form-select-sm" value={values?.hotkeyF1 && values?.hotkeyF1[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}>
+										{HOTKEY_ACTIONS.map((o, i) => <option key={`f1-option-${i}`} value={o.value}>{o.label}</option>)}
+									</Form.Select>
+									<Form.Control.Feedback type="invalid">{errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}</Form.Control.Feedback>
+								</div>
+								</Form.Group>
+							)}	
+							<div className='row'>
+								<Form.Label className='col'>{buttonLabelS2 + " + " + buttonLabelA1}</Form.Label>
 							</div>
-							</Form.Group>
-						)}	
+							{HOTKEY_MASKS.map((o, i) =>
+								<Form.Group key={`hotkey-${i}`} className="row mb-3">
+								<div className="col-sm-1">{o.label}</div>
+								<div className="col-sm-2">
+									<Form.Select name={`hotkeyF2[${i}].action`} className="form-select-sm" value={values?.hotkeyF2 && values?.hotkeyF2[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}>
+										{HOTKEY_ACTIONS.map((o, i) => <option key={`f2-option-${i}`} value={o.value}>{o.label}</option>)}
+									</Form.Select>
+									<Form.Control.Feedback type="invalid">{errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}</Form.Control.Feedback>
+								</div>
+								</Form.Group>
+							)}	
+						</div>
+						<Form.Check
+							label="Lock Hotkeys"
+							type="switch"
+							id="LockHotkeys"
+							reverse
+							isInvalid={false}
+							checked={Boolean(values.lockHotkeys)}
+							onChange={(e) => { setFieldValue("lockHotkeys", e.target.checked ? 1 : 0); }}
+						/>	
 					</Section>
 					<Button type="submit">Save</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}

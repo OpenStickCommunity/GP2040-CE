@@ -254,6 +254,8 @@ void Gamepad::save()
 
 GamepadHotkey Gamepad::hotkey()
 {
+	if (options.lockHotkeys) return HOTKEY_NONE;
+
 	static GamepadHotkey lastAction = HOTKEY_NONE;
 	GamepadHotkey action = HOTKEY_NONE;
 	if (pressedF1())
@@ -617,6 +619,16 @@ GamepadOptions GamepadStorage::getGamepadOptions()
 		options.socdMode = DEFAULT_SOCD_MODE;
 		#else
 		options.socdMode = SOCD_MODE_NEUTRAL;
+		#endif
+		#ifdef DEFAULT_FORCED_SETUP_MODE
+		options.forcedSetupMode = DEFAULT_FORCED_SETUP_MODE;
+		#else
+		options.forcedSetupMode = FORCED_SETUP_MODE_OFF;
+		#endif
+		#ifdef DEFAULT_LOCK_HOTKEYS
+		options.lockHotkeys = DEFAULT_LOCK_HOTKEYS;
+		#else
+		options.lockHotkeys = false;
 		#endif
 		options.invertXAxis = false;
 		options.invertYAxis = false;
