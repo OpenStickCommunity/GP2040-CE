@@ -84,13 +84,15 @@ FetchContent_Declare(ArduinoJson
 )
 FetchContent_MakeAvailable(ArduinoJson)
 
+set(PICO_PIO_USB_PATH ${CMAKE_SOURCE_DIR}/lib/pico_pio_usb)
+
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 add_subdirectory(lib)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   # Activate some compiler / linker options to aid us with diagnosing stack space issues in Debug builds
-  add_compile_options(-fstack-usage -Wstack-usage=500)
+  add_compile_options(-w -fstack-usage -Wstack-usage=500)
   add_compile_definitions(PICO_USE_STACK_GUARDS=1)
 endif()
 
@@ -113,6 +115,7 @@ src/addons/bootsel_button.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/extra_button.cpp
+src/addons/keyboard_host.cpp
 src/addons/i2canalog1219.cpp
 src/addons/jslider.cpp
 src/addons/i2cdisplay.cpp
@@ -136,6 +139,9 @@ pico_set_program_version(GP2040-CE "0.7.1")
 target_link_libraries(${PROJECT_NAME}
 pico_stdlib
 pico_bootsel_via_double_reset
+tinyusb_host
+#tinyusb_board
+tinyusb_pico_pio_usb
 AnimationStation
 CRC32
 FlashPROM
@@ -161,6 +167,10 @@ configs/${GP2040_BOARDCONFIG}
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
   PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
+  # PIO_USB_USE_TINYUSB
+  PICO_DEFAULT_UART_TX_PIN=12
+	PICO_DEFAULT_UART_RX_PIN=13
+  LOG=2
 )
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
@@ -169,6 +179,9 @@ target_include_directories(${PROJECT_NAME}  PRIVATE
   )
 
 pico_add_extra_outputs(${PROJECT_NAME})
+
+pico_enable_stdio_usb(${PROJECT_NAME} 0)
+pico_enable_stdio_uart(${PROJECT_NAME} 1)
 
 add_compile_options(-Wall
         -Wtype-limits
