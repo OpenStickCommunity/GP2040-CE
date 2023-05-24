@@ -175,6 +175,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/Chase.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animation.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animationstation.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/CustomTheme.hpp \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\map \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\tuple \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/CustomThemePressed.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/Rainbow.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/StaticColor.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/StaticTheme.hpp \
@@ -224,15 +235,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\typeinfo \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\map \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\tuple \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h \
  C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src/PlayerLEDs.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\cstring \
  C:\Users\kanuk\clone\GP2040-CE\headers/gpaddon.h \
@@ -243,6 +245,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/GamepadStorage.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/HIDDescriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/SwitchDescriptors.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/KeyboardDescriptors.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/PS4Descriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/helper.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/storagemanager.h \
  C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src/FlashPROM.h \
@@ -250,4 +254,9 @@ CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: \
  C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/sync.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include/hardware/flash.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/enums.h \
- C:\Users\kanuk\clone\GP2040-CE\headers/helper.h
+ C:\Users\kanuk\clone\GP2040-CE\headers/helper.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/rsa.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/mbedtls_config.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/bignum.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/md.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/platform_util.h

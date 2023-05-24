@@ -21,7 +21,7 @@ set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
 
 include(ExternalProject)
 ExternalProject_Add(arduinojson-populate
-                     "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/bblanchon/ArduinoJson.git" "GIT_TAG" "v6.19.4"
+                     "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/bblanchon/ArduinoJson.git" "GIT_TAG" "v6.21.2"
                     SOURCE_DIR          "C:/Users/kanuk/clone/GP2040-CE/build2/_deps/arduinojson-src"
                     BINARY_DIR          "C:/Users/kanuk/clone/GP2040-CE/build2/_deps/arduinojson-build"
                     CONFIGURE_COMMAND   ""

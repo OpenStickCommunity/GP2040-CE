@@ -98,24 +98,24 @@ lib\httpd\CMakeFiles\httpd.dir\fsdata.c.s: cmake_force
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\httpd\fsdata.c -o CMakeFiles\httpd.dir\fsdata.c.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: lib\httpd\CMakeFiles\httpd.dir\flags.make
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.c
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: lib\httpd\CMakeFiles\httpd.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object lib/httpd/CMakeFiles/httpd.dir/httpd.c.obj"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: lib\httpd\CMakeFiles\httpd.dir\flags.make
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: lib\httpd\CMakeFiles\httpd.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj -MF CMakeFiles\httpd.dir\httpd.c.obj.d -o CMakeFiles\httpd.dir\httpd.c.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.c
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj -MF CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj.d -o CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/httpd.dir/httpd.c.i"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.c.i"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.c > CMakeFiles\httpd.dir\httpd.c.i
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c > CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.i
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/httpd.dir/httpd.c.s"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.c.s"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.c -o CMakeFiles\httpd.dir\httpd.c.s
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c -o CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
 lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: lib\httpd\CMakeFiles\httpd.dir\flags.make
@@ -2711,7 +2711,7 @@ lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\
 httpd_OBJECTS = \
 "CMakeFiles\httpd.dir\fs.c.obj" \
 "CMakeFiles\httpd.dir\fsdata.c.obj" \
-"CMakeFiles\httpd.dir\httpd.c.obj" \
+"CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj" \
 "CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj" \
 "CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj" \
 "CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj" \
@@ -2848,7 +2848,7 @@ httpd_EXTERNAL_OBJECTS =
 
 lib\httpd\libhttpd.a: lib\httpd\CMakeFiles\httpd.dir\fs.c.obj
 lib\httpd\libhttpd.a: lib\httpd\CMakeFiles\httpd.dir\fsdata.c.obj
-lib\httpd\libhttpd.a: lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj
+lib\httpd\libhttpd.a: lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj
 lib\httpd\libhttpd.a: lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj
 lib\httpd\libhttpd.a: lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj
 lib\httpd\libhttpd.a: lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj

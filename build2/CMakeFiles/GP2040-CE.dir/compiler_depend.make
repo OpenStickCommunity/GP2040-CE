@@ -3727,6 +3727,1476 @@ CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_opts.h
 
 
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bn_mul.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time_internal.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\certs.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time_internal.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\constant_time.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md_internal.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\pkcs11.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\threading.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\config_psa.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_values.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_struct.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cmac.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cipher.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\gcm.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_primitives.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_primitives.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_composites.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_composites.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_extra.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_compat.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\config_psa.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_values.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_struct.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cmac.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cipher.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\gcm.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_primitives.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_primitives.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_composites.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_composites.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_extra.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_compat.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_core.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_se_driver.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md_internal.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa_internal.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\oid.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\asn1.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\pk.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\config_psa.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_values.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_struct.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cmac.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cipher.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\gcm.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_primitives.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_primitives.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_composites.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_composites.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_extra.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_compat.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time_internal.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\constant_time.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa_internal.h
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
@@ -3910,8 +5380,8 @@ CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
-CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_protocol.h
-CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\ndis.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_protocol.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\ndis.h
 
 
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c
@@ -5829,6 +7299,48 @@ CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mallo
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 
 
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\include\pico\rand.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: generated\pico_base\pico\version.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: generated\pico_base\pico\config_autogen.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+
+
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\multicore.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\multicore.c
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\multicore.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\multicore.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
@@ -5956,6 +7468,53 @@ CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_print
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\include\pico\printf.h
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\float.h"
+
+
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\include\pico\rand.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: generated\pico_base\pico\version.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: generated\pico_base\pico\config_autogen.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\include\pico\unique_id.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\include\hardware\clocks.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\rosc.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\rosc.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\bus_ctrl.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\busctrl.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 
 
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c
@@ -6290,6 +7849,40 @@ CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdli
 CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
 
 
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: generated\pico_base\pico\version.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: generated\pico_base\pico\config_autogen.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+CMakeFiles\GP2040-CE.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\include\pico\unique_id.h
+
+
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addonmanager.cpp
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addonmanager.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
@@ -6325,11 +7918,29 @@ CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-C
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -6347,12 +7958,28 @@ CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -6375,7 +8002,6 @@ CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm G
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -6430,8 +8056,6 @@ CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm G
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -6442,9 +8066,6 @@ CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm G
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addonmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\analog.cpp
@@ -6482,11 +8103,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -6504,12 +8143,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sd
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -6532,7 +8187,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm 
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -6587,8 +8241,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm 
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -6610,13 +8262,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm 
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -6635,6 +8282,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -6658,43 +8316,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm 
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_adc\include\hardware\adc.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\adc.h
 CMakeFiles\GP2040-CE.dir\src\addons\analog.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\adc.h
@@ -6735,11 +8365,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP20
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -6757,12 +8405,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -6785,7 +8449,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\A
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -6840,8 +8503,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\A
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -6863,13 +8524,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\A
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -6888,6 +8544,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP20
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -6911,43 +8578,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\A
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\usb_driver.h
 CMakeFiles\GP2040-CE.dir\src\addons\board_led.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadDescriptors.h
 
@@ -6987,11 +8626,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -7009,12 +8666,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -7037,7 +8710,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -7092,8 +8764,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -7116,13 +8786,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -7141,6 +8806,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -7164,43 +8840,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ioqspi.h
 CMakeFiles\GP2040-CE.dir\src\addons\bootsel_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_qspi.h
 
@@ -7340,12 +8988,43 @@ CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -7373,13 +9052,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -7398,6 +9072,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -7421,43 +9106,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x8
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\math.h"
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cmath"
 CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\math.h"
@@ -7514,11 +9171,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clon
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -7536,12 +9211,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clon
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -7564,7 +9255,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -7619,8 +9309,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -7642,13 +9330,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -7667,6 +9350,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clon
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -7690,43 +9384,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\dualdirectional.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\extra_button.cpp
@@ -7764,11 +9430,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\G
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -7786,12 +9470,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\p
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -7814,7 +9514,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -7869,8 +9568,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -7893,13 +9590,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -7918,6 +9610,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\G
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -7941,43 +9644,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\extra_button.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\i2canalog1219.cpp
@@ -8066,6 +9741,40 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h"
@@ -8073,7 +9782,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x8
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -8128,8 +9836,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x8
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -8151,13 +9857,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x8
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -8176,6 +9877,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -8199,43 +9911,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x8
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2canalog1219.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\i2cdisplay.cpp
@@ -8393,6 +10077,37 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\NeoPico.hpp
@@ -8410,13 +10125,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -8435,6 +10145,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -8458,46 +10179,19 @@ CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
 CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\bitmaps.h
+CMakeFiles\GP2040-CE.dir\src\addons\i2cdisplay.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\jslider.cpp
@@ -8535,11 +10229,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -8557,12 +10269,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-s
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -8585,7 +10313,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -8640,8 +10367,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -8663,13 +10388,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -8688,6 +10408,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -8711,43 +10442,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\jslider.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\neopicoleds.cpp
@@ -8888,6 +10591,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pi
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -8937,15 +10651,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStorage.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Pixel.hpp
@@ -8962,14 +10667,7 @@ CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addonmanager.h
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\neopicoleds.h
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
-CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
@@ -8985,6 +10683,9 @@ CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pi
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
@@ -8996,6 +10697,12 @@ CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pi
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addonmanager.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\neopicoleds.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
@@ -9006,6 +10713,11 @@ CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pi
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\pleds.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\themes.h
 CMakeFiles\GP2040-CE.dir\src\addons\neopicoleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
@@ -9187,6 +10899,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -9236,15 +10959,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
@@ -9255,6 +10969,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadStorage.h
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
@@ -9263,6 +10979,11 @@ CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\pic
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\playerleds.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\playernum.cpp
@@ -9300,11 +11021,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP20
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -9322,12 +11061,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -9350,7 +11105,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\A
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -9405,8 +11159,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\A
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -9428,13 +11180,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\A
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -9453,6 +11200,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP20
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -9476,44 +11234,278 @@ CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\A
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\playernum.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\system.h
+
+
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\ps4mode.cpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\ps4mode.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\configs\WaveshareZero\BoardConfig.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadEnums.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadDebouncer.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadState.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadOptions.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadStorage.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\cpu_defines.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: generated\pico_base\pico\version.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: generated\pico_base\pico\config_autogen.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pads_bank0.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\iobank0.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_bank0.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\include\hardware\irq.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\intctrl.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\include\hardware\uart.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\uart.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_uart.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\char_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\new_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\new"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functexcept.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_defines.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\move.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cpp_type_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\clocale"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\locale.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iosfwd"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cctype"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream_insert.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_forced.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_types.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_funcs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\concept_check.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\assertions.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ptr_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_function.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\backward\binders.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\numeric_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algobase.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_pair.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\utility.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\debug.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\predefined_ops.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\refwrap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\invoke.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\initializer_list"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\alloc_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\alloc_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_construct.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string_view"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functional_hash.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\hash_bytes.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\string_view.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\string_conversions.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\charconv.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\NeoPico.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\generated\ws2812.pio.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pio.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pio.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio_instructions.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\include\hardware\clocks.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\vector"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_uninitialized.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\algorithm"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algo.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\algorithmfwd.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_heap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tempbuf.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uniform_int_dist.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\glue_algorithm_defs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\execution_defs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdlib.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Pixel.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iterator"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stream_iterator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf_iterator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\streambuf"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ios_base.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\atomicity.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr-default.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\atomic_word.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\system_error"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\error_constants.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdexcept"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\exception"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_ptr.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_init_exception.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+CMakeFiles\GP2040-CE.dir\src\addons\ps4mode.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\reverse.cpp
@@ -9551,11 +11543,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -9573,12 +11583,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-s
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -9601,7 +11627,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -9656,8 +11681,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -9679,13 +11702,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -9704,6 +11722,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -9727,43 +11756,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\reverse.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\slider_socd.cpp
@@ -9801,11 +11802,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -9823,12 +11842,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pi
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -9851,7 +11886,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -9906,8 +11940,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -9929,13 +11961,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -9954,6 +11981,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -9977,43 +12015,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\slider_socd.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 
 
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\tilt.cpp
@@ -10051,11 +12061,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -10073,12 +12101,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -10101,7 +12145,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GN
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -10156,8 +12199,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GN
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -10179,13 +12220,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GN
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -10204,6 +12240,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -10227,43 +12274,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GN
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\tilt.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad.h
 
 
@@ -10302,11 +12321,29 @@ CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-C
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -10324,12 +12361,28 @@ CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -10352,7 +12405,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm G
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -10407,8 +12459,6 @@ CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm G
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -10430,13 +12480,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm G
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -10455,6 +12500,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-C
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -10478,46 +12534,282 @@ CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm G
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_adc\include\hardware\adc.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\adc.h
 CMakeFiles\GP2040-CE.dir\src\addons\turbo.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\adc.h
+
+
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\addons\wiiext.cpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\wiiext.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\cpu_defines.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\char_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\new_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\new"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functexcept.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_defines.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\move.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cpp_type_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\clocale"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\locale.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iosfwd"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cctype"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream_insert.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_forced.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_types.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_funcs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\concept_check.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\assertions.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ptr_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_function.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\backward\binders.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\numeric_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algobase.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_pair.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\utility.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\debug.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\predefined_ops.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\refwrap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\invoke.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\initializer_list"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\alloc_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\alloc_traits.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_construct.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string_view"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functional_hash.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\hash_bytes.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\string_view.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\string_conversions.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\charconv.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_i2c\include\hardware\i2c.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: generated\pico_base\pico\version.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: generated\pico_base\pico\config_autogen.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\i2c.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\i2c.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\configs\WaveshareZero\BoardConfig.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadEnums.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadDebouncer.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadState.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadOptions.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadStorage.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pads_bank0.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\iobank0.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_bank0.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\include\hardware\irq.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\intctrl.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\include\hardware\uart.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\uart.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_uart.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\NeoPico.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\generated\ws2812.pio.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pio.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pio.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio_instructions.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\include\hardware\clocks.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\vector"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_uninitialized.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\algorithm"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algo.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\algorithmfwd.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_heap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tempbuf.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uniform_int_dist.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\glue_algorithm_defs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\execution_defs.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdlib.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Pixel.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iterator"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stream_iterator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf_iterator.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\streambuf"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ios_base.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\atomicity.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr-default.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\atomic_word.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\system_error"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\error_constants.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdexcept"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\exception"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_ptr.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_init_exception.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+CMakeFiles\GP2040-CE.dir\src\addons\wiiext.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\WiiExtension\WiiExtension.h
 
 
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\configmanager.cpp
@@ -10700,6 +12992,17 @@ CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\pico-sd
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -10723,15 +13026,6 @@ CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm 
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
@@ -10768,6 +13062,13 @@ CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadStorage.h
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addonmanager.h
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
 CMakeFiles\GP2040-CE.dir\src\configmanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\configs\webconfig.h
@@ -10960,6 +13261,17 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pic
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -10983,15 +13295,6 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
@@ -11028,25 +13331,33 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadStorage.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\configmanager.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpconfig.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStorage.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\system.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Configuration.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\ArrayRef.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\ArrayFunctions.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Collection\CollectionData.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\JsonArray.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\ElementProxy.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantRefBase.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\Converter.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Namespace.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\preprocessor.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\version.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\assert.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\ArrayIterator.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\SlotFunctions.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantData.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\JsonVariantConst.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Memory\MemoryPool.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Memory\Alignment.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\assert.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\mpl\max.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\StringAdapters.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits.hpp
@@ -11055,6 +13366,7 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\sr
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\integral_constant.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_array.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_base_of.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\remove_reference.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_class.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\declval.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_const.hpp
@@ -11071,12 +13383,11 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\sr
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\type_identity.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\make_void.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\remove_const.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\remove_reference.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\JsonString.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\RamString.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\IsString.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\String.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Misc\SafeBoolIdiom.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\StoragePolicy.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\StringAdapter.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\JsonString.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ostream"
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ios"
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_ios.h"
@@ -11088,52 +13399,53 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_facets.tcc"
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_ios.tcc"
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream.tcc"
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\StdString.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\StringView.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\StringObject.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\StringTraits.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantSlot.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\integer.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\limits.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantContent.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\Float.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\Integer.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Collection\CollectionData.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\JsonFloat.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\JsonInteger.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\IsString.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantAttorney.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\attributes.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantTo.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantFunctions.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantData.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Misc\SerializedValue.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\convertNumber.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantRef.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Misc\Visitable.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\Converter.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantFunctions.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\attributes.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Strings\StoragePolicy.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\FloatTraits.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\alias_cast.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\math.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\pgmspace_generic.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\Visitor.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantOperators.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\arithmeticCompare.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantTag.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantShortcuts.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\ArrayShortcuts.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\ObjectShortcuts.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\ObjectRef.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\ObjectFunctions.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\ObjectIterator.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\Pair.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\JsonArrayConst.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\JsonArrayIterator.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\JsonVariant.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\SlotFunctions.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\JsonObject.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\JsonObjectConst.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\JsonObjectIterator.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\JsonPair.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\MemberProxy.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Document\DynamicJsonDocument.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Document\BasicJsonDocument.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Document\JsonDocument.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\ElementProxy.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantTo.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\MemberProxy.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Document\StaticJsonDocument.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\ArrayImpl.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\JsonArrayImpl.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Array\Utilities.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Collection\CollectionImpl.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\ObjectImpl.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Object\JsonObjectImpl.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\ConverterImpl.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Json\JsonSerializer.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Json\TextFormatter.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Json\EscapeSequence.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\FloatParts.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\FloatTraits.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\alias_cast.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\math.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\static_array.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Serialization\CountingDecorator.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Serialization\measure.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Serialization\Writers\DummyWriter.hpp
@@ -11142,7 +13454,6 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\sr
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Serialization\Writers\StaticStringWriter.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Serialization\Writers\StdStringWriter.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Serialization\Writers\StdStreamWriter.hpp
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\Visitor.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantCompare.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Variant\VariantImpl.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Numbers\parseNumber.hpp
@@ -11150,9 +13461,11 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\sr
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Json\JsonDeserializer.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\deserialize.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\DeserializationError.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\DeserializationOptions.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\Filter.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\NestingLimit.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\Reader.hpp
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Polyfills\utility.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\Readers\IteratorReader.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\Readers\RamReader.hpp
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: _deps\arduinojson-src\src\ArduinoJson\Deserialization\Readers\VariantReader.hpp
@@ -11184,7 +13497,9 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pic
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\fscustom.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\fs.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\fsdata.h
-CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd_opts.h
+CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\iana.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
 CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
@@ -11224,11 +13539,29 @@ CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\hea
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -11246,12 +13579,28 @@ CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -11318,13 +13667,8 @@ CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU To
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -11334,7 +13678,6 @@ CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU To
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h"
@@ -11355,8 +13698,6 @@ CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU To
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -11377,6 +13718,17 @@ CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -11400,44 +13752,16 @@ CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU To
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\gamepad.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\CRC32\src\CRC32.h
 
 
@@ -11497,6 +13821,66 @@ CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Fil
 CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
 CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\cpu_defines.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: generated\pico_base\pico\version.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: generated\pico_base\pico\config_autogen.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\gamepad\GamepadDescriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
 
 
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\gp2040.cpp
@@ -11533,11 +13917,29 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\head
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
@@ -11555,12 +13957,28 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\r
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -11585,7 +14003,6 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Too
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -11640,8 +14057,6 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Too
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -11652,9 +14067,6 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Too
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\algorithm"
@@ -11680,6 +14092,17 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -11703,44 +14126,9 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Too
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\system.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\configmanager.h
@@ -11752,6 +14140,11 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\r
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addonmanager.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\analog.h
@@ -11775,6 +14168,8 @@ CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\head
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\reverse.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\turbo.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\slider_socd.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\wiiext.h
+CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\WiiExtension\WiiExtension.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\include\pico\bootrom.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_adc\include\hardware\adc.h
 CMakeFiles\GP2040-CE.dir\src\gp2040.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\adc.h
@@ -11862,11 +14257,29 @@ CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: generated\pico_base\pico\version.h
@@ -11880,12 +14293,28 @@ CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\sr
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
@@ -11907,7 +14336,6 @@ CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU 
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h"
@@ -11928,17 +14356,12 @@ CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU 
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\charconv.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.tcc"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addonmanager.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\NeoPico.hpp
@@ -11953,8 +14376,6 @@ CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\sr
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\enums.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
@@ -11973,6 +14394,17 @@ CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\l
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -11996,43 +14428,15 @@ CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU 
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addonmanager.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\i2cdisplay.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_i2c\include\hardware\i2c.h
@@ -12049,6 +14453,7 @@ CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\pleds.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\board_led.h
 CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\buzzerspeaker.h
+CMakeFiles\GP2040-CE.dir\src\gp2040aux.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\ps4mode.h
 
 
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\src\main.cpp
@@ -12120,6 +14525,35 @@ CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\header
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
@@ -12144,7 +14578,6 @@ CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolc
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
-CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
@@ -12199,8 +14632,6 @@ CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolc
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
-CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
 CMakeFiles\GP2040-CE.dir\src\main.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
@@ -12392,6 +14823,17 @@ CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\pico-s
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -12415,15 +14857,6 @@ CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring"
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
@@ -12460,6 +14893,13 @@ CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadStorage.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStorage.hpp
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
@@ -12468,21 +14908,6 @@ CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\pico-s
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\watchdog.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\CRC32\src\CRC32.h
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\sstream"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\istream"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ios"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_ios.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_facets.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwctype"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wctype.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\ctype_base.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\ctype_inline.h"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_facets.tcc"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_ios.tcc"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ostream"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream.tcc"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\istream.tcc"
-CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\sstream.tcc"
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\analog.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\board_led.h
@@ -12506,10 +14931,13 @@ CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\neopicoleds.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\helper.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\playernum.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\ps4mode.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\pleds.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\reverse.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\turbo.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\slider_socd.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\wiiext.h
+CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\WiiExtension\WiiExtension.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\addons\tilt.h
 CMakeFiles\GP2040-CE.dir\src\storagemanager.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\bitmaps.h
 
@@ -12579,17 +15007,19 @@ CMakeFiles\GP2040-CE.dir\src\system.cpp.obj: "C:\Program Files (x86)\Arm GNU Too
 
 
 
+C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\generated\ws2812.pio.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\generated\ws2812.pio.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_adc\adc.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sys.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\timespec.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c:
 
@@ -12605,15 +15035,17 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string_view":
-
 C:\Users\kanuk\clone\GP2040-CE\src\addons\bootsel_button.cpp:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\tbman.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string_view":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.h:
 
 C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h:
 
@@ -12621,29 +15053,29 @@ C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\inet_chksum.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algo.h":
+C:\Users\kanuk\clone\GP2040-CE\lib\WiiExtension\WiiExtension.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h":
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c:
+
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\configs\base64.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_values.h:
 
 C:\Users\kanuk\clone\GP2040-CE\src\gamepad\GamepadDebouncer.cpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Json\EscapeSequence.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\poly_hermite.tcc":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\select.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h":
 
@@ -12657,21 +15089,25 @@ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_uninitialized.h":
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\init.h:
+
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\adc.h:
 
-C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\pkcs11.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h:
 
@@ -12682,8 +15118,6 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c:
 _deps\arduinojson-src\src\ArduinoJson\Json\Utf8.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h":
 
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\mpl\max.hpp:
 
@@ -12696,6 +15130,8 @@ _deps\arduinojson-src\src\ArduinoJson\Polyfills\mpl\max.hpp:
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\pk.h:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\addons\i2canalog1219.h:
 
@@ -12715,23 +15151,23 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\icmp.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h":
 
-_deps\arduinojson-src\src\ArduinoJson\Array\ArrayFunctions.hpp:
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h":
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\include\pico\float.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\include\pico\float.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h":
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include\pico\multicore.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h":
 
 C:\Users\kanuk\clone\GP2040-CE\headers\addons\buzzerspeaker.h:
 
@@ -12751,17 +15187,15 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c:
 
-C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h":
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h":
 
@@ -12775,11 +15209,21 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_common.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\icmp6.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h:
 
 _deps\arduinojson-src\src\ArduinoJson\Memory\MemoryPool.hpp:
 
@@ -12787,29 +15231,43 @@ _deps\arduinojson-src\src\ArduinoJson\Memory\MemoryPool.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\oid.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\errno.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\include\pico\bootrom\sf_table.h:
 
 _deps\arduinojson-src\src\ArduinoJson\Serialization\Writer.hpp:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c:
+
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pio.h:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\addons\bootsel_button.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\char_traits.h":
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\char_traits.h":
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c:
 
@@ -12823,17 +15281,27 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c:
+
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h":
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algobase.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcp.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algobase.h":
+_deps\arduinojson-src\src\ArduinoJson\Object\JsonObjectIterator.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c:
+
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c:
 
@@ -12841,11 +15309,15 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\struc
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c:
 
+_deps\arduinojson-src\src\ArduinoJson\Array\JsonArrayImpl.hpp:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c:
 
 _deps\arduinojson-src\src\ArduinoJson\Variant\VariantTo.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h:
 
@@ -12853,31 +15325,41 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\vre
 
 _deps\arduinojson-src\src\ArduinoJson\MsgPack\endianess.hpp:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h:
+_deps\arduinojson-src\src\ArduinoJson\Array\JsonArrayIterator.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\boot_stage2\include\boot_stage2\config.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c:
+
+C:\Users\kanuk\clone\GP2040-CE\src\addons\i2cdisplay.cpp:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\beta_function.tcc":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sockets.h:
-
 C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadState.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sockets.h:
 
 _deps\arduinojson-src\src\ArduinoJson\Variant\VariantOperators.hpp:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h:
+C:\Users\kanuk\clone\GP2040-CE\headers\addons\wiiext.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib":
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadDebouncer.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootsel_via_double_reset\pico_bootsel_via_double_reset.c:
-
-C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadDebouncer.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h:
 
@@ -12885,7 +15367,11 @@ _deps\arduinojson-src\src\ArduinoJson\Serialization\serialize.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h:
 
@@ -12893,23 +15379,25 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\raw.h:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\alloc_traits.h":
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\raw.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\udp.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c:
 
 C:\Users\kanuk\clone\GP2040-CE\src\addons\jslider.cpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\udp.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h":
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\tcp_priv.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\tcp_priv.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcpbase.h:
 
@@ -12919,10 +15407,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\icmp.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\streambuf":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\refwrap.h":
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\tcp.h:
 
 _deps\arduinojson-src\src\ArduinoJson\Numbers\convertNumber.hpp:
@@ -12931,15 +15415,19 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\igmp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\dns.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\timeouts.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\timeout_helper.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\etharp.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\resets.h:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h":
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\resets.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ethernet.h:
 
@@ -12971,19 +15459,25 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c:
 
-C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Pixel.hpp:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\snmp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\dhcp.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_frag.h:
+
+_deps\arduinojson-src\src\ArduinoJson\Variant\JsonVariantConst.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\autoip.h:
 
@@ -12991,21 +15485,19 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\acd.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\iana.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\debug.h":
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\debug.h":
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadStorage.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_qspi.h:
-
-C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadStorage.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno":
 
 _deps\arduinojson-src\src\ArduinoJson\Deserialization\Filter.hpp:
 
@@ -13027,6 +15519,8 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\raw_priv.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\certs.h:
+
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c:
@@ -13041,11 +15535,13 @@ C:\Users\kanuk\clone\GP2040-CE\headers\gp2040.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c:
+C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h":
 
-C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c:
 
@@ -13055,13 +15551,19 @@ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c:
 
-_deps\arduinojson-src\src\ArduinoJson\Array\ArrayShortcuts.hpp:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c:
+
+_deps\arduinojson-src\src\ArduinoJson\Variant\JsonVariant.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\icmp6.h:
+
+_deps\arduinojson-src\src\ArduinoJson\Object\JsonPair.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c:
 
 _deps\arduinojson-src\src\ArduinoJson\Variant\VariantContent.hpp:
 
@@ -13069,33 +15571,31 @@ C:\Users\kanuk\clone\GP2040-CE\headers\system.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c:
+
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\bessel_function.tcc":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_sigset.h":
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_construct.h":
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\altcp.h:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\addons\analog.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netbuf.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_opts.h:
 
-C:\Users\kanuk\clone\GP2040-CE\headers\addons\analog.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\tcpip_priv.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_heap.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\api_msg.h:
 
@@ -13109,11 +15609,17 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\res
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\gcm.h:
 
 C:\Users\kanuk\clone\GP2040-CE\src\gp2040.cpp:
 
@@ -13145,9 +15651,13 @@ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c:
 
+_deps\arduinojson-src\src\ArduinoJson\Strings\JsonString.hpp:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\time.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pll.h:
 
@@ -13155,15 +15665,17 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\struc
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\include\hardware\uart.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\time.h":
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c:
+C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\gpaddon.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c:
 
@@ -13185,19 +15697,25 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pll.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream_insert.h":
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c:
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\watchdog.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator.h":
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\watchdog.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\ndis.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_composites.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\unistd.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c:
 
@@ -13205,11 +15723,13 @@ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\unistd.h":
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c:
+
+_deps\arduinojson-src\src\ArduinoJson\Numbers\JsonInteger.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c:
 
@@ -13223,15 +15743,15 @@ _deps\arduinojson-src\src\ArduinoJson\MsgPack\MsgPackSerializer.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c:
 
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h:
+
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\remove_cv.hpp:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\addons\neopicoleds.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++allocator.h":
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c:
 
 _deps\arduinojson-src\src\ArduinoJson\Memory\Alignment.hpp:
 
@@ -13255,29 +15775,363 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\struc
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\slipif.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sio.h:
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadOptions.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stat.h":
 
-C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadOptions.h:
-
-_deps\arduinojson-src\src\ArduinoJson\Object\ObjectFunctions.hpp:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\zepif.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sio.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_uart.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\zepif.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\include\pico\malloc.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c:
+
+_deps\arduinojson-src\src\ArduinoJson\Numbers\JsonFloat.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bn_mul.h:
+
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\declval.hpp:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\string_view.tcc":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h:
+
+_deps\arduinojson-src\src\ArduinoJson\Variant\Visitor.hpp:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ios":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time_internal.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_protocol.h:
 
 _deps\arduinojson-src\src\ArduinoJson\Json\JsonDeserializer.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\enums.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functional_hash.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c:
+
+_deps\arduinojson-src\src\ArduinoJson\Array\JsonArrayConst.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\constant_time.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_timeval.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md_internal.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\types.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\addons\dualdirectional.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_spi\include\hardware\spi.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_types.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\pheap.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c:
+
+C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\atomic_word.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c:
+
+generated\pico_base\pico\version.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c:
+
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_unsigned.hpp:
+
+_deps\arduinojson-src\src\ArduinoJson\Variant\VariantRefBase.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_timespec.h":
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\include\pico\printf.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\threading.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_platform.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\config_psa.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_types.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h:
+
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\attributes.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_struct.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cmac.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cipher.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_primitives.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ptr_traits.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_primitives.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_composites.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_extra.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\rosc.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_compat.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\include\hardware\claim.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_core.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_se_driver.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c:
+
+C:\Users\kanuk\clone\GP2040-CE\src\addons\playerleds.cpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\include\pico\fix\rp2040_usb_device_enumeration.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_endian.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\utility.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h:
+
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_class.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa_internal.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\asn1.h:
+
+_deps\arduinojson-src\src\ArduinoJson\Numbers\parseNumber.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ssi.h:
+
+C:\Users\kanuk\clone\GP2040-CE\src\addons\i2canalog1219.cpp:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\include\pico\unique_id.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ioqspi.h:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\addons\extra_button.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\times.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar":
+
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c:
+
+_deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\RamString.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pwm\include\hardware\pwm.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c:
+
+_deps\arduinojson-src\src\ArduinoJson\Deserialization\NestingLimit.hpp:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h:
 
@@ -13303,8 +16157,6 @@ C:\Users\kanuk\clone\GP2040-CE\src\addons\turbo.cpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\glue_algorithm_defs.h":
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\ell_integral.tcc":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.tcc":
@@ -13319,12 +16171,6 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\struc
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\types.h":
-
-generated\pico_base\pico\version.h:
-
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\type_identity.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\usb.h:
@@ -13333,15 +16179,13 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\addons\reverse.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h:
-
 C:\Users\kanuk\clone\GP2040-CE\headers\addonmanager.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h:
+C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_forced.h":
 
-_deps\arduinojson-src\src\ArduinoJson\Object\ObjectIterator.hpp:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h:
 
@@ -13363,21 +16207,9 @@ _deps\arduinojson-src\src\ArduinoJson\Serialization\measure.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\include\pico\printf.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_timespec.h":
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio":
+_deps\arduinojson-src\src\ArduinoJson\Object\JsonObject.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h:
-
-_deps\arduinojson-src\src\ArduinoJson\Serialization\CountingDecorator.hpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_defines.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h:
 
@@ -13387,33 +16219,13 @@ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h":
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_i2c\i2c.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iterator":
-
-C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_protocol.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\rndis\ndis.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\NeoPico.hpp:
-
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_private.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\algorithm":
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c:
 
@@ -13421,27 +16233,15 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c:
 
-_deps\arduinojson-src\src\ArduinoJson\Deserialization\NestingLimit.hpp:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\numeric_traits.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\dcd.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\numeric_traits.h":
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c:
-
-_deps\arduinojson-src\src\ArduinoJson\Polyfills\static_array.hpp:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\usb.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\endian.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h":
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\usb.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_resets\include\hardware\resets.h:
 
@@ -13450,10 +16250,6 @@ C:\Users\kanuk\clone\GP2040-CE\headers\gp2040aux.h:
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\include\hardware\irq.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\intctrl.h:
-
-_deps\arduinojson-src\src\ArduinoJson\Numbers\parseNumber.hpp:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c:
 
@@ -13465,13 +16261,7 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\pheap.h:
-
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\include\pico\fix\rp2040_usb_device_enumeration.h:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\addons\board_led.h:
 
@@ -13481,33 +16271,27 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\datetime.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\queue.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_adc\include\hardware\adc.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\i2c.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint":
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h:
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pads_bank0.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\iobank0.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\include\hardware\claim.h:
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\include\hardware\clocks.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h:
+C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pwm.h:
 
@@ -13519,39 +16303,27 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\wat
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\include\hardware\xosc.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd_opts.h:
+
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\xosc.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\xosc.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\clocale":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\clocale":
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c:
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\include\pico\bootrom.h:
-
-_deps\arduinojson-src\src\ArduinoJson\Object\ObjectImpl.hpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_pair.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\algorithmfwd.h":
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ssi.h:
-
-_deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\StdString.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\ssi.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ioqspi.h:
-
 _deps\arduinojson-src\src\ArduinoJson\Json\Latch.hpp:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c:
+C:\Users\kanuk\clone\GP2040-CE\src\addons\wiiext.cpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cpp_type_traits.h":
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_i2c\include\hardware\i2c.h:
 
@@ -13567,25 +16339,9 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pio
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio_instructions.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c:
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_spi\spi.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_spi\include\hardware\spi.h:
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\spi.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c:
-
-C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h":
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\include\hardware\vreg.h:
 
@@ -13593,15 +16349,11 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\struc
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\psm.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h":
-
 _deps\arduinojson-src\src\ArduinoJson\Numbers\arithmeticCompare.hpp:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\code.h:
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\code.h:
 
 _deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\JsonString.hpp:
 
@@ -13609,27 +16361,43 @@ _deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\JsonString.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\include\pico\double.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\include\pico\malloc.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ostream":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\move.h":
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algo.h":
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\include\pico\rand.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\multicore.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\tbman.h:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadDescriptors.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sysinfo.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_timeval.h":
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_endian.h":
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\rosc.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h":
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\bus_ctrl.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\busctrl.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\poly_hermite.tcc":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\select.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_sigset.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_pthreadtypes.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\sched.h":
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\sched.h":
 
 C:\Users\kanuk\clone\GP2040-CE\headers\addons\i2cdisplay.h:
 
@@ -13645,19 +16413,17 @@ _deps\arduinojson-src\src\ArduinoJson\Array\ElementProxy.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_time.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\times.h":
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\unistd.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\mpu.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c:
 
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\integral_constant.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cmath":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\predefined_ops.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\cpu_defines.h":
 
@@ -13667,15 +16433,21 @@ C:\Users\kanuk\clone\GP2040-CE\headers\addons\playernum.h:
 
 C:\Users\kanuk\clone\GP2040-CE\src\addons\extra_button.cpp:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio\driver.h:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tempbuf.h":
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio\driver.h:
 
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\preprocessor.hpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\string_conversions.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iterator":
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h:
+
+C:\Users\kanuk\clone\GP2040-CE\lib\ADS1219\ADS1219.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c:
 
 C:\Users\kanuk\clone\GP2040-CE\src\addons\reverse.cpp:
 
@@ -13697,7 +16469,11 @@ C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert":
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd.h:
+
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h":
 
@@ -13713,19 +16489,27 @@ _deps\arduinojson-src\src\ArduinoJson\Object\MemberProxy.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functexcept.h":
 
+_deps\arduinojson-src\src\ArduinoJson\Serialization\CountingDecorator.hpp:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_defines.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\move.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h":
+
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\locale.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iosfwd":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cctype":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_types.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream_insert.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstring":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_funcs.h":
-
-C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.h:
 
 C:\Users\kanuk\clone\GP2040-CE\src\addons\neopicoleds.cpp:
 
@@ -13737,33 +16521,37 @@ _deps\arduinojson-src\src\ArduinoJson\Document\JsonDocument.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\assertions.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ptr_traits.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_function.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\backward\binders.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_function.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\algorithmfwd.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\utility.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_pair.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\predefined_ops.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\streambuf":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\refwrap.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\invoke.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h":
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\initializer_list":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\alloc_traits.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functional_hash.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_construct.h":
 
 C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\usb_driver.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\hash_bytes.h":
 
-_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\declval.hpp:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\string_conversions.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\string_view.tcc":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h":
 
@@ -13779,25 +16567,53 @@ _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_enum.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\vector":
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_uninitialized.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc":
+
 C:\Users\kanuk\clone\GP2040-CE\src\addons\analog.cpp:
 
-C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src\FlashPROM.h:
+C:\Users\kanuk\clone\GP2040-CE\headers\storagemanager.h:
 
-C:\Users\kanuk\clone\GP2040-CE\headers\enums.h:
+C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\NeoPico.hpp:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\helper.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\algorithm":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_heap.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uniform_int_dist.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\glue_algorithm_defs.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\execution_defs.h":
 
-C:\Users\kanuk\clone\GP2040-CE\headers\helper.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uniform_int_dist.h":
-
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdlib.h":
 
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Pixel.hpp:
+
 C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h":
+
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_const.hpp:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h":
+
+_deps\arduinojson-src\src\ArduinoJson\Numbers\FloatParts.hpp:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h":
 
 C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp:
 
@@ -13819,8 +16635,6 @@ _deps\arduinojson-src\src\ArduinoJson\Json\TextFormatter.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr-default.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\atomic_word.h":
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\system_error":
 
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\limits.hpp:
@@ -13833,22 +16647,6 @@ _deps\arduinojson-src\src\ArduinoJson\Polyfills\limits.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h":
-
-_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_const.hpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h":
-
-_deps\arduinojson-src\src\ArduinoJson\Numbers\FloatParts.hpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h":
-
 C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src\PlayerLEDs.h:
 
 C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h:
@@ -13858,10 +16656,6 @@ _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\remove_const.hpp:
 C:\Users\kanuk\clone\GP2040-CE\src\addons\board_led.cpp:
 
 C:\Users\kanuk\clone\GP2040-CE\src\addons\buzzerspeaker.cpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\RamString.hpp:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pwm\include\hardware\pwm.h:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\songs.h:
 
@@ -13877,10 +16671,6 @@ _deps\arduinojson-src\src\ArduinoJson\Polyfills\integer.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\special_function_util.h":
 
-C:\Users\kanuk\clone\GP2040-CE\src\addons\i2cdisplay.cpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\beta_function.tcc":
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\hypergeometric.tcc":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\legendre_function.tcc":
@@ -13890,18 +16680,6 @@ _deps\arduinojson-src\src\ArduinoJson\Polyfills\ctype.hpp:
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\poly_laguerre.tcc":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\riemann_zeta.tcc":
-
-C:\Users\kanuk\clone\GP2040-CE\headers\addons\dualdirectional.h:
-
-C:\Users\kanuk\clone\GP2040-CE\headers\addons\extra_button.h:
-
-_deps\arduinojson-src\src\ArduinoJson\Object\ObjectRef.hpp:
-
-C:\Users\kanuk\clone\GP2040-CE\src\addons\i2canalog1219.cpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Strings\String.hpp:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\ADS1219\ADS1219.h:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\bitmaps.h:
 
@@ -13913,9 +16691,13 @@ C:\Users\kanuk\clone\GP2040-CE\headers\addons\pleds.h:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\themes.h:
 
-C:\Users\kanuk\clone\GP2040-CE\src\addons\playerleds.cpp:
-
 C:\Users\kanuk\clone\GP2040-CE\src\addons\playernum.cpp:
+
+_deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\StringObject.hpp:
+
+C:\Users\kanuk\clone\GP2040-CE\src\addons\ps4mode.cpp:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\addons\ps4mode.h:
 
 C:\Users\kanuk\clone\GP2040-CE\src\addons\slider_socd.cpp:
 
@@ -13935,25 +16717,19 @@ C:\Users\kanuk\clone\GP2040-CE\headers\configs\webconfig.h:
 
 C:\Users\kanuk\clone\GP2040-CE\src\configs\webconfig.cpp:
 
-C:\Users\kanuk\clone\GP2040-CE\headers\configs\base64.h:
-
 _deps\arduinojson-src\src\ArduinoJson.h:
 
 _deps\arduinojson-src\src\ArduinoJson\Configuration.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Array\ArrayRef.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Deserialization\deserialize.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Collection\CollectionData.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Array\JsonArray.hpp:
+
+_deps\arduinojson-src\src\ArduinoJson\Variant\Converter.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\version.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\assert.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Array\ArrayIterator.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Variant\SlotFunctions.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Variant\VariantData.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Strings\StringAdapters.hpp:
 
@@ -13965,7 +16741,7 @@ _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_array.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_base_of.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_class.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\remove_reference.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_convertible.hpp:
 
@@ -13979,23 +16755,11 @@ _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_pointer.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_signed.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\is_unsigned.hpp:
-
 _deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\make_void.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Polyfills\type_traits\remove_reference.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Strings\StoragePolicy.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Strings\IsString.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Array\Utilities.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Misc\SafeBoolIdiom.hpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ostream":
-
-_deps\arduinojson-src\src\ArduinoJson\Variant\Visitor.hpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ios":
+_deps\arduinojson-src\src\ArduinoJson\Strings\StringAdapter.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_ios.h":
 
@@ -14011,37 +16775,33 @@ _deps\arduinojson-src\src\ArduinoJson\Variant\Visitor.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_ios.tcc":
 
-_deps\arduinojson-src\src\ArduinoJson\Strings\Adapters\StringView.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Strings\StringTraits.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Variant\VariantSlot.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Numbers\Float.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Collection\CollectionData.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Numbers\Integer.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Strings\IsString.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Misc\SerializedValue.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Variant\VariantRef.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Variant\VariantCompare.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Misc\Visitable.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Variant\Converter.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Variant\VariantAttorney.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Variant\VariantFunctions.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Polyfills\attributes.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Variant\VariantData.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Strings\StoragePolicy.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Misc\SerializedValue.hpp:
+
+_deps\arduinojson-src\src\ArduinoJson\Numbers\FloatTraits.hpp:
+
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\math.hpp:
+
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\pgmspace_generic.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Variant\VariantTag.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Variant\VariantShortcuts.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Variant\SlotFunctions.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Object\ObjectShortcuts.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Object\Pair.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Object\JsonObjectConst.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Document\DynamicJsonDocument.hpp:
 
@@ -14049,15 +16809,13 @@ _deps\arduinojson-src\src\ArduinoJson\Document\BasicJsonDocument.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Document\StaticJsonDocument.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Array\ArrayImpl.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Array\Utilities.hpp:
+
+_deps\arduinojson-src\src\ArduinoJson\Object\JsonObjectImpl.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Variant\ConverterImpl.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Json\JsonSerializer.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Numbers\FloatTraits.hpp:
-
-_deps\arduinojson-src\src\ArduinoJson\Polyfills\math.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Serialization\Writers\DummyWriter.hpp:
 
@@ -14067,11 +16825,15 @@ _deps\arduinojson-src\src\ArduinoJson\Serialization\Writers\StdStringWriter.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Serialization\Writers\StdStreamWriter.hpp:
 
+_deps\arduinojson-src\src\ArduinoJson\Variant\VariantCompare.hpp:
+
 _deps\arduinojson-src\src\ArduinoJson\Variant\VariantImpl.hpp:
 
-_deps\arduinojson-src\src\ArduinoJson\Deserialization\deserialize.hpp:
+_deps\arduinojson-src\src\ArduinoJson\Deserialization\DeserializationOptions.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Deserialization\Reader.hpp:
+
+_deps\arduinojson-src\src\ArduinoJson\Polyfills\utility.hpp:
 
 _deps\arduinojson-src\src\ArduinoJson\Deserialization\Readers\IteratorReader.hpp:
 
@@ -14110,10 +16872,6 @@ C:\Users\kanuk\clone\GP2040-CE\src\gp2040aux.cpp:
 C:\Users\kanuk\clone\GP2040-CE\src\main.cpp:
 
 C:\Users\kanuk\clone\GP2040-CE\src\storagemanager.cpp:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\sstream":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\sstream.tcc":
 
 C:\Users\kanuk\clone\GP2040-CE\src\system.cpp:
 

@@ -51,6 +51,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("C:/Users/kanuk/clone/GP2040-CE/build2/lib/PlayerLEDs/cmake_install.cmake")
   include("C:/Users/kanuk/clone/GP2040-CE/build2/lib/rndis/cmake_install.cmake")
   include("C:/Users/kanuk/clone/GP2040-CE/build2/lib/TinyUSB_Gamepad/cmake_install.cmake")
+  include("C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/cmake_install.cmake")
 
 endif()
 

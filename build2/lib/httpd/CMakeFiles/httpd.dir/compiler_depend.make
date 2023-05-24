@@ -330,6 +330,76 @@ lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tc
 lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
 
 
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\init.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd_opts.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\iana.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\fs.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd_structs.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\altcp.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcp.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcpbase.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\icmp.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\icmp.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\altcp_tcp.h
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
 lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c
 lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
 lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
@@ -5319,81 +5389,16 @@ lib\httpd\CMakeFiles\httpd.dir\fsdata.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\
 lib\httpd\CMakeFiles\httpd.dir\fsdata.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
 
 
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.c
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd_structs.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcp.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcpbase.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\icmp.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\icmp.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\fs.h
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
-lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
-
-
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sys.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\timespec.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h":
 
@@ -5404,6 +5409,10 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c:
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\iana.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c:
 
@@ -5416,12 +5425,6 @@ C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h:
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h":
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\inet_chksum.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h":
 
@@ -5437,6 +5440,8 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c:
+
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h":
@@ -5445,11 +5450,11 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\init.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h:
 
@@ -5457,13 +5462,15 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h":
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd_structs.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h:
 
@@ -5501,13 +5508,7 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h":
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h":
 
@@ -5523,17 +5524,15 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_common.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h":
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\icmp6.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h":
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c:
 
@@ -5555,39 +5554,31 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h":
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\altcp.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcp.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\fs.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c:
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\xosc.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h":
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd_opts.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\vreg_and_chip_reset.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\boot_stage2\include\boot_stage2\config.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib":
 
@@ -5595,9 +5586,17 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sockets.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcpbase.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\boot_stage2\include\boot_stage2\config.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h:
 
@@ -5608,6 +5607,38 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h:
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\icmp.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\include\hardware\xosc.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\altcp_tcp.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\inet_chksum.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\raw.h:
 
@@ -5620,12 +5651,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\udp.h:
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\tcp_priv.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcpbase.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\icmp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\tcp.h:
 
@@ -5683,8 +5708,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\autoip.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\acd.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\iana.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c:
@@ -5700,8 +5723,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c:
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_frag.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c:
 
@@ -5740,8 +5761,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c:
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_sigset.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\altcp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_opts.h:
 
@@ -5957,10 +5976,6 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\include\hardware\
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\watchdog.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\include\hardware\xosc.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\xosc.h:
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\xosc.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_resets\include\hardware\resets.h:
@@ -6070,7 +6085,3 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h:
 C:\Users\kanuk\clone\GP2040-CE\lib\httpd\fs.c:
 
 C:\Users\kanuk\clone\GP2040-CE\lib\httpd\fs.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd_structs.h:

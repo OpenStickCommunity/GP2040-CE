@@ -78,24 +78,24 @@ lib\rndis\CMakeFiles\rndis.dir\rndis.c.s: cmake_force
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis.c -o CMakeFiles\rndis.dir\rndis.c.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: lib\rndis\CMakeFiles\rndis.dir\flags.make
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_reports.c
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: lib\rndis\CMakeFiles\rndis.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object lib/rndis/CMakeFiles/rndis.dir/rndis_reports.c.obj"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: lib\rndis\CMakeFiles\rndis.dir\flags.make
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: lib\rndis\CMakeFiles\rndis.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj -MF CMakeFiles\rndis.dir\rndis_reports.c.obj.d -o CMakeFiles\rndis.dir\rndis_reports.c.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_reports.c
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj -MF CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj.d -o CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rndis.dir/rndis_reports.c.i"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c.i"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_reports.c > CMakeFiles\rndis.dir\rndis_reports.c.i
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c > CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.i
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rndis.dir/rndis_reports.c.s"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c.s"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_reports.c -o CMakeFiles\rndis.dir\rndis_reports.c.s
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c -o CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: lib\rndis\CMakeFiles\rndis.dir\flags.make
@@ -3070,7 +3070,7 @@ lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\
 # Object files for target rndis
 rndis_OBJECTS = \
 "CMakeFiles\rndis.dir\rndis.c.obj" \
-"CMakeFiles\rndis.dir\rndis_reports.c.obj" \
+"CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj" \
 "CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj" \
 "CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj" \
 "CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj" \
@@ -3225,7 +3225,7 @@ rndis_OBJECTS = \
 rndis_EXTERNAL_OBJECTS =
 
 lib\rndis\librndis.a: lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj
-lib\rndis\librndis.a: lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj
+lib\rndis\librndis.a: lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj
 lib\rndis\librndis.a: lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj
 lib\rndis\librndis.a: lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj
 lib\rndis\librndis.a: lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj

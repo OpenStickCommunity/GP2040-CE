@@ -77,6 +77,18 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/GamepadDescriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/GamepadEnums.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/XInputDescriptors.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/KeyboardDescriptors.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/tusb.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_common.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/osal/osal.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_fifo.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid.h \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/device/usbd.h \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid_device.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid.h
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/net_device.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/cdc/cdc.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/ncm.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/PS4Descriptors.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/device/usbd.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid_device.h

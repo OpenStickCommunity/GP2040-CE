@@ -778,3 +778,12 @@ C:/Users/kanuk/clone/GP2040-CE/build2/lib/TinyUSB_Gamepad/CMakeFiles/list_instal
 C:/Users/kanuk/clone/GP2040-CE/build2/lib/TinyUSB_Gamepad/CMakeFiles/install.dir
 C:/Users/kanuk/clone/GP2040-CE/build2/lib/TinyUSB_Gamepad/CMakeFiles/install/local.dir
 C:/Users/kanuk/clone/GP2040-CE/build2/lib/TinyUSB_Gamepad/CMakeFiles/install/strip.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/WiiExtension.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/package.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/package_source.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/edit_cache.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/rebuild_cache.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/list_install_components.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/install.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/install/local.dir
+C:/Users/kanuk/clone/GP2040-CE/build2/lib/WiiExtension/CMakeFiles/install/strip.dir

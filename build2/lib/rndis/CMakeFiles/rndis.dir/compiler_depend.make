@@ -3727,6 +3727,79 @@ lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_opts.h
 
 
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdalign.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_protocol.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\ndis.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ethernet.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ieee.h
+
+
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
@@ -3910,8 +3983,8 @@ lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\cla
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
-lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_protocol.h
-lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\ndis.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_protocol.h
+lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\ndis.h
 
 
 lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c
@@ -6035,7 +6108,7 @@ lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\ti
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
-lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.h
+lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
@@ -6074,83 +6147,12 @@ lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lw
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ieee.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h
-lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.h
+lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\init.h
 lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\timeouts.h
-lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.h
-
-
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_reports.c
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdalign.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ethernet.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ieee.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_protocol.h
-lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\ndis.h
+lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd.h
+lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd_opts.h
+lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\iana.h
 
 
 
@@ -6165,8 +6167,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sys.h:
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h":
-
-C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.h:
 
 C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h:
 
@@ -6458,8 +6458,6 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c:
 
-C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\snmp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\dhcp.h:
@@ -6546,8 +6544,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\tcpip_priv.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\api_msg.h:
 
-C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_reports.c:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\sockets_priv.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\nd6_priv.h:
@@ -6626,6 +6622,8 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\struc
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\ndis.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c:
@@ -6684,19 +6682,21 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\zepif.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h:
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdalign.h":
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h":
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c:
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c:
 
@@ -6709,6 +6709,18 @@ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h:
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_protocol.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h:
 
@@ -6727,6 +6739,8 @@ generated\pico_base\pico\version.h:
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\usb.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h:
 
@@ -6763,20 +6777,6 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_protocol.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\rndis\ndis.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_private.h:
 
@@ -6847,6 +6847,8 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\include\hardware\
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\watchdog.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\include\hardware\xosc.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd_opts.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\xosc.h:
 
@@ -6934,6 +6936,8 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio\drive
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c:
 
-C:\Users\kanuk\clone\GP2040-CE\lib\httpd\httpd.h:
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdalign.h":
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\apps\httpd.h:

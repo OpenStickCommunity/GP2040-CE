@@ -3727,6 +3727,142 @@ lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\sr
 lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_opts.h
 
 
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\udp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\udp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\etharp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\etharp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ethernet.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ieee.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h
+
+
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\udp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\udp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\etharp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\etharp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ethernet.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ieee.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h
+
+
 lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c
 lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
 lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
@@ -5236,142 +5372,6 @@ lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_com
 lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
 
 
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.c
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\udp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\udp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\etharp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\etharp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ethernet.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ieee.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h
-
-
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.c
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\udp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_priv.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\mem_priv.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\udp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\etharp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\etharp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ethernet.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ieee.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h
-
-
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h:
 
@@ -5384,8 +5384,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sys.h:
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h":
-
-C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.h:
 
 C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h:
 
@@ -5661,8 +5659,6 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c:
 
-C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\snmp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\dhcp.h:
@@ -5744,8 +5740,6 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\tcpip_priv.h:
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\api_msg.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\sockets_priv.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\nd6_priv.h:
 
@@ -5873,6 +5867,16 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\zepif.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.h:
+
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h:
@@ -5890,8 +5894,6 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h:
 generated\pico_base\pico\version.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h:
 
@@ -5920,8 +5922,6 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h:
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\defs.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c:
 

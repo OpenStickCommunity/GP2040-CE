@@ -2752,6 +2752,66 @@ C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.s:
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
 .PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.s
 
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.obj: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.obj
+
+# target to build an object file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj
+
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.i: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.i
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.i
+
+# target to preprocess a source file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.i:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.i
+
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.s: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.s
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.s
+
+# target to generate assembly for a file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.s:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.s
+
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.obj: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.obj
+
+# target to build an object file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj
+
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.i: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.i
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.i
+
+# target to preprocess a source file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.i:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.i
+
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.s: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.s
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.s
+
+# target to generate assembly for a file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.s:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.s
+
 C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.obj: C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj
 .PHONY : C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.obj
 
@@ -3882,66 +3942,6 @@ C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.s:
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
 .PHONY : C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.s
 
-server\dhserver.obj: server\dhserver.c.obj
-.PHONY : server\dhserver.obj
-
-# target to build an object file
-server\dhserver.c.obj:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-.PHONY : server\dhserver.c.obj
-
-server\dhserver.i: server\dhserver.c.i
-.PHONY : server\dhserver.i
-
-# target to preprocess a source file
-server\dhserver.c.i:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.i
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-.PHONY : server\dhserver.c.i
-
-server\dhserver.s: server\dhserver.c.s
-.PHONY : server\dhserver.s
-
-# target to generate assembly for a file
-server\dhserver.c.s:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.s
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-.PHONY : server\dhserver.c.s
-
-server\dnserver.obj: server\dnserver.c.obj
-.PHONY : server\dnserver.obj
-
-# target to build an object file
-server\dnserver.c.obj:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-.PHONY : server\dnserver.c.obj
-
-server\dnserver.i: server\dnserver.c.i
-.PHONY : server\dnserver.i
-
-# target to preprocess a source file
-server\dnserver.c.i:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.i
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-.PHONY : server\dnserver.c.i
-
-server\dnserver.s: server\dnserver.c.s
-.PHONY : server\dnserver.s
-
-# target to generate assembly for a file
-server\dnserver.c.s:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\lwip-port\CMakeFiles\lwip-port.dir\build.make /nologo -$(MAKEFLAGS) lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.s
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-.PHONY : server\dnserver.c.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -4212,6 +4212,12 @@ help:
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.obj
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.i
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.s
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dhserver.obj
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dhserver.i
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dhserver.s
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dnserver.obj
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dnserver.i
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dnserver.s
 	@echo ... C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/critical_section.obj
 	@echo ... C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/critical_section.i
 	@echo ... C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/critical_section.s
@@ -4325,12 +4331,6 @@ help:
 	@echo ... C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.obj
 	@echo ... C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.i
 	@echo ... C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.s
-	@echo ... server/dhserver.obj
-	@echo ... server/dhserver.i
-	@echo ... server/dhserver.s
-	@echo ... server/dnserver.obj
-	@echo ... server/dnserver.i
-	@echo ... server/dnserver.s
 .PHONY : help
 
 

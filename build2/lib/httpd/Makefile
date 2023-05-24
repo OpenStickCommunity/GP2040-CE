@@ -472,6 +472,36 @@ C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.s:
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
 .PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.s
 
+C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.obj: C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.obj
+
+# target to build an object file
+C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\httpd\CMakeFiles\httpd.dir\build.make /nologo -$(MAKEFLAGS) lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.obj
+
+C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.i: C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.i
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.i
+
+# target to preprocess a source file
+C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.i:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\httpd\CMakeFiles\httpd.dir\build.make /nologo -$(MAKEFLAGS) lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.i
+
+C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.s: C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.s
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.s
+
+# target to generate assembly for a file
+C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.s:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\httpd\CMakeFiles\httpd.dir\build.make /nologo -$(MAKEFLAGS) lib\httpd\CMakeFiles\httpd.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\apps\http\httpd.c.s
+
 C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.obj: C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj
 .PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.obj
 
@@ -3942,36 +3972,6 @@ fsdata.c.s:
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
 .PHONY : fsdata.c.s
 
-httpd.obj: httpd.c.obj
-.PHONY : httpd.obj
-
-# target to build an object file
-httpd.c.obj:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\httpd\CMakeFiles\httpd.dir\build.make /nologo -$(MAKEFLAGS) lib\httpd\CMakeFiles\httpd.dir\httpd.c.obj
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
-.PHONY : httpd.c.obj
-
-httpd.i: httpd.c.i
-.PHONY : httpd.i
-
-# target to preprocess a source file
-httpd.c.i:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\httpd\CMakeFiles\httpd.dir\build.make /nologo -$(MAKEFLAGS) lib\httpd\CMakeFiles\httpd.dir\httpd.c.i
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
-.PHONY : httpd.c.i
-
-httpd.s: httpd.c.s
-.PHONY : httpd.s
-
-# target to generate assembly for a file
-httpd.c.s:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\httpd\CMakeFiles\httpd.dir\build.make /nologo -$(MAKEFLAGS) lib\httpd\CMakeFiles\httpd.dir\httpd.c.s
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\httpd
-.PHONY : httpd.c.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -4014,6 +4014,9 @@ help:
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.obj
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.i
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.s
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.obj
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.i
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.s
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.obj
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.i
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.s
@@ -4361,9 +4364,6 @@ help:
 	@echo ... fsdata.obj
 	@echo ... fsdata.i
 	@echo ... fsdata.s
-	@echo ... httpd.obj
-	@echo ... httpd.i
-	@echo ... httpd.s
 .PHONY : help
 
 

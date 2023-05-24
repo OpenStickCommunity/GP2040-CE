@@ -134,12 +134,43 @@ CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/HIDDescriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/SwitchDescriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/XInputDescriptors.h \
- C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include/pico/stdlib.h \
- C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include/pico/stdio.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/KeyboardDescriptors.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/tusb.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_common.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/tusb_option.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_compiler.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/tusb_config.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_mcu.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_compiler.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_verify.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_types.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_debug.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_timeout.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/osal/osal.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_common.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/osal/osal_pico.h \
  C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include/pico/time.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include/hardware/timer.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include/hardware/structs/timer.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include/hardware/regs/timer.h \
+ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/sem.h \
+ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/lock_core.h \
+ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include/hardware/sync.h \
+ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/mutex.h \
+ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/critical_section.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_fifo.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/osal/osal.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_fifo.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/device/usbd.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid_device.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/net_device.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/cdc/cdc.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/ncm.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/PS4Descriptors.h \
+ C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include/pico/stdlib.h \
+ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include/pico/stdio.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include/hardware/gpio.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include/hardware/structs/sio.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include/hardware/structs/interp.h \
@@ -167,13 +198,8 @@ CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: \
  C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include/hardware/structs/clocks.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include/hardware/regs/clocks.h \
  C:\Users\kanuk\clone\GP2040-CE\lib\FlashPROM\src/FlashPROM.h \
- C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/lock_core.h \
- C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include/hardware/sync.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_multicore\include/pico/multicore.h \
  C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/sync.h \
- C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/sem.h \
- C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/mutex.h \
- C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include/pico/critical_section.h \
  C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include/hardware/flash.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/enums.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/helper.h \
@@ -192,6 +218,17 @@ CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/Chase.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animation.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animationstation.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/CustomTheme.hpp \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\map \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\tuple \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/CustomThemePressed.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/Rainbow.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/StaticColor.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/StaticTheme.hpp \
@@ -215,43 +252,15 @@ CMakeFiles\GP2040-CE.dir\src\addons\buzzerspeaker.cpp.obj: \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\typeinfo \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\map \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\tuple \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h \
  C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src/PlayerLEDs.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\cstring \
  C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src/xinput_driver.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/tusb.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_common.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/tusb_option.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_compiler.h \
- C:\Users\kanuk\clone\GP2040-CE\headers/tusb_config.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_mcu.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_compiler.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_verify.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_types.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_debug.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_timeout.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/osal/osal.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_common.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/osal/osal_pico.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_fifo.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/osal/osal.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/common/tusb_fifo.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/device/usbd.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid_device.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/hid/hid.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/net_device.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/cdc/cdc.h \
- C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/ncm.h \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/device/usbd_pvt.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/rsa.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/mbedtls_config.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/bignum.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/md.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/platform_util.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\math.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\cmath \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\math.h \

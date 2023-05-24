@@ -39,7 +39,7 @@ endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/." TYPE FILE FILES
-    "C:/Users/kanuk/clone/GP2040-CE/build2/GP2040-CE_0.6.3_WaveshareZero.uf2"
+    "C:/Users/kanuk/clone/GP2040-CE/build2/GP2040-CE_0.7.1_WaveshareZero.uf2"
     "C:/Users/kanuk/clone/GP2040-CE/README.md"
     )
 endif()

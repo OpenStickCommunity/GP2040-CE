@@ -1452,6 +1452,66 @@ src\Effects\Chase.cpp.s:
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 .PHONY : src\Effects\Chase.cpp.s
 
+src\Effects\CustomTheme.obj: src\Effects\CustomTheme.cpp.obj
+.PHONY : src\Effects\CustomTheme.obj
+
+# target to build an object file
+src\Effects\CustomTheme.cpp.obj:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\AnimationStation\CMakeFiles\AnimationStation.dir\build.make /nologo -$(MAKEFLAGS) lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+.PHONY : src\Effects\CustomTheme.cpp.obj
+
+src\Effects\CustomTheme.i: src\Effects\CustomTheme.cpp.i
+.PHONY : src\Effects\CustomTheme.i
+
+# target to preprocess a source file
+src\Effects\CustomTheme.cpp.i:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\AnimationStation\CMakeFiles\AnimationStation.dir\build.make /nologo -$(MAKEFLAGS) lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+.PHONY : src\Effects\CustomTheme.cpp.i
+
+src\Effects\CustomTheme.s: src\Effects\CustomTheme.cpp.s
+.PHONY : src\Effects\CustomTheme.s
+
+# target to generate assembly for a file
+src\Effects\CustomTheme.cpp.s:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\AnimationStation\CMakeFiles\AnimationStation.dir\build.make /nologo -$(MAKEFLAGS) lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+.PHONY : src\Effects\CustomTheme.cpp.s
+
+src\Effects\CustomThemePressed.obj: src\Effects\CustomThemePressed.cpp.obj
+.PHONY : src\Effects\CustomThemePressed.obj
+
+# target to build an object file
+src\Effects\CustomThemePressed.cpp.obj:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\AnimationStation\CMakeFiles\AnimationStation.dir\build.make /nologo -$(MAKEFLAGS) lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+.PHONY : src\Effects\CustomThemePressed.cpp.obj
+
+src\Effects\CustomThemePressed.i: src\Effects\CustomThemePressed.cpp.i
+.PHONY : src\Effects\CustomThemePressed.i
+
+# target to preprocess a source file
+src\Effects\CustomThemePressed.cpp.i:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\AnimationStation\CMakeFiles\AnimationStation.dir\build.make /nologo -$(MAKEFLAGS) lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+.PHONY : src\Effects\CustomThemePressed.cpp.i
+
+src\Effects\CustomThemePressed.s: src\Effects\CustomThemePressed.cpp.s
+.PHONY : src\Effects\CustomThemePressed.s
+
+# target to generate assembly for a file
+src\Effects\CustomThemePressed.cpp.s:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\AnimationStation\CMakeFiles\AnimationStation.dir\build.make /nologo -$(MAKEFLAGS) lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+.PHONY : src\Effects\CustomThemePressed.cpp.s
+
 src\Effects\Rainbow.obj: src\Effects\Rainbow.cpp.obj
 .PHONY : src\Effects\Rainbow.obj
 
@@ -1682,6 +1742,12 @@ help:
 	@echo ... src/Effects/Chase.obj
 	@echo ... src/Effects/Chase.i
 	@echo ... src/Effects/Chase.s
+	@echo ... src/Effects/CustomTheme.obj
+	@echo ... src/Effects/CustomTheme.i
+	@echo ... src/Effects/CustomTheme.s
+	@echo ... src/Effects/CustomThemePressed.obj
+	@echo ... src/Effects/CustomThemePressed.i
+	@echo ... src/Effects/CustomThemePressed.s
 	@echo ... src/Effects/Rainbow.obj
 	@echo ... src/Effects/Rainbow.i
 	@echo ... src/Effects/Rainbow.s

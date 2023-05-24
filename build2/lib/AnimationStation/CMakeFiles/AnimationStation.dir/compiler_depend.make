@@ -1822,6 +1822,17 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.ob
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -1871,15 +1882,6 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.ob
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.cpp
@@ -2020,9 +2022,20 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iterator"
@@ -2071,15 +2084,410 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+
+
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.cpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algobase.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\cpu_defines.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functexcept.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_defines.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cpp_type_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\numeric_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_pair.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\move.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\utility.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_types.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_funcs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\concept_check.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\assertions.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ptr_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\debug.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\predefined_ops.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\new_allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\new"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_function.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\backward\binders.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\alloc_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\alloc_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_construct.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\initializer_list"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\invoke.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Pixel.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdlib.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\vector"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_uninitialized.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functional_hash.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\hash_bytes.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\refwrap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: generated\pico_base\pico\version.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: generated\pico_base\pico\config_autogen.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pads_bank0.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\iobank0.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_bank0.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\include\hardware\irq.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\intctrl.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\include\hardware\uart.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\uart.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_uart.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\NeoPico.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\generated\ws2812.pio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio_instructions.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\include\hardware\clocks.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\algorithm"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algo.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\algorithmfwd.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_heap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tempbuf.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uniform_int_dist.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\glue_algorithm_defs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\execution_defs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iterator"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iosfwd"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stream_iterator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf_iterator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\streambuf"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\clocale"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\locale.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cctype"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ios_base.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\atomicity.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr-default.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\atomic_word.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\char_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream_insert.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_forced.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string_view"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\string_view.tcc"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\string_conversions.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\charconv.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.tcc"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.tcc"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\system_error"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\error_constants.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdexcept"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\exception"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_ptr.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_init_exception.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
+
+
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.cpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algobase.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\cpu_defines.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functexcept.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_defines.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cpp_type_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\numeric_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_pair.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\move.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\utility.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_types.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_funcs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\concept_check.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\assertions.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ptr_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\debug.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\predefined_ops.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\new_allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\new"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_function.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\backward\binders.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\alloc_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\alloc_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_construct.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\initializer_list"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\invoke.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\vector"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_uninitialized.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functional_hash.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\hash_bytes.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\refwrap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Pixel.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdlib.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: generated\pico_base\pico\version.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: generated\pico_base\pico\config_autogen.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pads_bank0.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\iobank0.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_bank0.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\include\hardware\irq.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\intctrl.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\include\hardware\uart.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\uart.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_uart.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\NeoPico.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\NeoPico\src\generated\ws2812.pio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pio.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio_instructions.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\include\hardware\clocks.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\algorithm"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algo.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\algorithmfwd.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_heap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tempbuf.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uniform_int_dist.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\glue_algorithm_defs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\execution_defs.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iterator"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iosfwd"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stream_iterator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf_iterator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\streambuf"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\clocale"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\locale.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cctype"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ios_base.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\atomicity.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\gthr-default.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\atomic_word.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\char_traits.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream_insert.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_forced.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string_view"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\string_view.tcc"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\string_conversions.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\charconv.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.tcc"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\locale_classes.tcc"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\system_error"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\error_constants.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\stdexcept"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\exception"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_ptr.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_init_exception.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
 
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.cpp
@@ -2222,6 +2630,17 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -2271,15 +2690,6 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.cpp
@@ -2422,6 +2832,17 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -2471,15 +2892,6 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\typeinfo"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h"
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tuple"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h"
-lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h"
 
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.cpp
@@ -2677,6 +3089,8 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.hpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.hpp
@@ -2709,9 +3123,9 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h":
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h":
 
@@ -2756,6 +3170,8 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h:
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h":
+
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h":
 
@@ -2870,6 +3286,8 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c:
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\queue.h:
+
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.cpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c:
 
@@ -3032,6 +3450,8 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c:
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\endian.h":
+
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.cpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h":
 
@@ -3203,6 +3623,18 @@ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.hpp:
 
 C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.hpp:
 
+C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.hpp:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h":
+
 C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.hpp:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\streambuf_iterator.h":
@@ -3266,16 +3698,6 @@ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.cpp:
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_init_exception.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\map":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h":
 
 C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.cpp:
 

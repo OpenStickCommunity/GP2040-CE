@@ -87,8 +87,11 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/HIDDescriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/SwitchDescriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/XInputDescriptors.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/KeyboardDescriptors.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/PS4Descriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\usb_driver.h \
  C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\net_driver.h \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/net_device.h \
  C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\hid_driver.h \
- C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
+ C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h \
+ C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.h

@@ -180,6 +180,17 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/Chase.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animation.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animationstation.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/CustomTheme.hpp \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\map \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\tuple \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/CustomThemePressed.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/Rainbow.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/StaticColor.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/Effects/StaticTheme.hpp \
@@ -203,15 +214,6 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\typeinfo \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\map \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\tuple \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h \
  C:\Users\kanuk\clone\GP2040-CE\lib\PlayerLEDs\src/PlayerLEDs.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\cstring \
  C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src/xinput_driver.h \
@@ -248,25 +250,33 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/GamepadStorage.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/HIDDescriptors.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/SwitchDescriptors.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/KeyboardDescriptors.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/gamepad/descriptors/PS4Descriptors.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/rsa.h \
+ C:\Users\kanuk\clone\GP2040-CE\headers/mbedtls_config.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/bignum.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/md.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include/mbedtls/platform_util.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/configmanager.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/gpconfig.h \
  C:\Users\kanuk\clone\GP2040-CE\headers/storagemanager.h \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/AnimationStorage.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src/AnimationStation.hpp \
  C:\Users\kanuk\clone\GP2040-CE\headers/system.h \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson.h \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Configuration.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/ArrayRef.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/ArrayFunctions.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Collection/CollectionData.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/JsonArray.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/ElementProxy.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantRefBase.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/Converter.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Namespace.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/preprocessor.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/version.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/assert.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/ArrayIterator.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/SlotFunctions.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantData.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/JsonVariantConst.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Memory/MemoryPool.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Memory/Alignment.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/assert.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/mpl/max.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/StringAdapters.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits.hpp \
@@ -275,6 +285,7 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/integral_constant.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/is_array.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/is_base_of.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/remove_reference.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/is_class.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/declval.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/is_const.hpp \
@@ -291,12 +302,11 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/type_identity.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/make_void.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/remove_const.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/type_traits/remove_reference.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/Adapters/JsonString.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/Adapters/RamString.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/IsString.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/String.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Misc/SafeBoolIdiom.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/StoragePolicy.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/StringAdapter.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/JsonString.hpp \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ostream \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ios \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\basic_ios.h \
@@ -308,52 +318,53 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\locale_facets.tcc \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\basic_ios.tcc \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\ostream.tcc \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/Adapters/StdString.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/Adapters/StringView.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/Adapters/StringObject.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/StringTraits.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantSlot.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/integer.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/limits.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantContent.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/Float.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/Integer.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Collection/CollectionData.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/JsonFloat.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/JsonInteger.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/IsString.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantAttorney.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/attributes.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantTo.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantFunctions.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantData.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Misc/SerializedValue.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/convertNumber.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantRef.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Misc/Visitable.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/Converter.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantFunctions.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/attributes.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Strings/StoragePolicy.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/FloatTraits.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/alias_cast.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/math.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/pgmspace_generic.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/Visitor.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantOperators.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/arithmeticCompare.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantTag.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantShortcuts.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/ArrayShortcuts.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/ObjectShortcuts.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/ObjectRef.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/ObjectFunctions.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/ObjectIterator.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/Pair.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/JsonArrayConst.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/JsonArrayIterator.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/JsonVariant.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/SlotFunctions.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/JsonObject.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/JsonObjectConst.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/JsonObjectIterator.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/JsonPair.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/MemberProxy.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Document/DynamicJsonDocument.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Document/BasicJsonDocument.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Document/JsonDocument.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/ElementProxy.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantTo.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/MemberProxy.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Document/StaticJsonDocument.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/ArrayImpl.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/JsonArrayImpl.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Array/Utilities.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Collection/CollectionImpl.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/ObjectImpl.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Object/JsonObjectImpl.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/ConverterImpl.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Json/JsonSerializer.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Json/TextFormatter.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Json/EscapeSequence.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/FloatParts.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/FloatTraits.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/alias_cast.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/math.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/static_array.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Serialization/CountingDecorator.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Serialization/measure.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Serialization/Writers/DummyWriter.hpp \
@@ -362,7 +373,6 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Serialization/Writers/StaticStringWriter.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Serialization/Writers/StdStringWriter.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Serialization/Writers/StdStreamWriter.hpp \
- C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/Visitor.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantCompare.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Variant/VariantImpl.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Numbers/parseNumber.hpp \
@@ -370,9 +380,11 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Json/JsonDeserializer.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/deserialize.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/DeserializationError.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/DeserializationOptions.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/Filter.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/NestingLimit.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/Reader.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Polyfills/utility.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/Readers/IteratorReader.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/Readers/RamReader.hpp \
  C:\Users\kanuk\clone\GP2040-CE\build2\_deps\arduinojson-src\src/ArduinoJson/Deserialization/Readers/VariantReader.hpp \
@@ -404,7 +416,9 @@ CMakeFiles\GP2040-CE.dir\src\configs\webconfig.cpp.obj: \
  c:\users\kanuk\clone\gp2040-ce\lib\httpd\fscustom.h \
  c:\users\kanuk\clone\gp2040-ce\lib\httpd\fs.h \
  c:\users\kanuk\clone\gp2040-ce\lib\httpd\fsdata.h \
- c:\users\kanuk\clone\gp2040-ce\lib\httpd\httpd.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/apps/httpd.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/apps/httpd_opts.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/prot/iana.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/pbuf.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/def.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/mem.h \

@@ -3727,6 +3727,79 @@ lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/netif/lowpan6.h
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/netif/lowpan6_opts.h
 
+lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c.obj
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stdalign.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/string.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/_ansi.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/newlib.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/_newlib_version.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/config.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/machine/ieeefp.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/features.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/reent.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/_ansi.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stddef.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/_types.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/machine/_types.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/machine/_default_types.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/lock.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/cdefs.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/_locale.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/strings.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/string.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/net_device.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_common.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stdint.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/stdint.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/_intsup.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/_stdint.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/stdio.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stdarg.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/stdio.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/tusb_option.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_compiler.h
+ C:/Users/kanuk/clone/GP2040-CE/headers/tusb_config.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_mcu.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_compiler.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_verify.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_types.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_debug.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_timeout.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ncm.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_protocol.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/ndis.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/netif/ethernet.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/opt.h
+ C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/lwipopts.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/debug.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/arch.h
+ C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/arch/cc.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/stdlib.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/machine/stdlib.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/alloca.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/inttypes.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include-fixed/limits.h
+ C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/ctype.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/pbuf.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/err.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/netif.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/ip_addr.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/def.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/ip4_addr.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/ip6_addr.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/def.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/stats.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/mem.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/memp.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/priv/memp_std.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/priv/memp_priv.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/priv/mem_priv.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/prot/ethernet.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/prot/ieee.h
+
 lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/tusb_option.h
@@ -3911,8 +3984,8 @@ lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/cla
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/net_device.h
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc.h
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ncm.h
- C:/Users/kanuk/clone/GP2040-CE/lib/rndis/rndis_protocol.h
- C:/Users/kanuk/clone/GP2040-CE/lib/rndis/ndis.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_protocol.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/ndis.h
 
 lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c
@@ -6036,7 +6109,7 @@ lib/rndis/CMakeFiles/rndis.dir/rndis.c.obj
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/net_device.h
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc.h
  C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ncm.h
- C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/server/dhserver.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dhserver.h
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/err.h
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/opt.h
  C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/lwipopts.h
@@ -6075,81 +6148,10 @@ lib/rndis/CMakeFiles/rndis.dir/rndis.c.obj
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/prot/ieee.h
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/prot/etharp.h
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/netif/ethernet.h
- C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/server/dnserver.h
+ C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dnserver.h
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/init.h
  C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/timeouts.h
- C:/Users/kanuk/clone/GP2040-CE/lib/httpd/httpd.h
-
-lib/rndis/CMakeFiles/rndis.dir/rndis_reports.c.obj
- C:/Users/kanuk/clone/GP2040-CE/lib/rndis/rndis_reports.c
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stdalign.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/string.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/_ansi.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/newlib.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/_newlib_version.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/config.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/machine/ieeefp.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/features.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/reent.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/_ansi.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stddef.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/_types.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/machine/_types.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/machine/_default_types.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/lock.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/cdefs.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/_locale.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/strings.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/string.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/netif/ethernet.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/opt.h
- C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/lwipopts.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/debug.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/arch.h
- C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/arch/cc.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/stdio.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stdarg.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/stdio.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/stdlib.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/machine/stdlib.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/alloca.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stdint.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/stdint.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/_intsup.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/sys/_stdint.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/inttypes.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include-fixed/limits.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/arm-none-eabi/include/ctype.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/pbuf.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/err.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/netif.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/ip_addr.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/def.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/ip4_addr.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/ip6_addr.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/def.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/stats.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/mem.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/memp.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/priv/memp_std.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/priv/memp_priv.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/priv/mem_priv.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/prot/ethernet.h
- C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/prot/ieee.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/net_device.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_common.h
- C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/12.2 rel1/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/tusb_option.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_compiler.h
- C:/Users/kanuk/clone/GP2040-CE/headers/tusb_config.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_mcu.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_compiler.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_verify.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_types.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_debug.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_timeout.h
- C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ncm.h
- C:/Users/kanuk/clone/GP2040-CE/lib/rndis/rndis_protocol.h
- C:/Users/kanuk/clone/GP2040-CE/lib/rndis/ndis.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/apps/httpd.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/apps/httpd_opts.h
+ C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include/lwip/prot/iana.h
 

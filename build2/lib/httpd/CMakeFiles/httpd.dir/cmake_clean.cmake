@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/sockets.c.obj.d"
   "CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.c.obj"
   "CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.c.obj.d"
+  "CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.c.obj"
+  "CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.c.obj.d"
   "CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.c.obj"
   "CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.c.obj.d"
   "CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_alloc.c.obj"
@@ -252,8 +254,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/httpd.dir/fs.c.obj.d"
   "CMakeFiles/httpd.dir/fsdata.c.obj"
   "CMakeFiles/httpd.dir/fsdata.c.obj.d"
-  "CMakeFiles/httpd.dir/httpd.c.obj"
-  "CMakeFiles/httpd.dir/httpd.c.obj.d"
   "libhttpd.a"
   "libhttpd.pdb"
 )

@@ -71,6 +71,7 @@ set(CMAKE_TARGET_DEFINITIONS_ASM
 set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "C:/Users/kanuk/clone/GP2040-CE/lib/rndis"
   "C:/Users/kanuk/clone/GP2040-CE/headers"
+  "C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking"
   "C:/Users/kanuk/clone/pico-sdk/src/common/pico_stdlib/include"
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_gpio/include"
   "C:/Users/kanuk/clone/pico-sdk/src/common/pico_base/include"
@@ -114,7 +115,6 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/hw"
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/include"
   "C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/."
-  "C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/server"
   "C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/arch"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include"
   "C:/Users/kanuk/clone/GP2040-CE/lib/httpd/."
@@ -207,6 +207,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/vj.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/vj.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/vj.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/slipif.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/slipif.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/slipif.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.c.obj.d"
+  "C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj.d"
@@ -260,7 +261,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj.d"
   "C:/Users/kanuk/clone/GP2040-CE/lib/rndis/rndis.c" "lib/rndis/CMakeFiles/rndis.dir/rndis.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/rndis.c.obj.d"
-  "C:/Users/kanuk/clone/GP2040-CE/lib/rndis/rndis_reports.c" "lib/rndis/CMakeFiles/rndis.dir/rndis_reports.c.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/rndis_reports.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj" "gcc" "lib/rndis/CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj.d"
   )
 

@@ -69,5 +69,5 @@ lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\cla
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/cdc/cdc.h \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h \
- C:\Users\kanuk\clone\GP2040-CE\lib\rndis/rndis_protocol.h \
- C:\Users\kanuk\clone\GP2040-CE\lib\rndis/ndis.h
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking/rndis_protocol.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking/ndis.h

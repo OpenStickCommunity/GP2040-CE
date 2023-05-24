@@ -75,7 +75,7 @@ lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/net_device.h \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/cdc/cdc.h \
  C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src/class/net/ncm.h \
- c:\users\kanuk\clone\gp2040-ce\lib\lwip-port\server\dhserver.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking/dhserver.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/err.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/opt.h \
  c:\users\kanuk\clone\gp2040-ce\lib\lwip-port\lwipopts.h \
@@ -114,7 +114,9 @@ lib\rndis\CMakeFiles\rndis.dir\rndis.c.obj: \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/prot/ieee.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/prot/etharp.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/netif/ethernet.h \
- c:\users\kanuk\clone\gp2040-ce\lib\lwip-port\server\dnserver.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking/dnserver.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/init.h \
  C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/timeouts.h \
- c:\users\kanuk\clone\gp2040-ce\lib\httpd\httpd.h
+ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/apps/httpd.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/apps/httpd_opts.h \
+ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include/lwip/prot/iana.h

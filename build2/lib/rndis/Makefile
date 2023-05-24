@@ -2752,6 +2752,36 @@ C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.s:
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
 .PHONY : C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.s
 
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.obj: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.obj
+
+# target to build an object file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\rndis\CMakeFiles\rndis.dir\build.make /nologo -$(MAKEFLAGS) lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.obj
+
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.i: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.i
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.i
+
+# target to preprocess a source file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.i:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\rndis\CMakeFiles\rndis.dir\build.make /nologo -$(MAKEFLAGS) lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.i
+
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.s: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.s
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.s
+
+# target to generate assembly for a file
+C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.s:
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+	$(MAKE) $(MAKESILENT) -f lib\rndis\CMakeFiles\rndis.dir\build.make /nologo -$(MAKEFLAGS) lib\rndis\CMakeFiles\rndis.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
+.PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_reports.c.s
+
 C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.obj: C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj
 .PHONY : C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.obj
 
@@ -4482,36 +4512,6 @@ rndis.c.s:
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
 .PHONY : rndis.c.s
 
-rndis_reports.obj: rndis_reports.c.obj
-.PHONY : rndis_reports.obj
-
-# target to build an object file
-rndis_reports.c.obj:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\rndis\CMakeFiles\rndis.dir\build.make /nologo -$(MAKEFLAGS) lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.obj
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
-.PHONY : rndis_reports.c.obj
-
-rndis_reports.i: rndis_reports.c.i
-.PHONY : rndis_reports.i
-
-# target to preprocess a source file
-rndis_reports.c.i:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\rndis\CMakeFiles\rndis.dir\build.make /nologo -$(MAKEFLAGS) lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.i
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
-.PHONY : rndis_reports.c.i
-
-rndis_reports.s: rndis_reports.c.s
-.PHONY : rndis_reports.s
-
-# target to generate assembly for a file
-rndis_reports.c.s:
-	cd C:\Users\kanuk\clone\GP2040-CE\build2
-	$(MAKE) $(MAKESILENT) -f lib\rndis\CMakeFiles\rndis.dir\build.make /nologo -$(MAKEFLAGS) lib\rndis\CMakeFiles\rndis.dir\rndis_reports.c.s
-	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\rndis
-.PHONY : rndis_reports.c.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -4782,6 +4782,9 @@ help:
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.obj
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.i
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.s
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.obj
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.i
+	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.s
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.obj
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.i
 	@echo ... C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.s
@@ -4955,9 +4958,6 @@ help:
 	@echo ... rndis.obj
 	@echo ... rndis.i
 	@echo ... rndis.s
-	@echo ... rndis_reports.obj
-	@echo ... rndis_reports.i
-	@echo ... rndis_reports.s
 .PHONY : help
 
 

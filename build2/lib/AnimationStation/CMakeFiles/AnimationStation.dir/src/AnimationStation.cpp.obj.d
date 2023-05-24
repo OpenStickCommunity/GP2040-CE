@@ -137,6 +137,17 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.ob
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects/Chase.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animation.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animationstation.hpp \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects/CustomTheme.hpp \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\map \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\tuple \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h \
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h \
+ C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects/CustomThemePressed.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects/Rainbow.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects/StaticColor.hpp \
  C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects/StaticTheme.hpp \
@@ -185,13 +196,4 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.ob
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_init_exception.h \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\typeinfo \
  c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\nested_exception.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\map \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_tree.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\ext\aligned_buffer.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\node_handle.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_map.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\tuple \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\uses_allocator.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\stl_multimap.h \
- c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\erase_if.h
+ c:\progra~2\armgnu~1\12dbab~1.2re\arm-none-eabi\include\c++\12.2.1\bits\streambuf.tcc

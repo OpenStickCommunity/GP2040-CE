@@ -194,6 +194,8 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\Effects/Chase.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animation.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\animationstation.hpp \
+ c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\Effects/CustomTheme.hpp \
+ c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\Effects/CustomThemePressed.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\Effects/Rainbow.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\Effects/StaticColor.hpp \
  c:\users\kanuk\clone\gp2040-ce\lib\animationstation\src\Effects/StaticTheme.hpp

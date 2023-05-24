@@ -103,8 +103,8 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_mem_ops/include"
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/boot_stage2/include"
   "C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/."
-  "C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/server"
   "C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/arch"
+  "C:/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/include"
   )
 
@@ -119,6 +119,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netifapi.c" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netifapi.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netifapi.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/sockets.c" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/sockets.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/sockets.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.c" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.c.obj.d"
+  "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.c" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/apps/http/httpd.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.c" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_alloc.c" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_alloc.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_alloc.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_tcp.c" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_tcp.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_tcp.c.obj.d"
@@ -230,7 +231,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj.d"
   "C:/Users/kanuk/clone/GP2040-CE/lib/httpd/fs.c" "lib/httpd/CMakeFiles/httpd.dir/fs.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/fs.c.obj.d"
   "C:/Users/kanuk/clone/GP2040-CE/lib/httpd/fsdata.c" "lib/httpd/CMakeFiles/httpd.dir/fsdata.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/fsdata.c.obj.d"
-  "C:/Users/kanuk/clone/GP2040-CE/lib/httpd/httpd.c" "lib/httpd/CMakeFiles/httpd.dir/httpd.c.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/httpd.c.obj.d"
   "C:/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj" "gcc" "lib/httpd/CMakeFiles/httpd.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj.d"
   )
 

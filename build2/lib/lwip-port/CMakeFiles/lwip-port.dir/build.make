@@ -58,44 +58,44 @@ include lib\lwip-port\CMakeFiles\lwip-port.dir\progress.make
 # Include the compile flags for this target's objects.
 include lib\lwip-port\CMakeFiles\lwip-port.dir\flags.make
 
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\flags.make
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.c
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object lib/lwip-port/CMakeFiles/lwip-port.dir/server/dhserver.c.obj"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\flags.make
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object lib/lwip-port/CMakeFiles/lwip-port.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dhserver.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj -MF CMakeFiles\lwip-port.dir\server\dhserver.c.obj.d -o CMakeFiles\lwip-port.dir\server\dhserver.c.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.c
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj -MF CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj.d -o CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/lwip-port.dir/server/dhserver.c.i"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/lwip-port.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dhserver.c.i"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.c > CMakeFiles\lwip-port.dir\server\dhserver.c.i
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c > CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.i
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/lwip-port.dir/server/dhserver.c.s"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/lwip-port.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dhserver.c.s"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dhserver.c -o CMakeFiles\lwip-port.dir\server\dhserver.c.s
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c -o CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\flags.make
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.c
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object lib/lwip-port/CMakeFiles/lwip-port.dir/server/dnserver.c.obj"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\flags.make
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object lib/lwip-port/CMakeFiles/lwip-port.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dnserver.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj -MF CMakeFiles\lwip-port.dir\server\dnserver.c.obj.d -o CMakeFiles\lwip-port.dir\server\dnserver.c.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.c
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj -MF CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj.d -o CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/lwip-port.dir/server/dnserver.c.i"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/lwip-port.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dnserver.c.i"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.c > CMakeFiles\lwip-port.dir\server\dnserver.c.i
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c > CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.i
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
-lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/lwip-port.dir/server/dnserver.c.s"
+lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/lwip-port.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/dnserver.c.s"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\lwip-port
-	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\server\dnserver.c -o CMakeFiles\lwip-port.dir\server\dnserver.c.s
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c -o CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
 lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: lib\lwip-port\CMakeFiles\lwip-port.dir\flags.make
@@ -2689,8 +2689,8 @@ lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\sr
 
 # Object files for target lwip-port
 lwip__port_OBJECTS = \
-"CMakeFiles\lwip-port.dir\server\dhserver.c.obj" \
-"CMakeFiles\lwip-port.dir\server\dnserver.c.obj" \
+"CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj" \
+"CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj" \
 "CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj" \
 "CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj" \
 "CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj" \
@@ -2825,8 +2825,8 @@ lwip__port_OBJECTS = \
 # External object files for target lwip-port
 lwip__port_EXTERNAL_OBJECTS =
 
-lib\lwip-port\liblwip-port.a: lib\lwip-port\CMakeFiles\lwip-port.dir\server\dhserver.c.obj
-lib\lwip-port\liblwip-port.a: lib\lwip-port\CMakeFiles\lwip-port.dir\server\dnserver.c.obj
+lib\lwip-port\liblwip-port.a: lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dhserver.c.obj
+lib\lwip-port\liblwip-port.a: lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\dnserver.c.obj
 lib\lwip-port\liblwip-port.a: lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj
 lib\lwip-port\liblwip-port.a: lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj
 lib\lwip-port\liblwip-port.a: lib\lwip-port\CMakeFiles\lwip-port.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj

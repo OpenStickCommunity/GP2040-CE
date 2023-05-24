@@ -3727,6 +3727,1476 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_opts.h
 
 
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bn_mul.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time_internal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\certs.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time_internal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\constant_time.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md_internal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\pkcs11.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\threading.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\config_psa.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_values.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_struct.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cmac.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cipher.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\gcm.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_primitives.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_primitives.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_composites.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_composites.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_extra.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_compat.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\config_psa.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_values.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_struct.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cmac.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cipher.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\gcm.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_primitives.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_primitives.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_composites.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_composites.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_extra.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_compat.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_core.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_se_driver.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md_internal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa_internal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\oid.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\asn1.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\pk.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\config_psa.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_values.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_struct.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cmac.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cipher.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\gcm.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_primitives.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_primitives.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_composites.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_composites.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_extra.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_compat.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time_internal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\constant_time.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa_internal.h
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+
+
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
@@ -3910,8 +5380,8 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
-lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_protocol.h
-lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\GP2040-CE\lib\rndis\ndis.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_protocol.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\ndis.h
 
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c
@@ -4882,6 +6352,45 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_bank0.h
 
 
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: generated\pico_base\pico\version.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: generated\pico_base\pico\config_autogen.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\include\pico\bootrom.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ssi.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\ssi.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ioqspi.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_qspi.h
+
+
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
@@ -5550,6 +7059,48 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\include\pico\malloc.h
 
 
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\include\pico\rand.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: generated\pico_base\pico\version.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: generated\pico_base\pico\config_autogen.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+
+
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
@@ -5625,6 +7176,53 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\include\pico\printf.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\float.h"
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\include\pico\rand.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: generated\pico_base\pico\version.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: generated\pico_base\pico\config_autogen.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\include\pico\unique_id.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\include\hardware\clocks.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\rosc.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\rosc.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\bus_ctrl.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\busctrl.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
 
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c
@@ -5959,6 +7557,40 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h
 
 
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: generated\pico_base\pico\version.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: generated\pico_base\pico\config_autogen.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\include\pico\unique_id.h
+
+
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\hid_driver.cpp
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\hid_driver.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
@@ -6037,9 +7669,21 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Us
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadDescriptors.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadEnums.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\hid_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
 
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\net_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\net_driver.cpp
@@ -6117,6 +7761,197 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\net_driver.cpp.obj: C:\Us
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\net_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\net_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\net_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.cpp
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_newlib_version.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\cdefs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\cpu_defines.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: generated\pico_base\pico\version.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: generated\pico_base\pico\config_autogen.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\lock_core.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\CRC32\src\CRC32.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\random"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cmath"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cpp_type_traits.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\math.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\std_abs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\specfun.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algobase.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functexcept.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_defines.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\numeric_traits.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_pair.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\move.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\utility.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_types.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_funcs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\concept_check.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\assertions.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ptr_traits.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\debug.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\predefined_ops.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\limits"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\gamma.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\special_function_util.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\bessel_function.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\beta_function.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\ell_integral.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\exp_integral.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\hypergeometric.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\legendre_function.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\modified_bessel_func.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\poly_hermite.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\poly_laguerre.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\riemann_zeta.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\char_traits.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++allocator.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\new_allocator.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\new"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\clocale"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\locale.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iosfwd"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cctype"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream_insert.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_forced.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_function.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\backward\binders.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\refwrap.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\invoke.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\initializer_list"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\alloc_traits.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\alloc_traits.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_construct.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string_view"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functional_hash.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\hash_bytes.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\string_view.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\string_conversions.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\charconv.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\random.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\vector"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_uninitialized.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uniform_int_dist.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\opt_random.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\random.tcc"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\numeric"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_numeric.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bit"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\glue_numeric_defs.h"
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\execution_defs.h"
 
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\tusb_driver.cpp
@@ -6207,11 +8042,14 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\U
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\usb_driver.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\net_driver.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\hid_driver.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.h
 
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\usb_descriptors.cpp
@@ -6302,6 +8140,8 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj: 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\webserver_descriptors.h
 
 
@@ -6392,13 +8232,15 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\xinput_driver.cpp.obj: C:
 
 
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip_addr.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\opt.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sys.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\timespec.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c:
 
@@ -6408,35 +8250,49 @@ C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\lwipopts.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\debug.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\etharp.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\arch.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string_view":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.h:
+
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\tbman.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\random":
 
 C:\Users\kanuk\clone\GP2040-CE\lib\lwip-port\arch\cc.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdio.h":
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\inet_chksum.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h":
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\include\pico\rand.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_locale.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\_ansi.h":
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_values.h:
+
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\newlib.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\poly_hermite.tcc":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\select.h":
 
@@ -6444,11 +8300,11 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\include\pico\platform
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\ieeefp.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdarg.h":
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_pvt.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\config.h":
 
@@ -6456,39 +8312,47 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\init.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdint.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\features.h":
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\pkcs11.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\stats.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_default_types.h":
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stddef.h":
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h":
+
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_compiler.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\reent.h":
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\pk.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_types.h":
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h:
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netdb.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\types.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netdb.h:
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_mcu.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\icmp.h:
 
@@ -6498,19 +8362,21 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\include\hardware\tim
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\lock.h":
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h":
+
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\include\pico\float.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\stdio.h":
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\error.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\stdlib.h":
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\stdlib.h":
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\alloca.h":
 
@@ -6518,9 +8384,9 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_intsup.h":
 
@@ -6528,63 +8394,97 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_addr.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_stdint.h":
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\include\hardware\pll.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\inttypes.h":
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\def.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h":
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_common.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include-fixed\limits.h":
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mem.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\icmp6.h:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha256.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\icmp6.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md4.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\ctype.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\oid.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\err.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\include\pico\bootrom\sf_table.h:
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\clocks.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_common.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\errno.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\include\pico\bootrom\sf_table.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\char_traits.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_bank0.h:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c:
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_bank0.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c:
+
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\string.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcp.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_algobase.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\tcp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c:
 
@@ -6596,9 +8496,11 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\strings.h":
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\vreg_and_chip_reset.h:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\pbuf.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\vreg_and_chip_reset.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\boot_stage2\include\boot_stage2\config.h:
 
@@ -6606,11 +8508,15 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_addr.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\beta_function.tcc":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\memp.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib":
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\sockets.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdlib":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\memp_std.h:
 
@@ -6622,21 +8528,31 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netif.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip4.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\ip.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\alloc_traits.h":
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\raw.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\udp.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\udp.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\postypes.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\pstl_config.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\tcp_priv.h:
 
@@ -6651,6 +8567,10 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\tcp.h:
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\igmp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\dns.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\timeouts.h:
 
@@ -6670,23 +8590,23 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\nd6.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\mld6.h:
 
-generated\pico_base\pico\config_autogen.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\api.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\api.h:
+generated\pico_base\pico\config_autogen.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ppp\ppp_opts.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ppp\ppp_impl.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c:
 
@@ -6694,9 +8614,15 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bignum.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\snmp.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\dhcp.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip6_frag.h:
 
@@ -6706,17 +8632,19 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\acd.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\iana.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\debug.h":
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\ethernet.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\structure.h:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c:
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_qspi.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c:
 
@@ -6726,13 +8654,15 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ip4_frag.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\raw_priv.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\psm.h:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\certs.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\psm.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c:
 
@@ -6740,25 +8670,41 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\tusb_config.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_vector.h":
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c:
-
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c:
 
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\prot\icmp6.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\bessel_function.tcc":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c:
 
@@ -6768,15 +8714,15 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\altcp.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_opts.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\netbuf.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6_opts.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\tcpip_priv.h:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h":
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\api_msg.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\lib\gcc\arm-none-eabi\12.2.1\include\stdbool.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\priv\sockets_priv.h:
 
@@ -6786,11 +8732,17 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\res
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\KeyboardDescriptors.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\gcm.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c:
 
@@ -6798,9 +8750,9 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\dhcp6.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c:
 
@@ -6810,25 +8762,29 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\bridgeif.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\bridgeif_opts.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\lwip\ethip6.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c:
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\time.h":
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pll.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\include\hardware\uart.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pll.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\time.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\lowpan6.h:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\mbedtls_config.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c:
 
@@ -6844,31 +8800,41 @@ C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\hid_driver.cpp:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pll.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c:
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\watchdog.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator.h":
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c:
 
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\ndis.h:
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_composites.h:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\unistd.h":
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c:
+C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c:
 
@@ -6886,6 +8852,8 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\include\pico\time.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++allocator.h":
+
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c:
@@ -6898,13 +8866,13 @@ C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h":
-
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\scb.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\assert.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\scb.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\slipif.h:
 
@@ -6916,51 +8884,341 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_
 
 C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\include\netif\zepif.h:
 
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\include\pico\malloc.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\common.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\bn_mul.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\string_view.tcc":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform_util.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\error.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time_internal.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\lib\networking\rndis_protocol.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functional_hash.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\constant_time.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c:
+
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\PS4Descriptors.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha1.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_timeval.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c:
+
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb_option.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md_internal.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md2.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\md5.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\ripemd160.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\types.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\sha512.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_types.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\pheap.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c:
+
+generated\pico_base\pico\version.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_numeric.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_timespec.h":
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\include\pico\printf.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\platform.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\threading.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_platform.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\config_psa.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_types.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_sizes.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_struct.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cmac.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\cipher.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_primitives.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ptr_traits.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_builtin_primitives.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_driver_contexts_composites.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_extra.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_compat.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\rosc.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\include\hardware\claim.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_core.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\psa\crypto_se_driver.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\include\pico\fix\rp2040_usb_device_enumeration.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stringfwd.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_endian.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\utility.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h:
+
+C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\net_driver.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\rsa_internal.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\include\mbedtls\asn1.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ssi.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\include\pico\unique_id.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\ioqspi.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\times.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\range_access.h":
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cwchar":
+
+C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c:
+
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c:
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\os_defines.h":
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c:
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_common.h:
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_verify.h:
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_types.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_debug.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_timeout.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\ell_integral.tcc":
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c:
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\osal\osal_pico.h:
 
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c:
+
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\types.h":
-
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\assert.h:
-
-generated\pico_base\pico\version.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\usb.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_base\include\pico\config.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\boards\include\boards\pico.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cxxabi_forced.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h:
 
@@ -6976,43 +9234,23 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\defs.h:
-
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sem.h:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_timespec.h":
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\include\pico\printf.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\include\hardware\sync.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\mutex.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\critical_section.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\exp_integral.tcc":
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\net_device.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc.h:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\rndis\rndis_protocol.h:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\rndis\ndis.h:
+C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_private.h:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c:
 
@@ -7020,19 +9258,17 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\numeric_traits.h":
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\dcd.h:
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.h:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\random.h":
 
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c:
-
-C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\endian.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\type_traits.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\usb.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\endian.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_resets\include\hardware\resets.h:
 
@@ -7041,8 +9277,6 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\include\hardware\irq.h
 C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\usb_descriptors.cpp:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\intctrl.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h:
 
 C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c:
 
@@ -7054,27 +9288,19 @@ C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\pheap.h:
-
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\include\pico\sync.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\include\pico\fix\rp2040_usb_device_enumeration.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\datetime.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c:
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\allocator.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\include\pico\util\queue.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\include\hardware\claim.h:
-
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\include\hardware\clocks.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\clocks.h:
+C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\include\hardware\watchdog.h:
 
@@ -7086,29 +9312,29 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\struc
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\xosc.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdint":
+
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pads_bank0.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\iobank0.h:
 
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\clocale":
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\include\hardware\flash.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\include\pico\bootrom.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\ssi.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\cpp_type_traits.h":
+
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c:
-
-C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\HIDDescriptors.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c:
-
-C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\net_driver.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\include\hardware\vreg.h:
 
@@ -7116,29 +9342,29 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\struc
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\psm.h:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c:
-
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\include\pico\bootrom.h:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\math.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\include\pico\double.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c:
 
-C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\include\pico\malloc.h:
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c:
 
 C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\GamepadDescriptors.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sysinfo.h:
 
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\rosc.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\bus_ctrl.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\busctrl.h:
+
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\code.h:
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c:
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_timeval.h":
-
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_endian.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\_pthreadtypes.h":
 
@@ -7146,23 +9372,29 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c:
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\sched.h":
 
-C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\tusb_driver.cpp:
-
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\types.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\time.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\time.h":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_time.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\modified_bessel_func.tcc":
 
-"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\times.h":
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\machine\_time.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\unistd.h":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\mpu.h:
 
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c:
+
 C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\defs.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\structure.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cmath":
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp:
 
@@ -7174,11 +9406,19 @@ C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio\drive
 
 C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c:
 
+C:\Users\kanuk\clone\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h:
+
+C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c:
+
 C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\hid_driver.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\random.tcc":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cassert":
 
 C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\SwitchDescriptors.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\hash_bytes.h":
 
 C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\usb_driver.h:
 
@@ -7188,9 +9428,119 @@ C:\Users\kanuk\clone\GP2040-CE\headers\gamepad\descriptors\XInputDescriptors.h:
 
 C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\net_driver.cpp:
 
-C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h:
+C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.cpp:
+
+C:\Users\kanuk\clone\GP2040-CE\lib\CRC32\src\CRC32.h:
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\debug\assertions.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\specfun.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\functexcept.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception_defines.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_pair.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\type_traits":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bit":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\move.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_iterator_base_funcs.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\concept_check.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\predefined_ops.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\limits":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\gamma.tcc":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\special_function_util.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\hypergeometric.tcc":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\legendre_function.tcc":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\poly_laguerre.tcc":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\tr1\riemann_zeta.tcc":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\string":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\memoryfwd.h":
 
 "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\wchar.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\new_allocator.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\new":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\exception.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\localefwd.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\c++locale.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\locale.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\iosfwd":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cctype":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\ostream_insert.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_function.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\backward\binders.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\refwrap.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\invoke.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\initializer_list":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\alloc_traits.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_construct.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\ext\string_conversions.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cstdio":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\cerrno":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\errno.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\sys\errno.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\charconv.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\basic_string.tcc":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\vector":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_uninitialized.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\stl_bvector.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\vector.tcc":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\bits\uniform_int_dist.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\arm-none-eabi\thumb\v6-m\nofp\bits\opt_random.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\numeric":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\glue_numeric_defs.h":
+
+"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 rel1\arm-none-eabi\include\c++\12.2.1\pstl\execution_defs.h":
+
+C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\tusb_driver.cpp:
+
+C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.h:
 
 C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\webserver_descriptors.h:
 

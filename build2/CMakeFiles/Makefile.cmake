@@ -58,6 +58,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Users/kanuk/clone/GP2040-CE/lib/OneBitDisplay/CMakeLists.txt"
   "C:/Users/kanuk/clone/GP2040-CE/lib/PlayerLEDs/CMakeLists.txt"
   "C:/Users/kanuk/clone/GP2040-CE/lib/TinyUSB_Gamepad/CMakeLists.txt"
+  "C:/Users/kanuk/clone/GP2040-CE/lib/WiiExtension/CMakeLists.txt"
   "C:/Users/kanuk/clone/GP2040-CE/lib/httpd/CMakeLists.txt"
   "C:/Users/kanuk/clone/GP2040-CE/lib/lwip-port/CMakeLists.txt"
   "C:/Users/kanuk/clone/GP2040-CE/lib/rndis/CMakeLists.txt"
@@ -283,6 +284,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "lib/PlayerLEDs/CMakeFiles/CMakeDirectoryInformation.cmake"
   "lib/rndis/CMakeFiles/CMakeDirectoryInformation.cmake"
   "lib/TinyUSB_Gamepad/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "lib/WiiExtension/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -307,4 +309,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "lib/PlayerLEDs/CMakeFiles/PlayerLEDs.dir/DependInfo.cmake"
   "lib/rndis/CMakeFiles/rndis.dir/DependInfo.cmake"
   "lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/DependInfo.cmake"
+  "lib/WiiExtension/CMakeFiles/WiiExtension.dir/DependInfo.cmake"
   )

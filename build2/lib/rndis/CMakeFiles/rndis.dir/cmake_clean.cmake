@@ -169,6 +169,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/slipif.c.obj.d"
   "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.c.obj"
   "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.c.obj.d"
+  "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c.obj"
+  "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/lib/networking/rndis_reports.c.obj.d"
   "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj"
   "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj.d"
   "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj"
@@ -288,8 +290,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/rndis.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj.d"
   "CMakeFiles/rndis.dir/rndis.c.obj"
   "CMakeFiles/rndis.dir/rndis.c.obj.d"
-  "CMakeFiles/rndis.dir/rndis_reports.c.obj"
-  "CMakeFiles/rndis.dir/rndis_reports.c.obj.d"
   "librndis.a"
   "librndis.pdb"
 )

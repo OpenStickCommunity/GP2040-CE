@@ -158,10 +158,30 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\xinput_driver.cpp.s: cmak
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\xinput_driver.cpp -o CMakeFiles\TinyUSB_Gamepad.dir\src\xinput_driver.cpp.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.cpp
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/src/ps4_driver.cpp.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.cpp
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TinyUSB_Gamepad.dir/src/ps4_driver.cpp.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.cpp > CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TinyUSB_Gamepad.dir/src/ps4_driver.cpp.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\TinyUSB_Gamepad\src\ps4_driver.cpp -o CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -181,7 +201,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -201,7 +221,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_platform/platform.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_platform/platform.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -221,7 +241,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -241,7 +261,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -261,7 +281,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -280,7 +300,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -300,7 +320,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/sem.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/sem.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -320,7 +340,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/lock_core.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/lock_core.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -340,7 +360,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/mutex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/mutex.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -360,7 +380,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/critical_section.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/critical_section.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -380,7 +400,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_time/time.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_time/time.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -400,7 +420,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_time/timeout_helper.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_time/timeout_helper.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -420,7 +440,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -440,7 +460,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/datetime.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/datetime.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -460,7 +480,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/pheap.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/pheap.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -480,7 +500,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/queue.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/queue.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -500,7 +520,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -520,7 +540,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -540,7 +560,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -560,7 +580,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -580,7 +600,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -600,7 +620,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -619,7 +639,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_divider/divider.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_divider/divider.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -639,7 +659,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -659,7 +679,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_printf/printf.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_printf/printf.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -678,7 +698,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -698,7 +718,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -717,7 +737,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_divider/divider.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_divider/divider.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -736,7 +756,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -756,7 +776,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -776,7 +796,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_math.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_math.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -795,7 +815,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -814,7 +834,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -833,7 +853,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -853,7 +873,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -873,7 +893,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_math.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_math.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -892,7 +912,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -912,7 +932,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_malloc/pico_malloc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_malloc/pico_malloc.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -931,7 +951,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -950,7 +970,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building ASM object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -970,7 +990,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -990,7 +1010,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1010,7 +1030,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1030,7 +1050,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1047,10 +1067,2010 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_mbedtls/pico_mbedtls.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_mbedtls/pico_mbedtls.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_mbedtls/pico_mbedtls.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aes.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aes.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aes.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aesni.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aesni.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aesni.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/arc4.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/arc4.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/arc4.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aria.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aria.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/aria.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/asn1parse.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/asn1parse.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/asn1parse.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/asn1write.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/asn1write.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/asn1write.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/base64.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/base64.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/base64.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/bignum.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/bignum.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/bignum.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/blowfish.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/blowfish.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/blowfish.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/camellia.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/camellia.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/camellia.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ccm.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ccm.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ccm.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/chacha20.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/chacha20.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/chacha20.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/chachapoly.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/chachapoly.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/chachapoly.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cipher.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cipher.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cipher.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cipher_wrap.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cipher_wrap.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cipher_wrap.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/constant_time.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/constant_time.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/constant_time.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cmac.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cmac.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/cmac.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ctr_drbg.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ctr_drbg.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ctr_drbg.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/des.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/des.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/des.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/dhm.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/dhm.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/dhm.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecdh.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecdh.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecdh.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecdsa.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecdsa.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecdsa.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecjpake.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecjpake.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecjpake.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecp.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecp.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecp.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecp_curves.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecp_curves.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ecp_curves.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/entropy.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/entropy.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/entropy.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/entropy_poll.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/entropy_poll.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/entropy_poll.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/error.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/error.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/error.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/gcm.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/gcm.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/gcm.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/havege.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/havege.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/havege.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/hkdf.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/hkdf.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/hkdf.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/hmac_drbg.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/hmac_drbg.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/hmac_drbg.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md2.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md2.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md2.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md4.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md4.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md4.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md5.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md5.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/md5.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/memory_buffer_alloc.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/memory_buffer_alloc.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/memory_buffer_alloc.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/mps_reader.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/mps_reader.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/mps_reader.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/mps_trace.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/mps_trace.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/mps_trace.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_92) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/nist_kw.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/nist_kw.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/nist_kw.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_93) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/oid.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/oid.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/oid.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_94) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/padlock.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/padlock.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/padlock.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_95) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pem.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pem.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pem.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_96) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pk.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pk.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pk.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_97) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pk_wrap.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pk_wrap.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pk_wrap.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_98) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs12.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs12.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs12.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_99) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs5.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs5.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs5.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_100) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkparse.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkparse.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkparse.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_101) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkwrite.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkwrite.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkwrite.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_102) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/platform.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/platform.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/platform.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_103) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/platform_util.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/platform_util.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/platform_util.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_104) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/poly1305.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/poly1305.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/poly1305.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_105) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_106) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_aead.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_aead.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_aead.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_107) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_cipher.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_cipher.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_cipher.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_108) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_client.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_client.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_client.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_109) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_driver_wrappers.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_driver_wrappers.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_driver_wrappers.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_110) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_ecp.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_ecp.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_ecp.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_111) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_hash.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_hash.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_hash.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_112) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_mac.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_mac.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_mac.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_113) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_rsa.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_rsa.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_rsa.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_114) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_se.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_se.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_se.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_115) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_slot_management.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_slot_management.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_slot_management.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_116) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_storage.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_storage.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_crypto_storage.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_117) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_its_file.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_its_file.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/psa_its_file.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_118) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ripemd160.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ripemd160.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ripemd160.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_119) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/rsa.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/rsa.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/rsa.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_120) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/rsa_internal.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/rsa_internal.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/rsa_internal.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_121) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha1.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha1.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha1.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_122) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha256.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha256.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha256.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_123) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha512.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha512.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/sha512.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_124) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/threading.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/threading.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/threading.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_125) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/timing.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/timing.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/timing.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_126) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/version.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/version.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/version.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_127) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/version_features.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/version_features.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/version_features.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_128) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/xtea.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/xtea.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/xtea.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_129) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/certs.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/certs.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/certs.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_130) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs11.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs11.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/pkcs11.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_131) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_132) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_create.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_create.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_create.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_133) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_crl.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_crl.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_crl.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_134) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_crt.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_crt.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_crt.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_135) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_csr.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_csr.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509_csr.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_136) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509write_crt.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509write_crt.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509write_crt.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_137) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509write_csr.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509write_csr.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/x509write_csr.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_138) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/debug.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/debug.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/debug.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_139) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/net_sockets.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/net_sockets.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/net_sockets.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_140) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cache.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cache.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cache.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_141) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_ciphersuites.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_ciphersuites.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_ciphersuites.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_142) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cli.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cli.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cli.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_143) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cookie.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cookie.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_cookie.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_144) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_msg.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_msg.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_msg.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_145) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_srv.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_srv.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_srv.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_146) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_ticket.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_ticket.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_ticket.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_147) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_tls.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_tls.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_tls.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_148) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_tls13_keys.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_tls13_keys.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/mbedtls/library/ssl_tls13_keys.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_149) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_rand/rand.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_rand/rand.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_rand/rand.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_150) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_unique_id/unique_id.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_151) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_flash/flash.c.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_flash/flash.c.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c > CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_flash/flash.c.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_152) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1070,7 +3090,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_153) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1090,7 +3110,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/device/usbd.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_154) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/device/usbd.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1110,7 +3130,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_155) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/device/usbd_control.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd_control.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1130,7 +3150,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_156) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\audio\audio_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1150,7 +3170,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_157) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/cdc/cdc_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\cdc\cdc_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1170,7 +3190,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_158) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/dfu/dfu_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1190,7 +3210,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_159) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/dfu/dfu_rt_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\dfu\dfu_rt_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1210,7 +3230,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_160) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/hid/hid_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\hid\hid_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1230,7 +3250,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_161) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/midi/midi_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\midi\midi_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1250,7 +3270,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_162) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/msc/msc_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\msc\msc_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1270,7 +3290,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_163) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ecm_rndis_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ecm_rndis_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1290,7 +3310,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_164) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/net/ncm_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\net\ncm_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1310,7 +3330,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_165) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/usbtmc/usbtmc_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\usbtmc\usbtmc_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1330,7 +3350,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_166) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/vendor/vendor_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\vendor\vendor_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1350,7 +3370,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_167) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/class/video/video_device.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\class\video\video_device.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1370,7 +3390,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/tusb.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_168) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/tusb.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\tusb.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1390,7 +3410,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_169) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/tinyusb/src/common/tusb_fifo.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\common\tusb_fifo.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1410,7 +3430,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_170) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_fix\rp2040_usb_device_enumeration\rp2040_usb_device_enumeration.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1430,7 +3450,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/init.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_171) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/init.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\init.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1450,7 +3470,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/def.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_172) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/def.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\def.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1470,7 +3490,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/dns.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_173) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/dns.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\dns.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1490,7 +3510,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/inet_chksum.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_174) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/inet_chksum.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\inet_chksum.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1510,7 +3530,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ip.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_175) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ip.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ip.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1530,7 +3550,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/mem.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_176) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/mem.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\mem.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1550,7 +3570,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/memp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_177) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/memp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\memp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1570,7 +3590,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/netif.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_178) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/netif.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\netif.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1590,7 +3610,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/pbuf.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_179) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/pbuf.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\pbuf.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1610,7 +3630,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/raw.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_180) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/raw.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\raw.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1630,7 +3650,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/stats.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_181) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/stats.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\stats.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1650,7 +3670,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/sys.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_182) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/sys.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\sys.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1670,7 +3690,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_183) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1690,7 +3710,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_alloc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_184) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_alloc.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_alloc.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1710,7 +3730,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_tcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_185) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/altcp_tcp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\altcp_tcp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1730,7 +3750,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/tcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_186) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/tcp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1750,7 +3770,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/tcp_in.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_187) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/tcp_in.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_in.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1770,7 +3790,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/tcp_out.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_188) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/tcp_out.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\tcp_out.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1790,7 +3810,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/timeouts.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_189) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/timeouts.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\timeouts.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1810,7 +3830,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/udp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_190) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/udp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\udp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1830,7 +3850,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/autoip.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_191) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/autoip.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\autoip.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1850,7 +3870,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/dhcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_192) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/dhcp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\dhcp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1870,7 +3890,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_92) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/etharp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_193) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/etharp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\etharp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1890,7 +3910,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_93) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/icmp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_194) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/icmp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\icmp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1910,7 +3930,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_94) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/igmp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_195) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/igmp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\igmp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1930,7 +3950,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_95) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/ip4_frag.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_196) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/ip4_frag.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_frag.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1950,7 +3970,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_96) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/ip4.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_197) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/ip4.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1970,7 +3990,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_97) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/ip4_addr.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_198) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/ip4_addr.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\ip4_addr.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1990,7 +4010,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_98) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/acd.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_199) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv4/acd.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv4\acd.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2010,7 +4030,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_99) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/dhcp6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_200) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/dhcp6.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\dhcp6.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2030,7 +4050,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_100) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/ethip6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_201) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/ethip6.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ethip6.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2050,7 +4070,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_101) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/icmp6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_202) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/icmp6.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\icmp6.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2070,7 +4090,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_102) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/inet6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_203) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/inet6.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\inet6.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2090,7 +4110,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_103) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/ip6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_204) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/ip6.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2110,7 +4130,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_104) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/ip6_addr.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_205) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/ip6_addr.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_addr.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2130,7 +4150,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_105) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/ip6_frag.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_206) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/ip6_frag.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\ip6_frag.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2150,7 +4170,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_106) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/mld6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_207) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/mld6.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\mld6.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2170,7 +4190,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_107) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/nd6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_208) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/core/ipv6/nd6.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\core\ipv6\nd6.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2190,7 +4210,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_108) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/api_lib.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_209) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/api_lib.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_lib.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2210,7 +4230,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_109) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/api_msg.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_210) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/api_msg.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\api_msg.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2230,7 +4250,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_110) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/err.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_211) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/err.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\err.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2250,7 +4270,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_111) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/if_api.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_212) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/if_api.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\if_api.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2270,7 +4290,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_112) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netbuf.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_213) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netbuf.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netbuf.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2290,7 +4310,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_113) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netdb.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_214) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netdb.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netdb.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2310,7 +4330,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_114) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netifapi.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_215) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/netifapi.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\netifapi.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2330,7 +4350,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_115) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/sockets.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_216) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/sockets.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\sockets.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2350,7 +4370,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_116) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_217) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/api/tcpip.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\api\tcpip.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2370,7 +4390,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_117) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ethernet.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_218) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ethernet.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ethernet.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2390,7 +4410,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_118) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/bridgeif.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_219) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/bridgeif.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2410,7 +4430,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_119) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/bridgeif_fdb.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_220) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/bridgeif_fdb.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\bridgeif_fdb.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2430,7 +4450,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_120) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/slipif.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_221) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/slipif.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\slipif.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2450,7 +4470,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_common.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_common.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_common.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_common.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_121) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/lowpan6_common.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_222) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/lowpan6_common.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_common.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_common.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_common.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_common.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2470,7 +4490,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_122) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/lowpan6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_223) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/lowpan6.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2490,7 +4510,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_123) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/lowpan6_ble.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_224) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/lowpan6_ble.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\lowpan6_ble.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2510,7 +4530,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_124) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_225) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/zepif.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\zepif.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2530,7 +4550,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_125) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/auth.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_226) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/auth.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\auth.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2550,7 +4570,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_126) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ccp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_227) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ccp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ccp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2570,7 +4590,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_127) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/chap-md5.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_228) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/chap-md5.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-md5.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2590,7 +4610,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_128) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/chap_ms.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_229) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/chap_ms.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap_ms.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2610,7 +4630,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_129) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/chap-new.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_230) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/chap-new.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\chap-new.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2630,7 +4650,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_130) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/demand.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_231) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/demand.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\demand.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2650,7 +4670,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_131) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/eap.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_232) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/eap.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eap.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2670,7 +4690,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_132) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ecp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_233) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ecp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ecp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2690,7 +4710,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_133) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/eui64.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_234) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/eui64.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\eui64.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2710,7 +4730,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_134) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/fsm.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_235) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/fsm.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\fsm.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2730,7 +4750,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_135) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ipcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_236) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ipcp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipcp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2750,7 +4770,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_136) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ipv6cp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_237) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ipv6cp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ipv6cp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2770,7 +4790,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_137) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/lcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_238) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/lcp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\lcp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2790,7 +4810,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_138) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/magic.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_239) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/magic.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\magic.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2810,7 +4830,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_139) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/mppe.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_240) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/mppe.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\mppe.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2830,7 +4850,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_140) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/multilink.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_241) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/multilink.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\multilink.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2850,7 +4870,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_141) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ppp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_242) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/ppp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\ppp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2870,7 +4890,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_142) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppapi.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_243) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppapi.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppapi.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2890,7 +4910,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_143) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppcrypt.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_244) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppcrypt.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppcrypt.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2910,7 +4930,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppoe.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppoe.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppoe.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppoe.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_144) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppoe.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_245) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppoe.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppoe.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppoe.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppoe.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppoe.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2930,7 +4950,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppol2tp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppol2tp.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppol2tp.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppol2tp.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_145) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppol2tp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_246) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppol2tp.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppol2tp.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppol2tp.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppol2tp.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppol2tp.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2950,7 +4970,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_146) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppos.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_247) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/pppos.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\pppos.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2970,7 +4990,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_147) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/upap.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_248) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/upap.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\upap.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -2990,7 +5010,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_148) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/utils.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_249) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/utils.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\utils.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -3010,7 +5030,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_149) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/vj.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_250) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/vj.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\vj.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -3030,7 +5050,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_150) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/arc4.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_251) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/arc4.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\arc4.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -3050,7 +5070,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_151) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/des.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_252) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/des.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\des.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -3070,7 +5090,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md4.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md4.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md4.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_152) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/md4.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_253) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/md4.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md4.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md4.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md4.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md4.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -3090,7 +5110,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_153) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/md5.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_254) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/md5.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\md5.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -3110,7 +5130,7 @@ lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\flags.make
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c.obj: C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c
 lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c.obj: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_154) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/sha1.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_255) "Building C object lib/TinyUSB_Gamepad/CMakeFiles/TinyUSB_Gamepad.dir/C_/Users/kanuk/clone/pico-sdk/lib/lwip/src/netif/ppp/polarssl/sha1.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c.obj -MF CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c.obj.d -o CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c.obj -c C:\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -3134,6 +5154,7 @@ TinyUSB_Gamepad_OBJECTS = \
 "CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\src\xinput_driver.cpp.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj" \
@@ -3179,6 +5200,106 @@ TinyUSB_Gamepad_OBJECTS = \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj" \
+"CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c.obj" \
 "CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c.obj" \
@@ -3292,6 +5413,7 @@ lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\tusb_driver.cpp.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\usb_descriptors.cpp.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\xinput_driver.cpp.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\src\ps4_driver.cpp.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj
@@ -3337,6 +5459,106 @@ lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mbedtls\pico_mbedtls.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aes.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aesni.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\arc4.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\aria.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1parse.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\asn1write.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\base64.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\bignum.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\blowfish.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\camellia.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ccm.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chacha20.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\chachapoly.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cipher_wrap.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\constant_time.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\cmac.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ctr_drbg.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\des.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\dhm.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdh.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecdsa.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecjpake.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ecp_curves.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\entropy_poll.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\error.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\gcm.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\havege.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hkdf.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\hmac_drbg.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md2.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md4.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\md5.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\memory_buffer_alloc.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_reader.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\mps_trace.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\nist_kw.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\oid.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\padlock.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pem.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pk_wrap.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs12.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs5.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkparse.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkwrite.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\platform_util.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\poly1305.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_aead.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_cipher.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_client.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_driver_wrappers.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_ecp.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_hash.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_mac.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_rsa.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_se.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_slot_management.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_crypto_storage.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\psa_its_file.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ripemd160.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\rsa_internal.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha1.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha256.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\sha512.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\threading.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\timing.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\version_features.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\xtea.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\certs.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\pkcs11.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_create.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crl.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_crt.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509_csr.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_crt.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\x509write_csr.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\debug.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\net_sockets.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cache.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ciphersuites.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cli.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_cookie.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_msg.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_srv.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_ticket.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\mbedtls\library\ssl_tls13_keys.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_rand\rand.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_unique_id\unique_id.c.obj
+lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_flash\flash.c.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\dcd_rp2040.c.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\portable\raspberrypi\rp2040\rp2040_usb.c.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\tinyusb\src\device\usbd.c.obj
@@ -3443,7 +5665,7 @@ lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\C_\Users\kanuk\clone\pico-sdk\lib\lwip\src\netif\ppp\polarssl\sha1.c.obj
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\build.make
 lib\TinyUSB_Gamepad\libTinyUSB_Gamepad.a: lib\TinyUSB_Gamepad\CMakeFiles\TinyUSB_Gamepad.dir\link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_155) "Linking CXX static library libTinyUSB_Gamepad.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_256) "Linking CXX static library libTinyUSB_Gamepad.a"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\TinyUSB_Gamepad
 	$(CMAKE_COMMAND) -P CMakeFiles\TinyUSB_Gamepad.dir\cmake_clean_target.cmake
 	cd C:\Users\kanuk\clone\GP2040-CE\build2

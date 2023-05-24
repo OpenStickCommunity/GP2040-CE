@@ -41,12 +41,12 @@ endif()
 
 execute_process(
   COMMAND "C:/Program Files/Git/cmd/git.exe" 
-          checkout "v6.19.4" --
+          checkout "v6.21.2" --
   WORKING_DIRECTORY "C:/Users/kanuk/clone/GP2040-CE/build2/_deps/arduinojson-src"
   RESULT_VARIABLE error_code
 )
 if(error_code)
-  message(FATAL_ERROR "Failed to checkout tag: 'v6.19.4'")
+  message(FATAL_ERROR "Failed to checkout tag: 'v6.21.2'")
 endif()
 
 set(init_submodules TRUE)

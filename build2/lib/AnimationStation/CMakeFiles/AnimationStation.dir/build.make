@@ -78,10 +78,50 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.s: cm
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Chase.cpp -o CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.s
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
 
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.cpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Effects/CustomTheme.cpp.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj -MF CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj.d -o CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.cpp
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/AnimationStation.dir/src/Effects/CustomTheme.cpp.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.cpp > CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/AnimationStation.dir/src/Effects/CustomTheme.cpp.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomTheme.cpp -o CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.cpp
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Effects/CustomThemePressed.cpp.obj"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj -MF CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj.d -o CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.cpp
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/AnimationStation.dir/src/Effects/CustomThemePressed.cpp.i"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.cpp > CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.i
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
+lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/AnimationStation.dir/src/Effects/CustomThemePressed.cpp.s"
+	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
+	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\CustomThemePressed.cpp -o CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.s
+	cd C:\Users\kanuk\clone\GP2040-CE\build2
+
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Effects/Rainbow.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Effects/Rainbow.cpp.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj -MF CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj.d -o CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\Rainbow.cpp
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -101,7 +141,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.s: 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Effects/StaticColor.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Effects/StaticColor.cpp.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj -MF CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj.d -o CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticColor.cpp
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -121,7 +161,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Effects/StaticTheme.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Effects/StaticTheme.cpp.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj -MF CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj.d -o CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Effects\StaticTheme.cpp
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -141,7 +181,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/AnimationStation.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/AnimationStation.cpp.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj -MF CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj.d -o CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\AnimationStation.cpp
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -161,7 +201,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\AnimationStation.cpp.s:
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Animation.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Animation.cpp.obj: C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Animation.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Animation.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/src/Animation.cpp.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Animation.cpp.obj -MF CMakeFiles\AnimationStation.dir\src\Animation.cpp.obj.d -o CMakeFiles\AnimationStation.dir\src\Animation.cpp.obj -c C:\Users\kanuk\clone\GP2040-CE\lib\AnimationStation\src\Animation.cpp
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -181,7 +221,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Animation.cpp.s: cmake_
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdlib/stdlib.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdlib\stdlib.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -201,7 +241,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_gpio\gpio.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -221,7 +261,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_platform/platform.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_platform/platform.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_platform\platform.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -241,7 +281,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_claim\claim.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -261,7 +301,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_sync\sync.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -281,7 +321,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -300,7 +340,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_irq\irq_handler_chain.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -320,7 +360,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/sem.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/sem.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\sem.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -340,7 +380,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/lock_core.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/lock_core.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\lock_core.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -360,7 +400,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/mutex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/mutex.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\mutex.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -380,7 +420,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/critical_section.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_sync/critical_section.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_sync\critical_section.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -400,7 +440,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_time/time.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_time/time.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\time.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -420,7 +460,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_time/timeout_helper.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_time/timeout_helper.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_time\timeout_helper.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -440,7 +480,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_timer\timer.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -460,7 +500,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/datetime.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/datetime.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\datetime.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -480,7 +520,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/pheap.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/pheap.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\pheap.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -500,7 +540,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj: C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/queue.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/common/pico_util/queue.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\common\pico_util\queue.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -520,7 +560,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_uart\uart.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -540,7 +580,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_clocks\clocks.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -560,7 +600,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pll\pll.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -580,7 +620,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_vreg/vreg.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_vreg\vreg.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -600,7 +640,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_watchdog\watchdog.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -620,7 +660,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_xosc\xosc.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -639,7 +679,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_divider/divider.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_divider/divider.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_divider\divider.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -659,7 +699,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_runtime\runtime.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -679,7 +719,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_printf/printf.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_printf/printf.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_printf\printf.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -698,7 +738,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bit_ops\bit_ops_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -718,7 +758,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_bootrom\bootrom.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -737,7 +777,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_divider/divider.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_divider/divider.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_divider\divider.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -756,7 +796,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -776,7 +816,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_init_rom.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -796,7 +836,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_math.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_math.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_math.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -815,7 +855,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_double\double_v1_rom_shim.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -834,7 +874,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_int64_ops\pico_int64_ops_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -853,7 +893,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -873,7 +913,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_init_rom.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -893,7 +933,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_math.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_math.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_math.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -912,7 +952,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_float\float_v1_rom_shim.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -932,7 +972,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_malloc/pico_malloc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_malloc/pico_malloc.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_malloc\pico_malloc.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -951,7 +991,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_mem_ops\mem_ops_aeabi.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -970,7 +1010,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building ASM object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S.obj   -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\crt0.S
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -990,7 +1030,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR10B2~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\new_delete.cpp
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1010,7 +1050,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_standard_link\binary_info.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1030,7 +1070,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio\stdio.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1050,7 +1090,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\pico_stdio_uart\stdio_uart.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1070,7 +1110,7 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\flags.make
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c.obj: C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c
 lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c.obj: lib\AnimationStation\CMakeFiles\AnimationStation.dir\compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building C object lib/AnimationStation/CMakeFiles/AnimationStation.dir/C_/Users/kanuk/clone/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	C:\PROGRA~2\ARMGNU~1\12DBAB~1.2RE\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c.obj -MF CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c.obj.d -o CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c.obj -c C:\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
@@ -1090,6 +1130,8 @@ lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-s
 # Object files for target AnimationStation
 AnimationStation_OBJECTS = \
 "CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj" \
+"CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj" \
+"CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj" \
 "CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj" \
 "CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj" \
 "CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj" \
@@ -1146,6 +1188,8 @@ AnimationStation_OBJECTS = \
 AnimationStation_EXTERNAL_OBJECTS =
 
 lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Chase.cpp.obj
+lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomTheme.cpp.obj
+lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\CustomThemePressed.cpp.obj
 lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\Rainbow.cpp.obj
 lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticColor.cpp.obj
 lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\src\Effects\StaticTheme.cpp.obj
@@ -1199,7 +1243,7 @@ lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\Anim
 lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\C_\Users\kanuk\clone\pico-sdk\src\rp2_common\hardware_pio\pio.c.obj
 lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\build.make
 lib\AnimationStation\libAnimationStation.a: lib\AnimationStation\CMakeFiles\AnimationStation.dir\link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Linking CXX static library libAnimationStation.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\kanuk\clone\GP2040-CE\build2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Linking CXX static library libAnimationStation.a"
 	cd C:\Users\kanuk\clone\GP2040-CE\build2\lib\AnimationStation
 	$(CMAKE_COMMAND) -P CMakeFiles\AnimationStation.dir\cmake_clean_target.cmake
 	cd C:\Users\kanuk\clone\GP2040-CE\build2
