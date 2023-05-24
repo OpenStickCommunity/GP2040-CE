@@ -31,7 +31,7 @@ const Navigation = (props) => {
 
 	const updateButtonLabels = (e) => {
 		saveButtonLabels(e.target.value);
-		setButtonLabels(e.target.value);
+		setButtonLabels({ buttonLabelType: e.target.value });
 	};
 
 	return (
@@ -68,7 +68,7 @@ const Navigation = (props) => {
 						<FormSelect
 							name="buttonLabels"
 							className="form-select-sm"
-							value={buttonLabels}
+							value={buttonLabels.buttonLabelType}
 							onChange={updateButtonLabels}
 						>
 							{Object.keys(BUTTONS).map((b, i) =>

@@ -1,5 +1,5 @@
 /**
- * GP2040 Configurator Development Server
+ * GP2040-CE Configurator Development Server
  */
 
 const express = require("express");
@@ -77,7 +77,7 @@ app.get("/api/getSplashImage", (req, res) => {
 app.get("/api/getGamepadOptions", (req, res) => {
 	return res.send({
 		dpadMode: 0,
-		inputMode: 1,
+		inputMode: 4,
 		socdMode: 2,
 		switchTpShareForDs4: 0,
 		hotkeyF1: [

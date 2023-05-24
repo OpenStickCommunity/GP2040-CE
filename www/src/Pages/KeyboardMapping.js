@@ -6,7 +6,7 @@ import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import boards from '../Data/Boards.json';
-import BUTTONS from '../Data/Buttons.json';
+import { BUTTONS } from '../Data/Buttons';
 import './PinMappings.scss';
 
 const KEY_CODES = [
@@ -104,6 +104,8 @@ export default function KeyboardMappingPage() {
 	const [selectedController] = useState(process.env.REACT_APP_GP2040_CONTROLLER);
 	const [selectedBoard] = useState(process.env.REACT_APP_GP2040_BOARD);
 
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+
 	useEffect(() => {
 		async function fetchData() {
 			setKeyMappings(await WebApi.getKeyMappings());
@@ -167,14 +169,21 @@ export default function KeyboardMappingPage() {
 				<table className="table table-sm pin-mapping-table">
 					<thead className="table">
 						<tr>
-							<th className="table-header-button-label">{BUTTONS[buttonLabels].label}</th>
+							<th className="table-header-button-label">{BUTTONS[buttonLabelType].label}</th>
 							<th>Key</th>
 						</tr>
 					</thead>
 					<tbody>
-						{Object.keys(BUTTONS[buttonLabels])?.filter(p => p !== 'label' && p !== 'value').map((button, i) =>
-							<tr key={`button-map-${i}`} className={validated && !!keyMappings[button].error ? "table-danger" : ""}>
-								<td>{BUTTONS[buttonLabels][button]}</td>
+						{Object.keys(BUTTONS[buttonLabelType])?.filter(p => p !== 'label' && p !== 'value').map((button, i) => {
+							let label = BUTTONS[buttonLabelType][button];
+							if (button === "S1" && swapTpShareLabels) {
+								label = BUTTONS[buttonLabelType]["A2"];
+							}
+							if (button === "A2" && swapTpShareLabels) {
+								label = BUTTONS[buttonLabelType]["S1"];
+							}
+							return <tr key={`button-map-${i}`} className={validated && !!keyMappings[button].error ? "table-danger" : ""}>
+								<td>{label}</td>
 								<td>
 									<FormSelect
 										type="number"
@@ -188,7 +197,7 @@ export default function KeyboardMappingPage() {
 									</FormSelect>
 								</td>
 							</tr>
-						)}
+						})}
 					</tbody>
 				</table>
 				<Button type="submit">Save</Button>
