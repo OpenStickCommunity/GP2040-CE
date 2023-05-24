@@ -36,72 +36,72 @@ void WiiExtensionInput::process() {
         wii->poll();
         
         if (wii->extensionType == WII_EXTENSION_NUNCHUCK) {
-            buttonZ = wii->buttonZ;
-            buttonC = wii->buttonC;
+            buttonZ = wii->getController()->buttons[WiiButtons::WII_BUTTON_Z];
+            buttonC = wii->getController()->buttons[WiiButtons::WII_BUTTON_C];
 
-            leftX = map(wii->joy1X,0,1023,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            leftY = map(wii->joy1Y,1023,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            leftX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_X],0,1023,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            leftY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_Y],1023,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             rightX = GAMEPAD_JOYSTICK_MID;
             rightY = GAMEPAD_JOYSTICK_MID;
 
             triggerLeft = 0;
             triggerRight = 0;
         } else if ((wii->extensionType == WII_EXTENSION_CLASSIC) || (wii->extensionType == WII_EXTENSION_CLASSIC_PRO)) {
-            buttonA = wii->buttonA;
-            buttonB = wii->buttonB;
-            buttonX = wii->buttonX;
-            buttonY = wii->buttonY;
-            buttonL = wii->buttonZL;
-            buttonZL = wii->buttonLT;
-            buttonR = wii->buttonZR;
-            buttonZR = wii->buttonRT;
-            dpadUp = wii->directionUp;
-            dpadDown = wii->directionDown;
-            dpadLeft = wii->directionLeft;
-            dpadRight = wii->directionRight;
-            buttonSelect = wii->buttonMinus;
-            buttonStart = wii->buttonPlus;
-            buttonHome = wii->buttonHome;
+            buttonA = wii->getController()->buttons[WiiButtons::WII_BUTTON_A];
+            buttonB = wii->getController()->buttons[WiiButtons::WII_BUTTON_B];
+            buttonX = wii->getController()->buttons[WiiButtons::WII_BUTTON_X];
+            buttonY = wii->getController()->buttons[WiiButtons::WII_BUTTON_Y];
+            buttonL = wii->getController()->buttons[WiiButtons::WII_BUTTON_L];
+            buttonZL = wii->getController()->buttons[WiiButtons::WII_BUTTON_ZL];
+            buttonR = wii->getController()->buttons[WiiButtons::WII_BUTTON_R];
+            buttonZR = wii->getController()->buttons[WiiButtons::WII_BUTTON_ZR];
+            dpadUp = wii->getController()->directionalPad[WiiDirectionalPad::WII_DIRECTION_UP];
+            dpadDown = wii->getController()->directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN];
+            dpadLeft = wii->getController()->directionalPad[WiiDirectionalPad::WII_DIRECTION_LEFT];
+            dpadRight = wii->getController()->directionalPad[WiiDirectionalPad::WII_DIRECTION_RIGHT];
+            buttonSelect = wii->getController()->buttons[WiiButtons::WII_BUTTON_MINUS];
+            buttonStart = wii->getController()->buttons[WiiButtons::WII_BUTTON_PLUS];
+            buttonHome = wii->getController()->buttons[WiiButtons::WII_BUTTON_HOME];
 
             if (wii->extensionType == WII_EXTENSION_CLASSIC) {
-                triggerLeft  = wii->triggerLeft;
-                triggerRight = wii->triggerRight;
+                triggerLeft  = wii->getController()->analogState[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT];
+                triggerRight = wii->getController()->analogState[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT];
             }
 
-            leftX = map(wii->joy1X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            leftY = map(wii->joy1Y,WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightX = map(wii->joy2X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightY = map(wii->joy2Y,WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            leftX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            leftY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_Y],WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            rightX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_RIGHT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            rightY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_RIGHT_Y],WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
         } else if (wii->extensionType == WII_EXTENSION_GUITAR) {
-            buttonSelect = wii->buttonMinus;
-            buttonStart = wii->buttonPlus;
+            buttonSelect = wii->getController()->buttons[WiiButtons::WII_BUTTON_MINUS];
+            buttonStart = wii->getController()->buttons[WiiButtons::WII_BUTTON_PLUS];
 
-            dpadUp = wii->directionUp;
-            dpadDown = wii->directionDown;
+            dpadUp = wii->getController()->directionalPad[WiiDirectionalPad::WII_DIRECTION_UP];
+            dpadDown = wii->getController()->directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN];
 
-            buttonB = wii->fretGreen;
-            buttonA = wii->fretRed;
-            buttonX = wii->fretYellow;
-            buttonY = wii->fretBlue;
-            buttonL = wii->fretOrange;
+            buttonB = wii->getController()->buttons[GuitarButtons::GUITAR_GREEN];
+            buttonA = wii->getController()->buttons[GuitarButtons::GUITAR_RED];
+            buttonX = wii->getController()->buttons[GuitarButtons::GUITAR_YELLOW];
+            buttonY = wii->getController()->buttons[GuitarButtons::GUITAR_BLUE];
+            buttonL = wii->getController()->buttons[GuitarButtons::GUITAR_ORANGE];
 
             // whammy currently maps to Joy2X in addition to the raw whammy value
-            whammyBar = wii->whammyBar;
-            buttonR = wii->pedalButton;
+            whammyBar = wii->getController()->analogState[WiiAnalogs::WII_ANALOG_RIGHT_X];
+            buttonR = wii->getController()->buttons[GuitarButtons::GUITAR_PEDAL];
 
-            leftX = map(wii->joy1X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            leftY = map(wii->joy1Y,WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightX = map(wii->joy2X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            leftX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            leftY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_Y],WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            rightX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_RIGHT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             rightY = GAMEPAD_JOYSTICK_MID;
 
             triggerLeft = 0;
             triggerRight = 0;
         } else if (wii->extensionType == WII_EXTENSION_TAIKO) {
-            buttonL = wii->rimLeft;
-            buttonR = wii->rimRight;
+            buttonL = wii->getController()->buttons[TaikoButtons::TATA_KAT_LEFT];
+            buttonR = wii->getController()->buttons[TaikoButtons::TATA_KAT_RIGHT];
 
-            dpadLeft = wii->drumLeft;
-            buttonA = wii->drumRight;
+            dpadLeft = wii->getController()->buttons[TaikoButtons::TATA_DON_LEFT];
+            buttonA = wii->getController()->buttons[TaikoButtons::TATA_DON_RIGHT];
         }
                
         nextTimer = getMillis() + uIntervalMS;
@@ -129,10 +129,10 @@ void WiiExtensionInput::process() {
     if (buttonB) gamepad->state.buttons |= GAMEPAD_MASK_B1;
     if (buttonX) gamepad->state.buttons |= GAMEPAD_MASK_B4;
     if (buttonY) gamepad->state.buttons |= GAMEPAD_MASK_B3;
-    if (buttonL) gamepad->state.buttons |= GAMEPAD_MASK_L1;
-    if (buttonZL) gamepad->state.buttons |= GAMEPAD_MASK_L2;
-    if (buttonR) gamepad->state.buttons |= GAMEPAD_MASK_R1;
-    if (buttonZR) gamepad->state.buttons |= GAMEPAD_MASK_R2;
+    if (buttonL) gamepad->state.buttons |= GAMEPAD_MASK_L2;
+    if (buttonZL) gamepad->state.buttons |= GAMEPAD_MASK_L1;
+    if (buttonR) gamepad->state.buttons |= GAMEPAD_MASK_R2;
+    if (buttonZR) gamepad->state.buttons |= GAMEPAD_MASK_R1;
     if (buttonSelect) gamepad->state.buttons |= GAMEPAD_MASK_S1;
     if (buttonStart) gamepad->state.buttons |= GAMEPAD_MASK_S2;
     if (buttonHome) gamepad->state.buttons |= GAMEPAD_MASK_A1;
