@@ -34,6 +34,11 @@ void SNESpadInput::process() {
     if (nextTimer < getMillis()) {
         snes->poll();
 
+        leftX = GAMEPAD_JOYSTICK_MID;
+        leftY = GAMEPAD_JOYSTICK_MID;
+        rightX = GAMEPAD_JOYSTICK_MID;
+        rightY = GAMEPAD_JOYSTICK_MID;
+
         if (snes->type == SNES_PAD_BASIC) {
             buttonA = snes->buttonA;
             buttonB = snes->buttonB;
@@ -47,11 +52,6 @@ void SNESpadInput::process() {
             dpadRight = snes->directionRight;
             buttonSelect = snes->buttonSelect;
             buttonStart = snes->buttonStart;
-
-            leftX = GAMEPAD_JOYSTICK_MID;
-            leftY = GAMEPAD_JOYSTICK_MID;
-            rightX = GAMEPAD_JOYSTICK_MID;
-            rightY = GAMEPAD_JOYSTICK_MID;
 
         } else if (snes->type == SNES_PAD_NES) {
             buttonA = snes->buttonA;
@@ -67,11 +67,6 @@ void SNESpadInput::process() {
             buttonSelect = snes->buttonSelect;
             buttonStart = snes->buttonStart;
 
-            leftX = GAMEPAD_JOYSTICK_MID;
-            leftY = GAMEPAD_JOYSTICK_MID;
-            rightX = GAMEPAD_JOYSTICK_MID;
-            rightY = GAMEPAD_JOYSTICK_MID;
-
         } else if (snes->type == SNES_PAD_MOUSE){
             buttonA = snes->buttonA;
             buttonB = snes->buttonB;
@@ -86,12 +81,10 @@ void SNESpadInput::process() {
             buttonSelect = false;
             buttonStart = false;
 
-            leftX = map(snes->mouseX,255,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            leftY = map(snes->mouseY,255,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightX = GAMEPAD_JOYSTICK_MID;
-            rightY = GAMEPAD_JOYSTICK_MID;
-        }
+            leftX = map(snes->mouseX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+            leftY = map(snes->mouseY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
 
+        }
 
         nextTimer = getMillis() + uIntervalMS;
     }
@@ -104,6 +97,7 @@ void SNESpadInput::process() {
     gamepad->state.ry = rightY;
 
     gamepad->hasAnalogTriggers = false;
+    gamepad->hasLeftAnalogStick = true;
 
     if (buttonA) gamepad->state.buttons |= GAMEPAD_MASK_B2;
     if (buttonB) gamepad->state.buttons |= GAMEPAD_MASK_B1;

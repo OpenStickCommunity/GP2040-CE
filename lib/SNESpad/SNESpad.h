@@ -1,11 +1,40 @@
-// SNESpad Library
-// category=Signal Input/Output
+/*
+  SNESpad - Arduino/Pico library for interfacing with SNES controllers
+
+  github.com/RobertDaleSmith/SNESpad
+
+  Version: 2.0 (2023) - Extended to Pico SDK (Robert Dale Smith)
+                      - Mouse and NES controller support (Robert Dale Smith)
+  Version: 1.3 (11/12/2010) - get rid of shortcut constructor - seems to be broken
+  Version: 1.2 (05/25/2009) - put pin numbers in constructor (Pascal Hahn)
+  Version: 1.1 (09/22/2008) - fixed compilation errors in arduino 0012 (Rob Duarte)
+  Version: 1.0 (09/20/2007) - Created (Rob Duarte)
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation; either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITSNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.  
+*/
 
 #ifndef _SNESPAD_H_
 #define _SNESPAD_H_
 
 #include <inttypes.h>
-#include "pico/stdlib.h"
+// Try to include Arduino.h
+#ifdef ARDUINO
+    #include <Arduino.h>
+#else
+    // If we aren't compiling on Arduino, include the Pico SDK standard library
+    #include "pico/stdlib.h"
+#endif
 
 #define SNES_PAD_NONE   -1
 #define SNES_PAD_BASIC  0
@@ -35,11 +64,11 @@
 #define SNES_MOUSE_ID       0b1000
 
 #define SNES_MOUSE_SLOW     0
-#define SNES_MOUSE_MEDIUM   1
-#define SNES_MOUSE_FAST     2
+#define SNES_MOUSE_MEDIUM   2
+#define SNES_MOUSE_FAST     1
 
 #define SNES_MOUSE_THRESHOLD 10  // max speed fails (Hyperkin compatiblity)
-#define SNES_MOUSE_PRECISION 20  // mouse movement velocity multiplier
+#define SNES_MOUSE_PRECISION 1   // mouse movement velocity multiplier
 
 #ifndef SNES_PAD_DEBUG
 #define SNES_PAD_DEBUG false
@@ -47,7 +76,7 @@
 
 class SNESpad {
   protected:
-	// uint8_t address;
+  // uint8_t address;
   public:
     int8_t type = SNES_PAD_NONE; 
 
@@ -73,10 +102,10 @@ class SNESpad {
 
     // Methods
     void begin();
-  	void start();
-  	void poll();
+    void start();
+    void poll();
   private:
-	
+  
     uint8_t latchPin; // output: latch
     uint8_t clockPin; // output: clock
     uint8_t dataPin;  // input:  data
