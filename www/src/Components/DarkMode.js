@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import "./DarkMode.css";
 
 const storedTheme = localStorage.getItem('theme')
 

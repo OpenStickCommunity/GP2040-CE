@@ -7,7 +7,7 @@ import { saveButtonLabels } from '../Services/Storage';
 import { BUTTONS } from '../Data/Buttons';
 import './Navigation.scss';
 import WebApi from '../Services/WebApi';
-import DarkMode from '../Services/DarkMode';
+import DarkMode from './DarkMode';
 
 const BOOT_MODES = {
 	GAMEPAD: 0,
