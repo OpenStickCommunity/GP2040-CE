@@ -1,4 +1,4 @@
-# GP2040 Web Configurator
+# GP2040-CE Web Configurator
 
 Simple web application for gamepad configuration.
 
@@ -14,7 +14,7 @@ The mock data Express server is running at http://localhost:8080.
 
 ### API Endpoints
 
-When adding a new API endpoint to the GP2040 Configurator:
+When adding a new API endpoint to the GP2040-CE Configurator:
 
 > NOTE: All endpoints should be under the `/api` path
 
@@ -26,7 +26,7 @@ When adding a new API endpoint to the GP2040 Configurator:
   * Add handling code in `fs_open_custom` for the API path
 * Add a mock data endpoint to `src/server/app.js`
 * Add the client-side API function to `www/src/Services/WebApi.js`.
-* Add the endpoint to the Postman collection at `www/server/docs/GP2040.postman_collection.json`
+* Add the endpoint to the Postman collection at `www/server/docs/GP2040-CE.postman_collection.json`
 
 ### Files
 

@@ -17,16 +17,19 @@ const errorType = {
 };
 
 export default function PinMappingPage() {
-	const { buttonLabels, usedPins } = useContext(AppContext);
+	const { buttonLabels, setButtonLabels, usedPins, updateUsedPins } = useContext(AppContext);
 	const [validated, setValidated] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [buttonMappings, setButtonMappings] = useState(baseButtonMappings);
 	const [selectedController] = useState(process.env.REACT_APP_GP2040_CONTROLLER);
 	const [selectedBoard] = useState(process.env.REACT_APP_GP2040_BOARD);
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
 	useEffect(() => {
 		async function fetchData() {
 			setButtonMappings(await WebApi.getPinMappings());
+			const options = await WebApi.getGamepadOptions();
+			setButtonLabels({ swapTpShareLabels: options.switchTpShareForDs4 && (options.inputMode === 4) });
 		}
 
 		fetchData();
@@ -55,6 +58,8 @@ export default function PinMappingPage() {
 		}
 
 		const success = await WebApi.setPinMappings(mappings);
+		if (success)
+			updateUsedPins();
 		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
 
@@ -100,13 +105,13 @@ export default function PinMappingPage() {
 
 	const renderError = (button) => {
 		if (buttonMappings[button].error === errorType.required) {
-			return <span key="required" className="error-message">{`${BUTTONS[buttonLabels][button]} is required`}</span>;
+			return <span key="required" className="error-message">{`${BUTTONS[buttonLabelType][button]} is required`}</span>;
 		}
 		else if (buttonMappings[button].error === errorType.conflict) {
 			const conflictedMappings = Object.keys(buttonMappings)
 				.filter(b => b !== button)
 				.filter(b => buttonMappings[b].pin === buttonMappings[button].pin)
-				.map(b => BUTTONS[buttonLabels][b]);
+				.map(b => BUTTONS[buttonLabelType][b]);
 
 			return <span key="conflict" className="error-message">{`Pin ${buttonMappings[button].pin} is already assigned to ${conflictedMappings.join(', ')}`}</span>;
 		}
@@ -131,14 +136,21 @@ export default function PinMappingPage() {
 				<table className="table table-sm pin-mapping-table">
 					<thead className="table">
 						<tr>
-							<th className="table-header-button-label">{BUTTONS[buttonLabels].label}</th>
+							<th className="table-header-button-label">{BUTTONS[buttonLabelType].label}</th>
 							<th>Pin</th>
 						</tr>
 					</thead>
 					<tbody>
-						{Object.keys(BUTTONS[buttonLabels])?.filter(p => p !== 'label' && p !== 'value').map((button, i) =>
-							<tr key={`button-map-${i}`} className={validated && !!buttonMappings[button].error ? "table-danger" : ""}>
-								<td>{BUTTONS[buttonLabels][button]}</td>
+						{Object.keys(BUTTONS[buttonLabelType])?.filter(p => p !== 'label' && p !== 'value').map((button, i) => {
+							let label = BUTTONS[buttonLabelType][button];
+							if (button === "S1" && swapTpShareLabels) {
+								label = BUTTONS[buttonLabelType]["A2"];
+							}
+							if (button === "A2" && swapTpShareLabels) {
+								label = BUTTONS[buttonLabelType]["S1"];
+							}
+							return <tr key={`button-map-${i}`} className={validated && !!buttonMappings[button].error ? "table-danger" : ""}>
+								<td>{label}</td>
 								<td>
 									<Form.Control
 										type="number"
@@ -154,7 +166,7 @@ export default function PinMappingPage() {
 									</Form.Control.Feedback>
 								</td>
 							</tr>
-						)}
+						})}
 					</tbody>
 				</table>
 				<Button type="submit">Save</Button>

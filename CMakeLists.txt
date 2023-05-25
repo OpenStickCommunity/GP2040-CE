@@ -132,6 +132,7 @@ src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
 src/addons/wiiext.cpp
+src/addons/snes_input.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
@@ -157,6 +158,7 @@ ArduinoJson
 rndis
 hardware_adc
 WiiExtension
+SNESpad
 pico_mbedtls
 TinyUSB_Gamepad
 nanopb

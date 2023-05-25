@@ -282,4 +282,12 @@
 #define HOTKEY_F2_RIGHT_MASK   GAMEPAD_MASK_RIGHT
 #define HOTKEY_F2_RIGHT_ACTION HOTKEY_INVERT_Y_AXIS
 
+// SNESpad Settings
+// Basic SNES controller clock, latch(strobe), and data IO: https://github.com/gilligan/snesdev/blob/master/docs/fullsnes.txt#L16048
+// CLOCK == SNES_CTRL_PIN_2, LATCH == SNES_CTRL_PIN_3, and DATA = SNES_CTRL_PIN_4
+#define SNES_PAD_ENABLED 0
+#define SNES_PAD_CLOCK_PIN -1
+#define SNES_PAD_LATCH_PIN -1
+#define SNES_PAD_DATA_PIN -1
+
 #endif

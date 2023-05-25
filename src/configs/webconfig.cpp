@@ -480,7 +480,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "dpadMode", gamepadOptions.dpadMode);
 	writeDoc(doc, "inputMode", gamepadOptions.inputMode);
 	writeDoc(doc, "socdMode", gamepadOptions.socdMode);
-	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4);
+	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);
@@ -933,6 +933,11 @@ std::string setAddonOptions()
 
 	Storage::getInstance().save();
 
+	// docToValue(addonOptions.SNESpadAddonEnabled, doc, "SNESpadAddonEnabled");
+	// docToPin(addonOptions.snesPadClockPin, doc, "snesPadClockPin");
+	// docToPin(addonOptions.snesPadLatchPin, doc, "snesPadLatchPin");
+	// docToPin(addonOptions.snesPadDataPin, doc, "snesPadDataPin");
+
 	return serialize_json(doc);
 }
 
@@ -1133,6 +1138,12 @@ std::string getAddonOptions()
 
 	const PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
 	writeDoc(doc, "PS4ModeAddonEnabled", ps4Options.enabled);
+
+	// writeDoc(doc, "snesPadClockPin", addonOptions.snesPadClockPin == 0xFF ? -1 : addonOptions.snesPadClockPin);
+	// writeDoc(doc, "snesPadLatchPin", addonOptions.snesPadLatchPin == 0xFF ? -1 : addonOptions.snesPadLatchPin);
+	// writeDoc(doc, "snesPadDataPin", addonOptions.snesPadDataPin == 0xFF ? -1 : addonOptions.snesPadDataPin);
+	// writeDoc(doc, "SNESpadAddonEnabled", addonOptions.SNESpadAddonEnabled);
+
 
 	return serialize_json(doc);
 }
