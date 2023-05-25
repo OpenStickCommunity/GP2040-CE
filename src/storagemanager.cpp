@@ -231,6 +231,7 @@ void Storage::setAddonOptions(AddonOptions options)
 
 void Storage::setDefaultSplashImage()
 {
+	const unsigned char splashImageMain[] = { DEFAULT_SPLASH };
 	memcpy(&splashImage.data, &splashImageMain, sizeof(splashImageMain));
 	setSplashImage(splashImage);
 }
