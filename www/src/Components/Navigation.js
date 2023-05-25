@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Nav, NavDropdown, Navbar, Button, Modal } from 'react-bootstrap';
+import { Nav, NavDropdown, Navbar, Button, Modal, Dropdown } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 import { AppContext } from '../Contexts/AppContext';
 import FormSelect from './FormSelect';
@@ -56,9 +56,16 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} to={{ pathname: "https://gp2040-ce.info/" }} target="_blank">Documentation</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} to={{ pathname: "https://github.com/OpenStickCommunity/GP2040-CE" }} target="_blank">Github</NavDropdown.Item>
 					</NavDropdown>
-					<NavDropdown title="DANGER ZONE" className="btn-danger danger-zone">
-						<NavDropdown.Item as={NavLink} exact="true" to="/reset-settings">Reset Settings</NavDropdown.Item>
-					</NavDropdown>
+
+					<Dropdown>
+						<Dropdown.Toggle variant="danger">
+							DANGER ZONE
+						</Dropdown.Toggle>
+
+						<Dropdown.Menu>
+							<Dropdown.Item href="/reset-settings">Reset Settings</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown>
 				</Nav>
 				<Nav>
 					<Button style={{ marginRight: "7px" }} variant="success" onClick={handleShow}>
