@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Dropdown } from 'react-bootstrap';
 
 const storedTheme = localStorage.getItem('theme')
+const dropdownOptions = [
+	{ theme: 'light', icon: 'bi-sun-fill', label: 'Light' },
+	{ theme: 'dark', icon: 'bi-moon-stars-fill', label: 'Dark' },
+	{ theme: 'auto', icon: 'bi-circle-half', label: 'Auto' },
+];
 
 const getPreferredTheme = () => {
 	if (storedTheme) {
@@ -35,41 +41,23 @@ const DarkMode = () => {
 	}, []);
 
 	return (
-		<div className="dropdown">
-			<button style={{ marginRight: "7px" }} className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+		<Dropdown>
+			<Dropdown.Toggle variant="secondary" style={{ marginRight: "7px" }}>
 				<i class="bi-moon-stars-fill"></i>
-			</button>
+			</Dropdown.Toggle>
 
-			<ul className="dropdown-menu">
-				<li>
-					<a
-						className={`dropdown-item ${theme === 'light' ? 'active' : ''}`}
-						href="#"
-						onClick={() => setThemeAndState('light')}
+			<Dropdown.Menu>
+				{dropdownOptions.map((option) => (
+					<Dropdown.Item
+						key={option.theme}
+						className={`dropdown-item ${theme === option.theme ? 'active' : ''}`}
+						onClick={() => setThemeAndState(option.theme)}
 					>
-						<i className="bi-sun-fill"></i> Light
-					</a>
-				</li>
-				<li>
-					<a
-						className={`dropdown-item ${theme === 'dark' ? 'active' : ''}`}
-						href="#"
-						onClick={() => setThemeAndState('dark')}
-					>
-						<i className="bi-moon-stars-fill"></i> Dark
-					</a>
-				</li>
-				<li>
-					<a
-						className={`dropdown-item ${theme === 'auto' ? 'active' : ''}`}
-						href="#"
-						onClick={() => setThemeAndState('auto')}
-					>
-						<i className="bi-circle-half"></i> Auto
-					</a>
-				</li>
-			</ul>
-		</div>
+						<i className={option.icon}></i> {option.label}
+					</Dropdown.Item>
+				))}
+			</Dropdown.Menu>
+		</Dropdown>
 	);
 };
 
