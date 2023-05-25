@@ -36,8 +36,7 @@ enum WiiAnalogs {
     WII_ANALOG_RIGHT_Y,
     WII_ANALOG_TRIGGER_LEFT,
     WII_ANALOG_TRIGGER_RIGHT,
-    WII_ANALOG_CALIBRATION_PRECISION_LEFT,
-    WII_ANALOG_CALIBRATION_PRECISION_RIGHT,
+    WII_ANALOG_CALIBRATION_PRECISION,
     WII_MAX_ANALOGS
 };
 
@@ -68,6 +67,7 @@ class ExtensionBase {
         WiiAnalogCalibration _analogCalibration[WiiAnalogs::WII_MAX_ANALOGS];
     private:
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+        uint16_t bounds(uint16_t x, uint16_t out_min, uint16_t out_max);
         uint16_t applyCalibration(uint16_t pos, uint16_t min, uint16_t max, uint16_t cen);
     public:
         bool directionalPad[WiiDirectionalPad::WII_MAX_DIRECTIONS];
@@ -75,8 +75,11 @@ class ExtensionBase {
         uint16_t analogState[WiiAnalogs::WII_MAX_ANALOGS];
         uint16_t motionState[WiiMotions::WII_MAX_MOTIONS];
 
+        uint16_t initialAnalogState[WiiAnalogs::WII_MAX_ANALOGS];
+        bool isFirstRead = true;
+
         virtual void init(uint8_t dataType);
-        virtual void calibrate(uint8_t *calibrationData);
+        virtual bool calibrate(uint8_t *calibrationData);
         virtual void process(uint8_t *inputData);
         virtual void postProcess();
 

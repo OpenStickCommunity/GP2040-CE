@@ -6,40 +6,44 @@
 void NunchuckExtension::init(uint8_t dataType) {
     ExtensionBase::init(dataType);
     _extensionType = WII_EXTENSION_NUNCHUCK;
-    _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].origin      = WII_ANALOG_PRECISION_2;
-    _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].destination = WII_ANALOG_PRECISION_3;
-    _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_Y].origin      = WII_ANALOG_PRECISION_2;
-    _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_Y].destination = WII_ANALOG_PRECISION_3;
+    _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].origin                           = WII_ANALOG_PRECISION_2;
+    _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].destination                      = WII_ANALOG_PRECISION_3;
+    _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_Y].origin                           = WII_ANALOG_PRECISION_2;
+    _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_Y].destination                      = WII_ANALOG_PRECISION_3;
 
-#if WII_EXTENSION_CALIBRATION==false
     // preseed calibration data with max ranges
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum   = 35;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center    = 128;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum   = 228;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum                        = WII_NUNCHUCK_GATE_CENTER-WII_NUNCHUCK_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center                         = WII_NUNCHUCK_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum                        = WII_NUNCHUCK_GATE_CENTER+WII_NUNCHUCK_GATE_SIZE;
 
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum   = 27;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center    = 128;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum   = 220;
-#endif
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum                        = WII_NUNCHUCK_GATE_CENTER-WII_NUNCHUCK_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center                         = WII_NUNCHUCK_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum                        = WII_NUNCHUCK_GATE_CENTER+WII_NUNCHUCK_GATE_SIZE;
+
+    _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
+    _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
 }
 
-void NunchuckExtension::calibrate(uint8_t *calibrationData) {
+bool NunchuckExtension::calibrate(uint8_t *calibrationData) {
 #if WII_EXTENSION_CALIBRATION==true
-//    _maxX1 = idRead[8];
-//    _minX1 = idRead[9];
-//    _cenX1 = idRead[10];
-//
-//    _maxY1 = idRead[11];
-//    _minY1 = idRead[12];
-//    _cenY1 = idRead[13];
-//
-//    _accelX0G = ((idRead[0] << 2) | ((idRead[3] >> 2) & 0x03));
-//    _accelY0G = ((idRead[1] << 2) | ((idRead[3] >> 4) & 0x03));
-//    _accelZ0G = ((idRead[2] << 2) | ((idRead[3] >> 6) & 0x03));
-//
-//    _accelX1G = ((idRead[4] << 2) | ((idRead[7] >> 2) & 0x03));
-//    _accelY1G = ((idRead[5] << 2) | ((idRead[7] >> 4) & 0x03));
-//    _accelZ1G = ((idRead[6] << 2) | ((idRead[7] >> 6) & 0x03));
+    if (ExtensionBase::calibrate(calibrationData)) {
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum   = calibrationData[8];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum   = calibrationData[9];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center    = calibrationData[10];
+
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum   = calibrationData[11];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum   = calibrationData[12];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center    = calibrationData[13];
+
+        //_accelX0G = ((idRead[0] << 2) | ((idRead[3] >> 2) & 0x03));
+        //_accelY0G = ((idRead[1] << 2) | ((idRead[3] >> 4) & 0x03));
+        //_accelZ0G = ((idRead[2] << 2) | ((idRead[3] >> 6) & 0x03));
+        //
+        //_accelX1G = ((idRead[4] << 2) | ((idRead[7] >> 2) & 0x03));
+        //_accelY1G = ((idRead[5] << 2) | ((idRead[7] >> 4) & 0x03));
+        //_accelZ1G = ((idRead[6] << 2) | ((idRead[7] >> 6) & 0x03));
+        return true;
+    }
 
 #if WII_EXTENSION_DEBUG==true
     //printf("Calibration:\n");
@@ -57,6 +61,7 @@ void NunchuckExtension::calibrate(uint8_t *calibrationData) {
     //printf("Y Center: %d\n", _cenY);
 #endif
 #endif
+    return false;
 }
 
 void NunchuckExtension::process(uint8_t *inputData) {
@@ -71,6 +76,6 @@ void NunchuckExtension::process(uint8_t *inputData) {
     motionState[WiiMotions::WII_MOTION_Z]      = (((inputData[4] << 2) | ((inputData[5] >> 6) & 0x03)));
 
 #if WII_EXTENSION_DEBUG==true
-    printf("Joy X=%4d Y=%4d   Acc X=%4d Y=%4d Z=%4d   Btn Z=%1d C=%1d\n", analogState[WiiAnalogs::ANALOG_LEFT_X], analogState[WiiAnalogs::ANALOG_LEFT_Y], motionState[WiiMotions::MOTION_X], motionState[WiiMotions::MOTION_Y], motionState[WiiMotions::MOTION_Z], buttons[WiiButtons::BUTTON_Z], buttons[WiiButtons::BUTTON_C]);
+    //printf("Joy X=%4d Y=%4d   Acc X=%4d Y=%4d Z=%4d   Btn Z=%1d C=%1d\n", analogState[WiiAnalogs::ANALOG_LEFT_X], analogState[WiiAnalogs::ANALOG_LEFT_Y], motionState[WiiMotions::MOTION_X], motionState[WiiMotions::MOTION_Y], motionState[WiiMotions::MOTION_Z], buttons[WiiButtons::BUTTON_Z], buttons[WiiButtons::BUTTON_C]);
 #endif
 }

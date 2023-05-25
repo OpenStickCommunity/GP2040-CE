@@ -67,11 +67,15 @@
 #endif
 
 #ifndef WII_EXTENSION_CALIBRATION
-#define WII_EXTENSION_CALIBRATION false
+#define WII_EXTENSION_CALIBRATION true
 #endif
 
 #define WII_ALARM_NUM 0
 #define WII_ALARM_IRQ TIMER_IRQ_0
+
+#define WII_CHECKSUM_MAGIC 0x55
+#define WII_CALIBRATION_SIZE 0x10
+#define WII_CALIBRATION_CHECKSUM_SIZE 0x02
 
 static volatile bool WiiExtension_alarmFired;
 

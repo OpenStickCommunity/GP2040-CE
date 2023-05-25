@@ -10,6 +10,8 @@ void ClassicExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].destination                      = WII_ANALOG_PRECISION_3;
         _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_Y].origin                           = WII_ANALOG_PRECISION_1;
         _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_Y].destination                      = WII_ANALOG_PRECISION_3;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_X].origin                          = WII_ANALOG_PRECISION_0;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_X].destination                     = WII_ANALOG_PRECISION_3;
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].origin                          = WII_ANALOG_PRECISION_0;
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].destination                     = WII_ANALOG_PRECISION_3;
 
@@ -18,10 +20,8 @@ void ClassicExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_0;
         _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_LEFT].origin       = WII_ANALOG_PRECISION_1;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_LEFT].destination  = WII_ANALOG_PRECISION_3;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_RIGHT].origin      = WII_ANALOG_PRECISION_1;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_RIGHT].destination = WII_ANALOG_PRECISION_3;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
     } else if (getDataType() == WII_DATA_TYPE_2) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].origin                           = WII_ANALOG_PRECISION_3;
         _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].destination                      = WII_ANALOG_PRECISION_3;
@@ -37,10 +37,8 @@ void ClassicExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_LEFT].origin       = WII_ANALOG_PRECISION_1;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_LEFT].destination  = WII_ANALOG_PRECISION_3;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_RIGHT].origin      = WII_ANALOG_PRECISION_1;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_RIGHT].destination = WII_ANALOG_PRECISION_3;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
     } else if (getDataType() == WII_DATA_TYPE_3) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].origin                           = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].destination                      = WII_ANALOG_PRECISION_3;
@@ -56,82 +54,68 @@ void ClassicExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_LEFT].origin       = WII_ANALOG_PRECISION_1;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_LEFT].destination  = WII_ANALOG_PRECISION_3;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_RIGHT].origin      = WII_ANALOG_PRECISION_1;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION_RIGHT].destination = WII_ANALOG_PRECISION_3;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
     }
 
-#if WII_EXTENSION_CALIBRATION==false
     // preseed calibration data with max ranges
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum   = 7;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center    = 31;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum   = 57;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum   = WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center    = WII_CLASSIC_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum   = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
 
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum   = 7;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center    = 32;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum   = 57;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum   = WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center    = WII_CLASSIC_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum   = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
     
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum   = 4;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center    = 16;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum   = 29;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum   = WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center    = WII_CLASSIC_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum   = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
 
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum   = 2;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center    = 15;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].maximum   = 27;
-#endif
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum   = WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center    = WII_CLASSIC_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].maximum   = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
+    
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].minimum   = 1;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].center    = WII_CLASSIC_TRIGGER_MAX/2;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].maximum   = WII_CLASSIC_TRIGGER_MAX;
+
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].minimum   = 1;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].center    = WII_CLASSIC_TRIGGER_MAX/2;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].maximum   = WII_CLASSIC_TRIGGER_MAX;
 }
 
-void ClassicExtension::calibrate(uint8_t *calibrationData) {
+bool ClassicExtension::calibrate(uint8_t *calibrationData) {
 #if WII_EXTENSION_CALIBRATION==true
-    if (getDataType() == WII_DATA_TYPE_1) {
-        _calibrationPrecision1From = WII_ANALOG_PRECISION_2;
-        _calibrationPrecision1To   = WII_ANALOG_PRECISION_1;
-        _calibrationPrecision2From = WII_ANALOG_PRECISION_2;
-        _calibrationPrecision2To   = WII_ANALOG_PRECISION_0;
-    } else if (getDataType() == WII_DATA_TYPE_2) {
-        _calibrationPrecision1From = WII_ANALOG_PRECISION_2;
-        _calibrationPrecision1To   = WII_ANALOG_PRECISION_3;
-        _calibrationPrecision2From = WII_ANALOG_PRECISION_2;
-        _calibrationPrecision2To   = WII_ANALOG_PRECISION_3;
-    } else if (getDataType() == WII_DATA_TYPE_3) {
-        _calibrationPrecision1From = WII_ANALOG_PRECISION_2;
-        _calibrationPrecision1To   = WII_ANALOG_PRECISION_2;
-        _calibrationPrecision2From = WII_ANALOG_PRECISION_2;
-        _calibrationPrecision2To   = WII_ANALOG_PRECISION_2;
+    if (ExtensionBase::calibrate(calibrationData)) {
+        // calibration passed checksum
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum   = calibrationData[0];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum   = calibrationData[1];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center    = calibrationData[2];
+
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum   = calibrationData[3];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum   = calibrationData[4];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center    = calibrationData[5];
+        
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum   = calibrationData[6];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum   = calibrationData[7];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center    = calibrationData[8];
+
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].maximum   = calibrationData[9];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum   = calibrationData[10];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center    = calibrationData[11];
+        
+        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].maximum   = calibrationData[12];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].minimum   = 1;
+        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].center    = calibrationData[12]/2;
+
+        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].maximum   = calibrationData[13];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].minimum   = 1;
+        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].center    = calibrationData[12]/2;
+        return true;
+    } else {
     }
-
-    _maxX1 = map(idRead[0],0,(_calibrationPrecision1From-1),0,(_calibrationPrecision1To-1));
-    _minX1 = map(idRead[1],0,(_calibrationPrecision1From-1),0,(_calibrationPrecision1To-1));
-    _cenX1 = map(idRead[2],0,(_calibrationPrecision1From-1),0,(_calibrationPrecision1To-1));
-    
-    _maxY1 = map(idRead[3],0,(_calibrationPrecision1From-1),0,(_calibrationPrecision1To-1));
-    _minY1 = map(idRead[4],0,(_calibrationPrecision1From-1),0,(_calibrationPrecision1To-1));
-    _cenY1 = map(idRead[5],0,(_calibrationPrecision1From-1),0,(_calibrationPrecision1To-1));
-    
-    _maxX2 = map(idRead[6],0,(_calibrationPrecision2From-1),0,(_calibrationPrecision2To-1));
-    _minX2 = map(idRead[7],0,(_calibrationPrecision2From-1),0,(_calibrationPrecision2To-1));
-    _cenX2 = map(idRead[8],0,(_calibrationPrecision2From-1),0,(_calibrationPrecision2To-1));
-    
-    _maxY2 = map(idRead[9],0,(_calibrationPrecision2From-1),0,(_calibrationPrecision2To-1));
-    _minY2 = map(idRead[10],0,(_calibrationPrecision2From-1),0,(_calibrationPrecision2To-1));
-    _cenY2 = map(idRead[11],0,(_calibrationPrecision2From-1),0,(_calibrationPrecision2To-1));
-
-#if WII_EXTENSION_DEBUG==true
-//    printf("X1 Min: %d\n", _minX1);
-//    printf("X1 Max: %d\n", _maxX1);
-//    printf("X1 Center: %d\n", _cenX1);
-//    printf("Y1 Min: %d\n", _minY1);
-//    printf("Y1 Max: %d\n", _maxY1);
-//    printf("Y1 Center: %d\n", _cenY1);
-//    printf("X2 Min: %d\n", _minX2);
-//    printf("X2 Max: %d\n", _maxX2);
-//    printf("X2 Center: %d\n", _cenX2);
-//    printf("Y2 Min: %d\n", _minY2);
-//    printf("Y2 Max: %d\n", _maxY2);
-//    printf("Y2 Center: %d\n", _cenY2);
 #endif
-#endif
+    return false;
 }
 
 void ClassicExtension::process(uint8_t *inputData) {
