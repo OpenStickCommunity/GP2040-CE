@@ -1,19 +1,20 @@
 #include "addons/playernum.h"
 #include "storagemanager.h"
 #include "system.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool PlayerNumAddon::available() {
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
-    return options.PlayerNumAddonEnabled;
+    return Storage::getInstance().getAddonOptions().playerNumberOptions.enabled;
 }
 
 void PlayerNumAddon::setup() {
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
+    const PlayerNumberOptions& options = Storage::getInstance().getAddonOptions().playerNumberOptions;
     xinputIDs[0] = XINPUT_PLED_ON1;
     xinputIDs[1] = XINPUT_PLED_ON2;
     xinputIDs[2] = XINPUT_PLED_ON3;
     xinputIDs[3] = XINPUT_PLED_ON4;
-    playerNum = options.playerNumber;
+    playerNum = options.number;
     if ( playerNum < 1 || playerNum > 4 ) {
         playerNum = 1; // error checking, set to 1 if we're off
     }
@@ -24,7 +25,7 @@ void PlayerNumAddon::process()
 {
     if ( assigned == 0 ) {
         Gamepad * gamepad = Storage::getInstance().GetGamepad();
-        InputMode inputMode = gamepad->options.inputMode;
+        InputMode inputMode = static_cast<InputMode>(gamepad->getOptions().inputMode);
         if ( inputMode == INPUT_MODE_XINPUT ) {
             uint8_t * featureData = Storage::getInstance().GetFeatureData();
             if (featureData[0] == 0x01) {
