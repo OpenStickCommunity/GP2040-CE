@@ -36,7 +36,7 @@ const DarkMode = () => {
 
 	return (
 		<div className="dropdown">
-			<button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+			<button style={{ marginRight: "7px" }} className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 				<i class="bi-moon-stars-fill"></i>
 			</button>
 
