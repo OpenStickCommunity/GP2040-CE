@@ -24,6 +24,7 @@
 #include "addons/slider_socd.h"
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
+#include "addons/snes_input.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -368,6 +369,12 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, i2cSDAPin, WII_EXTENSION_I2C_SDA_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, i2cSCLPin, WII_EXTENSION_I2C_SCL_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, i2cSpeed, WII_EXTENSION_I2C_SPEED);
+
+    // addonOptions.snesOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, enabled, !!SNES_PAD_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, clockPin, SNES_PAD_CLOCK_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, latchPin, SNES_PAD_LATCH_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
 }
 
 // -----------------------------------------------------

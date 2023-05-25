@@ -362,6 +362,14 @@ message WiiOptions
 	optional int32 i2cSpeed = 5;
 }
 
+message SNESOptions
+{
+	optional bool enabled = 1;
+	optional int32 clockPin = 2;
+	optional int32 latchPin = 3;
+	optional int32 dataPin = 4;
+}
+
 message AddonOptions
 {
 	optional BootselButtonOptions bootselButtonOptions = 1;
@@ -378,6 +386,7 @@ message AddonOptions
 	optional PS4Options ps4Options = 12;
 	optional WiiOptions wiiOptions = 13;
 	optional SOCDSliderOptions socdSliderOptions = 14;
+	optional SNESOptions snesOptions = 15;
 }
 
 message Config

@@ -1,19 +1,19 @@
 #include "addons/snes_input.h"
 #include "storagemanager.h"
 #include "hardware/gpio.h"
+#include "helper.h"
 
 bool SNESpadInput::available() {
-    const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
 
-    return (options.SNESpadAddonEnabled &&
-        options.snesPadClockPin != (uint8_t)-1 &&
-        options.snesPadLatchPin != (uint8_t)-1 &&
-        options.snesPadDataPin != (uint8_t)-1);
+    return (snesOptions.enabled &&
+        isValidPin(snesOptions.clockPin) &&
+        isValidPin(snesOptions.latchPin) &&
+        isValidPin(snesOptions.dataPin));
 }
 
 void SNESpadInput::setup() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
     nextTimer = getMillis();
 
 #if SNES_PAD_DEBUG==true
@@ -23,9 +23,9 @@ void SNESpadInput::setup() {
     uIntervalMS = 0;
 
     snes = new SNESpad(
-        options.snesPadClockPin,
-        options.snesPadLatchPin,
-        options.snesPadDataPin);
+        snesOptions.clockPin,
+        snesOptions.latchPin,
+        snesOptions.dataPin);
     snes->begin();
     snes->start();
 }

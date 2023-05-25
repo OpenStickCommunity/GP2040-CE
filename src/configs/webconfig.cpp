@@ -931,12 +931,13 @@ std::string setAddonOptions()
     PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
 	docToValue(ps4Options.enabled, doc, "PS4ModeAddonEnabled");
 
-	Storage::getInstance().save();
+	SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
+	docToValue(snesOptions.enabled, doc, "SNESpadAddonEnabled");
+	docToPin(snesOptions.clockPin, doc, "snesPadClockPin");
+	docToPin(snesOptions.latchPin, doc, "snesPadLatchPin");
+	docToPin(snesOptions.dataPin, doc, "snesPadDataPin");
 
-	// docToValue(addonOptions.SNESpadAddonEnabled, doc, "SNESpadAddonEnabled");
-	// docToPin(addonOptions.snesPadClockPin, doc, "snesPadClockPin");
-	// docToPin(addonOptions.snesPadLatchPin, doc, "snesPadLatchPin");
-	// docToPin(addonOptions.snesPadDataPin, doc, "snesPadDataPin");
+	Storage::getInstance().save();
 
 	return serialize_json(doc);
 }
@@ -1139,11 +1140,11 @@ std::string getAddonOptions()
 	const PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
 	writeDoc(doc, "PS4ModeAddonEnabled", ps4Options.enabled);
 
-	// writeDoc(doc, "snesPadClockPin", addonOptions.snesPadClockPin == 0xFF ? -1 : addonOptions.snesPadClockPin);
-	// writeDoc(doc, "snesPadLatchPin", addonOptions.snesPadLatchPin == 0xFF ? -1 : addonOptions.snesPadLatchPin);
-	// writeDoc(doc, "snesPadDataPin", addonOptions.snesPadDataPin == 0xFF ? -1 : addonOptions.snesPadDataPin);
-	// writeDoc(doc, "SNESpadAddonEnabled", addonOptions.SNESpadAddonEnabled);
-
+	const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
+	writeDoc(doc, "snesPadClockPin", cleanPin(snesOptions.clockPin));
+	writeDoc(doc, "snesPadLatchPin", cleanPin(snesOptions.latchPin));
+	writeDoc(doc, "snesPadDataPin", cleanPin(snesOptions.dataPin));
+	writeDoc(doc, "SNESpadAddonEnabled", snesOptions.enabled);
 
 	return serialize_json(doc);
 }
