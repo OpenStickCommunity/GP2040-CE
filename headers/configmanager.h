@@ -1,5 +1,5 @@
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef CONFIGMANAGER_H
+#define CONFIGMANAGER_H
 
 #include "enums.h"
 #include "gpconfig.h"
@@ -16,10 +16,6 @@ public:
     void setup(ConfigType);
     void loop(); // If anything needs to update in the gpconfig driver
     void setGamepadOptions(Gamepad*);
-    void setBoardOptions(BoardOptions);
-    void setPreviewBoardOptions(BoardOptions);
-    void setLedOptions(LEDOptions);
-    void setSplashImage(const SplashImage&);
 private:
     ConfigManager() {}
     void setupConfig(GPConfig*);

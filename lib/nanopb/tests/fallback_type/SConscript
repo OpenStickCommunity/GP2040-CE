@@ -1,0 +1,7 @@
+# Test fallback_type option
+
+Import("env")
+
+env.NanopbProto(["fallback_type","fallback_type.options"])
+env.Object("fallback_type.pb.c")
+env.Match(['fallback_type.pb.h', 'fallback_type.expected'])

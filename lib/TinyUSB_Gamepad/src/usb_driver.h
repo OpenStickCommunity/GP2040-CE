@@ -6,6 +6,7 @@
 #pragma once
 
 #include "gamepad/GamepadDescriptors.h"
+#include "enums.pb.h"
 
 typedef enum
 {

@@ -11,6 +11,8 @@
 #include "AnimationStation.hpp"
 #include "helper.h"
 
+#include "config.pb.h"
+
 using namespace std;
 
 static map<uint32_t, RGB> themeStaticRainbow({
