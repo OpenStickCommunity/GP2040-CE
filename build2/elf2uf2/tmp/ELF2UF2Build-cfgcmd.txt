@@ -1,1 +1,0 @@
-cmd='C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe;-DCMAKE_MAKE_PROGRAM:FILEPATH=nmake;-GNMake Makefiles;<SOURCE_DIR><SOURCE_SUBDIR>'
