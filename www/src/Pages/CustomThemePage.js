@@ -113,6 +113,7 @@ const CustomThemePage = () => {
 	const [pickerVisible, setPickerVisible] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [presetColors, setPresetColors] = useState([...ledColors, ...customColors(savedColors)]);
+	const { buttonLabelType } = buttonLabels;
 
 	const confirmClearAll = () => {
 		setSelectedColor(null);
@@ -296,7 +297,7 @@ const CustomThemePage = () => {
 											<LEDButton
 												key={`led-button-${buttonName}`}
 												className={`${buttonName} ${selectedButton === buttonName ? 'selected' : ''}`}
-												name={BUTTONS[buttonLabels][buttonName]}
+												name={BUTTONS[buttonLabelType][buttonName]}
 												buttonColor={customTheme[buttonName]?.normal}
 												buttonPressedColor={customTheme[buttonName]?.pressed}
 												labelUnder={true}
@@ -309,7 +310,7 @@ const CustomThemePage = () => {
 											<LEDButton
 												key={`led-button-${buttonName}`}
 												className={`${buttonName} ${selectedButton === buttonName ? 'selected' : ''}`}
-												name={BUTTONS[buttonLabels][buttonName]}
+												name={BUTTONS[buttonLabelType][buttonName]}
 												buttonColor={customTheme[buttonName]?.normal}
 												buttonPressedColor={customTheme[buttonName]?.pressed}
 												labelUnder={false}
@@ -337,7 +338,7 @@ const CustomThemePage = () => {
 				>
 					<Popover onClick={(e) => e.stopPropagation()}>
 						<Container className="led-color-picker">
-							<h6 className="text-center">{specialButtons.indexOf(selectedButton) > -1 ? selectedButton : BUTTONS[buttonLabels][selectedButton]}</h6>
+							<h6 className="text-center">{specialButtons.indexOf(selectedButton) > -1 ? selectedButton : BUTTONS[buttonLabelType][selectedButton]}</h6>
 							<Row>
 								<Form.Group as={Col}
 									className={`led-color-option ${pickerType?.type === 'normal' ? 'selected' : ''}`}

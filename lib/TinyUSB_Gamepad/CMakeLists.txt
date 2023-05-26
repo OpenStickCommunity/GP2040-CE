@@ -1,3 +1,6 @@
+include(../../compile_proto.cmake)
+compile_proto()
+
 add_library(TinyUSB_Gamepad
 src/hid_driver.cpp
 src/net_driver.cpp
@@ -5,12 +8,15 @@ src/tusb_driver.cpp
 src/usb_descriptors.cpp
 src/xinput_driver.cpp
 src/ps4_driver.cpp
+${PROTO_OUTPUT_DIR}/enums.pb.h
 )
-target_include_directories(TinyUSB_Gamepad PUBLIC 
-src
+target_include_directories(TinyUSB_Gamepad PUBLIC
+${CMAKE_CURRENT_SOURCE_DIR}/src
 ${CMAKE_SOURCE_DIR}/headers
 ${CMAKE_SOURCE_DIR}/lib/CRC32/src
 ${CMAKE_SOURCE_DIR}/lib/mbedtls/include
+${CMAKE_SOURCE_DIR}/lib/nanopb
+${PROTO_OUTPUT_DIR}
 )
 target_link_libraries(TinyUSB_Gamepad 
 pico_stdlib

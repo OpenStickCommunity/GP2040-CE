@@ -12,13 +12,6 @@
 
 typedef enum
 {
-	PLED_TYPE_NONE = -1,
-	PLED_TYPE_PWM = 0,
-	PLED_TYPE_RGB = 1,
-} PLEDType;
-
-typedef enum
-{
 	PLED_STATE_LED1 = (1 << 0),
 	PLED_STATE_LED2 = (1 << 1),
 	PLED_STATE_LED3 = (1 << 2),
