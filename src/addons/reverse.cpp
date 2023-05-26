@@ -1,12 +1,13 @@
 #include "addons/reverse.h"
 #include "storagemanager.h"
 #include "GamepadEnums.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool ReverseInput::available() {
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
-    pinButtonReverse = options.pinButtonReverse;
-	return (options.ReverseInputEnabled &&
-        pinButtonReverse != (uint8_t)-1);
+    const ReverseOptions& options = Storage::getInstance().getAddonOptions().reverseOptions;
+    pinButtonReverse = options.buttonPin;
+	return options.enabled && isValidPin(options.buttonPin);
 }
 
 void ReverseInput::setup()
@@ -17,18 +18,19 @@ void ReverseInput::setup()
     gpio_pull_up(pinButtonReverse);          // Set as PULLUP
 
     // Setup Reverse LED if available
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
-    pinLED = options.pinReverseLED;
-    if (pinLED != (uint8_t)-1) {
-        gpio_init(options.pinReverseLED);
-        gpio_set_dir(options.pinReverseLED, GPIO_OUT);
-        gpio_put(options.pinReverseLED, 1);
+    const ReverseOptions& options = Storage::getInstance().getAddonOptions().reverseOptions;
+    pinLED = 0xff;
+    if (isValidPin(options.ledPin)) {
+        pinLED = options.ledPin;
+        gpio_init(pinLED);
+        gpio_set_dir(pinLED, GPIO_OUT);
+        gpio_put(pinLED, 1);
     }
 
-    actionUp = options.reverseActionUp;
-    actionDown = options.reverseActionDown;
-    actionLeft = options.reverseActionLeft;
-    actionRight = options.reverseActionDown;
+    actionUp = options.actionUp;
+    actionDown = options.actionDown;
+    actionLeft = options.actionLeft;
+    actionRight = options.actionRight;
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	mapDpadUp    = gamepad->mapDpadUp;
@@ -36,8 +38,8 @@ void ReverseInput::setup()
 	mapDpadLeft  = gamepad->mapDpadLeft;
 	mapDpadRight = gamepad->mapDpadRight;
 
-    invertXAxis = gamepad->options.invertXAxis;
-    invertYAxis = gamepad->options.invertYAxis;
+    invertXAxis = gamepad->getOptions().invertXAxis;
+    invertYAxis = gamepad->getOptions().invertYAxis;
 
     state = false;
 }
@@ -69,7 +71,7 @@ void ReverseInput::process()
         | input(values & mapDpadRight->pinMask, mapDpadRight->buttonMask,   mapDpadLeft->buttonMask,    actionRight,    invertXAxis)
     ;
 
-    if (pinLED != (uint8_t)-1) {
+    if (pinLED != 0xff) {
         gpio_put(pinLED, !state);
     }
 }

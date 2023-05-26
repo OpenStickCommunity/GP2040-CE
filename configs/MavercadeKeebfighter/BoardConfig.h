@@ -6,7 +6,8 @@
 #ifndef MAVERCADEKEEBFIGHTER_CONFIG_H_
 #define MAVERCADEKEEBFIGHTER_CONFIG_H_
 
-#include <GamepadEnums.h>
+#include "enums.pb.h"
+
 // Mapping between Mavercade Keebfighter switch number (as silkscreened) and GPIO pin
 
 #define FLATBOX_SW1_PIN    14
@@ -177,8 +178,8 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define SPLASH_MODE NOSPLASH
-#define SPLASH_CHOICE MAIN
+#define SPLASH_MODE SPLASH_MODE_NONE
+#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
 
 
 // The default `BUTTON_LAYOUT` is `BUTTON_LAYOUT_STICK` which will show an arcade stick on the left hand side of the display.
@@ -218,7 +219,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_TYPE BOARD_LED_OFF
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
 
 // Dual Directional Add-on Options
 

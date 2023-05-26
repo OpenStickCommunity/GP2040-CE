@@ -38,7 +38,7 @@ struct RGB {
     }
   }
 
-  inline uint32_t value(LEDFormat format, float brightnessX = 1.0F) {
+  inline uint32_t value(LEDFormat format, float brightnessX = 1.0F) const {
     switch (format) {
       case LED_FORMAT_GRB:
         return ((uint32_t)(g * brightnessX) << 16)

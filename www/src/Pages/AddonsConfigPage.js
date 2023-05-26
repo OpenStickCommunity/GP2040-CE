@@ -385,6 +385,9 @@ const defaultValues = {
 	wiiExtensionSCLPin: -1,
 	wiiExtensionBlock: 0,
 	wiiExtensionSpeed: 400000,
+	snesPadClockPin: -1,
+	snesPadLatchPin: -1,
+	snesPadDataPin: -1,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
 	BuzzerSpeakerAddonEnabled: 0,
@@ -399,6 +402,7 @@ const defaultValues = {
 	ReverseInputEnabled: 0,
 	TurboInputEnabled: 0,
 	WiiExtensionAddonEnabled: 0,
+	SNESpadAddonEnabled: 0,
 };
 
 const FormContext = ({setStoredData}) => {
@@ -530,6 +534,12 @@ const sanitizeData = (values) => {
 			values.wiiExtensionBlock = parseInt(values.wiiExtensionBlock);
 		if (!!values.wiiExtensionSpeed)
 			values.wiiExtensionSpeed = parseInt(values.wiiExtensionSpeed);
+		if (!!values.snesPadClockPin)
+			values.snesPadClockPin = parseInt(values.snesPadClockPin);
+		if (!!values.snesPadLatchPin)
+			values.snesPadLatchPin = parseInt(values.snesPadLatchPin);
+		if (!!values.snesPadDataPin)
+			values.snesPadDataPin = parseInt(values.snesPadDataPin);
 		if (!!values.AnalogInputEnabled)
 			values.AnalogInputEnabled = parseInt(values.AnalogInputEnabled);
 		if (!!values.BoardLedAddonEnabled)
@@ -558,6 +568,8 @@ const sanitizeData = (values) => {
 			values.TurboInputEnabled = parseInt(values.TurboInputEnabled);
 		if (!!values.WiiExtensionAddonEnabled)
 			values.WiiExtensionAddonEnabled = parseInt(values.WiiExtensionAddonEnabled);
+		if (!!values.SNESpadAddonEnabled)
+			values.SNESpadAddonEnabled = parseInt(values.SNESpadAddonEnabled);
 }
 
 function flattenObject(object) {
@@ -1562,6 +1574,67 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.WiiExtensionAddonEnabled)}
 							onChange={(e) => {handleCheckbox("WiiExtensionAddonEnabled", values); handleChange(e);}}
+						/>
+					</Section>
+					<Section title="Snes Extension Configuration">
+						<div
+							id="SNESpadAddonOptions"
+							hidden={!values.SNESpadAddonEnabled}>
+							<Row>
+								<p>Note: If the Display is enabled at the same time, this Addon will be disabled.</p>
+                                <h3>Currently Supported Controllers</h3>
+                                <p>SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</p>
+                                <p>SNES mouse: Analog Stick Supported. Left Click = B1, Right Click = B2</p>
+                                <p>NES: D-Pad Supported. B = B1, A = B2, Select = S1, Start = S2</p>
+							</Row>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label="Clock Pin"
+									name="snesPadClockPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.snesPadClockPin}
+									error={errors.snesPadClockPin}
+									isInvalid={errors.snesPadClockPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label="Latch Pin"
+									name="snesPadLatchPin"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.snesPadLatchPin}
+									error={errors.snesPadLatchPin}
+									isInvalid={errors.snesPadLatchPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label="Data Pin"
+									name="snesPadDataPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.snesPadDataPin}
+									error={errors.snesPadDataPin}
+									isInvalid={errors.snesPadDataPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
+						</div>
+						<FormCheck
+							label="Enabled"
+							type="switch"
+							id="SNESpadButton"
+							reverse="true"
+							error={undefined}
+							isInvalid={false}
+							checked={Boolean(values.SNESpadAddonEnabled)}
+							onChange={(e) => {handleCheckbox("SNESpadAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
 					<div className="mt-3">

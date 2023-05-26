@@ -2,6 +2,7 @@
 #include "gp2040.h"
 #include "helper.h"
 #include "system.h"
+#include "enums.pb.h"
 
 #include "configmanager.h" // Global Managers
 #include "storagemanager.h"
@@ -18,6 +19,7 @@
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
+#include "addons/snes_input.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -69,7 +71,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_KEYBOARD:
 		case BootAction::NONE:
 			{
-				InputMode inputMode = gamepad->options.inputMode;
+				InputMode inputMode = gamepad->getOptions().inputMode;
 				if (bootAction == BootAction::SET_INPUT_MODE_HID) {
 					inputMode = INPUT_MODE_HID;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_SWITCH) {
@@ -82,9 +84,9 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_KEYBOARD;
 				}
 
-				if (inputMode != gamepad->options.inputMode) {
+				if (inputMode != gamepad->getOptions().inputMode) {
 					// Save the changed input mode
-					gamepad->options.inputMode = inputMode;
+					gamepad->setInputMode(inputMode);
 					gamepad->save();
 				}
 
@@ -106,6 +108,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
 	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
 	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
+	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 }
@@ -115,6 +118,7 @@ void GP2040::run() {
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	bool configMode = Storage::getInstance().GetConfigMode();
 	while (1) { // LOOP
+		Storage::getInstance().performEnqueuedSaves();
 		// Config Loop (Web-Config does not require gamepad)
 		if (configMode == true) {
 			ConfigManager& configManager = ConfigManager::getInstance();
@@ -175,11 +179,12 @@ GP2040::BootAction GP2040::getBootAction() {
 				Gamepad * gamepad = Storage::getInstance().GetGamepad();
 				gamepad->read();
 
-				bool modeSwitchLocked = gamepad->options.forcedSetupMode == ForcedSetupMode::LOCK_MODE_SWITCH ||
-										gamepad->options.forcedSetupMode == ForcedSetupMode::LOCK_BOTH;
+				ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+				bool modeSwitchLocked = forcedSetupOptions.mode == LOCK_MODE_SWITCH ||
+										forcedSetupOptions.mode == LOCK_BOTH;
 
-				bool webConfigLocked  = gamepad->options.forcedSetupMode == ForcedSetupMode::LOCK_WEB_CONFIG ||
-										gamepad->options.forcedSetupMode == ForcedSetupMode::LOCK_BOTH;
+				bool webConfigLocked  = forcedSetupOptions.mode == LOCK_WEB_CONFIG ||
+										forcedSetupOptions.mode == LOCK_BOTH;
 
 				if (gamepad->pressedF1() && gamepad->pressedUp()) {
 					return BootAction::ENTER_USB_MODE;
