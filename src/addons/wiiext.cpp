@@ -109,10 +109,10 @@ void WiiExtensionInput::process() {
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
-    gamepad->state.lx = leftX;
-    gamepad->state.ly = leftY;
-    gamepad->state.rx = rightX;
-    gamepad->state.ry = rightY;
+    gamepad->state.lx = bounds(leftX,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+    gamepad->state.ly = bounds(leftY,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+    gamepad->state.rx = bounds(rightX,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+    gamepad->state.ry = bounds(rightY,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
 
     if (wii->extensionType == WII_EXTENSION_CLASSIC) {
         gamepad->hasAnalogTriggers = true;
@@ -144,4 +144,10 @@ void WiiExtensionInput::process() {
 
 uint16_t WiiExtensionInput::map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+uint16_t WiiExtensionInput::bounds(uint16_t x, uint16_t out_min, uint16_t out_max) {
+    if (x > out_max) x = out_max;
+    if (x < out_min) x = out_min;
+    return x;
 }

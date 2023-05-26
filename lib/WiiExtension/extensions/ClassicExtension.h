@@ -6,6 +6,7 @@
 #define WII_CLASSIC_GATE_SIZE 97
 #define WII_CLASSIC_GATE_CENTER 128
 #define WII_CLASSIC_TRIGGER_MAX 32
+#define WII_CLASSIC_ANALOG_GAP (WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE)
 
 class ClassicExtension : public ExtensionBase {
     public:

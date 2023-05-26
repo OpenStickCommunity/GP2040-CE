@@ -11,6 +11,7 @@ void ExtensionBase::init(uint8_t dataType) {
     setDataType(dataType);
     isFirstRead = true;
     
+    _hasCalibrationData = false;
     for (i = 0; i < WiiDirectionalPad::WII_MAX_DIRECTIONS; ++i) directionalPad[i] = 0;
     for (i = 0; i < WiiButtons::WII_MAX_BUTTONS; ++i) buttons[i] = 0;
     for (i = 0; i < WiiMotions::WII_MAX_MOTIONS; ++i) motionState[i] = 0;
@@ -28,6 +29,7 @@ bool ExtensionBase::calibrate(uint8_t *calibrationData) {
     uint8_t checksum = WII_CHECKSUM_MAGIC;
     uint8_t i = 0;
     uint8_t checksumBytes[2] = {0x00,0x00};
+    bool result = false;
 
 #if WII_EXTENSION_DEBUG==true
     for (int i = 0; i < 16; ++i) {
@@ -48,7 +50,11 @@ bool ExtensionBase::calibrate(uint8_t *calibrationData) {
 #endif
 
     // if the checksum passes, the extensions can use the data. if not, it will fall back to the extension defaults
-    return ((checksumBytes[0] == calibrationData[WII_CALIBRATION_SIZE-2]) && (checksumBytes[1] == calibrationData[WII_CALIBRATION_SIZE-1]));
+    result = ((checksumBytes[0] == calibrationData[WII_CALIBRATION_SIZE-2]) && (checksumBytes[1] == calibrationData[WII_CALIBRATION_SIZE-1]));
+
+    _hasCalibrationData = result;
+
+    return result;
 }
 
 void ExtensionBase::postProcess() {
@@ -67,20 +73,33 @@ void ExtensionBase::postProcess() {
             if (isFirstRead) {
                 // stash the first read as the initial orientation. will reset on hotswap.
                 initialAnalogState[i] = map(analogState[i], 0, (_analogPrecision[i].origin-1), 0,(_analogPrecision[i].destination-1));
+
+                if (!_hasCalibrationData) {
+                    cenVal = initialAnalogState[i];
+                }
             }
 
-            centerOffset = cenVal-initialAnalogState[i];
+            if (_analogCalibration[i].useOffset) {
+                centerOffset = cenVal-initialAnalogState[i];
+            } else {
+                centerOffset = 0;
+            }
 
             outVal = map(analogState[i], 0, (_analogPrecision[i].origin-1), 0,(_analogPrecision[i].destination-1));
             if ((i != WiiAnalogs::WII_ANALOG_TRIGGER_LEFT) && (i != WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT)) {
+                outVal = bounds(outVal, minVal, maxVal);
                 outVal = map(outVal+centerOffset, minVal+centerOffset, maxVal+centerOffset, 0, (_analogPrecision[i].destination-1));
+                outVal = bounds(outVal, minVal, maxVal);
+            } else {
+                outVal = bounds(outVal, 0, (_analogPrecision[i].destination-1));
             }
-            outVal = bounds(outVal, 0, (_analogPrecision[i].destination-1));
 
             //applyCalibration(analogState[i], minVal, maxVal, cenVal),
 
 #if WII_EXTENSION_DEBUG==true
-            printf("cur:%5d min=%5d:%5d max=%5d:%5d cen=%5d:%5d out:%5d off:%5d\n", analogState[i], _analogCalibration[i].minimum, minVal, _analogCalibration[i].maximum, maxVal, _analogCalibration[i].center, cenVal, outVal, centerOffset);
+            if (i == WiiAnalogs::WII_ANALOG_RIGHT_X) {
+                //printf("cur:%5d min=%5d:%5d max=%5d:%5d cen=%5d:%5d out:%5d off:%5d\n", analogState[i], _analogCalibration[i].minimum, minVal, _analogCalibration[i].maximum, maxVal, _analogCalibration[i].center, cenVal, outVal, centerOffset);
+            }
 #endif
 
             analogState[i] = outVal;

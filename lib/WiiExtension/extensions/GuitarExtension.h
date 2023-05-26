@@ -3,6 +3,11 @@
 
 #include "ExtensionBase.h"
 
+#define WII_GUITAR_GATE_SIZE 97
+#define WII_GUITAR_GATE_CENTER 128
+#define WII_GUITAR_TRIGGER_MAX 32
+#define WII_GUITAR_ANALOG_GAP (WII_GUITAR_GATE_CENTER-WII_GUITAR_GATE_SIZE)
+
 enum GuitarButtons {
     GUITAR_ORANGE = WiiButtons::WII_BUTTON_ZL,
     GUITAR_RED    = WiiButtons::WII_BUTTON_B,

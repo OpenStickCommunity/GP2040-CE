@@ -48,20 +48,22 @@ enum WiiMotions {
 };
 
 typedef struct {
-    uint16_t origin;
-    uint16_t destination;
+    uint16_t origin = 0;
+    uint16_t destination = 0;
 } WiiAnalogPrecision;
 
 typedef struct {
-    uint16_t minimum;
-    uint16_t center;
-    uint16_t maximum;
+    uint16_t minimum = 0;
+    uint16_t center = 0;
+    uint16_t maximum = 0;
+    bool useOffset = true;
 } WiiAnalogCalibration;
 
 class ExtensionBase {
     protected:
         uint8_t _dataType;
         uint8_t _extensionType;
+        bool _hasCalibrationData = false;
 
         WiiAnalogPrecision _analogPrecision[WiiAnalogs::WII_MAX_ANALOGS];
         WiiAnalogCalibration _analogCalibration[WiiAnalogs::WII_MAX_ANALOGS];

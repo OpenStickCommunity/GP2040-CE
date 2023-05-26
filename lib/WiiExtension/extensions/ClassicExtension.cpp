@@ -59,25 +59,25 @@ void ClassicExtension::init(uint8_t dataType) {
     }
 
     // preseed calibration data with max ranges
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum   = WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center    = WII_CLASSIC_GATE_CENTER;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum   = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum          = WII_CLASSIC_ANALOG_GAP;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center           = WII_CLASSIC_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum          = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
 
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum   = WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center    = WII_CLASSIC_GATE_CENTER;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum   = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum          = WII_CLASSIC_ANALOG_GAP;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center           = WII_CLASSIC_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum          = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
     
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum   = WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center    = WII_CLASSIC_GATE_CENTER;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum   = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum         = WII_CLASSIC_ANALOG_GAP;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center          = WII_CLASSIC_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum         = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
 
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum   = WII_CLASSIC_GATE_CENTER-WII_CLASSIC_GATE_SIZE;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center    = WII_CLASSIC_GATE_CENTER;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].maximum   = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum         = WII_CLASSIC_ANALOG_GAP;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center          = WII_CLASSIC_GATE_CENTER;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].maximum         = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
     
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].minimum   = 1;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].center    = WII_CLASSIC_TRIGGER_MAX/2;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].maximum   = WII_CLASSIC_TRIGGER_MAX;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].minimum    = 1;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].center     = WII_CLASSIC_TRIGGER_MAX/2;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].maximum    = WII_CLASSIC_TRIGGER_MAX;
 
     _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].minimum   = 1;
     _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].center    = WII_CLASSIC_TRIGGER_MAX/2;
