@@ -180,11 +180,11 @@ GP2040::BootAction GP2040::getBootAction() {
 				gamepad->read();
 
 				ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
-				bool modeSwitchLocked = forcedSetupOptions.mode == LOCK_MODE_SWITCH ||
-										forcedSetupOptions.mode == LOCK_BOTH;
+				bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
+										forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
-				bool webConfigLocked  = forcedSetupOptions.mode == LOCK_WEB_CONFIG ||
-										forcedSetupOptions.mode == LOCK_BOTH;
+				bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
+										forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
 				if (gamepad->pressedF1() && gamepad->pressedUp()) {
 					return BootAction::ENTER_USB_MODE;
