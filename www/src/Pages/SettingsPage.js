@@ -124,7 +124,7 @@ export default function SettingsPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: ''});
 
-	const WARNING_CHECK_TEXT = "I know what I'm doing";
+	const WARNING_CHECK_TEXT = "GP2040-CE";
 
 	const handleWarningClose = async (accepted, values, setFieldValue) => {
 		setWarning({ show: false, acceptText: ''});
