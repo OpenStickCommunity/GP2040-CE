@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 
@@ -99,6 +99,10 @@ const FormContext = ({ setButtonLabels }) => {
 			values.socdMode = parseInt(values.socdMode);
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
+		if (!!values.forcedSetupMode)
+			values.forcedSetupMode = parseInt(values.forcedSetupMode);
+		if (!!values.lockHotkeys)
+			values.lockHotkeys = parseInt(values.lockHotkeys);
 
 		setButtonLabels({ swapTpShareLabels: (values.switchTpShareForDs4 === 1) && (values.inputMode === 4) });
 
@@ -118,10 +122,28 @@ const FormContext = ({ setButtonLabels }) => {
 export default function SettingsPage() {
 	const { buttonLabels, setButtonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
+	const [warning, setWarning] = useState({ show: false, acceptText: ''});
 
-	const onSuccess = async (values) => {
+	const WARNING_CHECK_TEXT = "I know what I'm doing";
+
+	const handleWarningClose = async (accepted, values, setFieldValue) => {
+		setWarning({ show: false, acceptText: ''});
+		if (accepted) await saveSettings(values);
+		else setFieldValue('forcedSetupMode', 0);
+	};
+
+	const setWarningAcceptText = (e) => {
+		setWarning({ ...warning, acceptText: e.target.value });
+	};
+
+	const saveSettings = async (values) => {
 		const success = await WebApi.setGamepadOptions(values);
 		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+	};
+
+	const onSuccess = async (values) => {
+		if (values.forcedSetupMode > 1) { setWarning({ show: true, acceptText: ''}); }
+		else { await saveSettings(values); }
 	};
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
@@ -236,6 +258,27 @@ export default function SettingsPage() {
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 					<FormContext  setButtonLabels={setButtonLabels}/>
 					</Form>
+					<Modal size="lg" show={warning.show} onHide={handleWarningClose}>
+						<Modal.Header closeButton>
+							<Modal.Title>Forced Setup Mode Warning</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							<div className='mb-3'>
+								If you reboot to Controller mode after saving, you will no longer have access to the web-config.
+								Please type "<strong>{WARNING_CHECK_TEXT}</strong>" below to unlock the Save button if you fully acknowledge this and intend it.
+								Clicking on Dismiss will revert this setting which then is to be saved.
+							</div>
+							<Form.Control value={warning.acceptText} onChange={setWarningAcceptText}></Form.Control>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button disabled={warning.acceptText != WARNING_CHECK_TEXT} variant="warning" onClick={() => handleWarningClose(true, values)}>
+								Save
+							</Button>
+							<Button variant="primary" onClick={() => handleWarningClose(false, values, setFieldValue)}>
+								Dismiss
+							</Button>
+						</Modal.Footer>
+					</Modal>
 				</div>
 			)}
 		</Formik>
