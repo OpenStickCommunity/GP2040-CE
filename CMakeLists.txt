@@ -87,7 +87,13 @@ FetchContent_Declare(ArduinoJson
 )
 FetchContent_MakeAvailable(ArduinoJson)
 
-set(PICO_PIO_USB_PATH ${CMAKE_SOURCE_DIR}/lib/pico_pio_usb)
+if(DEFINED ENV{PICO_PIO_USB_PATH})
+  message(STATUS "Found custom Pico-PIO-USB path, using it.")
+  set(PICO_PIO_USB_PATH $ENV{PICO_PIO_USB_PATH})
+elseif(NOT DEFINED PICO_PIO_USB_PATH)
+  message(STATUS "Using default Pico-PIO-USB.")
+  set(PICO_PIO_USB_PATH ${CMAKE_SOURCE_DIR}/lib/pico_pio_usb)
+endif()
 
 include(compile_proto.cmake)
 compile_proto()
@@ -151,7 +157,6 @@ target_link_libraries(${PROJECT_NAME}
 pico_stdlib
 pico_bootsel_via_double_reset
 tinyusb_host
-#tinyusb_board
 tinyusb_pico_pio_usb
 AnimationStation
 CRC32
