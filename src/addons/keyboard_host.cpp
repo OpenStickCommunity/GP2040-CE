@@ -29,6 +29,7 @@ bool KeyboardHostAddon::available() {
 }
 
 void KeyboardHostAddon::setup() {
+  set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
   const KeyboardMapping& keyboardMapping = Storage::getInstance().getAddonOptions().keyboardHostOptions.mapping;
 	// board_init();
   // board_init() should be doing what the two lines below are doing but doesn't work
