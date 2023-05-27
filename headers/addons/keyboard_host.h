@@ -13,8 +13,7 @@
 
 struct KeyboardButtonMapping
 {
-	KeyboardButtonMapping(uint8_t p, uint16_t bm) : 
-		key(p > HID_KEY_NONE && p <=HID_KEY_GUI_RIGHT ? p : 0xff),
+	KeyboardButtonMapping(uint16_t bm) : 
 		buttonMask(bm)
 	{}
 
@@ -23,14 +22,7 @@ struct KeyboardButtonMapping
 
 	inline void setKey(uint8_t p)
 	{
-		if (p <= HID_KEY_NONE && p <=HID_KEY_GUI_RIGHT)
-		{
-			key = p;
-		}
-		else
-		{
-			key = 0xff;
-		}
+		key = (p > HID_KEY_NONE && p <=HID_KEY_GUI_RIGHT) ? p : 0xff;
 	}
 
 	bool isAssigned() const { return key != 0xff; }

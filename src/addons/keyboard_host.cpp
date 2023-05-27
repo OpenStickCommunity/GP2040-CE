@@ -3,33 +3,33 @@
 
 #include "pio_usb.h"
 
-GamepadState _keyboard_host_state;
+static GamepadState _keyboard_host_state;
 
-KeyboardButtonMapping *_keyboard_host_mapDpadUp;
-KeyboardButtonMapping *_keyboard_host_mapDpadDown;
-KeyboardButtonMapping *_keyboard_host_mapDpadLeft;
-KeyboardButtonMapping *_keyboard_host_mapDpadRight;
-KeyboardButtonMapping *_keyboard_host_mapButtonB1;
-KeyboardButtonMapping *_keyboard_host_mapButtonB2;
-KeyboardButtonMapping *_keyboard_host_mapButtonB3;
-KeyboardButtonMapping *_keyboard_host_mapButtonB4;
-KeyboardButtonMapping *_keyboard_host_mapButtonL1;
-KeyboardButtonMapping *_keyboard_host_mapButtonR1;
-KeyboardButtonMapping *_keyboard_host_mapButtonL2;
-KeyboardButtonMapping *_keyboard_host_mapButtonR2;
-KeyboardButtonMapping *_keyboard_host_mapButtonS1;
-KeyboardButtonMapping *_keyboard_host_mapButtonS2;
-KeyboardButtonMapping *_keyboard_host_mapButtonL3;
-KeyboardButtonMapping *_keyboard_host_mapButtonR3;
-KeyboardButtonMapping *_keyboard_host_mapButtonA1;
-KeyboardButtonMapping *_keyboard_host_mapButtonA2;
+static KeyboardButtonMapping _keyboard_host_mapDpadUp    = KeyboardButtonMapping(GAMEPAD_MASK_UP);
+static KeyboardButtonMapping _keyboard_host_mapDpadDown  = KeyboardButtonMapping(GAMEPAD_MASK_DOWN);
+static KeyboardButtonMapping _keyboard_host_mapDpadLeft  = KeyboardButtonMapping(GAMEPAD_MASK_LEFT);
+static KeyboardButtonMapping _keyboard_host_mapDpadRight = KeyboardButtonMapping(GAMEPAD_MASK_RIGHT);
+static KeyboardButtonMapping _keyboard_host_mapButtonB1  = KeyboardButtonMapping(GAMEPAD_MASK_B1);
+static KeyboardButtonMapping _keyboard_host_mapButtonB2  = KeyboardButtonMapping(GAMEPAD_MASK_B2);
+static KeyboardButtonMapping _keyboard_host_mapButtonB3  = KeyboardButtonMapping(GAMEPAD_MASK_R2);
+static KeyboardButtonMapping _keyboard_host_mapButtonB4  = KeyboardButtonMapping(GAMEPAD_MASK_L2);
+static KeyboardButtonMapping _keyboard_host_mapButtonL1  = KeyboardButtonMapping(GAMEPAD_MASK_B3);
+static KeyboardButtonMapping _keyboard_host_mapButtonR1  = KeyboardButtonMapping(GAMEPAD_MASK_B4);
+static KeyboardButtonMapping _keyboard_host_mapButtonL2  = KeyboardButtonMapping(GAMEPAD_MASK_R1);
+static KeyboardButtonMapping _keyboard_host_mapButtonR2  = KeyboardButtonMapping(GAMEPAD_MASK_L1);
+static KeyboardButtonMapping _keyboard_host_mapButtonS1  = KeyboardButtonMapping(GAMEPAD_MASK_S1);
+static KeyboardButtonMapping _keyboard_host_mapButtonS2  = KeyboardButtonMapping(GAMEPAD_MASK_S2);
+static KeyboardButtonMapping _keyboard_host_mapButtonL3  = KeyboardButtonMapping(GAMEPAD_MASK_L3);
+static KeyboardButtonMapping _keyboard_host_mapButtonR3  = KeyboardButtonMapping(GAMEPAD_MASK_R3);
+static KeyboardButtonMapping _keyboard_host_mapButtonA1  = KeyboardButtonMapping(GAMEPAD_MASK_A1);
+static KeyboardButtonMapping _keyboard_host_mapButtonA2  = KeyboardButtonMapping(GAMEPAD_MASK_A2);
 
 bool KeyboardHostAddon::available() {
 	return Storage::getInstance().getAddonOptions().keyboardHostOptions.enabled;
 }
 
 void KeyboardHostAddon::setup() {
-  KeyboardMapping& keyboardMapping = Storage::getInstance().getAddonOptions().keyboardHostOptions.mapping;
+  const KeyboardMapping& keyboardMapping = Storage::getInstance().getAddonOptions().keyboardHostOptions.mapping;
 	// board_init();
   // board_init() should be doing what the two lines below are doing but doesn't work
   // needs tinyusb_board library linked
@@ -37,24 +37,24 @@ void KeyboardHostAddon::setup() {
   tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
 	tuh_init(BOARD_TUH_RHPORT);
 
-  _keyboard_host_mapDpadUp    = new KeyboardButtonMapping(keyboardMapping.keyDpadUp  ,  GAMEPAD_MASK_UP);
-  _keyboard_host_mapDpadDown  = new KeyboardButtonMapping(keyboardMapping.keyDpadDown,  GAMEPAD_MASK_DOWN);
-  _keyboard_host_mapDpadLeft  = new KeyboardButtonMapping(keyboardMapping.keyDpadLeft,  GAMEPAD_MASK_LEFT);
-  _keyboard_host_mapDpadRight = new KeyboardButtonMapping(keyboardMapping.keyDpadRight,  GAMEPAD_MASK_RIGHT);
-  _keyboard_host_mapButtonB1  = new KeyboardButtonMapping(keyboardMapping.keyButtonB1,  GAMEPAD_MASK_B1);
-  _keyboard_host_mapButtonB2  = new KeyboardButtonMapping(keyboardMapping.keyButtonB2,  GAMEPAD_MASK_B2);
-  _keyboard_host_mapButtonR2  = new KeyboardButtonMapping(keyboardMapping.keyButtonR2,  GAMEPAD_MASK_R2);
-  _keyboard_host_mapButtonL2  = new KeyboardButtonMapping(keyboardMapping.keyButtonL2,  GAMEPAD_MASK_L2);
-  _keyboard_host_mapButtonB3  = new KeyboardButtonMapping(keyboardMapping.keyButtonB3,  GAMEPAD_MASK_B3);
-  _keyboard_host_mapButtonB4  = new KeyboardButtonMapping(keyboardMapping.keyButtonB4,  GAMEPAD_MASK_B4);
-  _keyboard_host_mapButtonR1  = new KeyboardButtonMapping(keyboardMapping.keyButtonR1,  GAMEPAD_MASK_R1);
-  _keyboard_host_mapButtonL1  = new KeyboardButtonMapping(keyboardMapping.keyButtonL1,  GAMEPAD_MASK_L1);
-  _keyboard_host_mapButtonS1  = new KeyboardButtonMapping(keyboardMapping.keyButtonS1,  GAMEPAD_MASK_S1);
-  _keyboard_host_mapButtonS2  = new KeyboardButtonMapping(keyboardMapping.keyButtonS2,  GAMEPAD_MASK_S2);
-  _keyboard_host_mapButtonL3  = new KeyboardButtonMapping(keyboardMapping.keyButtonL3,  GAMEPAD_MASK_L3);
-  _keyboard_host_mapButtonR3  = new KeyboardButtonMapping(keyboardMapping.keyButtonR3,  GAMEPAD_MASK_R3);
-  _keyboard_host_mapButtonA1  = new KeyboardButtonMapping(keyboardMapping.keyButtonA1,  GAMEPAD_MASK_A1);
-  _keyboard_host_mapButtonA2  = new KeyboardButtonMapping(keyboardMapping.keyButtonA2,  GAMEPAD_MASK_A2);
+  _keyboard_host_mapDpadUp.setKey(keyboardMapping.keyDpadUp);
+  _keyboard_host_mapDpadDown.setKey(keyboardMapping.keyDpadDown);
+  _keyboard_host_mapDpadLeft.setKey(keyboardMapping.keyDpadLeft);
+  _keyboard_host_mapDpadRight.setKey(keyboardMapping.keyDpadRight);
+  _keyboard_host_mapButtonB1.setKey(keyboardMapping.keyButtonB1);
+  _keyboard_host_mapButtonB2.setKey(keyboardMapping.keyButtonB2);
+  _keyboard_host_mapButtonR2.setKey(keyboardMapping.keyButtonR2);
+  _keyboard_host_mapButtonL2.setKey(keyboardMapping.keyButtonL2);
+  _keyboard_host_mapButtonB3.setKey(keyboardMapping.keyButtonB3);
+  _keyboard_host_mapButtonB4.setKey(keyboardMapping.keyButtonB4);
+  _keyboard_host_mapButtonR1.setKey(keyboardMapping.keyButtonR1);
+  _keyboard_host_mapButtonL1.setKey(keyboardMapping.keyButtonL1);
+  _keyboard_host_mapButtonS1.setKey(keyboardMapping.keyButtonS1);
+  _keyboard_host_mapButtonS2.setKey(keyboardMapping.keyButtonS2);
+  _keyboard_host_mapButtonL3.setKey(keyboardMapping.keyButtonL3);
+  _keyboard_host_mapButtonR3.setKey(keyboardMapping.keyButtonR3);
+  _keyboard_host_mapButtonA1.setKey(keyboardMapping.keyButtonA1);
+  _keyboard_host_mapButtonA2.setKey(keyboardMapping.keyButtonA2);
 }
 
 void KeyboardHostAddon::preprocess() {
@@ -129,7 +129,7 @@ void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
   _keyboard_host_state.lx = GAMEPAD_JOYSTICK_MID;
   _keyboard_host_state.ly = GAMEPAD_JOYSTICK_MID;
   _keyboard_host_state.rx = GAMEPAD_JOYSTICK_MID;
-  _keyboard_host_state.ry = GAMEPAD_JOYSTICK_MID; 
+  _keyboard_host_state.ry = GAMEPAD_JOYSTICK_MID;
   _keyboard_host_state.lt = 0;
   _keyboard_host_state.rt = 0;
 
@@ -138,30 +138,30 @@ void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
     uint8_t keycode = (i < 6) ? report->keycode[i] : getKeycodeFromModifier(report->modifier);
     if ( keycode )
     {
-      GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+      const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
       _keyboard_host_state.dpad |=
-            ((keycode == _keyboard_host_mapDpadUp->key)    ? (gamepadOptions.invertYAxis ? _keyboard_host_mapDpadDown->buttonMask : _keyboard_host_mapDpadUp->buttonMask) : _keyboard_host_state.dpad)
-          | ((keycode == _keyboard_host_mapDpadDown->key)  ? (gamepadOptions.invertYAxis ? _keyboard_host_mapDpadUp->buttonMask : _keyboard_host_mapDpadDown->buttonMask) : _keyboard_host_state.dpad)
-          | ((keycode == _keyboard_host_mapDpadLeft->key)  ? _keyboard_host_mapDpadLeft->buttonMask  : _keyboard_host_state.dpad)
-          | ((keycode == _keyboard_host_mapDpadRight->key) ? _keyboard_host_mapDpadRight->buttonMask : _keyboard_host_state.dpad)
+            ((keycode == _keyboard_host_mapDpadUp.key)    ? (gamepadOptions.invertYAxis ? _keyboard_host_mapDpadDown.buttonMask : _keyboard_host_mapDpadUp.buttonMask) : _keyboard_host_state.dpad)
+          | ((keycode == _keyboard_host_mapDpadDown.key)  ? (gamepadOptions.invertYAxis ? _keyboard_host_mapDpadUp.buttonMask : _keyboard_host_mapDpadDown.buttonMask) : _keyboard_host_state.dpad)
+          | ((keycode == _keyboard_host_mapDpadLeft.key)  ? _keyboard_host_mapDpadLeft.buttonMask  : _keyboard_host_state.dpad)
+          | ((keycode == _keyboard_host_mapDpadRight.key) ? _keyboard_host_mapDpadRight.buttonMask : _keyboard_host_state.dpad)
         ;
 
         _keyboard_host_state.buttons |=
-            ((keycode == _keyboard_host_mapButtonB1->key)  ? _keyboard_host_mapButtonB1->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonB2->key)  ? _keyboard_host_mapButtonB2->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonB3->key)  ? _keyboard_host_mapButtonB3->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonB4->key)  ? _keyboard_host_mapButtonB4->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonL1->key)  ? _keyboard_host_mapButtonL1->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonR1->key)  ? _keyboard_host_mapButtonR1->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonL2->key)  ? _keyboard_host_mapButtonL2->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonR2->key)  ? _keyboard_host_mapButtonR2->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonS1->key)  ? _keyboard_host_mapButtonS1->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonS2->key)  ? _keyboard_host_mapButtonS2->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonL3->key)  ? _keyboard_host_mapButtonL3->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonR3->key)  ? _keyboard_host_mapButtonR3->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonA1->key)  ? _keyboard_host_mapButtonA1->buttonMask  : _keyboard_host_state.buttons)
-          | ((keycode == _keyboard_host_mapButtonA2->key)  ? _keyboard_host_mapButtonA2->buttonMask  : _keyboard_host_state.buttons)
+            ((keycode == _keyboard_host_mapButtonB1.key)  ? _keyboard_host_mapButtonB1.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonB2.key)  ? _keyboard_host_mapButtonB2.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonB3.key)  ? _keyboard_host_mapButtonB3.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonB4.key)  ? _keyboard_host_mapButtonB4.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonL1.key)  ? _keyboard_host_mapButtonL1.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonR1.key)  ? _keyboard_host_mapButtonR1.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonL2.key)  ? _keyboard_host_mapButtonL2.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonR2.key)  ? _keyboard_host_mapButtonR2.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonS1.key)  ? _keyboard_host_mapButtonS1.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonS2.key)  ? _keyboard_host_mapButtonS2.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonL3.key)  ? _keyboard_host_mapButtonL3.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonR3.key)  ? _keyboard_host_mapButtonR3.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonA1.key)  ? _keyboard_host_mapButtonA1.buttonMask  : _keyboard_host_state.buttons)
+          | ((keycode == _keyboard_host_mapButtonA2.key)  ? _keyboard_host_mapButtonA2.buttonMask  : _keyboard_host_state.buttons)
         ;
 
         _keyboard_host_state.lx = GAMEPAD_JOYSTICK_MID;
