@@ -1,23 +1,9 @@
 #include "addons/keyboard_host.h"
 #include "storagemanager.h"
-#include "hardware/gpio.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include "bsp/board.h"
-
-#include "pico/stdlib.h"
-#include "pico/multicore.h"
-#include "pico/bootrom.h"
 #include "pio_usb.h"
 
-#include "tusb.h"
-
-static hid_keyboard_report_t prev_report = { 0, 0, {0} }; // previous report to check key released
 GamepadState _keyboard_host_state;
-GamepadState _keyboard_host_state_temp;
 
 KeyboardButtonMapping *_keyboard_host_mapDpadUp;
 KeyboardButtonMapping *_keyboard_host_mapDpadDown;
@@ -39,38 +25,36 @@ KeyboardButtonMapping *_keyboard_host_mapButtonA1;
 KeyboardButtonMapping *_keyboard_host_mapButtonA2;
 
 bool KeyboardHostAddon::available() {
-	return true;
+	return Storage::getInstance().getAddonOptions().keyboardHostOptions.enabled;
 }
 
 void KeyboardHostAddon::setup() {
-  Gamepad *gamepad = Storage::getInstance().GetGamepad();
-	// sleep_ms(10);
-	// // board_init();
+  KeyboardMapping& keyboardMapping = Storage::getInstance().getAddonOptions().keyboardHostOptions.mapping;
+	// board_init();
   // board_init() should be doing what the two lines below are doing but doesn't work
   // needs tinyusb_board library linked
 	pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
   tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
-	bool boardInit = tuh_init(BOARD_TUH_RHPORT);
-	printf("Board init %d\n", boardInit);
+	tuh_init(BOARD_TUH_RHPORT);
 
-  _keyboard_host_mapDpadUp    = new KeyboardButtonMapping(gamepad->options.keyDpadUp  ,  GAMEPAD_MASK_UP);
-  _keyboard_host_mapDpadDown  = new KeyboardButtonMapping(gamepad->options.keyDpadDown,  GAMEPAD_MASK_DOWN);
-  _keyboard_host_mapDpadLeft  = new KeyboardButtonMapping(gamepad->options.keyDpadLeft,  GAMEPAD_MASK_LEFT);
-  _keyboard_host_mapDpadRight = new KeyboardButtonMapping(gamepad->options.keyDpadRight,  GAMEPAD_MASK_RIGHT);
-  _keyboard_host_mapButtonB1  = new KeyboardButtonMapping(gamepad->options.keyButtonB1,  GAMEPAD_MASK_B1);
-  _keyboard_host_mapButtonB2  = new KeyboardButtonMapping(gamepad->options.keyButtonB2,  GAMEPAD_MASK_B2);
-  _keyboard_host_mapButtonR2  = new KeyboardButtonMapping(gamepad->options.keyButtonR2,  GAMEPAD_MASK_R2);
-  _keyboard_host_mapButtonL2  = new KeyboardButtonMapping(gamepad->options.keyButtonL2,  GAMEPAD_MASK_L2);
-  _keyboard_host_mapButtonB3  = new KeyboardButtonMapping(gamepad->options.keyButtonB3,  GAMEPAD_MASK_B3);
-  _keyboard_host_mapButtonB4  = new KeyboardButtonMapping(gamepad->options.keyButtonB4,  GAMEPAD_MASK_B4);
-  _keyboard_host_mapButtonR1  = new KeyboardButtonMapping(gamepad->options.keyButtonR1,  GAMEPAD_MASK_R1);
-  _keyboard_host_mapButtonL1  = new KeyboardButtonMapping(gamepad->options.keyButtonL1,  GAMEPAD_MASK_L1);
-  _keyboard_host_mapButtonS1  = new KeyboardButtonMapping(gamepad->options.keyButtonS1,  GAMEPAD_MASK_S1);
-  _keyboard_host_mapButtonS2  = new KeyboardButtonMapping(gamepad->options.keyButtonS2,  GAMEPAD_MASK_S2);
-  _keyboard_host_mapButtonL3  = new KeyboardButtonMapping(gamepad->options.keyButtonL3,  GAMEPAD_MASK_L3);
-  _keyboard_host_mapButtonR3  = new KeyboardButtonMapping(gamepad->options.keyButtonR3,  GAMEPAD_MASK_R3);
-  _keyboard_host_mapButtonA1  = new KeyboardButtonMapping(gamepad->options.keyButtonA1,  GAMEPAD_MASK_A1);
-  _keyboard_host_mapButtonA2  = new KeyboardButtonMapping(gamepad->options.keyButtonA2,  GAMEPAD_MASK_A2);
+  _keyboard_host_mapDpadUp    = new KeyboardButtonMapping(keyboardMapping.keyDpadUp  ,  GAMEPAD_MASK_UP);
+  _keyboard_host_mapDpadDown  = new KeyboardButtonMapping(keyboardMapping.keyDpadDown,  GAMEPAD_MASK_DOWN);
+  _keyboard_host_mapDpadLeft  = new KeyboardButtonMapping(keyboardMapping.keyDpadLeft,  GAMEPAD_MASK_LEFT);
+  _keyboard_host_mapDpadRight = new KeyboardButtonMapping(keyboardMapping.keyDpadRight,  GAMEPAD_MASK_RIGHT);
+  _keyboard_host_mapButtonB1  = new KeyboardButtonMapping(keyboardMapping.keyButtonB1,  GAMEPAD_MASK_B1);
+  _keyboard_host_mapButtonB2  = new KeyboardButtonMapping(keyboardMapping.keyButtonB2,  GAMEPAD_MASK_B2);
+  _keyboard_host_mapButtonR2  = new KeyboardButtonMapping(keyboardMapping.keyButtonR2,  GAMEPAD_MASK_R2);
+  _keyboard_host_mapButtonL2  = new KeyboardButtonMapping(keyboardMapping.keyButtonL2,  GAMEPAD_MASK_L2);
+  _keyboard_host_mapButtonB3  = new KeyboardButtonMapping(keyboardMapping.keyButtonB3,  GAMEPAD_MASK_B3);
+  _keyboard_host_mapButtonB4  = new KeyboardButtonMapping(keyboardMapping.keyButtonB4,  GAMEPAD_MASK_B4);
+  _keyboard_host_mapButtonR1  = new KeyboardButtonMapping(keyboardMapping.keyButtonR1,  GAMEPAD_MASK_R1);
+  _keyboard_host_mapButtonL1  = new KeyboardButtonMapping(keyboardMapping.keyButtonL1,  GAMEPAD_MASK_L1);
+  _keyboard_host_mapButtonS1  = new KeyboardButtonMapping(keyboardMapping.keyButtonS1,  GAMEPAD_MASK_S1);
+  _keyboard_host_mapButtonS2  = new KeyboardButtonMapping(keyboardMapping.keyButtonS2,  GAMEPAD_MASK_S2);
+  _keyboard_host_mapButtonL3  = new KeyboardButtonMapping(keyboardMapping.keyButtonL3,  GAMEPAD_MASK_L3);
+  _keyboard_host_mapButtonR3  = new KeyboardButtonMapping(keyboardMapping.keyButtonR3,  GAMEPAD_MASK_R3);
+  _keyboard_host_mapButtonA1  = new KeyboardButtonMapping(keyboardMapping.keyButtonA1,  GAMEPAD_MASK_A1);
+  _keyboard_host_mapButtonA2  = new KeyboardButtonMapping(keyboardMapping.keyButtonA2,  GAMEPAD_MASK_A2);
 }
 
 void KeyboardHostAddon::preprocess() {
@@ -98,25 +82,17 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
   (void)desc_len;
 
   // Interface protocol (hid_interface_protocol_enum_t)
-  const char* protocol_str[] = { "None", "Keyboard", "Mouse" };
   uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
 
   uint16_t vid, pid;
   tuh_vid_pid_get(dev_addr, &vid, &pid);
 
-  char tempbuf[256];
-  int count = sprintf(tempbuf, "[%04x:%04x][%u] HID Interface%u, Protocol = %s\r\n", vid, pid, dev_addr, instance, protocol_str[itf_protocol]);
-
-  // tud_cdc_write(tempbuf, (uint32_t) count);
-  // tud_cdc_write_flush();
-
-  // Receive report from boot keyboard & mouse only
   // tuh_hid_report_received_cb() will be invoked when report is available
-  if (itf_protocol == HID_ITF_PROTOCOL_KEYBOARD || itf_protocol == HID_ITF_PROTOCOL_MOUSE)
+  if (itf_protocol == HID_ITF_PROTOCOL_KEYBOARD)
   {
     if ( !tuh_hid_receive_report(dev_addr, instance) )
     {
-      // tud_cdc_write_str("Error: cannot request report\r\n");
+      // Error: cannot request report
     }
   }
 }
@@ -124,21 +100,8 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
 // Invoked when device with hid interface is un-mounted
 void tuh_hid_umount_cb(uint8_t dev_addr, uint8_t instance)
 {
-//   char tempbuf[256];
-//   int count = sprintf(tempbuf, "[%u] HID Interface%u is unmounted\r\n", dev_addr, instance);
-//   tud_cdc_write(tempbuf, count);
-//   tud_cdc_write_flush();
-}
-
-// look up new key in previous keys
-static inline bool find_key_in_report(hid_keyboard_report_t const *report, uint8_t keycode)
-{
-  for(uint8_t i=0; i<6; i++)
-  {
-    if (report->keycode[i] == keycode)  return true;
-  }
-
-  return false;
+  (void) dev_addr;
+  (void) instance;
 }
 
 uint8_t getKeycodeFromModifier(uint8_t modifier) {
@@ -160,7 +123,6 @@ uint8_t getKeycodeFromModifier(uint8_t modifier) {
 void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
 {
   (void) dev_addr;
-  bool flush = false;
 
   _keyboard_host_state.dpad = 0;
   _keyboard_host_state.buttons = 0;
@@ -176,11 +138,11 @@ void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
     uint8_t keycode = (i < 6) ? report->keycode[i] : getKeycodeFromModifier(report->modifier);
     if ( keycode )
     {
-      Gamepad * gamepad = Storage::getInstance().GetGamepad();
+      GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
       _keyboard_host_state.dpad |=
-            ((keycode == _keyboard_host_mapDpadUp->key)    ? (gamepad->options.invertYAxis ? _keyboard_host_mapDpadDown->buttonMask : _keyboard_host_mapDpadUp->buttonMask) : _keyboard_host_state.dpad)
-          | ((keycode == _keyboard_host_mapDpadDown->key)  ? (gamepad->options.invertYAxis ? _keyboard_host_mapDpadUp->buttonMask : _keyboard_host_mapDpadDown->buttonMask) : _keyboard_host_state.dpad)
+            ((keycode == _keyboard_host_mapDpadUp->key)    ? (gamepadOptions.invertYAxis ? _keyboard_host_mapDpadDown->buttonMask : _keyboard_host_mapDpadUp->buttonMask) : _keyboard_host_state.dpad)
+          | ((keycode == _keyboard_host_mapDpadDown->key)  ? (gamepadOptions.invertYAxis ? _keyboard_host_mapDpadUp->buttonMask : _keyboard_host_mapDpadDown->buttonMask) : _keyboard_host_state.dpad)
           | ((keycode == _keyboard_host_mapDpadLeft->key)  ? _keyboard_host_mapDpadLeft->buttonMask  : _keyboard_host_state.dpad)
           | ((keycode == _keyboard_host_mapDpadRight->key) ? _keyboard_host_mapDpadRight->buttonMask : _keyboard_host_state.dpad)
         ;
@@ -208,61 +170,13 @@ void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
         _keyboard_host_state.ry = GAMEPAD_JOYSTICK_MID;
         _keyboard_host_state.lt = 0;
         _keyboard_host_state.rt = 0;
-
-      // if ( find_key_in_report(&prev_report, keycode) )
-      // {
-      //   // exist in previous report means the current key is holding
-      //   upButtonHeld = false;
-      // }else
-      // {
-      //   upButtonHeld = true;
-      //   // not existed in previous report means the current key is pressed
-
-      //   // remap the key code for Colemak layout
-      //   #ifdef KEYBOARD_COLEMAK
-      //   uint8_t colemak_key_code = colemak[keycode];
-      //   if (colemak_key_code != 0) keycode = colemak_key_code;
-      //   #endif
-
-      //   bool const is_shift = report->modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
-      //   // uint8_t ch = keycode2ascii[keycode][is_shift ? 1 : 0];
-
-      //   // if (ch)
-      //   // {
-      //   //   if (ch == '\n') tud_cdc_write("\r", 1);
-      //   //   tud_cdc_write(&ch, 1);
-      //   //   flush = true;
-      //   // }
-      // }
     }
-    // TODO example skips key released
   }
-
-//   if (flush) tud_cdc_write_flush();
-
-  prev_report = *report;
-}
-
-// send mouse report to usb device CDC
-static void process_mouse_report(uint8_t dev_addr, hid_mouse_report_t const * report)
-{
-  //------------- button state  -------------//
-  //uint8_t button_changed_mask = report->buttons ^ prev_report.buttons;
-  char l = report->buttons & MOUSE_BUTTON_LEFT   ? 'L' : '-';
-  char m = report->buttons & MOUSE_BUTTON_MIDDLE ? 'M' : '-';
-  char r = report->buttons & MOUSE_BUTTON_RIGHT  ? 'R' : '-';
-
-  char tempbuf[32];
-  int count = sprintf(tempbuf, "[%u] %c%c%c %d %d %d\r\n", dev_addr, l, m, r, report->x, report->y, report->wheel);
-
-//   tud_cdc_write(tempbuf, count);
-//   tud_cdc_write_flush();
 }
 
 // Invoked when received report from device via interrupt endpoint
 void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len)
 {
-  printf("Received report!");
   (void) len;
   uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
 
@@ -272,16 +186,12 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
       process_kbd_report(dev_addr, (hid_keyboard_report_t const*) report );
     break;
 
-    case HID_ITF_PROTOCOL_MOUSE:
-      process_mouse_report(dev_addr, (hid_mouse_report_t const*) report );
-    break;
-
     default: break;
   }
 
   // continue to request to receive report
   if ( !tuh_hid_receive_report(dev_addr, instance) )
   {
-    // tud_cdc_write_str("Error: cannot request report\r\n");
+    //Error: cannot request report
   }
 }

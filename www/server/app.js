@@ -7,7 +7,7 @@ const cors = require("cors");
 const mapValues = require("lodash/mapValues");
 
 const { pico: picoController } = require("../src/Data/Controllers.json");
-const { keyboard: keyboardMapping } = require("../src/Data/Keyboard.json");
+const { DEFAULT_KEYBOARD_MAPPING: keyboardMapping } = require("../src/Data/Keyboard");
 
 const port = process.env.PORT || 8080;
 
@@ -226,6 +226,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
+		keyboardHostMap: keyboardMapping,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		BuzzerSpeakerAddonEnabled: 1,
@@ -234,6 +235,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		ExtraButtonAddonEnabled: 1,
 		I2CAnalog1219InputEnabled: 1,
 		JSliderInputEnabled: 1,
+		KeyboardHostAddonEnabled: 1,
 		PlayerNumAddonEnabled: 1,
 		PS4ModeAddonEnabled: 1,
 		ReverseInputEnabled: 1,

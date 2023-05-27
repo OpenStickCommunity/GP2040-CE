@@ -6,8 +6,9 @@ import * as yup from 'yup';
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
+import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
-import WebApi from '../Services/WebApi';
+import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import JSEncrypt from 'jsencrypt';
 import CryptoJS from 'crypto-js';
 import get from 'lodash/get'
@@ -290,6 +291,8 @@ const schema = yup.object().shape({
 	sliderLSPin:                 yup.number().label('Slider LS Pin').validatePinWhenValue('JSliderInputEnabled'),
 	sliderRSPin:                 yup.number().label('Slider RS Pin').validatePinWhenValue('JSliderInputEnabled'),
 
+	KeyboardHostAddonEnabled:    yup.number().required().label('Keyboard Host Add-On Enabled'),
+
 	PlayerNumAddonEnabled:       yup.number().required().label('Player Number Add-On Enabled'),
 	playerNumber:                yup.number().label('Player Number').validateRangeWhenValue('PlayerNumAddonEnabled', 1, 4),
 
@@ -388,6 +391,7 @@ const defaultValues = {
 	snesPadClockPin: -1,
 	snesPadLatchPin: -1,
 	snesPadDataPin: -1,
+	keyboardHostMap: baseButtonMappings,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
 	BuzzerSpeakerAddonEnabled: 0,
@@ -396,6 +400,7 @@ const defaultValues = {
 	ExtraButtonAddonEnabled: 0,
 	I2CAnalog1219InputEnabled: 0,
 	JSliderInputEnabled: 0,
+	KeyboardHostAddonEnabled: 0,
 	SliderSOCDInputEnabled: 0,
 	PlayerNumAddonEnabled: 0,
 	PS4ModeAddonEnabled: 0,
@@ -556,6 +561,8 @@ const sanitizeData = (values) => {
 			values.I2CAnalog1219InputEnabled = parseInt(values.I2CAnalog1219InputEnabled);
 		if (!!values.JSliderInputEnabled)
 			values.JSliderInputEnabled = parseInt(values.JSliderInputEnabled);
+		if (!!values.KeyboardHostAddonEnabled)
+			values.KeyboardHostAddonEnabled = parseInt(values.KeyboardHostAddonEnabled);
 		if (!!values.SliderSOCDInputEnabled)
 			values.SliderSOCDInputEnabled = parseInt(values.SliderSOCDInputEnabled);
 		if (!!values.PlayerNumAddonEnabled)
@@ -593,9 +600,40 @@ function flattenObject(object) {
   }
 
 export default function AddonsConfigPage() {
-	const { updateUsedPins } = useContext(AppContext);
+	const { buttonLabels, updateUsedPins } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [storedData, setStoredData] = useState({});
+	const [validated, setValidated] = useState(false);
+
+	const handleKeyChange = (values, setFieldValue) => (value, button) => {
+		const newMappings = {...values.keyboardHostMap};
+		newMappings[button].key = value;
+		const mappings = validateMappings(newMappings);
+		setFieldValue('keyboardHostMap', mappings);
+		setValidated(true);
+	};
+
+	// const handleSubmit = async (e) => {
+	// 	e.preventDefault();
+	// 	e.stopPropagation();
+
+	// 	let mappings = {...keyMappings};
+	// 	mappings = validateMappings(mappings);
+	// 	setKeyMappings(mappings);
+	// 	setValidated(true);
+
+	// 	if (Object.keys(mappings).filter(p => !!mappings[p].error).length) {
+	// 		setSaveMessage('Validation errors, see above');
+	// 		return;
+	// 	}
+
+	// 	const success = await WebApi.setKeyMappings(mappings);
+	// 	setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+	// };
+
+	const getKeyMappingForButton = (values) => (button) =>  {
+		return values.keyboardHostMap[button];
+	}
 
 	const onSuccess = async (values) => {
 		const flattened = flattenObject(storedData)
@@ -629,6 +667,7 @@ export default function AddonsConfigPage() {
 				handleChange,
 				values,
 				errors,
+				setFieldValue
 			}) => (
 				<Form noValidate onSubmit={handleSubmit}>
 					<Section title="Add-Ons Configuration">
@@ -1635,6 +1674,28 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.SNESpadAddonEnabled)}
 							onChange={(e) => {handleCheckbox("SNESpadAddonEnabled", values); handleChange(e);}}
+						/>
+					</Section>
+					<Section title="Keyboard Host Configuration">
+						<div
+							id="KeyboardHostAddonOptions"
+							hidden={!values.KeyboardHostAddonEnabled}>
+							<Row className="mb-3">
+								<p>Use the form below to reconfigure your button-to-key mapping.</p>
+								<KeyboardMapper buttonLabels={buttonLabels}
+									handleKeyChange={handleKeyChange(values, setFieldValue)}
+									validated={validated}
+									getKeyMappingForButton={getKeyMappingForButton(values)} />
+							</Row>
+						</div>
+						<FormCheck
+							label="Enabled"
+							type="switch"
+							id="KeyboardHostAddonButton"
+							reverse
+							isInvalid={false}
+							checked={Boolean(values.KeyboardHostAddonEnabled)}
+							onChange={(e) => { handleCheckbox("KeyboardHostAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
 					<div className="mt-3">
