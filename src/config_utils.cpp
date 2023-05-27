@@ -377,7 +377,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
 
     // keyboardMapping
-    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, true);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, false);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadUp, KEY_DPAD_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadDown, KEY_DPAD_DOWN);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadRight, KEY_DPAD_RIGHT);

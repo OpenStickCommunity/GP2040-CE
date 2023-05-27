@@ -104,7 +104,7 @@ add_subdirectory(lib)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   # Activate some compiler / linker options to aid us with diagnosing stack space issues in Debug builds
-  add_compile_options(-w -fstack-usage -Wstack-usage=500)
+  add_compile_options(-fstack-usage -Wstack-usage=500)
   add_compile_definitions(PICO_USE_STACK_GUARDS=1)
 endif()
 
@@ -186,10 +186,6 @@ ${PROTO_OUTPUT_DIR}
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
   PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
-  # PIO_USB_USE_TINYUSB
-  PICO_DEFAULT_UART_TX_PIN=12
-	PICO_DEFAULT_UART_RX_PIN=13
-  LOG=2
 )
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
@@ -198,9 +194,6 @@ target_include_directories(${PROJECT_NAME}  PRIVATE
   )
 
 pico_add_extra_outputs(${PROJECT_NAME})
-
-pico_enable_stdio_usb(${PROJECT_NAME} 0)
-pico_enable_stdio_uart(${PROJECT_NAME} 1)
 
 add_compile_options(-Wall
         -Wtype-limits
