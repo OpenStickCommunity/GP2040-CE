@@ -3,7 +3,7 @@
 #include "gamepad.h"
 
 bool TiltInput::available() {
-	AddonOptions options = Storage::getInstance().getAddonOptions();
+	const AddonOptions options = Storage::getInstance().getAddonOptions();
 	pinTilt1 = options.pinTilt1;
 	pinTilt2 = options.pinTilt2;
 	pinTiltFunction = options.pinTiltFunction;
@@ -20,7 +20,7 @@ bool TiltInput::available() {
 }
 
 void TiltInput::setup() {
-	AddonOptions options = Storage::getInstance().getAddonOptions();
+	const AddonOptions options = Storage::getInstance().getAddonOptions();
 	tiltSOCDMode = options.tiltSOCDMode;
 
 	// Setup Tilt Key
@@ -131,6 +131,7 @@ void TiltInput::preprocess()
 
 void TiltInput::process()
 {
+	const AddonOptions& options = Storage::getInstance().getAddonOptions();
 	SOCDTiltClean(tiltSOCDMode);
 
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
