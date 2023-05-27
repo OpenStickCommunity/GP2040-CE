@@ -247,9 +247,11 @@ async function getAddonsOptions() {
 }
 
 async function setAddonsOptions(options) {
-	let data = {};
-	Object.keys(options.keyboardHostMap).map((button, i) => data[button] = options.keyboardHostMap[button].key);
-	options.keyboardHostMap = data;
+	if (options.keyboardHostMap) {
+		let data = {};
+		Object.keys(options.keyboardHostMap).map((button, i) => data[button] = options.keyboardHostMap[button].key);
+		options.keyboardHostMap = data;
+	}
 
 	return axios.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
 		.then((response) => {
