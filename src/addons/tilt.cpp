@@ -143,12 +143,17 @@ void TiltInput::process()
 	OverrideGamepad(gamepad, tiltLeftOut, tiltRightOut);
 }
 
+//The character's movement changes depending on the degree to which the stick is tilted.
+//I added the functionality to allow the all - button controller to perform the operations that can be performed by the sticks.
+//Two buttons, tilt1 and tilt2, have been implemented.
+//While pressing these buttons, pressing the left or right analog stick will cause the character to walk or walk more slowly.
+
 void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
-	// L2 R2 button state check
 	//uint8_t gamepadButtonState = gamepad->state.buttons;
 	bool pinTilt1Pressed = pinTilt1 != (uint8_t)-1 && !gpio_get(pinTilt1);
 	bool pinTilt2Pressed = pinTilt2 != (uint8_t)-1 && !gpio_get(pinTilt2);
 	bool pinTiltFunctionPressed = pinTiltFunction != (uint8_t)-1 && !gpio_get(pinTiltFunction);
+	// L2 R2 button state check
 	//bool pinButtonL2Pressed = gamepadButtonState & GAMEPAD_MASK_L2;
 	//bool pinButtonR2Pressed = gamepadButtonState & GAMEPAD_MASK_R2;
 
@@ -167,6 +172,10 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	//		gamepad->state.ly = dpadToAnalogY(dpad1);
 	//	}
 	//}
+
+	//Defines the behavior of the left analog stick when the Tilt1 and Tilt2 buttons are pressed.
+	//The main purpose of the left analog stick is to move the character.
+	//Pressing it simultaneously with Tilt 1 will make the character walk; pressing it simultaneously with Tilt 2 will make the character walk more slowly.
 	if (pinTilt1Pressed) {
 		gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * 0.35;
 		gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * 0.45;
@@ -189,9 +198,12 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 		gamepad->state.buttons |= (dpad2 & GAMEPAD_MASK_UP) ? GAMEPAD_MASK_A2 : 0;
 	}
 	else if (pinTilt1Pressed && pinTilt2Pressed) {
+		//Since this is an auxiliary function for appeals and such, pressing Tilt1 and Tilt2 at the same time will cause the light analog stick to correspond to each of the DPad methods.
 		gamepad->state.dpad = dpad2; //Hold tilt1 + tilt2 turn on D-Pad
 	}
-	else if (pinTilt1Pressed) {	
+	else if (pinTilt1Pressed) {
+		//The light analog stick has 8 directions, which can be handled by pressing up, down, left, right, and simultaneously.
+		//This function adds to that the ability to tilt it at an angle closer to horizontal than diagonal.
 		if (dpad2 & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
 			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * 0.3;
 			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * 1.7;
