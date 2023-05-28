@@ -60,24 +60,6 @@
 // Tilt Module Name
 #define TiltName "Tilt"
 
-// These constants define the adjustment factors for gamepad analog inputs under different tilt states.
-// Defines the behavior of the left analog stick when the Tilt1 and Tilt2 buttons are pressed.
-// The main purpose of the left analog stick is to move the character.
-// Pressing it simultaneously with Tilt 1 will make the character walk.
-// Pressing it simultaneously with Tilt 2 will make the character walk more slowly.
-#define TILT1_FACTOR_LEFT_X 0.35  // Adjustment factor for left analog stick X direction
-#define TILT1_FACTOR_LEFT_Y 0.45  // Adjustment factor for left analog stick Y direction
-#define TILT2_FACTOR_LEFT_X 0.65  // Adjustment factor for left analog stick X direction
-#define TILT2_FACTOR_LEFT_Y 0.35  // Adjustment factor for left analog stick Y direction
-
-// The Right analog stick has 8 directions, which can be handled by pressing up, down, left, right, and simultaneously.
-// This function adds to that the ability to tilt it at an angle closer to horizontal than diagonal.
-#define TILT1_FACTOR_RIGHT_X 0.3  // Adjustment factor for right analog stick X direction
-#define TILT1_FACTOR_RIGHT_Y 1.7  // Adjustment factor for right analog stick Y direction
-#define TILT2_FACTOR_RIGHT_X 0.3  // Adjustment factor for right analog stick X direction
-#define TILT2_FACTOR_RIGHT_Y 0.3  // Adjustment factor for right analog stick Y direction
-
-
 class TiltInput : public GPAddon {
 public:
 	virtual bool available();
