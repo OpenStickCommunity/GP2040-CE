@@ -69,7 +69,6 @@ public:
 	virtual std::string name() { return TiltName; }
 private:
 	void debounce();
-	uint8_t gpadToBinary(DpadMode, GamepadState);
 	void SOCDTiltClean(SOCDMode);
 	uint8_t SOCDCombine(SOCDMode, uint8_t);
 	uint8_t SOCDGamepadClean(uint8_t);
