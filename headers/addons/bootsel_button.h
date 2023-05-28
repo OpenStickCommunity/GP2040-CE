@@ -5,7 +5,7 @@
 #include "gamepad.h"
 
 #ifndef BOOTSEL_BUTTON_ENABLED
-#define BOOTSEL_BUTTON_ENABLED 0
+#define BOOTSEL_BUTTON_ENABLED 1
 #endif
 
 // BootselButton Module Name

@@ -239,6 +239,18 @@ namespace ConfigLegacy
         uint8_t pinDualDirRight;
         DpadMode dualDirDpadMode;    // LS/DP/RS
         uint8_t dualDirCombineMode; // Mix/Gamepad/Dual/None
+				uint8_t pinTilt1;
+				uint8_t pinTilt2;
+				uint8_t pinTiltFunction;
+				uint8_t pinTiltLeftAnalogDown;
+				uint8_t pinTiltLeftAnalogUp;
+				uint8_t pinTiltLeftAnalogLeft;
+				uint8_t pinTiltLeftAnalogRight;
+				uint8_t pinTiltRightAnalogDown;
+				uint8_t pinTiltRightAnalogUp;
+				uint8_t pinTiltRightAnalogLeft;
+				uint8_t pinTiltRightAnalogRight;
+				SOCDMode tiltSOCDMode;
         OnBoardLedMode onBoardLedMode;
         uint8_t analogAdcPinX;
         uint8_t analogAdcPinY;
@@ -275,6 +287,7 @@ namespace ConfigLegacy
         uint8_t BootselButtonAddonEnabled;
         uint8_t BuzzerSpeakerAddonEnabled;
         uint8_t DualDirectionalInputEnabled;
+				uint8_t TiltInputEnabled;
         uint8_t ExtraButtonAddonEnabled;
         uint8_t I2CAnalog1219InputEnabled;
         //bool I2CDisplayAddonEnabled; // I2C is special case
@@ -953,6 +966,25 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
             SET_PROPERTY(dualDirectionalOptions, dpadMode, static_cast<DpadMode>(legacyAddonOptions.dualDirDpadMode));
         }
         SET_PROPERTY(dualDirectionalOptions, combineMode, legacyAddonOptions.dualDirCombineMode);
+
+				TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
+				config.addonOptions.has_tiltOptions = true;
+				SET_PROPERTY(tiltOptions, enabled, legacyAddonOptions.TiltInputEnabled);
+				SET_PROPERTY(tiltOptions, tilt1Pin, bytePinToIntPin(legacyAddonOptions.pinTilt1));
+				SET_PROPERTY(tiltOptions, tilt2Pin, bytePinToIntPin(legacyAddonOptions.pinTilt2));
+				SET_PROPERTY(tiltOptions, tiltFunctionPin, bytePinToIntPin(legacyAddonOptions.pinTiltFunction));
+				SET_PROPERTY(tiltOptions, tiltLeftAnalogDownPin, bytePinToIntPin(legacyAddonOptions.pinTiltLeftAnalogDown));
+				SET_PROPERTY(tiltOptions, tiltLeftAnalogUpPin, bytePinToIntPin(legacyAddonOptions.pinTiltLeftAnalogUp));
+				SET_PROPERTY(tiltOptions, tiltLeftAnalogLeftPin, bytePinToIntPin(legacyAddonOptions.pinTiltLeftAnalogLeft));
+				SET_PROPERTY(tiltOptions, tiltLeftAnalogRightPin, bytePinToIntPin(legacyAddonOptions.pinTiltLeftAnalogRight));
+				SET_PROPERTY(tiltOptions, tiltRightAnalogDownPin, bytePinToIntPin(legacyAddonOptions.pinTiltRightAnalogDown));
+				SET_PROPERTY(tiltOptions, tiltRightAnalogUpPin, bytePinToIntPin(legacyAddonOptions.pinTiltRightAnalogUp));
+				SET_PROPERTY(tiltOptions, tiltRightAnalogLeftPin, bytePinToIntPin(legacyAddonOptions.pinTiltRightAnalogLeft));
+				SET_PROPERTY(tiltOptions, tiltRightAnalogRightPin, bytePinToIntPin(legacyAddonOptions.pinTiltRightAnalogRight));
+				if (isValidSOCDMode(legacyAddonOptions.tiltSOCDMode))
+				{
+					SET_PROPERTY(tiltOptions, tiltSOCDMode, static_cast<SOCDMode>(legacyAddonOptions.tiltSOCDMode));
+				}
 
         ExtraButtonOptions& extraButtonOptions = config.addonOptions.extraButtonOptions;
         config.addonOptions.has_extraButtonOptions = true;

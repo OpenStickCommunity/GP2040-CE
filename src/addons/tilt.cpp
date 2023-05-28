@@ -1,27 +1,28 @@
 #include "addons/tilt.h"
 #include "storagemanager.h"
-#include "gamepad.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool TiltInput::available() {
-	const AddonOptions options = Storage::getInstance().getAddonOptions();
-	pinTilt1 = options.pinTilt1;
-	pinTilt2 = options.pinTilt2;
-	pinTiltFunction = options.pinTiltFunction;
-	pinTiltLeftAnalogDown = options.pinTiltLeftAnalogDown;
-	pinTiltLeftAnalogUp = options.pinTiltLeftAnalogUp;
-	pinTiltLeftAnalogLeft = options.pinTiltLeftAnalogLeft;
-	pinTiltLeftAnalogRight = options.pinTiltLeftAnalogRight;
-	pinTiltRightAnalogDown = options.pinTiltRightAnalogDown;
-	pinTiltRightAnalogUp = options.pinTiltRightAnalogUp;
-	pinTiltRightAnalogLeft = options.pinTiltRightAnalogLeft;
-	pinTiltRightAnalogRight = options.pinTiltRightAnalogRight;
-
-	return options.TiltInputEnabled;
+	return Storage::getInstance().getAddonOptions().tiltOptions.enabled;
 }
 
 void TiltInput::setup() {
-	const AddonOptions options = Storage::getInstance().getAddonOptions();
+	const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;	
 	tiltSOCDMode = options.tiltSOCDMode;
+
+	pinTilt1 = options.tilt1Pin;
+	pinTilt2 = options.tilt2Pin;
+	pinTiltFunction = options.tiltFunctionPin;
+	pinTiltLeftAnalogDown = options.tiltLeftAnalogDownPin;
+	pinTiltLeftAnalogUp = options.tiltLeftAnalogUpPin;
+	pinTiltLeftAnalogLeft = options.tiltLeftAnalogLeftPin;
+	pinTiltLeftAnalogRight = options.tiltLeftAnalogRightPin;
+	pinTiltRightAnalogDown = options.tiltRightAnalogDownPin;
+	pinTiltRightAnalogUp = options.tiltRightAnalogUpPin;
+	pinTiltRightAnalogLeft = options.tiltRightAnalogLeftPin;
+	pinTiltRightAnalogRight = options.tiltRightAnalogRightPin;
+
 
 	// Setup Tilt Key
 	uint8_t pinTilt[11] = { pinTilt1,

@@ -315,6 +315,25 @@ message DualDirectionalOptions
 	optional uint32 combineMode = 7;
 }
 
+message TiltOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 tilt1Pin = 2;
+	optional int32 tilt2Pin = 3;
+	optional int32 tiltFunctionPin = 4;
+	optional int32 tiltLeftAnalogUpPin = 5;
+	optional int32 tiltLeftAnalogDownPin = 6;
+	optional int32 tiltLeftAnalogLeftPin = 7;
+	optional int32 tiltLeftAnalogRightPin = 8;
+	optional int32 tiltRightAnalogUpPin = 9;
+	optional int32 tiltRightAnalogDownPin = 10;
+	optional int32 tiltRightAnalogLeftPin = 11;
+	optional int32 tiltRightAnalogRightPin = 12;
+
+	optional SOCDMode tiltSOCDMode = 13;
+}
+
 message BuzzerOptions
 {
 	optional bool enabled = 1;
@@ -387,6 +406,7 @@ message AddonOptions
 	optional WiiOptions wiiOptions = 13;
 	optional SOCDSliderOptions socdSliderOptions = 14;
 	optional SNESOptions snesOptions = 15;
+	optional TiltOptions tiltOptions = 16;
 }
 
 message Config

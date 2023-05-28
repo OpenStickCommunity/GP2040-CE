@@ -15,7 +15,7 @@ enum DualDirectionalCombinationMode
 };
 
 #ifndef DUAL_DIRECTIONAL_ENABLED
-#define DUAL_DIRECTIONAL_ENABLED 1
+#define DUAL_DIRECTIONAL_ENABLED 0
 #endif
 
 #ifndef PIN_DUAL_DIRECTIONAL_UP

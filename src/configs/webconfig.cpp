@@ -857,6 +857,21 @@ std::string setAddonOptions()
 	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
+		TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
+	docToPin(tiltOptions.tilt1Pin, doc, "tiltPin");
+	docToPin(tiltOptions.tilt2Pin, doc, "tilt2Pin");
+	docToPin(tiltOptions.tiltFunctionPin, doc, "tiltFunctionPin");
+	docToPin(tiltOptions.tiltLeftAnalogUpPin, doc, "tiltLeftAnalogUpPin");
+	docToPin(tiltOptions.tiltLeftAnalogDownPin, doc, "tiltLeftAnalogDownPin");
+	docToPin(tiltOptions.tiltLeftAnalogLeftPin, doc, "tiltLeftAnalogLeftPin");
+	docToPin(tiltOptions.tiltLeftAnalogRightPin, doc, "tiltLeftAnalogRightPin");
+	docToPin(tiltOptions.tiltRightAnalogUpPin, doc, "tiltRightAnalogUpPin");
+	docToPin(tiltOptions.tiltRightAnalogDownPin, doc, "tiltRightAnalogDownPin");
+	docToPin(tiltOptions.tiltRightAnalogLeftPin, doc, "tiltRightAnalogLeftPin");
+	docToPin(tiltOptions.tiltRightAnalogRightPin, doc, "tiltRightAnalogRightPin");
+	docToValue(tiltOptions.tiltSOCDMode, doc, "tiltSOCDMode");
+	docToValue(tiltOptions.enabled, doc, "TiltInputEnabled");
+
     ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	docToPin(extraButtonOptions.pin, doc, "extraButtonPin");
 	docToValue(extraButtonOptions.buttonMap, doc, "extraButtonMap");
@@ -1065,6 +1080,21 @@ std::string getAddonOptions()
 	writeDoc(doc, "dualDirDpadMode", dualDirectionalOptions.dpadMode);
 	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
 	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
+
+		const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
+	writeDoc(doc, "tilt1Pin", cleanPin(tiltOptions.tilt1Pin));
+	writeDoc(doc, "tilt2Pin", cleanPin(tiltOptions.tilt2Pin));
+	writeDoc(doc, "tiltFunctionPin", cleanPin(tiltOptions.tiltFunctionPin));
+	writeDoc(doc, "tiltLeftAnalogUpPin", cleanPin(tiltOptions.tiltLeftAnalogUpPin));
+	writeDoc(doc, "tiltLeftAnalogDownPin", cleanPin(tiltOptions.tiltLeftAnalogDownPin));
+	writeDoc(doc, "tiltLeftAnalogLeftPin", cleanPin(tiltOptions.tiltLeftAnalogLeftPin));
+	writeDoc(doc, "tiltLeftAnalogRightPin", cleanPin(tiltOptions.tiltLeftAnalogRightPin));
+	writeDoc(doc, "tiltRightAnalogUpPin", cleanPin(tiltOptions.tiltRightAnalogUpPin));
+	writeDoc(doc, "tiltRightAnalogDownPin", cleanPin(tiltOptions.tiltRightAnalogDownPin));
+	writeDoc(doc, "tiltRightAnalogLeftPin", cleanPin(tiltOptions.tiltRightAnalogLeftPin));
+	writeDoc(doc, "tiltRightAnalogRightPin", cleanPin(tiltOptions.tiltRightAnalogRightPin));
+	writeDoc(doc, "tiltSOCDMode", tiltOptions.tiltSOCDMode);
+	writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
     const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	writeDoc(doc, "extraButtonPin", cleanPin(extraButtonOptions.pin));
