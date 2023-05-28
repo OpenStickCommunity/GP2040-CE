@@ -1,1 +1,1 @@
-add_subdirectory(WaveshareZero)
+add_subdirectory(Pico)
