@@ -41,7 +41,6 @@
 #define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
 #define PIN_SLIDER_SOCD_TWO    -1         // SOCD Slider Pin Two
 
-
 // This is the SOCD section.
 // SOCD stands for `simultaneous opposing cardinal directions`.
 // There are three options for `DEFAULT_SOCD_MODE` currently:
