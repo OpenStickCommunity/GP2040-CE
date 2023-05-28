@@ -25,7 +25,8 @@ void TiltInput::setup() {
 
 
 	// Setup Tilt Key
-	uint8_t pinTilt[11] = { pinTilt1,
+	uint8_t pinTilt[11] = {
+											pinTilt1,
 											pinTilt2,
 											pinTiltFunction,
 											pinTiltLeftAnalogDown,
@@ -149,29 +150,9 @@ void TiltInput::process()
 //While pressing these buttons, pressing the left or right analog stick will cause the character to walk or walk more slowly.
 
 void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
-	//uint8_t gamepadButtonState = gamepad->state.buttons;
 	bool pinTilt1Pressed = pinTilt1 != (uint8_t)-1 && !gpio_get(pinTilt1);
 	bool pinTilt2Pressed = pinTilt2 != (uint8_t)-1 && !gpio_get(pinTilt2);
 	bool pinTiltFunctionPressed = pinTiltFunction != (uint8_t)-1 && !gpio_get(pinTiltFunction);
-	// L2 R2 button state check
-	//bool pinButtonL2Pressed = gamepadButtonState & GAMEPAD_MASK_L2;
-	//bool pinButtonR2Pressed = gamepadButtonState & GAMEPAD_MASK_R2;
-
-	// For left analog
-	//if(pinButtonL2Pressed || pinButtonR2Pressed){
-	//	if (pinTilt1Pressed) {
-	//		gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * 0.3;
-	//		gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * 0.3;
-	//	}
-	//	else if (pinTilt2Pressed) {
-	//		gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * 0.27;
-	//		gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * 0.27;
-	//	}
-	//	else {
-	//		gamepad->state.lx = dpadToAnalogX(dpad1);
-	//		gamepad->state.ly = dpadToAnalogY(dpad1);
-	//	}
-	//}
 
 	//Defines the behavior of the left analog stick when the Tilt1 and Tilt2 buttons are pressed.
 	//The main purpose of the left analog stick is to move the character.
@@ -190,7 +171,8 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	}
 
 	// For right analog
-//Hold Function button turn on Home, minus, plus, capture.
+
+	//Hold Function button turn on Home, minus, plus, capture.
 	if (pinTiltFunctionPressed) {
 		gamepad->state.buttons |= (dpad2 & GAMEPAD_MASK_LEFT) ? GAMEPAD_MASK_S1 : 0;
 		gamepad->state.buttons |= (dpad2 & GAMEPAD_MASK_DOWN) ? GAMEPAD_MASK_A1 : 0;
@@ -198,7 +180,8 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 		gamepad->state.buttons |= (dpad2 & GAMEPAD_MASK_UP) ? GAMEPAD_MASK_A2 : 0;
 	}
 	else if (pinTilt1Pressed && pinTilt2Pressed) {
-		//Since this is an auxiliary function for appeals and such, pressing Tilt1 and Tilt2 at the same time will cause the light analog stick to correspond to each of the DPad methods.
+		//Since this is an auxiliary function for appeals and such,
+		//pressing Tilt1 and Tilt2 at the same time will cause the light analog stick to correspond to each of the DPad methods.
 		gamepad->state.dpad = dpad2; //Hold tilt1 + tilt2 turn on D-Pad
 	}
 	else if (pinTilt1Pressed) {

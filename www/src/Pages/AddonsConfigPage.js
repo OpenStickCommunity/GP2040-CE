@@ -300,7 +300,6 @@ const schema = yup.object().shape({
 	tiltRightAnalogDownPin:			 yup.number().label('Tilt Right Analog Down Pin').validatePinWhenValue('TiltInputEnabled'),
 	tiltRightAnalogLeftPin:			 yup.number().label('Tilt Right Analog Left Pin').validatePinWhenValue('TiltInputEnabled'),
 	tiltRightAnalogRightPin:		 yup.number().label('Tilt Right Analog Right Pin').validatePinWhenValue('TiltInputEnabled'),
-	//tiltSOCDMode: yup.number().required().oneOf(TILT_SOCD_MODES.map(o => o.value)).label('Tilt SOCE Mode'),
 	tiltSOCDMode:								 yup.number().label('Tilt SOCE Mode').validateSelectionWhenValue('TiltInputEnabled', SOCD_MODES),
 
 	ExtraButtonAddonEnabled:     yup.number().required().label('Extra Button Add-On Enabled'),

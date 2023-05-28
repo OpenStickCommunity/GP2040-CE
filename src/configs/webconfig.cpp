@@ -858,7 +858,7 @@ std::string setAddonOptions()
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
 		TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
-	docToPin(tiltOptions.tilt1Pin, doc, "tiltPin");
+	docToPin(tiltOptions.tilt1Pin, doc, "tilt1Pin");
 	docToPin(tiltOptions.tilt2Pin, doc, "tilt2Pin");
 	docToPin(tiltOptions.tiltFunctionPin, doc, "tiltFunctionPin");
 	docToPin(tiltOptions.tiltLeftAnalogUpPin, doc, "tiltLeftAnalogUpPin");

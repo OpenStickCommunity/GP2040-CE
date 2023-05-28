@@ -1,4 +1,4 @@
-/*
+1/*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
@@ -222,7 +222,7 @@
 #define PIN_TILT_RIGHT_ANALOG_UP -1
 #define PIN_TILT_RIGHT_ANALOG_DOWN -1
 #define PIN_TILT_RIGHT_ANALOG_LEFT -1
-#define PIN_TILT_RIGHT_ANALOG_RIGHT -
+#define PIN_TILT_RIGHT_ANALOG_RIGHT -1
 #define TILT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 // BOOTSEL Button Add-on setting
