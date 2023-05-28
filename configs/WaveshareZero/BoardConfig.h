@@ -230,7 +230,7 @@
 #define TILT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 // BOOTSEL Button Add-on setting
-#define BOOTSEL_BUTTON_MASK 12 // 0 means none, get other mask from GamepadState.h
+#define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 
 // Extra Button Add-on setting
 #define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
