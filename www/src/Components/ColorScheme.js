@@ -10,10 +10,13 @@ const dropdownOptions = [
 ];
 
 const setTheme = function (theme) {
-	if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		document.documentElement.setAttribute('data-bs-theme', 'dark');
+	const rootElement = document.documentElement;
+	const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+	if (theme === 'auto') {
+		rootElement.setAttribute('data-bs-theme', prefersDarkMode ? 'dark' : 'light');
 	} else {
-		document.documentElement.setAttribute('data-bs-theme', theme);
+		rootElement.setAttribute('data-bs-theme', theme);
 	}
 }
 
