@@ -7,7 +7,7 @@ import { saveButtonLabels } from '../Services/Storage';
 import { BUTTONS } from '../Data/Buttons';
 import './Navigation.scss';
 import WebApi from '../Services/WebApi';
-import DarkMode from './DarkMode';
+import ColorScheme from './ColorScheme';
 
 const BOOT_MODES = {
 	GAMEPAD: 0,
@@ -69,7 +69,7 @@ const Navigation = (props) => {
 					</Dropdown>
 				</Nav>
 				<Nav>
-					<DarkMode />
+					<ColorScheme />
 					<Button style={{ marginRight: "7px" }} variant="success" onClick={handleShow}>
 						Reboot
 					</Button>

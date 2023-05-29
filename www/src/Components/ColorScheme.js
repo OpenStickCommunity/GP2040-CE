@@ -28,7 +28,7 @@ const setTheme = function (theme) {
 
 setTheme(getPreferredTheme());
 
-const DarkMode = () => {
+const ColorScheme = () => {
 	const [theme, setThemeState] = useState(getPreferredTheme());
 
 	const setThemeAndState = (newTheme) => {
@@ -61,4 +61,4 @@ const DarkMode = () => {
 	);
 };
 
-export default DarkMode;
+export default ColorScheme;
