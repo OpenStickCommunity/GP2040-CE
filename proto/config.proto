@@ -11,6 +11,7 @@ message GamepadOptions
 	optional bool invertXAxis = 4;
 	optional bool invertYAxis = 5;
 	optional bool switchTpShareForDs4 = 6;
+	optional bool lockHotkeys = 7;
 }
 
 message KeyboardMapping
@@ -52,6 +53,11 @@ message HotkeyOptions
 	optional HotkeyEntry hotkeyF2Left = 7;
 	optional HotkeyEntry hotkeyF2Right = 8;
 }
+
+message ForcedSetupOptions
+{
+	optional ForcedSetupMode mode = 1;
+};
 
 message ButtonLayoutParamsCommon
 {
@@ -401,4 +407,5 @@ message Config
 	optional LEDOptions ledOptions = 7;
 	optional AnimationOptions_Proto animationOptions = 8;
 	optional AddonOptions addonOptions = 9;
+	optional ForcedSetupOptions forcedSetupOptions = 10;
 }

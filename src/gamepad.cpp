@@ -257,6 +257,8 @@ void Gamepad::save()
 
 GamepadHotkey Gamepad::hotkey()
 {
+	if (options.lockHotkeys) return HOTKEY_NONE;
+
 	static GamepadHotkey lastAction = HOTKEY_NONE;
 	GamepadHotkey action = HOTKEY_NONE;
 	if (pressedF1())

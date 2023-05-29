@@ -455,6 +455,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.inputMode, doc, "inputMode");
 	readDoc(gamepadOptions.socdMode, doc, "socdMode");
 	readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
+	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	readDoc(hotkeyOptions.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
@@ -466,6 +467,9 @@ std::string setGamepadOptions()
 	readDoc(hotkeyOptions.hotkeyF2Down.action, doc, "hotkeyF2", 1, "action");
 	readDoc(hotkeyOptions.hotkeyF2Left.action, doc, "hotkeyF2", 2, "action");
 	readDoc(hotkeyOptions.hotkeyF2Right.action, doc, "hotkeyF2", 3, "action");
+
+	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+	readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
 
 	Storage::getInstance().save();
 
@@ -481,6 +485,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "inputMode", gamepadOptions.inputMode);
 	writeDoc(doc, "socdMode", gamepadOptions.socdMode);
 	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
+	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);
@@ -501,6 +506,8 @@ std::string getGamepadOptions()
 	writeDoc(doc, "hotkeyF2", 3, "action", hotkeyOptions.hotkeyF2Right.action);
 	writeDoc(doc, "hotkeyF2", 3, "mask", hotkeyOptions.hotkeyF2Right.dpadMask);
 
+	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+	writeDoc(doc, "forcedSetupMode", forcedSetupOptions.mode);
 	return serialize_json(doc);
 }
 
