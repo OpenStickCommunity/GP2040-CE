@@ -67,7 +67,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 		console.log('buttonLabelType is', newType)
 		newType && localStorage.setItem('buttonLabelType', newType);
 		newSwap !== undefined && localStorage.setItem('swapTpShareLabels', newSwap);
-		_setButtonLabels(({ buttonLabelType, swapTpShareLabels }) => 
+		_setButtonLabels(({ buttonLabelType, swapTpShareLabels }) =>
 			({ buttonLabelType: newType || buttonLabelType,
 			   swapTpShareLabels: (newSwap !== undefined) ? newSwap : swapTpShareLabels }));
 	};
@@ -146,6 +146,12 @@ export const AppContextProvider = ({ children, ...props }) => {
 
 	console.log('usedPins:', usedPins);
 
+	const [savedColorScheme, _setSavedColorScheme] = useState(localStorage.getItem('savedColorScheme') || 'auto');
+	const setSavedColorScheme = (savedColorScheme) => {
+		localStorage.setItem('savedColorScheme', savedColorScheme);
+		_setSavedColorScheme(savedColorScheme);
+	};
+
 	return (
 		<AppContext.Provider
 			{...props}
@@ -165,6 +171,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 				setSavedColors,
 				setUsedPins,
 				updateUsedPins,
+				savedColorScheme,
+				setSavedColorScheme,
 			}}
 		>
 			{children}

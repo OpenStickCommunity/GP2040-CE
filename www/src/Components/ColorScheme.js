@@ -1,20 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { AppContext } from '../Contexts/AppContext';
 
-const storedTheme = localStorage.getItem('theme')
+
 const dropdownOptions = [
 	{ theme: 'light', icon: 'bi-sun-fill', label: 'Light' },
 	{ theme: 'dark', icon: 'bi-moon-stars-fill', label: 'Dark' },
 	{ theme: 'auto', icon: 'bi-circle-half', label: 'Auto' },
 ];
-
-const getPreferredTheme = () => {
-	if (storedTheme) {
-		return storedTheme;
-	}
-
-	return 'auto';
-}
 
 const setTheme = function (theme) {
 	if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -26,19 +19,15 @@ const setTheme = function (theme) {
 	localStorage.setItem('theme', theme);
 }
 
-setTheme(getPreferredTheme());
-
 const ColorScheme = () => {
-	const [theme, setThemeState] = useState(getPreferredTheme());
+	const { savedColorScheme, setSavedColorScheme } = useContext(AppContext);
 
-	const setThemeAndState = (newTheme) => {
-		setThemeState(newTheme);
-		setTheme(newTheme);
+	setTheme(savedColorScheme);
+
+	const setThemeAndState = (newColorScheme) => {
+		setTheme(newColorScheme);
+		setSavedColorScheme(newColorScheme);
 	}
-
-	useEffect(() => {
-		setThemeState(getPreferredTheme());
-	}, []);
 
 	return (
 		<Dropdown>
@@ -50,7 +39,7 @@ const ColorScheme = () => {
 				{dropdownOptions.map((option) => (
 					<Dropdown.Item
 						key={option.theme}
-						className={`dropdown-item ${theme === option.theme ? 'active' : ''}`}
+						className={`dropdown-item ${savedColorScheme === option.theme ? 'active' : ''}`}
 						onClick={() => setThemeAndState(option.theme)}
 					>
 						<i className={option.icon}></i> {option.label}
