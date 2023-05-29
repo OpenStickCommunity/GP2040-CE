@@ -4,9 +4,9 @@ import { AppContext } from '../Contexts/AppContext';
 
 
 const dropdownOptions = [
-	{ theme: 'light', icon: 'bi-sun-fill', label: 'Light' },
-	{ theme: 'dark', icon: 'bi-moon-stars-fill', label: 'Dark' },
-	{ theme: 'auto', icon: 'bi-circle-half', label: 'Auto' },
+	{ scheme: 'light', icon: 'bi-sun-fill', label: 'Light' },
+	{ scheme: 'dark', icon: 'bi-moon-stars-fill', label: 'Dark' },
+	{ scheme: 'auto', icon: 'bi-circle-half', label: 'Auto' },
 ];
 
 const setTheme = function (theme) {
@@ -15,8 +15,6 @@ const setTheme = function (theme) {
 	} else {
 		document.documentElement.setAttribute('data-bs-theme', theme);
 	}
-
-	localStorage.setItem('theme', theme);
 }
 
 const ColorScheme = () => {
@@ -39,8 +37,8 @@ const ColorScheme = () => {
 				{dropdownOptions.map((option) => (
 					<Dropdown.Item
 						key={option.theme}
-						className={`dropdown-item ${savedColorScheme === option.theme ? 'active' : ''}`}
-						onClick={() => setThemeAndState(option.theme)}
+						className={`dropdown-item ${savedColorScheme === option.scheme ? 'active' : ''}`}
+						onClick={() => setThemeAndState(option.scheme)}
 					>
 						<i className={option.icon}></i> {option.label}
 					</Dropdown.Item>
