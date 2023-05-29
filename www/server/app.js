@@ -80,6 +80,8 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		inputMode: 4,
 		socdMode: 2,
 		switchTpShareForDs4: 0,
+		forcedSetupMode: 0,
+		lockHotkeys: 0,
 		hotkeyF1: [
 			{ action: 1, mask: 1<<0 },
 			{ action: 2, mask: 1<<1 },
@@ -223,6 +225,9 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		wiiExtensionSCLPin: -1,
 		wiiExtensionBlock: 0,
 		wiiExtensionSpeed: 400000,
+		snesPadClockPin: -1,
+		snesPadLatchPin: -1,
+		snesPadDataPin: -1,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		BuzzerSpeakerAddonEnabled: 1,
@@ -237,6 +242,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		SliderSOCDInputEnabled: 1,
 		TurboInputEnabled: 1,
 		WiiExtensionAddonEnabled: 1,
+		SNESpadAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });

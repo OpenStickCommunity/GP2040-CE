@@ -11,36 +11,38 @@
 #include "pico/stdlib.h"
 #include "bitmaps.h"
 #include "ps4_driver.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool I2CDisplayAddon::available() {
-	const BoardOptions& boardOptions = getBoardOptions();
-	return boardOptions.hasI2CDisplay && 
-		boardOptions.i2cSDAPin != (uint8_t)-1 && 
-		boardOptions.i2cSCLPin != (uint8_t)-1;
+	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+	return options.enabled && 
+		isValidPin(options.i2cSDAPin) && 
+		isValidPin(options.i2cSCLPin);
 }
 
 void I2CDisplayAddon::setup() {
-	const BoardOptions& boardOptions = getBoardOptions();
+	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
 
 	obdI2CInit(&obd,
-	    boardOptions.displaySize,
-		boardOptions.displayI2CAddress,
-		boardOptions.displayFlip,
-		boardOptions.displayInvert,
+	    options.size,
+		options.i2cAddress,
+		options.flip,
+		options.invert,
 		DISPLAY_USEWIRE,
-		boardOptions.i2cSDAPin,
-		boardOptions.i2cSCLPin,
-		boardOptions.i2cBlock == 0 ? i2c0 : i2c1,
+		options.i2cSDAPin,
+		options.i2cSCLPin,
+		options.i2cBlock == 0 ? i2c0 : i2c1,
 		-1,
-		boardOptions.i2cSpeed);
-		
+		options.i2cSpeed);
+
 	const int detectedDisplay = initDisplay(0);
 	if (isSH1106(detectedDisplay)) {
 		// The display is actually a SH1106 that was misdetected as a SSD1306 by OneBitDisplay.
 		// Reinitialize as SH1106.
 		initDisplay(OLED_132x64);
 	}
-	
+
 	obdSetContrast(&obd, 0xFF);
 	obdSetBackBuffer(&obd, ucBackBuffer);
 	clearScreen(1);
@@ -48,7 +50,7 @@ void I2CDisplayAddon::setup() {
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
 
 	prevButtonState = 0;
-	displaySaverTimer = boardOptions.displaySaverTimeout;
+	displaySaverTimer = options.displaySaverTimeout;
 	displaySaverTimeout = displaySaverTimer;
 	configMode = Storage::getInstance().GetConfigMode();
 }
@@ -56,7 +58,7 @@ void I2CDisplayAddon::setup() {
 bool I2CDisplayAddon::isDisplayPowerOff()
 {
 	if (!displaySaverTimeout) return false;
-	
+
 	float diffTime = getMillis() - prevMillis;
 	displaySaverTimer -= diffTime;
 
@@ -96,18 +98,18 @@ void I2CDisplayAddon::process() {
 			drawText(5, 7, "B2 > Splash");
 			break;
 		case I2CDisplayAddon::DisplayMode::SPLASH:
-			if (getBoardOptions().splashMode == NOSPLASH) {
+			if (getDisplayOptions().splashMode == static_cast<SplashMode>(SPLASH_MODE_NONE)) {
 				drawText(0, 4, " Splash NOT enabled.");
 				break;
 			}
-			drawSplashScreen(getBoardOptions().splashMode, (uint8_t*) Storage::getInstance().getSplashImage().data, 90);
+			drawSplashScreen(getDisplayOptions().splashMode, (uint8_t*) Storage::getInstance().getDisplayOptions().splashImage.bytes, 90);
 			break;
 		case I2CDisplayAddon::DisplayMode::BUTTONS:
 			drawStatusBar(gamepad);
-			const BoardOptions& boardOptions = getBoardOptions();
-			ButtonLayoutCustomOptions buttonLayoutCustomOptions = boardOptions.buttonLayoutCustomOptions;
+			const DisplayOptions& options = getDisplayOptions();
+			ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
 
-			switch (boardOptions.buttonLayout) {
+			switch (options.buttonLayout) {
 				case BUTTON_LAYOUT_STICK:
 					drawArcadeStick(8, 28, 8, 2);
 					break;
@@ -139,7 +141,7 @@ void I2CDisplayAddon::process() {
 					drawVLXA(7, 28, 7, 2);
 					break;
 				case BUTTON_LAYOUT_CUSTOMA:
-					drawButtonLayoutLeft(buttonLayoutCustomOptions);
+					drawButtonLayoutLeft(buttonLayoutCustomOptions.paramsLeft);
 					break;
 				case BUTTON_LAYOUT_FIGHTBOARD_STICK:
 					drawArcadeStick(18, 22, 8, 2);
@@ -149,7 +151,7 @@ void I2CDisplayAddon::process() {
 					break;
 			}
 
-			switch (boardOptions.buttonLayoutRight) {
+			switch (options.buttonLayoutRight) {
 				case BUTTON_LAYOUT_ARCADE:
 					drawArcadeButtons(8, 28, 8, 2);
 					break;
@@ -193,7 +195,7 @@ void I2CDisplayAddon::process() {
 					drawVLXB(6, 28, 7, 2);
 					break;
 				case BUTTON_LAYOUT_CUSTOMB:
-					drawButtonLayoutRight(buttonLayoutCustomOptions);
+					drawButtonLayoutRight(buttonLayoutCustomOptions.paramsRight);
 					break;
 				case BUTTON_LAYOUT_FIGHTBOARD:
 					drawFightboard(8, 22, 7, 3);
@@ -231,35 +233,35 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 		prevButtonState = buttonState;
 		return prevDisplayMode;
 	} else {
-		if (Storage::getInstance().getBoardOptions().splashMode != NOSPLASH) {
-			int splashDuration = getBoardOptions().splashDuration;
+		if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
+			int splashDuration = getDisplayOptions().splashDuration;
 			if (splashDuration == 0 || getMillis() < splashDuration) {
 				return I2CDisplayAddon::DisplayMode::SPLASH;
-			}				
+			}
 		}
 	}
 
 	return I2CDisplayAddon::DisplayMode::BUTTONS;
 }
 
-const BoardOptions& I2CDisplayAddon::getBoardOptions() {
+const DisplayOptions& I2CDisplayAddon::getDisplayOptions() {
 	bool configMode = Storage::getInstance().GetConfigMode();
-	return configMode ? Storage::getInstance().getPreviewBoardOptions() : Storage::getInstance().getBoardOptions();
+	return configMode ? Storage::getInstance().getPreviewDisplayOptions() : Storage::getInstance().getDisplayOptions();
 }
 
 int I2CDisplayAddon::initDisplay(int typeOverride) {
-	const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
+	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
 	return obdI2CInit(&obd,
-	    typeOverride > 0 ? typeOverride : boardOptions.displaySize,
-		boardOptions.displayI2CAddress,
-		boardOptions.displayFlip,
-		boardOptions.displayInvert,
+	    typeOverride > 0 ? typeOverride : options.size,
+		options.i2cAddress,
+		options.flip,
+		options.invert,
 		DISPLAY_USEWIRE,
-		boardOptions.i2cSDAPin,
-		boardOptions.i2cSCLPin,
-		boardOptions.i2cBlock == 0 ? i2c0 : i2c1,
+		options.i2cSDAPin,
+		options.i2cSCLPin,
+		options.i2cBlock == 0 ? i2c0 : i2c1,
 		-1,
-		boardOptions.i2cSpeed);
+		options.i2cSpeed);
 }
 
 bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
@@ -318,14 +320,14 @@ void I2CDisplayAddon::clearScreen(int render) {
 	obdFill(&obd, 0, render);
 }
 
-void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutCustomOptions options)
+void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutParamsLeft& options)
 {
-	int& startX = options.params.startX;
-	int& startY = options.params.startY;
-	int& buttonRadius = options.params.buttonRadius;
-	int& buttonPadding = options.params.buttonPadding;
+	int32_t& startX    = options.common.startX;
+	int32_t& startY    = options.common.startY;
+	int32_t& buttonRadius  = options.common.buttonRadius;
+	int32_t& buttonPadding = options.common.buttonPadding;
 
-	switch (options.params.layout)
+	switch (options.layout)
 		{
 			case BUTTON_LAYOUT_STICK:
 				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
@@ -366,14 +368,14 @@ void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutCustomOptions options)
 		}
 }
 
-void I2CDisplayAddon::drawButtonLayoutRight(ButtonLayoutCustomOptions options)
+void I2CDisplayAddon::drawButtonLayoutRight(ButtonLayoutParamsRight& options)
 {
-	int& startX = options.paramsRight.startX;
-	int& startY = options.paramsRight.startY;
-	int& buttonRadius = options.paramsRight.buttonRadius;
-	int& buttonPadding = options.paramsRight.buttonPadding;
+	int32_t& startX        = options.common.startX;
+	int32_t& startY        = options.common.startY;
+	int32_t& buttonRadius  = options.common.buttonRadius;
+	int32_t& buttonPadding = options.common.buttonPadding;
 
-	switch (options.paramsRight.layoutRight)
+	switch (options.layout)
 		{
 			case BUTTON_LAYOUT_ARCADE:
 				drawArcadeButtons(startX, startY, buttonRadius, buttonPadding);
@@ -481,7 +483,7 @@ void I2CDisplayAddon::drawArcadeStick(int startX, int startY, int buttonRadius, 
 
 	// Stick
 	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-	
+
 	if (pressedUp()) {
 		if (pressedLeft()) {
 			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
@@ -513,7 +515,7 @@ void I2CDisplayAddon::drawVLXA(int startX, int startY, int buttonRadius, int but
 
 	// Stick
 	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-	
+
 	if (pressedUp()) {
 		if (pressedLeft()) {
 			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
@@ -568,7 +570,7 @@ void I2CDisplayAddon::drawTwinStickA(int startX, int startY, int buttonRadius, i
 
 	// Stick
 	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-	
+
 	if (pressedUp()) {
 		if (pressedLeft()) {
 			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
@@ -600,7 +602,7 @@ void I2CDisplayAddon::drawTwinStickB(int startX, int startY, int buttonRadius, i
 
 	// Stick
 	obdPreciseEllipse(&obd, startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-	
+
 	if (pGamepad->pressedB4()) {
 		if (pGamepad->pressedB3()) {
 			obdPreciseEllipse(&obd, startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
@@ -861,7 +863,7 @@ void I2CDisplayAddon::drawDancepadA(int startX, int startY, int buttonSize, int 
 void I2CDisplayAddon::drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding)
 {
 	const int buttonMargin = buttonPadding + buttonSize;
-	
+
 	obdRectangle(&obd, startX, startY, startX + buttonSize, startY + buttonSize, 1, pGamepad->pressedB2()); // Up/Left
 	obdRectangle(&obd, startX, startY + buttonMargin * 2, startX + buttonSize, startY + buttonSize + buttonMargin * 2, 1, pGamepad->pressedB4()); // Down/Left
 	obdRectangle(&obd, startX + buttonMargin * 2, startY, startX + buttonSize + buttonMargin * 2, startY + buttonSize, 1, pGamepad->pressedB1()); // Up/Right
@@ -881,14 +883,14 @@ void I2CDisplayAddon::drawSplashScreen(int splashMode, uint8_t * splashChoice, i
     int mils = getMillis();
     switch (splashMode)
 	{
-		case STATICSPLASH: // Default, display static or custom image
+		case SPLASH_MODE_STATIC: // Default, display static or custom image
 			obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
 			break;
-		case CLOSEIN: // Close-in. Animate the GP2040 logo
+		case SPLASH_MODE_CLOSEIN: // Close-in. Animate the GP2040 logo
 			obdDrawSprite(&obd, (uint8_t *)bootLogoTop, 43, 39, 6, 43, std::min<int>((mils / splashSpeed) - 39, 0), 1);
 			obdDrawSprite(&obd, (uint8_t *)bootLogoBottom, 80, 21, 10, 24, std::max<int>(64 - (mils / (splashSpeed * 2)), 44), 1);
 			break;
-        case CLOSEINCUSTOM: // Close-in on custom image or delayed close-in if custom image does not exist
+        case SPLASH_MODE_CLOSEINCUSTOM: // Close-in on custom image or delayed close-in if custom image does not exist
             obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
             if (mils > 2500) {
                 int milss = mils - 2500;
@@ -907,13 +909,13 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
-	const BoardOptions& boardOptions = getBoardOptions();
-	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	const DisplayOptions& options = getDisplayOptions();
+	const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
 
 	// Limit to 21 chars with 6x8 font for now
 	statusBar.clear();
 
-	switch (gamepad->options.inputMode)
+	switch (gamepad->getOptions().inputMode)
 	{
 		case INPUT_MODE_HID:    statusBar += "DINPUT"; break;
 		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
@@ -929,15 +931,15 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
-	if ( addonOptions.pinButtonTurbo != (uint8_t)-1 ) {
+	if ( turboOptions.enabled && isValidPin(turboOptions.buttonPin) ) {
 		statusBar += " T";
-		if ( addonOptions.turboShotCount < 10 ) // padding
+		if ( turboOptions.shotCount < 10 ) // padding
 			statusBar += "0";
-		statusBar += std::to_string(addonOptions.turboShotCount);
+		statusBar += std::to_string(turboOptions.shotCount);
 	} else {
 		statusBar += "    "; // no turbo, don't show Txx setting
 	}
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 
 		case DPAD_MODE_DIGITAL:      statusBar += " DP"; break;
@@ -945,7 +947,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case DPAD_MODE_RIGHT_ANALOG: statusBar += " RS"; break;
 	}
 
-	switch (Gamepad::resolveSOCDMode(gamepad->options))
+	switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
 	{
 		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
 		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
@@ -958,7 +960,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 
 bool I2CDisplayAddon::pressedUp()
 {
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      return pGamepad->pressedUp();
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.ly == GAMEPAD_JOYSTICK_MIN;
@@ -970,7 +972,7 @@ bool I2CDisplayAddon::pressedUp()
 
 bool I2CDisplayAddon::pressedDown()
 {
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      return pGamepad->pressedDown();
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.ly == GAMEPAD_JOYSTICK_MAX;
@@ -982,7 +984,7 @@ bool I2CDisplayAddon::pressedDown()
 
 bool I2CDisplayAddon::pressedLeft()
 {
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      return pGamepad->pressedLeft();
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.lx == GAMEPAD_JOYSTICK_MIN;
@@ -994,7 +996,7 @@ bool I2CDisplayAddon::pressedLeft()
 
 bool I2CDisplayAddon::pressedRight()
 {
-	switch (gamepad->options.dpadMode)
+	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      return pGamepad->pressedRight();
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.lx == GAMEPAD_JOYSTICK_MAX;

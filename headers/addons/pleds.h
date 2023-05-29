@@ -14,6 +14,8 @@
 #include "gpaddon.h"
 #include "helper.h"
 
+#include "enums.pb.h"
+
 // This needs to be moved to storage if we're going to share between modules
 extern NeoPico *neopico;
 extern AnimationStation as;
@@ -38,7 +40,7 @@ public:
 	virtual void process();
 	virtual std::string name() { return PLEDName; }
 	PlayerLEDAddon() {
-		type = static_cast<PLEDType>(Storage::getInstance().getLEDOptions().pledType);
+		type = static_cast<PLEDType>(Storage::getInstance().getLedOptions().pledType);
 	}
 	PlayerLEDAddon(PLEDType type) : type(type) {}
 

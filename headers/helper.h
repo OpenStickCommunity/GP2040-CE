@@ -53,4 +53,6 @@ const std::string BUTTON_LABEL_A2 = "A2";
 #define PLED_COLOR ColorWhite // White
 #endif
 
+static inline bool isValidPin(int32_t pin) { return pin >= 0 && pin < NUM_BANK0_GPIOS; }
+
 #endif

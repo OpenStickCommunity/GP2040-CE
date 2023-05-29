@@ -7,9 +7,7 @@ class AnimationStorage
 {
   public:
     void save();
-
     AnimationOptions getAnimationOptions();
-    void setAnimationOptions(AnimationOptions options);
 };
 
 static AnimationStorage AnimationStore;
