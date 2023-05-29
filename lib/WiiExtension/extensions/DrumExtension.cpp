@@ -21,8 +21,12 @@ void DrumExtension::process(uint8_t *inputData) {
 #if WII_EXTENSION_DEBUG==true
     //printf("O=%1d R=%1d Y=%1d G=%1d B=%1d P=%1d\n", buttons[DrumButtons::DRUM_ORANGE], buttons[DrumButtons::DRUM_RED], buttons[DrumButtons::DRUM_YELLOW], buttons[DrumButtons::DRUM_GREEN], buttons[DrumButtons::DRUM_BLUE], buttons[DrumButtons::DRUM_PEDAL]);
     //printf("-=%1d +=%1d Joy X=%4d Y=%4d\n", buttons[WiiButtons::BUTTON_MINUS], buttons[WiiButtons::BUTTON_PLUS], analogState[WiiAnalogs::ANALOG_LEFT_X], analogState[WiiAnalogs::ANALOG_LEFT_Y]);
-    //for (int i = 0; i < result; ++i) {
-    //    if (_lastRead[i] != regRead[i]) printf("Byte%2d    " BYTE_TO_BINARY_PATTERN "\n", i, BYTE_TO_BINARY(regRead[i]));
+    //if (_lastRead[2] != inputData[2]) printf("Byte%2d    " BYTE_TO_BINARY_PATTERN "\n", 2, BYTE_TO_BINARY(inputData[2]));
+    //if (_lastRead[3] != inputData[3]) printf("Byte%2d    " BYTE_TO_BINARY_PATTERN "\n", 3, BYTE_TO_BINARY(inputData[3]));
+    //if (_lastRead[5] != inputData[5]) printf("Byte%2d    " BYTE_TO_BINARY_PATTERN "\n", 5, BYTE_TO_BINARY(inputData[5]));
+    //for (int i = 0; i < 8; ++i) {
+    //    //if (_lastRead[i] != inputData[i]) printf("Byte%2d    " BYTE_TO_BINARY_PATTERN "\n", i, BYTE_TO_BINARY(inputData[i]));
+    //    _lastRead[i] = inputData[i];
     //}
 #endif
 }

@@ -97,7 +97,7 @@ void ExtensionBase::postProcess() {
             //applyCalibration(analogState[i], minVal, maxVal, cenVal),
 
 #if WII_EXTENSION_DEBUG==true
-            if (i == WiiAnalogs::WII_ANALOG_RIGHT_X) {
+            if (i == WiiAnalogs::WII_ANALOG_RIGHT_Y) {
                 //printf("cur:%5d min=%5d:%5d max=%5d:%5d cen=%5d:%5d out:%5d off:%5d\n", analogState[i], _analogCalibration[i].minimum, minVal, _analogCalibration[i].maximum, maxVal, _analogCalibration[i].center, cenVal, outVal, centerOffset);
             }
 #endif

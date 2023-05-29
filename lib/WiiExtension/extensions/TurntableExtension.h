@@ -4,24 +4,34 @@
 #include "ExtensionBase.h"
 
 enum TurntableButtons {
-    TURNTABLE_LEFT_RED    = WiiButtons::WII_BUTTON_L,
-    TURNTABLE_RIGHT_RED   = WiiButtons::WII_BUTTON_R,
-    TURNTABLE_LEFT_GREEN  = WiiButtons::WII_BUTTON_X,
-    TURNTABLE_LEFT_BLUE   = WiiButtons::WII_BUTTON_ZL,
     TURNTABLE_RIGHT_GREEN = WiiButtons::WII_BUTTON_Y,
-    TURNTABLE_RIGHT_BLUE  = WiiButtons::WII_BUTTON_ZR,
-    TURNTABLE_EUPHORIA    = WiiButtons::WII_BUTTON_A
+    TURNTABLE_RIGHT_RED   = WiiButtons::WII_BUTTON_X,
+    TURNTABLE_RIGHT_BLUE  = WiiButtons::WII_BUTTON_A,
+    TURNTABLE_EUPHORIA    = WiiButtons::WII_BUTTON_ZR
+};
+
+enum TurntableDirectionalPad {
+    TURNTABLE_LEFT_GREEN  = WiiDirectionalPad::WII_DIRECTION_LEFT,
+    TURNTABLE_LEFT_RED    = WiiDirectionalPad::WII_DIRECTION_UP,
+    TURNTABLE_LEFT_BLUE   = WiiDirectionalPad::WII_DIRECTION_RIGHT,
 };
 
 enum TurntableAnalogs {
-    TURNTABLE_LEFT        = WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT,
+    TURNTABLE_LEFT        = WiiAnalogs::WII_ANALOG_RIGHT_Y,
     TURNTABLE_RIGHT       = WiiAnalogs::WII_ANALOG_RIGHT_X,
     TURNTABLE_EFFECTS     = WiiAnalogs::WII_ANALOG_TRIGGER_LEFT,
-    TURNTABLE_CROSSFADE   = WiiAnalogs::WII_ANALOG_RIGHT_Y
+    TURNTABLE_CROSSFADE   = WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT
 };
+
+#define WII_TURNTABLE_GATE_SIZE 97
+#define WII_TURNTABLE_GATE_CENTER 128
+#define WII_TURNTABLE_TRIGGER_MAX 64
+#define WII_TURNTABLE_ANALOG_GAP (WII_TURNTABLE_GATE_CENTER-WII_TURNTABLE_GATE_SIZE)
+#define WII_TURNTABLE_MAX_PRECISION WII_ANALOG_PRECISION_0
 
 class TurntableExtension : public ExtensionBase {
     public:
+        void init(uint8_t dataType) override;
         void process(uint8_t *inputData) override;
 };
 

@@ -9,18 +9,21 @@
 
 #include "extensions/Extensions.h"
 
-#define WII_EXTENSION_NONE          -1
-#define WII_EXTENSION_NUNCHUCK      0
-#define WII_EXTENSION_CLASSIC       1
-#define WII_EXTENSION_CLASSIC_PRO   2
-#define WII_EXTENSION_DRAWSOME      3
-#define WII_EXTENSION_GUITAR        4
-#define WII_EXTENSION_DRUMS         5
-#define WII_EXTENSION_TURNTABLE     6
-#define WII_EXTENSION_TAIKO         7
-#define WII_EXTENSION_UDRAW         8
-#define WII_EXTENSION_BALANCE_BOARD 9
-#define WII_EXTENSION_MOTION_PLUS   10
+enum WiiExtensionController {
+    WII_EXTENSION_NONE = -1,
+    WII_EXTENSION_NUNCHUCK,
+    WII_EXTENSION_CLASSIC,
+    WII_EXTENSION_CLASSIC_PRO,
+    WII_EXTENSION_DRAWSOME,
+    WII_EXTENSION_GUITAR,
+    WII_EXTENSION_DRUMS,
+    WII_EXTENSION_TURNTABLE,
+    WII_EXTENSION_TAIKO,
+    WII_EXTENSION_UDRAW,
+    WII_EXTENSION_BALANCE_BOARD,
+    WII_EXTENSION_MOTION_PLUS,
+    WII_EXTENSION_COUNT
+};
 
 #define WII_DATA_TYPE_0             0
 #define WII_DATA_TYPE_1             1
@@ -122,9 +125,6 @@ class WiiExtension {
 	int32_t iSpeed;
 
     uint8_t _lastRead[16] = {0xFF};
-
-    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
-    uint16_t calibrate(uint16_t pos, uint16_t min, uint16_t max, uint16_t center);
 
     int doI2CWrite(uint8_t *pData, int iLen);
     int doI2CRead(uint8_t *pData, int iLen);

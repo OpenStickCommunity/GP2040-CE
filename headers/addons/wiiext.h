@@ -2,6 +2,7 @@
 #define _WIIExtensionAddon_H
 
 #include <string>
+#include <map>
 #include <stdint.h>
 #include <hardware/i2c.h>
 #include "BoardConfig.h"
@@ -37,6 +38,14 @@
 #define WII_EXTENSION_I2C_SPEED 400000
 #endif
 
+#define WII_SET_MASK(bits, check, val) ((check) ? ((bits) |= (val)) : ((bits) &= ~(val)))
+
+typedef struct {
+    // button ID = gamepad mask value
+    std::unordered_map<uint16_t, uint16_t> buttonMap;
+    std::unordered_map<uint16_t, uint16_t> dpadMap;
+} WiiExtensionConfig;
+
 class WiiExtensionInput : public GPAddon {
 public:
 	virtual bool available();
@@ -48,6 +57,106 @@ private:
     WiiExtension * wii;
     uint32_t uIntervalMS;
     uint32_t nextTimer;
+
+    // controller ID = config
+    // defaults if no defined config
+    std::unordered_map<uint16_t, WiiExtensionConfig> extensionConfigs = {
+        {
+            WII_EXTENSION_NUNCHUCK,
+            {
+                {
+                    {WiiButtons::WII_BUTTON_C,GAMEPAD_MASK_B1},
+                    {WiiButtons::WII_BUTTON_C,GAMEPAD_MASK_B2},
+                },{/* No D-Pad */}
+            }
+        },
+        {
+            WII_EXTENSION_CLASSIC,
+            {
+                {
+                    {WiiButtons::WII_BUTTON_B, GAMEPAD_MASK_B1},
+                    {WiiButtons::WII_BUTTON_A, GAMEPAD_MASK_B2},
+                    {WiiButtons::WII_BUTTON_X, GAMEPAD_MASK_B4},
+                    {WiiButtons::WII_BUTTON_Y, GAMEPAD_MASK_B3},
+                    {WiiButtons::WII_BUTTON_L, GAMEPAD_MASK_L2},
+                    {WiiButtons::WII_BUTTON_ZL, GAMEPAD_MASK_L1},
+                    {WiiButtons::WII_BUTTON_R, GAMEPAD_MASK_R2},
+                    {WiiButtons::WII_BUTTON_ZR, GAMEPAD_MASK_R1},
+                    {WiiButtons::WII_BUTTON_MINUS, GAMEPAD_MASK_S1},
+                    {WiiButtons::WII_BUTTON_PLUS, GAMEPAD_MASK_S2},
+                    {WiiButtons::WII_BUTTON_HOME, GAMEPAD_MASK_A1},
+                },
+                {
+                    {WiiDirectionalPad::WII_DIRECTION_UP, GAMEPAD_MASK_UP},
+                    {WiiDirectionalPad::WII_DIRECTION_DOWN, GAMEPAD_MASK_DOWN},
+                    {WiiDirectionalPad::WII_DIRECTION_LEFT, GAMEPAD_MASK_LEFT},
+                    {WiiDirectionalPad::WII_DIRECTION_RIGHT, GAMEPAD_MASK_RIGHT},
+                }
+            }
+        },
+        {
+            WII_EXTENSION_TAIKO,
+            {
+                {
+                    {TaikoButtons::TATA_KAT_LEFT, GAMEPAD_MASK_L2},
+                    {TaikoButtons::TATA_KAT_RIGHT, GAMEPAD_MASK_R2},
+                    {TaikoButtons::TATA_DON_RIGHT, GAMEPAD_MASK_B1},
+                },
+                {
+                    {TaikoButtons::TATA_DON_LEFT, GAMEPAD_MASK_LEFT},
+                }
+            }
+        },
+        {
+            WII_EXTENSION_GUITAR,
+            {
+                {
+                    {GuitarButtons::GUITAR_RED, GAMEPAD_MASK_B2},
+                    {GuitarButtons::GUITAR_GREEN, GAMEPAD_MASK_B1},
+                    {GuitarButtons::GUITAR_YELLOW, GAMEPAD_MASK_B4},
+                    {GuitarButtons::GUITAR_BLUE, GAMEPAD_MASK_B3},
+                    {GuitarButtons::GUITAR_ORANGE, GAMEPAD_MASK_L2},
+                    {GuitarButtons::GUITAR_PEDAL, GAMEPAD_MASK_R2},
+                    {WiiButtons::WII_BUTTON_MINUS, GAMEPAD_MASK_S1},
+                    {WiiButtons::WII_BUTTON_PLUS, GAMEPAD_MASK_S2},
+                },{/* No D-Pad */}
+            }
+        },
+        {
+            WII_EXTENSION_DRUMS,
+            {
+                {
+                    {DrumButtons::DRUM_RED, GAMEPAD_MASK_B2},
+                    {DrumButtons::DRUM_GREEN, GAMEPAD_MASK_B1},
+                    {DrumButtons::DRUM_BLUE, GAMEPAD_MASK_B4},
+                    {DrumButtons::DRUM_YELLOW, GAMEPAD_MASK_B3},
+                    {DrumButtons::DRUM_ORANGE, GAMEPAD_MASK_L2},
+                    {DrumButtons::DRUM_PEDAL, GAMEPAD_MASK_R2},
+                    {WiiButtons::WII_BUTTON_MINUS, GAMEPAD_MASK_S1},
+                    {WiiButtons::WII_BUTTON_PLUS, GAMEPAD_MASK_S2},
+                },{/* No D-Pad */}
+            }
+        },
+        {
+            WII_EXTENSION_TURNTABLE,
+            {
+                {
+                    {TurntableButtons::TURNTABLE_RIGHT_GREEN, GAMEPAD_MASK_B3},
+                    {TurntableButtons::TURNTABLE_RIGHT_RED, GAMEPAD_MASK_B4},
+                    {TurntableButtons::TURNTABLE_RIGHT_BLUE, GAMEPAD_MASK_B2},
+                    {TurntableButtons::TURNTABLE_EUPHORIA, GAMEPAD_MASK_R1},
+                    {WiiButtons::WII_BUTTON_MINUS, GAMEPAD_MASK_S1},
+                    {WiiButtons::WII_BUTTON_PLUS, GAMEPAD_MASK_S2},
+                },
+                {
+                    {TurntableDirectionalPad::TURNTABLE_LEFT_GREEN, GAMEPAD_MASK_LEFT},
+                    {TurntableDirectionalPad::TURNTABLE_LEFT_RED, GAMEPAD_MASK_UP},
+                    {TurntableDirectionalPad::TURNTABLE_LEFT_BLUE, GAMEPAD_MASK_RIGHT},
+                }
+            }
+        },
+    };
+    WiiExtensionConfig* currentConfig = NULL;
 
     bool buttonC = false;
     bool buttonZ = false;
