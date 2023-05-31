@@ -118,7 +118,6 @@ void Gamepad::setup()
 	mapButtonR3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR3),	GAMEPAD_MASK_R3);
 	mapButtonA1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA1),	GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA2),	GAMEPAD_MASK_A2);
-	mapButtonFn  = new GamepadButtonMapping(pinMappings.pinButtonFn, GAMEPAD_MASK_FN);
 
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
@@ -126,7 +125,7 @@ void Gamepad::setup()
 		mapButtonB1, mapButtonB2, mapButtonB3, mapButtonB4,
 		mapButtonL1, mapButtonR1, mapButtonL2, mapButtonR2,
 		mapButtonS1, mapButtonS2, mapButtonL3, mapButtonR3,
-		mapButtonA1, mapButtonA2, mapButtonFn
+		mapButtonA1, mapButtonA2
 	};
 
 	for (int i = 0; i < GAMEPAD_DIGITAL_INPUT_COUNT; i++)
@@ -139,11 +138,12 @@ void Gamepad::setup()
 		}
 	}
 
-	#ifdef PIN_SETTINGS
-		gpio_init(PIN_SETTINGS);             // Initialize pin
-		gpio_set_dir(PIN_SETTINGS, GPIO_IN); // Set as INPUT
-		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
-	#endif
+	// initialize the Function pin button/switch if it is configured
+	if (isValidPin(pinMappings.pinButtonFn)) {
+		gpio_init(pinMappings.pinButtonFn);             // Initialize pin
+		gpio_set_dir(pinMappings.pinButtonFn, GPIO_IN); // Set as INPUT
+		gpio_pull_up(pinMappings.pinButtonFn);          // Set as PULLUP
+	}
 
 	const HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	hotkeyF1Up    =	hotkeyOptions.hotkeyF1Up;
@@ -215,14 +215,12 @@ void Gamepad::process()
 
 void Gamepad::read()
 {
+	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
+
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
 
-	#ifdef PIN_SETTINGS
-	state.aux = 0
-		| ((values & (1 << PIN_SETTINGS)) ? (1 << 0) : 0)
-	;
-	#endif
+	state.aux = (!isValidPin(pinMappings.pinButtonFn) | (values & (1 << pinMappings.pinButtonFn)) ? 1 : 0);
 
 	state.dpad = 0
 		| ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
@@ -246,7 +244,6 @@ void Gamepad::read()
 		| ((values & mapButtonR3->pinMask)  ? mapButtonR3->buttonMask  : 0)
 		| ((values & mapButtonA1->pinMask)  ? mapButtonA1->buttonMask  : 0)
 		| ((values & mapButtonA2->pinMask)  ? mapButtonA2->buttonMask  : 0)
-		| ((values & mapButtonFn->pinMask)  ? mapButtonFn->buttonMask  : 0)
 	;
 
 	state.lx = GAMEPAD_JOYSTICK_MID;
@@ -271,7 +268,7 @@ void Gamepad::hotkey()
 	if (options.lockHotkeys) return;
 
 	GamepadHotkey action = HOTKEY_NONE;
-	if (pressedF1() && (pressedFn() || mapButtonFn->pin == 255))
+	if (pressedF1() && state.aux)
 	{
 		if (state.dpad == hotkeyF1Up   .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Up   .action);
 		if (state.dpad == hotkeyF1Down .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Down .action);
@@ -281,7 +278,7 @@ void Gamepad::hotkey()
 			state.dpad = 0;
 			state.buttons &= ~(f1Mask);
 		}
-	} else if (pressedF2() && (pressedFn() || mapButtonFn->pin == 255)) {
+	} else if (pressedF2() && state.aux) {
 		if (state.dpad == hotkeyF2Up   .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Up   .action);
 		if (state.dpad == hotkeyF2Down .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Down .action);
 		if (state.dpad == hotkeyF2Left .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Left .action);

@@ -55,7 +55,7 @@ struct GamepadButtonMapping
 	bool isAssigned() const { return pin != 0xff; }
 };
 
-#define GAMEPAD_DIGITAL_INPUT_COUNT 19 // Total number of buttons, including D-pad and Fn button
+#define GAMEPAD_DIGITAL_INPUT_COUNT 18 // Total number of buttons, including D-pad
 
 class Gamepad {
 public:
@@ -124,7 +124,6 @@ public:
 	inline bool __attribute__((always_inline)) pressedA2()    { return pressedButton(GAMEPAD_MASK_A2); }
 	inline bool __attribute__((always_inline)) pressedF1()    { return pressedButton(f1Mask); }
 	inline bool __attribute__((always_inline)) pressedF2()    { return pressedButton(f2Mask); }
-	inline bool __attribute__((always_inline)) pressedFn()    { return pressedButton(GAMEPAD_MASK_FN); }
 
 	const GamepadOptions& getOptions() const { return options; }
 
@@ -156,7 +155,6 @@ public:
 	GamepadButtonMapping *mapButtonR3;
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
-	GamepadButtonMapping *mapButtonFn;
 	GamepadButtonMapping **gamepadMappings;
 
 	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
