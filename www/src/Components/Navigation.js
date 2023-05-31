@@ -7,6 +7,7 @@ import { saveButtonLabels } from '../Services/Storage';
 import { BUTTONS } from '../Data/Buttons';
 import './Navigation.scss';
 import WebApi from '../Services/WebApi';
+import ColorScheme from './ColorScheme';
 
 const BOOT_MODES = {
 	GAMEPAD: 0,
@@ -35,7 +36,7 @@ const Navigation = (props) => {
 	};
 
 	return (
-		<Navbar collapseOnSelect bg="dark" variant="dark" expand="md" fixed="top">
+		<Navbar collapseOnSelect bg="primary" variant="dark" expand="md" fixed="top">
 			<Navbar.Brand href="/">
 				<img src="images/logo.png" className="title-logo" alt="logo" />{' '}GP2040
 			</Navbar.Brand>
@@ -68,6 +69,7 @@ const Navigation = (props) => {
 					</Dropdown>
 				</Nav>
 				<Nav>
+					<ColorScheme />
 					<Button style={{ marginRight: "7px" }} variant="success" onClick={handleShow}>
 						Reboot
 					</Button>
