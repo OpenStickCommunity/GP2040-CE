@@ -217,6 +217,12 @@ void WiiExtension::poll() {
                 _lastRead[i] = regRead[i];
             }
 
+            if (extensionType == WII_EXTENSION_TURNTABLE) {
+                regWrite[0] = 0xFB;
+                regWrite[1] = ((TurntableExtension*)extensionController)->getLED();
+                result = doI2CWrite(regWrite, 2);
+            }
+
             // continue poll
             regWrite[0] = 0x00;
             result = doI2CWrite(regWrite, 1);

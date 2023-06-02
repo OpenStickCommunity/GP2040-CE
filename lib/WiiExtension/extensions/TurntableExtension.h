@@ -30,9 +30,14 @@ enum TurntableAnalogs {
 #define WII_TURNTABLE_MAX_PRECISION WII_ANALOG_PRECISION_0
 
 class TurntableExtension : public ExtensionBase {
+    private:
+        bool _ledState = false;
     public:
         void init(uint8_t dataType) override;
         void process(uint8_t *inputData) override;
+
+        void setLED(bool ledOn) {_ledState = ledOn;};
+        bool getLED() {return _ledState;};
 };
 
 #endif

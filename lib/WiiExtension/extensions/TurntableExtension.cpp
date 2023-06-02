@@ -78,7 +78,6 @@ void TurntableExtension::process(uint8_t *inputData) {
     directionalPad[TurntableDirectionalPad::TURNTABLE_LEFT_RED]      = !((inputData[4] & 0x20) >> 5);
     directionalPad[TurntableDirectionalPad::TURNTABLE_LEFT_BLUE]     = !((inputData[5] & 0x80) >> 7);
 
-
 #if WII_EXTENSION_DEBUG==true
     //printf("LR=%1d LG=%1d LB=%1d\n", buttons[TurntableButtons::TURNTABLE_LEFT_RED], buttons[TurntableButtons::TURNTABLE_LEFT_GREEN], buttons[TurntableButtons::TURNTABLE_LEFT_BLUE]);
     //printf("RR=%1d RG=%1d RB=%1d\n", buttons[TurntableButtons::TURNTABLE_RIGHT_RED], buttons[TurntableButtons::TURNTABLE_RIGHT_GREEN], buttons[TurntableButtons::TURNTABLE_RIGHT_BLUE]);
