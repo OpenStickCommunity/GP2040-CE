@@ -974,68 +974,68 @@ std::string setPS4Options()
 
 	// RSA Context
 	if ( readEncoded("N") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaN.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaN.bytes)) ) {
 			memcpy(ps4Options.rsaN.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaN.size = decoded.length();
 		}
 	}
 	if ( readEncoded("E") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaE.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaE.bytes)) ) {
 			memcpy(ps4Options.rsaE.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaE.size = decoded.length();
 		}
 	}
 	if ( readEncoded("D") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaD.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaD.bytes)) ) {
 			memcpy(ps4Options.rsaD.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaD.size = decoded.length();
 		}
 	}
 	if ( readEncoded("P") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaP.bytes)) ) {
 			memcpy(ps4Options.rsaP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("Q") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaQ.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQ.bytes)) ) {
 			memcpy(ps4Options.rsaQ.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaQ.size = decoded.length();
 		}
 	}
 	if ( readEncoded("DP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaDP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDP.bytes)) ) {
 			memcpy(ps4Options.rsaDP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaDP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("DQ") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaDQ.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDQ.bytes)) ) {
 			memcpy(ps4Options.rsaDQ.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaDQ.size = decoded.length();
 		}
 	}
 	if ( readEncoded("QP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaQP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQP.bytes)) ) {
 			memcpy(ps4Options.rsaQP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaQP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("RN") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaRN.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaRN.bytes)) ) {
 			memcpy(ps4Options.rsaRN.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaRN.size = decoded.length();
 		}
 	}
 	// Serial & Signature
 	if ( readEncoded("serial") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.serial.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.serial.bytes)) ) {
 			memcpy(ps4Options.serial.bytes, decoded.data(), decoded.length());
 			ps4Options.serial.size = decoded.length();
 		}
 	}
 	if ( readEncoded("signature") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.signature.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.signature.bytes)) ) {
 			memcpy(ps4Options.signature.bytes, decoded.data(), decoded.length());
 			ps4Options.signature.size = decoded.length();
 		}
