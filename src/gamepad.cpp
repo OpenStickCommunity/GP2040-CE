@@ -41,7 +41,7 @@ static PS4Report ps4Report
 	.dpad = 0x08,
 	.button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
 	.button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
-	.button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,	
+	.button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
 	.padding = 0,
 	.mystery = { },
 	.touchpad_data = TouchpadData(),
@@ -118,11 +118,11 @@ void Gamepad::setup()
 	mapButtonA1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA1),	GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA2),	GAMEPAD_MASK_A2);
 
-	uint16_t maskS1 = options.inputMode == INPUT_MODE_PS4 
+	uint16_t maskS1 = options.inputMode == INPUT_MODE_PS4
 	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_A2 : GAMEPAD_MASK_S1;
 	mapButtonS1  = new GamepadButtonMapping(pinMappings.pinButtonS1,  maskS1);
 
-	uint16_t maskA2 = options.inputMode == INPUT_MODE_PS4 
+	uint16_t maskA2 = options.inputMode == INPUT_MODE_PS4
 	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_S1 : GAMEPAD_MASK_A2;
 	mapButtonA2  = new GamepadButtonMapping(pinMappings.pinButtonA2, maskA2);
 
@@ -165,6 +165,17 @@ void Gamepad::setup()
 void Gamepad::process()
 {
 	memcpy(&rawState, &state, sizeof(GamepadState));
+
+	// NOTE: Inverted Y-axis must run before SOCD and Dpad processing
+	if (options.invertYAxis) {
+		bool up = (state.dpad & mapDpadUp->buttonMask) != 0;
+		bool down = (state.dpad & mapDpadDown->buttonMask) != 0;
+		state.dpad &= ~(mapDpadUp->buttonMask | mapDpadDown->buttonMask);
+		if (up)
+			state.dpad |= mapDpadDown->buttonMask;
+		if (down)
+			state.dpad |= mapDpadUp->buttonMask;
+	}
 
 	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
 
@@ -215,8 +226,8 @@ void Gamepad::read()
 	#endif
 
 	state.dpad = 0
-		| ((values & mapDpadUp->pinMask)    ? (options.invertYAxis ? mapDpadDown->buttonMask : mapDpadUp->buttonMask) : 0)
-		| ((values & mapDpadDown->pinMask)  ? (options.invertYAxis ? mapDpadUp->buttonMask : mapDpadDown->buttonMask) : 0)
+		| ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
+		| ((values & mapDpadDown->pinMask)  ? mapDpadDown->buttonMask : 0)
 		| ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask  : 0)
 		| ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0)
 	;
