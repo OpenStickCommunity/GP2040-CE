@@ -60,10 +60,16 @@ yup.addMethod(yup.NumberSchema, 'checkUsedPins', function(this: yup.NumberSchema
 });
 
 export const AppContextProvider = ({ children, ...props }) => {
-	const [buttonLabels, _setButtonLabels] = useState(localStorage.getItem('buttonLabels') || 'gp2040');
-	const setButtonLabels = (buttonLabels) => {
-		localStorage.setItem('buttonLabels', buttonLabels);
-		_setButtonLabels(buttonLabels);
+	const localValue = localStorage.getItem('buttonLabelType') || 'gp2040';
+	const localValue2 = localStorage.getItem('swapTpShareLabels') || false;
+	const [buttonLabels, _setButtonLabels] = useState({ swapTpShareLabels: localValue2, buttonLabelType: localValue });
+	const setButtonLabels = ({ buttonLabelType : newType, swapTpShareLabels: newSwap }) => {
+		console.log('buttonLabelType is', newType)
+		newType && localStorage.setItem('buttonLabelType', newType);
+		newSwap !== undefined && localStorage.setItem('swapTpShareLabels', newSwap);
+		_setButtonLabels(({ buttonLabelType, swapTpShareLabels }) =>
+			({ buttonLabelType: newType || buttonLabelType,
+			   swapTpShareLabels: (newSwap !== undefined) ? newSwap : swapTpShareLabels }));
 	};
 
 	const [savedColors, _setSavedColors] = useState(localStorage.getItem('savedColors') ? localStorage.getItem('savedColors').split(',') : []);
@@ -71,6 +77,25 @@ export const AppContextProvider = ({ children, ...props }) => {
 		localStorage.setItem('savedColors', savedColors);
 		_setSavedColors(savedColors);
 	};
+
+	const updateButtonLabels = (e) => {
+		const { key, newValue } = e;
+		if (key === "swapTpShareLabels") {
+		  _setButtonLabels(({ buttonLabelType }) => ({ buttonLabelType, swapTpShareLabels: newValue === "true" }));
+		}
+		if (key === "buttonLabelType") {
+		  _setButtonLabels(({ swapTpShareLabels }) => ({ buttonLabelType: newValue, swapTpShareLabels }));
+		}
+	};
+
+	useEffect(() => {
+		_setButtonLabels({ buttonLabelType: buttonLabels.buttonLabelType,
+						   swapTpShareLabels: buttonLabels.swapTpShareLabels });
+		window.addEventListener("storage", updateButtonLabels);
+		return () => {
+		  window.removeEventListener("storage", updateButtonLabels);
+		};
+	  }, []);
 
 	const [gradientNormalColor1, _setGradientNormalColor1] = useState('#00ffff');
 	const setGradientNormalColor1 = (gradientNormalColor1) => {
@@ -121,6 +146,12 @@ export const AppContextProvider = ({ children, ...props }) => {
 
 	console.log('usedPins:', usedPins);
 
+	const [savedColorScheme, _setSavedColorScheme] = useState(localStorage.getItem('savedColorScheme') || 'auto');
+	const setSavedColorScheme = (savedColorScheme) => {
+		localStorage.setItem('savedColorScheme', savedColorScheme);
+		_setSavedColorScheme(savedColorScheme);
+	};
+
 	return (
 		<AppContext.Provider
 			{...props}
@@ -140,6 +171,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 				setSavedColors,
 				setUsedPins,
 				updateUsedPins,
+				savedColorScheme,
+				setSavedColorScheme,
 			}}
 		>
 			{children}

@@ -1,0 +1,155 @@
+{
+	"info": {
+		"_postman_id": "f14b64b0-eae6-4bbe-b8fc-edc35a7f64bb",
+		"name": "GP2040-CE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/getGamepadOptions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/getGamepadOptions",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"getGamepadOptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/getPinMappings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/getPinMappings",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"getPinMappings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/getAddonsOptions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/getAddonsOptions",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"getAddonsOptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/resetSettings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/resetSettings",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"resetSettings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/setGamepadOptions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dpadMode\": 0,\r\n    \"inputMode\": 1,\r\n    \"socdMode\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/setGamepadOptions",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"setGamepadOptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/setPinMappings",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Up\": 2,\r\n    \"Down\": 3,\r\n    \"Left\": 5,\r\n    \"Right\": 4,\r\n    \"B1\": 6,\r\n    \"B2\": 7,\r\n    \"B3\": 10,\r\n    \"B4\": 11,\r\n    \"L1\": 13,\r\n    \"R1\": 12,\r\n    \"L2\": 9,\r\n    \"R2\": 8,\r\n    \"S1\": 16,\r\n    \"S2\": 17,\r\n    \"L3\": 18,\r\n    \"R3\": 19,\r\n    \"A1\": 20,\r\n    \"A2\": 21\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/setGamepadOptions",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"setGamepadOptions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

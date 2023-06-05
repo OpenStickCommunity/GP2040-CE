@@ -30,7 +30,7 @@
 class Base64 {
  public:
 
-  static std::string Encode(const std::string data) {
+  static std::string Encode(const char* dataPtr, size_t dataLen) {
     static constexpr char sEncodingTable[] = {
       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
       'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -42,27 +42,31 @@ class Base64 {
       '4', '5', '6', '7', '8', '9', '+', '/'
     };
 
-    size_t in_len = data.size();
-    size_t out_len = 4 * ((in_len + 2) / 3);
-    std::string ret(out_len, '\0');
-    size_t i;
-    char *p = const_cast<char*>(ret.c_str());
+    size_t out_len = 4 * ((dataLen + 2) / 3);
+    std::string ret;
+    ret.resize(out_len);
 
-    for (i = 0; i < in_len - 2; i += 3) {
-      *p++ = sEncodingTable[(data[i] >> 2) & 0x3F];
-      *p++ = sEncodingTable[((data[i] & 0x3) << 4) | ((int) (data[i + 1] & 0xF0) >> 4)];
-      *p++ = sEncodingTable[((data[i + 1] & 0xF) << 2) | ((int) (data[i + 2] & 0xC0) >> 6)];
-      *p++ = sEncodingTable[data[i + 2] & 0x3F];
+    size_t i = 0;
+    char *p = ret.data();
+
+    if (dataLen >= 2) {
+      for (; i < dataLen - 2; i += 3) {
+        *p++ = sEncodingTable[(dataPtr[i] >> 2) & 0x3F];
+        *p++ = sEncodingTable[((dataPtr[i] & 0x3) << 4) | ((int) (dataPtr[i + 1] & 0xF0) >> 4)];
+        *p++ = sEncodingTable[((dataPtr[i + 1] & 0xF) << 2) | ((int) (dataPtr[i + 2] & 0xC0) >> 6)];
+        *p++ = sEncodingTable[dataPtr[i + 2] & 0x3F];
+      }
     }
-    if (i < in_len) {
-      *p++ = sEncodingTable[(data[i] >> 2) & 0x3F];
-      if (i == (in_len - 1)) {
-        *p++ = sEncodingTable[((data[i] & 0x3) << 4)];
+
+    if (i < dataLen) {
+      *p++ = sEncodingTable[(dataPtr[i] >> 2) & 0x3F];
+      if (i == (dataLen - 1)) {
+        *p++ = sEncodingTable[((dataPtr[i] & 0x3) << 4)];
         *p++ = '=';
       }
       else {
-        *p++ = sEncodingTable[((data[i] & 0x3) << 4) | ((int) (data[i + 1] & 0xF0) >> 4)];
-        *p++ = sEncodingTable[((data[i + 1] & 0xF) << 2)];
+        *p++ = sEncodingTable[((dataPtr[i] & 0x3) << 4) | ((int) (dataPtr[i + 1] & 0xF0) >> 4)];
+        *p++ = sEncodingTable[((dataPtr[i + 1] & 0xF) << 2)];
       }
       *p++ = '=';
     }
@@ -70,7 +74,11 @@ class Base64 {
     return ret;
   }
 
-  static bool Decode(const std::string& input, std::string& out) {
+  static std::string Encode(const std::string data) {
+    return Encode(data.data(), data.length());
+  }
+
+  static bool Decode(const char* dataPtr, size_t dataLen, std::string& out) {
     static constexpr unsigned char kDecodingTable[] = {
       64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
       64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
@@ -90,24 +98,23 @@ class Base64 {
       64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64
     };
 
-    size_t in_len = input.size();
-    if (in_len % 4 != 0)
+    if (dataLen % 4 != 0)
     {
       out.clear();
       return false;
     }
 
-    size_t out_len = in_len / 4 * 3;
-    if (input[in_len - 1] == '=') out_len--;
-    if (input[in_len - 2] == '=') out_len--;
+    size_t out_len = dataLen / 4 * 3;
+    if (dataLen >= 1 && dataPtr[dataLen - 1] == '=') out_len--;
+    if (dataLen >= 2 && dataPtr[dataLen - 2] == '=') out_len--;
 
     out.resize(out_len);
 
-    for (size_t i = 0, j = 0; i < in_len;) {
-      uint32_t a = input[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(input[i++])];
-      uint32_t b = input[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(input[i++])];
-      uint32_t c = input[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(input[i++])];
-      uint32_t d = input[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(input[i++])];
+    for (size_t i = 0, j = 0; i < dataLen;) {
+      uint32_t a = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(dataPtr[i++])];
+      uint32_t b = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(dataPtr[i++])];
+      uint32_t c = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(dataPtr[i++])];
+      uint32_t d = dataPtr[i] == '=' ? 0 & i++ : kDecodingTable[static_cast<int>(dataPtr[i++])];
 
       uint32_t triple = (a << 3 * 6) + (b << 2 * 6) + (c << 1 * 6) + (d << 0 * 6);
 
@@ -117,6 +124,10 @@ class Base64 {
     }
 
     return true;
+  }
+
+  static bool Decode(const std::string& input, std::string& out) {
+    return Decode(input.data(), input.length(), out);
   }
 
 };

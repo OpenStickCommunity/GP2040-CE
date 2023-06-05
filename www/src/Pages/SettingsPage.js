@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
-import BUTTONS from '../Data/Buttons.json';
+import { BUTTONS } from '../Data/Buttons';
 
 const PS4Mode = 4;
 const INPUT_MODES = [
@@ -54,6 +54,13 @@ const HOTKEY_ACTIONS = [
 	{ label: 'Invert Y Axis', value: 10 },
 ];
 
+const FORCED_SETUP_MODES = [
+	{ label: 'Off', value: 0 },
+	{ label: 'Disable Input-Mode Switch', value: 1 },
+	{ label: 'Disable Web-Config', value: 2 },
+	{ label: 'Disable Input-Mode Switch and Web-Config', value: 3 },
+];
+
 const schema = yup.object().shape({
 	dpadMode : yup.number().required().oneOf(DPAD_MODES.map(o => o.value)).label('D-Pad Mode'),
 	hotkeyF1 : yup.array().of(yup.object({
@@ -67,14 +74,18 @@ const schema = yup.object().shape({
 	inputMode: yup.number().required().oneOf(INPUT_MODES.map(o => o.value)).label('Input Mode'),
 	socdMode : yup.number().required().oneOf(SOCD_MODES.map(o => o.value)).label('SOCD Cleaning Mode'),
 	switchTpShareForDs4: yup.number().required().label('Switch Touchpad and Share'),
+	forcedSetupMode : yup.number().required().oneOf(FORCED_SETUP_MODES.map(o => o.value)).label('SOCD Cleaning Mode'),
+	lockHotkeys: yup.number().required().label('Lock Hotkeys'),
 });
 
-const FormContext = () => {
+const FormContext = ({ setButtonLabels }) => {
 	const { values, setValues } = useFormikContext();
 
 	useEffect(() => {
 		async function fetchData() {
-			setValues(await WebApi.getGamepadOptions());
+			const options = await WebApi.getGamepadOptions()
+			setValues(options);
+			setButtonLabels({ swapTpShareLabels: (options.switchTpShareForDs4 === 1) && (options.inputMode === 4) });
 		}
 		fetchData();
 	}, [setValues]);
@@ -88,6 +99,13 @@ const FormContext = () => {
 			values.socdMode = parseInt(values.socdMode);
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
+		if (!!values.forcedSetupMode)
+			values.forcedSetupMode = parseInt(values.forcedSetupMode);
+		if (!!values.lockHotkeys)
+			values.lockHotkeys = parseInt(values.lockHotkeys);
+
+		setButtonLabels({ swapTpShareLabels: (values.switchTpShareForDs4 === 1) && (values.inputMode === 4) });
+
 		values.hotkeyF1 = values.hotkeyF1?.map( i => ({
 			action: parseInt(i.action),
 			mask: parseInt(i.mask)
@@ -102,13 +120,37 @@ const FormContext = () => {
 };
 
 export default function SettingsPage() {
-	const { buttonLabels } = useContext(AppContext);
+	const { buttonLabels, setButtonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
+	const [warning, setWarning] = useState({ show: false, acceptText: ''});
 
-	const onSuccess = async (values) => {
+	const WARNING_CHECK_TEXT = "GP2040-CE";
+
+	const handleWarningClose = async (accepted, values, setFieldValue) => {
+		setWarning({ show: false, acceptText: ''});
+		if (accepted) await saveSettings(values);
+		else setFieldValue('forcedSetupMode', 0);
+	};
+
+	const setWarningAcceptText = (e) => {
+		setWarning({ ...warning, acceptText: e.target.value });
+	};
+
+	const saveSettings = async (values) => {
 		const success = await WebApi.setGamepadOptions(values);
 		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
 	};
+
+	const onSuccess = async (values) => {
+		if (values.forcedSetupMode > 1) { setWarning({ show: true, acceptText: ''}); }
+		else { await saveSettings(values); }
+	};
+
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+
+	const buttonLabelS1 = BUTTONS[buttonLabelType][swapTpShareLabels ? "A2" : "S1"];
+	const buttonLabelS2 = BUTTONS[buttonLabelType]["S2"];
+	const buttonLabelA1 = BUTTONS[buttonLabelType]["A1"];
 
 	return (
 		<Formik validationSchema={schema} onSubmit={onSuccess} initialValues={{}}>
@@ -160,41 +202,83 @@ export default function SettingsPage() {
 							</div>
 						</Form.Group>
 						<p>Note: PS4, PS3 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.</p>
+						<Form.Group className="row mb-3">
+							<Form.Label>Forced Setup Mode</Form.Label>
+							<div className="col-sm-3">
+								<Form.Select name="forcedSetupMode" className="form-select-sm" value={values.forcedSetupMode} onChange={handleChange} isInvalid={errors.forcedSetupMode}>
+									{FORCED_SETUP_MODES.map((o, i) => <option key={`button-forcedSetupMode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</Form.Select>
+								<Form.Control.Feedback type="invalid">{errors.forcedSetupMode}</Form.Control.Feedback>
+							</div>
+						</Form.Group>
 					</Section>
 					<Section title="Hotkey Settings">
-						<div className='row'>
-							<Form.Label className='col'>{BUTTONS[buttonLabels]["S1"] + " + " + BUTTONS[buttonLabels]["S2"]}</Form.Label>
-						</div>
-						{HOTKEY_MASKS.map((o, i) =>
-							<Form.Group key={`hotkey-${i}`} className="row mb-3">
-							<div className="col-sm-1">{o.label}</div>
-							<div className="col-sm-2">
-								<Form.Select name={`hotkeyF1[${i}].action`} className="form-select-sm" value={values?.hotkeyF1 && values?.hotkeyF1[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}>
-									{HOTKEY_ACTIONS.map((o, i) => <option key={`f1-option-${i}`} value={o.value}>{o.label}</option>)}
-								</Form.Select>
-								<Form.Control.Feedback type="invalid">{errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}</Form.Control.Feedback>
+						<div id="Hotkeys"
+							hidden={values.lockHotkeys}>
+							<div className='row'>
+								<Form.Label className='col'>{buttonLabelS1 + " + " + buttonLabelS2}</Form.Label>
 							</div>
-							</Form.Group>
-						)}	
-						<div className='row'>
-							<Form.Label className='col'>{BUTTONS[buttonLabels]["S2"] + " + " + BUTTONS[buttonLabels]["A1"]}</Form.Label>
-						</div>
-						{HOTKEY_MASKS.map((o, i) =>
-							<Form.Group key={`hotkey-${i}`} className="row mb-3">
-							<div className="col-sm-1">{o.label}</div>
-							<div className="col-sm-2">
-								<Form.Select name={`hotkeyF2[${i}].action`} className="form-select-sm" value={values?.hotkeyF2 && values?.hotkeyF2[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}>
-									{HOTKEY_ACTIONS.map((o, i) => <option key={`f2-option-${i}`} value={o.value}>{o.label}</option>)}
-								</Form.Select>
-								<Form.Control.Feedback type="invalid">{errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}</Form.Control.Feedback>
+							{HOTKEY_MASKS.map((o, i) =>
+								<Form.Group key={`hotkey-${i}`} className="row mb-3">
+								<div className="col-sm-1">{o.label}</div>
+								<div className="col-sm-2">
+									<Form.Select name={`hotkeyF1[${i}].action`} className="form-select-sm" value={values?.hotkeyF1 && values?.hotkeyF1[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}>
+										{HOTKEY_ACTIONS.map((o, i) => <option key={`f1-option-${i}`} value={o.value}>{o.label}</option>)}
+									</Form.Select>
+									<Form.Control.Feedback type="invalid">{errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}</Form.Control.Feedback>
+								</div>
+								</Form.Group>
+							)}	
+							<div className='row'>
+								<Form.Label className='col'>{buttonLabelS2 + " + " + buttonLabelA1}</Form.Label>
 							</div>
-							</Form.Group>
-						)}	
+							{HOTKEY_MASKS.map((o, i) =>
+								<Form.Group key={`hotkey-${i}`} className="row mb-3">
+								<div className="col-sm-1">{o.label}</div>
+								<div className="col-sm-2">
+									<Form.Select name={`hotkeyF2[${i}].action`} className="form-select-sm" value={values?.hotkeyF2 && values?.hotkeyF2[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}>
+										{HOTKEY_ACTIONS.map((o, i) => <option key={`f2-option-${i}`} value={o.value}>{o.label}</option>)}
+									</Form.Select>
+									<Form.Control.Feedback type="invalid">{errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}</Form.Control.Feedback>
+								</div>
+								</Form.Group>
+							)}	
+						</div>
+						<Form.Check
+							label="Lock Hotkeys"
+							type="switch"
+							id="LockHotkeys"
+							reverse
+							isInvalid={false}
+							checked={Boolean(values.lockHotkeys)}
+							onChange={(e) => { setFieldValue("lockHotkeys", e.target.checked ? 1 : 0); }}
+						/>	
 					</Section>
 					<Button type="submit">Save</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}
-					<FormContext />
+					<FormContext  setButtonLabels={setButtonLabels}/>
 					</Form>
+					<Modal size="lg" show={warning.show} onHide={handleWarningClose}>
+						<Modal.Header closeButton>
+							<Modal.Title>Forced Setup Mode Warning</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							<div className='mb-3'>
+								If you reboot to Controller mode after saving, you will no longer have access to the web-config.
+								Please type "<strong>{WARNING_CHECK_TEXT}</strong>" below to unlock the Save button if you fully acknowledge this and intend it.
+								Clicking on Dismiss will revert this setting which then is to be saved.
+							</div>
+							<Form.Control value={warning.acceptText} onChange={setWarningAcceptText}></Form.Control>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button disabled={warning.acceptText != WARNING_CHECK_TEXT} variant="warning" onClick={() => handleWarningClose(true, values)}>
+								Save
+							</Button>
+							<Button variant="primary" onClick={() => handleWarningClose(false, values, setFieldValue)}>
+								Dismiss
+							</Button>
+						</Modal.Footer>
+					</Modal>
 				</div>
 			)}
 		</Formik>

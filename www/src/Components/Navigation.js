@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Nav, NavDropdown, Navbar, Button, Modal } from 'react-bootstrap';
+import { Nav, NavDropdown, Navbar, Button, Modal, Dropdown } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 import { AppContext } from '../Contexts/AppContext';
 import FormSelect from './FormSelect';
@@ -7,6 +7,7 @@ import { saveButtonLabels } from '../Services/Storage';
 import { BUTTONS } from '../Data/Buttons';
 import './Navigation.scss';
 import WebApi from '../Services/WebApi';
+import ColorScheme from './ColorScheme';
 
 const BOOT_MODES = {
 	GAMEPAD: 0,
@@ -31,11 +32,11 @@ const Navigation = (props) => {
 
 	const updateButtonLabels = (e) => {
 		saveButtonLabels(e.target.value);
-		setButtonLabels(e.target.value);
+		setButtonLabels({ buttonLabelType: e.target.value });
 	};
 
 	return (
-		<Navbar collapseOnSelect bg="dark" variant="dark" expand="md" fixed="top">
+		<Navbar collapseOnSelect bg="primary" variant="dark" expand="md" fixed="top">
 			<Navbar.Brand href="/">
 				<img src="images/logo.png" className="title-logo" alt="logo" />{' '}GP2040
 			</Navbar.Brand>
@@ -56,11 +57,19 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} to={{ pathname: "https://gp2040-ce.info/" }} target="_blank">Documentation</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} to={{ pathname: "https://github.com/OpenStickCommunity/GP2040-CE" }} target="_blank">Github</NavDropdown.Item>
 					</NavDropdown>
-					<NavDropdown title="DANGER ZONE" className="btn-danger danger-zone">
-						<NavDropdown.Item as={NavLink} exact="true" to="/reset-settings">Reset Settings</NavDropdown.Item>
-					</NavDropdown>
+
+					<Dropdown>
+						<Dropdown.Toggle variant="danger">
+							DANGER ZONE
+						</Dropdown.Toggle>
+
+						<Dropdown.Menu>
+							<Dropdown.Item href="/reset-settings">Reset Settings</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown>
 				</Nav>
 				<Nav>
+					<ColorScheme />
 					<Button style={{ marginRight: "7px" }} variant="success" onClick={handleShow}>
 						Reboot
 					</Button>
@@ -68,7 +77,7 @@ const Navigation = (props) => {
 						<FormSelect
 							name="buttonLabels"
 							className="form-select-sm"
-							value={buttonLabels}
+							value={buttonLabels.buttonLabelType}
 							onChange={updateButtonLabels}
 						>
 							{Object.keys(BUTTONS).map((b, i) =>

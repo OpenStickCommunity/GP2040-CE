@@ -1,0 +1,163 @@
+syntax = "proto2";
+
+import "nanopb.proto";
+
+enum ButtonLayout
+{
+    option (nanopb_enumopt).long_names = false;
+
+    BUTTON_LAYOUT_STICK = 0;
+    BUTTON_LAYOUT_STICKLESS = 1;
+    BUTTON_LAYOUT_BUTTONS_ANGLED = 2;
+    BUTTON_LAYOUT_BUTTONS_BASIC = 3;
+    BUTTON_LAYOUT_KEYBOARD_ANGLED = 4;
+    BUTTON_LAYOUT_KEYBOARDA = 5;
+    BUTTON_LAYOUT_DANCEPADA = 6;
+    BUTTON_LAYOUT_TWINSTICKA = 7;
+    BUTTON_LAYOUT_BLANKA = 8;
+    BUTTON_LAYOUT_VLXA = 9;
+    BUTTON_LAYOUT_FIGHTBOARD_STICK = 10;
+    BUTTON_LAYOUT_FIGHTBOARD_MIRRORED = 11;
+    BUTTON_LAYOUT_CUSTOMA = 12;
+}
+
+enum ButtonLayoutRight
+{
+    option (nanopb_enumopt).long_names = false;
+
+    BUTTON_LAYOUT_ARCADE = 0;
+    BUTTON_LAYOUT_STICKLESSB = 1;
+    BUTTON_LAYOUT_BUTTONS_ANGLEDB = 2;
+    BUTTON_LAYOUT_VEWLIX = 3;
+    BUTTON_LAYOUT_VEWLIX7 = 4;
+    BUTTON_LAYOUT_CAPCOM = 5;
+    BUTTON_LAYOUT_CAPCOM6 = 6;
+    BUTTON_LAYOUT_SEGA2P = 7;
+    BUTTON_LAYOUT_NOIR8 = 8;
+    BUTTON_LAYOUT_KEYBOARDB = 9;
+    BUTTON_LAYOUT_DANCEPADB = 10;
+    BUTTON_LAYOUT_TWINSTICKB = 11;
+    BUTTON_LAYOUT_BLANKB = 12;
+    BUTTON_LAYOUT_VLXB = 13;
+    BUTTON_LAYOUT_FIGHTBOARD = 14;
+    BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED = 15;
+    BUTTON_LAYOUT_CUSTOMB = 16;
+}
+
+enum SplashMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SPLASH_MODE_STATIC = 0;
+    SPLASH_MODE_CLOSEIN = 1;
+    SPLASH_MODE_CLOSEINCUSTOM = 2;
+    SPLASH_MODE_NONE = 3;
+}
+
+enum SplashChoice
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SPLASH_CHOICE_MAIN = 0;
+    SPLASH_CHOICE_X = 1;
+    SPLASH_CHOICE_Y = 2;
+    SPLASH_CHOICE_Z = 3;
+    SPLASH_CHOICE_CUSTOM = 4;
+    SPLASH_CHOICE_LEGACY = 5;
+}
+
+enum OnBoardLedMode
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    ON_BOARD_LED_MODE_OFF = 0;
+    ON_BOARD_LED_MODE_MODE_INDICATOR = 1;
+    ON_BOARD_LED_MODE_INPUT_TEST = 2;
+}
+
+enum InputMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    INPUT_MODE_XINPUT = 0;
+    INPUT_MODE_SWITCH = 1;
+    INPUT_MODE_HID = 2;
+    INPUT_MODE_KEYBOARD = 3;
+    INPUT_MODE_PS4 = 4;
+    INPUT_MODE_CONFIG = 255;
+}
+
+enum DpadMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    DPAD_MODE_DIGITAL = 0;
+    DPAD_MODE_LEFT_ANALOG = 1;
+    DPAD_MODE_RIGHT_ANALOG = 2;
+}
+
+enum SOCDMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SOCD_MODE_UP_PRIORITY = 0;				// U+D=U, L+R=N
+    SOCD_MODE_NEUTRAL = 1;					// U+D=N, L+R=N
+    SOCD_MODE_SECOND_INPUT_PRIORITY = 2;	// U>D=D, L>R=R (Last Input Priority, aka Last Win)
+    SOCD_MODE_FIRST_INPUT_PRIORITY = 3;		// U>D=U, L>R=L (First Input Priority, aka First Win)
+    SOCD_MODE_BYPASS = 4;					// U+D=UD, L+R=LR (No cleaning applied)
+}
+
+enum GamepadHotkey
+{
+    option (nanopb_enumopt).long_names = false;
+
+    HOTKEY_NONE                 = 0;
+    HOTKEY_DPAD_DIGITAL         = 1;
+    HOTKEY_DPAD_LEFT_ANALOG     = 2;
+    HOTKEY_DPAD_RIGHT_ANALOG    = 3;
+    HOTKEY_HOME_BUTTON          = 4;
+    HOTKEY_CAPTURE_BUTTON       = 5;
+    HOTKEY_SOCD_UP_PRIORITY     = 6;
+    HOTKEY_SOCD_NEUTRAL         = 7;
+    HOTKEY_SOCD_LAST_INPUT      = 8;
+    HOTKEY_INVERT_X_AXIS        = 9;
+    HOTKEY_INVERT_Y_AXIS        = 10;
+    HOTKEY_SOCD_FIRST_INPUT     = 11;
+    HOTKEY_SOCD_BYPASS          = 12;
+}
+
+// This has to be kept in sync with LEDFormat in NeoPico.hpp
+enum LEDFormat_Proto
+{
+    LED_FORMAT_GRB = 0;
+    LED_FORMAT_RGB = 1;
+    LED_FORMAT_GRBW = 2;
+    LED_FORMAT_RGBW = 3;
+}
+
+enum ShmupMixMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    SHMUP_MIX_MODE_TURBO_PRIORITY = 0;
+    SHMUP_MIX_MODE_CHARGE_PRIORITY = 1;
+}
+
+enum PLEDType
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    PLED_TYPE_NONE = -1;
+    PLED_TYPE_PWM = 0;
+    PLED_TYPE_RGB = 1;
+};
+
+enum ForcedSetupMode
+{
+    option (nanopb_enumopt).long_names = false;
+    
+	FORCED_SETUP_MODE_OFF = 0;
+	FORCED_SETUP_MODE_LOCK_MODE_SWITCH = 1;
+	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
+	FORCED_SETUP_MODE_LOCK_BOTH = 3;
+};
