@@ -221,6 +221,22 @@ DynamicJsonDocument get_post_data()
 	return doc;
 }
 
+void save_hotkey(HotkeyEntry* hotkey, const DynamicJsonDocument& doc, const string hotkey_key)
+{
+	readDoc(hotkey->auxMask, doc, hotkey_key, "auxMask");
+	readDoc(hotkey->buttonsMask, doc, hotkey_key, "buttonsMask");
+	readDoc(hotkey->dpadMask, doc, hotkey_key, "dpadMask");
+	readDoc(hotkey->action, doc, hotkey_key, "action");
+}
+
+void load_hotkey(const HotkeyEntry* hotkey, DynamicJsonDocument& doc, const string hotkey_key)
+{
+	writeDoc(doc, hotkey_key, "auxMask", hotkey->auxMask);
+	writeDoc(doc, hotkey_key, "buttonsMask", hotkey->buttonsMask);
+	writeDoc(doc, hotkey_key, "dpadMask", hotkey->dpadMask);
+	writeDoc(doc, hotkey_key, "action", hotkey->action);
+}
+
 // LWIP callback on HTTP POST to validate the URI
 err_t httpd_post_begin(void *connection, const char *uri, const char *http_request,
                        uint16_t http_request_len, int content_len, char *response_uri,
@@ -470,15 +486,18 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
-	readDoc(hotkeyOptions.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
-	readDoc(hotkeyOptions.hotkeyF1Down.action, doc, "hotkeyF1", 1, "action");
-	readDoc(hotkeyOptions.hotkeyF1Left.action, doc, "hotkeyF1", 2, "action");
-	readDoc(hotkeyOptions.hotkeyF1Right.action, doc, "hotkeyF1", 3, "action");
-
-	readDoc(hotkeyOptions.hotkeyF2Up.action, doc, "hotkeyF2", 0, "action");
-	readDoc(hotkeyOptions.hotkeyF2Down.action, doc, "hotkeyF2", 1, "action");
-	readDoc(hotkeyOptions.hotkeyF2Left.action, doc, "hotkeyF2", 2, "action");
-	readDoc(hotkeyOptions.hotkeyF2Right.action, doc, "hotkeyF2", 3, "action");
+	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
+	save_hotkey(&hotkeyOptions.hotkey02, doc, "hotkey02");
+	save_hotkey(&hotkeyOptions.hotkey03, doc, "hotkey03");
+	save_hotkey(&hotkeyOptions.hotkey04, doc, "hotkey04");
+	save_hotkey(&hotkeyOptions.hotkey05, doc, "hotkey05");
+	save_hotkey(&hotkeyOptions.hotkey06, doc, "hotkey06");
+	save_hotkey(&hotkeyOptions.hotkey07, doc, "hotkey07");
+	save_hotkey(&hotkeyOptions.hotkey08, doc, "hotkey08");
+	save_hotkey(&hotkeyOptions.hotkey09, doc, "hotkey09");
+	save_hotkey(&hotkeyOptions.hotkey10, doc, "hotkey10");
+	save_hotkey(&hotkeyOptions.hotkey11, doc, "hotkey11");
+	save_hotkey(&hotkeyOptions.hotkey12, doc, "hotkey12");
 
 	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 	readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
@@ -501,23 +520,18 @@ std::string getGamepadOptions()
 	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
-	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);
-	writeDoc(doc, "hotkeyF1", 0, "mask", hotkeyOptions.hotkeyF1Up.dpadMask);
-	writeDoc(doc, "hotkeyF1", 1, "action", hotkeyOptions.hotkeyF1Down.action);
-	writeDoc(doc, "hotkeyF1", 1, "mask", hotkeyOptions.hotkeyF1Down.dpadMask);
-	writeDoc(doc, "hotkeyF1", 2, "action", hotkeyOptions.hotkeyF1Left.action);
-	writeDoc(doc, "hotkeyF1", 2, "mask", hotkeyOptions.hotkeyF1Left.dpadMask);
-	writeDoc(doc, "hotkeyF1", 3, "action", hotkeyOptions.hotkeyF1Right.action);
-	writeDoc(doc, "hotkeyF1", 3, "mask", hotkeyOptions.hotkeyF1Right.dpadMask);
-
-	writeDoc(doc, "hotkeyF2", 0, "action", hotkeyOptions.hotkeyF2Up.action);
-	writeDoc(doc, "hotkeyF2", 0, "mask", hotkeyOptions.hotkeyF2Up.dpadMask);
-	writeDoc(doc, "hotkeyF2", 1, "action", hotkeyOptions.hotkeyF2Down.action);
-	writeDoc(doc, "hotkeyF2", 1, "mask", hotkeyOptions.hotkeyF2Down.dpadMask);
-	writeDoc(doc, "hotkeyF2", 2, "action", hotkeyOptions.hotkeyF2Left.action);
-	writeDoc(doc, "hotkeyF2", 2, "mask", hotkeyOptions.hotkeyF2Left.dpadMask);
-	writeDoc(doc, "hotkeyF2", 3, "action", hotkeyOptions.hotkeyF2Right.action);
-	writeDoc(doc, "hotkeyF2", 3, "mask", hotkeyOptions.hotkeyF2Right.dpadMask);
+	load_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
+	load_hotkey(&hotkeyOptions.hotkey02, doc, "hotkey02");
+	load_hotkey(&hotkeyOptions.hotkey03, doc, "hotkey03");
+	load_hotkey(&hotkeyOptions.hotkey04, doc, "hotkey04");
+	load_hotkey(&hotkeyOptions.hotkey05, doc, "hotkey05");
+	load_hotkey(&hotkeyOptions.hotkey06, doc, "hotkey06");
+	load_hotkey(&hotkeyOptions.hotkey07, doc, "hotkey07");
+	load_hotkey(&hotkeyOptions.hotkey08, doc, "hotkey08");
+	load_hotkey(&hotkeyOptions.hotkey09, doc, "hotkey09");
+	load_hotkey(&hotkeyOptions.hotkey10, doc, "hotkey10");
+	load_hotkey(&hotkeyOptions.hotkey11, doc, "hotkey11");
+	load_hotkey(&hotkeyOptions.hotkey12, doc, "hotkey12");
 
 	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 	writeDoc(doc, "forcedSetupMode", forcedSetupOptions.mode);

@@ -41,18 +41,24 @@ message HotkeyEntry
 {
 	optional uint32 dpadMask = 1;
 	optional GamepadHotkey action = 2;
+	optional uint32 buttonsMask = 3;
+	optional uint32 auxMask = 4;
 }
 
 message HotkeyOptions
 {
-	optional HotkeyEntry hotkeyF1Up = 1;
-	optional HotkeyEntry hotkeyF1Down = 2;
-	optional HotkeyEntry hotkeyF1Left = 3;
-	optional HotkeyEntry hotkeyF1Right = 4;
-	optional HotkeyEntry hotkeyF2Up = 5;
-	optional HotkeyEntry hotkeyF2Down = 6;
-	optional HotkeyEntry hotkeyF2Left = 7;
-	optional HotkeyEntry hotkeyF2Right = 8;
+	optional HotkeyEntry hotkey01 = 1;
+	optional HotkeyEntry hotkey02 = 2;
+	optional HotkeyEntry hotkey03 = 3;
+	optional HotkeyEntry hotkey04 = 4;
+	optional HotkeyEntry hotkey05 = 5;
+	optional HotkeyEntry hotkey06 = 6;
+	optional HotkeyEntry hotkey07 = 7;
+	optional HotkeyEntry hotkey08 = 8;
+	optional HotkeyEntry hotkey09 = 9;
+	optional HotkeyEntry hotkey10 = 10;
+	optional HotkeyEntry hotkey11 = 11;
+	optional HotkeyEntry hotkey12 = 12;
 }
 
 message ForcedSetupOptions

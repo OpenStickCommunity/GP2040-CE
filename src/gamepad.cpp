@@ -144,16 +144,6 @@ void Gamepad::setup()
 		gpio_set_dir(pinMappings.pinButtonFn, GPIO_IN); // Set as INPUT
 		gpio_pull_up(pinMappings.pinButtonFn);          // Set as PULLUP
 	}
-
-	const HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
-	hotkeyF1Up    =	hotkeyOptions.hotkeyF1Up;
-	hotkeyF1Down  =	hotkeyOptions.hotkeyF1Down;
-	hotkeyF1Left  =	hotkeyOptions.hotkeyF1Left;
-	hotkeyF1Right =	hotkeyOptions.hotkeyF1Right;
-	hotkeyF2Up 	  =	hotkeyOptions.hotkeyF2Up;
-	hotkeyF2Down  =	hotkeyOptions.hotkeyF2Down;
-	hotkeyF2Left  =	hotkeyOptions.hotkeyF2Left;
-	hotkeyF2Right =	hotkeyOptions.hotkeyF2Right;
 }
 
 void Gamepad::process()
@@ -220,7 +210,8 @@ void Gamepad::read()
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
 
-	state.aux = (!isValidPin(pinMappings.pinButtonFn) | (values & (1 << pinMappings.pinButtonFn)) ? 1 : 0);
+	state.aux = 0
+		| (values & (1 << pinMappings.pinButtonFn)) ? AUX_MASK_FUNCTION : 0;
 
 	state.dpad = 0
 		| ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
@@ -268,29 +259,21 @@ void Gamepad::hotkey()
 	if (options.lockHotkeys) return;
 
 	GamepadHotkey action = HOTKEY_NONE;
-	if (pressedF1() && state.aux)
-	{
-		if (state.dpad == hotkeyF1Up   .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Up   .action);
-		if (state.dpad == hotkeyF1Down .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Down .action);
-		if (state.dpad == hotkeyF1Left .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Left .action);
-		if (state.dpad == hotkeyF1Right.dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Right.action);
-		if (action != HOTKEY_NONE) {
-			state.dpad = 0;
-			state.buttons &= ~(f1Mask);
-		}
-	} else if (pressedF2() && state.aux) {
-		if (state.dpad == hotkeyF2Up   .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Up   .action);
-		if (state.dpad == hotkeyF2Down .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Down .action);
-		if (state.dpad == hotkeyF2Left .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Left .action);
-		if (state.dpad == hotkeyF2Right.dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Right.action);
-		if (action != HOTKEY_NONE) {
-			state.dpad = 0;
-			state.buttons &= ~(f2Mask);
-		}
-	} else {
-		// no hotkey pressed, set reset last action so we can process the next press
-		lastAction = HOTKEY_NONE;
-	}
+
+	const HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
+	if (pressedHotkey(hotkeyOptions.hotkey01))	action = selectHotkey(hotkeyOptions.hotkey01);
+	if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
+	if (pressedHotkey(hotkeyOptions.hotkey03))	action = selectHotkey(hotkeyOptions.hotkey03);
+	if (pressedHotkey(hotkeyOptions.hotkey04))	action = selectHotkey(hotkeyOptions.hotkey04);
+	if (pressedHotkey(hotkeyOptions.hotkey05))	action = selectHotkey(hotkeyOptions.hotkey05);
+	if (pressedHotkey(hotkeyOptions.hotkey06))	action = selectHotkey(hotkeyOptions.hotkey06);
+	if (pressedHotkey(hotkeyOptions.hotkey07))	action = selectHotkey(hotkeyOptions.hotkey07);
+	if (pressedHotkey(hotkeyOptions.hotkey08))	action = selectHotkey(hotkeyOptions.hotkey08);
+	if (pressedHotkey(hotkeyOptions.hotkey09))	action = selectHotkey(hotkeyOptions.hotkey09);
+	if (pressedHotkey(hotkeyOptions.hotkey10))	action = selectHotkey(hotkeyOptions.hotkey10);
+	if (pressedHotkey(hotkeyOptions.hotkey11))	action = selectHotkey(hotkeyOptions.hotkey11);
+	if (pressedHotkey(hotkeyOptions.hotkey12))	action = selectHotkey(hotkeyOptions.hotkey12);
+	else                                        lastAction = HOTKEY_NONE;
 	processHotkeyIfNewAction(action);
 }
 

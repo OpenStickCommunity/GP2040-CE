@@ -529,7 +529,7 @@ AnimationHotkey animationHotkeys(Gamepad *gamepad)
 {
 	AnimationHotkey action = HOTKEY_LEDS_NONE;
 
-	if (gamepad->pressedF1())
+	if (gamepad->pressedS1() && gamepad->pressedS2())
 	{
 		if (gamepad->pressedB3())
 		{

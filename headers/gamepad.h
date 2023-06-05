@@ -104,6 +104,30 @@ public:
 	 */
 	inline bool __attribute__((always_inline)) pressedDpad(const uint8_t mask) { return (state.dpad & mask) == mask; }
 
+	/**
+	 * @brief Check for an aux button press. Same idea as `pressedButton`.
+	 */
+	inline bool __attribute__((always_inline)) pressedAux(const uint16_t mask) {
+		return (state.aux & mask) == mask;
+	}
+
+	/**
+	 * @brief Check for a hotkey combination press. Checks aux, buttons, and dpad.
+	 */
+	inline bool __attribute__((always_inline)) pressedHotkey(const HotkeyEntry hotkey) {
+		return (hotkey.action != 0 && pressedButton(hotkey.buttonsMask) &&
+				pressedDpad(hotkey.dpadMask) && pressedAux(hotkey.auxMask));
+	}
+
+	/**
+	 * @brief Remote hotkey bits from the state bitmask and provide pressed action.
+	 */
+	inline GamepadHotkey __attribute__((always_inline)) selectHotkey(const HotkeyEntry hotkey) {
+		state.buttons &= ~(hotkey.buttonsMask);
+		state.dpad &= ~(hotkey.dpadMask);
+		return static_cast<GamepadHotkey>(hotkey.action);
+	}
+
 	inline bool __attribute__((always_inline)) pressedUp()    { return pressedDpad(GAMEPAD_MASK_UP); }
 	inline bool __attribute__((always_inline)) pressedDown()  { return pressedDpad(GAMEPAD_MASK_DOWN); }
 	inline bool __attribute__((always_inline)) pressedLeft()  { return pressedDpad(GAMEPAD_MASK_LEFT); }
@@ -122,8 +146,6 @@ public:
 	inline bool __attribute__((always_inline)) pressedR3()    { return pressedButton(GAMEPAD_MASK_R3); }
 	inline bool __attribute__((always_inline)) pressedA1()    { return pressedButton(GAMEPAD_MASK_A1); }
 	inline bool __attribute__((always_inline)) pressedA2()    { return pressedButton(GAMEPAD_MASK_A2); }
-	inline bool __attribute__((always_inline)) pressedF1()    { return pressedButton(f1Mask); }
-	inline bool __attribute__((always_inline)) pressedF2()    { return pressedButton(f2Mask); }
 
 	const GamepadOptions& getOptions() const { return options; }
 

@@ -97,22 +97,38 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Up, dpadMask, HOTKEY_F1_UP_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Up, action, HOTKEY_F1_UP_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Down, dpadMask, HOTKEY_F1_DOWN_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Down, action, HOTKEY_F1_DOWN_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Left, dpadMask, HOTKEY_F1_LEFT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Left, action, HOTKEY_F1_LEFT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Right, dpadMask, HOTKEY_F1_RIGHT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Right, action, HOTKEY_F1_RIGHT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Up, dpadMask, HOTKEY_F2_UP_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Up, action, HOTKEY_F2_UP_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Down, dpadMask, HOTKEY_F2_DOWN_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Down, action, HOTKEY_F2_DOWN_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, dpadMask, HOTKEY_F2_LEFT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, HOTKEY_F2_LEFT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, HOTKEY_F2_RIGHT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, HOTKEY_F2_RIGHT_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, auxMask, 0);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, dpadMask, GAMEPAD_MASK_UP);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, action, HOTKEY_HOME_BUTTON);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, auxMask, 0);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, dpadMask, GAMEPAD_MASK_DOWN);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, action, HOTKEY_DPAD_DIGITAL);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, auxMask, 0);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, dpadMask, GAMEPAD_MASK_LEFT);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, action, HOTKEY_DPAD_LEFT_ANALOG);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, auxMask, 0);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, dpadMask, GAMEPAD_MASK_RIGHT);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, action, HOTKEY_DPAD_RIGHT_ANALOG);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, auxMask, 0);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, dpadMask, GAMEPAD_MASK_UP);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, action, HOTKEY_SOCD_UP_PRIORITY);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, auxMask, 0);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, dpadMask, GAMEPAD_MASK_DOWN);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, action, HOTKEY_SOCD_NEUTRAL);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, auxMask, 0);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, dpadMask, GAMEPAD_MASK_LEFT);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, action, HOTKEY_SOCD_LAST_INPUT);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, auxMask, 0);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, dpadMask, GAMEPAD_MASK_RIGHT);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, action, HOTKEY_INVERT_Y_AXIS);
 
     // forcedSetupMode
     INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
