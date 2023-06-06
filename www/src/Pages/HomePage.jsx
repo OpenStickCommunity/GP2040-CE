@@ -12,7 +12,7 @@ const toKB = (x) => parseFloat((x / 1024).toFixed(2))
 export default function HomePage() {
 	const [latestVersion, setLatestVersion] = useState('');
 	const [latestTag, setLatestTag] = useState('');
-	const [currentVersion, setCurrentVersion] = useState(process.env.REACT_APP_CURRENT_VERSION);
+	const [currentVersion, setCurrentVersion] = useState(import.meta.env.VITE_CURRENT_VERSION);
 	const [memoryReport, setMemoryReport] = useState(null);
 
 	useEffect(() => {
