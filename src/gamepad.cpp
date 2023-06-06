@@ -90,6 +90,7 @@ Gamepad::Gamepad(int debounceMS) :
 	, f2Mask((GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3))
 	, debouncer(debounceMS)
 	, options(Storage::getInstance().getGamepadOptions())
+	, hotkeyOptions(Storage::getInstance().getHotkeyOptions())
 {}
 
 void Gamepad::setup()
@@ -260,7 +261,6 @@ void Gamepad::hotkey()
 
 	GamepadHotkey action = HOTKEY_NONE;
 
-	const HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	if (pressedHotkey(hotkeyOptions.hotkey01))	action = selectHotkey(hotkeyOptions.hotkey01);
 	if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
 	if (pressedHotkey(hotkeyOptions.hotkey03))	action = selectHotkey(hotkeyOptions.hotkey03);

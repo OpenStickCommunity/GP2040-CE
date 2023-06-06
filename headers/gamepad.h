@@ -195,15 +195,7 @@ private:
 	void processHotkeyIfNewAction(GamepadHotkey action);
 
 	GamepadOptions& options;
-
-	HotkeyEntry hotkeyF1Up;
-	HotkeyEntry hotkeyF1Down;
-	HotkeyEntry hotkeyF1Left;
-	HotkeyEntry hotkeyF1Right;
-	HotkeyEntry hotkeyF2Up;
-	HotkeyEntry hotkeyF2Down;
-	HotkeyEntry hotkeyF2Left;
-	HotkeyEntry hotkeyF2Right;
+	const HotkeyOptions& hotkeyOptions;
 
 	GamepadHotkey lastAction = HOTKEY_NONE;
 };
