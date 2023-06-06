@@ -262,17 +262,17 @@ void Gamepad::hotkey()
 	GamepadHotkey action = HOTKEY_NONE;
 
 	if (pressedHotkey(hotkeyOptions.hotkey01))	action = selectHotkey(hotkeyOptions.hotkey01);
-	if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
-	if (pressedHotkey(hotkeyOptions.hotkey03))	action = selectHotkey(hotkeyOptions.hotkey03);
-	if (pressedHotkey(hotkeyOptions.hotkey04))	action = selectHotkey(hotkeyOptions.hotkey04);
-	if (pressedHotkey(hotkeyOptions.hotkey05))	action = selectHotkey(hotkeyOptions.hotkey05);
-	if (pressedHotkey(hotkeyOptions.hotkey06))	action = selectHotkey(hotkeyOptions.hotkey06);
-	if (pressedHotkey(hotkeyOptions.hotkey07))	action = selectHotkey(hotkeyOptions.hotkey07);
-	if (pressedHotkey(hotkeyOptions.hotkey08))	action = selectHotkey(hotkeyOptions.hotkey08);
-	if (pressedHotkey(hotkeyOptions.hotkey09))	action = selectHotkey(hotkeyOptions.hotkey09);
-	if (pressedHotkey(hotkeyOptions.hotkey10))	action = selectHotkey(hotkeyOptions.hotkey10);
-	if (pressedHotkey(hotkeyOptions.hotkey11))	action = selectHotkey(hotkeyOptions.hotkey11);
-	if (pressedHotkey(hotkeyOptions.hotkey12))	action = selectHotkey(hotkeyOptions.hotkey12);
+	else if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
+	else if (pressedHotkey(hotkeyOptions.hotkey03))	action = selectHotkey(hotkeyOptions.hotkey03);
+	else if (pressedHotkey(hotkeyOptions.hotkey04))	action = selectHotkey(hotkeyOptions.hotkey04);
+	else if (pressedHotkey(hotkeyOptions.hotkey05))	action = selectHotkey(hotkeyOptions.hotkey05);
+	else if (pressedHotkey(hotkeyOptions.hotkey06))	action = selectHotkey(hotkeyOptions.hotkey06);
+	else if (pressedHotkey(hotkeyOptions.hotkey07))	action = selectHotkey(hotkeyOptions.hotkey07);
+	else if (pressedHotkey(hotkeyOptions.hotkey08))	action = selectHotkey(hotkeyOptions.hotkey08);
+	else if (pressedHotkey(hotkeyOptions.hotkey09))	action = selectHotkey(hotkeyOptions.hotkey09);
+	else if (pressedHotkey(hotkeyOptions.hotkey10))	action = selectHotkey(hotkeyOptions.hotkey10);
+	else if (pressedHotkey(hotkeyOptions.hotkey11))	action = selectHotkey(hotkeyOptions.hotkey11);
+	else if (pressedHotkey(hotkeyOptions.hotkey12))	action = selectHotkey(hotkeyOptions.hotkey12);
 	else                                        lastAction = HOTKEY_NONE;
 	processHotkeyIfNewAction(action);
 }
