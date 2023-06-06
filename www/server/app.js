@@ -195,7 +195,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		dualDirCombineMode: 0,
 		tilt1Pin: -1,
 		tilt2Pin: -1,
-		tiltFunctionPin: -1,
+		//tiltFunctionPin: -1,
 		tiltLeftAnalogUpPin: -1,
 		tiltLeftAnalogDownPin: -1,
 		tiltLeftAnalogLeftPin: -1,

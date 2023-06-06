@@ -340,7 +340,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1Pin, PIN_TILT_1);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2Pin, PIN_TILT_2);
-    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltFunctionPin, PIN_TILT_FUNCTION);
+    //INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltFunctionPin, PIN_TILT_FUNCTION);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogDownPin, PIN_TILT_LEFT_ANALOG_DOWN);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogUpPin, PIN_TILT_LEFT_ANALOG_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogLeftPin, PIN_TILT_LEFT_ANALOG_LEFT);

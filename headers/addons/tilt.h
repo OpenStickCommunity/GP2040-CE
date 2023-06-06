@@ -17,9 +17,9 @@
 #define PIN_TILT_2 -1
 #endif
 
-#ifndef PIN_TILT_FUNCTION
-#define PIN_TILT_FUNCTION -1
-#endif
+//#ifndef PIN_TILT_FUNCTION
+//#define PIN_TILT_FUNCTION -1
+//#endif
 
 #ifndef PIN_TILT_LEFT_ANALOG_UP
 #define PIN_TILT_LEFT_ANALOG_UP -1
@@ -84,7 +84,7 @@ private:
 	uint32_t dpadTime[4];
 	uint8_t pinTilt1;
 	uint8_t pinTilt2;
-	uint8_t pinTiltFunction;
+	//uint8_t pinTiltFunction;
 	uint8_t pinTiltLeftAnalogDown;
 	uint8_t pinTiltLeftAnalogUp;
 	uint8_t pinTiltLeftAnalogLeft;

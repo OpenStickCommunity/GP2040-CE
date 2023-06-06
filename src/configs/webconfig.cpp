@@ -860,7 +860,7 @@ std::string setAddonOptions()
 		TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
 	docToPin(tiltOptions.tilt1Pin, doc, "tilt1Pin");
 	docToPin(tiltOptions.tilt2Pin, doc, "tilt2Pin");
-	docToPin(tiltOptions.tiltFunctionPin, doc, "tiltFunctionPin");
+	//docToPin(tiltOptions.tiltFunctionPin, doc, "tiltFunctionPin");
 	docToPin(tiltOptions.tiltLeftAnalogUpPin, doc, "tiltLeftAnalogUpPin");
 	docToPin(tiltOptions.tiltLeftAnalogDownPin, doc, "tiltLeftAnalogDownPin");
 	docToPin(tiltOptions.tiltLeftAnalogLeftPin, doc, "tiltLeftAnalogLeftPin");
@@ -1084,7 +1084,7 @@ std::string getAddonOptions()
 		const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
 	writeDoc(doc, "tilt1Pin", cleanPin(tiltOptions.tilt1Pin));
 	writeDoc(doc, "tilt2Pin", cleanPin(tiltOptions.tilt2Pin));
-	writeDoc(doc, "tiltFunctionPin", cleanPin(tiltOptions.tiltFunctionPin));
+	//writeDoc(doc, "tiltFunctionPin", cleanPin(tiltOptions.tiltFunctionPin));
 	writeDoc(doc, "tiltLeftAnalogUpPin", cleanPin(tiltOptions.tiltLeftAnalogUpPin));
 	writeDoc(doc, "tiltLeftAnalogDownPin", cleanPin(tiltOptions.tiltLeftAnalogDownPin));
 	writeDoc(doc, "tiltLeftAnalogLeftPin", cleanPin(tiltOptions.tiltLeftAnalogLeftPin));

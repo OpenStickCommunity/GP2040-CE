@@ -291,7 +291,7 @@ const schema = yup.object().shape({
 	TiltInputEnabled:						 yup.number().required().label('Tilt Input Enabled'),
 	tilt1Pin:										 yup.number().label('Tilt 1 Pin').validatePinWhenValue('TiltInputEnabled'),
 	tilt2Pin:										 yup.number().label('Tilt 2 Pin').validatePinWhenValue('TiltInputEnabled'),
-	tiltFunctionPin:						 yup.number().label('Tilt Function Pin').validatePinWhenValue('TiltInputEnabled'),
+	//tiltFunctionPin:						 yup.number().label('Tilt Function Pin').validatePinWhenValue('TiltInputEnabled'),
 	tiltLeftAnalogUpPin:				 yup.number().label('Tilt Left Analog Up Pin').validatePinWhenValue('TiltInputEnabled'),
 	tiltLeftAnalogDownPin:			 yup.number().label('Tilt Left Analog Down Pin').validatePinWhenValue('TiltInputEnabled'),
 	tiltLeftAnalogLeftPin:			 yup.number().label('Tilt Left Analog Left Pin').validatePinWhenValue('TiltInputEnabled'),
@@ -377,7 +377,7 @@ const defaultValues = {
 	dualDirCombineMode: 0,
 	tilt1Pin: -1,
 	tilt2Pin: -1,
-	tiltFunctionPin: -1,
+	//tiltFunctionPin: -1,
 	tiltLeftAnalogUpPin: -1,
 	tiltLeftAnalogDownPin: -1,
 	tiltLeftAnalogLeftPin: -1,
@@ -509,8 +509,8 @@ const sanitizeData = (values) => {
 			values.tilt1Pin = parseInt(values.tilt1Pin);
 		if (!!values.tilt2Pin)
 			values.tilt2Pin = parseInt(values.tilt2Pin);
-		if (!!values.tiltFunctionPin)
-			values.tiltFunctionPin = parseInt(values.tiltFunctionPin);
+		//if (!!values.tiltFunctionPin)
+		//	values.tiltFunctionPin = parseInt(values.tiltFunctionPin);
 		if (!!values.tiltLeftAnalogDownPin)
 			values.tiltLeftAnalogDownPin = parseInt(values.tiltLeftAnalogDownPin);
 		if (!!values.tiltLeftAnalogUpPin)
@@ -1355,18 +1355,18 @@ export default function AddonsConfigPage() {
 									min={-1}
 									max={29}
 								/>
-								<FormControl type="number"
-									label="Function Pin"
-									name="tiltFunctionPin"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.tiltFunctionPin || -1}
-									error={errors.tiltFunctionPin}
-									isInvalid={errors.tiltFunctionPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
+								{/*<FormControl type="number"*/}
+								{/*	label="Function Pin"*/}
+								{/*	name="tiltFunctionPin"*/}
+								{/*	className="form-select-sm"*/}
+								{/*	groupClassName="col-sm-3 mb-3"*/}
+								{/*	value={values.tiltFunctionPin || -1}*/}
+								{/*	error={errors.tiltFunctionPin}*/}
+								{/*	isInvalid={errors.tiltFunctionPin}*/}
+								{/*	onChange={handleChange}*/}
+								{/*	min={-1}*/}
+								{/*	max={29}*/}
+								{/*/>*/}
 							</Row>
 							<Row class="mb-3">
 								<FormControl type="number"

@@ -275,7 +275,6 @@ namespace ConfigLegacy
         uint8_t BootselButtonAddonEnabled;
         uint8_t BuzzerSpeakerAddonEnabled;
         uint8_t DualDirectionalInputEnabled;
-				uint8_t TiltInputEnabled;
         uint8_t ExtraButtonAddonEnabled;
         uint8_t I2CAnalog1219InputEnabled;
         //bool I2CDisplayAddonEnabled; // I2C is special case
