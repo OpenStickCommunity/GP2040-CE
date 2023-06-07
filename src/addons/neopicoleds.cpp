@@ -151,7 +151,8 @@ void NeoPicoLEDAddon::process()
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		switch (inputMode) { // HACK
 			case INPUT_MODE_XINPUT:
-				auto pledPins = Storage::getInstance().getPLEDPins();
+				LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+				int32_t pledPins[] = { ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4 };
 				for (int i = 0; i < PLED_COUNT; i++) {
 					if (pledPins[i] < 0)
 						continue;
