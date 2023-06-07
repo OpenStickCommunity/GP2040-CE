@@ -67,37 +67,18 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
-	void setPLEDPins(int pin1, int pin2, int pin3, int pin4) {
-		pledPins[0] = pin1;
-		pledPins[1] = pin2;
-		pledPins[2] = pin3;
-		pledPins[3] = pin4;
-	}
-	const int * getPLEDPins() { return pledPins; }
-
 private:
 	Storage();
-	void initBoardOptions();
-	void initPreviewBoardOptions();
-	void initLEDOptions();
-	void setDefaultBoardOptions();
-	void setDefaultAddonOptions();
-	void setDefaultSplashImage();
-	void initPS4Options();
 	bool CONFIG_MODE = false; 			// Config mode (boot)
 	Gamepad * gamepad = nullptr;    		// Gamepad data
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
 	uint8_t featureData[32]; // USB X-Input Feature Data
 	DisplayOptions previewDisplayOptions;
-
 	Config config;
-
 	std::atomic<bool> animationOptionsSavePending;
 	critical_section_t animationOptionsCs;
 	uint32_t animationOptionsCrc = 0;
 	AnimationOptions animationOptionsToSave = {};
-
-	int pledPins[4];
 };
 
 #endif
