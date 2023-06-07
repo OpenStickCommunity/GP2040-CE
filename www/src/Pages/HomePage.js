@@ -38,6 +38,9 @@ export default function HomePage() {
 
 		axios.get('https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases')
 			.then((response) => {
+				// Filter out pre-releases
+				response.data = response.data.filter((release) => !release.prerelease);
+
 				const sortedData = orderBy(response.data, 'published_at', 'desc');
 				setLatestVersion(sortedData[0].name);
 				setLatestTag(sortedData[0].tag_name);
