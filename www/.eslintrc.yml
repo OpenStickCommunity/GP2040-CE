@@ -21,3 +21,4 @@ rules:
   no-template-curly-in-string: off
   no-unused-vars: off
   react-hooks/exhaustive-deps: off
+  no-extra-boolean-cast: off
