@@ -148,7 +148,7 @@ export default function SettingsPage() {
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
-	const buttonLabelS1 = BUTTONS[buttonLabelType][swapTpShareLabels ? "A2" : "S1"];
+	const buttonLabelS1 = BUTTONS[buttonLabelType][(swapTpShareLabels && buttonLabelType === "ps4") ? "A2" : "S1"];
 	const buttonLabelS2 = BUTTONS[buttonLabelType]["S2"];
 	const buttonLabelA1 = BUTTONS[buttonLabelType]["A1"];
 
