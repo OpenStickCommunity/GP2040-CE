@@ -1,5 +1,6 @@
-# GP2040 Configuration for the Stress fightpad using a WaveshareZero
+# GP2040 Configuration for the Stress Fightpad
 
-![Pin Mapping](assets/WaveshareRP2040Zero.png)
+![Stress Fightpad](assets/stress-00.jpg)
 
-Basic pin setup for the Waveshare RP2040 Zero.
+Configuration for the [Stress Fightpad](https://github.com/GroooveBob/Stress). Configuration uses the same pinout as the Waveshare RP2040 Zero.
+
