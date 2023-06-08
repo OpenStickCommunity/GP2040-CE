@@ -125,7 +125,11 @@ void Gamepad::setup()
 	uint16_t maskA2 = options.inputMode == INPUT_MODE_PS4
 	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_S1 : GAMEPAD_MASK_A2;
 	mapButtonA2  = new GamepadButtonMapping(pinMappings.pinButtonA2, maskA2);
-
+	
+	if(options.inputMode == INPUT_MODE_PS4 && options.switchTpShareForDs4)
+	{
+		f1Mask = (GAMEPAD_MASK_A2 | GAMEPAD_MASK_S2);
+	}
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
 		mapDpadUp,   mapDpadDown, mapDpadLeft, mapDpadRight,
