@@ -8,7 +8,7 @@ on:
   pull_request_target:
     branches: [ "main" ]
   workflow_dispatch:
-  
+
 env:
   BUILD_TYPE: Release
 
@@ -23,22 +23,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: [Pico, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, KB2040, MavercadeKeebfighter, PicoAnn, PicoFightingBoard, ReflexEncoder, RP2040AdvancedBreakoutBoard, SparkFunProMicro, WaveshareZero ]
+        GP2040_BOARDCONFIG: [Pico, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, KB2040, MavercadeKeebfighter, PicoAnn, PicoFightingBoard, ReflexEncoder, RP2040AdvancedBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress ]
 
     steps:
     #Global Setup
     - name: Checkout GP2040-CE
       uses: actions/checkout@v3
-      
+
     - name: Setup SDK pipeline
       uses: Fortinbra/RaspberryPiPicoBuild@v1
-    
+
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3.0.2
       with:
         name: fsData
         path: ${{github.workspace}}/lib/httpd/
-    
+
     - name: Get core count
       id: core_count
       run : cat /proc/cpuinfo  | grep processor | wc -l
@@ -51,7 +51,7 @@ jobs:
     - name: Pico Build
       shell: bash
       run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
-   
+
     - name: Upload Pico Artifact
       uses: actions/upload-artifact@v3.1.1
       with:
