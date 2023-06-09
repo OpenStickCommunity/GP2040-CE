@@ -320,6 +320,7 @@ message DualDirectionalOptions
 	
 	optional DpadMode dpadMode = 6;
 	optional uint32 combineMode = 7;
+	optional bool fourWayMode = 8;
 }
 
 message BuzzerOptions

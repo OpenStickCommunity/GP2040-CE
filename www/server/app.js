@@ -91,6 +91,7 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		switchTpShareForDs4: 0,
 		forcedSetupMode: 0,
 		lockHotkeys: 0,
+		fourWayMode: 0,
 		hotkeyF1: [
 			{ action: 1, mask: 1 << 0 },
 			{ action: 2, mask: 1 << 1 },
@@ -204,6 +205,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		dualDirRightPin: -1,
 		dualDirDpadMode: 0,
 		dualDirCombineMode: 0,
+		dualDirFourWayMode: 0,
 		analogAdcPinX: -1,
 		analogAdcPinY: -1,
 		bootselButtonMap: 0,

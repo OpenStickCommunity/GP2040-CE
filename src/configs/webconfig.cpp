@@ -864,6 +864,7 @@ std::string setAddonOptions()
 	docToPin(dualDirectionalOptions.rightPin, doc, "dualDirRightPin");
 	docToValue(dualDirectionalOptions.dpadMode, doc, "dualDirDpadMode");
 	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
+	docToValue(dualDirectionalOptions.fourWayMode, doc, "dualDirFourWayMode");
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
     ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
@@ -1073,6 +1074,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "dualDirRightPin", cleanPin(dualDirectionalOptions.rightPin));
 	writeDoc(doc, "dualDirDpadMode", dualDirectionalOptions.dpadMode);
 	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
+	writeDoc(doc, "dualDirFourWayMode", dualDirectionalOptions.fourWayMode);
 	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
     const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
