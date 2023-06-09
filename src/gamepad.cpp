@@ -171,6 +171,11 @@ void Gamepad::process()
 
 	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
 
+	// SOCD cleaning first, allows for control over which diagonal to take/filter
+	if (options.fourWayMode) {
+		state.dpad = filterToFourWayMode(state.dpad);
+	}
+
 	switch (options.dpadMode)
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:

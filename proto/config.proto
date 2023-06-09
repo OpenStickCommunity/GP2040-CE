@@ -12,6 +12,7 @@ message GamepadOptions
 	optional bool invertYAxis = 5;
 	optional bool switchTpShareForDs4 = 6;
 	optional bool lockHotkeys = 7;
+	optional bool fourWayMode = 8;
 }
 
 message KeyboardMapping

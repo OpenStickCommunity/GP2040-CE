@@ -76,6 +76,7 @@ const schema = yup.object().shape({
 	switchTpShareForDs4: yup.number().required().label('Switch Touchpad and Share'),
 	forcedSetupMode : yup.number().required().oneOf(FORCED_SETUP_MODES.map(o => o.value)).label('SOCD Cleaning Mode'),
 	lockHotkeys: yup.number().required().label('Lock Hotkeys'),
+	fourWayMode: yup.number().required().label('4-Way Joystick Mode'),
 });
 
 const FormContext = ({ setButtonLabels }) => {
@@ -103,6 +104,8 @@ const FormContext = ({ setButtonLabels }) => {
 			values.forcedSetupMode = parseInt(values.forcedSetupMode);
 		if (!!values.lockHotkeys)
 			values.lockHotkeys = parseInt(values.lockHotkeys);
+		if (!!values.fourWayMode)
+			values.fourWayMode = parseInt(values.fourWayMode);
 
 		setButtonLabels({ swapTpShareLabels: (values.switchTpShareForDs4 === 1) && (values.inputMode === 4) });
 
@@ -211,6 +214,14 @@ export default function SettingsPage() {
 								<Form.Control.Feedback type="invalid">{errors.forcedSetupMode}</Form.Control.Feedback>
 							</div>
 						</Form.Group>
+						<Form.Check
+							label="4-Way Joystick Mode"
+							type="switch"
+							id="fourWayMode"
+							isInvalid={false}
+							checked={Boolean(values.fourWayMode)}
+							onChange={(e) => { setFieldValue("fourWayMode", e.target.checked ? 1 : 0); }}
+						/>
 					</Section>
 					<Section title="Hotkey Settings">
 						<div id="Hotkeys"

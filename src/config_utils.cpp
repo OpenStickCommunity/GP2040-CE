@@ -91,6 +91,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
