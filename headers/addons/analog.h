@@ -19,6 +19,10 @@
 #define ANALOG_ADC_VRY    -1
 #endif
 
+#ifndef FORCED_CIRCULARITY_ENABLED
+#define FORCED_CIRCULARITY_ENABLED 0
+#endif
+
 // Analog Module Name
 #define AnalogName "Analog"
 
@@ -32,6 +36,7 @@ public:
 private:
 	uint8_t analogAdcPinX;
 	uint8_t analogAdcPinY;
+	bool forced_circularity;
 };
 
 #endif  // _Analog_H_

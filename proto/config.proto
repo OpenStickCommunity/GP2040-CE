@@ -237,6 +237,7 @@ message AnalogOptions
 
 	optional int32 analogAdcPinX = 2;
 	optional int32 analogAdcPinY = 3;
+	optional bool forced_circularity = 4;
 }
 
 message TurboOptions

@@ -263,6 +263,7 @@ const schema = yup.object().shape({
 	AnalogInputEnabled:          yup.number().required().label('Analog Input Enabled'),
 	analogAdcPinX:               yup.number().label('Analog Stick Pin X').validatePinWhenValue('AnalogInputEnabled'),
  	analogAdcPinY:               yup.number().label('Analog Stick Pin Y').validatePinWhenValue('AnalogInputEnabled'),
+	forced_circularity:           yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 
 	BoardLedAddonEnabled:        yup.number().required().label('Board LED Add-On Enabled'),
 	onBoardLedMode:              yup.number().label('On-Board LED Mode').validateSelectionWhenValue('BoardLedAddonEnabled', ON_BOARD_LED_MODES),
@@ -357,6 +358,7 @@ const defaultValues = {
 	dualDirCombineMode: 0,
 	analogAdcPinX : -1,
  	analogAdcPinY : -1,
+	forced_circularity : 0,
 	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
@@ -478,6 +480,8 @@ const sanitizeData = (values) => {
 			values.analogAdcPinX = parseInt(values.analogAdcPinX);
 		if (!!values.analogAdcPinY)
 			values.analogAdcPinY = parseInt(values.analogAdcPinY);
+		if (!!values.forced_circularity)
+			values.forced_circularity = parseInt(values.forced_circularity);
 		if (!!values.bootselButtonMap)
 			values.bootselButtonMap = parseInt(values.bootselButtonMap);
 		if (!!values.buzzerPin)
@@ -718,6 +722,15 @@ export default function AddonsConfigPage() {
 							>
 								{ANALOG_PIN_OPTIONS}
 							</FormSelect>
+							<FormCheck
+								label="Force Circularity"
+								type="switch"
+								id="Forced_circularity"
+								className="col-sm-3 ms-2"
+								isInvalid={false}
+								checked={Boolean(values.forced_circularity)}
+								onChange={(e) => {handleCheckbox("forced_circularity", values); handleChange(e);}}
+							/>
 						</Row>
 						</div>
 						<FormCheck

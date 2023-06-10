@@ -844,6 +844,7 @@ std::string setAddonOptions()
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
 	docToPin(analogOptions.analogAdcPinX, doc, "analogAdcPinX");
 	docToPin(analogOptions.analogAdcPinY, doc, "analogAdcPinY");
+	docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
 	docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1053,6 +1054,7 @@ std::string getAddonOptions()
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
 	writeDoc(doc, "analogAdcPinX", cleanPin(analogOptions.analogAdcPinX));
 	writeDoc(doc, "analogAdcPinY", cleanPin(analogOptions.analogAdcPinY));
+	writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1269,6 +1271,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getFirmwareVersion", getFirmwareVersion },
 	{ "/api/getMemoryReport", getMemoryReport },
 	{ "/api/getUsedPins", getUsedPins },
+	{ "/api/getConfig", getConfig },
 #if !defined(NDEBUG)
 	{ "/api/echo", echo },
 #endif

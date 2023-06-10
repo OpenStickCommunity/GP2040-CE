@@ -242,6 +242,7 @@ namespace ConfigLegacy
         OnBoardLedMode onBoardLedMode;
         uint8_t analogAdcPinX;
         uint8_t analogAdcPinY;
+        uint8_t forced_circularity;
         uint16_t bootselButtonMap;
         uint8_t extraButtonPin;
         uint32_t extraButtonMap;
@@ -929,6 +930,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(analogOptions, enabled, legacyAddonOptions.AnalogInputEnabled);
         SET_PROPERTY(analogOptions, analogAdcPinX, bytePinToIntPin(legacyAddonOptions.analogAdcPinX));
         SET_PROPERTY(analogOptions, analogAdcPinY, bytePinToIntPin(legacyAddonOptions.analogAdcPinY));
+        SET_PROPERTY(analogOptions, forced_circularity, bytePinToIntPin(legacyAddonOptions.forced_circularity));
 
         BootselButtonOptions& bootselButtonOptions = config.addonOptions.bootselButtonOptions;
         config.addonOptions.has_bootselButtonOptions = true;

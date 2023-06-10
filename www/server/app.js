@@ -197,6 +197,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		dualDirCombineMode: 0,
 		analogAdcPinX: -1,
 		analogAdcPinY: -1,
+		forced_circularity: 0,
 		bootselButtonMap: 0,
 		buzzerPin: -1,
 		buzzerVolume: 100,
