@@ -126,7 +126,9 @@ void PWMPlayerLEDs::setup()
 
 	std::vector<uint> sliceNums;
 
-	auto pledPins = Storage::getInstance().getPLEDPins();
+	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+	int32_t pledPins[] = { ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4 };
+
 	for (int i = 0; i < PLED_COUNT; i++)
 	{
 		if (pledPins[i] > -1)
@@ -145,7 +147,9 @@ void PWMPlayerLEDs::setup()
 
 void PWMPlayerLEDs::display()
 {
-	auto pledPins = Storage::getInstance().getPLEDPins();
+	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+	int32_t pledPins[] = { ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4 };
+
 	for (int i = 0; i < PLED_COUNT; i++)
 		if (pledPins[i] > -1)
 			pwm_set_gpio_level(pledPins[i], ledLevels[i]);

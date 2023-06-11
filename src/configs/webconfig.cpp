@@ -455,6 +455,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.inputMode, doc, "inputMode");
 	readDoc(gamepadOptions.socdMode, doc, "socdMode");
 	readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
+	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	readDoc(hotkeyOptions.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
@@ -466,6 +467,9 @@ std::string setGamepadOptions()
 	readDoc(hotkeyOptions.hotkeyF2Down.action, doc, "hotkeyF2", 1, "action");
 	readDoc(hotkeyOptions.hotkeyF2Left.action, doc, "hotkeyF2", 2, "action");
 	readDoc(hotkeyOptions.hotkeyF2Right.action, doc, "hotkeyF2", 3, "action");
+
+	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+	readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
 
 	Storage::getInstance().save();
 
@@ -481,6 +485,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "inputMode", gamepadOptions.inputMode);
 	writeDoc(doc, "socdMode", gamepadOptions.socdMode);
 	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
+	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);
@@ -501,6 +506,8 @@ std::string getGamepadOptions()
 	writeDoc(doc, "hotkeyF2", 3, "action", hotkeyOptions.hotkeyF2Right.action);
 	writeDoc(doc, "hotkeyF2", 3, "mask", hotkeyOptions.hotkeyF2Right.dpadMask);
 
+	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+	writeDoc(doc, "forcedSetupMode", forcedSetupOptions.mode);
 	return serialize_json(doc);
 }
 
@@ -975,68 +982,68 @@ std::string setPS4Options()
 
 	// RSA Context
 	if ( readEncoded("N") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaN.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaN.bytes)) ) {
 			memcpy(ps4Options.rsaN.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaN.size = decoded.length();
 		}
 	}
 	if ( readEncoded("E") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaE.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaE.bytes)) ) {
 			memcpy(ps4Options.rsaE.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaE.size = decoded.length();
 		}
 	}
 	if ( readEncoded("D") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaD.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaD.bytes)) ) {
 			memcpy(ps4Options.rsaD.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaD.size = decoded.length();
 		}
 	}
 	if ( readEncoded("P") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaP.bytes)) ) {
 			memcpy(ps4Options.rsaP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("Q") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaQ.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQ.bytes)) ) {
 			memcpy(ps4Options.rsaQ.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaQ.size = decoded.length();
 		}
 	}
 	if ( readEncoded("DP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaDP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDP.bytes)) ) {
 			memcpy(ps4Options.rsaDP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaDP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("DQ") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaDQ.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDQ.bytes)) ) {
 			memcpy(ps4Options.rsaDQ.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaDQ.size = decoded.length();
 		}
 	}
 	if ( readEncoded("QP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaQP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQP.bytes)) ) {
 			memcpy(ps4Options.rsaQP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaQP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("RN") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaRN.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaRN.bytes)) ) {
 			memcpy(ps4Options.rsaRN.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaRN.size = decoded.length();
 		}
 	}
 	// Serial & Signature
 	if ( readEncoded("serial") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.serial.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.serial.bytes)) ) {
 			memcpy(ps4Options.serial.bytes, decoded.data(), decoded.length());
 			ps4Options.serial.size = decoded.length();
 		}
 	}
 	if ( readEncoded("signature") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.signature.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.signature.bytes)) ) {
 			memcpy(ps4Options.signature.bytes, decoded.data(), decoded.length());
 			ps4Options.signature.size = decoded.length();
 		}
@@ -1278,7 +1285,6 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getFirmwareVersion", getFirmwareVersion },
 	{ "/api/getMemoryReport", getMemoryReport },
 	{ "/api/getUsedPins", getUsedPins },
-	{ "/api/getConfig", getConfig },
 #if !defined(NDEBUG)
 	{ "/api/echo", echo },
 #endif

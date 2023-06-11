@@ -151,3 +151,13 @@ enum PLEDType
     PLED_TYPE_PWM = 0;
     PLED_TYPE_RGB = 1;
 };
+
+enum ForcedSetupMode
+{
+    option (nanopb_enumopt).long_names = false;
+    
+	FORCED_SETUP_MODE_OFF = 0;
+	FORCED_SETUP_MODE_LOCK_MODE_SWITCH = 1;
+	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
+	FORCED_SETUP_MODE_LOCK_BOTH = 3;
+};

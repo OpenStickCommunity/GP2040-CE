@@ -91,6 +91,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -110,6 +111,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, HOTKEY_F2_LEFT_ACTION);
     INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, HOTKEY_F2_RIGHT_MASK);
     INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, HOTKEY_F2_RIGHT_ACTION);
+
+    // forcedSetupMode
+    INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
 
     // pinMappings
     INIT_UNSET_PROPERTY(config.pinMappings, pinDpadUp, PIN_DPAD_UP);
@@ -178,7 +182,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, splashMode, SPLASH_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashChoice, SPLASH_CHOICE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
-    INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, emptyByteArray);
+	const unsigned char defaultSplash[] = { DEFAULT_SPLASH };
+    INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, defaultSplash);
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
