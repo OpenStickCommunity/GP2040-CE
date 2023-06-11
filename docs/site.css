@@ -5,8 +5,8 @@
   --base-font-size: 0.875rem;
   --theme-color   : #C73C8B;
   --sidebar-width : 20rem;
-	--sidebar-padding: 0 0.75rem;
-	/* --content-max-width: 75em; */
+	/* --sidebar-padding: 0 0.75rem; */
+	--content-max-width: 70em;
 }
 
 hr {
@@ -68,25 +68,87 @@ hr {
 	padding-left: 1%;
 }
 
-.download-category-list a {
+.download-box {
 	display: flex;
 	flex: 1 1 auto;
+	flex-direction: column;
 	max-width: 31%;
-	margin: 0 1%;
 	align-items: center;
 	justify-content: center;
+	margin: 0 1%;
+	margin-bottom: 2rem;
 }
 
-.download-category-list a > div {
-	align-items: center;
+.download-box .download-img,
+.download-box .download-img img {
+	display: flex;
+	width: 100%;
+}
+
+.download-box .download-title,
+.download-box .download-links,
+.download-box .download-desc {
+	display: flex;
+	flex: 1 0 auto;
+	justify-content: center;
+	color: #000000;
+	background-color: #d2d2d2;
+	padding: 0.1rem;
+	margin: 0;
+	width: 100%;
+}
+
+.download-box .download-title {
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.25rem;
+	font-weight: 600;
+	padding: 0.5rem 0.75rem 1.5rem;
+}
+
+.download-box .download-links {
+	display: flex;
+	list-style: none;
+	justify-content: space-around;
+}
+
+.download-box .download-links li {
+	display: flex;
+	font-weight: 600;
+}
+
+.download-box .download-links li a {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	text-decoration: none;
+	font-size: 0.85rem;
 }
 
-.download-category-list a > div span {
-	display: inline-block;
-	width: 100%;
-	text-align: center;
-	font-size: 1rem;
-	font-weight: 600;
+.download-box .download-links li a:hover {
+	color: var(--theme-color);
+}
+
+.download-box .download-links li a i {
+	height: 1rem;
+}
+
+.download-box .download-desc {
+	flex-direction: column;
+	/* font-size: 0.85rem; */
+	padding: 0.5rem 1.5rem 1rem;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+@media screen and (max-width: 900px) {
+	.download-box {
+		max-width: 48%;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.download-box {
+		max-width: 100%;
+	}
 }
