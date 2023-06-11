@@ -113,6 +113,7 @@ public:
   static void SetBrightness(uint8_t brightness);
   static void DecreaseBrightness();
   static void IncreaseBrightness();
+  static void DimBrightnessTo0();
   static void SetOptions(AnimationOptions options);
 
   Animation* baseAnimation;

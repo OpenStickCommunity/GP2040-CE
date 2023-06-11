@@ -6,7 +6,7 @@
 #ifndef PICO_BOARD_CONFIG_H_
 #define PICO_BOARD_CONFIG_H_
 
-#include <GamepadEnums.h>
+#include "enums.pb.h"
 
 
 // This is the main pin definition section.
@@ -198,8 +198,8 @@
 
 #define BUTTON_LAYOUT BUTTON_LAYOUT_FIGHTBOARD_STICK
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_FIGHTBOARD
-#define SPLASH_MODE NOSPLASH
-#define SPLASH_CHOICE MAIN
+#define SPLASH_MODE SPLASH_MODE_NONE
+#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
 #define SPLASH_DURATION 7500 // Duration in milliseconds
 
 // Default theme
@@ -214,7 +214,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_TYPE BOARD_LED_OFF
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
 
 // Dual Directional Add-on Options
 #define PIN_DUAL_DIRECTIONAL_UP -1

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Form, Row, FormCheck } from 'react-bootstrap';
+import { Button, Form, Row, FormCheck, Col } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 
@@ -270,9 +270,12 @@ const schema = yup.object().shape({
 	BootselButtonAddonEnabled:   yup.number().required().label('Boot Select Button Add-On Enabled'),
 	bootselButtonMap:            yup.number().label('BOOTSEL Button Map').validateSelectionWhenValue('BootselButtonAddonEnabled', BUTTON_MASKS),
 
-	ButtonLockAddonEnabled:     yup.number().required().label('Button Lock Add-On Enabled'),
-	buttonLockPin:              yup.number().label('Button Lock Pin').validatePinWhenValue('ButtonLockAddonEnabled'),
-	buttonLockMap:              yup.number().label('Button Lock Map').validateRangeWhenValue('ButtonLockAddonEnabled', 0, (1<<20) - 1),
+	FocusModeAddonEnabled:       yup.number().required().label('Focus Mode Add-On Enabled'),
+	focusModePin:                yup.number().label('Focus Mode Pin').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeButtonLockEnabled:  yup.number().label('Focus Mode Button Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeOledLockEnabled:    yup.number().label('Focus Mode OLED Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeRgbLockEnabled:     yup.number().label('Focus Mode RGB Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeButtonLockMask:      yup.number().label('Focus Mode Button Lock Map').validateRangeWhenValue('FocusModeAddonEnabled', 0, (1<<20) - 1),
 
 	BuzzerSpeakerAddonEnabled:   yup.number().required().label('Buzzer Speaker Add-On Enabled'),
 	buzzerPin:                   yup.number().label('Buzzer Pin').validatePinWhenValue('BuzzerSpeakerAddonEnabled'),
@@ -389,9 +392,12 @@ const defaultValues = {
 	wiiExtensionSCLPin: -1,
 	wiiExtensionBlock: 0,
 	wiiExtensionSpeed: 400000,
+	snesPadClockPin: -1,
+	snesPadLatchPin: -1,
+	snesPadDataPin: -1,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
-	ButtonLockAddonEnabled: 0,
+	FocusModeAddonEnabled: 0,
 	BuzzerSpeakerAddonEnabled: 0,
 	BootselButtonAddonEnabled: 0,
 	DualDirectionalInputEnabled: 0,
@@ -404,6 +410,7 @@ const defaultValues = {
 	ReverseInputEnabled: 0,
 	TurboInputEnabled: 0,
 	WiiExtensionAddonEnabled: 0,
+	SNESpadAddonEnabled: 0,
 };
 
 const FormContext = ({setStoredData}) => {
@@ -481,10 +488,10 @@ const sanitizeData = (values) => {
 			values.analogAdcPinY = parseInt(values.analogAdcPinY);
 		if (!!values.bootselButtonMap)
 			values.bootselButtonMap = parseInt(values.bootselButtonMap);
-		if (!!values.buttonLockMap)
-			values.buttonLockMap = parseInt(values.buttonLockMap);
-		if (!!values.buttonLockPin)
-			values.buttonLockPin = parseInt(values.buttonLockPin);
+		if (!!values.focusModeButtonLockMask)
+			values.focusModeButtonLockMask = parseInt(values.focusModeButtonLockMask);
+		if (!!values.focusModePin)
+			values.focusModePin = parseInt(values.focusModePin);
 		if (!!values.buzzerPin)
 			values.buzzerPin = parseInt(values.buzzerPin);
 		if (!!values.buzzerVolume)
@@ -539,6 +546,12 @@ const sanitizeData = (values) => {
 			values.wiiExtensionBlock = parseInt(values.wiiExtensionBlock);
 		if (!!values.wiiExtensionSpeed)
 			values.wiiExtensionSpeed = parseInt(values.wiiExtensionSpeed);
+		if (!!values.snesPadClockPin)
+			values.snesPadClockPin = parseInt(values.snesPadClockPin);
+		if (!!values.snesPadLatchPin)
+			values.snesPadLatchPin = parseInt(values.snesPadLatchPin);
+		if (!!values.snesPadDataPin)
+			values.snesPadDataPin = parseInt(values.snesPadDataPin);
 		if (!!values.AnalogInputEnabled)
 			values.AnalogInputEnabled = parseInt(values.AnalogInputEnabled);
 		if (!!values.BoardLedAddonEnabled)
@@ -567,6 +580,8 @@ const sanitizeData = (values) => {
 			values.TurboInputEnabled = parseInt(values.TurboInputEnabled);
 		if (!!values.WiiExtensionAddonEnabled)
 			values.WiiExtensionAddonEnabled = parseInt(values.WiiExtensionAddonEnabled);
+		if (!!values.SNESpadAddonEnabled)
+			values.SNESpadAddonEnabled = parseInt(values.SNESpadAddonEnabled);
 }
 
 function flattenObject(object) {
@@ -1574,58 +1589,151 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("WiiExtensionAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Button Lock Configuration">
+					<Section title="Snes Extension Configuration">
 						<div
-							id="ButtonLockAddonOptions"
-							hidden={!values.ButtonLockAddonEnabled}>
+							id="SNESpadAddonOptions"
+							hidden={!values.SNESpadAddonEnabled}>
+							<Row>
+								<p>Note: If the Display is enabled at the same time, this Addon will be disabled.</p>
+                                <h3>Currently Supported Controllers</h3>
+                                <p>SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</p>
+                                <p>SNES mouse: Analog Stick Supported. Left Click = B1, Right Click = B2</p>
+                                <p>NES: D-Pad Supported. B = B1, A = B2, Select = S1, Start = S2</p>
+							</Row>
 							<Row className="mb-3">
 								<FormControl type="number"
-									label="Button Lock Pin"
-									name="buttonLockPin"
+									label="Clock Pin"
+									name="snesPadClockPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.buttonLockPin || -1}
-									error={errors.buttonLockPin}
-									isInvalid={errors.buttonLockPin}
+									value={values.snesPadClockPin}
+									error={errors.snesPadClockPin}
+									isInvalid={errors.snesPadClockPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>	
+								<FormControl type="number"
+									label="Latch Pin"
+									name="snesPadLatchPin"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.snesPadLatchPin}
+									error={errors.snesPadLatchPin}
+									isInvalid={errors.snesPadLatchPin}
 									onChange={handleChange}
 									min={-1}
 									max={29}
 								/>
-								<p>Buttons</p>
+								<FormControl type="number"
+									label="Data Pin"
+									name="snesPadDataPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.snesPadDataPin}
+									error={errors.snesPadDataPin}
+									isInvalid={errors.snesPadDataPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
+						</div>
+						<FormCheck
+							label="Enabled"
+							type="switch"
+							id="SNESpadButton"
+							reverse="true"
+							error={undefined}
+							isInvalid={false}
+							checked={Boolean(values.SNESpadAddonEnabled)}
+							onChange={(e) => {handleCheckbox("SNESpadAddonEnabled", values); handleChange(e);}}
+						/>
+					</Section>
+					<Section title="Focus Mode Configuration">
+						<div
+							id="FocusModeAddonOptions"
+							hidden={!values.FocusModeAddonEnabled}>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label="Focus Mode Pin"
+									name="focusModePin"
+									className="form-select-sm col-3"
+									groupClassName="col-sm-3 mb-3"
+									value={values.focusModePin}
+									error={errors.focusModePin}
+									isInvalid={errors.focusModePin}
+									onChange={handleChange}
+									min={-1}
+									max={29} />
+								<div className="col-sm-3">
+									<FormCheck
+										label="Lock OLED Screen"
+										className="form-check-sm"
+										type="switch"
+										reverse
+										id="FocusModeAddonOLEDButton"
+										isInvalid={false}
+										checked={Boolean(values.focusModeOledLockEnabled)}
+										onChange={(e) => { handleCheckbox("focusModeOledLockEnabled", values); handleChange(e); }} />
+								</div>
+								<div className="col-sm-3">
+									<FormCheck
+										label="Lock RGB LED"
+										className="form-check-sm"
+										type="switch"
+										reverse
+										id="FocusModeAddonButton"
+										isInvalid={false}
+										checked={Boolean(values.focusModeRgbLockEnabled)}
+										onChange={(e) => { handleCheckbox("focusModeRgbLockEnabled", values); handleChange(e); }} />
+								</div>
+								<div className="col-sm-3">
+									<FormCheck
+										label="Lock Buttons"
+										className="form-check-sm"
+										type="switch"
+										reverse
+										id="FocusModeAddonButton"
+										isInvalid={false}
+										checked={Boolean(values.focusModeButtonLockEnabled)}
+										onChange={(e) => { handleCheckbox("focusModeButtonLockEnabled", values); handleChange(e); }}
+									/>
+								</div>
 								<Row>
-								{BUTTON_MASKS.map(mask => (values.buttonLockMap & mask.value) ? <FormSelect
-									name="buttonLockMap"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.buttonLockMap & mask.value}
-									error={errors.buttonLockMap}
-									isInvalid={errors.buttonLockMap}
-									onChange={(e) => { setFieldValue("buttonLockMap", values.buttonLockMap ^ mask.value | e.target.value); }}
-								>
-									{BUTTON_MASKS.map((o, i) => <option key={`buttonLockMap-option-${i}`} value={o.value}>{o.label}</option>)}
-								</FormSelect> : <></>)}
-								<FormSelect
-									name="buttonLockMap"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={0}
-									error={errors.buttonLockMap}
-									isInvalid={errors.buttonLockMap}
-									onChange={(e) => { setFieldValue("buttonLockMap", values.buttonLockMap | e.target.value); }}
-								>
-									{BUTTON_MASKS.map((o, i) => <option key={`buttonLockMap-option-${i}`} value={o.value}>{o.label}</option>)}
-								</FormSelect>
+									{BUTTON_MASKS.map(mask => (values.focusModeButtonLockMask & mask.value) ? <FormSelect
+										name="focusModeButtonLockMask"
+										className="form-select-sm"
+										groupClassName="col-sm-3 mb-3"
+										value={values.focusModeButtonLockMask & mask.value}
+										error={errors.focusModeButtonLockMask}
+										isInvalid={errors.focusModeButtonLockMask}
+										onChange={(e) => { setFieldValue("focusModeButtonLockMask", values.focusModeButtonLockMask ^ mask.value | e.target.value); }}
+									>
+										{BUTTON_MASKS.map((o, i) => <option key={`focusModeButtonLockMask-option-${i}`} value={o.value}>{o.label}</option>)}
+									</FormSelect> : <></>)}
+									<FormSelect
+										name="focusModeButtonLockMask"
+										className="form-select-sm"
+										groupClassName="col-sm-3 mb-3"
+										value={0}
+										error={errors.focusModeButtonLockMask}
+										isInvalid={errors.focusModeButtonLockMask}
+										onChange={(e) => { setFieldValue("focusModeButtonLockMask", values.focusModeButtonLockMask | e.target.value); }}
+									>
+										{BUTTON_MASKS.map((o, i) => <option key={`focusModeButtonLockMask-option-${i}`} value={o.value}>{o.label}</option>)}
+									</FormSelect>
 								</Row>
 							</Row>
 						</div>
 						<FormCheck
 							label="Enabled"
 							type="switch"
-							id="ButtonLockAddonButton"
+							id="FocusModeAddonButton"
 							reverse
 							isInvalid={false}
-							checked={Boolean(values.ButtonLockAddonEnabled)}
-							onChange={(e) => { handleCheckbox("ButtonLockAddonEnabled", values); handleChange(e);}}
+							checked={Boolean(values.FocusModeAddonEnabled)}
+							onChange={(e) => { handleCheckbox("FocusModeAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
 					<div className="mt-3">

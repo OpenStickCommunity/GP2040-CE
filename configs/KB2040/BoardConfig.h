@@ -202,8 +202,8 @@
 #define JSLIDER_ENABLED 1
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX
-#define SPLASH_MODE NOSPLASH
-#define SPLASH_CHOICE MAIN
+#define SPLASH_MODE SPLASH_MODE_NONE
+#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
 #define SPLASH_DURATION 7500 // Duration in milliseconds
 
 // Board LED Add-on Setting
@@ -212,7 +212,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_TYPE BOARD_LED_OFF
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
 
 // Dual Directional Add-on Options
 
@@ -281,5 +281,13 @@
 #define HOTKEY_F2_LEFT_ACTION  HOTKEY_SOCD_LAST_INPUT
 #define HOTKEY_F2_RIGHT_MASK   GAMEPAD_MASK_RIGHT
 #define HOTKEY_F2_RIGHT_ACTION HOTKEY_INVERT_Y_AXIS
+
+// SNESpad Settings
+// Basic SNES controller clock, latch(strobe), and data IO: https://github.com/gilligan/snesdev/blob/master/docs/fullsnes.txt#L16048
+// CLOCK == SNES_CTRL_PIN_2, LATCH == SNES_CTRL_PIN_3, and DATA = SNES_CTRL_PIN_4
+#define SNES_PAD_ENABLED 0
+#define SNES_PAD_CLOCK_PIN -1
+#define SNES_PAD_LATCH_PIN -1
+#define SNES_PAD_DATA_PIN -1
 
 #endif

@@ -83,17 +83,14 @@ PLEDAnimationState getXInputAnimationNEOPICO(uint8_t *data)
 }
 
 bool NeoPicoLEDAddon::available() {
-	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
-	return ledOptions.dataPin != -1;
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	return isValidPin(ledOptions.dataPin);
 }
 
 void NeoPicoLEDAddon::setup()
 {
 	// Set Default LED Options
-	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
-	if (!ledOptions.useUserDefinedLEDs) {
-		Storage::getInstance().setDefaultLEDOptions();
-	}
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
 	if ( ledOptions.pledType == PLED_TYPE_RGB ) {
 		neoPLEDs = new NeoPicoPlayerLEDs();
@@ -106,20 +103,23 @@ void NeoPicoLEDAddon::setup()
 	configureLEDs();
 
 	nextRunTime = make_timeout_time_ms(0); // Reset timeout
+	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	isFocusModeEnabled = focusModeOptions.enabled && focusModeOptions.rgbLockEnabled &&
+		isValidPin(focusModeOptions.pin);
 }
 
 void NeoPicoLEDAddon::process()
 {
-	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
-	if (ledOptions.dataPin < 0 || !time_reached(this->nextRunTime))
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	if (!isValidPin(ledOptions.dataPin) || !time_reached(this->nextRunTime))
 		return;
 
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();
 	AnimationHotkey action = animationHotkeys(gamepad);
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
-		inputMode = gamepad->options.inputMode; // HACK
-		switch (gamepad->options.inputMode) {
+		inputMode = gamepad->getOptions().inputMode; // HACK
+		switch (gamepad->getOptions().inputMode) {
 			case INPUT_MODE_XINPUT:
 				animationState = getXInputAnimationNEOPICO(featureData);
 				if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
@@ -148,6 +148,19 @@ void NeoPicoLEDAddon::process()
 		as.ClearPressed();
 
 	as.Animate();
+
+	if (isFocusModeEnabled) {
+		const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+		bool isFocusModeActive = !gpio_get(focusModeOptions.pin);
+		if (focusModePrevState != isFocusModeActive) {
+			focusModePrevState = isFocusModeActive;
+			if (isFocusModeActive) {
+				as.DimBrightnessTo0();
+			} else {
+				as.SetBrightness(AnimationStation::GetBrightness());
+			}
+		}
+	}
 	as.ApplyBrightness(frame);
 
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
@@ -393,7 +406,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 			positions[i][l] = (i * ledsPerPixel) + l;
 	}
 
-	switch (layout)
+	switch (static_cast<ButtonLayout>(layout))
 	{
 		case BUTTON_LAYOUT_BLANKA:
 			return generatedLEDButtons(&positions);
@@ -438,7 +451,7 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 
 uint8_t NeoPicoLEDAddon::setupButtonPositions()
 {
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	buttonPositions.clear();
 	buttonPositions.emplace(BUTTON_LABEL_UP, ledOptions.indexUp);
 	buttonPositions.emplace(BUTTON_LABEL_DOWN, ledOptions.indexDown);
@@ -470,9 +483,9 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 
 void NeoPicoLEDAddon::configureLEDs()
 {
-	const LEDOptions& ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	uint8_t buttonCount = setupButtonPositions();
-	vector<vector<Pixel>> pixels = createLEDLayout(ledOptions.ledLayout, ledOptions.ledsPerButton, buttonCount);
+	vector<vector<Pixel>> pixels = createLEDLayout(static_cast<ButtonLayout>(ledOptions.ledLayout), ledOptions.ledsPerButton, buttonCount);
 	matrix.setup(pixels, ledOptions.ledsPerButton);
 	ledCount = matrix.getLedCount();
 	if (ledOptions.pledType == PLED_TYPE_RGB && PLED_COUNT > 0)
@@ -480,10 +493,10 @@ void NeoPicoLEDAddon::configureLEDs()
 
 	// Remove the old neopico (config can call this)
 	delete neopico;
-	neopico = new NeoPico(ledOptions.dataPin, ledCount, ledOptions.ledFormat);
+	neopico = new NeoPico(ledOptions.dataPin, ledCount, static_cast<LEDFormat>(ledOptions.ledFormat));
 	neopico->Off();
 
-	Animation::format = ledOptions.ledFormat;
+	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	as.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
 	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
 	addStaticThemes(ledOptions, animationOptions);
