@@ -161,29 +161,30 @@ import VueStickyElement from "vue-sticky-element";
 						<a class="download-img" :href="release.url">
 							<img :src="'/assets/boards/' + release.key + '.jpg'">
 						</a>
-						<div class="download-title">{{ release.name }}</div>
-						<ul class="download-links">
-							<li>
-								<a :href="release.url">
-									<i class="fa-solid fa-file-arrow-down fa-2xl"></i>
-									Download
-								</a>
-							</li>
-							<li v-if="release.pinout">
-								<a :href="release.pinout" target="_blank">
-									<i class="fa-solid fa-gamepad fa-2xl"></i>
-									Pinout
-								</a>
-							</li>
-							<li v-if="release.website">
-								<a :href="release.website" target="_blank">
-									<i class="fa-solid fa-globe fa-2xl"></i>
-									Website
-								</a>
-							</li>
-						</ul>
-						<div class="download-desc">
-							<div v-html="release.desc"></div>
+						<div class="download-info">
+							<div class="download-title">{{ release.name }}</div>
+							<ul class="download-links">
+								<li>
+									<a :href="release.url">
+										<i class="fa-solid fa-file-arrow-down fa-2xl"></i>
+										Download
+									</a>
+								</li>
+								<li v-if="release.pinout">
+									<a :href="release.pinout" target="_blank">
+										<i class="fa-solid fa-gamepad fa-2xl"></i>
+										Pinout
+									</a>
+								</li>
+								<li v-if="release.website">
+									<a :href="release.website" target="_blank">
+										<i class="fa-solid fa-globe fa-2xl"></i>
+										Website
+									</a>
+								</li>
+							</ul>
+							<div v-if="release.desc" class="download-desc" v-html="release.desc">
+							</div>
 						</div>
 					</div>
 				`,
