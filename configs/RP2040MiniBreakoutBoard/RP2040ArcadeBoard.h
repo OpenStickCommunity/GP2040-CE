@@ -10,11 +10,11 @@
 // -----------------------------------------------------
 
 
-#ifndef _BOARDS_RP2040ARCADEBOARD_H
-#define _BOARDS_RP2040ARCADEBOARD_H
+#ifndef _BOARDS_RP2040MINIBREAKOUTBOARD_H
+#define _BOARDS_RP2040MINIBREAKOUTBOARD_H
 
 // For board detection
-#define RP2040ARCADEBOARD
+#define RP2040MINIBREAKOUTBOARD
 
 //For crappy crystal
 #ifndef PICO_XOSC_STARTUP_DELAY_MULTIPLIER
