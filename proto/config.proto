@@ -110,26 +110,26 @@ message PinMappings
 message DisplayOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 i2cBlock = 2;
 	optional int32 i2cSDAPin = 3;
 	optional int32 i2cSCLPin = 4;
 	optional int32 i2cAddress = 5;
 	optional int32 i2cSpeed = 6;
-
+	
 	optional ButtonLayout buttonLayout = 7;
 	optional ButtonLayoutRight buttonLayoutRight = 8;
 	optional ButtonLayoutCustomOptions buttonLayoutCustomOptions = 9;
-
+	
 	optional SplashMode splashMode = 10;
 	optional SplashChoice splashChoice = 11;
 	optional int32 splashDuration = 12;
 	optional bytes splashImage = 13 [(nanopb).max_size = 1024];
-
+	
 	optional int32 size = 14;
 	optional int32 flip = 15;
 	optional bool invert = 16;
-
+	
 	optional int32 displaySaverTimeout = 17;
 }
 
@@ -160,7 +160,7 @@ message LEDOptions
 	optional int32 indexR3 = 22;
 	optional int32 indexA1 = 23;
 	optional int32 indexA2 = 24;
-
+	
 	optional PLEDType pledType = 25;
 	optional int32 pledPin1 = 26;
 	optional int32 pledPin2 = 27;
@@ -179,7 +179,7 @@ message AnimationOptions_Proto
 	optional int32 chaseCycleTime = 5;
 	optional int32 rainbowCycleTime = 6;
 	optional uint32 themeIndex = 7;
-
+	
 	optional bool hasCustomTheme = 8;
 	optional uint32 customThemeUp = 9;
 	optional uint32 customThemeDown = 10;
@@ -234,7 +234,7 @@ message OnBoardLedOptions
 message AnalogOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 analogAdcPinX = 2;
 	optional int32 analogAdcPinY = 3;
 }
@@ -242,12 +242,12 @@ message AnalogOptions
 message TurboOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 buttonPin = 2;
 	optional int32 ledPin = 3;
 	optional uint32 shotCount = 4;
 	optional int32 shmupDialPin = 5;
-
+	
 	optional bool shmupModeEnabled = 6;
 	optional uint32 shmupAlwaysOn1 = 7;
 	optional uint32 shmupAlwaysOn2 = 8;
@@ -267,7 +267,7 @@ message TurboOptions
 message SliderOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 pinLS = 2;
 	optional int32 pinRS = 3;
 }
@@ -275,10 +275,10 @@ message SliderOptions
 message SOCDSliderOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 pinOne = 2;
 	optional int32 pinTwo = 3;
-
+	
 	optional SOCDMode modeDefault = 4;
 	optional SOCDMode modeOne = 5;
 	optional SOCDMode modeTwo = 6;
@@ -287,10 +287,10 @@ message SOCDSliderOptions
 message ReverseOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 buttonPin = 2;
 	optional int32 ledPin = 3;
-
+	
 	optional uint32 actionUp = 4;
 	optional uint32 actionDown = 5;
 	optional uint32 actionLeft = 6;
@@ -300,7 +300,7 @@ message ReverseOptions
 message AnalogADS1219Options
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 i2cBlock = 2;
 	optional int32 i2cSDAPin = 3;
 	optional int32 i2cSCLPin = 4;
@@ -311,7 +311,7 @@ message AnalogADS1219Options
 message DualDirectionalOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 upPin = 2;
 	optional int32 downPin = 3;
 	optional int32 leftPin = 4;
@@ -324,7 +324,7 @@ message DualDirectionalOptions
 message BuzzerOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 pin = 2;
 	optional uint32 volume = 3;
 }
@@ -332,7 +332,7 @@ message BuzzerOptions
 message ExtraButtonOptions
 {
 	optional bool enabled = 1;
-
+	
 	optional int32 pin = 2;
 	optional uint32 buttonMap = 3;
 }
@@ -389,7 +389,7 @@ message AddonOptions
 	optional BuzzerOptions buzzerOptions = 9;
 	optional ExtraButtonOptions extraButtonOptions = 10;
 	optional PlayerNumberOptions playerNumberOptions = 11;
-	optional PS4Options ps4Options = 12;
+	optional PS4Options ps4Options = 12 [(nanopb).disallow_export = true];
 	optional WiiOptions wiiOptions = 13;
 	optional SOCDSliderOptions socdSliderOptions = 14;
 	optional SNESOptions snesOptions = 15;
@@ -398,7 +398,7 @@ message AddonOptions
 message Config
 {
 	optional string boardVersion = 1 [(nanopb).max_length = 31];
-
+	
 	optional GamepadOptions gamepadOptions = 2;
 	optional HotkeyOptions hotkeyOptions = 3;
 	optional PinMappings pinMappings = 4;

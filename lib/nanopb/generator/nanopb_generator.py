@@ -561,6 +561,7 @@ class Field(ProtoElement):
         self.callback_datatype = field_options.callback_datatype
         self.math_include_required = False
         self.sort_by_tag = field_options.sort_by_tag
+        self.disallow_export = False
         
         if field_options.type == nanopb_pb2.FT_INLINE:
             # Before nanopb-0.3.8, fixed length bytes arrays were specified
@@ -581,6 +582,9 @@ class Field(ProtoElement):
 
         if field_options.HasField("max_count"):
             self.max_count = field_options.max_count
+
+        if field_options.HasField("disallow_export"):
+            self.disallow_export = field_options.disallow_export
 
         if desc.HasField('default_value'):
             self.default = desc.default_value
@@ -870,7 +874,7 @@ class Field(ProtoElement):
 
     def fieldlist(self):
         '''Return the FIELDLIST macro entry for this field.
-        Format is: X(a, ATYPE, HTYPE, LTYPE, field_name, tag)
+        Format is: X(a, ATYPE, HTYPE, LTYPE, field_name, tag, disallow_export)
         '''
         name = Globals.naming_style.var_name(self.name)
 
@@ -889,13 +893,14 @@ class Field(ProtoElement):
                 Globals.naming_style.var_name(self.name),
                 Globals.naming_style.var_name(self.name))
 
-        return '%s(%s, %-9s %-9s %-9s %-16s %3d)' % (self.macro_x_param,
+        return '%s(%s, %-9s %-9s %-9s %-32s %3s %d)' % (self.macro_x_param,
                                                      self.macro_a_param,
                                                      self.allocation + ',',
                                                      self.rules + ',',
                                                      self.pbtype + ',',
                                                      name + ',',
-                                                     self.tag)
+                                                     str(self.tag) + ',',
+                                                     1 if self.disallow_export else 0)
 
     def data_size(self, dependencies):
         '''Return estimated size of this field in the C struct.

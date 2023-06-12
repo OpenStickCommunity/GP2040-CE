@@ -86,10 +86,10 @@ const getLedButtons = (buttonLabels, map, excludeNulls, swapTpShareLabels) => {
 			.filter(p => excludeNulls ? map[p] > -1 : true)
 			.map(p => {
 				let label = BUTTONS[buttonLabels][p];
-				if (p === "S1" && swapTpShareLabels) {
+				if (p === "S1" && swapTpShareLabels && buttonLabels === "ps4") {
 					label = BUTTONS[buttonLabels]["A2"];
 				}
-				if (p === "A2" && swapTpShareLabels) {
+				if (p === "A2" && swapTpShareLabels && buttonLabels === "ps4") {
 					label = BUTTONS[buttonLabels]["S1"];
 				}
 				return ({ id: p, label: BUTTONS[buttonLabels][p], value: map[p] });

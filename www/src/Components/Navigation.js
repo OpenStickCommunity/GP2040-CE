@@ -54,8 +54,8 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} exact="true" to="/backup">Data Backup and Restoration</NavDropdown.Item>
 					</NavDropdown>
 					<NavDropdown title="Links">
-						<NavDropdown.Item as={NavLink} to={{ pathname: "https://gp2040-ce.info/" }} target="_blank">Documentation</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to={{ pathname: "https://github.com/OpenStickCommunity/GP2040-CE" }} target="_blank">Github</NavDropdown.Item>
+						<NavDropdown.Item href="https://gp2040-ce.info/" target="_blank">Documentation</NavDropdown.Item>
+						<NavDropdown.Item href="https://github.com/OpenStickCommunity/GP2040-CE" target="_blank">Github</NavDropdown.Item>
 					</NavDropdown>
 
 					<Dropdown>
