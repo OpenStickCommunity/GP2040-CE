@@ -117,7 +117,10 @@ void Gamepad::setup()
 	mapButtonR3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR3),	GAMEPAD_MASK_R3);
 	mapButtonA1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA1),	GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA2),	GAMEPAD_MASK_A2);
-
+	
+	if(options.inputMode == INPUT_MODE_PS4 && options.switchTpShareForDs4)
+		f1Mask = GAMEPAD_MASK_A2 | GAMEPAD_MASK_S2;
+	
 	uint16_t maskS1 = options.inputMode == INPUT_MODE_PS4
 	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_A2 : GAMEPAD_MASK_S1;
 	mapButtonS1  = new GamepadButtonMapping(pinMappings.pinButtonS1,  maskS1);
