@@ -5,8 +5,8 @@
   --base-font-size: 0.875rem;
   --theme-color   : #C73C8B;
   --sidebar-width : 20rem;
-	--sidebar-padding: 0 0.75rem;
-	/* --content-max-width: 75em; */
+	/* --sidebar-padding: 0 0.75rem; */
+	--content-max-width: 70em;
 }
 
 hr {
@@ -61,32 +61,86 @@ hr {
 }
 
 .download-category-list {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: start;
+	display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem 1rem;
 	width: 100%;
-	padding-left: 1%;
 }
 
-.download-category-list a {
-	display: flex;
-	flex: 1 1 auto;
-	max-width: 31%;
-	margin: 0 1%;
-	align-items: center;
-	justify-content: center;
-}
-
-.download-category-list a > div {
-	align-items: center;
+.download-box {
 	display: flex;
 	flex-direction: column;
 }
 
-.download-category-list a > div span {
-	display: inline-block;
+.download-box .download-img {
+	display: flex;
+}
+
+.download-box .download-img img {
 	width: 100%;
+	height: 100%;
+}
+
+.download-box .download-info {
+	display: flex;
+	flex: 1 0 auto;
+	flex-direction: column;
+	width: 100%;
+	color: #000000;
+	background-color: #d2d2d2;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.download-box .download-info .download-title {
 	text-align: center;
-	font-size: 1rem;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.25rem;
 	font-weight: 600;
+	padding: 0.5rem 0rem 1.5rem 0.5rem;
+}
+
+.download-box .download-info .download-links {
+	display: flex;
+	list-style: none;
+	justify-content: space-around;
+	margin: 0;
+	padding: 0;
+	padding-bottom: 0.75rem;
+}
+
+.download-box .download-info .download-links li {
+	font-weight: 600;
+}
+
+.download-box .download-info .download-links li a {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-decoration: none;
+	font-size: 0.85rem;
+}
+
+.download-box .download-info .download-links li a:hover {
+	color: var(--theme-color);
+}
+
+.download-box .download-info .download-links li a i {
+	height: 1rem;
+}
+
+.download-box .download-info .download-desc {
+	padding: 0rem 1.25rem 1rem;
+}
+
+@media screen and (min-width: 500px) {
+	.download-category-list {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media screen and (min-width: 900px) {
+	.download-category-list {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
 }
