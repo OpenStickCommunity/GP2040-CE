@@ -263,7 +263,8 @@ const schema = yup.object().shape({
 	AnalogInputEnabled:          yup.number().required().label('Analog Input Enabled'),
 	analogAdcPinX:               yup.number().label('Analog Stick Pin X').validatePinWhenValue('AnalogInputEnabled'),
  	analogAdcPinY:               yup.number().label('Analog Stick Pin Y').validatePinWhenValue('AnalogInputEnabled'),
-	forced_circularity:           yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
+	forced_circularity:          yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
+	analog_deadzone:             yup.number().label('Deadzone Size (%)').validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 
 	BoardLedAddonEnabled:        yup.number().required().label('Board LED Add-On Enabled'),
 	onBoardLedMode:              yup.number().label('On-Board LED Mode').validateSelectionWhenValue('BoardLedAddonEnabled', ON_BOARD_LED_MODES),
@@ -359,6 +360,7 @@ const defaultValues = {
 	analogAdcPinX : -1,
  	analogAdcPinY : -1,
 	forced_circularity : 0,
+	analog_deadzone: 5,
 	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
@@ -482,6 +484,8 @@ const sanitizeData = (values) => {
 			values.analogAdcPinY = parseInt(values.analogAdcPinY);
 		if (!!values.forced_circularity)
 			values.forced_circularity = parseInt(values.forced_circularity);
+		if (!!values.analog_deadzone)
+			values.analog_deadzone = parseInt(values.analog_deadzone);
 		if (!!values.bootselButtonMap)
 			values.bootselButtonMap = parseInt(values.bootselButtonMap);
 		if (!!values.buzzerPin)
@@ -731,6 +735,18 @@ export default function AddonsConfigPage() {
 								checked={Boolean(values.forced_circularity)}
 								onChange={(e) => {handleCheckbox("forced_circularity", values); handleChange(e);}}
 							/>
+							<FormControl type="number"
+								label="Deadzone Size (%)"
+								name="analog_deadzone"
+								className="form-control-sm"
+								groupClassName="col-sm-3 mb-3"
+								value={values.analog_deadzone}
+								error={errors.analog_deadzone}
+								isInvalid={errors.analog_deadzone}
+								onChange={handleChange}
+								min={0}
+								max={100}
+							/>
 						</Row>
 						</div>
 						<FormCheck
@@ -781,7 +797,7 @@ export default function AddonsConfigPage() {
 								error={errors.turboShotCount}
 								isInvalid={errors.turboShotCount}
 								onChange={handleChange}
-								min={2}
+								min={5}
 								max={30}
 							/>
 							<FormSelect

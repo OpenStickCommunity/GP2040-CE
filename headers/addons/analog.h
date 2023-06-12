@@ -23,6 +23,10 @@
 #define FORCED_CIRCULARITY_ENABLED 0
 #endif
 
+#ifndef DEFAULT_ANALOG_DEADZONE
+#define DEFAULT_ANALOG_DEADZONE 5
+#endif  // DEFAULT_SHOT_PER_SEC
+
 // Analog Module Name
 #define AnalogName "Analog"
 
@@ -37,6 +41,7 @@ private:
 	uint8_t analogAdcPinX;
 	uint8_t analogAdcPinY;
 	bool forced_circularity;
+	uint8_t analog_deadzone;
 };
 
 #endif  // _Analog_H_

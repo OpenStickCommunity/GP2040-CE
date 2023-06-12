@@ -9,7 +9,6 @@
 
 #define ADC_MAX ((1 << 12) - 1)
 #define ANALOG_CENTER 0.5f // 0.5f is center
-#define ANALOG_DEADZONE 0.05f // move to config (future release)
 
 bool AnalogInput::available() {
     return Storage::getInstance().getAddonOptions().analogOptions.enabled;
@@ -19,7 +18,8 @@ void AnalogInput::setup() {
     const AnalogOptions& options = Storage::getInstance().getAddonOptions().analogOptions;
 	analogAdcPinX = options.analogAdcPinX;
 	analogAdcPinY = options.analogAdcPinY;
-    forced_circularity = options.forced_circularity;
+	forced_circularity = options.forced_circularity;
+	analog_deadzone = options.analog_deadzone;
 
     // Make sure GPIO is high-impedance, no pullups etc
     if ( isValidPin(analogAdcPinX) )
@@ -33,20 +33,25 @@ void AnalogInput::process()
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     float adc_x = ANALOG_CENTER;
     float adc_y = ANALOG_CENTER;
+    float deadzone = analog_deadzone / 200.0f;
+
     if ( isValidPin(analogAdcPinX) ) {
         adc_select_input(analogAdcPinX-26); // ANALOG-X
         adc_x = ((float)adc_read())/ADC_MAX;
         
-        if ( abs(adc_x - ANALOG_CENTER) < ANALOG_DEADZONE ) // deadzones
+        if ( abs(adc_x - ANALOG_CENTER) < deadzone ) // deadzones
             adc_x = ANALOG_CENTER;
     }
     if ( isValidPin(analogAdcPinY) ) {
         adc_select_input(analogAdcPinY-26); // ANALOG-Y
         adc_y = ((float)adc_read())/ADC_MAX;
 
-        if ( abs(adc_y - ANALOG_CENTER) < ANALOG_DEADZONE ) // deadzones
+        if ( abs(adc_y - ANALOG_CENTER) < deadzone ) // deadzones
             adc_y = ANALOG_CENTER;
     }
+
+    printf("deadzone - %f\n", deadzone);
+    printf("analog_deadzone - %f\n", analog_deadzone);
     
     // Alter coordinates to force perfect circularity
     if (forced_circularity){

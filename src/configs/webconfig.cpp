@@ -845,6 +845,7 @@ std::string setAddonOptions()
 	docToPin(analogOptions.analogAdcPinX, doc, "analogAdcPinX");
 	docToPin(analogOptions.analogAdcPinY, doc, "analogAdcPinY");
 	docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
+	docToValue(analogOptions.analog_deadzone, doc, "analog_deadzone");
 	docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1055,6 +1056,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "analogAdcPinX", cleanPin(analogOptions.analogAdcPinX));
 	writeDoc(doc, "analogAdcPinY", cleanPin(analogOptions.analogAdcPinY));
 	writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
+	writeDoc(doc, "analog_deadzone", analogOptions.analog_deadzone);
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
