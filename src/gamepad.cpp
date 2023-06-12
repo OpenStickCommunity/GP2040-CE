@@ -5,6 +5,7 @@
 
 // GP2040 Libraries
 #include "gamepad.h"
+#include "enums.pb.h"
 #include "storagemanager.h"
 
 #include "FlashPROM.h"
@@ -317,6 +318,10 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 			case HOTKEY_INVERT_Y_AXIS     :
 				if (lastAction != HOTKEY_INVERT_Y_AXIS)
 					options.invertYAxis = !options.invertYAxis;
+				break;
+			case HOTKEY_TOGGLE_4_WAY_MODE :
+				if (lastAction != HOTKEY_TOGGLE_4_WAY_MODE)
+					options.fourWayMode = !options.fourWayMode;
 				break;
 		}
 

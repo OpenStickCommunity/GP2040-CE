@@ -124,6 +124,7 @@ enum GamepadHotkey
     HOTKEY_INVERT_Y_AXIS        = 10;
     HOTKEY_SOCD_FIRST_INPUT     = 11;
     HOTKEY_SOCD_BYPASS          = 12;
+    HOTKEY_TOGGLE_4_WAY_MODE    = 13;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp

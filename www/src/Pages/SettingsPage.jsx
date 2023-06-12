@@ -52,6 +52,7 @@ const HOTKEY_ACTIONS = [
 	{ label: 'SOCD Cleaning Off', value: 12 },
 	{ label: 'Invert X Axis', value: 9 },
 	{ label: 'Invert Y Axis', value: 10 },
+	{ label: 'Toggle 4-Way Joystick Mode', value: 13 },
 ];
 
 const FORCED_SETUP_MODES = [
