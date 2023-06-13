@@ -1,24 +1,31 @@
-import React, { useContext } from 'react';
-import { Dropdown } from 'react-bootstrap';
-import { AppContext } from '../Contexts/AppContext';
-
+import React, { useContext } from "react";
+import { Dropdown } from "react-bootstrap";
+import { AppContext } from "../Contexts/AppContext";
+import SunIcon from "../Icons/Sun";
+import MoonStarsIcon from "../Icons/MoonStars";
+import CircleHalfIcon from "../Icons/CircleHalf";
 
 const dropdownOptions = [
-	{ scheme: 'light', icon: 'bi-sun-fill', label: 'Light' },
-	{ scheme: 'dark', icon: 'bi-moon-stars-fill', label: 'Dark' },
-	{ scheme: 'auto', icon: 'bi-circle-half', label: 'Auto' },
+	{ scheme: "light", icon: SunIcon, label: "Light" },
+	{ scheme: "dark", icon: MoonStarsIcon, label: "Dark" },
+	{ scheme: "auto", icon: CircleHalfIcon, label: "Auto" },
 ];
 
 const setTheme = function (theme) {
 	const rootElement = document.documentElement;
-	const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+	const prefersDarkMode = window.matchMedia(
+		"(prefers-color-scheme: dark)"
+	).matches;
 
-	if (theme === 'auto') {
-		rootElement.setAttribute('data-bs-theme', prefersDarkMode ? 'dark' : 'light');
+	if (theme === "auto") {
+		rootElement.setAttribute(
+			"data-bs-theme",
+			prefersDarkMode ? "dark" : "light"
+		);
 	} else {
-		rootElement.setAttribute('data-bs-theme', theme);
+		rootElement.setAttribute("data-bs-theme", theme);
 	}
-}
+};
 
 const ColorScheme = () => {
 	const { savedColorScheme, setSavedColorScheme } = useContext(AppContext);
@@ -28,22 +35,23 @@ const ColorScheme = () => {
 	const setThemeAndState = (newColorScheme) => {
 		setTheme(newColorScheme);
 		setSavedColorScheme(newColorScheme);
-	}
+	};
 
 	return (
 		<Dropdown>
 			<Dropdown.Toggle variant="secondary" style={{ marginRight: "7px" }}>
-				<i class="bi-moon-stars-fill"></i>
+				<MoonStarsIcon />
 			</Dropdown.Toggle>
 
 			<Dropdown.Menu>
 				{dropdownOptions.map((option) => (
 					<Dropdown.Item
 						key={option.theme}
-						className={`dropdown-item ${savedColorScheme === option.scheme ? 'active' : ''}`}
+						as={"button"}
+						className={savedColorScheme === option.scheme ? "active" : ""}
 						onClick={() => setThemeAndState(option.scheme)}
 					>
-						<i className={option.icon}></i> {option.label}
+						<option.icon /> {option.label}
 					</Dropdown.Item>
 				))}
 			</Dropdown.Menu>
