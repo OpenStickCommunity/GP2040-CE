@@ -56,8 +56,8 @@
  *****************************************************************************************/
 
 $preview-height: 400px;
-$preview-width: $preview-height * 2;
-$preview-padding: $preview-height / 20;
+$preview-width: calc($preview-height * 2);
+$preview-padding: calc($preview-height / 20);;
 $button-size-multiplier: 3;
 $button-12mm: 12px;
 $button-24mm: 24px;

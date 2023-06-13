@@ -101,8 +101,8 @@ export default function KeyboardMappingPage() {
 	const [validated, setValidated] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
-	const [selectedController] = useState(process.env.REACT_APP_GP2040_CONTROLLER);
-	const [selectedBoard] = useState(process.env.REACT_APP_GP2040_BOARD);
+	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
+	const [selectedBoard] = useState(import.meta.env.VITE_GP2040_BOARD);
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 

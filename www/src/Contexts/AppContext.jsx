@@ -7,11 +7,11 @@ export const AppContext = createContext(null);
 
 let checkPins = null;
 
-yup.addMethod(yup.string, 'validateColor', function(this: yup.StringSchema, name) {
+yup.addMethod(yup.string, 'validateColor', function() {
 	return this.test('', 'Valid hex color required', (value) => value?.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i));
 });
 
-yup.addMethod(yup.NumberSchema, 'validateSelectionWhenValue', function(this: yup.NumberSchema, name, choices) {
+yup.addMethod(yup.NumberSchema, 'validateSelectionWhenValue', function(name, choices) {
 	return this.when(name, {
 		is: value => !isNaN(parseInt(value)),
 		then: () => this.required().oneOf(choices.map(o => o.value)),
@@ -19,7 +19,7 @@ yup.addMethod(yup.NumberSchema, 'validateSelectionWhenValue', function(this: yup
 	})
 });
 
-yup.addMethod(yup.NumberSchema, 'validateNumberWhenValue', function(this: yup.NumberSchema, name) {
+yup.addMethod(yup.NumberSchema, 'validateNumberWhenValue', function(name) {
 	return this.when(name, {
 		is: value => !isNaN(parseInt(value)),
 		then: () => this.required(),
@@ -27,7 +27,7 @@ yup.addMethod(yup.NumberSchema, 'validateNumberWhenValue', function(this: yup.Nu
 	})
 });
 
-yup.addMethod(yup.NumberSchema, 'validateMinWhenEqualTo', function(this: yup.NumberSchema, name, compareValue, min) {
+yup.addMethod(yup.NumberSchema, 'validateMinWhenEqualTo', function(name, compareValue, min) {
 	return this.when(name, {
 		is: value => parseInt(value) === compareValue,
 		then: () => this.required().min(min),
@@ -35,7 +35,7 @@ yup.addMethod(yup.NumberSchema, 'validateMinWhenEqualTo', function(this: yup.Num
 	})
 });
 
-yup.addMethod(yup.NumberSchema, 'validateRangeWhenValue', function(this: yup.NumberSchema, name, min, max) {
+yup.addMethod(yup.NumberSchema, 'validateRangeWhenValue', function(name, min, max) {
 	return this.when(name, {
 		is: value => !isNaN(parseInt(value)),
 		then: () => this.required().min(min).max(max),
@@ -43,7 +43,7 @@ yup.addMethod(yup.NumberSchema, 'validateRangeWhenValue', function(this: yup.Num
 	});
 });
 
-yup.addMethod(yup.NumberSchema, 'validatePinWhenEqualTo', function(this: yup.NumberSchema, name, compareName, compareValue) {
+yup.addMethod(yup.NumberSchema, 'validatePinWhenEqualTo', function(name, compareName, compareValue) {
 	return this.when(compareName, {
 		is: value => parseInt(value) === compareValue,
 		then: () => this.validatePinWhenValue(name),
@@ -51,11 +51,11 @@ yup.addMethod(yup.NumberSchema, 'validatePinWhenEqualTo', function(this: yup.Num
 	})
 });
 
-yup.addMethod(yup.NumberSchema, 'validatePinWhenValue', function(this: yup.NumberSchema, name) {
+yup.addMethod(yup.NumberSchema, 'validatePinWhenValue', function(name) {
 	return this.checkUsedPins();
 });
 
-yup.addMethod(yup.NumberSchema, 'checkUsedPins', function(this: yup.NumberSchema) {
+yup.addMethod(yup.NumberSchema, 'checkUsedPins', function() {
 	return this.test('', '${originalValue} is unavailable/already assigned!', (value) => checkPins(value));
 });
 
