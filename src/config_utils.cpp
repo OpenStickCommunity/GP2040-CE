@@ -620,12 +620,15 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_POINTER(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 #define TO_JSON_CALLBACK(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 
-#define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
-    if (!firstField) str.append(",\n"); \
-    firstField = false; \
-    writeIndentation(str, indentLevel); \
-    str.append("\"" #fieldname "\": "); \
-    PREPROCESSOR_JOIN(TO_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname ## _MSGTYPE)
+#define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag, disallow_export) \
+    if (!disallow_export) \
+    { \
+        if (!firstField) str.append(",\n"); \
+        firstField = false; \
+        writeIndentation(str, indentLevel); \
+        str.append("\"" #fieldname "\": "); \
+        PREPROCESSOR_JOIN(TO_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname ## _MSGTYPE) \
+    }
 
 #define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::string& str, const structtype& s, int indentLevel);
 
@@ -948,7 +951,7 @@ bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* b
 #define FROM_JSON_POINTER(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 #define FROM_JSON_CALLBACK(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 
-#define FROM_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
+#define FROM_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag, disallow_export) \
     PREPROCESSOR_JOIN(FROM_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname)
 
 #define GEN_FROM_JSON_FUNCTION_DECL(structtype) static bool fromJSON ## structtype(JsonObjectConst jsonObject, structtype& configStruct);
