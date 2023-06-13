@@ -25,7 +25,7 @@
 
 #ifndef DEFAULT_ANALOG_DEADZONE
 #define DEFAULT_ANALOG_DEADZONE 5
-#endif  // DEFAULT_SHOT_PER_SEC
+#endif
 
 // Analog Module Name
 #define AnalogName "Analog"

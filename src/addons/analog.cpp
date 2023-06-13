@@ -49,9 +49,6 @@ void AnalogInput::process()
         if ( abs(adc_y - ANALOG_CENTER) < deadzone ) // deadzones
             adc_y = ANALOG_CENTER;
     }
-
-    printf("deadzone - %f\n", deadzone);
-    printf("analog_deadzone - %f\n", analog_deadzone);
     
     // Alter coordinates to force perfect circularity
     if (forced_circularity){
