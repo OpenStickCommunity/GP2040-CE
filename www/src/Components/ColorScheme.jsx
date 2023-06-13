@@ -5,7 +5,6 @@ import SunIcon from "../Icons/Sun";
 import MoonStarsIcon from "../Icons/MoonStars";
 import CircleHalfIcon from "../Icons/CircleHalf";
 
-MoonStarsIcon;
 const dropdownOptions = [
 	{ scheme: "light", icon: SunIcon, label: "Light" },
 	{ scheme: "dark", icon: MoonStarsIcon, label: "Dark" },
