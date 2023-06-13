@@ -6,6 +6,7 @@
 #include "pb_common.h"
 
 #include "BoardConfig.h"
+#include "GamepadConfig.h"
 #include "helper.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
@@ -97,38 +98,54 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, auxMask, 0);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, dpadMask, GAMEPAD_MASK_UP);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, action, HOTKEY_HOME_BUTTON);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, auxMask, 0);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, dpadMask, GAMEPAD_MASK_DOWN);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, action, HOTKEY_DPAD_DIGITAL);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, auxMask, 0);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, dpadMask, GAMEPAD_MASK_LEFT);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, action, HOTKEY_DPAD_LEFT_ANALOG);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, auxMask, 0);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, dpadMask, GAMEPAD_MASK_RIGHT);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, action, HOTKEY_DPAD_RIGHT_ANALOG);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, auxMask, 0);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, dpadMask, GAMEPAD_MASK_UP);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, action, HOTKEY_SOCD_UP_PRIORITY);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, auxMask, 0);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, dpadMask, GAMEPAD_MASK_DOWN);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, action, HOTKEY_SOCD_NEUTRAL);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, auxMask, 0);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, dpadMask, GAMEPAD_MASK_LEFT);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, action, HOTKEY_SOCD_LAST_INPUT);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, auxMask, 0);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, dpadMask, GAMEPAD_MASK_RIGHT);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, action, HOTKEY_INVERT_Y_AXIS);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, auxMask, HOTKEY_01_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, buttonsMask, HOTKEY_01_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, dpadMask, HOTKEY_01_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, action, GamepadHotkey(HOTKEY_01_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, auxMask, HOTKEY_02_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, buttonsMask, HOTKEY_02_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, dpadMask, HOTKEY_02_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, action, GamepadHotkey(HOTKEY_02_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, auxMask, HOTKEY_03_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, buttonsMask, HOTKEY_03_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, dpadMask, HOTKEY_03_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, action, GamepadHotkey(HOTKEY_03_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, auxMask, HOTKEY_04_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, buttonsMask, HOTKEY_04_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, dpadMask, HOTKEY_04_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, action, GamepadHotkey(HOTKEY_04_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, auxMask, HOTKEY_05_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, buttonsMask, HOTKEY_05_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, dpadMask, HOTKEY_05_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, action, GamepadHotkey(HOTKEY_05_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, auxMask, HOTKEY_06_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, buttonsMask, HOTKEY_06_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, dpadMask, HOTKEY_06_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, action, GamepadHotkey(HOTKEY_06_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, auxMask, HOTKEY_07_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, buttonsMask, HOTKEY_07_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, dpadMask, HOTKEY_07_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, action, GamepadHotkey(HOTKEY_07_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, auxMask, HOTKEY_08_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, buttonsMask, HOTKEY_08_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, dpadMask, HOTKEY_08_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, action, GamepadHotkey(HOTKEY_08_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, auxMask, HOTKEY_09_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, buttonsMask, HOTKEY_09_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, dpadMask, HOTKEY_09_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, action, GamepadHotkey(HOTKEY_09_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, auxMask, HOTKEY_10_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, buttonsMask, HOTKEY_10_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, dpadMask, HOTKEY_10_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, action, GamepadHotkey(HOTKEY_10_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, auxMask, HOTKEY_11_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, buttonsMask, HOTKEY_11_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, dpadMask, HOTKEY_11_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, action, GamepadHotkey(HOTKEY_11_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, auxMask, HOTKEY_12_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, buttonsMask, HOTKEY_12_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, dpadMask, HOTKEY_12_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, action, GamepadHotkey(HOTKEY_12_ACTION));
 
     // forcedSetupMode
     INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
