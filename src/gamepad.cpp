@@ -118,14 +118,6 @@ void Gamepad::setup()
 	mapButtonA1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA1),	GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA2),	GAMEPAD_MASK_A2);
 
-	uint16_t maskS1 = options.inputMode == INPUT_MODE_PS4
-	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_A2 : GAMEPAD_MASK_S1;
-	mapButtonS1  = new GamepadButtonMapping(pinMappings.pinButtonS1,  maskS1);
-
-	uint16_t maskA2 = options.inputMode == INPUT_MODE_PS4
-	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_S1 : GAMEPAD_MASK_A2;
-	mapButtonA2  = new GamepadButtonMapping(pinMappings.pinButtonA2, maskA2);
-
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
 		mapDpadUp,   mapDpadDown, mapDpadLeft, mapDpadRight,
@@ -266,11 +258,10 @@ void Gamepad::save()
 	Storage::getInstance().save();
 }
 
-GamepadHotkey Gamepad::hotkey()
+void Gamepad::hotkey()
 {
-	if (options.lockHotkeys) return HOTKEY_NONE;
+	if (options.lockHotkeys) return;
 
-	static GamepadHotkey lastAction = HOTKEY_NONE;
 	GamepadHotkey action = HOTKEY_NONE;
 	if (pressedF1())
 	{
@@ -291,33 +282,42 @@ GamepadHotkey Gamepad::hotkey()
 			state.dpad = 0;
 			state.buttons &= ~(f2Mask);
 		}
+	} else {
+		// no hotkey pressed, set reset last action so we can process the next press
+		lastAction = HOTKEY_NONE;
 	}
+	processHotkeyIfNewAction(action);
+}
 
-	switch (action) {
-		case HOTKEY_NONE              : return action;
-		case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; break;
-		case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; break;
-		case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; break;
-		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
-		case HOTKEY_CAPTURE_BUTTON    :
-			break;
-		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; break;
-		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; break;
-		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; break;
-		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY; break;
-		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; break;
-		case HOTKEY_INVERT_X_AXIS     : break;
-		case HOTKEY_INVERT_Y_AXIS     :
-			if (lastAction != HOTKEY_INVERT_Y_AXIS)
-				options.invertYAxis = !options.invertYAxis;
-			break;
-	}
+/**
+ * @brief Take a hotkey action if it hasn't already been taken, modifying state/options appropriately.
+ */
+void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
+{
+	if (action != lastAction) {
+		switch (action) {
+			case HOTKEY_NONE              : return;
+			case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; break;
+			case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; break;
+			case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; break;
+			case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
+			case HOTKEY_CAPTURE_BUTTON    :
+				break;
+			case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; break;
+			case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; break;
+			case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; break;
+			case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY; break;
+			case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; break;
+			case HOTKEY_INVERT_X_AXIS     : break;
+			case HOTKEY_INVERT_Y_AXIS     :
+				if (lastAction != HOTKEY_INVERT_Y_AXIS)
+					options.invertYAxis = !options.invertYAxis;
+				break;
+		}
 
-	GamepadHotkey hotkey = action;
-	if (hotkey != GamepadHotkey::HOTKEY_NONE)
+		lastAction = action;
 		save();
-
-	return hotkey;
+	}
 }
 
 
@@ -511,12 +511,12 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.button_r1       = pressedR1();
 	ps4Report.button_l2       = pressedL2();
 	ps4Report.button_r2       = pressedR2();
-	ps4Report.button_select   = pressedS1();
+	ps4Report.button_select   = options.switchTpShareForDs4 ? pressedA2() : pressedS1();
 	ps4Report.button_start    = pressedS2();
 	ps4Report.button_l3       = pressedL3();
 	ps4Report.button_r3       = pressedR3();
 	ps4Report.button_home     = pressedA1();
-	ps4Report.button_touchpad = pressedA2();
+	ps4Report.button_touchpad = options.switchTpShareForDs4 ? pressedS1() : pressedA2();
 
 	// report counter is 6 bits, but we circle 0-255
 	ps4Report.report_counter = last_report_counter++;

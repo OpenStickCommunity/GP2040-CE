@@ -21,8 +21,8 @@ export default function PinMappingPage() {
 	const [validated, setValidated] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [buttonMappings, setButtonMappings] = useState(baseButtonMappings);
-	const [selectedController] = useState(process.env.REACT_APP_GP2040_CONTROLLER);
-	const [selectedBoard] = useState(process.env.REACT_APP_GP2040_BOARD);
+	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
+	const [selectedBoard] = useState(import.meta.env.VITE_GP2040_BOARD);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
 	useEffect(() => {
@@ -143,10 +143,10 @@ export default function PinMappingPage() {
 					<tbody>
 						{Object.keys(BUTTONS[buttonLabelType])?.filter(p => p !== 'label' && p !== 'value').map((button, i) => {
 							let label = BUTTONS[buttonLabelType][button];
-							if (button === "S1" && swapTpShareLabels) {
+							if (button === "S1" && swapTpShareLabels && buttonLabelType === "ps4") {
 								label = BUTTONS[buttonLabelType]["A2"];
 							}
-							if (button === "A2" && swapTpShareLabels) {
+							if (button === "A2" && swapTpShareLabels && buttonLabelType === "ps4") {
 								label = BUTTONS[buttonLabelType]["S1"];
 							}
 							return <tr key={`button-map-${i}`} className={validated && !!buttonMappings[button].error ? "table-danger" : ""}>

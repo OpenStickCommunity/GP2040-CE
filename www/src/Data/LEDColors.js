@@ -1,6 +1,6 @@
 // Definitions in this file should match those in GP2040-CE/lib/AnimationStation/src/Animation.hpp
 
-import { rgbArrayToHex, toHex } from "../Services/Utilities";
+import { rgbArrayToHex } from "../Services/Utilities";
 
 const Black     = rgbArrayToHex([0, 0, 0]);
 const White     = rgbArrayToHex([255, 255, 255]);

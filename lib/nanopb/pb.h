@@ -520,42 +520,42 @@ struct pb_extension_s {
     }; \
     msgname ## _FIELDLIST(PB_GEN_FIELD_INFO_ASSERT_ ## width, structname)
 
-#define PB_GEN_FIELD_COUNT(structname, atype, htype, ltype, fieldname, tag) +1
-#define PB_GEN_REQ_FIELD_COUNT(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_COUNT(structname, atype, htype, ltype, fieldname, tag, disallow_export) +1
+#define PB_GEN_REQ_FIELD_COUNT(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     + (PB_HTYPE_ ## htype == PB_HTYPE_REQUIRED)
-#define PB_GEN_LARGEST_TAG(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_LARGEST_TAG(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     * 0 + tag
 
 /* X-macro for generating the entries in struct_field_info[] array. */
-#define PB_GEN_FIELD_INFO_1(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_1(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_1(tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_DATA_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_SIZE_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_ARRAY_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname))
 
-#define PB_GEN_FIELD_INFO_2(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_2(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_2(tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_DATA_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_SIZE_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_ARRAY_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname))
 
-#define PB_GEN_FIELD_INFO_4(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_4(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_4(tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_DATA_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_SIZE_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_ARRAY_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname))
 
-#define PB_GEN_FIELD_INFO_8(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_8(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_8(tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_DATA_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_SIZE_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_ARRAY_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname))
 
-#define PB_GEN_FIELD_INFO_AUTO(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_AUTO(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_AUTO2(PB_FIELDINFO_WIDTH_AUTO(_PB_ATYPE_ ## atype, _PB_HTYPE_ ## htype, _PB_LTYPE_ ## ltype), \
                    tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
@@ -572,35 +572,35 @@ struct pb_extension_s {
 /* X-macro for generating asserts that entries fit in struct_field_info[] array.
  * The structure of macros here must match the structure above in PB_GEN_FIELD_INFO_x(),
  * but it is not easily reused because of how macro substitutions work. */
-#define PB_GEN_FIELD_INFO_ASSERT_1(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_ASSERT_1(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_ASSERT_1(tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_DATA_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_SIZE_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_ARRAY_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname))
 
-#define PB_GEN_FIELD_INFO_ASSERT_2(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_ASSERT_2(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_ASSERT_2(tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_DATA_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_SIZE_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_ARRAY_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname))
 
-#define PB_GEN_FIELD_INFO_ASSERT_4(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_ASSERT_4(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_ASSERT_4(tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_DATA_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_SIZE_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_ARRAY_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname))
 
-#define PB_GEN_FIELD_INFO_ASSERT_8(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_ASSERT_8(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_ASSERT_8(tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_DATA_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_SIZE_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
                    PB_ARRAY_SIZE_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname))
 
-#define PB_GEN_FIELD_INFO_ASSERT_AUTO(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_FIELD_INFO_ASSERT_AUTO(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_FIELDINFO_ASSERT_AUTO2(PB_FIELDINFO_WIDTH_AUTO(_PB_ATYPE_ ## atype, _PB_HTYPE_ ## htype, _PB_LTYPE_ ## ltype), \
                    tag, PB_ATYPE_ ## atype | PB_HTYPE_ ## htype | PB_LTYPE_MAP_ ## ltype, \
                    PB_DATA_OFFSET_ ## atype(_PB_HTYPE_ ## htype, structname, fieldname), \
@@ -691,7 +691,7 @@ struct pb_extension_s {
 #define PB_ONEOF_NAME_MEMBER(unionname,membername,fullname) membername
 #define PB_ONEOF_NAME_FULL(unionname,membername,fullname) fullname
 
-#define PB_GEN_SUBMSG_INFO(structname, atype, htype, ltype, fieldname, tag) \
+#define PB_GEN_SUBMSG_INFO(structname, atype, htype, ltype, fieldname, tag, disallow_export) \
     PB_SUBMSG_INFO_ ## htype(_PB_LTYPE_ ## ltype, structname, fieldname)
 
 #define PB_SUBMSG_INFO_REQUIRED(ltype, structname, fieldname) PB_SI ## ltype(structname ## _ ## fieldname ## _MSGTYPE)

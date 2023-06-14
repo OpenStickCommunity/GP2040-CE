@@ -1,10 +1,13 @@
-const path = require('path');
-const fs = require('fs');
+import path from "path";
+import fs from "fs";
 
-const exec = require('child_process').execFile;
+import { execFile } from "child_process";
+import { fileURLToPath } from "url";
 
-const root = path.dirname(require.main.filename).replace(path.normalize("www"), "");
-const rootwww = path.dirname(require.main.filename);
+const __filename = fileURLToPath(import.meta.url);
+
+const root = path.dirname(__filename).replace(path.normalize("www"), "");
+const rootwww = path.dirname(__filename);
 
 const fsdata_filename = path.normalize("/lib/httpd/fsdata.c");
 
@@ -27,7 +30,7 @@ function correctincludes() {
 }
 
 function makefsdata() {
-      exec(path.normalize(process.platform !== "darwin" ? `${root}/tools/makefsdata` : `${root}/tools/makefsdata.darwin`), [path.normalize(`${rootwww}/build`), '-defl:1', '-xc:png,ico,json', `-f:`+ path.normalize(`${root}/lib/httpd/fsdata.c`)], function(error, data) {
+      execFile(path.normalize(process.platform !== "darwin" ? `${root}/tools/makefsdata` : `${root}/tools/makefsdata.darwin`), [path.normalize(`${rootwww}/build`), '-defl:1', '-xc:png,ico,json', `-f:`+ path.normalize(`${root}/lib/httpd/fsdata.c`)], function(error, data) {
         if (error) {
             console.error(error);
         } else {

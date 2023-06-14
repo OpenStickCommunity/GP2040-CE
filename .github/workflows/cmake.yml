@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: [Pico, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, KB2040, MavercadeKeebfighter, PicoAnn, PicoFightingBoard, ReflexEncoder, RP2040AdvancedBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress ]
+        GP2040_BOARDCONFIG: [Pico, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, KB2040, MavercadeKeebfighter, PicoAnn, PicoFightingBoard, ReflexEncoder, RP2040AdvancedBreakoutBoard, RP2040MiniBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress ]
 
     steps:
     #Global Setup

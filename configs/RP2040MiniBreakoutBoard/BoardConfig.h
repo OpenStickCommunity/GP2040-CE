@@ -6,7 +6,8 @@
 #ifndef PICO_BOARD_CONFIG_H_
 #define PICO_BOARD_CONFIG_H_
 
-#include <GamepadEnums.h>
+#include "enums.pb.h"
+
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.
@@ -15,30 +16,30 @@
 // Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
-#define PIN_DPAD_UP     26          // UP
-#define PIN_DPAD_DOWN   28          // DOWN
-#define PIN_DPAD_LEFT   29          // LEFT
-#define PIN_DPAD_RIGHT  27          // RIGHT
-#define PIN_BUTTON_B1   1           // B1 / A / B / Cross / 2 / K1
-#define PIN_BUTTON_B2   3           // B2 / B / A / Circle / 3 / K2
-#define PIN_BUTTON_B3   0           // B3 / X / Y / Square / 1 / P1
-#define PIN_BUTTON_B4   2           // B4 / Y / X / Triangle / 4 / P2
-#define PIN_BUTTON_L1   5           // L1 / LB / L / L1 / 5 / P4
-#define PIN_BUTTON_R1   4           // R1 / RB / R / R1 / 6 / P3
-#define PIN_BUTTON_L2   6           // L2 / LT / ZL / L2 / 7 / K4
-#define PIN_BUTTON_R2   7           // R2 / RT / ZR / R2 / 8 / K3
-#define PIN_BUTTON_S1   8           // S1 / Back / Minus / Select / 9 / Coin
+#define PIN_DPAD_UP     15           // UP
+#define PIN_DPAD_DOWN   14           // DOWN
+#define PIN_DPAD_RIGHT  13           // RIGHT
+#define PIN_DPAD_LEFT   12           // LEFT
+#define PIN_BUTTON_B1   3           // B1 / A / B / Cross / 2 / K1
+#define PIN_BUTTON_B2   2           // B2 / B / A / Circle / 3 / K2
+#define PIN_BUTTON_R2   0           // R2 / RT / ZR / R2 / 8 / K3
+#define PIN_BUTTON_L2   1           // L2 / LT / ZL / L2 / 7 / K4
+#define PIN_BUTTON_B3   8          // B3 / X / Y / Square / 1 / P1
+#define PIN_BUTTON_B4   6          // B4 / Y / X / Triangle / 4 / P2
+#define PIN_BUTTON_R1   5          // R1 / RB / R / R1 / 6 / P3
+#define PIN_BUTTON_L1   4          // L1 / LB / L / L1 / 5 / P4
+#define PIN_BUTTON_S1   11           // S1 / Back / Minus / Select / 9 / Coin
 #define PIN_BUTTON_S2   9           // S2 / Start / Plus / Start / 10 / Start
-#define PIN_BUTTON_L3   12          // L3 / LS / LS / L3 / 11 / LS
-#define PIN_BUTTON_R3   13          // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   14          // A1 / Guide / Home / PS / 13 / ~
-#define PIN_BUTTON_A2   15          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_L3   28          // L3 / LS / LS / L3 / 11 / LS
+#define PIN_BUTTON_R3   29          // R3 / RS / RS / R3 / 12 / RS
+#define PIN_BUTTON_A1   10          // A1 / Guide / Home / PS / 13 / ~
+#define PIN_BUTTON_A2   27          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
-#define PIN_SLIDER_SOCD_ONE    -1   // SOCD Slider Pin One
-#define PIN_SLIDER_SOCD_TWO    -1   // SOCD Slider Pin Two
+#define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
+#define PIN_SLIDER_SOCD_TWO    -1         // SOCD Slider Pin Two
 
 
 // This is the SOCD section.
@@ -82,7 +83,7 @@
 
 #define TURBO_LED_PIN -1
 
-#define BOARD_LEDS_PIN -1
+#define BOARD_LEDS_PIN 16
 
 #define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
@@ -176,7 +177,7 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define HAS_I2C_DISPLAY -1
+#define HAS_I2C_DISPLAY 0
 #define I2C_SDA_PIN 0
 #define I2C_SCL_PIN 1
 #define I2C_BLOCK i2c0
@@ -201,7 +202,8 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
+#define BOARD_LED_PIN 25
 
 // Dual Directional Add-on Options
 
@@ -225,16 +227,16 @@
 // Even for the modifier keys, HID_KEY entries should be used as the implementation expects those and will convert as necessary.
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP
 #define KEY_DPAD_DOWN   HID_KEY_ARROW_DOWN    // DOWN
-#define KEY_DPAD_LEFT   HID_KEY_ARROW_LEFT    // LEFT
 #define KEY_DPAD_RIGHT  HID_KEY_ARROW_RIGHT   // RIGHT
+#define KEY_DPAD_LEFT   HID_KEY_ARROW_LEFT    // LEFT
 #define KEY_BUTTON_B1   HID_KEY_SHIFT_LEFT    // B1 / A / B / Cross / 2 / K1
 #define KEY_BUTTON_B2   HID_KEY_Z             // B2 / B / A / Circle / 3 / K2
+#define KEY_BUTTON_R2   HID_KEY_X             // R2 / RT / ZR / R2 / 8 / K3
+#define KEY_BUTTON_L2   HID_KEY_V             // L2 / LT / ZL / L2 / 7 / K4
 #define KEY_BUTTON_B3   HID_KEY_CONTROL_LEFT  // B3 / X / Y / Square / 1 / P1
 #define KEY_BUTTON_B4   HID_KEY_ALT_LEFT      // B4 / Y / X / Triangle / 4 / P2
-#define KEY_BUTTON_L1   HID_KEY_C             // L1 / LB / L / L1 / 5 / P4
 #define KEY_BUTTON_R1   HID_KEY_SPACE         // R1 / RB / R / R1 / 6 / P3
-#define KEY_BUTTON_L2   HID_KEY_V             // L2 / LT / ZL / L2 / 7 / K4
-#define KEY_BUTTON_R2   HID_KEY_X             // R2 / RT / ZR / R2 / 8 / K3
+#define KEY_BUTTON_L1   HID_KEY_C             // L1 / LB / L / L1 / 5 / P4
 #define KEY_BUTTON_S1   HID_KEY_5             // S1 / Back / Minus / Select / 9 / Coin
 #define KEY_BUTTON_S2   HID_KEY_1             // S2 / Start / Plus / Start / 10 / Start
 #define KEY_BUTTON_L3   HID_KEY_EQUAL         // L3 / LS / LS / L3 / 11 / LS
