@@ -118,14 +118,6 @@ void Gamepad::setup()
 	mapButtonA1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA1),	GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA2),	GAMEPAD_MASK_A2);
 
-	uint16_t maskS1 = options.inputMode == INPUT_MODE_PS4
-	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_A2 : GAMEPAD_MASK_S1;
-	mapButtonS1  = new GamepadButtonMapping(pinMappings.pinButtonS1,  maskS1);
-
-	uint16_t maskA2 = options.inputMode == INPUT_MODE_PS4
-	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_S1 : GAMEPAD_MASK_A2;
-	mapButtonA2  = new GamepadButtonMapping(pinMappings.pinButtonA2, maskA2);
-
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
 		mapDpadUp,   mapDpadDown, mapDpadLeft, mapDpadRight,
@@ -519,12 +511,12 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.button_r1       = pressedR1();
 	ps4Report.button_l2       = pressedL2();
 	ps4Report.button_r2       = pressedR2();
-	ps4Report.button_select   = pressedS1();
+	ps4Report.button_select   = options.switchTpShareForDs4 ? pressedA2() : pressedS1();
 	ps4Report.button_start    = pressedS2();
 	ps4Report.button_l3       = pressedL3();
 	ps4Report.button_r3       = pressedR3();
 	ps4Report.button_home     = pressedA1();
-	ps4Report.button_touchpad = pressedA2();
+	ps4Report.button_touchpad = options.switchTpShareForDs4 ? pressedS1() : pressedA2();
 
 	// report counter is 6 bits, but we circle 0-255
 	ps4Report.report_counter = last_report_counter++;
