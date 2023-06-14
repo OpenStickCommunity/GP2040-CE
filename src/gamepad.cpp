@@ -323,6 +323,12 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 				if (lastAction != HOTKEY_TOGGLE_4_WAY_MODE)
 					options.fourWayMode = !options.fourWayMode;
 				break;
+			case HOTKEY_TOGGLE_DDI_4_WAY_MODE:
+				if (lastAction != HOTKEY_TOGGLE_DDI_4_WAY_MODE) {
+					DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
+					ddiOpt.fourWayMode = !ddiOpt.fourWayMode;
+				}
+				break;
 		}
 
 		lastAction = action;

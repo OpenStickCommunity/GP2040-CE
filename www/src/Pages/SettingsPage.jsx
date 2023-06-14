@@ -53,6 +53,7 @@ const HOTKEY_ACTIONS = [
 	{ label: 'Invert X Axis', value: 9 },
 	{ label: 'Invert Y Axis', value: 10 },
 	{ label: 'Toggle 4-Way Joystick Mode', value: 13 },
+	{ label: 'Toggle DDI 4-Way Joystick Mode', value: 14 },
 ];
 
 const FORCED_SETUP_MODES = [
