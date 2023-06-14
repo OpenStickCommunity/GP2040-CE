@@ -266,11 +266,10 @@ void Gamepad::save()
 	Storage::getInstance().save();
 }
 
-GamepadHotkey Gamepad::hotkey()
+void Gamepad::hotkey()
 {
-	if (options.lockHotkeys) return HOTKEY_NONE;
+	if (options.lockHotkeys) return;
 
-	static GamepadHotkey lastAction = HOTKEY_NONE;
 	GamepadHotkey action = HOTKEY_NONE;
 	if (pressedF1())
 	{
@@ -291,33 +290,42 @@ GamepadHotkey Gamepad::hotkey()
 			state.dpad = 0;
 			state.buttons &= ~(f2Mask);
 		}
+	} else {
+		// no hotkey pressed, set reset last action so we can process the next press
+		lastAction = HOTKEY_NONE;
 	}
+	processHotkeyIfNewAction(action);
+}
 
-	switch (action) {
-		case HOTKEY_NONE              : return action;
-		case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; break;
-		case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; break;
-		case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; break;
-		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
-		case HOTKEY_CAPTURE_BUTTON    :
-			break;
-		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; break;
-		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; break;
-		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; break;
-		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY; break;
-		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; break;
-		case HOTKEY_INVERT_X_AXIS     : break;
-		case HOTKEY_INVERT_Y_AXIS     :
-			if (lastAction != HOTKEY_INVERT_Y_AXIS)
-				options.invertYAxis = !options.invertYAxis;
-			break;
-	}
+/**
+ * @brief Take a hotkey action if it hasn't already been taken, modifying state/options appropriately.
+ */
+void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
+{
+	if (action != lastAction) {
+		switch (action) {
+			case HOTKEY_NONE              : return;
+			case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; break;
+			case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; break;
+			case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; break;
+			case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
+			case HOTKEY_CAPTURE_BUTTON    :
+				break;
+			case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; break;
+			case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; break;
+			case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; break;
+			case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY; break;
+			case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; break;
+			case HOTKEY_INVERT_X_AXIS     : break;
+			case HOTKEY_INVERT_Y_AXIS     :
+				if (lastAction != HOTKEY_INVERT_Y_AXIS)
+					options.invertYAxis = !options.invertYAxis;
+				break;
+		}
 
-	GamepadHotkey hotkey = action;
-	if (hotkey != GamepadHotkey::HOTKEY_NONE)
+		lastAction = action;
 		save();
-
-	return hotkey;
+	}
 }
 
 
