@@ -349,14 +349,14 @@ const defaultValues = {
 	i2cAnalog1219Speed: 400000,
 	i2cAnalog1219Address: 0x40,
 	onBoardLedMode: 0,
-	dualUpPin: -1,
-	dualDownPin: -1,
-	dualLeftPin: -1,
-	dualRightPin: -1,
+	dualDirUpPin: -1,
+	dualDirDownPin: -1,
+	dualDirLeftPin: -1,
+	dualDirRightPin: -1,
 	dualDirDpadMode: 0,
 	dualDirCombineMode: 0,
 	analogAdcPinX : -1,
- 	analogAdcPinY : -1,
+	analogAdcPinY : -1,
 	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
@@ -464,14 +464,14 @@ const sanitizeData = (values) => {
 			values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
 		if (!!values.onBoardLedMode)
 			values.onBoardLedMode = parseInt(values.onBoardLedMode);
-		if (!!values.dualDownPin)
-			values.dualDownPin = parseInt(values.dualDownPin);
-		if (!!values.dualUpPin)
-			values.dualUpPin = parseInt(values.dualUpPin);
-		if (!!values.dualLeftPin)
-			values.dualLeftPin = parseInt(values.dualLeftPin);
-		if (!!values.dualRightPin)
-			values.dualRightPin = parseInt(values.dualRightPin);
+		if (!!values.dualDirDownPin)
+			values.dualDirDownPin = parseInt(values.dualDirDownPin);
+		if (!!values.dualDirUpPin)
+			values.dualDirUpPin = parseInt(values.dualDirUpPin);
+		if (!!values.dualDirLeftPin)
+			values.dualDirLeftPin = parseInt(values.dualDirLeftPin);
+		if (!!values.dualDirRightPin)
+			values.dualDirRightPin = parseInt(values.dualDirRightPin);
 		if (!!values.dualDirMode)
 			values.dualDirMode = parseInt(values.dualDirMode);
 		if (!!values.analogAdcPinX)
