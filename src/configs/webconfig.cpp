@@ -224,16 +224,43 @@ DynamicJsonDocument get_post_data()
 void save_hotkey(HotkeyEntry* hotkey, const DynamicJsonDocument& doc, const string hotkey_key)
 {
 	readDoc(hotkey->auxMask, doc, hotkey_key, "auxMask");
-	readDoc(hotkey->buttonsMask, doc, hotkey_key, "buttonsMask");
-	readDoc(hotkey->dpadMask, doc, hotkey_key, "dpadMask");
+	uint32_t buttonsMask = doc[hotkey_key]["buttonsMask"];
+	uint32_t dpadMask = 0;
+	if (buttonsMask & GAMEPAD_MASK_DU) {
+		dpadMask |= GAMEPAD_MASK_UP;
+	}
+	if (buttonsMask & GAMEPAD_MASK_DD) {
+		dpadMask |= GAMEPAD_MASK_DOWN;
+	}
+	if (buttonsMask & GAMEPAD_MASK_DL) {
+		dpadMask |= GAMEPAD_MASK_LEFT;
+	}
+	if (buttonsMask & GAMEPAD_MASK_DR) {
+		dpadMask |= GAMEPAD_MASK_RIGHT;
+	}
+	buttonsMask &= ~(GAMEPAD_MASK_DU | GAMEPAD_MASK_DD | GAMEPAD_MASK_DL | GAMEPAD_MASK_DR);
+	hotkey->dpadMask = dpadMask;
+	hotkey->buttonsMask = buttonsMask;
 	readDoc(hotkey->action, doc, hotkey_key, "action");
 }
 
 void load_hotkey(const HotkeyEntry* hotkey, DynamicJsonDocument& doc, const string hotkey_key)
 {
 	writeDoc(doc, hotkey_key, "auxMask", hotkey->auxMask);
-	writeDoc(doc, hotkey_key, "buttonsMask", hotkey->buttonsMask);
-	writeDoc(doc, hotkey_key, "dpadMask", hotkey->dpadMask);
+	uint32_t buttonsMask = hotkey->buttonsMask;
+	if (hotkey->dpadMask & GAMEPAD_MASK_UP) {
+		buttonsMask |= GAMEPAD_MASK_DU;
+	}
+	if (hotkey->dpadMask & GAMEPAD_MASK_DOWN) {
+		buttonsMask |= GAMEPAD_MASK_DD;
+	}
+	if (hotkey->dpadMask & GAMEPAD_MASK_LEFT) {
+		buttonsMask |= GAMEPAD_MASK_DL;
+	}
+	if (hotkey->dpadMask & GAMEPAD_MASK_RIGHT) {
+		buttonsMask |= GAMEPAD_MASK_DR;
+	}
+	writeDoc(doc, hotkey_key, "buttonsMask", buttonsMask);
 	writeDoc(doc, hotkey_key, "action", hotkey->action);
 }
 

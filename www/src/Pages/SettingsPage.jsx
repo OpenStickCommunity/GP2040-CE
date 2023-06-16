@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
-import { BUTTONS } from '../Data/Buttons';
+import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
 
 const PS4Mode = 4;
 const INPUT_MODES = [
@@ -63,16 +63,22 @@ const FORCED_SETUP_MODES = [
 	{ label: 'Disable Input-Mode Switch and Web-Config', value: 3 },
 ];
 
+const hotkeySchema = {
+	action: yup.number().required().oneOf(HOTKEY_ACTIONS.map(o => o.value)).label('Hotkey Action'),
+	buttonsMask: yup.number().required().label('Button Mask'),
+	auxMask: yup.number().required().label('Function Key')
+};
+
+const hotkeyFields = Array(12).fill(0).reduce((acc, a, i) => {
+	const number = String(i + 1).padStart(2, '0');
+	const newSchema = yup.object().label('Hotkey ' + number).shape({ ...hotkeySchema });
+	acc["hotkey" + number] = newSchema;
+	return acc;
+}, {});
+
 const schema = yup.object().shape({
 	dpadMode : yup.number().required().oneOf(DPAD_MODES.map(o => o.value)).label('D-Pad Mode'),
-	hotkeyF1 : yup.array().of(yup.object({
-		action: yup.number().required().oneOf(HOTKEY_ACTIONS.map(o => o.value)).label('Hotkey action'),
-		mask: yup.number().required().oneOf(HOTKEY_MASKS.map(o => o.value)).label('Hotkey action')
-	})),
-	hotkeyF2 : yup.array().of(yup.object({
-		action: yup.number().required().oneOf(HOTKEY_ACTIONS.map(o => o.value)).label('Hotkey action'),
-		mask: yup.number().required().oneOf(HOTKEY_MASKS.map(o => o.value)).label('Hotkey action')
-	})),
+	...hotkeyFields,
 	inputMode: yup.number().required().oneOf(INPUT_MODES.map(o => o.value)).label('Input Mode'),
 	socdMode : yup.number().required().oneOf(SOCD_MODES.map(o => o.value)).label('SOCD Cleaning Mode'),
 	switchTpShareForDs4: yup.number().required().label('Switch Touchpad and Share'),
@@ -111,14 +117,16 @@ const FormContext = ({ setButtonLabels }) => {
 
 		setButtonLabels({ swapTpShareLabels: (values.switchTpShareForDs4 === 1) && (values.inputMode === 4) });
 
-		values.hotkeyF1 = values.hotkeyF1?.map( i => ({
-			action: parseInt(i.action),
-			mask: parseInt(i.mask)
-		}));
-		values.hotkeyF2 = values.hotkeyF2?.map( i => ({
-			action: parseInt(i.action),
-			mask: parseInt(i.mask)
-		}));
+		Object.keys(hotkeyFields).forEach(a => {
+			const value = values[a];
+			if (value) {
+				values[a] = {
+					action: parseInt(value.action),
+					buttonsMask: parseInt(value.buttonsMask),
+					auxMask: parseInt(value.auxMask)
+				}
+			};
+		});
 	}, [values, setValues]);
 
 	return null;
@@ -228,34 +236,45 @@ export default function SettingsPage() {
 					<Section title="Hotkey Settings">
 						<div id="Hotkeys"
 							hidden={values.lockHotkeys}>
-							<div className='row'>
-								<Form.Label className='col'>{buttonLabelS1 + " + " + buttonLabelS2}</Form.Label>
-							</div>
-							{HOTKEY_MASKS.map((o, i) =>
+							{Object.keys(hotkeyFields).map((o, i) =>
 								<Form.Group key={`hotkey-${i}`} className="row mb-3">
-								<div className="col-sm-1">{o.label}</div>
-								<div className="col-sm-2">
-									<Form.Select name={`hotkeyF1[${i}].action`} className="form-select-sm" value={values?.hotkeyF1 && values?.hotkeyF1[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}>
-										{HOTKEY_ACTIONS.map((o, i) => <option key={`f1-option-${i}`} value={o.value}>{o.label}</option>)}
-									</Form.Select>
-									<Form.Control.Feedback type="invalid">{errors?.hotkeyF1 && errors?.hotkeyF1[i]?.action}</Form.Control.Feedback>
+								<div className="col-sm-1">
+									<Form.Check name={`${o}.auxMask`} label="&nbsp;&nbsp;Fn" type="switch" className="form-select-sm" checked={values[o] && !!(values[o]?.auxMask)} onChange={(e) => { setFieldValue(`${o}.auxMask`, e.target.checked ? 32768 : 0)}} isInvalid={errors[o] && errors[o]?.auxMask} />
+									<Form.Control.Feedback type="invalid">{errors[o] && errors[o]?.action}</Form.Control.Feedback>
 								</div>
-								</Form.Group>
-							)}	
-							<div className='row'>
-								<Form.Label className='col'>{buttonLabelS2 + " + " + buttonLabelA1}</Form.Label>
-							</div>
-							{HOTKEY_MASKS.map((o, i) =>
-								<Form.Group key={`hotkey-${i}`} className="row mb-3">
-								<div className="col-sm-1">{o.label}</div>
 								<div className="col-sm-2">
-									<Form.Select name={`hotkeyF2[${i}].action`} className="form-select-sm" value={values?.hotkeyF2 && values?.hotkeyF2[i]?.action} onChange={handleChange} isInvalid={errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}>
-										{HOTKEY_ACTIONS.map((o, i) => <option key={`f2-option-${i}`} value={o.value}>{o.label}</option>)}
+									<Form.Select name={`${o}.action`} className="form-select-sm" value={values[o] && values[o]?.action} onChange={handleChange} isInvalid={errors[o] && errors[o]?.action}>
+										{HOTKEY_ACTIONS.map((o, i) => <option key={`hotkey-action-${i}`} value={o.value}>{o.label}</option>)}
 									</Form.Select>
-									<Form.Control.Feedback type="invalid">{errors?.hotkeyF2 && errors?.hotkeyF2[i]?.action}</Form.Control.Feedback>
+									<Form.Control.Feedback type="invalid">{errors[o] && errors[o]?.action}</Form.Control.Feedback>
 								</div>
+								{BUTTON_MASKS.map(mask => ((values[o] && values[o]?.buttonsMask & mask.value) ?
+									<div className="col-sm-2">
+										<Form.Select
+											name={`${o}.buttonsMask`}
+											className="form-select-sm sm-1"
+											groupClassName="mb-3"
+											value={values[o] && (values[o]?.buttonsMask & mask.value)}
+											error={errors[o] && errors[o]?.buttonsMask}
+											isInvalid={errors[o] && errors[o]?.buttonsMask}
+											onChange={(e) => { setFieldValue(`${o}.buttonsMask`, (values[o] && values[o]?.buttonsMask ^ mask.value) | e.target.value); }}>
+												{BUTTON_MASKS.map((o, i2) => <option key={`hotkey-${i}-button${i2}`} value={o.value}>{o.label}</option>)}
+										</Form.Select>
+									</div> : <></>))}
+									<div className="col">
+										<div className="col-sm-2">
+											<Form.Select
+												name={`${o}.buttonsMask`}
+												className="form-select-sm sm-1"
+												groupClassName="mb-3"
+												value={0}
+												onChange={(e) => { setFieldValue(`${o}.buttonsMask`, (values[o] && values[o]?.buttonsMask) | e.target.value); }}>
+													{BUTTON_MASKS.map((o, i2) => <option key={`hotkey-${i}-buttonZero-${i2}`} value={o.value}>{o.label}</option>)}
+											</Form.Select>
+										</div>
+									</div>
 								</Form.Group>
-							)}	
+							)}
 						</div>
 						<Form.Check
 							label="Lock Hotkeys"
