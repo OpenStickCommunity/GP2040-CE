@@ -86,8 +86,6 @@ static KeyboardReport keyboardReport
 
 Gamepad::Gamepad(int debounceMS) :
 	debounceMS(debounceMS)
-	, f1Mask((GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2))
-	, f2Mask((GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3))
 	, debouncer(debounceMS)
 	, options(Storage::getInstance().getGamepadOptions())
 	, hotkeyOptions(Storage::getInstance().getHotkeyOptions())
@@ -96,8 +94,6 @@ Gamepad::Gamepad(int debounceMS) :
 void Gamepad::setup()
 {
 	// Configure pin mapping
-	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-
 	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
 
 	const auto convertPin = [](int32_t pin) -> uint8_t { return isValidPin(pin) ? pin : 0xff; };

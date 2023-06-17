@@ -155,8 +155,6 @@ public:
 
 	GamepadDebouncer debouncer;
 	const uint8_t debounceMS;
-	uint16_t f1Mask;
-	uint16_t f2Mask;
 	GamepadState rawState;
 	GamepadState state;
 	GamepadButtonMapping *mapDpadUp;
