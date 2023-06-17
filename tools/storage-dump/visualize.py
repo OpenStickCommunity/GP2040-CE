@@ -43,10 +43,17 @@ def get_config(filename):
 
 @click.command()
 @click.argument('filename')
-def visualize(filename):
+@click.option('--redump', default=None, help="re-serialize the config to the specified filename")
+def visualize(filename, redump):
     """Read FILENAME (a .bin dump of a GP2040-CE's Protobuf storage section (commonly 101FE000-101FFFF4))
     and print out its contents."""
-    pprint.pprint(get_config(filename))
+    config = get_config(filename)
+    pprint.pprint(config)
+
+    if redump:
+        print(f"writing config to new binary file {redump}...")
+        with open(redump, 'wb') as dump:
+            dump.write(config.SerializeToString())
 
 
 if __name__ == '__main__':
