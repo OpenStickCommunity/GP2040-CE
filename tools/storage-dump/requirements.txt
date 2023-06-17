@@ -7,7 +7,9 @@
 build==0.10.0
     # via pip-tools
 click==8.1.3
-    # via pip-tools
+    # via
+    #   -r requirements.in
+    #   pip-tools
 packaging==23.1
     # via build
 pip-tools==6.13.0

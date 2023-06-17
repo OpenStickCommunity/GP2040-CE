@@ -23,12 +23,13 @@ Usage:
 """
 import pprint
 
+import click
 from config_pb2 import Config
 
 
-def get_config():
+def get_config(filename):
     """Load the protobuf section of an flash and display the contents."""
-    with open('build/memory.bin', 'rb') as dump:
+    with open(filename, 'rb') as dump:
         # read off the unused space
         while True:
             byte = dump.read(1)
@@ -40,5 +41,13 @@ def get_config():
     return config
 
 
+@click.command()
+@click.argument('filename')
+def visualize(filename):
+    """Read FILENAME (a .bin dump of a GP2040-CE's Protobuf storage section (commonly 101FE000-101FFFF4))
+    and print out its contents."""
+    pprint.pprint(get_config(filename))
+
+
 if __name__ == '__main__':
-    pprint.pprint(get_config())
+    visualize()
