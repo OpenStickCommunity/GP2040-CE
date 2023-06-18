@@ -16,7 +16,7 @@ struct Pixel {
   std::vector<uint8_t> positions; // The actual LED indexes on the chain
 };
 
-const Pixel NO_PIXEL(-1);
+inline const Pixel NO_PIXEL(-1);
 
 struct PixelMatrix {
   PixelMatrix() { }
