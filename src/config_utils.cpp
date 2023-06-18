@@ -728,50 +728,71 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
-#define FROM_JSON_INT32(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<int>()) \
-        { \
-            configStruct.fieldname = value.as<int>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+static bool fromJsonInt32(JsonObjectConst jsonObject, const char* fieldname, int32_t& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<int>())
+        {
+            value = jsonVariant.as<int>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-#define FROM_JSON_UINT32(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<unsigned int>()) \
-        { \
-            configStruct.fieldname = value.as<unsigned int>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+    return true;
+}
+
+#define FROM_JSON_INT32(fieldname, submessageType) if (!fromJsonInt32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonUint32(JsonObjectConst jsonObject, const char* fieldname, uint32_t& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<unsigned int>())
+        {
+            value = jsonVariant.as<unsigned int>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-#define FROM_JSON_BOOL(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<bool>()) \
-        { \
-            configStruct.fieldname = value.as<bool>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+    return true;
+}
+
+#define FROM_JSON_UINT32(fieldname, submessageType) if (!fromJsonUint32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonBool(JsonObjectConst jsonObject, const char* fieldname, bool& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<bool>())
+        {
+            value = jsonVariant.as<bool>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+    return true;
+}
+
+#define FROM_JSON_BOOL(fieldname, submessageType) if (!fromJsonBool(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
 
 #define FROM_JSON_STRING(fieldname, submessageType) \
     if (jsonObject.containsKey(#fieldname)) \
@@ -789,7 +810,7 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
-bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
+static bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
 {
     if (jsonObject.containsKey(fieldname))
     {
