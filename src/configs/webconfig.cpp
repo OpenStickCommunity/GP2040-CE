@@ -1185,12 +1185,14 @@ DataAndStatusCode setConfig()
 
 	// Store config struct on the heap to avoid stack overflow
 	std::unique_ptr<Config> config(new Config);
+	*config.get() = Config_init_default;
 	if (ConfigUtils::fromJSON(*config.get(), http_post_payload, http_post_payload_len))
 	{
-	Storage::getInstance().getConfig() = *config.get();
+		Storage::getInstance().getConfig() = *config.get();
+		config.reset();
 		if (Storage::getInstance().save())
 		{
-	return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
+			return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
 		}
 		else
 		{
