@@ -349,14 +349,14 @@ const defaultValues = {
 	i2cAnalog1219Speed: 400000,
 	i2cAnalog1219Address: 0x40,
 	onBoardLedMode: 0,
-	dualUpPin: -1,
-	dualDownPin: -1,
-	dualLeftPin: -1,
-	dualRightPin: -1,
+	dualDirUpPin: -1,
+	dualDirDownPin: -1,
+	dualDirLeftPin: -1,
+	dualDirRightPin: -1,
 	dualDirDpadMode: 0,
 	dualDirCombineMode: 0,
 	analogAdcPinX : -1,
- 	analogAdcPinY : -1,
+	analogAdcPinY : -1,
 	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
@@ -464,14 +464,14 @@ const sanitizeData = (values) => {
 			values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
 		if (!!values.onBoardLedMode)
 			values.onBoardLedMode = parseInt(values.onBoardLedMode);
-		if (!!values.dualDownPin)
-			values.dualDownPin = parseInt(values.dualDownPin);
-		if (!!values.dualUpPin)
-			values.dualUpPin = parseInt(values.dualUpPin);
-		if (!!values.dualLeftPin)
-			values.dualLeftPin = parseInt(values.dualLeftPin);
-		if (!!values.dualRightPin)
-			values.dualRightPin = parseInt(values.dualRightPin);
+		if (!!values.dualDirDownPin)
+			values.dualDirDownPin = parseInt(values.dualDirDownPin);
+		if (!!values.dualDirUpPin)
+			values.dualDirUpPin = parseInt(values.dualDirUpPin);
+		if (!!values.dualDirLeftPin)
+			values.dualDirLeftPin = parseInt(values.dualDirLeftPin);
+		if (!!values.dualDirRightPin)
+			values.dualDirRightPin = parseInt(values.dualDirRightPin);
 		if (!!values.dualDirMode)
 			values.dualDirMode = parseInt(values.dualDirMode);
 		if (!!values.analogAdcPinX)
@@ -740,7 +740,7 @@ export default function AddonsConfigPage() {
 								name="turboPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.turboPin || -1}
+								value={values.turboPin}
 								error={errors.turboPin}
 								isInvalid={errors.turboPin}
 								onChange={handleChange}
@@ -752,7 +752,7 @@ export default function AddonsConfigPage() {
 								name="turboPinLED"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.turboPinLED || -1}
+								value={values.turboPinLED}
 								error={errors.turboPinLED}
 								isInvalid={errors.turboPinLED}
 								onChange={handleChange}
@@ -776,7 +776,7 @@ export default function AddonsConfigPage() {
 								name="pinShmupDial"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.pinShmupDial || -1}
+								value={values.pinShmupDial}
 								error={errors.pinShmupDial}
 								isInvalid={errors.pinShmupDial}
 								onChange={handleChange}
@@ -1189,7 +1189,7 @@ export default function AddonsConfigPage() {
 								name="dualDirUpPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirUpPin || -1}
+								value={values.dualDirUpPin}
 								error={errors.dualDirUpPin}
 								isInvalid={errors.dualDirUpPin}
 								onChange={handleChange}
@@ -1201,7 +1201,7 @@ export default function AddonsConfigPage() {
 								name="dualDirDownPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirDownPin || -1}
+								value={values.dualDirDownPin}
 								error={errors.dualDirDownPin}
 								isInvalid={errors.dualDirDownPin}
 								onChange={handleChange}
@@ -1213,7 +1213,7 @@ export default function AddonsConfigPage() {
 								name="dualDirLeftPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirLeftPin || -1}
+								value={values.dualDirLeftPin}
 								error={errors.dualDirLeftPin}
 								isInvalid={errors.dualDirLeftPin}
 								onChange={handleChange}
@@ -1225,7 +1225,7 @@ export default function AddonsConfigPage() {
 								name="dualDirRightPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirRightPin || -1}
+								value={values.dualDirRightPin}
 								error={errors.dualDirRightPin}
 								isInvalid={errors.dualDirRightPin}
 								onChange={handleChange}
@@ -1322,7 +1322,7 @@ export default function AddonsConfigPage() {
 									name="extraButtonPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.extraButtonPin || -1}
+									value={values.extraButtonPin}
 									error={errors.extraButtonPin}
 									isInvalid={errors.extraButtonPin}
 									onChange={handleChange}
