@@ -34,8 +34,8 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
-const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
+const static char* spaPaths[] = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
+const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
@@ -1300,13 +1300,13 @@ int fs_open_custom(struct fs_file *file, const char *name)
 	}
 
 	bool isExclude = false;
-	for (const auto &excludePath : excludePaths)
-		if (!excludePath.compare(name))
+	for (const char* excludePath : excludePaths)
+		if (strcmp(excludePath, name) == 0)
 			return 0;
 
-	for (const auto &spaPath : spaPaths)
+	for (const char* spaPath : spaPaths)
 	{
-		if (!spaPath.compare(name))
+		if (strcmp(spaPath, name) == 0)
 		{
 			file->data = (const char *)file__index_html[0].data;
 			file->len = file__index_html[0].len;
