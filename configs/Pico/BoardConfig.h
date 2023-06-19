@@ -240,6 +240,14 @@
                             // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN -1
 
+// Button Lock Add-on setting
+#define FOCUS_MODE_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+                            // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
+#define FOCUS_MODE_PIN -1
+#define FOCUS_MODE_OLED_LOCK_ENABLED 0
+#define FOCUS_MODE_RGB_LOCK_ENABLED 0
+#define FOCUS_MODE_BUTTON_LOCK_ENABLED 0
+
 // Keyboard Mapping Configuration
 // List of HID keycodes can be located here: https://github.com/hathach/tinyusb/blob/3623ba1884ddff23e9b64766cb6dd032f1425846/src/class/hid/hid.h#L356
 // Even for the modifier keys, HID_KEY entries should be used as the implementation expects those and will convert as necessary.

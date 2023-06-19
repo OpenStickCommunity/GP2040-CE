@@ -190,6 +190,8 @@ private:
 	NeoPicoPlayerLEDs * neoPLEDs = nullptr;
 	AnimationStation as;
 	std::map<std::string, int> buttonPositions;
+	bool isFocusModeEnabled;
+	bool focusModePrevState;
 };
 
 #endif

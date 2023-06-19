@@ -869,6 +869,14 @@ std::string setAddonOptions()
 	docToValue(extraButtonOptions.buttonMap, doc, "extraButtonMap");
 	docToValue(extraButtonOptions.enabled, doc, "ExtraButtonAddonEnabled");
 
+    FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	docToPin(focusModeOptions.pin, doc, "focusModePin");
+	docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
+	docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
+	docToValue(focusModeOptions.oledLockEnabled, doc, "focusModeOledLockEnabled");
+	docToValue(focusModeOptions.rgbLockEnabled, doc, "focusModeRgbLockEnabled");
+	docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
+
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 	docToPin(analogADS1219Options.i2cSDAPin, doc, "i2cAnalog1219SDAPin");
 	docToPin(analogADS1219Options.i2cSCLPin, doc, "i2cAnalog1219SCLPin");
@@ -1152,6 +1160,14 @@ std::string getAddonOptions()
 	writeDoc(doc, "snesPadLatchPin", cleanPin(snesOptions.latchPin));
 	writeDoc(doc, "snesPadDataPin", cleanPin(snesOptions.dataPin));
 	writeDoc(doc, "SNESpadAddonEnabled", snesOptions.enabled);
+
+	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
+	writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
+	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
+	writeDoc(doc, "focusModeOledLockEnabled", focusModeOptions.oledLockEnabled);
+	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
+	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
 	return serialize_json(doc);
 }
