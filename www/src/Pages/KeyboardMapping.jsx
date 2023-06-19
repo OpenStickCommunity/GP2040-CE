@@ -93,7 +93,15 @@ const KEY_CODES = [
 	{ label: "Shift Right", value: 0xe5 },
 	{ label: "Slash", value: 0x38 },
 	{ label: "Space", value: 0x2c },
-	{ label: "Tab", value: 0x2b }
+	{ label: "Tab", value: 0x2b },
+	{ label: "Next Track", value: 0xe8 }, // (Scan Next Track)
+ 	{ label: "Prev Track", value: 0xe9 }, // (Scan Previous Track)
+ 	{ label: "Stop", value: 0xf0 }, // (Stop)
+ 	{ label: "Play/Pause", value: 0xf1 }, // (Play/Pause)
+ 	{ label: "Mute", value: 0xf2 }, // (Mute)
+ 	{ label: "Volume Up", value: 0xf3 }, // (Volume Increment)
+ 	{ label: "Volume Down", value: 0xf4 }, // (Volume Decrement)
+
 ];
 
 export default function KeyboardMappingPage() {

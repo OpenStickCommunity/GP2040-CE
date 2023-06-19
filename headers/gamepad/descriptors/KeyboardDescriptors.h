@@ -4,17 +4,29 @@
 #include "tusb.h"
 
 #define KEY_COUNT 104
+#define KEYBOARD_KEY_REPORT_ID 0x01
+#define KEYBOARD_MULTIMEDIA_REPORT_ID 0x02
+
+#define KEYBOARD_MULTIMEDIA_NEXT_TRACK  0XE8
+#define KEYBOARD_MULTIMEDIA_PREV_TRACK  0XE9
+#define KEYBOARD_MULTIMEDIA_STOP 	    0XF0
+#define KEYBOARD_MULTIMEDIA_PLAY_PAUSE  0XF1
+#define KEYBOARD_MULTIMEDIA_MUTE 	    0XF2
+#define KEYBOARD_MULTIMEDIA_VOLUME_UP   0XF3
+#define KEYBOARD_MULTIMEDIA_VOLUME_DOWN 0XF4
 
 /// Standard HID Boot Protocol Keyboard Report.
 typedef struct TU_ATTR_PACKED
 {
+	uint8_t reportId = KEYBOARD_KEY_REPORT_ID;
 	uint8_t keycode[16]; /**< Key codes of the currently pressed keys. */
+	uint8_t multimedia;
 } KeyboardReport;
 
 static const uint8_t keyboard_string_language[]    = { 0x09, 0x04 };
 static const uint8_t keyboard_string_manfacturer[] = "Open Stick Community";
 static const uint8_t keyboard_string_product[]     = "GP2040-CE (Keyboard)";
-static const uint8_t keyboard_string_version[]     = "1.0";
+static const uint8_t keyboard_string_version[]     = "1.1";
 
 static const uint8_t *keyboard_string_descriptors[] =
 {
@@ -52,43 +64,58 @@ enum
 
 #define EPNUM_HID   0x81
 
-static const uint8_t keyboard_report_descriptor[] = 
-{
-	0x05, 0x01,				// Usage Page (Generic Desktop),
-	0x09, 0x06,				// Usage (Keyboard),
-	0xA1, 0x01,				// Collection (Application),
-	// Modifier Keys
-	0x05, 0x07,					// Usage Page (Key Codes),
-	0x19, 0xE0,					// Usage Minimum (224),
-	0x29, 0xE7,					// Usage Maximum (231),
-	0x15, 0x00,					// Logical Minimum (0),
-	0x25, 0x01,					// Logical Maximum (1),
-	0x75, 0x01,					// Report Size (1),
-	0x95, 0x08,					// Report Count (8),
-	0x81, 0x02,					// Input (Data, Variable, Absolute),				;Modifier byte (0)
-	// LEDS
-	0x05, 0x08,					// Usage Page (LEDs),
-	0x19, 0x01,					// Usage Minimum (1),
-	0x29, 0x05,					// Usage Maximum (5),
-	0x75, 0x01,					// Report Size (1),
-	0x95, 0x05,					// Report Count (5),
-	0x91, 0x02,					// Output (Data, Variable, Absolute),				;LED Report (5/8)
-	0x75, 0x03,					// Report Size (3),
-	0x95, 0x01,					// Report Count (1),
-	0x91, 0x03,					// Output (Constant, Variable, Absolute),			;LED Report padding (8/8)
-	// Keys
-	0x05, 0x07,					// Usage Page (Key Codes),
-	0x19, 0x00,					// Usage Minimum (0),
-	0x29, KEY_COUNT - 1,		// Usage Maximum (103),
-	0x15, 0x00,					// Logical Minimum (0),
-	0x25, 0x01,					// Logical Maximum (1),
-	0x75, 0x01,					// Report Size (1),
-	0x95, KEY_COUNT,			// Report Count (104),
-	0x81, 0x02,					// Input (Data, Variable, Absolute),				;Key byte (1-13)
-	0x75, 0x08,					// Report Size (8),
-	0x95, 0x02,					// Report Count (2),
-	0x81, 0x03,					// Input (Constant, Variable, Absolute),			;Key byte padding (14-15)
-	0xC0					// End Collection
+static const uint8_t keyboard_report_descriptor[] =
+	{
+		0x05, 0x01, // Usage Page (Generic Desktop),
+		0x09, 0x06, // Usage (Keyboard),
+		0xA1, 0x01, 	// Collection (Application),
+
+		// Report ID (1)
+		0x85, KEYBOARD_KEY_REPORT_ID,
+		// Modifier Keys
+		0x05, 0x07, 		 // Usage Page (Key Codes),
+		0x19, 0xE0, 		 // Usage Minimum (224),
+		0x29, 0xE7, 		 // Usage Maximum (231),
+		0x15, 0x00, 		 // Logical Minimum (0),
+		0x25, 0x01, 		 // Logical Maximum (1),
+		0x75, 0x01, 		 // Report Size (1),
+		0x95, 0x08, 		 // Report Count (8),
+		0x81, 0x02, 		 // Input (Data, Variable, Absolute),				;Modifier byte (0)	
+		// Keys
+		0x05, 0x07,			 // Usage Page (Key Codes),
+		0x19, 0x00,			 // Usage Minimum (0),
+		0x29, KEY_COUNT - 1, // Usage Maximum (103),
+		0x15, 0x00,			 // Logical Minimum (0),
+		0x25, 0x01,			 // Logical Maximum (1),
+		0x75, 0x01,			 // Report Size (1),
+		0x95, KEY_COUNT,	 // Report Count (104),
+		0x81, 0x02,			 // Input (Data, Variable, Absolute), Key byte (1-13)
+		0x75, 0x08,			 // Report Size (8),
+		0x95, 0x02,			 // Report Count (2),
+		0x81, 0x03,			 // Input (Constant, Variable, Absolute), Key byte padding (14-15)
+		0xC0,			// End Collection
+		0x05, 0x0C, //Usage Page (Consumer Devices)
+		0x09, 0x01, //Usage (Consumer Control)
+		0xA1, 0x01, 	//Collection (Application)
+		
+		//Report ID (2)
+		0x85, KEYBOARD_MULTIMEDIA_REPORT_ID,
+		0x05, 0x0C,			 //Usage Page (Consumer Devices)
+		0x15, 0x00,			 //Logical Minimum (0)
+		0x25, 0x01,			 //Logical Maximum (1)
+		0x75, 0x01,			 //Report Size (1)
+		0x95, 0x07,			 //Report Count (7)
+		0x09, 0xB5,			 //Usage (Scan Next Track)
+		0x09, 0xB6,			 //Usage (Scan Previous Track)
+		0x09, 0xB7,			 //Usage (Stop)
+		0x09, 0xCD,			 //Usage (Play/Pause)
+		0x09, 0xE2,			 //Usage (Mute)
+		0x09, 0xE9,			 //Usage (Volume Increment)
+		0x09, 0xEA,			 //Usage (Volume Decrement)
+		0x81, 0x02,			 //Input (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)
+		0x95, 0x01,			 //Report Count (1)
+		0x81, 0x01,			 //Input (Const,Ary,Abs)
+		0xC0,			//End Collection
 };
 
 // Interface number, string index, protocol, report descriptor len, EP In address, size & polling interval
