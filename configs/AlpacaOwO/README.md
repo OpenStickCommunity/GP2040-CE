@@ -2,7 +2,9 @@
 
 ![Alpaca-OwO](assets/Alpaca-OwO-front.webp)
 
-Free, open source and flexible arcade controller I/O platform in standard fightstick PCB form factor.
+Free, open source and flexible arcade controller I/O platform in standard fightstick PCB form factor.  
+
+You can find the GitHub [Here](https://github.com/Project-Alpaca/Alpaca-OwO).
 
 [Pin assignment](https://github.com/Project-Alpaca/Alpaca-OwO#pin-assignments). By default it uses GP2040's convention on Share/Touchpad key mapping (i.e. `Share == Select (S1)` and `Touchpad == Capture (A2)`).
 
