@@ -1,10 +1,11 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ * SPDX-FileCopyrightText: Copyright (c) 2022-2023 Project Alpaca (project-alpaca.github.io)
  */
 
-#ifndef PICO_BOARD_CONFIG_H_
-#define PICO_BOARD_CONFIG_H_
+#ifndef ALPACAOWO_BOARD_CONFIG_H_
+#define ALPACAOWO_BOARD_CONFIG_H_
 
 #include "enums.pb.h"
 
@@ -16,24 +17,24 @@
 // Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
-#define PIN_DPAD_UP     2           // UP
-#define PIN_DPAD_DOWN   3           // DOWN
-#define PIN_DPAD_RIGHT  4           // RIGHT
-#define PIN_DPAD_LEFT   5           // LEFT
-#define PIN_BUTTON_B1   6           // B1 / A / B / Cross / 2 / K1
-#define PIN_BUTTON_B2   7           // B2 / B / A / Circle / 3 / K2
-#define PIN_BUTTON_R2   8           // R2 / RT / ZR / R2 / 8 / K3
-#define PIN_BUTTON_L2   9           // L2 / LT / ZL / L2 / 7 / K4
-#define PIN_BUTTON_B3   10          // B3 / X / Y / Square / 1 / P1
-#define PIN_BUTTON_B4   11          // B4 / Y / X / Triangle / 4 / P2
-#define PIN_BUTTON_R1   12          // R1 / RB / R / R1 / 6 / P3
-#define PIN_BUTTON_L1   13          // L1 / LB / L / L1 / 5 / P4
-#define PIN_BUTTON_S1   16          // S1 / Back / Minus / Select / 9 / Coin
-#define PIN_BUTTON_S2   17          // S2 / Start / Plus / Start / 10 / Start
-#define PIN_BUTTON_L3   18          // L3 / LS / LS / L3 / 11 / LS
-#define PIN_BUTTON_R3   19          // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   20          // A1 / Guide / Home / PS / 13 / ~
-#define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_DPAD_DOWN   0           // DOWN
+#define PIN_DPAD_UP     1           // UP
+#define PIN_DPAD_LEFT   2           // LEFT
+#define PIN_DPAD_RIGHT  3           // RIGHT
+#define PIN_BUTTON_A1   4           // A1 / Guide / Home / PS / 13 / ~
+#define PIN_BUTTON_S1   5           // S1 / Back / Minus / Select / 9 / Coin
+#define PIN_BUTTON_S2   6           // S2 / Start / Plus / Start / 10 / Start
+#define PIN_BUTTON_B3   7           // B3 / X / Y / Square / 1 / P1
+#define PIN_BUTTON_B4   8           // B4 / Y / X / Triangle / 4 / P2
+#define PIN_BUTTON_R1   9           // R1 / RB / R / R1 / 6 / P3
+#define PIN_BUTTON_L1   10          // L1 / LB / L / L1 / 5 / P4
+#define PIN_BUTTON_B1   11          // B1 / A / B / Cross / 2 / K1
+#define PIN_BUTTON_B2   12          // B2 / B / A / Circle / 3 / K2
+#define PIN_BUTTON_R2   13          // R2 / RT / ZR / R2 / 8 / K3
+#define PIN_BUTTON_L2   14          // L2 / LT / ZL / L2 / 7 / K4
+#define PIN_BUTTON_A2   15          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_R3   22          // R3 / RS / RS / R3 / 12 / RS
+#define PIN_BUTTON_L3   23          // L3 / LS / LS / L3 / 11 / LS
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
@@ -85,7 +86,7 @@
 
 #define TURBO_LED_PIN -1
 
-#define BOARD_LEDS_PIN 28
+#define BOARD_LEDS_PIN -1
 
 #define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
@@ -177,9 +178,10 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
+// Uses I2C0/I2C QC port (pin 24 and 25)
 #define HAS_I2C_DISPLAY 1
-#define I2C_SDA_PIN 0
-#define I2C_SCL_PIN 1
+#define I2C_SDA_PIN 24
+#define I2C_SCL_PIN 25
 #define I2C_BLOCK i2c0
 #define I2C_SPEED 400000
 #define DISPLAY_FLIP 0
@@ -240,14 +242,6 @@
                             // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN -1
 
-// Button Lock Add-on setting
-#define FOCUS_MODE_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
-                            // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
-#define FOCUS_MODE_PIN -1
-#define FOCUS_MODE_OLED_LOCK_ENABLED 0
-#define FOCUS_MODE_RGB_LOCK_ENABLED 0
-#define FOCUS_MODE_BUTTON_LOCK_ENABLED 0
-
 // Keyboard Mapping Configuration
 // List of HID keycodes can be located here: https://github.com/hathach/tinyusb/blob/3623ba1884ddff23e9b64766cb6dd032f1425846/src/class/hid/hid.h#L356
 // Even for the modifier keys, HID_KEY entries should be used as the implementation expects those and will convert as necessary.
@@ -292,7 +286,7 @@
 
 // For details on this, see: https://gp2040-ce.info/#/development?id=i2c-display-splash
 #define DEFAULT_SPLASH \
-    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
@@ -357,4 +351,4 @@
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 
-#endif
+#endif // ALPACAOWO_BOARD_CONFIG_H_

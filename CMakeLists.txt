@@ -92,6 +92,11 @@ compile_proto()
 
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
+
+# Remove unused code and data
+add_compile_options(-fdata-sections -ffunction-sections)
+add_link_options(-Wl,--gc-sections)
+
 add_subdirectory(lib)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -118,6 +123,7 @@ src/configs/webconfig.cpp
 src/addons/analog.cpp
 src/addons/board_led.cpp
 src/addons/bootsel_button.cpp
+src/addons/focus_mode.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/extra_button.cpp

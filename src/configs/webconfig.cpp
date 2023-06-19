@@ -34,8 +34,8 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
-const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
+const static char* spaPaths[] = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
+const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
@@ -869,6 +869,14 @@ std::string setAddonOptions()
 	docToValue(extraButtonOptions.buttonMap, doc, "extraButtonMap");
 	docToValue(extraButtonOptions.enabled, doc, "ExtraButtonAddonEnabled");
 
+    FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	docToPin(focusModeOptions.pin, doc, "focusModePin");
+	docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
+	docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
+	docToValue(focusModeOptions.oledLockEnabled, doc, "focusModeOledLockEnabled");
+	docToValue(focusModeOptions.rgbLockEnabled, doc, "focusModeRgbLockEnabled");
+	docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
+
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 	docToPin(analogADS1219Options.i2cSDAPin, doc, "i2cAnalog1219SDAPin");
 	docToPin(analogADS1219Options.i2cSCLPin, doc, "i2cAnalog1219SCLPin");
@@ -1153,6 +1161,14 @@ std::string getAddonOptions()
 	writeDoc(doc, "snesPadDataPin", cleanPin(snesOptions.dataPin));
 	writeDoc(doc, "SNESpadAddonEnabled", snesOptions.enabled);
 
+	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
+	writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
+	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
+	writeDoc(doc, "focusModeOledLockEnabled", focusModeOptions.oledLockEnabled);
+	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
+	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
+
 	return serialize_json(doc);
 }
 
@@ -1185,12 +1201,14 @@ DataAndStatusCode setConfig()
 
 	// Store config struct on the heap to avoid stack overflow
 	std::unique_ptr<Config> config(new Config);
+	*config.get() = Config_init_default;
 	if (ConfigUtils::fromJSON(*config.get(), http_post_payload, http_post_payload_len))
 	{
-	Storage::getInstance().getConfig() = *config.get();
+		Storage::getInstance().getConfig() = *config.get();
+		config.reset();
 		if (Storage::getInstance().save())
 		{
-	return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
+			return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
 		}
 		else
 		{
@@ -1300,13 +1318,13 @@ int fs_open_custom(struct fs_file *file, const char *name)
 	}
 
 	bool isExclude = false;
-	for (const auto &excludePath : excludePaths)
-		if (!excludePath.compare(name))
+	for (const char* excludePath : excludePaths)
+		if (strcmp(excludePath, name) == 0)
 			return 0;
 
-	for (const auto &spaPath : spaPaths)
+	for (const char* spaPath : spaPaths)
 	{
-		if (!spaPath.compare(name))
+		if (strcmp(spaPath, name) == 0)
 		{
 			file->data = (const char *)file__index_html[0].data;
 			file->len = file__index_html[0].len;

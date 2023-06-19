@@ -209,6 +209,8 @@ private:
 	DisplayMode getDisplayMode();
 	DisplayMode prevDisplayMode;
 	uint16_t prevButtonState;
+	bool isFocusModeEnabled;
+	bool focusModePrevState;
 };
 
 #endif
