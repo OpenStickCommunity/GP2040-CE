@@ -70,7 +70,7 @@ void send_report(void *report, uint16_t report_size)
 				break;
 
 			default:
-				sent = send_hid_report(0x02, report, report_size);
+				sent = send_hid_report(0, report, report_size);
 				break;
 		}
 
