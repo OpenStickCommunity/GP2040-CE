@@ -77,10 +77,10 @@ static XInputReport xinputReport
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
 
-
 static KeyboardReport keyboardReport
 {
-	.keycode = { 0 }
+	.keycode = { 0 },
+	.multimedia = 0
 };
 
 Gamepad::Gamepad(int debounceMS) :
@@ -560,10 +560,28 @@ uint8_t Gamepad::getModifier(uint8_t code) {
 	return 0;
 }
 
+uint8_t Gamepad::getMultimedia(uint8_t code) {
+	switch (code) {
+		case KEYBOARD_MULTIMEDIA_NEXT_TRACK : return 0x01;
+		case KEYBOARD_MULTIMEDIA_PREV_TRACK : return 0x02;
+		case KEYBOARD_MULTIMEDIA_STOP 	    : return 0x04;
+		case KEYBOARD_MULTIMEDIA_PLAY_PAUSE : return 0x08;
+		case KEYBOARD_MULTIMEDIA_MUTE 	    : return 0x10;
+		case KEYBOARD_MULTIMEDIA_VOLUME_UP  : return 0x20;
+		case KEYBOARD_MULTIMEDIA_VOLUME_DOWN: return 0x40;
+	}
+	return 0;
+}
+
 void Gamepad::pressKey(uint8_t code) {
-	if (code >= HID_KEY_CONTROL_LEFT) {
+	if (code > HID_KEY_GUI_RIGHT) {
+		keyboardReport.reportId = KEYBOARD_MULTIMEDIA_REPORT_ID;
+		keyboardReport.multimedia = getMultimedia(code);
+	} else if (code >= HID_KEY_CONTROL_LEFT) {
+		keyboardReport.reportId = KEYBOARD_KEY_REPORT_ID;
 		keyboardReport.keycode[0] |= getModifier(code);
 	} else if ((code >> 3) < KEY_COUNT - 2) {
+		keyboardReport.reportId = KEYBOARD_KEY_REPORT_ID;
 		keyboardReport.keycode[(code >> 3) + 1] |= 1 << (code & 7);
 	}
 }
@@ -572,6 +590,7 @@ void Gamepad::releaseAllKeys(void) {
 	for (uint8_t i = 0; i < (sizeof(keyboardReport.keycode) / sizeof(keyboardReport.keycode[0])); i++) {
 		keyboardReport.keycode[i] = 0;
 	}
+	keyboardReport.multimedia = 0;
 }
 
 KeyboardReport *Gamepad::getKeyboardReport()
