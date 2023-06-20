@@ -3,6 +3,7 @@
 
 #include "pio_usb.h"
 
+static bool host_device_mounted = false;
 static GamepadState _keyboard_host_state;
 
 static KeyboardButtonMapping _keyboard_host_mapDpadUp    = KeyboardButtonMapping(GAMEPAD_MASK_UP);
@@ -37,6 +38,11 @@ void KeyboardHostAddon::setup() {
 	pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
   tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
 	tuh_init(BOARD_TUH_RHPORT);
+
+  while((to_ms_since_boot(get_absolute_time()) < 250)) {
+    if (host_device_mounted) break;
+    tuh_task();
+  }
 
   _keyboard_host_mapDpadUp.setKey(keyboardMapping.keyDpadUp);
   _keyboard_host_mapDpadDown.setKey(keyboardMapping.keyDpadDown);
@@ -81,6 +87,8 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
 {
   (void)desc_report;
   (void)desc_len;
+
+  host_device_mounted = true;
 
   // Interface protocol (hid_interface_protocol_enum_t)
   uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);

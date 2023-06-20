@@ -49,6 +49,8 @@
 #define SLIDER_SOCD_SLOT_TWO  SOCD_MODE_SECOND_INPUT_PRIORITY
 #define SLIDER_SOCD_SLOT_DEFAULT SOCD_MODE_NEUTRAL
 
+#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF // 	FORCED_SETUP_MODE_OFF, FORCED_SETUP_MODE_LOCK_MODE_SWITCH, FORCED_SETUP_MODE_LOCK_WEB_CONFIG, FORCED_SETUP_MODE_LOCK_BOTH
+#define DEFAULT_LOCK_HOTKEYS false // or true
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
 // The Turbo LED will flash at a speed consistant with the set speed of the Turbo when a Turbo button is active.

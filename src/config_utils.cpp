@@ -13,6 +13,7 @@
 #include "addons/buzzerspeaker.h"
 #include "addons/dualdirectional.h"
 #include "addons/extra_button.h"
+#include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
 #include "addons/i2cdisplay.h"
 #include "addons/jslider.h"
@@ -90,6 +91,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -109,6 +112,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, HOTKEY_F2_LEFT_ACTION);
     INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, HOTKEY_F2_RIGHT_MASK);
     INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, HOTKEY_F2_RIGHT_ACTION);
+
+    // forcedSetupMode
+    INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
 
     // pinMappings
     INIT_UNSET_PROPERTY(config.pinMappings, pinDpadUp, PIN_DPAD_UP);
@@ -177,7 +183,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, splashMode, SPLASH_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashChoice, SPLASH_CHOICE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
-    INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, emptyByteArray);
+	const unsigned char defaultSplash[] = { DEFAULT_SPLASH };
+    INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, defaultSplash);
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
@@ -334,6 +341,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, rightPin, PIN_DUAL_DIRECTIONAL_RIGHT);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode>(DUAL_DIRECTIONAL_STICK_MODE));
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, fourWayMode, false);
 
     // addonOptions.buzzerOptions
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);
@@ -396,6 +404,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonR3, KEY_BUTTON_R3);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonA1, KEY_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonA2, KEY_BUTTON_A2);
+
+    // addonOptions.focusModeOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, enabled, !!FOCUS_MODE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, pin, FOCUS_MODE_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockMask, FOCUS_MODE_BUTTON_MASK);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, oledLockEnabled, !!FOCUS_MODE_OLED_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, rgbLockEnabled, !!FOCUS_MODE_RGB_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
 }
 
 // -----------------------------------------------------
@@ -636,12 +652,15 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_POINTER(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 #define TO_JSON_CALLBACK(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 
-#define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
-    if (!firstField) str.append(",\n"); \
-    firstField = false; \
-    writeIndentation(str, indentLevel); \
-    str.append("\"" #fieldname "\": "); \
-    PREPROCESSOR_JOIN(TO_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname ## _MSGTYPE)
+#define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag, disallow_export) \
+    if (!disallow_export) \
+    { \
+        if (!firstField) str.append(",\n"); \
+        firstField = false; \
+        writeIndentation(str, indentLevel); \
+        str.append("\"" #fieldname "\": "); \
+        PREPROCESSOR_JOIN(TO_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname ## _MSGTYPE) \
+    }
 
 #define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::string& str, const structtype& s, int indentLevel);
 
@@ -741,50 +760,71 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
-#define FROM_JSON_INT32(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<int>()) \
-        { \
-            configStruct.fieldname = value.as<int>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+static bool fromJsonInt32(JsonObjectConst jsonObject, const char* fieldname, int32_t& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<int>())
+        {
+            value = jsonVariant.as<int>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-#define FROM_JSON_UINT32(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<unsigned int>()) \
-        { \
-            configStruct.fieldname = value.as<unsigned int>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+    return true;
+}
+
+#define FROM_JSON_INT32(fieldname, submessageType) if (!fromJsonInt32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonUint32(JsonObjectConst jsonObject, const char* fieldname, uint32_t& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<unsigned int>())
+        {
+            value = jsonVariant.as<unsigned int>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-#define FROM_JSON_BOOL(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<bool>()) \
-        { \
-            configStruct.fieldname = value.as<bool>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+    return true;
+}
+
+#define FROM_JSON_UINT32(fieldname, submessageType) if (!fromJsonUint32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonBool(JsonObjectConst jsonObject, const char* fieldname, bool& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<bool>())
+        {
+            value = jsonVariant.as<bool>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+    return true;
+}
+
+#define FROM_JSON_BOOL(fieldname, submessageType) if (!fromJsonBool(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
 
 #define FROM_JSON_STRING(fieldname, submessageType) \
     if (jsonObject.containsKey(#fieldname)) \
@@ -802,7 +842,7 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
-bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
+static bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
 {
     if (jsonObject.containsKey(fieldname))
     {
@@ -964,7 +1004,7 @@ bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* b
 #define FROM_JSON_POINTER(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 #define FROM_JSON_CALLBACK(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 
-#define FROM_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
+#define FROM_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag, disallow_export) \
     PREPROCESSOR_JOIN(FROM_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname)
 
 #define GEN_FROM_JSON_FUNCTION_DECL(structtype) static bool fromJSON ## structtype(JsonObjectConst jsonObject, structtype& configStruct);

@@ -1,4 +1,4 @@
-const DEFAULT_KEYBOARD_MAPPING = {
+export const DEFAULT_KEYBOARD_MAPPING = {
 	Up: 26,
 	Down: 22,
 	Left: 4,
@@ -19,7 +19,7 @@ const DEFAULT_KEYBOARD_MAPPING = {
 	A2: 0
 };
 
-const KEY_CODES = [
+export const KEY_CODES = [
 	{ label: "None", value: 0x00 },
 	{ label: "Alt Left", value: 0xe2 },
 	{ label: "Alt Right", value: 0xe6 },
@@ -103,7 +103,12 @@ const KEY_CODES = [
 	{ label: "Shift Right", value: 0xe5 },
 	{ label: "Slash", value: 0x38 },
 	{ label: "Space", value: 0x2c },
-	{ label: "Tab", value: 0x2b }
+	{ label: "Tab", value: 0x2b },
+	{ label: "Next Track", value: 0xe8 }, // (Scan Next Track)
+ 	{ label: "Prev Track", value: 0xe9 }, // (Scan Previous Track)
+ 	{ label: "Stop", value: 0xf0 }, // (Stop)
+ 	{ label: "Play/Pause", value: 0xf1 }, // (Play/Pause)
+ 	{ label: "Mute", value: 0xf2 }, // (Mute)
+ 	{ label: "Volume Up", value: 0xf3 }, // (Volume Increment)
+ 	{ label: "Volume Down", value: 0xf4 }, // (Volume Decrement)
 ];
-
-module.exports = { DEFAULT_KEYBOARD_MAPPING, KEY_CODES };

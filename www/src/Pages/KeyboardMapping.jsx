@@ -11,6 +11,7 @@ export default function KeyboardMappingPage() {
 	const [validated, setValidated] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
+	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -18,7 +19,7 @@ export default function KeyboardMappingPage() {
 		}
 
 		fetchData();
-	}, [setKeyMappings]);
+	}, [setKeyMappings, selectedController]);
 
 	const handleKeyChange = (value, button) => {
 		const newMappings = {...keyMappings};

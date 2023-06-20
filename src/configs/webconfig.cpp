@@ -34,8 +34,8 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
-const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
+const static char* spaPaths[] = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
+const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
@@ -465,6 +465,8 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.inputMode, doc, "inputMode");
 	readDoc(gamepadOptions.socdMode, doc, "socdMode");
 	readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
+	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
+	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	readDoc(hotkeyOptions.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
@@ -476,6 +478,9 @@ std::string setGamepadOptions()
 	readDoc(hotkeyOptions.hotkeyF2Down.action, doc, "hotkeyF2", 1, "action");
 	readDoc(hotkeyOptions.hotkeyF2Left.action, doc, "hotkeyF2", 2, "action");
 	readDoc(hotkeyOptions.hotkeyF2Right.action, doc, "hotkeyF2", 3, "action");
+
+	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+	readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
 
 	Storage::getInstance().save();
 
@@ -491,6 +496,8 @@ std::string getGamepadOptions()
 	writeDoc(doc, "inputMode", gamepadOptions.inputMode);
 	writeDoc(doc, "socdMode", gamepadOptions.socdMode);
 	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
+	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
+	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);
@@ -511,6 +518,8 @@ std::string getGamepadOptions()
 	writeDoc(doc, "hotkeyF2", 3, "action", hotkeyOptions.hotkeyF2Right.action);
 	writeDoc(doc, "hotkeyF2", 3, "mask", hotkeyOptions.hotkeyF2Right.dpadMask);
 
+	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+	writeDoc(doc, "forcedSetupMode", forcedSetupOptions.mode);
 	return serialize_json(doc);
 }
 
@@ -865,12 +874,21 @@ std::string setAddonOptions()
 	docToPin(dualDirectionalOptions.rightPin, doc, "dualDirRightPin");
 	docToValue(dualDirectionalOptions.dpadMode, doc, "dualDirDpadMode");
 	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
+	docToValue(dualDirectionalOptions.fourWayMode, doc, "dualDirFourWayMode");
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
     ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	docToPin(extraButtonOptions.pin, doc, "extraButtonPin");
 	docToValue(extraButtonOptions.buttonMap, doc, "extraButtonMap");
 	docToValue(extraButtonOptions.enabled, doc, "ExtraButtonAddonEnabled");
+
+    FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	docToPin(focusModeOptions.pin, doc, "focusModePin");
+	docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
+	docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
+	docToValue(focusModeOptions.oledLockEnabled, doc, "focusModeOledLockEnabled");
+	docToValue(focusModeOptions.rgbLockEnabled, doc, "focusModeRgbLockEnabled");
+	docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 	docToPin(analogADS1219Options.i2cSDAPin, doc, "i2cAnalog1219SDAPin");
@@ -998,68 +1016,68 @@ std::string setPS4Options()
 
 	// RSA Context
 	if ( readEncoded("N") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaN.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaN.bytes)) ) {
 			memcpy(ps4Options.rsaN.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaN.size = decoded.length();
 		}
 	}
 	if ( readEncoded("E") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaE.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaE.bytes)) ) {
 			memcpy(ps4Options.rsaE.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaE.size = decoded.length();
 		}
 	}
 	if ( readEncoded("D") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaD.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaD.bytes)) ) {
 			memcpy(ps4Options.rsaD.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaD.size = decoded.length();
 		}
 	}
 	if ( readEncoded("P") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaP.bytes)) ) {
 			memcpy(ps4Options.rsaP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("Q") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaQ.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQ.bytes)) ) {
 			memcpy(ps4Options.rsaQ.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaQ.size = decoded.length();
 		}
 	}
 	if ( readEncoded("DP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaDP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDP.bytes)) ) {
 			memcpy(ps4Options.rsaDP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaDP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("DQ") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaDQ.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDQ.bytes)) ) {
 			memcpy(ps4Options.rsaDQ.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaDQ.size = decoded.length();
 		}
 	}
 	if ( readEncoded("QP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaQP.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQP.bytes)) ) {
 			memcpy(ps4Options.rsaQP.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaQP.size = decoded.length();
 		}
 	}
 	if ( readEncoded("RN") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.rsaRN.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaRN.bytes)) ) {
 			memcpy(ps4Options.rsaRN.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaRN.size = decoded.length();
 		}
 	}
 	// Serial & Signature
 	if ( readEncoded("serial") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.serial.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.serial.bytes)) ) {
 			memcpy(ps4Options.serial.bytes, decoded.data(), decoded.length());
 			ps4Options.serial.size = decoded.length();
 		}
 	}
 	if ( readEncoded("signature") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == ps4Options.signature.size) ) {
+		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.signature.bytes)) ) {
 			memcpy(ps4Options.signature.bytes, decoded.data(), decoded.length());
 			ps4Options.signature.size = decoded.length();
 		}
@@ -1095,6 +1113,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "dualDirRightPin", cleanPin(dualDirectionalOptions.rightPin));
 	writeDoc(doc, "dualDirDpadMode", dualDirectionalOptions.dpadMode);
 	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
+	writeDoc(doc, "dualDirFourWayMode", dualDirectionalOptions.fourWayMode);
 	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
     const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
@@ -1198,6 +1217,14 @@ std::string getAddonOptions()
 	writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
 	writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
 
+	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
+	writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
+	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
+	writeDoc(doc, "focusModeOledLockEnabled", focusModeOptions.oledLockEnabled);
+	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
+	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
+
 	return serialize_json(doc);
 }
 
@@ -1230,12 +1257,14 @@ DataAndStatusCode setConfig()
 
 	// Store config struct on the heap to avoid stack overflow
 	std::unique_ptr<Config> config(new Config);
+	*config.get() = Config_init_default;
 	if (ConfigUtils::fromJSON(*config.get(), http_post_payload, http_post_payload_len))
 	{
-	Storage::getInstance().getConfig() = *config.get();
+		Storage::getInstance().getConfig() = *config.get();
+		config.reset();
 		if (Storage::getInstance().save())
 		{
-	return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
+			return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
 		}
 		else
 		{
@@ -1345,13 +1374,13 @@ int fs_open_custom(struct fs_file *file, const char *name)
 	}
 
 	bool isExclude = false;
-	for (const auto &excludePath : excludePaths)
-		if (!excludePath.compare(name))
+	for (const char* excludePath : excludePaths)
+		if (strcmp(excludePath, name) == 0)
 			return 0;
 
-	for (const auto &spaPath : spaPaths)
+	for (const char* spaPath : spaPaths)
 	{
-		if (!spaPath.compare(name))
+		if (strcmp(spaPath, name) == 0)
 		{
 			file->data = (const char *)file__index_html[0].data;
 			file->len = file__index_html[0].len;

@@ -12,3 +12,4 @@
 extern const usbd_class_driver_t hid_driver;
 
 bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size);
+bool send_keyboard_report(void *report);

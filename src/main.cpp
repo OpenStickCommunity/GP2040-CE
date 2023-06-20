@@ -10,6 +10,16 @@
 #include "gp2040.h"
 #include "gp2040aux.h"
 
+#include <cstdlib>
+
+// Custom implementation of __gnu_cxx::__verbose_terminate_handler() to reduce binary size
+namespace __gnu_cxx {
+void __verbose_terminate_handler()
+{
+	abort();
+}
+}
+
 // Launch our second core with additional modules loaded in
 void core1() {
 	multicore_lockout_victim_init(); // block core 1
