@@ -5,6 +5,7 @@
 
 // GP2040 Libraries
 #include "gamepad.h"
+#include "enums.pb.h"
 #include "storagemanager.h"
 
 #include "FlashPROM.h"
@@ -77,10 +78,10 @@ static XInputReport xinputReport
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
 
-
 static KeyboardReport keyboardReport
 {
-	.keycode = { 0 }
+	.keycode = { 0 },
+	.multimedia = 0
 };
 
 Gamepad::Gamepad(int debounceMS) :
@@ -117,14 +118,6 @@ void Gamepad::setup()
 	mapButtonR3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR3),	GAMEPAD_MASK_R3);
 	mapButtonA1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA1),	GAMEPAD_MASK_A1);
 	mapButtonA2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA2),	GAMEPAD_MASK_A2);
-
-	uint16_t maskS1 = options.inputMode == INPUT_MODE_PS4
-	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_A2 : GAMEPAD_MASK_S1;
-	mapButtonS1  = new GamepadButtonMapping(pinMappings.pinButtonS1,  maskS1);
-
-	uint16_t maskA2 = options.inputMode == INPUT_MODE_PS4
-	               && options.switchTpShareForDs4 ? GAMEPAD_MASK_S1 : GAMEPAD_MASK_A2;
-	mapButtonA2  = new GamepadButtonMapping(pinMappings.pinButtonA2, maskA2);
 
 	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
 	{
@@ -178,6 +171,11 @@ void Gamepad::process()
 	}
 
 	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
+
+	// SOCD cleaning first, allows for control over which diagonal to take/filter
+	if (options.fourWayMode) {
+		state.dpad = filterToFourWayMode(state.dpad);
+	}
 
 	switch (options.dpadMode)
 	{
@@ -266,11 +264,10 @@ void Gamepad::save()
 	Storage::getInstance().save();
 }
 
-GamepadHotkey Gamepad::hotkey()
+void Gamepad::hotkey()
 {
-	if (options.lockHotkeys) return HOTKEY_NONE;
+	if (options.lockHotkeys) return;
 
-	static GamepadHotkey lastAction = HOTKEY_NONE;
 	GamepadHotkey action = HOTKEY_NONE;
 	if (pressedF1())
 	{
@@ -291,33 +288,52 @@ GamepadHotkey Gamepad::hotkey()
 			state.dpad = 0;
 			state.buttons &= ~(f2Mask);
 		}
+	} else {
+		// no hotkey pressed, set reset last action so we can process the next press
+		lastAction = HOTKEY_NONE;
 	}
+	processHotkeyIfNewAction(action);
+}
 
-	switch (action) {
-		case HOTKEY_NONE              : return action;
-		case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; break;
-		case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; break;
-		case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; break;
-		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
-		case HOTKEY_CAPTURE_BUTTON    :
-			break;
-		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; break;
-		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; break;
-		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; break;
-		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY; break;
-		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; break;
-		case HOTKEY_INVERT_X_AXIS     : break;
-		case HOTKEY_INVERT_Y_AXIS     :
-			if (lastAction != HOTKEY_INVERT_Y_AXIS)
-				options.invertYAxis = !options.invertYAxis;
-			break;
-	}
+/**
+ * @brief Take a hotkey action if it hasn't already been taken, modifying state/options appropriately.
+ */
+void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
+{
+	if (action != lastAction) {
+		switch (action) {
+			case HOTKEY_NONE              : return;
+			case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; break;
+			case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; break;
+			case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; break;
+			case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
+			case HOTKEY_CAPTURE_BUTTON    :
+				break;
+			case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; break;
+			case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; break;
+			case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; break;
+			case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY; break;
+			case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; break;
+			case HOTKEY_INVERT_X_AXIS     : break;
+			case HOTKEY_INVERT_Y_AXIS     :
+				if (lastAction != HOTKEY_INVERT_Y_AXIS)
+					options.invertYAxis = !options.invertYAxis;
+				break;
+			case HOTKEY_TOGGLE_4_WAY_MODE :
+				if (lastAction != HOTKEY_TOGGLE_4_WAY_MODE)
+					options.fourWayMode = !options.fourWayMode;
+				break;
+			case HOTKEY_TOGGLE_DDI_4_WAY_MODE:
+				if (lastAction != HOTKEY_TOGGLE_DDI_4_WAY_MODE) {
+					DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
+					ddiOpt.fourWayMode = !ddiOpt.fourWayMode;
+				}
+				break;
+		}
 
-	GamepadHotkey hotkey = action;
-	if (hotkey != GamepadHotkey::HOTKEY_NONE)
+		lastAction = action;
 		save();
-
-	return hotkey;
+	}
 }
 
 
@@ -511,12 +527,12 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.button_r1       = pressedR1();
 	ps4Report.button_l2       = pressedL2();
 	ps4Report.button_r2       = pressedR2();
-	ps4Report.button_select   = pressedS1();
+	ps4Report.button_select   = options.switchTpShareForDs4 ? pressedA2() : pressedS1();
 	ps4Report.button_start    = pressedS2();
 	ps4Report.button_l3       = pressedL3();
 	ps4Report.button_r3       = pressedR3();
 	ps4Report.button_home     = pressedA1();
-	ps4Report.button_touchpad = pressedA2();
+	ps4Report.button_touchpad = options.switchTpShareForDs4 ? pressedS1() : pressedA2();
 
 	// report counter is 6 bits, but we circle 0-255
 	ps4Report.report_counter = last_report_counter++;
@@ -560,10 +576,28 @@ uint8_t Gamepad::getModifier(uint8_t code) {
 	return 0;
 }
 
+uint8_t Gamepad::getMultimedia(uint8_t code) {
+	switch (code) {
+		case KEYBOARD_MULTIMEDIA_NEXT_TRACK : return 0x01;
+		case KEYBOARD_MULTIMEDIA_PREV_TRACK : return 0x02;
+		case KEYBOARD_MULTIMEDIA_STOP 	    : return 0x04;
+		case KEYBOARD_MULTIMEDIA_PLAY_PAUSE : return 0x08;
+		case KEYBOARD_MULTIMEDIA_MUTE 	    : return 0x10;
+		case KEYBOARD_MULTIMEDIA_VOLUME_UP  : return 0x20;
+		case KEYBOARD_MULTIMEDIA_VOLUME_DOWN: return 0x40;
+	}
+	return 0;
+}
+
 void Gamepad::pressKey(uint8_t code) {
-	if (code >= HID_KEY_CONTROL_LEFT) {
+	if (code > HID_KEY_GUI_RIGHT) {
+		keyboardReport.reportId = KEYBOARD_MULTIMEDIA_REPORT_ID;
+		keyboardReport.multimedia = getMultimedia(code);
+	} else if (code >= HID_KEY_CONTROL_LEFT) {
+		keyboardReport.reportId = KEYBOARD_KEY_REPORT_ID;
 		keyboardReport.keycode[0] |= getModifier(code);
 	} else if ((code >> 3) < KEY_COUNT - 2) {
+		keyboardReport.reportId = KEYBOARD_KEY_REPORT_ID;
 		keyboardReport.keycode[(code >> 3) + 1] |= 1 << (code & 7);
 	}
 }
@@ -572,6 +606,7 @@ void Gamepad::releaseAllKeys(void) {
 	for (uint8_t i = 0; i < (sizeof(keyboardReport.keycode) / sizeof(keyboardReport.keycode[0])); i++) {
 		keyboardReport.keycode[i] = 0;
 	}
+	keyboardReport.multimedia = 0;
 }
 
 KeyboardReport *Gamepad::getKeyboardReport()

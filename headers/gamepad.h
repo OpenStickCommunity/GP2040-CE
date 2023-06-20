@@ -4,6 +4,7 @@
 #include "BoardConfig.h"
 #include <string.h>
 
+#include "enums.pb.h"
 #include "gamepad/GamepadDebouncer.h"
 #include "gamepad/GamepadState.h"
 #include "gamepad/descriptors/HIDDescriptors.h"
@@ -66,7 +67,7 @@ public:
 	void save();
 	void debounce();
 	
-	GamepadHotkey hotkey();
+	void hotkey();
 
 	/**
 	 * @brief Flag to indicate analog trigger support.
@@ -168,6 +169,8 @@ private:
 	void releaseAllKeys(void);
 	void pressKey(uint8_t code);
 	uint8_t getModifier(uint8_t code);
+	uint8_t getMultimedia(uint8_t code);
+	void processHotkeyIfNewAction(GamepadHotkey action);
 
 	GamepadOptions& options;
 
@@ -179,6 +182,8 @@ private:
 	HotkeyEntry hotkeyF2Down;
 	HotkeyEntry hotkeyF2Left;
 	HotkeyEntry hotkeyF2Right;
+
+	GamepadHotkey lastAction = HOTKEY_NONE;
 };
 
 #endif

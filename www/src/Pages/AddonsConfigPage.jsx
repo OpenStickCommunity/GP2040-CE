@@ -272,6 +272,13 @@ const schema = yup.object().shape({
 	BootselButtonAddonEnabled:   yup.number().required().label('Boot Select Button Add-On Enabled'),
 	bootselButtonMap:            yup.number().label('BOOTSEL Button Map').validateSelectionWhenValue('BootselButtonAddonEnabled', BUTTON_MASKS),
 
+	FocusModeAddonEnabled:       yup.number().required().label('Focus Mode Add-On Enabled'),
+	focusModePin:                yup.number().label('Focus Mode Pin').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeButtonLockEnabled:  yup.number().label('Focus Mode Button Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeOledLockEnabled:    yup.number().label('Focus Mode OLED Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeRgbLockEnabled:     yup.number().label('Focus Mode RGB Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeButtonLockMask:      yup.number().label('Focus Mode Button Lock Map').validateRangeWhenValue('FocusModeAddonEnabled', 0, (1<<20) - 1),
+
 	BuzzerSpeakerAddonEnabled:   yup.number().required().label('Buzzer Speaker Add-On Enabled'),
 	buzzerPin:                   yup.number().label('Buzzer Pin').validatePinWhenValue('BuzzerSpeakerAddonEnabled'),
 	buzzerVolume:                yup.number().label('Buzzer Volume').validateRangeWhenValue('BuzzerSpeakerAddonEnabled', 0, 100),
@@ -283,6 +290,7 @@ const schema = yup.object().shape({
 	dualDirRightPin:             yup.number().label('Dual Directional Right Pin').validatePinWhenValue('DualDirectionalInputEnabled'),
 	dualDirDpadMode:             yup.number().label('Dual Stick Mode').validateSelectionWhenValue('DualDirectionalInputEnabled', DUAL_STICK_MODES),
 	dualDirCombineMode:          yup.number().label('Dual Combination Mode').validateSelectionWhenValue('DualDirectionalInputEnabled', DUAL_COMBINE_MODES),
+	dualDirFourWayMode:          yup.number().label('Dual Directional 4-Way Joystick Mode').validateRangeWhenValue('DualDirectionalInputEnabled', 0, 1),
 
 	ExtraButtonAddonEnabled:     yup.number().required().label('Extra Button Add-On Enabled'),
 	extraButtonPin:              yup.number().label('Extra Button Pin').validatePinWhenValue('ExtraButtonAddonEnabled'),
@@ -351,16 +359,18 @@ const defaultValues = {
 	i2cAnalog1219Speed: 400000,
 	i2cAnalog1219Address: 0x40,
 	onBoardLedMode: 0,
-	dualUpPin: -1,
-	dualDownPin: -1,
-	dualLeftPin: -1,
-	dualRightPin: -1,
+	dualDirUpPin: -1,
+	dualDirDownPin: -1,
+	dualDirLeftPin: -1,
+	dualDirRightPin: -1,
 	dualDirDpadMode: 0,
 	dualDirCombineMode: 0,
+	dualDirFourWayMode: 0,
 	analogAdcPinX : -1,
  	analogAdcPinY : -1,
 	forced_circularity : 0,
 	analog_deadzone: 5,
+	analogAdcPinY : -1,
 	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
@@ -394,6 +404,7 @@ const defaultValues = {
 	snesPadDataPin: -1,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
+	FocusModeAddonEnabled: 0,
 	BuzzerSpeakerAddonEnabled: 0,
 	BootselButtonAddonEnabled: 0,
 	DualDirectionalInputEnabled: 0,
@@ -468,16 +479,18 @@ const sanitizeData = (values) => {
 			values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
 		if (!!values.onBoardLedMode)
 			values.onBoardLedMode = parseInt(values.onBoardLedMode);
-		if (!!values.dualDownPin)
-			values.dualDownPin = parseInt(values.dualDownPin);
-		if (!!values.dualUpPin)
-			values.dualUpPin = parseInt(values.dualUpPin);
-		if (!!values.dualLeftPin)
-			values.dualLeftPin = parseInt(values.dualLeftPin);
-		if (!!values.dualRightPin)
-			values.dualRightPin = parseInt(values.dualRightPin);
+		if (!!values.dualDirDownPin)
+			values.dualDirDownPin = parseInt(values.dualDirDownPin);
+		if (!!values.dualDirUpPin)
+			values.dualDirUpPin = parseInt(values.dualDirUpPin);
+		if (!!values.dualDirLeftPin)
+			values.dualDirLeftPin = parseInt(values.dualDirLeftPin);
+		if (!!values.dualDirRightPin)
+			values.dualDirRightPin = parseInt(values.dualDirRightPin);
 		if (!!values.dualDirMode)
 			values.dualDirMode = parseInt(values.dualDirMode);
+		if (!!values.dualDirFourWayMode)
+			values.dualDirFourWayMode = parseInt(values.dualDirFourWayMode);
 		if (!!values.analogAdcPinX)
 			values.analogAdcPinX = parseInt(values.analogAdcPinX);
 		if (!!values.analogAdcPinY)
@@ -488,14 +501,18 @@ const sanitizeData = (values) => {
 			values.analog_deadzone = parseInt(values.analog_deadzone);
 		if (!!values.bootselButtonMap)
 			values.bootselButtonMap = parseInt(values.bootselButtonMap);
+		if (!!values.focusModeButtonLockMask)
+			values.focusModeButtonLockMask = parseInt(values.focusModeButtonLockMask);
+		if (!!values.focusModePin)
+			values.focusModePin = parseInt(values.focusModePin);
 		if (!!values.buzzerPin)
 			values.buzzerPin = parseInt(values.buzzerPin);
 		if (!!values.buzzerVolume)
 			values.buzzerVolume = parseInt(values.buzzerVolume);
 		if (!!values.extraButtonMap)
 			values.extraButtonMap = parseInt(values.extraButtonMap);
-		if (!!values.extrabuttonPin)
-			values.extrabuttonPin = parseInt(values.extrabuttonPin);
+		if (!!values.extraButtonPin)
+			values.extraButtonPin = parseInt(values.extraButtonPin);
 		if (!!values.playerNumber)
 			values.playerNumber = parseInt(values.playerNumber);
 		if (!!values.shmupMode)
@@ -637,6 +654,7 @@ export default function AddonsConfigPage() {
 				handleChange,
 				values,
 				errors,
+				setFieldValue
 			}) => (
 				<Form noValidate onSubmit={handleSubmit}>
 					<Section title="Add-Ons Configuration">
@@ -769,7 +787,7 @@ export default function AddonsConfigPage() {
 								name="turboPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.turboPin || -1}
+								value={values.turboPin}
 								error={errors.turboPin}
 								isInvalid={errors.turboPin}
 								onChange={handleChange}
@@ -781,7 +799,7 @@ export default function AddonsConfigPage() {
 								name="turboPinLED"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.turboPinLED || -1}
+								value={values.turboPinLED}
 								error={errors.turboPinLED}
 								isInvalid={errors.turboPinLED}
 								onChange={handleChange}
@@ -805,7 +823,7 @@ export default function AddonsConfigPage() {
 								name="pinShmupDial"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.pinShmupDial || -1}
+								value={values.pinShmupDial}
 								error={errors.pinShmupDial}
 								isInvalid={errors.pinShmupDial}
 								onChange={handleChange}
@@ -1218,7 +1236,7 @@ export default function AddonsConfigPage() {
 								name="dualDirUpPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirUpPin || -1}
+								value={values.dualDirUpPin}
 								error={errors.dualDirUpPin}
 								isInvalid={errors.dualDirUpPin}
 								onChange={handleChange}
@@ -1230,7 +1248,7 @@ export default function AddonsConfigPage() {
 								name="dualDirDownPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirDownPin || -1}
+								value={values.dualDirDownPin}
 								error={errors.dualDirDownPin}
 								isInvalid={errors.dualDirDownPin}
 								onChange={handleChange}
@@ -1242,7 +1260,7 @@ export default function AddonsConfigPage() {
 								name="dualDirLeftPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirLeftPin || -1}
+								value={values.dualDirLeftPin}
 								error={errors.dualDirLeftPin}
 								isInvalid={errors.dualDirLeftPin}
 								onChange={handleChange}
@@ -1254,7 +1272,7 @@ export default function AddonsConfigPage() {
 								name="dualDirRightPin"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirRightPin || -1}
+								value={values.dualDirRightPin}
 								error={errors.dualDirRightPin}
 								isInvalid={errors.dualDirRightPin}
 								onChange={handleChange}
@@ -1288,6 +1306,15 @@ export default function AddonsConfigPage() {
 							>
 								{DUAL_COMBINE_MODES.map((o, i) => <option key={`button-dualDirCombineMode-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
+							<FormCheck
+								label="Dual Directional 4-Way Joystick Mode"
+								type="switch"
+								id="DualDirFourWayMode"
+								className="col-sm-3 ms-2"
+								isInvalid={false}
+								checked={Boolean(values.dualDirFourWayMode)}
+								onChange={(e) => {handleCheckbox("dualDirFourWayMode", values); handleChange(e);}}
+							/>
 						</Row>
 						</div>
 						<FormCheck
@@ -1351,7 +1378,7 @@ export default function AddonsConfigPage() {
 									name="extraButtonPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.extraButtonPin || -1}
+									value={values.extraButtonPin}
 									error={errors.extraButtonPin}
 									isInvalid={errors.extraButtonPin}
 									onChange={handleChange}
@@ -1628,7 +1655,7 @@ export default function AddonsConfigPage() {
 									onChange={handleChange}
 									min={-1}
 									max={29}
-								/>
+								/>	
 								<FormControl type="number"
 									label="Latch Pin"
 									name="snesPadLatchPin"
@@ -1664,6 +1691,92 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.SNESpadAddonEnabled)}
 							onChange={(e) => {handleCheckbox("SNESpadAddonEnabled", values); handleChange(e);}}
+						/>
+					</Section>
+					<Section title="Focus Mode Configuration">
+						<div
+							id="FocusModeAddonOptions"
+							hidden={!values.FocusModeAddonEnabled}>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label="Focus Mode Pin"
+									name="focusModePin"
+									className="form-select-sm col-3"
+									groupClassName="col-sm-3 mb-3"
+									value={values.focusModePin}
+									error={errors.focusModePin}
+									isInvalid={errors.focusModePin}
+									onChange={handleChange}
+									min={-1}
+									max={29} />
+								<div className="col-sm-3">
+									<FormCheck
+										label="Lock OLED Screen"
+										className="form-check-sm"
+										type="switch"
+										reverse
+										id="FocusModeAddonOLEDButton"
+										isInvalid={false}
+										checked={Boolean(values.focusModeOledLockEnabled)}
+										onChange={(e) => { handleCheckbox("focusModeOledLockEnabled", values); handleChange(e); }} />
+								</div>
+								<div className="col-sm-3">
+									<FormCheck
+										label="Lock RGB LED"
+										className="form-check-sm"
+										type="switch"
+										reverse
+										id="FocusModeAddonButton"
+										isInvalid={false}
+										checked={Boolean(values.focusModeRgbLockEnabled)}
+										onChange={(e) => { handleCheckbox("focusModeRgbLockEnabled", values); handleChange(e); }} />
+								</div>
+								<div className="col-sm-3">
+									<FormCheck
+										label="Lock Buttons"
+										className="form-check-sm"
+										type="switch"
+										reverse
+										id="FocusModeAddonButton"
+										isInvalid={false}
+										checked={Boolean(values.focusModeButtonLockEnabled)}
+										onChange={(e) => { handleCheckbox("focusModeButtonLockEnabled", values); handleChange(e); }}
+									/>
+								</div>
+								<Row>
+									{BUTTON_MASKS.map(mask => (values.focusModeButtonLockMask & mask.value) ? <FormSelect
+										name="focusModeButtonLockMask"
+										className="form-select-sm"
+										groupClassName="col-sm-3 mb-3"
+										value={values.focusModeButtonLockMask & mask.value}
+										error={errors.focusModeButtonLockMask}
+										isInvalid={errors.focusModeButtonLockMask}
+										onChange={(e) => { setFieldValue("focusModeButtonLockMask", values.focusModeButtonLockMask ^ mask.value | e.target.value); }}
+									>
+										{BUTTON_MASKS.map((o, i) => <option key={`focusModeButtonLockMask-option-${i}`} value={o.value}>{o.label}</option>)}
+									</FormSelect> : <></>)}
+									<FormSelect
+										name="focusModeButtonLockMask"
+										className="form-select-sm"
+										groupClassName="col-sm-3 mb-3"
+										value={0}
+										error={errors.focusModeButtonLockMask}
+										isInvalid={errors.focusModeButtonLockMask}
+										onChange={(e) => { setFieldValue("focusModeButtonLockMask", values.focusModeButtonLockMask | e.target.value); }}
+									>
+										{BUTTON_MASKS.map((o, i) => <option key={`focusModeButtonLockMask-option-${i}`} value={o.value}>{o.label}</option>)}
+									</FormSelect>
+								</Row>
+							</Row>
+						</div>
+						<FormCheck
+							label="Enabled"
+							type="switch"
+							id="FocusModeAddonButton"
+							reverse
+							isInvalid={false}
+							checked={Boolean(values.FocusModeAddonEnabled)}
+							onChange={(e) => { handleCheckbox("FocusModeAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
 					<div className="mt-3">

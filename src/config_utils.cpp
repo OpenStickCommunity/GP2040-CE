@@ -13,6 +13,7 @@
 #include "addons/buzzerspeaker.h"
 #include "addons/dualdirectional.h"
 #include "addons/extra_button.h"
+#include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
 #include "addons/i2cdisplay.h"
 #include "addons/jslider.h"
@@ -91,6 +92,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -341,6 +343,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, rightPin, PIN_DUAL_DIRECTIONAL_RIGHT);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode>(DUAL_DIRECTIONAL_STICK_MODE));
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, fourWayMode, false);
 
     // addonOptions.buzzerOptions
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);
@@ -382,6 +385,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, clockPin, SNES_PAD_CLOCK_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, latchPin, SNES_PAD_LATCH_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
+
+    // addonOptions.focusModeOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, enabled, !!FOCUS_MODE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, pin, FOCUS_MODE_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockMask, FOCUS_MODE_BUTTON_MASK);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, oledLockEnabled, !!FOCUS_MODE_OLED_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, rgbLockEnabled, !!FOCUS_MODE_RGB_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
 }
 
 // -----------------------------------------------------
@@ -730,50 +741,71 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
-#define FROM_JSON_INT32(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<int>()) \
-        { \
-            configStruct.fieldname = value.as<int>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+static bool fromJsonInt32(JsonObjectConst jsonObject, const char* fieldname, int32_t& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<int>())
+        {
+            value = jsonVariant.as<int>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-#define FROM_JSON_UINT32(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<unsigned int>()) \
-        { \
-            configStruct.fieldname = value.as<unsigned int>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+    return true;
+}
+
+#define FROM_JSON_INT32(fieldname, submessageType) if (!fromJsonInt32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonUint32(JsonObjectConst jsonObject, const char* fieldname, uint32_t& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<unsigned int>())
+        {
+            value = jsonVariant.as<unsigned int>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-#define FROM_JSON_BOOL(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<bool>()) \
-        { \
-            configStruct.fieldname = value.as<bool>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+    return true;
+}
+
+#define FROM_JSON_UINT32(fieldname, submessageType) if (!fromJsonUint32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonBool(JsonObjectConst jsonObject, const char* fieldname, bool& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<bool>())
+        {
+            value = jsonVariant.as<bool>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+    return true;
+}
+
+#define FROM_JSON_BOOL(fieldname, submessageType) if (!fromJsonBool(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
 
 #define FROM_JSON_STRING(fieldname, submessageType) \
     if (jsonObject.containsKey(#fieldname)) \
@@ -791,7 +823,7 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
-bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
+static bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
 {
     if (jsonObject.containsKey(fieldname))
     {
