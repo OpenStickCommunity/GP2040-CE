@@ -370,7 +370,6 @@ const defaultValues = {
  	analogAdcPinY : -1,
 	forced_circularity : 0,
 	analog_deadzone: 5,
-	analogAdcPinY : -1,
 	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
