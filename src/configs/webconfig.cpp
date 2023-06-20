@@ -456,6 +456,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.socdMode, doc, "socdMode");
 	readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
 	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
+	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	readDoc(hotkeyOptions.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
@@ -486,6 +487,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "socdMode", gamepadOptions.socdMode);
 	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
 	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
+	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);
@@ -862,6 +864,7 @@ std::string setAddonOptions()
 	docToPin(dualDirectionalOptions.rightPin, doc, "dualDirRightPin");
 	docToValue(dualDirectionalOptions.dpadMode, doc, "dualDirDpadMode");
 	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
+	docToValue(dualDirectionalOptions.fourWayMode, doc, "dualDirFourWayMode");
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
     ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
@@ -1079,6 +1082,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "dualDirRightPin", cleanPin(dualDirectionalOptions.rightPin));
 	writeDoc(doc, "dualDirDpadMode", dualDirectionalOptions.dpadMode);
 	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
+	writeDoc(doc, "dualDirFourWayMode", dualDirectionalOptions.fourWayMode);
 	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
     const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;

@@ -12,6 +12,7 @@ message GamepadOptions
 	optional bool invertYAxis = 5;
 	optional bool switchTpShareForDs4 = 6;
 	optional bool lockHotkeys = 7;
+	optional bool fourWayMode = 8;
 }
 
 message KeyboardMapping
@@ -319,6 +320,7 @@ message DualDirectionalOptions
 	
 	optional DpadMode dpadMode = 6;
 	optional uint32 combineMode = 7;
+	optional bool fourWayMode = 8;
 }
 
 message BuzzerOptions

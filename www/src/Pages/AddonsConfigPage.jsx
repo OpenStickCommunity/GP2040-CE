@@ -288,6 +288,7 @@ const schema = yup.object().shape({
 	dualDirRightPin:             yup.number().label('Dual Directional Right Pin').validatePinWhenValue('DualDirectionalInputEnabled'),
 	dualDirDpadMode:             yup.number().label('Dual Stick Mode').validateSelectionWhenValue('DualDirectionalInputEnabled', DUAL_STICK_MODES),
 	dualDirCombineMode:          yup.number().label('Dual Combination Mode').validateSelectionWhenValue('DualDirectionalInputEnabled', DUAL_COMBINE_MODES),
+	dualDirFourWayMode:          yup.number().label('Dual Directional 4-Way Joystick Mode').validateRangeWhenValue('DualDirectionalInputEnabled', 0, 1),
 
 	ExtraButtonAddonEnabled:     yup.number().required().label('Extra Button Add-On Enabled'),
 	extraButtonPin:              yup.number().label('Extra Button Pin').validatePinWhenValue('ExtraButtonAddonEnabled'),
@@ -362,6 +363,7 @@ const defaultValues = {
 	dualDirRightPin: -1,
 	dualDirDpadMode: 0,
 	dualDirCombineMode: 0,
+	dualDirFourWayMode: 0,
 	analogAdcPinX : -1,
 	analogAdcPinY : -1,
 	bootselButtonMap: 0,
@@ -482,6 +484,8 @@ const sanitizeData = (values) => {
 			values.dualDirRightPin = parseInt(values.dualDirRightPin);
 		if (!!values.dualDirMode)
 			values.dualDirMode = parseInt(values.dualDirMode);
+		if (!!values.dualDirFourWayMode)
+			values.dualDirFourWayMode = parseInt(values.dualDirFourWayMode);
 		if (!!values.analogAdcPinX)
 			values.analogAdcPinX = parseInt(values.analogAdcPinX);
 		if (!!values.analogAdcPinY)
@@ -1272,6 +1276,15 @@ export default function AddonsConfigPage() {
 							>
 								{DUAL_COMBINE_MODES.map((o, i) => <option key={`button-dualDirCombineMode-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
+							<FormCheck
+								label="Dual Directional 4-Way Joystick Mode"
+								type="switch"
+								id="DualDirFourWayMode"
+								className="col-sm-3 ms-2"
+								isInvalid={false}
+								checked={Boolean(values.dualDirFourWayMode)}
+								onChange={(e) => {handleCheckbox("dualDirFourWayMode", values); handleChange(e);}}
+							/>
 						</Row>
 						</div>
 						<FormCheck

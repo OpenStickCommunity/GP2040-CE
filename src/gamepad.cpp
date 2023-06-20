@@ -5,6 +5,7 @@
 
 // GP2040 Libraries
 #include "gamepad.h"
+#include "enums.pb.h"
 #include "storagemanager.h"
 
 #include "FlashPROM.h"
@@ -171,6 +172,11 @@ void Gamepad::process()
 
 	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
 
+	// SOCD cleaning first, allows for control over which diagonal to take/filter
+	if (options.fourWayMode) {
+		state.dpad = filterToFourWayMode(state.dpad);
+	}
+
 	switch (options.dpadMode)
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:
@@ -312,6 +318,16 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 			case HOTKEY_INVERT_Y_AXIS     :
 				if (lastAction != HOTKEY_INVERT_Y_AXIS)
 					options.invertYAxis = !options.invertYAxis;
+				break;
+			case HOTKEY_TOGGLE_4_WAY_MODE :
+				if (lastAction != HOTKEY_TOGGLE_4_WAY_MODE)
+					options.fourWayMode = !options.fourWayMode;
+				break;
+			case HOTKEY_TOGGLE_DDI_4_WAY_MODE:
+				if (lastAction != HOTKEY_TOGGLE_DDI_4_WAY_MODE) {
+					DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
+					ddiOpt.fourWayMode = !ddiOpt.fourWayMode;
+				}
 				break;
 		}
 

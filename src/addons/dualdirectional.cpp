@@ -1,4 +1,5 @@
 #include "addons/dualdirectional.h"
+#include "GamepadOptions.h"
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
@@ -126,6 +127,11 @@ void DualDirectionalInput::process()
     uint8_t dualOut = dualState;
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
 
+    // SOCD cleaning already happened, allows for control over which diagonal to take/filter
+    if (options.fourWayMode) {
+        dualOut = filterToFourWayMode(dualOut);
+    }
+
     // If we're in mixed mode
     if (combineMode == DUAL_COMBINE_MODE_MIXED) {
         uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
@@ -144,8 +150,6 @@ void DualDirectionalInput::process()
             OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut | gamepad->state.dpad);
         }
     } else { // We are not mixed mode, don't change dual output
-        dualOut = dualState;
-
         if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
             // Set Dual Directional Output
             OverrideGamepad(gamepad, dpadMode, dualOut);
