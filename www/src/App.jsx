@@ -31,7 +31,7 @@ const App = () => {
 						<Route path="/settings" element={<SettingsPage />} />
 						<Route path="/pin-mapping" element={<PinMappingPage />} />
 						<Route path="/keyboard-mapping" element={<KeyboardMappingPage />} />
-            <Route path="/reset-settings" element={<ResetSettingsPage />} />
+						<Route path="/reset-settings" element={<ResetSettingsPage />} />
 						<Route path="/led-config" element={<LEDConfigPage />} />
 						<Route path="/custom-theme" element={<CustomThemePage />} />
 						<Route path="/display-config" element={<DisplayConfigPage />} />

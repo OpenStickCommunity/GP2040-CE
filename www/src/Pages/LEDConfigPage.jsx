@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import orderBy from 'lodash/orderBy';
-import { SketchPicker } from '@hello-pangea/color-picker';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { AppContext } from '../Contexts/AppContext';
 import ColorPicker from '../Components/ColorPicker';
@@ -17,7 +16,7 @@ import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import { BUTTONS } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
-import { hexToInt, rgbIntToHex } from '../Services/Utilities';
+import { hexToInt } from '../Services/Utilities';
 import WebApi from '../Services/WebApi';
 
 const LED_FORMATS = [
@@ -157,11 +156,11 @@ const FormContext = ({
 		if (!!ledFormat)
 			setFieldValue('ledFormat', parseInt(ledFormat));
 	}, [ledFormat, setFieldValue]);
-	
+
 	useEffect(() => {
 		setFieldValue('ledButtonMap', ledButtonMap);
 	}, [ledButtonMap, setFieldValue]);
-	
+
 	useEffect(() => {
 		if (!!pledPin1)
 			setFieldValue('pledPin1', parseInt(pledPin1));
@@ -213,6 +212,15 @@ export default function LEDConfigPage() {
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
+	const { t } = useTranslation('');
+
+	// Translate PLED labels
+	PLED_LABELS.map((p, n) => {
+		p[0] = t(`LedConfig:pled-pin-label`, { pin: ++n });
+		p[1] = t(`LedConfig:pled-index-label`, { index: n });
+	});
+
+
 	const ledOrderChanged = (ledOrderArrays, ledsPerButton) => {
 		if (ledOrderArrays.length === 2) {
 			setLedButtonMap(getLedMap(buttonLabelType, ledOrderArrays[1]));
@@ -235,7 +243,7 @@ export default function LEDConfigPage() {
 		setColorPickerTarget(e.target);
 		setShowPicker(true);
 	};
-	
+
 	const toggleRgbPledPicker = (e) => {
 		e.stopPropagation();
 		setColorPickerTarget(e.target);
@@ -252,7 +260,7 @@ export default function LEDConfigPage() {
 		if (success)
 			updateUsedPins();
 
-		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+		setSaveMessage(success ? t('Common:saved-success-message') : t('Common:saved-error-message'));
 	};
 
 	const onSubmit = (e, handleSubmit, setValues, values) => {
@@ -266,7 +274,7 @@ export default function LEDConfigPage() {
 			case 0:
 				// PLED pin already set
 				break;
-				
+
 			case 1:
 				values.pledPin1 = values.pledIndex1;
 				values.pledPin2 = values.pledIndex2;
@@ -294,14 +302,13 @@ export default function LEDConfigPage() {
 				handleBlur,
 				setValues,
 				values,
-				touched,
 				errors,
 			}) => (
 				<Form noValidate onSubmit={(e) => onSubmit(e, handleSubmit, setValues, values)}>
-					<Section title="RGB LED Configuration">
+					<Section title={t('LedConfig:rgb.header-text')}>
 						<Row>
 							<FormControl type="number"
-								label="Data Pin (-1 for disabled)"
+								label={t('LedConfig:rgb.data-pin-label')}
 								name="dataPin"
 								className="form-control-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -313,7 +320,7 @@ export default function LEDConfigPage() {
 								max={29}
 							/>
 							<FormSelect
-								label="LED Format"
+								label={t('LedConfig:rgb.led-format-label')}
 								name="ledFormat"
 								className="form-select-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -321,11 +328,11 @@ export default function LEDConfigPage() {
 								error={errors.ledFormat}
 								isInvalid={errors.ledFormat}
 								onChange={handleChange}
-								>
+							>
 								{LED_FORMATS.map((o, i) => <option key={`ledFormat-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 							<FormSelect
-								label="LED Layout"
+								label={t('LedConfig:rgb.led-layout-label')}
 								name="ledLayout"
 								className="form-select-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -339,7 +346,7 @@ export default function LEDConfigPage() {
 						</Row>
 						<Row>
 							<FormControl type="number"
-								label="LEDs Per Button"
+								label={t('LedConfig:rgb.leds-per-button-label')}
 								name="ledsPerButton"
 								className="form-control-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -350,7 +357,7 @@ export default function LEDConfigPage() {
 								min={1}
 							/>
 							<FormControl type="number"
-								label="Max Brightness"
+								label={t('LedConfig:rgb.led-brightness-maximum-label')}
 								name="brightnessMaximum"
 								className="form-control-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -362,7 +369,7 @@ export default function LEDConfigPage() {
 								max={255}
 							/>
 							<FormControl type="number"
-								label="Brightness Steps"
+								label={t('LedConfig:rgb.led-brightness-steps-label')}
 								name="brightnessSteps"
 								className="form-control-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -375,11 +382,11 @@ export default function LEDConfigPage() {
 							/>
 						</Row>
 					</Section>
-					<Section title="Player LEDs (XInput)">
+					<Section title={t('LedConfig:player.header-text')}>
 						<Form.Group as={Col}>
 							<Row>
 								<FormSelect
-									label="Player LED Type"
+									label={t('LedConfig:player.pled-type-label')}
 									name="pledType"
 									className="form-select-sm"
 									groupClassName="col-sm-2 mb-3"
@@ -388,9 +395,9 @@ export default function LEDConfigPage() {
 									isInvalid={errors.pledType}
 									onChange={handleChange}
 								>
-									<option value="-1" defaultValue={true}>Off</option>
-									<option value="0">PWM</option>
-									<option value="1">RGB</option>
+									<option value="-1" defaultValue={true}>{t('LedConfig:player.pled-type-off')}</option>
+									<option value="0">{t('LedConfig:player.pled-type-pwm')}</option>
+									<option value="1">{t('LedConfig:player.pled-type-rgb')}</option>
 								</FormSelect>
 								<FormControl type="number"
 									name="pledPin1"
@@ -489,7 +496,7 @@ export default function LEDConfigPage() {
 									min={0}
 								/>
 								<FormControl
-									label="RGB PLED Color"
+									label={t('LedConfig:player.pled-color-label')}
 									hidden={parseInt(values.pledType) !== 1}
 									name="pledColor"
 									className="form-control-sm"
@@ -510,31 +517,34 @@ export default function LEDConfigPage() {
 									onChange={(c, e) => setPledColor(values, c)}
 									onDismiss={(e) => setShowPicker(false)}
 									placement="bottom"
-									presetColors={LEDColors.map(c => ({ title: c.name, color: c.value}))}
+									presetColors={LEDColors.map(c => ({ title: c.name, color: c.value }))}
 									show={showPicker}
 									target={colorPickerTarget}
 								></ColorPicker>
 							</Row>
-							<p hidden={parseInt(values.pledType) !== 0}>For PWM LEDs, set each LED to a dedicated GPIO pin.</p>
-							<p hidden={parseInt(values.pledType) !== 1}>For RGB LEDs, the indexes must be after the last LED button defined in <em>RGB LED Button Order</em> section and likely <strong>starts at index {rgbLedStartIndex}</strong>.</p>
+							<p hidden={parseInt(values.pledType) !== 0}>{t('LedConfig:player.pwm-sub-header-text')}</p>
+							<p hidden={parseInt(values.pledType) !== 1}>
+								<Trans ns="LedConfig" i18nKey="player.rgb-sub-header-text" rgbLedStartIndex={rgbLedStartIndex}>
+									For RGB LEDs, the indexes must be after the last LED button defined in <em>RGB LED Button Order</em> section and likely <strong>starts at index {{ rgbLedStartIndex }}</strong>.
+								</Trans>
+							</p>
 						</Form.Group>
 					</Section>
-					<Section title="RGB LED Button Order">
+					<Section title={t('LedConfig:rgb-order.header-text')}>
 						<p className="card-text">
-							Here you can define which buttons have RGB LEDs and in what order they run from the control board.
-							This is required for certain LED animations and static theme support.
+							{t('LedConfig:rgb-order.sub-header-text')}
 						</p>
 						<p className="card-text">
-							Drag and drop list items to assign and reorder the RGB LEDs.
+							{t('LedConfig:rgb-order.sub-header1-text')}
 						</p>
 						<DraggableListGroup
 							groupName="test"
-							titles={['Available Buttons', 'Assigned Buttons']}
+							titles={[t('LedConfig:rgb-order.available-header-text'), t('LedConfig:rgb-order.assigned-header-text')]}
 							dataSources={dataSources}
 							onChange={(a) => ledOrderChanged(a, values.ledsPerButton)}
 						/>
 					</Section>
-					<Button type="submit">Save</Button>
+					<Button type="submit">{t('Common:button-save-label')}</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 					<FormContext {...{
 						buttonLabels: buttonLabelType,

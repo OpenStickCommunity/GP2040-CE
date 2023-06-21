@@ -152,6 +152,12 @@ export const AppContextProvider = ({ children, ...props }) => {
 		_setSavedColorScheme(savedColorScheme);
 	};
 
+	const [savedLanguage, _setSavedLanguage] = useState(localStorage.getItem('i18next') || 'en-GB');
+	const setSavedLanguage = (savedLanguage) => {
+		localStorage.setItem('i18next', savedLanguage);
+		_setSavedLanguage(savedLanguage);
+	};
+
 	return (
 		<AppContext.Provider
 			{...props}
@@ -173,6 +179,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 				updateUsedPins,
 				savedColorScheme,
 				setSavedColorScheme,
+				savedLanguage,
+				setSavedLanguage,
 			}}
 		>
 			{children}

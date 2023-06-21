@@ -7,13 +7,14 @@ import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import boards from '../Data/Boards.json';
 import { BUTTONS } from '../Data/Buttons';
 import './PinMappings.scss';
+import { Trans, useTranslation } from 'react-i18next';
 
 const requiredButtons = ['S2'];
 const errorType = {
-	required: 'required',
-	conflict: 'conflict',
-	invalid: 'invalid',
-	used: 'used',
+	required: 'errors.required',
+	conflict: 'errors.conflict',
+	invalid: 'errors.invalid',
+	used: 'errors.used',
 };
 
 export default function PinMappingPage() {
@@ -24,6 +25,10 @@ export default function PinMappingPage() {
 	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
 	const [selectedBoard] = useState(import.meta.env.VITE_GP2040_BOARD);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+
+	const { t } = useTranslation('');
+
+	const translatedErrorType = Object.keys(errorType).reduce((a, k) => ({ ...a, [k]: t(`PinMapping:${errorType[k]}`) }), {});
 
 	useEffect(() => {
 		async function fetchData() {
@@ -36,7 +41,7 @@ export default function PinMappingPage() {
 	}, [setButtonMappings, selectedController]);
 
 	const handlePinChange = (e, prop) => {
-		const newMappings = {...buttonMappings};
+		const newMappings = { ...buttonMappings };
 		if (e.target.value)
 			newMappings[prop].pin = parseInt(e.target.value);
 		else
@@ -49,18 +54,18 @@ export default function PinMappingPage() {
 		e.preventDefault();
 		e.stopPropagation();
 
-		let mappings = {...buttonMappings};
+		let mappings = { ...buttonMappings };
 		validateMappings(mappings);
 
 		if (Object.keys(mappings).filter(p => mappings[p].error).length > 0) {
-			setSaveMessage('Validation errors, see above');
+			setSaveMessage(t('Common:errors.validation-error'));
 			return;
 		}
 
 		const success = await WebApi.setPinMappings(mappings);
 		if (success)
 			updateUsedPins();
-		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+		setSaveMessage(success ? t('Common:saved-success-message') : t('Common:saved-error-message'));
 	};
 
 	const validateMappings = (mappings) => {
@@ -84,19 +89,19 @@ export default function PinMappingPage() {
 
 			// Validate required button
 			if ((mappings[button].pin < boards[selectedBoard].minPin || mappings[button].pin > boards[selectedBoard].maxPin) && requiredButtons.filter(b => b === button).length)
-				mappings[button].error = errorType.required;
+				mappings[button].error = translatedErrorType.required;
 
 			// Identify conflicted pins
 			else if (conflictedPins.indexOf(mappings[button].pin) > -1)
-				mappings[button].error = errorType.conflict;
+				mappings[button].error = translatedErrorType.conflict;
 
 			// Identify invalid pin assignments
 			else if (invalidPins.indexOf(mappings[button].pin) > -1)
-				mappings[button].error = errorType.invalid;
+				mappings[button].error = translatedErrorType.invalid;
 
 			// Identify used pins
 			else if (otherPins.indexOf(mappings[button].pin) > -1)
-				mappings[button].error = errorType.used;
+				mappings[button].error = translatedErrorType.used;
 		}
 
 		setButtonMappings(mappings);
@@ -104,40 +109,56 @@ export default function PinMappingPage() {
 	};
 
 	const renderError = (button) => {
-		if (buttonMappings[button].error === errorType.required) {
-			return <span key="required" className="error-message">{`${BUTTONS[buttonLabelType][button]} is required`}</span>;
+		if (buttonMappings[button].error === translatedErrorType.required) {
+			return <span key="required" className="error-message">{t('PinMapping:errors.required', {
+        button: BUTTONS[buttonLabelType][button]
+      })}</span>;
 		}
-		else if (buttonMappings[button].error === errorType.conflict) {
+		else if (buttonMappings[button].error === translatedErrorType.conflict) {
 			const conflictedMappings = Object.keys(buttonMappings)
 				.filter(b => b !== button)
 				.filter(b => buttonMappings[b].pin === buttonMappings[button].pin)
 				.map(b => BUTTONS[buttonLabelType][b]);
 
-			return <span key="conflict" className="error-message">{`Pin ${buttonMappings[button].pin} is already assigned to ${conflictedMappings.join(', ')}`}</span>;
+			return <span key="conflict" className="error-message">{t('PinMapping:errors.conflict', {
+        pin: buttonMappings[button].pin,
+        conflictedMappings: conflictedMappings.join(', '),
+      })}</span>;
 		}
-		else if (buttonMappings[button].error === errorType.invalid) {
-			return <span key="invalid" className="error-message">{`Pin ${buttonMappings[button].pin} is invalid for this board`}</span>;
+		else if (buttonMappings[button].error === translatedErrorType.invalid) {
+			console.log(buttonMappings[button].pin);
+			return <span key="invalid" className="error-message">{t('PinMapping:errors.invalid', {
+        pin: buttonMappings[button].pin
+      })}</span>;
 		}
-		else if (buttonMappings[button].error === errorType.used) {
-			return <span key="used" className="error-message">{`Pin ${buttonMappings[button].pin} is already assigned to another feature`}</span>;
+		else if (buttonMappings[button].error === translatedErrorType.used) {
+			return <span key="used" className="error-message">{t('PinMapping:errors.used', {
+        pin: buttonMappings[button].pin
+      })}</span>;
 		}
 
 		return <></>;
 	};
 
 	return (
-		<Section title="Pin Mapping">
+		<Section title={t('PinMapping:header-text')}>
 			<Form noValidate validated={validated} onSubmit={handleSubmit}>
-				<p>Use the form below to reconfigure your button-to-pin mapping.</p>
-				<div className="alert alert-warning">
+				<p>{t('PinMapping:sub-header-text')}</p>
+				{/* <div className="alert alert-warning">
 					Mapping buttons to pins that aren't connected or available can leave the device in non-functional state. To clear the
 					the invalid configuration go to the <NavLink exact="true" to="/reset-settings">Reset Settings</NavLink> page.
+				</div> */}
+				<div className="alert alert-warning">
+					<Trans ns="PinMapping" i18nKey="alert-text">
+						Mapping buttons to pins that aren&apos;t connected or available can leave the device in non-functional state. To clear the
+						the invalid configuration go to the <NavLink exact="true" to="/reset-settings">Reset Settings</NavLink> page.
+					</Trans>
 				</div>
 				<table className="table table-sm pin-mapping-table">
 					<thead className="table">
 						<tr>
 							<th className="table-header-button-label">{BUTTONS[buttonLabelType].label}</th>
-							<th>Pin</th>
+							<th>{t('PinMapping:pin-header-label')}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -169,7 +190,7 @@ export default function PinMappingPage() {
 						})}
 					</tbody>
 				</table>
-				<Button type="submit">Save</Button>
+				<Button type="submit">{t('Common:button-save-label')}</Button>
 				{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 			</Form>
 		</Section>

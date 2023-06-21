@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+
 import { AppContext } from "../Contexts/AppContext";
 import SunIcon from "../Icons/Sun";
 import MoonStarsIcon from "../Icons/MoonStars";
 import CircleHalfIcon from "../Icons/CircleHalf";
 
 const dropdownOptions = [
-	{ scheme: "light", icon: SunIcon, label: "Light" },
-	{ scheme: "dark", icon: MoonStarsIcon, label: "Dark" },
-	{ scheme: "auto", icon: CircleHalfIcon, label: "Auto" },
+	{ scheme: "light", icon: SunIcon },
+	{ scheme: "dark", icon: MoonStarsIcon },
+	{ scheme: "auto", icon: CircleHalfIcon },
 ];
 
 const setTheme = function (theme) {
@@ -30,6 +32,13 @@ const setTheme = function (theme) {
 const ColorScheme = () => {
 	const { savedColorScheme, setSavedColorScheme } = useContext(AppContext);
 
+	const { t } = useTranslation('');
+
+	const translatedDropdownOptions = dropdownOptions.map((option) => ({
+		...option,
+		label: t(`Components:color-scheme.${option.scheme}`),
+	}));
+
 	setTheme(savedColorScheme);
 
 	const setThemeAndState = (newColorScheme) => {
@@ -44,7 +53,7 @@ const ColorScheme = () => {
 			</Dropdown.Toggle>
 
 			<Dropdown.Menu>
-				{dropdownOptions.map((option) => (
+				{translatedDropdownOptions.map((option) => (
 					<Dropdown.Item
 						key={option.theme}
 						as={"button"}

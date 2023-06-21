@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+
 import { AppContext } from '../Contexts/AppContext';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
@@ -12,6 +14,10 @@ export default function KeyboardMappingPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
 	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
+
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+
+	const { t } = useTranslation('');
 
 	useEffect(() => {
 		async function fetchData() {
@@ -39,18 +45,18 @@ export default function KeyboardMappingPage() {
 		setValidated(true);
 
 		if (Object.keys(mappings).filter(p => !!mappings[p].error).length) {
-			setSaveMessage('Validation errors, see above');
+			setSaveMessage(t('Common:errors.validation-error'));
 			return;
 		}
 
 		const success = await WebApi.setKeyMappings(mappings);
-		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+		setSaveMessage(success ? t('Common:saved-success-message') : t('Common:saved-error-message'));
 	};
 
 	const getKeyMappingForButton = (button) => keyMappings[button];
 
 	return (
-		<Section title="Keyboard Mapping">
+		<Section title={t('KeyboardMapping:header-text')}>
 			<Form noValidate validated={validated} onSubmit={handleSubmit}>
 				<p>Use the form below to reconfigure your button-to-key mapping.</p>
 				<KeyboardMapper buttonLabels={buttonLabels}

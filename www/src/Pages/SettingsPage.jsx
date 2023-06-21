@@ -4,6 +4,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import { NavLink } from "react-router-dom";
 import * as yup from 'yup';
+import { Trans, useTranslation } from 'react-i18next';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
@@ -11,57 +12,57 @@ import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
 
 const PS4Mode = 4;
 const INPUT_MODES = [
-	{ label: 'XInput', value: 0 },
-	{ label: 'Nintendo Switch', value: 1 },
-	{ label: 'PS3/DirectInput', value: 2 },
-	{ label: 'Keyboard', value: 3 },
-	{ label: 'PS4', value: PS4Mode }
+	{ labelKey: 'input-mode-options.xinput', value: 0 },
+	{ labelKey: 'input-mode-options.nintendo-switch', value: 1 },
+	{ labelKey: 'input-mode-options.ps3', value: 2 },
+	{ labelKey: 'input-mode-options.keyboard', value: 3 },
+	{ labelKey: 'input-mode-options.ps4', value: PS4Mode }
 ];
 
 const DPAD_MODES = [
-	{ label: 'D-pad', value: 0 },
-	{ label: 'Left Analog', value: 1 },
-	{ label: 'Right Analog', value: 2 },
+	{ labelKey: 'd-pad-mode-options.d-pad', value: 0 },
+	{ labelKey: 'd-pad-mode-options.left-analog', value: 1 },
+	{ labelKey: 'd-pad-mode-options.right-analog', value: 2 },
 ];
 
 const SOCD_MODES = [
-	{ label: 'Up Priority', value: 0 },
-	{ label: 'Neutral', value: 1 },
-	{ label: 'Last Win', value: 2 },
-	{ label: 'First Win', value: 3 },
-	{ label: 'Off', value: 4 },
+	{ labelKey: 'socd-cleaning-mode-options.up-priority', value: 0 },
+	{ labelKey: 'socd-cleaning-mode-options.neutral', value: 1 },
+	{ labelKey: 'socd-cleaning-mode-options.last-win', value: 2 },
+	{ labelKey: 'socd-cleaning-mode-options.first-win', value: 3 },
+	{ labelKey: 'socd-cleaning-mode-options.off', value: 4 },
 ];
 
 const HOTKEY_MASKS = [
-	{ label: 'Up', value: 1<<0 },
-	{ label: 'Down', value: 1<<1 },
-	{ label: 'Left', value: 1<<2 },
-	{ label: 'Right', value: 1<<3 },
+	{ labelKey: 'hotkey-settings-up-label', value: 1 << 0 },
+	{ labelKey: 'hotkey-settings-down-label', value: 1 << 1 },
+	{ labelKey: 'hotkey-settings-left-label', value: 1 << 2 },
+	{ labelKey: 'hotkey-settings-right-label', value: 1 << 3 },
 ];
 
 const HOTKEY_ACTIONS = [
-	{ label: 'No Action', value: 0 },
-	{ label: 'Dpad Digital', value: 1 },
-	{ label: 'Dpad Left Analog', value: 2 },
-	{ label: 'Dpad Right Analog', value: 3 },
-	{ label: 'Home Button', value: 4 },
-	{ label: 'Capture Button', value: 5 },
-	{ label: 'SOCD UP Priority', value: 6 },
-	{ label: 'SOCD Neutral', value: 7 },
-	{ label: 'SOCD Last Win', value: 8 },
-	{ label: 'SOCD First Win', value: 11 },
-	{ label: 'SOCD Cleaning Off', value: 12 },
-	{ label: 'Invert X Axis', value: 9 },
-	{ label: 'Invert Y Axis', value: 10 },
-	{ label: 'Toggle 4-Way Joystick Mode', value: 13 },
-	{ label: 'Toggle DDI 4-Way Joystick Mode', value: 14 },
+	{ labelKey: 'hotkey-actions.no-action', value: 0 },
+	{ labelKey: 'hotkey-actions.dpad-digital', value: 1 },
+	{ labelKey: 'hotkey-actions.dpad-left-analog', value: 2 },
+	{ labelKey: 'hotkey-actions.dpad-right-analog', value: 3 },
+	{ labelKey: 'hotkey-actions.home-button', value: 4 },
+	{ labelKey: 'hotkey-actions.capture-button', value: 5 },
+	{ labelKey: 'hotkey-actions.socd-up-priority', value: 6 },
+	{ labelKey: 'hotkey-actions.socd-neutral', value: 7 },
+	{ labelKey: 'hotkey-actions.socd-last-win', value: 8 },
+	{ labelKey: 'hotkey-actions.socd-first-win', value: 11 },
+	{ labelKey: 'hotkey-actions.socd-off', value: 12 },
+	{ labelKey: 'hotkey-actions.invert-x', value: 9 },
+	{ labelKey: 'hotkey-actions.invert-y', value: 10 },
+	{ labelKey: 'hotkey-actions.toggle-4way-joystick-mode', value: 13 },
+	{ labelKey: 'hotkey-actions.toggle-ddi-4way-joystick-mode', value: 14 },
 ];
 
 const FORCED_SETUP_MODES = [
-	{ label: 'Off', value: 0 },
-	{ label: 'Disable Input-Mode Switch', value: 1 },
-	{ label: 'Disable Web-Config', value: 2 },
-	{ label: 'Disable Input-Mode Switch and Web-Config', value: 3 },
+	{ labelKey: 'forced-setup-mode-options.off', value: 0 },
+	{ labelKey: 'forced-setup-mode-options.disable-input-mode', value: 1 },
+	{ labelKey: 'forced-setup-mode-options.disable-web-config', value: 2 },
+	{ labelKey: 'forced-setup-mode-options.disable-both', value: 3 },
 ];
 
 const hotkeySchema = {
@@ -152,7 +153,7 @@ export default function SettingsPage() {
 
 	const saveSettings = async (values) => {
 		const success = await WebApi.setGamepadOptions(values);
-		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+		setSaveMessage(success ? t('Common:saved-success-message') : t('Common:saved-error-message'));
 	};
 
 	const onSuccess = async (values) => {
@@ -160,11 +161,26 @@ export default function SettingsPage() {
 		else { await saveSettings(values); }
 	};
 
+	const translateArray = (array) => {
+		return array.map(({ labelKey, value }) => {
+			return { label: t(`SettingsPage:${labelKey}`), value };
+		});
+	}
+
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
 	const buttonLabelS1 = BUTTONS[buttonLabelType][(swapTpShareLabels && buttonLabelType === "ps4") ? "A2" : "S1"];
 	const buttonLabelS2 = BUTTONS[buttonLabelType]["S2"];
 	const buttonLabelA1 = BUTTONS[buttonLabelType]["A1"];
+
+	const { t } = useTranslation('');
+
+	const translatedInputModes = translateArray(INPUT_MODES);
+	const translatedDpadModes = translateArray(DPAD_MODES);
+	const translatedSocdModes = translateArray(SOCD_MODES);
+	const translatedHotkeyMasks = translateArray(HOTKEY_MASKS);
+	const translatedHotkeyActions = translateArray(HOTKEY_ACTIONS);
+	const translatedForcedSetupModes = translateArray(FORCED_SETUP_MODES);
 
 	return (
 		<Formik validationSchema={schema} onSubmit={onSuccess} initialValues={{}}>
@@ -177,18 +193,18 @@ export default function SettingsPage() {
 			}) => console.log('errors', errors) || (
 				<div>
 					<Form noValidate onSubmit={handleSubmit}>
-					<Section title="Settings">
+					<Section title={t('SettingsPage:settings-header-text')}>
 						<Form.Group className="row mb-3">
-							<Form.Label>Input Mode</Form.Label>
+							<Form.Label>{t('SettingsPage:input-mode-label')}</Form.Label>
 							<div className="col-sm-3">
 								<Form.Select name="inputMode" className="form-select-sm" value={values.inputMode} onChange={handleChange} isInvalid={errors.inputMode}>
-									{INPUT_MODES.map((o, i) => <option key={`button-inputMode-option-${i}`} value={o.value}>{o.label}</option>)}
+									{translatedInputModes.map((o, i) => <option key={`button-inputMode-option-${i}`} value={o.value}>{o.label}</option>)}
 								</Form.Select>
 								<Form.Control.Feedback type="invalid">{errors.inputMode}</Form.Control.Feedback>
 							</div>
 							<div className="col-sm-3">
 								{values.inputMode === PS4Mode && <Form.Check
-									label="Switch Touchpad and Share"
+									label={t('SettingsPage:input-mode-extra-label')}
 									type="switch"
 									name="switchTpShareForDs4"
 									isInvalid={false}
@@ -198,35 +214,35 @@ export default function SettingsPage() {
 							</div>
 						</Form.Group>
 						<Form.Group className="row mb-3">
-							<Form.Label>D-Pad Mode</Form.Label>
+							<Form.Label>{t('SettingsPage:d-pad-mode-label')}</Form.Label>
 							<div className="col-sm-3">
 								<Form.Select name="dpadMode" className="form-select-sm" value={values.dpadMode} onChange={handleChange} isInvalid={errors.dpadMode}>
-									{DPAD_MODES.map((o, i) => <option key={`button-dpadMode-option-${i}`} value={o.value}>{o.label}</option>)}
+									{translatedDpadModes.map((o, i) => <option key={`button-dpadMode-option-${i}`} value={o.value}>{o.label}</option>)}
 								</Form.Select>
-								<Form.Control.Feedback type="invalid">{errors.dpadMode}</Form.Control.Feedback>	
+								<Form.Control.Feedback type="invalid">{errors.dpadMode}</Form.Control.Feedback>
 							</div>
 						</Form.Group>
 						<Form.Group className="row mb-3">
-							<Form.Label>SOCD Cleaning Mode</Form.Label>
+							<Form.Label>{t('SettingsPage:socd-cleaning-mode-label')}</Form.Label>
 							<div className="col-sm-3">
 								<Form.Select name="socdMode" className="form-select-sm" value={values.socdMode} onChange={handleChange} isInvalid={errors.socdMode}>
-									{SOCD_MODES.map((o, i) => <option key={`button-socdMode-option-${i}`} value={o.value}>{o.label}</option>)}
+									{translatedSocdModes.map((o, i) => <option key={`button-socdMode-option-${i}`} value={o.value}>{o.label}</option>)}
 								</Form.Select>
 								<Form.Control.Feedback type="invalid">{errors.socdMode}</Form.Control.Feedback>
 							</div>
 						</Form.Group>
-						<p>Note: PS4, PS3 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.</p>
+						<p>{t('SettingsPage:socd-cleaning-mode-note')}</p>
 						<Form.Group className="row mb-3">
-							<Form.Label>Forced Setup Mode</Form.Label>
+							<Form.Label>{t('SettingsPage:forced-setup-mode-label')}</Form.Label>
 							<div className="col-sm-3">
 								<Form.Select name="forcedSetupMode" className="form-select-sm" value={values.forcedSetupMode} onChange={handleChange} isInvalid={errors.forcedSetupMode}>
-									{FORCED_SETUP_MODES.map((o, i) => <option key={`button-forcedSetupMode-option-${i}`} value={o.value}>{o.label}</option>)}
+									{translatedForcedSetupModes.map((o, i) => <option key={`button-forcedSetupMode-option-${i}`} value={o.value}>{o.label}</option>)}
 								</Form.Select>
 								<Form.Control.Feedback type="invalid">{errors.forcedSetupMode}</Form.Control.Feedback>
 							</div>
 						</Form.Group>
 						<Form.Check
-							label="4-Way Joystick Mode"
+							label={t('SettingsPage:4-way-joystick-mode-label')}
 							type="switch"
 							id="fourWayMode"
 							isInvalid={false}
@@ -281,37 +297,35 @@ export default function SettingsPage() {
 							)}
 						</div>
 						<Form.Check
-							label="Lock Hotkeys"
+							label={t('SettingsPage:lock-hotkeys-label')}
 							type="switch"
 							id="LockHotkeys"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.lockHotkeys)}
 							onChange={(e) => { setFieldValue("lockHotkeys", e.target.checked ? 1 : 0); }}
-						/>	
+						/>
 					</Section>
-					<Button type="submit">Save</Button>
+					<Button type="submit">{t('Common:button-save-label')}</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 					<FormContext  setButtonLabels={setButtonLabels}/>
 					</Form>
 					<Modal size="lg" show={warning.show} onHide={handleWarningClose}>
 						<Modal.Header closeButton>
-							<Modal.Title>Forced Setup Mode Warning</Modal.Title>
+							<Modal.Title>{t('SettingsPage:forced-setup-mode-modal-title')}</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>
 							<div className='mb-3'>
-								If you reboot to Controller mode after saving, you will no longer have access to the web-config.
-								Please type "<strong>{WARNING_CHECK_TEXT}</strong>" below to unlock the Save button if you fully acknowledge this and intend it.
-								Clicking on Dismiss will revert this setting which then is to be saved.
+								<Trans ns="SettingsPage" i18nKey='forced-setup-mode-modal-body' components={{ strong: <strong /> }} values={{ warningCheckText: WARNING_CHECK_TEXT }} />
 							</div>
 							<Form.Control value={warning.acceptText} onChange={setWarningAcceptText}></Form.Control>
 						</Modal.Body>
 						<Modal.Footer>
 							<Button disabled={warning.acceptText != WARNING_CHECK_TEXT} variant="warning" onClick={() => handleWarningClose(true, values)}>
-								Save
+							{t('Common:button-save-label')}
 							</Button>
 							<Button variant="primary" onClick={() => handleWarningClose(false, values, setFieldValue)}>
-								Dismiss
+							{t('Common:button-dismiss-label')}
 							</Button>
 						</Modal.Footer>
 					</Modal>

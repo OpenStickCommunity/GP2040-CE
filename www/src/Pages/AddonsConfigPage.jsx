@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form, Row, FormCheck } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
@@ -448,190 +449,187 @@ const FormContext = ({setStoredData}) => {
 
 const sanitizeData = (values) => {
 	if (!!values.turboPin)
-			values.turboPin = parseInt(values.turboPin);
-		if (!!values.turboPinLED)
-			values.turboPinLED = parseInt(values.turboPinLED);
-		if (!!values.sliderLSPin)
-			values.sliderLSPin = parseInt(values.sliderLSPin);
-		if (!!values.sliderRSPin)
-			values.sliderRSPin = parseInt(values.sliderRSPin);
-		if (!!values.sliderSOCDPinOne)
-			values.sliderSOCDPinOne = parseInt(values.sliderSOCDPinOne);
-		if (!!values.sliderSOCDPinTwo)
-			values.sliderSOCDPinTwo = parseInt(values.sliderSOCDPinTwo);
-		if (!!values.turboShotCount)
-			values.turboShotCount = parseInt(values.turboShotCount);
-		if (!!values.reversePin)
-			values.reversePin = parseInt(values.reversePin);
-		if (!!values.reversePinLED)
-			values.reversePinLED = parseInt(values.reversePinLED);
-		if (!!values.reverseActionUp)
-			values.reverseActionUp = parseInt(values.reverseActionUp);
-		if (!!values.reverseActionDown)
-			values.reverseActionDown = parseInt(values.reverseActionDown);
-		if (!!values.reverseActionLeft)
-			values.reverseActionLeft = parseInt(values.reverseActionLeft);
-		if (!!values.reverseActionRight)
-			values.reverseActionRight = parseInt(values.reverseActionRight);
-		if (!!values.i2cAnalog1219SDAPin)
-			values.i2cAnalog1219SDAPin = parseInt(values.i2cAnalog1219SDAPin);
-		if (!!values.i2cAnalog1219SCLPin)
-			values.i2cAnalog1219SCLPin = parseInt(values.i2cAnalog1219SCLPin);
-		if (!!values.i2cAnalog1219Block)
-			values.i2cAnalog1219Block = parseInt(values.i2cAnalog1219Block);
-		if (!!values.i2cAnalog1219Speed)
-			values.i2cAnalog1219Speed = parseInt(values.i2cAnalog1219Speed);
-		if (!!values.i2cAnalog1219Address)
-			values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
-		if (!!values.onBoardLedMode)
-			values.onBoardLedMode = parseInt(values.onBoardLedMode);
-		if (!!values.dualDirDownPin)
-			values.dualDirDownPin = parseInt(values.dualDirDownPin);
-		if (!!values.dualDirUpPin)
-			values.dualDirUpPin = parseInt(values.dualDirUpPin);
-		if (!!values.dualDirLeftPin)
-			values.dualDirLeftPin = parseInt(values.dualDirLeftPin);
-		if (!!values.dualDirRightPin)
-			values.dualDirRightPin = parseInt(values.dualDirRightPin);
-		if (!!values.dualDirMode)
-			values.dualDirMode = parseInt(values.dualDirMode);
-		if (!!values.dualDirFourWayMode)
-			values.dualDirFourWayMode = parseInt(values.dualDirFourWayMode);
-		if (!!values.analogAdcPinX)
-			values.analogAdcPinX = parseInt(values.analogAdcPinX);
-		if (!!values.analogAdcPinY)
-			values.analogAdcPinY = parseInt(values.analogAdcPinY);
-		if (!!values.forced_circularity)
-			values.forced_circularity = parseInt(values.forced_circularity);
-		if (!!values.analog_deadzone)
-			values.analog_deadzone = parseInt(values.analog_deadzone);
-		if (!!values.bootselButtonMap)
-			values.bootselButtonMap = parseInt(values.bootselButtonMap);
-		if (!!values.focusModeButtonLockMask)
-			values.focusModeButtonLockMask = parseInt(values.focusModeButtonLockMask);
-		if (!!values.focusModePin)
-			values.focusModePin = parseInt(values.focusModePin);
-		if (!!values.buzzerPin)
-			values.buzzerPin = parseInt(values.buzzerPin);
-		if (!!values.buzzerVolume)
-			values.buzzerVolume = parseInt(values.buzzerVolume);
-		if (!!values.extraButtonMap)
-			values.extraButtonMap = parseInt(values.extraButtonMap);
-		if (!!values.extraButtonPin)
-			values.extraButtonPin = parseInt(values.extraButtonPin);
-		if (!!values.playerNumber)
-			values.playerNumber = parseInt(values.playerNumber);
-		if (!!values.shmupMode)
-			values.shmupMode = parseInt(values.shmupMode);
-		if (!!values.shmupMixMode)
-			values.shmupMixMode = parseInt(values.shmupMixMode);
-		if (!!values.shmupAlwaysOn1)
-			values.shmupAlwaysOn1 = parseInt(values.shmupAlwaysOn1);
-		if (!!values.shmupAlwaysOn2)
-			values.shmupAlwaysOn2 = parseInt(values.shmupAlwaysOn2);
-		if (!!values.shmupAlwaysOn3)
-			values.shmupAlwaysOn3 = parseInt(values.shmupAlwaysOn3);
-		if (!!values.shmupAlwaysOn4)
-			values.shmupAlwaysOn4 = parseInt(values.shmupAlwaysOn4);
-		if (!!values.pinShmupBtn1)
-			values.pinShmupBtn1 = parseInt(values.pinShmupBtn1);
-		if (!!values.pinShmupBtn2)
-			values.pinShmupBtn2 = parseInt(values.pinShmupBtn2);
-		if (!!values.pinShmupBtn3)
-			values.pinShmupBtn3 = parseInt(values.pinShmupBtn3);
-		if (!!values.pinShmupBtn4)
-			values.pinShmupBtn4 = parseInt(values.pinShmupBtn4);
-		if (!!values.shmupBtnMask1)
-			values.shmupBtnMask1 = parseInt(values.shmupBtnMask1);
-		if (!!values.shmupBtnMask2)
-			values.shmupBtnMask2 = parseInt(values.shmupBtnMask2);
-		if (!!values.shmupBtnMask3)
-			values.shmupBtnMask3 = parseInt(values.shmupBtnMask3);
-		if (!!values.shmupBtnMask4)
-			values.shmupBtnMask4 = parseInt(values.shmupBtnMask4);
-		if (!!values.pinShmupDial)
-			values.pinShmupDial = parseInt(values.pinShmupDial);
-		if (!!values.sliderSOCDModeOne)
-			values.sliderSOCDModeOne = parseInt(values.sliderSOCDModeOne);
-		if (!!values.sliderSOCDModeTwo)
-			values.sliderSOCDModeTwo = parseInt(values.sliderSOCDModeTwo);
-		if (!!values.sliderSOCDModeDefault)
-			values.sliderSOCDModeDefault = parseInt(values.sliderSOCDModeDefault);
-		if (!!values.wiiExtensionSDAPin)
-			values.wiiExtensionSDAPin = parseInt(values.wiiExtensionSDAPin);
-		if (!!values.wiiExtensionSCLPin)
-			values.wiiExtensionSCLPin = parseInt(values.wiiExtensionSCLPin);
-		if (!!values.wiiExtensionBlock)
-			values.wiiExtensionBlock = parseInt(values.wiiExtensionBlock);
-		if (!!values.wiiExtensionSpeed)
-			values.wiiExtensionSpeed = parseInt(values.wiiExtensionSpeed);
-		if (!!values.snesPadClockPin)
-			values.snesPadClockPin = parseInt(values.snesPadClockPin);
-		if (!!values.snesPadLatchPin)
-			values.snesPadLatchPin = parseInt(values.snesPadLatchPin);
-		if (!!values.snesPadDataPin)
-			values.snesPadDataPin = parseInt(values.snesPadDataPin);
-		if (!!values.keyboardHostPinDplus)
-			values.keyboardHostPinDplus = parseInt(values.keyboardHostPinDplus);
-		if (!!values.AnalogInputEnabled)
-			values.AnalogInputEnabled = parseInt(values.AnalogInputEnabled);
-		if (!!values.BoardLedAddonEnabled)
-			values.BoardLedAddonEnabled = parseInt(values.BoardLedAddonEnabled);
-		if (!!values.BuzzerSpeakerAddonEnabled)
-			values.BuzzerSpeakerAddonEnabled = parseInt(values.BuzzerSpeakerAddonEnabled);
-		if (!!values.BootselButtonAddonEnabled)
-			values.BootselButtonAddonEnabled = parseInt(values.BootselButtonAddonEnabled);
-		if (!!values.DualDirectionalInputEnabled)
-			values.DualDirectionalInputEnabled = parseInt(values.DualDirectionalInputEnabled);
-		if (!!values.ExtraButtonAddonEnabled)
-			values.ExtraButtonAddonEnabled = parseInt(values.ExtraButtonAddonEnabled);
-		if (!!values.I2CAnalog1219InputEnabled)
-			values.I2CAnalog1219InputEnabled = parseInt(values.I2CAnalog1219InputEnabled);
-		if (!!values.JSliderInputEnabled)
-			values.JSliderInputEnabled = parseInt(values.JSliderInputEnabled);
-		if (!!values.KeyboardHostAddonEnabled)
-			values.KeyboardHostAddonEnabled = parseInt(values.KeyboardHostAddonEnabled);
-		if (!!values.SliderSOCDInputEnabled)
-			values.SliderSOCDInputEnabled = parseInt(values.SliderSOCDInputEnabled);
-		if (!!values.PlayerNumAddonEnabled)
-			values.PlayerNumAddonEnabled = parseInt(values.PlayerNumAddonEnabled);
-		if (!!values.PS4ModeAddonEnabled)
-			values.PS4ModeAddonEnabled = parseInt(values.PS4ModeAddonEnabled);
-		if (!!values.ReverseInputEnabled)
-			values.ReverseInputEnabled = parseInt(values.ReverseInputEnabled);
-		if (!!values.TurboInputEnabled)
-			values.TurboInputEnabled = parseInt(values.TurboInputEnabled);
-		if (!!values.WiiExtensionAddonEnabled)
-			values.WiiExtensionAddonEnabled = parseInt(values.WiiExtensionAddonEnabled);
-		if (!!values.SNESpadAddonEnabled)
-			values.SNESpadAddonEnabled = parseInt(values.SNESpadAddonEnabled);
+		values.turboPin = parseInt(values.turboPin);
+	if (!!values.turboPinLED)
+		values.turboPinLED = parseInt(values.turboPinLED);
+	if (!!values.sliderLSPin)
+		values.sliderLSPin = parseInt(values.sliderLSPin);
+	if (!!values.sliderRSPin)
+		values.sliderRSPin = parseInt(values.sliderRSPin);
+	if (!!values.sliderSOCDPinOne)
+		values.sliderSOCDPinOne = parseInt(values.sliderSOCDPinOne);
+	if (!!values.sliderSOCDPinTwo)
+		values.sliderSOCDPinTwo = parseInt(values.sliderSOCDPinTwo);
+	if (!!values.turboShotCount)
+		values.turboShotCount = parseInt(values.turboShotCount);
+	if (!!values.reversePin)
+		values.reversePin = parseInt(values.reversePin);
+	if (!!values.reversePinLED)
+		values.reversePinLED = parseInt(values.reversePinLED);
+	if (!!values.reverseActionUp)
+		values.reverseActionUp = parseInt(values.reverseActionUp);
+	if (!!values.reverseActionDown)
+		values.reverseActionDown = parseInt(values.reverseActionDown);
+	if (!!values.reverseActionLeft)
+		values.reverseActionLeft = parseInt(values.reverseActionLeft);
+	if (!!values.reverseActionRight)
+		values.reverseActionRight = parseInt(values.reverseActionRight);
+	if (!!values.i2cAnalog1219SDAPin)
+		values.i2cAnalog1219SDAPin = parseInt(values.i2cAnalog1219SDAPin);
+	if (!!values.i2cAnalog1219SCLPin)
+		values.i2cAnalog1219SCLPin = parseInt(values.i2cAnalog1219SCLPin);
+	if (!!values.i2cAnalog1219Block)
+		values.i2cAnalog1219Block = parseInt(values.i2cAnalog1219Block);
+	if (!!values.i2cAnalog1219Speed)
+		values.i2cAnalog1219Speed = parseInt(values.i2cAnalog1219Speed);
+	if (!!values.i2cAnalog1219Address)
+		values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
+	if (!!values.onBoardLedMode)
+		values.onBoardLedMode = parseInt(values.onBoardLedMode);
+	if (!!values.dualDirDownPin)
+		values.dualDirDownPin = parseInt(values.dualDirDownPin);
+	if (!!values.dualDirUpPin)
+		values.dualDirUpPin = parseInt(values.dualDirUpPin);
+	if (!!values.dualDirLeftPin)
+		values.dualDirLeftPin = parseInt(values.dualDirLeftPin);
+	if (!!values.dualDirRightPin)
+		values.dualDirRightPin = parseInt(values.dualDirRightPin);
+	if (!!values.dualDirMode)
+		values.dualDirMode = parseInt(values.dualDirMode);
+	if (!!values.analogAdcPinX)
+		values.analogAdcPinX = parseInt(values.analogAdcPinX);
+	if (!!values.analogAdcPinY)
+		values.analogAdcPinY = parseInt(values.analogAdcPinY);
+	if (!!values.bootselButtonMap)
+		values.bootselButtonMap = parseInt(values.bootselButtonMap);
+	if (!!values.focusModeButtonLockMask)
+		values.focusModeButtonLockMask = parseInt(values.focusModeButtonLockMask);
+	if (!!values.focusModePin)
+		values.focusModePin = parseInt(values.focusModePin);
+	if (!!values.buzzerPin)
+		values.buzzerPin = parseInt(values.buzzerPin);
+	if (!!values.buzzerVolume)
+		values.buzzerVolume = parseInt(values.buzzerVolume);
+	if (!!values.extraButtonMap)
+		values.extraButtonMap = parseInt(values.extraButtonMap);
+	if (!!values.extraButtonPin)
+		values.extraButtonPin = parseInt(values.extraButtonPin);
+	if (!!values.playerNumber)
+		values.playerNumber = parseInt(values.playerNumber);
+	if (!!values.shmupMode)
+		values.shmupMode = parseInt(values.shmupMode);
+	if (!!values.shmupMixMode)
+		values.shmupMixMode = parseInt(values.shmupMixMode);
+	if (!!values.shmupAlwaysOn1)
+		values.shmupAlwaysOn1 = parseInt(values.shmupAlwaysOn1);
+	if (!!values.shmupAlwaysOn2)
+		values.shmupAlwaysOn2 = parseInt(values.shmupAlwaysOn2);
+	if (!!values.shmupAlwaysOn3)
+		values.shmupAlwaysOn3 = parseInt(values.shmupAlwaysOn3);
+	if (!!values.shmupAlwaysOn4)
+		values.shmupAlwaysOn4 = parseInt(values.shmupAlwaysOn4);
+	if (!!values.pinShmupBtn1)
+		values.pinShmupBtn1 = parseInt(values.pinShmupBtn1);
+	if (!!values.pinShmupBtn2)
+		values.pinShmupBtn2 = parseInt(values.pinShmupBtn2);
+	if (!!values.pinShmupBtn3)
+		values.pinShmupBtn3 = parseInt(values.pinShmupBtn3);
+	if (!!values.pinShmupBtn4)
+		values.pinShmupBtn4 = parseInt(values.pinShmupBtn4);
+	if (!!values.shmupBtnMask1)
+		values.shmupBtnMask1 = parseInt(values.shmupBtnMask1);
+	if (!!values.shmupBtnMask2)
+		values.shmupBtnMask2 = parseInt(values.shmupBtnMask2);
+	if (!!values.shmupBtnMask3)
+		values.shmupBtnMask3 = parseInt(values.shmupBtnMask3);
+	if (!!values.shmupBtnMask4)
+		values.shmupBtnMask4 = parseInt(values.shmupBtnMask4);
+	if (!!values.pinShmupDial)
+		values.pinShmupDial = parseInt(values.pinShmupDial);
+	if (!!values.sliderSOCDModeOne)
+		values.sliderSOCDModeOne = parseInt(values.sliderSOCDModeOne);
+	if (!!values.sliderSOCDModeTwo)
+		values.sliderSOCDModeTwo = parseInt(values.sliderSOCDModeTwo);
+	if (!!values.sliderSOCDModeDefault)
+		values.sliderSOCDModeDefault = parseInt(values.sliderSOCDModeDefault);
+	if (!!values.wiiExtensionSDAPin)
+		values.wiiExtensionSDAPin = parseInt(values.wiiExtensionSDAPin);
+	if (!!values.wiiExtensionSCLPin)
+		values.wiiExtensionSCLPin = parseInt(values.wiiExtensionSCLPin);
+	if (!!values.wiiExtensionBlock)
+		values.wiiExtensionBlock = parseInt(values.wiiExtensionBlock);
+	if (!!values.wiiExtensionSpeed)
+		values.wiiExtensionSpeed = parseInt(values.wiiExtensionSpeed);
+	if (!!values.snesPadClockPin)
+		values.snesPadClockPin = parseInt(values.snesPadClockPin);
+	if (!!values.snesPadLatchPin)
+		values.snesPadLatchPin = parseInt(values.snesPadLatchPin);
+	if (!!values.snesPadDataPin)
+		values.snesPadDataPin = parseInt(values.snesPadDataPin);
+	if (!!values.AnalogInputEnabled)
+		values.AnalogInputEnabled = parseInt(values.AnalogInputEnabled);
+	if (!!values.BoardLedAddonEnabled)
+		values.BoardLedAddonEnabled = parseInt(values.BoardLedAddonEnabled);
+	if (!!values.BuzzerSpeakerAddonEnabled)
+		values.BuzzerSpeakerAddonEnabled = parseInt(values.BuzzerSpeakerAddonEnabled);
+	if (!!values.BootselButtonAddonEnabled)
+		values.BootselButtonAddonEnabled = parseInt(values.BootselButtonAddonEnabled);
+	if (!!values.DualDirectionalInputEnabled)
+		values.DualDirectionalInputEnabled = parseInt(values.DualDirectionalInputEnabled);
+	if (!!values.ExtraButtonAddonEnabled)
+		values.ExtraButtonAddonEnabled = parseInt(values.ExtraButtonAddonEnabled);
+	if (!!values.I2CAnalog1219InputEnabled)
+		values.I2CAnalog1219InputEnabled = parseInt(values.I2CAnalog1219InputEnabled);
+	if (!!values.JSliderInputEnabled)
+		values.JSliderInputEnabled = parseInt(values.JSliderInputEnabled);
+	if (!!values.SliderSOCDInputEnabled)
+		values.SliderSOCDInputEnabled = parseInt(values.SliderSOCDInputEnabled);
+	if (!!values.PlayerNumAddonEnabled)
+		values.PlayerNumAddonEnabled = parseInt(values.PlayerNumAddonEnabled);
+	if (!!values.PS4ModeAddonEnabled)
+		values.PS4ModeAddonEnabled = parseInt(values.PS4ModeAddonEnabled);
+	if (!!values.ReverseInputEnabled)
+		values.ReverseInputEnabled = parseInt(values.ReverseInputEnabled);
+	if (!!values.TurboInputEnabled)
+		values.TurboInputEnabled = parseInt(values.TurboInputEnabled);
+	if (!!values.WiiExtensionAddonEnabled)
+		values.WiiExtensionAddonEnabled = parseInt(values.WiiExtensionAddonEnabled);
+	if (!!values.SNESpadAddonEnabled)
+		values.SNESpadAddonEnabled = parseInt(values.SNESpadAddonEnabled);
 }
 
 function flattenObject(object) {
 	var toReturn = {};
 
 	for (var i in object) {
-	  if (!object.hasOwnProperty(i)) continue;
+		if (!object.hasOwnProperty(i)) continue;
 
-	  if (typeof object[i] == "object" && object[i] !== null) {
-		var flatObject = flattenObject(object[i]);
-		for (var x in flatObject) {
-		  if (!flatObject.hasOwnProperty(x)) continue;
+		if (typeof object[i] == "object" && object[i] !== null) {
+			var flatObject = flattenObject(object[i]);
+			for (var x in flatObject) {
+				if (!flatObject.hasOwnProperty(x)) continue;
 
-		  toReturn[i + "." + x] = flatObject[x];
+				toReturn[i + "." + x] = flatObject[x];
+			}
+		} else {
+			toReturn[i] = object[i];
 		}
-	  } else {
-		toReturn[i] = object[i];
-	  }
 	}
 	return toReturn;
-  }
+}
 
 export default function AddonsConfigPage() {
 	const { buttonLabels, updateUsedPins } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [storedData, setStoredData] = useState({});
 	const [validated, setValidated] = useState(false);
+
+	const { t } = useTranslation();
+
+	const translatedReverseAction = REVERSE_ACTION.map((option) => ({
+		...option,
+		label: t(`AddonsConfig:reverse-action-${option.label.toLowerCase()}-label`),
+	}));
 
 	const handleKeyChange = (values, setFieldValue) => (value, button) => {
 		const newMappings = {...values.keyboardHostMap};
@@ -679,7 +677,7 @@ export default function AddonsConfigPage() {
 		sanitizeData(resultObject);
 		const success = await WebApi.setAddonsOptions(resultObject);
 		setStoredData(JSON.parse(JSON.stringify(values))); // Update to reflect saved data
-		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+		setSaveMessage(success ? t('Common:saved-success-message') : t('Common:saved-error-message'));
 		if (success)
 			updateUsedPins();
 	};
@@ -689,7 +687,7 @@ export default function AddonsConfigPage() {
 	};
 
 	return (
-	<Formik enableReinitialize={true} validationSchema={schema} onSubmit={onSuccess} initialValues={defaultValues}>
+		<Formik enableReinitialize={true} validationSchema={schema} onSubmit={onSuccess} initialValues={defaultValues}>
 			{({
 				handleSubmit,
 				handleChange,
@@ -698,16 +696,16 @@ export default function AddonsConfigPage() {
 				setFieldValue
 			}) => (
 				<Form noValidate onSubmit={handleSubmit}>
-					<Section title="Add-Ons Configuration">
-						<p>Use the form below to reconfigure add-on options in GP2040-CE.</p>
+					<Section title={t('AddonsConfig:header-text')}>
+						<p>{t('AddonsConfig:sub-header-text')}</p>
 					</Section>
-					<Section title="BOOTSEL Button Configuration">
+					<Section title={t('AddonsConfig:bootsel-header-text')}>
 						<div
 							id="BootselButtonAddonOptions"
 							hidden={!values.BootselButtonAddonEnabled}>
-							<p>Note: OLED might become unresponsive if button is set, unset to restore.</p>
+							<p>{t('AddonsConfig:bootsel-sub-header-text')}</p>
 							<FormSelect
-								label="BOOTSEL Button"
+								label={t('AddonsConfig:bootsel-button-pin-label')}
 								name="bootselButtonMap"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -720,7 +718,7 @@ export default function AddonsConfigPage() {
 							</FormSelect>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="BootselButtonAddonButton"
 							reverse
@@ -729,12 +727,12 @@ export default function AddonsConfigPage() {
 							onChange={(e) => { handleCheckbox("BootselButtonAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="On-Board LED Configuration">
+					<Section title={t('AddonsConfig:on-board-led-configuration-label')}>
 						<div
 							id="BoardLedAddonEnabledOptions"
 							hidden={!values.BoardLedAddonEnabled}>
 							<FormSelect
-								label="LED Mode"
+								label={t('AddonsConfig:on-board-led-mode-label')}
 								name="onBoardLedMode"
 								className="form-select-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -746,7 +744,7 @@ export default function AddonsConfigPage() {
 							</FormSelect>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="BoardLedAddonButton"
 							reverse
@@ -755,61 +753,40 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("BoardLedAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Analog">
+					<Section title={t('AddonsConfig:analog-header-text')}>
 						<div
 							id="AnalogInputOptions"
 							hidden={!values.AnalogInputEnabled}>
-						<p>Available pins: {ANALOG_PINS.filter(p => p !== -1).join(", ")}</p>
-						<Row className="mb-3">
-							<FormSelect
-								label="Analog Stick X Pin"
-								name="analogAdcPinX"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.analogAdcPinX}
-								error={errors.analogAdcPinX}
-								isInvalid={errors.analogAdcPinX}
-								onChange={handleChange}
-							>
-								{ANALOG_PIN_OPTIONS}
-							</FormSelect>
-							<FormSelect
-								label="Analog Stick Y Pin"
-								name="analogAdcPinY"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.analogAdcPinY}
-								error={errors.analogAdcPinY}
-								isInvalid={errors.analogAdcPinY}
-								onChange={handleChange}
-							>
-								{ANALOG_PIN_OPTIONS}
-							</FormSelect>
-							<FormCheck
-								label="Force Circularity"
-								type="switch"
-								id="Forced_circularity"
-								className="col-sm-3 ms-2"
-								isInvalid={false}
-								checked={Boolean(values.forced_circularity)}
-								onChange={(e) => {handleCheckbox("forced_circularity", values); handleChange(e);}}
-							/>
-							<FormControl type="number"
-								label="Deadzone Size (%)"
-								name="analog_deadzone"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.analog_deadzone}
-								error={errors.analog_deadzone}
-								isInvalid={errors.analog_deadzone}
-								onChange={handleChange}
-								min={0}
-								max={100}
-							/>
-						</Row>
+							<p>{t('AddonsConfig:analog-available-pins-text', {pins: ANALOG_PINS.filter(p => p !== -1).join(", ")})}</p>
+							<Row className="mb-3">
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-pin-x-label')}
+									name="analogAdcPinX"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdcPinX}
+									error={errors.analogAdcPinX}
+									isInvalid={errors.analogAdcPinX}
+									onChange={handleChange}
+								>
+									{ANALOG_PIN_OPTIONS}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-pin-y-label')}
+									name="analogAdcPinY"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdcPinY}
+									error={errors.analogAdcPinY}
+									isInvalid={errors.analogAdcPinY}
+									onChange={handleChange}
+								>
+									{ANALOG_PIN_OPTIONS}
+								</FormSelect>
+							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="AnalogInputButton"
 							reverse
@@ -818,63 +795,63 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("AnalogInputEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Turbo">
+					<Section title={t('AddonsConfig:turbo-header-text')}>
 						<div
 							id="TurboInputOptions"
 							hidden={!values.TurboInputEnabled}>
-						<Row className="mb-3">
-							<FormControl type="number"
-								label="Turbo Pin"
-								name="turboPin"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.turboPin}
-								error={errors.turboPin}
-								isInvalid={errors.turboPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="Turbo Pin LED"
-								name="turboPinLED"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.turboPinLED}
-								error={errors.turboPinLED}
-								isInvalid={errors.turboPinLED}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="Turbo Shot Count"
-								name="turboShotCount"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.turboShotCount}
-								error={errors.turboShotCount}
-								isInvalid={errors.turboShotCount}
-								onChange={handleChange}
-								min={5}
-								max={30}
-							/>
-							<FormSelect
-								label="Turbo Dial (ADC ONLY)"
-								name="pinShmupDial"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.pinShmupDial}
-								error={errors.pinShmupDial}
-								isInvalid={errors.pinShmupDial}
-								onChange={handleChange}
-							>
-								{ANALOG_PIN_OPTIONS}
-							</FormSelect>
-							<FormCheck
-								label="SHMUP MODE"
-								type="switch"
-								id="ShmupMode"
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:turbo-button-pin-label')}
+									name="turboPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.turboPin}
+									error={errors.turboPin}
+									isInvalid={errors.turboPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:turbo-led-pin-label')}
+									name="turboPinLED"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.turboPinLED}
+									error={errors.turboPinLED}
+									isInvalid={errors.turboPinLED}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:turbo-shot-count-label')}
+									name="turboShotCount"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.turboShotCount}
+									error={errors.turboShotCount}
+									isInvalid={errors.turboShotCount}
+									onChange={handleChange}
+									min={2}
+									max={30}
+								/>
+								<FormSelect
+									label={t('AddonsConfig:turbo-shmup-dial-pin-label')}
+									name="pinShmupDial"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.pinShmupDial}
+									error={errors.pinShmupDial}
+									isInvalid={errors.pinShmupDial}
+									onChange={handleChange}
+								>
+									{ANALOG_PIN_OPTIONS}
+								</FormSelect>
+								<FormCheck
+									label={t('AddonsConfig:turbo-shmup-mode-label')}
+									type="switch"
+									id="ShmupMode"
 								className="col-sm-3 ms-2"
 								isInvalid={false}
 								checked={Boolean(values.shmupMode)}
@@ -882,174 +859,174 @@ export default function AddonsConfigPage() {
 							/>
 							<div
 								id="ShmupOptions"
-								hidden={!values.shmupMode}>
-								<Row className="mb-3">
+									hidden={!values.shmupMode}>
+									<Row className="mb-3">
+										<FormSelect
+											label={t('AddonsConfig:turbo-shmup-always-on-1-label')}
+											name="shmupAlwaysOn1"
+											className="form-select-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.shmupAlwaysOn1}
+											error={errors.shmupAlwaysOn1}
+											isInvalid={errors.shmupAlwaysOn1}
+											onChange={handleChange}
+										>
+											{TURBO_MASKS.map((o, i) => <option key={`shmupAlwaysOn1-option-${i}`} value={o.value}>{o.label}</option>)}
+										</FormSelect>
+										<FormSelect
+											label={t('AddonsConfig:turbo-shmup-always-on-2-label')}
+											name="shmupAlwaysOn2"
+											className="form-select-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.shmupAlwaysOn2}
+											error={errors.shmupAlwaysOn2}
+											isInvalid={errors.shmupAlwaysOn2}
+											onChange={handleChange}
+										>
+											{TURBO_MASKS.map((o, i) => <option key={`shmupAlwaysOn2-option-${i}`} value={o.value}>{o.label}</option>)}
+										</FormSelect>
+										<FormSelect
+											label={t('AddonsConfig:turbo-shmup-always-on-3-label')}
+											name="shmupAlwaysOn3"
+											className="form-select-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.shmupAlwaysOn3}
+											error={errors.shmupAlwaysOn3}
+											isInvalid={errors.shmupAlwaysOn3}
+											onChange={handleChange}
+										>
+											{TURBO_MASKS.map((o, i) => <option key={`shmupAlwaysOn3-option-${i}`} value={o.value}>{o.label}</option>)}
+										</FormSelect>
+										<FormSelect
+											label={t('AddonsConfig:turbo-shmup-always-on-4-label')}
+											name="shmupAlwaysOn4"
+											className="form-select-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.shmupAlwaysOn4}
+											error={errors.shmupAlwaysOn4}
+											isInvalid={errors.shmupAlwaysOn4}
+											onChange={handleChange}
+										>
+											{TURBO_MASKS.map((o, i) => <option key={`shmupAlwaysOn4-option-${i}`} value={o.value}>{o.label}</option>)}
+										</FormSelect>
+									</Row>
+									<Row className="mb-3">
+										<FormControl type="number"
+											label={t('AddonsConfig:turbo-shmup-button-1-label')}
+											name="pinShmupBtn1"
+											className="form-control-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.pinShmupBtn1}
+											error={errors.pinShmupBtn1}
+											isInvalid={errors.pinShmupBtn1}
+											onChange={handleChange}
+											min={-1}
+											max={29}
+										/>
+										<FormControl type="number"
+											label={t('AddonsConfig:turbo-shmup-button-2-label')}
+											name="pinShmupBtn2"
+											className="form-control-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.pinShmupBtn2}
+											error={errors.pinShmupBtn2}
+											isInvalid={errors.pinShmupBtn2}
+											onChange={handleChange}
+											min={-1}
+											max={29}
+										/>
+										<FormControl type="number"
+											label={t('AddonsConfig:turbo-shmup-button-3-label')}
+											name="pinShmupBtn3"
+											className="form-control-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.pinShmupBtn3}
+											error={errors.pinShmupBtn3}
+											isInvalid={errors.pinShmupBtn3}
+											onChange={handleChange}
+											min={-1}
+											max={29}
+										/>
+										<FormControl type="number"
+											label={t('AddonsConfig:turbo-shmup-button-4-label')}
+											name="pinShmupBtn4"
+											className="form-control-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.pinShmupBtn4}
+											error={errors.pinShmupBtn4}
+											isInvalid={errors.pinShmupBtn4}
+											onChange={handleChange}
+											min={-1}
+											max={29}
+										/>
+									</Row>
+									<Row className="mb-3">
+										<FormSelect
+											label={t('AddonsConfig:turbo-shmup-button-mask-1-label')}
+											name="shmupBtnMask1"
+											className="form-select-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.shmupBtnMask1}
+											error={errors.shmupBtnMask1}
+											isInvalid={errors.shmupBtnMask1}
+											onChange={handleChange}
+										>
+											{TURBO_MASKS.map((o, i) => <option key={`shmupBtnMask1-option-${i}`} value={o.value}>{o.label}</option>)}
+										</FormSelect>
+										<FormSelect
+											label={t('AddonsConfig:turbo-shmup-button-mask-2-label')}
+											name="shmupBtnMask2"
+											className="form-select-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.shmupBtnMask2}
+											error={errors.shmupBtnMask2}
+											isInvalid={errors.shmupBtnMask2}
+											onChange={handleChange}
+										>
+											{TURBO_MASKS.map((o, i) => <option key={`shmupBtnMask2-option-${i}`} value={o.value}>{o.label}</option>)}
+										</FormSelect>
+										<FormSelect
+											label={t('AddonsConfig:turbo-shmup-button-mask-3-label')}
+											name="shmupBtnMask3"
+											className="form-select-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.shmupBtnMask3}
+											error={errors.shmupBtnMask3}
+											isInvalid={errors.shmupBtnMask3}
+											onChange={handleChange}
+										>
+											{TURBO_MASKS.map((o, i) => <option key={`shmupBtnMask3-option-${i}`} value={o.value}>{o.label}</option>)}
+										</FormSelect>
+										<FormSelect
+											label={t('AddonsConfig:turbo-shmup-button-mask-4-label')}
+											name="shmupBtnMask4"
+											className="form-select-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.shmupBtnMask4}
+											error={errors.shmupBtnMask4}
+											isInvalid={errors.shmupBtnMask4}
+											onChange={handleChange}
+										>
+											{TURBO_MASKS.map((o, i) => <option key={`shmupBtnMask4-option-${i}`} value={o.value}>{o.label}</option>)}
+										</FormSelect>
+									</Row>
 									<FormSelect
-										label="Turbo Always On 1"
-										name="shmupAlwaysOn1"
+										label={t('AddonsConfig:turbo-shmup-mix-mode-label')}
+										name="shmupMixMode"
 										className="form-select-sm"
 										groupClassName="col-sm-3 mb-3"
-										value={values.shmupAlwaysOn1}
-										error={errors.shmupAlwaysOn1}
-										isInvalid={errors.shmupAlwaysOn1}
+										value={values.shmupMixMode}
+										error={errors.shmupMixMode}
+										isInvalid={errors.shmupMixMode}
 										onChange={handleChange}
 									>
-										{TURBO_MASKS.map((o, i) => <option key={`shmupAlwaysOn1-option-${i}`} value={o.value}>{o.label}</option>)}
+										{SHMUP_MIXED_MODES.map((o, i) => <option key={`button-shmupMixedMode-option-${i}`} value={o.value}>{o.label}</option>)}
 									</FormSelect>
-									<FormSelect
-										label="Turbo Always On 2"
-										name="shmupAlwaysOn2"
-										className="form-select-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.shmupAlwaysOn2}
-										error={errors.shmupAlwaysOn2}
-										isInvalid={errors.shmupAlwaysOn2}
-										onChange={handleChange}
-									>
-										{TURBO_MASKS.map((o, i) => <option key={`shmupAlwaysOn2-option-${i}`} value={o.value}>{o.label}</option>)}
-									</FormSelect>
-									<FormSelect
-										label="Turbo Always On 3"
-										name="shmupAlwaysOn3"
-										className="form-select-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.shmupAlwaysOn3}
-										error={errors.shmupAlwaysOn3}
-										isInvalid={errors.shmupAlwaysOn3}
-										onChange={handleChange}
-									>
-										{TURBO_MASKS.map((o, i) => <option key={`shmupAlwaysOn3-option-${i}`} value={o.value}>{o.label}</option>)}
-									</FormSelect>
-									<FormSelect
-										label="Turbo Always On 4"
-										name="shmupAlwaysOn4"
-										className="form-select-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.shmupAlwaysOn4}
-										error={errors.shmupAlwaysOn4}
-										isInvalid={errors.shmupAlwaysOn4}
-										onChange={handleChange}
-									>
-										{TURBO_MASKS.map((o, i) => <option key={`shmupAlwaysOn4-option-${i}`} value={o.value}>{o.label}</option>)}
-									</FormSelect>
-								</Row>
-								<Row className="mb-3">
-									<FormControl type="number"
-										label="Charge Button 1 Pin"
-										name="pinShmupBtn1"
-										className="form-control-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.pinShmupBtn1}
-										error={errors.pinShmupBtn1}
-										isInvalid={errors.pinShmupBtn1}
-										onChange={handleChange}
-										min={-1}
-										max={29}
-									/>
-									<FormControl type="number"
-										label="Charge Button 2 Pin"
-										name="pinShmupBtn2"
-										className="form-control-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.pinShmupBtn2}
-										error={errors.pinShmupBtn2}
-										isInvalid={errors.pinShmupBtn2}
-										onChange={handleChange}
-										min={-1}
-										max={29}
-									/>
-									<FormControl type="number"
-										label="Charge Button 3 Pin"
-										name="pinShmupBtn3"
-										className="form-control-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.pinShmupBtn3}
-										error={errors.pinShmupBtn3}
-										isInvalid={errors.pinShmupBtn3}
-										onChange={handleChange}
-										min={-1}
-										max={29}
-									/>
-									<FormControl type="number"
-										label="Charge Button 4 Pin"
-										name="pinShmupBtn4"
-										className="form-control-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.pinShmupBtn4}
-										error={errors.pinShmupBtn4}
-										isInvalid={errors.pinShmupBtn4}
-										onChange={handleChange}
-										min={-1}
-										max={29}
-									/>
-								</Row>
-								<Row className="mb-3">
-									<FormSelect
-										label="Charge Button 1 Assignment"
-										name="shmupBtnMask1"
-										className="form-select-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.shmupBtnMask1}
-										error={errors.shmupBtnMask1}
-										isInvalid={errors.shmupBtnMask1}
-										onChange={handleChange}
-									>
-										{TURBO_MASKS.map((o, i) => <option key={`shmupBtnMask1-option-${i}`} value={o.value}>{o.label}</option>)}
-									</FormSelect>
-									<FormSelect
-										label="Charge Button 2 Assignment"
-										name="shmupBtnMask2"
-										className="form-select-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.shmupBtnMask2}
-										error={errors.shmupBtnMask2}
-										isInvalid={errors.shmupBtnMask2}
-										onChange={handleChange}
-									>
-										{TURBO_MASKS.map((o, i) => <option key={`shmupBtnMask2-option-${i}`} value={o.value}>{o.label}</option>)}
-									</FormSelect>
-									<FormSelect
-										label="Charge Button 3 Assignment"
-										name="shmupBtnMask3"
-										className="form-select-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.shmupBtnMask3}
-										error={errors.shmupBtnMask3}
-										isInvalid={errors.shmupBtnMask3}
-										onChange={handleChange}
-									>
-										{TURBO_MASKS.map((o, i) => <option key={`shmupBtnMask3-option-${i}`} value={o.value}>{o.label}</option>)}
-									</FormSelect>
-									<FormSelect
-										label="Charge Button 4 Assignment"
-										name="shmupBtnMask4"
-										className="form-select-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={values.shmupBtnMask4}
-										error={errors.shmupBtnMask4}
-										isInvalid={errors.shmupBtnMask4}
-										onChange={handleChange}
-									>
-										{TURBO_MASKS.map((o, i) => <option key={`shmupBtnMask4-option-${i}`} value={o.value}>{o.label}</option>)}
-									</FormSelect>
-								</Row>
-								<FormSelect
-									label="Simultaneous Priority Mode"
-									name="shmupMixMode"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.shmupMixMode}
-									error={errors.shmupMixMode}
-									isInvalid={errors.shmupMixMode}
-									onChange={handleChange}
-								>
-									{SHMUP_MIXED_MODES.map((o, i) => <option key={`button-shmupMixedMode-option-${i}`} value={o.value}>{o.label}</option>)}
-								</FormSelect>
-							</div>
-						</Row>
+								</div>
+							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="TurboInputButton"
 							reverse
@@ -1058,39 +1035,39 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("TurboInputEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Joystick Selection Slider">
+					<Section title={t('AddonsConfig:joystick-selection-slider-header-text')}>
 						<div
 							id="JSliderInputOptions"
 							hidden={!values.JSliderInputEnabled}>
-						<Row className="mb-3">
-							<FormControl type="number"
-								label="Slider LS Pin"
-								name="sliderLSPin"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.sliderLSPin}
-								error={errors.sliderLSPin}
-								isInvalid={errors.sliderLSPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="Slider RS Pin"
-								name="sliderRSPin"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.sliderRSPin}
-								error={errors.sliderRSPin}
-								isInvalid={errors.sliderRSPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-						</Row>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:joystick-selection-slider-ls-pin-label')}
+									name="sliderLSPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.sliderLSPin}
+									error={errors.sliderLSPin}
+									isInvalid={errors.sliderLSPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:joystick-selection-slider-rs-pin-label')}
+									name="sliderRSPin"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.sliderRSPin}
+									error={errors.sliderRSPin}
+									isInvalid={errors.sliderRSPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="JSliderInputButton"
 							reverse
@@ -1099,89 +1076,89 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("JSliderInputEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Input Reverse">
+					<Section title={t('AddonsConfig:input-reverse-header-text')}>
 						<div
 							id="ReverseInputOptions"
 							hidden={!values.ReverseInputEnabled}>
-						<Row className="mb-3">
-							<FormControl type="number"
-								label="Reverse Input Pin"
-								name="reversePin"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.reversePin}
-								error={errors.reversePin}
-								isInvalid={errors.reversePin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="Reverse Input Pin LED"
-								name="reversePinLED"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.reversePinLED}
-								error={errors.reversePinLED}
-								isInvalid={errors.reversePinLED}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-						</Row>
-						<Row className="mb-3">
-							<FormSelect
-								label="Reverse Up"
-								name="reverseActionUp"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.reverseActionUp}
-								error={errors.reverseActionUp}
-								isInvalid={errors.reverseActionUp}
-								onChange={handleChange}
-							>
-								{REVERSE_ACTION.map((o, i) => <option key={`reverseActionUp-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
-							<FormSelect
-								label="Reverse Down"
-								name="reverseActionDown"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.reverseActionDown}
-								error={errors.reverseActionDown}
-								isInvalid={errors.reverseActionDown}
-								onChange={handleChange}
-							>
-								{REVERSE_ACTION.map((o, i) => <option key={`reverseActionDown-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
-							<FormSelect
-								label="Reverse Left"
-								name="reverseActionLeft"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.reverseActionLeft}
-								error={errors.reverseActionLeft}
-								isInvalid={errors.reverseActionLeft}
-								onChange={handleChange}
-							>
-								{REVERSE_ACTION.map((o, i) => <option key={`reverseActionLeft-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
-							<FormSelect
-								label="Reverse Right"
-								name="reverseActionRight"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.reverseActionRight}
-								error={errors.reverseActionRight}
-								isInvalid={errors.reverseActionRight}
-								onChange={handleChange}
-							>
-								{REVERSE_ACTION.map((o, i) => <option key={`reverseActionRight-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
-						</Row>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:input-reverse-button-pin-label')}
+									name="reversePin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.reversePin}
+									error={errors.reversePin}
+									isInvalid={errors.reversePin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label="Reverse Input Pin LED"
+									name={t('AddonsConfig:input-reverse-led-pin-label')}
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.reversePinLED}
+									error={errors.reversePinLED}
+									isInvalid={errors.reversePinLED}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
+							<Row className="mb-3">
+								<FormSelect
+									label={t('AddonsConfig:input-reverse-action-up-label')}
+									name="reverseActionUp"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.reverseActionUp}
+									error={errors.reverseActionUp}
+									isInvalid={errors.reverseActionUp}
+									onChange={handleChange}
+								>
+									{translatedReverseAction.map((o, i) => <option key={`reverseActionUp-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:input-reverse-action-down-label')}
+									name="reverseActionDown"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.reverseActionDown}
+									error={errors.reverseActionDown}
+									isInvalid={errors.reverseActionDown}
+									onChange={handleChange}
+								>
+									{translatedReverseAction.map((o, i) => <option key={`reverseActionDown-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:input-reverse-action-left-label')}
+									name="reverseActionLeft"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.reverseActionLeft}
+									error={errors.reverseActionLeft}
+									isInvalid={errors.reverseActionLeft}
+									onChange={handleChange}
+								>
+									{translatedReverseAction.map((o, i) => <option key={`reverseActionLeft-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:input-reverse-action-right-label')}
+									name="reverseActionRight"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.reverseActionRight}
+									error={errors.reverseActionRight}
+									isInvalid={errors.reverseActionRight}
+									onChange={handleChange}
+								>
+									{translatedReverseAction.map((o, i) => <option key={`reverseActionRight-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="ReverseInputButton"
 							reverse
@@ -1190,75 +1167,75 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("ReverseInputEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="I2C Analog ADS1219">
+					<Section title={t('AddonsConfig:i2c-analog-ads1219-header-text')}>
 						<div
 							id="I2CAnalog1219InputOptions"
 							hidden={!values.I2CAnalog1219InputEnabled}>
-						<Row className="mb-3">
-							<FormControl type="number"
-								label="I2C Analog ADS1219 SDA Pin"
-								name="i2cAnalog1219SDAPin"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.i2cAnalog1219SDAPin}
-								error={errors.i2cAnalog1219SDAPin}
-								isInvalid={errors.i2cAnalog1219SDAPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="I2C Analog ADS1219 SCL Pin"
-								name="i2cAnalog1219SCLPin"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.i2cAnalog1219SCLPin}
-								error={errors.i2cAnalog1219SCLPin}
-								isInvalid={errors.i2cAnalog1219SCLPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormSelect
-								label="I2C Analog ADS1219 Block"
-								name="i2cAnalog1219Block"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.i2cAnalog1219Block}
-								error={errors.i2cAnalog1219Block}
-								isInvalid={errors.i2cAnalog1219Block}
-								onChange={handleChange}
-							>
-								{I2C_BLOCKS.map((o, i) => <option key={`i2cBlock-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
-							<FormControl
-								label="I2C Analog ADS1219 Speed"
-								name="i2cAnalog1219Speed"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.i2cAnalog1219Speed}
-								error={errors.i2cAnalog1219Speed}
-								isInvalid={errors.i2cAnalog1219Speed}
-								onChange={handleChange}
-								min={100000}
-							/>
-						</Row>
-						<Row className="mb-3">
-							<FormControl
-								label="I2C Analog ADS1219 Address"
-								name="i2cAnalog1219Address"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.i2cAnalog1219Address}
-								error={errors.i2cAnalog1219Address}
-								isInvalid={errors.i2cAnalog1219Address}
-								onChange={handleChange}
-								maxLength={4}
-							/>
-						</Row>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:i2c-analog-ads1219-sda-pin-label')}
+									name="i2cAnalog1219SDAPin"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.i2cAnalog1219SDAPin}
+									error={errors.i2cAnalog1219SDAPin}
+									isInvalid={errors.i2cAnalog1219SDAPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:i2c-analog-ads1219-scl-pin-label')}
+									name="i2cAnalog1219SCLPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.i2cAnalog1219SCLPin}
+									error={errors.i2cAnalog1219SCLPin}
+									isInvalid={errors.i2cAnalog1219SCLPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormSelect
+									label={t('AddonsConfig:i2c-analog-ads1219-block-label')}
+									name="i2cAnalog1219Block"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.i2cAnalog1219Block}
+									error={errors.i2cAnalog1219Block}
+									isInvalid={errors.i2cAnalog1219Block}
+									onChange={handleChange}
+								>
+									{I2C_BLOCKS.map((o, i) => <option key={`i2cBlock-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormControl
+									label={t('AddonsConfig:i2c-analog-ads1219-speed-label')}
+									name="i2cAnalog1219Speed"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.i2cAnalog1219Speed}
+									error={errors.i2cAnalog1219Speed}
+									isInvalid={errors.i2cAnalog1219Speed}
+									onChange={handleChange}
+									min={100000}
+								/>
+							</Row>
+							<Row className="mb-3">
+								<FormControl
+									label={t('AddonsConfig:i2c-analog-ads1219-address-label')}
+									name="i2cAnalog1219Address"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.i2cAnalog1219Address}
+									error={errors.i2cAnalog1219Address}
+									isInvalid={errors.i2cAnalog1219Address}
+									onChange={handleChange}
+									maxLength={4}
+								/>
+							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="I2CAnalog1219InputButton"
 							reverse
@@ -1267,76 +1244,76 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("I2CAnalog1219InputEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Dual Directional Input">
+					<Section title={t('AddonsConfig:dual-directional-input-header-text')}>
 						<div
 							id="DualDirectionalInputOptions"
 							hidden={!values.DualDirectionalInputEnabled}>
-						<Row className="mb-3">
-							<FormControl type="number"
-								label="Dual Up Pin"
-								name="dualDirUpPin"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirUpPin}
-								error={errors.dualDirUpPin}
-								isInvalid={errors.dualDirUpPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="Dual Down Pin"
-								name="dualDirDownPin"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirDownPin}
-								error={errors.dualDirDownPin}
-								isInvalid={errors.dualDirDownPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="Dual Left Pin"
-								name="dualDirLeftPin"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirLeftPin}
-								error={errors.dualDirLeftPin}
-								isInvalid={errors.dualDirLeftPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="Dual Right Pin"
-								name="dualDirRightPin"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirRightPin}
-								error={errors.dualDirRightPin}
-								isInvalid={errors.dualDirRightPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-						</Row>
-						<Row className="mb-3">
-							<FormSelect
-								label="Dual D-Pad Mode"
-								name="dualDirDpadMode"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.dualDirDpadMode}
-								error={errors.dualDirDpadMode}
-								isInvalid={errors.dualDirDpadMode}
-								onChange={handleChange}
-							>
-								{DUAL_STICK_MODES.map((o, i) => <option key={`button-dualDirDpadMode-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:dual-directional-input-up-pin-label')}
+									name="dualDirUpPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.dualDirUpPin}
+									error={errors.dualDirUpPin}
+									isInvalid={errors.dualDirUpPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:dual-directional-input-down-pin-label')}
+									name="dualDirDownPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.dualDirDownPin}
+									error={errors.dualDirDownPin}
+									isInvalid={errors.dualDirDownPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:dual-directional-input-left-pin-label')}
+									name="dualDirLeftPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.dualDirLeftPin}
+									error={errors.dualDirLeftPin}
+									isInvalid={errors.dualDirLeftPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:dual-directional-input-right-pin-label')}
+									name="dualDirRightPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.dualDirRightPin}
+									error={errors.dualDirRightPin}
+									isInvalid={errors.dualDirRightPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
+							<Row className="mb-3">
+								<FormSelect
+									label={t('AddonsConfig:dual-directional-input-dpad-mode-label')}
+									name="dualDirDpadMode"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.dualDirDpadMode}
+									error={errors.dualDirDpadMode}
+									isInvalid={errors.dualDirDpadMode}
+									onChange={handleChange}
+								>
+									{DUAL_STICK_MODES.map((o, i) => <option key={`button-dualDirDpadMode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
 
 							<FormSelect
-								label="Combination Mode"
+								label={t('AddonsConfig:dual-directional-input-combine-mode-label')}
 								name="dualDirCombineMode"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -1348,7 +1325,7 @@ export default function AddonsConfigPage() {
 								{DUAL_COMBINE_MODES.map((o, i) => <option key={`button-dualDirCombineMode-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 							<FormCheck
-								label="Dual Directional 4-Way Joystick Mode"
+								label={t('AddonsConfig:dual-directional-input-four-way-joystick-mode-label')}
 								type="switch"
 								id="DualDirFourWayMode"
 								className="col-sm-3 ms-2"
@@ -1359,7 +1336,7 @@ export default function AddonsConfigPage() {
 						</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="DualDirectionalInputButton"
 							reverse
@@ -1368,39 +1345,39 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("DualDirectionalInputEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Buzzer Speaker">
+					<Section title={t('AddonsConfig:buzzer-speaker-header-text')}>
 						<div
 							id="BuzzerSpeakerAddonOptions"
 							hidden={!values.BuzzerSpeakerAddonEnabled}>
-						<Row className="mb-3">
-							<FormControl type="number"
-								label="Buzzer Pin"
-								name="buzzerPin"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.buzzerPin}
-								error={errors.buzzerPin}
-								isInvalid={errors.buzzerPin}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormControl type="number"
-								label="Buzzer Volume"
-								name="buzzerVolume"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.buzzerVolume}
-								error={errors.buzzerVolume}
-								isInvalid={errors.buzzerVolume}
-								onChange={handleChange}
-								min={0}
-								max={100}
-							/>
-						</Row>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:buzzer-speaker-pin-label')}
+									name="buzzerPin"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.buzzerPin}
+									error={errors.buzzerPin}
+									isInvalid={errors.buzzerPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:buzzer-speaker-volume-label')}
+									name="buzzerVolume"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.buzzerVolume}
+									error={errors.buzzerVolume}
+									isInvalid={errors.buzzerVolume}
+									onChange={handleChange}
+									min={0}
+									max={100}
+								/>
+							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="BuzzerSpeakerAddonButton"
 							reverse
@@ -1409,13 +1386,13 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("BuzzerSpeakerAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Extra Button Configuration">
+					<Section title={t('AddonsConfig:extra-button-header-text')}>
 						<div
 							id="ExtraButtonAddonOptions"
 							hidden={!values.ExtraButtonAddonEnabled}>
 							<Row className="mb-3">
 								<FormControl type="number"
-									label="Extra Button Pin"
+									label={t('AddonsConfig:extra-button-pin-label')}
 									name="extraButtonPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1427,7 +1404,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 								<FormSelect
-									label="Extra Button"
+									label={t('AddonsConfig:extra-button-map-label')}
 									name="extraButtonMap"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1441,7 +1418,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="ExtraButtonAddonButton"
 							reverse
@@ -1450,28 +1427,28 @@ export default function AddonsConfigPage() {
 							onChange={(e) => { handleCheckbox("ExtraButtonAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Player Number (X-INPUT ONLY)">
+					<Section title={t('AddonsConfig:player-number-header-text')}>
 						<div
 							id="PlayerNumAddonOptions"
 							hidden={!values.PlayerNumAddonEnabled}>
-						<p><strong>WARNING: ONLY ENABLE THIS OPTION IF YOU ARE CONNECTING MULTIPLE GP2040-CE DEVICES WITH PLAYER NUMBER ENABLED</strong></p>
-						<Row className="mb-3">
-							<FormControl type="number"
-								label="Player Number"
-								name="playerNumber"
-								className="form-control-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.playerNumber}
-								error={errors.playerNumber}
-								isInvalid={errors.playerNumber}
-								onChange={handleChange}
-								min={1}
-								max={4}
-							/>
-						</Row>
+							<p><strong>{t('AddonsConfig:player-number-sub-header-text')}</strong></p>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:player-number-label')}
+									name="playerNumber"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.playerNumber}
+									error={errors.playerNumber}
+									isInvalid={errors.playerNumber}
+									onChange={handleChange}
+									min={1}
+									max={4}
+								/>
+							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="PlayerNumAddonButton"
 							reverse
@@ -1480,76 +1457,76 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("PlayerNumAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="SOCD Cleaning Mode Selection Slider">
+					<Section title={t('AddonsConfig:socd-cleaning-mode-selection-slider-header-text')}>
 						<div
 							id="SliderSOCDInputOptions"
 							hidden={!values.SliderSOCDInputEnabled}>
-						<Row className="mb-3">
-							<p>Note: PS4, PS3 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.</p>
-							<FormSelect
-								label="SOCD Slider Mode Default"
-								name="sliderSOCDModeDefault"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.sliderSOCDModeDefault}
-								error={errors.sliderSOCDModeDefault}
-								isInvalid={errors.sliderSOCDModeDefault}
-								onChange={handleChange}
-							>
-								{SOCD_MODES.map((o, i) => <option key={`sliderSOCDModeDefault-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
-							<FormSelect
-								label="SOCD Slider Mode One"
-								name="sliderSOCDModeOne"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.sliderSOCDModeOne}
-								error={errors.sliderSOCDModeOne}
-								isInvalid={errors.sliderSOCDModeOne}
-								onChange={handleChange}
-							>
-								{SOCD_MODES.map((o, i) => <option key={`sliderSOCDModeOne-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
-							<FormControl type="number"
-								label="Pin One"
-								name="sliderSOCDPinOne"
-								className="form-select-sm"
-								groupClassName="col-sm-1 mb-3"
-								value={values.sliderSOCDPinOne}
-								error={errors.sliderSOCDPinOne}
-								isInvalid={errors.sliderSOCDPinOne}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-							<FormSelect
-								label="SOCD Slider Mode Two"
-								name="sliderSOCDModeTwo"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.sliderSOCDModeTwo}
-								error={errors.sliderSOCDModeTwo}
-								isInvalid={errors.sliderSOCDModeTwo}
-								onChange={handleChange}
-							>
-								{SOCD_MODES.map((o, i) => <option key={`sliderSOCDModeTwo-option-${i}`} value={o.value}>{o.label}</option>)}
-							</FormSelect>
-							<FormControl type="number"
-								label="Pin Two"
-								name="sliderSOCDPinTwo"
-								className="form-control-sm"
-								groupClassName="col-sm-1 mb-3"
-								value={values.sliderSOCDPinTwo}
-								error={errors.sliderSOCDPinTwo}
-								isInvalid={errors.sliderSOCDPinTwo}
-								onChange={handleChange}
-								min={-1}
-								max={29}
-							/>
-						</Row>
+							<Row className="mb-3">
+								<p>{t('AddonsConfig:socd-cleaning-mode-selection-slider-sub-header-text')}</p>
+								<FormSelect
+									label={t('AddonsConfig:socd-cleaning-mode-selection-slider-mode-default-label')}
+									name="sliderSOCDModeDefault"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.sliderSOCDModeDefault}
+									error={errors.sliderSOCDModeDefault}
+									isInvalid={errors.sliderSOCDModeDefault}
+									onChange={handleChange}
+								>
+									{SOCD_MODES.map((o, i) => <option key={`sliderSOCDModeDefault-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:socd-cleaning-mode-selection-slider-mode-one-label')}
+									name="sliderSOCDModeOne"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.sliderSOCDModeOne}
+									error={errors.sliderSOCDModeOne}
+									isInvalid={errors.sliderSOCDModeOne}
+									onChange={handleChange}
+								>
+									{SOCD_MODES.map((o, i) => <option key={`sliderSOCDModeOne-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormControl type="number"
+									label={t('AddonsConfig:socd-cleaning-mode-selection-slider-pin-one-label')}
+									name="sliderSOCDPinOne"
+									className="form-select-sm"
+									groupClassName="col-sm-1 mb-3"
+									value={values.sliderSOCDPinOne}
+									error={errors.sliderSOCDPinOne}
+									isInvalid={errors.sliderSOCDPinOne}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormSelect
+									label={t('AddonsConfig:socd-cleaning-mode-selection-slider-mode-two-label')}
+									name="sliderSOCDModeTwo"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.sliderSOCDModeTwo}
+									error={errors.sliderSOCDModeTwo}
+									isInvalid={errors.sliderSOCDModeTwo}
+									onChange={handleChange}
+								>
+									{SOCD_MODES.map((o, i) => <option key={`sliderSOCDModeTwo-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormControl type="number"
+									label={t('AddonsConfig:socd-cleaning-mode-selection-slider-pin-two-label')}
+									name="sliderSOCDPinTwo"
+									className="form-control-sm"
+									groupClassName="col-sm-1 mb-3"
+									value={values.sliderSOCDPinTwo}
+									error={errors.sliderSOCDPinTwo}
+									isInvalid={errors.sliderSOCDPinTwo}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="SliderSOCDInputButton"
 							reverse
@@ -1558,31 +1535,33 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("SliderSOCDInputEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="PS4 Mode">
+					<Section title={t('AddonsConfig:ps4-mode-header-text')}>
 						<div
 							id="PS4ModeOptions"
 							hidden={!values.PS4ModeAddonEnabled}>
 							<Row>
-								<h2>!!!! DISCLAIMER: GP2040-CE WILL NEVER SUPPLY THESE FILES !!!!</h2>
-								<p>Please upload the 3 required files and click the "Verify & Save" button to use PS4 Mode.</p>
+								<Trans ns="AddonsConfig" i18nKey="ps4-mode-sub-header-text">
+									<h2>!!!! DISCLAIMER: GP2040-CE WILL NEVER SUPPLY THESE FILES !!!!</h2>
+									<p>Please upload the 3 required files and click the &quot;Verify & Save&quot; button to use PS4 Mode.</p>
+								</Trans>
 							</Row>
 							<Row className="mb-3">
 								<div className="col-sm-3 mb-3">
-									Private Key (PEM):
+									{t('AddonsConfig:ps4-mode-private-key-label')}:
 									<input type="file" id="ps4key-input" accept="*/*" />
 								</div>
 								<div className="col-sm-3 mb-3">
-									Serial Number (16 Bytes in Hex Ascii):
+									{t('AddonsConfig:ps4-mode-serial-number-label')}:
 									<input type="file" id="ps4serial-input" accept="*/*" />
 								</div>
 								<div className="col-sm-3 mb-3">
-									Signature (256 Bytes in Binary):
+									{t('AddonsConfig:ps4-mode-signature-label')}:
 									<input type="file" id="ps4signature-input" accept="*/*" />
 								</div>
 							</Row>
 							<Row className="mb-3">
 								<div className="col-sm-3 mb-3">
-									<Button type="button" onClick={verifyAndSavePS4}>Verify & Save</Button>
+									<Button type="button" onClick={verifyAndSavePS4}>{t('Common:button-verify-save-label')}</Button>
 								</div>
 							</Row>
 							<Row className="mb-3">
@@ -1592,7 +1571,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="PS4ModeAddonEnabledButton"
 							reverse
@@ -1601,20 +1580,22 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("PS4ModeAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Wii Extension Configuration">
+					<Section title={t('AddonsConfig:wii-extension-header-text')}>
 						<div
 							id="WiiExtensionAddonOptions"
 							hidden={!values.WiiExtensionAddonEnabled}>
 							<Row>
-								<p>Note: If the Display is enabled at the same time, this Addon will be disabled.</p>
-                                <h3>Currently Supported Controllers</h3>
-                                <p>Classic/Classic Pro: Both Analogs and D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, ZL = L2, R = R1, ZR = R2, Minus = S1, Plus = S2, Home = A1</p>
-                                <p>Nunchuck: Analog Stick Supported. C = B1, Z = B2</p>
-                                <p>Guitar Hero Guitar: Analog Stick Supported. Green = B1, Red = B2, Blue = B3, Yellow = B4, Orange = L1, Strum Up = Up, Strum Down = Down, Minus = S1, Plus = S2</p>
+								<Trans ns="AddonsConfig" i18nKey="wii-extension-sub-header-text">
+									<p>Note: If the Display is enabled at the same time, this Addon will be disabled.</p>
+									<h3>Currently Supported Controllers</h3>
+									<p>Classic/Classic Pro: Both Analogs and D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, ZL = L2, R = R1, ZR = R2, Minus = S1, Plus = S2, Home = A1</p>
+									<p>Nunchuck: Analog Stick Supported. C = B1, Z = B2</p>
+									<p>Guitar Hero Guitar: Analog Stick Supported. Green = B1, Red = B2, Blue = B3, Yellow = B4, Orange = L1, Strum Up = Up, Strum Down = Down, Minus = S1, Plus = S2</p>
+								</Trans>
 							</Row>
 							<Row className="mb-3">
 								<FormControl type="number"
-									label="I2C SDA Pin"
+									label={t('AddonsConfig:wii-extension-sda-pin-label')}
 									name="wiiExtensionSDAPin"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1626,7 +1607,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 								<FormControl type="number"
-									label="I2C SCL Pin"
+									label={t('AddonsConfig:wii-extension-scl-pin-label')}
 									name="wiiExtensionSCLPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1638,7 +1619,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 								<FormSelect
-									label="I2C Block"
+									label={t('AddonsConfig:wii-extension-block-label')}
 									name="wiiExtensionBlock"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1650,7 +1631,7 @@ export default function AddonsConfigPage() {
 									{I2C_BLOCKS.map((o, i) => <option key={`wiiExtensionI2cBlock-option-${i}`} value={o.value}>{o.label}</option>)}
 								</FormSelect>
 								<FormControl
-									label="I2C Speed"
+									label={t('AddonsConfig:wii-extension-speed-label')}
 									name="wiiExtensionSpeed"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1663,7 +1644,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="WiiExtensionButton"
 							reverse="true"
@@ -1673,20 +1654,22 @@ export default function AddonsConfigPage() {
 							onChange={(e) => {handleCheckbox("WiiExtensionAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Snes Extension Configuration">
+					<Section title={t('AddonsConfig:snes-extension-header-text')}>
 						<div
 							id="SNESpadAddonOptions"
 							hidden={!values.SNESpadAddonEnabled}>
 							<Row>
-								<p>Note: If the Display is enabled at the same time, this Addon will be disabled.</p>
-                                <h3>Currently Supported Controllers</h3>
-                                <p>SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</p>
-                                <p>SNES mouse: Analog Stick Supported. Left Click = B1, Right Click = B2</p>
-                                <p>NES: D-Pad Supported. B = B1, A = B2, Select = S1, Start = S2</p>
+								<Trans ns="AddonsConfig" i18nKey="snes-extension-sub-header-text">
+									<p>Note: If the Display is enabled at the same time, this Addon will be disabled.</p>
+									<h3>Currently Supported Controllers</h3>
+									<p>SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</p>
+									<p>SNES mouse: Analog Stick Supported. Left Click = B1, Right Click = B2</p>
+									<p>NES: D-Pad Supported. B = B1, A = B2, Select = S1, Start = S2</p>
+								</Trans>
 							</Row>
 							<Row className="mb-3">
 								<FormControl type="number"
-									label="Clock Pin"
+									label={t('AddonsConfig:snes-extension-clock-pin-label')}
 									name="snesPadClockPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1698,7 +1681,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 								<FormControl type="number"
-									label="Latch Pin"
+									label={t('AddonsConfig:snes-extension-latch-pin-label')}
 									name="snesPadLatchPin"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1710,7 +1693,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 								<FormControl type="number"
-									label="Data Pin"
+									label={t('AddonsConfig:snes-extension-data-pin-label')}
 									name="snesPadDataPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1724,7 +1707,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="SNESpadButton"
 							reverse="true"
@@ -1733,14 +1716,14 @@ export default function AddonsConfigPage() {
 							checked={Boolean(values.SNESpadAddonEnabled)}
 							onChange={(e) => {handleCheckbox("SNESpadAddonEnabled", values); handleChange(e);}}
 						/>
-					</Section>	
-					<Section title="Focus Mode Configuration">
+					</Section>
+					<Section title={t('AddonsConfig:focus-mode-header-text')}>
 						<div
 							id="FocusModeAddonOptions"
 							hidden={!values.FocusModeAddonEnabled}>
 							<Row className="mb-3">
 								<FormControl type="number"
-									label="Focus Mode Pin"
+									label={t('AddonsConfig:focus-mode-pin-label')}
 									name="focusModePin"
 									className="form-select-sm col-3"
 									groupClassName="col-sm-3 mb-3"
@@ -1752,7 +1735,7 @@ export default function AddonsConfigPage() {
 									max={29} />
 								<div className="col-sm-3">
 									<FormCheck
-										label="Lock OLED Screen"
+										label={t('Common:lock-oled-screen')}
 										className="form-check-sm"
 										type="switch"
 										reverse
@@ -1763,7 +1746,7 @@ export default function AddonsConfigPage() {
 								</div>
 								<div className="col-sm-3">
 									<FormCheck
-										label="Lock RGB LED"
+										label={t('Common:lock-rgb-led')}
 										className="form-check-sm"
 										type="switch"
 										reverse
@@ -1774,7 +1757,7 @@ export default function AddonsConfigPage() {
 								</div>
 								<div className="col-sm-3">
 									<FormCheck
-										label="Lock Buttons"
+										label={t('Common:lock-buttons')}
 										className="form-check-sm"
 										type="switch"
 										reverse
@@ -1811,7 +1794,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="FocusModeAddonButton"
 							reverse
@@ -1865,7 +1848,7 @@ export default function AddonsConfigPage() {
 						/>
 					</Section>
 					<div className="mt-3">
-						<Button type="submit" id="save">Save</Button>
+						<Button type="submit" id="save">{t('Common:button-save-label')}</Button>
 						{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 					</div>
 					<FormContext setStoredData={setStoredData}/>
