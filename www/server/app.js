@@ -91,6 +91,7 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		forcedSetupMode: 0,
 		lockHotkeys: 0,
 		fourWayMode: 0,
+		fnButtonPin: -1,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,

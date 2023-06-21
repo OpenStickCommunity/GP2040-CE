@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
+import { NavLink } from "react-router-dom";
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
@@ -234,22 +235,20 @@ export default function SettingsPage() {
 						/>
 					</Section>
 					<Section title="Hotkey Settings">
+						<div className="mb-3">The <strong>Fn</strong> slider provides a mappable Function button in the <NavLink exact="true" to="/pin-mapping">Pin Mapping</NavLink> page. By selecting the Fn slider option, the Function button must be held along with the selected hotkey settings.
+						<br/>Additionally, select <strong>None</strong> from the dropdown to unassign any button.</div>
+						{values.fnButtonPin === -1 && <div className="alert alert-warning">Function button is not mapped. The Fn slider will be disabled.</div> }
 						<div id="Hotkeys"
 							hidden={values.lockHotkeys}>
 							{Object.keys(hotkeyFields).map((o, i) =>
 								<Form.Group key={`hotkey-${i}`} className="row mb-3">
-								<div className="col-sm-1">
-									<Form.Check name={`${o}.auxMask`} label="&nbsp;&nbsp;Fn" type="switch" className="form-select-sm" checked={values[o] && !!(values[o]?.auxMask)} onChange={(e) => { setFieldValue(`${o}.auxMask`, e.target.checked ? 32768 : 0)}} isInvalid={errors[o] && errors[o]?.auxMask} />
+								<div className="col-sm-auto">
+									<Form.Check name={`${o}.auxMask`} label="&nbsp;&nbsp;Fn" type="switch" className="form-select-sm" disabled={values.fnButtonPin === -1} checked={values[o] && !!(values[o]?.auxMask)} onChange={(e) => { setFieldValue(`${o}.auxMask`, e.target.checked ? 32768 : 0)}} isInvalid={errors[o] && errors[o]?.auxMask} />
 									<Form.Control.Feedback type="invalid">{errors[o] && errors[o]?.action}</Form.Control.Feedback>
 								</div>
-								<div className="col-sm-2">
-									<Form.Select name={`${o}.action`} className="form-select-sm" value={values[o] && values[o]?.action} onChange={handleChange} isInvalid={errors[o] && errors[o]?.action}>
-										{HOTKEY_ACTIONS.map((o, i) => <option key={`hotkey-action-${i}`} value={o.value}>{o.label}</option>)}
-									</Form.Select>
-									<Form.Control.Feedback type="invalid">{errors[o] && errors[o]?.action}</Form.Control.Feedback>
-								</div>
+								<span className="col-sm-auto">+</span>
 								{BUTTON_MASKS.map(mask => ((values[o] && values[o]?.buttonsMask & mask.value) ?
-									<div className="col-sm-2">
+									[<div className="col-sm-auto">
 										<Form.Select
 											name={`${o}.buttonsMask`}
 											className="form-select-sm sm-1"
@@ -259,19 +258,24 @@ export default function SettingsPage() {
 											isInvalid={errors[o] && errors[o]?.buttonsMask}
 											onChange={(e) => { setFieldValue(`${o}.buttonsMask`, (values[o] && values[o]?.buttonsMask ^ mask.value) | e.target.value); }}>
 												{BUTTON_MASKS.map((o, i2) => <option key={`hotkey-${i}-button${i2}`} value={o.value}>{o.label}</option>)}
+										</Form.Select>	
+									</div>, <span className="col-sm-auto">+</span>] : <></>))}
+									<div className="col-sm-auto">
+										<Form.Select
+											name={`${o}.buttonsMask`}
+											className="form-select-sm sm-1"
+											groupClassName="mb-3"
+											value={0}
+											onChange={(e) => { setFieldValue(`${o}.buttonsMask`, (values[o] && values[o]?.buttonsMask) | e.target.value); }}>
+												{BUTTON_MASKS.map((o, i2) => <option key={`hotkey-${i}-buttonZero-${i2}`} value={o.value}>{o.label}</option>)}
 										</Form.Select>
-									</div> : <></>))}
-									<div className="col">
-										<div className="col-sm-2">
-											<Form.Select
-												name={`${o}.buttonsMask`}
-												className="form-select-sm sm-1"
-												groupClassName="mb-3"
-												value={0}
-												onChange={(e) => { setFieldValue(`${o}.buttonsMask`, (values[o] && values[o]?.buttonsMask) | e.target.value); }}>
-													{BUTTON_MASKS.map((o, i2) => <option key={`hotkey-${i}-buttonZero-${i2}`} value={o.value}>{o.label}</option>)}
-											</Form.Select>
-										</div>
+									</div>
+									<span className="col-sm-auto">=</span>
+									<div className="col-sm-auto">
+										<Form.Select name={`${o}.action`} className="form-select-sm" value={values[o] && values[o]?.action} onChange={handleChange} isInvalid={errors[o] && errors[o]?.action}>
+											{HOTKEY_ACTIONS.map((o, i) => <option key={`hotkey-action-${i}`} value={o.value}>{o.label}</option>)}
+										</Form.Select>
+										<Form.Control.Feedback type="invalid">{errors[o] && errors[o]?.action}</Form.Control.Feedback>
 									</div>
 								</Form.Group>
 							)}
