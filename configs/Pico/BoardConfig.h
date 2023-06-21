@@ -290,6 +290,10 @@
 #define HOTKEY_F2_RIGHT_MASK   GAMEPAD_MASK_RIGHT
 #define HOTKEY_F2_RIGHT_ACTION HOTKEY_INVERT_Y_AXIS
 
+// Keyboard Host Addon defaults
+#define KEYBOARD_HOST_ENABLED 0
+#define KEYBOARD_HOST_PIN_DPLUS -1
+
 // For details on this, see: https://gp2040-ce.info/#/development?id=i2c-display-splash
 #define DEFAULT_SPLASH \
     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \

@@ -87,6 +87,14 @@ FetchContent_Declare(ArduinoJson
 )
 FetchContent_MakeAvailable(ArduinoJson)
 
+if(DEFINED ENV{PICO_PIO_USB_PATH})
+  message(STATUS "Found custom Pico-PIO-USB path, using it.")
+  set(PICO_PIO_USB_PATH $ENV{PICO_PIO_USB_PATH})
+elseif(NOT DEFINED PICO_PIO_USB_PATH)
+  message(STATUS "Using default Pico-PIO-USB.")
+  set(PICO_PIO_USB_PATH ${CMAKE_SOURCE_DIR}/lib/pico_pio_usb)
+endif()
+
 include(compile_proto.cmake)
 compile_proto()
 
@@ -127,6 +135,7 @@ src/addons/focus_mode.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/extra_button.cpp
+src/addons/keyboard_host.cpp
 src/addons/i2canalog1219.cpp
 src/addons/jslider.cpp
 src/addons/i2cdisplay.cpp
@@ -153,6 +162,8 @@ pico_set_program_version(GP2040-CE "0.7.2")
 target_link_libraries(${PROJECT_NAME}
 pico_stdlib
 pico_bootsel_via_double_reset
+tinyusb_host
+tinyusb_pico_pio_usb
 AnimationStation
 CRC32
 FlashPROM

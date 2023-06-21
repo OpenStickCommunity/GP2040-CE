@@ -13,6 +13,7 @@
 #include "addons/focus_mode.h"
 #include "addons/dualdirectional.h"
 #include "addons/extra_button.h"
+#include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
 #include "addons/jslider.h"
 #include "addons/playernum.h"
@@ -100,6 +101,7 @@ void GP2040::setup() {
 	adc_init();
 
 	// Setup Add-ons
+  	addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);

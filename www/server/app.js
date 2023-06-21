@@ -8,6 +8,7 @@ import mapValues from "lodash/mapValues.js";
 import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { DEFAULT_KEYBOARD_MAPPING } from "../src/Data/Keyboard.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,9 +16,7 @@ const __dirname = path.dirname(__filename);
 const { pico: picoController } = JSON.parse(
 	readFileSync(path.resolve(__dirname, "../src/Data/Controllers.json"), "utf8")
 );
-const { keyboard: keyboardMapping } = JSON.parse(
-	readFileSync(path.resolve(__dirname, "../src/Data/Keyboard.json"), "utf8")
-);
+
 const port = process.env.PORT || 8080;
 
 const app = express();
@@ -175,7 +174,7 @@ app.get("/api/getPinMappings", (req, res) => {
 });
 
 app.get("/api/getKeyMappings", (req, res) =>
-	res.send(mapValues(keyboardMapping))
+	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING))
 );
 
 app.get("/api/getAddonsOptions", (req, res) => {
@@ -246,6 +245,8 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
+		keyboardHostPinDplus: 0,
+		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
@@ -255,6 +256,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		ExtraButtonAddonEnabled: 1,
 		I2CAnalog1219InputEnabled: 1,
 		JSliderInputEnabled: 1,
+		KeyboardHostAddonEnabled: 1,
 		PlayerNumAddonEnabled: 1,
 		PS4ModeAddonEnabled: 1,
 		ReverseInputEnabled: 1,

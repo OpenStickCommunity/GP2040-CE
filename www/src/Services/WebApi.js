@@ -236,11 +236,23 @@ async function setKeyMappings(mappings) {
 }
 async function getAddonsOptions() {
 	return axios.get(`${baseUrl}/api/getAddonsOptions`)
-		.then((response) => response.data)
+		.then((response) => response.data).then((data) => {
+			let mappings = { ...baseButtonMappings };
+			for (let prop of Object.keys(data.keyboardHostMap))
+				mappings[prop].key = parseInt(data.keyboardHostMap[prop]);
+			data.keyboardHostMap = mappings;
+			return data;
+		})
 		.catch(console.error);
 }
 
 async function setAddonsOptions(options) {
+	if (options.keyboardHostMap) {
+		let data = {};
+		Object.keys(options.keyboardHostMap).map((button, i) => data[button] = options.keyboardHostMap[button].key);
+		options.keyboardHostMap = data;
+	}
+
 	return axios.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);

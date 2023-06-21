@@ -38,7 +38,7 @@ void initialize_driver(InputMode mode)
 	if (mode == INPUT_MODE_CONFIG)
 		usb_mode = USB_MODE_NET;
 
-	tusb_init();
+	tud_init(TUD_OPT_RHPORT);
 }
 
 void receive_report(uint8_t *buffer)

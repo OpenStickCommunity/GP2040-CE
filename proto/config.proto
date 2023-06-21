@@ -380,6 +380,13 @@ message SNESOptions
 	optional int32 dataPin = 4;
 }
 
+message KeyboardHostOptions
+{
+	optional bool enabled = 1;
+	optional int32 pinDplus = 2;
+	optional KeyboardMapping mapping = 3;
+}
+
 message FocusModeOptions
 {
 	optional bool enabled = 1;
@@ -407,7 +414,8 @@ message AddonOptions
 	optional WiiOptions wiiOptions = 13;
 	optional SOCDSliderOptions socdSliderOptions = 14;
 	optional SNESOptions snesOptions = 15;
-	optional FocusModeOptions focusModeOptions = 16;
+	optional KeyboardHostOptions keyboardHostOptions = 16;
+	optional FocusModeOptions focusModeOptions = 17;
 }
 
 message Config

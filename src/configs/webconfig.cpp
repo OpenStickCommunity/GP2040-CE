@@ -81,6 +81,16 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
+template <typename T>
+static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocument& doc, const char* key0, const char* key1)
+{
+	if (doc[key0][key1] != nullptr)
+	{
+		value = doc[key0][key1];
+	}
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPinLegacy(uint8_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
 	if (doc[key] != nullptr)
@@ -957,6 +967,28 @@ std::string setAddonOptions()
 	docToPin(snesOptions.latchPin, doc, "snesPadLatchPin");
 	docToPin(snesOptions.dataPin, doc, "snesPadDataPin");
 
+	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
+	docToPin(keyboardHostOptions.pinDplus, doc, "keyboardHostPinDplus");
+	docToValue(keyboardHostOptions.mapping.keyDpadUp, doc, "keyboardHostMap", "Up");
+	docToValue(keyboardHostOptions.mapping.keyDpadDown, doc, "keyboardHostMap", "Down");
+	docToValue(keyboardHostOptions.mapping.keyDpadLeft, doc, "keyboardHostMap", "Left");
+	docToValue(keyboardHostOptions.mapping.keyDpadRight, doc, "keyboardHostMap", "Right");
+	docToValue(keyboardHostOptions.mapping.keyButtonB1, doc, "keyboardHostMap", "B1");
+	docToValue(keyboardHostOptions.mapping.keyButtonB2, doc, "keyboardHostMap", "B2");
+	docToValue(keyboardHostOptions.mapping.keyButtonB3, doc, "keyboardHostMap", "B3");
+	docToValue(keyboardHostOptions.mapping.keyButtonB4, doc, "keyboardHostMap", "B4");
+	docToValue(keyboardHostOptions.mapping.keyButtonL1, doc, "keyboardHostMap", "L1");
+	docToValue(keyboardHostOptions.mapping.keyButtonR1, doc, "keyboardHostMap", "R1");
+	docToValue(keyboardHostOptions.mapping.keyButtonL2, doc, "keyboardHostMap", "L2");
+	docToValue(keyboardHostOptions.mapping.keyButtonR2, doc, "keyboardHostMap", "R2");
+	docToValue(keyboardHostOptions.mapping.keyButtonS1, doc, "keyboardHostMap", "S1");
+	docToValue(keyboardHostOptions.mapping.keyButtonS2, doc, "keyboardHostMap", "S2");
+	docToValue(keyboardHostOptions.mapping.keyButtonL3, doc, "keyboardHostMap", "L3");
+	docToValue(keyboardHostOptions.mapping.keyButtonR3, doc, "keyboardHostMap", "R3");
+	docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
+	docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
+
 	Storage::getInstance().save();
 
 	return serialize_json(doc);
@@ -1168,6 +1200,28 @@ std::string getAddonOptions()
 	writeDoc(doc, "snesPadLatchPin", cleanPin(snesOptions.latchPin));
 	writeDoc(doc, "snesPadDataPin", cleanPin(snesOptions.dataPin));
 	writeDoc(doc, "SNESpadAddonEnabled", snesOptions.enabled);
+
+	const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+	writeDoc(doc, "KeyboardHostAddonEnabled", keyboardHostOptions.enabled);
+	writeDoc(doc, "keyboardHostPinDplus", keyboardHostOptions.pinDplus);
+	writeDoc(doc, "keyboardHostMap", "Up", keyboardHostOptions.mapping.keyDpadUp);
+	writeDoc(doc, "keyboardHostMap", "Down", keyboardHostOptions.mapping.keyDpadDown);
+	writeDoc(doc, "keyboardHostMap", "Left", keyboardHostOptions.mapping.keyDpadLeft);
+	writeDoc(doc, "keyboardHostMap", "Right", keyboardHostOptions.mapping.keyDpadRight);
+	writeDoc(doc, "keyboardHostMap", "B1", keyboardHostOptions.mapping.keyButtonB1);
+	writeDoc(doc, "keyboardHostMap", "B2", keyboardHostOptions.mapping.keyButtonB2);
+	writeDoc(doc, "keyboardHostMap", "B3", keyboardHostOptions.mapping.keyButtonB3);
+	writeDoc(doc, "keyboardHostMap", "B4", keyboardHostOptions.mapping.keyButtonB4);
+	writeDoc(doc, "keyboardHostMap", "L1", keyboardHostOptions.mapping.keyButtonL1);
+	writeDoc(doc, "keyboardHostMap", "R1", keyboardHostOptions.mapping.keyButtonR1);
+	writeDoc(doc, "keyboardHostMap", "L2", keyboardHostOptions.mapping.keyButtonL2);
+	writeDoc(doc, "keyboardHostMap", "R2", keyboardHostOptions.mapping.keyButtonR2);
+	writeDoc(doc, "keyboardHostMap", "S1", keyboardHostOptions.mapping.keyButtonS1);
+	writeDoc(doc, "keyboardHostMap", "S2", keyboardHostOptions.mapping.keyButtonS2);
+	writeDoc(doc, "keyboardHostMap", "L3", keyboardHostOptions.mapping.keyButtonL3);
+	writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
+	writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
+	writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
 
 	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
