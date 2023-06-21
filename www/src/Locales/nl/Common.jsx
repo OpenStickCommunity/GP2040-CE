@@ -12,5 +12,5 @@ export default {
 		"button-verify-save-label": "Verifiëren en opslaan",
 		"errors": {
 			"validation-error": "Validatiefouten, zie hierboven",
-		},
+		}
 };

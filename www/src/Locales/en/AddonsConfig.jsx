@@ -90,4 +90,8 @@ export default {
 	'snes-extension-data-pin-label': 'Data Pin',
 	'focus-mode-header-text': 'Focus Mode Configuration',
 	'focus-mode-pin-label': 'Focus Mode Pin',
+	'keyboard-host-header-text': 'Keyboard Host Configuration',
+	'keyboard-host-sub-header-text': 'Following set the data + and - pins. Only the + pin can be configured.',
+	'keyboard-host-d-plus-label': 'D+',
+	'keyboard-host-d-minus-label': 'D-',
 };

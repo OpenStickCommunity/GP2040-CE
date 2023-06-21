@@ -15,8 +15,6 @@ export default function KeyboardMappingPage() {
 	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
 	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
 
-	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
-
 	const { t } = useTranslation('');
 
 	useEffect(() => {
@@ -58,12 +56,12 @@ export default function KeyboardMappingPage() {
 	return (
 		<Section title={t('KeyboardMapping:header-text')}>
 			<Form noValidate validated={validated} onSubmit={handleSubmit}>
-				<p>Use the form below to reconfigure your button-to-key mapping.</p>
+				<p>{t('KeyboardMapping:sub-header-text')}</p>
 				<KeyboardMapper buttonLabels={buttonLabels}
 								handleKeyChange={handleKeyChange}
 								validated={validated}
 								getKeyMappingForButton={getKeyMappingForButton} />
-				<Button type="submit">Save</Button>
+				<Button type="submit">{t('Common:button-save-label')}</Button>
 				{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 			</Form>
 		</Section>

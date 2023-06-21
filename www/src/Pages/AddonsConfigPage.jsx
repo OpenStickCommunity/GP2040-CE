@@ -1803,14 +1803,14 @@ export default function AddonsConfigPage() {
 							onChange={(e) => { handleCheckbox("FocusModeAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-					<Section title="Keyboard Host Configuration">
+					<Section title={t('AddonsConfig:keyboard-host-header-text')}>
 						<div
 							id="KeyboardHostAddonOptions"
 							hidden={!values.KeyboardHostAddonEnabled}>
 							<Row className="mb-3">
-								<p>Following set the data + and - pins. Only the + pin can be configured.</p>
+								<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
 								<FormControl type="number"
-									label="D+"
+									label={t('AddonsConfig:keyboard-host-d-plus-label')}
 									name="keyboardHostPinDplus"
 									className="form-select-sm"
 									groupClassName="col-sm-1 mb-3"
@@ -1822,7 +1822,7 @@ export default function AddonsConfigPage() {
 									max={28}
 								/>
 								<FormControl type="number"
-									label="D-"
+									label={t('AddonsConfig:keyboard-host-d-minus-label')}
 									disabled
 									className="form-select-sm"
 									groupClassName="col-sm-1 mb-3"
@@ -1830,7 +1830,7 @@ export default function AddonsConfigPage() {
 								/>
 							</Row>
 							<Row className="mb-3">
-								<p>Use the form below to reconfigure your button-to-key mapping.</p>
+								<p>{t('KeyboardMapping:sub-header-text')}</p>
 								<KeyboardMapper buttonLabels={buttonLabels}
 									handleKeyChange={handleKeyChange(values, setFieldValue)}
 									validated={validated}
@@ -1838,7 +1838,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label="Enabled"
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="KeyboardHostAddonButton"
 							reverse
