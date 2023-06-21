@@ -147,11 +147,11 @@ const verifyAndSavePS4 = async () => {
 				}
 				const hashed = CryptoJS.SHA256(bytes);
 				const signNonce = key.sign(hashed, CryptoJS.SHA256, "sha256");
-				
+
 				if (signNonce === false) {
 					throw new Error("Bad Private Key");
 				}
-				
+
 				// Private key worked!
 				var BigInteger = require('jsbn').BigInteger;
 
@@ -269,15 +269,15 @@ const schema = yup.object().shape({
 
 	BoardLedAddonEnabled:        yup.number().required().label('Board LED Add-On Enabled'),
 	onBoardLedMode:              yup.number().label('On-Board LED Mode').validateSelectionWhenValue('BoardLedAddonEnabled', ON_BOARD_LED_MODES),
- 
+
 	BootselButtonAddonEnabled:   yup.number().required().label('Boot Select Button Add-On Enabled'),
 	bootselButtonMap:            yup.number().label('BOOTSEL Button Map').validateSelectionWhenValue('BootselButtonAddonEnabled', BUTTON_MASKS),
 
 	FocusModeAddonEnabled:       yup.number().required().label('Focus Mode Add-On Enabled'),
 	focusModePin:                yup.number().label('Focus Mode Pin').validatePinWhenValue('FocusModeAddonEnabled'),
-	focusModeButtonLockEnabled:  yup.number().label('Focus Mode Button Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
-	focusModeOledLockEnabled:    yup.number().label('Focus Mode OLED Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
-	focusModeRgbLockEnabled:     yup.number().label('Focus Mode RGB Lock Enabled').validatePinWhenValue('FocusModeAddonEnabled'),
+	focusModeButtonLockEnabled:  yup.number().label('Focus Mode Button Lock Enabled').validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
+	focusModeOledLockEnabled:    yup.number().label('Focus Mode OLED Lock Enabled').validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
+	focusModeRgbLockEnabled:     yup.number().label('Focus Mode RGB Lock Enabled').validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
 	focusModeButtonLockMask:      yup.number().label('Focus Mode Button Lock Map').validateRangeWhenValue('FocusModeAddonEnabled', 0, (1<<20) - 1),
 
 	BuzzerSpeakerAddonEnabled:   yup.number().required().label('Buzzer Speaker Add-On Enabled'),
@@ -330,7 +330,7 @@ const schema = yup.object().shape({
 	pinShmupDial:                yup.number().label('Shmup Dial Pin').validatePinWhenValue('TurboInputEnabled'),
 	turboShotCount:              yup.number().label('Turbo Shot Count').validateRangeWhenValue('TurboInputEnabled', 5, 30),
 	shmupMode:                   yup.number().label('Shmup Mode Enabled').validateRangeWhenValue('TurboInputEnabled', 0, 1),
-	shmupMixMode:                yup.number().label('Shmup Mix Priority').validateSelectionWhenValue('TurboInputEnabled', DUAL_STICK_MODES), 
+	shmupMixMode:                yup.number().label('Shmup Mix Priority').validateSelectionWhenValue('TurboInputEnabled', DUAL_STICK_MODES),
 	shmupAlwaysOn1:              yup.number().label('Turbo-Button 1 (Always On)').validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupAlwaysOn2:              yup.number().label('Turbo-Button 2 (Always On)').validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupAlwaysOn3:              yup.number().label('Turbo-Button 3 (Always On)').validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
@@ -609,15 +609,15 @@ const sanitizeData = (values) => {
 
 function flattenObject(object) {
 	var toReturn = {};
-  
+
 	for (var i in object) {
 	  if (!object.hasOwnProperty(i)) continue;
-  
+
 	  if (typeof object[i] == "object" && object[i] !== null) {
 		var flatObject = flattenObject(object[i]);
 		for (var x in flatObject) {
 		  if (!flatObject.hasOwnProperty(x)) continue;
-  
+
 		  toReturn[i + "." + x] = flatObject[x];
 		}
 	  } else {
@@ -666,7 +666,7 @@ export default function AddonsConfigPage() {
 	const onSuccess = async (values) => {
 		const flattened = flattenObject(storedData)
 		const valuesCopy = schema.cast((values)) // Strip invalid values
-		
+
 		// Compare what's changed and set it to resultObject
 		let resultObject = {}
 		Object.entries(flattened)?.map(entry => {
@@ -1696,7 +1696,7 @@ export default function AddonsConfigPage() {
 									onChange={handleChange}
 									min={-1}
 									max={29}
-								/>	
+								/>
 								<FormControl type="number"
 									label="Latch Pin"
 									name="snesPadLatchPin"
