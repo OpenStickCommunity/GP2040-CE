@@ -245,6 +245,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
+		keyboardHostPinDplus: 0,
 		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,

@@ -8,6 +8,10 @@
 #define KEYBOARD_HOST_ENABLED 0
 #endif
 
+#ifndef KEYBOARD_HOST_PIN_DPLUS
+#define KEYBOARD_HOST_PIN_DPLUS -1
+#endif
+
 // KeyboardHost Module Name
 #define KeyboardHostName "KeyboardHost"
 

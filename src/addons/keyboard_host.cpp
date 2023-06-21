@@ -26,16 +26,19 @@ static KeyboardButtonMapping _keyboard_host_mapButtonA1  = KeyboardButtonMapping
 static KeyboardButtonMapping _keyboard_host_mapButtonA2  = KeyboardButtonMapping(GAMEPAD_MASK_A2);
 
 bool KeyboardHostAddon::available() {
-	return Storage::getInstance().getAddonOptions().keyboardHostOptions.enabled;
+  const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+	return keyboardHostOptions.enabled && isValidPin(keyboardHostOptions.pinDplus);
 }
 
 void KeyboardHostAddon::setup() {
   set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
-  const KeyboardMapping& keyboardMapping = Storage::getInstance().getAddonOptions().keyboardHostOptions.mapping;
+  const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+  const KeyboardMapping& keyboardMapping = keyboardHostOptions.mapping;
 	// board_init();
   // board_init() should be doing what the two lines below are doing but doesn't work
   // needs tinyusb_board library linked
 	pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
+  pio_cfg.pin_dp = keyboardHostOptions.pinDplus;
   tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
 	tuh_init(BOARD_TUH_RHPORT);
 

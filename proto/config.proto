@@ -383,7 +383,8 @@ message SNESOptions
 message KeyboardHostOptions
 {
 	optional bool enabled = 1;
-	optional KeyboardMapping mapping = 2;
+	optional int32 pinDplus = 2;
+	optional KeyboardMapping mapping = 3;
 }
 
 message FocusModeOptions

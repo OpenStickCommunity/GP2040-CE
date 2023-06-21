@@ -302,6 +302,7 @@ const schema = yup.object().shape({
 	sliderRSPin:                 yup.number().label('Slider RS Pin').validatePinWhenValue('JSliderInputEnabled'),
 
 	KeyboardHostAddonEnabled:    yup.number().required().label('Keyboard Host Add-On Enabled'),
+	keyboardHostPinDplus:        yup.number().label('Keyboard Host D+ Pin').validatePinWhenValue('KeyboardHostAddonEnabled'),
 
 	PlayerNumAddonEnabled:       yup.number().required().label('Player Number Add-On Enabled'),
 	playerNumber:                yup.number().label('Player Number').validateRangeWhenValue('PlayerNumAddonEnabled', 1, 4),
@@ -404,6 +405,7 @@ const defaultValues = {
 	snesPadClockPin: -1,
 	snesPadLatchPin: -1,
 	snesPadDataPin: -1,
+	keyboardHostPinDplus: -1,
 	keyboardHostMap: baseButtonMappings,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
@@ -569,6 +571,8 @@ const sanitizeData = (values) => {
 			values.snesPadLatchPin = parseInt(values.snesPadLatchPin);
 		if (!!values.snesPadDataPin)
 			values.snesPadDataPin = parseInt(values.snesPadDataPin);
+		if (!!values.keyboardHostPinDplus)
+			values.keyboardHostPinDplus = parseInt(values.keyboardHostPinDplus);
 		if (!!values.AnalogInputEnabled)
 			values.AnalogInputEnabled = parseInt(values.AnalogInputEnabled);
 		if (!!values.BoardLedAddonEnabled)
@@ -1820,6 +1824,28 @@ export default function AddonsConfigPage() {
 						<div
 							id="KeyboardHostAddonOptions"
 							hidden={!values.KeyboardHostAddonEnabled}>
+							<Row className="mb-3">
+								<p>Following set the data + and - pins. Only the + pin can be configured.</p>
+								<FormControl type="number"
+									label="D+"
+									name="keyboardHostPinDplus"
+									className="form-select-sm"
+									groupClassName="col-sm-1 mb-3"
+									value={values.keyboardHostPinDplus}
+									error={errors.keyboardHostPinDplus}
+									isInvalid={errors.keyboardHostPinDplus}
+									onChange={handleChange}
+									min={-1}
+									max={28}
+								/>
+								<FormControl type="number"
+									label="D-"
+									disabled
+									className="form-select-sm"
+									groupClassName="col-sm-1 mb-3"
+									value={values.keyboardHostPinDplus === -1 ? -1 : values.keyboardHostPinDplus + 1}
+								/>
+							</Row>
 							<Row className="mb-3">
 								<p>Use the form below to reconfigure your button-to-key mapping.</p>
 								<KeyboardMapper buttonLabels={buttonLabels}
