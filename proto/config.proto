@@ -414,8 +414,8 @@ message AddonOptions
 	optional WiiOptions wiiOptions = 13;
 	optional SOCDSliderOptions socdSliderOptions = 14;
 	optional SNESOptions snesOptions = 15;
-	optional KeyboardHostOptions keyboardHostOptions = 16;
-	optional FocusModeOptions focusModeOptions = 17;
+	optional FocusModeOptions focusModeOptions = 16;
+	optional KeyboardHostOptions keyboardHostOptions = 17;
 }
 
 message Config
