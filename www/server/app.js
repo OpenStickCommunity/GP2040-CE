@@ -247,6 +247,12 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		snesPadDataPin: -1,
 		keyboardHostPinDplus: 0,
 		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
+		lkpI2CBlock: 0,
+		lkpI2CAddress: 0x08,
+		lkpInterruptPin: -1,
+		lkpI2CSDAPin: -1,
+		lkpI2CSCLPin: -1,
+		lkpI2CSpeed: 400000,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
@@ -264,6 +270,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		TurboInputEnabled: 1,
 		WiiExtensionAddonEnabled: 1,
 		SNESpadAddonEnabled: 1,
+		I2CLKPAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });

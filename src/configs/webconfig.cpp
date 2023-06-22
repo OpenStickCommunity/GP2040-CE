@@ -459,7 +459,7 @@ std::string setSplashImage()
 std::string setGamepadOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
-	
+
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 	readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
 	readDoc(gamepadOptions.inputMode, doc, "inputMode");
@@ -795,7 +795,7 @@ std::string getPinMappings()
 std::string setKeyMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
-	
+
 	KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
 	readDoc(keyboardMapping.keyDpadUp, doc, "Up");
@@ -911,8 +911,8 @@ std::string setAddonOptions()
 
 	ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
-	docToPin(reverseOptions.buttonPin, doc, "reversePin");	
-	docToPin(reverseOptions.ledPin, doc, "reversePinLED");	
+	docToPin(reverseOptions.buttonPin, doc, "reversePin");
+	docToPin(reverseOptions.ledPin, doc, "reversePinLED");
 	docToValue(reverseOptions.actionUp, doc, "reverseActionUp");
 	docToValue(reverseOptions.actionDown, doc, "reverseActionDown");
 	docToValue(reverseOptions.actionLeft, doc, "reverseActionLeft");
@@ -988,6 +988,15 @@ std::string setAddonOptions()
 	docToValue(keyboardHostOptions.mapping.keyButtonR3, doc, "keyboardHostMap", "R3");
 	docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
 	docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
+
+	auto& lkpOptions = Storage::getInstance().getAddonOptions().lkpOptions;
+	docToValue(lkpOptions.enabled, doc, "I2CLKPAddonEnabled");
+	docToValue(lkpOptions.i2cBlock, doc, "lkpI2CBlock");
+	docToValue(lkpOptions.i2cAddress, doc, "lkpI2CAddress");
+	docToPin(lkpOptions.interruptPin, doc, "lkpInterruptPin");
+	docToPin(lkpOptions.i2cSDAPin, doc, "lkpI2CSDAPin");
+	docToPin(lkpOptions.i2cSCLPin, doc, "lkpI2CSCLPin");
+	docToValue(lkpOptions.i2cSpeed, doc, "lkpI2CSpeed");
 
 	Storage::getInstance().save();
 
@@ -1231,6 +1240,14 @@ std::string getAddonOptions()
 	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
 	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
+	const auto& lkpOptions = Storage::getInstance().getAddonOptions().lkpOptions;
+	writeDoc(doc, "I2CLKPAddonEnabled", lkpOptions.enabled);
+	writeDoc(doc, "lkpI2CBlock", lkpOptions.i2cBlock);
+	writeDoc(doc, "lkpI2CAddress", lkpOptions.i2cAddress);
+	writeDoc(doc, "lkpInterruptPin", cleanPin(lkpOptions.interruptPin));
+	writeDoc(doc, "lkpI2CSDAPin", cleanPin(lkpOptions.i2cSDAPin));
+	writeDoc(doc, "lkpI2CSCLPin", cleanPin(lkpOptions.i2cSCLPin));
+	writeDoc(doc, "lkpI2CSpeed", lkpOptions.i2cSpeed);
 	return serialize_json(doc);
 }
 

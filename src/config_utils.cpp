@@ -27,6 +27,7 @@
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/i2clkp.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -223,7 +224,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin2, PLED2_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin4, PLED4_PIN);
-    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b)); 
+    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b));
 
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
@@ -416,6 +417,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, oledLockEnabled, !!FOCUS_MODE_OLED_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, rgbLockEnabled, !!FOCUS_MODE_RGB_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
+
+		//addonOptions.lkpOptions
+		INIT_UNSET_PROPERTY(config.addonOptions.lkpOptions, enabled, !!LKP_ENABLED);
+		INIT_UNSET_PROPERTY(config.addonOptions.lkpOptions, i2cBlock, (LKP_I2C_BLOCK == i2c0) ? 0 : 1);
+		INIT_UNSET_PROPERTY(config.addonOptions.lkpOptions, i2cAddress, LKP_ADDR);
+		INIT_UNSET_PROPERTY(config.addonOptions.lkpOptions, interruptPin, LKP_INTERRUPT_PIN);
+		INIT_UNSET_PROPERTY(config.addonOptions.lkpOptions, i2cSDAPin, LKP_SDA_PIN);
+		INIT_UNSET_PROPERTY(config.addonOptions.lkpOptions, i2cSCLPin, LKP_SCL_PIN);
+		INIT_UNSET_PROPERTY(config.addonOptions.lkpOptions, i2cSpeed, LKP_SPEED);
 }
 
 // -----------------------------------------------------
@@ -524,7 +534,7 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
     {
         return;
     }
-    
+
     do
     {
         // Not implemented for extension fields
@@ -702,7 +712,7 @@ std::string ConfigUtils::toJSON(const Config& config)
 // From JSON
 // -----------------------------------------------------
 
-#define TEST_VALUE(name, value) if (v == value) return true; 
+#define TEST_VALUE(name, value) if (v == value) return true;
 
 #define GEN_IS_VALID_ENUM_VALUE_FUNCTION(enumtype) \
     static bool isValid ## enumtype(int v) \

@@ -345,6 +345,14 @@ const schema = yup.object().shape({
 	wiiExtensionSCLPin:          yup.number().required().label('WiiExtension I2C SCL Pin').validatePinWhenValue('WiiExtensionAddonEnabled'),
 	wiiExtensionBlock:           yup.number().required().label('WiiExtension I2C Block').validateSelectionWhenValue('WiiExtensionAddonEnabled', I2C_BLOCKS),
 	wiiExtensionSpeed:           yup.number().label('WiiExtension I2C Speed').validateNumberWhenValue('WiiExtensionAddonEnabled'),
+
+	I2CLKPAddonEnabled:          yup.number().required().label('LKP Extension Enabled'),
+	lkpI2CBlock:                 yup.number().label('LKP I2C Block').validateSelectionWhenValue('I2CLKPAddonEnabled', I2C_BLOCKS),
+	lkpI2CAddress:               yup.number().label('LKP I2C Address').validateNumberWhenValue('I2CLKPAddonEnabled'),
+	lkpInterruptPin:             yup.number().label('LKP Interrupt Pin').validatePinWhenValue('I2CLKPAddonEnabled'),
+	lkpI2CSDAPin:                yup.number().label('LKP I2C SDA Pin').validatePinWhenValue('I2CLKPAddonEnabled'),
+	lkpI2CSCLPin:                yup.number().label('LKP I2C SCL Pin').validatePinWhenValue('I2CLKPAddonEnabled'),
+	lkpI2CSpeed:                 yup.number().label('LKP I2C Speed').validateNumberWhenValue('I2CLKPAddonEnabled'),
 });
 
 const defaultValues = {
@@ -407,6 +415,12 @@ const defaultValues = {
 	snesPadDataPin: -1,
 	keyboardHostPinDplus: -1,
 	keyboardHostMap: baseButtonMappings,
+	lkpI2CBlock: 0,
+	lkpI2CAddress: 0x08,
+	lkpInterruptPin: -1,
+	lkpI2CSDAPin: -1,
+	lkpI2CSCLPin: -1,
+	lkpI2CSpeed: 400000,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
 	FocusModeAddonEnabled: 0,
@@ -424,6 +438,7 @@ const defaultValues = {
 	TurboInputEnabled: 0,
 	WiiExtensionAddonEnabled: 0,
 	SNESpadAddonEnabled: 0,
+	I2CLKPAddonEnabled: 0,
 };
 
 const FormContext = ({setStoredData}) => {
@@ -575,6 +590,18 @@ const sanitizeData = (values) => {
 			values.keyboardHostPinDplus = parseInt(values.keyboardHostPinDplus);
 		if (!!values.AnalogInputEnabled)
 			values.AnalogInputEnabled = parseInt(values.AnalogInputEnabled);
+		if (!!values.lkpI2CBlock)
+			values.lkpI2CBlock = parseInt(values.lkpI2CBlock);
+		if (!!values.lkpI2CAddress)
+			values.lkpI2CAddress = parseInt(values.lkpI2CAddress);
+		if (!!values.lkpInterruptPin)
+			values.lkpInterruptPin = parseInt(values.lkpInterruptPin);
+		if (!!values.lkpI2CSDAPin)
+			values.lkpI2CSDAPin = parseInt(values.lkpI2CSDAPin);
+		if (!!values.lkpI2CSCLPin)
+			values.lkpI2CSCLPin = parseInt(values.lkpI2CSCLPin);
+		if (!!values.lkpI2CSpeed)
+			values.lkpI2CSpeed = parseInt(values.lkpI2CSpeed);
 		if (!!values.BoardLedAddonEnabled)
 			values.BoardLedAddonEnabled = parseInt(values.BoardLedAddonEnabled);
 		if (!!values.BuzzerSpeakerAddonEnabled)
@@ -605,6 +632,8 @@ const sanitizeData = (values) => {
 			values.WiiExtensionAddonEnabled = parseInt(values.WiiExtensionAddonEnabled);
 		if (!!values.SNESpadAddonEnabled)
 			values.SNESpadAddonEnabled = parseInt(values.SNESpadAddonEnabled);
+		if (!!values.I2CLKPAddonEnabled)
+			values.I2CLKPAddonEnabled = parseInt(values.I2CLKPAddonEnabled);
 }
 
 function flattenObject(object) {
@@ -1733,7 +1762,7 @@ export default function AddonsConfigPage() {
 							checked={Boolean(values.SNESpadAddonEnabled)}
 							onChange={(e) => {handleCheckbox("SNESpadAddonEnabled", values); handleChange(e);}}
 						/>
-					</Section>	
+					</Section>
 					<Section title="Focus Mode Configuration">
 						<div
 							id="FocusModeAddonOptions"
@@ -1862,6 +1891,105 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.KeyboardHostAddonEnabled)}
 							onChange={(e) => { handleCheckbox("KeyboardHostAddonEnabled", values); handleChange(e);}}
+						/>
+					</Section>
+					<Section title="LKP Capacitive Slider Extension Configuration">
+						<div
+							id="I2CLKPAddonOptions"
+							hidden={!values.I2CLKPAddonEnabled}>
+							<Row>
+								<p>
+									<strong>
+										Currently the display driver will corrupt the data exchange between GP2040 and LKP
+										if both the display and LKP are on the same I2C block.
+										As a workaround, it is recommended to run LKP with display disabled or on a
+										different I2C block.
+									</strong>
+								</p>
+							</Row>
+							<Row className="mb-3">
+								<FormSelect
+									label="I2C Block"
+									name="lkpI2CBlock"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.lkpI2CBlock}
+									error={errors.lkpI2CBlock}
+									isInvalid={errors.lkpI2CBlock}
+									onChange={handleChange}
+								>
+									{I2C_BLOCKS.map((o, i) => <option key={`lkpI2CBlock-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormControl
+									label="I2C Address"
+									name="lkpI2CAddress"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.lkpI2CAddress}
+									error={errors.lkpI2CAddress}
+									isInvalid={errors.lkpI2CAddress}
+									onChange={handleChange}
+									maxLength={4}
+								/>
+								<FormControl type="number"
+									label="Interrupt Pin"
+									name="lkpInterruptPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.lkpInterruptPin}
+									error={errors.lkpInterruptPin}
+									isInvalid={errors.lkpInterruptPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
+							<Row className="mb-3">
+							<FormControl type="number"
+									label="I2C SDA Pin"
+									name="lkpI2CSDAPin"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.lkpI2CSDAPin}
+									error={errors.lkpI2CSDAPin}
+									isInvalid={errors.lkpI2CSDAPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label="I2C SCL Pin"
+									name="lkpI2CSCLPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.lkpI2CSCLPin}
+									error={errors.lkpI2CSCLPin}
+									isInvalid={errors.lkpI2CSCLPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl
+									label="I2C Speed"
+									name="lkpI2CSpeed"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.lkpI2CSpeed}
+									error={errors.lkpI2CSpeed}
+									isInvalid={errors.lkpI2CSpeed}
+									onChange={handleChange}
+									min={100000}
+								/>
+							</Row>
+						</div>
+						<FormCheck
+							label="Enabled"
+							type="switch"
+							id="I2CLKPButton"
+							reverse
+							isInvalid={false}
+							checked={Boolean(values.I2CLKPAddonEnabled)}
+							onChange={(e) => {handleCheckbox("I2CLKPAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
 					<div className="mt-3">
