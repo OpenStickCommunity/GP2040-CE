@@ -25,10 +25,8 @@ export default {
 		'off': 'Off'
 	},
 	'hotkey-settings-label': 'Hotkey Settings',
-	'hotkey-settings-up-label': 'Up',
-	'hotkey-settings-down-label': 'Down',
-	'hotkey-settings-left-label': 'Left',
-	'hotkey-settings-right-label': 'Right',
+	'hotkey-settings-sub-header': "The <strong>Fn</strong> slider provides a mappable Function button in the <1 exact='true' to='/pin-mapping'>Pin Mapping</1> page. By selecting the Fn slider option, the Function button must be held along with the selected hotkey settings.<br />Additionally, select <strong>None</strong> from the dropdown to unassign any button.",
+	'hotkey-settings-warning': 'Function button is not mapped. The Fn slider will be disabled.',
 	'hotkey-actions': {
 		'no-action': 'No Action',
 		'dpad-digital': 'Dpad Digital',

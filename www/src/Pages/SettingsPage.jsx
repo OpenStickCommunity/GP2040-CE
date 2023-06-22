@@ -33,13 +33,6 @@ const SOCD_MODES = [
 	{ labelKey: 'socd-cleaning-mode-options.off', value: 4 },
 ];
 
-const HOTKEY_MASKS = [
-	{ labelKey: 'hotkey-settings-up-label', value: 1 << 0 },
-	{ labelKey: 'hotkey-settings-down-label', value: 1 << 1 },
-	{ labelKey: 'hotkey-settings-left-label', value: 1 << 2 },
-	{ labelKey: 'hotkey-settings-right-label', value: 1 << 3 },
-];
-
 const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.no-action', value: 0 },
 	{ labelKey: 'hotkey-actions.dpad-digital', value: 1 },
@@ -178,7 +171,6 @@ export default function SettingsPage() {
 	const translatedInputModes = translateArray(INPUT_MODES);
 	const translatedDpadModes = translateArray(DPAD_MODES);
 	const translatedSocdModes = translateArray(SOCD_MODES);
-	const translatedHotkeyMasks = translateArray(HOTKEY_MASKS);
 	const translatedHotkeyActions = translateArray(HOTKEY_ACTIONS);
 	const translatedForcedSetupModes = translateArray(FORCED_SETUP_MODES);
 
@@ -250,10 +242,14 @@ export default function SettingsPage() {
 							onChange={(e) => { setFieldValue("fourWayMode", e.target.checked ? 1 : 0); }}
 						/>
 					</Section>
-					<Section title="Hotkey Settings">
-						<div className="mb-3">The <strong>Fn</strong> slider provides a mappable Function button in the <NavLink exact="true" to="/pin-mapping">Pin Mapping</NavLink> page. By selecting the Fn slider option, the Function button must be held along with the selected hotkey settings.
-						<br/>Additionally, select <strong>None</strong> from the dropdown to unassign any button.</div>
-						{values.fnButtonPin === -1 && <div className="alert alert-warning">Function button is not mapped. The Fn slider will be disabled.</div> }
+					<Section title={t('SettingsPage:hotkey-settings-label')}>
+						<div className="mb-3">
+							<Trans ns="SettingsPage" i18nKey="hotkey-settings-sub-header">
+								The <strong>Fn</strong> slider provides a mappable Function button in the <NavLink exact="true" to="/pin-mapping">Pin Mapping</NavLink> page. By selecting the Fn slider option, the Function button must be held along with the selected hotkey settings.
+								<br/>Additionally, select <strong>None</strong> from the dropdown to unassign any button.
+							</Trans>
+						</div>
+						{values.fnButtonPin === -1 && <div className="alert alert-warning">{t('SettingsPage:hotkey-settings-warning')}</div> }
 						<div id="Hotkeys"
 							hidden={values.lockHotkeys}>
 							{Object.keys(hotkeyFields).map((o, i) =>
@@ -274,7 +270,7 @@ export default function SettingsPage() {
 											isInvalid={errors[o] && errors[o]?.buttonsMask}
 											onChange={(e) => { setFieldValue(`${o}.buttonsMask`, (values[o] && values[o]?.buttonsMask ^ mask.value) | e.target.value); }}>
 												{BUTTON_MASKS.map((o, i2) => <option key={`hotkey-${i}-button${i2}`} value={o.value}>{o.label}</option>)}
-										</Form.Select>	
+										</Form.Select>
 									</div>, <span className="col-sm-auto">+</span>] : <></>))}
 									<div className="col-sm-auto">
 										<Form.Select
@@ -289,7 +285,7 @@ export default function SettingsPage() {
 									<span className="col-sm-auto">=</span>
 									<div className="col-sm-auto">
 										<Form.Select name={`${o}.action`} className="form-select-sm" value={values[o] && values[o]?.action} onChange={handleChange} isInvalid={errors[o] && errors[o]?.action}>
-											{HOTKEY_ACTIONS.map((o, i) => <option key={`hotkey-action-${i}`} value={o.value}>{o.label}</option>)}
+											{translatedHotkeyActions.map((o, i) => <option key={`hotkey-action-${i}`} value={o.value}>{o.label}</option>)}
 										</Form.Select>
 										<Form.Control.Feedback type="invalid">{errors[o] && errors[o]?.action}</Form.Control.Feedback>
 									</div>
