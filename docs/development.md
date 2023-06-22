@@ -9,7 +9,7 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 
 ### Windows Setup
 
-1. Install the latest ARM GNU Toolcahin
+1. Install the latest ARM GNU Toolchain
     - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 1. Install latest version of CMake
     - [CMake](https://cmake.org/download/)
