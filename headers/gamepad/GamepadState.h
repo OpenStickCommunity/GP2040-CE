@@ -74,6 +74,11 @@
 #define GAMEPAD_JOYSTICK_MID 0x7FFF
 #define GAMEPAD_JOYSTICK_MAX 0xFFFF
 
+/**
+ * @brief AUX defines --- gamepad state that doesn't translate to an output button/dpad/etc.
+ */
+#define AUX_MASK_FUNCTION	(1U << 15)
+
 const uint8_t dpadMasks[] =
 {
 	GAMEPAD_MASK_UP,

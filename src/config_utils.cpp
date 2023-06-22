@@ -1,11 +1,13 @@
 #include "config_utils.h"
 
+#include "config.pb.h"
 #include "enums.pb.h"
 #include "pb_encode.h"
 #include "pb_decode.h"
 #include "pb_common.h"
 
 #include "BoardConfig.h"
+#include "GamepadConfig.h"
 #include "helper.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
@@ -97,22 +99,54 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Up, dpadMask, HOTKEY_F1_UP_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Up, action, HOTKEY_F1_UP_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Down, dpadMask, HOTKEY_F1_DOWN_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Down, action, HOTKEY_F1_DOWN_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Left, dpadMask, HOTKEY_F1_LEFT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Left, action, HOTKEY_F1_LEFT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Right, dpadMask, HOTKEY_F1_RIGHT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Right, action, HOTKEY_F1_RIGHT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Up, dpadMask, HOTKEY_F2_UP_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Up, action, HOTKEY_F2_UP_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Down, dpadMask, HOTKEY_F2_DOWN_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Down, action, HOTKEY_F2_DOWN_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, dpadMask, HOTKEY_F2_LEFT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, HOTKEY_F2_LEFT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, HOTKEY_F2_RIGHT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, HOTKEY_F2_RIGHT_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, auxMask, HOTKEY_01_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, buttonsMask, HOTKEY_01_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, dpadMask, HOTKEY_01_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, action, GamepadHotkey(HOTKEY_01_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, auxMask, HOTKEY_02_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, buttonsMask, HOTKEY_02_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, dpadMask, HOTKEY_02_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, action, GamepadHotkey(HOTKEY_02_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, auxMask, HOTKEY_03_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, buttonsMask, HOTKEY_03_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, dpadMask, HOTKEY_03_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, action, GamepadHotkey(HOTKEY_03_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, auxMask, HOTKEY_04_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, buttonsMask, HOTKEY_04_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, dpadMask, HOTKEY_04_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, action, GamepadHotkey(HOTKEY_04_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, auxMask, HOTKEY_05_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, buttonsMask, HOTKEY_05_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, dpadMask, HOTKEY_05_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, action, GamepadHotkey(HOTKEY_05_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, auxMask, HOTKEY_06_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, buttonsMask, HOTKEY_06_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, dpadMask, HOTKEY_06_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, action, GamepadHotkey(HOTKEY_06_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, auxMask, HOTKEY_07_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, buttonsMask, HOTKEY_07_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, dpadMask, HOTKEY_07_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, action, GamepadHotkey(HOTKEY_07_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, auxMask, HOTKEY_08_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, buttonsMask, HOTKEY_08_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, dpadMask, HOTKEY_08_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, action, GamepadHotkey(HOTKEY_08_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, auxMask, HOTKEY_09_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, buttonsMask, HOTKEY_09_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, dpadMask, HOTKEY_09_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, action, GamepadHotkey(HOTKEY_09_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, auxMask, HOTKEY_10_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, buttonsMask, HOTKEY_10_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, dpadMask, HOTKEY_10_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, action, GamepadHotkey(HOTKEY_10_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, auxMask, HOTKEY_11_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, buttonsMask, HOTKEY_11_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, dpadMask, HOTKEY_11_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, action, GamepadHotkey(HOTKEY_11_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, auxMask, HOTKEY_12_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, buttonsMask, HOTKEY_12_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, dpadMask, HOTKEY_12_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, action, GamepadHotkey(HOTKEY_12_ACTION));
 
     // forcedSetupMode
     INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
@@ -136,6 +170,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR3, PIN_BUTTON_R3);
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA1, PIN_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA2, PIN_BUTTON_A2);
+    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonFn, PIN_BUTTON_FN);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadUp, KEY_DPAD_UP);
@@ -418,6 +453,62 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
 }
 
+
+// -----------------------------------------------------
+// migrations
+// used for when we might need to populate configs with
+// something *other than* the board defaults
+// -----------------------------------------------------
+
+// populate existing configurations' buttonsMask and auxMask to mirror behavior
+// from the behavior before this code merged. totally new configs get their
+// board defaults via initUnsetPropertiesWithDefaults
+void hotkeysMigration(Config& config)
+{
+    HotkeyOptions& hotkeys = config.hotkeyOptions;
+
+    // if dpadMask is defined and buttonsMask and auxMask aren't, then this
+    // hotkey was saved at least once in the past when the button shortcut was
+    // known as F1/F2, so they should be made to reflect the
+    // previously-hardcoded values for those hotkeys
+
+    // F1 == S1 | S2, no Fn
+    if (hotkeys.hotkey01.has_dpadMask && (!hotkeys.hotkey01.has_auxMask || !hotkeys.hotkey01.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey01, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey01, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey02.has_dpadMask && (!hotkeys.hotkey02.has_auxMask || !hotkeys.hotkey02.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey02, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey02, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey03.has_dpadMask && (!hotkeys.hotkey03.has_auxMask || !hotkeys.hotkey03.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey03, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey03, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey04.has_dpadMask && (!hotkeys.hotkey04.has_auxMask || !hotkeys.hotkey04.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey04, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey04, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+
+    // F2 == S2 | A1, no Fn
+    if (hotkeys.hotkey05.has_dpadMask && (!hotkeys.hotkey05.has_auxMask || !hotkeys.hotkey05.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey05, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey05, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey06.has_dpadMask && (!hotkeys.hotkey06.has_auxMask || !hotkeys.hotkey06.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey06, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey06, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey07.has_dpadMask && (!hotkeys.hotkey07.has_auxMask || !hotkeys.hotkey07.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey07, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey07, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey08.has_dpadMask && (!hotkeys.hotkey08.has_auxMask || !hotkeys.hotkey08.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey08, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey08, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+}
+
 // -----------------------------------------------------
 // Loading / Saving
 // -----------------------------------------------------
@@ -499,6 +590,9 @@ void ConfigUtils::load(Config& config)
         // We are probably dealing with a new device and therefore initialize the config to default values.
         config = Config Config_init_default;
     }
+
+    // run migrations
+    hotkeysMigration(config);
 
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.

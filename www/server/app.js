@@ -91,18 +91,67 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		forcedSetupMode: 0,
 		lockHotkeys: 0,
 		fourWayMode: 0,
-		hotkeyF1: [
-			{ action: 1, mask: 1 << 0 },
-			{ action: 2, mask: 1 << 1 },
-			{ action: 3, mask: 1 << 2 },
-			{ action: 4, mask: 1 << 3 },
-		],
-		hotkeyF2: [
-			{ action: 5, mask: 1 << 0 },
-			{ action: 6, mask: 1 << 1 },
-			{ action: 7, mask: 1 << 2 },
-			{ action: 8, mask: 1 << 3 },
-		],
+		fnButtonPin: -1,
+		hotkey01: {
+			auxMask: 32768,
+			buttonsMask: 66304,
+			action: 4
+		},
+		hotkey02: {
+			auxMask: 0,
+			buttonsMask: 131840,
+			action: 1
+		},
+		hotkey03: {
+			auxMask: 0,
+			buttonsMask: 262912,
+			action: 2
+		},
+		hotkey04: {
+			auxMask: 0,
+			buttonsMask: 525056,
+			action: 3
+		},
+		hotkey05: {
+			auxMask: 0,
+			buttonsMask: 70144,
+			action: 6
+		},
+		hotkey06: {
+			auxMask: 0,
+			buttonsMask: 135680,
+			action: 7
+		},
+		hotkey07: {
+			auxMask: 0,
+			buttonsMask: 266752,
+			action: 8
+		},
+		hotkey08: {
+			auxMask: 0,
+			buttonsMask: 528896,
+			action: 10
+		},
+		hotkey09: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0
+		},
+		hotkey10: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0
+		},
+		hotkey11: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0
+		},
+		hotkey12: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0
+		}
 	});
 });
 

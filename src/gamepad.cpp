@@ -86,17 +86,14 @@ static KeyboardReport keyboardReport
 
 Gamepad::Gamepad(int debounceMS) :
 	debounceMS(debounceMS)
-	, f1Mask((GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2))
-	, f2Mask((GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3))
 	, debouncer(debounceMS)
 	, options(Storage::getInstance().getGamepadOptions())
+	, hotkeyOptions(Storage::getInstance().getHotkeyOptions())
 {}
 
 void Gamepad::setup()
 {
 	// Configure pin mapping
-	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
-
 	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
 
 	const auto convertPin = [](int32_t pin) -> uint8_t { return isValidPin(pin) ? pin : 0xff; };
@@ -138,21 +135,12 @@ void Gamepad::setup()
 		}
 	}
 
-	#ifdef PIN_SETTINGS
-		gpio_init(PIN_SETTINGS);             // Initialize pin
-		gpio_set_dir(PIN_SETTINGS, GPIO_IN); // Set as INPUT
-		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
-	#endif
-
-	const HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
-	hotkeyF1Up    =	hotkeyOptions.hotkeyF1Up;
-	hotkeyF1Down  =	hotkeyOptions.hotkeyF1Down;
-	hotkeyF1Left  =	hotkeyOptions.hotkeyF1Left;
-	hotkeyF1Right =	hotkeyOptions.hotkeyF1Right;
-	hotkeyF2Up 	  =	hotkeyOptions.hotkeyF2Up;
-	hotkeyF2Down  =	hotkeyOptions.hotkeyF2Down;
-	hotkeyF2Left  =	hotkeyOptions.hotkeyF2Left;
-	hotkeyF2Right =	hotkeyOptions.hotkeyF2Right;
+	// initialize the Function pin button/switch if it is configured
+	if (isValidPin(pinMappings.pinButtonFn)) {
+		gpio_init(pinMappings.pinButtonFn);             // Initialize pin
+		gpio_set_dir(pinMappings.pinButtonFn, GPIO_IN); // Set as INPUT
+		gpio_pull_up(pinMappings.pinButtonFn);          // Set as PULLUP
+	}
 }
 
 void Gamepad::process()
@@ -214,14 +202,13 @@ void Gamepad::process()
 
 void Gamepad::read()
 {
+	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
+
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
 
-	#ifdef PIN_SETTINGS
 	state.aux = 0
-		| ((values & (1 << PIN_SETTINGS)) ? (1 << 0) : 0)
-	;
-	#endif
+		| (values & (1 << pinMappings.pinButtonFn)) ? AUX_MASK_FUNCTION : 0;
 
 	state.dpad = 0
 		| ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
@@ -269,29 +256,20 @@ void Gamepad::hotkey()
 	if (options.lockHotkeys) return;
 
 	GamepadHotkey action = HOTKEY_NONE;
-	if (pressedF1())
-	{
-		if (state.dpad == hotkeyF1Up   .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Up   .action);
-		if (state.dpad == hotkeyF1Down .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Down .action);
-		if (state.dpad == hotkeyF1Left .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Left .action);
-		if (state.dpad == hotkeyF1Right.dpadMask) action = static_cast<GamepadHotkey>(hotkeyF1Right.action);
-		if (action != HOTKEY_NONE) {
-			state.dpad = 0;
-			state.buttons &= ~(f1Mask);
-		}
-	} else if (pressedF2()) {
-		if (state.dpad == hotkeyF2Up   .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Up   .action);
-		if (state.dpad == hotkeyF2Down .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Down .action);
-		if (state.dpad == hotkeyF2Left .dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Left .action);
-		if (state.dpad == hotkeyF2Right.dpadMask) action = static_cast<GamepadHotkey>(hotkeyF2Right.action);
-		if (action != HOTKEY_NONE) {
-			state.dpad = 0;
-			state.buttons &= ~(f2Mask);
-		}
-	} else {
-		// no hotkey pressed, set reset last action so we can process the next press
-		lastAction = HOTKEY_NONE;
-	}
+
+	if (pressedHotkey(hotkeyOptions.hotkey01))	action = selectHotkey(hotkeyOptions.hotkey01);
+	else if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
+	else if (pressedHotkey(hotkeyOptions.hotkey03))	action = selectHotkey(hotkeyOptions.hotkey03);
+	else if (pressedHotkey(hotkeyOptions.hotkey04))	action = selectHotkey(hotkeyOptions.hotkey04);
+	else if (pressedHotkey(hotkeyOptions.hotkey05))	action = selectHotkey(hotkeyOptions.hotkey05);
+	else if (pressedHotkey(hotkeyOptions.hotkey06))	action = selectHotkey(hotkeyOptions.hotkey06);
+	else if (pressedHotkey(hotkeyOptions.hotkey07))	action = selectHotkey(hotkeyOptions.hotkey07);
+	else if (pressedHotkey(hotkeyOptions.hotkey08))	action = selectHotkey(hotkeyOptions.hotkey08);
+	else if (pressedHotkey(hotkeyOptions.hotkey09))	action = selectHotkey(hotkeyOptions.hotkey09);
+	else if (pressedHotkey(hotkeyOptions.hotkey10))	action = selectHotkey(hotkeyOptions.hotkey10);
+	else if (pressedHotkey(hotkeyOptions.hotkey11))	action = selectHotkey(hotkeyOptions.hotkey11);
+	else if (pressedHotkey(hotkeyOptions.hotkey12))	action = selectHotkey(hotkeyOptions.hotkey12);
+	else                                        lastAction = HOTKEY_NONE;
 	processHotkeyIfNewAction(action);
 }
 

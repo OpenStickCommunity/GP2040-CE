@@ -64,7 +64,7 @@ Input mode is saved across power cycles.
 
 ## D-Pad Modes
 
-You can switch between the 3 modes for the D-Pad **while the controller is in use by pressing one of the following combinations:**
+You can switch between the 3 modes for the D-Pad **while the controller is in use by pressing one of the following default combinations:**
 
 * <hotkey v-bind:buttons='["S1", "S2", "Down"]'></hotkey> - D-Pad
 * <hotkey v-bind:buttons='["S1", "S2", "Left"]'></hotkey> - Emulate Left Analog stick
@@ -74,7 +74,7 @@ D-Pad mode is saved across power cycles.
 
 ## SOCD Modes
 
-[Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040 users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button combinations:**
+[Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040 users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button default combinations:**
 
 * <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Standard stickless behavior).
 * <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.
@@ -84,7 +84,12 @@ The selected SOCD mode is saved across power cycles.
 
 ## Invert D-Pad Y-axis
 
-A toggle is available to invert the Y-axis input of the D-pad, allowing some additional input flexibility. To toggle, press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey>. This is a temporary hotkey mapping for this feature, so keep an eye on updated releases for this to change.
+A toggle is available to invert the Y-axis input of the D-pad, allowing some additional input flexibility. The default hotkey to toggle is to press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey>. This is a temporary hotkey mapping for this feature, so keep an eye on updated releases for this to change.
+
+### Hotkeys
+
+The D-Pad Mode, SOCD Mode, and Invert D-Pad Y-axis hotkey bindings can be changed or assigned to different
+actions in [the web configurator](web-configurator.md#hotkeys).
 
 ## RGB LEDs
 
