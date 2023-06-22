@@ -1898,14 +1898,7 @@ export default function AddonsConfigPage() {
 							id="I2CLKPAddonOptions"
 							hidden={!values.I2CLKPAddonEnabled}>
 							<Row>
-								<p>
-									<strong>
-										Currently the display driver will corrupt the data exchange between GP2040 and LKP
-										if both the display and LKP are on the same I2C block.
-										As a workaround, it is recommended to run LKP with display disabled or on a
-										different I2C block.
-									</strong>
-								</p>
+								<p>Note: If the Display is enabled at the same time, this Addon will be disabled.</p>
 							</Row>
 							<Row className="mb-3">
 								<FormSelect

@@ -52,42 +52,42 @@ static inline void fillReg16(uint8_t* dest, uint16_t reg) {
 }
 
 int I2CLKPInput::readReg(uint16_t u16Register) {
-  uint8_t u16RegisterBE[2];
+	uint8_t u16RegisterBE[2];
 	uint8_t reg;
 
 	fillReg16(u16RegisterBE, u16Register);
-  auto rc = i2c_write_timeout_per_char_us(
+	auto rc = i2c_write_timeout_per_char_us(
 		this->i2c, this->addr, u16RegisterBE, sizeof(u16RegisterBE), true, LKP_I2C_BREAK_US
 	);
-  if (rc == sizeof(u16RegisterBE)) {
-  	rc = i2c_read_timeout_per_char_us(
+	if (rc == sizeof(u16RegisterBE)) {
+		rc = i2c_read_timeout_per_char_us(
 			this->i2c, this->addr, &reg, sizeof(reg), false, LKP_I2C_BREAK_US
 		);
-  }
-  return rc == sizeof(reg) ? reg : -1;
+	}
+	return rc == sizeof(reg) ? reg : -1;
 }
 
 bool I2CLKPInput::readReg(uint16_t u16Register, uint8_t* dest, size_t len) {
-  uint8_t u16RegisterBE[2];
+	uint8_t u16RegisterBE[2];
 
 	fillReg16(u16RegisterBE, u16Register);
-  auto rc = i2c_write_timeout_per_char_us(
+	auto rc = i2c_write_timeout_per_char_us(
 		this->i2c, this->addr, u16RegisterBE, sizeof(u16RegisterBE), true, LKP_I2C_BREAK_US
 	);
-  if (rc == sizeof(u16RegisterBE)) {
-  	rc = i2c_read_timeout_per_char_us(this->i2c, this->addr, dest, len, false, LKP_I2C_BREAK_US);
-  }
-  return rc == len;
+	if (rc == sizeof(u16RegisterBE)) {
+		rc = i2c_read_timeout_per_char_us(this->i2c, this->addr, dest, len, false, LKP_I2C_BREAK_US);
+	}
+	return rc == len;
 }
 
 bool I2CLKPInput::writeReg(uint16_t u16Register, uint8_t newval) {
 	uint8_t scratchPad[3];
 	fillReg16(scratchPad, u16Register);
 	scratchPad[2] = newval;
-  auto rc = i2c_write_timeout_per_char_us(
+	auto rc = i2c_write_timeout_per_char_us(
 		i2c, addr, scratchPad, sizeof(scratchPad), false, LKP_I2C_BREAK_US
 	);
-  return rc == sizeof(scratchPad);
+	return rc == sizeof(scratchPad);
 }
 
 bool I2CLKPInput::cli() {
@@ -141,8 +141,11 @@ bool I2CLKPInput::probe() {
 }
 
 bool I2CLKPInput::available() {
+	const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
 	const auto& options = Storage::getInstance().getAddonOptions().lkpOptions;
-	return options.enabled &&
+
+	return (!displayOptions.enabled) &&
+		options.enabled &&
 		isValidPin(options.interruptPin) &&
 		options.has_i2cAddress &&
 		options.has_i2cBlock &&
@@ -168,10 +171,10 @@ void I2CLKPInput::setup() {
 	// This should not be required once #293 (specifically the global serial block allocation part)
 	// is finished.
 	i2c_init(this->i2c, options.i2cSpeed);
-  gpio_set_function(options.i2cSDAPin, GPIO_FUNC_I2C);
-  gpio_set_function(options.i2cSCLPin, GPIO_FUNC_I2C);
-  gpio_pull_up(options.i2cSDAPin);
-  gpio_pull_up(options.i2cSCLPin);
+	gpio_set_function(options.i2cSDAPin, GPIO_FUNC_I2C);
+	gpio_set_function(options.i2cSCLPin, GPIO_FUNC_I2C);
+	gpio_pull_up(options.i2cSDAPin);
+	gpio_pull_up(options.i2cSCLPin);
 
 	// Start probing
 	this->probe();
