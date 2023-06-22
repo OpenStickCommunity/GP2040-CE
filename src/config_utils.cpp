@@ -1,5 +1,6 @@
 #include "config_utils.h"
 
+#include "config.pb.h"
 #include "enums.pb.h"
 #include "pb_encode.h"
 #include "pb_decode.h"
@@ -452,6 +453,62 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
 }
 
+
+// -----------------------------------------------------
+// migrations
+// used for when we might need to populate configs with
+// something *other than* the board defaults
+// -----------------------------------------------------
+
+// populate existing configurations' buttonsMask and auxMask to mirror behavior
+// from the behavior before this code merged. totally new configs get their
+// board defaults via initUnsetPropertiesWithDefaults
+void hotkeysMigration(Config& config)
+{
+    HotkeyOptions& hotkeys = config.hotkeyOptions;
+
+    // if dpadMask is defined and buttonsMask and auxMask aren't, then this
+    // hotkey was saved at least once in the past when the button shortcut was
+    // known as F1/F2, so they should be made to reflect the
+    // previously-hardcoded values for those hotkeys
+
+    // F1 == S1 | S2, no Fn
+    if (hotkeys.hotkey01.has_dpadMask && (!hotkeys.hotkey01.has_auxMask || !hotkeys.hotkey01.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey01, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey01, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey02.has_dpadMask && (!hotkeys.hotkey02.has_auxMask || !hotkeys.hotkey02.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey02, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey02, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey03.has_dpadMask && (!hotkeys.hotkey03.has_auxMask || !hotkeys.hotkey03.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey03, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey03, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey04.has_dpadMask && (!hotkeys.hotkey04.has_auxMask || !hotkeys.hotkey04.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey04, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey04, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+
+    // F2 == S2 | A1, no Fn
+    if (hotkeys.hotkey05.has_dpadMask && (!hotkeys.hotkey05.has_auxMask || !hotkeys.hotkey05.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey05, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey05, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey06.has_dpadMask && (!hotkeys.hotkey06.has_auxMask || !hotkeys.hotkey06.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey06, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey06, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey07.has_dpadMask && (!hotkeys.hotkey07.has_auxMask || !hotkeys.hotkey07.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey07, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey07, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey08.has_dpadMask && (!hotkeys.hotkey08.has_auxMask || !hotkeys.hotkey08.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey08, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey08, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+}
+
 // -----------------------------------------------------
 // Loading / Saving
 // -----------------------------------------------------
@@ -533,6 +590,9 @@ void ConfigUtils::load(Config& config)
         // We are probably dealing with a new device and therefore initialize the config to default values.
         config = Config Config_init_default;
     }
+
+    // run migrations
+    hotkeysMigration(config);
 
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
