@@ -300,40 +300,48 @@ void Gamepad::hotkey()
  */
 void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 {
-	if (action != lastAction) {
-		switch (action) {
-			case HOTKEY_NONE              : return;
-			case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; break;
-			case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; break;
-			case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; break;
-			case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
-			case HOTKEY_CAPTURE_BUTTON    :
-				break;
-			case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; break;
-			case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; break;
-			case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; break;
-			case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY; break;
-			case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; break;
-			case HOTKEY_INVERT_X_AXIS     : break;
-			case HOTKEY_INVERT_Y_AXIS     :
-				if (lastAction != HOTKEY_INVERT_Y_AXIS)
-					options.invertYAxis = !options.invertYAxis;
-				break;
-			case HOTKEY_TOGGLE_4_WAY_MODE :
-				if (lastAction != HOTKEY_TOGGLE_4_WAY_MODE)
-					options.fourWayMode = !options.fourWayMode;
-				break;
-			case HOTKEY_TOGGLE_DDI_4_WAY_MODE:
-				if (lastAction != HOTKEY_TOGGLE_DDI_4_WAY_MODE) {
-					DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
-					ddiOpt.fourWayMode = !ddiOpt.fourWayMode;
-				}
-				break;
-		}
+	bool reqSave = false;
+	switch (action) {
+		case HOTKEY_NONE              : return;
+		case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; reqSave = true; break;
+		case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; reqSave = true; break;
+		case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; reqSave = true; break;
+		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
+		case HOTKEY_CAPTURE_BUTTON    :
+			break;
+		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; reqSave = true; break;
+		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; reqSave = true; break;
+		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;
+		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;  reqSave = true;break;
+		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; reqSave = true; break;
+		case HOTKEY_INVERT_X_AXIS     : break;
+		case HOTKEY_INVERT_Y_AXIS     :
+			if (action != lastAction) {
+				options.invertYAxis = !options.invertYAxis;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_TOGGLE_4_WAY_MODE :
+			if (action != lastAction) {
+				options.fourWayMode = !options.fourWayMode;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_TOGGLE_DDI_4_WAY_MODE:
+			if (action != lastAction) {
+				DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
+				ddiOpt.fourWayMode = !ddiOpt.fourWayMode;
+				reqSave = true;
+			}
+			break;
+	}
 
-		lastAction = action;
+	// only save if we did something different (except NONE because NONE doesn't get here)
+	if (action != lastAction && reqSave) {
 		save();
 	}
+
+	lastAction = action;
 }
 
 
