@@ -12,6 +12,7 @@ import Row from 'react-bootstrap/Row';
 import Stack from 'react-bootstrap/Stack';
 import { SketchPicker } from '@hello-pangea/color-picker';
 import Gradient from "javascript-color-gradient";
+import { Trans, useTranslation } from 'react-i18next';
 
 import { AppContext } from '../Contexts/AppContext';
 import FormSelect from '../Components/FormSelect';
@@ -85,7 +86,7 @@ const LEDButton = ({ id, name, buttonType, buttonColor, buttonPressedColor, clas
 	);
 };
 
-const ledColors = LEDColors.map(c => ({ title: c.name, color: c.value}));
+const ledColors = LEDColors.map(c => ({ title: c.name, color: c.value }));
 const customColors = (colors) => colors.map(c => ({ title: c, color: c }));
 
 const CustomThemePage = () => {
@@ -114,6 +115,8 @@ const CustomThemePage = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [presetColors, setPresetColors] = useState([...ledColors, ...customColors(savedColors)]);
 	const { buttonLabelType } = buttonLabels;
+
+	const { t } = useTranslation('');
 
 	const confirmClearAll = () => {
 		setSelectedColor(null);
@@ -230,7 +233,7 @@ const CustomThemePage = () => {
 		const leds = { ...customTheme };
 		specialButtons.forEach(b => delete leds[b]);
 		const success = await WebApi.setCustomTheme({ hasCustomTheme, customTheme: leds });
-		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+		setSaveMessage(success ? t('Common:saved-success-message') : t('Common:saved-error-message'));
 	};
 
 	useEffect(() => {
@@ -260,11 +263,13 @@ const CustomThemePage = () => {
 	}, [pickerVisible]);
 
 	return <>
-		<Section title="Custom LED Theme">
+		<Section title={t('CustomTheme:header-text')}>
 			<div>
 				<p>
-					Here you can enable and configure a custom LED theme.
-					The custom theme will be selectable using the Next and Previous Animation shortcuts on your controller.
+					<Trans ns="CustomTheme" i18nKey="sub-header-text">
+						Here you can enable and configure a custom LED theme.
+						The custom theme will be selectable using the Next and Previous Animation shortcuts on your controller.
+					</Trans>
 				</p>
 				{hasCustomTheme &&
 					<>
@@ -272,13 +277,15 @@ const CustomThemePage = () => {
 							<div className="d-flex justify-content-between">
 								<div className="d-flex d-none d-md-block">
 									<ul>
-										<li>Click a button to bring up the normal and pressed color selection.</li>
-										<li>Click on the controller background to dismiss the color selection.</li>
-										<li>Right-click a button to preview the button's pressed color.</li>
+										<Trans ns="CustomTheme" i18nKey="list-text">
+											<li>Click a button to bring up the normal and pressed color selection.</li>
+											<li>Click on the controller background to dismiss the color selection.</li>
+											<li>Right-click a button to preview the button&apos;s pressed color.</li>
+										</Trans>
 									</ul>
 								</div>
 								<FormSelect
-									label="Preview Layout"
+									label={t('CustomTheme:led-layout-label')}
 									name="ledLayout"
 									value={ledLayout}
 									onChange={(e) => setLedLayout(e.target.value)}
@@ -322,10 +329,10 @@ const CustomThemePage = () => {
 							</div>
 						</Stack>
 						<div className="button-group">
-							<Button onClick={(e) => setModalVisible(true)}>Clear All</Button>
-							<Button onClick={(e) => toggleSelectedButton(e, 'ALL')}>Set All To Color</Button>
-							<Button onClick={(e) => toggleSelectedButton(e, 'GRADIENT NORMAL')}>Set Gradient</Button>
-							<Button onClick={(e) => toggleSelectedButton(e, 'GRADIENT PRESSED')}>Set Pressed Gradient</Button>
+							<Button onClick={(e) => setModalVisible(true)}>{t('Common:button-clear-all-label')}</Button>
+							<Button onClick={(e) => toggleSelectedButton(e, 'ALL')}>{t('Common:button-set-all-to-color-label')}</Button>
+							<Button onClick={(e) => toggleSelectedButton(e, 'GRADIENT NORMAL')}>{t('Common:button-set-gradient-label')}</Button>
+							<Button onClick={(e) => toggleSelectedButton(e, 'GRADIENT PRESSED')}>{t('Common:button-set-pressed-gradient-label')}</Button>
 						</div>
 					</>
 				}
@@ -374,15 +381,15 @@ const CustomThemePage = () => {
 								</Col>
 							</Row>
 							<div className="button-group d-flex justify-content-between">
-								<Button size="sm" onClick={() => saveCurrentColor()}>Save Color</Button>
-								<Button size="sm" onClick={() => deleteCurrentColor()}>Delete Color</Button>
+								<Button size="sm" onClick={() => saveCurrentColor()}>{t('Common:button-save-color-label')}</Button>
+								<Button size="sm" onClick={() => deleteCurrentColor()}>{t('Common:button-delete-color-label')}</Button>
 							</div>
 						</Container>
 					</Popover>
 				</Overlay>
 			</div>
 			<FormCheck
-				label="Enable"
+				label={t('CustomTheme:has-custom-theme-label')}
 				type="switch"
 				id="hasCustomTheme"
 				reverse="true"
@@ -393,17 +400,17 @@ const CustomThemePage = () => {
 			/>
 		</Section>
 		<div>
-			<Button onClick={submit}>Save</Button>
+			<Button onClick={submit}>{t('Common:button-save-label')}</Button>
 			{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 		</div>
 		<Modal show={modalVisible} onHide={() => setModalVisible(false)}>
 			<Modal.Header closeButton>
-				<Modal.Title>Confirm Clear Custom Theme</Modal.Title>
+				<Modal.Title>{t('CustomTheme:modal-title')}</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>Are you sure you would like to clear your current custom LED theme?</Modal.Body>
+			<Modal.Body>{t('CustomTheme:modal-body')}</Modal.Body>
 			<Modal.Footer>
-				<Button variant="danger" onClick={() => setModalVisible(false)}>No</Button>
-				<Button variant="success" onClick={() => confirmClearAll()}>Yes</Button>
+				<Button variant="danger" onClick={() => setModalVisible(false)}>{t('CustomTheme:modal-yes')}</Button>
+				<Button variant="success" onClick={() => confirmClearAll()}>{t('CustomTheme:modal-no')}</Button>
 			</Modal.Footer>
 		</Modal>
 	</>;

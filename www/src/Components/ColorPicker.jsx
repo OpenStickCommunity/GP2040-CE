@@ -7,6 +7,7 @@ import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import Row from 'react-bootstrap/Row';
 import { SketchPicker } from '@hello-pangea/color-picker';
+import { useTranslation } from 'react-i18next';
 
 import { AppContext } from '../Contexts/AppContext';
 import LEDColors from '../Data/LEDColors';
@@ -22,6 +23,8 @@ const ColorPicker = ({ types, onChange, onDismiss, pickerOnly, placement, show, 
 	const [colorTypes, setColorTypes] = useState(types);
 	const [selectedColor, setSelectedColor] = useState('#000000');
 	const [selectedColorType, setSelectedColorType] = useState(types[0]);
+
+	const { t } = useTranslation('');
 
 	const deleteCurrentColor = () => {
 		const colorIndex = savedColors.indexOf(selectedColor);
@@ -49,7 +52,7 @@ const ColorPicker = ({ types, onChange, onDismiss, pickerOnly, placement, show, 
 			onChange(c.hex, e);
 
 		selectedColorType.value = c.hex;
-		
+
 		setSelectedColor(c.hex);
 		setColorTypes(colorTypes);
 	};
@@ -100,8 +103,8 @@ const ColorPicker = ({ types, onChange, onDismiss, pickerOnly, placement, show, 
 						</Col>
 					</Row>
 					<div className="button-group d-flex justify-content-between mt-2">
-						<Button size="sm" onClick={() => saveCurrentColor()}>Save Color</Button>
-						<Button size="sm" onClick={() => deleteCurrentColor()}>Delete Color</Button>
+						<Button size="sm" onClick={() => saveCurrentColor()}>{t('Common:button-save-color-label')}</Button>
+						<Button size="sm" onClick={() => deleteCurrentColor()}>{t('Common:button-delete-color-label')}</Button>
 					</div>
 				</Container>
 			</Popover>

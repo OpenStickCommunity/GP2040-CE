@@ -6,6 +6,7 @@ extends:
   - eslint:recommended
   - plugin:react/recommended
   - plugin:react-hooks/recommended
+  - plugin:i18next/recommended
 overrides: []
 parserOptions:
   ecmaVersion: latest
@@ -15,6 +16,7 @@ settings:
     version: "18.2"
 plugins:
   - react-refresh
+  - i18next
 rules:
   react-refresh/only-export-components: warn
   react/prop-types: off

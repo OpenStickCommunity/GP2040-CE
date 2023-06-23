@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import orderBy from 'lodash/orderBy';
+import { useTranslation } from 'react-i18next';
 
 import Section from '../Components/Section';
 
@@ -15,15 +16,17 @@ export default function HomePage() {
 	const [currentVersion, setCurrentVersion] = useState(import.meta.env.VITE_CURRENT_VERSION);
 	const [memoryReport, setMemoryReport] = useState(null);
 
+	const { t } = useTranslation('');
+
 	useEffect(() => {
 		WebApi.getFirmwareVersion().then(response => {
 			setCurrentVersion(response.version);
 		})
-		.catch(console.error);
+			.catch(console.error);
 
 		WebApi.getMemoryReport().then(response => {
 			const unit = 1024;
-			const {totalFlash, usedFlash, staticAllocs, totalHeap, usedHeap} = response;
+			const { totalFlash, usedFlash, staticAllocs, totalHeap, usedHeap } = response;
 			setMemoryReport({
 				totalFlash: toKB(totalFlash),
 				usedFlash: toKB(usedFlash),
@@ -34,7 +37,7 @@ export default function HomePage() {
 				percentageHeap: percentage(usedHeap, totalHeap)
 			});
 		})
-		.catch(console.error);
+			.catch(console.error);
 
 		axios.get('https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases')
 			.then((response) => {
@@ -50,13 +53,13 @@ export default function HomePage() {
 
 	return (
 		<div>
-			<h1>Welcome to the GP2040-CE Web Configurator!</h1>
-			<p>Please select a menu option to proceed.</p>
-			<Section title="System Stats">
+			<h1>{t('HomePage:header-text')}</h1>
+			<p>{t('HomePage:sub-header-text')}</p>
+			<Section title={t('HomePage:system-stats-header-text')}>
 				<div>
-					<div><strong>Version</strong></div>
-					<div>Current: { currentVersion }</div>
-					<div>Latest: { latestVersion }</div>
+					<div><strong>{t('HomePage:version-text')}</strong></div>
+					<div>{t('HomePage:current-text', { version: currentVersion })}</div>
+					<div>{t('HomePage:latest-text', { version: latestVersion })}</div>
 					{(latestVersion && currentVersion !== latestVersion) &&
 						<div className="mt-3 mb-3">
 							<a
@@ -64,15 +67,15 @@ export default function HomePage() {
 								rel="noreferrer"
 								href={`https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`}
 								className="btn btn-primary"
-							>Get Latest Version</a>
+							>{t('HomePage:get-update-text')}</a>
 						</div>
 					}
 					{memoryReport &&
 						<div>
-							<strong>Memory (KB)</strong>
-							<div>Flash: {memoryReport.usedFlash} / {memoryReport.totalFlash} ({memoryReport.percentageFlash}%)</div>
-							<div>Heap: {memoryReport.usedHeap} / {memoryReport.totalHeap} ({memoryReport.percentageHeap}%)</div>
-							<div>Static Allocations: {memoryReport.staticAllocs}</div>
+							<strong>{t('HomePage:memory-header-text')}</strong>
+							<div>{t('HomePage:memory-flash-text')}: {memoryReport.usedFlash} / {memoryReport.totalFlash} ({memoryReport.percentageFlash}%)</div>
+							<div>{t('HomePage:memory-heap-text')}: {memoryReport.usedHeap} / {memoryReport.totalHeap} ({memoryReport.percentageHeap}%)</div>
+							<div>{t('HomePage:memory-static-allocations-text')}: {memoryReport.staticAllocs}</div>
 						</div>
 					}
 				</div>

@@ -3,6 +3,7 @@ import { Button, Form, Row, Col, FormLabel } from 'react-bootstrap';
 import { Formik, useFormikContext, Field } from 'formik';
 import chunk from 'lodash/chunk';
 import * as yup from 'yup';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
@@ -81,10 +82,10 @@ const DISPLAY_SAVER_TIMEOUT_CHOICES = [
 ];
 
 const DISPLAY_FLIP_MODES = [
- { label: "None", value: 0 },
- { label: "Flip", value: 1 },
- { label: "Mirror", value: 2 },
- { label: "Flip and Mirror", value: 3 },
+	{ label: "None", value: 0 },
+	{ label: "Flip", value: 1 },
+	{ label: "Mirror", value: 2 },
+	{ label: "Flip and Mirror", value: 3 },
 ];
 
 const defaultValues = {
@@ -230,6 +231,8 @@ export default function DisplayConfigPage() {
 	const { updateUsedPins } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
+	const { t } = useTranslation('');
+
 	const onSuccess = async (values) => {
 		const success = await WebApi.setDisplayOptions(values, false)
 			.then(() => WebApi.setSplashImage(values));
@@ -237,7 +240,7 @@ export default function DisplayConfigPage() {
 		if (success)
 			await updateUsedPins();
 
-		setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
+		setSaveMessage(success ? t('Common:saved-success-message') : t('Common:saved-error-message'));
 
 	};
 
@@ -255,34 +258,41 @@ export default function DisplayConfigPage() {
 				touched,
 				errors,
 			}) => console.log('errors', errors) || (console.log('values', values) ||
-				<Section title="Display Configuration">
+				<Section title={t('DisplayConfig:header-text')}>
 					<p>
-						A monochrome display can be used to show controller status and button activity. Ensure your display module
-						has the following attributes:
+						{t('DisplayConfig:sub-header-text')}
 					</p>
 					<ul>
-						<li>Monochrome display with 128x64 resolution</li>
-						<li>Uses I2C with a SSD1306, SH1106, SH1107 or other compatible display IC</li>
-						<li>Supports 3.3v operation</li>
+						<Trans ns="DisplayConfig" i18nKey="list-text">
+							<li>Monochrome display with 128x64 resolution</li>
+							<li>Uses I2C with a SSD1306, SH1106, SH1107 or other compatible display IC</li>
+							<li>Supports 3.3v operation</li>
+						</Trans>
 					</ul>
 					<p>
-						Use these tables to determine which I2C block to select based on the configured SDA and SCL pins:
+						{t('DisplayConfig:table.header')}
 					</p>
 					<Row>
-						<Col>
+					<Col>
 							<table className="table table-sm mb-4">
 								<thead>
 									<tr>
-										<th>SDA/SCL Pins</th>
-										<th>I2C Block</th>
+										<th>{t('DisplayConfig:table.sda-scl-pins-header')}</th>
+										<th>{t('DisplayConfig:table.i2c-block-header')}</th>
 									</tr>
 								</thead>
 								<tbody>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>0/1</td><td>i2c0</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>2/3</td><td>i2c1</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>4/5</td><td>i2c0</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>6/7</td><td>i2c1</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>8/9</td><td>i2c0</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>10/11</td><td>i2c1</td></tr>
 								</tbody>
 							</table>
@@ -291,16 +301,22 @@ export default function DisplayConfigPage() {
 							<table className="table table-sm mb-4">
 								<thead>
 									<tr>
-										<th>SDA/SCL Pins</th>
-										<th>I2C Block</th>
+										<th>{t('DisplayConfig:table.sda-scl-pins-header')}</th>
+										<th>{t('DisplayConfig:table.i2c-block-header')}</th>
 									</tr>
 								</thead>
 								<tbody>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>12/13</td><td>i2c0</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>14/15</td><td>i2c1</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>16/17</td><td>i2c0</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>18/19</td><td>i2c1</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>20/21</td><td>i2c0</td></tr>
+									{/* eslint-disable-next-line i18next/no-literal-string */}
 									<tr><td>26/27</td><td>i2c1</td></tr>
 								</tbody>
 							</table>
@@ -309,7 +325,7 @@ export default function DisplayConfigPage() {
 					<Form noValidate onSubmit={handleSubmit}>
 						<Row>
 							<FormSelect
-								label="Use Display"
+								label={t('Common:switch-enabled')}
 								name="enabled"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -321,7 +337,7 @@ export default function DisplayConfigPage() {
 								{ON_OFF_OPTIONS.map((o, i) => <option key={`enabled-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 							<FormSelect
-								label="I2C Block"
+								label={t('DisplayConfig:form.i2c-block-label')}
 								name="i2cBlock"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -333,7 +349,7 @@ export default function DisplayConfigPage() {
 								{I2C_BLOCKS.map((o, i) => <option key={`i2cBlock-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 							<FormControl type="number"
-								label="SDA Pin"
+								label={t('DisplayConfig:form.sda-pin-label')}
 								name="sdaPin"
 								className="form-control-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -345,7 +361,7 @@ export default function DisplayConfigPage() {
 								max={29}
 							/>
 							<FormControl type="number"
-								label="SCL Pin"
+								label={t('DisplayConfig:form.scl-pin-label')}
 								name="sclPin"
 								className="form-control-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -359,7 +375,7 @@ export default function DisplayConfigPage() {
 						</Row>
 						<Row className="mb-3">
 							<FormControl type="text"
-								label="I2C Address"
+								label={t('DisplayConfig:form.i2c-address-label')}
 								name="i2cAddress"
 								className="form-control-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -370,7 +386,7 @@ export default function DisplayConfigPage() {
 								maxLength={4}
 							/>
 							<FormControl type="number"
-								label="I2C Speed"
+								label={t('DisplayConfig:form.i2c-speed-label')}
 								name="i2cSpeed"
 								className="form-control-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -381,7 +397,7 @@ export default function DisplayConfigPage() {
 								min={100000}
 							/>
 							<FormSelect
-								label="Flip Display"
+								label={t('DisplayConfig:form.flip-display-label')}
 								name="flipDisplay"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -393,7 +409,7 @@ export default function DisplayConfigPage() {
 								{DISPLAY_FLIP_MODES.map((o, i) => <option key={`flipDisplay-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 							<FormSelect
-								label="Invert Display"
+								label={t('DisplayConfig:form.invert-display-label')}
 								name="invertDisplay"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -407,7 +423,7 @@ export default function DisplayConfigPage() {
 						</Row>
 						<Row className="mb-3">
 							<FormSelect
-								label="Button Layout (Left)"
+								label={t('DisplayConfig:form.button-layout-label')}
 								name="buttonLayout"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -419,7 +435,7 @@ export default function DisplayConfigPage() {
 								{BUTTON_LAYOUTS.map((o, i) => <option key={`buttonLayout-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 							<FormSelect
-								label="Button Layout (Right)"
+								label={t('DisplayConfig:form.button-layout-right-label')}
 								name="buttonLayoutRight"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -431,7 +447,7 @@ export default function DisplayConfigPage() {
 								{BUTTON_LAYOUTS_RIGHT.map((o, i) => <option key={`buttonLayoutRight-option-${i}`} value={o.value}>{o.label}</option>)}
 							</FormSelect>
 							<FormSelect
-								label="Splash Mode"
+								label={t('DisplayConfig:form.splash-mode-label')}
 								name="splashMode"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -444,11 +460,11 @@ export default function DisplayConfigPage() {
 							</FormSelect>
 						</Row>
 						{isButtonLayoutCustom(values) && <Row className="mb-3">
-							<FormLabel>Custom Button Layout Params</FormLabel>
+							<FormLabel>{t('DisplayConfig:form.button-layout-custom-header')}</FormLabel>
 							<Col sm="6">
 								<Form.Group as={Row}
 									name="buttonLayoutCustomOptions">
-									<Form.Label column>Layout Left</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-left-label')}</Form.Label>
 									<FormSelect
 										name="buttonLayoutCustomOptions.params.layout"
 										className="form-select-sm"
@@ -460,28 +476,28 @@ export default function DisplayConfigPage() {
 									</FormSelect>
 								</Form.Group>
 								<Form.Group as={Row}>
-									<Form.Label column>Start X</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-start-x-label')}</Form.Label>
 									<Col sm="10">
 										<Field column className="mb-1" name="buttonLayoutCustomOptions.params.startX"
 												type="number" as={Form.Control}/>
 									</Col>
 								</Form.Group>
 								<Form.Group as={Row}>
-									<Form.Label column>Start Y</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-start-y-label')}</Form.Label>
 									<Col sm="10">
 										<Field column className="mb-1" name="buttonLayoutCustomOptions.params.startY"
 												type="number" as={Form.Control}/>
 									</Col>
 								</Form.Group>
 									<Form.Group as={Row}>
-									<Form.Label column>Button Radius</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-button-radius-label')}</Form.Label>
 									<Col sm="10">
 										<Field column className="mb-1" name="buttonLayoutCustomOptions.params.buttonRadius"
 												type="number" as={Form.Control}/>
 									</Col>
 								</Form.Group>
 								<Form.Group as={Row}>
-									<Form.Label column>Button Padding</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-button-padding-label')}</Form.Label>
 									<Col sm="10">
 										<Field column className="mb-1" name="buttonLayoutCustomOptions.params.buttonPadding"
 												type="number" as={Form.Control}/>
@@ -490,40 +506,40 @@ export default function DisplayConfigPage() {
 							</Col>
 							<Col sm="6">
 								<Form.Group as={Row}>
-									<Form.Label column>Layout Right</Form.Label>
-								<FormSelect
-									name="buttonLayoutCustomOptions.paramsRight.layout"
-									className="form-select-sm"
-									groupClassName="col-sm-10 mb-1"
-									value={values.buttonLayoutCustomOptions.paramsRight.layout}
-									onChange={handleChange}
-								>
-									{BUTTON_LAYOUTS_RIGHT.slice(0, -1).map((o, i) => <option key={`buttonLayoutRight-option-${i}`} value={o.value}>{o.label}</option>)}
-								</FormSelect>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-right-label')}</Form.Label>
+									<FormSelect
+										name="buttonLayoutCustomOptions.paramsRight.layout"
+										className="form-select-sm"
+										groupClassName="col-sm-10 mb-1"
+										value={values.buttonLayoutCustomOptions.paramsRight.layout}
+										onChange={handleChange}
+									>
+										{BUTTON_LAYOUTS_RIGHT.slice(0, -1).map((o, i) => <option key={`buttonLayoutRight-option-${i}`} value={o.value}>{o.label}</option>)}
+									</FormSelect>
 								</Form.Group>
 								<Form.Group as={Row}>
-									<Form.Label column>Start X</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-start-x-label')}</Form.Label>
 									<Col sm="10">
 										<Field column className="mb-1" name="buttonLayoutCustomOptions.paramsRight.startX"
 												type="number" as={Form.Control}/>
 									</Col>
 								</Form.Group>
 								<Form.Group as={Row}>
-									<Form.Label column>Start Y</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-start-y-label')}</Form.Label>
 									<Col sm="10">
 										<Field column className="mb-1" name="buttonLayoutCustomOptions.paramsRight.startY"
 												type="number" as={Form.Control}/>
 									</Col>
 								</Form.Group>
 									<Form.Group as={Row}>
-									<Form.Label column>Button Radius</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-button-radius-label')}</Form.Label>
 									<Col sm="10">
 										<Field column className="mb-1" name="buttonLayoutCustomOptions.paramsRight.buttonRadius"
 												type="number" as={Form.Control}/>
 									</Col>
 								</Form.Group>
 								<Form.Group as={Row}>
-									<Form.Label column>Button Padding</Form.Label>
+									<Form.Label column>{t('DisplayConfig:form.button-layout-custom-button-padding-label')}</Form.Label>
 									<Col sm="10">
 										<Field column className="mb-1" name="buttonLayoutCustomOptions.paramsRight.buttonPadding"
 												type="number" as={Form.Control}/>
@@ -533,7 +549,7 @@ export default function DisplayConfigPage() {
 						</Row>}
 						<Row className="mb-3">
 							<FormControl type="number"
-								label="Splash Duration (seconds, 0 for Always On)"
+								label={t('DisplayConfig:form.splash-duration-label')}
 								name="splashDuration"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -544,7 +560,7 @@ export default function DisplayConfigPage() {
 								min={0}
 							/>
 							<FormControl type="number"
-								label="Display Saver Timeout (minutes)"
+								label={t('DisplayConfig:form.display-saver-timeout-label')}
 								name="displaySaverTimeout"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -569,7 +585,7 @@ export default function DisplayConfigPage() {
 							</Field>
 						</Row>
 						<div className="mt-3">
-							<Button type="submit">Save</Button>
+							<Button type="submit">{t('Common:button-save-label')}</Button>
 							{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 						</div>
 						<FormContext />
@@ -585,6 +601,8 @@ const Canvas = ({value: bitsArray, onChange}) => {
 	const [canvasContext, setCanvasContext] = useState(null);
 	const [inverted, setInverted] = useState(false);
 	const canvasRef = useRef();
+
+	const { t } = useTranslation('');
 
 	useEffect(() => {
 		setCanvasContext(canvasRef.current.getContext('2d'));
@@ -684,7 +702,7 @@ const Canvas = ({value: bitsArray, onChange}) => {
 		<div style={{ marginLeft: "11px" }}>
 			<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" onChange={onImageAdd} />
 			<br/>
-			<input type="checkbox" checked={inverted} onChange={toggleInverted}/> Invert
+			<input type="checkbox" checked={inverted} onChange={toggleInverted}/> {t('DisplayConfig:form.inverted-label')}
 			{/* <ErrorMessage name="splashImage" /> */}
 		</div>
 	</div>)

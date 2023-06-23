@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Button, Form, Col } from 'react-bootstrap';
+import { Trans, useTranslation } from 'react-i18next';
+
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 
@@ -26,6 +28,8 @@ export default function BackupPage() {
 	const [noticeMessage, setNoticeMessage] = useState('');
 	const [saveMessage, setSaveMessage] = useState('');
 	const [loadMessage, setLoadMessage] = useState('');
+
+	const { t } = useTranslation('');
 
 	useEffect(() => {
 		async function fetchData() {
@@ -114,7 +118,7 @@ export default function BackupPage() {
 		a.click();
 		a.remove();
 
-		setSaveMessage(`Saved as: ${name}`);
+		setSaveMessage(t('BackupPage:saved-success-message', { name }));
 
 		setTimeout(() => {
 			setSaveMessage('');
@@ -191,10 +195,10 @@ export default function BackupPage() {
 
 	return (
 		<>
-			<Section title={"Data Backup and Restoration"}>
-				<i>{"Backups made from different GP2040-CE versions can be used."}</i>
+			<Section title={t('BackupPage:header-text')}>
+				<i>{t('BackupPage:sub-header-text')}</i>
 			</Section>
-			<Section title={"Backup To File"}>
+			<Section title={t('BackupPage:save-header-text')}>
 				<Col>
 					<Form.Group className={"row mb-3"}>
 						<div className={"col-sm-4"}>
@@ -202,7 +206,9 @@ export default function BackupPage() {
 								<Form.Check
 									id={`export_${api[0]}`}
 									key={`export_${api[0]}`}
-									label={`Export ${api[1].label} Options`}
+									label={t('BackupPage:save-export-option-label', {
+										api: t(`BackupPage:api-${api[0]}-text`)
+									})}
 									type={"checkbox"}
 									checked={checkValues[`export_${api[0]}`] ?? false}
 									onChange={handleChange}
@@ -220,7 +226,7 @@ export default function BackupPage() {
 							type="submit"
 							onClick={handleSave}
 						>
-							{"Save"}
+							{t('Common:button-save-label')}
 						</Button>
 						<div
 							style={{
@@ -236,7 +242,7 @@ export default function BackupPage() {
 					</div>
 				</Col>
 			</Section>
-			<Section title={"Restore From File"}>
+			<Section title={t('BackupPage:load-header-text')}>
 				<Col>
 					<Form.Group className={"row mb-3"}>
 						<div className={"col-sm-4"}>
@@ -244,7 +250,9 @@ export default function BackupPage() {
 								<Form.Check
 									id={`import_${api[0]}`}
 									key={`import_${api[0]}`}
-									label={`Import ${api[1].label} Options`}
+									label={t('BackupPage:load-export-option-label', {
+										api: t(`BackupPage:api-${api[0]}-text`)
+									})}
 									type={"checkbox"}
 									checked={checkValues[`import_${api[0]}`] ?? false}
 									onChange={handleChange}
@@ -270,7 +278,7 @@ export default function BackupPage() {
 								inputFileSelect.current.click();
 							}}
 						>
-							{"Load"}
+							{t('Common:button-load-label')}
 						</Button>
 						<div
 							style={{
