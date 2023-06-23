@@ -30,7 +30,6 @@ void TiltInput::setup() {
 
 	pinTilt1 = options.tilt1Pin;
 	pinTilt2 = options.tilt2Pin;
-	//pinTiltFunction = options.tiltFunctionPin;
 	pinTiltLeftAnalogDown = options.tiltLeftAnalogDownPin;
 	pinTiltLeftAnalogUp = options.tiltLeftAnalogUpPin;
 	pinTiltLeftAnalogLeft = options.tiltLeftAnalogLeftPin;
@@ -45,7 +44,6 @@ void TiltInput::setup() {
 	uint8_t pinTilt[10] = {
 											pinTilt1,
 											pinTilt2,
-											//pinTiltFunction,
 											pinTiltLeftAnalogDown,
 											pinTiltLeftAnalogUp,
 											pinTiltLeftAnalogLeft,
@@ -170,7 +168,6 @@ void TiltInput::process()
 void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
 	bool pinTilt1Pressed = pinTilt1 != (uint8_t)-1 && !gpio_get(pinTilt1);
 	bool pinTilt2Pressed = pinTilt2 != (uint8_t)-1 && !gpio_get(pinTilt2);
-	//bool pinTiltFunctionPressed = pinTiltFunction != (uint8_t)-1 && !gpio_get(pinTiltFunction);
 
 	if (pinTilt1Pressed) {
 		gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * TILT1_FACTOR_LEFT_X;
@@ -185,13 +182,6 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 		gamepad->state.ly = dpadToAnalogY(dpad1);
 	}
 
-	//if (pinTiltFunctionPressed) {//Hold Function button turn on Home, minus, plus, capture.
-	//	gamepad->state.buttons |= (dpad2 & GAMEPAD_MASK_LEFT) ? GAMEPAD_MASK_S1 : 0;
-	//	gamepad->state.buttons |= (dpad2 & GAMEPAD_MASK_DOWN) ? GAMEPAD_MASK_A1 : 0;
-	//	gamepad->state.buttons |= (dpad2 & GAMEPAD_MASK_RIGHT) ? GAMEPAD_MASK_S2 : 0;
-	//	gamepad->state.buttons |= (dpad2 & GAMEPAD_MASK_UP) ? GAMEPAD_MASK_A2 : 0;
-	//}
-	//else
 	if (pinTilt1Pressed && pinTilt2Pressed) {
 		gamepad->state.dpad = dpad2; //Hold tilt1 + tilt2 turn on D-Pad
 	}
