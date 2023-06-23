@@ -1,3 +1,0 @@
-export default {
-	'wii-extension-sub-header-text': '<0>Opmerking: als het beeldscherm tegelijkertijd is ingeschakeld, wordt deze add-on uitgeschakeld.</0> <1>Momenteel ondersteunde controllers</1> <0>Classic/Classic Pro: zowel analoge als D-Pad ondersteund \n. \nB = B1, A = B2, Y = B3, X = B4, L = L1, ZL = L2, R = R1, ZR = R2, Minus = S1, Plus = S2, Thuis = A1</0> <0> \nNunchuck: Analoge stick ondersteund. \nC = B1, Z = B2</0> <0>Guitar Hero-gitaar: analoge stick ondersteund. \nGroen = B1, Rood = B2, Blauw = B3, Geel = B4, Oranje = L1, Strum Up = Up, Strum Down = Down, Minus = S1, Plus = S2</0>',
-};

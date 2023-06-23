@@ -4,13 +4,11 @@ import { AppContext } from '../Contexts/AppContext';
 import { useTranslation } from 'react-i18next';
 import GlobeIcon from "../Icons/Globe";
 import GbFlag from "../Icons/Flags/Gb";
-import NlFlag from "../Icons/Flags/Nl";
 import UsFlag from "../Icons/Flags/Us";
 
 const dropdownOptions = [
 	{ code: 'en', icon: UsFlag },
 	{ code: 'en-GB', icon: GbFlag },
-	{ code: 'nl', icon: NlFlag },
 ];
 
 const LanguageSelector = () => {
