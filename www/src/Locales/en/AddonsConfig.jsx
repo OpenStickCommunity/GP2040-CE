@@ -78,7 +78,7 @@ export default {
 	'ps4-mode-serial-number-label': 'Serial Number (16 Bytes in Hex Ascii)',
 	'ps4-mode-signature-label': 'Signature (256 Bytes in Binary)',
 	'wii-extension-header-text': 'Wii Extension',
-	'wii-extension-sub-header-text': '<0>Opmerking: als het beeldscherm tegelijkertijd is ingeschakeld, wordt deze add-on uitgeschakeld.</0> <1>Momenteel ondersteunde controllers</1> <0>Classic/Classic Pro: zowel analoge als D-Pad ondersteund \n. \nB = B1, A = B2, Y = B3, X = B4, L = L1, ZL = L2, R = R1, ZR = R2, Minus = S1, Plus = S2, Thuis = A1</0> <0> \nNunchuck: Analoge stick ondersteund. \nC = B1, Z = B2</0> <0>Guitar Hero-gitaar: analoge stick ondersteund. \nGroen = B1, Rood = B2, Blauw = B3, Geel = B4, Oranje = L1, Strum Up = Up, Strum Down = Down, Minus = S1, Plus = S2</0>',
+	'wii-extension-sub-header-text': '<0>Note: If the Display is enabled at the same time, this Addon will be disabled.</0> <1>Currently Supported Controllers</1> <0>Classic/Classic Pro: Both Analogs and D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, ZL = L2, R = R1, ZR = R2, Minus = S1, Plus = S2, Home = A1</0>	<0>Nunchuck: Analog Stick Supported. C = B1, Z = B2</0>	<0>Guitar Hero Guitar: Analog Stick Supported. Green = B1, Red = B2, Blue = B3, Yellow = B4, Orange = L1, Strum Up = Up, Strum Down = Down, Minus = S1, Plus = S2</0>',
 	'wii-extension-sda-pin-label': 'I2C SDA Pin',
 	'wii-extension-scl-pin-label': 'I2C SCL Pin',
 	'wii-extension-block-label': 'I2C Block',
