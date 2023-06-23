@@ -579,12 +579,9 @@ void Gamepad::pressKey(uint8_t code) {
 	if (code > HID_KEY_GUI_RIGHT) {
 		keyboardReport.reportId = KEYBOARD_MULTIMEDIA_REPORT_ID;
 		keyboardReport.multimedia = getMultimedia(code);
-	} else if (code >= HID_KEY_CONTROL_LEFT) {
+	}  else {
 		keyboardReport.reportId = KEYBOARD_KEY_REPORT_ID;
-		keyboardReport.keycode[0] |= getModifier(code);
-	} else if ((code >> 3) < KEY_COUNT - 2) {
-		keyboardReport.reportId = KEYBOARD_KEY_REPORT_ID;
-		keyboardReport.keycode[(code >> 3) + 1] |= 1 << (code & 7);
+		keyboardReport.keycode[code / 8] |= 1 << (code % 8);
 	}
 }
 

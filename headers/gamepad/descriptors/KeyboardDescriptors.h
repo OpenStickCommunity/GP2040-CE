@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include "tusb.h"
 
-#define KEY_COUNT 104
 #define KEYBOARD_KEY_REPORT_ID 0x01
 #define KEYBOARD_MULTIMEDIA_REPORT_ID 0x02
 
@@ -16,10 +15,10 @@
 #define KEYBOARD_MULTIMEDIA_VOLUME_DOWN 0XF4
 
 /// Standard HID Boot Protocol Keyboard Report.
-typedef struct TU_ATTR_PACKED
+typedef struct
 {
 	uint8_t reportId = KEYBOARD_KEY_REPORT_ID;
-	uint8_t keycode[16]; /**< Key codes of the currently pressed keys. */
+	uint8_t keycode[32]; /**< Key codes of the currently pressed keys. */
 	uint8_t multimedia;
 } KeyboardReport;
 
@@ -72,27 +71,15 @@ static const uint8_t keyboard_report_descriptor[] =
 
 		// Report ID (1)
 		0x85, KEYBOARD_KEY_REPORT_ID,
-		// Modifier Keys
-		0x05, 0x07, 		 // Usage Page (Key Codes),
-		0x19, 0xE0, 		 // Usage Minimum (224),
-		0x29, 0xE7, 		 // Usage Maximum (231),
-		0x15, 0x00, 		 // Logical Minimum (0),
-		0x25, 0x01, 		 // Logical Maximum (1),
-		0x75, 0x01, 		 // Report Size (1),
-		0x95, 0x08, 		 // Report Count (8),
-		0x81, 0x02, 		 // Input (Data, Variable, Absolute),				;Modifier byte (0)	
 		// Keys
 		0x05, 0x07,			 // Usage Page (Key Codes),
 		0x19, 0x00,			 // Usage Minimum (0),
-		0x29, KEY_COUNT - 1, // Usage Maximum (103),
+		0x2A, 0xFF, 0x00, 	 // Usage Maximum (255),
 		0x15, 0x00,			 // Logical Minimum (0),
 		0x25, 0x01,			 // Logical Maximum (1),
 		0x75, 0x01,			 // Report Size (1),
-		0x95, KEY_COUNT,	 // Report Count (104),
-		0x81, 0x02,			 // Input (Data, Variable, Absolute), Key byte (1-13)
-		0x75, 0x08,			 // Report Size (8),
-		0x95, 0x02,			 // Report Count (2),
-		0x81, 0x03,			 // Input (Constant, Variable, Absolute), Key byte padding (14-15)
+		0x96, 0x00, 0x01,	 // Report Count (256),
+		0x81, 0x02,			 // Input (Data, Variable, Absolute), Key byte (1-32)
 		0xC0,			// End Collection
 		0x05, 0x0C, //Usage Page (Consumer Devices)
 		0x09, 0x01, //Usage (Consumer Control)
