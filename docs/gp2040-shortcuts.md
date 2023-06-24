@@ -50,20 +50,24 @@ Unlike other controllers, Keyboard gets different keys for directional buttons.
 
 Home button shortcut if you do not have a Home button - <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey>.
 
-D-Pad mode **while the controller is in use by pressing one of the following combinations:**
+D-Pad mode **while the controller is in use by pressing one of the following default combinations:**
 
 * <hotkey v-bind:buttons='["S1", "S2", "Down"]'></hotkey> - D-Pad
 * <hotkey v-bind:buttons='["S1", "S2", "Left"]'></hotkey> - Emulate Left Analog stick
 * <hotkey v-bind:buttons='["S1", "S2", "Right"]'></hotkey> - Emulate Right Analog stick
 
-SOCD mode **while the controller is in use by pressing one of the following combinations:**
+SOCD mode **while the controller is in use by pressing one of the following default combinations:**
 
 * <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Stickless behavior).
 * <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.
 * <hotkey v-bind:buttons='["S2", "A1", "Left"]'></hotkey> - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
 
+Invert the Y-axis input of the D-pad.  Press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey> by default.
 
-Invert the Y-axis input of the D-pad.  Press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey>.
+### Changing Hotkeys
+
+The D-Pad Mode, SOCD Mode, and Invert D-Pad Y-axis hotkey bindings can be changed or assigned to different
+actions in [the web configurator](web-configurator.md#hotkeys).
 
 ## LED Control Hotkeys
 

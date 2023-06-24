@@ -126,11 +126,6 @@ void Storage::enqueueAnimationOptionsSave(const AnimationOptions& animationOptio
 	critical_section_exit(&animationOptionsCs);
 }
 
-/* Board stuffs */
-void Storage::initBoardOptions() {
-	setDefaultBoardOptions();
-}
-
 void Storage::ResetSettings()
 {
 	EEPROM.reset();

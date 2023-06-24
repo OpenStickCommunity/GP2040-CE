@@ -15,7 +15,7 @@ endif()
 # Uncomment the next line for an unomptimized build for debugging. Use in conjunction with the Debug build type.
 # set(PICO_DEOPTIMIZED_DEBUG 1)
 
-project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.7.1)
+project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.7.2)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -87,11 +87,24 @@ FetchContent_Declare(ArduinoJson
 )
 FetchContent_MakeAvailable(ArduinoJson)
 
+if(DEFINED ENV{PICO_PIO_USB_PATH})
+  message(STATUS "Found custom Pico-PIO-USB path, using it.")
+  set(PICO_PIO_USB_PATH $ENV{PICO_PIO_USB_PATH})
+elseif(NOT DEFINED PICO_PIO_USB_PATH)
+  message(STATUS "Using default Pico-PIO-USB.")
+  set(PICO_PIO_USB_PATH ${CMAKE_SOURCE_DIR}/lib/pico_pio_usb)
+endif()
+
 include(compile_proto.cmake)
 compile_proto()
 
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
+
+# Remove unused code and data
+add_compile_options(-fdata-sections -ffunction-sections)
+add_link_options(-Wl,--gc-sections)
+
 add_subdirectory(lib)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -118,9 +131,11 @@ src/configs/webconfig.cpp
 src/addons/analog.cpp
 src/addons/board_led.cpp
 src/addons/bootsel_button.cpp
+src/addons/focus_mode.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/extra_button.cpp
+src/addons/keyboard_host.cpp
 src/addons/i2canalog1219.cpp
 src/addons/jslider.cpp
 src/addons/i2cdisplay.cpp
@@ -144,11 +159,13 @@ ${PROTO_OUTPUT_DIR}/config.pb.c
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
-pico_set_program_version(GP2040-CE "0.7.1")
+pico_set_program_version(GP2040-CE "0.7.2")
 
 target_link_libraries(${PROJECT_NAME}
 pico_stdlib
 pico_bootsel_via_double_reset
+tinyusb_host
+tinyusb_pico_pio_usb
 AnimationStation
 CRC32
 FlashPROM

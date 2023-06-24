@@ -74,6 +74,11 @@
 #define GAMEPAD_JOYSTICK_MID 0x7FFF
 #define GAMEPAD_JOYSTICK_MAX 0xFFFF
 
+/**
+ * @brief AUX defines --- gamepad state that doesn't translate to an output button/dpad/etc.
+ */
+#define AUX_MASK_FUNCTION	(1U << 15)
+
 const uint8_t dpadMasks[] =
 {
 	GAMEPAD_MASK_UP,
@@ -143,6 +148,53 @@ inline uint16_t dpadToAnalogY(uint8_t dpad)
 		default:
 			return GAMEPAD_JOYSTICK_MID;
 	}
+}
+
+/**
+ * @brief DRY method used in filtering diagonals for 4-way mode, checks two adjacent directions
+ * and tracks how they toggle.
+ *
+ * @param dir_a Direction state A to track.
+ * @param dir_mask_a Dpad mask state A to check/deselect.
+ * @param dir_b Direction state B to track.
+ * @param dir_mask_b Dpad mask state B to check/deselect.
+ * @param state History for this diagonal (affects which cardinal to deselect).
+ * @return uint8_t The modified dpad
+ */
+inline uint8_t diagonal_check(uint8_t dpad, DpadDirection dir_a, uint16_t dir_mask_a, DpadDirection dir_b,
+		uint16_t dir_mask_b, DpadDirection* state) {
+	uint8_t newDpad = ~0;
+	if ((dpad & (dir_mask_a | dir_mask_b)) == (dir_mask_a | dir_mask_b)) {
+		newDpad = (*state == dir_a) ? ~dir_mask_a : ~dir_mask_b;
+	} else if ((dpad & (dir_mask_a | dir_mask_b)) == dir_mask_a) {
+		*state = dir_a;
+	} else if ((dpad & (dir_mask_a | dir_mask_b)) == dir_mask_b) {
+		*state = dir_b;
+	}
+	return newDpad;
+}
+
+/**
+ * @brief Filter diagonals out of the dpad, making the device work as a 4-way lever.
+ *
+ * The most recent cardinal direction wins.
+ *
+ * @param dpad The GameState.dpad value.
+ * @return uint8_t The new dpad value.
+ */
+inline uint8_t filterToFourWayMode(uint8_t dpad)
+{
+	static DpadDirection lastUL = DIRECTION_NONE;
+	static DpadDirection lastUR = DIRECTION_NONE;
+	static DpadDirection lastDR = DIRECTION_NONE;
+	static DpadDirection lastDL = DIRECTION_NONE;
+
+	dpad &= diagonal_check(dpad, DIRECTION_LEFT, GAMEPAD_MASK_LEFT, DIRECTION_UP, GAMEPAD_MASK_UP, &lastUL);
+	dpad &= diagonal_check(dpad, DIRECTION_UP, GAMEPAD_MASK_UP, DIRECTION_RIGHT, GAMEPAD_MASK_RIGHT, &lastUR);
+	dpad &= diagonal_check(dpad, DIRECTION_RIGHT, GAMEPAD_MASK_RIGHT, DIRECTION_DOWN, GAMEPAD_MASK_DOWN, &lastDR);
+	dpad &= diagonal_check(dpad, DIRECTION_DOWN, GAMEPAD_MASK_DOWN, DIRECTION_LEFT, GAMEPAD_MASK_LEFT, &lastDL);
+
+	return dpad;
 }
 
 /**

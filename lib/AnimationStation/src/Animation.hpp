@@ -12,9 +12,9 @@
 struct RGB {
   RGB() : r(0), g(0), b(0) {}
 
-  RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b), w(0) {}
+  constexpr RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b), w(0) {}
 
-  RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
+  constexpr RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
     : r(r), g(g), b(b), w(w) { }
 
   RGB(uint32_t c)
@@ -78,25 +78,25 @@ struct RGB {
   }
 };
 
-static const RGB ColorBlack(0, 0, 0);
-static const RGB ColorWhite(255, 255, 255);
-static const RGB ColorRed(255, 0, 0);
-static const RGB ColorOrange(255, 128, 0);
-static const RGB ColorYellow(255, 255, 0);
-static const RGB ColorLimeGreen(128, 255, 0);
-static const RGB ColorGreen(0, 255, 0);
-static const RGB ColorSeafoam(0, 255, 128);
-static const RGB ColorAqua(0, 255, 255);
-static const RGB ColorSkyBlue(0, 128, 255);
-static const RGB ColorBlue(0, 0, 255);
-static const RGB ColorPurple(128, 0, 255);
-static const RGB ColorPink(255, 0, 255);
-static const RGB ColorMagenta(255, 0, 128);
+constexpr RGB ColorBlack(0, 0, 0);
+constexpr RGB ColorWhite(255, 255, 255);
+constexpr RGB ColorRed(255, 0, 0);
+constexpr RGB ColorOrange(255, 128, 0);
+constexpr RGB ColorYellow(255, 255, 0);
+constexpr RGB ColorLimeGreen(128, 255, 0);
+constexpr RGB ColorGreen(0, 255, 0);
+constexpr RGB ColorSeafoam(0, 255, 128);
+constexpr RGB ColorAqua(0, 255, 255);
+constexpr RGB ColorSkyBlue(0, 128, 255);
+constexpr RGB ColorBlue(0, 0, 255);
+constexpr RGB ColorPurple(128, 0, 255);
+constexpr RGB ColorPink(255, 0, 255);
+constexpr RGB ColorMagenta(255, 0, 128);
 
-static const std::vector<RGB> colors = {
+inline const std::vector<RGB> colors {
     ColorBlack,     ColorWhite,  ColorRed,     ColorOrange, ColorYellow,
     ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
-    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta};
+    ColorBlue,      ColorPurple, ColorPink,    ColorMagenta };
 
 class Animation {
 public:

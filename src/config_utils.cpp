@@ -1,11 +1,13 @@
 #include "config_utils.h"
 
+#include "config.pb.h"
 #include "enums.pb.h"
 #include "pb_encode.h"
 #include "pb_decode.h"
 #include "pb_common.h"
 
 #include "BoardConfig.h"
+#include "GamepadConfig.h"
 #include "helper.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
@@ -14,9 +16,11 @@
 #include "addons/dualdirectional.h"
 #include "addons/tilt.h"
 #include "addons/extra_button.h"
+#include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
 #include "addons/i2cdisplay.h"
 #include "addons/jslider.h"
+#include "addons/keyboard_host.h"
 #include "addons/neopicoleds.h"
 #include "addons/playernum.h"
 #include "addons/pleds.h"
@@ -91,25 +95,62 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Up, dpadMask, HOTKEY_F1_UP_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Up, action, HOTKEY_F1_UP_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Down, dpadMask, HOTKEY_F1_DOWN_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Down, action, HOTKEY_F1_DOWN_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Left, dpadMask, HOTKEY_F1_LEFT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Left, action, HOTKEY_F1_LEFT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Right, dpadMask, HOTKEY_F1_RIGHT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF1Right, action, HOTKEY_F1_RIGHT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Up, dpadMask, HOTKEY_F2_UP_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Up, action, HOTKEY_F2_UP_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Down, dpadMask, HOTKEY_F2_DOWN_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Down, action, HOTKEY_F2_DOWN_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, dpadMask, HOTKEY_F2_LEFT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, HOTKEY_F2_LEFT_ACTION);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, HOTKEY_F2_RIGHT_MASK);
-    INIT_UNSET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, HOTKEY_F2_RIGHT_ACTION);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, auxMask, HOTKEY_01_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, buttonsMask, HOTKEY_01_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, dpadMask, HOTKEY_01_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey01, action, GamepadHotkey(HOTKEY_01_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, auxMask, HOTKEY_02_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, buttonsMask, HOTKEY_02_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, dpadMask, HOTKEY_02_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey02, action, GamepadHotkey(HOTKEY_02_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, auxMask, HOTKEY_03_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, buttonsMask, HOTKEY_03_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, dpadMask, HOTKEY_03_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey03, action, GamepadHotkey(HOTKEY_03_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, auxMask, HOTKEY_04_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, buttonsMask, HOTKEY_04_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, dpadMask, HOTKEY_04_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey04, action, GamepadHotkey(HOTKEY_04_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, auxMask, HOTKEY_05_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, buttonsMask, HOTKEY_05_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, dpadMask, HOTKEY_05_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey05, action, GamepadHotkey(HOTKEY_05_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, auxMask, HOTKEY_06_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, buttonsMask, HOTKEY_06_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, dpadMask, HOTKEY_06_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey06, action, GamepadHotkey(HOTKEY_06_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, auxMask, HOTKEY_07_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, buttonsMask, HOTKEY_07_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, dpadMask, HOTKEY_07_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey07, action, GamepadHotkey(HOTKEY_07_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, auxMask, HOTKEY_08_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, buttonsMask, HOTKEY_08_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, dpadMask, HOTKEY_08_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey08, action, GamepadHotkey(HOTKEY_08_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, auxMask, HOTKEY_09_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, buttonsMask, HOTKEY_09_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, dpadMask, HOTKEY_09_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey09, action, GamepadHotkey(HOTKEY_09_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, auxMask, HOTKEY_10_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, buttonsMask, HOTKEY_10_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, dpadMask, HOTKEY_10_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey10, action, GamepadHotkey(HOTKEY_10_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, auxMask, HOTKEY_11_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, buttonsMask, HOTKEY_11_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, dpadMask, HOTKEY_11_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey11, action, GamepadHotkey(HOTKEY_11_ACTION));
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, auxMask, HOTKEY_12_AUX_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, buttonsMask, HOTKEY_12_BUTTONS_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, dpadMask, HOTKEY_12_DPAD_MASK);
+    INIT_UNSET_PROPERTY(hotkeyOptions.hotkey12, action, GamepadHotkey(HOTKEY_12_ACTION));
+
+    // forcedSetupMode
+    INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
 
     // pinMappings
     INIT_UNSET_PROPERTY(config.pinMappings, pinDpadUp, PIN_DPAD_UP);
@@ -130,6 +171,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR3, PIN_BUTTON_R3);
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA1, PIN_BUTTON_A1);
     INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA2, PIN_BUTTON_A2);
+    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonFn, PIN_BUTTON_FN);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadUp, KEY_DPAD_UP);
@@ -178,7 +220,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, splashMode, SPLASH_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashChoice, SPLASH_CHOICE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
-    INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, emptyByteArray);
+	const unsigned char defaultSplash[] = { DEFAULT_SPLASH };
+    INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, defaultSplash);
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
@@ -275,6 +318,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, enabled, !!ANALOG_INPUT_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdcPinX, ANALOG_ADC_VRX);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdcPinY, ANALOG_ADC_VRY);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, enabled, !!FORCED_CIRCULARITY_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analog_deadzone, DEFAULT_ANALOG_DEADZONE);
 
     // addonOptions.turboOptions
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, enabled, !!TURBO_ENABLED);
@@ -335,6 +380,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, rightPin, PIN_DUAL_DIRECTIONAL_RIGHT);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode>(DUAL_DIRECTIONAL_STICK_MODE));
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, fourWayMode, false);
 
 		// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);
@@ -390,6 +436,92 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, clockPin, SNES_PAD_CLOCK_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, latchPin, SNES_PAD_LATCH_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
+
+    // keyboardMapping
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, pinDplus, KEYBOARD_HOST_PIN_DPLUS);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadUp, KEY_DPAD_UP);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadDown, KEY_DPAD_DOWN);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadRight, KEY_DPAD_RIGHT);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadLeft, KEY_DPAD_LEFT);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonB1, KEY_BUTTON_B1);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonB2, KEY_BUTTON_B2);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonR2, KEY_BUTTON_R2);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonL2, KEY_BUTTON_L2);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonB3, KEY_BUTTON_B3);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonB4, KEY_BUTTON_B4);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonR1, KEY_BUTTON_R1);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonL1, KEY_BUTTON_L1);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonS1, KEY_BUTTON_S1);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonS2, KEY_BUTTON_S2);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonL3, KEY_BUTTON_L3);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonR3, KEY_BUTTON_R3);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonA1, KEY_BUTTON_A1);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyButtonA2, KEY_BUTTON_A2);
+
+    // addonOptions.focusModeOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, enabled, !!FOCUS_MODE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, pin, FOCUS_MODE_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockMask, FOCUS_MODE_BUTTON_MASK);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, oledLockEnabled, !!FOCUS_MODE_OLED_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, rgbLockEnabled, !!FOCUS_MODE_RGB_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
+}
+
+
+// -----------------------------------------------------
+// migrations
+// used for when we might need to populate configs with
+// something *other than* the board defaults
+// -----------------------------------------------------
+
+// populate existing configurations' buttonsMask and auxMask to mirror behavior
+// from the behavior before this code merged. totally new configs get their
+// board defaults via initUnsetPropertiesWithDefaults
+void hotkeysMigration(Config& config)
+{
+    HotkeyOptions& hotkeys = config.hotkeyOptions;
+
+    // if dpadMask is defined and buttonsMask and auxMask aren't, then this
+    // hotkey was saved at least once in the past when the button shortcut was
+    // known as F1/F2, so they should be made to reflect the
+    // previously-hardcoded values for those hotkeys
+
+    // F1 == S1 | S2, no Fn
+    if (hotkeys.hotkey01.has_dpadMask && (!hotkeys.hotkey01.has_auxMask || !hotkeys.hotkey01.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey01, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey01, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey02.has_dpadMask && (!hotkeys.hotkey02.has_auxMask || !hotkeys.hotkey02.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey02, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey02, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey03.has_dpadMask && (!hotkeys.hotkey03.has_auxMask || !hotkeys.hotkey03.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey03, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey03, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+    if (hotkeys.hotkey04.has_dpadMask && (!hotkeys.hotkey04.has_auxMask || !hotkeys.hotkey04.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey04, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey04, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+    }
+
+    // F2 == S2 | A1, no Fn
+    if (hotkeys.hotkey05.has_dpadMask && (!hotkeys.hotkey05.has_auxMask || !hotkeys.hotkey05.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey05, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey05, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey06.has_dpadMask && (!hotkeys.hotkey06.has_auxMask || !hotkeys.hotkey06.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey06, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey06, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey07.has_dpadMask && (!hotkeys.hotkey07.has_auxMask || !hotkeys.hotkey07.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey07, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey07, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
+    if (hotkeys.hotkey08.has_dpadMask && (!hotkeys.hotkey08.has_auxMask || !hotkeys.hotkey08.has_buttonsMask)) {
+	INIT_UNSET_PROPERTY(hotkeys.hotkey08, auxMask, 0);
+	INIT_UNSET_PROPERTY(hotkeys.hotkey08, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
+    }
 }
 
 // -----------------------------------------------------
@@ -473,6 +605,9 @@ void ConfigUtils::load(Config& config)
         // We are probably dealing with a new device and therefore initialize the config to default values.
         config = Config Config_init_default;
     }
+
+    // run migrations
+    hotkeysMigration(config);
 
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
@@ -630,12 +765,15 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_POINTER(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 #define TO_JSON_CALLBACK(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 
-#define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
-    if (!firstField) str.append(",\n"); \
-    firstField = false; \
-    writeIndentation(str, indentLevel); \
-    str.append("\"" #fieldname "\": "); \
-    PREPROCESSOR_JOIN(TO_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname ## _MSGTYPE)
+#define TO_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag, disallow_export) \
+    if (!disallow_export) \
+    { \
+        if (!firstField) str.append(",\n"); \
+        firstField = false; \
+        writeIndentation(str, indentLevel); \
+        str.append("\"" #fieldname "\": "); \
+        PREPROCESSOR_JOIN(TO_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname ## _MSGTYPE) \
+    }
 
 #define GEN_TO_JSON_FUNCTION_DECL(structtype) static void toJSON ## structtype(std::string& str, const structtype& s, int indentLevel);
 
@@ -735,50 +873,71 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
-#define FROM_JSON_INT32(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<int>()) \
-        { \
-            configStruct.fieldname = value.as<int>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+static bool fromJsonInt32(JsonObjectConst jsonObject, const char* fieldname, int32_t& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<int>())
+        {
+            value = jsonVariant.as<int>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-#define FROM_JSON_UINT32(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<unsigned int>()) \
-        { \
-            configStruct.fieldname = value.as<unsigned int>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+    return true;
+}
+
+#define FROM_JSON_INT32(fieldname, submessageType) if (!fromJsonInt32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonUint32(JsonObjectConst jsonObject, const char* fieldname, uint32_t& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<unsigned int>())
+        {
+            value = jsonVariant.as<unsigned int>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-#define FROM_JSON_BOOL(fieldname, submessageType) \
-    if (jsonObject.containsKey(#fieldname)) \
-    { \
-        JsonVariantConst value = jsonObject[#fieldname]; \
-        if (value.is<bool>()) \
-        { \
-            configStruct.fieldname = value.as<bool>(); \
-            configStruct.PREPROCESSOR_JOIN(has_, fieldname) = true; \
-        } \
-        else \
-        { \
-            return false; \
-        } \
+    return true;
+}
+
+#define FROM_JSON_UINT32(fieldname, submessageType) if (!fromJsonUint32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonBool(JsonObjectConst jsonObject, const char* fieldname, bool& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<bool>())
+        {
+            value = jsonVariant.as<bool>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+    return true;
+}
+
+#define FROM_JSON_BOOL(fieldname, submessageType) if (!fromJsonBool(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
 
 #define FROM_JSON_STRING(fieldname, submessageType) \
     if (jsonObject.containsKey(#fieldname)) \
@@ -796,7 +955,7 @@ std::string ConfigUtils::toJSON(const Config& config)
         } \
     }
 
-bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
+static bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* bytes, uint16_t& size, size_t maxSize)
 {
     if (jsonObject.containsKey(fieldname))
     {
@@ -958,7 +1117,7 @@ bool fromJsonBytes(JsonObjectConst jsonObject, const char* fieldname, uint8_t* b
 #define FROM_JSON_POINTER(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 #define FROM_JSON_CALLBACK(htype, ltype, fieldname, submessageType) static_assert(false, "not supported");
 
-#define FROM_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag) \
+#define FROM_JSON_FIELD(parenttype, atype, htype, ltype, fieldname, tag, disallow_export) \
     PREPROCESSOR_JOIN(FROM_JSON_, atype)(htype, ltype, fieldname, parenttype ## _ ## fieldname)
 
 #define GEN_FROM_JSON_FUNCTION_DECL(structtype) static bool fromJSON ## structtype(JsonObjectConst jsonObject, structtype& configStruct);
