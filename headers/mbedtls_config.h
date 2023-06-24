@@ -1,3 +1,6 @@
+/* Workaround for some mbedtls source files using INT_MAX without including limits.h */
+#include <limits.h>
+
 /* This can be enabled lated when we use SNTP */
 #undef MBEDTLS_HAVE_TIME_DATE
 
@@ -12,12 +15,20 @@
 #define MBEDTLS_NO_PLATFORM_ENTROPY
 #define MBEDTLS_PSA_CRYPTO_CLIENT
 #define MBEDTLS_PSA_CRYPTO_DRIVERS
+
+// For PS4 auth, key validation, etc.
 #define MBEDTLS_SHA256_C
 #define MBEDTLS_RSA_C
 #define MBEDTLS_X509_RSASSA_PSS_SUPPORT
 #define MBEDTLS_PKCS1_V21
+#define MBEDTLS_AES_C
+#define MBEDTLS_CTR_DRBG_C
+#define MBEDTLS_ENTROPY_C
+#define MBEDTLS_ERROR_C
+#undef MBEDTLS_ERROR_STRERROR_DUMMY
 #define MBEDTLS_BIGNUM_C
 #define MBEDTLS_MD_C
+
 #define MBEDTLS_SSL_ASYNC_PRIVATE
 #define MBEDTLS_SSL_VARIABLE_BUFFER_LENGTH
 #define MBEDTLS_USE_PSA_CRYPTO

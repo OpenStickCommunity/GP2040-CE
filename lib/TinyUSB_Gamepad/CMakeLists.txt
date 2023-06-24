@@ -18,9 +18,10 @@ ${CMAKE_SOURCE_DIR}/lib/mbedtls/include
 ${CMAKE_SOURCE_DIR}/lib/nanopb
 ${PROTO_OUTPUT_DIR}
 )
-target_link_libraries(TinyUSB_Gamepad 
+target_link_libraries(TinyUSB_Gamepad
 pico_stdlib
 pico_mbedtls
 tinyusb_device
 rndis
+DS4Crypto
 )

@@ -178,6 +178,7 @@ hardware_adc
 WiiExtension
 SNESpad
 pico_mbedtls
+DS4Crypto
 TinyUSB_Gamepad
 nanopb
 )

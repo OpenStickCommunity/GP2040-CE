@@ -7,6 +7,7 @@
 
 #include "tusb.h"
 #include "device/usbd_pvt.h"
+#include "ds4crypto.h"
 
 #include "gamepad/descriptors/PS4Descriptors.h"
 
@@ -14,11 +15,11 @@
 
 typedef enum
 {
-	PS4_UNKNOWN_0X03         = 0x03,    // Unknown (PS4 Report 0x03)
+	PS4_GET_FEATURE          = 0x03,    // Query enabled PS4 controller features
 	PS4_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
 	PS4_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
 	PS4_GET_SIGNING_STATE    = 0xF2,    // Get Signing State
-	PS4_RESET_AUTH           = 0xF3     // Unknown (PS4 Report 0xF3)
+	PS4_RESET_AUTH           = 0xF3     // Reset auth state and report buffer size
 } PS4AuthReport;
 
 // USB endpoint state vars
@@ -50,24 +51,13 @@ public:
 
 	PS4State ps4State;
 	bool authsent;
-	uint8_t nonce_buffer[256];
-
-	// Send back in 56 byte chunks:
-	//    256 byte - nonce signature
-	//    16 byte  - ps4 serial
-	//    256 byte - RSA N
-	//    256 byte - RSA E
-	//    256 byte - ps4 signature
-	//    24 byte  - zero padding
-
-	// buffer = 256 + 16 + 256 + 256 + 256 + 24
-	// == 1064 bytes (almost 1 kb)
-	uint8_t ps4_auth_buffer[1064];
+	NonceBuffer nonce_buffer;
+	ResponseBuffer ps4_auth_buffer;
 private:
 	PS4Data() {
 		ps4State = PS4State::no_nonce;
 		authsent = false;
-		memset(nonce_buffer, 0, 256);
-		memset(ps4_auth_buffer, 0, 1064);
+		memset(nonce_buffer, 0, sizeof(nonce_buffer));
+		memset(ps4_auth_buffer.data, 0, sizeof(ps4_auth_buffer.data));
 	}
 };

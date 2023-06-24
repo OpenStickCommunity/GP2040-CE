@@ -11,8 +11,6 @@
 #include "mbedtls/rsa.h"
 #include "mbedtls/sha256.h"
 
-#include <random>
-
 uint8_t ps4_endpoint_in = 0;
 uint8_t ps4_endpoint_out = 0;
 uint8_t ps4_out_buffer[PS4_OUT_SIZE] = {};
@@ -40,22 +38,7 @@ static constexpr uint8_t output_0xf3[] = { 0x0, 0x38, 0x38, 0, 0, 0, 0 };
 
 static uint8_t cur_nonce_id = 1;
 
-// debug
-static int rss_error = 0;
-
 static uint8_t send_nonce_part = 0;
-
-struct PS4Key {
-  unsigned char serial[16];
-  unsigned char signature[256];
-  struct mbedtls_rsa_context* rsa_context;
-};
-
-struct SignaturePart {
-  size_t length;
-  size_t (*function)(uint8_t * buf, size_t offset, const void* arg, size_t expected_size);
-  const void* arg;
-};
 
 ssize_t get_ps4_report(uint8_t report_id, uint8_t * buf, uint16_t reqlen)
 {
@@ -63,8 +46,8 @@ ssize_t get_ps4_report(uint8_t report_id, uint8_t * buf, uint16_t reqlen)
 	uint32_t crc32;
 	ps4_out_buffer[0] = report_id;
 	switch(report_id) {
-		// Not sure on 0x03? maybe a controller qualifier
-		case PS4AuthReport::PS4_UNKNOWN_0X03:
+		// Query enabled controller features
+		case PS4AuthReport::PS4_GET_FEATURE:
 			if (reqlen != sizeof(output_0x03)) {
 				return -1;
 			}
@@ -79,7 +62,7 @@ ssize_t get_ps4_report(uint8_t report_id, uint8_t * buf, uint16_t reqlen)
 			data[3] = 0;
 
 			// 56 byte chunks
-			memcpy(&data[4], &PS4Data::getInstance().ps4_auth_buffer[send_nonce_part*56], 56);
+			memcpy(&data[4], &PS4Data::getInstance().ps4_auth_buffer.data[send_nonce_part*56], 56);
 
 			// calculate the CRC32 of the buffer and write it back
 			crc32 = CRC32::calculate(data, 60);

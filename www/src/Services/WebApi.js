@@ -125,7 +125,7 @@ async function getLedOptions() {
 
 async function setLedOptions(options) {
 	let data = sanitizeRequest(options);
-	
+
 
 	return axios.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
@@ -266,15 +266,17 @@ async function setAddonsOptions(options) {
 }
 
 async function setPS4Options(options) {
-	return axios.post(`${baseUrl}/api/setPS4Options`, options)
-		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
+	try {
+		const response = await axios.post(`${baseUrl}/api/setPS4Options`, options, {timeout: 15000});
+		return response.data;
+	} catch (err) {
+		console.error(err);
+		return {
+			success: 0,
+			step: 'data upload',
+			error: err.message,
+		};
+	}
 }
 
 async function getFirmwareVersion() {

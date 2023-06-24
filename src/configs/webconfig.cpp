@@ -24,6 +24,10 @@
 #include "lwip/def.h"
 #include "lwip/mem.h"
 
+// For verifying DS4 keys
+#include <ds4crypto.h>
+#include <mbedtls/error.h>
+
 #include "bitmaps.h"
 
 #define PATH_CGI_ACTION "/cgi/action"
@@ -503,7 +507,7 @@ std::string setSplashImage()
 std::string setGamepadOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
-	
+
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 	readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
 	readDoc(gamepadOptions.inputMode, doc, "inputMode");
@@ -842,7 +846,7 @@ std::string getPinMappings()
 std::string setKeyMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
-	
+
 	KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
 	readDoc(keyboardMapping.keyDpadUp, doc, "Up");
@@ -972,8 +976,8 @@ std::string setAddonOptions()
 
 	ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
-	docToPin(reverseOptions.buttonPin, doc, "reversePin");	
-	docToPin(reverseOptions.ledPin, doc, "reversePinLED");	
+	docToPin(reverseOptions.buttonPin, doc, "reversePin");
+	docToPin(reverseOptions.ledPin, doc, "reversePinLED");
 	docToValue(reverseOptions.actionUp, doc, "reverseActionUp");
 	docToValue(reverseOptions.actionDown, doc, "reverseActionDown");
 	docToValue(reverseOptions.actionLeft, doc, "reverseActionLeft");
@@ -1062,7 +1066,12 @@ std::string setPS4Options()
 	std::string encoded;
 	std::string decoded;
 	size_t length;
+	auto needSave = false;
+	char errorBuf[192];
 
+	DynamicJsonDocument docResponse(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+	// Keep this here for now in case we need to accept Bluetooth Auth2 secret in the future.
 	const auto readEncoded = [&](const char* key) -> bool
 	{
 		if (doc.containsKey(key))
@@ -1078,78 +1087,48 @@ std::string setPS4Options()
 		}
 	};
 
-	// RSA Context
-	if ( readEncoded("N") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaN.bytes)) ) {
-			memcpy(ps4Options.rsaN.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaN.size = decoded.length();
+	if (readEncoded("ds4Key")) {
+		if (Base64::Decode(encoded, decoded) && decoded.length() == sizeof(ps4Options.ds4Key.bytes)) {
+			auto ds4Key = new LoadedDS4Key();
+			auto nonce = new NonceBuffer;
+			auto response = new ResponseBuffer;
+			memset(nonce, 0, sizeof(NonceBuffer));
+
+			// Maybe we should patch base64 to for example use vector so we don't need this
+			// reinterpret_cast here.
+			// uint8_t[] is unarguably the right answer here. It's bytes. NanoPB uses it. It's from base64.
+			auto result = ds4Key->load(reinterpret_cast<uint8_t *>(decoded.data()), false) &&
+				ds4Key->sign(nonce, *response);
+			if (!result) {
+				auto step = ds4Key->getStepName();
+				mbedtls_strerror(ds4Key->error.mbedTlsError, errorBuf, sizeof(errorBuf));
+				writeDoc(docResponse, "success", false);
+				writeDoc(docResponse, "step", step);
+				writeDoc(docResponse, "error", errorBuf);
+			} else {
+				memcpy(ps4Options.ds4Key.bytes, decoded.data(), decoded.length());
+				ps4Options.ds4Key.size = decoded.length();
+				writeDoc(docResponse, "success", true);
+				writeDoc(docResponse, "step", nullptr);
+				writeDoc(docResponse, "error", nullptr);
+				needSave = true;
+			}
+
+			delete ds4Key;
+			delete nonce;
+			delete response;
 		}
-	}
-	if ( readEncoded("E") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaE.bytes)) ) {
-			memcpy(ps4Options.rsaE.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaE.size = decoded.length();
-		}
-	}
-	if ( readEncoded("D") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaD.bytes)) ) {
-			memcpy(ps4Options.rsaD.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaD.size = decoded.length();
-		}
-	}
-	if ( readEncoded("P") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaP.bytes)) ) {
-			memcpy(ps4Options.rsaP.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaP.size = decoded.length();
-		}
-	}
-	if ( readEncoded("Q") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQ.bytes)) ) {
-			memcpy(ps4Options.rsaQ.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaQ.size = decoded.length();
-		}
-	}
-	if ( readEncoded("DP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDP.bytes)) ) {
-			memcpy(ps4Options.rsaDP.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaDP.size = decoded.length();
-		}
-	}
-	if ( readEncoded("DQ") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDQ.bytes)) ) {
-			memcpy(ps4Options.rsaDQ.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaDQ.size = decoded.length();
-		}
-	}
-	if ( readEncoded("QP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQP.bytes)) ) {
-			memcpy(ps4Options.rsaQP.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaQP.size = decoded.length();
-		}
-	}
-	if ( readEncoded("RN") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaRN.bytes)) ) {
-			memcpy(ps4Options.rsaRN.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaRN.size = decoded.length();
-		}
-	}
-	// Serial & Signature
-	if ( readEncoded("serial") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.serial.bytes)) ) {
-			memcpy(ps4Options.serial.bytes, decoded.data(), decoded.length());
-			ps4Options.serial.size = decoded.length();
-		}
-	}
-	if ( readEncoded("signature") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.signature.bytes)) ) {
-			memcpy(ps4Options.signature.bytes, decoded.data(), decoded.length());
-			ps4Options.signature.size = decoded.length();
-		}
+	} else {
+		writeDoc(docResponse, "success", false);
+		writeDoc(docResponse, "step", "early verification");
+		writeDoc(docResponse, "error", "Invalid size for DS4 key.");
 	}
 
-	Storage::getInstance().save();
+	if (needSave) {
+		Storage::getInstance().save();
+	}
 
-	return "{\"success\":true}";
+	return serialize_json(docResponse);
 }
 
 std::string getAddonOptions()
