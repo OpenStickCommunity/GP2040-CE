@@ -9,4 +9,9 @@ export default {
 		"light": "Light",
 		"auto": "Auto",
 	},
+	"keyboard-mapper": {
+		"key-header": "Key",
+		"error-conflict": "Key {{key}} is already assigned",
+		"error-invalid": "{{key}} is invalid for this board",
+	}
 };

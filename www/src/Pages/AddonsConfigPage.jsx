@@ -634,7 +634,7 @@ export default function AddonsConfigPage() {
 	const handleKeyChange = (values, setFieldValue) => (value, button) => {
 		const newMappings = {...values.keyboardHostMap};
 		newMappings[button].key = value;
-		const mappings = validateMappings(newMappings);
+		const mappings = validateMappings(newMappings, t);
 		setFieldValue('keyboardHostMap', mappings);
 		setValidated(true);
 	};
@@ -644,7 +644,7 @@ export default function AddonsConfigPage() {
 	// 	e.stopPropagation();
 
 	// 	let mappings = {...keyMappings};
-	// 	mappings = validateMappings(mappings);
+	// 	mappings = validateMappings(mappings, t);
 	// 	setKeyMappings(mappings);
 	// 	setValidated(true);
 
