@@ -1654,7 +1654,7 @@ export default function AddonsConfigPage() {
 								</div>
 							</Row>
 							<Row className="mb-3">
-								<div className="col-sm-3 mb-3">
+								<div className="col-sm mb-3">
 									<span id="ps4alert"></span>
 								</div>
 							</Row>
