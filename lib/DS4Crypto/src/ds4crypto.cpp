@@ -2,15 +2,21 @@
 #include <pico/rand.h>
 
 #include <cstring>
+#include <vector>
 
-static const char NAME_NONE[] = "unknown step";
-static const char NAME_INTERNAL[] = "internal processing";
-static const char NAME_LOAD_PARSE_KEY[] = "key parsing";
-static const char NAME_LOAD_COMPLETE_KEY[] = "key completion";
-static const char NAME_LOAD_VERIFY_KEY[] = "key verification";
-static const char NAME_SIGN_HASH[] = "hashing nonce";
-static const char NAME_SIGN_PSS[] = "signing nonce";
-static const char NAME_SIGN_EXPORT_IDENTITY[] = "exporting identity";
+static const char STEP_NAME_UNK[] = "unknown step";
+
+using Step = LoadedDS4Key::Step;
+
+static constexpr std::pair<LoadedDS4Key::Step, const char *> STEP_NAMES[] = {
+	{Step::INTERNAL, "internal processing"},
+	{Step::LOAD_PARSE_KEY, "key parsing"},
+	{Step::LOAD_COMPLETE_KEY, "key completion"},
+	{Step::LOAD_VERIFY_KEY, "key verification"},
+	{Step::SIGN_HASH, "nonce hashing"},
+	{Step::SIGN_PSS, "nonce signing"},
+	{Step::SIGN_EXPORT_IDENTITY, "identity exporting"},
+};
 
 /* dogtopus: Some parts in this code were shamelessly stolen from RDS4Reboot, which was authored by
    me but licensed under LGPL. Therefore I release this specific version, without all the bells and
@@ -134,22 +140,10 @@ bool LoadedDS4Key::sign(const NonceBuffer nonce, ResponseBuffer& response) {
 }
 
 const char* LoadedDS4Key::getStepName() {
-	switch (this->error.step) {
-		case Step::INTERNAL:
-			return NAME_INTERNAL;
-		case Step::LOAD_COMPLETE_KEY:
-			return NAME_LOAD_COMPLETE_KEY;
-		case Step::LOAD_PARSE_KEY:
-			return NAME_LOAD_PARSE_KEY;
-		case Step::LOAD_VERIFY_KEY:
-			return NAME_LOAD_VERIFY_KEY;
-		case Step::SIGN_EXPORT_IDENTITY:
-			return NAME_SIGN_EXPORT_IDENTITY;
-		case Step::SIGN_HASH:
-			return NAME_SIGN_HASH;
-		case Step::SIGN_PSS:
-			return NAME_SIGN_PSS;
-		default:
-			return NAME_NONE;
+	for (const auto& entry : STEP_NAMES) {
+		if (entry.first == this->error.step) {
+			return entry.second;
+		}
 	}
+	return STEP_NAME_UNK;
 }
