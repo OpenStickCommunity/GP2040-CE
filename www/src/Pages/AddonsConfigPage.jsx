@@ -10,8 +10,6 @@ import FormSelect from '../Components/FormSelect';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
-import JSEncrypt from 'jsencrypt';
-import CryptoJS from 'crypto-js';
 import get from 'lodash/get';
 import set from "lodash/set";
 import isNil from 'lodash';
