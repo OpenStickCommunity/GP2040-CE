@@ -1310,7 +1310,7 @@ DataAndStatusCode setConfig()
 
 	// Store config struct on the heap to avoid stack overflow
 	std::unique_ptr<Config> config(new Config);
-	*config.get() = Config_init_default;
+	*config.get() = Config Config_init_default;
 	if (ConfigUtils::fromJSON(*config.get(), http_post_payload, http_post_payload_len))
 	{
 		Storage::getInstance().getConfig() = *config.get();
