@@ -125,6 +125,8 @@ const verifyAndSavePS4 = async () => {
 
 	const result = await WebApi.setPS4Options(toUpload);
 
+	// TODO how should we localize these?
+	// mbedTLS errors can be kept as English since there's no other language available.
 	if (result.success === 1) {
 		document.getElementById("ps4alert").textContent = (
 			'Verified and enabled PS4 Mode! Reboot to take effect'
@@ -1637,7 +1639,7 @@ export default function AddonsConfigPage() {
 							<Row>
 								<Trans ns="AddonsConfig" i18nKey="ps4-mode-sub-header-text">
 									<h2>!!!! DISCLAIMER: GP2040-CE WILL NEVER SUPPLY ANY KEYS !!!!</h2>
-									<p>Please upload the 3 required files and click the &quot;Verify & Save&quot; button to use PS4 Mode.</p>
+									<p>Please upload the required key files and click the &quot;Verify & Save&quot; button to enable authentication in PS4 Mode.</p>
 								</Trans>
 							</Row>
 							<Row className="mb-3">
