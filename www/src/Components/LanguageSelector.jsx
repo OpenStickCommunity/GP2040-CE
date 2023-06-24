@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { AppContext } from '../Contexts/AppContext';
 import { useTranslation } from 'react-i18next';
@@ -15,12 +15,13 @@ const LanguageSelector = () => {
 	const { savedLanguage, setSavedLanguage } = useContext(AppContext);
 	const { i18n, t } = useTranslation('Components');
 
-	// If i18n.language not in dropdownOptions, set it to the first option
-	if (!dropdownOptions.some(o => o.code === i18n.language)) {
-		setSavedLanguage(dropdownOptions[0].code);
-	} else {
-		setSavedLanguage(i18n.language);
-	}
+	useEffect(() => {
+		if (!dropdownOptions.some(o => o.code === i18n.language)) {
+			setSavedLanguage(dropdownOptions[0].code);
+		} else {
+			setSavedLanguage(i18n.language);
+		}
+	}, [i18n.language, setSavedLanguage]);
 
 	const setLanguage = (newLanguage) => {
 		i18n.changeLanguage(newLanguage);
