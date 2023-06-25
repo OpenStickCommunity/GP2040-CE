@@ -1543,7 +1543,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t('AddonsConfig:enabled-label')}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="TiltInputButton"
 							reverse="true"
