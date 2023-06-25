@@ -147,7 +147,17 @@ void Gamepad::process()
 {
 	memcpy(&rawState, &state, sizeof(GamepadState));
 
-	// NOTE: Inverted Y-axis must run before SOCD and Dpad processing
+	// NOTE: Inverted X/Y-axis must run before SOCD and Dpad processing
+	if (options.invertXAxis) {
+		bool left = (state.dpad & mapDpadLeft->buttonMask) != 0;
+		bool right = (state.dpad & mapDpadRight->buttonMask) != 0;
+		state.dpad &= ~(mapDpadLeft->buttonMask | mapDpadRight->buttonMask);
+		if (left)
+			state.dpad |= mapDpadRight->buttonMask;
+		if (right)
+			state.dpad |= mapDpadLeft->buttonMask;
+	}
+
 	if (options.invertYAxis) {
 		bool up = (state.dpad & mapDpadUp->buttonMask) != 0;
 		bool down = (state.dpad & mapDpadDown->buttonMask) != 0;
@@ -292,7 +302,12 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;  reqSave = true;break;
 		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; reqSave = true; break;
-		case HOTKEY_INVERT_X_AXIS     : break;
+		case HOTKEY_INVERT_X_AXIS     :
+			if (action != lastAction) {
+				options.invertXAxis = !options.invertXAxis;
+				reqSave = true;
+			}
+			break;
 		case HOTKEY_INVERT_Y_AXIS     :
 			if (action != lastAction) {
 				options.invertYAxis = !options.invertYAxis;

@@ -26,9 +26,9 @@ export default function KeyboardMappingPage() {
 	}, [setKeyMappings, selectedController]);
 
 	const handleKeyChange = (value, button) => {
-		const newMappings = {...keyMappings};
+		const newMappings = { ...keyMappings };
 		newMappings[button].key = value;
-		const mappings = validateMappings(newMappings);
+		const mappings = validateMappings(newMappings, t);
 		setKeyMappings(mappings);
 		setValidated(true);
 	};
@@ -37,8 +37,8 @@ export default function KeyboardMappingPage() {
 		e.preventDefault();
 		e.stopPropagation();
 
-		let mappings = {...keyMappings};
-		mappings = validateMappings(mappings);
+		let mappings = { ...keyMappings };
+		mappings = validateMappings(mappings, t);
 		setKeyMappings(mappings);
 		setValidated(true);
 
@@ -58,9 +58,9 @@ export default function KeyboardMappingPage() {
 			<Form noValidate validated={validated} onSubmit={handleSubmit}>
 				<p>{t('KeyboardMapping:sub-header-text')}</p>
 				<KeyboardMapper buttonLabels={buttonLabels}
-								handleKeyChange={handleKeyChange}
-								validated={validated}
-								getKeyMappingForButton={getKeyMappingForButton} />
+					handleKeyChange={handleKeyChange}
+					validated={validated}
+					getKeyMappingForButton={getKeyMappingForButton} />
 				<Button type="submit">{t('Common:button-save-label')}</Button>
 				{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 			</Form>
