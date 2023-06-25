@@ -1,7 +1,6 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
- * SPDX-FileCopyrightText: Copyright (c) 2023 Project Alpaca (project-alpaca.github.io)
  */
 
 #include "addons/ps4mode.h"

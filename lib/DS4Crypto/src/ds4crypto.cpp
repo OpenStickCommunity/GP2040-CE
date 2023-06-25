@@ -18,10 +18,9 @@ static constexpr std::pair<LoadedDS4Key::Step, const char *> STEP_NAMES[] = {
 	{Step::SIGN_EXPORT_IDENTITY, "identity exporting"},
 };
 
-/* dogtopus: Some parts in this code were shamelessly stolen from RDS4Reboot, which was authored by
-   me but licensed under LGPL. Therefore I release this specific version, without all the bells and
-	 whistles from RDS4Reboot, under MIT license.
-	 tl;dr: TBH IDRC just use it LMAO. */
+/* Some parts in this code were borrowed from RDS4Reboot, which was authored by dogtopus but licensed
+   under LGPL. However this specific version, without all the bells and whistles from RDS4Reboot, is
+	 licensed under MIT license, with approval from dogtopus. */
 
 LoadedDS4Key::LoadedDS4Key() : ready(false), serial{0}, identitySig{0} {
 	mbedtls_rsa_init(&this->rsa, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
