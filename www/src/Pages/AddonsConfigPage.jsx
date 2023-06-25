@@ -12,6 +12,7 @@ import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import JSEncrypt from 'jsencrypt';
 import CryptoJS from 'crypto-js';
+import * as bigintModArith from 'bigint-mod-arith';
 import get from 'lodash/get'
 import set from "lodash/set"
 
@@ -154,27 +155,26 @@ const verifyAndSavePS4 = async () => {
 				}
 
 				// Private key worked!
-				var BigInteger = require('jsbn').BigInteger;
 
 				// Translate these to BigInteger
-				var N = new BigInteger(String(key.key.n));
-				var E = new BigInteger(String(key.key.e));
-				var D = new BigInteger(String(key.key.d));
-				var P = new BigInteger(String(key.key.p));
-				var Q = new BigInteger(String(key.key.q));
-				var DP = new BigInteger(String(key.key.dmp1));
-				var DQ = new BigInteger(String(key.key.dmq1));
-				var constantR = new BigInteger('2').pow(4096); 	// constant R
-				var QP = Q.modInverse(P); 						// qp = 1 / ( Q % P)
-				var RN = constantR.mod(N); 						// rn = constant R mod N
+				var N = BigInt(String(key.key.n));
+				var E = BigInt(String(key.key.e));
+				var D = BigInt(String(key.key.d));
+				var P = BigInt(String(key.key.p));
+				var Q = BigInt(String(key.key.q));
+				var DP = BigInt(String(key.key.dmp1));
+				var DQ = BigInt(String(key.key.dmq1));
+				var constantR = BigInt('2') ** BigInt(4096); 	// constant R
+				var QP = bigintModArith.modInv(Q,P); 						// qp = 1 / ( Q % P)
+				var RN = constantR % N; 						// rn = constant R mod N
 
 				function int2mbedmpi(num) {
 					var out = [];
-					var mask = new BigInteger('4294967295');
-					var zero = new BigInteger('0');
-					while(!num.equals(zero)) {
-						out.push(num.and(mask).toString(16).padStart(8, '0'));
-						num = num.shiftRight(32);
+					var mask = BigInt('4294967295');
+					var zero = BigInt('0');
+					while(num !== zero) {
+						out.push((num & mask).toString(16).padStart(8, '0'));
+						num = num >> BigInt(32);
 					}
 					return out;
 				}
