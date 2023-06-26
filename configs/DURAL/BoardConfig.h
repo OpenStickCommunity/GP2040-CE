@@ -42,6 +42,7 @@
 #define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
 #define PIN_SLIDER_SOCD_TWO    -1         // SOCD Slider Pin Two
 
+
 // This is the SOCD section.
 // SOCD stands for `simultaneous opposing cardinal directions`.
 // There are three options for `DEFAULT_SOCD_MODE` currently:
@@ -212,20 +213,6 @@
 #define PIN_DUAL_DIRECTIONAL_RIGHT -1
 #define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
 #define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
-
-// TILTAdd-on Options
-#define PIN_TILT_1 -1
-#define PIN_TILT_2 -1
-#define PIN_TILT_FUNCTION -1
-#define PIN_TILT_LEFT_ANALOG_UP -1
-#define PIN_TILT_LEFT_ANALOG_DOWN -1
-#define PIN_TILT_LEFT_ANALOG_LEFT -1
-#define PIN_TILT_LEFT_ANALOG_RIGHT -1
-#define PIN_TILT_RIGHT_ANALOG_UP -1
-#define PIN_TILT_RIGHT_ANALOG_DOWN -1
-#define PIN_TILT_RIGHT_ANALOG_LEFT -1
-#define PIN_TILT_RIGHT_ANALOG_RIGHT -1
-#define TILT_SOCD_MODE SOCD_MODE_NEUTRAL
 
 // BOOTSEL Button Add-on setting
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
