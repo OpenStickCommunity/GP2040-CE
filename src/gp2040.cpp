@@ -10,8 +10,11 @@
 
 #include "addons/analog.h" // Inputs for Core0
 #include "addons/bootsel_button.h"
+#include "addons/focus_mode.h"
 #include "addons/dualdirectional.h"
+#include "addons/tilt.h"
 #include "addons/extra_button.h"
+#include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
 #include "addons/jslider.h"
 #include "addons/playernum.h"
@@ -99,10 +102,12 @@ void GP2040::setup() {
 	adc_init();
 
 	// Setup Add-ons
+  	addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
   	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
+  	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
 	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
@@ -111,6 +116,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
+	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
 }
 
 void GP2040::run() {
@@ -186,7 +192,7 @@ GP2040::BootAction GP2040::getBootAction() {
 				bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
 										forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
-				if (gamepad->pressedF1() && gamepad->pressedUp()) {
+				if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
 					return BootAction::ENTER_USB_MODE;
 				} else if (!webConfigLocked && gamepad->pressedS2()) {
 					return BootAction::ENTER_WEBCONFIG_MODE;

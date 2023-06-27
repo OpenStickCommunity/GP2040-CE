@@ -3,7 +3,6 @@ $primary: #495057;
 $danger: #7b2d26;
 
 @import '~bootstrap/scss/bootstrap';
-@import '~bootstrap-icons/font/bootstrap-icons';
 
 :root {
 	--bs-primary-rgb: 20, 23, 30;
@@ -42,10 +41,8 @@ button {
 	flex-direction: row;
 	align-items: center;
 	flex: 0 0 auto;
-	width: auto !important;
 
 	svg {
-		margin: 0.25rem;
 		transform: translateY(-0.125rem);
 	}
 }

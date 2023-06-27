@@ -2,12 +2,20 @@
  * GP2040-CE Configurator Development Server
  */
 
-const express = require("express");
-const cors = require("cors");
-const mapValues = require("lodash/mapValues");
+import express from "express";
+import cors from "cors";
+import mapValues from "lodash/mapValues.js";
+import { readFileSync } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { DEFAULT_KEYBOARD_MAPPING } from "../src/Data/Keyboard.js";
 
-const { pico: picoController } = require("../src/Data/Controllers.json");
-const { keyboard: keyboardMapping } = require("../src/Data/Keyboard.json");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const { pico: picoController } = JSON.parse(
+	readFileSync(path.resolve(__dirname, "../src/Data/Controllers.json"), "utf8")
+);
 
 const port = process.env.PORT || 8080;
 
@@ -21,7 +29,7 @@ app.use((req, res, next) => {
 
 app.get("/api/getUsedPins", (req, res) => {
 	return res.send({ usedPins: Object.values(picoController) });
-})
+});
 
 app.get("/api/resetSettings", (req, res) => {
 	return res.send({ success: true });
@@ -82,18 +90,68 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		switchTpShareForDs4: 0,
 		forcedSetupMode: 0,
 		lockHotkeys: 0,
-		hotkeyF1: [
-			{ action: 1, mask: 1<<0 },
-			{ action: 2, mask: 1<<1 },
-			{ action: 3, mask: 1<<2 },
-			{ action: 4, mask: 1<<3 },
-		 ],
-		hotkeyF2: [
-			{ action: 5, mask: 1<<0 },
-			{ action: 6, mask: 1<<1 },
-			{ action: 7, mask: 1<<2 },
-			{ action: 8, mask: 1<<3 },
-		 ]
+		fourWayMode: 0,
+		fnButtonPin: -1,
+		hotkey01: {
+			auxMask: 32768,
+			buttonsMask: 66304,
+			action: 4
+		},
+		hotkey02: {
+			auxMask: 0,
+			buttonsMask: 131840,
+			action: 1
+		},
+		hotkey03: {
+			auxMask: 0,
+			buttonsMask: 262912,
+			action: 2
+		},
+		hotkey04: {
+			auxMask: 0,
+			buttonsMask: 525056,
+			action: 3
+		},
+		hotkey05: {
+			auxMask: 0,
+			buttonsMask: 70144,
+			action: 6
+		},
+		hotkey06: {
+			auxMask: 0,
+			buttonsMask: 135680,
+			action: 7
+		},
+		hotkey07: {
+			auxMask: 0,
+			buttonsMask: 266752,
+			action: 8
+		},
+		hotkey08: {
+			auxMask: 0,
+			buttonsMask: 528896,
+			action: 10
+		},
+		hotkey09: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0
+		},
+		hotkey10: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0
+		},
+		hotkey11: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0
+		},
+		hotkey12: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0
+		}
 	});
 });
 
@@ -135,8 +193,8 @@ app.get("/api/getLedOptions", (req, res) => {
 	});
 });
 
-app.get('/api/getCustomTheme', (req, res) => {
-	console.log('/api/getCustomTheme');
+app.get("/api/getCustomTheme", (req, res) => {
+	console.log("/api/getCustomTheme");
 	return res.send({
 		enabled: true,
 		Up: { u: 16711680, d: 255 },
@@ -165,7 +223,7 @@ app.get("/api/getPinMappings", (req, res) => {
 });
 
 app.get("/api/getKeyMappings", (req, res) =>
-	res.send(mapValues(keyboardMapping))
+	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING))
 );
 
 app.get("/api/getAddonsOptions", (req, res) => {
@@ -195,13 +253,32 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		dualDirRightPin: -1,
 		dualDirDpadMode: 0,
 		dualDirCombineMode: 0,
+		dualDirFourWayMode: 0,
+		tilt1Pin: -1,
+		tilt2Pin: -1,
+		tiltLeftAnalogUpPin: -1,
+		tiltLeftAnalogDownPin: -1,
+		tiltLeftAnalogLeftPin: -1,
+		tiltLeftAnalogRightPin: -1,
+		tiltRightAnalogUpPin: -1,
+		tiltRightAnalogDownPin: -1,
+		tiltRightAnalogLeftPin: -1,
+		tiltRightAnalogRightPin: -1,
+		tiltSOCDMode: 0,
 		analogAdcPinX: -1,
 		analogAdcPinY: -1,
+		forced_circularity: 0,
+		analog_deadzone: 5,
 		bootselButtonMap: 0,
 		buzzerPin: -1,
 		buzzerVolume: 100,
 		extraButtonPin: -1,
 		extraButtonMap: 0,
+		focusModePin: -1,
+		focusModeButtonLockMask: 0,
+		focusModeButtonLockEnabled: 0,
+		focusModeButtonLockOledLockEnabled: 0,
+		focusModeButtonLockRgbLockEnabled: 0,
 		playerNumber: 1,
 		shmupMode: 0,
 		shmupMixMode: 0,
@@ -228,14 +305,19 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		snesPadClockPin: -1,
 		snesPadLatchPin: -1,
 		snesPadDataPin: -1,
+		keyboardHostPinDplus: 0,
+		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
+		FocusModeAddonEnabled: 1,
 		BuzzerSpeakerAddonEnabled: 1,
 		BootselButtonAddonEnabled: 1,
 		DualDirectionalInputEnabled: 1,
+		TiltInputEnabled: 1,
 		ExtraButtonAddonEnabled: 1,
 		I2CAnalog1219InputEnabled: 1,
 		JSliderInputEnabled: 1,
+		KeyboardHostAddonEnabled: 1,
 		PlayerNumAddonEnabled: 1,
 		PS4ModeAddonEnabled: 1,
 		ReverseInputEnabled: 1,
@@ -249,7 +331,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 
 app.get("/api/getFirmwareVersion", (req, res) => {
 	return res.send({
-		version: process.env.REACT_APP_CURRENT_VERSION,
+		version: process.env.VITE_CURRENT_VERSION,
 	});
 });
 

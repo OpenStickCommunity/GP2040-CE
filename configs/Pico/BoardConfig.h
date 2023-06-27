@@ -34,6 +34,7 @@
 #define PIN_BUTTON_R3   19          // R3 / RS / RS / R3 / 12 / RS
 #define PIN_BUTTON_A1   20          // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_FN   -1          // Hotkey Function
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
@@ -223,6 +224,20 @@
 #define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
 #define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
 
+// TILTAdd-on Options
+#define PIN_TILT_1 -1
+#define PIN_TILT_2 -1
+#define PIN_TILT_FUNCTION -1
+#define PIN_TILT_LEFT_ANALOG_UP -1
+#define PIN_TILT_LEFT_ANALOG_DOWN -1
+#define PIN_TILT_LEFT_ANALOG_LEFT -1
+#define PIN_TILT_LEFT_ANALOG_RIGHT -1
+#define PIN_TILT_RIGHT_ANALOG_UP -1
+#define PIN_TILT_RIGHT_ANALOG_DOWN -1
+#define PIN_TILT_RIGHT_ANALOG_LEFT -1
+#define PIN_TILT_RIGHT_ANALOG_RIGHT -1
+#define TILT_SOCD_MODE SOCD_MODE_NEUTRAL
+
 // BOOTSEL Button Add-on setting
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 
@@ -239,6 +254,14 @@
 #define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
                             // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN -1
+
+// Button Lock Add-on setting
+#define FOCUS_MODE_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+                            // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
+#define FOCUS_MODE_PIN -1
+#define FOCUS_MODE_OLED_LOCK_ENABLED 0
+#define FOCUS_MODE_RGB_LOCK_ENABLED 0
+#define FOCUS_MODE_BUTTON_LOCK_ENABLED 0
 
 // Keyboard Mapping Configuration
 // List of HID keycodes can be located here: https://github.com/hathach/tinyusb/blob/3623ba1884ddff23e9b64766cb6dd032f1425846/src/class/hid/hid.h#L356
@@ -262,25 +285,9 @@
 #define KEY_BUTTON_A1   HID_KEY_9             // A1 / Guide / Home / PS / 13 / ~
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2 / ~ / Capture / ~ / 14 / ~
 
-// Hotkey Action Mapping
-// Find the list of hotkey actions in GamepadEnums.h
-#define HOTKEY_F1_UP_MASK      GAMEPAD_MASK_UP
-#define HOTKEY_F1_UP_ACTION    HOTKEY_HOME_BUTTON
-#define HOTKEY_F1_DOWN_MASK    GAMEPAD_MASK_DOWN
-#define HOTKEY_F1_DOWN_ACTION  HOTKEY_DPAD_DIGITAL
-#define HOTKEY_F1_LEFT_MASK    GAMEPAD_MASK_LEFT
-#define HOTKEY_F1_LEFT_ACTION  HOTKEY_DPAD_LEFT_ANALOG
-#define HOTKEY_F1_RIGHT_MASK   GAMEPAD_MASK_RIGHT
-#define HOTKEY_F1_RIGHT_ACTION HOTKEY_DPAD_RIGHT_ANALOG
-
-#define HOTKEY_F2_UP_MASK      GAMEPAD_MASK_UP
-#define HOTKEY_F2_UP_ACTION    HOTKEY_SOCD_UP_PRIORITY
-#define HOTKEY_F2_DOWN_MASK    GAMEPAD_MASK_DOWN
-#define HOTKEY_F2_DOWN_ACTION  HOTKEY_SOCD_NEUTRAL
-#define HOTKEY_F2_LEFT_MASK    GAMEPAD_MASK_LEFT
-#define HOTKEY_F2_LEFT_ACTION  HOTKEY_SOCD_LAST_INPUT
-#define HOTKEY_F2_RIGHT_MASK   GAMEPAD_MASK_RIGHT
-#define HOTKEY_F2_RIGHT_ACTION HOTKEY_INVERT_Y_AXIS
+// Keyboard Host Addon defaults
+#define KEYBOARD_HOST_ENABLED 0
+#define KEYBOARD_HOST_PIN_DPLUS -1
 
 // For details on this, see: https://gp2040-ce.info/#/development?id=i2c-display-splash
 #define DEFAULT_SPLASH \

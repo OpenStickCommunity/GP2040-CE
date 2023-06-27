@@ -28,6 +28,15 @@ The options in the main menu are:
 
 Here you can select the basic settings which are normally available via hotkeys.
 
+### Hotkeys
+
+An arbitrary number of buttons and directions, plus the optional Function (Fn) button, can be used to define
+desired hotkey actions. Select Fn if desired, plus one or more buttons/directions, and associate them with a
+hotkey action. The default hotkeys can be modified or removed, and new ones added, up to 12 in total.
+
+The available hotkey actions will expand over time. We may also expand the number of hotkeys available to
+configure in the future.
+
 ## Pin Mapping
 
 ![GP2040-CE Configurator - Pin Mapping](assets/images/gpc-pin-mapping.png)

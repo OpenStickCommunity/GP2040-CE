@@ -34,8 +34,8 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static vector<string> spaPaths = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
-const static vector<string> excludePaths = { "/css", "/images", "/js", "/static" };
+const static char* spaPaths[] = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
+const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
 static char http_post_payload[LWIP_HTTPD_POST_MAX_PAYLOAD_LEN];
@@ -77,6 +77,16 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
 	if (doc[key] != nullptr)
 	{
 		value = doc[key];
+	}
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
+template <typename T>
+static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocument& doc, const char* key0, const char* key1)
+{
+	if (doc[key0][key1] != nullptr)
+	{
+		value = doc[key0][key1];
 	}
 }
 
@@ -211,6 +221,49 @@ DynamicJsonDocument get_post_data()
 	return doc;
 }
 
+void save_hotkey(HotkeyEntry* hotkey, const DynamicJsonDocument& doc, const string hotkey_key)
+{
+	readDoc(hotkey->auxMask, doc, hotkey_key, "auxMask");
+	uint32_t buttonsMask = doc[hotkey_key]["buttonsMask"];
+	uint32_t dpadMask = 0;
+	if (buttonsMask & GAMEPAD_MASK_DU) {
+		dpadMask |= GAMEPAD_MASK_UP;
+	}
+	if (buttonsMask & GAMEPAD_MASK_DD) {
+		dpadMask |= GAMEPAD_MASK_DOWN;
+	}
+	if (buttonsMask & GAMEPAD_MASK_DL) {
+		dpadMask |= GAMEPAD_MASK_LEFT;
+	}
+	if (buttonsMask & GAMEPAD_MASK_DR) {
+		dpadMask |= GAMEPAD_MASK_RIGHT;
+	}
+	buttonsMask &= ~(GAMEPAD_MASK_DU | GAMEPAD_MASK_DD | GAMEPAD_MASK_DL | GAMEPAD_MASK_DR);
+	hotkey->dpadMask = dpadMask;
+	hotkey->buttonsMask = buttonsMask;
+	readDoc(hotkey->action, doc, hotkey_key, "action");
+}
+
+void load_hotkey(const HotkeyEntry* hotkey, DynamicJsonDocument& doc, const string hotkey_key)
+{
+	writeDoc(doc, hotkey_key, "auxMask", hotkey->auxMask);
+	uint32_t buttonsMask = hotkey->buttonsMask;
+	if (hotkey->dpadMask & GAMEPAD_MASK_UP) {
+		buttonsMask |= GAMEPAD_MASK_DU;
+	}
+	if (hotkey->dpadMask & GAMEPAD_MASK_DOWN) {
+		buttonsMask |= GAMEPAD_MASK_DD;
+	}
+	if (hotkey->dpadMask & GAMEPAD_MASK_LEFT) {
+		buttonsMask |= GAMEPAD_MASK_DL;
+	}
+	if (hotkey->dpadMask & GAMEPAD_MASK_RIGHT) {
+		buttonsMask |= GAMEPAD_MASK_DR;
+	}
+	writeDoc(doc, hotkey_key, "buttonsMask", buttonsMask);
+	writeDoc(doc, hotkey_key, "action", hotkey->action);
+}
+
 // LWIP callback on HTTP POST to validate the URI
 err_t httpd_post_begin(void *connection, const char *uri, const char *http_request,
                        uint16_t http_request_len, int content_len, char *response_uri,
@@ -308,6 +361,7 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	addPinIfValid(pinMappings.pinButtonR3);
 	addPinIfValid(pinMappings.pinButtonA1);
 	addPinIfValid(pinMappings.pinButtonA2);
+	addPinIfValid(pinMappings.pinButtonFn);
 
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(boardOptions.i2cSDAPin);
@@ -456,17 +510,21 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.socdMode, doc, "socdMode");
 	readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
 	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
+	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
-	readDoc(hotkeyOptions.hotkeyF1Up.action, doc, "hotkeyF1", 0, "action");
-	readDoc(hotkeyOptions.hotkeyF1Down.action, doc, "hotkeyF1", 1, "action");
-	readDoc(hotkeyOptions.hotkeyF1Left.action, doc, "hotkeyF1", 2, "action");
-	readDoc(hotkeyOptions.hotkeyF1Right.action, doc, "hotkeyF1", 3, "action");
-
-	readDoc(hotkeyOptions.hotkeyF2Up.action, doc, "hotkeyF2", 0, "action");
-	readDoc(hotkeyOptions.hotkeyF2Down.action, doc, "hotkeyF2", 1, "action");
-	readDoc(hotkeyOptions.hotkeyF2Left.action, doc, "hotkeyF2", 2, "action");
-	readDoc(hotkeyOptions.hotkeyF2Right.action, doc, "hotkeyF2", 3, "action");
+	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
+	save_hotkey(&hotkeyOptions.hotkey02, doc, "hotkey02");
+	save_hotkey(&hotkeyOptions.hotkey03, doc, "hotkey03");
+	save_hotkey(&hotkeyOptions.hotkey04, doc, "hotkey04");
+	save_hotkey(&hotkeyOptions.hotkey05, doc, "hotkey05");
+	save_hotkey(&hotkeyOptions.hotkey06, doc, "hotkey06");
+	save_hotkey(&hotkeyOptions.hotkey07, doc, "hotkey07");
+	save_hotkey(&hotkeyOptions.hotkey08, doc, "hotkey08");
+	save_hotkey(&hotkeyOptions.hotkey09, doc, "hotkey09");
+	save_hotkey(&hotkeyOptions.hotkey10, doc, "hotkey10");
+	save_hotkey(&hotkeyOptions.hotkey11, doc, "hotkey11");
+	save_hotkey(&hotkeyOptions.hotkey12, doc, "hotkey12");
 
 	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 	readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
@@ -486,25 +544,24 @@ std::string getGamepadOptions()
 	writeDoc(doc, "socdMode", gamepadOptions.socdMode);
 	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
 	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
+	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
+
+	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
+	writeDoc(doc, "fnButtonPin", pinMappings.pinButtonFn);
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
-	writeDoc(doc, "hotkeyF1", 0, "action", hotkeyOptions.hotkeyF1Up.action);
-	writeDoc(doc, "hotkeyF1", 0, "mask", hotkeyOptions.hotkeyF1Up.dpadMask);
-	writeDoc(doc, "hotkeyF1", 1, "action", hotkeyOptions.hotkeyF1Down.action);
-	writeDoc(doc, "hotkeyF1", 1, "mask", hotkeyOptions.hotkeyF1Down.dpadMask);
-	writeDoc(doc, "hotkeyF1", 2, "action", hotkeyOptions.hotkeyF1Left.action);
-	writeDoc(doc, "hotkeyF1", 2, "mask", hotkeyOptions.hotkeyF1Left.dpadMask);
-	writeDoc(doc, "hotkeyF1", 3, "action", hotkeyOptions.hotkeyF1Right.action);
-	writeDoc(doc, "hotkeyF1", 3, "mask", hotkeyOptions.hotkeyF1Right.dpadMask);
-
-	writeDoc(doc, "hotkeyF2", 0, "action", hotkeyOptions.hotkeyF2Up.action);
-	writeDoc(doc, "hotkeyF2", 0, "mask", hotkeyOptions.hotkeyF2Up.dpadMask);
-	writeDoc(doc, "hotkeyF2", 1, "action", hotkeyOptions.hotkeyF2Down.action);
-	writeDoc(doc, "hotkeyF2", 1, "mask", hotkeyOptions.hotkeyF2Down.dpadMask);
-	writeDoc(doc, "hotkeyF2", 2, "action", hotkeyOptions.hotkeyF2Left.action);
-	writeDoc(doc, "hotkeyF2", 2, "mask", hotkeyOptions.hotkeyF2Left.dpadMask);
-	writeDoc(doc, "hotkeyF2", 3, "action", hotkeyOptions.hotkeyF2Right.action);
-	writeDoc(doc, "hotkeyF2", 3, "mask", hotkeyOptions.hotkeyF2Right.dpadMask);
+	load_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
+	load_hotkey(&hotkeyOptions.hotkey02, doc, "hotkey02");
+	load_hotkey(&hotkeyOptions.hotkey03, doc, "hotkey03");
+	load_hotkey(&hotkeyOptions.hotkey04, doc, "hotkey04");
+	load_hotkey(&hotkeyOptions.hotkey05, doc, "hotkey05");
+	load_hotkey(&hotkeyOptions.hotkey06, doc, "hotkey06");
+	load_hotkey(&hotkeyOptions.hotkey07, doc, "hotkey07");
+	load_hotkey(&hotkeyOptions.hotkey08, doc, "hotkey08");
+	load_hotkey(&hotkeyOptions.hotkey09, doc, "hotkey09");
+	load_hotkey(&hotkeyOptions.hotkey10, doc, "hotkey10");
+	load_hotkey(&hotkeyOptions.hotkey11, doc, "hotkey11");
+	load_hotkey(&hotkeyOptions.hotkey12, doc, "hotkey12");
 
 	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 	writeDoc(doc, "forcedSetupMode", forcedSetupOptions.mode);
@@ -747,6 +804,7 @@ std::string setPinMappings()
 	pinMappings.pinButtonR3  = convertPin("R3");
 	pinMappings.pinButtonA1  = convertPin("A1");
 	pinMappings.pinButtonA2  = convertPin("A2");
+	pinMappings.pinButtonFn  = convertPin("Fn");
 
 	Storage::getInstance().save();
 
@@ -776,6 +834,7 @@ std::string getPinMappings()
 	writeDoc(doc, "R3", cleanPin(pinMappings.pinButtonR3));
 	writeDoc(doc, "A1", cleanPin(pinMappings.pinButtonA1));
 	writeDoc(doc, "A2", cleanPin(pinMappings.pinButtonA2));
+	writeDoc(doc, "Fn", cleanPin(pinMappings.pinButtonFn));
 
 	return serialize_json(doc);
 }
@@ -844,6 +903,8 @@ std::string setAddonOptions()
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
 	docToPin(analogOptions.analogAdcPinX, doc, "analogAdcPinX");
 	docToPin(analogOptions.analogAdcPinY, doc, "analogAdcPinY");
+	docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
+	docToValue(analogOptions.analog_deadzone, doc, "analog_deadzone");
 	docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -862,12 +923,35 @@ std::string setAddonOptions()
 	docToPin(dualDirectionalOptions.rightPin, doc, "dualDirRightPin");
 	docToValue(dualDirectionalOptions.dpadMode, doc, "dualDirDpadMode");
 	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
+	docToValue(dualDirectionalOptions.fourWayMode, doc, "dualDirFourWayMode");
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
+
+		TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
+	docToPin(tiltOptions.tilt1Pin, doc, "tilt1Pin");
+	docToPin(tiltOptions.tilt2Pin, doc, "tilt2Pin");
+	docToPin(tiltOptions.tiltLeftAnalogUpPin, doc, "tiltLeftAnalogUpPin");
+	docToPin(tiltOptions.tiltLeftAnalogDownPin, doc, "tiltLeftAnalogDownPin");
+	docToPin(tiltOptions.tiltLeftAnalogLeftPin, doc, "tiltLeftAnalogLeftPin");
+	docToPin(tiltOptions.tiltLeftAnalogRightPin, doc, "tiltLeftAnalogRightPin");
+	docToPin(tiltOptions.tiltRightAnalogUpPin, doc, "tiltRightAnalogUpPin");
+	docToPin(tiltOptions.tiltRightAnalogDownPin, doc, "tiltRightAnalogDownPin");
+	docToPin(tiltOptions.tiltRightAnalogLeftPin, doc, "tiltRightAnalogLeftPin");
+	docToPin(tiltOptions.tiltRightAnalogRightPin, doc, "tiltRightAnalogRightPin");
+	docToValue(tiltOptions.tiltSOCDMode, doc, "tiltSOCDMode");
+	docToValue(tiltOptions.enabled, doc, "TiltInputEnabled");
 
     ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	docToPin(extraButtonOptions.pin, doc, "extraButtonPin");
 	docToValue(extraButtonOptions.buttonMap, doc, "extraButtonMap");
 	docToValue(extraButtonOptions.enabled, doc, "ExtraButtonAddonEnabled");
+
+    FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	docToPin(focusModeOptions.pin, doc, "focusModePin");
+	docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
+	docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
+	docToValue(focusModeOptions.oledLockEnabled, doc, "focusModeOledLockEnabled");
+	docToValue(focusModeOptions.rgbLockEnabled, doc, "focusModeRgbLockEnabled");
+	docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 	docToPin(analogADS1219Options.i2cSDAPin, doc, "i2cAnalog1219SDAPin");
@@ -943,6 +1027,28 @@ std::string setAddonOptions()
 	docToPin(snesOptions.clockPin, doc, "snesPadClockPin");
 	docToPin(snesOptions.latchPin, doc, "snesPadLatchPin");
 	docToPin(snesOptions.dataPin, doc, "snesPadDataPin");
+
+	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
+	docToPin(keyboardHostOptions.pinDplus, doc, "keyboardHostPinDplus");
+	docToValue(keyboardHostOptions.mapping.keyDpadUp, doc, "keyboardHostMap", "Up");
+	docToValue(keyboardHostOptions.mapping.keyDpadDown, doc, "keyboardHostMap", "Down");
+	docToValue(keyboardHostOptions.mapping.keyDpadLeft, doc, "keyboardHostMap", "Left");
+	docToValue(keyboardHostOptions.mapping.keyDpadRight, doc, "keyboardHostMap", "Right");
+	docToValue(keyboardHostOptions.mapping.keyButtonB1, doc, "keyboardHostMap", "B1");
+	docToValue(keyboardHostOptions.mapping.keyButtonB2, doc, "keyboardHostMap", "B2");
+	docToValue(keyboardHostOptions.mapping.keyButtonB3, doc, "keyboardHostMap", "B3");
+	docToValue(keyboardHostOptions.mapping.keyButtonB4, doc, "keyboardHostMap", "B4");
+	docToValue(keyboardHostOptions.mapping.keyButtonL1, doc, "keyboardHostMap", "L1");
+	docToValue(keyboardHostOptions.mapping.keyButtonR1, doc, "keyboardHostMap", "R1");
+	docToValue(keyboardHostOptions.mapping.keyButtonL2, doc, "keyboardHostMap", "L2");
+	docToValue(keyboardHostOptions.mapping.keyButtonR2, doc, "keyboardHostMap", "R2");
+	docToValue(keyboardHostOptions.mapping.keyButtonS1, doc, "keyboardHostMap", "S1");
+	docToValue(keyboardHostOptions.mapping.keyButtonS2, doc, "keyboardHostMap", "S2");
+	docToValue(keyboardHostOptions.mapping.keyButtonL3, doc, "keyboardHostMap", "L3");
+	docToValue(keyboardHostOptions.mapping.keyButtonR3, doc, "keyboardHostMap", "R3");
+	docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
+	docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
 
 	Storage::getInstance().save();
 
@@ -1053,6 +1159,8 @@ std::string getAddonOptions()
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
 	writeDoc(doc, "analogAdcPinX", cleanPin(analogOptions.analogAdcPinX));
 	writeDoc(doc, "analogAdcPinY", cleanPin(analogOptions.analogAdcPinY));
+	writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
+	writeDoc(doc, "analog_deadzone", analogOptions.analog_deadzone);
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1071,7 +1179,22 @@ std::string getAddonOptions()
 	writeDoc(doc, "dualDirRightPin", cleanPin(dualDirectionalOptions.rightPin));
 	writeDoc(doc, "dualDirDpadMode", dualDirectionalOptions.dpadMode);
 	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
+	writeDoc(doc, "dualDirFourWayMode", dualDirectionalOptions.fourWayMode);
 	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
+
+		const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
+	writeDoc(doc, "tilt1Pin", cleanPin(tiltOptions.tilt1Pin));
+	writeDoc(doc, "tilt2Pin", cleanPin(tiltOptions.tilt2Pin));
+	writeDoc(doc, "tiltLeftAnalogUpPin", cleanPin(tiltOptions.tiltLeftAnalogUpPin));
+	writeDoc(doc, "tiltLeftAnalogDownPin", cleanPin(tiltOptions.tiltLeftAnalogDownPin));
+	writeDoc(doc, "tiltLeftAnalogLeftPin", cleanPin(tiltOptions.tiltLeftAnalogLeftPin));
+	writeDoc(doc, "tiltLeftAnalogRightPin", cleanPin(tiltOptions.tiltLeftAnalogRightPin));
+	writeDoc(doc, "tiltRightAnalogUpPin", cleanPin(tiltOptions.tiltRightAnalogUpPin));
+	writeDoc(doc, "tiltRightAnalogDownPin", cleanPin(tiltOptions.tiltRightAnalogDownPin));
+	writeDoc(doc, "tiltRightAnalogLeftPin", cleanPin(tiltOptions.tiltRightAnalogLeftPin));
+	writeDoc(doc, "tiltRightAnalogRightPin", cleanPin(tiltOptions.tiltRightAnalogRightPin));
+	writeDoc(doc, "tiltSOCDMode", tiltOptions.tiltSOCDMode);
+	writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
     const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	writeDoc(doc, "extraButtonPin", cleanPin(extraButtonOptions.pin));
@@ -1153,6 +1276,36 @@ std::string getAddonOptions()
 	writeDoc(doc, "snesPadDataPin", cleanPin(snesOptions.dataPin));
 	writeDoc(doc, "SNESpadAddonEnabled", snesOptions.enabled);
 
+	const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+	writeDoc(doc, "KeyboardHostAddonEnabled", keyboardHostOptions.enabled);
+	writeDoc(doc, "keyboardHostPinDplus", keyboardHostOptions.pinDplus);
+	writeDoc(doc, "keyboardHostMap", "Up", keyboardHostOptions.mapping.keyDpadUp);
+	writeDoc(doc, "keyboardHostMap", "Down", keyboardHostOptions.mapping.keyDpadDown);
+	writeDoc(doc, "keyboardHostMap", "Left", keyboardHostOptions.mapping.keyDpadLeft);
+	writeDoc(doc, "keyboardHostMap", "Right", keyboardHostOptions.mapping.keyDpadRight);
+	writeDoc(doc, "keyboardHostMap", "B1", keyboardHostOptions.mapping.keyButtonB1);
+	writeDoc(doc, "keyboardHostMap", "B2", keyboardHostOptions.mapping.keyButtonB2);
+	writeDoc(doc, "keyboardHostMap", "B3", keyboardHostOptions.mapping.keyButtonB3);
+	writeDoc(doc, "keyboardHostMap", "B4", keyboardHostOptions.mapping.keyButtonB4);
+	writeDoc(doc, "keyboardHostMap", "L1", keyboardHostOptions.mapping.keyButtonL1);
+	writeDoc(doc, "keyboardHostMap", "R1", keyboardHostOptions.mapping.keyButtonR1);
+	writeDoc(doc, "keyboardHostMap", "L2", keyboardHostOptions.mapping.keyButtonL2);
+	writeDoc(doc, "keyboardHostMap", "R2", keyboardHostOptions.mapping.keyButtonR2);
+	writeDoc(doc, "keyboardHostMap", "S1", keyboardHostOptions.mapping.keyButtonS1);
+	writeDoc(doc, "keyboardHostMap", "S2", keyboardHostOptions.mapping.keyButtonS2);
+	writeDoc(doc, "keyboardHostMap", "L3", keyboardHostOptions.mapping.keyButtonL3);
+	writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
+	writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
+	writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
+
+	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
+	writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
+	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
+	writeDoc(doc, "focusModeOledLockEnabled", focusModeOptions.oledLockEnabled);
+	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
+	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
+
 	return serialize_json(doc);
 }
 
@@ -1185,12 +1338,14 @@ DataAndStatusCode setConfig()
 
 	// Store config struct on the heap to avoid stack overflow
 	std::unique_ptr<Config> config(new Config);
+	*config.get() = Config Config_init_default;
 	if (ConfigUtils::fromJSON(*config.get(), http_post_payload, http_post_payload_len))
 	{
-	Storage::getInstance().getConfig() = *config.get();
+		Storage::getInstance().getConfig() = *config.get();
+		config.reset();
 		if (Storage::getInstance().save())
 		{
-	return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
+			return DataAndStatusCode(getConfig(), HttpStatusCode::_200);
 		}
 		else
 		{
@@ -1300,13 +1455,13 @@ int fs_open_custom(struct fs_file *file, const char *name)
 	}
 
 	bool isExclude = false;
-	for (const auto &excludePath : excludePaths)
-		if (!excludePath.compare(name))
+	for (const char* excludePath : excludePaths)
+		if (strcmp(excludePath, name) == 0)
 			return 0;
 
-	for (const auto &spaPath : spaPaths)
+	for (const char* spaPath : spaPaths)
 	{
-		if (!spaPath.compare(name))
+		if (strcmp(spaPath, name) == 0)
 		{
 			file->data = (const char *)file__index_html[0].data;
 			file->len = file__index_html[0].len;

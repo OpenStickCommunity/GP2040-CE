@@ -31,6 +31,7 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/tilt.h"
 
 #include "config_utils.h"
 
@@ -123,11 +124,6 @@ void Storage::enqueueAnimationOptionsSave(const AnimationOptions& animationOptio
 		animationOptionsSavePending.store(true);
 	}
 	critical_section_exit(&animationOptionsCs);
-}
-
-/* Board stuffs */
-void Storage::initBoardOptions() {
-	setDefaultBoardOptions();
 }
 
 void Storage::ResetSettings()

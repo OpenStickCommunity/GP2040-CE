@@ -153,6 +153,10 @@ message NanoPBOptions {
   // will be a a static field.
   // Fields with dynamic length are converted to either a pointer or a callback.
   optional FieldType fallback_type = 29 [default = FT_CALLBACK]; 
+
+  // GP2040-CE extension
+  // Marks a field to be excluded when performing export operations (i.e. converting to JSON)
+  optional bool disallow_export = 30 [default = false];
 }
 
 // Extensions to protoc 'Descriptor' type in order to define options

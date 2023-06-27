@@ -111,19 +111,21 @@ enum GamepadHotkey
 {
     option (nanopb_enumopt).long_names = false;
 
-    HOTKEY_NONE                 = 0;
-    HOTKEY_DPAD_DIGITAL         = 1;
-    HOTKEY_DPAD_LEFT_ANALOG     = 2;
-    HOTKEY_DPAD_RIGHT_ANALOG    = 3;
-    HOTKEY_HOME_BUTTON          = 4;
-    HOTKEY_CAPTURE_BUTTON       = 5;
-    HOTKEY_SOCD_UP_PRIORITY     = 6;
-    HOTKEY_SOCD_NEUTRAL         = 7;
-    HOTKEY_SOCD_LAST_INPUT      = 8;
-    HOTKEY_INVERT_X_AXIS        = 9;
-    HOTKEY_INVERT_Y_AXIS        = 10;
-    HOTKEY_SOCD_FIRST_INPUT     = 11;
-    HOTKEY_SOCD_BYPASS          = 12;
+    HOTKEY_NONE                  = 0;
+    HOTKEY_DPAD_DIGITAL          = 1;
+    HOTKEY_DPAD_LEFT_ANALOG      = 2;
+    HOTKEY_DPAD_RIGHT_ANALOG     = 3;
+    HOTKEY_HOME_BUTTON           = 4;
+    HOTKEY_CAPTURE_BUTTON        = 5;
+    HOTKEY_SOCD_UP_PRIORITY      = 6;
+    HOTKEY_SOCD_NEUTRAL          = 7;
+    HOTKEY_SOCD_LAST_INPUT       = 8;
+    HOTKEY_INVERT_X_AXIS         = 9;
+    HOTKEY_INVERT_Y_AXIS         = 10;
+    HOTKEY_SOCD_FIRST_INPUT      = 11;
+    HOTKEY_SOCD_BYPASS           = 12;
+    HOTKEY_TOGGLE_4_WAY_MODE     = 13;
+    HOTKEY_TOGGLE_DDI_4_WAY_MODE = 14;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp

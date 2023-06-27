@@ -5,6 +5,7 @@
 #include "helper.h"
 
 #include "config.pb.h"
+#include "GamepadState.h"
 
 #include "mbedtls/rsa.h"
 
@@ -242,6 +243,8 @@ namespace ConfigLegacy
         OnBoardLedMode onBoardLedMode;
         uint8_t analogAdcPinX;
         uint8_t analogAdcPinY;
+        uint8_t forced_circularity;
+        uint8_t analog_deadzone;
         uint16_t bootselButtonMap;
         uint8_t extraButtonPin;
         uint32_t extraButtonMap;
@@ -687,52 +690,60 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
 
         HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
         config.has_hotkeyOptions = true;
-        SET_PROPERTY(hotkeyOptions.hotkeyF1Up, dpadMask, legacyGamepadOptions.hotkeyF1Up.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey01, dpadMask, legacyGamepadOptions.hotkeyF1Up.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey01, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
         if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF1Up.action))
         {
-            SET_PROPERTY(hotkeyOptions.hotkeyF1Up, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Up.action));
+            SET_PROPERTY(hotkeyOptions.hotkey01, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Up.action));
         }
 
-        SET_PROPERTY(hotkeyOptions.hotkeyF1Down, dpadMask, legacyGamepadOptions.hotkeyF1Down.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey02, dpadMask, legacyGamepadOptions.hotkeyF1Down.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey02, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
         if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF1Down.action))
         {
-            SET_PROPERTY(hotkeyOptions.hotkeyF1Down, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Down.action));
+            SET_PROPERTY(hotkeyOptions.hotkey02, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Down.action));
         }
 
-        SET_PROPERTY(hotkeyOptions.hotkeyF1Left, dpadMask, legacyGamepadOptions.hotkeyF1Left.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey03, dpadMask, legacyGamepadOptions.hotkeyF1Left.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey03, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
         if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF1Left.action))
         {
-            SET_PROPERTY(hotkeyOptions.hotkeyF1Left, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Left.action));
+            SET_PROPERTY(hotkeyOptions.hotkey03, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Left.action));
         }
 
-        SET_PROPERTY(hotkeyOptions.hotkeyF1Right, dpadMask, legacyGamepadOptions.hotkeyF1Right.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey04, dpadMask, legacyGamepadOptions.hotkeyF1Right.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey04, buttonsMask, GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
         if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF1Right.action))
         {
-            SET_PROPERTY(hotkeyOptions.hotkeyF1Right, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Right.action));
+            SET_PROPERTY(hotkeyOptions.hotkey04, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF1Right.action));
         }
 
-        SET_PROPERTY(hotkeyOptions.hotkeyF2Up, dpadMask, legacyGamepadOptions.hotkeyF2Up.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey05, dpadMask, legacyGamepadOptions.hotkeyF2Up.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey05, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
         if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF2Up.action))
         {
-            SET_PROPERTY(hotkeyOptions.hotkeyF2Up, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Up.action));
+            SET_PROPERTY(hotkeyOptions.hotkey05, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Up.action));
         }
 
-        SET_PROPERTY(hotkeyOptions.hotkeyF2Down, dpadMask, legacyGamepadOptions.hotkeyF2Down.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey06, dpadMask, legacyGamepadOptions.hotkeyF2Down.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey06, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
         if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF2Down.action))
         {
-            SET_PROPERTY(hotkeyOptions.hotkeyF2Down, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Down.action));
+            SET_PROPERTY(hotkeyOptions.hotkey06, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Down.action));
         }
 
-        SET_PROPERTY(hotkeyOptions.hotkeyF2Left, dpadMask, legacyGamepadOptions.hotkeyF2Left.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey07, dpadMask, legacyGamepadOptions.hotkeyF2Left.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey07, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
         if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF2Left.action))
         {
-            SET_PROPERTY(hotkeyOptions.hotkeyF2Left, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Left.action));
+            SET_PROPERTY(hotkeyOptions.hotkey07, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Left.action));
         }
 
-        SET_PROPERTY(hotkeyOptions.hotkeyF2Right, dpadMask, legacyGamepadOptions.hotkeyF2Right.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey08, dpadMask, legacyGamepadOptions.hotkeyF2Right.dpadMask);
+        SET_PROPERTY(hotkeyOptions.hotkey08, buttonsMask, GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
         if (isValidGamepadHotkey(legacyGamepadOptions.hotkeyF2Right.action))
         {
-            SET_PROPERTY(hotkeyOptions.hotkeyF2Right, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Right.action));
+            SET_PROPERTY(hotkeyOptions.hotkey08, action, static_cast<GamepadHotkey>(legacyGamepadOptions.hotkeyF2Right.action));
         }
     }
 
@@ -929,6 +940,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(analogOptions, enabled, legacyAddonOptions.AnalogInputEnabled);
         SET_PROPERTY(analogOptions, analogAdcPinX, bytePinToIntPin(legacyAddonOptions.analogAdcPinX));
         SET_PROPERTY(analogOptions, analogAdcPinY, bytePinToIntPin(legacyAddonOptions.analogAdcPinY));
+        SET_PROPERTY(analogOptions, forced_circularity, bytePinToIntPin(legacyAddonOptions.forced_circularity));
+        SET_PROPERTY(analogOptions, analog_deadzone, legacyAddonOptions.analog_deadzone);
 
         BootselButtonOptions& bootselButtonOptions = config.addonOptions.bootselButtonOptions;
         config.addonOptions.has_bootselButtonOptions = true;
