@@ -31,6 +31,7 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/tilt.h"
 
 #include "config_utils.h"
 

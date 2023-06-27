@@ -45,6 +45,12 @@ const SHMUP_MIXED_MODES = [
 	{ label: 'Charge Priority', value: 1}
 ];
 
+const TILT_SOCD_MODES = [
+	{ label: 'Up Priority', value: 0 },
+	{ label: 'Neutral', value: 1 },
+	{ label: 'Last Win', value: 2 },
+];
+
 const ANALOG_PINS = [
 	-1,26,27,28,29
 ];
@@ -294,6 +300,19 @@ const schema = yup.object().shape({
 	dualDirCombineMode:          yup.number().label('Dual Combination Mode').validateSelectionWhenValue('DualDirectionalInputEnabled', DUAL_COMBINE_MODES),
 	dualDirFourWayMode:          yup.number().label('Dual Directional 4-Way Joystick Mode').validateRangeWhenValue('DualDirectionalInputEnabled', 0, 1),
 
+	TiltInputEnabled:            yup.number().required().label('Tilt Input Enabled'),
+	tilt1Pin:                    yup.number().label('Tilt 1 Pin').validatePinWhenValue('TiltInputEnabled'),
+	tilt2Pin:                    yup.number().label('Tilt 2 Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltLeftAnalogUpPin:         yup.number().label('Tilt Left Analog Up Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltLeftAnalogDownPin:       yup.number().label('Tilt Left Analog Down Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltLeftAnalogLeftPin:       yup.number().label('Tilt Left Analog Left Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltLeftAnalogRightPin:      yup.number().label('Tilt Left Analog Right Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltRightAnalogUpPin:        yup.number().label('Tilt Right Analog Up Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltRightAnalogDownPin:      yup.number().label('Tilt Right Analog Down Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltRightAnalogLeftPin:      yup.number().label('Tilt Right Analog Left Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltRightAnalogRightPin:     yup.number().label('Tilt Right Analog Right Pin').validatePinWhenValue('TiltInputEnabled'),
+	tiltSOCDMode:                yup.number().label('Tilt SOCE Mode').validateSelectionWhenValue('TiltInputEnabled', SOCD_MODES),
+
 	ExtraButtonAddonEnabled:     yup.number().required().label('Extra Button Add-On Enabled'),
 	extraButtonPin:              yup.number().label('Extra Button Pin').validatePinWhenValue('ExtraButtonAddonEnabled'),
 	extraButtonMap:              yup.number().label('Extra Button Map').validateSelectionWhenValue('ExtraButtonAddonEnabled', BUTTON_MASKS),
@@ -371,6 +390,16 @@ const defaultValues = {
 	dualDirDpadMode: 0,
 	dualDirCombineMode: 0,
 	dualDirFourWayMode: 0,
+	tilt1Pin: -1,
+	tilt2Pin: -1,
+	tiltLeftAnalogUpPin: -1,
+	tiltLeftAnalogDownPin: -1,
+	tiltLeftAnalogLeftPin: -1,
+	tiltLeftAnalogRightPin: -1,
+	tiltRightAnalogUpPin: -1,
+	tiltRightAnalogDownPin: -1,
+	tiltRightAnalogLeftPin: -1,
+	tiltRightAnalogRightPin: -1,
 	analogAdcPinX : -1,
  	analogAdcPinY : -1,
 	forced_circularity : 0,
@@ -414,6 +443,7 @@ const defaultValues = {
 	BuzzerSpeakerAddonEnabled: 0,
 	BootselButtonAddonEnabled: 0,
 	DualDirectionalInputEnabled: 0,
+	TiltInputEnabled: 0,
 	ExtraButtonAddonEnabled: 0,
 	I2CAnalog1219InputEnabled: 0,
 	JSliderInputEnabled: 0,
@@ -496,6 +526,28 @@ const sanitizeData = (values) => {
 		values.dualDirRightPin = parseInt(values.dualDirRightPin);
 	if (!!values.dualDirMode)
 		values.dualDirMode = parseInt(values.dualDirMode);
+	if (!!values.tilt1Pin)
+		values.tilt1Pin = parseInt(values.tilt1Pin);
+	if (!!values.tilt2Pin)
+		values.tilt2Pin = parseInt(values.tilt2Pin);
+	if (!!values.tiltLeftAnalogDownPin)
+		values.tiltLeftAnalogDownPin = parseInt(values.tiltLeftAnalogDownPin);
+	if (!!values.tiltLeftAnalogUpPin)
+		values.tiltLeftAnalogUpPin = parseInt(values.tiltLeftAnalogUpPin);
+	if (!!values.tiltLeftAnalogLeftPin)
+		values.tiltLeftAnalogLeftPin = parseInt(values.tiltLeftAnalogLeftPin);
+	if (!!values.tiltLeftAnalogRightPin)
+		values.tiltLeftAnalogRightPin = parseInt(values.tiltLeftAnalogRightPin);
+	if (!!values.tiltRightAnalogDownPin)
+		values.tiltRightAnalogDownPin = parseInt(values.tiltRightAnalogDownPin);
+	if (!!values.tiltRightAnalogUpPin)
+		values.tiltRightAnalogUpPin = parseInt(values.tiltRightAnalogUpPin);
+	if (!!values.tiltRightAnalogLeftPin)
+		values.tiltRightAnalogLeftPin = parseInt(values.tiltRightAnalogLeftPin);
+	if (!!values.tiltRightAnalogRightPin)
+		values.tiltRightAnalogRightPin = parseInt(values.tiltRightAnalogRightPin);
+	if (!!values.tiltSOCDMode)
+		values.tiltSOCDMode = parseInt(values.tiltSOCDMode);
 	if (!!values.analogAdcPinX)
 		values.analogAdcPinX = parseInt(values.analogAdcPinX);
 	if (!!values.analogAdcPinY)
@@ -576,6 +628,8 @@ const sanitizeData = (values) => {
 		values.BootselButtonAddonEnabled = parseInt(values.BootselButtonAddonEnabled);
 	if (!!values.DualDirectionalInputEnabled)
 		values.DualDirectionalInputEnabled = parseInt(values.DualDirectionalInputEnabled);
+	if (!!values.TiltInputEnabled)
+		values.TiltInputEnabled = parseInt(values.TiltInputEnabled);
 	if (!!values.ExtraButtonAddonEnabled)
 		values.ExtraButtonAddonEnabled = parseInt(values.ExtraButtonAddonEnabled);
 	if (!!values.I2CAnalog1219InputEnabled)
@@ -1343,6 +1397,160 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.DualDirectionalInputEnabled)}
 							onChange={(e) => {handleCheckbox("DualDirectionalInputEnabled", values); handleChange(e);}}
+						/>
+					</Section>
+					<Section title={t('AddonsConfig:tilt-header-text')}>
+						<div id="TiltOptions" hidden={!values.TiltInputEnabled}>
+							<Row class="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-1-pin-label')}
+									name="tilt1Pin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tilt1Pin || -1}
+									error={errors.tilt1Pin}
+									isInvalid={errors.tilt1Pin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-2-pin-label')}
+									name="tilt2Pin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tilt2Pin || -1}
+									error={errors.tilt2Pin}
+									isInvalid={errors.tilt2Pin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
+							<Row class="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-left-analog-up-pin-label')}
+									name="tiltLeftAnalogUpPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltLeftAnalogUpPin || -1}
+									error={errors.tiltLeftAnalogUpPin}
+									isInvalid={errors.tiltLeftAnalogUpPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-left-analog-down-pin-label')}
+									name="tiltLeftAnalogDownPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltLeftAnalogDownPin || -1}
+									error={errors.tiltLeftAnalogDownPin}
+									isInvalid={errors.tiltLeftAnalogDownPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-left-analog-left-pin-label')}
+									name="tiltLeftAnalogLeftPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltLeftAnalogLeftPin || -1}
+									error={errors.tiltLeftAnalogLeftPin}
+									isInvalid={errors.tiltLeftAnalogLeftPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-left-analog-right-pin-label')}
+									name="tiltLeftAnalogRightPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltLeftAnalogRightPin || -1}
+									error={errors.tiltLeftAnalogRightPin}
+									isInvalid={errors.tiltLeftAnalogRightPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
+							<Row class="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-right-analog-up-pin-label')}
+									name="tiltRightAnalogUpPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltRightAnalogUpPin || -1}
+									error={errors.tiltRightAnalogUpPin}
+									isInvalid={errors.tiltRightAnalogUpPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-right-analog-down-pin-label')}
+									name="tiltRightAnalogDownPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltRightAnalogDownPin || -1}
+									error={errors.tiltRightAnalogDownPin}
+									isInvalid={errors.tiltRightAnalogDownPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-right-analog-left-pin-label')}
+									name="tiltRightAnalogLeftPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltRightAnalogLeftPin || -1}
+									error={errors.tiltRightAnalogLeftPin}
+									isInvalid={errors.tiltRightAnalogLeftPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:tilt-right-analog-right-pin-label')}
+									name="tiltRightAnalogRightPin"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltRightAnalogRightPin || -1}
+									error={errors.tiltRightAnalogRightPin}
+									isInvalid={errors.tiltRightAnalogRightPin}
+									onChange={handleChange}
+									min={-1}
+									max={29}
+								/>
+							</Row>
+							<Row class="mb-3">
+								<FormSelect
+									label={t('AddonsConfig:tilt-socd-mode-label')}
+									name="tiltSOCDMode"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.tiltSOCDMode}
+									error={errors.tiltSOCDMode}
+									isInvalid={errors.tiltSOCDMode}
+									onChange={handleChange}
+								>
+									{TILT_SOCD_MODES.map((o, i) => <option key={`button-tiltSOCDMode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+							</Row>
+						</div>
+						<FormCheck
+							label={t('Common:switch-enabled')}
+							type="switch"
+							id="TiltInputButton"
+							reverse="true"
+							error={false}
+							isInvalid={false}
+							checked={Boolean(values.TiltInputEnabled)}
+							onChange={(e) => { handleCheckbox("TiltInputEnabled", values); handleChange(e); }}
 						/>
 					</Section>
 					<Section title={t('AddonsConfig:buzzer-speaker-header-text')}>
