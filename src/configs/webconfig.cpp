@@ -1061,17 +1061,27 @@ std::string setAddonOptions()
 
 std::string setPS4Options()
 {
+	enum {
+		PS4_KEY_IMPORT_INVALID = -1,
+		PS4_KEY_IMPORT_PASSINGLINK = 0,
+		PS4_KEY_IMPORT_DS4KEY,
+	};
+
 	DynamicJsonDocument doc = get_post_data();
 	PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
+	static_assert(sizeof(ps4Options.ds4Key.bytes) == sizeof(DS4FullKeyBlock), "Protobuf DS4Key size is inconsistent with the internal DS4Key buffer size.");
 	std::string encoded;
 	std::string decoded;
 	size_t length;
 	auto needSave = false;
-	char errorBuf[192];
+	char mbedTlsErrorBuf[192];
+	int importType = PS4_KEY_IMPORT_INVALID;
+	const uint8_t* ds4KeyPtr = nullptr;
+	PLKeyConverter* plconv = nullptr;
 
 	DynamicJsonDocument docResponse(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
-	// Keep this here for now in case we need to accept Bluetooth Auth2 secret in the future.
+	// Prepare a key for base64 decoding
 	const auto readEncoded = [&](const char* key) -> bool
 	{
 		if (doc.containsKey(key))
@@ -1087,45 +1097,142 @@ std::string setPS4Options()
 		}
 	};
 
-	if (readEncoded("ds4Key")) {
-		if (Base64::Decode(encoded, decoded) && decoded.length() == sizeof(ps4Options.ds4Key.bytes)) {
-			auto ds4Key = new LoadedDS4Key();
-			auto nonce = new NonceBuffer;
-			auto response = new ResponseBuffer;
-			memset(nonce, 0, sizeof(NonceBuffer));
+	if (doc.containsKey("importType")) {
+		readDoc(importType, doc, "importType");
+	}
 
-			// Maybe we should patch base64 to for example use vector so we don't need this
-			// reinterpret_cast here.
-			// uint8_t[] is unarguably the right answer here. It's bytes. NanoPB uses it. It's from base64.
-			auto result = ds4Key->load(reinterpret_cast<uint8_t *>(decoded.data()), false) &&
-				ds4Key->sign(nonce, *response);
-			if (!result) {
-				auto step = ds4Key->getStepName();
-				mbedtls_strerror(ds4Key->error.mbedTlsError, errorBuf, sizeof(errorBuf));
+	switch (importType) {
+		case PS4_KEY_IMPORT_DS4KEY: {
+			if (readEncoded("ds4Key")) {
+				if (Base64::Decode(encoded, decoded) && decoded.length() == sizeof(ps4Options.ds4Key.bytes)) {
+					// TODO: Maybe we should patch base64 to for example use vector<uint8_t> so we don't need this
+					// reinterpret_cast here.
+					// uint8_t[] is unarguably the right answer here. It's bytes. NanoPB uses it. It's from
+					// base64.
+					ds4KeyPtr = reinterpret_cast<const uint8_t *>(decoded.data());
+					break;
+				}
+			}
+			writeDoc(docResponse, "success", false);
+			writeDoc(docResponse, "step", "DS4 key early verification");
+			writeDoc(docResponse, "error", "Malformed DS4 key field.");
+			break;
+		} // case PS4_KEY_IMPORT_DS4KEY
+		case PS4_KEY_IMPORT_PASSINGLINK: {
+			plconv = new PLKeyConverter();
+			int mbedTlsError = 0;
+			bool validField = false;
+
+			// Read private key
+			validField = readEncoded("privateKey");
+			if (validField) {
+				// Quick PEM detection. Further checks will be performed by the converter.
+				if (encoded.rfind("-----BEGIN ", 0) == 0) {
+					mbedTlsError = plconv->parsePrivateKey(
+						reinterpret_cast<const uint8_t *>(encoded.c_str()),
+						encoded.length() + 1
+					);
+				} else {
+					validField = Base64::Decode(encoded, decoded);
+					if (validField) {
+						mbedTlsError = plconv->parsePrivateKey(
+							reinterpret_cast<const uint8_t *>(decoded.data()),
+							decoded.size()
+						);
+					}
+				}
+			}
+			if (!validField) {
 				writeDoc(docResponse, "success", false);
-				writeDoc(docResponse, "step", step);
-				writeDoc(docResponse, "error", errorBuf);
-			} else {
-				memcpy(ps4Options.ds4Key.bytes, decoded.data(), decoded.length());
-				ps4Options.ds4Key.size = decoded.length();
-				writeDoc(docResponse, "success", true);
-				writeDoc(docResponse, "step", nullptr);
-				writeDoc(docResponse, "error", nullptr);
-				needSave = true;
+				writeDoc(docResponse, "step", "private key parsing");
+				writeDoc(docResponse, "error", "Malformed private key field.");
+				break;
+			}
+			if (mbedTlsError < 0) {
+				mbedtls_strerror(mbedTlsError, mbedTlsErrorBuf, sizeof(mbedTlsErrorBuf));
+				writeDoc(docResponse, "success", false);
+				writeDoc(docResponse, "step", "private key parsing");
+				writeDoc(docResponse, "error", mbedTlsErrorBuf);
+				break;
 			}
 
-			delete ds4Key;
-			delete nonce;
-			delete response;
+			// Read serial number
+			if (doc.containsKey("serialNumber")) {
+				const char *serial = nullptr;
+				readDoc(serial, doc, "serialNumber");
+				mbedTlsError = plconv->parseHexSerial(serial, strlen(serial));
+			} else {
+				writeDoc(docResponse, "success", false);
+				writeDoc(docResponse, "step", "serial number parsing");
+				writeDoc(docResponse, "error", "Malformed serial number field.");
+				break;
+			}
+			if (mbedTlsError < 0) {
+				mbedtls_strerror(mbedTlsError, mbedTlsErrorBuf, sizeof(mbedTlsErrorBuf));
+				writeDoc(docResponse, "success", false);
+				writeDoc(docResponse, "step", "serial number parsing");
+				writeDoc(docResponse, "error", mbedTlsErrorBuf);
+				break;
+			}
+
+			// Read signature
+			validField = readEncoded("signature") &&
+				Base64::Decode(encoded, decoded) &&
+				plconv->setIdentitySig(
+					reinterpret_cast<const uint8_t *>(decoded.data()),
+					decoded.length()
+				);
+			if (!validField) {
+				writeDoc(docResponse, "success", false);
+				writeDoc(docResponse, "step", "signature parsing");
+				writeDoc(docResponse, "error", "Malformed signature field.");
+				break;
+			}
+
+			ds4KeyPtr = plconv->getKeyView();
+			break;
+		} // case PS4_KEY_IMPORT_PASSINGLINK
+		default: {
+			writeDoc(docResponse, "success", false);
+			writeDoc(docResponse, "step", "request processing");
+			writeDoc(docResponse, "error", "Invalid import type.");
 		}
-	} else {
-		writeDoc(docResponse, "success", false);
-		writeDoc(docResponse, "step", "early verification");
-		writeDoc(docResponse, "error", "Invalid size for DS4 key.");
+	}
+
+	// Validate the DS4Key if needed
+	if (ds4KeyPtr != nullptr) {
+		auto ds4Key = new LoadedDS4Key();
+		auto nonce = new NonceBuffer;
+		auto response = new ResponseBuffer;
+		memset(nonce, 0, sizeof(NonceBuffer));
+
+		auto result = ds4Key->load(ds4KeyPtr, false) && ds4Key->sign(nonce, *response);
+		if (!result) {
+			auto step = ds4Key->getStepName();
+			mbedtls_strerror(ds4Key->error.mbedTlsError, mbedTlsErrorBuf, sizeof(mbedTlsErrorBuf));
+			writeDoc(docResponse, "success", false);
+			writeDoc(docResponse, "step", step);
+			writeDoc(docResponse, "error", mbedTlsErrorBuf);
+		} else {
+			memcpy(ps4Options.ds4Key.bytes, ds4KeyPtr, sizeof(ps4Options.ds4Key.bytes));
+			ps4Options.ds4Key.size = sizeof(ps4Options.ds4Key.bytes);
+			writeDoc(docResponse, "success", true);
+			writeDoc(docResponse, "step", nullptr);
+			writeDoc(docResponse, "error", nullptr);
+			needSave = true;
+		}
+
+		delete ds4Key;
+		delete nonce;
+		delete response;
 	}
 
 	if (needSave) {
 		Storage::getInstance().save();
+	}
+
+	if (plconv != nullptr) {
+		delete plconv;
 	}
 
 	return serialize_json(docResponse);
