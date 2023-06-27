@@ -199,7 +199,6 @@
 
 // Board LED Add-on Setting
 // BOARD_LED_OFF  - Turns the on-board LED off
-// 
 // MODE_INDICATOR - On-board LED blinks on various frequencies depending
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
