@@ -19,6 +19,7 @@ export default {
 		"invalid": "invalid",
 		"used": "used",
 		"validation-error": "Validation errors, see above",
+		"missing-required-files": "One or more required files are missing."
 	},
 	'switch-enabled': 'Enabled',
 	'lock-oled-screen': 'Lock OLED Screen',

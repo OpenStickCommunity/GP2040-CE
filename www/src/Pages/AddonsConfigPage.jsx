@@ -97,50 +97,6 @@ const REVERSE_ACTION = [
 	{ label: 'Neutral', value: 2 },
 ];
 
-const verifyAndSavePS4 = async () => {
-	document.getElementById("ps4alert").textContent = (
-		'Validating and installing the keys... This should not take more than a few seconds.'
-	);
-
-	let PS4Key = document.getElementById("ps4key-input");
-
-	const loadKey = () => {
-		return new Promise((resolve, reject) => {
-			const keyReader = new FileReader();
-			keyReader.onloadend = (e) => {
-				if (!isNil(keyReader.error)) {
-					reject(keyReader.error);
-				} else {
-					resolve(keyReader.result);
-				}
-			};
-			keyReader.readAsBinaryString(PS4Key.files[0]);
-		});
-	};
-
-	const keyString = await loadKey();
-	const toUpload = {
-		ds4Key: btoa(keyString),
-	};
-
-	const result = await WebApi.setPS4Options(toUpload);
-
-	// TODO how should we localize these?
-	// mbedTLS errors can be kept as English since there's no other language available.
-	if (result.success === 1) {
-		document.getElementById("ps4alert").textContent = (
-			'Verified and enabled PS4 Mode! Reboot to take effect'
-		);
-		document.getElementById("save").click();
-	} else if (result.success === 0) {
-		document.getElementById("ps4alert").textContent =
-		  `Error occurred during ${result.step}: ${result.error}. ` +
-			'Please double check the key and try again.';
-	} else {
-		document.getElementById("ps4alert").textContent = 'Unknown error occurred.';
-	}
-};
-
 const SOCD_MODES = [
 	{ label: 'Up Priority', value: 0 },
 	{ label: 'Neutral', value: 1 },
@@ -148,6 +104,11 @@ const SOCD_MODES = [
 	{ label: 'First Win', value: 3 },
 	{ label: 'SOCD Cleaning Off', value: 4 },
 ];
+
+const PS4_IMPORT_TYPE = [
+	{ label: 'PassingLink-style (3 files)', value: 0 },
+	{ label: 'DS4Key (jedi cert) (1 file)', value: 1 },
+]
 
 const schema = yup.object().shape({
 	I2CAnalog1219InputEnabled:   yup.number().label('I2C Analog1219 Input Enabled'),
@@ -566,6 +527,7 @@ export default function AddonsConfigPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 	const [storedData, setStoredData] = useState({});
 	const [validated, setValidated] = useState(false);
+	const [ps4ImportMode, setPS4ImportMode] = useState(0);
 
 	const { t } = useTranslation();
 
@@ -627,6 +589,76 @@ export default function AddonsConfigPage() {
 
 	const handleCheckbox = async (name, values) => {
 		values[name] = values[name] === 1 ? 0 : 1;
+	};
+
+	const handleFormSelect = async(name, newval, values) => {
+		values[name] = newval;
+	}
+
+	const verifyAndSavePS4 = async () => {
+		const PS4Alert = document.getElementById("ps4alert");
+		PS4Alert.textContent = t('AddonsConfig:ps4-mode-import-state-busy-text');
+
+		const PS4Key = document.getElementById("ps4key-input");
+		const PS4Serial = document.getElementById("ps4serial-input");
+		const PS4Signature = document.getElementById("ps4signature-input");
+		const PS4KeyBlock = document.getElementById("ps4keyblock-input");
+
+		const loadFile = (file) => {
+			return new Promise((resolve, reject) => {
+				const keyReader = new FileReader();
+				keyReader.onloadend = (e) => {
+					if (!isNil(keyReader.error)) {
+						reject(keyReader.error);
+					} else {
+						resolve(keyReader.result);
+					}
+				};
+				keyReader.readAsBinaryString(file);
+			});
+		};
+
+		const toUpload = {
+			importType: ps4ImportMode,
+		};
+
+		if (ps4ImportMode == 0) {
+			if (PS4Key.files.length < 1 || PS4Serial.files.length < 1 || PS4Signature.files.length < 1) {
+				PS4Alert.textContent = t('Common:errors.missing-required-files');
+				return;
+			}
+			const [keyString, serialString, sigString] = await Promise.all([
+				loadFile(PS4Key.files[0]),
+				loadFile(PS4Serial.files[0]),
+				loadFile(PS4Signature.files[0]),
+			]);
+			toUpload.privateKey = keyString.startsWith('-----BEGIN ') ? keyString : btoa(keyString);
+			toUpload.serialNumber = serialString.trimEnd();
+			toUpload.signature = btoa(sigString);
+		} else if (ps4ImportMode == 1) {
+			if (PS4KeyBlock.files.length < 1) {
+				PS4Alert.textContent = t('Common:errors.missing-required-files');
+				return;
+			}
+			const keyString = await loadFile(PS4KeyBlock.files[0]);
+			toUpload.ds4Key = btoa(keyString);
+		}
+
+		const result = await WebApi.setPS4Options(toUpload);
+
+		// TODO how should we localize these?
+		// mbedTLS errors can be kept as English since there's no other language available.
+		if (result.success === 1) {
+			PS4Alert.textContent = t('AddonsConfig:ps4-mode-import-state-ok-text');
+			document.getElementById("save").click();
+		} else if (result.success === 0) {
+			PS4Alert.textContent =
+				`${t('AddonsConfig:ps4-mode-import-state-err-pre-step-text')}${result.step}` +
+				`${t('AddonsConfig:ps4-mode-import-state-err-btwn-step-error-text')}${result.error}` +
+				`${t('AddonsConfig:ps4-mode-import-state-err-post-error-text')}`;
+		} else {
+			PS4Alert.textContent = t('ps4-mode-import-state-unk-err-text');
+		}
 	};
 
 	return (
@@ -1643,9 +1675,40 @@ export default function AddonsConfigPage() {
 								</Trans>
 							</Row>
 							<Row className="mb-3">
+								<div className="col-sm mb-3">
+									<FormSelect
+										label={t('AddonsConfig:ps4-mode-import-mode-label')}
+										name="ps4ImportMode"
+										className="form-select-sm"
+										groupClassName="col-sm-3 mb-3"
+										value={ps4ImportMode}
+										onChange={(e) => {
+											setPS4ImportMode(e.target.value);
+											handleChange(e);
+										}}
+									>
+										{PS4_IMPORT_TYPE.map((o, i) => <option key={`ps4ImportMode-option-${i}`} value={o.value}>{o.label}</option>)}
+									</FormSelect>
+								</div>
+							</Row>
+							<Row className="mb-3" hidden={ps4ImportMode != 0}>
 								<div className="col-sm-3 mb-3">
 									{t('AddonsConfig:ps4-mode-private-key-label')}:
 									<input type="file" id="ps4key-input" accept="*/*" />
+								</div>
+								<div className="col-sm-3 mb-3">
+									{t('AddonsConfig:ps4-mode-serial-number-label')}:
+									<input type="file" id="ps4serial-input" accept="*/*" />
+								</div>
+								<div className="col-sm-3 mb-3">
+									{t('AddonsConfig:ps4-mode-signature-label')}:
+									<input type="file" id="ps4signature-input" accept="*/*" />
+								</div>
+							</Row>
+							<Row className="mb-3" hidden={ps4ImportMode != 1}>
+								<div className="col-sm-3 mb-3">
+									{t('AddonsConfig:ps4-mode-ds4-key-label')}:
+									<input type="file" id="ps4keyblock-input" accept="*/*" />
 								</div>
 							</Row>
 							<Row className="mb-3">
