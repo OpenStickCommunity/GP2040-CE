@@ -32,11 +32,8 @@ async function resetSettings() {
 }
 
 async function getDisplayOptions() {
-	// setLoading(true);
-
 	try {
 		const response = await axios.get(`${baseUrl}/api/getDisplayOptions`)
-		// setLoading(false);
 
 		if (response.data.i2cAddress) {
 			response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
@@ -46,7 +43,6 @@ async function getDisplayOptions() {
 
 		return response.data;
 	} catch (error) {
-		// setLoading(false);
 		console.error(error);
 	}
 }
@@ -79,15 +75,11 @@ async function setDisplayOptions(options, isPreview) {
 		});
 }
 
-async function getSplashImage(setLoading) {
-	// setLoading(true);
-
+async function getSplashImage() {
 	try {
 		const response = await axios.get(`${baseUrl}/api/getSplashImage`)
-		// setLoading(false);
 		return response.data;
 	} catch (error) {
-		// setLoading(false);
 		console.error(error);
 	}
 }
