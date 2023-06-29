@@ -503,7 +503,7 @@ std::string setSplashImage()
 std::string setGamepadOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
-	
+
 	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 	readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
 	readDoc(gamepadOptions.inputMode, doc, "inputMode");
@@ -842,7 +842,7 @@ std::string getPinMappings()
 std::string setKeyMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
-	
+
 	KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
 
 	readDoc(keyboardMapping.keyDpadUp, doc, "Up");
@@ -972,8 +972,8 @@ std::string setAddonOptions()
 
 	ReverseOptions& reverseOptions = Storage::getInstance().getAddonOptions().reverseOptions;
 	docToValue(reverseOptions.enabled, doc, "ReverseInputEnabled");
-	docToPin(reverseOptions.buttonPin, doc, "reversePin");	
-	docToPin(reverseOptions.ledPin, doc, "reversePinLED");	
+	docToPin(reverseOptions.buttonPin, doc, "reversePin");
+	docToPin(reverseOptions.ledPin, doc, "reversePinLED");
 	docToValue(reverseOptions.actionUp, doc, "reverseActionUp");
 	docToValue(reverseOptions.actionDown, doc, "reverseActionDown");
 	docToValue(reverseOptions.actionLeft, doc, "reverseActionLeft");
@@ -1091,12 +1091,6 @@ std::string setPS4Options()
 			ps4Options.rsaE.size = decoded.length();
 		}
 	}
-	if ( readEncoded("D") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaD.bytes)) ) {
-			memcpy(ps4Options.rsaD.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaD.size = decoded.length();
-		}
-	}
 	if ( readEncoded("P") ) {
 		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaP.bytes)) ) {
 			memcpy(ps4Options.rsaP.bytes, decoded.data(), decoded.length());
@@ -1107,30 +1101,6 @@ std::string setPS4Options()
 		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQ.bytes)) ) {
 			memcpy(ps4Options.rsaQ.bytes, decoded.data(), decoded.length());
 			ps4Options.rsaQ.size = decoded.length();
-		}
-	}
-	if ( readEncoded("DP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDP.bytes)) ) {
-			memcpy(ps4Options.rsaDP.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaDP.size = decoded.length();
-		}
-	}
-	if ( readEncoded("DQ") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaDQ.bytes)) ) {
-			memcpy(ps4Options.rsaDQ.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaDQ.size = decoded.length();
-		}
-	}
-	if ( readEncoded("QP") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaQP.bytes)) ) {
-			memcpy(ps4Options.rsaQP.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaQP.size = decoded.length();
-		}
-	}
-	if ( readEncoded("RN") ) {
-		if ( Base64::Decode(encoded, decoded) && (decoded.length() == sizeof(ps4Options.rsaRN.bytes)) ) {
-			memcpy(ps4Options.rsaRN.bytes, decoded.data(), decoded.length());
-			ps4Options.rsaRN.size = decoded.length();
 		}
 	}
 	// Serial & Signature
@@ -1146,6 +1116,13 @@ std::string setPS4Options()
 			ps4Options.signature.size = decoded.length();
 		}
 	}
+
+	// Zap deprecated fields
+	if (ps4Options.rsaD.size != 0) ps4Options.rsaD.size = 0;
+	if (ps4Options.rsaDP.size != 0) ps4Options.rsaDP.size = 0;
+	if (ps4Options.rsaDQ.size != 0) ps4Options.rsaDQ.size = 0;
+	if (ps4Options.rsaQP.size != 0) ps4Options.rsaQP.size = 0;
+	if (ps4Options.rsaRN.size != 0) ps4Options.rsaRN.size = 0;
 
 	Storage::getInstance().save();
 
