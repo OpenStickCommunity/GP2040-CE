@@ -44,7 +44,6 @@ void AnalogInput::process()
     float adc_2_y = ANALOG_CENTER;
     float deadzone = analogOptions.analog_deadzone / 200.0f;
 
-    // Analog ADC 1
     if ( isValidPin(analogOptions.analogAdc1PinX) ) {
         adc_select_input(analogOptions.analogAdc1PinX-26); // ANALOG-X
         adc_1_x = ((float)adc_read())/ADC_MAX;

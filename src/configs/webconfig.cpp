@@ -1168,7 +1168,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "analogAdc1Mode", analogOptions.analogAdc1Mode);
 	writeDoc(doc, "analogAdc2PinX", cleanPin(analogOptions.analogAdc2PinX));
 	writeDoc(doc, "analogAdc2PinY", cleanPin(analogOptions.analogAdc2PinY));
-	writeDoc(doc, "analogAdc2Mode", analogOptions.analogAdc1Mode);
+	writeDoc(doc, "analogAdc2Mode", analogOptions.analogAdc2Mode);
 	writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
 	writeDoc(doc, "analog_deadzone", analogOptions.analog_deadzone);
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
