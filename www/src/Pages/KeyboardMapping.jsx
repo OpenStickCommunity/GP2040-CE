@@ -14,12 +14,13 @@ export default function KeyboardMappingPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
 	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
+	const { setLoading } = useContext(AppContext);
 
 	const { t } = useTranslation('');
 
 	useEffect(() => {
 		async function fetchData() {
-			setKeyMappings(await WebApi.getKeyMappings());
+			setKeyMappings(await WebApi.getKeyMappings(setLoading));
 		}
 
 		fetchData();

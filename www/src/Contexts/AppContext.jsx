@@ -124,7 +124,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 	const [usedPins, setUsedPins] = useState([]);
 
 	const updateUsedPins = async () => {
-		const data = await WebApi.getUsedPins();
+		const data = await WebApi.getUsedPins(setLoading);
 		setUsedPins(data.usedPins);
 		console.log('usedPins updated:', data.usedPins);
 		return data;
@@ -158,6 +158,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 		_setSavedLanguage(savedLanguage);
 	};
 
+	const [loading, setLoading] = useState(false);
+
 	return (
 		<AppContext.Provider
 			{...props}
@@ -181,6 +183,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 				setSavedColorScheme,
 				savedLanguage,
 				setSavedLanguage,
+				loading,
+				setLoading
 			}}
 		>
 			{children}

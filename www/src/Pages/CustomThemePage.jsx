@@ -115,6 +115,7 @@ const CustomThemePage = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [presetColors, setPresetColors] = useState([...ledColors, ...customColors(savedColors)]);
 	const { buttonLabelType } = buttonLabels;
+	const { setLoading } = useContext(AppContext);
 
 	const { t } = useTranslation('');
 
@@ -238,7 +239,7 @@ const CustomThemePage = () => {
 
 	useEffect(() => {
 		async function fetchData() {
-			const data = await WebApi.getCustomTheme();
+			const data = await WebApi.getCustomTheme(setLoading);
 
 			setHasCustomTheme(data.hasCustomTheme);
 			if (!data.customTheme['ALL'])
