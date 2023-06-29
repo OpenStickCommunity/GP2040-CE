@@ -133,8 +133,13 @@
 // The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
 // To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
 
-#define ANALOG_ADC_VRX -1
-#define ANALOG_ADC_VRY -1
+#define ANALOG_ADC_1_VRX -1
+#define ANALOG_ADC_1_VRY -1
+#define ANALOG_ADC_1_MODE DPAD_MODE_LEFT_ANALOG
+
+#define ANALOG_ADC_2_VRX -1
+#define ANALOG_ADC_2_VRY -1
+#define ANALOG_ADC_2_MODE DPAD_MODE_RIGHT_ANALOG
 
 
 // This is the I2C Display section (commonly known as the OLED display section).

@@ -33,6 +33,11 @@ const DUAL_STICK_MODES = [
 	{ label: 'Right Analog', value: 2 },
 ];
 
+const ANALOG_STICK_MODES = [
+	{ label: 'Left Analog', value: 1 },
+	{ label: 'Right Analog', value: 2 },
+];
+
 const DUAL_COMBINE_MODES = [
     { label: 'Mixed', value: 0 },
 	{ label: 'Gamepad', value: 1},
@@ -269,8 +274,12 @@ const schema = yup.object().shape({
 	i2cAnalog1219Address:        yup.number().label('I2C Analog1219 Address').validateNumberWhenValue('I2CAnalog1219InputEnabled'),
 
 	AnalogInputEnabled:          yup.number().required().label('Analog Input Enabled'),
-	analogAdcPinX:               yup.number().label('Analog Stick Pin X').validatePinWhenValue('AnalogInputEnabled'),
- 	analogAdcPinY:               yup.number().label('Analog Stick Pin Y').validatePinWhenValue('AnalogInputEnabled'),
+	analogAdc1PinX:              yup.number().label('Analog Stick 1 Pin X').validatePinWhenValue('AnalogInputEnabled'),
+ 	analogAdc1PinY:              yup.number().label('Analog Stick 1 Pin Y').validatePinWhenValue('AnalogInputEnabled'),
+	analogAdc1Mode:              yup.number().label('Analog Stick 1 Mode').validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES), 
+	analogAdc2PinX:              yup.number().label('Analog Stick 2 Pin X').validatePinWhenValue('AnalogInputEnabled'),
+ 	analogAdc2PinY:              yup.number().label('Analog Stick 2 Pin Y').validatePinWhenValue('AnalogInputEnabled'),
+	analogAdc2Mode:              yup.number().label('Analog Stick 2 Mode').validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES), 
 	forced_circularity:          yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone:             yup.number().label('Deadzone Size (%)').validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 
@@ -400,8 +409,12 @@ const defaultValues = {
 	tiltRightAnalogDownPin: -1,
 	tiltRightAnalogLeftPin: -1,
 	tiltRightAnalogRightPin: -1,
-	analogAdcPinX : -1,
- 	analogAdcPinY : -1,
+	analogAdc1PinX : -1,
+ 	analogAdc1PinY : -1,
+	analogAdc1Mode: 1,
+	analogAdc2PinX : -1,
+ 	analogAdc2PinY : -1,
+	analogAdc2Mode: 2,
 	forced_circularity : 0,
 	analog_deadzone: 5,
 	bootselButtonMap: 0,
@@ -548,10 +561,18 @@ const sanitizeData = (values) => {
 		values.tiltRightAnalogRightPin = parseInt(values.tiltRightAnalogRightPin);
 	if (!!values.tiltSOCDMode)
 		values.tiltSOCDMode = parseInt(values.tiltSOCDMode);
-	if (!!values.analogAdcPinX)
-		values.analogAdcPinX = parseInt(values.analogAdcPinX);
-	if (!!values.analogAdcPinY)
-		values.analogAdcPinY = parseInt(values.analogAdcPinY);
+	if (!!values.analogAdc1PinX)
+		values.analogAdc1PinX = parseInt(values.analogAdc1PinX);
+	if (!!values.analogAdc1PinY)
+		values.analogAdc1PinY = parseInt(values.analogAdc1PinY);
+	if (!!values.analogAdc1Mode)
+		values.analogAdc1Mode = parseInt(values.analogAdc1Mode);
+	if (!!values.analogAdc2PinX)
+		values.analogAdc2PinX = parseInt(values.analogAdc2PinX);
+	if (!!values.analogAdc2PinY)
+		values.analogAdc2PinY = parseInt(values.analogAdc2PinY);
+	if (!!values.analogAdc2Mode)
+		values.analogAdc2Mode = parseInt(values.analogAdc2Mode);
 	if (!!values.bootselButtonMap)
 		values.bootselButtonMap = parseInt(values.bootselButtonMap);
 	if (!!values.focusModeButtonLockMask)
@@ -814,29 +835,102 @@ export default function AddonsConfigPage() {
 							<p>{t('AddonsConfig:analog-available-pins-text', {pins: ANALOG_PINS.filter(p => p !== -1).join(", ")})}</p>
 							<Row className="mb-3">
 								<FormSelect
-									label={t('AddonsConfig:analog-adc-pin-x-label')}
-									name="analogAdcPinX"
+									label={t('AddonsConfig:analog-adc-1-pin-x-label')}
+									name="analogAdc1PinX"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.analogAdcPinX}
-									error={errors.analogAdcPinX}
-									isInvalid={errors.analogAdcPinX}
+									value={values.analogAdc1PinX}
+									error={errors.analogAdc1PinX}
+									isInvalid={errors.analogAdc1PinX}
 									onChange={handleChange}
 								>
 									{ANALOG_PIN_OPTIONS}
 								</FormSelect>
 								<FormSelect
-									label={t('AddonsConfig:analog-adc-pin-y-label')}
-									name="analogAdcPinY"
+									label={t('AddonsConfig:analog-adc-1-pin-y-label')}
+									name="analogAdc1PinY"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.analogAdcPinY}
-									error={errors.analogAdcPinY}
-									isInvalid={errors.analogAdcPinY}
+									value={values.analogAdc1PinY}
+									error={errors.analogAdc1PinY}
+									isInvalid={errors.analogAdc1PinY}
 									onChange={handleChange}
 								>
 									{ANALOG_PIN_OPTIONS}
 								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-1-mode-label')}
+									name="analogAdc1Mode"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc1Mode}
+									error={errors.analogAdc1Mode}
+									isInvalid={errors.analogAdc1Mode}
+									onChange={handleChange}
+								>
+									{ANALOG_STICK_MODES.map((o, i) => <option key={`button-analogAdc1Mode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+							</Row>
+							<Row className="mb-3">
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-2-pin-x-label')}
+									name="analogAdc2PinX"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc2PinX}
+									error={errors.analogAdc2PinX}
+									isInvalid={errors.analogAdc2PinX}
+									onChange={handleChange}
+								>
+									{ANALOG_PIN_OPTIONS}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-2-pin-y-label')}
+									name="analogAdc2PinY"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc2PinY}
+									error={errors.analogAdc2PinY}
+									isInvalid={errors.analogAdc2PinY}
+									onChange={handleChange}
+								>
+									{ANALOG_PIN_OPTIONS}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-2-mode-label')}
+									name="analogAdc2Mode"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc2Mode}
+									error={errors.analogAdc2Mode}
+									isInvalid={errors.analogAdc2Mode}
+									onChange={handleChange}
+								>
+									{ANALOG_STICK_MODES.map((o, i) => <option key={`button-analogAdc2Mode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+							</Row>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:analog-deadzone-size')}
+									name="analog_deadzone"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analog_deadzone}
+									error={errors.analog_deadzone}
+									isInvalid={errors.analog_deadzone}
+									onChange={handleChange}
+									min={0}
+									max={100}
+								/>
+								<FormCheck
+									label={t('AddonsConfig:analog-force-circularity')}
+									type="switch"
+									id="Forced_circularity"
+									className="col-sm-3 ms-2"
+									isInvalid={false}
+									checked={Boolean(values.forced_circularity)}
+									onChange={(e) => {handleCheckbox("forced_circularity", values); handleChange(e);}}
+								/>
 							</Row>
 						</div>
 						<FormCheck
