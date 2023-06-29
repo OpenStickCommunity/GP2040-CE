@@ -42,11 +42,10 @@ void PS4ModeAddon::setup() {
 
 	mbedtls_rsa_init(&rsa_context, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
 
-	do {
-		if (mbedtls_rsa_import(&rsa_context, &N, &P, &Q, nullptr, &E) < 0) break;
-		if (mbedtls_rsa_complete(&rsa_context) < 0) break;
+	if (mbedtls_rsa_import(&rsa_context, &N, &P, &Q, nullptr, &E) == 0 &&
+			mbedtls_rsa_complete(&rsa_context) == 0) {
 		ready = true;
-	} while (false);
+	}
 
 	DELETE_CONFIG_MPI(N)
 	DELETE_CONFIG_MPI(E)
