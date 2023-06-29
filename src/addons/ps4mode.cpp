@@ -33,24 +33,25 @@ bool PS4ModeAddon::available() {
 
 void PS4ModeAddon::setup() {
 	const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
+	ready = false;
 
-		ready = false;
+	NEW_CONFIG_MPI(N, options.rsaN.bytes, options.rsaN.size)
+	NEW_CONFIG_MPI(E, options.rsaE.bytes, options.rsaE.size)
+	NEW_CONFIG_MPI(P, options.rsaP.bytes, options.rsaP.size)
+	NEW_CONFIG_MPI(Q, options.rsaQ.bytes, options.rsaQ.size)
 
-		NEW_CONFIG_MPI(N, options.rsaN.bytes, options.rsaN.size)
-		NEW_CONFIG_MPI(E, options.rsaE.bytes, options.rsaE.size)
-		NEW_CONFIG_MPI(P, options.rsaP.bytes, options.rsaP.size)
-		NEW_CONFIG_MPI(Q, options.rsaQ.bytes, options.rsaQ.size)
+	mbedtls_rsa_init(&rsa_context, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
 
-		mbedtls_rsa_init(&rsa_context, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
-		mbedtls_rsa_import(&rsa_context, &N, &P, &Q, nullptr, &E);
-		mbedtls_rsa_complete(&rsa_context);
-
-		DELETE_CONFIG_MPI(N)
-		DELETE_CONFIG_MPI(E)
-		DELETE_CONFIG_MPI(P)
-		DELETE_CONFIG_MPI(Q)
-
+	do {
+		if (mbedtls_rsa_import(&rsa_context, &N, &P, &Q, nullptr, &E) < 0) break;
+		if (mbedtls_rsa_complete(&rsa_context) < 0) break;
 		ready = true;
+	} while (false);
+
+	DELETE_CONFIG_MPI(N)
+	DELETE_CONFIG_MPI(E)
+	DELETE_CONFIG_MPI(P)
+	DELETE_CONFIG_MPI(Q)
 }
 
 void PS4ModeAddon::process() {
