@@ -6,7 +6,7 @@
 #include "GamepadEnums.h"
 
 #ifndef TILT_ENABLED
-#define TILT_ENABLED 1
+#define TILT_ENABLED 0
 #endif
 
 #ifndef PIN_TILT_1
