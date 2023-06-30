@@ -84,10 +84,11 @@ const schema = yup.object().shape({
 
 const FormContext = ({ setButtonLabels }) => {
 	const { values, setValues } = useFormikContext();
+	const { setLoading } = useContext(AppContext);
 
 	useEffect(() => {
 		async function fetchData() {
-			const options = await WebApi.getGamepadOptions()
+			const options = await WebApi.getGamepadOptions(setLoading)
 			setValues(options);
 			setButtonLabels({ swapTpShareLabels: (options.switchTpShareForDs4 === 1) && (options.inputMode === 4) });
 		}

@@ -459,10 +459,11 @@ const defaultValues = {
 
 const FormContext = ({setStoredData}) => {
 	const { values, setValues } = useFormikContext();
+	const { setLoading } = useContext(AppContext);
 
 	useEffect(() => {
 		async function fetchData() {
-			const data = await WebApi.getAddonsOptions();
+			const data = await WebApi.getAddonsOptions(setLoading);
 
 			setValues(data);
 			setStoredData(JSON.parse(JSON.stringify(data))); // Do a deep copy to keep the original

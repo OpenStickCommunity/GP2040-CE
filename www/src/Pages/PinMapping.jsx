@@ -25,6 +25,7 @@ export default function PinMappingPage() {
 	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
 	const [selectedBoard] = useState(import.meta.env.VITE_GP2040_BOARD);
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+	const { setLoading } = useContext(AppContext);
 
 	const { t } = useTranslation('');
 
@@ -32,8 +33,8 @@ export default function PinMappingPage() {
 
 	useEffect(() => {
 		async function fetchData() {
-			setButtonMappings(await WebApi.getPinMappings());
-			const options = await WebApi.getGamepadOptions();
+			setButtonMappings(await WebApi.getPinMappings(setLoading));
+			const options = await WebApi.getGamepadOptions(setLoading);
 			setButtonLabels({ swapTpShareLabels: options.switchTpShareForDs4 && (options.inputMode === 4) });
 		}
 
