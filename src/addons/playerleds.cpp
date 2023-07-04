@@ -78,11 +78,11 @@ PLEDAnimationState getXInputAnimationPWM(uint8_t *data)
 }
 
 bool PlayerLEDAddon::available() {
-	return Storage::getInstance().getLEDOptions().pledType != PLED_TYPE_NONE;
+	return Storage::getInstance().getLedOptions().pledType != PLED_TYPE_NONE;
 }
 
 void PlayerLEDAddon::setup() {
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 	switch (ledOptions.pledType)
 	{
 		case PLED_TYPE_PWM:
@@ -100,7 +100,7 @@ void PlayerLEDAddon::setup() {
 void PlayerLEDAddon::process()
 {
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	LEDOptions ledOptions = Storage::getInstance().getLEDOptions();
+	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
 	// Player LEDs can be PWM or driven by NeoPixel
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();
@@ -108,7 +108,7 @@ void PlayerLEDAddon::process()
 		if (pwmLEDs != nullptr)
 			pwmLEDs->display();
 
-		switch (gamepad->options.inputMode)
+		switch (gamepad->getOptions().inputMode)
 		{
 			case INPUT_MODE_XINPUT:
 				animationState = getXInputAnimationPWM(featureData);
@@ -126,7 +126,9 @@ void PWMPlayerLEDs::setup()
 
 	std::vector<uint> sliceNums;
 
-	auto pledPins = Storage::getInstance().getPLEDPins();
+	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+	int32_t pledPins[] = { ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4 };
+
 	for (int i = 0; i < PLED_COUNT; i++)
 	{
 		if (pledPins[i] > -1)
@@ -145,7 +147,9 @@ void PWMPlayerLEDs::setup()
 
 void PWMPlayerLEDs::display()
 {
-	auto pledPins = Storage::getInstance().getPLEDPins();
+	LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+	int32_t pledPins[] = { ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4 };
+
 	for (int i = 0; i < PLED_COUNT; i++)
 		if (pledPins[i] > -1)
 			pwm_set_gpio_level(pledPins[i], ledLevels[i]);

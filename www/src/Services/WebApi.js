@@ -22,6 +22,7 @@ export const baseButtonMappings = {
 	R3:    { pin: -1, key: 0, error: null },
 	A1:    { pin: -1, key: 0, error: null },
 	A2:    { pin: -1, key: 0, error: null },
+	Fn:    { pin: -1, key: 0, error: null },
 };
 
 async function resetSettings() {
@@ -31,16 +32,19 @@ async function resetSettings() {
 }
 
 async function getDisplayOptions() {
-	return axios.get(`${baseUrl}/api/getDisplayOptions`)
-		.then((response) => {
-			if (response.data.i2cAddress)
-				response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
-			response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
-			response.data.displaySaverTimeout = response.data.displaySaverTimeout / 60000; // milliseconds to minutes
+	try {
+		const response = await axios.get(`${baseUrl}/api/getDisplayOptions`)
 
-			return response.data;
-		})
-		.catch(console.error);
+		if (response.data.i2cAddress) {
+			response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
+		}
+		response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
+		response.data.displaySaverTimeout = response.data.displaySaverTimeout / 60000; // milliseconds to minutes
+
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 async function setDisplayOptions(options, isPreview) {
@@ -72,10 +76,12 @@ async function setDisplayOptions(options, isPreview) {
 }
 
 async function getSplashImage() {
-	return axios.get(`${baseUrl}/api/getSplashImage`)
-		.then((response) => {
-			return response.data;
-		}).catch(console.error);
+	try {
+		const response = await axios.get(`${baseUrl}/api/getSplashImage`)
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 async function setSplashImage({splashImage}) {
@@ -86,10 +92,17 @@ async function setSplashImage({splashImage}) {
 	}).catch(console.error);
 }
 
-async function getGamepadOptions() {
-	return axios.get(`${baseUrl}/api/getGamepadOptions`)
-		.then((response) => response.data)
-		.catch(console.error);
+async function getGamepadOptions(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getGamepadOptions`)
+		setLoading(false);
+		return response.data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
 }
 
 async function setGamepadOptions(options) {
@@ -104,27 +117,31 @@ async function setGamepadOptions(options) {
 		});
 }
 
-async function getLedOptions() {
-	return axios.get(`${baseUrl}/api/getLedOptions`)
-		.then((response) => {
-			console.log(response.data);
+async function getLedOptions(setLoading) {
+	setLoading(true);
 
-			response.data.pledColor = rgbIntToHex(response.data.pledColor) || "#ffffff";
-			if (response.data.pledType === 1) {
-				response.data.pledIndex1 = response.data.pledPin1;
-				response.data.pledIndex2 = response.data.pledPin2;
-				response.data.pledIndex3 = response.data.pledPin3;
-				response.data.pledIndex4 = response.data.pledPin4;
-			}
+	try {
+		const response = await axios.get(`${baseUrl}/api/getLedOptions`)
+		setLoading(false);
 
-			return response.data;
-		})
-		.catch(console.error);
+		response.data.pledColor = rgbIntToHex(response.data.pledColor) || "#ffffff";
+		if (response.data.pledType === 1) {
+			response.data.pledIndex1 = response.data.pledPin1;
+			response.data.pledIndex2 = response.data.pledPin2;
+			response.data.pledIndex3 = response.data.pledPin3;
+			response.data.pledIndex4 = response.data.pledPin4;
+		}
+
+		return response.data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
 }
 
 async function setLedOptions(options) {
 	let data = sanitizeRequest(options);
-	
+
 
 	return axios.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
@@ -137,25 +154,31 @@ async function setLedOptions(options) {
 		});
 }
 
-async function getCustomTheme() {
-	return axios.get(`${baseUrl}/api/getCustomTheme`)
-		.then((response) => {
-			let data = { hasCustomTheme: response.data.enabled, customTheme: { } };
+async function getCustomTheme(setLoading) {
+	setLoading(true);
 
-			// Transform ARGB int value to hex for easy use on frontend
-			Object.keys(response.data)
-				.filter(p => p !== 'enabled')
-				.forEach((button) => {
-					data.customTheme[button] = {
-						normal: rgbIntToHex(response.data[button].u),
-						pressed: rgbIntToHex(response.data[button].d),
-					};
-				});
+	try {
+		const response = await axios.get(`${baseUrl}/api/getCustomTheme`)
+		setLoading(false);
 
-			console.log(data);
-			return data;
-		})
-		.catch(console.error);
+		let data = { hasCustomTheme: response.data.enabled, customTheme: {} };
+
+		// Transform ARGB int value to hex for easy use on frontend
+		Object.keys(response.data)
+			.filter(p => p !== 'enabled')
+			.forEach((button) => {
+				data.customTheme[button] = {
+					normal: rgbIntToHex(response.data[button].u),
+					pressed: rgbIntToHex(response.data[button].d),
+				};
+			});
+
+		console.log(data);
+		return data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
 }
 
 async function setCustomTheme(customThemeOptions) {
@@ -181,16 +204,20 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getPinMappings() {
-	return axios.get(`${baseUrl}/api/getPinMappings`)
-		.then((response) => {
-			let mappings = { ...baseButtonMappings };
-			for (let prop of Object.keys(response.data))
-				mappings[prop].pin = parseInt(response.data[prop]);
+async function getPinMappings(setLoading) {
+	setLoading(true);
 
-			return mappings;
-		})
-		.catch(console.error);
+	try {
+		const response = await axios.get(`${baseUrl}/api/getPinMappings`)
+		let mappings = { ...baseButtonMappings };
+		for (let prop of Object.keys(response.data))
+			mappings[prop].pin = parseInt(response.data[prop]);
+
+		return mappings;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
 }
 
 async function setPinMappings(mappings) {
@@ -208,16 +235,22 @@ async function setPinMappings(mappings) {
 		});
 }
 
-async function getKeyMappings() {
-	return axios.get(`${baseUrl}/api/getKeyMappings`)
-		.then((response) => {
-			let mappings = { ...baseButtonMappings };
-			for (let prop of Object.keys(response.data))
-				mappings[prop].key = parseInt(response.data[prop]);
+async function getKeyMappings(setLoading) {
+	setLoading(true);
 
-			return mappings;
-		})
-		.catch(console.error);
+	try {
+		const response = await axios.get(`${baseUrl}/api/getKeyMappings`)
+		setLoading(false);
+
+		let mappings = { ...baseButtonMappings };
+		for (let prop of Object.keys(response.data))
+			mappings[prop].key = parseInt(response.data[prop]);
+
+		return mappings;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
 }
 
 async function setKeyMappings(mappings) {
@@ -234,13 +267,33 @@ async function setKeyMappings(mappings) {
 			return false;
 		});
 }
-async function getAddonsOptions() {
-	return axios.get(`${baseUrl}/api/getAddonsOptions`)
-		.then((response) => response.data)
-		.catch(console.error);
+
+async function getAddonsOptions(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getAddonsOptions`)
+		const data = response.data;
+		setLoading(false);
+
+		let mappings = { ...baseButtonMappings };
+		for (let prop of Object.keys(data.keyboardHostMap))
+			mappings[prop].key = parseInt(data.keyboardHostMap[prop]);
+		data.keyboardHostMap = mappings;
+		return data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
 }
 
 async function setAddonsOptions(options) {
+	if (options.keyboardHostMap) {
+		let data = {};
+		Object.keys(options.keyboardHostMap).map((button, i) => data[button] = options.keyboardHostMap[button].key);
+		options.keyboardHostMap = data;
+	}
+
 	return axios.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
@@ -264,22 +317,44 @@ async function setPS4Options(options) {
 		});
 }
 
-async function getFirmwareVersion() {
-	return axios.get(`${baseUrl}/api/getFirmwareVersion`)
-		.then((response) => response.data)
-		.catch(console.error);
+async function getFirmwareVersion(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getFirmwareVersion`)
+		setLoading(false);
+		return response.data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
 }
 
-async function getMemoryReport() {
-	return axios.get(`${baseUrl}/api/getMemoryReport`)
-		.then((response) => response.data)
-		.catch(console.error);
+async function getMemoryReport(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getMemoryReport`)
+		setLoading(false);
+		return response.data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
 }
 
-async function getUsedPins() {
-	return axios.get(`${baseUrl}/api/getUsedPins`)
-	.then((response) => response.data)
-	.catch(console.error);
+
+async function getUsedPins(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getUsedPins`)
+		setLoading(false);
+		return response.data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
 }
 
 async function reboot(bootMode) {

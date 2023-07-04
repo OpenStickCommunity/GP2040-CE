@@ -3,6 +3,7 @@
 
 #include "gpaddon.h"
 #include "storagemanager.h"
+#include "enums.pb.h"
 
 #ifndef TURBO_ENABLED
 #define TURBO_ENABLED 0
@@ -26,13 +27,8 @@
 #define TURBO_SHMUP_MODE 0
 #endif
 
-enum ShmupMixMode {
-    TURBO_PRIORITY = 0,
-    CHARGE_PRIORITY
-};
-
 #ifndef SHMUP_MIX_MODE
-#define SHMUP_MIX_MODE TURBO_PRIORITY
+#define SHMUP_MIX_MODE SHMUP_MIX_MODE_TURBO_PRIORITY
 #endif
 
 #ifndef SHMUP_ALWAYS_ON1
@@ -98,7 +94,7 @@ public:
 	virtual void process();     // TURBO Setting of buttons (Enable/Disable)
     virtual std::string name() { return TurboName; }
 private:
-    void read(const AddonOptions&);                // Read TURBO Buttons and Dials
+    void read(const TurboOptions&);                // Read TURBO Buttons and Dials
     void debounce();            // TURBO Button Debouncer
     void updateTurboShotCount(uint8_t turboShotCount);
     bool bDebState;             // Debounce TURBO Button State

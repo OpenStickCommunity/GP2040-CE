@@ -11,6 +11,8 @@
 #include "class/hid/hid_device.h"
 #include "gamepad/GamepadDescriptors.h"
 
+#include "enums.pb.h"
+
 // Magic byte sequence to enable PS button on PS3
 static const uint8_t magic_init_bytes[8] = {0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00};
 
@@ -18,6 +20,19 @@ bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
 {
 	if (tud_hid_ready())
 		return tud_hid_report(report_id, report, report_size);
+
+	return false;
+}
+
+bool send_keyboard_report(void *report)
+{
+	if (tud_hid_ready()) {
+		KeyboardReport *keyboard_report = ((KeyboardReport *)report);
+		void *keyboard_report_payload = keyboard_report->reportId == KEYBOARD_KEY_REPORT_ID ? (void *)keyboard_report->keycode : (void *)&keyboard_report->multimedia;
+		uint16_t keyboard_report_size = keyboard_report->reportId == KEYBOARD_KEY_REPORT_ID ? sizeof(KeyboardReport::keycode) : sizeof(KeyboardReport::multimedia);
+
+		return tud_hid_report(keyboard_report->reportId, keyboard_report_payload, keyboard_report_size);
+	}
 
 	return false;
 }

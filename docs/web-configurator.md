@@ -28,6 +28,15 @@ The options in the main menu are:
 
 Here you can select the basic settings which are normally available via hotkeys.
 
+### Hotkeys
+
+An arbitrary number of buttons and directions, plus the optional Function (Fn) button, can be used to define
+desired hotkey actions. Select Fn if desired, plus one or more buttons/directions, and associate them with a
+hotkey action. The default hotkeys can be modified or removed, and new ones added, up to 12 in total.
+
+The available hotkey actions will expand over time. We may also expand the number of hotkeys available to
+configure in the future.
+
 ## Pin Mapping
 
 ![GP2040-CE Configurator - Pin Mapping](assets/images/gpc-pin-mapping.png)
@@ -286,6 +295,32 @@ Supported Extension Controllers and their mapping is as follows:
 Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Controllers. 
 
 Original Classic Controller L & R triggers are analog sensitive, where Pro triggers are not.
+
+### SNES Input
+
+![GP2040 Configurator - SNES Input](assets/images/gpc-add-ons-snespad-input.png)
+
+* `CLOCK Pin` - The GPIO pin used for SNES CLOCK.
+* `LATCH Pin` - The GPIO pin used for SNES LATCH.
+* `DATA Pin` - The GPIO pin used for SNES DATA.
+
+Supported controller types and their mapping is as follows:
+
+| GP2040-CE | NES      | SNES         | Super NES Mouse    |
+|-----------|----------|--------------|--------------------|
+| B1        | B        | B            | Left Click         |
+| B2        | A        | A            | Right Click        |
+| B3        |          | Y            |                    |
+| B4        |          | X            |                    |
+| L1        |          | L            |                    |
+| L2        |          |              |                    |
+| R1        |          | R            |                    |
+| R2        |          |              |                    |
+| S1        | Select   | Select       |                    |
+| S2        | Start    | Start        |                    |
+| A1        |          |              |                    |
+| D-Pad     | D-Pad    | D-Pad        |                    |
+| Analog    |          |              | Mouse Movement     |
 
 ## Data Backup and Restoration
 
