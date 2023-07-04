@@ -136,10 +136,12 @@
 #define ANALOG_ADC_1_VRX -1
 #define ANALOG_ADC_1_VRY -1
 #define ANALOG_ADC_1_MODE DPAD_MODE_LEFT_ANALOG
+#define ANALOG_ADC_1_INVERT INVERT_NONE
 
 #define ANALOG_ADC_2_VRX -1
 #define ANALOG_ADC_2_VRY -1
 #define ANALOG_ADC_2_MODE DPAD_MODE_RIGHT_ANALOG
+#define ANALOG_ADC_2_INVERT INVERT_NONE
 
 
 // This is the I2C Display section (commonly known as the OLED display section).

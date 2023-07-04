@@ -243,17 +243,16 @@ message AnalogOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 analogAdcPinX = 2;
-	optional int32 analogAdcPinY = 3;
+	optional int32 analogAdc1PinX = 2;
+	optional int32 analogAdc1PinY = 3;
 	optional bool forced_circularity = 4;
 	optional uint32 analog_deadzone = 5;
-
-	optional int32 analogAdc1PinX = 6;
-	optional int32 analogAdc1PinY = 7;
+	optional int32 analogAdc2PinX = 6;
+	optional int32 analogAdc2PinY = 7;
 	optional DpadMode analogAdc1Mode = 8;
-	optional int32 analogAdc2PinX = 9;
-	optional int32 analogAdc2PinY = 10;
-	optional DpadMode analogAdc2Mode = 11;
+	optional DpadMode analogAdc2Mode = 9;
+	optional InvertMode analogAdc1Invert = 10;
+	optional InvertMode analogAdc2Invert = 11;
 }
 
 message TurboOptions

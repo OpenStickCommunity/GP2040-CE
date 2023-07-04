@@ -11,6 +11,7 @@
 
 #define ADC_MAX ((1 << 12) - 1)
 #define ANALOG_CENTER 0.5f // 0.5f is center
+#define ANALOG_MAX 1.0f    // 1.0f is max
 
 bool AnalogInput::available() {
     return Storage::getInstance().getAddonOptions().analogOptions.enabled;
@@ -47,26 +48,42 @@ void AnalogInput::process()
     if ( isValidPin(analogOptions.analogAdc1PinX) ) {
         adc_select_input(analogOptions.analogAdc1PinX-26); // ANALOG-X
         adc_1_x = ((float)adc_read())/ADC_MAX;
-        if ( abs(adc_1_x - ANALOG_CENTER) < deadzone ) // deadzones
+        if ( abs(adc_1_x - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_1_x = ANALOG_CENTER;
+        } else if ( analogOptions.analogAdc1Invert == InvertMode::INVERT_X ||
+            analogOptions.analogAdc1Invert == InvertMode::INVERT_XY) {
+            adc_1_x = ANALOG_MAX - adc_1_x;
+        }
     }
     if ( isValidPin(analogOptions.analogAdc1PinY) ) {
         adc_select_input(analogOptions.analogAdc1PinY-26); // ANALOG-Y
         adc_1_y = ((float)adc_read())/ADC_MAX;
-        if ( abs(adc_1_y - ANALOG_CENTER) < deadzone ) // deadzones
+        if ( abs(adc_1_y - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_1_y = ANALOG_CENTER;
+        } else if ( analogOptions.analogAdc1Invert == InvertMode::INVERT_Y ||
+            analogOptions.analogAdc1Invert == InvertMode::INVERT_XY) {
+            adc_1_y = ANALOG_MAX - adc_1_y;
+        }
     }
     if ( isValidPin(analogOptions.analogAdc2PinX) ) {
         adc_select_input(analogOptions.analogAdc2PinX-26); // ANALOG-X
         adc_2_x = ((float)adc_read())/ADC_MAX;
-        if ( abs(adc_2_x - ANALOG_CENTER) < deadzone ) // deadzones
+        if ( abs(adc_2_x - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_2_x = ANALOG_CENTER;
+        } else if ( analogOptions.analogAdc2Invert == InvertMode::INVERT_X ||
+            analogOptions.analogAdc2Invert == InvertMode::INVERT_XY) {
+            adc_2_x = ANALOG_MAX - adc_2_x;
+        }
     }
     if ( isValidPin(analogOptions.analogAdc2PinY) ) {
         adc_select_input(analogOptions.analogAdc2PinY-26); // ANALOG-Y
         adc_2_y = ((float)adc_read())/ADC_MAX;
-        if ( abs(adc_2_y - ANALOG_CENTER) < deadzone ) // deadzones
+        if ( abs(adc_2_y - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_2_y = ANALOG_CENTER;
+        } else if ( analogOptions.analogAdc2Invert == InvertMode::INVERT_Y ||
+            analogOptions.analogAdc1Invert == InvertMode::INVERT_XY) {
+            adc_2_y = ANALOG_MAX - adc_2_y;
+        }
     }
     
     // Alter coordinates to force perfect circularity

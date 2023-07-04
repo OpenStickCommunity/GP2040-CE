@@ -906,9 +906,11 @@ std::string setAddonOptions()
 	docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
 	docToPin(analogOptions.analogAdc1PinY, doc, "analogAdc1PinY");
 	docToValue(analogOptions.analogAdc1Mode, doc, "analogAdc1Mode");
+	docToValue(analogOptions.analogAdc1Invert, doc, "analogAdc1Invert");
 	docToPin(analogOptions.analogAdc2PinX, doc, "analogAdc2PinX");
 	docToPin(analogOptions.analogAdc2PinY, doc, "analogAdc2PinY");
 	docToValue(analogOptions.analogAdc2Mode, doc, "analogAdc2Mode");
+	docToValue(analogOptions.analogAdc2Invert, doc, "analogAdc2Invert");
 	docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
 	docToValue(analogOptions.analog_deadzone, doc, "analog_deadzone");
 	docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
@@ -1143,9 +1145,11 @@ std::string getAddonOptions()
 	writeDoc(doc, "analogAdc1PinX", cleanPin(analogOptions.analogAdc1PinX));
 	writeDoc(doc, "analogAdc1PinY", cleanPin(analogOptions.analogAdc1PinY));
 	writeDoc(doc, "analogAdc1Mode", analogOptions.analogAdc1Mode);
+	writeDoc(doc, "analogAdc1Invert", analogOptions.analogAdc1Invert);
 	writeDoc(doc, "analogAdc2PinX", cleanPin(analogOptions.analogAdc2PinX));
 	writeDoc(doc, "analogAdc2PinY", cleanPin(analogOptions.analogAdc2PinY));
 	writeDoc(doc, "analogAdc2Mode", analogOptions.analogAdc2Mode);
+	writeDoc(doc, "analogAdc2Invert", analogOptions.analogAdc2Invert);
 	writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
 	writeDoc(doc, "analog_deadzone", analogOptions.analog_deadzone);
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);

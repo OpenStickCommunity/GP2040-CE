@@ -56,6 +56,13 @@ const TILT_SOCD_MODES = [
 	{ label: 'Last Win', value: 2 },
 ];
 
+const INVERT_MODES = [
+	{ label: 'None', value: 0 },
+	{ label: 'X Axis', value: 1 },
+	{ label: 'Y Axis', value: 2 },
+	{ label: 'X/Y Axis', value: 3 },
+];
+
 const ANALOG_PINS = [
 	-1,26,27,28,29
 ];
@@ -239,9 +246,11 @@ const schema = yup.object().shape({
 	analogAdc1PinX:              yup.number().label('Analog Stick 1 Pin X').validatePinWhenValue('AnalogInputEnabled'),
  	analogAdc1PinY:              yup.number().label('Analog Stick 1 Pin Y').validatePinWhenValue('AnalogInputEnabled'),
 	analogAdc1Mode:              yup.number().label('Analog Stick 1 Mode').validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES), 
+	analogAdc1Invert:            yup.number().label('Analog Stick 1 Invert').validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
 	analogAdc2PinX:              yup.number().label('Analog Stick 2 Pin X').validatePinWhenValue('AnalogInputEnabled'),
  	analogAdc2PinY:              yup.number().label('Analog Stick 2 Pin Y').validatePinWhenValue('AnalogInputEnabled'),
-	analogAdc2Mode:              yup.number().label('Analog Stick 2 Mode').validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES), 
+	analogAdc2Mode:              yup.number().label('Analog Stick 2 Mode').validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES),
+	analogAdc2Invert:            yup.number().label('Analog Stick 2 Invert').validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
 	forced_circularity:          yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone:             yup.number().label('Deadzone Size (%)').validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 
@@ -374,9 +383,11 @@ const defaultValues = {
 	analogAdc1PinX : -1,
  	analogAdc1PinY : -1,
 	analogAdc1Mode: 1,
+	analogAdc1Invert: 0,
 	analogAdc2PinX : -1,
  	analogAdc2PinY : -1,
 	analogAdc2Mode: 2,
+	analogAdc2Invert: 0,
 	forced_circularity : 0,
 	analog_deadzone: 5,
 	bootselButtonMap: 0,
@@ -530,12 +541,16 @@ const sanitizeData = (values) => {
 		values.analogAdc1PinY = parseInt(values.analogAdc1PinY);
 	if (!!values.analogAdc1Mode)
 		values.analogAdc1Mode = parseInt(values.analogAdc1Mode);
+	if (!!values.analogAdc1Invert)
+		values.analogAdc1Invert = parseInt(values.analogAdc1Invert);
 	if (!!values.analogAdc2PinX)
 		values.analogAdc2PinX = parseInt(values.analogAdc2PinX);
 	if (!!values.analogAdc2PinY)
 		values.analogAdc2PinY = parseInt(values.analogAdc2PinY);
 	if (!!values.analogAdc2Mode)
 		values.analogAdc2Mode = parseInt(values.analogAdc2Mode);
+	if (!!values.analogAdc2Invert)
+		values.analogAdc2Invert = parseInt(values.analogAdc2Invert);
 	if (!!values.bootselButtonMap)
 		values.bootselButtonMap = parseInt(values.bootselButtonMap);
 	if (!!values.focusModeButtonLockMask)
@@ -795,6 +810,7 @@ export default function AddonsConfigPage() {
 						<div
 							id="AnalogInputOptions"
 							hidden={!values.AnalogInputEnabled}>
+							<p>{t('AddonsConfig:analog-warning')}</p>
 							<p>{t('AddonsConfig:analog-available-pins-text', {pins: ANALOG_PINS.filter(p => p !== -1).join(", ")})}</p>
 							<Row className="mb-3">
 								<FormSelect
@@ -833,6 +849,18 @@ export default function AddonsConfigPage() {
 								>
 									{ANALOG_STICK_MODES.map((o, i) => <option key={`button-analogAdc1Mode-option-${i}`} value={o.value}>{o.label}</option>)}
 								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-1-invert-label')}
+									name="analogAdc1Invert"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc1Invert}
+									error={errors.analogAdc1Invert}
+									isInvalid={errors.analogAdc1Invert}
+									onChange={handleChange}
+								>
+									{INVERT_MODES.map((o, i) => <option key={`button-analogAdc1Invert-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
 							</Row>
 							<Row className="mb-3">
 								<FormSelect
@@ -870,6 +898,18 @@ export default function AddonsConfigPage() {
 									onChange={handleChange}
 								>
 									{ANALOG_STICK_MODES.map((o, i) => <option key={`button-analogAdc2Mode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-2-invert-label')}
+									name="analogAdc2Invert"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc2Invert}
+									error={errors.analogAdc2Invert}
+									isInvalid={errors.analogAdc2Invert}
+									onChange={handleChange}
+								>
+									{INVERT_MODES.map((o, i) => <option key={`button-analogAdc2Invert-option-${i}`} value={o.value}>{o.label}</option>)}
 								</FormSelect>
 							</Row>
 							<Row className="mb-3">

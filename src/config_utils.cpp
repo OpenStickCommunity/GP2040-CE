@@ -319,9 +319,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdc1PinX, ANALOG_ADC_1_VRX);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdc1PinY, ANALOG_ADC_1_VRY);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdc1Mode, ANALOG_ADC_1_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdc1Invert, ANALOG_ADC_1_INVERT);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdc2PinX, ANALOG_ADC_2_VRX);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdc2PinY, ANALOG_ADC_2_VRY);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdc2Mode, ANALOG_ADC_2_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analogAdc2Invert, ANALOG_ADC_2_INVERT);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, enabled, !!FORCED_CIRCULARITY_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.analogOptions, analog_deadzone, DEFAULT_ANALOG_DEADZONE);
 
