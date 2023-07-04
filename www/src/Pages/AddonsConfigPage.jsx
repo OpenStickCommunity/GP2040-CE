@@ -12,7 +12,6 @@ import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import JSEncrypt from 'jsencrypt';
 import CryptoJS from 'crypto-js';
-import * as bigintModArith from 'bigint-mod-arith';
 import get from 'lodash/get';
 import set from "lodash/set";
 import isNil from 'lodash/isNil';
