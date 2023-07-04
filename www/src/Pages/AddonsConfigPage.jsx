@@ -12,9 +12,9 @@ import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import JSEncrypt from 'jsencrypt';
 import CryptoJS from 'crypto-js';
-import * as bigintModArith from 'bigint-mod-arith';
-import get from 'lodash/get'
-import set from "lodash/set"
+import get from 'lodash/get';
+import set from "lodash/set";
+import isNil from 'lodash/isNil';
 
 const I2C_BLOCKS = [
 	{ label: 'i2c0', value: 0 },
@@ -109,152 +109,114 @@ const verifyAndSavePS4 = async () => {
 	let PS4Serial = document.getElementById("ps4serial-input");
 	let PS4Signature = document.getElementById("ps4signature-input");
 
-	let count = 0;
-	var pem;
-	var signature;
-	var serial;
-
-	const handlePEM = (e) => {
-		pem = keyReader.result;
-		count++;
-	};
-
-	const handleSignature = (e) => {
-		signature = sigReader.result;
-		count++;
-	};
-
-	const handleSerial = (e) => {
-		serial = serialReader.result;
-		count++;
-	};
-
-	let keyReader = new FileReader();
-	keyReader.onloadend = handlePEM;
-	keyReader.readAsText(PS4Key.files[0]);
-
-	let serialReader = new FileReader();
-	serialReader.onloadend = handleSerial;
-	serialReader.readAsText(PS4Serial.files[0]);
-
-	let sigReader = new FileReader();
-	sigReader.onloadend = handleSignature;
-	sigReader.readAsBinaryString(PS4Signature.files[0]);
-
-	async function checkRead () {
-		if ( count < 3 ) {
-			setTimeout(checkRead, 1000);
-		} else {
-			// Make sure our signature is 256 bytes
-			if ( signature.length !== 256 || serial.length !== 16) {
-				throw new Error("Signature or serial is invalid");
-			}
-			try {
-				serial = serial.padStart(32,'0'); // Add our padding
-
-				const key = new JSEncrypt();
-				key.setPrivateKey(pem);
-				const bytes = new Uint8Array(256);
-				for(let i = 0; i < 256; i++){
-					bytes[i] = Math.random();
-				}
-				const hashed = CryptoJS.SHA256(bytes);
-				const signNonce = key.sign(hashed, CryptoJS.SHA256, "sha256");
-
-				if (signNonce === false) {
-					throw new Error("Bad Private Key");
-				}
-
-				// Private key worked!
-
-				// Translate these to BigInteger
-				var N = BigInt(String(key.key.n));
-				var E = BigInt(String(key.key.e));
-				var D = BigInt(String(key.key.d));
-				var P = BigInt(String(key.key.p));
-				var Q = BigInt(String(key.key.q));
-				var DP = BigInt(String(key.key.dmp1));
-				var DQ = BigInt(String(key.key.dmq1));
-				var constantR = BigInt('2') ** BigInt(4096); 	// constant R
-				var QP = bigintModArith.modInv(Q,P); 						// qp = 1 / ( Q % P)
-				var RN = constantR % N; 						// rn = constant R mod N
-
-				function int2mbedmpi(num) {
-					var out = [];
-					var mask = BigInt('4294967295');
-					var zero = BigInt('0');
-					while(num !== zero) {
-						out.push((num & mask).toString(16).padStart(8, '0'));
-						num = num >> BigInt(32);
-					}
-					return out;
-				}
-
-				function hexToBytes(hex) {
-					let bytes = [];
-					for (let c = 0; c < hex.length; c += 2)
-						bytes.push(parseInt(hex.substr(c, 2), 16));
-					return bytes;
-				}
-
-				function mbedmpi2b64(mpi) {
-					var arr = new Uint8Array(mpi.length*4);
-					var cnt = 0;
-					for ( let i = 0; i < mpi.length; i++) {
-						let bytes = hexToBytes(mpi[i]);
-						for ( let j = 4; j > 0; j--) {
-							//arr[cnt] = bytes[j];
-							// TEST: re-order from LSB to MSB
-							arr[cnt] = bytes[j-1];
-							cnt++;
-						}
-					}
-
-					return btoa(String.fromCharCode.apply(null, arr));
-				}
-
-				const sendPS4Chunks = async (chunks) => {
-					for ( var i in chunks ) {
-						if (await WebApi.setPS4Options(chunks[i]) === false ) {
-							return false;
-						}
-					}
-					return true;
-				};
-
-
-				let serialBin = hexToBytes(serial);
-
-				let success = await sendPS4Chunks([{
-					N: mbedmpi2b64(int2mbedmpi(N)),
-					E: mbedmpi2b64(int2mbedmpi(E)),
-					D: mbedmpi2b64(int2mbedmpi(D))
-				}, {
-					P: mbedmpi2b64(int2mbedmpi(P)),
-					Q: mbedmpi2b64(int2mbedmpi(Q)),
-					DP: mbedmpi2b64(int2mbedmpi(DP)),
-					DQ: mbedmpi2b64(int2mbedmpi(DQ))
-				}, {
-					QP: mbedmpi2b64(int2mbedmpi(QP)),
-					RN: mbedmpi2b64(int2mbedmpi(RN)),
-					serial: btoa(String.fromCharCode(...new Uint8Array(serialBin)))
-				}, {
-					signature: btoa(signature)
-				}]);
-
-				if ( success ) {
-					document.getElementById("ps4alert").textContent = 'Verified and Saved PS4 Mode! Reboot to take effect';
-					document.getElementById("save").click();
+	const loadFile = (file, text) => {
+		return new Promise((resolve, reject) => {
+			const keyReader = new FileReader();
+			keyReader.onloadend = (e) => {
+				if (!isNil(keyReader.error)) {
+					reject(keyReader.error);
 				} else {
-					throw Error("PS4 Chunks Error");
+					resolve(keyReader.result);
 				}
+			};
+			if (text) {
+				keyReader.readAsText(file);
+			} else {
+				keyReader.readAsBinaryString(file);
+			}
+		});
+	};
 
-			} catch (e) {
-				document.getElementById("ps4alert").textContent = 'ERROR: Could not verify required files';
+	function int2mbedmpi(num) {
+		var out = [];
+		var mask = BigInt('4294967295');
+		var zero = BigInt('0');
+		while(num !== zero) {
+			out.push((num & mask).toString(16).padStart(8, '0'));
+			num = num >> BigInt(32);
+		}
+		return out;
+	}
+
+	function hexToBytes(hex) {
+		let bytes = [];
+		for (let c = 0; c < hex.length; c += 2)
+			bytes.push(parseInt(hex.substr(c, 2), 16));
+		return bytes;
+	}
+
+	function mbedmpi2b64(mpi) {
+		var arr = new Uint8Array(mpi.length*4);
+		var cnt = 0;
+		for ( let i = 0; i < mpi.length; i++) {
+			let bytes = hexToBytes(mpi[i]);
+			for ( let j = 4; j > 0; j--) {
+				//arr[cnt] = bytes[j];
+				// TEST: re-order from LSB to MSB
+				arr[cnt] = bytes[j-1];
+				cnt++;
 			}
 		}
-	};
-	setTimeout(checkRead, 1000);
+
+		return btoa(String.fromCharCode.apply(null, arr));
+	}
+
+	try {
+		const [pem, signature, serialFileContent] = await Promise.all([
+			loadFile(PS4Key.files[0], true),
+			loadFile(PS4Signature.files[0], false),
+			loadFile(PS4Serial.files[0], true),
+		]);
+
+		// Make sure our signature is 256 bytes
+		const serialNoPadding = serialFileContent.trimRight();
+		if ( signature.length !== 256 || serialNoPadding.length !== 16) {
+			throw new Error("Signature or serial is invalid");
+		}
+		const serial = serialNoPadding.padStart(32, '0'); // Add our padding
+
+		const key = new JSEncrypt();
+		key.setPrivateKey(pem);
+		const bytes = new Uint8Array(256);
+		for(let i = 0; i < 256; i++){
+			bytes[i] = Math.random() * 255;
+		}
+		const hashed = CryptoJS.SHA256(bytes);
+		const signNonce = key.sign(hashed, CryptoJS.SHA256, "sha256");
+
+		if (signNonce === false) {
+			throw new Error("Bad Private Key");
+		}
+
+		// Private key worked!
+
+		// Translate these to BigInteger
+		var N = BigInt(String(key.key.n));
+		var E = BigInt(String(key.key.e));
+		var P = BigInt(String(key.key.p));
+		var Q = BigInt(String(key.key.q));
+
+		let serialBin = hexToBytes(serial);
+
+		let success = await WebApi.setPS4Options({
+			N: mbedmpi2b64(int2mbedmpi(N)),
+			E: mbedmpi2b64(int2mbedmpi(E)),
+			P: mbedmpi2b64(int2mbedmpi(P)),
+			Q: mbedmpi2b64(int2mbedmpi(Q)),
+			serial: btoa(String.fromCharCode(...new Uint8Array(serialBin))),
+			signature: btoa(signature),
+		});
+
+		if ( success ) {
+			document.getElementById("ps4alert").textContent = 'Verified and Saved PS4 Mode! Reboot to take effect';
+			document.getElementById("save").click();
+		} else {
+			throw Error("ERROR: Failed to upload the key to the board");
+		}
+
+	} catch (e) {
+		document.getElementById("ps4alert").textContent = "ERROR: Could not verify required files: ${e}";
+	}
 };
 
 const SOCD_MODES = [
@@ -472,10 +434,11 @@ const defaultValues = {
 
 const FormContext = ({setStoredData}) => {
 	const { values, setValues } = useFormikContext();
+	const { setLoading } = useContext(AppContext);
 
 	useEffect(() => {
 		async function fetchData() {
-			const data = await WebApi.getAddonsOptions();
+			const data = await WebApi.getAddonsOptions(setLoading);
 
 			setValues(data);
 			setStoredData(JSON.parse(JSON.stringify(data))); // Do a deep copy to keep the original

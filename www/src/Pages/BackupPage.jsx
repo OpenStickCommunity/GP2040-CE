@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
+import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, Col } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -28,6 +29,7 @@ export default function BackupPage() {
 	const [noticeMessage, setNoticeMessage] = useState('');
 	const [saveMessage, setSaveMessage] = useState('');
 	const [loadMessage, setLoadMessage] = useState('');
+	const { setLoading } = useContext(AppContext);
 
 	const { t } = useTranslation('');
 
@@ -35,7 +37,7 @@ export default function BackupPage() {
 		async function fetchData() {
 			let exportData = {};
 			for (const [key, func] of Object.entries(API_BINDING)) {
-				exportData[key] = await func.get();
+				exportData[key] = await func.get(setLoading);
 			}
 			setOptionStateData(exportData);
 		}

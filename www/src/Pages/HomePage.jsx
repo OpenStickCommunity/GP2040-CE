@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { AppContext } from '../Contexts/AppContext';
 import axios from 'axios';
 import orderBy from 'lodash/orderBy';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +10,7 @@ import WebApi from '../Services/WebApi';
 
 const percentage = (x, y) => (x / y * 100).toFixed(2)
 const toKB = (x) => parseFloat((x / 1024).toFixed(2))
+let loading = true;
 
 export default function HomePage() {
 	const [latestVersion, setLatestVersion] = useState('');
@@ -18,13 +20,15 @@ export default function HomePage() {
 
 	const { t } = useTranslation('');
 
+	const { setLoading } = useContext(AppContext);
+
 	useEffect(() => {
-		WebApi.getFirmwareVersion().then(response => {
+		WebApi.getFirmwareVersion(setLoading).then(response => {
 			setCurrentVersion(response.version);
 		})
 			.catch(console.error);
 
-		WebApi.getMemoryReport().then(response => {
+		WebApi.getMemoryReport(setLoading).then(response => {
 			const unit = 1024;
 			const { totalFlash, usedFlash, staticAllocs, totalHeap, usedHeap } = response;
 			setMemoryReport({

@@ -15,23 +15,14 @@
 
 class PS4ModeAddon : public GPAddon {
 public:
-    virtual bool available();
+	virtual bool available();
 	virtual void setup();       // TURBO Button Setup
-    virtual void preprocess() {}
+	virtual void preprocess() {}
 	virtual void process();     // TURBO Setting of buttons (Enable/Disable)
-    virtual std::string name() { return PS4ModeName; }
+	virtual std::string name() { return PS4ModeName; }
 private:
 	struct mbedtls_rsa_context rsa_context;
-    mbedtls_mpi_uint bytesN[64] = {};
-    mbedtls_mpi_uint bytesE[1] = {};
-    mbedtls_mpi_uint bytesD[64] = {};
-    mbedtls_mpi_uint bytesP[32] = {};
-    mbedtls_mpi_uint bytesQ[32] = {};
-    mbedtls_mpi_uint bytesDP[32] = {};
-    mbedtls_mpi_uint bytesDQ[32] = {};
-    mbedtls_mpi_uint bytesQP[32] = {};
-    mbedtls_mpi_uint bytesRN[64] = {};
-    uint8_t hashed_nonce[32] = {};
+	bool ready;
 };
 
 #endif  // PS4MODE_H_

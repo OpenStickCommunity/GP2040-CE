@@ -24,4 +24,5 @@ export default {
 	'lock-oled-screen': 'Lock OLED Screen',
 	'lock-rgb-led': 'Lock RGB LED',
 	'lock-buttons': 'Lock Buttons',
+	'loading-text': 'Loading...'
 };

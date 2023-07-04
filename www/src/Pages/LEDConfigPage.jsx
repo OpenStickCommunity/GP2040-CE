@@ -120,10 +120,11 @@ const FormContext = ({
 	setDataSources
 }) => {
 	const { setFieldValue, setValues } = useFormikContext();
+	const { setLoading } = useContext(AppContext);
 
 	useEffect(() => {
 		async function fetchData() {
-			const data = await WebApi.getLedOptions();
+			const data = await WebApi.getLedOptions(setLoading);
 
 			let available = {};
 			let assigned = {};
