@@ -15,7 +15,7 @@ import CryptoJS from 'crypto-js';
 import * as bigintModArith from 'bigint-mod-arith';
 import get from 'lodash/get';
 import set from "lodash/set";
-import isNil from 'lodash';
+import isNil from 'lodash/isNil';
 
 const I2C_BLOCKS = [
 	{ label: 'i2c0', value: 0 },
