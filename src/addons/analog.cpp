@@ -81,7 +81,7 @@ void AnalogInput::process()
         if ( abs(adc_2_y - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_2_y = ANALOG_CENTER;
         } else if ( analogOptions.analogAdc2Invert == InvertMode::INVERT_Y ||
-            analogOptions.analogAdc1Invert == InvertMode::INVERT_XY) {
+            analogOptions.analogAdc2Invert == InvertMode::INVERT_XY) {
             adc_2_y = ANALOG_MAX - adc_2_y;
         }
     }
