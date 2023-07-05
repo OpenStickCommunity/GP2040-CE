@@ -295,13 +295,18 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 		case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; reqSave = true; break;
 		case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; reqSave = true; break;
 		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
-		case HOTKEY_CAPTURE_BUTTON    :
-			break;
 		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; reqSave = true; break;
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;  reqSave = true;break;
 		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; reqSave = true; break;
+		case HOTKEY_CAPTURE_BUTTON    :
+			if (options.inputMode == INPUT_MODE_PS4 && options.switchTpShareForDs4) {
+				state.buttons |= GAMEPAD_MASK_A2;
+			} else {
+				state.buttons |= GAMEPAD_MASK_S1;
+			}
+			break;
 		case HOTKEY_INVERT_X_AXIS     :
 			if (action != lastAction) {
 				options.invertXAxis = !options.invertXAxis;
