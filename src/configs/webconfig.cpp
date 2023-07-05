@@ -368,8 +368,10 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	// addPinIfValid(boardOptions.i2cSCLPin);
 
 	const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-	addPinIfValid(analogOptions.analogAdcPinX);
-	addPinIfValid(analogOptions.analogAdcPinY);
+	addPinIfValid(analogOptions.analogAdc1PinX);
+	addPinIfValid(analogOptions.analogAdc1PinY);
+	addPinIfValid(analogOptions.analogAdc2PinX);
+	addPinIfValid(analogOptions.analogAdc2PinY);
 
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(addonOptions.buzzerPin);
@@ -901,8 +903,14 @@ std::string setAddonOptions()
 	DynamicJsonDocument doc = get_post_data();
 
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-	docToPin(analogOptions.analogAdcPinX, doc, "analogAdcPinX");
-	docToPin(analogOptions.analogAdcPinY, doc, "analogAdcPinY");
+	docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
+	docToPin(analogOptions.analogAdc1PinY, doc, "analogAdc1PinY");
+	docToValue(analogOptions.analogAdc1Mode, doc, "analogAdc1Mode");
+	docToValue(analogOptions.analogAdc1Invert, doc, "analogAdc1Invert");
+	docToPin(analogOptions.analogAdc2PinX, doc, "analogAdc2PinX");
+	docToPin(analogOptions.analogAdc2PinY, doc, "analogAdc2PinY");
+	docToValue(analogOptions.analogAdc2Mode, doc, "analogAdc2Mode");
+	docToValue(analogOptions.analogAdc2Invert, doc, "analogAdc2Invert");
 	docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
 	docToValue(analogOptions.analog_deadzone, doc, "analog_deadzone");
 	docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
@@ -1134,8 +1142,14 @@ std::string getAddonOptions()
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-	writeDoc(doc, "analogAdcPinX", cleanPin(analogOptions.analogAdcPinX));
-	writeDoc(doc, "analogAdcPinY", cleanPin(analogOptions.analogAdcPinY));
+	writeDoc(doc, "analogAdc1PinX", cleanPin(analogOptions.analogAdc1PinX));
+	writeDoc(doc, "analogAdc1PinY", cleanPin(analogOptions.analogAdc1PinY));
+	writeDoc(doc, "analogAdc1Mode", analogOptions.analogAdc1Mode);
+	writeDoc(doc, "analogAdc1Invert", analogOptions.analogAdc1Invert);
+	writeDoc(doc, "analogAdc2PinX", cleanPin(analogOptions.analogAdc2PinX));
+	writeDoc(doc, "analogAdc2PinY", cleanPin(analogOptions.analogAdc2PinY));
+	writeDoc(doc, "analogAdc2Mode", analogOptions.analogAdc2Mode);
+	writeDoc(doc, "analogAdc2Invert", analogOptions.analogAdc2Invert);
 	writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
 	writeDoc(doc, "analog_deadzone", analogOptions.analog_deadzone);
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);

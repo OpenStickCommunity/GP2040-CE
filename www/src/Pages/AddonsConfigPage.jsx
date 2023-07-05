@@ -33,6 +33,11 @@ const DUAL_STICK_MODES = [
 	{ label: 'Right Analog', value: 2 },
 ];
 
+const ANALOG_STICK_MODES = [
+	{ label: 'Left Analog', value: 1 },
+	{ label: 'Right Analog', value: 2 },
+];
+
 const DUAL_COMBINE_MODES = [
     { label: 'Mixed', value: 0 },
 	{ label: 'Gamepad', value: 1},
@@ -51,7 +56,14 @@ const TILT_SOCD_MODES = [
 	{ label: 'Last Win', value: 2 },
 ];
 
-const ANALOG_PINS = [26, 27, 28, 29];
+const INVERT_MODES = [
+	{ label: 'None', value: 0 },
+	{ label: 'X Axis', value: 1 },
+	{ label: 'Y Axis', value: 2 },
+	{ label: 'X/Y Axis', value: 3 }
+];
+
+const ANALOG_PINS = [ 26,27,28,29 ];
 
 const BUTTON_MASKS = [
 	{ label: 'None',  value:  0          },
@@ -227,8 +239,15 @@ const schema = yup.object().shape({
 	i2cAnalog1219Address:        yup.number().label('I2C Analog1219 Address').validateNumberWhenValue('I2CAnalog1219InputEnabled'),
 
 	AnalogInputEnabled:          yup.number().required().label('Analog Input Enabled'),
-	analogAdcPinX:               yup.number().label('Analog Stick Pin X').validatePinWhenValue('AnalogInputEnabled'),
-	analogAdcPinY:               yup.number().label('Analog Stick Pin Y').validatePinWhenValue('AnalogInputEnabled'),
+	analogAdc1PinX:              yup.number().label('Analog Stick 1 Pin X').validatePinWhenValue('AnalogInputEnabled'),
+ 	analogAdc1PinY:              yup.number().label('Analog Stick 1 Pin Y').validatePinWhenValue('AnalogInputEnabled'),
+	analogAdc1Mode:              yup.number().label('Analog Stick 1 Mode').validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES), 
+	analogAdc1Invert:            yup.number().label('Analog Stick 1 Invert').validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
+	analogAdc2PinX:              yup.number().label('Analog Stick 2 Pin X').validatePinWhenValue('AnalogInputEnabled'),
+ 	analogAdc2PinY:              yup.number().label('Analog Stick 2 Pin Y').validatePinWhenValue('AnalogInputEnabled'),
+	analogAdc2Mode:              yup.number().label('Analog Stick 2 Mode').validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES),
+	analogAdc2Invert:            yup.number().label('Analog Stick 2 Invert').validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
+
 	forced_circularity:          yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone:             yup.number().label('Deadzone Size (%)').validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 
@@ -358,8 +377,14 @@ const defaultValues = {
 	tiltRightAnalogDownPin: -1,
 	tiltRightAnalogLeftPin: -1,
 	tiltRightAnalogRightPin: -1,
-	analogAdcPinX : -1,
-	analogAdcPinY : -1,
+	analogAdc1PinX : -1,
+ 	analogAdc1PinY : -1,
+	analogAdc1Mode: 1,
+	analogAdc1Invert: 0,
+	analogAdc2PinX : -1,
+ 	analogAdc2PinY : -1,
+	analogAdc2Mode: 2,
+	analogAdc2Invert: 0,
 	forced_circularity : 0,
 	analog_deadzone: 5,
 	bootselButtonMap: 0,
@@ -437,178 +462,10 @@ const FormContext = ({setStoredData}) => {
 };
 
 const sanitizeData = (values) => {
-	if (!!values.turboPin)
-		values.turboPin = parseInt(values.turboPin);
-	if (!!values.turboPinLED)
-		values.turboPinLED = parseInt(values.turboPinLED);
-	if (!!values.sliderLSPin)
-		values.sliderLSPin = parseInt(values.sliderLSPin);
-	if (!!values.sliderRSPin)
-		values.sliderRSPin = parseInt(values.sliderRSPin);
-	if (!!values.sliderSOCDPinOne)
-		values.sliderSOCDPinOne = parseInt(values.sliderSOCDPinOne);
-	if (!!values.sliderSOCDPinTwo)
-		values.sliderSOCDPinTwo = parseInt(values.sliderSOCDPinTwo);
-	if (!!values.turboShotCount)
-		values.turboShotCount = parseInt(values.turboShotCount);
-	if (!!values.reversePin)
-		values.reversePin = parseInt(values.reversePin);
-	if (!!values.reversePinLED)
-		values.reversePinLED = parseInt(values.reversePinLED);
-	if (!!values.reverseActionUp)
-		values.reverseActionUp = parseInt(values.reverseActionUp);
-	if (!!values.reverseActionDown)
-		values.reverseActionDown = parseInt(values.reverseActionDown);
-	if (!!values.reverseActionLeft)
-		values.reverseActionLeft = parseInt(values.reverseActionLeft);
-	if (!!values.reverseActionRight)
-		values.reverseActionRight = parseInt(values.reverseActionRight);
-	if (!!values.i2cAnalog1219SDAPin)
-		values.i2cAnalog1219SDAPin = parseInt(values.i2cAnalog1219SDAPin);
-	if (!!values.i2cAnalog1219SCLPin)
-		values.i2cAnalog1219SCLPin = parseInt(values.i2cAnalog1219SCLPin);
-	if (!!values.i2cAnalog1219Block)
-		values.i2cAnalog1219Block = parseInt(values.i2cAnalog1219Block);
-	if (!!values.i2cAnalog1219Speed)
-		values.i2cAnalog1219Speed = parseInt(values.i2cAnalog1219Speed);
-	if (!!values.i2cAnalog1219Address)
-		values.i2cAnalog1219Address = parseInt(values.i2cAnalog1219Address);
-	if (!!values.onBoardLedMode)
-		values.onBoardLedMode = parseInt(values.onBoardLedMode);
-	if (!!values.dualDirDownPin)
-		values.dualDirDownPin = parseInt(values.dualDirDownPin);
-	if (!!values.dualDirUpPin)
-		values.dualDirUpPin = parseInt(values.dualDirUpPin);
-	if (!!values.dualDirLeftPin)
-		values.dualDirLeftPin = parseInt(values.dualDirLeftPin);
-	if (!!values.dualDirRightPin)
-		values.dualDirRightPin = parseInt(values.dualDirRightPin);
-	if (!!values.dualDirMode)
-		values.dualDirMode = parseInt(values.dualDirMode);
-	if (!!values.tilt1Pin)
-		values.tilt1Pin = parseInt(values.tilt1Pin);
-	if (!!values.tilt2Pin)
-		values.tilt2Pin = parseInt(values.tilt2Pin);
-	if (!!values.tiltLeftAnalogDownPin)
-		values.tiltLeftAnalogDownPin = parseInt(values.tiltLeftAnalogDownPin);
-	if (!!values.tiltLeftAnalogUpPin)
-		values.tiltLeftAnalogUpPin = parseInt(values.tiltLeftAnalogUpPin);
-	if (!!values.tiltLeftAnalogLeftPin)
-		values.tiltLeftAnalogLeftPin = parseInt(values.tiltLeftAnalogLeftPin);
-	if (!!values.tiltLeftAnalogRightPin)
-		values.tiltLeftAnalogRightPin = parseInt(values.tiltLeftAnalogRightPin);
-	if (!!values.tiltRightAnalogDownPin)
-		values.tiltRightAnalogDownPin = parseInt(values.tiltRightAnalogDownPin);
-	if (!!values.tiltRightAnalogUpPin)
-		values.tiltRightAnalogUpPin = parseInt(values.tiltRightAnalogUpPin);
-	if (!!values.tiltRightAnalogLeftPin)
-		values.tiltRightAnalogLeftPin = parseInt(values.tiltRightAnalogLeftPin);
-	if (!!values.tiltRightAnalogRightPin)
-		values.tiltRightAnalogRightPin = parseInt(values.tiltRightAnalogRightPin);
-	if (!!values.tiltSOCDMode)
-		values.tiltSOCDMode = parseInt(values.tiltSOCDMode);
-	if (!!values.analogAdcPinX)
-		values.analogAdcPinX = parseInt(values.analogAdcPinX);
-	if (!!values.analogAdcPinY)
-		values.analogAdcPinY = parseInt(values.analogAdcPinY);
-	if (!!values.bootselButtonMap)
-		values.bootselButtonMap = parseInt(values.bootselButtonMap);
-	if (!!values.focusModeButtonLockMask)
-		values.focusModeButtonLockMask = parseInt(values.focusModeButtonLockMask);
-	if (!!values.focusModePin)
-		values.focusModePin = parseInt(values.focusModePin);
-	if (!!values.buzzerPin)
-		values.buzzerPin = parseInt(values.buzzerPin);
-	if (!!values.buzzerVolume)
-		values.buzzerVolume = parseInt(values.buzzerVolume);
-	if (!!values.extraButtonMap)
-		values.extraButtonMap = parseInt(values.extraButtonMap);
-	if (!!values.extraButtonPin)
-		values.extraButtonPin = parseInt(values.extraButtonPin);
-	if (!!values.playerNumber)
-		values.playerNumber = parseInt(values.playerNumber);
-	if (!!values.shmupMode)
-		values.shmupMode = parseInt(values.shmupMode);
-	if (!!values.shmupMixMode)
-		values.shmupMixMode = parseInt(values.shmupMixMode);
-	if (!!values.shmupAlwaysOn1)
-		values.shmupAlwaysOn1 = parseInt(values.shmupAlwaysOn1);
-	if (!!values.shmupAlwaysOn2)
-		values.shmupAlwaysOn2 = parseInt(values.shmupAlwaysOn2);
-	if (!!values.shmupAlwaysOn3)
-		values.shmupAlwaysOn3 = parseInt(values.shmupAlwaysOn3);
-	if (!!values.shmupAlwaysOn4)
-		values.shmupAlwaysOn4 = parseInt(values.shmupAlwaysOn4);
-	if (!!values.pinShmupBtn1)
-		values.pinShmupBtn1 = parseInt(values.pinShmupBtn1);
-	if (!!values.pinShmupBtn2)
-		values.pinShmupBtn2 = parseInt(values.pinShmupBtn2);
-	if (!!values.pinShmupBtn3)
-		values.pinShmupBtn3 = parseInt(values.pinShmupBtn3);
-	if (!!values.pinShmupBtn4)
-		values.pinShmupBtn4 = parseInt(values.pinShmupBtn4);
-	if (!!values.shmupBtnMask1)
-		values.shmupBtnMask1 = parseInt(values.shmupBtnMask1);
-	if (!!values.shmupBtnMask2)
-		values.shmupBtnMask2 = parseInt(values.shmupBtnMask2);
-	if (!!values.shmupBtnMask3)
-		values.shmupBtnMask3 = parseInt(values.shmupBtnMask3);
-	if (!!values.shmupBtnMask4)
-		values.shmupBtnMask4 = parseInt(values.shmupBtnMask4);
-	if (!!values.pinShmupDial)
-		values.pinShmupDial = parseInt(values.pinShmupDial);
-	if (!!values.sliderSOCDModeOne)
-		values.sliderSOCDModeOne = parseInt(values.sliderSOCDModeOne);
-	if (!!values.sliderSOCDModeTwo)
-		values.sliderSOCDModeTwo = parseInt(values.sliderSOCDModeTwo);
-	if (!!values.sliderSOCDModeDefault)
-		values.sliderSOCDModeDefault = parseInt(values.sliderSOCDModeDefault);
-	if (!!values.wiiExtensionSDAPin)
-		values.wiiExtensionSDAPin = parseInt(values.wiiExtensionSDAPin);
-	if (!!values.wiiExtensionSCLPin)
-		values.wiiExtensionSCLPin = parseInt(values.wiiExtensionSCLPin);
-	if (!!values.wiiExtensionBlock)
-		values.wiiExtensionBlock = parseInt(values.wiiExtensionBlock);
-	if (!!values.wiiExtensionSpeed)
-		values.wiiExtensionSpeed = parseInt(values.wiiExtensionSpeed);
-	if (!!values.snesPadClockPin)
-		values.snesPadClockPin = parseInt(values.snesPadClockPin);
-	if (!!values.snesPadLatchPin)
-		values.snesPadLatchPin = parseInt(values.snesPadLatchPin);
-	if (!!values.snesPadDataPin)
-		values.snesPadDataPin = parseInt(values.snesPadDataPin);
-	if (!!values.AnalogInputEnabled)
-		values.AnalogInputEnabled = parseInt(values.AnalogInputEnabled);
-	if (!!values.BoardLedAddonEnabled)
-		values.BoardLedAddonEnabled = parseInt(values.BoardLedAddonEnabled);
-	if (!!values.BuzzerSpeakerAddonEnabled)
-		values.BuzzerSpeakerAddonEnabled = parseInt(values.BuzzerSpeakerAddonEnabled);
-	if (!!values.BootselButtonAddonEnabled)
-		values.BootselButtonAddonEnabled = parseInt(values.BootselButtonAddonEnabled);
-	if (!!values.DualDirectionalInputEnabled)
-		values.DualDirectionalInputEnabled = parseInt(values.DualDirectionalInputEnabled);
-	if (!!values.TiltInputEnabled)
-		values.TiltInputEnabled = parseInt(values.TiltInputEnabled);
-	if (!!values.ExtraButtonAddonEnabled)
-		values.ExtraButtonAddonEnabled = parseInt(values.ExtraButtonAddonEnabled);
-	if (!!values.I2CAnalog1219InputEnabled)
-		values.I2CAnalog1219InputEnabled = parseInt(values.I2CAnalog1219InputEnabled);
-	if (!!values.JSliderInputEnabled)
-		values.JSliderInputEnabled = parseInt(values.JSliderInputEnabled);
-	if (!!values.SliderSOCDInputEnabled)
-		values.SliderSOCDInputEnabled = parseInt(values.SliderSOCDInputEnabled);
-	if (!!values.PlayerNumAddonEnabled)
-		values.PlayerNumAddonEnabled = parseInt(values.PlayerNumAddonEnabled);
-	if (!!values.PS4ModeAddonEnabled)
-		values.PS4ModeAddonEnabled = parseInt(values.PS4ModeAddonEnabled);
-	if (!!values.ReverseInputEnabled)
-		values.ReverseInputEnabled = parseInt(values.ReverseInputEnabled);
-	if (!!values.TurboInputEnabled)
-		values.TurboInputEnabled = parseInt(values.TurboInputEnabled);
-	if (!!values.WiiExtensionAddonEnabled)
-		values.WiiExtensionAddonEnabled = parseInt(values.WiiExtensionAddonEnabled);
-	if (!!values.SNESpadAddonEnabled)
-		values.SNESpadAddonEnabled = parseInt(values.SNESpadAddonEnabled);
+	for(const prop in Object.keys(values).filter((key) => !!!key.includes("keyboardHostMap"))) {
+		if (!!values[prop])
+			values[prop] = parseInt(values[prop]);
+	}
 }
 
 function flattenObject(object) {
@@ -770,32 +627,130 @@ export default function AddonsConfigPage() {
 						<div
 							id="AnalogInputOptions"
 							hidden={!values.AnalogInputEnabled}>
+							<p>{t('AddonsConfig:analog-warning')}</p>
 							<p>{t('AddonsConfig:analog-available-pins-text', {pins: availableAnalogPins.join(", ")})}</p>
 							<Row className="mb-3">
 								<FormSelect
-									label={t('AddonsConfig:analog-adc-pin-x-label')}
-									name="analogAdcPinX"
+									label={t('AddonsConfig:analog-adc-1-pin-x-label')}
+									name="analogAdc1PinX"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.analogAdcPinX}
-									error={errors.analogAdcPinX}
-									isInvalid={errors.analogAdcPinX}
+									value={values.analogAdc1PinX}
+									error={errors.analogAdc1PinX}
+									isInvalid={errors.analogAdc1PinX}
 									onChange={handleChange}
 								>
 									<AvailablePinOptions pins={availableAnalogPins}/>
 								</FormSelect>
 								<FormSelect
-									label={t('AddonsConfig:analog-adc-pin-y-label')}
-									name="analogAdcPinY"
+									label={t('AddonsConfig:analog-adc-1-pin-y-label')}
+									name="analogAdc1PinY"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.analogAdcPinY}
-									error={errors.analogAdcPinY}
-									isInvalid={errors.analogAdcPinY}
+									value={values.analogAdc1PinY}
+									error={errors.analogAdc1PinY}
+									isInvalid={errors.analogAdc1PinY}
 									onChange={handleChange}
 								>
 									<AvailablePinOptions pins={availableAnalogPins}/>
 								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-1-mode-label')}
+									name="analogAdc1Mode"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc1Mode}
+									error={errors.analogAdc1Mode}
+									isInvalid={errors.analogAdc1Mode}
+									onChange={handleChange}
+								>
+									{ANALOG_STICK_MODES.map((o, i) => <option key={`button-analogAdc1Mode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-1-invert-label')}
+									name="analogAdc1Invert"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc1Invert}
+									error={errors.analogAdc1Invert}
+									isInvalid={errors.analogAdc1Invert}
+									onChange={handleChange}
+								>
+									{INVERT_MODES.map((o, i) => <option key={`button-analogAdc1Invert-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+							</Row>
+							<Row className="mb-3">
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-2-pin-x-label')}
+									name="analogAdc2PinX"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc2PinX}
+									error={errors.analogAdc2PinX}
+									isInvalid={errors.analogAdc2PinX}
+									onChange={handleChange}
+								>
+									<AvailablePinOptions pins={availableAnalogPins}/>
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-2-pin-y-label')}
+									name="analogAdc2PinY"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc2PinY}
+									error={errors.analogAdc2PinY}
+									isInvalid={errors.analogAdc2PinY}
+									onChange={handleChange}
+								>
+									<AvailablePinOptions pins={availableAnalogPins}/>
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-2-mode-label')}
+									name="analogAdc2Mode"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc2Mode}
+									error={errors.analogAdc2Mode}
+									isInvalid={errors.analogAdc2Mode}
+									onChange={handleChange}
+								>
+									{ANALOG_STICK_MODES.map((o, i) => <option key={`button-analogAdc2Mode-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:analog-adc-2-invert-label')}
+									name="analogAdc2Invert"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analogAdc2Invert}
+									error={errors.analogAdc2Invert}
+									isInvalid={errors.analogAdc2Invert}
+									onChange={handleChange}
+								>
+									{INVERT_MODES.map((o, i) => <option key={`button-analogAdc2Invert-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+							</Row>
+							<Row className="mb-3">
+								<FormControl type="number"
+									label={t('AddonsConfig:analog-deadzone-size')}
+									name="analog_deadzone"
+									className="form-control-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.analog_deadzone}
+									error={errors.analog_deadzone}
+									isInvalid={errors.analog_deadzone}
+									onChange={handleChange}
+									min={0}
+									max={100}
+								/>
+								<FormCheck
+									label={t('AddonsConfig:analog-force-circularity')}
+									type="switch"
+									id="Forced_circularity"
+									className="col-sm-3 ms-2"
+									isInvalid={false}
+									checked={Boolean(values.forced_circularity)}
+									onChange={(e) => {handleCheckbox("forced_circularity", values); handleChange(e);}}
+								/>
 							</Row>
 						</div>
 						<FormCheck

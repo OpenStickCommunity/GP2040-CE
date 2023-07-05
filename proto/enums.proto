@@ -96,6 +96,16 @@ enum DpadMode
     DPAD_MODE_RIGHT_ANALOG = 2;
 }
 
+enum InvertMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    INVERT_NONE = 0;
+    INVERT_X = 1;
+    INVERT_Y = 2;
+    INVERT_XY = 3;
+}
+
 enum SOCDMode
 {
     option (nanopb_enumopt).long_names = false;
