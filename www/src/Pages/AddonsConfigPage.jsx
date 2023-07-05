@@ -640,7 +640,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc1PinX}
 									onChange={handleChange}
 								>
-									<AvailablePinOptions pins={availableAnalogPins}/>
+									<AvailablePinOptions pins={ANALOG_PINS}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-1-pin-y-label')}
@@ -652,7 +652,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc1PinY}
 									onChange={handleChange}
 								>
-									<AvailablePinOptions pins={availableAnalogPins}/>
+									<AvailablePinOptions pins={ANALOG_PINS}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-1-mode-label')}
@@ -814,7 +814,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.pinShmupDial}
 									onChange={handleChange}
 								>
-									<AvailablePinOptions pins={availableAnalogPins}/>
+									<AvailablePinOptions pins={ANALOG_PINS}/>
 								</FormSelect>
 								<FormCheck
 									label={t('AddonsConfig:turbo-shmup-mode-label')}
