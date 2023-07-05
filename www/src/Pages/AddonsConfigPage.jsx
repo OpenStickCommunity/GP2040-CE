@@ -61,13 +61,8 @@ const INVERT_MODES = [
 	{ label: 'X Axis', value: 1 },
 	{ label: 'Y Axis', value: 2 },
 	{ label: 'X/Y Axis', value: 3 },
-];
 
-const ANALOG_PINS = [
-	-1,26,27,28,29
-];
-
-const ANALOG_PIN_OPTIONS = ANALOG_PINS.map((i) => <option key={`analogPins-option-${i}`} value={i}>{i === -1 ? 'None' : i}</option>);
+const ANALOG_PINS = [ 26,27,28,29 ];
 
 const BUTTON_MASKS = [
 	{ label: 'None',  value:  0          },
@@ -251,6 +246,7 @@ const schema = yup.object().shape({
  	analogAdc2PinY:              yup.number().label('Analog Stick 2 Pin Y').validatePinWhenValue('AnalogInputEnabled'),
 	analogAdc2Mode:              yup.number().label('Analog Stick 2 Mode').validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES),
 	analogAdc2Invert:            yup.number().label('Analog Stick 2 Invert').validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
+
 	forced_circularity:          yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone:             yup.number().label('Deadzone Size (%)').validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 
@@ -491,11 +487,29 @@ function flattenObject(object) {
 	return toReturn;
 }
 
+const AvailablePinOptions = ({ pins }) => {
+	const { t } = useTranslation();
+	return (
+		<>
+			<option value={-1}>
+				{t("AddonsConfig:analog-available-pins-option-not-set")}
+			</option>
+			{pins.map((i) => (
+				<option key={`analogPins-option-${i}`} value={i}>
+					{i}
+				</option>
+			))}
+		</>
+	);
+};
+
 export default function AddonsConfigPage() {
-	const { buttonLabels, updateUsedPins } = useContext(AppContext);
+	const { buttonLabels, updateUsedPins, usedPins } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [storedData, setStoredData] = useState({});
 	const [validated, setValidated] = useState(false);
+
+	const availableAnalogPins = ANALOG_PINS.filter((pin) => !usedPins?.includes(pin));
 
 	const { t } = useTranslation();
 
@@ -511,24 +525,6 @@ export default function AddonsConfigPage() {
 		setFieldValue('keyboardHostMap', mappings);
 		setValidated(true);
 	};
-
-	// const handleSubmit = async (e) => {
-	// 	e.preventDefault();
-	// 	e.stopPropagation();
-
-	// 	let mappings = {...keyMappings};
-	// 	mappings = validateMappings(mappings, t);
-	// 	setKeyMappings(mappings);
-	// 	setValidated(true);
-
-	// 	if (Object.keys(mappings).filter(p => !!mappings[p].error).length) {
-	// 		setSaveMessage('Validation errors, see above');
-	// 		return;
-	// 	}
-
-	// 	const success = await WebApi.setKeyMappings(mappings);
-	// 	setSaveMessage(success ? 'Saved! Please Restart Your Device' : 'Unable to Save');
-	// };
 
 	const getKeyMappingForButton = (values) => (button) =>  {
 		return values.keyboardHostMap[button];
@@ -631,7 +627,7 @@ export default function AddonsConfigPage() {
 							id="AnalogInputOptions"
 							hidden={!values.AnalogInputEnabled}>
 							<p>{t('AddonsConfig:analog-warning')}</p>
-							<p>{t('AddonsConfig:analog-available-pins-text', {pins: ANALOG_PINS.filter(p => p !== -1).join(", ")})}</p>
+							<p>{t('AddonsConfig:analog-available-pins-text', {pins: availableAnalogPins.join(", ")})}</p>
 							<Row className="mb-3">
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-1-pin-x-label')}
@@ -643,7 +639,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc1PinX}
 									onChange={handleChange}
 								>
-									{ANALOG_PIN_OPTIONS}
+									<AvailablePinOptions pins={availableAnalogPins}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-1-pin-y-label')}
@@ -655,7 +651,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc1PinY}
 									onChange={handleChange}
 								>
-									{ANALOG_PIN_OPTIONS}
+									<AvailablePinOptions pins={availableAnalogPins}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-1-mode-label')}
@@ -693,7 +689,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc2PinX}
 									onChange={handleChange}
 								>
-									{ANALOG_PIN_OPTIONS}
+									<AvailablePinOptions pins={availableAnalogPins}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-2-pin-y-label')}
@@ -705,7 +701,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc2PinY}
 									onChange={handleChange}
 								>
-									{ANALOG_PIN_OPTIONS}
+									<AvailablePinOptions pins={availableAnalogPins}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-2-mode-label')}
@@ -817,7 +813,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.pinShmupDial}
 									onChange={handleChange}
 								>
-									{ANALOG_PIN_OPTIONS}
+									<AvailablePinOptions pins={availableAnalogPins}/>
 								</FormSelect>
 								<FormCheck
 									label={t('AddonsConfig:turbo-shmup-mode-label')}
@@ -1318,7 +1314,7 @@ export default function AddonsConfigPage() {
 					</Section>
 					<Section title={t('AddonsConfig:tilt-header-text')}>
 						<div id="TiltOptions" hidden={!values.TiltInputEnabled}>
-							<Row class="mb-3">
+							<Row className="mb-3">
 								<FormControl type="number"
 									label={t('AddonsConfig:tilt-1-pin-label')}
 									name="tilt1Pin"
@@ -1344,7 +1340,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 							</Row>
-							<Row class="mb-3">
+							<Row className="mb-3">
 								<FormControl type="number"
 									label={t('AddonsConfig:tilt-left-analog-up-pin-label')}
 									name="tiltLeftAnalogUpPin"
@@ -1394,7 +1390,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 							</Row>
-							<Row class="mb-3">
+							<Row className="mb-3">
 								<FormControl type="number"
 									label={t('AddonsConfig:tilt-right-analog-up-pin-label')}
 									name="tiltRightAnalogUpPin"
@@ -1444,7 +1440,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 							</Row>
-							<Row class="mb-3">
+							<Row className="mb-3">
 								<FormSelect
 									label={t('AddonsConfig:tilt-socd-mode-label')}
 									name="tiltSOCDMode"
@@ -1463,7 +1459,7 @@ export default function AddonsConfigPage() {
 							label={t('Common:switch-enabled')}
 							type="switch"
 							id="TiltInputButton"
-							reverse="true"
+							reverse={true}
 							error={false}
 							isInvalid={false}
 							checked={Boolean(values.TiltInputEnabled)}
@@ -1772,7 +1768,7 @@ export default function AddonsConfigPage() {
 							label={t('Common:switch-enabled')}
 							type="switch"
 							id="WiiExtensionButton"
-							reverse="true"
+							reverse={true}
 							error={undefined}
 							isInvalid={false}
 							checked={Boolean(values.WiiExtensionAddonEnabled)}
@@ -1835,7 +1831,7 @@ export default function AddonsConfigPage() {
 							label={t('Common:switch-enabled')}
 							type="switch"
 							id="SNESpadButton"
-							reverse="true"
+							reverse={true}
 							error={undefined}
 							isInvalid={false}
 							checked={Boolean(values.SNESpadAddonEnabled)}
