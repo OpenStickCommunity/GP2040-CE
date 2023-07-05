@@ -60,7 +60,8 @@ const INVERT_MODES = [
 	{ label: 'None', value: 0 },
 	{ label: 'X Axis', value: 1 },
 	{ label: 'Y Axis', value: 2 },
-	{ label: 'X/Y Axis', value: 3 },
+	{ label: 'X/Y Axis', value: 3 }
+];
 
 const ANALOG_PINS = [ 26,27,28,29 ];
 
