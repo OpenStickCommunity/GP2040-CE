@@ -8,6 +8,7 @@ export default {
 	'on-board-led-mode-label': 'LED Mode',
 	'analog-header-text': 'Analog',
 	'analog-available-pins-text': 'Available pins: {{pins}}',
+	'analog-available-pins-option-not-set': 'None',
 	'analog-adc-pin-x-label': 'Analog Stick X Pin',
 	'analog-adc-pin-y-label': 'Analog Stick Y Pin',
 	'turbo-header-text': 'Turbo',
