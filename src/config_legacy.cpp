@@ -938,8 +938,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         AnalogOptions& analogOptions = config.addonOptions.analogOptions;
         config.addonOptions.has_analogOptions = true;
         SET_PROPERTY(analogOptions, enabled, legacyAddonOptions.AnalogInputEnabled);
-        SET_PROPERTY(analogOptions, analogAdcPinX, bytePinToIntPin(legacyAddonOptions.analogAdcPinX));
-        SET_PROPERTY(analogOptions, analogAdcPinY, bytePinToIntPin(legacyAddonOptions.analogAdcPinY));
+        SET_PROPERTY(analogOptions, analogAdc1PinX, bytePinToIntPin(legacyAddonOptions.analogAdcPinX));
+        SET_PROPERTY(analogOptions, analogAdc1PinY, bytePinToIntPin(legacyAddonOptions.analogAdcPinY));
         SET_PROPERTY(analogOptions, forced_circularity, bytePinToIntPin(legacyAddonOptions.forced_circularity));
         SET_PROPERTY(analogOptions, analog_deadzone, legacyAddonOptions.analog_deadzone);
 
