@@ -142,8 +142,11 @@ void AnalogInput::process()
 
 			// Calibrate axis based on off-center
 			uint16_t adc_2_x_calibrated;
-			if (adc_2_x_hold >= adc_2_x_center) {
+			if (adc_2_x_hold > adc_2_x_center) {
 				adc_2_x_calibrated = map(adc_2_x_hold, adc_2_x_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
+			}
+            else if (adc_2_x_hold == adc_2_x_center) {
+				adc_2_x_calibrated = ADC_MAX/2;
 			}
 			else{
 				adc_2_x_calibrated = map(adc_2_x_hold, 0, adc_2_x_center, 0, ADC_MAX/2);
@@ -170,8 +173,11 @@ void AnalogInput::process()
 
 			// Calibrate axis based on off-center
 			uint16_t adc_2_y_calibrated;
-			if (adc_2_y_hold >= adc_2_y_center) {
+			if (adc_2_y_hold > adc_2_y_center) {
 				adc_2_y_calibrated = map(adc_2_y_hold, adc_2_y_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
+			}
+            else if (adc_2_y_hold == adc_2_y_center) {
+				adc_2_y_calibrated = ADC_MAX/2;
 			}
 			else{
 				adc_2_y_calibrated = map(adc_2_y_hold, 0, adc_2_y_center, 0, ADC_MAX/2);
