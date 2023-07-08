@@ -137,10 +137,10 @@
 // 3 - `PLED_TYPE_RGB` - This will enable the Player LEDs as addressible RGB LEDs (please not that this has not been implemented yet)
 
 #define PLED_TYPE PLED_TYPE_RGB
-#define PLED1_PIN 12
-#define PLED2_PIN 13
-#define PLED3_PIN 14
-#define PLED4_PIN 15
+#define PLED1_PIN 24
+#define PLED2_PIN 25
+#define PLED3_PIN 26
+#define PLED4_PIN 27
 #define PLED_COLOR ColorGreen
 
 // This is the Analog section.
