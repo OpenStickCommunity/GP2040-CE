@@ -12,6 +12,7 @@
 #define ADC_MAX ((1 << 12) - 1)
 #define ANALOG_CENTER 0.5f // 0.5f is center
 #define ANALOG_MAX 1.0f    // 1.0f is max
+
 uint16_t adc_1_x_center = 0;
 uint16_t adc_1_y_center = 0;
 uint16_t adc_2_x_center = 0;
@@ -37,28 +38,31 @@ void AnalogInput::setup() {
     if ( isValidPin(analogOptions.analogAdc2PinY) ) {
         adc_gpio_init(analogOptions.analogAdc2PinY);
     }
-
-    // Read pins deviation from center for calibration
-    if ( isValidPin(analogOptions.analogAdc1PinX) ) {
-        adc_select_input(analogOptions.analogAdc1PinX-26); // ANALOG1-X
-        adc_1_x_center = adc_read();
-    }
-    if ( isValidPin(analogOptions.analogAdc1PinY) ) {
-        adc_select_input(analogOptions.analogAdc1PinY-26); // ANALOG1-Y
-        adc_1_y_center = adc_read();
-    }
-    if ( isValidPin(analogOptions.analogAdc2PinX) ) {
-        adc_select_input(analogOptions.analogAdc1PinX-26); // ANALOG2-X
-        adc_2_x_center = adc_read();
-    }
-    if ( isValidPin(analogOptions.analogAdc2PinY) ) {
-        adc_select_input(analogOptions.analogAdc2PinY-26); // ANALOG2-Y
-        adc_2_y_center = adc_read();
-    }
+	
+	// Read pins deviation from center for calibration
+	if (analogOptions.auto_calibrate) {
+		if ( isValidPin(analogOptions.analogAdc1PinX) ) {
+			adc_select_input(analogOptions.analogAdc1PinX-26); // ANALOG1-X
+			adc_1_x_center = adc_read();
+		}
+		if ( isValidPin(analogOptions.analogAdc1PinY) ) {
+			adc_select_input(analogOptions.analogAdc1PinY-26); // ANALOG1-Y
+			adc_1_y_center = adc_read();
+		}
+		if ( isValidPin(analogOptions.analogAdc2PinX) ) {
+			adc_select_input(analogOptions.analogAdc2PinX-26); // ANALOG2-X
+			adc_2_x_center = adc_read();
+		}
+		if ( isValidPin(analogOptions.analogAdc2PinY) ) {
+			adc_select_input(analogOptions.analogAdc2PinY-26); // ANALOG2-Y
+			adc_2_y_center = adc_read();
+		}
+	}
 }
 
 void AnalogInput::process()
 {
+    
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     float adc_1_x = ANALOG_CENTER;
@@ -70,22 +74,27 @@ void AnalogInput::process()
     if ( isValidPin(analogOptions.analogAdc1PinX) ) {
         adc_select_input(analogOptions.analogAdc1PinX-26); // ANALOG1-X
 
-        uint16_t adc_1_x_hold = adc_read();
+		if (analogOptions.auto_calibrate) {
+			uint16_t adc_1_x_hold = adc_read();
 
-        // Calibrate axis based on off-center
-        uint16_t adc_1_x_calibrated;
+			// Calibrate axis based on off-center
+			uint16_t adc_1_x_calibrated;
 
-        if (adc_1_x_hold > adc_1_x_center) {
-            adc_1_x_calibrated = map(adc_1_x_hold, adc_1_x_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
-        }
-        else if (adc_1_x_hold == adc_1_x_center) {
-            adc_1_x_calibrated = ADC_MAX/2;
-        }
-        else{
-            adc_1_x_calibrated = map(adc_1_x_hold, 0, adc_1_x_center, 0, ADC_MAX/2);
-        }
-        
-        adc_1_x = ((float)adc_1_x_calibrated)/ADC_MAX;
+			if (adc_1_x_hold > adc_1_x_center) {
+				adc_1_x_calibrated = map(adc_1_x_hold, adc_1_x_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
+			}
+			else if (adc_1_x_hold == adc_1_x_center) {
+				adc_1_x_calibrated = ADC_MAX/2;
+			}
+			else{
+				adc_1_x_calibrated = map(adc_1_x_hold, 0, adc_1_x_center, 0, ADC_MAX/2);
+			}
+			
+			adc_1_x = ((float)adc_1_x_calibrated)/ADC_MAX;
+		}
+		else {
+			adc_1_x = ((float)adc_read())/ADC_MAX;
+		}
         
         if ( abs(adc_1_x - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_1_x = ANALOG_CENTER;
@@ -97,21 +106,26 @@ void AnalogInput::process()
     if ( isValidPin(analogOptions.analogAdc1PinY) ) {
         adc_select_input(analogOptions.analogAdc1PinY-26); // ANALOG1-Y
         
-        uint16_t adc_1_y_hold = adc_read();
+		if (analogOptions.auto_calibrate) {
+			uint16_t adc_1_y_hold = adc_read();
 
-        // Calibrate axis based on off-center
-        uint16_t adc_1_y_calibrated;
-        if (adc_1_y_hold > adc_1_y_center) {
-            adc_1_y_calibrated = map(adc_1_y_hold, adc_1_y_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
-        }
-        else if (adc_1_y_hold == adc_1_y_center) {
-            adc_1_y_calibrated = ADC_MAX/2;
-        }
-        else{
-            adc_1_y_calibrated = map(adc_1_y_hold, 0, adc_1_y_center, 0, ADC_MAX/2);
-        }
-        
-        adc_1_y = ((float)adc_1_y_calibrated)/ADC_MAX;
+			// Calibrate axis based on off-center
+			uint16_t adc_1_y_calibrated;
+			if (adc_1_y_hold > adc_1_y_center) {
+				adc_1_y_calibrated = map(adc_1_y_hold, adc_1_y_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
+			}
+			else if (adc_1_y_hold == adc_1_y_center) {
+				adc_1_y_calibrated = ADC_MAX/2;
+			}
+			else{
+				adc_1_y_calibrated = map(adc_1_y_hold, 0, adc_1_y_center, 0, ADC_MAX/2);
+			}
+			
+			adc_1_y = ((float)adc_1_y_calibrated)/ADC_MAX;
+		}
+		else {
+			adc_1_y = ((float)adc_read())/ADC_MAX;
+		}
         
         if ( abs(adc_1_y - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_1_y = ANALOG_CENTER;
@@ -123,18 +137,23 @@ void AnalogInput::process()
     if ( isValidPin(analogOptions.analogAdc2PinX) ) {
         adc_select_input(analogOptions.analogAdc2PinX-26); // ANALOG2-X
         
-        uint16_t adc_2_x_hold = adc_read();
+		if (analogOptions.auto_calibrate) {
+			uint16_t adc_2_x_hold = adc_read();
 
-        // Calibrate axis based on off-center
-        uint16_t adc_2_x_calibrated;
-        if (adc_2_x_hold >= adc_2_x_center) {
-            adc_2_x_calibrated = map(adc_2_x_hold, adc_2_x_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
-        }
-        else{
-            adc_2_x_calibrated = map(adc_2_x_hold, 0, adc_2_x_center, 0, ADC_MAX/2);
-        }
-        
-        adc_2_x = ((float)adc_2_x_calibrated)/ADC_MAX;
+			// Calibrate axis based on off-center
+			uint16_t adc_2_x_calibrated;
+			if (adc_2_x_hold >= adc_2_x_center) {
+				adc_2_x_calibrated = map(adc_2_x_hold, adc_2_x_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
+			}
+			else{
+				adc_2_x_calibrated = map(adc_2_x_hold, 0, adc_2_x_center, 0, ADC_MAX/2);
+			}
+			
+			adc_2_x = ((float)adc_2_x_calibrated)/ADC_MAX;
+		}
+		else {
+			adc_2_x = ((float)adc_read())/ADC_MAX;
+		}
 
         if ( abs(adc_2_x - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_2_x = ANALOG_CENTER;
@@ -146,18 +165,23 @@ void AnalogInput::process()
     if ( isValidPin(analogOptions.analogAdc2PinY) ) {
         adc_select_input(analogOptions.analogAdc2PinY-26); // ANALOG2-Y
         
-        uint16_t adc_2_y_hold = adc_read();
+		if (analogOptions.auto_calibrate) {
+			uint16_t adc_2_y_hold = adc_read();
 
-        // Calibrate axis based on off-center
-        uint16_t adc_2_y_calibrated;
-        if (adc_2_y_hold >= adc_2_y_center) {
-            adc_2_y_calibrated = map(adc_2_y_hold, adc_2_y_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
-        }
-        else{
-            adc_2_y_calibrated = map(adc_2_y_hold, 0, adc_2_y_center, 0, ADC_MAX/2);
-        }
-        
-        adc_2_y = ((float)adc_2_y_calibrated)/ADC_MAX;
+			// Calibrate axis based on off-center
+			uint16_t adc_2_y_calibrated;
+			if (adc_2_y_hold >= adc_2_y_center) {
+				adc_2_y_calibrated = map(adc_2_y_hold, adc_2_y_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
+			}
+			else{
+				adc_2_y_calibrated = map(adc_2_y_hold, 0, adc_2_y_center, 0, ADC_MAX/2);
+			}
+			
+			adc_2_y = ((float)adc_2_y_calibrated)/ADC_MAX;
+		}
+		else {
+			adc_2_y = ((float)adc_read())/ADC_MAX;
+		}
 
         if ( abs(adc_2_y - ANALOG_CENTER) < deadzone ) { // deadzones
             adc_2_y = ANALOG_CENTER;
@@ -168,7 +192,7 @@ void AnalogInput::process()
     }
     
     // Alter coordinates to force perfect circularity
-    if (analogOptions.forced_circularity){
+    if (analogOptions.forced_circularity) {
         float adc_1_x_magnitude = adc_1_x-(ANALOG_CENTER);
         float adc_1_y_magnitude = adc_1_y-(ANALOG_CENTER);
         float adc_1_magnitude = sqrt((adc_1_x_magnitude * adc_1_x_magnitude) + (adc_1_y_magnitude * adc_1_y_magnitude));

@@ -245,6 +245,7 @@ namespace ConfigLegacy
         uint8_t analogAdcPinY;
         uint8_t forced_circularity;
         uint8_t analog_deadzone;
+        uint8_t auto_calibrate;
         uint16_t bootselButtonMap;
         uint8_t extraButtonPin;
         uint32_t extraButtonMap;
@@ -942,6 +943,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(analogOptions, analogAdc1PinY, bytePinToIntPin(legacyAddonOptions.analogAdcPinY));
         SET_PROPERTY(analogOptions, forced_circularity, bytePinToIntPin(legacyAddonOptions.forced_circularity));
         SET_PROPERTY(analogOptions, analog_deadzone, legacyAddonOptions.analog_deadzone);
+        SET_PROPERTY(analogOptions, auto_calibrate, bytePinToIntPin(legacyAddonOptions.auto_calibrate));
 
         BootselButtonOptions& bootselButtonOptions = config.addonOptions.bootselButtonOptions;
         config.addonOptions.has_bootselButtonOptions = true;

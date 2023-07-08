@@ -253,6 +253,7 @@ message AnalogOptions
 	optional DpadMode analogAdc2Mode = 9;
 	optional InvertMode analogAdc1Invert = 10;
 	optional InvertMode analogAdc2Invert = 11;
+	optional bool auto_calibrate = 12;
 }
 
 message TurboOptions

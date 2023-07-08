@@ -53,6 +53,10 @@
 #define DEFAULT_ANALOG_DEADZONE 5
 #endif
 
+#ifndef AUTO_CALIBRATE_ENABLED
+#define AUTO_CALIBRATE_ENABLED 0
+#endif
+
 // Analog Module Name
 #define AnalogName "Analog"
 
