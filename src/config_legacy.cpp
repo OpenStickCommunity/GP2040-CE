@@ -20,6 +20,12 @@ const size_t SPLASH_IMAGE_STORAGE_INDEX = 6144; // 1032 bytes for Display Config
 const uint32_t CHECKSUM_MAGIC   = 0;
 const uint32_t NOCHECKSUM_MAGIC = 0xDEADBEEF;   // No checksum CRC;
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Do not change the structs or enums in the ConfigLegacy namespace!
+// They represent the structure of our legacy configuration storage, and any
+// change will break the migration process.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 namespace ConfigLegacy
 {
     enum InputMode
@@ -243,8 +249,6 @@ namespace ConfigLegacy
         OnBoardLedMode onBoardLedMode;
         uint8_t analogAdcPinX;
         uint8_t analogAdcPinY;
-        uint8_t forced_circularity;
-        uint8_t analog_deadzone;
         uint16_t bootselButtonMap;
         uint8_t extraButtonPin;
         uint32_t extraButtonMap;
@@ -940,8 +944,6 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(analogOptions, enabled, legacyAddonOptions.AnalogInputEnabled);
         SET_PROPERTY(analogOptions, analogAdc1PinX, bytePinToIntPin(legacyAddonOptions.analogAdcPinX));
         SET_PROPERTY(analogOptions, analogAdc1PinY, bytePinToIntPin(legacyAddonOptions.analogAdcPinY));
-        SET_PROPERTY(analogOptions, forced_circularity, bytePinToIntPin(legacyAddonOptions.forced_circularity));
-        SET_PROPERTY(analogOptions, analog_deadzone, legacyAddonOptions.analog_deadzone);
 
         BootselButtonOptions& bootselButtonOptions = config.addonOptions.bootselButtonOptions;
         config.addonOptions.has_bootselButtonOptions = true;
