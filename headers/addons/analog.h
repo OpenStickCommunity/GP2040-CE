@@ -68,7 +68,14 @@ public:
 	virtual void preprocess() {}
     virtual std::string name() { return AnalogName; }
 private:
-	uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+	uint16_t adc_1_x_center = 0;
+	uint16_t adc_1_y_center = 0;
+	uint16_t adc_2_x_center = 0;
+	uint16_t adc_2_y_center = 0;
+
+	static float readPin(int pin, uint16_t center, bool autoCalibrate, float deadzone);
+	static uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+	void adjustCircularity(float& x, float& y);
 };
 
 #endif  // _Analog_H_

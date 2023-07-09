@@ -13,11 +13,6 @@
 #define ANALOG_CENTER 0.5f // 0.5f is center
 #define ANALOG_MAX 1.0f    // 1.0f is max
 
-uint16_t adc_1_x_center = 0;
-uint16_t adc_1_y_center = 0;
-uint16_t adc_2_x_center = 0;
-uint16_t adc_2_y_center = 0;
-
 bool AnalogInput::available() {
     return Storage::getInstance().getAddonOptions().analogOptions.enabled;
 }
@@ -62,136 +57,42 @@ void AnalogInput::setup() {
 
 void AnalogInput::process()
 {
-    
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     float adc_1_x = ANALOG_CENTER;
     float adc_1_y = ANALOG_CENTER;
     float adc_2_x = ANALOG_CENTER;
     float adc_2_y = ANALOG_CENTER;
-    float deadzone = analogOptions.analog_deadzone / 200.0f;
+    float adc_deadzone = analogOptions.analog_deadzone / 200.0f;
 
     if ( isValidPin(analogOptions.analogAdc1PinX) ) {
-        adc_select_input(analogOptions.analogAdc1PinX-26); // ANALOG1-X
-
-		if (analogOptions.auto_calibrate) {
-			uint16_t adc_1_x_hold = adc_read();
-
-			// Calibrate axis based on off-center
-			uint16_t adc_1_x_calibrated;
-
-			if (adc_1_x_hold > adc_1_x_center) {
-				adc_1_x_calibrated = map(adc_1_x_hold, adc_1_x_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
-			}
-			else if (adc_1_x_hold == adc_1_x_center) {
-				adc_1_x_calibrated = ADC_MAX/2;
-			}
-			else{
-				adc_1_x_calibrated = map(adc_1_x_hold, 0, adc_1_x_center, 0, ADC_MAX/2);
-			}
-			
-			adc_1_x = ((float)adc_1_x_calibrated)/ADC_MAX;
-		}
-		else {
-			adc_1_x = ((float)adc_read())/ADC_MAX;
-		}
+        adc_1_x = readPin(analogOptions.analogAdc1PinX, adc_1_x_center, analogOptions.auto_calibrate, adc_deadzone);
         
-        if ( abs(adc_1_x - ANALOG_CENTER) < deadzone ) { // deadzones
-            adc_1_x = ANALOG_CENTER;
-        } else if ( analogOptions.analogAdc1Invert == InvertMode::INVERT_X ||
+        if ( analogOptions.analogAdc1Invert == InvertMode::INVERT_X ||
             analogOptions.analogAdc1Invert == InvertMode::INVERT_XY) {
             adc_1_x = ANALOG_MAX - adc_1_x;
         }
     }
     if ( isValidPin(analogOptions.analogAdc1PinY) ) {
-        adc_select_input(analogOptions.analogAdc1PinY-26); // ANALOG1-Y
+        adc_1_y = readPin(analogOptions.analogAdc1PinY, adc_1_y_center, analogOptions.auto_calibrate, adc_deadzone);
         
-		if (analogOptions.auto_calibrate) {
-			uint16_t adc_1_y_hold = adc_read();
-
-			// Calibrate axis based on off-center
-			uint16_t adc_1_y_calibrated;
-			if (adc_1_y_hold > adc_1_y_center) {
-				adc_1_y_calibrated = map(adc_1_y_hold, adc_1_y_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
-			}
-			else if (adc_1_y_hold == adc_1_y_center) {
-				adc_1_y_calibrated = ADC_MAX/2;
-			}
-			else{
-				adc_1_y_calibrated = map(adc_1_y_hold, 0, adc_1_y_center, 0, ADC_MAX/2);
-			}
-			
-			adc_1_y = ((float)adc_1_y_calibrated)/ADC_MAX;
-		}
-		else {
-			adc_1_y = ((float)adc_read())/ADC_MAX;
-		}
-        
-        if ( abs(adc_1_y - ANALOG_CENTER) < deadzone ) { // deadzones
-            adc_1_y = ANALOG_CENTER;
-        } else if ( analogOptions.analogAdc1Invert == InvertMode::INVERT_Y ||
+        if ( analogOptions.analogAdc1Invert == InvertMode::INVERT_Y ||
             analogOptions.analogAdc1Invert == InvertMode::INVERT_XY) {
             adc_1_y = ANALOG_MAX - adc_1_y;
         }
     }
     if ( isValidPin(analogOptions.analogAdc2PinX) ) {
-        adc_select_input(analogOptions.analogAdc2PinX-26); // ANALOG2-X
+        adc_2_x = readPin(analogOptions.analogAdc2PinX, adc_2_x_center, analogOptions.auto_calibrate, adc_deadzone);
         
-		if (analogOptions.auto_calibrate) {
-			uint16_t adc_2_x_hold = adc_read();
-
-			// Calibrate axis based on off-center
-			uint16_t adc_2_x_calibrated;
-			if (adc_2_x_hold > adc_2_x_center) {
-				adc_2_x_calibrated = map(adc_2_x_hold, adc_2_x_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
-			}
-            else if (adc_2_x_hold == adc_2_x_center) {
-				adc_2_x_calibrated = ADC_MAX/2;
-			}
-			else{
-				adc_2_x_calibrated = map(adc_2_x_hold, 0, adc_2_x_center, 0, ADC_MAX/2);
-			}
-			
-			adc_2_x = ((float)adc_2_x_calibrated)/ADC_MAX;
-		}
-		else {
-			adc_2_x = ((float)adc_read())/ADC_MAX;
-		}
-
-        if ( abs(adc_2_x - ANALOG_CENTER) < deadzone ) { // deadzones
-            adc_2_x = ANALOG_CENTER;
-        } else if ( analogOptions.analogAdc2Invert == InvertMode::INVERT_X ||
+        if ( analogOptions.analogAdc2Invert == InvertMode::INVERT_X ||
             analogOptions.analogAdc2Invert == InvertMode::INVERT_XY) {
             adc_2_x = ANALOG_MAX - adc_2_x;
         }
     }
     if ( isValidPin(analogOptions.analogAdc2PinY) ) {
-        adc_select_input(analogOptions.analogAdc2PinY-26); // ANALOG2-Y
-        
-		if (analogOptions.auto_calibrate) {
-			uint16_t adc_2_y_hold = adc_read();
+        adc_2_y = readPin(analogOptions.analogAdc2PinY, adc_2_y_center, analogOptions.auto_calibrate, adc_deadzone);
 
-			// Calibrate axis based on off-center
-			uint16_t adc_2_y_calibrated;
-			if (adc_2_y_hold > adc_2_y_center) {
-				adc_2_y_calibrated = map(adc_2_y_hold, adc_2_y_center, ADC_MAX, ADC_MAX/2, ADC_MAX);
-			}
-            else if (adc_2_y_hold == adc_2_y_center) {
-				adc_2_y_calibrated = ADC_MAX/2;
-			}
-			else{
-				adc_2_y_calibrated = map(adc_2_y_hold, 0, adc_2_y_center, 0, ADC_MAX/2);
-			}
-			
-			adc_2_y = ((float)adc_2_y_calibrated)/ADC_MAX;
-		}
-		else {
-			adc_2_y = ((float)adc_read())/ADC_MAX;
-		}
-
-        if ( abs(adc_2_y - ANALOG_CENTER) < deadzone ) { // deadzones
-            adc_2_y = ANALOG_CENTER;
-        } else if ( analogOptions.analogAdc2Invert == InvertMode::INVERT_Y ||
+        if ( analogOptions.analogAdc2Invert == InvertMode::INVERT_Y ||
             analogOptions.analogAdc2Invert == InvertMode::INVERT_XY) {
             adc_2_y = ANALOG_MAX - adc_2_y;
         }
@@ -199,23 +100,8 @@ void AnalogInput::process()
     
     // Alter coordinates to force perfect circularity
     if (analogOptions.forced_circularity) {
-        float adc_1_x_magnitude = adc_1_x-(ANALOG_CENTER);
-        float adc_1_y_magnitude = adc_1_y-(ANALOG_CENTER);
-        float adc_1_magnitude = sqrt((adc_1_x_magnitude * adc_1_x_magnitude) + (adc_1_y_magnitude * adc_1_y_magnitude));
-        
-        if ( adc_1_magnitude > ANALOG_CENTER) {
-            adc_1_x = ((adc_1_x_magnitude / adc_1_magnitude) * ANALOG_CENTER + ANALOG_CENTER);
-            adc_1_y = ((adc_1_y_magnitude / adc_1_magnitude) * ANALOG_CENTER + ANALOG_CENTER);
-        }
-
-        float adc_2_x_magnitude = adc_2_x-(ANALOG_CENTER);
-        float adc_2_y_magnitude = adc_2_y-(ANALOG_CENTER);
-        float adc_2_magnitude = sqrt((adc_2_x_magnitude * adc_2_x_magnitude) + (adc_2_y_magnitude * adc_2_y_magnitude));
-        
-        if ( adc_2_magnitude > ANALOG_CENTER) {
-            adc_2_x = ((adc_2_x_magnitude / adc_2_magnitude) * ANALOG_CENTER + ANALOG_CENTER);
-            adc_2_y = ((adc_2_y_magnitude / adc_2_magnitude) * ANALOG_CENTER + ANALOG_CENTER);
-        }
+        adjustCircularity(adc_1_x, adc_1_y);
+        adjustCircularity(adc_2_x, adc_2_y);
     }
 
     // Convert to 16-bit value
@@ -235,6 +121,48 @@ void AnalogInput::process()
     }
 }
 
+float AnalogInput::readPin(int pin, uint16_t center, bool autoCalibrate, float deadzone) {
+	adc_select_input(pin - 26);
+	uint16_t adc_hold = adc_read();
+
+	// Calibrate axis based on off-center
+	uint16_t adc_calibrated;
+
+	if (autoCalibrate) {
+		if (adc_hold > center) {
+			adc_calibrated = map(adc_hold, center, ADC_MAX, ADC_MAX / 2, ADC_MAX);
+		}
+		else if (adc_hold == center) {
+			adc_calibrated = ADC_MAX / 2;
+		}
+		else {
+			adc_calibrated = map(adc_hold, 0, center, 0, ADC_MAX / 2);
+		}
+	}
+	else {
+		adc_calibrated = adc_hold;
+	}
+
+	float adc_value = ((float)adc_calibrated) / ADC_MAX;
+
+	if (abs(adc_value - ANALOG_CENTER) < deadzone) { // deadzones
+		adc_value = ANALOG_CENTER;
+	}
+
+	return adc_value;
+}
+
 uint16_t AnalogInput::map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+void AnalogInput::adjustCircularity(float& x, float& y) {
+    float x_magnitude = x - ANALOG_CENTER;
+    float y_magnitude = y - ANALOG_CENTER;
+    float magnitude = sqrt((x_magnitude * x_magnitude) + (y_magnitude * y_magnitude));
+
+    if (magnitude > ANALOG_CENTER) {
+        x = ((x_magnitude / magnitude) * ANALOG_CENTER + ANALOG_CENTER);
+        y = ((y_magnitude / magnitude) * ANALOG_CENTER + ANALOG_CENTER);
+    }
 }
