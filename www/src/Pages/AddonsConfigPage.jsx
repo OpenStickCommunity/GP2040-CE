@@ -690,7 +690,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc2PinX}
 									onChange={handleChange}
 								>
-									<AvailablePinOptions pins={availableAnalogPins}/>
+									<AvailablePinOptions pins={ANALOG_PINS}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-2-pin-y-label')}
@@ -702,7 +702,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc2PinY}
 									onChange={handleChange}
 								>
-									<AvailablePinOptions pins={availableAnalogPins}/>
+									<AvailablePinOptions pins={ANALOG_PINS}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-2-mode-label')}
