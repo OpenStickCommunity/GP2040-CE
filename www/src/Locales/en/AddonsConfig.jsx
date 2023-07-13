@@ -20,6 +20,7 @@ export default {
 	'analog-adc-2-invert-label': 'Analog Stick 2 Invert',
 	'analog-force-circularity': 'Force Circularity',
 	'analog-deadzone-size': 'Deadzone Size (%)',
+	'analog-auto-calibrate': 'Auto Calibration',
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Turbo Pin',
 	'turbo-led-pin-label': 'Turbo Pin LED',

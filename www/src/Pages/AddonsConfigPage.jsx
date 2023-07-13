@@ -250,6 +250,7 @@ const schema = yup.object().shape({
 
 	forced_circularity:          yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone:             yup.number().label('Deadzone Size (%)').validateRangeWhenValue('AnalogInputEnabled', 0, 100),
+	auto_calibrate:              yup.number().label('Auto Calibration').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 
 	BoardLedAddonEnabled:        yup.number().required().label('Board LED Add-On Enabled'),
 	onBoardLedMode:              yup.number().label('On-Board LED Mode').validateSelectionWhenValue('BoardLedAddonEnabled', ON_BOARD_LED_MODES),
@@ -385,8 +386,9 @@ const defaultValues = {
  	analogAdc2PinY : -1,
 	analogAdc2Mode: 2,
 	analogAdc2Invert: 0,
-	forced_circularity : 0,
+	forced_circularity: 0,
 	analog_deadzone: 5,
+	auto_calibrate: 0,
 	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
@@ -750,6 +752,15 @@ export default function AddonsConfigPage() {
 									isInvalid={false}
 									checked={Boolean(values.forced_circularity)}
 									onChange={(e) => {handleCheckbox("forced_circularity", values); handleChange(e);}}
+								/>
+								<FormCheck
+									label={t('AddonsConfig:analog-auto-calibrate')}
+									type="switch"
+									id="Auto_calibrate"
+									className="col-sm-3 ms-2"
+									isInvalid={false}
+									checked={Boolean(values.auto_calibrate)}
+									onChange={(e) => {handleCheckbox("auto_calibrate", values); handleChange(e);}}
 								/>
 							</Row>
 						</div>
