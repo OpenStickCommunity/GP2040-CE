@@ -4,6 +4,7 @@
 #include "system.h"
 #include "enums.pb.h"
 
+#include "build_info.h"
 #include "configmanager.h" // Global Managers
 #include "storagemanager.h"
 #include "addonmanager.h"
