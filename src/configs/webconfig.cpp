@@ -367,11 +367,12 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	// addPinIfValid(boardOptions.i2cSDAPin);
 	// addPinIfValid(boardOptions.i2cSCLPin);
 
-	const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-	addPinIfValid(analogOptions.analogAdc1PinX);
-	addPinIfValid(analogOptions.analogAdc1PinY);
-	addPinIfValid(analogOptions.analogAdc2PinX);
-	addPinIfValid(analogOptions.analogAdc2PinY);
+	// TODO: Used Pins logic does not work in add-ons, fix this
+	// const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+	// addPinIfValid(analogOptions.analogAdc1PinX);
+	// addPinIfValid(analogOptions.analogAdc1PinY);
+	// addPinIfValid(analogOptions.analogAdc2PinX);
+	// addPinIfValid(analogOptions.analogAdc2PinY);
 
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(addonOptions.buzzerPin);
