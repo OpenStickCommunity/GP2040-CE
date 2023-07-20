@@ -10,3 +10,32 @@
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
+
+.ps4-inputs {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	gap: 8px;
+
+	.ps4-file-input {
+		border: $grey 1px solid;
+		padding: 8px;
+		border-radius: 4px;
+		box-sizing: border-box;
+		background-color: rgba(0, 0, 0, 0.034);
+
+		label {
+			font-weight: 600;
+			margin-bottom: 8px;
+		}
+
+		input[type="file"]::file-selector-button {
+			@include gp2040-btn-secondary;
+		}
+	}
+}
+
+#ps4error:empty,
+#ps4alert:empty {
+	display: none;
+}

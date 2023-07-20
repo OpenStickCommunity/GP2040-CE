@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Form, Row, FormCheck } from "react-bootstrap";
+import { Button, Form, Row, FormCheck, Alert } from "react-bootstrap";
 import { Formik, useFormikContext } from "formik";
 import * as yup from "yup";
 import { Trans, useTranslation } from "react-i18next";
@@ -166,6 +166,10 @@ const verifyAndSavePS4 = async () => {
 		return btoa(String.fromCharCode.apply(null, arr));
 	}
 
+	// reset error before trying again
+	document.getElementById("ps4error").textContent = "";
+	document.getElementById("ps4alert").textContent = "";
+
 	try {
 		const [pem, signature, serialFileContent] = await Promise.all([
 			loadFile(PS4Key.files[0], true),
@@ -220,7 +224,7 @@ const verifyAndSavePS4 = async () => {
 			throw Error("ERROR: Failed to upload the key to the board");
 		}
 	} catch (e) {
-		document.getElementById("ps4alert").textContent =
+		document.getElementById("ps4error").textContent =
 			"ERROR: Could not verify required files: ${e}";
 	}
 };
@@ -2281,44 +2285,47 @@ export default function AddonsConfigPage() {
 						</Section>
 						<Section title={t("AddonsConfig:ps4-mode-header-text")}>
 							<div id="PS4ModeOptions" hidden={!values.PS4ModeAddonEnabled}>
-								<Row>
-									<Trans ns="AddonsConfig" i18nKey="ps4-mode-sub-header-text">
-										<h2>
-											!!!! DISCLAIMER: GP2040-CE WILL NEVER SUPPLY THESE FILES
-											!!!!
-										</h2>
-										<p>
-											Please upload the 3 required files and click the
-											&quot;Verify & Save&quot; button to use PS4 Mode.
-										</p>
-									</Trans>
-								</Row>
-								<Row className="mb-3">
-									<div className="col-sm-4 mb-3">
-										{t("AddonsConfig:ps4-mode-private-key-label")}:
-										<input type="file" id="ps4key-input" accept="*/*" />
+								<Trans ns="AddonsConfig" i18nKey="ps4-mode-sub-header-text">
+									<Alert variant="warning">
+										!!!! DISCLAIMER: GP2040-CE WILL NEVER SUPPLY THESE FILES
+										!!!!
+									</Alert>
+									<p>
+										Please upload the 3 required files and click the
+										&quot;Verify & Save&quot; button to use PS4 Mode.
+									</p>
+								</Trans>
+								<div className="mb-4 ps4-inputs">
+									<div className="ps4-file-input">
+										<label>
+											{t("AddonsConfig:ps4-mode-private-key-label")}:
+										</label>
+										<input type="file" id="ps4key-input" accept=".pem" />
 									</div>
-									<div className="col-sm-4 mb-3">
-										{t("AddonsConfig:ps4-mode-serial-number-label")}:
-										<input type="file" id="ps4serial-input" accept="*/*" />
+									<div className="ps4-file-input">
+										<label>
+											{t("AddonsConfig:ps4-mode-serial-number-label")}:
+										</label>
+										<input type="file" id="ps4serial-input" accept=".txt" />
 									</div>
-									<div className="col-sm-4 mb-3">
-										{t("AddonsConfig:ps4-mode-signature-label")}:
-										<input type="file" id="ps4signature-input" accept="*/*" />
+									<div className="ps4-file-input">
+										<label>{t("AddonsConfig:ps4-mode-signature-label")}:</label>
+										<input type="file" id="ps4signature-input" accept=".bin" />
 									</div>
-								</Row>
-								<Row className="mb-3">
+								</div>
+								<div className="mb-3">
 									<div className="col-sm-3 mb-3">
 										<Button type="button" onClick={verifyAndSavePS4}>
 											{t("Common:button-verify-save-label")}
 										</Button>
 									</div>
-								</Row>
-								<Row className="mb-3">
-									<div className="col-sm-3 mb-3">
-										<span id="ps4alert"></span>
+								</div>
+								<div className="mb-3">
+									<div className="col-sm-12 mb-3">
+										<Alert variant="success" id="ps4alert"></Alert>
+										<Alert variant="danger" id="ps4error"></Alert>
 									</div>
-								</Row>
+								</div>
 							</div>
 							<FormCheck
 								label={t("Common:switch-enabled")}

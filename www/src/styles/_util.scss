@@ -2,6 +2,9 @@ $md-breakpoint: 720px;
 $sm-breakpoint: 480px;
 $lg-breakpoint: 1080px;
 $xl-breakpoint: 1440px;
+$magenta-primary: rgb(255, 0, 242);
+$black: rgb(37, 37, 37);
+$grey: #495057;
 
 // in case you want it for another size
 @mixin min-width($size) {
@@ -32,5 +35,41 @@ $xl-breakpoint: 1440px;
 @mixin min-width-xl {
 	@include min-width($xl-breakpoint) {
 		@content;
+	}
+}
+
+@mixin gp2040-btn-primary {
+	background-color: $magenta-primary;
+	border: $magenta-primary 1px solid;
+	border-radius: 4px;
+	box-sizing: border-box;
+	color: white;
+
+	&:hover {
+		background-color: darken($magenta-primary, 5);
+		cursor: pointer;
+	}
+
+	&:active {
+		background-color: darken($magenta-primary, 10);
+		cursor: pointer;
+	}
+}
+
+@mixin gp2040-btn-secondary {
+	background-color: $grey;
+	border: $grey 1px solid;
+	border-radius: 4px;
+	box-sizing: border-box;
+	color: white;
+
+	&:hover {
+		background-color: darken($grey, 5);
+		cursor: pointer;
+	}
+
+	&:active {
+		background-color: darken($grey, 10);
+		cursor: pointer;
 	}
 }
