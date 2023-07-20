@@ -1,0 +1,36 @@
+$md-breakpoint: 720px;
+$sm-breakpoint: 480px;
+$lg-breakpoint: 1080px;
+$xl-breakpoint: 1440px;
+
+// in case you want it for another size
+@mixin min-width($size) {
+	@media (min-width: $size) {
+		@content;
+	}
+}
+
+// ehh might as well use it
+@mixin min-width-sm {
+	@include min-width($sm-breakpoint) {
+		@content;
+	}
+}
+
+@mixin min-width-md {
+	@include min-width($md-breakpoint) {
+		@content;
+	}
+}
+
+@mixin min-width-lg {
+	@include min-width($lg-breakpoint) {
+		@content;
+	}
+}
+
+@mixin min-width-xl {
+	@include min-width($xl-breakpoint) {
+		@content;
+	}
+}

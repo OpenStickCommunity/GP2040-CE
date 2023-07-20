@@ -1,0 +1,12 @@
+@use "src/styles/util" as *;
+
+.add-ons-wrapper {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-template-rows: auto;
+	gap: 16px;
+
+	@include min-width-lg {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
