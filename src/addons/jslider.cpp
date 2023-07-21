@@ -12,30 +12,31 @@
 
 bool JSliderInput::available() {
     const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
-	return ( options.enabled && isValidPin(options.pinLS) && isValidPin(options.pinRS) );
+	return ( options.enabled && (isValidPin(options.pinLS) || isValidPin(options.pinRS)) );
 }
 
 void JSliderInput::setup()
 {
     const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
-    pinSliderLS = options.pinLS;
-    pinSliderRS = options.pinRS;
-
-    gpio_init(pinSliderLS);             // Initialize pin
-    gpio_set_dir(pinSliderLS, GPIO_IN); // Set as INPUT
-    gpio_pull_up(pinSliderLS);          // Set as PULLUP
-    gpio_init(pinSliderRS);
-    gpio_set_dir(pinSliderRS, GPIO_IN); // Set as INPUT
-    gpio_pull_up(pinSliderRS);          // Set as PULLUP
+    if ( isValidPin(options.pinLS)) {
+        gpio_init(pinSliderLS);             // Initialize pin
+        gpio_set_dir(pinSliderLS, GPIO_IN); // Set as INPUT
+        gpio_pull_up(pinSliderLS);          // Set as PULLUP    
+    }
+    if ( isValidPin(options.pinRS)) {
+        gpio_init(pinSliderRS);
+        gpio_set_dir(pinSliderRS, GPIO_IN); // Set as INPUT
+        gpio_pull_up(pinSliderRS);          // Set as PULLUP
+    }
 }
 
 DpadMode JSliderInput::read() {
-    if ( pinSliderLS != (uint8_t)-1 && pinSliderRS != (uint8_t)-1) {
-        if ( !gpio_get(pinSliderLS)) {
-            return DPAD_MODE_LEFT_ANALOG;
-        } else if ( !gpio_get(pinSliderRS)) {
-            return DPAD_MODE_RIGHT_ANALOG;
-        }
+    const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
+    if ( isValidPin(options.pinLS) && !gpio_get(options.pinLS)) {
+        return DPAD_MODE_LEFT_ANALOG;
+    }
+    if ( isValidPin(options.pinRS) && !gpio_get(options.pinRS)) {
+        return DPAD_MODE_RIGHT_ANALOG;
     }
     return  DPAD_MODE_DIGITAL;
 }
