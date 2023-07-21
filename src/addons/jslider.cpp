@@ -19,14 +19,14 @@ void JSliderInput::setup()
 {
     const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
     if ( isValidPin(options.pinLS)) {
-        gpio_init(pinSliderLS);             // Initialize pin
-        gpio_set_dir(pinSliderLS, GPIO_IN); // Set as INPUT
-        gpio_pull_up(pinSliderLS);          // Set as PULLUP    
+        gpio_init(options.pinLS);             // Initialize pin
+        gpio_set_dir(options.pinLS, GPIO_IN); // Set as INPUT
+        gpio_pull_up(options.pinLS);          // Set as PULLUP    
     }
     if ( isValidPin(options.pinRS)) {
-        gpio_init(pinSliderRS);
-        gpio_set_dir(pinSliderRS, GPIO_IN); // Set as INPUT
-        gpio_pull_up(pinSliderRS);          // Set as PULLUP
+        gpio_init(options.pinRS);
+        gpio_set_dir(options.pinRS, GPIO_IN); // Set as INPUT
+        gpio_pull_up(options.pinRS);          // Set as PULLUP
     }
 }
 
