@@ -32,10 +32,10 @@
 #define PIN_BUTTON_S2   17          // S2 / Start / Plus / Start / 10 / Start
 #define PIN_BUTTON_L3   18          // L3 / LS / LS / L3 / 11 / LS
 #define PIN_BUTTON_R3   19          // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   31          // A1 / Guide / Home / PS / 13 / ~
-#define PIN_BUTTON_A2   32          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_A1   20          // A1 / Guide / Home / PS / 13 / ~
+#define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_FN   -1          // Hotkey Function
-#define PIN_BUTTON_TURBO 17         // Turbo
+#define PIN_BUTTON_TURBO 14         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
@@ -223,7 +223,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
+#define BOARD_LED_TYPE INPUT_TEST
 
 // Dual Directional Add-on Options
 
