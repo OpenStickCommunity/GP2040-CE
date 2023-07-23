@@ -6,6 +6,12 @@ const configCategories = [
 ];
 
 const configData = {
+	AlpacaOwO: {
+		name: 'Dogtopus Alpaca-OwO',
+		category: configCategories[1],
+		website: 'https://github.com/Project-Alpaca/Alpaca-OwO',
+		desc: 'Arcade controller I/O platform'
+	},
 	BentoBox: {
 		name: 'ScrubTier BentoBox',
 		category: configCategories[2],
@@ -41,6 +47,12 @@ const configData = {
 		category: configCategories[1],
 		website: 'https://github.com/jfedor2/flatbox/tree/master/hardware-rev5',
 		desc: 'Stickless PCB designed by <a target="_blank" href="https://github.com/jfedor2">jfedor2</a> using the Waveshare RP2040-Zero.'
+	},
+	FlatboxRev5RGB: {
+		name: 'Flatbox Rev 5 RGB',
+		category: configCategories[1],
+		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/Flatbox%20Rev%205%20RGB',
+		desc: 'Stickless PCB designed by <a target="_blank" href="https://github.com/jfedor2">jfedor2</a> and <a target="_blank" href="https://github.com/TheTrainGoes">TheTrain</a> using the Waveshare RP2040-Zero.'
 	},
 	KB2040: {
 		name: 'Adafruit KB2040',
