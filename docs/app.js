@@ -7,10 +7,10 @@ const configCategories = [
 
 const configData = {
 	AlpacaOwO: {
-		name: 'Dogtopus Alpaca-OwO',
+		name: 'Alpaca-OwO',
 		category: configCategories[1],
 		website: 'https://github.com/Project-Alpaca/Alpaca-OwO',
-		desc: 'Arcade controller I/O platform'
+		desc: 'Arcade controller I/O platform designed by <a target="_blank" href="https://github.com/dogtopus">dogtopus</a>.'
 	},
 	BentoBox: {
 		name: 'ScrubTier BentoBox',
