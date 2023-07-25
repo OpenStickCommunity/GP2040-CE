@@ -36,6 +36,12 @@ const configData = {
 		website: 'https://docs.thnikk.moe/models/fightboard/v3.html',
 		desc: ''
 	},
+	FightingBoxV1: {
+		name: 'FightingBoxV1',
+		category: configCategories[3],
+		website: 'https://fr.aliexpress.com/item/1005005193080741.html',
+		desc: ''
+	},
 	FlatboxRev4: {
 		name: 'Flatbox Rev 4',
 		category: configCategories[1],
