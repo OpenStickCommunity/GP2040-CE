@@ -163,8 +163,8 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 * `Analog Stick 2 Mode` - Choose if Analog Stick 2 is to be used for Left Analog or Right Analog (must be different than Analog Stick 1).
 * `Analog Stick 2 Invert` - Choose if you would like to flip the X or Y axis Analog Stick 2 inputs (or both).
 * `Deadzone Size (%)` - Enter the % value of deadzone you would like on the analog sticks.
-* `Forced Circularity` - Enables additional logic to reduce error rates by reducing maximum output by a small amount.
-* `Auto Calibration` - Attempts to automatically calibrate the analog inputs based on maximum inputs on the X and Y axis.
+* `Forced Circularity` - Force the analog sticks to be bound within a perfect circle. This can be beneficial for certain games. However, be aware that this may negatively impact some games which account for sticks moving outside of a circle.
+* `Auto Calibration` - Automatically centers the analog sticks. This works by reading in the offset from center during boot and then accounts for that until the next power cycle. This can be helpful for analog sticks experiencing drift.
 
 
 
