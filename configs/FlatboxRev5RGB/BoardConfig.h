@@ -3,10 +3,32 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef PICO_BOARD_CONFIG_H_
-#define PICO_BOARD_CONFIG_H_
+#ifndef FLATBOX_REV5_RGB_CONFIG_H_
+#define FLATBOX_REV5_RGB_CONFIG_H_
 
 #include "enums.pb.h"
+
+// Mapping between Flatbox rev5 RGB switch number (as silkscreened) and GPIO pin
+
+#define FLATBOX_SW1_PIN    14
+#define FLATBOX_SW2_PIN    15
+#define FLATBOX_SW3_PIN    26
+#define FLATBOX_SW4_PIN    27
+#define FLATBOX_SW5_PIN    28
+#define FLATBOX_SW6_PIN    29
+#define FLATBOX_SW7_PIN    13 // LEFT
+#define FLATBOX_SW8_PIN    12 // DOWN
+#define FLATBOX_SW9_PIN    11 // RIGHT
+#define FLATBOX_SW10_PIN    8 // P1 / SQUARE
+#define FLATBOX_SW11_PIN    6 // P2 / TRIANGLE
+#define FLATBOX_SW12_PIN    4 // P3
+#define FLATBOX_SW13_PIN    2 // P4
+#define FLATBOX_SW14_PIN    9 // K1 / CROSS
+#define FLATBOX_SW15_PIN    7 // K2 / CIRCLE
+#define FLATBOX_SW16_PIN    5 // K3
+#define FLATBOX_SW17_PIN    3 // K4
+#define FLATBOX_SW18_PIN   10 // UP / THUMB
+
 
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
@@ -16,27 +38,27 @@
 // Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
-#define PIN_DPAD_UP     2           // UP
-#define PIN_DPAD_DOWN   3           // DOWN
-#define PIN_DPAD_RIGHT  4           // RIGHT
-#define PIN_DPAD_LEFT   5           // LEFT
-#define PIN_BUTTON_B1   6           // B1 / A / B / Cross / 2 / K1
-#define PIN_BUTTON_B2   7           // B2 / B / A / Circle / 3 / K2
-#define PIN_BUTTON_R2   8           // R2 / RT / ZR / R2 / 8 / K3
-#define PIN_BUTTON_L2   9           // L2 / LT / ZL / L2 / 7 / K4
-#define PIN_BUTTON_B3   10          // B3 / X / Y / Square / 1 / P1
-#define PIN_BUTTON_B4   11          // B4 / Y / X / Triangle / 4 / P2
-#define PIN_BUTTON_R1   12          // R1 / RB / R / R1 / 6 / P3
-#define PIN_BUTTON_L1   13          // L1 / LB / L / L1 / 5 / P4
-#define PIN_BUTTON_S1   16          // S1 / Back / Minus / Select / 9 / Coin
-#define PIN_BUTTON_S2   17          // S2 / Start / Plus / Start / 10 / Start
-#define PIN_BUTTON_L3   18          // L3 / LS / LS / L3 / 11 / LS
-#define PIN_BUTTON_R3   19          // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   20          // A1 / Guide / Home / PS / 13 / ~
-#define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_DPAD_UP     FLATBOX_SW18_PIN         // DOWN
+#define PIN_DPAD_DOWN   FLATBOX_SW8_PIN          // UP
+#define PIN_DPAD_RIGHT  FLATBOX_SW9_PIN          // RIGHT
+#define PIN_DPAD_LEFT   FLATBOX_SW7_PIN          // LEFT
+#define PIN_BUTTON_B1   FLATBOX_SW14_PIN         // B1 / A / B / Cross / 2 / K1
+#define PIN_BUTTON_B2   FLATBOX_SW15_PIN         // B2 / B / A / Circle / 3 / K2
+#define PIN_BUTTON_R2   FLATBOX_SW16_PIN         // R2 / RT / ZR / R2 / 8 / K3
+#define PIN_BUTTON_L2   FLATBOX_SW17_PIN         // L2 / LT / ZL / L2 / 7 / K4
+#define PIN_BUTTON_B3   FLATBOX_SW10_PIN         // B3 / X / Y / Square / 1 / P1
+#define PIN_BUTTON_B4   FLATBOX_SW11_PIN         // B4 / Y / X / Triangle / 4 / P2
+#define PIN_BUTTON_R1   FLATBOX_SW12_PIN         // R1 / RB / R / R1 / 6 / P3
+#define PIN_BUTTON_L1   FLATBOX_SW13_PIN         // L1 / LB / L / L1 / 5 / P4
+#define PIN_BUTTON_S1   FLATBOX_SW2_PIN          // S1 / Back / Minus / Select / 9 / Coin
+#define PIN_BUTTON_S2   FLATBOX_SW1_PIN          // S2 / Start / Plus / Start / 10 / Start
+#define PIN_BUTTON_L3   FLATBOX_SW5_PIN          // L3 / LS / LS / L3 / 11 / LS
+#define PIN_BUTTON_R3   FLATBOX_SW6_PIN          // R3 / RS / RS / R3 / 12 / RS
+#define PIN_BUTTON_A1   FLATBOX_SW3_PIN          // A1 / Guide / Home / PS / 13 / ~
+#define PIN_BUTTON_A2   FLATBOX_SW4_PIN          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_FN   -1          // Hotkey Function
-#define PIN_BUTTON_TURBO 14         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
+#define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_SLIDER_LS    -1         // Left Stick Slider
 #define PIN_SLIDER_RS    -1         // Right Stick Slider
 #define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
@@ -82,34 +104,27 @@
 // The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
-#define TURBO_LED_PIN 15
+#define TURBO_LED_PIN -1
+#define BOARD_LEDS_PIN 0
+#define REVERSE_LED_PIN -1
 
-#define BOARD_LEDS_PIN 28
-
-#define LED_BRIGHTNESS_MAXIMUM 150
+#define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
-#define LEDS_PER_PIXEL 1
+#define LEDS_PER_PIXEL 2
 
-#define LEDS_DPAD_LEFT   11
-#define LEDS_DPAD_DOWN   10
-#define LEDS_DPAD_RIGHT  9
-#define LEDS_DPAD_UP     0
-#define LEDS_BUTTON_B3   8
-#define LEDS_BUTTON_B4   7
+#define LEDS_DPAD_LEFT   0
+#define LEDS_DPAD_DOWN   1
+#define LEDS_DPAD_RIGHT  2
+#define LEDS_DPAD_UP     3
+#define LEDS_BUTTON_B3   4
+#define LEDS_BUTTON_B4   5
 #define LEDS_BUTTON_R1   6
-#define LEDS_BUTTON_L1   5
-#define LEDS_BUTTON_B1   1
-#define LEDS_BUTTON_B2   2
-#define LEDS_BUTTON_R2   3
-#define LEDS_BUTTON_L2   4
-#define LEDS_BUTTON_S1   -1
-#define LEDS_BUTTON_S2   -1
-#define LEDS_BUTTON_L3   -1
-#define LEDS_BUTTON_R3   -1
-#define LEDS_BUTTON_A1   -1
-#define LEDS_BUTTON_A2   -1
-
+#define LEDS_BUTTON_L1   7
+#define LEDS_BUTTON_B1   8
+#define LEDS_BUTTON_B2   9
+#define LEDS_BUTTON_R2   10
+#define LEDS_BUTTON_L2   11
 
 // This is the Player LED section.
 // In this section you can specify if Player LEDs will be active, and, if active, which pins will be used for them.
@@ -121,17 +136,17 @@
 // 2 - `PLED_TYPE_PWM` - This will enable the Player LEDs ( it is recommended to run through 3V3(OUT) with a resistor)
 // 3 - `PLED_TYPE_RGB` - This will enable the Player LEDs as addressible RGB LEDs (please not that this has not been implemented yet)
 
-#define PLED_TYPE PLED_TYPE_NONE
-#define PLED1_PIN 16
-#define PLED2_PIN 17
-#define PLED3_PIN 18
-#define PLED4_PIN 19
-
+#define PLED_TYPE PLED_TYPE_RGB
+#define PLED1_PIN 24
+#define PLED2_PIN 25
+#define PLED3_PIN 26
+#define PLED4_PIN 27
+#define PLED_COLOR ColorGreen
 
 // This is the Analog section.
 // In this section you can specify if Analog is enabled, and, if endabled, which pins will be used for it.
 // The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
-// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
+// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired.
 
 #define ANALOG_ADC_1_VRX -1
 #define ANALOG_ADC_1_VRY -1
@@ -147,7 +162,7 @@
 // This is the I2C Display section (commonly known as the OLED display section).
 // In this section you can specify if a display as been enabled, which pins are assined to it, the block address and speed.
 // The default for `HAS_I2C_DISPLAY` is `1` which enables it.
-// To disable the display you can change `HAS_I2C_DISPLAY` to `-1`.
+// To disable the display you can change `HAS_I2C_DISPLAY` to `0`.
 // The default `I2C_SDA_PIN` is `0`.
 // The defualt `I2C_SCL_PIN` is `1`.
 // The defualt `I2C_BLOCK` is `12c0`.
@@ -159,6 +174,23 @@
 // This can be changed to `1` to have the dispaly output flipped.
 // The default `DISPLAY_INVERY` is `0`.
 // This can be changed to `1` to have the color on the display inverted.
+
+#define HAS_I2C_DISPLAY 0
+
+
+// The default `SPLASH_MODE` is `NOSPLASH`.
+// There are four options for `SPLASH_MODE` currently:
+// 1 - `STATICSPLASH` - This will display the static splash image
+// 2 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
+// 3 - `CLOSEINCUSTOM` - This will display the custom splash image as a top and bottom coming together animation
+// 4 - `NOSPLASH` - This will not display a splash screen on boot
+// Special note - All of the splash screen images can be changed via `include/bitmaps.h`
+
+#define SPLASH_MODE SPLASH_MODE_NONE
+#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
+#define SPLASH_DURATION 7500 // Duration in milliseconds
+
+
 // The default `BUTTON_LAYOUT` is `BUTTON_LAYOUT_STICK` which will show an arcade stick on the left hand side of the display.
 // There are seven options for `BUTTON_LAYOUT` currently:
 // 1 - BUTTON_LAYOUT_STICK - This is a basic joystick layout
@@ -181,41 +213,14 @@
 // 9 - BUTTON_LAYOUT_NOIR8 - This is the standard 8 button Noir layout
 // 10 - BUTTON_LAYOUT_KEYBOARDB - This is a WASD keyboard layout that is straight
 // 11 - BUTTON_LAYOUT_DANCEPADB - This is a dance pad layout (must be used with `BUTTON_LAYOUT_DANCEPADA` in `BUTTON_LAYOUT`)
-// The default `SPLASH_MODE` is `NOSPLASH`.
-// There are four options for `SPLASH_MODE` currently:
-// 1 - `STATICSPLASH` - This will display the static splash image
-// 2 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
-// 3 - `CLOSEINCUSTOM` - This will display the custom splash image as a top and bottom coming together animation
-// 4 - `NOSPLASH` - This will not display a splash screen on boot
-// Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define HAS_I2C_DISPLAY 1
-#define I2C_SDA_PIN 0
-#define I2C_SCL_PIN 1
-#define I2C_BLOCK i2c1
-#define I2C_SPEED 400000
-#define DISPLAY_FLIP 0
-#define DISPLAY_INVERT 0
+#define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESSB
 
-// I2C Analog ADS1219 Add-on Options
-#define I2C_ANALOG1219_SDA_PIN -1
-#define I2C_ANALOG1219_SCL_PIN -1
-#define I2C_ANALOG1219_BLOCK i2c0
-#define I2C_ANALOG1219_SPEED 400000
-#define I2C_ANALOG1219_ADDRESS 0x40
-
-// Reverse Button section
-#define REVERSE_LED_PIN -1
 #define REVERSE_UP_DEFAULT 1
 #define REVERSE_DOWN_DEFAULT 1
 #define REVERSE_LEFT_DEFAULT 1
 #define REVERSE_RIGHT_DEFAULT 1
-
-#define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
-#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESSB
-#define SPLASH_MODE SPLASH_MODE_NONE
-#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
-#define SPLASH_DURATION 7500 // Duration in milliseconds
 
 // Board LED Add-on Setting
 // BOARD_LED_OFF  - Turns the on-board LED off

@@ -250,6 +250,7 @@ const schema = yup.object().shape({
 
 	forced_circularity:          yup.number().label('Force Circularity').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone:             yup.number().label('Deadzone Size (%)').validateRangeWhenValue('AnalogInputEnabled', 0, 100),
+	auto_calibrate:              yup.number().label('Auto Calibration').validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 
 	BoardLedAddonEnabled:        yup.number().required().label('Board LED Add-On Enabled'),
 	onBoardLedMode:              yup.number().label('On-Board LED Mode').validateSelectionWhenValue('BoardLedAddonEnabled', ON_BOARD_LED_MODES),
@@ -385,8 +386,9 @@ const defaultValues = {
  	analogAdc2PinY : -1,
 	analogAdc2Mode: 2,
 	analogAdc2Invert: 0,
-	forced_circularity : 0,
+	forced_circularity: 0,
 	analog_deadzone: 5,
+	auto_calibrate: 0,
 	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
@@ -690,7 +692,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc2PinX}
 									onChange={handleChange}
 								>
-									<AvailablePinOptions pins={availableAnalogPins}/>
+									<AvailablePinOptions pins={ANALOG_PINS}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-2-pin-y-label')}
@@ -702,7 +704,7 @@ export default function AddonsConfigPage() {
 									isInvalid={errors.analogAdc2PinY}
 									onChange={handleChange}
 								>
-									<AvailablePinOptions pins={availableAnalogPins}/>
+									<AvailablePinOptions pins={ANALOG_PINS}/>
 								</FormSelect>
 								<FormSelect
 									label={t('AddonsConfig:analog-adc-2-mode-label')}
@@ -750,6 +752,15 @@ export default function AddonsConfigPage() {
 									isInvalid={false}
 									checked={Boolean(values.forced_circularity)}
 									onChange={(e) => {handleCheckbox("forced_circularity", values); handleChange(e);}}
+								/>
+								<FormCheck
+									label={t('AddonsConfig:analog-auto-calibrate')}
+									type="switch"
+									id="Auto_calibrate"
+									className="col-sm-3 ms-2"
+									isInvalid={false}
+									checked={Boolean(values.auto_calibrate)}
+									onChange={(e) => {handleCheckbox("auto_calibrate", values); handleChange(e);}}
 								/>
 							</Row>
 						</div>
@@ -1321,7 +1332,7 @@ export default function AddonsConfigPage() {
 									name="tilt1Pin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tilt1Pin || -1}
+									value={values.tilt1Pin}
 									error={errors.tilt1Pin}
 									isInvalid={errors.tilt1Pin}
 									onChange={handleChange}
@@ -1333,7 +1344,7 @@ export default function AddonsConfigPage() {
 									name="tilt2Pin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tilt2Pin || -1}
+									value={values.tilt2Pin}
 									error={errors.tilt2Pin}
 									isInvalid={errors.tilt2Pin}
 									onChange={handleChange}
@@ -1347,7 +1358,7 @@ export default function AddonsConfigPage() {
 									name="tiltLeftAnalogUpPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tiltLeftAnalogUpPin || -1}
+									value={values.tiltLeftAnalogUpPin}
 									error={errors.tiltLeftAnalogUpPin}
 									isInvalid={errors.tiltLeftAnalogUpPin}
 									onChange={handleChange}
@@ -1359,7 +1370,7 @@ export default function AddonsConfigPage() {
 									name="tiltLeftAnalogDownPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tiltLeftAnalogDownPin || -1}
+									value={values.tiltLeftAnalogDownPin}
 									error={errors.tiltLeftAnalogDownPin}
 									isInvalid={errors.tiltLeftAnalogDownPin}
 									onChange={handleChange}
@@ -1371,7 +1382,7 @@ export default function AddonsConfigPage() {
 									name="tiltLeftAnalogLeftPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tiltLeftAnalogLeftPin || -1}
+									value={values.tiltLeftAnalogLeftPin}
 									error={errors.tiltLeftAnalogLeftPin}
 									isInvalid={errors.tiltLeftAnalogLeftPin}
 									onChange={handleChange}
@@ -1383,7 +1394,7 @@ export default function AddonsConfigPage() {
 									name="tiltLeftAnalogRightPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tiltLeftAnalogRightPin || -1}
+									value={values.tiltLeftAnalogRightPin}
 									error={errors.tiltLeftAnalogRightPin}
 									isInvalid={errors.tiltLeftAnalogRightPin}
 									onChange={handleChange}
@@ -1397,7 +1408,7 @@ export default function AddonsConfigPage() {
 									name="tiltRightAnalogUpPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tiltRightAnalogUpPin || -1}
+									value={values.tiltRightAnalogUpPin}
 									error={errors.tiltRightAnalogUpPin}
 									isInvalid={errors.tiltRightAnalogUpPin}
 									onChange={handleChange}
@@ -1409,7 +1420,7 @@ export default function AddonsConfigPage() {
 									name="tiltRightAnalogDownPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tiltRightAnalogDownPin || -1}
+									value={values.tiltRightAnalogDownPin}
 									error={errors.tiltRightAnalogDownPin}
 									isInvalid={errors.tiltRightAnalogDownPin}
 									onChange={handleChange}
@@ -1421,7 +1432,7 @@ export default function AddonsConfigPage() {
 									name="tiltRightAnalogLeftPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tiltRightAnalogLeftPin || -1}
+									value={values.tiltRightAnalogLeftPin}
 									error={errors.tiltRightAnalogLeftPin}
 									isInvalid={errors.tiltRightAnalogLeftPin}
 									onChange={handleChange}
@@ -1433,7 +1444,7 @@ export default function AddonsConfigPage() {
 									name="tiltRightAnalogRightPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.tiltRightAnalogRightPin || -1}
+									value={values.tiltRightAnalogRightPin}
 									error={errors.tiltRightAnalogRightPin}
 									isInvalid={errors.tiltRightAnalogRightPin}
 									onChange={handleChange}
@@ -1925,6 +1936,7 @@ export default function AddonsConfigPage() {
 							onChange={(e) => { handleCheckbox("FocusModeAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
+				{/*
 					<Section title={t('AddonsConfig:keyboard-host-header-text')}>
 						<div
 							id="KeyboardHostAddonOptions"
@@ -1969,6 +1981,7 @@ export default function AddonsConfigPage() {
 							onChange={(e) => { handleCheckbox("KeyboardHostAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
+									*/}
 					<div className="mt-3">
 						<Button type="submit" id="save">{t('Common:button-save-label')}</Button>
 						{saveMessage ? <span className="alert">{saveMessage}</span> : null}

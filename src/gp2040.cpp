@@ -4,6 +4,7 @@
 #include "system.h"
 #include "enums.pb.h"
 
+#include "build_info.h"
 #include "configmanager.h" // Global Managers
 #include "storagemanager.h"
 #include "addonmanager.h"
@@ -102,7 +103,7 @@ void GP2040::setup() {
 	adc_init();
 
 	// Setup Add-ons
-  	addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
+  	//addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);

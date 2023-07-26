@@ -367,11 +367,12 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 	// addPinIfValid(boardOptions.i2cSDAPin);
 	// addPinIfValid(boardOptions.i2cSCLPin);
 
-	const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-	addPinIfValid(analogOptions.analogAdc1PinX);
-	addPinIfValid(analogOptions.analogAdc1PinY);
-	addPinIfValid(analogOptions.analogAdc2PinX);
-	addPinIfValid(analogOptions.analogAdc2PinY);
+	// TODO: Used Pins logic does not work in add-ons, fix this
+	// const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
+	// addPinIfValid(analogOptions.analogAdc1PinX);
+	// addPinIfValid(analogOptions.analogAdc1PinY);
+	// addPinIfValid(analogOptions.analogAdc2PinX);
+	// addPinIfValid(analogOptions.analogAdc2PinY);
 
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(addonOptions.buzzerPin);
@@ -913,6 +914,7 @@ std::string setAddonOptions()
 	docToValue(analogOptions.analogAdc2Invert, doc, "analogAdc2Invert");
 	docToValue(analogOptions.forced_circularity, doc, "forced_circularity");
 	docToValue(analogOptions.analog_deadzone, doc, "analog_deadzone");
+	docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
 	docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
@@ -1152,6 +1154,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "analogAdc2Invert", analogOptions.analogAdc2Invert);
 	writeDoc(doc, "forced_circularity", analogOptions.forced_circularity);
 	writeDoc(doc, "analog_deadzone", analogOptions.analog_deadzone);
+	writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
