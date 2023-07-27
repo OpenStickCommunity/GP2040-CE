@@ -43,6 +43,9 @@ export default {
 		'invert-y': 'Invert Y Axis',
 		'toggle-4way-joystick-mode': 'Toggle 4-Way Joystick Mode',
 		'toggle-ddi-4way-joystick-mode': 'Toggle DDI 4-Way Joystick Mode',
+		'l3-button': 'L3 Button',
+		'r3-button': 'R3 Button',
+		'touchpad-button': 'Touchpad Button',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {

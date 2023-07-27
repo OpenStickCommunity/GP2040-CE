@@ -49,6 +49,9 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.invert-y', value: 10 },
 	{ labelKey: 'hotkey-actions.toggle-4way-joystick-mode', value: 13 },
 	{ labelKey: 'hotkey-actions.toggle-ddi-4way-joystick-mode', value: 14 },
+	{ labelKey: 'hotkey-actions.l3-button', value: 15 },
+	{ labelKey: 'hotkey-actions.r3-button', value: 16 },
+	{ labelKey: 'hotkey-actions.touchpad-button', value: 17 },
 ];
 
 const FORCED_SETUP_MODES = [

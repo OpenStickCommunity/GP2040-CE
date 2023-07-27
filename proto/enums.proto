@@ -136,6 +136,9 @@ enum GamepadHotkey
     HOTKEY_SOCD_BYPASS           = 12;
     HOTKEY_TOGGLE_4_WAY_MODE     = 13;
     HOTKEY_TOGGLE_DDI_4_WAY_MODE = 14;
+    HOTKEY_L3_BUTTON             = 15;
+    HOTKEY_R3_BUTTON             = 16;
+    HOTKEY_TOUCHPAD_BUTTON       = 17;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
