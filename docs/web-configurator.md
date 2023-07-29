@@ -352,6 +352,22 @@ Supported controller types and their mapping is as follows:
 * `Lock RGB LED` - When enabled the RGB LEDs that are controlled by the RP2040 device will not display anything during Focus Mode.
 * `Lock Buttons` - When enabled the You can specify specific buttons to not function during Focus Mode.  You can add as many additional buttons as needed here.
 
+### Keyboard Host Configuration
+
+![GP2040 Configurator - Keyboard Host Configuration](assets/images/gpc-add-ons-keyboard-host-configuration.png)
+
+* `D+` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040
+* `D-` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
+
+#### Example Wiring Diagram
+
+![USB Host Wiring Diagram](assets/images/gpc-add-ons-keyboard-host-configuration-wiring-diagram.png)
+
+* `VCC` - Connects to 5V power (Example: VBUS on the Raspberry Pi Pico)
+* `D+` - Connects to the `D+` GPIO Pin above, set in the Web Configurator. (Example: GPIO0 on the Raspberry Pi Pico)
+* `D+` - Connects to the `D-` GPIO Pin above, set in the Web Configurator. (Example: GPIO1 on the Raspberry Pi Pico)
+* `GND` - Connects to a ground pin, any `GND` pin will work. (Example: VBUS on the Raspberry Pi Pico)
+
 ## Data Backup and Restoration
 
 ![GP2040-CE Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
