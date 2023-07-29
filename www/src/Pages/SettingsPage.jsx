@@ -56,6 +56,7 @@ const HOTKEY_ACTIONS = [
   { labelKey: 'hotkey-actions.l3-button', value: 19 },
 	{ labelKey: 'hotkey-actions.r3-button', value: 20 },
 	{ labelKey: 'hotkey-actions.touchpad-button', value: 21 },
+	{ labelKey: 'hotkey-actions.reboot-default', value: 22 },
 ];
 
 const FORCED_SETUP_MODES = [

@@ -12,6 +12,7 @@
 #include "CRC32.h"
 
 #include "storagemanager.h"
+#include "system.h"
 
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
@@ -326,6 +327,7 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;  reqSave = true;break;
 		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; reqSave = true; break;
+		case HOTKEY_REBOOT_DEFAULT    : System::reboot(System::BootMode::DEFAULT); break;
 		case HOTKEY_CAPTURE_BUTTON    :
 			if (options.inputMode == INPUT_MODE_PS4 && options.switchTpShareForDs4) {
 				state.buttons |= GAMEPAD_MASK_A2;
