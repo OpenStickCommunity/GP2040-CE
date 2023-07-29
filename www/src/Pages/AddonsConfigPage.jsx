@@ -1936,7 +1936,7 @@ export default function AddonsConfigPage() {
 							onChange={(e) => { handleCheckbox("FocusModeAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-				{/*
+				{
 					<Section title={t('AddonsConfig:keyboard-host-header-text')}>
 						<div
 							id="KeyboardHostAddonOptions"
@@ -1981,7 +1981,7 @@ export default function AddonsConfigPage() {
 							onChange={(e) => { handleCheckbox("KeyboardHostAddonEnabled", values); handleChange(e);}}
 						/>
 					</Section>
-									*/}
+									}
 					<div className="mt-3">
 						<Button type="submit" id="save">{t('Common:button-save-label')}</Button>
 						{saveMessage ? <span className="alert">{saveMessage}</span> : null}
