@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const { pico: picoController } = JSON.parse(
-	readFileSync(path.resolve(__dirname, "../src/Data/Controllers.json"), "utf8")
+	readFileSync(path.resolve(__dirname, "../src/Data/Controllers.json"), "utf8"),
 );
 
 const port = process.env.PORT || 8080;
@@ -95,63 +95,63 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
-			action: 4
+			action: 4,
 		},
 		hotkey02: {
 			auxMask: 0,
 			buttonsMask: 131840,
-			action: 1
+			action: 1,
 		},
 		hotkey03: {
 			auxMask: 0,
 			buttonsMask: 262912,
-			action: 2
+			action: 2,
 		},
 		hotkey04: {
 			auxMask: 0,
 			buttonsMask: 525056,
-			action: 3
+			action: 3,
 		},
 		hotkey05: {
 			auxMask: 0,
 			buttonsMask: 70144,
-			action: 6
+			action: 6,
 		},
 		hotkey06: {
 			auxMask: 0,
 			buttonsMask: 135680,
-			action: 7
+			action: 7,
 		},
 		hotkey07: {
 			auxMask: 0,
 			buttonsMask: 266752,
-			action: 8
+			action: 8,
 		},
 		hotkey08: {
 			auxMask: 0,
 			buttonsMask: 528896,
-			action: 10
+			action: 10,
 		},
 		hotkey09: {
 			auxMask: 0,
 			buttonsMask: 0,
-			action: 0
+			action: 0,
 		},
 		hotkey10: {
 			auxMask: 0,
 			buttonsMask: 0,
-			action: 0
+			action: 0,
 		},
 		hotkey11: {
 			auxMask: 0,
 			buttonsMask: 0,
-			action: 0
+			action: 0,
 		},
 		hotkey12: {
 			auxMask: 0,
 			buttonsMask: 0,
-			action: 0
-		}
+			action: 0,
+		},
 	});
 });
 
@@ -223,7 +223,7 @@ app.get("/api/getPinMappings", (req, res) => {
 });
 
 app.get("/api/getKeyMappings", (req, res) =>
-	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING))
+	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
 );
 
 app.get("/api/getAddonsOptions", (req, res) => {

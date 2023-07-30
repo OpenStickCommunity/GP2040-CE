@@ -13,16 +13,16 @@ export default {
 	"button-verify-save-label": "Verify & Save",
 	"saved-success-message": "Saved! Please Restart Your Device",
 	"saved-error-message": "Unable to Save",
-	'errors': {
-		"required": "required",
-		"conflict": "conflict",
-		"invalid": "invalid",
-		"used": "used",
+	errors: {
+		required: "required",
+		conflict: "conflict",
+		invalid: "invalid",
+		used: "used",
 		"validation-error": "Validation errors, see above",
 	},
-	'switch-enabled': 'Enabled',
-	'lock-oled-screen': 'Lock OLED Screen',
-	'lock-rgb-led': 'Lock RGB LED',
-	'lock-buttons': 'Lock Buttons',
-	'loading-text': 'Loading...'
+	"switch-enabled": "Enabled",
+	"lock-oled-screen": "Lock OLED Screen",
+	"lock-rgb-led": "Lock RGB LED",
+	"lock-buttons": "Lock Buttons",
+	"loading-text": "Loading...",
 };

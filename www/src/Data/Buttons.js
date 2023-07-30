@@ -20,7 +20,7 @@ export const BUTTONS = {
 		R3: "R3",
 		A1: "A1",
 		A2: "A2",
-		Fn: "Function"
+		Fn: "Function",
 	},
 	arcade: {
 		label: "Arcade",
@@ -43,7 +43,7 @@ export const BUTTONS = {
 		R3: "R3",
 		A1: "Home",
 		A2: "-",
-		Fn: "Function"
+		Fn: "Function",
 	},
 	xinput: {
 		label: "XInput",
@@ -66,7 +66,7 @@ export const BUTTONS = {
 		R3: "RS",
 		A1: "Guide",
 		A2: "-",
-		Fn: "Function"
+		Fn: "Function",
 	},
 	switch: {
 		label: "Nintendo Switch",
@@ -89,7 +89,7 @@ export const BUTTONS = {
 		R3: "RS",
 		A1: "Home",
 		A2: "Capture",
-		Fn: "Function"
+		Fn: "Function",
 	},
 	ps3: {
 		label: "PS3",
@@ -112,7 +112,7 @@ export const BUTTONS = {
 		R3: "R3",
 		A1: "PS",
 		A2: "-",
-		Fn: "Function"
+		Fn: "Function",
 	},
 	ps4: {
 		label: "PS4",
@@ -134,7 +134,7 @@ export const BUTTONS = {
 		L3: "L3",
 		R3: "R3",
 		A1: "PS",
-		A2: "Touchpad"
+		A2: "Touchpad",
 	},
 	dinput: {
 		label: "DirectInput",
@@ -157,62 +157,75 @@ export const BUTTONS = {
 		R3: "12",
 		A1: "13",
 		A2: "14",
-		Fn: "Function"
-	}
+		Fn: "Function",
+	},
 };
 
-export const AUX_BUTTONS = [ 'S1', 'S2', 'L3', 'R3', 'A1', 'A2', 'Fn' ];
-export const MAIN_BUTTONS = [ 'Up', 'Down', 'Left', 'Right', 'B1', 'B2', 'B3', 'B4', 'L1', 'R1', 'L2', 'R2' ];
+export const AUX_BUTTONS = ["S1", "S2", "L3", "R3", "A1", "A2", "Fn"];
+export const MAIN_BUTTONS = [
+	"Up",
+	"Down",
+	"Left",
+	"Right",
+	"B1",
+	"B2",
+	"B3",
+	"B4",
+	"L1",
+	"R1",
+	"L2",
+	"R2",
+];
 
 export const STICK_LAYOUT = [
-	[null, 'Left', null],
-	['Up', null, 'Down'],
-	[null, 'Right', null],
-	['B3', null, 'B1'],
-	['B4', null, 'B2'],
-	['R1', null, 'R2'],
-	['L1', null, 'L2'],
+	[null, "Left", null],
+	["Up", null, "Down"],
+	[null, "Right", null],
+	["B3", null, "B1"],
+	["B4", null, "B2"],
+	["R1", null, "R2"],
+	["L1", null, "L2"],
 ];
 
 export const STICKLESS_LAYOUT = [
-	['Left', null, null],
-	['Down', null, null],
-	['Right', null, null],
-	[null, 'Up', null],
-	['B3', 'B1', null],
-	['B4', 'B2', null],
-	['R1', 'R2', null],
-	['L1', 'L2', null],
+	["Left", null, null],
+	["Down", null, null],
+	["Right", null, null],
+	[null, "Up", null],
+	["B3", "B1", null],
+	["B4", "B2", null],
+	["R1", "R2", null],
+	["L1", "L2", null],
 ];
 
 export const KEYBOARD_LAYOUT = [
-	[null, 'Left'],
-	['Up', 'Down'],
-	[null, 'Right'],
-	['B3', 'B1'],
-	['B4', 'B2'],
-	['R1', 'R2'],
-	['L1', 'L2'],
+	[null, "Left"],
+	["Up", "Down"],
+	[null, "Right"],
+	["B3", "B1"],
+	["B4", "B2"],
+	["R1", "R2"],
+	["L1", "L2"],
 ];
 
 export const BUTTON_MASKS = [
-	{ label: 'None',  value:  0          },
-	{ label: 'B1',    value:  (1 << 0)   },
-	{ label: 'B2',    value:  (1 << 1)   },
-	{ label: 'B3',    value:  (1 << 2)   },
-	{ label: 'B4',    value:  (1 << 3)   },
-	{ label: 'L1',    value:  (1 << 4)   },
-	{ label: 'R1',    value:  (1 << 5)   },
-	{ label: 'L2',    value:  (1 << 6)   },
-	{ label: 'R2',    value:  (1 << 7)   },
-	{ label: 'S1',    value:  (1 << 8)   },
-	{ label: 'S2',    value:  (1 << 9)   },
-	{ label: 'L3',    value:  (1 << 10)  },
-	{ label: 'R3',    value:  (1 << 11)  },
-	{ label: 'A1',    value:  (1 << 12)  },
-	{ label: 'A2',    value:  (1 << 13)  },
-	{ label: 'Up',    value:  (1 << 16)  },
-	{ label: 'Down',  value:  (1 << 17)  },
-	{ label: 'Left',  value:  (1 << 18)  },
-	{ label: 'Right', value:  (1 << 19)  },
+	{ label: "None", value: 0 },
+	{ label: "B1", value: 1 << 0 },
+	{ label: "B2", value: 1 << 1 },
+	{ label: "B3", value: 1 << 2 },
+	{ label: "B4", value: 1 << 3 },
+	{ label: "L1", value: 1 << 4 },
+	{ label: "R1", value: 1 << 5 },
+	{ label: "L2", value: 1 << 6 },
+	{ label: "R2", value: 1 << 7 },
+	{ label: "S1", value: 1 << 8 },
+	{ label: "S2", value: 1 << 9 },
+	{ label: "L3", value: 1 << 10 },
+	{ label: "R3", value: 1 << 11 },
+	{ label: "A1", value: 1 << 12 },
+	{ label: "A2", value: 1 << 13 },
+	{ label: "Up", value: 1 << 16 },
+	{ label: "Down", value: 1 << 17 },
+	{ label: "Left", value: 1 << 18 },
+	{ label: "Right", value: 1 << 19 },
 ];

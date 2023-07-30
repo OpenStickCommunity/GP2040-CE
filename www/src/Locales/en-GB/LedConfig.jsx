@@ -1,5 +1,5 @@
 export default {
-	"player": {
+	player: {
 		"pled-color-label": "RGB PLED Colour",
 	},
 };

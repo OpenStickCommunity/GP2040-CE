@@ -16,13 +16,13 @@ const dropdownOptions = [
 const setTheme = function (theme) {
 	const rootElement = document.documentElement;
 	const prefersDarkMode = window.matchMedia(
-		"(prefers-color-scheme: dark)"
+		"(prefers-color-scheme: dark)",
 	).matches;
 
 	if (theme === "auto") {
 		rootElement.setAttribute(
 			"data-bs-theme",
-			prefersDarkMode ? "dark" : "light"
+			prefersDarkMode ? "dark" : "light",
 		);
 	} else {
 		rootElement.setAttribute("data-bs-theme", theme);
@@ -32,7 +32,7 @@ const setTheme = function (theme) {
 const ColorScheme = () => {
 	const { savedColorScheme, setSavedColorScheme } = useContext(AppContext);
 
-	const { t } = useTranslation('');
+	const { t } = useTranslation("");
 
 	const translatedDropdownOptions = dropdownOptions.map((option) => ({
 		...option,
