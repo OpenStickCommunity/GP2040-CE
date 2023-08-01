@@ -59,17 +59,19 @@ yup.addMethod(yup.NumberSchema, 'checkUsedPins', function() {
 	return this.test('', '${originalValue} is unavailable/already assigned!', (value) => checkPins(value));
 });
 
+const parseBoolean = (bool) => String(bool).toLowerCase() === "true";
+
 export const AppContextProvider = ({ children, ...props }) => {
 	const localValue = localStorage.getItem('buttonLabelType') || 'gp2040';
-	const localValue2 = localStorage.getItem('swapTpShareLabels') || false;
+	const localValue2 = parseBoolean(localStorage.getItem('swapTpShareLabels')) || false;
 	const [buttonLabels, _setButtonLabels] = useState({ swapTpShareLabels: localValue2, buttonLabelType: localValue });
 	const setButtonLabels = ({ buttonLabelType : newType, swapTpShareLabels: newSwap }) => {
 		console.log('buttonLabelType is', newType)
 		newType && localStorage.setItem('buttonLabelType', newType);
-		newSwap !== undefined && localStorage.setItem('swapTpShareLabels', newSwap);
+		newSwap !== undefined && localStorage.setItem('swapTpShareLabels', parseBoolean(newSwap));
 		_setButtonLabels(({ buttonLabelType, swapTpShareLabels }) =>
 			({ buttonLabelType: newType || buttonLabelType,
-			   swapTpShareLabels: (newSwap !== undefined) ? newSwap : swapTpShareLabels }));
+			   swapTpShareLabels: parseBoolean((newSwap !== undefined) ? newSwap : swapTpShareLabels) }));
 	};
 
 	const [savedColors, _setSavedColors] = useState(localStorage.getItem('savedColors') ? localStorage.getItem('savedColors').split(',') : []);
@@ -81,16 +83,16 @@ export const AppContextProvider = ({ children, ...props }) => {
 	const updateButtonLabels = (e) => {
 		const { key, newValue } = e;
 		if (key === "swapTpShareLabels") {
-		  _setButtonLabels(({ buttonLabelType }) => ({ buttonLabelType, swapTpShareLabels: newValue === "true" }));
+		  _setButtonLabels(({ buttonLabelType }) => ({ buttonLabelType, swapTpShareLabels: parseBoolean(newValue) }));
 		}
 		if (key === "buttonLabelType") {
-		  _setButtonLabels(({ swapTpShareLabels }) => ({ buttonLabelType: newValue, swapTpShareLabels }));
+		  _setButtonLabels(({ swapTpShareLabels }) => ({ buttonLabelType: newValue, swapTpShareLabels: parseBoolean(swapTpShareLabels) }));
 		}
 	};
 
 	useEffect(() => {
 		_setButtonLabels({ buttonLabelType: buttonLabels.buttonLabelType,
-						   swapTpShareLabels: buttonLabels.swapTpShareLabels });
+						   swapTpShareLabels: parseBoolean(buttonLabels.swapTpShareLabels) });
 		window.addEventListener("storage", updateButtonLabels);
 		return () => {
 		  window.removeEventListener("storage", updateButtonLabels);
