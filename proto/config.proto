@@ -418,6 +418,7 @@ message KeyboardHostOptions
 	optional bool enabled = 1;
 	optional int32 pinDplus = 2;
 	optional KeyboardMapping mapping = 3;
+	optional int32 pin5V = 4;
 }
 
 message FocusModeOptions

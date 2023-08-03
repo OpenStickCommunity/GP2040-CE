@@ -301,6 +301,7 @@ const schema = yup.object().shape({
 
 	KeyboardHostAddonEnabled:    yup.number().required().label('Keyboard Host Add-On Enabled'),
 	keyboardHostPinDplus:        yup.number().label('Keyboard Host D+ Pin').validatePinWhenValue('KeyboardHostAddonEnabled'),
+	keyboardHostPin5V:           yup.number().label('Keyboard Host 5V Power Pin').validatePinWhenValue('KeyboardHostAddonEnabled'),
 
 	PlayerNumAddonEnabled:       yup.number().required().label('Player Number Add-On Enabled'),
 	playerNumber:                yup.number().label('Player Number').validateRangeWhenValue('PlayerNumAddonEnabled', 1, 4),
@@ -421,6 +422,7 @@ const defaultValues = {
 	snesPadLatchPin: -1,
 	snesPadDataPin: -1,
 	keyboardHostPinDplus: -1,
+	keyboardHostPin5V: -1,
 	keyboardHostMap: baseButtonMappings,
 	AnalogInputEnabled: 0,
 	BoardLedAddonEnabled: 0,
@@ -1960,6 +1962,18 @@ export default function AddonsConfigPage() {
 									className="form-select-sm"
 									groupClassName="col-sm-1 mb-3"
 									value={values.keyboardHostPinDplus === -1 ? -1 : values.keyboardHostPinDplus + 1}
+								/>
+								<FormControl type="number"
+									label={t('AddonsConfig:keyboard-host-five-v-label')}
+									name="keyboardHostPin5V"
+									className="form-select-sm"
+									groupClassName="col-sm-auto mb-3"
+									value={values.keyboardHostPin5V}
+									error={errors.keyboardHostPin5V}
+									isInvalid={errors.keyboardHostPin5V}
+									onChange={handleChange}
+									min={-1}
+									max={28}
 								/>
 							</Row>
 							<Row className="mb-3">

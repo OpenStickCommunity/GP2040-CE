@@ -447,6 +447,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, pinDplus, KEYBOARD_HOST_PIN_DPLUS);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, pin5V, KEYBOARD_HOST_PIN_5V);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadUp, KEY_DPAD_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadDown, KEY_DPAD_DOWN);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadRight, KEY_DPAD_RIGHT);
