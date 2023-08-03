@@ -78,9 +78,6 @@ namespace ConfigLegacy
         HOTKEY_INVERT_Y_AXIS,
         HOTKEY_SOCD_FIRST_INPUT,
         HOTKEY_SOCD_BYPASS,
-        HOTKEY_L3_BUTTON,
-        HOTKEY_R3_BUTTON,
-        HOTKEY_TOUCHPAD_BUTTON,
     };
 
     enum OnBoardLedMode
@@ -528,9 +525,6 @@ static bool isValidGamepadHotkey(ConfigLegacy::GamepadHotkey hotkey)
         case HOTKEY_INVERT_Y_AXIS:
         case HOTKEY_SOCD_FIRST_INPUT:
         case HOTKEY_SOCD_BYPASS:
-        case HOTKEY_L3_BUTTON:
-        case HOTKEY_R3_BUTTON:
-        case HOTKEY_TOUCHPAD_BUTTON:
             return true;
     }
     return false;
