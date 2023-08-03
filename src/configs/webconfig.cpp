@@ -1,4 +1,5 @@
 #include "configs/webconfig.h"
+#include "config.pb.h"
 #include "configs/base64.h"
 
 #include "storagemanager.h"
@@ -503,6 +504,60 @@ std::string setSplashImage()
 	return serialize_json(doc);
 }
 
+std::string setProfileOptions()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+	JsonObject options = doc.as<JsonObject>();
+	JsonArray alts = options["alternativePinMappings"];
+	int altsIndex = 0;
+	for (JsonObject alt : alts) {
+		profileOptions.alternativePinMappings[altsIndex].pinButtonB1 = alt["B1"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinButtonB2 = alt["B2"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinButtonB3 = alt["B3"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinButtonB4 = alt["B4"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinButtonL1 = alt["L1"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinButtonR1 = alt["R1"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinButtonL2 = alt["L2"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinButtonR2 = alt["R2"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinDpadUp = alt["Up"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinDpadDown = alt["Down"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinDpadLeft = alt["Left"].as<int>();
+		profileOptions.alternativePinMappings[altsIndex].pinDpadRight = alt["Right"].as<int>();
+		profileOptions.alternativePinMappings_count = ++altsIndex;
+		if (altsIndex > 2) break;
+	}
+
+	Storage::getInstance().save();
+	return serialize_json(doc);
+}
+
+std::string getProfileOptions()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+	ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
+	JsonArray alts = doc.createNestedArray("alternativePinMappings");
+	for (int i = 0; i < profileOptions.alternativePinMappings_count; i++) {
+		JsonObject altMappings = alts.createNestedObject();
+		altMappings["B1"] = profileOptions.alternativePinMappings[i].pinButtonB1;
+		altMappings["B2"] = profileOptions.alternativePinMappings[i].pinButtonB2;
+		altMappings["B3"] = profileOptions.alternativePinMappings[i].pinButtonB3;
+		altMappings["B4"] = profileOptions.alternativePinMappings[i].pinButtonB4;
+		altMappings["L1"] = profileOptions.alternativePinMappings[i].pinButtonL1;
+		altMappings["R1"] = profileOptions.alternativePinMappings[i].pinButtonR1;
+		altMappings["L2"] = profileOptions.alternativePinMappings[i].pinButtonL2;
+		altMappings["R2"] = profileOptions.alternativePinMappings[i].pinButtonR2;
+		altMappings["Up"] = profileOptions.alternativePinMappings[i].pinDpadUp;
+		altMappings["Down"] = profileOptions.alternativePinMappings[i].pinDpadDown;
+		altMappings["Left"] = profileOptions.alternativePinMappings[i].pinDpadLeft;
+		altMappings["Right"] = profileOptions.alternativePinMappings[i].pinDpadRight;
+	}
+
+	return serialize_json(doc);
+}
+
 std::string setGamepadOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
@@ -514,6 +569,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
 	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
 	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
+	readDoc(gamepadOptions.profileNumber, doc, "profileNumber");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -548,6 +604,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
 	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
 	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
+	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
 
 	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
 	writeDoc(doc, "fnButtonPin", pinMappings.pinButtonFn);
@@ -1404,6 +1461,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/setCustomTheme", setCustomTheme },
 	{ "/api/getCustomTheme", getCustomTheme },
 	{ "/api/setPinMappings", setPinMappings },
+	{ "/api/setProfileOptions", setProfileOptions },
 	{ "/api/setKeyMappings", setKeyMappings },
 	{ "/api/setAddonsOptions", setAddonOptions },
 	{ "/api/setPS4Options", setPS4Options },
@@ -1413,6 +1471,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getGamepadOptions", getGamepadOptions },
 	{ "/api/getLedOptions", getLedOptions },
 	{ "/api/getPinMappings", getPinMappings },
+	{ "/api/getProfileOptions", getProfileOptions },
 	{ "/api/getKeyMappings", getKeyMappings },
 	{ "/api/getAddonsOptions", getAddonOptions },
 	{ "/api/resetSettings", resetSettings },

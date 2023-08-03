@@ -44,8 +44,11 @@ public:
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
 	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
+	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 
 	bool save();
+
+	PinMappings& getProfilePinMappings();
 
 	// Perform saves that were enqueued from core1
 	void performEnqueuedSaves();
@@ -65,6 +68,9 @@ public:
 	void ClearFeatureData();
 	uint8_t * GetFeatureData();
 
+	void setProfile(const uint32_t);		// profile support for multiple mappings
+	void setFunctionalPinMappings(const uint32_t);
+
 	void ResetSettings(); 				// EEPROM Reset Feature
 
 private:
@@ -79,6 +85,7 @@ private:
 	critical_section_t animationOptionsCs;
 	uint32_t animationOptionsCrc = 0;
 	AnimationOptions animationOptionsToSave = {};
+	PinMappings* functionalPinMappings = nullptr;
 };
 
 #endif

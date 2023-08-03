@@ -94,7 +94,7 @@ Gamepad::Gamepad(int debounceMS) :
 void Gamepad::setup()
 {
 	// Configure pin mapping
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
+	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
 
 	const auto convertPin = [](int32_t pin) -> uint8_t { return isValidPin(pin) ? pin : 0xff; };
 	mapDpadUp    = new GamepadButtonMapping(convertPin(pinMappings.pinDpadUp),		GAMEPAD_MASK_UP);
@@ -141,6 +141,31 @@ void Gamepad::setup()
 		gpio_set_dir(pinMappings.pinButtonFn, GPIO_IN); // Set as INPUT
 		gpio_pull_up(pinMappings.pinButtonFn);          // Set as PULLUP
 	}
+}
+
+/**
+ * @brief Undo setup().
+ */
+void Gamepad::teardown_and_reinit(const uint32_t profileNum)
+{
+	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
+	// deinitialize the GPIO pins so we don't have orphans
+	for (int i = 0; i < GAMEPAD_DIGITAL_INPUT_COUNT; i++)
+	{
+		if (gamepadMappings[i]->isAssigned())
+		{
+			gpio_deinit(gamepadMappings[i]->pin);
+		}
+	}
+	if (isValidPin(pinMappings.pinButtonFn)) {
+		gpio_deinit(pinMappings.pinButtonFn);
+	}
+
+	// set to new profile
+	Storage::getInstance().setProfile(profileNum);
+
+	// reinitialize pin mappings
+	this->setup();
 }
 
 void Gamepad::process()
@@ -212,8 +237,7 @@ void Gamepad::process()
 
 void Gamepad::read()
 {
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-
+	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
 
@@ -329,6 +353,30 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 			if (action != lastAction) {
 				DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
 				ddiOpt.fourWayMode = !ddiOpt.fourWayMode;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_1:
+			if (action != lastAction) {
+				this->teardown_and_reinit(1);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_2:
+			if (action != lastAction) {
+				this->teardown_and_reinit(2);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_3:
+			if (action != lastAction) {
+				this->teardown_and_reinit(3);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_4:
+			if (action != lastAction) {
+				this->teardown_and_reinit(4);
 				reqSave = true;
 			}
 			break;

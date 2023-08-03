@@ -24,6 +24,7 @@ export default {
 		'first-win': 'First Win',
 		'off': 'Off'
 	},
+	'profile-number-label': 'Profile Number',
 	'hotkey-settings-label': 'Hotkey Settings',
 	'hotkey-settings-sub-header': "The <1>Fn</1> slider provides a mappable Function button in the <3 exact='true' to='/pin-mapping'>Pin Mapping</3> page. By selecting the <1>Fn</1> slider option, the Function button must be held along with the selected hotkey settings.<5 />Additionally, select <1>None</1> from the dropdown to unassign any button.",
 	'hotkey-settings-warning': 'Function button is not mapped. The Fn slider will be disabled.',
@@ -43,6 +44,10 @@ export default {
 		'invert-y': 'Invert Y Axis',
 		'toggle-4way-joystick-mode': 'Toggle 4-Way Joystick Mode',
 		'toggle-ddi-4way-joystick-mode': 'Toggle DDI 4-Way Joystick Mode',
+		'load-profile-1': 'Load Profile #1',
+		'load-profile-2': 'Load Profile #2',
+		'load-profile-3': 'Load Profile #3',
+		'load-profile-4': 'Load Profile #4',
 	},
 	'forced-setup-mode-label': 'Forced Setup Mode',
 	'forced-setup-mode-options': {
