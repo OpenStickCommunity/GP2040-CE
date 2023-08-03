@@ -140,6 +140,9 @@ enum GamepadHotkey
     HOTKEY_LOAD_PROFILE_2        = 16;
     HOTKEY_LOAD_PROFILE_3        = 17;
     HOTKEY_LOAD_PROFILE_4        = 18;
+    HOTKEY_L3_BUTTON             = 19;
+    HOTKEY_R3_BUTTON             = 20;
+    HOTKEY_TOUCHPAD_BUTTON       = 21;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
