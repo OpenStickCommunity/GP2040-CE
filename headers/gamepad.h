@@ -62,6 +62,7 @@ public:
 	Gamepad(int debounceMS = 5);
 
 	void setup();
+	void teardown_and_reinit(const uint32_t profileNum);
 	void process();
 	void read();
 	void save();

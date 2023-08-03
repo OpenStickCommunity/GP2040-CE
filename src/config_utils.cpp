@@ -97,6 +97,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
     INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, profileNumber, 1);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -226,6 +227,45 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverTimeout, DISPLAY_SAVER_TIMEOUT);
+
+    // alternate pin mappings
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB1, PIN_BUTTON_B1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB2, PIN_BUTTON_B2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB3, PIN_BUTTON_B3);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB4, PIN_BUTTON_B4);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonL1, PIN_BUTTON_L1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonR1, PIN_BUTTON_R1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonL2, PIN_BUTTON_L2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonR2, PIN_BUTTON_R2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinDpadUp, PIN_DPAD_UP);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinDpadDown, PIN_DPAD_DOWN);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinDpadLeft, PIN_DPAD_LEFT);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinDpadRight, PIN_DPAD_RIGHT);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonB1, PIN_BUTTON_B1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonB2, PIN_BUTTON_B2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonB3, PIN_BUTTON_B3);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonB4, PIN_BUTTON_B4);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonL1, PIN_BUTTON_L1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonR1, PIN_BUTTON_R1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonL2, PIN_BUTTON_L2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonR2, PIN_BUTTON_R2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinDpadUp, PIN_DPAD_UP);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinDpadDown, PIN_DPAD_DOWN);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinDpadLeft, PIN_DPAD_LEFT);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinDpadRight, PIN_DPAD_RIGHT);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonB1, PIN_BUTTON_B1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonB2, PIN_BUTTON_B2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonB3, PIN_BUTTON_B3);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonB4, PIN_BUTTON_B4);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonL1, PIN_BUTTON_L1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonR1, PIN_BUTTON_R1);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonL2, PIN_BUTTON_L2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonR2, PIN_BUTTON_R2);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinDpadUp, PIN_DPAD_UP);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinDpadDown, PIN_DPAD_DOWN);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinDpadLeft, PIN_DPAD_LEFT);
+    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinDpadRight, PIN_DPAD_RIGHT);
+    config.profileOptions.alternativePinMappings_count = 3;
 
     // ledOptions
     INIT_UNSET_PROPERTY(config.ledOptions, dataPin, BOARD_LEDS_PIN);
@@ -447,6 +487,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, pinDplus, KEYBOARD_HOST_PIN_DPLUS);
+    INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, pin5V, KEYBOARD_HOST_PIN_5V);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadUp, KEY_DPAD_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadDown, KEY_DPAD_DOWN);
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions.mapping, keyDpadRight, KEY_DPAD_RIGHT);

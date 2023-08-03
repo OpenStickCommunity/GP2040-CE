@@ -114,7 +114,8 @@ export default {
 	'focus-mode-header-text': 'Focus Mode Configuration',
 	'focus-mode-pin-label': 'Focus Mode Pin',
 	'keyboard-host-header-text': 'Keyboard Host Configuration',
-	'keyboard-host-sub-header-text': 'Following set the data + and - pins. Only the + pin can be configured.',
+	'keyboard-host-sub-header-text': 'Following set the data +, - and 5V (optional) pins. Only the + and 5V pin can be configured.',
 	'keyboard-host-d-plus-label': 'D+',
 	'keyboard-host-d-minus-label': 'D-',
+	'keyboard-host-five-v-label': '5V Power (optional)',
 };
