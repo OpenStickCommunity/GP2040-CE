@@ -25,6 +25,49 @@ export const baseButtonMappings = {
 	Fn:    { pin: -1, key: 0, error: null },
 };
 
+export const baseProfileOptions = {
+	alternativePinMappings: [{
+		Up:    { pin: -1, key: 0, error: null },
+		Down:  { pin: -1, key: 0, error: null },
+		Left:  { pin: -1, key: 0, error: null },
+		Right: { pin: -1, key: 0, error: null },
+		B1:    { pin: -1, key: 0, error: null },
+		B2:    { pin: -1, key: 0, error: null },
+		B3:    { pin: -1, key: 0, error: null },
+		B4:    { pin: -1, key: 0, error: null },
+		L1:    { pin: -1, key: 0, error: null },
+		R1:    { pin: -1, key: 0, error: null },
+		L2:    { pin: -1, key: 0, error: null },
+		R2:    { pin: -1, key: 0, error: null },
+	},{
+		Up:    { pin: -1, key: 0, error: null },
+		Down:  { pin: -1, key: 0, error: null },
+		Left:  { pin: -1, key: 0, error: null },
+		Right: { pin: -1, key: 0, error: null },
+		B1:    { pin: -1, key: 0, error: null },
+		B2:    { pin: -1, key: 0, error: null },
+		B3:    { pin: -1, key: 0, error: null },
+		B4:    { pin: -1, key: 0, error: null },
+		L1:    { pin: -1, key: 0, error: null },
+		R1:    { pin: -1, key: 0, error: null },
+		L2:    { pin: -1, key: 0, error: null },
+		R2:    { pin: -1, key: 0, error: null },
+	},{
+		Up:    { pin: -1, key: 0, error: null },
+		Down:  { pin: -1, key: 0, error: null },
+		Left:  { pin: -1, key: 0, error: null },
+		Right: { pin: -1, key: 0, error: null },
+		B1:    { pin: -1, key: 0, error: null },
+		B2:    { pin: -1, key: 0, error: null },
+		B3:    { pin: -1, key: 0, error: null },
+		B4:    { pin: -1, key: 0, error: null },
+		L1:    { pin: -1, key: 0, error: null },
+		R1:    { pin: -1, key: 0, error: null },
+		L2:    { pin: -1, key: 0, error: null },
+		R2:    { pin: -1, key: 0, error: null },
+	}]
+};
+
 async function resetSettings() {
 	return axios.get(`${baseUrl}/api/resetSettings`)
 		.then((response) => response.data)
@@ -235,6 +278,46 @@ async function setPinMappings(mappings) {
 		});
 }
 
+async function getProfileOptions(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getProfileOptions`);
+		let profileOptions = { ...baseProfileOptions };
+		response.data['alternativePinMappings'].forEach((altButtons, index) => {
+			for (let prop of Object.keys(altButtons))
+				profileOptions['alternativePinMappings'][index][prop].pin = parseInt(
+					response.data['alternativePinMappings'][index][prop]
+				);
+		});
+		setLoading(false);
+		return profileOptions;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+async function setProfileOptions(options) {
+	let data = {};
+	data['alternativePinMappings'] = [];
+	options['alternativePinMappings'].forEach((altButtons, index) => {
+		let altMapping = {};
+		Object.keys(options['alternativePinMappings'][index]).map((button, i) => altMapping[button] = altButtons[button].pin);
+		data['alternativePinMappings'].push(altMapping);
+	});
+
+	return axios.post(`${baseUrl}/api/setProfileOptions`, sanitizeRequest(data))
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
 async function getKeyMappings(setLoading) {
 	setLoading(true);
 
@@ -385,6 +468,8 @@ const WebApi = {
 	setCustomTheme,
 	getPinMappings,
 	setPinMappings,
+	getProfileOptions,
+	setProfileOptions,
 	getKeyMappings,
 	setKeyMappings,
 	getAddonsOptions,

@@ -21,10 +21,10 @@ const KeyboardMapper = ({ buttonLabels, handleKeyChange, validated, getKeyMappin
 			<tbody>
 				{Object.keys(BUTTONS[buttonLabelType])?.filter(p => p !== 'label' && p !== 'value').map((button, i) => {
 					let label = BUTTONS[buttonLabelType][button];
-					if (button === "S1" && swapTpShareLabels) {
+					if (button === "S1" && swapTpShareLabels && buttonLabelType === "ps4") {
 						label = BUTTONS[buttonLabelType]["A2"];
 					}
-					if (button === "A2" && swapTpShareLabels) {
+					if (button === "A2" && swapTpShareLabels && buttonLabelType === "ps4") {
 						label = BUTTONS[buttonLabelType]["S1"];
 					}
 					const keyMapping = getKeyMappingForButton(button);

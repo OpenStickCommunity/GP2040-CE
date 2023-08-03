@@ -294,6 +294,7 @@
 // Keyboard Host Addon defaults
 #define KEYBOARD_HOST_ENABLED 0
 #define KEYBOARD_HOST_PIN_DPLUS -1
+#define KEYBOARD_HOST_PIN_5V -1
 
 // For details on this, see: https://gp2040-ce.info/#/development?id=i2c-display-splash
 #define DEFAULT_SPLASH \
