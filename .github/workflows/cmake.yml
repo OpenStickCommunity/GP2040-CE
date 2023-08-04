@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: [Pico, AlpacaOwO, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, FlatboxRev5RGB, KB2040, KeyboardConverter, MavercadeKeebfighter, PicoAnn, PicoFightingBoard, ReflexEncoder, RP2040AdvancedBreakoutBoard, RP2040MiniBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress, SGFDevices  ]
+        GP2040_BOARDCONFIG: [Pico, PicoW, AlpacaOwO, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, FlatboxRev5RGB, KB2040, KeyboardConverter, MavercadeKeebfighter, PicoAnn, PicoFightingBoard, ReflexEncoder, RP2040AdvancedBreakoutBoard, RP2040MiniBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress, SGFDevices  ]
 
     steps:
     #Global Setup
@@ -48,8 +48,14 @@ jobs:
       shell: bash
       run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
+    - name: PicoW Build
+      shell: bash
+      if: ${{ matrix.GP2040_BOARDCONFIG == 'PicoW'}}
+      run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} -DPICO_BOARD=pico_w
+
     - name: Pico Build
       shell: bash
+      if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW'}}
       run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
 
     - name: Upload Pico Artifact
