@@ -43,7 +43,7 @@ void KeyboardHostAddon::setup() {
   if (keyboardHostOptions.pin5V != -1) {
     const int32_t pin5V = keyboardHostOptions.pin5V;
 	  gpio_init(pin5V);
-	  gpio_set_dir(pin5V, GPIO_OUT);
+	  gpio_set_dir(pin5V, GPIO_IN);
 	  gpio_pull_up(pin5V);
   }
 
