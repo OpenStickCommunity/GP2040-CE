@@ -47,7 +47,7 @@ void SNESpad::begin() {
 }
 
 void SNESpad::start() {
-    uint32_t state;
+    uint32_t packet;
 
 #if SNES_PAD_DEBUG==true
     printf("SNESpad::start\n");
@@ -55,65 +55,37 @@ void SNESpad::start() {
 
     type = SNES_PAD_NONE;
 
-    state = read();
+    packet = read();
 
 #if SNES_PAD_DEBUG==true
     // printf("Data Packet: %02x\n",packet);
 #endif
 
-    if (state) {
-            switch (type) {
-                case SNES_PAD_BASIC:
-                    directionLeft =  (state & SNES_LEFT);
-                    directionUp =    (state & SNES_UP);
-                    directionRight = (state & SNES_RIGHT);
-                    directionDown =  (state & SNES_DOWN);
+    if (type != SNES_PAD_NONE) {
+#if SNES_PAD_DEBUG==true
+        printf("Device Type: %d\n", type);
+#endif
+        mouseX          = 0;
+        mouseY          = 0;
 
-                    buttonSelect =   (state & SNES_SELECT);
-                    buttonStart =    (state & SNES_START);
-                    buttonB =        (state & SNES_B);
-                    buttonY =        (state & SNES_Y);
-                    buttonA =        (state & SNES_A);
-                    buttonX =        (state & SNES_X);
-                    buttonL =        (state & SNES_L);
-                    buttonR =        (state & SNES_R);
+        buttonA         = 0;
+        buttonB         = 0;
+        buttonX         = 0;
+        buttonY         = 0;
+        buttonStart     = 0;
+        buttonSelect    = 0;
+        buttonL         = 0;
+        buttonR         = 0;
 
-                    break;
-                case SNES_PAD_NES:
-                    directionLeft =  (state & SNES_LEFT);
-                    directionUp =    (state & SNES_UP);
-                    directionRight = (state & SNES_RIGHT);
-                    directionDown =  (state & SNES_DOWN);
+        directionUp     = 0;
+        directionDown   = 0;
+        directionLeft   = 0;
+        directionRight  = 0;
 
-                    buttonSelect =   (state & SNES_SELECT);
-                    buttonStart =    (state & SNES_START);
-                    buttonB =        (state & SNES_Y);
-                    buttonA =        (state & SNES_B);
-
-                    break;
-                case SNES_PAD_MOUSE:
-                    int x = 127;  //set center position [0-255]
-                    int y = 127;
-
-                    // Mouse X axis
-                    x = (state & SNES_MOUSE_X) >> 25;
-                    x = reverse(x) * SNES_MOUSE_PRECISION;
-                    if (state & SNES_MOUSE_X_SIGN) x = 127 - x;
-                    else x = 127 + x;
-
-                    // Mouse Y axis
-                    y = (state & SNES_MOUSE_Y) >> 17;
-                    y = reverse(y) * SNES_MOUSE_PRECISION;
-                    if (state & SNES_MOUSE_Y_SIGN) y = 127 - y;
-                    else y = 127 + y;
-
-                    mouseX  = x;
-                    mouseY  = y;
-                    buttonB = (state & SNES_X);
-                    buttonA = (state & SNES_A);
-
-                    break;
-            }
+    } else {
+#if SNES_PAD_DEBUG==true
+        printf("Unknown Device: %02x\n", packet);
+#endif
     }
 }
 
