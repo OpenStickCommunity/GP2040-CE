@@ -148,6 +148,7 @@ src/addons/turbo.cpp
 src/addons/slider_socd.cpp
 src/addons/wiiext.cpp
 src/addons/snes_input.cpp
+src/addons/slider_input_mode.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
 src/addons/tilt.cpp

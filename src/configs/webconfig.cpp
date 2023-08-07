@@ -1054,6 +1054,14 @@ std::string setAddonOptions()
 	docToValue(socdSliderOptions.modeTwo, doc, "sliderSOCDModeTwo");
 	docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
 
+   SliderInputModeOptions& sliderInputModeOptions = Storage::getInstance().getAddonOptions().sliderInputModeOptions;
+	docToValue(sliderInputModeOptions.enabled, doc, "SliderInputModeEnabled");
+	docToPin(sliderInputModeOptions.pinOne, doc, "pinSliderInputModeOne");
+	docToPin(sliderInputModeOptions.pinTwo, doc, "pinSliderInputModeTwo");
+	docToValue(sliderInputModeOptions.modeOne, doc, "sliderInputModeOne");
+	docToValue(sliderInputModeOptions.modeTwo, doc, "sliderInputModeTwo");
+	docToValue(sliderInputModeOptions.modeDefault, doc, "sliderInputModeDefault");
+
     OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
 	docToValue(onBoardLedOptions.mode, doc, "onBoardLedMode");
 	docToValue(onBoardLedOptions.enabled, doc, "BoardLedAddonEnabled");
@@ -1286,6 +1294,14 @@ std::string getAddonOptions()
 	writeDoc(doc, "sliderSOCDModeTwo", socdSliderOptions.modeTwo);
 	writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
 	writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
+
+	  const SliderInputModeOptions& sliderInputModeOptions = Storage::getInstance().getAddonOptions().sliderInputModeOptions;
+	writeDoc(doc, "pinSliderInputModeOne", cleanPin(sliderInputModeOptions.pinOne));
+	writeDoc(doc, "pinSliderInputModeTwo", cleanPin(sliderInputModeOptions.pinTwo));
+	writeDoc(doc, "sliderInputModeOne", sliderInputModeOptions.modeOne);
+	writeDoc(doc, "sliderInputModeTwo", sliderInputModeOptions.modeTwo);
+	writeDoc(doc, "sliderInputModeDefault", sliderInputModeOptions.modeDefault);
+	writeDoc(doc, "SliderInputModeEnabled", sliderInputModeOptions.enabled);
 
     const OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
 	writeDoc(doc, "onBoardLedMode", onBoardLedOptions.mode);

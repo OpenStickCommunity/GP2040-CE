@@ -30,6 +30,7 @@
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/slider_input_mode.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -299,7 +300,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin2, PLED2_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin4, PLED4_PIN);
-    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b)); 
+    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b));
 
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
@@ -442,6 +443,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltRightAnalogLeftPin, PIN_TILT_RIGHT_ANALOG_LEFT);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltRightAnalogRightPin, PIN_TILT_RIGHT_ANALOG_RIGHT);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltSOCDMode, TILT_SOCD_MODE);
+
+    // addonOptions.sliderInputModeOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderInputModeOptions, enabled, !!SLIDER_INPUT_MODE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderInputModeOptions, pinOne, PIN_SLIDER_INPUT_MODE_ONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderInputModeOptions, pinTwo, PIN_SLIDER_INPUT_MODE_TWO);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderInputModeOptions, modeDefault, DEFAULT_INPUT_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderInputModeOptions, modeOne, SLIDER_INPUT_MODE_SLOT_ONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderInputModeOptions, modeTwo, SLIDER_INPUT_MODE_SLOT_TWO);
 
     // addonOptions.buzzerOptions
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);
@@ -681,7 +690,7 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
     {
         return;
     }
-    
+
     do
     {
         // Not implemented for extension fields
@@ -859,7 +868,7 @@ std::string ConfigUtils::toJSON(const Config& config)
 // From JSON
 // -----------------------------------------------------
 
-#define TEST_VALUE(name, value) if (v == value) return true; 
+#define TEST_VALUE(name, value) if (v == value) return true;
 
 #define GEN_IS_VALID_ENUM_VALUE_FUNCTION(enumtype) \
     static bool isValid ## enumtype(int v) \

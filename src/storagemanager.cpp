@@ -33,6 +33,7 @@
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
 #include "addons/tilt.h"
+#include "addons/slider_input_mode.h"
 
 #include "config_utils.h"
 

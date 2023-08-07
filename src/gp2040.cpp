@@ -24,6 +24,7 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/slider_input_mode.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -59,13 +60,13 @@ void GP2040::setup() {
 				Storage::getInstance().SetConfigMode(true);
 				initialize_driver(INPUT_MODE_CONFIG);
 				ConfigManager::getInstance().setup(CONFIG_TYPE_WEB);
-				break;	
+				break;
 			}
 
 		case BootAction::ENTER_USB_MODE:
 			{
 				reset_usb_boot(0, 0);
-				break;	
+				break;
 			}
 
 		case BootAction::SET_INPUT_MODE_HID:
@@ -103,12 +104,12 @@ void GP2040::setup() {
 	adc_init();
 
 	// Setup Add-ons
-  	addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
+  addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
-  	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
-  	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
+  addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
+  addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
 	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
@@ -118,6 +119,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
+	addons.LoadAddon(new SliderInputMode(), CORE0_USBREPORT);
 }
 
 void GP2040::run() {
@@ -152,7 +154,7 @@ void GP2040::run() {
 
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
-		
+
 		gamepad->process(); // process through MPGS
 
 		// (Post) Process for add-ons
