@@ -12,6 +12,10 @@
 #define KEYBOARD_HOST_PIN_DPLUS -1
 #endif
 
+#ifndef KEYBOARD_HOST_PIN_5V
+#define KEYBOARD_HOST_PIN_5V -1
+#endif
+
 // KeyboardHost Module Name
 #define KeyboardHostName "KeyboardHost"
 
