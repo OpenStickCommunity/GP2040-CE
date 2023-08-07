@@ -1,9 +1,9 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import FormSelect from "./FormSelect";
-import { KEY_CODES } from "../Data/Keyboard";
-import { BUTTONS } from "../Data/Buttons";
-import boards from "../Data/Boards.json";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import FormSelect from './FormSelect';
+import { KEY_CODES } from '../Data/Keyboard';
+import { BUTTONS } from '../Data/Buttons';
+import boards from '../Data/Boards.json';
 
 const KeyboardMapper = ({
 	buttonLabels,
@@ -14,7 +14,7 @@ const KeyboardMapper = ({
 }) => {
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
-	const { t } = useTranslation("Components", { keyPrefix: "keyboard-mapper" });
+	const { t } = useTranslation('Components', { keyPrefix: 'keyboard-mapper' });
 
 	return (
 		<table className="table table-sm pin-mapping-table" {...props}>
@@ -23,34 +23,34 @@ const KeyboardMapper = ({
 					<th className="table-header-button-label">
 						{BUTTONS[buttonLabelType].label}
 					</th>
-					<th>{t("key-header")}</th>
+					<th>{t('key-header')}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{Object.keys(BUTTONS[buttonLabelType])
-					?.filter((p) => p !== "label" && p !== "value")
+					?.filter((p) => p !== 'label' && p !== 'value')
 					.map((button, i) => {
 						let label = BUTTONS[buttonLabelType][button];
 						if (
-							button === "S1" &&
+							button === 'S1' &&
 							swapTpShareLabels &&
-							buttonLabelType === "ps4"
+							buttonLabelType === 'ps4'
 						) {
-							label = BUTTONS[buttonLabelType]["A2"];
+							label = BUTTONS[buttonLabelType]['A2'];
 						}
 						if (
-							button === "A2" &&
+							button === 'A2' &&
 							swapTpShareLabels &&
-							buttonLabelType === "ps4"
+							buttonLabelType === 'ps4'
 						) {
-							label = BUTTONS[buttonLabelType]["S1"];
+							label = BUTTONS[buttonLabelType]['S1'];
 						}
 						const keyMapping = getKeyMappingForButton(button);
 						return (
 							<tr
 								key={`button-map-${i}`}
 								className={
-									validated && !!keyMapping.error ? "table-danger" : ""
+									validated && !!keyMapping.error ? 'table-danger' : ''
 								}
 							>
 								<td>{label}</td>
@@ -63,7 +63,7 @@ const KeyboardMapper = ({
 										error={keyMapping.error}
 										onChange={(e) =>
 											handleKeyChange(
-												e.target.value ? parseInt(e.target.value) : "",
+												e.target.value ? parseInt(e.target.value) : '',
 												button,
 											)
 										}
@@ -100,7 +100,7 @@ export const validateMappings = (mappings, t) => {
 				mappings[prop].key !== 0x00 &&
 				mappings[prop].key === mappings[otherProp].key
 			) {
-				mappings[prop].error = t("Components:keyboard-mapper.error-conflict", {
+				mappings[prop].error = t('Components:keyboard-mapper.error-conflict', {
 					key,
 				});
 			} else if (
@@ -108,7 +108,7 @@ export const validateMappings = (mappings, t) => {
 					(p) => p === mappings[prop].key,
 				).length > 0
 			) {
-				mappings[prop].error = t("Components:keyboard-mapper.error-invalid", {
+				mappings[prop].error = t('Components:keyboard-mapper.error-invalid', {
 					key,
 				});
 			}

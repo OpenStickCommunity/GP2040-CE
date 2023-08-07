@@ -1,37 +1,37 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
-import { AppContext } from "../Contexts/AppContext";
-import Section from "../Components/Section";
+import React, { useContext, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
+import { AppContext } from '../Contexts/AppContext';
+import Section from '../Components/Section';
 import WebApi, {
 	baseProfileOptions,
 	baseButtonMappings,
-} from "../Services/WebApi";
-import boards from "../Data/Boards.json";
-import { BUTTONS } from "../Data/Buttons";
-import "./PinMappings.scss";
-import { Trans, useTranslation } from "react-i18next";
+} from '../Services/WebApi';
+import boards from '../Data/Boards.json';
+import { BUTTONS } from '../Data/Buttons';
+import './PinMappings.scss';
+import { Trans, useTranslation } from 'react-i18next';
 
-const requiredButtons = ["S2"];
+const requiredButtons = ['S2'];
 const errorType = {
-	required: "errors.required",
-	conflict: "errors.conflict",
-	invalid: "errors.invalid",
-	used: "errors.used",
+	required: 'errors.required',
+	conflict: 'errors.conflict',
+	invalid: 'errors.invalid',
+	used: 'errors.used',
 };
 
 export default function ProfileOptionsPage() {
 	const { buttonLabels, setButtonLabels, usedPins, updateUsedPins } =
 		useContext(AppContext);
 	const [validated, setValidated] = useState(false);
-	const [saveMessage, setSaveMessage] = useState("");
+	const [saveMessage, setSaveMessage] = useState('');
 	const [buttonMappings, setButtonMappings] = useState(baseButtonMappings);
 	const [profileOptions, setProfileOptions] = useState(baseProfileOptions);
 	const [selectedBoard] = useState(import.meta.env.VITE_GP2040_BOARD);
 	const { buttonLabelType } = buttonLabels;
 	const { setLoading } = useContext(AppContext);
 
-	const { t } = useTranslation("");
+	const { t } = useTranslation('');
 
 	const translatedErrorType = Object.keys(errorType).reduce(
 		(a, k) => ({ ...a, [k]: t(`ProfileOptions:${errorType[k]}`) }),
@@ -51,10 +51,10 @@ export default function ProfileOptionsPage() {
 	const handlePinChange = (e, index, key) => {
 		const newProfileOptions = { ...profileOptions };
 		if (e.target.value)
-			newProfileOptions["alternativePinMappings"][index][key].pin = parseInt(
+			newProfileOptions['alternativePinMappings'][index][key].pin = parseInt(
 				e.target.value,
 			);
-		else newProfileOptions["alternativePinMappings"][index][key].pin = "";
+		else newProfileOptions['alternativePinMappings'][index][key].pin = '';
 
 		validateMappings(newProfileOptions);
 	};
@@ -67,7 +67,7 @@ export default function ProfileOptionsPage() {
 		validateMappings(mappings);
 
 		if (Object.keys(mappings).filter((p) => mappings[p].error).length > 0) {
-			setSaveMessage(t("Common:errors.validation-error"));
+			setSaveMessage(t('Common:errors.validation-error'));
 			return;
 		}
 
@@ -75,13 +75,13 @@ export default function ProfileOptionsPage() {
 		if (success) updateUsedPins();
 		setSaveMessage(
 			success
-				? t("Common:saved-success-message")
-				: t("Common:saved-error-message"),
+				? t('Common:saved-success-message')
+				: t('Common:saved-error-message'),
 		);
 	};
 
 	const validateMappings = (mappings) => {
-		profileOptions["alternativePinMappings"].forEach((altMappings) => {
+		profileOptions['alternativePinMappings'].forEach((altMappings) => {
 			const buttons = Object.keys(altMappings);
 
 			// Create some mapped pin groups for easier error checking
@@ -105,7 +105,7 @@ export default function ProfileOptionsPage() {
 			const otherPins = usedPins.filter((p) => uniquePins.indexOf(p) === -1);
 
 			for (let button of buttons) {
-				altMappings[button].error = "";
+				altMappings[button].error = '';
 
 				// Validate required button
 				if (
@@ -136,11 +136,11 @@ export default function ProfileOptionsPage() {
 				<Form.Control
 					type="number"
 					className="pin-input form-control-sm"
-					value={profileOptions["alternativePinMappings"][profile][button].pin}
+					value={profileOptions['alternativePinMappings'][profile][button].pin}
 					min={-1}
 					max={boards[selectedBoard].maxPin}
 					isInvalid={
-						profileOptions["alternativePinMappings"][profile][button].error
+						profileOptions['alternativePinMappings'][profile][button].error
 					}
 					onChange={(e) => handlePinChange(e, profile, button)}
 				></Form.Control>
@@ -153,59 +153,59 @@ export default function ProfileOptionsPage() {
 
 	const renderError = (index, button) => {
 		if (
-			profileOptions["alternativePinMappings"][index][button].error ===
+			profileOptions['alternativePinMappings'][index][button].error ===
 			translatedErrorType.required
 		) {
 			return (
 				<span key="required" className="error-message">
-					{t("PinMapping:errors.required", {
+					{t('PinMapping:errors.required', {
 						button: BUTTONS[buttonLabelType][button],
 					})}
 				</span>
 			);
 		} else if (
-			profileOptions["alternativePinMappings"][index][button].error ===
+			profileOptions['alternativePinMappings'][index][button].error ===
 			translatedErrorType.conflict
 		) {
 			const conflictedMappings = Object.keys(
-				profileOptions["alternativePinMappings"][index],
+				profileOptions['alternativePinMappings'][index],
 			)
 				.filter((b) => b !== button)
 				.filter(
 					(b) =>
-						profileOptions["alternativePinMappings"][index][b].pin ===
-						profileOptions["alternativePinMappings"][index][button].pin,
+						profileOptions['alternativePinMappings'][index][b].pin ===
+						profileOptions['alternativePinMappings'][index][button].pin,
 				)
 				.map((b) => BUTTONS[buttonLabelType][b]);
 
 			return (
 				<span key="conflict" className="error-message">
-					{t("PinMapping:errors.conflict", {
-						pin: profileOptions["alternativePinMappings"][index][button].pin,
-						conflictedMappings: conflictedMappings.join(", "),
+					{t('PinMapping:errors.conflict', {
+						pin: profileOptions['alternativePinMappings'][index][button].pin,
+						conflictedMappings: conflictedMappings.join(', '),
 					})}
 				</span>
 			);
 		} else if (
-			profileOptions["alternativePinMappings"][index][button].error ===
+			profileOptions['alternativePinMappings'][index][button].error ===
 			translatedErrorType.invalid
 		) {
-			console.log(profileOptions["alternativePinMappings"][index][button].pin);
+			console.log(profileOptions['alternativePinMappings'][index][button].pin);
 			return (
 				<span key="invalid" className="error-message">
-					{t("PinMapping:errors.invalid", {
-						pin: profileOptions["alternativePinMappings"][index][button].pin,
+					{t('PinMapping:errors.invalid', {
+						pin: profileOptions['alternativePinMappings'][index][button].pin,
 					})}
 				</span>
 			);
 		} else if (
-			profileOptions["alternativePinMappings"][index][button].error ===
+			profileOptions['alternativePinMappings'][index][button].error ===
 			translatedErrorType.used
 		) {
 			return (
 				<span key="used" className="error-message">
-					{t("PinMapping:errors.used", {
-						pin: profileOptions["alternativePinMappings"][index][button].pin,
+					{t('PinMapping:errors.used', {
+						pin: profileOptions['alternativePinMappings'][index][button].pin,
 					})}
 				</span>
 			);
@@ -215,28 +215,28 @@ export default function ProfileOptionsPage() {
 	};
 
 	return (
-		<Section title={t("ProfileSettings:header-text")}>
-			<p>{t("ProfileSettings:profile-pins-desc")}</p>
+		<Section title={t('ProfileSettings:header-text')}>
+			<p>{t('ProfileSettings:profile-pins-desc')}</p>
 			<pre>
-				&nbsp;&nbsp;{String(buttonMappings["Up"].pin).padStart(2)}
+				&nbsp;&nbsp;{String(buttonMappings['Up'].pin).padStart(2)}
 				<br />
-				{String(buttonMappings["Left"].pin).padStart(2)}&nbsp;&nbsp;
-				{String(buttonMappings["Right"].pin).padStart(2)}
+				{String(buttonMappings['Left'].pin).padStart(2)}&nbsp;&nbsp;
+				{String(buttonMappings['Right'].pin).padStart(2)}
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				{String(buttonMappings["B3"].pin).padStart(2)}{" "}
-				{String(buttonMappings["B4"].pin).padStart(2)}{" "}
-				{String(buttonMappings["R1"].pin).padStart(2)}{" "}
-				{String(buttonMappings["L1"].pin).padStart(2)}
+				{String(buttonMappings['B3'].pin).padStart(2)}{' '}
+				{String(buttonMappings['B4'].pin).padStart(2)}{' '}
+				{String(buttonMappings['R1'].pin).padStart(2)}{' '}
+				{String(buttonMappings['L1'].pin).padStart(2)}
 				<br />
-				&nbsp;&nbsp;{String(buttonMappings["Down"].pin).padStart(2)}
+				&nbsp;&nbsp;{String(buttonMappings['Down'].pin).padStart(2)}
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				{String(buttonMappings["B1"].pin).padStart(2)}{" "}
-				{String(buttonMappings["B2"].pin).padStart(2)}{" "}
-				{String(buttonMappings["R2"].pin).padStart(2)}{" "}
-				{String(buttonMappings["L2"].pin).padStart(2)}
+				{String(buttonMappings['B1'].pin).padStart(2)}{' '}
+				{String(buttonMappings['B2'].pin).padStart(2)}{' '}
+				{String(buttonMappings['R2'].pin).padStart(2)}{' '}
+				{String(buttonMappings['L2'].pin).padStart(2)}
 			</pre>
 			<p>
-				<b>{t("ProfileSettings:profile-pins-warning")}</b>
+				<b>{t('ProfileSettings:profile-pins-warning')}</b>
 			</p>
 			<Form noValidate validated={validated} onSubmit={handleSubmit}>
 				<table className="table table-sm pin-mapping-table">
@@ -245,17 +245,17 @@ export default function ProfileOptionsPage() {
 							<th className="table-header-button-label">
 								{BUTTONS[buttonLabelType].label}
 							</th>
-							<th>{t("ProfileSettings:profile-1")}</th>
-							<th>{t("ProfileSettings:profile-2")}</th>
-							<th>{t("ProfileSettings:profile-3")}</th>
-							<th>{t("ProfileSettings:profile-4")}</th>
+							<th>{t('ProfileSettings:profile-1')}</th>
+							<th>{t('ProfileSettings:profile-2')}</th>
+							<th>{t('ProfileSettings:profile-3')}</th>
+							<th>{t('ProfileSettings:profile-4')}</th>
 						</tr>
 					</thead>
 					<tbody>
 						{console.log(
-							Object.keys(profileOptions["alternativePinMappings"][0]),
+							Object.keys(profileOptions['alternativePinMappings'][0]),
 						)}
-						{Object.keys(profileOptions["alternativePinMappings"][0]).map(
+						{Object.keys(profileOptions['alternativePinMappings'][0]).map(
 							(key) => (
 								<tr key={key}>
 									<td>{BUTTONS[buttonLabelType][key]}</td>
@@ -268,7 +268,7 @@ export default function ProfileOptionsPage() {
 						)}
 					</tbody>
 				</table>
-				<Button type="submit">{t("Common:button-save-label")}</Button>
+				<Button type="submit">{t('Common:button-save-label')}</Button>
 				{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 			</Form>
 		</Section>

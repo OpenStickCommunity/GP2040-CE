@@ -1,19 +1,19 @@
-import React, { useContext, useEffect } from "react";
-import { Dropdown } from "react-bootstrap";
-import { AppContext } from "../Contexts/AppContext";
-import { useTranslation } from "react-i18next";
-import GlobeIcon from "../Icons/Globe";
-import GbFlag from "../Icons/Flags/Gb";
-import UsFlag from "../Icons/Flags/Us";
+import React, { useContext, useEffect } from 'react';
+import { Dropdown } from 'react-bootstrap';
+import { AppContext } from '../Contexts/AppContext';
+import { useTranslation } from 'react-i18next';
+import GlobeIcon from '../Icons/Globe';
+import GbFlag from '../Icons/Flags/Gb';
+import UsFlag from '../Icons/Flags/Us';
 
 const dropdownOptions = [
-	{ code: "en", icon: UsFlag },
-	{ code: "en-GB", icon: GbFlag },
+	{ code: 'en', icon: UsFlag },
+	{ code: 'en-GB', icon: GbFlag },
 ];
 
 const LanguageSelector = () => {
 	const { savedLanguage, setSavedLanguage } = useContext(AppContext);
-	const { i18n, t } = useTranslation("Components");
+	const { i18n, t } = useTranslation('Components');
 
 	useEffect(() => {
 		if (!dropdownOptions.some((o) => o.code === i18n.language)) {
@@ -34,7 +34,7 @@ const LanguageSelector = () => {
 
 	return (
 		<Dropdown>
-			<Dropdown.Toggle variant="secondary" style={{ marginRight: "7px" }}>
+			<Dropdown.Toggle variant="secondary" style={{ marginRight: '7px' }}>
 				<GlobeIcon />
 			</Dropdown.Toggle>
 
@@ -43,7 +43,7 @@ const LanguageSelector = () => {
 					<Dropdown.Item
 						key={option.code}
 						className={`dropdown-item ${
-							savedLanguage === option.code ? "active" : ""
+							savedLanguage === option.code ? 'active' : ''
 						}`}
 						onClick={() => setLanguageAndState(option.code)}
 					>

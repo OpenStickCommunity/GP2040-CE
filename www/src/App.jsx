@@ -1,25 +1,25 @@
-import React, { useContext, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useContext, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { AppContextProvider } from "./Contexts/AppContext";
+import { AppContextProvider } from './Contexts/AppContext';
 
-import Navigation from "./Components/Navigation";
+import Navigation from './Components/Navigation';
 
-import HomePage from "./Pages/HomePage";
-import PinMappingPage from "./Pages/PinMapping";
-import ProfileSettingsPage from "./Pages/ProfileSettings";
-import KeyboardMappingPage from "./Pages/KeyboardMapping";
-import ResetSettingsPage from "./Pages/ResetSettingsPage";
-import SettingsPage from "./Pages/SettingsPage";
-import DisplayConfigPage from "./Pages/DisplayConfig";
-import LEDConfigPage from "./Pages/LEDConfigPage";
-import CustomThemePage from "./Pages/CustomThemePage";
-import AddonsConfigPage from "./Pages/AddonsConfigPage";
-import BackupPage from "./Pages/BackupPage";
-import PlaygroundPage from "./Pages/PlaygroundPage";
+import HomePage from './Pages/HomePage';
+import PinMappingPage from './Pages/PinMapping';
+import ProfileSettingsPage from './Pages/ProfileSettings';
+import KeyboardMappingPage from './Pages/KeyboardMapping';
+import ResetSettingsPage from './Pages/ResetSettingsPage';
+import SettingsPage from './Pages/SettingsPage';
+import DisplayConfigPage from './Pages/DisplayConfig';
+import LEDConfigPage from './Pages/LEDConfigPage';
+import CustomThemePage from './Pages/CustomThemePage';
+import AddonsConfigPage from './Pages/AddonsConfigPage';
+import BackupPage from './Pages/BackupPage';
+import PlaygroundPage from './Pages/PlaygroundPage';
 
-import { loadButtonLabels } from "./Services/Storage";
-import "./App.scss";
+import { loadButtonLabels } from './Services/Storage';
+import './App.scss';
 
 const App = () => {
 	return (

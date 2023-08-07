@@ -1,68 +1,68 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../Contexts/AppContext";
-import { Button, Form, Modal } from "react-bootstrap";
-import { Formik, useFormikContext } from "formik";
-import { NavLink } from "react-router-dom";
-import * as yup from "yup";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../Contexts/AppContext';
+import { Button, Form, Modal } from 'react-bootstrap';
+import { Formik, useFormikContext } from 'formik';
+import { NavLink } from 'react-router-dom';
+import * as yup from 'yup';
+import { Trans, useTranslation } from 'react-i18next';
 
-import Section from "../Components/Section";
-import WebApi from "../Services/WebApi";
-import { BUTTONS, BUTTON_MASKS } from "../Data/Buttons";
+import Section from '../Components/Section';
+import WebApi from '../Services/WebApi';
+import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
 
 const PS4Mode = 4;
 const INPUT_MODES = [
-	{ labelKey: "input-mode-options.xinput", value: 0 },
-	{ labelKey: "input-mode-options.nintendo-switch", value: 1 },
-	{ labelKey: "input-mode-options.ps3", value: 2 },
-	{ labelKey: "input-mode-options.keyboard", value: 3 },
-	{ labelKey: "input-mode-options.ps4", value: PS4Mode },
+	{ labelKey: 'input-mode-options.xinput', value: 0 },
+	{ labelKey: 'input-mode-options.nintendo-switch', value: 1 },
+	{ labelKey: 'input-mode-options.ps3', value: 2 },
+	{ labelKey: 'input-mode-options.keyboard', value: 3 },
+	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
 ];
 
 const DPAD_MODES = [
-	{ labelKey: "d-pad-mode-options.d-pad", value: 0 },
-	{ labelKey: "d-pad-mode-options.left-analog", value: 1 },
-	{ labelKey: "d-pad-mode-options.right-analog", value: 2 },
+	{ labelKey: 'd-pad-mode-options.d-pad', value: 0 },
+	{ labelKey: 'd-pad-mode-options.left-analog', value: 1 },
+	{ labelKey: 'd-pad-mode-options.right-analog', value: 2 },
 ];
 
 const SOCD_MODES = [
-	{ labelKey: "socd-cleaning-mode-options.up-priority", value: 0 },
-	{ labelKey: "socd-cleaning-mode-options.neutral", value: 1 },
-	{ labelKey: "socd-cleaning-mode-options.last-win", value: 2 },
-	{ labelKey: "socd-cleaning-mode-options.first-win", value: 3 },
-	{ labelKey: "socd-cleaning-mode-options.off", value: 4 },
+	{ labelKey: 'socd-cleaning-mode-options.up-priority', value: 0 },
+	{ labelKey: 'socd-cleaning-mode-options.neutral', value: 1 },
+	{ labelKey: 'socd-cleaning-mode-options.last-win', value: 2 },
+	{ labelKey: 'socd-cleaning-mode-options.first-win', value: 3 },
+	{ labelKey: 'socd-cleaning-mode-options.off', value: 4 },
 ];
 
 const HOTKEY_ACTIONS = [
-	{ labelKey: "hotkey-actions.no-action", value: 0 },
-	{ labelKey: "hotkey-actions.dpad-digital", value: 1 },
-	{ labelKey: "hotkey-actions.dpad-left-analog", value: 2 },
-	{ labelKey: "hotkey-actions.dpad-right-analog", value: 3 },
-	{ labelKey: "hotkey-actions.home-button", value: 4 },
-	{ labelKey: "hotkey-actions.capture-button", value: 5 },
-	{ labelKey: "hotkey-actions.socd-up-priority", value: 6 },
-	{ labelKey: "hotkey-actions.socd-neutral", value: 7 },
-	{ labelKey: "hotkey-actions.socd-last-win", value: 8 },
-	{ labelKey: "hotkey-actions.socd-first-win", value: 11 },
-	{ labelKey: "hotkey-actions.socd-off", value: 12 },
-	{ labelKey: "hotkey-actions.invert-x", value: 9 },
-	{ labelKey: "hotkey-actions.invert-y", value: 10 },
-	{ labelKey: "hotkey-actions.toggle-4way-joystick-mode", value: 13 },
-	{ labelKey: "hotkey-actions.toggle-ddi-4way-joystick-mode", value: 14 },
-	{ labelKey: "hotkey-actions.load-profile-1", value: 15 },
-	{ labelKey: "hotkey-actions.load-profile-2", value: 16 },
-	{ labelKey: "hotkey-actions.load-profile-3", value: 17 },
-	{ labelKey: "hotkey-actions.load-profile-4", value: 18 },
-	{ labelKey: "hotkey-actions.l3-button", value: 19 },
-	{ labelKey: "hotkey-actions.r3-button", value: 20 },
-	{ labelKey: "hotkey-actions.touchpad-button", value: 21 },
+	{ labelKey: 'hotkey-actions.no-action', value: 0 },
+	{ labelKey: 'hotkey-actions.dpad-digital', value: 1 },
+	{ labelKey: 'hotkey-actions.dpad-left-analog', value: 2 },
+	{ labelKey: 'hotkey-actions.dpad-right-analog', value: 3 },
+	{ labelKey: 'hotkey-actions.home-button', value: 4 },
+	{ labelKey: 'hotkey-actions.capture-button', value: 5 },
+	{ labelKey: 'hotkey-actions.socd-up-priority', value: 6 },
+	{ labelKey: 'hotkey-actions.socd-neutral', value: 7 },
+	{ labelKey: 'hotkey-actions.socd-last-win', value: 8 },
+	{ labelKey: 'hotkey-actions.socd-first-win', value: 11 },
+	{ labelKey: 'hotkey-actions.socd-off', value: 12 },
+	{ labelKey: 'hotkey-actions.invert-x', value: 9 },
+	{ labelKey: 'hotkey-actions.invert-y', value: 10 },
+	{ labelKey: 'hotkey-actions.toggle-4way-joystick-mode', value: 13 },
+	{ labelKey: 'hotkey-actions.toggle-ddi-4way-joystick-mode', value: 14 },
+	{ labelKey: 'hotkey-actions.load-profile-1', value: 15 },
+	{ labelKey: 'hotkey-actions.load-profile-2', value: 16 },
+	{ labelKey: 'hotkey-actions.load-profile-3', value: 17 },
+	{ labelKey: 'hotkey-actions.load-profile-4', value: 18 },
+	{ labelKey: 'hotkey-actions.l3-button', value: 19 },
+	{ labelKey: 'hotkey-actions.r3-button', value: 20 },
+	{ labelKey: 'hotkey-actions.touchpad-button', value: 21 },
 ];
 
 const FORCED_SETUP_MODES = [
-	{ labelKey: "forced-setup-mode-options.off", value: 0 },
-	{ labelKey: "forced-setup-mode-options.disable-input-mode", value: 1 },
-	{ labelKey: "forced-setup-mode-options.disable-web-config", value: 2 },
-	{ labelKey: "forced-setup-mode-options.disable-both", value: 3 },
+	{ labelKey: 'forced-setup-mode-options.off', value: 0 },
+	{ labelKey: 'forced-setup-mode-options.disable-input-mode', value: 1 },
+	{ labelKey: 'forced-setup-mode-options.disable-web-config', value: 2 },
+	{ labelKey: 'forced-setup-mode-options.disable-both', value: 3 },
 ];
 
 const hotkeySchema = {
@@ -70,20 +70,20 @@ const hotkeySchema = {
 		.number()
 		.required()
 		.oneOf(HOTKEY_ACTIONS.map((o) => o.value))
-		.label("Hotkey Action"),
-	buttonsMask: yup.number().required().label("Button Mask"),
-	auxMask: yup.number().required().label("Function Key"),
+		.label('Hotkey Action'),
+	buttonsMask: yup.number().required().label('Button Mask'),
+	auxMask: yup.number().required().label('Function Key'),
 };
 
 const hotkeyFields = Array(12)
 	.fill(0)
 	.reduce((acc, a, i) => {
-		const number = String(i + 1).padStart(2, "0");
+		const number = String(i + 1).padStart(2, '0');
 		const newSchema = yup
 			.object()
-			.label("Hotkey " + number)
+			.label('Hotkey ' + number)
 			.shape({ ...hotkeySchema });
-		acc["hotkey" + number] = newSchema;
+		acc['hotkey' + number] = newSchema;
 		return acc;
 	}, {});
 
@@ -92,30 +92,30 @@ const schema = yup.object().shape({
 		.number()
 		.required()
 		.oneOf(DPAD_MODES.map((o) => o.value))
-		.label("D-Pad Mode"),
+		.label('D-Pad Mode'),
 	...hotkeyFields,
 	inputMode: yup
 		.number()
 		.required()
 		.oneOf(INPUT_MODES.map((o) => o.value))
-		.label("Input Mode"),
+		.label('Input Mode'),
 	socdMode: yup
 		.number()
 		.required()
 		.oneOf(SOCD_MODES.map((o) => o.value))
-		.label("SOCD Cleaning Mode"),
+		.label('SOCD Cleaning Mode'),
 	switchTpShareForDs4: yup
 		.number()
 		.required()
-		.label("Switch Touchpad and Share"),
+		.label('Switch Touchpad and Share'),
 	forcedSetupMode: yup
 		.number()
 		.required()
 		.oneOf(FORCED_SETUP_MODES.map((o) => o.value))
-		.label("SOCD Cleaning Mode"),
-	lockHotkeys: yup.number().required().label("Lock Hotkeys"),
-	fourWayMode: yup.number().required().label("4-Way Joystick Mode"),
-	profileNumber: yup.number().required().label("Profile Number"),
+		.label('SOCD Cleaning Mode'),
+	lockHotkeys: yup.number().required().label('Lock Hotkeys'),
+	fourWayMode: yup.number().required().label('4-Way Joystick Mode'),
+	profileNumber: yup.number().required().label('Profile Number'),
 });
 
 const FormContext = ({ setButtonLabels }) => {
@@ -169,15 +169,15 @@ const FormContext = ({ setButtonLabels }) => {
 
 export default function SettingsPage() {
 	const { buttonLabels, setButtonLabels } = useContext(AppContext);
-	const [saveMessage, setSaveMessage] = useState("");
-	const [warning, setWarning] = useState({ show: false, acceptText: "" });
+	const [saveMessage, setSaveMessage] = useState('');
+	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 
-	const WARNING_CHECK_TEXT = "GP2040-CE";
+	const WARNING_CHECK_TEXT = 'GP2040-CE';
 
 	const handleWarningClose = async (accepted, values, setFieldValue) => {
-		setWarning({ show: false, acceptText: "" });
+		setWarning({ show: false, acceptText: '' });
 		if (accepted) await saveSettings(values);
-		else setFieldValue("forcedSetupMode", 0);
+		else setFieldValue('forcedSetupMode', 0);
 	};
 
 	const setWarningAcceptText = (e) => {
@@ -188,14 +188,14 @@ export default function SettingsPage() {
 		const success = await WebApi.setGamepadOptions(values);
 		setSaveMessage(
 			success
-				? t("Common:saved-success-message")
-				: t("Common:saved-error-message"),
+				? t('Common:saved-success-message')
+				: t('Common:saved-error-message'),
 		);
 	};
 
 	const onSuccess = async (values) => {
 		if (values.forcedSetupMode > 1) {
-			setWarning({ show: true, acceptText: "" });
+			setWarning({ show: true, acceptText: '' });
 		} else {
 			await saveSettings(values);
 		}
@@ -211,12 +211,12 @@ export default function SettingsPage() {
 
 	const buttonLabelS1 =
 		BUTTONS[buttonLabelType][
-			swapTpShareLabels && buttonLabelType === "ps4" ? "A2" : "S1"
+			swapTpShareLabels && buttonLabelType === 'ps4' ? 'A2' : 'S1'
 		];
-	const buttonLabelS2 = BUTTONS[buttonLabelType]["S2"];
-	const buttonLabelA1 = BUTTONS[buttonLabelType]["A1"];
+	const buttonLabelS2 = BUTTONS[buttonLabelType]['S2'];
+	const buttonLabelA1 = BUTTONS[buttonLabelType]['A1'];
 
-	const { t } = useTranslation("");
+	const { t } = useTranslation('');
 
 	const translatedInputModes = translateArray(INPUT_MODES);
 	const translatedDpadModes = translateArray(DPAD_MODES);
@@ -227,12 +227,12 @@ export default function SettingsPage() {
 	return (
 		<Formik validationSchema={schema} onSubmit={onSuccess} initialValues={{}}>
 			{({ handleSubmit, handleChange, values, errors, setFieldValue }) =>
-				console.log("errors", errors) || (
+				console.log('errors', errors) || (
 					<div>
 						<Form noValidate onSubmit={handleSubmit}>
-							<Section title={t("SettingsPage:settings-header-text")}>
+							<Section title={t('SettingsPage:settings-header-text')}>
 								<Form.Group className="row mb-3">
-									<Form.Label>{t("SettingsPage:input-mode-label")}</Form.Label>
+									<Form.Label>{t('SettingsPage:input-mode-label')}</Form.Label>
 									<div className="col-sm-3">
 										<Form.Select
 											name="inputMode"
@@ -257,14 +257,14 @@ export default function SettingsPage() {
 									<div className="col-sm-3">
 										{values.inputMode === PS4Mode && (
 											<Form.Check
-												label={t("SettingsPage:input-mode-extra-label")}
+												label={t('SettingsPage:input-mode-extra-label')}
 												type="switch"
 												name="switchTpShareForDs4"
 												isInvalid={false}
 												checked={Boolean(values.switchTpShareForDs4)}
 												onChange={(e) => {
 													setFieldValue(
-														"switchTpShareForDs4",
+														'switchTpShareForDs4',
 														e.target.checked ? 1 : 0,
 													);
 												}}
@@ -273,7 +273,7 @@ export default function SettingsPage() {
 									</div>
 								</Form.Group>
 								<Form.Group className="row mb-3">
-									<Form.Label>{t("SettingsPage:d-pad-mode-label")}</Form.Label>
+									<Form.Label>{t('SettingsPage:d-pad-mode-label')}</Form.Label>
 									<div className="col-sm-3">
 										<Form.Select
 											name="dpadMode"
@@ -298,7 +298,7 @@ export default function SettingsPage() {
 								</Form.Group>
 								<Form.Group className="row mb-3">
 									<Form.Label>
-										{t("SettingsPage:socd-cleaning-mode-label")}
+										{t('SettingsPage:socd-cleaning-mode-label')}
 									</Form.Label>
 									<div className="col-sm-3">
 										<Form.Select
@@ -322,10 +322,10 @@ export default function SettingsPage() {
 										</Form.Control.Feedback>
 									</div>
 								</Form.Group>
-								<p>{t("SettingsPage:socd-cleaning-mode-note")}</p>
+								<p>{t('SettingsPage:socd-cleaning-mode-note')}</p>
 								<Form.Group className="row mb-3">
 									<Form.Label>
-										{t("SettingsPage:forced-setup-mode-label")}
+										{t('SettingsPage:forced-setup-mode-label')}
 									</Form.Label>
 									<div className="col-sm-3">
 										<Form.Select
@@ -350,18 +350,18 @@ export default function SettingsPage() {
 									</div>
 								</Form.Group>
 								<Form.Check
-									label={t("SettingsPage:4-way-joystick-mode-label")}
+									label={t('SettingsPage:4-way-joystick-mode-label')}
 									type="switch"
 									id="fourWayMode"
 									isInvalid={false}
 									checked={Boolean(values.fourWayMode)}
 									onChange={(e) => {
-										setFieldValue("fourWayMode", e.target.checked ? 1 : 0);
+										setFieldValue('fourWayMode', e.target.checked ? 1 : 0);
 									}}
 								/>
 								<Form.Group className="row mb-3">
 									<Form.Label>
-										{t("SettingsPage:profile-number-label")}
+										{t('SettingsPage:profile-number-label')}
 									</Form.Label>
 									<div className="col-sm-3">
 										<Form.Control
@@ -373,7 +373,7 @@ export default function SettingsPage() {
 											isInvalid={false}
 											onChange={(e) => {
 												setFieldValue(
-													"profileNumber",
+													'profileNumber',
 													parseInt(e.target.value),
 												);
 											}}
@@ -381,14 +381,14 @@ export default function SettingsPage() {
 									</div>
 								</Form.Group>
 							</Section>
-							<Section title={t("SettingsPage:hotkey-settings-label")}>
+							<Section title={t('SettingsPage:hotkey-settings-label')}>
 								<div className="mb-3">
 									<Trans ns="SettingsPage" i18nKey="hotkey-settings-sub-header">
 										The <strong>Fn</strong> slider provides a mappable Function
-										button in the{" "}
+										button in the{' '}
 										<NavLink exact="true" to="/pin-mapping">
 											Pin Mapping
-										</NavLink>{" "}
+										</NavLink>{' '}
 										page. By selecting the Fn slider option, the Function button
 										must be held along with the selected hotkey settings.
 										<br />
@@ -398,7 +398,7 @@ export default function SettingsPage() {
 								</div>
 								{values.fnButtonPin === -1 && (
 									<div className="alert alert-warning">
-										{t("SettingsPage:hotkey-settings-warning")}
+										{t('SettingsPage:hotkey-settings-warning')}
 									</div>
 								)}
 								<div id="Hotkeys" hidden={values.lockHotkeys}>
@@ -511,18 +511,18 @@ export default function SettingsPage() {
 									))}
 								</div>
 								<Form.Check
-									label={t("SettingsPage:lock-hotkeys-label")}
+									label={t('SettingsPage:lock-hotkeys-label')}
 									type="switch"
 									id="LockHotkeys"
 									reverse
 									isInvalid={false}
 									checked={Boolean(values.lockHotkeys)}
 									onChange={(e) => {
-										setFieldValue("lockHotkeys", e.target.checked ? 1 : 0);
+										setFieldValue('lockHotkeys', e.target.checked ? 1 : 0);
 									}}
 								/>
 							</Section>
-							<Button type="submit">{t("Common:button-save-label")}</Button>
+							<Button type="submit">{t('Common:button-save-label')}</Button>
 							{saveMessage ? (
 								<span className="alert">{saveMessage}</span>
 							) : null}
@@ -531,7 +531,7 @@ export default function SettingsPage() {
 						<Modal size="lg" show={warning.show} onHide={handleWarningClose}>
 							<Modal.Header closeButton>
 								<Modal.Title>
-									{t("SettingsPage:forced-setup-mode-modal-title")}
+									{t('SettingsPage:forced-setup-mode-modal-title')}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body>
@@ -554,7 +554,7 @@ export default function SettingsPage() {
 									variant="warning"
 									onClick={() => handleWarningClose(true, values)}
 								>
-									{t("Common:button-save-label")}
+									{t('Common:button-save-label')}
 								</Button>
 								<Button
 									variant="primary"
@@ -562,7 +562,7 @@ export default function SettingsPage() {
 										handleWarningClose(false, values, setFieldValue)
 									}
 								>
-									{t("Common:button-dismiss-label")}
+									{t('Common:button-dismiss-label')}
 								</Button>
 							</Modal.Footer>
 						</Modal>

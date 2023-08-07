@@ -1,38 +1,38 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
-import { AppContext } from "../Contexts/AppContext";
-import { Button, Form, Col } from "react-bootstrap";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useEffect, useState, useRef, useContext } from 'react';
+import { AppContext } from '../Contexts/AppContext';
+import { Button, Form, Col } from 'react-bootstrap';
+import { Trans, useTranslation } from 'react-i18next';
 
-import Section from "../Components/Section";
-import WebApi from "../Services/WebApi";
+import Section from '../Components/Section';
+import WebApi from '../Services/WebApi';
 
-const FILE_EXTENSION = ".gp2040";
-const FILENAME = "gp2040ce_backup_{DATE}" + FILE_EXTENSION;
+const FILE_EXTENSION = '.gp2040';
+const FILENAME = 'gp2040ce_backup_{DATE}' + FILE_EXTENSION;
 
 const API_BINDING = {
 	display: {
-		label: "Display",
+		label: 'Display',
 		get: WebApi.getDisplayOptions,
 		set: WebApi.setDisplayOptions,
 	},
 	gamepad: {
-		label: "Gamepad",
+		label: 'Gamepad',
 		get: WebApi.getGamepadOptions,
 		set: WebApi.setGamepadOptions,
 	},
-	led: { label: "LED", get: WebApi.getLedOptions, set: WebApi.setLedOptions },
+	led: { label: 'LED', get: WebApi.getLedOptions, set: WebApi.setLedOptions },
 	ledTheme: {
-		label: "Custom LED Theme",
+		label: 'Custom LED Theme',
 		get: WebApi.getCustomTheme,
 		set: WebApi.setCustomTheme,
 	},
 	pinmappings: {
-		label: "Pin Mappings",
+		label: 'Pin Mappings',
 		get: WebApi.getPinMappings,
 		set: WebApi.setPinMappings,
 	},
 	addons: {
-		label: "Add-Ons",
+		label: 'Add-Ons',
 		get: WebApi.getAddonsOptions,
 		set: WebApi.setAddonsOptions,
 	},
@@ -46,12 +46,12 @@ export default function BackupPage() {
 	const [optionState, setOptionStateData] = useState({});
 	const [checkValues, setCheckValues] = useState({}); // lazy approach
 
-	const [noticeMessage, setNoticeMessage] = useState("");
-	const [saveMessage, setSaveMessage] = useState("");
-	const [loadMessage, setLoadMessage] = useState("");
+	const [noticeMessage, setNoticeMessage] = useState('');
+	const [saveMessage, setSaveMessage] = useState('');
+	const [loadMessage, setLoadMessage] = useState('');
 	const { setLoading } = useContext(AppContext);
 
-	const { t } = useTranslation("");
+	const { t } = useTranslation('');
 
 	useEffect(() => {
 		async function fetchData() {
@@ -76,7 +76,7 @@ export default function BackupPage() {
 	}, []);
 
 	const validateValues = (data, nextData) => {
-		if (typeof data != "object" || typeof nextData != "object") {
+		if (typeof data != 'object' || typeof nextData != 'object') {
 			// invalid data types
 			return {};
 		}
@@ -86,10 +86,10 @@ export default function BackupPage() {
 			const nextDataValue = nextData[key];
 			if (
 				nextDataValue !== null &&
-				typeof nextDataValue !== "undefined" &&
+				typeof nextDataValue !== 'undefined' &&
 				typeof value == typeof nextDataValue
 			) {
-				if (typeof nextDataValue == "object") {
+				if (typeof nextDataValue == 'object') {
 					validated[key] = validateValues(value, nextDataValue);
 				} else {
 					validated[key] = nextDataValue;
@@ -120,7 +120,7 @@ export default function BackupPage() {
 	const handleSave = async (values) => {
 		let exportData = {};
 		for (const [key, value] of Object.entries(checkValues)) {
-			if (key.match("export_") && (value != null || value !== undefined)) {
+			if (key.match('export_') && (value != null || value !== undefined)) {
 				let skey = key.slice(7, key.length);
 				if (optionState[skey] !== undefined || optionState[skey] != null) {
 					exportData[skey] = optionState[skey];
@@ -128,26 +128,26 @@ export default function BackupPage() {
 			}
 		}
 
-		const fileDate = new Date().toISOString().replace(/[^0-9]/g, "");
-		const name = FILENAME.replace("{DATE}", fileDate);
+		const fileDate = new Date().toISOString().replace(/[^0-9]/g, '');
+		const name = FILENAME.replace('{DATE}', fileDate);
 		const json = JSON.stringify(exportData);
-		const file = new Blob([json], { type: "text/json;charset=utf-8" });
+		const file = new Blob([json], { type: 'text/json;charset=utf-8' });
 
-		let a = document.createElement("a");
+		let a = document.createElement('a');
 		a.href = URL.createObjectURL(file);
 		a.download = name;
-		a.innerHTML = "Save Backup";
+		a.innerHTML = 'Save Backup';
 
-		let container = document.getElementById("root");
+		let container = document.getElementById('root');
 		container.appendChild(a);
 
 		a.click();
 		a.remove();
 
-		setSaveMessage(t("BackupPage:saved-success-message", { name }));
+		setSaveMessage(t('BackupPage:saved-success-message', { name }));
 
 		setTimeout(() => {
-			setSaveMessage("");
+			setSaveMessage('');
 		}, 5000);
 	};
 
@@ -192,7 +192,7 @@ export default function BackupPage() {
 				// filter by known values
 				let filteredData = {};
 				for (const [key, value] of Object.entries(checkValues)) {
-					if (key.match("import_") && (value != null || value !== undefined)) {
+					if (key.match('import_') && (value != null || value !== undefined)) {
 						let skey = key.slice(7, key.length);
 						if (newData[skey] !== undefined || newData[skey] != null) {
 							filteredData[skey] = newData[skey];
@@ -206,10 +206,10 @@ export default function BackupPage() {
 				setOptionsToAPIStorage(nextOptions);
 
 				setLoadMessage(`Loaded ${fileName}`);
-				setNoticeMessage("");
+				setNoticeMessage('');
 
 				setTimeout(() => {
-					setLoadMessage("");
+					setLoadMessage('');
 				}, 5000);
 			}
 		};
@@ -221,21 +221,21 @@ export default function BackupPage() {
 
 	return (
 		<>
-			<Section title={t("BackupPage:header-text")}>
-				<i>{t("BackupPage:sub-header-text")}</i>
+			<Section title={t('BackupPage:header-text')}>
+				<i>{t('BackupPage:sub-header-text')}</i>
 			</Section>
-			<Section title={t("BackupPage:save-header-text")}>
+			<Section title={t('BackupPage:save-header-text')}>
 				<Col>
-					<Form.Group className={"row mb-3"}>
-						<div className={"col-sm-4"}>
+					<Form.Group className={'row mb-3'}>
+						<div className={'col-sm-4'}>
 							{Object.entries(API_BINDING).map((api) => (
 								<Form.Check
 									id={`export_${api[0]}`}
 									key={`export_${api[0]}`}
-									label={t("BackupPage:save-export-option-label", {
+									label={t('BackupPage:save-export-option-label', {
 										api: t(`BackupPage:api-${api[0]}-text`),
 									})}
-									type={"checkbox"}
+									type={'checkbox'}
 									checked={checkValues[`export_${api[0]}`] ?? false}
 									onChange={handleChange}
 								/>
@@ -244,20 +244,20 @@ export default function BackupPage() {
 					</Form.Group>
 					<div
 						style={{
-							display: "flex",
-							flexDirection: "row",
+							display: 'flex',
+							flexDirection: 'row',
 						}}
 					>
 						<Button type="submit" onClick={handleSave}>
-							{t("Common:button-save-label")}
+							{t('Common:button-save-label')}
 						</Button>
 						<div
 							style={{
-								height: "100%",
+								height: '100%',
 								paddingLeft: 24,
 								fontWeight: 600,
-								color: "darkcyan",
-								alignSelf: "center",
+								color: 'darkcyan',
+								alignSelf: 'center',
 							}}
 						>
 							{saveMessage ? saveMessage : null}
@@ -265,18 +265,18 @@ export default function BackupPage() {
 					</div>
 				</Col>
 			</Section>
-			<Section title={t("BackupPage:load-header-text")}>
+			<Section title={t('BackupPage:load-header-text')}>
 				<Col>
-					<Form.Group className={"row mb-3"}>
-						<div className={"col-sm-4"}>
+					<Form.Group className={'row mb-3'}>
+						<div className={'col-sm-4'}>
 							{Object.entries(API_BINDING).map((api) => (
 								<Form.Check
 									id={`import_${api[0]}`}
 									key={`import_${api[0]}`}
-									label={t("BackupPage:load-export-option-label", {
+									label={t('BackupPage:load-export-option-label', {
 										api: t(`BackupPage:api-${api[0]}-text`),
 									})}
-									type={"checkbox"}
+									type={'checkbox'}
 									checked={checkValues[`import_${api[0]}`] ?? false}
 									onChange={handleChange}
 								/>
@@ -285,15 +285,15 @@ export default function BackupPage() {
 					</Form.Group>
 					<input
 						ref={inputFileSelect}
-						type={"file"}
+						type={'file'}
 						accept={FILE_EXTENSION}
-						style={{ display: "none" }}
+						style={{ display: 'none' }}
 						onChange={handleFileSelect.bind(this)}
 					/>
 					<div
 						style={{
-							display: "flex",
-							flexDirection: "row",
+							display: 'flex',
+							flexDirection: 'row',
 						}}
 					>
 						<Button
@@ -301,19 +301,19 @@ export default function BackupPage() {
 								inputFileSelect.current.click();
 							}}
 						>
-							{t("Common:button-load-label")}
+							{t('Common:button-load-label')}
 						</Button>
 						<div
 							style={{
-								height: "100%",
+								height: '100%',
 								paddingLeft: 24,
 								fontWeight: 600,
-								color: "darkcyan",
-								alignSelf: "center",
+								color: 'darkcyan',
+								alignSelf: 'center',
 							}}
 						>
 							<span>{loadMessage ? loadMessage : null}</span>
-							<span style={{ color: "red", fontWeight: "bold" }}>
+							<span style={{ color: 'red', fontWeight: 'bold' }}>
 								{noticeMessage ? noticeMessage : null}
 							</span>
 						</div>

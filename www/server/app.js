@@ -2,19 +2,19 @@
  * GP2040-CE Configurator Development Server
  */
 
-import express from "express";
-import cors from "cors";
-import mapValues from "lodash/mapValues.js";
-import { readFileSync } from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { DEFAULT_KEYBOARD_MAPPING } from "../src/Data/Keyboard.js";
+import express from 'express';
+import cors from 'cors';
+import mapValues from 'lodash/mapValues.js';
+import { readFileSync } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { DEFAULT_KEYBOARD_MAPPING } from '../src/Data/Keyboard.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const { pico: picoController } = JSON.parse(
-	readFileSync(path.resolve(__dirname, "../src/Data/Controllers.json"), "utf8"),
+	readFileSync(path.resolve(__dirname, '../src/Data/Controllers.json'), 'utf8'),
 );
 
 const port = process.env.PORT || 8080;
@@ -23,24 +23,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use((req, res, next) => {
-	console.log("Request:", req.method, req.url);
+	console.log('Request:', req.method, req.url);
 	next();
 });
 
-app.get("/api/getUsedPins", (req, res) => {
+app.get('/api/getUsedPins', (req, res) => {
 	return res.send({ usedPins: Object.values(picoController) });
 });
 
-app.get("/api/resetSettings", (req, res) => {
+app.get('/api/resetSettings', (req, res) => {
 	return res.send({ success: true });
 });
 
-app.get("/api/getDisplayOptions", (req, res) => {
+app.get('/api/getDisplayOptions', (req, res) => {
 	const data = {
 		enabled: 1,
 		sdaPin: 0,
 		sclPin: 1,
-		i2cAddress: "0x3D",
+		i2cAddress: '0x3D',
 		i2cBlock: 0,
 		i2cSpeed: 400000,
 		flipDisplay: 0,
@@ -70,19 +70,19 @@ app.get("/api/getDisplayOptions", (req, res) => {
 
 		displaySaverTimeout: 0,
 	};
-	console.log("data", data);
+	console.log('data', data);
 	return res.send(data);
 });
 
-app.get("/api/getSplashImage", (req, res) => {
+app.get('/api/getSplashImage', (req, res) => {
 	const data = {
 		splashImage: Array(16 * 64).fill(255),
 	};
-	console.log("data", data);
+	console.log('data', data);
 	return res.send(data);
 });
 
-app.get("/api/getGamepadOptions", (req, res) => {
+app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
 		dpadMode: 0,
 		inputMode: 4,
@@ -156,7 +156,7 @@ app.get("/api/getGamepadOptions", (req, res) => {
 	});
 });
 
-app.get("/api/getLedOptions", (req, res) => {
+app.get('/api/getLedOptions', (req, res) => {
 	return res.send({
 		brightnessMaximum: 255,
 		brightnessSteps: 5,
@@ -194,8 +194,8 @@ app.get("/api/getLedOptions", (req, res) => {
 	});
 });
 
-app.get("/api/getCustomTheme", (req, res) => {
-	console.log("/api/getCustomTheme");
+app.get('/api/getCustomTheme', (req, res) => {
+	console.log('/api/getCustomTheme');
 	return res.send({
 		enabled: true,
 		Up: { u: 16711680, d: 255 },
@@ -219,15 +219,15 @@ app.get("/api/getCustomTheme", (req, res) => {
 	});
 });
 
-app.get("/api/getPinMappings", (req, res) => {
+app.get('/api/getPinMappings', (req, res) => {
 	return res.send(picoController);
 });
 
-app.get("/api/getKeyMappings", (req, res) =>
+app.get('/api/getKeyMappings', (req, res) =>
 	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
 );
 
-app.get("/api/getProfileOptions", (req, res) => {
+app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
 		alternativePinMappings: [
 			{
@@ -276,7 +276,7 @@ app.get("/api/getProfileOptions", (req, res) => {
 	});
 });
 
-app.get("/api/getAddonsOptions", (req, res) => {
+app.get('/api/getAddonsOptions', (req, res) => {
 	return res.send({
 		turboPin: -1,
 		turboPinLED: -1,
@@ -387,13 +387,13 @@ app.get("/api/getAddonsOptions", (req, res) => {
 	});
 });
 
-app.get("/api/getFirmwareVersion", (req, res) => {
+app.get('/api/getFirmwareVersion', (req, res) => {
 	return res.send({
 		version: process.env.VITE_CURRENT_VERSION,
 	});
 });
 
-app.get("/api/getButtonLayoutCustomOptions", (req, res) => {
+app.get('/api/getButtonLayoutCustomOptions', (req, res) => {
 	return res.send({
 		params: {
 			layout: 2,
@@ -412,11 +412,11 @@ app.get("/api/getButtonLayoutCustomOptions", (req, res) => {
 	});
 });
 
-app.get("/api/reboot", (req, res) => {
+app.get('/api/reboot', (req, res) => {
 	return res.send({});
 });
 
-app.get("/api/getMemoryReport", (req, res) => {
+app.get('/api/getMemoryReport', (req, res) => {
 	return res.send({
 		totalFlash: 2048,
 		usedFlash: 1048,
@@ -426,7 +426,7 @@ app.get("/api/getMemoryReport", (req, res) => {
 	});
 });
 
-app.post("/api/*", (req, res) => {
+app.post('/api/*', (req, res) => {
 	console.log(req.body);
 	return res.send(req.body);
 });

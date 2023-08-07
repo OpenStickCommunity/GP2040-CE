@@ -1,8 +1,8 @@
-import axios from "axios";
-import { intToHex, hexToInt, rgbIntToHex } from "./Utilities";
+import axios from 'axios';
+import { intToHex, hexToInt, rgbIntToHex } from './Utilities';
 
 const baseUrl =
-	process.env.NODE_ENV === "production" ? "" : "http://localhost:8080";
+	process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
 
 export const baseButtonMappings = {
 	Up: { pin: -1, key: 0, error: null },
@@ -85,7 +85,7 @@ async function getDisplayOptions() {
 		const response = await axios.get(`${baseUrl}/api/getDisplayOptions`);
 
 		if (response.data.i2cAddress) {
-			response.data.i2cAddress = "0x" + response.data.i2cAddress.toString(16);
+			response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
 		}
 		response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
 		response.data.displaySaverTimeout =
@@ -188,7 +188,7 @@ async function getLedOptions(setLoading) {
 		const response = await axios.get(`${baseUrl}/api/getLedOptions`);
 		setLoading(false);
 
-		response.data.pledColor = rgbIntToHex(response.data.pledColor) || "#ffffff";
+		response.data.pledColor = rgbIntToHex(response.data.pledColor) || '#ffffff';
 		if (response.data.pledType === 1) {
 			response.data.pledIndex1 = response.data.pledPin1;
 			response.data.pledIndex2 = response.data.pledPin2;
@@ -229,7 +229,7 @@ async function getCustomTheme(setLoading) {
 
 		// Transform ARGB int value to hex for easy use on frontend
 		Object.keys(response.data)
-			.filter((p) => p !== "enabled")
+			.filter((p) => p !== 'enabled')
 			.forEach((button) => {
 				data.customTheme[button] = {
 					normal: rgbIntToHex(response.data[button].u),
@@ -251,8 +251,8 @@ async function setCustomTheme(customThemeOptions) {
 	// Transform RGB hex values to ARGB int before sending back to API
 	Object.keys(customThemeOptions.customTheme).forEach((p) => {
 		options[p] = {
-			u: hexToInt(customThemeOptions.customTheme[p].normal.replace("#", "")),
-			d: hexToInt(customThemeOptions.customTheme[p].pressed.replace("#", "")),
+			u: hexToInt(customThemeOptions.customTheme[p].normal.replace('#', '')),
+			d: hexToInt(customThemeOptions.customTheme[p].pressed.replace('#', '')),
 		};
 	});
 
@@ -308,10 +308,10 @@ async function getProfileOptions(setLoading) {
 	try {
 		const response = await axios.get(`${baseUrl}/api/getProfileOptions`);
 		let profileOptions = { ...baseProfileOptions };
-		response.data["alternativePinMappings"].forEach((altButtons, index) => {
+		response.data['alternativePinMappings'].forEach((altButtons, index) => {
 			for (let prop of Object.keys(altButtons))
-				profileOptions["alternativePinMappings"][index][prop].pin = parseInt(
-					response.data["alternativePinMappings"][index][prop],
+				profileOptions['alternativePinMappings'][index][prop].pin = parseInt(
+					response.data['alternativePinMappings'][index][prop],
 				);
 		});
 		setLoading(false);
@@ -324,13 +324,13 @@ async function getProfileOptions(setLoading) {
 
 async function setProfileOptions(options) {
 	let data = {};
-	data["alternativePinMappings"] = [];
-	options["alternativePinMappings"].forEach((altButtons, index) => {
+	data['alternativePinMappings'] = [];
+	options['alternativePinMappings'].forEach((altButtons, index) => {
 		let altMapping = {};
-		Object.keys(options["alternativePinMappings"][index]).map(
+		Object.keys(options['alternativePinMappings'][index]).map(
 			(button, i) => (altMapping[button] = altButtons[button].pin),
 		);
-		data["alternativePinMappings"].push(altMapping);
+		data['alternativePinMappings'].push(altMapping);
 	});
 
 	return axios

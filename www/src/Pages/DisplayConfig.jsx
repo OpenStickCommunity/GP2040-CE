@@ -1,98 +1,98 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { Button, Form, Row, Col, FormLabel } from "react-bootstrap";
-import { Formik, useFormikContext, Field } from "formik";
-import chunk from "lodash/chunk";
-import * as yup from "yup";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { Button, Form, Row, Col, FormLabel } from 'react-bootstrap';
+import { Formik, useFormikContext, Field } from 'formik';
+import chunk from 'lodash/chunk';
+import * as yup from 'yup';
+import { Trans, useTranslation } from 'react-i18next';
 
-import { AppContext } from "../Contexts/AppContext";
-import FormControl from "../Components/FormControl";
-import FormSelect from "../Components/FormSelect";
-import Section from "../Components/Section";
-import WebApi from "../Services/WebApi";
+import { AppContext } from '../Contexts/AppContext';
+import FormControl from '../Components/FormControl';
+import FormSelect from '../Components/FormSelect';
+import Section from '../Components/Section';
+import WebApi from '../Services/WebApi';
 
 const ON_OFF_OPTIONS = [
-	{ label: "Disabled", value: 0 },
-	{ label: "Enabled", value: 1 },
+	{ label: 'Disabled', value: 0 },
+	{ label: 'Enabled', value: 1 },
 ];
 
 const I2C_BLOCKS = [
-	{ label: "i2c0", value: 0 },
-	{ label: "i2c1", value: 1 },
+	{ label: 'i2c0', value: 0 },
+	{ label: 'i2c1', value: 1 },
 ];
 
 const BUTTON_LAYOUTS = [
-	{ label: "Stick", value: 0 }, // BUTTON_LAYOUT_STICK
-	{ label: "Stickless", value: 1 }, // BUTTON_LAYOUT_STICKLESS
-	{ label: "Buttons Angled", value: 2 }, // BUTTON_LAYOUT_BUTTONS_ANGLED
-	{ label: "Buttons Basic", value: 3 }, // BUTTON_LAYOUT_BUTTONS_BASIC
-	{ label: "Keyboard Angled", value: 4 }, // BUTTON_LAYOUT_KEYBOARD_ANGLED
-	{ label: "Keyboard", value: 5 }, // BUTTON_LAYOUT_KEYBOARDA
-	{ label: "Dancepad", value: 6 }, // BUTTON_LAYOUT_DANCEPADA
-	{ label: "Twinstick", value: 7 }, // BUTTON_LAYOUT_TWINSTICKA
-	{ label: "Blank", value: 8 }, // BUTTON_LAYOUT_BLANKA
-	{ label: "VLX", value: 9 }, // BUTTON_LAYOUT_VLXA
-	{ label: "Fightboard", value: 10 }, // BUTTON_LAYOUT_FIGHTBOARD_STICK
-	{ label: "Fightboard Mirrored", value: 11 }, // BUTTON_LAYOUT_FIGHTBOARD_MIRRORED
-	{ label: "Custom", value: 12 }, // BUTTON_LAYOUT_CUSTOM
+	{ label: 'Stick', value: 0 }, // BUTTON_LAYOUT_STICK
+	{ label: 'Stickless', value: 1 }, // BUTTON_LAYOUT_STICKLESS
+	{ label: 'Buttons Angled', value: 2 }, // BUTTON_LAYOUT_BUTTONS_ANGLED
+	{ label: 'Buttons Basic', value: 3 }, // BUTTON_LAYOUT_BUTTONS_BASIC
+	{ label: 'Keyboard Angled', value: 4 }, // BUTTON_LAYOUT_KEYBOARD_ANGLED
+	{ label: 'Keyboard', value: 5 }, // BUTTON_LAYOUT_KEYBOARDA
+	{ label: 'Dancepad', value: 6 }, // BUTTON_LAYOUT_DANCEPADA
+	{ label: 'Twinstick', value: 7 }, // BUTTON_LAYOUT_TWINSTICKA
+	{ label: 'Blank', value: 8 }, // BUTTON_LAYOUT_BLANKA
+	{ label: 'VLX', value: 9 }, // BUTTON_LAYOUT_VLXA
+	{ label: 'Fightboard', value: 10 }, // BUTTON_LAYOUT_FIGHTBOARD_STICK
+	{ label: 'Fightboard Mirrored', value: 11 }, // BUTTON_LAYOUT_FIGHTBOARD_MIRRORED
+	{ label: 'Custom', value: 12 }, // BUTTON_LAYOUT_CUSTOM
 ];
 
 const BUTTON_LAYOUTS_RIGHT = [
-	{ label: "Arcade", value: 0 }, // BUTTON_LAYOUT_ARCADE
-	{ label: "Stickless", value: 1 }, // BUTTON_LAYOUT_STICKLESSB
-	{ label: "Buttons Angled", value: 2 }, // BUTTON_LAYOUT_BUTTONS_ANGLEDB
-	{ label: "Viewlix", value: 3 }, // BUTTON_LAYOUT_VEWLIX
-	{ label: "Viewlix 7", value: 4 }, // BUTTON_LAYOUT_VEWLIX7
-	{ label: "Capcom", value: 5 }, // BUTTON_LAYOUT_CAPCOM
-	{ label: "Capcom 6", value: 6 }, // BUTTON_LAYOUT_CAPCOM6
-	{ label: "Sega 2P", value: 7 }, // BUTTON_LAYOUT_SEGA2P
-	{ label: "Noir 8", value: 8 }, // BUTTON_LAYOUT_NOIR8
-	{ label: "Keyboard", value: 9 }, // BUTTON_LAYOUT_KEYBOARDB
-	{ label: "Dancepad", value: 10 }, // BUTTON_LAYOUT_DANCEPADB
-	{ label: "Twinstick", value: 11 }, // BUTTON_LAYOUT_TWINSTICKB
-	{ label: "Blank", value: 12 }, // BUTTON_LAYOUT_BLANKB
-	{ label: "VLX", value: 13 }, // BUTTON_LAYOUT_VLXB
-	{ label: "Fightboard", value: 14 }, // BUTTON_LAYOUT_FIGHTBOARD
-	{ label: "Fightboard Mirrored", value: 15 }, // BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED
-	{ label: "Custom", value: 16 }, // BUTTON_LAYOUT_CUSTOM
+	{ label: 'Arcade', value: 0 }, // BUTTON_LAYOUT_ARCADE
+	{ label: 'Stickless', value: 1 }, // BUTTON_LAYOUT_STICKLESSB
+	{ label: 'Buttons Angled', value: 2 }, // BUTTON_LAYOUT_BUTTONS_ANGLEDB
+	{ label: 'Viewlix', value: 3 }, // BUTTON_LAYOUT_VEWLIX
+	{ label: 'Viewlix 7', value: 4 }, // BUTTON_LAYOUT_VEWLIX7
+	{ label: 'Capcom', value: 5 }, // BUTTON_LAYOUT_CAPCOM
+	{ label: 'Capcom 6', value: 6 }, // BUTTON_LAYOUT_CAPCOM6
+	{ label: 'Sega 2P', value: 7 }, // BUTTON_LAYOUT_SEGA2P
+	{ label: 'Noir 8', value: 8 }, // BUTTON_LAYOUT_NOIR8
+	{ label: 'Keyboard', value: 9 }, // BUTTON_LAYOUT_KEYBOARDB
+	{ label: 'Dancepad', value: 10 }, // BUTTON_LAYOUT_DANCEPADB
+	{ label: 'Twinstick', value: 11 }, // BUTTON_LAYOUT_TWINSTICKB
+	{ label: 'Blank', value: 12 }, // BUTTON_LAYOUT_BLANKB
+	{ label: 'VLX', value: 13 }, // BUTTON_LAYOUT_VLXB
+	{ label: 'Fightboard', value: 14 }, // BUTTON_LAYOUT_FIGHTBOARD
+	{ label: 'Fightboard Mirrored', value: 15 }, // BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED
+	{ label: 'Custom', value: 16 }, // BUTTON_LAYOUT_CUSTOM
 ];
 
 const SPLASH_MODES = [
-	{ label: "Enabled", value: 0 }, // STATICSPLASH
+	{ label: 'Enabled', value: 0 }, // STATICSPLASH
 	//	{ label: 'Close In', value: 1 },		 // CLOSEIN
-	{ label: "Disabled", value: 3 }, // NOSPLASH
+	{ label: 'Disabled', value: 3 }, // NOSPLASH
 ];
 
 const SPLASH_DURATION_CHOICES = [
-	{ label: "Default", value: 0 },
-	{ label: "5 seconds", value: 5000 },
-	{ label: "10 seconds", value: 10000 },
-	{ label: "30 seconds", value: 30000 },
-	{ label: "Always ON", value: -1 },
+	{ label: 'Default', value: 0 },
+	{ label: '5 seconds', value: 5000 },
+	{ label: '10 seconds', value: 10000 },
+	{ label: '30 seconds', value: 30000 },
+	{ label: 'Always ON', value: -1 },
 ];
 
 const DISPLAY_SAVER_TIMEOUT_CHOICES = [
-	{ label: "Off", value: 0 },
-	{ label: "1 minute", value: 1 },
-	{ label: "2 minutes", value: 2 },
-	{ label: "5 minutes", value: 5 },
-	{ label: "10 minutes", value: 10 },
-	{ label: "20 minutes", value: 20 },
-	{ label: "30 minutes", value: 30 },
+	{ label: 'Off', value: 0 },
+	{ label: '1 minute', value: 1 },
+	{ label: '2 minutes', value: 2 },
+	{ label: '5 minutes', value: 5 },
+	{ label: '10 minutes', value: 10 },
+	{ label: '20 minutes', value: 20 },
+	{ label: '30 minutes', value: 30 },
 ];
 
 const DISPLAY_FLIP_MODES = [
-	{ label: "None", value: 0 },
-	{ label: "Flip", value: 1 },
-	{ label: "Mirror", value: 2 },
-	{ label: "Flip and Mirror", value: 3 },
+	{ label: 'None', value: 0 },
+	{ label: 'Flip', value: 1 },
+	{ label: 'Mirror', value: 2 },
+	{ label: 'Flip and Mirror', value: 3 },
 ];
 
 const defaultValues = {
 	enabled: false,
 	sdaPin: -1,
 	sclPin: -1,
-	i2cAddress: "0x3C",
+	i2cAddress: '0x3C',
 	i2cBlock: 0,
 	i2cSpeed: 400000,
 	flipDisplay: false,
@@ -126,74 +126,74 @@ const buttonLayoutSchema = yup
 	.number()
 	.required()
 	.oneOf(BUTTON_LAYOUTS.map((o) => o.value))
-	.label("Button Layout Left");
+	.label('Button Layout Left');
 const buttonLayoutRightSchema = yup
 	.number()
 	.required()
 	.oneOf(BUTTON_LAYOUTS_RIGHT.map((o) => o.value))
-	.label("Button Layout Right");
+	.label('Button Layout Right');
 
 const schema = yup.object().shape({
-	enabled: yup.number().label("Enabled?"),
-	i2cAddress: yup.string().required().label("I2C Address"),
-	sdaPin: yup.number().label("SDA Pin").validatePinWhenValue("sdaPin"),
-	sclPin: yup.number().label("SCL Pin").validatePinWhenValue("sclPin"),
+	enabled: yup.number().label('Enabled?'),
+	i2cAddress: yup.string().required().label('I2C Address'),
+	sdaPin: yup.number().label('SDA Pin').validatePinWhenValue('sdaPin'),
+	sclPin: yup.number().label('SCL Pin').validatePinWhenValue('sclPin'),
 	i2cBlock: yup
 		.number()
 		.required()
 		.oneOf(I2C_BLOCKS.map((o) => o.value))
-		.label("I2C Block"),
-	i2cSpeed: yup.number().required().label("I2C Speed"),
+		.label('I2C Block'),
+	i2cSpeed: yup.number().required().label('I2C Speed'),
 	flipDisplay: yup
 		.number()
 		.oneOf(DISPLAY_FLIP_MODES.map((o) => o.value))
-		.label("Flip Display"),
-	invertDisplay: yup.number().label("Invert Display"),
+		.label('Flip Display'),
+	invertDisplay: yup.number().label('Invert Display'),
 	buttonLayout: buttonLayoutSchema,
 	buttonLayoutRight: buttonLayoutRightSchema,
 	splashMode: yup
 		.number()
 		.required()
 		.oneOf(SPLASH_MODES.map((o) => o.value))
-		.label("Splash Screen"),
+		.label('Splash Screen'),
 	buttonLayoutCustomOptions: yup.object().shape({
 		params: yup.object().shape({
 			layout: buttonLayoutSchema,
-			startX: yup.number().required().min(0).max(128).label("Start X"),
-			startY: yup.number().required().min(0).max(64).label("Start Y"),
+			startX: yup.number().required().min(0).max(128).label('Start X'),
+			startY: yup.number().required().min(0).max(64).label('Start Y'),
 			buttonRadius: yup
 				.number()
 				.required()
 				.min(0)
 				.max(20)
-				.label("Button Radius"),
+				.label('Button Radius'),
 			buttonPadding: yup
 				.number()
 				.required()
 				.min(0)
 				.max(20)
-				.label("Button Padding"),
+				.label('Button Padding'),
 		}),
 		paramsRight: yup.object().shape({
 			layout: buttonLayoutRightSchema,
-			startX: yup.number().required().min(0).max(128).label("Start X"),
-			startY: yup.number().required().min(0).max(64).label("Start Y"),
+			startX: yup.number().required().min(0).max(128).label('Start X'),
+			startY: yup.number().required().min(0).max(64).label('Start Y'),
 			buttonRadius: yup
 				.number()
 				.required()
 				.min(0)
 				.max(20)
-				.label("Button Radius"),
+				.label('Button Radius'),
 			buttonPadding: yup
 				.number()
 				.required()
 				.min(0)
 				.max(20)
-				.label("Button Padding"),
+				.label('Button Padding'),
 		}),
 	}),
-	splashDuration: yup.number().required().min(0).label("Splash Duration"),
-	displaySaverTimeout: yup.number().required().min(0).label("Display Saver"),
+	splashDuration: yup.number().required().min(0).label('Splash Duration'),
+	displaySaverTimeout: yup.number().required().min(0).label('Display Saver'),
 });
 
 const FormContext = () => {
@@ -263,9 +263,9 @@ const isButtonLayoutCustom = (values) =>
 
 export default function DisplayConfigPage() {
 	const { updateUsedPins } = useContext(AppContext);
-	const [saveMessage, setSaveMessage] = useState("");
+	const [saveMessage, setSaveMessage] = useState('');
 
-	const { t } = useTranslation("");
+	const { t } = useTranslation('');
 
 	const onSuccess = async (values) => {
 		const success = await WebApi.setDisplayOptions(values, false).then(() =>
@@ -276,8 +276,8 @@ export default function DisplayConfigPage() {
 
 		setSaveMessage(
 			success
-				? t("Common:saved-success-message")
-				: t("Common:saved-error-message"),
+				? t('Common:saved-success-message')
+				: t('Common:saved-error-message'),
 		);
 	};
 
@@ -292,10 +292,10 @@ export default function DisplayConfigPage() {
 			initialValues={defaultValues}
 		>
 			{({ handleSubmit, handleChange, handleBlur, values, touched, errors }) =>
-				console.log("errors", errors) ||
-				console.log("values", values) || (
-					<Section title={t("DisplayConfig:header-text")}>
-						<p>{t("DisplayConfig:sub-header-text")}</p>
+				console.log('errors', errors) ||
+				console.log('values', values) || (
+					<Section title={t('DisplayConfig:header-text')}>
+						<p>{t('DisplayConfig:sub-header-text')}</p>
 						<ul>
 							<Trans ns="DisplayConfig" i18nKey="list-text">
 								<li>Monochrome display with 128x64 resolution</li>
@@ -306,14 +306,14 @@ export default function DisplayConfigPage() {
 								<li>Supports 3.3v operation</li>
 							</Trans>
 						</ul>
-						<p>{t("DisplayConfig:table.header")}</p>
+						<p>{t('DisplayConfig:table.header')}</p>
 						<Row>
 							<Col>
 								<table className="table table-sm mb-4">
 									<thead>
 										<tr>
-											<th>{t("DisplayConfig:table.sda-scl-pins-header")}</th>
-											<th>{t("DisplayConfig:table.i2c-block-header")}</th>
+											<th>{t('DisplayConfig:table.sda-scl-pins-header')}</th>
+											<th>{t('DisplayConfig:table.i2c-block-header')}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -354,8 +354,8 @@ export default function DisplayConfigPage() {
 								<table className="table table-sm mb-4">
 									<thead>
 										<tr>
-											<th>{t("DisplayConfig:table.sda-scl-pins-header")}</th>
-											<th>{t("DisplayConfig:table.i2c-block-header")}</th>
+											<th>{t('DisplayConfig:table.sda-scl-pins-header')}</th>
+											<th>{t('DisplayConfig:table.i2c-block-header')}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -396,7 +396,7 @@ export default function DisplayConfigPage() {
 						<Form noValidate onSubmit={handleSubmit}>
 							<Row>
 								<FormSelect
-									label={t("Common:switch-enabled")}
+									label={t('Common:switch-enabled')}
 									name="enabled"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -412,7 +412,7 @@ export default function DisplayConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("DisplayConfig:form.i2c-block-label")}
+									label={t('DisplayConfig:form.i2c-block-label')}
 									name="i2cBlock"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -429,7 +429,7 @@ export default function DisplayConfigPage() {
 								</FormSelect>
 								<FormControl
 									type="number"
-									label={t("DisplayConfig:form.sda-pin-label")}
+									label={t('DisplayConfig:form.sda-pin-label')}
 									name="sdaPin"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -442,7 +442,7 @@ export default function DisplayConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("DisplayConfig:form.scl-pin-label")}
+									label={t('DisplayConfig:form.scl-pin-label')}
 									name="sclPin"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -457,7 +457,7 @@ export default function DisplayConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="text"
-									label={t("DisplayConfig:form.i2c-address-label")}
+									label={t('DisplayConfig:form.i2c-address-label')}
 									name="i2cAddress"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -469,7 +469,7 @@ export default function DisplayConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("DisplayConfig:form.i2c-speed-label")}
+									label={t('DisplayConfig:form.i2c-speed-label')}
 									name="i2cSpeed"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -480,7 +480,7 @@ export default function DisplayConfigPage() {
 									min={100000}
 								/>
 								<FormSelect
-									label={t("DisplayConfig:form.flip-display-label")}
+									label={t('DisplayConfig:form.flip-display-label')}
 									name="flipDisplay"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -496,7 +496,7 @@ export default function DisplayConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("DisplayConfig:form.invert-display-label")}
+									label={t('DisplayConfig:form.invert-display-label')}
 									name="invertDisplay"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -514,7 +514,7 @@ export default function DisplayConfigPage() {
 							</Row>
 							<Row className="mb-3">
 								<FormSelect
-									label={t("DisplayConfig:form.button-layout-label")}
+									label={t('DisplayConfig:form.button-layout-label')}
 									name="buttonLayout"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -530,7 +530,7 @@ export default function DisplayConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("DisplayConfig:form.button-layout-right-label")}
+									label={t('DisplayConfig:form.button-layout-right-label')}
 									name="buttonLayoutRight"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -549,7 +549,7 @@ export default function DisplayConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("DisplayConfig:form.splash-mode-label")}
+									label={t('DisplayConfig:form.splash-mode-label')}
 									name="splashMode"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -568,13 +568,13 @@ export default function DisplayConfigPage() {
 							{isButtonLayoutCustom(values) && (
 								<Row className="mb-3">
 									<FormLabel>
-										{t("DisplayConfig:form.button-layout-custom-header")}
+										{t('DisplayConfig:form.button-layout-custom-header')}
 									</FormLabel>
 									<Col sm="6">
 										<Form.Group as={Row} name="buttonLayoutCustomOptions">
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-left-label",
+													'DisplayConfig:form.button-layout-custom-left-label',
 												)}
 											</Form.Label>
 											<FormSelect
@@ -597,7 +597,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-start-x-label",
+													'DisplayConfig:form.button-layout-custom-start-x-label',
 												)}
 											</Form.Label>
 											<Col sm="10">
@@ -613,7 +613,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-start-y-label",
+													'DisplayConfig:form.button-layout-custom-start-y-label',
 												)}
 											</Form.Label>
 											<Col sm="10">
@@ -629,7 +629,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-button-radius-label",
+													'DisplayConfig:form.button-layout-custom-button-radius-label',
 												)}
 											</Form.Label>
 											<Col sm="10">
@@ -645,7 +645,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-button-padding-label",
+													'DisplayConfig:form.button-layout-custom-button-padding-label',
 												)}
 											</Form.Label>
 											<Col sm="10">
@@ -663,7 +663,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-right-label",
+													'DisplayConfig:form.button-layout-custom-right-label',
 												)}
 											</Form.Label>
 											<FormSelect
@@ -688,7 +688,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-start-x-label",
+													'DisplayConfig:form.button-layout-custom-start-x-label',
 												)}
 											</Form.Label>
 											<Col sm="10">
@@ -704,7 +704,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-start-y-label",
+													'DisplayConfig:form.button-layout-custom-start-y-label',
 												)}
 											</Form.Label>
 											<Col sm="10">
@@ -720,7 +720,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-button-radius-label",
+													'DisplayConfig:form.button-layout-custom-button-radius-label',
 												)}
 											</Form.Label>
 											<Col sm="10">
@@ -736,7 +736,7 @@ export default function DisplayConfigPage() {
 										<Form.Group as={Row}>
 											<Form.Label column>
 												{t(
-													"DisplayConfig:form.button-layout-custom-button-padding-label",
+													'DisplayConfig:form.button-layout-custom-button-padding-label',
 												)}
 											</Form.Label>
 											<Col sm="10">
@@ -755,7 +755,7 @@ export default function DisplayConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("DisplayConfig:form.splash-duration-label")}
+									label={t('DisplayConfig:form.splash-duration-label')}
 									name="splashDuration"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -767,7 +767,7 @@ export default function DisplayConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("DisplayConfig:form.display-saver-timeout-label")}
+									label={t('DisplayConfig:form.display-saver-timeout-label')}
 									name="displaySaverTimeout"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -797,7 +797,7 @@ export default function DisplayConfigPage() {
 								</Field>
 							</Row>
 							<div className="mt-3">
-								<Button type="submit">{t("Common:button-save-label")}</Button>
+								<Button type="submit">{t('Common:button-save-label')}</Button>
 								{saveMessage ? (
 									<span className="alert">{saveMessage}</span>
 								) : null}
@@ -817,10 +817,10 @@ const Canvas = ({ value: bitsArray, onChange }) => {
 	const [inverted, setInverted] = useState(false);
 	const canvasRef = useRef();
 
-	const { t } = useTranslation("");
+	const { t } = useTranslation('');
 
 	useEffect(() => {
-		setCanvasContext(canvasRef.current.getContext("2d"));
+		setCanvasContext(canvasRef.current.getContext('2d'));
 	}, []);
 
 	// image to bitsArray (binary)
@@ -888,7 +888,7 @@ const Canvas = ({ value: bitsArray, onChange }) => {
 
 		// expand bytes to individual binary bits and then bits to 255 or 0, because monochrome
 		const bitsArrayArray = bitsArray.flatMap((a) => {
-			const bits = a.toString(2).split("").map(Number);
+			const bits = a.toString(2).split('').map(Number);
 			const full = Array(8 - bits.length)
 				.fill(0)
 				.concat(bits);
@@ -925,14 +925,14 @@ const Canvas = ({ value: bitsArray, onChange }) => {
 	};
 
 	return (
-		<div style={{ display: "flex", alignItems: "center" }}>
+		<div style={{ display: 'flex', alignItems: 'center' }}>
 			<canvas
 				ref={canvasRef}
 				width="128"
 				height="64"
-				style={{ background: "black" }}
+				style={{ background: 'black' }}
 			/>
-			<div style={{ marginLeft: "11px" }}>
+			<div style={{ marginLeft: '11px' }}>
 				<input
 					type="file"
 					id="image-input"
@@ -944,8 +944,8 @@ const Canvas = ({ value: bitsArray, onChange }) => {
 					type="checkbox"
 					checked={inverted}
 					onChange={toggleInverted}
-				/>{" "}
-				{t("DisplayConfig:form.inverted-label")}
+				/>{' '}
+				{t('DisplayConfig:form.inverted-label')}
 				{/* <ErrorMessage name="splashImage" /> */}
 			</div>
 		</div>

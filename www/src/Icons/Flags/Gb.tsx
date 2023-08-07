@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 // Source: https://flagicons.lipis.dev/
 

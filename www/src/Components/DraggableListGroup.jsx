@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import "./DraggableListGroup.scss";
+import React, { useEffect, useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import './DraggableListGroup.scss';
 
 const reorder = (list, startIndex, endIndex) => {
 	const result = Array.from(list);
@@ -97,8 +97,8 @@ const DraggableListGroup = ({
 									ref={droppableProvided.innerRef}
 									className={`draggable-list ${
 										droppableSnapshot.isDraggingOver
-											? "list-group bg-primary"
-											: "list-group"
+											? 'list-group bg-primary'
+											: 'list-group'
 									} border border-dark rounded-1`}
 								>
 									{listData[droppableId].map((item, l) => (
@@ -110,8 +110,8 @@ const DraggableListGroup = ({
 													{...draggableProvided.dragHandleProps}
 													className={
 														draggableSnapshot.isDragging
-															? "list-group-item active"
-															: "list-group-item"
+															? 'list-group-item active'
+															: 'list-group-item'
 													}
 												>
 													{item.label}

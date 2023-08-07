@@ -1,116 +1,116 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button, Form, Row, FormCheck } from "react-bootstrap";
-import { Formik, useFormikContext } from "formik";
-import * as yup from "yup";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Form, Row, FormCheck } from 'react-bootstrap';
+import { Formik, useFormikContext } from 'formik';
+import * as yup from 'yup';
+import { Trans, useTranslation } from 'react-i18next';
 
-import { AppContext } from "../Contexts/AppContext";
-import FormControl from "../Components/FormControl";
-import FormSelect from "../Components/FormSelect";
-import KeyboardMapper, { validateMappings } from "../Components/KeyboardMapper";
-import Section from "../Components/Section";
-import WebApi, { baseButtonMappings } from "../Services/WebApi";
-import JSEncrypt from "jsencrypt";
-import CryptoJS from "crypto-js";
-import get from "lodash/get";
-import set from "lodash/set";
-import isNil from "lodash/isNil";
+import { AppContext } from '../Contexts/AppContext';
+import FormControl from '../Components/FormControl';
+import FormSelect from '../Components/FormSelect';
+import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
+import Section from '../Components/Section';
+import WebApi, { baseButtonMappings } from '../Services/WebApi';
+import JSEncrypt from 'jsencrypt';
+import CryptoJS from 'crypto-js';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import isNil from 'lodash/isNil';
 
 const I2C_BLOCKS = [
-	{ label: "i2c0", value: 0 },
-	{ label: "i2c1", value: 1 },
+	{ label: 'i2c0', value: 0 },
+	{ label: 'i2c1', value: 1 },
 ];
 
 const ON_BOARD_LED_MODES = [
-	{ label: "Off", value: 0 },
-	{ label: "Mode Indicator", value: 1 },
-	{ label: "Input Test", value: 2 },
+	{ label: 'Off', value: 0 },
+	{ label: 'Mode Indicator', value: 1 },
+	{ label: 'Input Test', value: 2 },
 ];
 
 const DUAL_STICK_MODES = [
-	{ label: "D-Pad", value: 0 },
-	{ label: "Left Analog", value: 1 },
-	{ label: "Right Analog", value: 2 },
+	{ label: 'D-Pad', value: 0 },
+	{ label: 'Left Analog', value: 1 },
+	{ label: 'Right Analog', value: 2 },
 ];
 
 const ANALOG_STICK_MODES = [
-	{ label: "Left Analog", value: 1 },
-	{ label: "Right Analog", value: 2 },
+	{ label: 'Left Analog', value: 1 },
+	{ label: 'Right Analog', value: 2 },
 ];
 
 const DUAL_COMBINE_MODES = [
-	{ label: "Mixed", value: 0 },
-	{ label: "Gamepad", value: 1 },
-	{ label: "Dual Directional", value: 2 },
-	{ label: "None", value: 3 },
+	{ label: 'Mixed', value: 0 },
+	{ label: 'Gamepad', value: 1 },
+	{ label: 'Dual Directional', value: 2 },
+	{ label: 'None', value: 3 },
 ];
 
 const SHMUP_MIXED_MODES = [
-	{ label: "Turbo Priority", value: 0 },
-	{ label: "Charge Priority", value: 1 },
+	{ label: 'Turbo Priority', value: 0 },
+	{ label: 'Charge Priority', value: 1 },
 ];
 
 const TILT_SOCD_MODES = [
-	{ label: "Up Priority", value: 0 },
-	{ label: "Neutral", value: 1 },
-	{ label: "Last Win", value: 2 },
+	{ label: 'Up Priority', value: 0 },
+	{ label: 'Neutral', value: 1 },
+	{ label: 'Last Win', value: 2 },
 ];
 
 const INVERT_MODES = [
-	{ label: "None", value: 0 },
-	{ label: "X Axis", value: 1 },
-	{ label: "Y Axis", value: 2 },
-	{ label: "X/Y Axis", value: 3 },
+	{ label: 'None', value: 0 },
+	{ label: 'X Axis', value: 1 },
+	{ label: 'Y Axis', value: 2 },
+	{ label: 'X/Y Axis', value: 3 },
 ];
 
 const ANALOG_PINS = [26, 27, 28, 29];
 
 const BUTTON_MASKS = [
-	{ label: "None", value: 0 },
-	{ label: "B1", value: 1 << 0 },
-	{ label: "B2", value: 1 << 1 },
-	{ label: "B3", value: 1 << 2 },
-	{ label: "B4", value: 1 << 3 },
-	{ label: "L1", value: 1 << 4 },
-	{ label: "R1", value: 1 << 5 },
-	{ label: "L2", value: 1 << 6 },
-	{ label: "R2", value: 1 << 7 },
-	{ label: "S1", value: 1 << 8 },
-	{ label: "S2", value: 1 << 9 },
-	{ label: "L3", value: 1 << 10 },
-	{ label: "R3", value: 1 << 11 },
-	{ label: "A1", value: 1 << 12 },
-	{ label: "A2", value: 1 << 13 },
-	{ label: "Up", value: 1 << 16 },
-	{ label: "Down", value: 1 << 17 },
-	{ label: "Left", value: 1 << 18 },
-	{ label: "Right", value: 1 << 19 },
+	{ label: 'None', value: 0 },
+	{ label: 'B1', value: 1 << 0 },
+	{ label: 'B2', value: 1 << 1 },
+	{ label: 'B3', value: 1 << 2 },
+	{ label: 'B4', value: 1 << 3 },
+	{ label: 'L1', value: 1 << 4 },
+	{ label: 'R1', value: 1 << 5 },
+	{ label: 'L2', value: 1 << 6 },
+	{ label: 'R2', value: 1 << 7 },
+	{ label: 'S1', value: 1 << 8 },
+	{ label: 'S2', value: 1 << 9 },
+	{ label: 'L3', value: 1 << 10 },
+	{ label: 'R3', value: 1 << 11 },
+	{ label: 'A1', value: 1 << 12 },
+	{ label: 'A2', value: 1 << 13 },
+	{ label: 'Up', value: 1 << 16 },
+	{ label: 'Down', value: 1 << 17 },
+	{ label: 'Left', value: 1 << 18 },
+	{ label: 'Right', value: 1 << 19 },
 ];
 
 const TURBO_MASKS = [
-	{ label: "None", value: 0 },
-	{ label: "B1", value: 1 << 0 },
-	{ label: "B2", value: 1 << 1 },
-	{ label: "B3", value: 1 << 2 },
-	{ label: "B4", value: 1 << 3 },
-	{ label: "L1", value: 1 << 4 },
-	{ label: "R1", value: 1 << 5 },
-	{ label: "L2", value: 1 << 6 },
-	{ label: "R2", value: 1 << 7 },
-	{ label: "L3", value: 1 << 10 },
-	{ label: "R3", value: 1 << 11 },
+	{ label: 'None', value: 0 },
+	{ label: 'B1', value: 1 << 0 },
+	{ label: 'B2', value: 1 << 1 },
+	{ label: 'B3', value: 1 << 2 },
+	{ label: 'B4', value: 1 << 3 },
+	{ label: 'L1', value: 1 << 4 },
+	{ label: 'R1', value: 1 << 5 },
+	{ label: 'L2', value: 1 << 6 },
+	{ label: 'R2', value: 1 << 7 },
+	{ label: 'L3', value: 1 << 10 },
+	{ label: 'R3', value: 1 << 11 },
 ];
 
 const REVERSE_ACTION = [
-	{ label: "Disable", value: 0 },
-	{ label: "Enable", value: 1 },
-	{ label: "Neutral", value: 2 },
+	{ label: 'Disable', value: 0 },
+	{ label: 'Enable', value: 1 },
+	{ label: 'Neutral', value: 2 },
 ];
 
 const verifyAndSavePS4 = async () => {
-	let PS4Key = document.getElementById("ps4key-input");
-	let PS4Serial = document.getElementById("ps4serial-input");
-	let PS4Signature = document.getElementById("ps4signature-input");
+	let PS4Key = document.getElementById('ps4key-input');
+	let PS4Serial = document.getElementById('ps4serial-input');
+	let PS4Signature = document.getElementById('ps4signature-input');
 
 	const loadFile = (file, text) => {
 		return new Promise((resolve, reject) => {
@@ -132,10 +132,10 @@ const verifyAndSavePS4 = async () => {
 
 	function int2mbedmpi(num) {
 		var out = [];
-		var mask = BigInt("4294967295");
-		var zero = BigInt("0");
+		var mask = BigInt('4294967295');
+		var zero = BigInt('0');
 		while (num !== zero) {
-			out.push((num & mask).toString(16).padStart(8, "0"));
+			out.push((num & mask).toString(16).padStart(8, '0'));
 			num = num >> BigInt(32);
 		}
 		return out;
@@ -174,9 +174,9 @@ const verifyAndSavePS4 = async () => {
 		// Make sure our signature is 256 bytes
 		const serialNoPadding = serialFileContent.trimRight();
 		if (signature.length !== 256 || serialNoPadding.length !== 16) {
-			throw new Error("Signature or serial is invalid");
+			throw new Error('Signature or serial is invalid');
 		}
-		const serial = serialNoPadding.padStart(32, "0"); // Add our padding
+		const serial = serialNoPadding.padStart(32, '0'); // Add our padding
 
 		const key = new JSEncrypt();
 		key.setPrivateKey(pem);
@@ -185,10 +185,10 @@ const verifyAndSavePS4 = async () => {
 			bytes[i] = Math.random() * 255;
 		}
 		const hashed = CryptoJS.SHA256(bytes);
-		const signNonce = key.sign(hashed, CryptoJS.SHA256, "sha256");
+		const signNonce = key.sign(hashed, CryptoJS.SHA256, 'sha256');
 
 		if (signNonce === false) {
-			throw new Error("Bad Private Key");
+			throw new Error('Bad Private Key');
 		}
 
 		// Private key worked!
@@ -211,416 +211,416 @@ const verifyAndSavePS4 = async () => {
 		});
 
 		if (success) {
-			document.getElementById("ps4alert").textContent =
-				"Verified and Saved PS4 Mode! Reboot to take effect";
-			document.getElementById("save").click();
+			document.getElementById('ps4alert').textContent =
+				'Verified and Saved PS4 Mode! Reboot to take effect';
+			document.getElementById('save').click();
 		} else {
-			throw Error("ERROR: Failed to upload the key to the board");
+			throw Error('ERROR: Failed to upload the key to the board');
 		}
 	} catch (e) {
-		document.getElementById("ps4alert").textContent =
-			"ERROR: Could not verify required files: ${e}";
+		document.getElementById('ps4alert').textContent =
+			'ERROR: Could not verify required files: ${e}';
 	}
 };
 
 const SOCD_MODES = [
-	{ label: "Up Priority", value: 0 },
-	{ label: "Neutral", value: 1 },
-	{ label: "Last Win", value: 2 },
-	{ label: "First Win", value: 3 },
-	{ label: "SOCD Cleaning Off", value: 4 },
+	{ label: 'Up Priority', value: 0 },
+	{ label: 'Neutral', value: 1 },
+	{ label: 'Last Win', value: 2 },
+	{ label: 'First Win', value: 3 },
+	{ label: 'SOCD Cleaning Off', value: 4 },
 ];
 
 const schema = yup.object().shape({
-	I2CAnalog1219InputEnabled: yup.number().label("I2C Analog1219 Input Enabled"),
+	I2CAnalog1219InputEnabled: yup.number().label('I2C Analog1219 Input Enabled'),
 	i2cAnalog1219SDAPin: yup
 		.number()
-		.label("I2C Analog1219 SDA Pin")
-		.validatePinWhenValue("I2CAnalog1219InputEnabled"),
+		.label('I2C Analog1219 SDA Pin')
+		.validatePinWhenValue('I2CAnalog1219InputEnabled'),
 	i2cAnalog1219SCLPin: yup
 		.number()
-		.label("I2C Analog1219 SCL Pin")
-		.validatePinWhenValue("I2CAnalog1219InputEnabled"),
+		.label('I2C Analog1219 SCL Pin')
+		.validatePinWhenValue('I2CAnalog1219InputEnabled'),
 	i2cAnalog1219Block: yup
 		.number()
-		.label("I2C Analog1219 Block")
-		.validateSelectionWhenValue("I2CAnalog1219InputEnabled", I2C_BLOCKS),
+		.label('I2C Analog1219 Block')
+		.validateSelectionWhenValue('I2CAnalog1219InputEnabled', I2C_BLOCKS),
 	i2cAnalog1219Speed: yup
 		.number()
-		.label("I2C Analog1219 Speed")
-		.validateNumberWhenValue("I2CAnalog1219InputEnabled"),
+		.label('I2C Analog1219 Speed')
+		.validateNumberWhenValue('I2CAnalog1219InputEnabled'),
 	i2cAnalog1219Address: yup
 		.number()
-		.label("I2C Analog1219 Address")
-		.validateNumberWhenValue("I2CAnalog1219InputEnabled"),
+		.label('I2C Analog1219 Address')
+		.validateNumberWhenValue('I2CAnalog1219InputEnabled'),
 
-	AnalogInputEnabled: yup.number().required().label("Analog Input Enabled"),
+	AnalogInputEnabled: yup.number().required().label('Analog Input Enabled'),
 	analogAdc1PinX: yup
 		.number()
-		.label("Analog Stick 1 Pin X")
-		.validatePinWhenValue("AnalogInputEnabled"),
+		.label('Analog Stick 1 Pin X')
+		.validatePinWhenValue('AnalogInputEnabled'),
 	analogAdc1PinY: yup
 		.number()
-		.label("Analog Stick 1 Pin Y")
-		.validatePinWhenValue("AnalogInputEnabled"),
+		.label('Analog Stick 1 Pin Y')
+		.validatePinWhenValue('AnalogInputEnabled'),
 	analogAdc1Mode: yup
 		.number()
-		.label("Analog Stick 1 Mode")
-		.validateSelectionWhenValue("AnalogInputEnabled", ANALOG_STICK_MODES),
+		.label('Analog Stick 1 Mode')
+		.validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES),
 	analogAdc1Invert: yup
 		.number()
-		.label("Analog Stick 1 Invert")
-		.validateSelectionWhenValue("AnalogInputEnabled", INVERT_MODES),
+		.label('Analog Stick 1 Invert')
+		.validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
 	analogAdc2PinX: yup
 		.number()
-		.label("Analog Stick 2 Pin X")
-		.validatePinWhenValue("AnalogInputEnabled"),
+		.label('Analog Stick 2 Pin X')
+		.validatePinWhenValue('AnalogInputEnabled'),
 	analogAdc2PinY: yup
 		.number()
-		.label("Analog Stick 2 Pin Y")
-		.validatePinWhenValue("AnalogInputEnabled"),
+		.label('Analog Stick 2 Pin Y')
+		.validatePinWhenValue('AnalogInputEnabled'),
 	analogAdc2Mode: yup
 		.number()
-		.label("Analog Stick 2 Mode")
-		.validateSelectionWhenValue("AnalogInputEnabled", ANALOG_STICK_MODES),
+		.label('Analog Stick 2 Mode')
+		.validateSelectionWhenValue('AnalogInputEnabled', ANALOG_STICK_MODES),
 	analogAdc2Invert: yup
 		.number()
-		.label("Analog Stick 2 Invert")
-		.validateSelectionWhenValue("AnalogInputEnabled", INVERT_MODES),
+		.label('Analog Stick 2 Invert')
+		.validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
 
 	forced_circularity: yup
 		.number()
-		.label("Force Circularity")
-		.validateRangeWhenValue("AnalogInputEnabled", 0, 1),
+		.label('Force Circularity')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone: yup
 		.number()
-		.label("Deadzone Size (%)")
-		.validateRangeWhenValue("AnalogInputEnabled", 0, 100),
+		.label('Deadzone Size (%)')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 	auto_calibrate: yup
 		.number()
-		.label("Auto Calibration")
-		.validateRangeWhenValue("AnalogInputEnabled", 0, 1),
+		.label('Auto Calibration')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 
 	BoardLedAddonEnabled: yup
 		.number()
 		.required()
-		.label("Board LED Add-On Enabled"),
+		.label('Board LED Add-On Enabled'),
 	onBoardLedMode: yup
 		.number()
-		.label("On-Board LED Mode")
-		.validateSelectionWhenValue("BoardLedAddonEnabled", ON_BOARD_LED_MODES),
+		.label('On-Board LED Mode')
+		.validateSelectionWhenValue('BoardLedAddonEnabled', ON_BOARD_LED_MODES),
 
 	BootselButtonAddonEnabled: yup
 		.number()
 		.required()
-		.label("Boot Select Button Add-On Enabled"),
+		.label('Boot Select Button Add-On Enabled'),
 	bootselButtonMap: yup
 		.number()
-		.label("BOOTSEL Button Map")
-		.validateSelectionWhenValue("BootselButtonAddonEnabled", BUTTON_MASKS),
+		.label('BOOTSEL Button Map')
+		.validateSelectionWhenValue('BootselButtonAddonEnabled', BUTTON_MASKS),
 
 	FocusModeAddonEnabled: yup
 		.number()
 		.required()
-		.label("Focus Mode Add-On Enabled"),
+		.label('Focus Mode Add-On Enabled'),
 	focusModePin: yup
 		.number()
-		.label("Focus Mode Pin")
-		.validatePinWhenValue("FocusModeAddonEnabled"),
+		.label('Focus Mode Pin')
+		.validatePinWhenValue('FocusModeAddonEnabled'),
 	focusModeButtonLockEnabled: yup
 		.number()
-		.label("Focus Mode Button Lock Enabled")
-		.validateRangeWhenValue("FocusModeAddonEnabled", 0, 1),
+		.label('Focus Mode Button Lock Enabled')
+		.validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
 	focusModeOledLockEnabled: yup
 		.number()
-		.label("Focus Mode OLED Lock Enabled")
-		.validateRangeWhenValue("FocusModeAddonEnabled", 0, 1),
+		.label('Focus Mode OLED Lock Enabled')
+		.validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
 	focusModeRgbLockEnabled: yup
 		.number()
-		.label("Focus Mode RGB Lock Enabled")
-		.validateRangeWhenValue("FocusModeAddonEnabled", 0, 1),
+		.label('Focus Mode RGB Lock Enabled')
+		.validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
 	focusModeButtonLockMask: yup
 		.number()
-		.label("Focus Mode Button Lock Map")
-		.validateRangeWhenValue("FocusModeAddonEnabled", 0, (1 << 20) - 1),
+		.label('Focus Mode Button Lock Map')
+		.validateRangeWhenValue('FocusModeAddonEnabled', 0, (1 << 20) - 1),
 
 	BuzzerSpeakerAddonEnabled: yup
 		.number()
 		.required()
-		.label("Buzzer Speaker Add-On Enabled"),
+		.label('Buzzer Speaker Add-On Enabled'),
 	buzzerPin: yup
 		.number()
-		.label("Buzzer Pin")
-		.validatePinWhenValue("BuzzerSpeakerAddonEnabled"),
+		.label('Buzzer Pin')
+		.validatePinWhenValue('BuzzerSpeakerAddonEnabled'),
 	buzzerVolume: yup
 		.number()
-		.label("Buzzer Volume")
-		.validateRangeWhenValue("BuzzerSpeakerAddonEnabled", 0, 100),
+		.label('Buzzer Volume')
+		.validateRangeWhenValue('BuzzerSpeakerAddonEnabled', 0, 100),
 
 	DualDirectionalInputEnabled: yup
 		.number()
 		.required()
-		.label("Dual Directional Input Enabled"),
+		.label('Dual Directional Input Enabled'),
 	dualDirUpPin: yup
 		.number()
-		.label("Dual Directional Up Pin")
-		.validatePinWhenValue("DualDirectionalInputEnabled"),
+		.label('Dual Directional Up Pin')
+		.validatePinWhenValue('DualDirectionalInputEnabled'),
 	dualDirDownPin: yup
 		.number()
-		.label("Dual Directional Down Pin")
-		.validatePinWhenValue("DualDirectionalInputEnabled"),
+		.label('Dual Directional Down Pin')
+		.validatePinWhenValue('DualDirectionalInputEnabled'),
 	dualDirLeftPin: yup
 		.number()
-		.label("Dual Directional Left Pin")
-		.validatePinWhenValue("DualDirectionalInputEnabled"),
+		.label('Dual Directional Left Pin')
+		.validatePinWhenValue('DualDirectionalInputEnabled'),
 	dualDirRightPin: yup
 		.number()
-		.label("Dual Directional Right Pin")
-		.validatePinWhenValue("DualDirectionalInputEnabled"),
+		.label('Dual Directional Right Pin')
+		.validatePinWhenValue('DualDirectionalInputEnabled'),
 	dualDirDpadMode: yup
 		.number()
-		.label("Dual Stick Mode")
+		.label('Dual Stick Mode')
 		.validateSelectionWhenValue(
-			"DualDirectionalInputEnabled",
+			'DualDirectionalInputEnabled',
 			DUAL_STICK_MODES,
 		),
 	dualDirCombineMode: yup
 		.number()
-		.label("Dual Combination Mode")
+		.label('Dual Combination Mode')
 		.validateSelectionWhenValue(
-			"DualDirectionalInputEnabled",
+			'DualDirectionalInputEnabled',
 			DUAL_COMBINE_MODES,
 		),
 	dualDirFourWayMode: yup
 		.number()
-		.label("Dual Directional 4-Way Joystick Mode")
-		.validateRangeWhenValue("DualDirectionalInputEnabled", 0, 1),
+		.label('Dual Directional 4-Way Joystick Mode')
+		.validateRangeWhenValue('DualDirectionalInputEnabled', 0, 1),
 
-	TiltInputEnabled: yup.number().required().label("Tilt Input Enabled"),
+	TiltInputEnabled: yup.number().required().label('Tilt Input Enabled'),
 	tilt1Pin: yup
 		.number()
-		.label("Tilt 1 Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt 1 Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tilt2Pin: yup
 		.number()
-		.label("Tilt 2 Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt 2 Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltLeftAnalogUpPin: yup
 		.number()
-		.label("Tilt Left Analog Up Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt Left Analog Up Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltLeftAnalogDownPin: yup
 		.number()
-		.label("Tilt Left Analog Down Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt Left Analog Down Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltLeftAnalogLeftPin: yup
 		.number()
-		.label("Tilt Left Analog Left Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt Left Analog Left Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltLeftAnalogRightPin: yup
 		.number()
-		.label("Tilt Left Analog Right Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt Left Analog Right Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltRightAnalogUpPin: yup
 		.number()
-		.label("Tilt Right Analog Up Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt Right Analog Up Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltRightAnalogDownPin: yup
 		.number()
-		.label("Tilt Right Analog Down Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt Right Analog Down Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltRightAnalogLeftPin: yup
 		.number()
-		.label("Tilt Right Analog Left Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt Right Analog Left Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltRightAnalogRightPin: yup
 		.number()
-		.label("Tilt Right Analog Right Pin")
-		.validatePinWhenValue("TiltInputEnabled"),
+		.label('Tilt Right Analog Right Pin')
+		.validatePinWhenValue('TiltInputEnabled'),
 	tiltSOCDMode: yup
 		.number()
-		.label("Tilt SOCE Mode")
-		.validateSelectionWhenValue("TiltInputEnabled", SOCD_MODES),
+		.label('Tilt SOCE Mode')
+		.validateSelectionWhenValue('TiltInputEnabled', SOCD_MODES),
 
 	ExtraButtonAddonEnabled: yup
 		.number()
 		.required()
-		.label("Extra Button Add-On Enabled"),
+		.label('Extra Button Add-On Enabled'),
 	extraButtonPin: yup
 		.number()
-		.label("Extra Button Pin")
-		.validatePinWhenValue("ExtraButtonAddonEnabled"),
+		.label('Extra Button Pin')
+		.validatePinWhenValue('ExtraButtonAddonEnabled'),
 	extraButtonMap: yup
 		.number()
-		.label("Extra Button Map")
-		.validateSelectionWhenValue("ExtraButtonAddonEnabled", BUTTON_MASKS),
+		.label('Extra Button Map')
+		.validateSelectionWhenValue('ExtraButtonAddonEnabled', BUTTON_MASKS),
 
-	JSliderInputEnabled: yup.number().required().label("JSlider Input Enabled"),
+	JSliderInputEnabled: yup.number().required().label('JSlider Input Enabled'),
 	sliderLSPin: yup
 		.number()
-		.label("Slider LS Pin")
-		.validatePinWhenValue("JSliderInputEnabled"),
+		.label('Slider LS Pin')
+		.validatePinWhenValue('JSliderInputEnabled'),
 	sliderRSPin: yup
 		.number()
-		.label("Slider RS Pin")
-		.validatePinWhenValue("JSliderInputEnabled"),
+		.label('Slider RS Pin')
+		.validatePinWhenValue('JSliderInputEnabled'),
 
 	KeyboardHostAddonEnabled: yup
 		.number()
 		.required()
-		.label("Keyboard Host Add-On Enabled"),
+		.label('Keyboard Host Add-On Enabled'),
 	keyboardHostPinDplus: yup
 		.number()
-		.label("Keyboard Host D+ Pin")
-		.validatePinWhenValue("KeyboardHostAddonEnabled"),
+		.label('Keyboard Host D+ Pin')
+		.validatePinWhenValue('KeyboardHostAddonEnabled'),
 	keyboardHostPin5V: yup
 		.number()
-		.label("Keyboard Host 5V Power Pin")
-		.validatePinWhenValue("KeyboardHostAddonEnabled"),
+		.label('Keyboard Host 5V Power Pin')
+		.validatePinWhenValue('KeyboardHostAddonEnabled'),
 
 	PlayerNumAddonEnabled: yup
 		.number()
 		.required()
-		.label("Player Number Add-On Enabled"),
+		.label('Player Number Add-On Enabled'),
 	playerNumber: yup
 		.number()
-		.label("Player Number")
-		.validateRangeWhenValue("PlayerNumAddonEnabled", 1, 4),
+		.label('Player Number')
+		.validateRangeWhenValue('PlayerNumAddonEnabled', 1, 4),
 
-	PS4ModeAddonEnabled: yup.number().required().label("PS4 Mode Add-on Enabled"),
+	PS4ModeAddonEnabled: yup.number().required().label('PS4 Mode Add-on Enabled'),
 
-	ReverseInputEnabled: yup.number().required().label("Reverse Input Enabled"),
+	ReverseInputEnabled: yup.number().required().label('Reverse Input Enabled'),
 	reversePin: yup
 		.number()
-		.label("Reverse Pin")
-		.validatePinWhenValue("ReverseInputEnabled"),
+		.label('Reverse Pin')
+		.validatePinWhenValue('ReverseInputEnabled'),
 	reversePinLED: yup
 		.number()
-		.label("Reverse Pin LED")
-		.validatePinWhenValue("ReverseInputEnabled"),
+		.label('Reverse Pin LED')
+		.validatePinWhenValue('ReverseInputEnabled'),
 
 	SliderSOCDInputEnabled: yup
 		.number()
 		.required()
-		.label("Slider SOCD Input Enabled"),
+		.label('Slider SOCD Input Enabled'),
 	sliderSOCDModeOne: yup
 		.number()
-		.label("SOCD Slider Mode One")
-		.validateSelectionWhenValue("SliderSOCDInputEnabled", SOCD_MODES),
+		.label('SOCD Slider Mode One')
+		.validateSelectionWhenValue('SliderSOCDInputEnabled', SOCD_MODES),
 	sliderSOCDModeTwo: yup
 		.number()
-		.label("SOCD Slider Mode Two")
-		.validateSelectionWhenValue("SliderSOCDInputEnabled", SOCD_MODES),
+		.label('SOCD Slider Mode Two')
+		.validateSelectionWhenValue('SliderSOCDInputEnabled', SOCD_MODES),
 	sliderSOCDModeDefault: yup
 		.number()
-		.label("SOCD Slider Mode Default")
-		.validateSelectionWhenValue("SliderSOCDInputEnabled", SOCD_MODES),
+		.label('SOCD Slider Mode Default')
+		.validateSelectionWhenValue('SliderSOCDInputEnabled', SOCD_MODES),
 	sliderSOCDPinOne: yup
 		.number()
-		.label("Slider SOCD Up Priority Pin")
-		.validatePinWhenValue("SliderSOCDInputEnabled"),
+		.label('Slider SOCD Up Priority Pin')
+		.validatePinWhenValue('SliderSOCDInputEnabled'),
 	sliderSOCDPinTwo: yup
 		.number()
-		.label("Slider SOCD Second Priority Pin")
-		.validatePinWhenValue("SliderSOCDInputEnabled"),
+		.label('Slider SOCD Second Priority Pin')
+		.validatePinWhenValue('SliderSOCDInputEnabled'),
 
-	TurboInputEnabled: yup.number().required().label("Turbo Input Enabled"),
+	TurboInputEnabled: yup.number().required().label('Turbo Input Enabled'),
 	turboPin: yup
 		.number()
-		.label("Turbo Pin")
-		.validatePinWhenValue("TurboInputEnabled"),
+		.label('Turbo Pin')
+		.validatePinWhenValue('TurboInputEnabled'),
 	turboPinLED: yup
 		.number()
-		.label("Turbo Pin LED")
-		.validatePinWhenValue("TurboInputEnabled"),
+		.label('Turbo Pin LED')
+		.validatePinWhenValue('TurboInputEnabled'),
 	pinShmupBtn1: yup
 		.number()
-		.label("Charge Shot 1 Pin")
-		.validatePinWhenValue("TurboInputEnabled"),
+		.label('Charge Shot 1 Pin')
+		.validatePinWhenValue('TurboInputEnabled'),
 	pinShmupBtn2: yup
 		.number()
-		.label("Charge Shot 2 Pin")
-		.validatePinWhenValue("TurboInputEnabled"),
+		.label('Charge Shot 2 Pin')
+		.validatePinWhenValue('TurboInputEnabled'),
 	pinShmupBtn3: yup
 		.number()
-		.label("Charge Shot 3 Pin")
-		.validatePinWhenValue("TurboInputEnabled"),
+		.label('Charge Shot 3 Pin')
+		.validatePinWhenValue('TurboInputEnabled'),
 	pinShmupBtn4: yup
 		.number()
-		.label("Charge Shot 4 Pin")
-		.validatePinWhenValue("TurboInputEnabled"),
+		.label('Charge Shot 4 Pin')
+		.validatePinWhenValue('TurboInputEnabled'),
 	pinShmupDial: yup
 		.number()
-		.label("Shmup Dial Pin")
-		.validatePinWhenValue("TurboInputEnabled"),
+		.label('Shmup Dial Pin')
+		.validatePinWhenValue('TurboInputEnabled'),
 	turboShotCount: yup
 		.number()
-		.label("Turbo Shot Count")
-		.validateRangeWhenValue("TurboInputEnabled", 5, 30),
+		.label('Turbo Shot Count')
+		.validateRangeWhenValue('TurboInputEnabled', 5, 30),
 	shmupMode: yup
 		.number()
-		.label("Shmup Mode Enabled")
-		.validateRangeWhenValue("TurboInputEnabled", 0, 1),
+		.label('Shmup Mode Enabled')
+		.validateRangeWhenValue('TurboInputEnabled', 0, 1),
 	shmupMixMode: yup
 		.number()
-		.label("Shmup Mix Priority")
-		.validateSelectionWhenValue("TurboInputEnabled", DUAL_STICK_MODES),
+		.label('Shmup Mix Priority')
+		.validateSelectionWhenValue('TurboInputEnabled', DUAL_STICK_MODES),
 	shmupAlwaysOn1: yup
 		.number()
-		.label("Turbo-Button 1 (Always On)")
-		.validateSelectionWhenValue("TurboInputEnabled", BUTTON_MASKS),
+		.label('Turbo-Button 1 (Always On)')
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupAlwaysOn2: yup
 		.number()
-		.label("Turbo-Button 2 (Always On)")
-		.validateSelectionWhenValue("TurboInputEnabled", BUTTON_MASKS),
+		.label('Turbo-Button 2 (Always On)')
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupAlwaysOn3: yup
 		.number()
-		.label("Turbo-Button 3 (Always On)")
-		.validateSelectionWhenValue("TurboInputEnabled", BUTTON_MASKS),
+		.label('Turbo-Button 3 (Always On)')
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupAlwaysOn4: yup
 		.number()
-		.label("Turbo-Button 4 (Always On)")
-		.validateSelectionWhenValue("TurboInputEnabled", BUTTON_MASKS),
+		.label('Turbo-Button 4 (Always On)')
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupBtnMask1: yup
 		.number()
-		.label("Charge Shot Button 1 Map")
-		.validateSelectionWhenValue("TurboInputEnabled", BUTTON_MASKS),
+		.label('Charge Shot Button 1 Map')
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupBtnMask2: yup
 		.number()
-		.label("Charge Shot Button 2 Map")
-		.validateSelectionWhenValue("TurboInputEnabled", BUTTON_MASKS),
+		.label('Charge Shot Button 2 Map')
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupBtnMask3: yup
 		.number()
-		.label("Charge Shot Button 3 Map")
-		.validateSelectionWhenValue("TurboInputEnabled", BUTTON_MASKS),
+		.label('Charge Shot Button 3 Map')
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 	shmupBtnMask4: yup
 		.number()
-		.label("Charge Shot Button 4 Map")
-		.validateSelectionWhenValue("TurboInputEnabled", BUTTON_MASKS),
+		.label('Charge Shot Button 4 Map')
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
 
 	WiiExtensionAddonEnabled: yup
 		.number()
 		.required()
-		.label("Wii Extensions Enabled"),
+		.label('Wii Extensions Enabled'),
 	wiiExtensionSDAPin: yup
 		.number()
 		.required()
-		.label("WiiExtension I2C SDA Pin")
-		.validatePinWhenValue("WiiExtensionAddonEnabled"),
+		.label('WiiExtension I2C SDA Pin')
+		.validatePinWhenValue('WiiExtensionAddonEnabled'),
 	wiiExtensionSCLPin: yup
 		.number()
 		.required()
-		.label("WiiExtension I2C SCL Pin")
-		.validatePinWhenValue("WiiExtensionAddonEnabled"),
+		.label('WiiExtension I2C SCL Pin')
+		.validatePinWhenValue('WiiExtensionAddonEnabled'),
 	wiiExtensionBlock: yup
 		.number()
 		.required()
-		.label("WiiExtension I2C Block")
-		.validateSelectionWhenValue("WiiExtensionAddonEnabled", I2C_BLOCKS),
+		.label('WiiExtension I2C Block')
+		.validateSelectionWhenValue('WiiExtensionAddonEnabled', I2C_BLOCKS),
 	wiiExtensionSpeed: yup
 		.number()
-		.label("WiiExtension I2C Speed")
-		.validateNumberWhenValue("WiiExtensionAddonEnabled"),
+		.label('WiiExtension I2C Speed')
+		.validateNumberWhenValue('WiiExtensionAddonEnabled'),
 });
 
 const defaultValues = {
@@ -744,7 +744,7 @@ const FormContext = ({ setStoredData }) => {
 
 const sanitizeData = (values) => {
 	for (const prop in Object.keys(values).filter(
-		(key) => !!!key.includes("keyboardHostMap"),
+		(key) => !!!key.includes('keyboardHostMap'),
 	)) {
 		if (!!values[prop]) values[prop] = parseInt(values[prop]);
 	}
@@ -756,12 +756,12 @@ function flattenObject(object) {
 	for (var i in object) {
 		if (!object.hasOwnProperty(i)) continue;
 
-		if (typeof object[i] == "object" && object[i] !== null) {
+		if (typeof object[i] == 'object' && object[i] !== null) {
 			var flatObject = flattenObject(object[i]);
 			for (var x in flatObject) {
 				if (!flatObject.hasOwnProperty(x)) continue;
 
-				toReturn[i + "." + x] = flatObject[x];
+				toReturn[i + '.' + x] = flatObject[x];
 			}
 		} else {
 			toReturn[i] = object[i];
@@ -775,7 +775,7 @@ const AvailablePinOptions = ({ pins }) => {
 	return (
 		<>
 			<option value={-1}>
-				{t("AddonsConfig:analog-available-pins-option-not-set")}
+				{t('AddonsConfig:analog-available-pins-option-not-set')}
 			</option>
 			{pins.map((i) => (
 				<option key={`analogPins-option-${i}`} value={i}>
@@ -788,7 +788,7 @@ const AvailablePinOptions = ({ pins }) => {
 
 export default function AddonsConfigPage() {
 	const { buttonLabels, updateUsedPins, usedPins } = useContext(AppContext);
-	const [saveMessage, setSaveMessage] = useState("");
+	const [saveMessage, setSaveMessage] = useState('');
 	const [storedData, setStoredData] = useState({});
 	const [validated, setValidated] = useState(false);
 
@@ -807,7 +807,7 @@ export default function AddonsConfigPage() {
 		const newMappings = { ...values.keyboardHostMap };
 		newMappings[button].key = value;
 		const mappings = validateMappings(newMappings, t);
-		setFieldValue("keyboardHostMap", mappings);
+		setFieldValue('keyboardHostMap', mappings);
 		setValidated(true);
 	};
 
@@ -833,8 +833,8 @@ export default function AddonsConfigPage() {
 		setStoredData(JSON.parse(JSON.stringify(values))); // Update to reflect saved data
 		setSaveMessage(
 			success
-				? t("Common:saved-success-message")
-				: t("Common:saved-error-message"),
+				? t('Common:saved-success-message')
+				: t('Common:saved-error-message'),
 		);
 		if (success) updateUsedPins();
 	};
@@ -852,17 +852,17 @@ export default function AddonsConfigPage() {
 		>
 			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
 				<Form noValidate onSubmit={handleSubmit}>
-					<Section title={t("AddonsConfig:header-text")}>
-						<p>{t("AddonsConfig:sub-header-text")}</p>
+					<Section title={t('AddonsConfig:header-text')}>
+						<p>{t('AddonsConfig:sub-header-text')}</p>
 					</Section>
-					<Section title={t("AddonsConfig:bootsel-header-text")}>
+					<Section title={t('AddonsConfig:bootsel-header-text')}>
 						<div
 							id="BootselButtonAddonOptions"
 							hidden={!values.BootselButtonAddonEnabled}
 						>
-							<p>{t("AddonsConfig:bootsel-sub-header-text")}</p>
+							<p>{t('AddonsConfig:bootsel-sub-header-text')}</p>
 							<FormSelect
-								label={t("AddonsConfig:bootsel-button-pin-label")}
+								label={t('AddonsConfig:bootsel-button-pin-label')}
 								name="bootselButtonMap"
 								className="form-select-sm"
 								groupClassName="col-sm-3 mb-3"
@@ -879,25 +879,25 @@ export default function AddonsConfigPage() {
 							</FormSelect>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="BootselButtonAddonButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.BootselButtonAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("BootselButtonAddonEnabled", values);
+								handleCheckbox('BootselButtonAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:on-board-led-configuration-label")}>
+					<Section title={t('AddonsConfig:on-board-led-configuration-label')}>
 						<div
 							id="BoardLedAddonEnabledOptions"
 							hidden={!values.BoardLedAddonEnabled}
 						>
 							<FormSelect
-								label={t("AddonsConfig:on-board-led-mode-label")}
+								label={t('AddonsConfig:on-board-led-mode-label')}
 								name="onBoardLedMode"
 								className="form-select-sm"
 								groupClassName="col-sm-4 mb-3"
@@ -914,29 +914,29 @@ export default function AddonsConfigPage() {
 							</FormSelect>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="BoardLedAddonButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.BoardLedAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("BoardLedAddonEnabled", values);
+								handleCheckbox('BoardLedAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:analog-header-text")}>
+					<Section title={t('AddonsConfig:analog-header-text')}>
 						<div id="AnalogInputOptions" hidden={!values.AnalogInputEnabled}>
-							<p>{t("AddonsConfig:analog-warning")}</p>
+							<p>{t('AddonsConfig:analog-warning')}</p>
 							<p>
-								{t("AddonsConfig:analog-available-pins-text", {
-									pins: availableAnalogPins.join(", "),
+								{t('AddonsConfig:analog-available-pins-text', {
+									pins: availableAnalogPins.join(', '),
 								})}
 							</p>
 							<Row className="mb-3">
 								<FormSelect
-									label={t("AddonsConfig:analog-adc-1-pin-x-label")}
+									label={t('AddonsConfig:analog-adc-1-pin-x-label')}
 									name="analogAdc1PinX"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -948,7 +948,7 @@ export default function AddonsConfigPage() {
 									<AvailablePinOptions pins={ANALOG_PINS} />
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:analog-adc-1-pin-y-label")}
+									label={t('AddonsConfig:analog-adc-1-pin-y-label')}
 									name="analogAdc1PinY"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -960,7 +960,7 @@ export default function AddonsConfigPage() {
 									<AvailablePinOptions pins={ANALOG_PINS} />
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:analog-adc-1-mode-label")}
+									label={t('AddonsConfig:analog-adc-1-mode-label')}
 									name="analogAdc1Mode"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -979,7 +979,7 @@ export default function AddonsConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:analog-adc-1-invert-label")}
+									label={t('AddonsConfig:analog-adc-1-invert-label')}
 									name="analogAdc1Invert"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1000,7 +1000,7 @@ export default function AddonsConfigPage() {
 							</Row>
 							<Row className="mb-3">
 								<FormSelect
-									label={t("AddonsConfig:analog-adc-2-pin-x-label")}
+									label={t('AddonsConfig:analog-adc-2-pin-x-label')}
 									name="analogAdc2PinX"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1012,7 +1012,7 @@ export default function AddonsConfigPage() {
 									<AvailablePinOptions pins={ANALOG_PINS} />
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:analog-adc-2-pin-y-label")}
+									label={t('AddonsConfig:analog-adc-2-pin-y-label')}
 									name="analogAdc2PinY"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1024,7 +1024,7 @@ export default function AddonsConfigPage() {
 									<AvailablePinOptions pins={ANALOG_PINS} />
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:analog-adc-2-mode-label")}
+									label={t('AddonsConfig:analog-adc-2-mode-label')}
 									name="analogAdc2Mode"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1043,7 +1043,7 @@ export default function AddonsConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:analog-adc-2-invert-label")}
+									label={t('AddonsConfig:analog-adc-2-invert-label')}
 									name="analogAdc2Invert"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1065,7 +1065,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:analog-deadzone-size")}
+									label={t('AddonsConfig:analog-deadzone-size')}
 									name="analog_deadzone"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1077,50 +1077,50 @@ export default function AddonsConfigPage() {
 									max={100}
 								/>
 								<FormCheck
-									label={t("AddonsConfig:analog-force-circularity")}
+									label={t('AddonsConfig:analog-force-circularity')}
 									type="switch"
 									id="Forced_circularity"
 									className="col-sm-3 ms-2"
 									isInvalid={false}
 									checked={Boolean(values.forced_circularity)}
 									onChange={(e) => {
-										handleCheckbox("forced_circularity", values);
+										handleCheckbox('forced_circularity', values);
 										handleChange(e);
 									}}
 								/>
 								<FormCheck
-									label={t("AddonsConfig:analog-auto-calibrate")}
+									label={t('AddonsConfig:analog-auto-calibrate')}
 									type="switch"
 									id="Auto_calibrate"
 									className="col-sm-3 ms-2"
 									isInvalid={false}
 									checked={Boolean(values.auto_calibrate)}
 									onChange={(e) => {
-										handleCheckbox("auto_calibrate", values);
+										handleCheckbox('auto_calibrate', values);
 										handleChange(e);
 									}}
 								/>
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="AnalogInputButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.AnalogInputEnabled)}
 							onChange={(e) => {
-								handleCheckbox("AnalogInputEnabled", values);
+								handleCheckbox('AnalogInputEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:turbo-header-text")}>
+					<Section title={t('AddonsConfig:turbo-header-text')}>
 						<div id="TurboInputOptions" hidden={!values.TurboInputEnabled}>
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:turbo-button-pin-label")}
+									label={t('AddonsConfig:turbo-button-pin-label')}
 									name="turboPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1133,7 +1133,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:turbo-led-pin-label")}
+									label={t('AddonsConfig:turbo-led-pin-label')}
 									name="turboPinLED"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1146,7 +1146,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:turbo-shot-count-label")}
+									label={t('AddonsConfig:turbo-shot-count-label')}
 									name="turboShotCount"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1158,7 +1158,7 @@ export default function AddonsConfigPage() {
 									max={30}
 								/>
 								<FormSelect
-									label={t("AddonsConfig:turbo-shmup-dial-pin-label")}
+									label={t('AddonsConfig:turbo-shmup-dial-pin-label')}
 									name="pinShmupDial"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1170,21 +1170,21 @@ export default function AddonsConfigPage() {
 									<AvailablePinOptions pins={ANALOG_PINS} />
 								</FormSelect>
 								<FormCheck
-									label={t("AddonsConfig:turbo-shmup-mode-label")}
+									label={t('AddonsConfig:turbo-shmup-mode-label')}
 									type="switch"
 									id="ShmupMode"
 									className="col-sm-3 ms-2"
 									isInvalid={false}
 									checked={Boolean(values.shmupMode)}
 									onChange={(e) => {
-										handleCheckbox("shmupMode", values);
+										handleCheckbox('shmupMode', values);
 										handleChange(e);
 									}}
 								/>
 								<div id="ShmupOptions" hidden={!values.shmupMode}>
 									<Row className="mb-3">
 										<FormSelect
-											label={t("AddonsConfig:turbo-shmup-always-on-1-label")}
+											label={t('AddonsConfig:turbo-shmup-always-on-1-label')}
 											name="shmupAlwaysOn1"
 											className="form-select-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1203,7 +1203,7 @@ export default function AddonsConfigPage() {
 											))}
 										</FormSelect>
 										<FormSelect
-											label={t("AddonsConfig:turbo-shmup-always-on-2-label")}
+											label={t('AddonsConfig:turbo-shmup-always-on-2-label')}
 											name="shmupAlwaysOn2"
 											className="form-select-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1222,7 +1222,7 @@ export default function AddonsConfigPage() {
 											))}
 										</FormSelect>
 										<FormSelect
-											label={t("AddonsConfig:turbo-shmup-always-on-3-label")}
+											label={t('AddonsConfig:turbo-shmup-always-on-3-label')}
 											name="shmupAlwaysOn3"
 											className="form-select-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1241,7 +1241,7 @@ export default function AddonsConfigPage() {
 											))}
 										</FormSelect>
 										<FormSelect
-											label={t("AddonsConfig:turbo-shmup-always-on-4-label")}
+											label={t('AddonsConfig:turbo-shmup-always-on-4-label')}
 											name="shmupAlwaysOn4"
 											className="form-select-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1263,7 +1263,7 @@ export default function AddonsConfigPage() {
 									<Row className="mb-3">
 										<FormControl
 											type="number"
-											label={t("AddonsConfig:turbo-shmup-button-1-label")}
+											label={t('AddonsConfig:turbo-shmup-button-1-label')}
 											name="pinShmupBtn1"
 											className="form-control-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1276,7 +1276,7 @@ export default function AddonsConfigPage() {
 										/>
 										<FormControl
 											type="number"
-											label={t("AddonsConfig:turbo-shmup-button-2-label")}
+											label={t('AddonsConfig:turbo-shmup-button-2-label')}
 											name="pinShmupBtn2"
 											className="form-control-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1289,7 +1289,7 @@ export default function AddonsConfigPage() {
 										/>
 										<FormControl
 											type="number"
-											label={t("AddonsConfig:turbo-shmup-button-3-label")}
+											label={t('AddonsConfig:turbo-shmup-button-3-label')}
 											name="pinShmupBtn3"
 											className="form-control-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1302,7 +1302,7 @@ export default function AddonsConfigPage() {
 										/>
 										<FormControl
 											type="number"
-											label={t("AddonsConfig:turbo-shmup-button-4-label")}
+											label={t('AddonsConfig:turbo-shmup-button-4-label')}
 											name="pinShmupBtn4"
 											className="form-control-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1316,7 +1316,7 @@ export default function AddonsConfigPage() {
 									</Row>
 									<Row className="mb-3">
 										<FormSelect
-											label={t("AddonsConfig:turbo-shmup-button-mask-1-label")}
+											label={t('AddonsConfig:turbo-shmup-button-mask-1-label')}
 											name="shmupBtnMask1"
 											className="form-select-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1335,7 +1335,7 @@ export default function AddonsConfigPage() {
 											))}
 										</FormSelect>
 										<FormSelect
-											label={t("AddonsConfig:turbo-shmup-button-mask-2-label")}
+											label={t('AddonsConfig:turbo-shmup-button-mask-2-label')}
 											name="shmupBtnMask2"
 											className="form-select-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1354,7 +1354,7 @@ export default function AddonsConfigPage() {
 											))}
 										</FormSelect>
 										<FormSelect
-											label={t("AddonsConfig:turbo-shmup-button-mask-3-label")}
+											label={t('AddonsConfig:turbo-shmup-button-mask-3-label')}
 											name="shmupBtnMask3"
 											className="form-select-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1373,7 +1373,7 @@ export default function AddonsConfigPage() {
 											))}
 										</FormSelect>
 										<FormSelect
-											label={t("AddonsConfig:turbo-shmup-button-mask-4-label")}
+											label={t('AddonsConfig:turbo-shmup-button-mask-4-label')}
 											name="shmupBtnMask4"
 											className="form-select-sm"
 											groupClassName="col-sm-3 mb-3"
@@ -1393,7 +1393,7 @@ export default function AddonsConfigPage() {
 										</FormSelect>
 									</Row>
 									<FormSelect
-										label={t("AddonsConfig:turbo-shmup-mix-mode-label")}
+										label={t('AddonsConfig:turbo-shmup-mix-mode-label')}
 										name="shmupMixMode"
 										className="form-select-sm"
 										groupClassName="col-sm-3 mb-3"
@@ -1415,27 +1415,27 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="TurboInputButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.TurboInputEnabled)}
 							onChange={(e) => {
-								handleCheckbox("TurboInputEnabled", values);
+								handleCheckbox('TurboInputEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
 					<Section
-						title={t("AddonsConfig:joystick-selection-slider-header-text")}
+						title={t('AddonsConfig:joystick-selection-slider-header-text')}
 					>
 						<div id="JSliderInputOptions" hidden={!values.JSliderInputEnabled}>
 							<Row className="mb-3">
 								<FormControl
 									type="number"
 									label={t(
-										"AddonsConfig:joystick-selection-slider-ls-pin-label",
+										'AddonsConfig:joystick-selection-slider-ls-pin-label',
 									)}
 									name="sliderLSPin"
 									className="form-select-sm"
@@ -1450,7 +1450,7 @@ export default function AddonsConfigPage() {
 								<FormControl
 									type="number"
 									label={t(
-										"AddonsConfig:joystick-selection-slider-rs-pin-label",
+										'AddonsConfig:joystick-selection-slider-rs-pin-label',
 									)}
 									name="sliderRSPin"
 									className="form-control-sm"
@@ -1465,24 +1465,24 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="JSliderInputButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.JSliderInputEnabled)}
 							onChange={(e) => {
-								handleCheckbox("JSliderInputEnabled", values);
+								handleCheckbox('JSliderInputEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:input-reverse-header-text")}>
+					<Section title={t('AddonsConfig:input-reverse-header-text')}>
 						<div id="ReverseInputOptions" hidden={!values.ReverseInputEnabled}>
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:input-reverse-button-pin-label")}
+									label={t('AddonsConfig:input-reverse-button-pin-label')}
 									name="reversePin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1496,7 +1496,7 @@ export default function AddonsConfigPage() {
 								<FormControl
 									type="number"
 									label="Reverse Input Pin LED"
-									name={t("AddonsConfig:input-reverse-led-pin-label")}
+									name={t('AddonsConfig:input-reverse-led-pin-label')}
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
 									value={values.reversePinLED}
@@ -1509,7 +1509,7 @@ export default function AddonsConfigPage() {
 							</Row>
 							<Row className="mb-3">
 								<FormSelect
-									label={t("AddonsConfig:input-reverse-action-up-label")}
+									label={t('AddonsConfig:input-reverse-action-up-label')}
 									name="reverseActionUp"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1525,7 +1525,7 @@ export default function AddonsConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:input-reverse-action-down-label")}
+									label={t('AddonsConfig:input-reverse-action-down-label')}
 									name="reverseActionDown"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1544,7 +1544,7 @@ export default function AddonsConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:input-reverse-action-left-label")}
+									label={t('AddonsConfig:input-reverse-action-left-label')}
 									name="reverseActionLeft"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1563,7 +1563,7 @@ export default function AddonsConfigPage() {
 									))}
 								</FormSelect>
 								<FormSelect
-									label={t("AddonsConfig:input-reverse-action-right-label")}
+									label={t('AddonsConfig:input-reverse-action-right-label')}
 									name="reverseActionRight"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1584,19 +1584,19 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="ReverseInputButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.ReverseInputEnabled)}
 							onChange={(e) => {
-								handleCheckbox("ReverseInputEnabled", values);
+								handleCheckbox('ReverseInputEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:i2c-analog-ads1219-header-text")}>
+					<Section title={t('AddonsConfig:i2c-analog-ads1219-header-text')}>
 						<div
 							id="I2CAnalog1219InputOptions"
 							hidden={!values.I2CAnalog1219InputEnabled}
@@ -1604,7 +1604,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:i2c-analog-ads1219-sda-pin-label")}
+									label={t('AddonsConfig:i2c-analog-ads1219-sda-pin-label')}
 									name="i2cAnalog1219SDAPin"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1617,7 +1617,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:i2c-analog-ads1219-scl-pin-label")}
+									label={t('AddonsConfig:i2c-analog-ads1219-scl-pin-label')}
 									name="i2cAnalog1219SCLPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1629,7 +1629,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 								<FormSelect
-									label={t("AddonsConfig:i2c-analog-ads1219-block-label")}
+									label={t('AddonsConfig:i2c-analog-ads1219-block-label')}
 									name="i2cAnalog1219Block"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1645,7 +1645,7 @@ export default function AddonsConfigPage() {
 									))}
 								</FormSelect>
 								<FormControl
-									label={t("AddonsConfig:i2c-analog-ads1219-speed-label")}
+									label={t('AddonsConfig:i2c-analog-ads1219-speed-label')}
 									name="i2cAnalog1219Speed"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1658,7 +1658,7 @@ export default function AddonsConfigPage() {
 							</Row>
 							<Row className="mb-3">
 								<FormControl
-									label={t("AddonsConfig:i2c-analog-ads1219-address-label")}
+									label={t('AddonsConfig:i2c-analog-ads1219-address-label')}
 									name="i2cAnalog1219Address"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1671,19 +1671,19 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="I2CAnalog1219InputButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.I2CAnalog1219InputEnabled)}
 							onChange={(e) => {
-								handleCheckbox("I2CAnalog1219InputEnabled", values);
+								handleCheckbox('I2CAnalog1219InputEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:dual-directional-input-header-text")}>
+					<Section title={t('AddonsConfig:dual-directional-input-header-text')}>
 						<div
 							id="DualDirectionalInputOptions"
 							hidden={!values.DualDirectionalInputEnabled}
@@ -1691,7 +1691,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:dual-directional-input-up-pin-label")}
+									label={t('AddonsConfig:dual-directional-input-up-pin-label')}
 									name="dualDirUpPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1705,7 +1705,7 @@ export default function AddonsConfigPage() {
 								<FormControl
 									type="number"
 									label={t(
-										"AddonsConfig:dual-directional-input-down-pin-label",
+										'AddonsConfig:dual-directional-input-down-pin-label',
 									)}
 									name="dualDirDownPin"
 									className="form-select-sm"
@@ -1720,7 +1720,7 @@ export default function AddonsConfigPage() {
 								<FormControl
 									type="number"
 									label={t(
-										"AddonsConfig:dual-directional-input-left-pin-label",
+										'AddonsConfig:dual-directional-input-left-pin-label',
 									)}
 									name="dualDirLeftPin"
 									className="form-select-sm"
@@ -1735,7 +1735,7 @@ export default function AddonsConfigPage() {
 								<FormControl
 									type="number"
 									label={t(
-										"AddonsConfig:dual-directional-input-right-pin-label",
+										'AddonsConfig:dual-directional-input-right-pin-label',
 									)}
 									name="dualDirRightPin"
 									className="form-select-sm"
@@ -1751,7 +1751,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormSelect
 									label={t(
-										"AddonsConfig:dual-directional-input-dpad-mode-label",
+										'AddonsConfig:dual-directional-input-dpad-mode-label',
 									)}
 									name="dualDirDpadMode"
 									className="form-select-sm"
@@ -1773,7 +1773,7 @@ export default function AddonsConfigPage() {
 
 								<FormSelect
 									label={t(
-										"AddonsConfig:dual-directional-input-combine-mode-label",
+										'AddonsConfig:dual-directional-input-combine-mode-label',
 									)}
 									name="dualDirCombineMode"
 									className="form-select-sm"
@@ -1794,7 +1794,7 @@ export default function AddonsConfigPage() {
 								</FormSelect>
 								<FormCheck
 									label={t(
-										"AddonsConfig:dual-directional-input-four-way-joystick-mode-label",
+										'AddonsConfig:dual-directional-input-four-way-joystick-mode-label',
 									)}
 									type="switch"
 									id="DualDirFourWayMode"
@@ -1802,31 +1802,31 @@ export default function AddonsConfigPage() {
 									isInvalid={false}
 									checked={Boolean(values.dualDirFourWayMode)}
 									onChange={(e) => {
-										handleCheckbox("dualDirFourWayMode", values);
+										handleCheckbox('dualDirFourWayMode', values);
 										handleChange(e);
 									}}
 								/>
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="DualDirectionalInputButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.DualDirectionalInputEnabled)}
 							onChange={(e) => {
-								handleCheckbox("DualDirectionalInputEnabled", values);
+								handleCheckbox('DualDirectionalInputEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:tilt-header-text")}>
+					<Section title={t('AddonsConfig:tilt-header-text')}>
 						<div id="TiltOptions" hidden={!values.TiltInputEnabled}>
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-1-pin-label")}
+									label={t('AddonsConfig:tilt-1-pin-label')}
 									name="tilt1Pin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1839,7 +1839,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-2-pin-label")}
+									label={t('AddonsConfig:tilt-2-pin-label')}
 									name="tilt2Pin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1854,7 +1854,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-left-analog-up-pin-label")}
+									label={t('AddonsConfig:tilt-left-analog-up-pin-label')}
 									name="tiltLeftAnalogUpPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1867,7 +1867,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-left-analog-down-pin-label")}
+									label={t('AddonsConfig:tilt-left-analog-down-pin-label')}
 									name="tiltLeftAnalogDownPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1880,7 +1880,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-left-analog-left-pin-label")}
+									label={t('AddonsConfig:tilt-left-analog-left-pin-label')}
 									name="tiltLeftAnalogLeftPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1893,7 +1893,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-left-analog-right-pin-label")}
+									label={t('AddonsConfig:tilt-left-analog-right-pin-label')}
 									name="tiltLeftAnalogRightPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1908,7 +1908,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-right-analog-up-pin-label")}
+									label={t('AddonsConfig:tilt-right-analog-up-pin-label')}
 									name="tiltRightAnalogUpPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1921,7 +1921,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-right-analog-down-pin-label")}
+									label={t('AddonsConfig:tilt-right-analog-down-pin-label')}
 									name="tiltRightAnalogDownPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1934,7 +1934,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-right-analog-left-pin-label")}
+									label={t('AddonsConfig:tilt-right-analog-left-pin-label')}
 									name="tiltRightAnalogLeftPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1947,7 +1947,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:tilt-right-analog-right-pin-label")}
+									label={t('AddonsConfig:tilt-right-analog-right-pin-label')}
 									name="tiltRightAnalogRightPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1961,7 +1961,7 @@ export default function AddonsConfigPage() {
 							</Row>
 							<Row className="mb-3">
 								<FormSelect
-									label={t("AddonsConfig:tilt-socd-mode-label")}
+									label={t('AddonsConfig:tilt-socd-mode-label')}
 									name="tiltSOCDMode"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -1982,7 +1982,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="TiltInputButton"
 							reverse={true}
@@ -1990,12 +1990,12 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.TiltInputEnabled)}
 							onChange={(e) => {
-								handleCheckbox("TiltInputEnabled", values);
+								handleCheckbox('TiltInputEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:buzzer-speaker-header-text")}>
+					<Section title={t('AddonsConfig:buzzer-speaker-header-text')}>
 						<div
 							id="BuzzerSpeakerAddonOptions"
 							hidden={!values.BuzzerSpeakerAddonEnabled}
@@ -2003,7 +2003,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:buzzer-speaker-pin-label")}
+									label={t('AddonsConfig:buzzer-speaker-pin-label')}
 									name="buzzerPin"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2016,7 +2016,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:buzzer-speaker-volume-label")}
+									label={t('AddonsConfig:buzzer-speaker-volume-label')}
 									name="buzzerVolume"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2030,19 +2030,19 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="BuzzerSpeakerAddonButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.BuzzerSpeakerAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("BuzzerSpeakerAddonEnabled", values);
+								handleCheckbox('BuzzerSpeakerAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:extra-button-header-text")}>
+					<Section title={t('AddonsConfig:extra-button-header-text')}>
 						<div
 							id="ExtraButtonAddonOptions"
 							hidden={!values.ExtraButtonAddonEnabled}
@@ -2050,7 +2050,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:extra-button-pin-label")}
+									label={t('AddonsConfig:extra-button-pin-label')}
 									name="extraButtonPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2062,7 +2062,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 								<FormSelect
-									label={t("AddonsConfig:extra-button-map-label")}
+									label={t('AddonsConfig:extra-button-map-label')}
 									name="extraButtonMap"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2080,32 +2080,32 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="ExtraButtonAddonButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.ExtraButtonAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("ExtraButtonAddonEnabled", values);
+								handleCheckbox('ExtraButtonAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:player-number-header-text")}>
+					<Section title={t('AddonsConfig:player-number-header-text')}>
 						<div
 							id="PlayerNumAddonOptions"
 							hidden={!values.PlayerNumAddonEnabled}
 						>
 							<p>
 								<strong>
-									{t("AddonsConfig:player-number-sub-header-text")}
+									{t('AddonsConfig:player-number-sub-header-text')}
 								</strong>
 							</p>
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:player-number-label")}
+									label={t('AddonsConfig:player-number-label')}
 									name="playerNumber"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2119,21 +2119,21 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="PlayerNumAddonButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.PlayerNumAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("PlayerNumAddonEnabled", values);
+								handleCheckbox('PlayerNumAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
 					<Section
 						title={t(
-							"AddonsConfig:socd-cleaning-mode-selection-slider-header-text",
+							'AddonsConfig:socd-cleaning-mode-selection-slider-header-text',
 						)}
 					>
 						<div
@@ -2143,12 +2143,12 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<p>
 									{t(
-										"AddonsConfig:socd-cleaning-mode-selection-slider-sub-header-text",
+										'AddonsConfig:socd-cleaning-mode-selection-slider-sub-header-text',
 									)}
 								</p>
 								<FormSelect
 									label={t(
-										"AddonsConfig:socd-cleaning-mode-selection-slider-mode-default-label",
+										'AddonsConfig:socd-cleaning-mode-selection-slider-mode-default-label',
 									)}
 									name="sliderSOCDModeDefault"
 									className="form-select-sm"
@@ -2169,7 +2169,7 @@ export default function AddonsConfigPage() {
 								</FormSelect>
 								<FormSelect
 									label={t(
-										"AddonsConfig:socd-cleaning-mode-selection-slider-mode-one-label",
+										'AddonsConfig:socd-cleaning-mode-selection-slider-mode-one-label',
 									)}
 									name="sliderSOCDModeOne"
 									className="form-select-sm"
@@ -2191,7 +2191,7 @@ export default function AddonsConfigPage() {
 								<FormControl
 									type="number"
 									label={t(
-										"AddonsConfig:socd-cleaning-mode-selection-slider-pin-one-label",
+										'AddonsConfig:socd-cleaning-mode-selection-slider-pin-one-label',
 									)}
 									name="sliderSOCDPinOne"
 									className="form-select-sm"
@@ -2205,7 +2205,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormSelect
 									label={t(
-										"AddonsConfig:socd-cleaning-mode-selection-slider-mode-two-label",
+										'AddonsConfig:socd-cleaning-mode-selection-slider-mode-two-label',
 									)}
 									name="sliderSOCDModeTwo"
 									className="form-select-sm"
@@ -2227,7 +2227,7 @@ export default function AddonsConfigPage() {
 								<FormControl
 									type="number"
 									label={t(
-										"AddonsConfig:socd-cleaning-mode-selection-slider-pin-two-label",
+										'AddonsConfig:socd-cleaning-mode-selection-slider-pin-two-label',
 									)}
 									name="sliderSOCDPinTwo"
 									className="form-control-sm"
@@ -2242,19 +2242,19 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="SliderSOCDInputButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.SliderSOCDInputEnabled)}
 							onChange={(e) => {
-								handleCheckbox("SliderSOCDInputEnabled", values);
+								handleCheckbox('SliderSOCDInputEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:ps4-mode-header-text")}>
+					<Section title={t('AddonsConfig:ps4-mode-header-text')}>
 						<div id="PS4ModeOptions" hidden={!values.PS4ModeAddonEnabled}>
 							<Row>
 								<Trans ns="AddonsConfig" i18nKey="ps4-mode-sub-header-text">
@@ -2270,22 +2270,22 @@ export default function AddonsConfigPage() {
 							</Row>
 							<Row className="mb-3">
 								<div className="col-sm-3 mb-3">
-									{t("AddonsConfig:ps4-mode-private-key-label")}:
+									{t('AddonsConfig:ps4-mode-private-key-label')}:
 									<input type="file" id="ps4key-input" accept="*/*" />
 								</div>
 								<div className="col-sm-3 mb-3">
-									{t("AddonsConfig:ps4-mode-serial-number-label")}:
+									{t('AddonsConfig:ps4-mode-serial-number-label')}:
 									<input type="file" id="ps4serial-input" accept="*/*" />
 								</div>
 								<div className="col-sm-3 mb-3">
-									{t("AddonsConfig:ps4-mode-signature-label")}:
+									{t('AddonsConfig:ps4-mode-signature-label')}:
 									<input type="file" id="ps4signature-input" accept="*/*" />
 								</div>
 							</Row>
 							<Row className="mb-3">
 								<div className="col-sm-3 mb-3">
 									<Button type="button" onClick={verifyAndSavePS4}>
-										{t("Common:button-verify-save-label")}
+										{t('Common:button-verify-save-label')}
 									</Button>
 								</div>
 							</Row>
@@ -2296,19 +2296,19 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="PS4ModeAddonEnabledButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.PS4ModeAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("PS4ModeAddonEnabled", values);
+								handleCheckbox('PS4ModeAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:wii-extension-header-text")}>
+					<Section title={t('AddonsConfig:wii-extension-header-text')}>
 						<div
 							id="WiiExtensionAddonOptions"
 							hidden={!values.WiiExtensionAddonEnabled}
@@ -2339,7 +2339,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:wii-extension-sda-pin-label")}
+									label={t('AddonsConfig:wii-extension-sda-pin-label')}
 									name="wiiExtensionSDAPin"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2352,7 +2352,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:wii-extension-scl-pin-label")}
+									label={t('AddonsConfig:wii-extension-scl-pin-label')}
 									name="wiiExtensionSCLPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2364,7 +2364,7 @@ export default function AddonsConfigPage() {
 									max={29}
 								/>
 								<FormSelect
-									label={t("AddonsConfig:wii-extension-block-label")}
+									label={t('AddonsConfig:wii-extension-block-label')}
 									name="wiiExtensionBlock"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2383,7 +2383,7 @@ export default function AddonsConfigPage() {
 									))}
 								</FormSelect>
 								<FormControl
-									label={t("AddonsConfig:wii-extension-speed-label")}
+									label={t('AddonsConfig:wii-extension-speed-label')}
 									name="wiiExtensionSpeed"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2396,7 +2396,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="WiiExtensionButton"
 							reverse={true}
@@ -2404,12 +2404,12 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.WiiExtensionAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("WiiExtensionAddonEnabled", values);
+								handleCheckbox('WiiExtensionAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:snes-extension-header-text")}>
+					<Section title={t('AddonsConfig:snes-extension-header-text')}>
 						<div id="SNESpadAddonOptions" hidden={!values.SNESpadAddonEnabled}>
 							<Row>
 								<Trans
@@ -2438,7 +2438,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:snes-extension-clock-pin-label")}
+									label={t('AddonsConfig:snes-extension-clock-pin-label')}
 									name="snesPadClockPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2451,7 +2451,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:snes-extension-latch-pin-label")}
+									label={t('AddonsConfig:snes-extension-latch-pin-label')}
 									name="snesPadLatchPin"
 									className="form-control-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2464,7 +2464,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:snes-extension-data-pin-label")}
+									label={t('AddonsConfig:snes-extension-data-pin-label')}
 									name="snesPadDataPin"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
@@ -2478,7 +2478,7 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="SNESpadButton"
 							reverse={true}
@@ -2486,12 +2486,12 @@ export default function AddonsConfigPage() {
 							isInvalid={false}
 							checked={Boolean(values.SNESpadAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("SNESpadAddonEnabled", values);
+								handleCheckbox('SNESpadAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:focus-mode-header-text")}>
+					<Section title={t('AddonsConfig:focus-mode-header-text')}>
 						<div
 							id="FocusModeAddonOptions"
 							hidden={!values.FocusModeAddonEnabled}
@@ -2499,7 +2499,7 @@ export default function AddonsConfigPage() {
 							<Row className="mb-3">
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:focus-mode-pin-label")}
+									label={t('AddonsConfig:focus-mode-pin-label')}
 									name="focusModePin"
 									className="form-select-sm col-3"
 									groupClassName="col-sm-3 mb-3"
@@ -2512,7 +2512,7 @@ export default function AddonsConfigPage() {
 								/>
 								<div className="col-sm-3">
 									<FormCheck
-										label={t("Common:lock-oled-screen")}
+										label={t('Common:lock-oled-screen')}
 										className="form-check-sm"
 										type="switch"
 										reverse
@@ -2520,14 +2520,14 @@ export default function AddonsConfigPage() {
 										isInvalid={false}
 										checked={Boolean(values.focusModeOledLockEnabled)}
 										onChange={(e) => {
-											handleCheckbox("focusModeOledLockEnabled", values);
+											handleCheckbox('focusModeOledLockEnabled', values);
 											handleChange(e);
 										}}
 									/>
 								</div>
 								<div className="col-sm-3">
 									<FormCheck
-										label={t("Common:lock-rgb-led")}
+										label={t('Common:lock-rgb-led')}
 										className="form-check-sm"
 										type="switch"
 										reverse
@@ -2535,14 +2535,14 @@ export default function AddonsConfigPage() {
 										isInvalid={false}
 										checked={Boolean(values.focusModeRgbLockEnabled)}
 										onChange={(e) => {
-											handleCheckbox("focusModeRgbLockEnabled", values);
+											handleCheckbox('focusModeRgbLockEnabled', values);
 											handleChange(e);
 										}}
 									/>
 								</div>
 								<div className="col-sm-3">
 									<FormCheck
-										label={t("Common:lock-buttons")}
+										label={t('Common:lock-buttons')}
 										className="form-check-sm"
 										type="switch"
 										reverse
@@ -2550,7 +2550,7 @@ export default function AddonsConfigPage() {
 										isInvalid={false}
 										checked={Boolean(values.focusModeButtonLockEnabled)}
 										onChange={(e) => {
-											handleCheckbox("focusModeButtonLockEnabled", values);
+											handleCheckbox('focusModeButtonLockEnabled', values);
 											handleChange(e);
 										}}
 									/>
@@ -2567,7 +2567,7 @@ export default function AddonsConfigPage() {
 												isInvalid={errors.focusModeButtonLockMask}
 												onChange={(e) => {
 													setFieldValue(
-														"focusModeButtonLockMask",
+														'focusModeButtonLockMask',
 														(values.focusModeButtonLockMask ^ mask.value) |
 															e.target.value,
 													);
@@ -2595,7 +2595,7 @@ export default function AddonsConfigPage() {
 										isInvalid={errors.focusModeButtonLockMask}
 										onChange={(e) => {
 											setFieldValue(
-												"focusModeButtonLockMask",
+												'focusModeButtonLockMask',
 												values.focusModeButtonLockMask | e.target.value,
 											);
 										}}
@@ -2613,28 +2613,28 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="FocusModeAddonButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.FocusModeAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("FocusModeAddonEnabled", values);
+								handleCheckbox('FocusModeAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
-					<Section title={t("AddonsConfig:keyboard-host-header-text")}>
+					<Section title={t('AddonsConfig:keyboard-host-header-text')}>
 						<div
 							id="KeyboardHostAddonOptions"
 							hidden={!values.KeyboardHostAddonEnabled}
 						>
 							<Row className="mb-3">
-								<p>{t("AddonsConfig:keyboard-host-sub-header-text")}</p>
+								<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:keyboard-host-d-plus-label")}
+									label={t('AddonsConfig:keyboard-host-d-plus-label')}
 									name="keyboardHostPinDplus"
 									className="form-select-sm"
 									groupClassName="col-sm-1 mb-3"
@@ -2647,7 +2647,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:keyboard-host-d-minus-label")}
+									label={t('AddonsConfig:keyboard-host-d-minus-label')}
 									disabled
 									className="form-select-sm"
 									groupClassName="col-sm-1 mb-3"
@@ -2659,7 +2659,7 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label={t("AddonsConfig:keyboard-host-five-v-label")}
+									label={t('AddonsConfig:keyboard-host-five-v-label')}
 									name="keyboardHostPin5V"
 									className="form-select-sm"
 									groupClassName="col-sm-auto mb-3"
@@ -2672,7 +2672,7 @@ export default function AddonsConfigPage() {
 								/>
 							</Row>
 							<Row className="mb-3">
-								<p>{t("KeyboardMapping:sub-header-text")}</p>
+								<p>{t('KeyboardMapping:sub-header-text')}</p>
 								<KeyboardMapper
 									buttonLabels={buttonLabels}
 									handleKeyChange={handleKeyChange(values, setFieldValue)}
@@ -2682,21 +2682,21 @@ export default function AddonsConfigPage() {
 							</Row>
 						</div>
 						<FormCheck
-							label={t("Common:switch-enabled")}
+							label={t('Common:switch-enabled')}
 							type="switch"
 							id="KeyboardHostAddonButton"
 							reverse
 							isInvalid={false}
 							checked={Boolean(values.KeyboardHostAddonEnabled)}
 							onChange={(e) => {
-								handleCheckbox("KeyboardHostAddonEnabled", values);
+								handleCheckbox('KeyboardHostAddonEnabled', values);
 								handleChange(e);
 							}}
 						/>
 					</Section>
 					<div className="mt-3">
 						<Button type="submit" id="save">
-							{t("Common:button-save-label")}
+							{t('Common:button-save-label')}
 						</Button>
 						{saveMessage ? <span className="alert">{saveMessage}</span> : null}
 					</div>
