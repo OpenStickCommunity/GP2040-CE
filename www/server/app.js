@@ -229,46 +229,50 @@ app.get("/api/getKeyMappings", (req, res) =>
 
 app.get("/api/getProfileOptions", (req, res) => {
 	return res.send({
-		alternativePinMappings: [{
-			B1: 10,
-			B2: 6,
-			B3: 11,
-			B4: 12,
-			L1: 13,
-			R1: 9,
-			L2: 7,
-			R2: 8,
-			Up: 2,
-			Down: 3,
-			Left: 5,
-			Right: 4
-		},{
-			B1: 10,
-			B2: 11,
-			B3: 12,
-			B4: 13,
-			L1: 6,
-			R1: 8,
-			L2: 7,
-			R2: 9,
-			Up: 3,
-			Down: 2,
-			Left: 4,
-			Right: 5
-		},{
-			B1: 6,
-			B2: 7,
-			B3: 8,
-			B4: 9,
-			L1: 10,
-			R1: 12,
-			L2: 11,
-			R2: 13,
-			Up: 3,
-			Down: 5,
-			Left: 4,
-			Right: 2
-		}]
+		alternativePinMappings: [
+			{
+				B1: 10,
+				B2: 6,
+				B3: 11,
+				B4: 12,
+				L1: 13,
+				R1: 9,
+				L2: 7,
+				R2: 8,
+				Up: 2,
+				Down: 3,
+				Left: 5,
+				Right: 4,
+			},
+			{
+				B1: 10,
+				B2: 11,
+				B3: 12,
+				B4: 13,
+				L1: 6,
+				R1: 8,
+				L2: 7,
+				R2: 9,
+				Up: 3,
+				Down: 2,
+				Left: 4,
+				Right: 5,
+			},
+			{
+				B1: 6,
+				B2: 7,
+				B3: 8,
+				B4: 9,
+				L1: 10,
+				R1: 12,
+				L2: 11,
+				R2: 13,
+				Up: 3,
+				Down: 5,
+				Left: 4,
+				Right: 2,
+			},
+		],
 	});
 });
 

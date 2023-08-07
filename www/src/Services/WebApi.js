@@ -27,46 +27,50 @@ export const baseButtonMappings = {
 };
 
 export const baseProfileOptions = {
-	alternativePinMappings: [{
-		Up:    { pin: -1, key: 0, error: null },
-		Down:  { pin: -1, key: 0, error: null },
-		Left:  { pin: -1, key: 0, error: null },
-		Right: { pin: -1, key: 0, error: null },
-		B1:    { pin: -1, key: 0, error: null },
-		B2:    { pin: -1, key: 0, error: null },
-		B3:    { pin: -1, key: 0, error: null },
-		B4:    { pin: -1, key: 0, error: null },
-		L1:    { pin: -1, key: 0, error: null },
-		R1:    { pin: -1, key: 0, error: null },
-		L2:    { pin: -1, key: 0, error: null },
-		R2:    { pin: -1, key: 0, error: null },
-	},{
-		Up:    { pin: -1, key: 0, error: null },
-		Down:  { pin: -1, key: 0, error: null },
-		Left:  { pin: -1, key: 0, error: null },
-		Right: { pin: -1, key: 0, error: null },
-		B1:    { pin: -1, key: 0, error: null },
-		B2:    { pin: -1, key: 0, error: null },
-		B3:    { pin: -1, key: 0, error: null },
-		B4:    { pin: -1, key: 0, error: null },
-		L1:    { pin: -1, key: 0, error: null },
-		R1:    { pin: -1, key: 0, error: null },
-		L2:    { pin: -1, key: 0, error: null },
-		R2:    { pin: -1, key: 0, error: null },
-	},{
-		Up:    { pin: -1, key: 0, error: null },
-		Down:  { pin: -1, key: 0, error: null },
-		Left:  { pin: -1, key: 0, error: null },
-		Right: { pin: -1, key: 0, error: null },
-		B1:    { pin: -1, key: 0, error: null },
-		B2:    { pin: -1, key: 0, error: null },
-		B3:    { pin: -1, key: 0, error: null },
-		B4:    { pin: -1, key: 0, error: null },
-		L1:    { pin: -1, key: 0, error: null },
-		R1:    { pin: -1, key: 0, error: null },
-		L2:    { pin: -1, key: 0, error: null },
-		R2:    { pin: -1, key: 0, error: null },
-	}]
+	alternativePinMappings: [
+		{
+			Up: { pin: -1, key: 0, error: null },
+			Down: { pin: -1, key: 0, error: null },
+			Left: { pin: -1, key: 0, error: null },
+			Right: { pin: -1, key: 0, error: null },
+			B1: { pin: -1, key: 0, error: null },
+			B2: { pin: -1, key: 0, error: null },
+			B3: { pin: -1, key: 0, error: null },
+			B4: { pin: -1, key: 0, error: null },
+			L1: { pin: -1, key: 0, error: null },
+			R1: { pin: -1, key: 0, error: null },
+			L2: { pin: -1, key: 0, error: null },
+			R2: { pin: -1, key: 0, error: null },
+		},
+		{
+			Up: { pin: -1, key: 0, error: null },
+			Down: { pin: -1, key: 0, error: null },
+			Left: { pin: -1, key: 0, error: null },
+			Right: { pin: -1, key: 0, error: null },
+			B1: { pin: -1, key: 0, error: null },
+			B2: { pin: -1, key: 0, error: null },
+			B3: { pin: -1, key: 0, error: null },
+			B4: { pin: -1, key: 0, error: null },
+			L1: { pin: -1, key: 0, error: null },
+			R1: { pin: -1, key: 0, error: null },
+			L2: { pin: -1, key: 0, error: null },
+			R2: { pin: -1, key: 0, error: null },
+		},
+		{
+			Up: { pin: -1, key: 0, error: null },
+			Down: { pin: -1, key: 0, error: null },
+			Left: { pin: -1, key: 0, error: null },
+			Right: { pin: -1, key: 0, error: null },
+			B1: { pin: -1, key: 0, error: null },
+			B2: { pin: -1, key: 0, error: null },
+			B3: { pin: -1, key: 0, error: null },
+			B4: { pin: -1, key: 0, error: null },
+			L1: { pin: -1, key: 0, error: null },
+			R1: { pin: -1, key: 0, error: null },
+			L2: { pin: -1, key: 0, error: null },
+			R2: { pin: -1, key: 0, error: null },
+		},
+	],
 };
 
 async function resetSettings() {
@@ -304,10 +308,10 @@ async function getProfileOptions(setLoading) {
 	try {
 		const response = await axios.get(`${baseUrl}/api/getProfileOptions`);
 		let profileOptions = { ...baseProfileOptions };
-		response.data['alternativePinMappings'].forEach((altButtons, index) => {
+		response.data["alternativePinMappings"].forEach((altButtons, index) => {
 			for (let prop of Object.keys(altButtons))
-				profileOptions['alternativePinMappings'][index][prop].pin = parseInt(
-					response.data['alternativePinMappings'][index][prop]
+				profileOptions["alternativePinMappings"][index][prop].pin = parseInt(
+					response.data["alternativePinMappings"][index][prop],
 				);
 		});
 		setLoading(false);
@@ -320,14 +324,17 @@ async function getProfileOptions(setLoading) {
 
 async function setProfileOptions(options) {
 	let data = {};
-	data['alternativePinMappings'] = [];
-	options['alternativePinMappings'].forEach((altButtons, index) => {
+	data["alternativePinMappings"] = [];
+	options["alternativePinMappings"].forEach((altButtons, index) => {
 		let altMapping = {};
-		Object.keys(options['alternativePinMappings'][index]).map((button, i) => altMapping[button] = altButtons[button].pin);
-		data['alternativePinMappings'].push(altMapping);
+		Object.keys(options["alternativePinMappings"][index]).map(
+			(button, i) => (altMapping[button] = altButtons[button].pin),
+		);
+		data["alternativePinMappings"].push(altMapping);
 	});
 
-	return axios.post(`${baseUrl}/api/setProfileOptions`, sanitizeRequest(data))
+	return axios
+		.post(`${baseUrl}/api/setProfileOptions`, sanitizeRequest(data))
 		.then((response) => {
 			console.log(response.data);
 			return true;
