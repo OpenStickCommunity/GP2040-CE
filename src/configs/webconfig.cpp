@@ -406,6 +406,14 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 	readDoc(displayOptions.invert, doc, "invertDisplay");
 	readDoc(displayOptions.buttonLayout, doc, "buttonLayout");
 	readDoc(displayOptions.buttonLayoutRight, doc, "buttonLayoutRight");
+
+	readDoc(displayOptions.pinProfileIndicatorChoice, doc, "pinProfileIndicatorChoice");
+	readDoc(displayOptions.pinProfileIndicatorPositionHorizontal, doc, "pinProfileIndicatorPositionHorizontal");
+	readDoc(displayOptions.pinProfileIndicatorPositionVertical, doc, "pinProfileIndicatorPositionVertical");
+	readDoc(displayOptions.pinProfileIndicatorPositionVerticalOffset, doc, "pinProfileIndicatorPositionVerticalOffset");
+
+	readDoc(displayOptions.socdDisplayChoice, doc, "socdDisplayChoice");
+
 	readDoc(displayOptions.splashMode, doc, "splashMode");
 	readDoc(displayOptions.splashChoice, doc, "splashChoice");
 	readDoc(displayOptions.splashDuration, doc, "splashDuration");
@@ -450,8 +458,17 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	writeDoc(doc, "i2cSpeed", displayOptions.i2cSpeed);
 	writeDoc(doc, "flipDisplay", displayOptions.flip ? 1 : 0);
 	writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
+
 	writeDoc(doc, "buttonLayout", displayOptions.buttonLayout);
 	writeDoc(doc, "buttonLayoutRight", displayOptions.buttonLayoutRight);
+
+	writeDoc(doc, "pinProfileIndicatorChoice", displayOptions.pinProfileIndicatorChoice);
+	writeDoc(doc, "pinProfileIndicatorPositionHorizontal", displayOptions.pinProfileIndicatorPositionHorizontal);
+	writeDoc(doc, "pinProfileIndicatorPositionVertical", displayOptions.pinProfileIndicatorPositionVertical);
+	writeDoc(doc, "pinProfileIndicatorPositionVerticalOffset", displayOptions.pinProfileIndicatorPositionVerticalOffset);
+
+	writeDoc(doc, "socdDisplayChoice", displayOptions.socdDisplayChoice);
+
 	writeDoc(doc, "splashMode", displayOptions.splashMode);
 	writeDoc(doc, "splashChoice", displayOptions.splashChoice);
 	writeDoc(doc, "splashDuration", displayOptions.splashDuration);
@@ -533,6 +550,57 @@ std::string setProfileOptions()
 	return serialize_json(doc);
 }
 
+std::string getActiveWires()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
+	JsonObject wires = doc.createNestedObject("wires");
+
+	wires["Up"] = gamepad->activeWireUp();
+	wires["Down"] = gamepad->activeWireDown();
+	wires["Left"] = gamepad->activeWireLeft();
+	wires["Right"] = gamepad->activeWireRight();
+	wires["B1"] = gamepad->activeWireB1();
+	wires["B2"] = gamepad->activeWireB2();
+	wires["B3"] = gamepad->activeWireB3();
+	wires["B4"] = gamepad->activeWireB4();
+	wires["L1"] = gamepad->activeWireL1();
+	wires["R1"] = gamepad->activeWireR1();
+	wires["L2"] = gamepad->activeWireL2();
+	wires["R2"] = gamepad->activeWireR2();
+	wires["S1"] = gamepad->activeWireS1();
+	wires["S2"] = gamepad->activeWireS2();
+	wires["L3"] = gamepad->activeWireL3();
+	wires["R3"] = gamepad->activeWireR3();
+	wires["A1"] = gamepad->activeWireA1();
+	wires["A2"] = gamepad->activeWireA2();
+
+	JsonObject buttons = doc.createNestedObject("buttons");
+
+	buttons["Up"] = gamepad->pressedUp();
+	buttons["Down"] = gamepad->pressedDown();
+	buttons["Left"] = gamepad->pressedLeft();
+	buttons["Right"] = gamepad->pressedRight();
+	buttons["B1"] = gamepad->pressedB1();
+	buttons["B2"] = gamepad->pressedB2();
+	buttons["B3"] = gamepad->pressedB3();
+	buttons["B4"] = gamepad->pressedB4();
+	buttons["L1"] = gamepad->pressedL1();
+	buttons["R1"] = gamepad->pressedR1();
+	buttons["L2"] = gamepad->pressedL2();
+	buttons["R2"] = gamepad->pressedR2();
+	buttons["S1"] = gamepad->pressedS1();
+	buttons["S2"] = gamepad->pressedS2();
+	buttons["L3"] = gamepad->pressedL3();
+	buttons["R3"] = gamepad->pressedR3();
+	buttons["A1"] = gamepad->pressedA1();
+	buttons["A2"] = gamepad->pressedA2();
+
+	return serialize_json(doc);
+}
+
 std::string getProfileOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
@@ -569,7 +637,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.switchTpShareForDs4, doc, "switchTpShareForDs4");
 	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
 	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
-	readDoc(gamepadOptions.profileNumber, doc, "profileNumber");
+	readDoc(gamepadOptions.pinProfileNumber, doc, "pinProfileNumber");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -604,7 +672,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "switchTpShareForDs4", gamepadOptions.switchTpShareForDs4 ? 1 : 0);
 	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
 	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
-	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
+	writeDoc(doc, "pinProfileNumber", gamepadOptions.pinProfileNumber);
 
 	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
 	writeDoc(doc, "fnButtonPin", pinMappings.pinButtonFn);
@@ -1471,6 +1539,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getGamepadOptions", getGamepadOptions },
 	{ "/api/getLedOptions", getLedOptions },
 	{ "/api/getPinMappings", getPinMappings },
+	{ "/api/getActiveWires", getActiveWires},
 	{ "/api/getProfileOptions", getProfileOptions },
 	{ "/api/getKeyMappings", getKeyMappings },
 	{ "/api/getAddonsOptions", getAddonOptions },

@@ -133,16 +133,17 @@ void Storage::ResetSettings()
 	watchdog_reboot(0, SRAM_END, 2000);
 }
 
-PinMappings& Storage::getProfilePinMappings() {
+PinMappings& Storage::getPinProfileMappings() {
 	if (functionalPinMappings == nullptr) {
 		functionalPinMappings = (PinMappings*)malloc(sizeof(PinMappings));
-		setFunctionalPinMappings(config.gamepadOptions.profileNumber);
+		setFunctionalPinMappings(config.gamepadOptions.pinProfileNumber);
 	}
 	return *functionalPinMappings;
 }
 
 void Storage::setProfile(const uint32_t profileNum)
 {
+	config.gamepadOptions.pinProfileNumber = profileNum;
 	setFunctionalPinMappings(profileNum);
 }
 

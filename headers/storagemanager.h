@@ -48,7 +48,7 @@ public:
 
 	bool save();
 
-	PinMappings& getProfilePinMappings();
+	PinMappings& getPinProfileMappings();
 
 	// Perform saves that were enqueued from core1
 	void performEnqueuedSaves();

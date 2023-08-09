@@ -150,6 +150,7 @@ private:
 	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawStatusBar(Gamepad*);
+	void drawPinProfileIndicator(Gamepad * gamepad);
 	void drawText(int startX, int startY, std::string text);
 	void initMenu(char**);
 	//Adding my stuff here, remember to sort before PR

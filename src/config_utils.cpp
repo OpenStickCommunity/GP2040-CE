@@ -97,7 +97,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
     INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, profileNumber, 1);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, pinProfileNumber, 1);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -299,7 +299,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin2, PLED2_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin4, PLED4_PIN);
-    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b)); 
+    INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b));
 
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
@@ -681,7 +681,7 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
     {
         return;
     }
-    
+
     do
     {
         // Not implemented for extension fields
@@ -859,7 +859,7 @@ std::string ConfigUtils::toJSON(const Config& config)
 // From JSON
 // -----------------------------------------------------
 
-#define TEST_VALUE(name, value) if (v == value) return true; 
+#define TEST_VALUE(name, value) if (v == value) return true;
 
 #define GEN_IS_VALID_ENUM_VALUE_FUNCTION(enumtype) \
     static bool isValid ## enumtype(int v) \

@@ -44,6 +44,46 @@ enum ButtonLayoutRight
     BUTTON_LAYOUT_CUSTOMB = 16;
 }
 
+enum PinProfileIndicatorChoice
+{
+		option (nanopb_enumopt).long_names = false;
+
+		PIN_PROFILE_INDICATOR_NONE = 0;
+		PIN_PROFILE_INDICATOR_SQUARE_CROSS = 1;
+		PIN_PROFILE_INDICATOR_SQUARE_DOT = 2;
+		PIN_PROFILE_INDICATOR_CROSS_DOT = 3;
+		PIN_PROFILE_INDICATOR_DASH_DOT = 4;
+		PIN_PROFILE_INDICATOR_CIRCLES_LARGE = 5;
+		PIN_PROFILE_INDICATOR_SQUARES_LARGE = 6;
+}
+
+enum PinProfileIndicatorPositionHorizontal
+{
+		option (nanopb_enumopt).long_names = false;
+
+		PIN_PROFILE_INDICATOR_POSITION_H_LEFT = 0;
+		PIN_PROFILE_INDICATOR_POSITION_H_CENTER = 1;
+		PIN_PROFILE_INDICATOR_POSITION_H_RIGHT = 2;
+}
+
+enum PinProfileIndicatorPositionVertical
+{
+		option (nanopb_enumopt).long_names = false;
+
+		PIN_PROFILE_INDICATOR_POSITION_V_STATUSBAR = 0;
+		PIN_PROFILE_INDICATOR_POSITION_V_TOP = 1;
+		PIN_PROFILE_INDICATOR_POSITION_V_BOTTOM = 2;
+		PIN_PROFILE_INDICATOR_POSITION_V_OFFSET = 3;
+}
+
+enum SocdDisplayChoice
+{
+		option (nanopb_enumopt).long_names = false;
+
+		SOCD_DISPLAY_SHOW_CLEANED = 0;
+		SOCD_DISPLAY_SHOW_RAW = 1;
+}
+
 enum SplashMode
 {
     option (nanopb_enumopt).long_names = false;
@@ -69,7 +109,7 @@ enum SplashChoice
 enum OnBoardLedMode
 {
     option (nanopb_enumopt).long_names = false;
-    
+
     ON_BOARD_LED_MODE_OFF = 0;
     ON_BOARD_LED_MODE_MODE_INDICATOR = 1;
     ON_BOARD_LED_MODE_INPUT_TEST = 2;
@@ -136,10 +176,11 @@ enum GamepadHotkey
     HOTKEY_SOCD_BYPASS           = 12;
     HOTKEY_TOGGLE_4_WAY_MODE     = 13;
     HOTKEY_TOGGLE_DDI_4_WAY_MODE = 14;
-    HOTKEY_LOAD_PROFILE_1        = 15;
-    HOTKEY_LOAD_PROFILE_2        = 16;
-    HOTKEY_LOAD_PROFILE_3        = 17;
-    HOTKEY_LOAD_PROFILE_4        = 18;
+		HOTKEY_CYCLE_PIN_PROFILES		 = 22;
+    HOTKEY_LOAD_PIN_PROFILE_1    = 15;
+    HOTKEY_LOAD_PIN_PROFILE_2    = 16;
+    HOTKEY_LOAD_PIN_PROFILE_3    = 17;
+    HOTKEY_LOAD_PIN_PROFILE_4    = 18;
     HOTKEY_L3_BUTTON             = 19;
     HOTKEY_R3_BUTTON             = 20;
     HOTKEY_TOUCHPAD_BUTTON       = 21;
@@ -165,7 +206,7 @@ enum ShmupMixMode
 enum PLEDType
 {
     option (nanopb_enumopt).long_names = false;
-    
+
     PLED_TYPE_NONE = -1;
     PLED_TYPE_PWM = 0;
     PLED_TYPE_RGB = 1;
@@ -174,7 +215,7 @@ enum PLEDType
 enum ForcedSetupMode
 {
     option (nanopb_enumopt).long_names = false;
-    
+
 	FORCED_SETUP_MODE_OFF = 0;
 	FORCED_SETUP_MODE_LOCK_MODE_SWITCH = 1;
 	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;

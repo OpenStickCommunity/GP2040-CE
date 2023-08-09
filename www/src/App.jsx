@@ -1,25 +1,25 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import { AppContextProvider } from './Contexts/AppContext';
+import { AppContextProvider } from "./Contexts/AppContext";
 
-import Navigation from './Components/Navigation'
+import Navigation from "./Components/Navigation";
 
-import HomePage from './Pages/HomePage'
+import HomePage from "./Pages/HomePage";
 import PinMappingPage from "./Pages/PinMapping";
 import ProfileSettingsPage from "./Pages/ProfileSettings";
 import KeyboardMappingPage from "./Pages/KeyboardMapping";
-import ResetSettingsPage from './Pages/ResetSettingsPage';
-import SettingsPage from './Pages/SettingsPage';
-import DisplayConfigPage from './Pages/DisplayConfig';
-import LEDConfigPage from './Pages/LEDConfigPage';
-import CustomThemePage from './Pages/CustomThemePage';
-import AddonsConfigPage from './Pages/AddonsConfigPage';
-import BackupPage from './Pages/BackupPage';
-import PlaygroundPage from './Pages/PlaygroundPage';
+import ResetSettingsPage from "./Pages/ResetSettingsPage";
+import SettingsPage from "./Pages/SettingsPage";
+import DisplayConfigPage from "./Pages/DisplayConfig";
+import LEDConfigPage from "./Pages/LEDConfigPage";
+import CustomThemePage from "./Pages/CustomThemePage";
+import AddonsConfigPage from "./Pages/AddonsConfigPage";
+import BackupPage from "./Pages/BackupPage";
+import PlaygroundPage from "./Pages/PlaygroundPage";
 
-import { loadButtonLabels } from './Services/Storage';
-import './App.scss';
+import { loadButtonLabels } from "./Services/Storage";
+import "./App.scss";
 
 const App = () => {
 	return (
@@ -32,7 +32,7 @@ const App = () => {
 						<Route path="/settings" element={<SettingsPage />} />
 						<Route path="/pin-mapping" element={<PinMappingPage />} />
 						<Route path="/keyboard-mapping" element={<KeyboardMappingPage />} />
-						<Route path="/profile-settings" element={<ProfileSettingsPage />} />
+						<Route path="/pin-profiles" element={<ProfileSettingsPage />} />
 						<Route path="/reset-settings" element={<ResetSettingsPage />} />
 						<Route path="/led-config" element={<LEDConfigPage />} />
 						<Route path="/custom-theme" element={<CustomThemePage />} />
@@ -45,6 +45,6 @@ const App = () => {
 			</Router>
 		</AppContextProvider>
 	);
-}
+};
 
 export default App;
