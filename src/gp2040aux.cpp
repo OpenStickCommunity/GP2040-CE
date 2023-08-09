@@ -11,6 +11,7 @@
 #include "addons/board_led.h"
 #include "addons/buzzerspeaker.h"
 #include "addons/ps4mode.h"
+#include "addons/pspassthrough.h"
 
 #include <iterator>
 
@@ -27,6 +28,7 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PS4ModeAddon(), CORE1_LOOP);
+	addons.LoadAddon(new PSPassthroughAddon(), CORE1_LOOP); // must be at the bottom
 }
 
 void GP2040Aux::run() {

@@ -43,7 +43,7 @@ void KeyboardHostAddon::setup() {
   if (keyboardHostOptions.pin5V != -1) {
     const int32_t pin5V = keyboardHostOptions.pin5V;
 	  gpio_init(pin5V);
-	  gpio_set_dir(pin5V, GPIO_OUT);
+	  gpio_set_dir(pin5V, GPIO_IN);
 	  gpio_pull_up(pin5V);
   }
 
@@ -90,7 +90,7 @@ void KeyboardHostAddon::preprocess() {
 
   tuh_task();
 }
-
+/*
 // Invoked when device with hid interface is mounted
 // Report descriptor is also available for use. tuh_hid_parse_report_descriptor()
 // can be used to parse common/simple enough descriptor.
@@ -98,6 +98,9 @@ void KeyboardHostAddon::preprocess() {
 // therefore report_desc = NULL, desc_len = 0
 void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)
 {
+  if ( _keyboard_host_enabled == false )
+    return; // do nothing if our add-on is not enabled
+
   (void)desc_report;
   (void)desc_len;
 
@@ -199,6 +202,9 @@ void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
 // Invoked when received report from device via interrupt endpoint
 void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len)
 {
+  if ( _keyboard_host_enabled == false )
+    return; // do nothing if our add-on is not enabled
+
   (void) len;
   uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
 
@@ -217,3 +223,4 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
     //Error: cannot request report
   }
 }
+*/

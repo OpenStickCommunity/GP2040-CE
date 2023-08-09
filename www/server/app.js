@@ -361,6 +361,8 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		keyboardHostPinDplus: 0,
 		keyboardHostPin5V: -1,
 		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
+		psPassthroughPinDplus: 0,
+		psPassthroughPin5V: -1,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
@@ -379,6 +381,7 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		TurboInputEnabled: 1,
 		WiiExtensionAddonEnabled: 1,
 		SNESpadAddonEnabled: 1,
+		PSPassthroughAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });

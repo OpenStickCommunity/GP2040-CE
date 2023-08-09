@@ -1118,6 +1118,11 @@ std::string setAddonOptions()
 	docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
 	docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
 
+	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
+	docToValue(psPassthroughOptions.enabled, doc, "PSPassthroughAddonEnabled");
+	docToPin(psPassthroughOptions.pinDplus, doc, "psPassthroughPinDplus");
+	docToPin(psPassthroughOptions.pin5V, doc, "psPassthroughPin5V");
+
 	Storage::getInstance().save();
 
 	return serialize_json(doc);
@@ -1350,6 +1355,11 @@ std::string getAddonOptions()
 	writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
 	writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
 	writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
+
+	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
+	writeDoc(doc, "PSPassthroughAddonEnabled", psPassthroughOptions.enabled);
+	writeDoc(doc, "psPassthroughPinDplus", psPassthroughOptions.pinDplus);
+	writeDoc(doc, "psPassthroughPin5V", psPassthroughOptions.pin5V);
 
 	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));

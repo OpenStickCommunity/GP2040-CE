@@ -420,6 +420,13 @@ message PS4Options
 	optional bytes rsaRN = 12 [(nanopb).max_size = 256];
 }
 
+message PSPassthroughOptions
+{
+	optional bool enabled = 1;
+	optional int32 pinDplus = 2;
+	optional int32 pin5V = 3;
+}
+
 message WiiOptions
 {
 	optional bool enabled = 1;
@@ -475,6 +482,7 @@ message AddonOptions
 	optional FocusModeOptions focusModeOptions = 16;
 	optional KeyboardHostOptions keyboardHostOptions = 17;
 	optional TiltOptions tiltOptions = 18;
+	optional PSPassthroughOptions psPassthroughOptions = 19;
 }
 
 message Config
