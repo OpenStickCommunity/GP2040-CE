@@ -12,12 +12,12 @@ static KeyboardButtonMapping _keyboard_host_mapDpadLeft  = KeyboardButtonMapping
 static KeyboardButtonMapping _keyboard_host_mapDpadRight = KeyboardButtonMapping(GAMEPAD_MASK_RIGHT);
 static KeyboardButtonMapping _keyboard_host_mapButtonB1  = KeyboardButtonMapping(GAMEPAD_MASK_B1);
 static KeyboardButtonMapping _keyboard_host_mapButtonB2  = KeyboardButtonMapping(GAMEPAD_MASK_B2);
-static KeyboardButtonMapping _keyboard_host_mapButtonB3  = KeyboardButtonMapping(GAMEPAD_MASK_R2);
-static KeyboardButtonMapping _keyboard_host_mapButtonB4  = KeyboardButtonMapping(GAMEPAD_MASK_L2);
-static KeyboardButtonMapping _keyboard_host_mapButtonL1  = KeyboardButtonMapping(GAMEPAD_MASK_B3);
-static KeyboardButtonMapping _keyboard_host_mapButtonR1  = KeyboardButtonMapping(GAMEPAD_MASK_B4);
-static KeyboardButtonMapping _keyboard_host_mapButtonL2  = KeyboardButtonMapping(GAMEPAD_MASK_R1);
-static KeyboardButtonMapping _keyboard_host_mapButtonR2  = KeyboardButtonMapping(GAMEPAD_MASK_L1);
+static KeyboardButtonMapping _keyboard_host_mapButtonB3  = KeyboardButtonMapping(GAMEPAD_MASK_B3);
+static KeyboardButtonMapping _keyboard_host_mapButtonB4  = KeyboardButtonMapping(GAMEPAD_MASK_B4);
+static KeyboardButtonMapping _keyboard_host_mapButtonL1  = KeyboardButtonMapping(GAMEPAD_MASK_L1);
+static KeyboardButtonMapping _keyboard_host_mapButtonR1  = KeyboardButtonMapping(GAMEPAD_MASK_R1);
+static KeyboardButtonMapping _keyboard_host_mapButtonL2  = KeyboardButtonMapping(GAMEPAD_MASK_L2);
+static KeyboardButtonMapping _keyboard_host_mapButtonR2  = KeyboardButtonMapping(GAMEPAD_MASK_R2);
 static KeyboardButtonMapping _keyboard_host_mapButtonS1  = KeyboardButtonMapping(GAMEPAD_MASK_S1);
 static KeyboardButtonMapping _keyboard_host_mapButtonS2  = KeyboardButtonMapping(GAMEPAD_MASK_S2);
 static KeyboardButtonMapping _keyboard_host_mapButtonL3  = KeyboardButtonMapping(GAMEPAD_MASK_L3);
@@ -27,7 +27,9 @@ static KeyboardButtonMapping _keyboard_host_mapButtonA2  = KeyboardButtonMapping
 
 bool KeyboardHostAddon::available() {
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
-	return keyboardHostOptions.enabled && isValidPin(keyboardHostOptions.pinDplus);
+	return keyboardHostOptions.enabled &&
+         isValidPin(keyboardHostOptions.pinDplus) &&
+         (keyboardHostOptions.pin5V == -1 || isValidPin(keyboardHostOptions.pin5V));
 }
 
 void KeyboardHostAddon::setup() {
@@ -37,6 +39,14 @@ void KeyboardHostAddon::setup() {
 	// board_init();
   // board_init() should be doing what the two lines below are doing but doesn't work
   // needs tinyusb_board library linked
+
+  if (keyboardHostOptions.pin5V != -1) {
+    const int32_t pin5V = keyboardHostOptions.pin5V;
+	  gpio_init(pin5V);
+	  gpio_set_dir(pin5V, GPIO_IN);
+	  gpio_pull_up(pin5V);
+  }
+
 	pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
   pio_cfg.pin_dp = keyboardHostOptions.pinDplus;
   tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);

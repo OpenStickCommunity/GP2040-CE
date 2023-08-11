@@ -28,6 +28,13 @@ The options in the main menu are:
 
 Here you can select the basic settings which are normally available via hotkeys.
 
+* `Input Mode` - Choose the main input mode (XINPUT, DINPUT, Switch, PS4, HID-Keyboard) this connected device will boot into when powered on.  This selection will persist through unplug / replug.
+* `D-Pad Mode` - Choose the default D-Pad mode (D-Pad, Left Stick or Right Stick).
+* `SOCD Cleaning Mode` - Choose the default SOCD Cleaning Mode (Neutral, Last Win, First Win, OFF).  Please note that PS4, PS3 and Nintendo Switch modes do not support setting SOCD to off and will defualt to Neutral SOCD.
+* `Forced Setup Mode` - Allows you to lock out Input Mode, the ability to enter Web-Config or both.  Enabling a web-config lockout will require you to nuke and reload the firmware if you wish to make further changes.
+* `4-Way Joystick Mode` - Enables 4-Way Jostick mode which will prevent cardinal directions.
+
+
 ### Hotkeys
 
 An arbitrary number of buttons and directions, plus the optional Function (Fn) button, can be used to define
@@ -147,8 +154,19 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ![GP2040 Configurator - Add-Ons Analog](assets/images/gpc-add-ons-analog.png)
 
-* `Analog Stick X Pin` - The GPIO pin used for the Analog Stick X value.
-* `Analog Stick Y Pin` - The GPIO pin used for the Analog Stick Y value.
+* `Analog Stick 1 X Pin` - The GPIO pin used for the Analog Stick 1 X value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
+* `Analog Stick 1 Y Pin` - The GPIO pin used for the Analog Stick 1 Y value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
+* `Analog Stick 1 Mode` - Choose if Analog Stick 1 is to be used for Left Analog or Right Analog.  
+* `Analog Stick 1 Invert` - Choose if you would like to flip the X or Y axis Analog Stick 1 inputs (or both).
+* `Analog Stick 2 X Pin` - The GPIO pin used for the Analog Stick 2 X value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
+* `Analog Stick 2 Y Pin` - The GPIO pin used for the Analog Stick 2 Y value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
+* `Analog Stick 2 Mode` - Choose if Analog Stick 2 is to be used for Left Analog or Right Analog (must be different than Analog Stick 1).
+* `Analog Stick 2 Invert` - Choose if you would like to flip the X or Y axis Analog Stick 2 inputs (or both).
+* `Deadzone Size (%)` - Enter the % value of deadzone you would like on the analog sticks.
+* `Forced Circularity` - Force the analog sticks to be bound within a perfect circle. This can be beneficial for certain games. However, be aware that this may negatively impact some games which account for sticks moving outside of a circle.
+* `Auto Calibration` - Automatically centers the analog sticks. This works by reading in the offset from center during boot and then accounts for that until the next power cycle. This can be helpful for analog sticks experiencing drift.
+
+
 
 ### Turbo
 
@@ -250,8 +268,11 @@ Values are:
 
 ![GP2040 Configurator - SOCD Selection Slider](assets/images/gpc-add-ons-socd-slider.png)
 
-* `Slider SOCD Up Priority Pin` - The GPIO pin used for SOCD Up Priority.
-* `Slider SOCD Second Input Priority Pin` - The GPIO pin used for SOCD Second Input Priority.
+* `SOCD Slider Mode Default` - The default SOCD mode to be used when the slider pin is not activated.
+* `SOCD Slider Mode Tne` - The SOCD mode you would like to have enabled for the first slder position.
+* `Pin One` - The GPIO pin used for first SOCD mode slider position.
+* `SOCD Slider Mode Two` - The SOCD mode you would like to have enabled for the second slder position.
+* `Pin Two` - The GPIO pin used for second SOCD mode slider position.
 
 ### PS4 Mode
 
@@ -321,6 +342,31 @@ Supported controller types and their mapping is as follows:
 | A1        |          |              |                    |
 | D-Pad     | D-Pad    | D-Pad        |                    |
 | Analog    |          |              | Mouse Movement     |
+
+### Focus Mode Configuration
+
+![GP2040 Configurator - Focus Mode](assets/images/gpc-add-ons-focus-mode.png)
+
+* `Focus Mode Pin` - The GPIO pin used to enable Focus Mode (this needs to always be held so a slider or latching switch is recommended).
+* `Lock OLED Screen` - When enabled the OLED screen will not display anything during Focus Mode.
+* `Lock RGB LED` - When enabled the RGB LEDs that are controlled by the RP2040 device will not display anything during Focus Mode.
+* `Lock Buttons` - When enabled the You can specify specific buttons to not function during Focus Mode.  You can add as many additional buttons as needed here.
+
+### Keyboard Host Configuration
+
+![GP2040 Configurator - Keyboard Host Configuration](assets/images/gpc-add-ons-keyboard-host-configuration.png)
+
+* `D+` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040
+* `D-` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
+
+#### Example Wiring Diagram
+
+![USB Host Wiring Diagram](assets/images/gpc-add-ons-keyboard-host-configuration-wiring-diagram.png)
+
+* `VCC` - Connects to 5V power (Example: VBUS on the Raspberry Pi Pico)
+* `D+` - Connects to the `D+` GPIO Pin above, set in the Web Configurator. (Example: GPIO0 on the Raspberry Pi Pico)
+* `D+` - Connects to the `D-` GPIO Pin above, set in the Web Configurator. (Example: GPIO1 on the Raspberry Pi Pico)
+* `GND` - Connects to a ground pin, any `GND` pin will work. (Example: VBUS on the Raspberry Pi Pico)
 
 ## Data Backup and Restoration
 

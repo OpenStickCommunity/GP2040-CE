@@ -51,6 +51,7 @@ const Navigation = (props) => {
 					<NavDropdown title={t('Navigation:config-label')}>
 						<NavDropdown.Item as={NavLink} exact="true" to="/pin-mapping">{t('Navigation:pin-mapping-label')}</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact="true" to="/keyboard-mapping">{t('Navigation:keyboard-mapping-label')}</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} exact="true" to="/profile-settings">{t('Navigation:profile-settings-label')}</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact="true" to="/led-config">{t('Navigation:led-config-label')}</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact="true" to="/custom-theme">{t('Navigation:custom-theme-label')}</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact="true" to="/display-config">{t('Navigation:display-config-label')}</NavDropdown.Item>

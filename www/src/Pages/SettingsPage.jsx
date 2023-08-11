@@ -49,6 +49,13 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.invert-y', value: 10 },
 	{ labelKey: 'hotkey-actions.toggle-4way-joystick-mode', value: 13 },
 	{ labelKey: 'hotkey-actions.toggle-ddi-4way-joystick-mode', value: 14 },
+	{ labelKey: 'hotkey-actions.load-profile-1', value: 15 },
+	{ labelKey: 'hotkey-actions.load-profile-2', value: 16 },
+	{ labelKey: 'hotkey-actions.load-profile-3', value: 17 },
+	{ labelKey: 'hotkey-actions.load-profile-4', value: 18 },
+  { labelKey: 'hotkey-actions.l3-button', value: 19 },
+	{ labelKey: 'hotkey-actions.r3-button', value: 20 },
+	{ labelKey: 'hotkey-actions.touchpad-button', value: 21 },
 ];
 
 const FORCED_SETUP_MODES = [
@@ -80,6 +87,7 @@ const schema = yup.object().shape({
 	forcedSetupMode : yup.number().required().oneOf(FORCED_SETUP_MODES.map(o => o.value)).label('SOCD Cleaning Mode'),
 	lockHotkeys: yup.number().required().label('Lock Hotkeys'),
 	fourWayMode: yup.number().required().label('4-Way Joystick Mode'),
+	profileNumber: yup.number().required().label('Profile Number'),
 });
 
 const FormContext = ({ setButtonLabels }) => {
@@ -110,6 +118,8 @@ const FormContext = ({ setButtonLabels }) => {
 			values.lockHotkeys = parseInt(values.lockHotkeys);
 		if (!!values.fourWayMode)
 			values.fourWayMode = parseInt(values.fourWayMode);
+		if (!!values.profileNumber)
+			values.profileNumber = parseInt(values.profileNumber);
 
 		setButtonLabels({ swapTpShareLabels: (values.switchTpShareForDs4 === 1) && (values.inputMode === 4) });
 
@@ -242,6 +252,20 @@ export default function SettingsPage() {
 							checked={Boolean(values.fourWayMode)}
 							onChange={(e) => { setFieldValue("fourWayMode", e.target.checked ? 1 : 0); }}
 						/>
+						<Form.Group className="row mb-3">
+							<Form.Label>{t('SettingsPage:profile-number-label')}</Form.Label>
+							<div className="col-sm-3">
+								<Form.Control
+									type="number"
+									className="row mb-3"
+									value={values.profileNumber}
+									min={1}
+									max={4}
+									isInvalid={false}
+									onChange={(e) => { setFieldValue("profileNumber", parseInt(e.target.value));}}
+								></Form.Control>
+							</div>
+						</Form.Group>
 					</Section>
 					<Section title={t('SettingsPage:hotkey-settings-label')}>
 						<div className="mb-3">
