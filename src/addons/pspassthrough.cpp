@@ -7,6 +7,14 @@
 
 #include "CRC32.h"
 
+// Get Report using control endpoint
+// report_type is either Input, Output or Feature, (value from hid_report_type_t)
+bool tuh_hid_get_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void* report, uint16_t len);
+
+// Invoked when Sent Report to device via either control endpoint
+// len = 0 indicate there is error in the transfer e.g stalled response
+TU_ATTR_WEAK void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
+
 // Data passed between PS Passthrough and TinyUSB Host callbacks
 static bool host_device_mounted = false;
 static uint8_t ps_dev_addr = 0;
@@ -209,4 +217,54 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
   {
     //Error: cannot request report
   }
+}
+
+static void get_report_complete(tuh_xfer_t* xfer)
+{
+  TU_LOG2("HID Get Report complete\r\n");
+
+  if (tuh_hid_get_report_complete_cb)
+  {
+    uint8_t const itf_num     = (uint8_t) tu_le16toh(xfer->setup->wIndex);
+    uint8_t const instance    = ps_instance;
+
+    uint8_t const report_type = tu_u16_high(xfer->setup->wValue);
+    uint8_t const report_id   = tu_u16_low(xfer->setup->wValue);
+
+    tuh_hid_get_report_complete_cb(xfer->daddr, instance, report_id, report_type,
+                                   (xfer->result == XFER_RESULT_SUCCESS) ? xfer->setup->wLength : 0);
+  }
+}
+
+bool tuh_hid_get_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void* report, uint16_t len)
+{
+  //hidh_interface_t* hid_itf = get_instance(dev_addr, instance);
+  //TU_LOG2("HID Get Report: id = %u, type = %u, len = %u\r\n", report_id, report_type, len);
+
+  tusb_control_request_t const request =
+  {
+    .bmRequestType_bit =
+    {
+      .recipient = TUSB_REQ_RCPT_INTERFACE,
+      .type      = TUSB_REQ_TYPE_CLASS,
+      .direction = TUSB_DIR_IN
+    },
+    .bRequest = HID_REQ_CONTROL_GET_REPORT,
+    .wValue   = tu_u16(report_type, report_id),
+    .wIndex   = 0, //hid_itf->itf_num,
+    .wLength  = len
+  };
+
+  tuh_xfer_t xfer =
+  {
+    .daddr       = dev_addr,
+    .ep_addr     = 0,
+    .setup       = &request,
+    .buffer      = (uint8_t*)report,
+    .complete_cb = get_report_complete,
+    .user_data   = 0
+  };
+
+  TU_ASSERT( tuh_control_xfer(&xfer) );
+  return true;
 }
