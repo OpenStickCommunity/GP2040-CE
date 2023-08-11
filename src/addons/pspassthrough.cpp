@@ -1,22 +1,12 @@
 #include "addons/pspassthrough.h"
 #include "storagemanager.h"
-
-#include "pio_usb.h"
-#include "tusb.h"
-#include "host/usbh_classdriver.h"
+#include "usbhostmanager.h"
 
 #include "CRC32.h"
 
-// Get Report using control endpoint
-// report_type is either Input, Output or Feature, (value from hid_report_type_t)
-bool tuh_hid_get_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void* report, uint16_t len);
-
-// Invoked when Sent Report to device via either control endpoint
-// len = 0 indicate there is error in the transfer e.g stalled response
-TU_ATTR_WEAK void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
+#include "pio_usb.h"
 
 // Data passed between PS Passthrough and TinyUSB Host callbacks
-static bool host_device_mounted = false;
 static uint8_t ps_dev_addr = 0;
 static uint8_t ps_instance = 0;
 static tusb_desc_device_t desc_device;
@@ -33,7 +23,7 @@ bool PSPassthroughAddon::available() {
 }
 
 void PSPassthroughAddon::setup() {
-    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+    USBHostManager::getInstance().setClock();
 
     const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 
@@ -44,16 +34,7 @@ void PSPassthroughAddon::setup() {
         gpio_pull_up(pin5V);
     }
 
-	  pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-    pio_cfg.pin_dp = (uint8_t)psOptions.pinDplus;
-    tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
-	  tuh_init(BOARD_TUH_RHPORT);
-
-    while((to_ms_since_boot(get_absolute_time()) < 2000)) {
-        if (host_device_mounted)
-            break;
-        tuh_task();
-    }
+    initPIO();
 
     nonce_page = 0; // no nonce yet
     send_nonce_part = 0; // which part of the nonce are we getting from send?
@@ -134,137 +115,67 @@ void PSPassthroughAddon::process() {
           }
         break;
     };
-
-    tuh_task(); // USB handle task as host
 }
 
-void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)
-{
-  (void)desc_report;
-  (void)desc_len;
+void PSPassthroughAddon::initPIO() {
+    const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 
-  ps_dev_addr = dev_addr;
-  ps_instance = instance;
-  host_device_mounted = true;
-
-  uint16_t vid, pid;
-  tuh_vid_pid_get(dev_addr, &vid, &pid);
-
-  if ( !tuh_hid_receive_report(dev_addr, instance) )
-  {
-    // Error: cannot request report
-  }
+	  pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
+    pio_cfg.pin_dp = (uint8_t)psOptions.pinDplus;
+    tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
+	  tuh_init(BOARD_TUH_RHPORT);
 }
 
-
-/// Invoked when device is unmounted (bus reset/unplugged)
-void tuh_umount_cb(uint8_t daddr)
-{
-  host_device_mounted = false;
-  nonce_page = 0; // no nonce yet
-  send_nonce_part = 0; // which part of the nonce are we getting from send?
-  awaiting_cb = false; // did we receive the sign state yet
-  passthrough_state = PS4State::no_nonce;
+void PSPassthroughAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
+    ps_dev_addr = dev_addr;
+    ps_instance = instance;
+    ps_device_mounted = true;
 }
 
-void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+void PSPassthroughAddon::unmount(uint8_t dev_addr) {
+    ps_device_mounted = false;
+    nonce_page = 0; // no nonce yet
+    send_nonce_part = 0; // which part of the nonce are we getting from send?
+    awaiting_cb = false; // did we receive the sign state yet
+    passthrough_state = PS4State::no_nonce;
+}
+
+void PSPassthroughAddon::set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     switch(report_id) {
-      case PS4AuthReport::PS4_RESET_AUTH:
-        awaiting_cb = false;
-        if ( PS4Data::getInstance().ps4State == PS4State::nonce_ready)
-          passthrough_state = PS4State::receiving_nonce;
-        break;
-      case PS4AuthReport::PS4_GET_SIGNING_STATE:
-        awaiting_cb = false;
-        if (report_buffer[2] == 0)
-          passthrough_state = PS4State::sending_nonce;
-        break;
-      case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
-        awaiting_cb = false;
-        memcpy(&PS4Data::getInstance().ps4_auth_buffer[(send_nonce_part-1)*56], &report_buffer[4], 56);
-        if (send_nonce_part == 19) { // 0 = ready, 16 = not ready
-          send_nonce_part = 0;
-          passthrough_state = PS4State::no_nonce; // something we don't support
-          PS4Data::getInstance().ps4State = PS4State::signed_nonce_ready;
-        }
-        break;
-      default:
-        break;
-    }
-}
-
-// On IN/OUT/FEATURE set report callback
-void tuh_hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    switch(report_id) {
-      case PS4AuthReport::PS4_SET_AUTH_PAYLOAD:
-        awaiting_cb = false;
-        if (nonce_page == 5) {
-            nonce_page = 0;
-            passthrough_state = PS4State::signed_nonce_ready;
-        }
-        break;
-      default:
-        break;
+        case PS4AuthReport::PS4_SET_AUTH_PAYLOAD:
+            awaiting_cb = false;
+            if (nonce_page == 5) {
+                nonce_page = 0;
+                passthrough_state = PS4State::signed_nonce_ready;
+            }
+            break;
+        default:
+            break;
     };
 }
 
-
-// Invoked when received report from device via interrupt endpoint
-void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len)
-{
-  (void) len;
-  if ( !tuh_hid_receive_report(dev_addr, instance) )
-  {
-    //Error: cannot request report
-  }
-}
-
-static void get_report_complete(tuh_xfer_t* xfer)
-{
-  TU_LOG2("HID Get Report complete\r\n");
-
-  if (tuh_hid_get_report_complete_cb)
-  {
-    uint8_t const itf_num     = (uint8_t) tu_le16toh(xfer->setup->wIndex);
-    uint8_t const instance    = ps_instance;
-
-    uint8_t const report_type = tu_u16_high(xfer->setup->wValue);
-    uint8_t const report_id   = tu_u16_low(xfer->setup->wValue);
-
-    tuh_hid_get_report_complete_cb(xfer->daddr, instance, report_id, report_type,
-                                   (xfer->result == XFER_RESULT_SUCCESS) ? xfer->setup->wLength : 0);
-  }
-}
-
-bool tuh_hid_get_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void* report, uint16_t len)
-{
-  //hidh_interface_t* hid_itf = get_instance(dev_addr, instance);
-  //TU_LOG2("HID Get Report: id = %u, type = %u, len = %u\r\n", report_id, report_type, len);
-
-  tusb_control_request_t const request =
-  {
-    .bmRequestType_bit =
-    {
-      .recipient = TUSB_REQ_RCPT_INTERFACE,
-      .type      = TUSB_REQ_TYPE_CLASS,
-      .direction = TUSB_DIR_IN
-    },
-    .bRequest = HID_REQ_CONTROL_GET_REPORT,
-    .wValue   = tu_u16(report_type, report_id),
-    .wIndex   = 0, //hid_itf->itf_num,
-    .wLength  = len
-  };
-
-  tuh_xfer_t xfer =
-  {
-    .daddr       = dev_addr,
-    .ep_addr     = 0,
-    .setup       = &request,
-    .buffer      = (uint8_t*)report,
-    .complete_cb = get_report_complete,
-    .user_data   = 0
-  };
-
-  TU_ASSERT( tuh_control_xfer(&xfer) );
-  return true;
+void PSPassthroughAddon::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+    switch(report_id) {
+        case PS4AuthReport::PS4_RESET_AUTH:
+            awaiting_cb = false;
+            if ( PS4Data::getInstance().ps4State == PS4State::nonce_ready)
+                passthrough_state = PS4State::receiving_nonce;
+            break;
+        case PS4AuthReport::PS4_GET_SIGNING_STATE:
+            awaiting_cb = false;
+            if (report_buffer[2] == 0)
+                passthrough_state = PS4State::sending_nonce;
+            break;
+        case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
+            awaiting_cb = false;
+            memcpy(&PS4Data::getInstance().ps4_auth_buffer[(send_nonce_part-1)*56], &report_buffer[4], 56);
+            if (send_nonce_part == 19) { // 0 = ready, 16 = not ready
+                send_nonce_part = 0;
+                passthrough_state = PS4State::no_nonce; // something we don't support
+                PS4Data::getInstance().ps4State = PS4State::signed_nonce_ready;
+            }
+            break;
+        default:
+            break;
+    };
 }

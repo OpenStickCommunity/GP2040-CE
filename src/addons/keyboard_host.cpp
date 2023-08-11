@@ -1,29 +1,8 @@
 #include "addons/keyboard_host.h"
 #include "storagemanager.h"
+#include "usbhostmanager.h"
 
 #include "pio_usb.h"
-
-static bool host_device_mounted = false;
-static GamepadState _keyboard_host_state;
-
-static KeyboardButtonMapping _keyboard_host_mapDpadUp    = KeyboardButtonMapping(GAMEPAD_MASK_UP);
-static KeyboardButtonMapping _keyboard_host_mapDpadDown  = KeyboardButtonMapping(GAMEPAD_MASK_DOWN);
-static KeyboardButtonMapping _keyboard_host_mapDpadLeft  = KeyboardButtonMapping(GAMEPAD_MASK_LEFT);
-static KeyboardButtonMapping _keyboard_host_mapDpadRight = KeyboardButtonMapping(GAMEPAD_MASK_RIGHT);
-static KeyboardButtonMapping _keyboard_host_mapButtonB1  = KeyboardButtonMapping(GAMEPAD_MASK_B1);
-static KeyboardButtonMapping _keyboard_host_mapButtonB2  = KeyboardButtonMapping(GAMEPAD_MASK_B2);
-static KeyboardButtonMapping _keyboard_host_mapButtonB3  = KeyboardButtonMapping(GAMEPAD_MASK_B3);
-static KeyboardButtonMapping _keyboard_host_mapButtonB4  = KeyboardButtonMapping(GAMEPAD_MASK_B4);
-static KeyboardButtonMapping _keyboard_host_mapButtonL1  = KeyboardButtonMapping(GAMEPAD_MASK_L1);
-static KeyboardButtonMapping _keyboard_host_mapButtonR1  = KeyboardButtonMapping(GAMEPAD_MASK_R1);
-static KeyboardButtonMapping _keyboard_host_mapButtonL2  = KeyboardButtonMapping(GAMEPAD_MASK_L2);
-static KeyboardButtonMapping _keyboard_host_mapButtonR2  = KeyboardButtonMapping(GAMEPAD_MASK_R2);
-static KeyboardButtonMapping _keyboard_host_mapButtonS1  = KeyboardButtonMapping(GAMEPAD_MASK_S1);
-static KeyboardButtonMapping _keyboard_host_mapButtonS2  = KeyboardButtonMapping(GAMEPAD_MASK_S2);
-static KeyboardButtonMapping _keyboard_host_mapButtonL3  = KeyboardButtonMapping(GAMEPAD_MASK_L3);
-static KeyboardButtonMapping _keyboard_host_mapButtonR3  = KeyboardButtonMapping(GAMEPAD_MASK_R3);
-static KeyboardButtonMapping _keyboard_host_mapButtonA1  = KeyboardButtonMapping(GAMEPAD_MASK_A1);
-static KeyboardButtonMapping _keyboard_host_mapButtonA2  = KeyboardButtonMapping(GAMEPAD_MASK_A2);
 
 bool KeyboardHostAddon::available() {
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
@@ -33,12 +12,10 @@ bool KeyboardHostAddon::available() {
 }
 
 void KeyboardHostAddon::setup() {
-  set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+  USBHostManager::getInstance().setClock();
+
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
   const KeyboardMapping& keyboardMapping = keyboardHostOptions.mapping;
-	// board_init();
-  // board_init() should be doing what the two lines below are doing but doesn't work
-  // needs tinyusb_board library linked
 
   if (keyboardHostOptions.pin5V != -1) {
     const int32_t pin5V = keyboardHostOptions.pin5V;
@@ -47,16 +24,27 @@ void KeyboardHostAddon::setup() {
 	  gpio_pull_up(pin5V);
   }
 
-	pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-  pio_cfg.pin_dp = keyboardHostOptions.pinDplus;
-  tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
-	tuh_init(BOARD_TUH_RHPORT);
+  initPIO();
 
-  while((to_ms_since_boot(get_absolute_time()) < 250)) {
-    if (host_device_mounted) break;
-    tuh_task();
-  }
-
+  _keyboard_host_enabled = false;
+  _keyboard_host_mapDpadUp.setMask(GAMEPAD_MASK_UP);
+  _keyboard_host_mapDpadDown.setMask(GAMEPAD_MASK_DOWN);
+  _keyboard_host_mapDpadLeft.setMask(GAMEPAD_MASK_LEFT);
+  _keyboard_host_mapDpadRight.setMask(GAMEPAD_MASK_RIGHT);
+  _keyboard_host_mapButtonB1.setMask(GAMEPAD_MASK_B1);
+  _keyboard_host_mapButtonB2.setMask(GAMEPAD_MASK_B2);
+  _keyboard_host_mapButtonB3.setMask(GAMEPAD_MASK_B3);
+  _keyboard_host_mapButtonB4.setMask(GAMEPAD_MASK_B4);
+  _keyboard_host_mapButtonL1.setMask(GAMEPAD_MASK_L1);
+  _keyboard_host_mapButtonR1.setMask(GAMEPAD_MASK_R1);
+  _keyboard_host_mapButtonL2.setMask(GAMEPAD_MASK_L2);
+  _keyboard_host_mapButtonR2.setMask(GAMEPAD_MASK_R2);
+  _keyboard_host_mapButtonS1.setMask(GAMEPAD_MASK_S1);
+  _keyboard_host_mapButtonS2.setMask(GAMEPAD_MASK_S2);
+  _keyboard_host_mapButtonL3.setMask(GAMEPAD_MASK_L3);
+  _keyboard_host_mapButtonR3.setMask(GAMEPAD_MASK_R3);
+  _keyboard_host_mapButtonA1.setMask(GAMEPAD_MASK_A1);
+  _keyboard_host_mapButtonA2.setMask(GAMEPAD_MASK_A2);
   _keyboard_host_mapDpadUp.setKey(keyboardMapping.keyDpadUp);
   _keyboard_host_mapDpadDown.setKey(keyboardMapping.keyDpadDown);
   _keyboard_host_mapDpadLeft.setKey(keyboardMapping.keyDpadLeft);
@@ -87,46 +75,40 @@ void KeyboardHostAddon::preprocess() {
   gamepad->state.ry       |= _keyboard_host_state.ry;
   gamepad->state.lt       |= _keyboard_host_state.lt;
   gamepad->state.rt       |= _keyboard_host_state.rt;
-
-  tuh_task();
 }
-/*
-// Invoked when device with hid interface is mounted
-// Report descriptor is also available for use. tuh_hid_parse_report_descriptor()
-// can be used to parse common/simple enough descriptor.
-// Note: if report descriptor length > CFG_TUH_ENUMERATION_BUFSIZE, it will be skipped
-// therefore report_desc = NULL, desc_len = 0
-void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)
-{
+
+void KeyboardHostAddon::initPIO() {
+  // Probably can't move away from this in the USB manager
+  const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+	pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
+  pio_cfg.pin_dp = keyboardHostOptions.pinDplus;
+  tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
+  tuh_init(BOARD_TUH_RHPORT);
+}
+
+void KeyboardHostAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
   if ( _keyboard_host_enabled == false )
     return; // do nothing if our add-on is not enabled
+  _keyboard_host_enabled = true;
+}
 
-  (void)desc_report;
-  (void)desc_len;
+void KeyboardHostAddon::unmount(uint8_t dev_addr) {
+  if ( _keyboard_host_enabled == true )
+    _keyboard_host_enabled = false;
+}
 
-  host_device_mounted = true;
+void KeyboardHostAddon::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len){
+  if ( _keyboard_host_enabled == false )
+    return; // do nothing if our add-on is not enabled
 
   // Interface protocol (hid_interface_protocol_enum_t)
   uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
 
-  uint16_t vid, pid;
-  tuh_vid_pid_get(dev_addr, &vid, &pid);
-
   // tuh_hid_report_received_cb() will be invoked when report is available
-  if (itf_protocol == HID_ITF_PROTOCOL_KEYBOARD)
-  {
-    if ( !tuh_hid_receive_report(dev_addr, instance) )
-    {
-      // Error: cannot request report
-    }
-  }
-}
+  if (itf_protocol != HID_ITF_PROTOCOL_KEYBOARD)
+    return;
 
-// Invoked when device with hid interface is un-mounted
-void tuh_hid_umount_cb(uint8_t dev_addr, uint8_t instance)
-{
-  (void) dev_addr;
-  (void) instance;
+  process_kbd_report(dev_addr, (hid_keyboard_report_t const*) report );
 }
 
 uint8_t getKeycodeFromModifier(uint8_t modifier) {
@@ -145,7 +127,7 @@ uint8_t getKeycodeFromModifier(uint8_t modifier) {
 }
 
 // convert hid keycode to ascii and print via usb device CDC (ignore non-printable)
-void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
+void KeyboardHostAddon::process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
 {
   (void) dev_addr;
 
@@ -198,29 +180,3 @@ void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
     }
   }
 }
-
-// Invoked when received report from device via interrupt endpoint
-void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len)
-{
-  if ( _keyboard_host_enabled == false )
-    return; // do nothing if our add-on is not enabled
-
-  (void) len;
-  uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, instance);
-
-  switch(itf_protocol)
-  {
-    case HID_ITF_PROTOCOL_KEYBOARD:
-      process_kbd_report(dev_addr, (hid_keyboard_report_t const*) report );
-    break;
-
-    default: break;
-  }
-
-  // continue to request to receive report
-  if ( !tuh_hid_receive_report(dev_addr, instance) )
-  {
-    //Error: cannot request report
-  }
-}
-*/

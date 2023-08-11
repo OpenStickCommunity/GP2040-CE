@@ -1,15 +1,16 @@
 #include "addonmanager.h"
 
-void AddonManager::LoadAddon(GPAddon* addon, ADDON_PROCESS processAt) {
+bool AddonManager::LoadAddon(GPAddon* addon, ADDON_PROCESS processAt) {
     if (addon->available()) {
         AddonBlock * block = new AddonBlock;
 		addon->setup();
         block->ptr = addon;
         block->process = processAt;
         addons.push_back(block);
-	} else {
-        delete addon; // Don't use the memory if we don't have to
-    }
+        return true;
+	}
+    delete addon; // Don't use the memory if we don't have to
+    return false;
 }
 
 

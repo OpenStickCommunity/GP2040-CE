@@ -8,6 +8,7 @@
 #include "configmanager.h" // Global Managers
 #include "storagemanager.h"
 #include "addonmanager.h"
+#include "usbhostmanager.h"
 
 #include "addons/analog.h" // Inputs for Core0
 #include "addons/bootsel_button.h"
@@ -42,6 +43,9 @@ static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 GP2040::GP2040() : nextRuntime(0) {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
+	
+	// Init TinyUSB Host Manager
+	USBHostManager::getInstance().init();
 }
 
 GP2040::~GP2040() {
@@ -102,8 +106,12 @@ void GP2040::setup() {
 	// Initialize our ADC (various add-ons)
 	adc_init();
 
-	// Setup Add-ons
-  	//addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
+	// Setup USB Host Add-ons
+	KeyboardHostAddon * keyboardHostAddon = new KeyboardHostAddon();
+  	if( addons.LoadAddon(keyboardHostAddon, CORE0_INPUT) )
+		USBHostManager::getInstance().pushAddon(keyboardHostAddon);
+
+	// Setup Regular Add-ons
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
@@ -136,6 +144,8 @@ void GP2040::run() {
 
 			continue;
 		}
+
+		USBHostManager::getInstance().processCore0();
 
 		if (nextRuntime > getMicro()) { // fix for unsigned
 			sleep_us(50); // Give some time back to our CPU (lower power consumption)
