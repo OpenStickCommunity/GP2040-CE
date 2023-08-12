@@ -12,8 +12,6 @@ bool KeyboardHostAddon::available() {
 }
 
 void KeyboardHostAddon::setup() {
-  USBHostManager::getInstance().setClock();
-
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
   const KeyboardMapping& keyboardMapping = keyboardHostOptions.mapping;
 
@@ -24,7 +22,7 @@ void KeyboardHostAddon::setup() {
 	  gpio_pull_up(pin5V);
   }
 
-  initPIO();
+  USBHostManager::getInstance().init((uint8_t)keyboardHostOptions.pinDplus);
 
   _keyboard_host_enabled = false;
   _keyboard_host_mapDpadUp.setMask(GAMEPAD_MASK_UP);
@@ -75,15 +73,6 @@ void KeyboardHostAddon::preprocess() {
   gamepad->state.ry       |= _keyboard_host_state.ry;
   gamepad->state.lt       |= _keyboard_host_state.lt;
   gamepad->state.rt       |= _keyboard_host_state.rt;
-}
-
-void KeyboardHostAddon::initPIO() {
-  // Probably can't move away from this in the USB manager
-  const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
-	pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-  pio_cfg.pin_dp = keyboardHostOptions.pinDplus;
-  tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
-  tuh_init(BOARD_TUH_RHPORT);
 }
 
 void KeyboardHostAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {

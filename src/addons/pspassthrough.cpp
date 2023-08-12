@@ -23,8 +23,6 @@ bool PSPassthroughAddon::available() {
 }
 
 void PSPassthroughAddon::setup() {
-    USBHostManager::getInstance().setClock();
-
     const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 
     if (psOptions.pin5V != -1) { // Feather USB-A's require this
@@ -34,12 +32,13 @@ void PSPassthroughAddon::setup() {
         gpio_pull_up(pin5V);
     }
 
-    initPIO();
+    USBHostManager::getInstance().init((uint8_t)psOptions.pinDplus);
 
     nonce_page = 0; // no nonce yet
     send_nonce_part = 0; // which part of the nonce are we getting from send?
     awaiting_cb = false; // did we receive the sign state yet
     passthrough_state = PS4State::no_nonce;
+    PS4Data::getInstance().authType = PS4AuthType::PS5_PASSTHROUGH;
 }
 
 void PSPassthroughAddon::process() {
@@ -115,15 +114,6 @@ void PSPassthroughAddon::process() {
           }
         break;
     };
-}
-
-void PSPassthroughAddon::initPIO() {
-    const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
-
-	  pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-    pio_cfg.pin_dp = (uint8_t)psOptions.pinDplus;
-    tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
-	  tuh_init(BOARD_TUH_RHPORT);
 }
 
 void PSPassthroughAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {

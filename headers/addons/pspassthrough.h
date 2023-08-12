@@ -28,7 +28,6 @@ public:
 	virtual void preprocess() {}
 	virtual std::string name() { return PSPassthroughName; }
 // USB Add-on Features
-	virtual void initPIO();
 	virtual void mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len);
 	virtual void unmount(uint8_t dev_addr);
 	virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);

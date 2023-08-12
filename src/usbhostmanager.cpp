@@ -1,26 +1,28 @@
 #include "usbhostmanager.h"
 
+#include "pio_usb.h"
 #include "tusb.h"
 #include "host/usbh_classdriver.h"
 
-void USBHostManager::init() {
-}
-
-void USBHostManager::setClock() {
+void USBHostManager::init(uint8_t dataPin) {
     set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 
-    stdio_init_all();
-    printf("Setting speed to 120khz!\r\n");
-    // Adjust our clock speed for USB
+    pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
+    pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1);
+    pio_cfg.pin_dp = dataPin;
+    tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
+	tuh_init(BOARD_TUH_RHPORT);
 }
 
 void USBHostManager::pushAddon(USBAddon * usbAddon) { // If anything needs to update in the gpconfig driver
-    printf("Pushing add-on %s\r\n", usbAddon->name().c_str());
     addons.push_back(usbAddon);
 }
 
 // Core 0 - USB host manager does nothing for now
 void USBHostManager::processCore0() {
+    if ( !addons.empty() ){
+        //tuh_task();
+    }
 }
 
 // Core 1 - USB host manager calls TinyUSB Host task
@@ -31,41 +33,31 @@ void USBHostManager::processCore1() {
 }
 
 void USBHostManager::hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
-    printf("USB HID Mounted %i %i\r\n", dev_addr, instance);
     for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
-        printf("Calling mount on add-on %s\r\n", (*it)->name().c_str());
         (*it)->mount(dev_addr, instance, desc_report, desc_len);
     }
 }
 
-void USBHostManager::hid_umount_cb(uint8_t daddr) {
-    printf("USB HID unmounted %i\r\n", daddr);
+void USBHostManager::hid_umount_cb(uint8_t daddr, uint8_t instance) {
     for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
-        printf("Calling unmount on add-on %s\r\n", (*it)->name().c_str());
         (*it)->unmount(daddr);
     }
 }
 
 void USBHostManager::hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    //printf("Report Received!\r\n");
     for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
-        //printf("Sending to add-on %s\r\n", (*it)->name());
         (*it)->report_received(dev_addr, instance, report, len);
     }
 }
 
 void USBHostManager::hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    printf("Set Report Received!\r\n");
     for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
-        printf("Sending to add-on %s\r\n", (*it)->name().c_str());
         (*it)->set_report_complete(dev_addr, instance, report_id, report_type, len);
     }
 }
 
 void USBHostManager::hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    printf("Get Report Received!\r\n");
     for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
-        printf("Sending to add-on %s\r\n", (*it)->name().c_str());
         (*it)->get_report_complete(dev_addr, instance, report_id, report_type, len);
     }
 }
@@ -81,9 +73,9 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
 }
 
 /// Invoked when device is unmounted (bus reset/unplugged)
-void tuh_hid_umount_cb(uint8_t daddr)
+void tuh_hid_umount_cb(uint8_t daddr, uint8_t instance)
 {
-    USBHostManager::getInstance().hid_umount_cb(daddr);
+    USBHostManager::getInstance().hid_umount_cb(daddr, instance);
 }
 
 // Invoked when received report from device via interrupt endpoint
@@ -95,7 +87,6 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
         //Error: cannot request report
     }
 }
-
 
 // On IN/OUT/FEATURE set report callback
 void tuh_hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {

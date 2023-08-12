@@ -26,6 +26,9 @@
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
 
+#include "addons/neopicoleds.h"
+#include "addons/pleds.h"
+
 // Pico includes
 #include "pico/bootrom.h"
 #include "pico/time.h"
@@ -43,9 +46,6 @@ static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 GP2040::GP2040() : nextRuntime(0) {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
-	
-	// Init TinyUSB Host Manager
-	USBHostManager::getInstance().init();
 }
 
 GP2040::~GP2040() {
@@ -126,6 +126,8 @@ void GP2040::setup() {
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
+	addons.LoadAddon(new NeoPicoLEDAddon(), CORE0_LOOP);
+	addons.LoadAddon(new PlayerLEDAddon(), CORE0_LOOP);
 }
 
 void GP2040::run() {
@@ -147,6 +149,7 @@ void GP2040::run() {
 
 		USBHostManager::getInstance().processCore0();
 
+		// We can't send faster than USB can poll
 		if (nextRuntime > getMicro()) { // fix for unsigned
 			sleep_us(50); // Give some time back to our CPU (lower power consumption)
 			continue;
@@ -180,6 +183,9 @@ void GP2040::run() {
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
 
 		tud_task(); // TinyUSB Task update
+
+		// Process Loops
+		addons.ProcessAddons(ADDON_PROCESS::CORE0_LOOP);
 
 		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}

@@ -21,6 +21,13 @@ typedef enum
 	PS4_RESET_AUTH           = 0xF3     // Unknown (PS4 Report 0xF3)
 } PS4AuthReport;
 
+typedef enum
+{
+	NO_AUTH                  = 0,
+	PS4_KEY                  = 1,
+	PS5_PASSTHROUGH          = 2
+} PS4AuthType;
+
 // USB endpoint state vars
 extern const usbd_class_driver_t ps4_driver;
 
@@ -65,9 +72,13 @@ public:
 	// buffer = 256 + 16 + 256 + 256 + 256 + 24
 	// == 1064 bytes (almost 1 kb)
 	uint8_t ps4_auth_buffer[1064];
+
+	PS4AuthType authType;
+
 private:
 	PS4Data() {
 		ps4State = PS4State::no_nonce;
+		authType = PS4AuthType::NO_AUTH;
 		authsent = false;
 		memset(nonce_buffer, 0, 256);
 		memset(ps4_auth_buffer, 0, 1064);

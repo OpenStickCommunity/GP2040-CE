@@ -938,9 +938,31 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
 		case INPUT_MODE_PS4:
 			if (PS4Data::getInstance().authsent == true ) {
-				statusBar += "PS4:AS";
+				switch ( PS4Data::getInstance().authType ) {
+					case PS4AuthType::PS4_KEY:
+						statusBar += "PS4:AS";
+						break;
+					case PS4AuthType::PS5_PASSTHROUGH:
+						statusBar += "PS5:AS";
+						break;
+					case PS4AuthType::NO_AUTH:
+					default:
+						statusBar += "PS?:AS";
+						break;
+				};
 			} else {
-				statusBar += "PS4   ";
+				switch ( PS4Data::getInstance().authType ) {
+					case PS4AuthType::PS4_KEY:
+						statusBar += "PS4   ";
+						break;
+					case PS4AuthType::PS5_PASSTHROUGH:
+						statusBar += "PS5   ";
+						break;
+					case PS4AuthType::NO_AUTH:
+					default:
+						statusBar += "PS4:NK";
+						break;
+				};
 			}
 			break;
 		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;

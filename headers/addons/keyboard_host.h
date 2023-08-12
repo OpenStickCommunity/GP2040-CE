@@ -44,7 +44,6 @@ public:
 	virtual void preprocess();
 	virtual std::string name() { return KeyboardHostName; }
 // USB Add-on Features
-	virtual void initPIO();
 	virtual void mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len);
 	virtual void unmount(uint8_t dev_addr);
 	virtual void report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
