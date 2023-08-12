@@ -19,8 +19,7 @@ public:
 	}
     void init(uint8_t);
     void pushAddon(USBAddon *); // If anything needs to update in the gpconfig driver
-    void processCore0(); // do we separate Core0 and Core1?
-    void processCore1();
+    void process();
     void hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len);
     void hid_umount_cb(uint8_t daddr, uint8_t instance);
     void hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);

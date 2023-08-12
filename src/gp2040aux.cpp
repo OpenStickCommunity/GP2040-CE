@@ -6,12 +6,15 @@
 #include "addonmanager.h"
 #include "usbhostmanager.h"
 
-#include "addons/i2cdisplay.h" // Add-Ons
-
 #include "addons/board_led.h"
 #include "addons/buzzerspeaker.h"
 #include "addons/ps4mode.h"
 #include "addons/pspassthrough.h"
+
+
+#include "addons/i2cdisplay.h" // Add-Ons
+#include "addons/neopicoleds.h"
+#include "addons/pleds.h"
 
 #include <iterator>
 
@@ -23,12 +26,14 @@ GP2040Aux::~GP2040Aux() {
 
 void GP2040Aux::setup() {
 	// Setup Regular Add-ons
-/*
 	addons.LoadAddon(new I2CDisplayAddon(), CORE1_LOOP);
+	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
+	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PS4ModeAddon(), CORE1_LOOP);
-*/
+	
+	
 	// Setup USB add-ons
 	PSPassthroughAddon * psPassthroughAddon = new PSPassthroughAddon();
   	if( addons.LoadAddon(psPassthroughAddon, CORE1_LOOP) )
@@ -37,10 +42,7 @@ void GP2040Aux::setup() {
 
 void GP2040Aux::run() {
 	while (1) {
-		USBHostManager::getInstance().processCore1();
-
 		if (nextRuntime > getMicro()) { // fix for unsigned
-			//sleep_us(50); // Give some time back to our CPU (lower power consumption)
 			continue;
 		}
 		addons.ProcessAddons(CORE1_LOOP);

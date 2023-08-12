@@ -120,6 +120,15 @@ void PSPassthroughAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
     ps_dev_addr = dev_addr;
     ps_instance = instance;
     ps_device_mounted = true;
+
+    uint8_t output_0x03[48];
+    output_0x03[0] = 0x03;
+    memset(&output_0x03[1], 0, 47);
+    uint8_t* buf = report_buffer;
+    uint16_t len = sizeof(output_0x03);
+    memcpy(buf, output_0x03, len);
+
+    tuh_hid_get_report(ps_dev_addr, ps_instance, PS4AuthReport::PS4_DEFINITION, HID_REPORT_TYPE_FEATURE, buf, len);
 }
 
 void PSPassthroughAddon::unmount(uint8_t dev_addr) {
@@ -146,6 +155,8 @@ void PSPassthroughAddon::set_report_complete(uint8_t dev_addr, uint8_t instance,
 
 void PSPassthroughAddon::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     switch(report_id) {
+        case PS4AuthReport::PS4_DEFINITION:
+            break;
         case PS4AuthReport::PS4_RESET_AUTH:
             awaiting_cb = false;
             if ( PS4Data::getInstance().ps4State == PS4State::nonce_ready)

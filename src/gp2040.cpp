@@ -26,9 +26,6 @@
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
 
-#include "addons/neopicoleds.h"
-#include "addons/pleds.h"
-
 // Pico includes
 #include "pico/bootrom.h"
 #include "pico/time.h"
@@ -126,8 +123,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
-	addons.LoadAddon(new NeoPicoLEDAddon(), CORE0_LOOP);
-	addons.LoadAddon(new PlayerLEDAddon(), CORE0_LOOP);
 }
 
 void GP2040::run() {
@@ -147,11 +142,11 @@ void GP2040::run() {
 			continue;
 		}
 
-		USBHostManager::getInstance().processCore0();
+		USBHostManager::getInstance().process();
 
 		// We can't send faster than USB can poll
 		if (nextRuntime > getMicro()) { // fix for unsigned
-			sleep_us(50); // Give some time back to our CPU (lower power consumption)
+			//sleep_us(50); // Give some time back to our CPU (lower power consumption)
 			continue;
 		}
 

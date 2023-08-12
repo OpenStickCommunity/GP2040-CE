@@ -18,15 +18,8 @@ void USBHostManager::pushAddon(USBAddon * usbAddon) { // If anything needs to up
     addons.push_back(usbAddon);
 }
 
-// Core 0 - USB host manager does nothing for now
-void USBHostManager::processCore0() {
-    if ( !addons.empty() ){
-        //tuh_task();
-    }
-}
-
-// Core 1 - USB host manager calls TinyUSB Host task
-void USBHostManager::processCore1() {
+// Host manager should call tuh_task as fast as possible
+void USBHostManager::process() {
     if ( !addons.empty() ){
         tuh_task();
     }
