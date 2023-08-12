@@ -47,7 +47,6 @@ void PSPassthroughAddon::process() {
           // Did we get the nonce? Let's begin auth
           if ( PS4Data::getInstance().ps4State == nonce_ready ) {
             if ( !awaiting_cb ) { // Reset the device auth
-                uint8_t output_0xf3[] = { 0xf3, 0x0, 0x38, 0x38, 0, 0, 0, 0 };
                 uint8_t* buf = report_buffer;
                 uint16_t len = sizeof(output_0xf3);
                 memcpy(buf, output_0xf3, len);
@@ -121,17 +120,21 @@ void PSPassthroughAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
     ps_instance = instance;
     ps_device_mounted = true;
 
-    uint8_t output_0x03[48];
-    output_0x03[0] = 0x03;
-    memset(&output_0x03[1], 0, 47);
-    uint8_t* buf = report_buffer;
-    uint16_t len = sizeof(output_0x03);
-    memcpy(buf, output_0x03, len);
+    printf("Mounted USB device\r\n");
 
+    // Reset as soon as its connected
+    memset(report_buffer, 0, sizeof(report_buffer));
+
+    report_buffer[0] = PS4AuthReport::PS4_DEFINITION;
+    uint8_t* buf = report_buffer;
+    uint16_t len = 48;
+    awaiting_cb = true;
     tuh_hid_get_report(ps_dev_addr, ps_instance, PS4AuthReport::PS4_DEFINITION, HID_REPORT_TYPE_FEATURE, buf, len);
 }
 
 void PSPassthroughAddon::unmount(uint8_t dev_addr) {
+    printf("Unmounted USB device\r\n");
+
     ps_device_mounted = false;
     nonce_page = 0; // no nonce yet
     send_nonce_part = 0; // which part of the nonce are we getting from send?
@@ -142,7 +145,7 @@ void PSPassthroughAddon::unmount(uint8_t dev_addr) {
 void PSPassthroughAddon::set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     switch(report_id) {
         case PS4AuthReport::PS4_SET_AUTH_PAYLOAD:
-            awaiting_cb = false;
+            printf("Set Auth Payload\r\n");
             if (nonce_page == 5) {
                 nonce_page = 0;
                 passthrough_state = PS4State::signed_nonce_ready;
@@ -151,24 +154,31 @@ void PSPassthroughAddon::set_report_complete(uint8_t dev_addr, uint8_t instance,
         default:
             break;
     };
+    awaiting_cb = false;
 }
 
 void PSPassthroughAddon::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     switch(report_id) {
         case PS4AuthReport::PS4_DEFINITION:
+            printf("Get Definition: ");
+            for (uint8_t i = 0; i < 48; i++) {
+                printf("%02x,", report_buffer[i]);            }
+            printf("\r\n");
+            if ( PS4Data::getInstance().ps4State == PS4State::nonce_ready)
+                passthrough_state = PS4State::receiving_nonce;
             break;
         case PS4AuthReport::PS4_RESET_AUTH:
-            awaiting_cb = false;
+            printf("Reset Auth!\r\n");
             if ( PS4Data::getInstance().ps4State == PS4State::nonce_ready)
                 passthrough_state = PS4State::receiving_nonce;
             break;
         case PS4AuthReport::PS4_GET_SIGNING_STATE:
-            awaiting_cb = false;
+            printf("Get signing state!\r\n");
             if (report_buffer[2] == 0)
                 passthrough_state = PS4State::sending_nonce;
             break;
         case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
-            awaiting_cb = false;
+            printf("Get signature nonce!\r\n");
             memcpy(&PS4Data::getInstance().ps4_auth_buffer[(send_nonce_part-1)*56], &report_buffer[4], 56);
             if (send_nonce_part == 19) { // 0 = ready, 16 = not ready
                 send_nonce_part = 0;
@@ -179,4 +189,5 @@ void PSPassthroughAddon::get_report_complete(uint8_t dev_addr, uint8_t instance,
         default:
             break;
     };
+    awaiting_cb = false;
 }

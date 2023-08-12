@@ -7,6 +7,8 @@
 void USBHostManager::init(uint8_t dataPin) {
     set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 
+    stdio_init_all();
+
     pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
     pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1);
     pio_cfg.pin_dp = dataPin;
@@ -55,9 +57,20 @@ void USBHostManager::hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instan
     }
 }
 
+void tuh_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)
+{
+    printf("USBHostManager::tuh_mount_cb\r\n");
+    //USBHostManager::getInstance().hid_mount_cb(dev_addr, instance, desc_report, desc_len);
+
+    //if ( !tuh_hid_receive_report(dev_addr, instance) ) {
+    // Error: cannot request report
+    //}
+}
+
 // TinyUSB Mount Callback
 void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)
 {
+    printf("USBHostManager::tuh_hid_mount_cb\r\n");
     USBHostManager::getInstance().hid_mount_cb(dev_addr, instance, desc_report, desc_len);
 
     if ( !tuh_hid_receive_report(dev_addr, instance) ) {
@@ -68,6 +81,7 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
 /// Invoked when device is unmounted (bus reset/unplugged)
 void tuh_hid_umount_cb(uint8_t daddr, uint8_t instance)
 {
+    printf("USBHostManager::tuh_hid_umount_cb\r\n");
     USBHostManager::getInstance().hid_umount_cb(daddr, instance);
 }
 
@@ -83,12 +97,14 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
 
 // On IN/OUT/FEATURE set report callback
 void tuh_hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+    printf("USBHostManager::tuh_hid_set_report_complete_cb\r\n");
     USBHostManager::getInstance().hid_set_report_complete_cb(dev_addr, instance, report_id, report_type, len);
 }
 
 
 // GET REPORT FEATURE
 void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+    printf("USBHostManager::tuh_hid_get_report_complete_cb\r\n");
     USBHostManager::getInstance().hid_get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
 }
 
