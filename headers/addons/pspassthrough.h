@@ -6,19 +6,15 @@
 #include "ps4_driver.h"
 
 #ifndef PSPASSTHROUGH_ENABLED
-#define PSPASSTHROUGH_ENABLED 1
+#define PSPASSTHROUGH_ENABLED 0
 #endif
 
 #ifndef PPSPASSTHROUGH_PIN_DPLUS
-#define PSPASSTHROUGH_PIN_DPLUS 16
+#define PSPASSTHROUGH_PIN_DPLUS -1
 #endif
 
 #ifndef PSPASSTHROUGH_PIN_5V
-#define PSPASSTHROUGH_PIN_5V 18
-#endif
-
-#ifndef PSPASSTHROUGH_DEBUG
-#define PSPASSTHROUGH_DEBUG true
+#define PSPASSTHROUGH_PIN_5V -1
 #endif
 
 // KeyboardHost Module Name
