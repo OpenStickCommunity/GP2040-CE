@@ -23,11 +23,12 @@ GP2040Aux::~GP2040Aux() {
 
 void GP2040Aux::setup() {
 	// Setup Regular Add-ons
+/*
 	addons.LoadAddon(new I2CDisplayAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PS4ModeAddon(), CORE1_LOOP);
-
+*/
 	// Setup USB add-ons
 	PSPassthroughAddon * psPassthroughAddon = new PSPassthroughAddon();
   	if( addons.LoadAddon(psPassthroughAddon, CORE1_LOOP) )
