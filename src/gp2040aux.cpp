@@ -25,6 +25,9 @@ GP2040Aux::~GP2040Aux() {
 }
 
 void GP2040Aux::setup() {
+	// Setup USB add-ons
+	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
+
 	// Setup Regular Add-ons
 	addons.LoadAddon(new I2CDisplayAddon(), CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
@@ -33,10 +36,9 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PS4ModeAddon(), CORE1_LOOP);
 
-	// Setup USB add-ons
-	PSPassthroughAddon * psPassthroughAddon = new PSPassthroughAddon();
-  	if( addons.LoadAddon(psPassthroughAddon, CORE1_LOOP) )
-		USBHostManager::getInstance().pushAddon(psPassthroughAddon);
+	
+
+	USBHostManager::getInstance().start();
 }
 
 void GP2040Aux::run() {

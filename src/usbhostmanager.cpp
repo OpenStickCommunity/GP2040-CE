@@ -4,14 +4,21 @@
 #include "tusb.h"
 #include "host/usbh_classdriver.h"
 
-void USBHostManager::init(uint8_t dataPin) {
-    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+void USBHostManager::setDataPin(uint8_t inPin) {
+    dataPin = inPin;
+}
 
-    pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-    pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1); // Alarms go to Core1
-    pio_cfg.pin_dp = dataPin;
-    tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
-	tuh_init(BOARD_TUH_RHPORT);
+void USBHostManager::start() {
+    if ( !addons.empty() ) {
+        set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+        //stdio_init_all();
+        pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
+        pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1); // Alarms go to Core1
+        pio_cfg.pin_dp = dataPin;
+        tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
+        tuh_init(BOARD_TUH_RHPORT);
+        tuh_ready = true;
+    }
 }
 
 void USBHostManager::pushAddon(USBAddon * usbAddon) { // If anything needs to update in the gpconfig driver
@@ -20,7 +27,7 @@ void USBHostManager::pushAddon(USBAddon * usbAddon) { // If anything needs to up
 
 // Host manager should call tuh_task as fast as possible
 void USBHostManager::process() {
-    if ( !addons.empty() ){
+    if ( tuh_ready ){
         tuh_task();
     }
 }
@@ -33,7 +40,7 @@ void USBHostManager::hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t co
 
 void USBHostManager::hid_umount_cb(uint8_t daddr, uint8_t instance) {
     for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
-        (*it)->unmount(daddr);
+        (*it)->unmount(dev_addr);
     }
 }
 

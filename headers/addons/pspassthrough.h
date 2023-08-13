@@ -34,7 +34,13 @@ public:
 	virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
 	virtual void report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {}
 private:
-	bool ps_device_mounted = false;
+	uint8_t ps_dev_addr;
+	uint8_t ps_instance;
+	int8_t nonce_page;
+	PS4State passthrough_state;
+	int8_t send_nonce_part;
+	uint8_t report_buffer[64];
+	bool awaiting_cb;
 };
 
 #endif  // _PSPassthrough_H_

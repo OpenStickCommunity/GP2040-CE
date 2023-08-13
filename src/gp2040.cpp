@@ -99,14 +99,11 @@ void GP2040::setup() {
 				break;
 			}
 	}
-
 	// Initialize our ADC (various add-ons)
 	adc_init();
 
-	// Setup USB Host Add-ons
-	KeyboardHostAddon * keyboardHostAddon = new KeyboardHostAddon();
-  	if( addons.LoadAddon(keyboardHostAddon, CORE0_INPUT) )
-		USBHostManager::getInstance().pushAddon(keyboardHostAddon);
+	// Setup USB add-ons
+	addons.LoadUSBAddon(new KeyboardHostAddon(), CORE0_INPUT);
 
 	// Setup Regular Add-ons
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
@@ -146,7 +143,7 @@ void GP2040::run() {
 
 		// We can't send faster than USB can poll
 		if (nextRuntime > getMicro()) { // fix for unsigned
-			//sleep_us(50); // Give some time back to our CPU (lower power consumption)
+			sleep_us(50); // Give some time back to our CPU (lower power consumption)
 			continue;
 		}
 
@@ -178,9 +175,6 @@ void GP2040::run() {
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
 
 		tud_task(); // TinyUSB Task update
-
-		// Process Loops
-		addons.ProcessAddons(ADDON_PROCESS::CORE0_LOOP);
 
 		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}

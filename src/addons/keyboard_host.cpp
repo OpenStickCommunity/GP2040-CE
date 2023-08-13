@@ -2,10 +2,8 @@
 #include "storagemanager.h"
 #include "usbhostmanager.h"
 
-#include "pio_usb.h"
-
 bool KeyboardHostAddon::available() {
-  const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+    const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	return keyboardHostOptions.enabled &&
          isValidPin(keyboardHostOptions.pinDplus) &&
          (keyboardHostOptions.pin5V == -1 || isValidPin(keyboardHostOptions.pin5V));
@@ -16,13 +14,13 @@ void KeyboardHostAddon::setup() {
   const KeyboardMapping& keyboardMapping = keyboardHostOptions.mapping;
 
   if (keyboardHostOptions.pin5V != -1) {
-    const int32_t pin5V = keyboardHostOptions.pin5V;
+      const int32_t pin5V = keyboardHostOptions.pin5V;
 	  gpio_init(pin5V);
 	  gpio_set_dir(pin5V, GPIO_IN);
 	  gpio_pull_up(pin5V);
   }
 
-  USBHostManager::getInstance().init((uint8_t)keyboardHostOptions.pinDplus);
+  USBHostManager::getInstance().setDataPin((uint8_t)keyboardHostOptions.pinDplus);
 
   _keyboard_host_enabled = false;
   _keyboard_host_mapDpadUp.setMask(GAMEPAD_MASK_UP);
@@ -76,14 +74,11 @@ void KeyboardHostAddon::preprocess() {
 }
 
 void KeyboardHostAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
-  if ( _keyboard_host_enabled == false )
-    return; // do nothing if our add-on is not enabled
   _keyboard_host_enabled = true;
 }
 
 void KeyboardHostAddon::unmount(uint8_t dev_addr) {
-  if ( _keyboard_host_enabled == true )
-    _keyboard_host_enabled = false;
+  _keyboard_host_enabled = false;
 }
 
 void KeyboardHostAddon::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len){
@@ -100,7 +95,7 @@ void KeyboardHostAddon::report_received(uint8_t dev_addr, uint8_t instance, uint
   process_kbd_report(dev_addr, (hid_keyboard_report_t const*) report );
 }
 
-uint8_t getKeycodeFromModifier(uint8_t modifier) {
+uint8_t KeyboardHostAddon::getKeycodeFromModifier(uint8_t modifier) {
 	switch (modifier) {
 	  case KEYBOARD_MODIFIER_LEFTCTRL   : return HID_KEY_CONTROL_LEFT ;
 	  case KEYBOARD_MODIFIER_LEFTSHIFT  : return HID_KEY_SHIFT_LEFT   ;
@@ -118,8 +113,6 @@ uint8_t getKeycodeFromModifier(uint8_t modifier) {
 // convert hid keycode to ascii and print via usb device CDC (ignore non-printable)
 void KeyboardHostAddon::process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
 {
-  (void) dev_addr;
-
   _keyboard_host_state.dpad = 0;
   _keyboard_host_state.buttons = 0;
   _keyboard_host_state.lx = GAMEPAD_JOYSTICK_MID;

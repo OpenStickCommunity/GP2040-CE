@@ -40,7 +40,7 @@ class KeyboardHostAddon : public USBAddon {
 public:
 	virtual bool available();
 	virtual void setup();       // KeyboardHost Setup
-	virtual void process() {}     // KeyboardHost Process
+	virtual void process() {}   // KeyboardHost Process
 	virtual void preprocess();
 	virtual std::string name() { return KeyboardHostName; }
 // USB Add-on Features
@@ -51,6 +51,7 @@ public:
 	virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
 private:
 	bool _keyboard_host_enabled;
+	uint8_t getKeycodeFromModifier(uint8_t modifier);
 	void process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report);
 	GamepadState _keyboard_host_state;
 	KeyboardButtonMapping _keyboard_host_mapDpadUp;

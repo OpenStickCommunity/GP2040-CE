@@ -1,18 +1,30 @@
 #include "addonmanager.h"
+#include "usbhostmanager.h"
 
-bool AddonManager::LoadAddon(GPAddon* addon, ADDON_PROCESS processAt) {
+void AddonManager::LoadAddon(GPAddon* addon, ADDON_PROCESS processAt) {
     if (addon->available()) {
         AddonBlock * block = new AddonBlock;
 		addon->setup();
         block->ptr = addon;
         block->process = processAt;
         addons.push_back(block);
-        return true;
-	}
-    delete addon; // Don't use the memory if we don't have to
-    return false;
+	} else {
+        delete addon; // Don't use the memory if we don't have to
+    }
 }
 
+void AddonManager::LoadUSBAddon(USBAddon* addon, ADDON_PROCESS processAt) {
+    if (addon->available()) {
+        AddonBlock * block = new AddonBlock;
+		addon->setup();
+        block->ptr = addon;
+        block->process = processAt;
+        addons.push_back(block);
+        USBHostManager::getInstance().pushAddon(addon);
+	} else {
+        delete addon; // Don't use the memory if we don't have to
+    }
+}
 
 void AddonManager::PreprocessAddons(ADDON_PROCESS processType) {
     // Loop through all addons and process any that match our type

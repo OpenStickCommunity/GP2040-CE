@@ -17,7 +17,8 @@ public:
 		static USBHostManager instance; // Guaranteed to be destroyed. // Instantiated on first use.
 		return instance;
 	}
-    void init(uint8_t);
+    void setDataPin(uint8_t); // start USB host (change CPU, setup PIO PICO usb pin)
+    void start();
     void pushAddon(USBAddon *); // If anything needs to update in the gpconfig driver
     void process();
     void hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len);
@@ -26,9 +27,13 @@ public:
     void hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
     void hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
 private:
-    USBHostManager() {}
+    USBHostManager() : tuh_ready(false) {
+
+    }
     std::vector<USBAddon*> addons;
     usb_device_t *usb_device;
+    uint8_t dataPin;
+    bool tuh_ready;
 };
 
 #endif
