@@ -38,7 +38,7 @@ void USBHostManager::hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t co
     }
 }
 
-void USBHostManager::hid_umount_cb(uint8_t daddr, uint8_t instance) {
+void USBHostManager::hid_umount_cb(uint8_t dev_addr, uint8_t instance) {
     for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
         (*it)->unmount(dev_addr);
     }
