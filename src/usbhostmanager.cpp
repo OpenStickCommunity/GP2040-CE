@@ -7,10 +7,8 @@
 void USBHostManager::init(uint8_t dataPin) {
     set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 
-    stdio_init_all();
-
     pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-    pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1);
+    pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1); // Alarms go to Core1
     pio_cfg.pin_dp = dataPin;
     tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
 	tuh_init(BOARD_TUH_RHPORT);
@@ -57,31 +55,89 @@ void USBHostManager::hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instan
     }
 }
 
-void tuh_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)
-{
-    printf("USBHostManager::tuh_mount_cb\r\n");
-    //USBHostManager::getInstance().hid_mount_cb(dev_addr, instance, desc_report, desc_len);
+static uint8_t _intf_num = 0;
 
-    //if ( !tuh_hid_receive_report(dev_addr, instance) ) {
-    // Error: cannot request report
-    //}
+// Required helper class for HID_REQ_CONTROL_GET_REPORT addition
+uint16_t count_interface_total_len(tusb_desc_interface_t const* desc_itf, uint8_t itf_count, uint16_t max_len)
+{
+  uint8_t const* p_desc = (uint8_t const*) desc_itf;
+  uint16_t len = 0;
+
+  while (itf_count--)
+  {
+    // Next on interface desc
+    len += tu_desc_len(desc_itf);
+    p_desc = tu_desc_next(p_desc);
+
+    while (len < max_len)
+    {
+      // return on IAD regardless of itf count
+      if ( tu_desc_type(p_desc) == TUSB_DESC_INTERFACE_ASSOCIATION ) return len;
+
+      if ( (tu_desc_type(p_desc) == TUSB_DESC_INTERFACE) &&
+           ((tusb_desc_interface_t const*) p_desc)->bAlternateSetting == 0 )
+      {
+        break;
+      }
+
+      len += tu_desc_len(p_desc);
+      p_desc = tu_desc_next(p_desc);
+    }
+  }
+
+  return len;
 }
 
-// TinyUSB Mount Callback
 void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)
 {
-    printf("USBHostManager::tuh_hid_mount_cb\r\n");
-    USBHostManager::getInstance().hid_mount_cb(dev_addr, instance, desc_report, desc_len);
+    // Get Interface Number for our HID class
+    uint16_t temp_buf[128];
+    tusb_desc_configuration_t const* desc_cfg;
+    if (XFER_RESULT_SUCCESS == tuh_descriptor_get_configuration_sync(dev_addr, 0, temp_buf, sizeof(temp_buf)))
+    {
+        tusb_desc_configuration_t const* desc_cfg = (tusb_desc_configuration_t*) temp_buf;
+        uint8_t const* desc_end = ((uint8_t const*) desc_cfg) + tu_le16toh(desc_cfg->wTotalLength);
+        uint8_t const* p_desc   = tu_desc_next(desc_cfg);
 
+        // parse each interfaces
+        while( p_desc < desc_end )
+        {
+            uint8_t assoc_itf_count = 1;
+            // Class will always starts with Interface Association (if any) and then Interface descriptor
+            if ( TUSB_DESC_INTERFACE_ASSOCIATION == tu_desc_type(p_desc) )
+            {
+                tusb_desc_interface_assoc_t const * desc_iad = (tusb_desc_interface_assoc_t const *) p_desc;
+                assoc_itf_count = desc_iad->bInterfaceCount;
+
+                p_desc = tu_desc_next(p_desc); // next to Interface
+            }
+
+            // must be interface from now
+            if( TUSB_DESC_INTERFACE != tu_desc_type(p_desc) ) return;
+            tusb_desc_interface_t const* desc_itf = (tusb_desc_interface_t const*) p_desc;
+
+            // only open and listen to HID endpoint IN
+            if (desc_itf->bInterfaceClass == TUSB_CLASS_HID)
+            {
+                _intf_num = desc_itf->bInterfaceNumber;
+                break; // we got the interface number
+            }
+            
+            // next Interface or IAD descriptor
+            uint16_t const drv_len = count_interface_total_len(desc_itf, assoc_itf_count, (uint16_t) (desc_end-p_desc));
+            p_desc += drv_len;
+        }
+    } // This block can be removed once TinyUSB library incorporates HID_REQ_CONTROL_GET_REPORT callback
+
+    USBHostManager::getInstance().hid_mount_cb(dev_addr, instance, desc_report, desc_len);
     if ( !tuh_hid_receive_report(dev_addr, instance) ) {
-    // Error: cannot request report
+        // Error: cannot request report
     }
 }
 
 /// Invoked when device is unmounted (bus reset/unplugged)
 void tuh_hid_umount_cb(uint8_t daddr, uint8_t instance)
 {
-    printf("USBHostManager::tuh_hid_umount_cb\r\n");
     USBHostManager::getInstance().hid_umount_cb(daddr, instance);
 }
 
@@ -97,18 +153,18 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
 
 // On IN/OUT/FEATURE set report callback
 void tuh_hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    printf("USBHostManager::tuh_hid_set_report_complete_cb\r\n");
-    USBHostManager::getInstance().hid_set_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+    if ( len != 0 )
+        USBHostManager::getInstance().hid_set_report_complete_cb(dev_addr, instance, report_id, report_type, len);
 }
 
 
 // GET REPORT FEATURE
 void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    printf("USBHostManager::tuh_hid_get_report_complete_cb\r\n");
-    USBHostManager::getInstance().hid_get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+    if ( len != 0 )
+        USBHostManager::getInstance().hid_get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
 }
 
-// TinyUSB Calls missing from TinyUSB :(
+// Request for HID_REQ_CONTROL_GET_REPORT missing from TinyUSB
 static void get_report_complete(tuh_xfer_t* xfer)
 {
   if (tuh_hid_get_report_complete_cb)
@@ -136,7 +192,7 @@ bool tuh_hid_get_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, u
     },
     .bRequest = HID_REQ_CONTROL_GET_REPORT,
     .wValue   = tu_u16(report_type, report_id),
-    .wIndex   = 0, //hid_itf->itf_num,
+    .wIndex   = _intf_num, // pulled in from tuh_hid_mount_cb()
     .wLength  = len
   };
 

@@ -47,6 +47,7 @@ void PSPassthroughAddon::process() {
           // Did we get the nonce? Let's begin auth
           if ( PS4Data::getInstance().ps4State == nonce_ready ) {
             if ( !awaiting_cb ) { // Reset the device auth
+                uint8_t const output_0xf3[] = { 0x0, 0x38, 0x38, 0, 0, 0, 0 };
                 uint8_t* buf = report_buffer;
                 uint16_t len = sizeof(output_0xf3);
                 memcpy(buf, output_0xf3, len);
@@ -120,11 +121,8 @@ void PSPassthroughAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
     ps_instance = instance;
     ps_device_mounted = true;
 
-    printf("Mounted USB device\r\n");
-
     // Reset as soon as its connected
     memset(report_buffer, 0, sizeof(report_buffer));
-
     report_buffer[0] = PS4AuthReport::PS4_DEFINITION;
     uint8_t* buf = report_buffer;
     uint16_t len = 48;
@@ -133,8 +131,6 @@ void PSPassthroughAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
 }
 
 void PSPassthroughAddon::unmount(uint8_t dev_addr) {
-    printf("Unmounted USB device\r\n");
-
     ps_device_mounted = false;
     nonce_page = 0; // no nonce yet
     send_nonce_part = 0; // which part of the nonce are we getting from send?
