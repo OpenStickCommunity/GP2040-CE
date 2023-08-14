@@ -8,27 +8,13 @@ void USBHostManager::setDataPin(uint8_t inPin) {
     dataPin = inPin;
 }
 
-void USBHostManager::readyCore0() {
-    core0Ready = true;
-    if ( core0Ready && core1Ready ){
-        start();
-    }
-}
-
-void USBHostManager::readyCore1() {
-    core1Ready = true;
-    if ( core0Ready && core1Ready ){
-        start();
-    }
-}
-
 void USBHostManager::start() {
     if ( !addons.empty() ) {
         pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-        //pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1); // Alarms go to Core1
         pio_cfg.pin_dp = dataPin;
         tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
         tuh_init(BOARD_TUH_RHPORT);
+        sleep_us(10); // ensure we are ready
         tuh_ready = true;
     }
 }

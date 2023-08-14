@@ -18,8 +18,6 @@ public:
 		return instance;
 	}
     void setDataPin(uint8_t); // start USB host (change CPU, setup PIO PICO usb pin)
-    void readyCore0(); // Core 0 - READY
-    void readyCore1(); // Core 1 - READY
     void start();
     void pushAddon(USBAddon *); // If anything needs to update in the gpconfig driver
     void process();

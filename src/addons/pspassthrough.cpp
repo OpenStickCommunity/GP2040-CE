@@ -9,7 +9,7 @@
 bool PSPassthroughAddon::available() {
     const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 	  return psOptions.enabled && isValidPin(psOptions.pinDplus) &&
-    (psOptions.pin5V == -1 || isValidPin(psOptions.pin5V));
+            (psOptions.pin5V == -1 || isValidPin(psOptions.pin5V));
 }
 
 void PSPassthroughAddon::setup() {
