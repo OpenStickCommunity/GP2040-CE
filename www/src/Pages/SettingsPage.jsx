@@ -93,7 +93,7 @@ const schema = yup.object().shape({
 	lockHotkeys: yup.number().required().label('Lock Hotkeys'),
 	fourWayMode: yup.number().required().label('4-Way Joystick Mode'),
 	profileNumber: yup.number().required().label('Profile Number'),
-	ps4ControllerType: yup.number().required().label('PS4 Controller Type'),
+	ps4ControllerType: yup.number().required().oneOf(PS4_MODES.map(o => o.value)).label('PS4 Controller Type'),
 });
 
 const FormContext = ({ setButtonLabels }) => {
