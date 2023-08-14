@@ -143,7 +143,6 @@ PinMappings& Storage::getPinProfileMappings() {
 
 void Storage::setProfile(const uint32_t profileNum)
 {
-	config.gamepadOptions.pinProfileNumber = profileNum;
 	setFunctionalPinMappings(profileNum);
 }
 
@@ -165,6 +164,8 @@ void Storage::setFunctionalPinMappings(const uint32_t profileNum)
 	if (isValidPin(alts.pinDpadDown)) functionalPinMappings->pinDpadDown = alts.pinDpadDown;
 	if (isValidPin(alts.pinDpadLeft)) functionalPinMappings->pinDpadLeft = alts.pinDpadLeft;
 	if (isValidPin(alts.pinDpadRight)) functionalPinMappings->pinDpadRight = alts.pinDpadRight;
+
+	config.gamepadOptions.pinProfileNumber = profileNum;
 }
 
 void Storage::SetConfigMode(bool mode) { // hack for config mode
