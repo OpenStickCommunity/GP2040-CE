@@ -391,8 +391,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.sliderOptions
     INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, enabled, !!JSLIDER_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinLS, PIN_SLIDER_LS);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinRS, PIN_SLIDER_RS);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinSliderOne, PIN_SLIDER_ONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinSliderTwo, PIN_SLIDER_TWO);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeZero, SLIDER_MODE_ZERO);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeOne, SLIDER_MODE_ONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeTwo, SLIDER_MODE_TWO);
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
