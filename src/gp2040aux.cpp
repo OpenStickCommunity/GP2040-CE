@@ -29,6 +29,8 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PS4ModeAddon(), CORE1_LOOP);
+
+	USBHostManager::getInstance().start();
 }
 
 void GP2040Aux::run() {
