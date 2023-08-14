@@ -2,12 +2,17 @@ export default {
 	'settings-header-text': 'Settings',
 	'input-mode-label': 'Input Mode',
 	'input-mode-extra-label': 'Switch Touchpad and Share',
+	'input-mode-PS4ControllerType-label': 'PS4 Controller Type',
 	'input-mode-options': {
 		'xinput': "XInput",
 		'nintendo-switch': "Nintendo Switch",
 		'ps3': "PS3/DirectInput",
 		'keyboard': "Keyboard",
 		'ps4': "PS4"
+	},
+	'ps4-mode-options': {
+		'controller': "Controller",
+		'arcadestick': "Arcade Stick",
 	},
 	'd-pad-mode-label': 'D-Pad Mode',
 	'd-pad-mode-options': {
@@ -25,6 +30,7 @@ export default {
 		'off': 'Off'
 	},
 	'profile-number-label': 'Profile Number',
+	'ps4-compatibility-label': 'For <strong>PS5 compatibility</strong>, use "Arcade Stick" and enable PS Passthrough add-on<br/>For <strong>PS4 support</strong>, use "Controller" and enable PS4 Mode add-on if you have the necessary files',
 	'hotkey-settings-label': 'Hotkey Settings',
 	'hotkey-settings-sub-header': "The <1>Fn</1> slider provides a mappable Function button in the <3 exact='true' to='/pin-mapping'>Pin Mapping</3> page. By selecting the <1>Fn</1> slider option, the Function button must be held along with the selected hotkey settings.<5 />Additionally, select <1>None</1> from the dropdown to unassign any button.",
 	'hotkey-settings-warning': 'Function button is not mapped. The Fn slider will be disabled.',

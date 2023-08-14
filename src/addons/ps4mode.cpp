@@ -45,7 +45,6 @@ void PS4ModeAddon::setup() {
 	if (mbedtls_rsa_import(&rsa_context, &N, &P, &Q, nullptr, &E) == 0 &&
 			mbedtls_rsa_complete(&rsa_context) == 0) {
 		ready = true;
-		PS4Data::getInstance().authType = PS4AuthType::PS4_KEY;
 	}
 
 	DELETE_CONFIG_MPI(N)

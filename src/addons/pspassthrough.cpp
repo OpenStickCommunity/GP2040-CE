@@ -28,7 +28,6 @@ void PSPassthroughAddon::setup() {
     send_nonce_part = 0; // which part of the nonce are we getting from send?
     awaiting_cb = false; // did we receive the sign state yet
     passthrough_state = PS4State::no_nonce;
-    PS4Data::getInstance().authType = PS4AuthType::PS5_PASSTHROUGH;
 }
 
 void PSPassthroughAddon::process() {

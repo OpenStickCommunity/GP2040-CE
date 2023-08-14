@@ -93,6 +93,7 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		fourWayMode: 0,
 		fnButtonPin: -1,
 		profileNumber: 1,
+		ps4ControllerType: 0,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,

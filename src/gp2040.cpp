@@ -120,6 +120,8 @@ void GP2040::setup() {
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
+
+	USBHostManager::getInstance().readyCore0();
 }
 
 void GP2040::run() {

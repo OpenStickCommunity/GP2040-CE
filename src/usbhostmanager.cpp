@@ -8,10 +8,23 @@ void USBHostManager::setDataPin(uint8_t inPin) {
     dataPin = inPin;
 }
 
+void USBHostManager::readyCore0() {
+    core0Ready = true;
+    if ( core0Ready && core1Ready ){
+        start();
+    }
+}
+
+void USBHostManager::readyCore1() {
+    core1Ready = true;
+    if ( core0Ready && core1Ready ){
+        start();
+    }
+}
+
 void USBHostManager::start() {
     if ( !addons.empty() ) {
         set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
-        //stdio_init_all();
         pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
         pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1); // Alarms go to Core1
         pio_cfg.pin_dp = dataPin;

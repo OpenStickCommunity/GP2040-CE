@@ -570,6 +570,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
 	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
 	readDoc(gamepadOptions.profileNumber, doc, "profileNumber");
+	readDoc(gamepadOptions.ps4ControllerType, doc, "PS4ControllerType");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -605,6 +606,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
 	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
 	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
+	writeDoc(doc, "PS4ControllerType", gamepadOptions.ps4ControllerType);
 
 	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
 	writeDoc(doc, "fnButtonPin", pinMappings.pinButtonFn);

@@ -180,3 +180,11 @@ enum ForcedSetupMode
 	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
 	FORCED_SETUP_MODE_LOCK_BOTH = 3;
 };
+
+enum PS4ControllerType
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    PS4_CONTROLLER = 0;
+    PS4_ARCADESTICK = 7;
+}

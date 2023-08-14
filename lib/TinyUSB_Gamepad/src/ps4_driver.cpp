@@ -62,9 +62,7 @@ ssize_t get_ps4_report(uint8_t report_id, uint8_t * buf, uint16_t reqlen)
 				return -1;
 			}
 			memcpy(buf, output_0x03, reqlen);
-			//if ( PS4Data::getInstance().authType == PS4AuthType::PS5_PASSTHROUGH ) {
-				buf[4] = 0x07; // Tell auth we are an arcade stick
-			//}
+			buf[4] = (uint8_t)PS4Data::getInstance().ps4ControllerType; // Change controller type in definition
 			return reqlen;
 		// Use our private RSA key to sign the nonce and return chunks
 		case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:

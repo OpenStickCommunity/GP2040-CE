@@ -13,6 +13,9 @@
 
 #include "storagemanager.h"
 
+// PS5 compatibility
+#include "ps4_driver.h"
+
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
 	return to_ms_since_boot(get_absolute_time());
@@ -95,6 +98,7 @@ void Gamepad::setup()
 {
 	// Configure pin mapping
 	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
+	const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
 	const auto convertPin = [](int32_t pin) -> uint8_t { return isValidPin(pin) ? pin : 0xff; };
 	mapDpadUp    = new GamepadButtonMapping(convertPin(pinMappings.pinDpadUp),		GAMEPAD_MASK_UP);
@@ -141,6 +145,9 @@ void Gamepad::setup()
 		gpio_set_dir(pinMappings.pinButtonFn, GPIO_IN); // Set as INPUT
 		gpio_pull_up(pinMappings.pinButtonFn);          // Set as PULLUP
 	}
+
+	// setup PS5 compatibility
+	PS4Data::getInstance().ps4ControllerType = gamepadOptions.ps4ControllerType;
 }
 
 /**

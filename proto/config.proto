@@ -14,6 +14,7 @@ message GamepadOptions
 	optional bool lockHotkeys = 7;
 	optional bool fourWayMode = 8;
 	optional uint32 profileNumber = 9;
+	optional uint32 ps4ControllerType = 10;
 }
 
 message KeyboardMapping
