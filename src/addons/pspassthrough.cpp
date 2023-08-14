@@ -13,6 +13,8 @@ bool PSPassthroughAddon::available() {
 }
 
 void PSPassthroughAddon::setup() {
+    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+
     const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 
     if (psOptions.pin5V != -1) { // Feather USB-A's require this

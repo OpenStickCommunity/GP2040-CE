@@ -24,9 +24,8 @@ void USBHostManager::readyCore1() {
 
 void USBHostManager::start() {
     if ( !addons.empty() ) {
-        set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
         pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-        pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1); // Alarms go to Core1
+        //pio_cfg.alarm_pool = (void*)alarm_pool_create(2, 1); // Alarms go to Core1
         pio_cfg.pin_dp = dataPin;
         tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
         tuh_init(BOARD_TUH_RHPORT);
