@@ -2,7 +2,6 @@ export default {
 	'settings-header-text': 'Settings',
 	'input-mode-label': 'Input Mode',
 	'input-mode-extra-label': 'Switch Touchpad and Share',
-	'input-mode-PS4ControllerType-label': 'PS4 Controller Type',
 	'input-mode-options': {
 		'xinput': "XInput",
 		'nintendo-switch': "Nintendo Switch",
