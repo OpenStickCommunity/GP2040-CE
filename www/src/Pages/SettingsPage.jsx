@@ -227,7 +227,6 @@ export default function SettingsPage() {
 							</div>}
 							{(values.inputMode === PS4Mode) && 
 							<div className="col-sm-3">
-
 								<Form.Select
 									name="ps4ControllerType"
 									className="form-select-sm"

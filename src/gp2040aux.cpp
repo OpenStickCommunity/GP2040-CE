@@ -29,9 +29,9 @@ void GP2040Aux::setup() {
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
 
 	// Setup Regular Add-ons
-	addons.LoadAddon(new I2CDisplayAddon(), CORE1_LOOP);
-	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
-	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
+	addons.LoadAddon(new I2CDisplayAddon(), CORE1_ALWAYS);
+	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_ALWAYS);
+	addons.LoadAddon(new PlayerLEDAddon(), CORE1_ALWAYS);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PS4ModeAddon(), CORE1_LOOP);
@@ -40,11 +40,18 @@ void GP2040Aux::setup() {
 }
 
 void GP2040Aux::run() {
+	bool configMode = Storage::getInstance().GetConfigMode();
 	while (1) {
 		if (nextRuntime > getMicro()) { // fix for unsigned
 			continue;
 		}
-		addons.ProcessAddons(CORE1_LOOP);
+		
+		addons.ProcessAddons(CORE1_ALWAYS);
+		
+		// Config Loop (Only run "ALWAYS" add-ons)
+		if (configMode == false)
+			addons.ProcessAddons(CORE1_LOOP);
+			
 		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}
 }
