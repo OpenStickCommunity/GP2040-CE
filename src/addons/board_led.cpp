@@ -1,42 +1,45 @@
 #include "addons/board_led.h"
 #include "usb_driver.h" // Required to check USB state
+#include "helper.h"
+#include "config.pb.h"
 
 bool BoardLedAddon::available() {
-    const AddonOptions& options = Storage::getInstance().getAddonOptions();
-    onBoardLedMode = options.onBoardLedMode;
-    return options.BoardLedAddonEnabled &&
-        onBoardLedMode != OnBoardLedMode::BOARD_LED_OFF; // Available only when it's not set to off
+    const OnBoardLedOptions& options = Storage::getInstance().getAddonOptions().onBoardLedOptions;
+    return options.enabled && options.mode != OnBoardLedMode::ON_BOARD_LED_MODE_OFF; // Available only when it's not set to off
 }
 
 void BoardLedAddon::setup() {
-    gpio_init(BOARD_LED_PIN);
-    gpio_set_dir(BOARD_LED_PIN, GPIO_OUT);
+    const OnBoardLedOptions& options = Storage::getInstance().getAddonOptions().onBoardLedOptions;
+    onBoardLedMode = options.mode;
     isConfigMode = Storage::getInstance().GetConfigMode();
     timeSinceBlink = getMillis();
     prevState = -1;
+
+    gpio_init(BOARD_LED_PIN);
+    gpio_set_dir(BOARD_LED_PIN, GPIO_OUT);
 }
 
 void BoardLedAddon::process() {
     bool state = 0;
-    Gamepad * gamepad;
+    Gamepad * processedGamepad;
     switch (onBoardLedMode) {
-        case OnBoardLedMode::INPUT_TEST: // Blinks on input
-            gamepad = Storage::getInstance().GetGamepad();
-            state =    (gamepad->rawState.buttons != 0)
-                    || (gamepad->rawState.dpad    != 0)
-                    || (gamepad->rawState.lx      != GAMEPAD_JOYSTICK_MID)
-                    || (gamepad->rawState.rx      != GAMEPAD_JOYSTICK_MID)
-                    || (gamepad->rawState.ly      != GAMEPAD_JOYSTICK_MID)
-                    || (gamepad->rawState.ry      != GAMEPAD_JOYSTICK_MID)
-                    || (gamepad->rawState.lt      != 0)
-                    || (gamepad->rawState.rt      != 0)
-                    || (gamepad->rawState.aux     != 0);
+        case OnBoardLedMode::ON_BOARD_LED_MODE_INPUT_TEST: // Blinks on input
+            processedGamepad = Storage::getInstance().GetProcessedGamepad();
+            state =    (processedGamepad->state.buttons != 0)
+                    || (processedGamepad->state.dpad    != 0)
+                    || (processedGamepad->state.lx      != GAMEPAD_JOYSTICK_MID)
+                    || (processedGamepad->state.rx      != GAMEPAD_JOYSTICK_MID)
+                    || (processedGamepad->state.ly      != GAMEPAD_JOYSTICK_MID)
+                    || (processedGamepad->state.ry      != GAMEPAD_JOYSTICK_MID)
+                    || (processedGamepad->state.lt      != 0)
+                    || (processedGamepad->state.rt      != 0)
+                    || (processedGamepad->state.aux     != 0);
             if (prevState != state) {
                 gpio_put(BOARD_LED_PIN, state ? 1 : 0);
             }
             prevState = state;
             break;
-        case OnBoardLedMode::MODE_INDICATOR: // Blinks based on USB state and config mode
+        case OnBoardLedMode::ON_BOARD_LED_MODE_MODE_INDICATOR: // Blinks based on USB state and config mode
             if (!get_usb_mounted()) { // USB not mounted
                 uint32_t millis = getMillis();
                 if ((millis - timeSinceBlink) > BLINK_INTERVAL_USB_UNMOUNTED) {
@@ -60,7 +63,7 @@ void BoardLedAddon::process() {
                 }
             }
             break;
-        case OnBoardLedMode::BOARD_LED_OFF:
+        case OnBoardLedMode::ON_BOARD_LED_MODE_OFF:
             return;
             break;
     }

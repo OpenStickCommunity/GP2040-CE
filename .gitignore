@@ -1,10 +1,12 @@
 .pio
 .vscode/
+.cache/
 node_modules/
 configs/MyBoard
 .DS_Store
-/www/package-lock.json
 build/
 
+.*.sw*
+compile_commands.json
 lib/httpd/fsdata.c
 modules/Custom.cmake

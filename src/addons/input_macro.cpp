@@ -11,7 +11,7 @@ bool InputMacro::available() {
 	return true;
 }
 
-Macros macros;
+static MacroOptions inputMacroOptions;
 
 int macroPosition = -1;
 int position = 0;
@@ -27,7 +27,7 @@ void InputMacro::setup() {
     position = 0;
     isProcessing = 0;
     bootselPressed = 0;
-    macros = Storage::getInstance().getMacrosForInit();
+    inputMacroOptions = Storage::getInstance().getAddonOptions().macroOptions;
 }
 
 void InputMacro::preprocess()
@@ -37,7 +37,7 @@ void InputMacro::preprocess()
     if (!hasInit) { if (getMillis() < 1000) return; else hasInit = true; } 
     bootselPressed = otherButtonsPressed;
 
-    if (!isProcessing && gamepad->pressedF2() && !prevBootselPressed) {
+    if (!isProcessing && gamepad->pressedS2() && !prevBootselPressed) {
         switch (gamepad->state.buttons & (GAMEPAD_MASK_B1 | GAMEPAD_MASK_B2 | GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4)) {
             case GAMEPAD_MASK_B1: macroPosition = 0; break;
             case GAMEPAD_MASK_B2: macroPosition = 1; break;
@@ -50,11 +50,11 @@ void InputMacro::preprocess()
         prevBootselPressed = otherButtonsPressed; 
         return;
     }
-    Macro& macro = macros.list[macroPosition];
+    Macro& macro = inputMacroOptions.macroList[macroPosition];
 
     // light_up(bootselPressed);
     if (!isProcessing) {
-        switch (macro.type) {
+        switch (macro.macroType) {
             case ON_RELEASE_TOGGLE:
             case ON_RELEASE:
                 trigger = prevBootselPressed && !bootselPressed;
@@ -69,7 +69,7 @@ void InputMacro::preprocess()
                 break;
         }
     } else {
-        switch (macro.type) {
+        switch (macro.macroType) {
             case ON_RELEASE_TOGGLE:
                 if (prevBootselPressed && !bootselPressed)
                     trigger = false;
@@ -79,29 +79,30 @@ void InputMacro::preprocess()
 
     prevBootselPressed = bootselPressed;
 
-    auto inputs = macro.inputs;
+    auto macroInputs = macro.macroInputs;
 
     if (!isProcessing && trigger) {
         isProcessing = 1;
         heldAt = getMillis();
-        shouldHold = inputs[position].duration == -1 ? INPUT_HOLD_MS : inputs[position].duration;
+        shouldHold = macroInputs[position].duration == -1 ? INPUT_HOLD_MS : macroInputs[position].duration;
     }
     
     if (!isProcessing) return;
     
-    gamepad->state = inputs[position].state;
+    gamepad->state.dpad = macroInputs[position].state.dpad;
+    gamepad->state.buttons = macroInputs[position].state.buttons;
     
     if ((getMillis() - heldAt) >= shouldHold) {
         heldAt = getMillis(); position++;
-        shouldHold = inputs[position].duration == -1 ? INPUT_HOLD_MS : inputs[position].duration;
+        shouldHold = macroInputs[position].duration == -1 ? INPUT_HOLD_MS : macroInputs[position].duration;
     }
     
-    if (isProcessing && position >= (macro.size)) {
+    if (isProcessing && position >= (macro.macroInputsSize)) {
         position = 0;
-        trigger = trigger && macro.type == ON_RELEASE_TOGGLE;
+        trigger = trigger && macro.macroType == ON_RELEASE_TOGGLE;
         isProcessing = trigger;
-        macroPosition = (macro.type == ON_RELEASE_TOGGLE && trigger) ? macroPosition : -1;
-        if (macro.type == ON_RELEASE_TOGGLE && !trigger) {
+        macroPosition = (macro.macroType == ON_RELEASE_TOGGLE && trigger) ? macroPosition : -1;
+        if (macro.macroType == ON_RELEASE_TOGGLE && !trigger) {
             heldAt = 0;
             shouldHold = INPUT_HOLD_MS;
         }

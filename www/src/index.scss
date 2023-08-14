@@ -1,0 +1,86 @@
+// Override default variables before the import
+$primary: #495057;
+$danger: #7b2d26;
+
+@import '~bootstrap/scss/bootstrap';
+
+:root {
+	--bs-primary-rgb: 20, 23, 30;
+}
+
+* {
+	font-size: 16px;
+}
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	min-width: 880px;
+}
+
+h1 {
+	font-size: 1.5rem;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+input.form-control {
+	:focus {
+		color: inherit;
+	}
+}
+
+button {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 0 0 auto;
+
+	svg {
+		transform: translateY(-0.125rem);
+	}
+}
+
+// Fix for invalid inputs showing valid style after calling `form.checkValidity()`
+.was-validated .form-control.is-invalid {
+	border-color: $danger;
+	padding-right: calc(1.5em + 0.75rem);
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right calc(0.375em + 0.1875rem) center;
+	background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.card {
+	border-color: $primary;
+}
+
+.card-header {
+	background-color: $primary;
+	color: $white;
+}
+
+.popover {
+	position: fixed !important;
+	z-index: 2;
+
+	.cover {
+		position: fixed;
+		top: 0; right: 0; bottom: 0; left: 0;
+	}
+}
+
+.button-group {
+	display: flex;
+	justify-content: flex-start;
+
+	button:not(:first-child) {
+		margin-left: 10px;
+	}
+}

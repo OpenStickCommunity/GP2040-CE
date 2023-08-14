@@ -6,4 +6,5 @@
 - [Shortcuts](gp2040-shortcuts "GP2040-CE | Shortcuts")
 - [Web Configurator](web-configurator "GP2040-CE | Web Configurator")
 - [FAQ](faq "GP2040-CE | Frequently Asked Questions (FAQ)")
+- [PS4 Mode](ps4 "GP2040-CE | PS4 Mode")
 - [Development](development "GP2040-CE | Development")

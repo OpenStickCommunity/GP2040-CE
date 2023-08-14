@@ -1,0 +1,40 @@
++checks
++partial
++matchanyintegral
++strictlib
+-nullassign
+-predboolint
+-predboolptr
++ptrnegate
+-switchloopbreak
++ignoresigns
+-infloopsuncon
+-type
+
+# splint's memory checks don't quite work without annotations
+-mustfreeonly
+-compmempass
+-nullret
+-observertrans
+-statictrans
+-compdestroy
+-nullpass
+-nullstate
+-compdef
+-usereleased
+-temptrans
+-dependenttrans
+-kepttrans
+-branchstate
+-immediatetrans
+-mustfreefresh
+-allimponly
+
+# These tests give false positives, compiler typically has
+# better warnings for these.
+-noret
+-noeffect
+-usedef
+
+# Splint doesn't support C11
+-DPB_C99_STATIC_ASSERT

@@ -1,0 +1,215 @@
+.popover {
+	position: fixed !important;
+}
+
+.led-color-picker {
+	user-select: none;
+	padding-bottom: 10px;
+
+	h6 {
+		margin-top: 8px;
+	}
+
+	.led-color-option {
+		justify-content: flex-start;
+		cursor: pointer;
+		font-size: 0.8rem;
+
+		label {
+			cursor: pointer;
+			margin: 0 auto 4px;
+			text-align: center;
+			width: 100%;
+			font-size: 0.85rem;
+		}
+
+		&.selected {
+			background-color: #DEDEDE;
+		}
+	}
+
+	.led-color {
+		display: flex;
+
+		height: 40px !important;
+		margin: 0 auto 10px;
+		border: 1px solid black;
+
+		&-normal, &-pressed {
+			width: 40px !important;
+		}
+	}
+
+	.sketch-picker {
+		margin-top: 10px;
+	}
+}
+
+/******************************************************************************************
+ * LED Preview
+ *
+ * The LED preview section uses A LOT of calculated positioning for the controller layout.
+ * This is mostly to make the layouts look clean, but it's also been designed to be
+ * somewhat responsive and requires a minimum height of 400px. This could be tuned a bit,
+ * but may not be worth it since expanding functionality will likely require moving to
+ * canvas drawing and animation library instead.
+ *****************************************************************************************/
+
+$preview-height: 400px;
+$preview-width: calc($preview-height * 2);
+$preview-padding: calc($preview-height / 20);;
+$button-size-multiplier: 3;
+$button-12mm: 12px;
+$button-24mm: 24px;
+$button-30mm: 30px;
+$button-joystick: 35px;
+$button-keycap: 19px;
+
+@mixin arcade-button($size, $circle) {
+	$button-size: calc(#{$size} * #{$button-size-multiplier});
+
+	// Circles should look like a round button
+	@if $circle {
+		width: $button-size;
+		height: $button-size;
+		border-radius: 50%;
+	}
+
+	// "Not circles" should look like a keyboard keycap
+	@if not $circle {
+		width: $button-size;
+		height: $button-size;
+		border-radius: 10%;
+	}
+}
+
+.led-preview-container {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.led-preview {
+	$background-color: #AAA;
+
+	display: flex;
+	flex-direction: column;
+	background-color: $background-color;
+	width: $preview-width;
+	height: $preview-height;
+	margin: $preview-padding;
+	border: 10px solid darken($background-color, 5%);
+	border-radius: 20px;
+	cursor: pointer;
+	user-select: none;
+
+	.container-main, .container-aux {
+		display: flex;
+	}
+
+	.container-main {
+		position: relative;
+		flex: 1 0 auto;
+		justify-content: center;
+		align-items: center;
+
+		.led-button { transform: translate(-50%, 0); position: absolute; }
+	}
+
+	.container-aux {
+		height: $button-12mm * 5;
+		margin-bottom: $button-12mm * 2;
+
+		.led-button { margin: $button-12mm; }
+	}
+
+}
+
+.led-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	text-shadow: #000 0 -1px 0.5px, #000 0 1px 0.5px, #000 1px 0 0.5px, #000 -1px 0 0.5px, 0 0 2px #000;
+	box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+
+	&.selected {
+		border: 3px solid red;
+		box-shadow: 0px 0px 2px 2px rgba(255, 0, 0, 0.1);
+	}
+
+	&.S1 { @include arcade-button($button-12mm, true); left: $button-12mm * 3; }
+	&.S2 { @include arcade-button($button-12mm, true); left: $button-12mm * 8; }
+	&.A1 { @include arcade-button($button-12mm, true); left: $button-12mm * 13; }
+	&.A2 { @include arcade-button($button-12mm, true); left: $button-12mm * 18; }
+	&.L3 { @include arcade-button($button-12mm, true); left: $button-12mm * 23; }
+	&.R3 { @include arcade-button($button-12mm, true); left: $button-12mm * 28; }
+
+	.button-label {
+		font-size: 0.85rem;
+		font-weight: 600;
+		text-transform: uppercase;
+
+		&.under {
+			position: relative;
+			top: $button-30mm;
+		}
+	}
+}
+
+.button-30mm     { @include arcade-button($button-30mm, true); }
+.button-24mm     { @include arcade-button($button-24mm, true); }
+.button-keycap   { @include arcade-button($button-keycap, false); }
+.button-joystick { @include arcade-button($button-joystick, true); }
+
+.led-preview-keyboard {
+	.Up    { @include arcade-button($button-keycap, false); left: calc(50% - #{$button-24mm * 8.25}); top: $button-24mm * 1.25; }
+	.Left  { @include arcade-button($button-keycap, false); left: calc(50% - #{$button-24mm * 11}); top: $button-24mm * 4; }
+	.Down  { @include arcade-button($button-keycap, false); left: calc(50% - #{$button-24mm * 8.25}); top: $button-24mm * 4; }
+	.Right { @include arcade-button($button-keycap, false); left: calc(50% - #{$button-24mm * 5.5}); top: $button-24mm * 4; }
+
+	.B3 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 0.5}); top: $button-30mm; }
+	.B4 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 3.75}); top: 0; }
+	.R1 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 7}); top: 0; }
+	.L1 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 10.25}); top: 0; }
+	.B1 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 0.25}); top: $button-30mm * 4.25; }
+	.B2 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 3.5}); top: $button-30mm * 3.25; }
+	.R2 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 6.75}); top: $button-30mm * 3.25; }
+	.L2 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 10}); top: $button-30mm * 3.25; }
+}
+
+.led-preview-standard {
+	.Up    { @include arcade-button($button-24mm, true); left: calc(50% - #{$button-24mm * 8.5}); top: 0; }
+	.Left  { @include arcade-button($button-24mm, true); left: calc(50% - #{$button-24mm * 11.5}); top: $button-24mm * 3; }
+	.Down  { @include arcade-button($button-24mm, true); left: calc(50% - #{$button-24mm * 8.5}); top: $button-24mm * 6; }
+	.Right { @include arcade-button($button-24mm, true); left: calc(50% - #{$button-24mm * 5.5}); top: $button-24mm * 3; }
+
+	.B3 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 0.5}); top: $button-30mm; }
+	.B4 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 3.75}); top: 0; }
+	.R1 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 7}); top: 0; }
+	.L1 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 10.25}); top: 0; }
+	.B1 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 0.25}); top: $button-30mm * 4.25; }
+	.B2 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 3.5}); top: $button-30mm * 3.25; }
+	.R2 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 6.75}); top: $button-30mm * 3.25; }
+	.L2 { @include arcade-button($button-30mm, true); left: calc(50% + #{$button-30mm * 10}); top: $button-30mm * 3.25; }
+}
+
+.led-preview-stickless {
+	.Up    { @include arcade-button($button-30mm, true); left: 50%; right: 50%; top: calc(50% + #{$button-24mm * 1.5}); }
+
+	.Left  { @include arcade-button($button-24mm, true); left: calc(50% - #{$button-24mm * 7.75}); top: $button-24mm; }
+	.Down  { @include arcade-button($button-24mm, true); left: calc(50% - #{$button-24mm * 4.5}); top: $button-24mm; }
+	.Right { @include arcade-button($button-24mm, true); left: calc(50% - #{$button-24mm * 1.5}); top: $button-24mm * 2.5; }
+
+	.B3 { @include arcade-button($button-24mm, true); left: calc(50% + #{$button-24mm * 1.5}); top: $button-24mm; }
+	.B4 { @include arcade-button($button-24mm, true); left: calc(50% + #{$button-24mm * 4.75}); top: 0; }
+	.R1 { @include arcade-button($button-24mm, true); left: calc(50% + #{$button-24mm * 8}); top: 0; }
+	.L1 { @include arcade-button($button-24mm, true); left: calc(50% + #{$button-24mm * 11.25}); top: 0; }
+	.B1 { @include arcade-button($button-24mm, true); left: calc(50% + #{$button-24mm * 1.25}); top: $button-24mm * 4.25; }
+	.B2 { @include arcade-button($button-24mm, true); left: calc(50% + #{$button-24mm * 4.5}); top: $button-24mm * 3.25; }
+	.R2 { @include arcade-button($button-24mm, true); left: calc(50% + #{$button-24mm * 7.75}); top: $button-24mm * 3.25; }
+	.L2 { @include arcade-button($button-24mm, true); left: calc(50% + #{$button-24mm * 11}); top: $button-24mm * 3.25; }
+}

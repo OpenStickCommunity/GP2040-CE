@@ -9,9 +9,12 @@
 #include "BoardConfig.h"
 #include <stdint.h>
 #include "AnimationStation.hpp"
+#include "storagemanager.h"
 #include "PlayerLEDs.h"
 #include "gpaddon.h"
 #include "helper.h"
+
+#include "enums.pb.h"
 
 // This needs to be moved to storage if we're going to share between modules
 extern NeoPico *neopico;
@@ -36,7 +39,9 @@ public:
 	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return PLEDName; }
-	PlayerLEDAddon() : type(PLED_TYPE) {}
+	PlayerLEDAddon() {
+		type = static_cast<PLEDType>(Storage::getInstance().getLedOptions().pledType);
+	}
 	PlayerLEDAddon(PLEDType type) : type(type) {}
 
 protected:

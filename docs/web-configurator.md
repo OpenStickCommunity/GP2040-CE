@@ -28,6 +28,22 @@ The options in the main menu are:
 
 Here you can select the basic settings which are normally available via hotkeys.
 
+* `Input Mode` - Choose the main input mode (XINPUT, DINPUT, Switch, PS4, HID-Keyboard) this connected device will boot into when powered on.  This selection will persist through unplug / replug.
+* `D-Pad Mode` - Choose the default D-Pad mode (D-Pad, Left Stick or Right Stick).
+* `SOCD Cleaning Mode` - Choose the default SOCD Cleaning Mode (Neutral, Last Win, First Win, OFF).  Please note that PS4, PS3 and Nintendo Switch modes do not support setting SOCD to off and will defualt to Neutral SOCD.
+* `Forced Setup Mode` - Allows you to lock out Input Mode, the ability to enter Web-Config or both.  Enabling a web-config lockout will require you to nuke and reload the firmware if you wish to make further changes.
+* `4-Way Joystick Mode` - Enables 4-Way Jostick mode which will prevent cardinal directions.
+
+
+### Hotkeys
+
+An arbitrary number of buttons and directions, plus the optional Function (Fn) button, can be used to define
+desired hotkey actions. Select Fn if desired, plus one or more buttons/directions, and associate them with a
+hotkey action. The default hotkeys can be modified or removed, and new ones added, up to 12 in total.
+
+The available hotkey actions will expand over time. We may also expand the number of hotkeys available to
+configure in the future.
+
 ## Pin Mapping
 
 ![GP2040-CE Configurator - Pin Mapping](assets/images/gpc-pin-mapping.png)
@@ -38,6 +54,8 @@ Here you can remap the GP2040-CE buttons to different GPIO pins on the RP2040 ch
 
 If you have a setup with per-button RGB LEDs, they can be configured here.
 
+### RGB LED Configuration
+
 ![GP2040-CE Configurator - LED Configuration](assets/images/gpc-rgb-led-config.png)
 
 * `Data Pin` - The GPIO pin that will drive the data line for your RGB LED chain. Set to `-1` to disable RGB LEDs.
@@ -46,7 +64,33 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `LEDs Per Button` - Set the number of LEDs in each button on your chain.
 * `Max Brightness` - Set the maximum brightness for the LEDs. Ranges from 0-255.
 * `Brightness Steps` - The number of levels of brightness to cycle through when turning brightness up and down.
+
+### RGB LED Button Order
+
+!> Please note that RGB Button LEDs must be the first LEDs configured. They will start at index 0 on the RGB LED strip.
+
+![GP2040-CE Configurator - RGB LED Button Order](assets/images/gpc-rgb-led-button-order.png)
+
 * `LED Button Order` - Configure which buttons and what order they reside on the LED chain.
+
+### Player LEDs (XInput)
+
+Available selections for `Player LED Type` are `None`, `PWM` or `RGB`.
+
+#### PWM Player LEDs
+
+![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-pwm.png)
+
+* `PLED #[1-4] Pin` - The GPIO pin the standard LED is connected to.
+
+#### RGB Player LEDs
+
+!> Please note that RGB Player LEDs must be located at an index after the RGB LED Buttons on the LED strip! The Web Config interface will suggest a starting index based on the number of LED buttons mapped in [RGB LED Button Order](#rgb-led-button-order) and the select `LEDs Per Button` value. We hope to remove this limitation in the future.
+
+![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-rgb.png)
+
+* `PLED #[1-4] Index` - The index of the LED module on the RGB strip.
+* `RGB PLED Color` - Click the box to reveal a color picker, or manually enter the color.
 
 ## Custom LED Theme
 
@@ -56,6 +100,12 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 * `Preview Layout` - Predefined layouts for previewing LED theme. **NOTE:** This is for preview only, does not affect controller operation.
 * `Clear All` - Prompts for confirmation to reset the current theme to all buttons black (LEDs off). Make sure you have saved and have a backup if you don't want to lose your customizations.
 * `Set All To Color` - Presents a color picker to set all buttons to the same normal or pressed color.
+* `Set Gradient` - Sets a horizontal gradient across the action buttons according to the `Preview Layout` selection.
+* `Set Pressed Gradient` - Same as `Set Gradient`, but for pressed button state.
+* `Save Color` - Save a custom color to the color picker palette.
+* `Delete Color` - Deletes a custom color from the color picker palette. Stock colors cannot be deleted.
+
+?> All saved colors and gradient selections are saved to your browser's local storage.
 
 If enabled, the Custom LED Theme will be available as another animation mode and will cycle with the `Previous Animation` and `Next Animation` shortcuts on your controller. You can also use the [Data Backup and Restoration](#data-backup-and-restoration) feature to create and share themes!
 
@@ -104,8 +154,19 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ![GP2040 Configurator - Add-Ons Analog](assets/images/gpc-add-ons-analog.png)
 
-* `Analog Stick X Pin` - The GPIO pin used for the Analog Stick X value.
-* `Analog Stick Y Pin` - The GPIO pin used for the Analog Stick Y value.
+* `Analog Stick 1 X Pin` - The GPIO pin used for the Analog Stick 1 X value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
+* `Analog Stick 1 Y Pin` - The GPIO pin used for the Analog Stick 1 Y value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
+* `Analog Stick 1 Mode` - Choose if Analog Stick 1 is to be used for Left Analog or Right Analog.  
+* `Analog Stick 1 Invert` - Choose if you would like to flip the X or Y axis Analog Stick 1 inputs (or both).
+* `Analog Stick 2 X Pin` - The GPIO pin used for the Analog Stick 2 X value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
+* `Analog Stick 2 Y Pin` - The GPIO pin used for the Analog Stick 2 Y value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
+* `Analog Stick 2 Mode` - Choose if Analog Stick 2 is to be used for Left Analog or Right Analog (must be different than Analog Stick 1).
+* `Analog Stick 2 Invert` - Choose if you would like to flip the X or Y axis Analog Stick 2 inputs (or both).
+* `Deadzone Size (%)` - Enter the % value of deadzone you would like on the analog sticks.
+* `Forced Circularity` - Force the analog sticks to be bound within a perfect circle. This can be beneficial for certain games. However, be aware that this may negatively impact some games which account for sticks moving outside of a circle.
+* `Auto Calibration` - Automatically centers the analog sticks. This works by reading in the offset from center during boot and then accounts for that until the next power cycle. This can be helpful for analog sticks experiencing drift.
+
+
 
 ### Turbo
 
@@ -207,8 +268,11 @@ Values are:
 
 ![GP2040 Configurator - SOCD Selection Slider](assets/images/gpc-add-ons-socd-slider.png)
 
-* `Slider SOCD Up Priority Pin` - The GPIO pin used for SOCD Up Priority.
-* `Slider SOCD Second Input Priority Pin` - The GPIO pin used for SOCD Second Input Priority.
+* `SOCD Slider Mode Default` - The default SOCD mode to be used when the slider pin is not activated.
+* `SOCD Slider Mode Tne` - The SOCD mode you would like to have enabled for the first slder position.
+* `Pin One` - The GPIO pin used for first SOCD mode slider position.
+* `SOCD Slider Mode Two` - The SOCD mode you would like to have enabled for the second slder position.
+* `Pin Two` - The GPIO pin used for second SOCD mode slider position.
 
 ### PS4 Mode
 
@@ -252,6 +316,57 @@ Supported Extension Controllers and their mapping is as follows:
 Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Controllers. 
 
 Original Classic Controller L & R triggers are analog sensitive, where Pro triggers are not.
+
+### SNES Input
+
+![GP2040 Configurator - SNES Input](assets/images/gpc-add-ons-snespad-input.png)
+
+* `CLOCK Pin` - The GPIO pin used for SNES CLOCK.
+* `LATCH Pin` - The GPIO pin used for SNES LATCH.
+* `DATA Pin` - The GPIO pin used for SNES DATA.
+
+Supported controller types and their mapping is as follows:
+
+| GP2040-CE | NES      | SNES         | Super NES Mouse    |
+|-----------|----------|--------------|--------------------|
+| B1        | B        | B            | Left Click         |
+| B2        | A        | A            | Right Click        |
+| B3        |          | Y            |                    |
+| B4        |          | X            |                    |
+| L1        |          | L            |                    |
+| L2        |          |              |                    |
+| R1        |          | R            |                    |
+| R2        |          |              |                    |
+| S1        | Select   | Select       |                    |
+| S2        | Start    | Start        |                    |
+| A1        |          |              |                    |
+| D-Pad     | D-Pad    | D-Pad        |                    |
+| Analog    |          |              | Mouse Movement     |
+
+### Focus Mode Configuration
+
+![GP2040 Configurator - Focus Mode](assets/images/gpc-add-ons-focus-mode.png)
+
+* `Focus Mode Pin` - The GPIO pin used to enable Focus Mode (this needs to always be held so a slider or latching switch is recommended).
+* `Lock OLED Screen` - When enabled the OLED screen will not display anything during Focus Mode.
+* `Lock RGB LED` - When enabled the RGB LEDs that are controlled by the RP2040 device will not display anything during Focus Mode.
+* `Lock Buttons` - When enabled the You can specify specific buttons to not function during Focus Mode.  You can add as many additional buttons as needed here.
+
+### Keyboard Host Configuration
+
+![GP2040 Configurator - Keyboard Host Configuration](assets/images/gpc-add-ons-keyboard-host-configuration.png)
+
+* `D+` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040
+* `D-` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
+
+#### Example Wiring Diagram
+
+![USB Host Wiring Diagram](assets/images/gpc-add-ons-keyboard-host-configuration-wiring-diagram.png)
+
+* `VCC` - Connects to 5V power (Example: VBUS on the Raspberry Pi Pico)
+* `D+` - Connects to the `D+` GPIO Pin above, set in the Web Configurator. (Example: GPIO0 on the Raspberry Pi Pico)
+* `D+` - Connects to the `D-` GPIO Pin above, set in the Web Configurator. (Example: GPIO1 on the Raspberry Pi Pico)
+* `GND` - Connects to a ground pin, any `GND` pin will work. (Example: VBUS on the Raspberry Pi Pico)
 
 ## Data Backup and Restoration
 

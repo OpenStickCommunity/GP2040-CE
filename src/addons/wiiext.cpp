@@ -1,18 +1,18 @@
 #include "addons/wiiext.h"
 #include "storagemanager.h"
 #include "hardware/gpio.h"
+#include "helper.h"
+#include "config.pb.h"
 
 bool WiiExtensionInput::available() {
-    const BoardOptions& boardOptions = Storage::getInstance().getBoardOptions();
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
 
-    return (!boardOptions.hasI2CDisplay && (options.WiiExtensionAddonEnabled &&
-        options.wiiExtensionSDAPin != (uint8_t)-1 &&
-        options.wiiExtensionSCLPin != (uint8_t)-1));
+    return (!displayOptions.enabled && (options.enabled && isValidPin(options.i2cSDAPin) && isValidPin(options.i2cSCLPin)));
 }
 
 void WiiExtensionInput::setup() {
-    AddonOptions options = Storage::getInstance().getAddonOptions();
+    const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
     nextTimer = getMillis();
 
 #if WII_EXTENSION_DEBUG==true
@@ -22,10 +22,10 @@ void WiiExtensionInput::setup() {
     uIntervalMS = 0;
     
     wii = new WiiExtension(
-        options.wiiExtensionSDAPin,
-        options.wiiExtensionSCLPin,
-        options.wiiExtensionBlock == 0 ? i2c0 : i2c1,
-        options.wiiExtensionSpeed,
+        options.i2cSDAPin,
+        options.i2cSCLPin,
+        options.i2cBlock == 0 ? i2c0 : i2c1,
+        options.i2cSpeed,
         WII_EXTENSION_I2C_ADDR);
     wii->begin();
     wii->start();
@@ -87,10 +87,11 @@ void WiiExtensionInput::process() {
 
             // whammy currently maps to Joy2X in addition to the raw whammy value
             whammyBar = wii->whammyBar;
+            buttonR = wii->pedalButton;
 
             leftX = map(wii->joy1X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             leftY = map(wii->joy1Y,WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightX = map(wii->joy2X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MAX);
+            rightX = map(wii->joy2X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             rightY = GAMEPAD_JOYSTICK_MID;
 
             triggerLeft = 0;
@@ -99,7 +100,7 @@ void WiiExtensionInput::process() {
             buttonL = wii->rimLeft;
             buttonR = wii->rimRight;
 
-            dpadRight = wii->drumLeft;
+            dpadLeft = wii->drumLeft;
             buttonA = wii->drumRight;
         }
                

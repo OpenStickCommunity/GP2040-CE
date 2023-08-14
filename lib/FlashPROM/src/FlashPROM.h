@@ -13,8 +13,8 @@
 #include <hardware/flash.h>
 #include <hardware/timer.h>
 
-#define EEPROM_SIZE_BYTES    0x3000           // Reserve 8k of flash memory (ensure this value is divisible by 256)
-#define EEPROM_ADDRESS_START _u(0x101FD000) // The arduino-pico EEPROM lib starts here, so we'll do the same
+#define EEPROM_SIZE_BYTES    0x4000           // Reserve 8k of flash memory (ensure this value is divisible by 256)
+#define EEPROM_ADDRESS_START _u(0x101FC000) // The arduino-pico EEPROM lib starts here, so we'll do the same
 
 // #define EEPROM_SIZE_BYTES    0x2000           // Reserve 8k of flash memory (ensure this value is divisible by 256)
 // #define EEPROM_ADDRESS_START _u(0x101FE000) // The arduino-pico EEPROM lib starts here, so we'll do the same
@@ -28,28 +28,9 @@ class FlashPROM
 		void commit();
 		void reset();
 
-		template<typename T>
-		T &get(uint16_t const index, T &value)
-		{
-			if (index < EEPROM_SIZE_BYTES)
-				memcpy(&value, &cache[index], sizeof(T));
-
-			return value;
-		}
-
-		template<typename T>
-		void set(uint16_t const index, const T &value)
-		{
-			uint16_t size = sizeof(T);
-
-			if ((index + size) <= EEPROM_SIZE_BYTES)
-				memcpy(&cache[index], &value, sizeof(T));
-		}
-
-	private:
-		static uint8_t cache[EEPROM_SIZE_BYTES];
+		static uint8_t writeCache[EEPROM_SIZE_BYTES];
 };
 
-static FlashPROM EEPROM;
+inline FlashPROM EEPROM;
 
 #endif
