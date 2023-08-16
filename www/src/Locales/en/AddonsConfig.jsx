@@ -131,7 +131,8 @@ export default {
 	'keyboard-host-d-minus-label': 'D-',
 	'keyboard-host-five-v-label': '5V Power (optional)',
 	'pspassthrough-header-text': 'PS Passthrough',
-	'pspassthrough-sub-header-text': 'Following set the data +, - and 5V (optional) pins. Only the + and 5V pin can be configured.',
+	'pspassthrough-sub-header-text':
+		'Following set the data +, - and 5V (optional) pins. Only the + and 5V pin can be configured.',
 	'pspassthrough-d-plus-label': 'D+',
 	'pspassthrough-d-minus-label': 'D-',
 	'pspassthrough-five-v-label': '5V Power (optional)',
