@@ -222,6 +222,12 @@ const verifyAndSavePS4 = async () => {
 	}
 };
 
+const DPAD_MODES = [
+	{ label: 'Digital', value: 0 },
+	{ label: 'Left Analog', value: 1 },
+	{ label: 'Right Analog', value: 2 },
+];
+
 const SOCD_MODES = [
 	{ label: 'Up Priority', value: 0 },
 	{ label: 'Neutral', value: 1 },
@@ -296,8 +302,11 @@ const schema = yup.object().shape({
 	extraButtonMap:              yup.number().label('Extra Button Map').validateSelectionWhenValue('ExtraButtonAddonEnabled', BUTTON_MASKS),
 
 	JSliderInputEnabled:         yup.number().required().label('JSlider Input Enabled'),
-	sliderLSPin:                 yup.number().label('Slider LS Pin').validatePinWhenValue('JSliderInputEnabled'),
-	sliderRSPin:                 yup.number().label('Slider RS Pin').validatePinWhenValue('JSliderInputEnabled'),
+	sliderPinOne:                yup.number().label('Slider Pin One').validatePinWhenValue('JSliderInputEnabled'),
+	sliderPinTwo:                yup.number().label('Slider Pin Two').validatePinWhenValue('JSliderInputEnabled'),
+	sliderModeZero:              yup.number().label('Slider Mode Zero').validateSelectionWhenValue('JSliderInputEnabled', DPAD_MODES),
+	sliderModeOne:               yup.number().label('Slider Mode One').validateSelectionWhenValue('JSliderInputEnabled', DPAD_MODES),
+	sliderModeTwo:               yup.number().label('Slider Mode Two').validateSelectionWhenValue('JSliderInputEnabled', DPAD_MODES),
 
 	KeyboardHostAddonEnabled:    yup.number().required().label('Keyboard Host Add-On Enabled'),
 	keyboardHostPinDplus:        yup.number().label('Keyboard Host D+ Pin').validatePinWhenValue('KeyboardHostAddonEnabled'),
@@ -353,10 +362,13 @@ const schema = yup.object().shape({
 const defaultValues = {
 	turboPin: -1,
 	turboPinLED: -1,
-	sliderLSPin: -1,
-	sliderRSPin: -1,
+	sliderPinOne: -1,
+	sliderPinTwo: -1,
 	sliderSOCDPinOne: -1,
 	sliderSOCDPinTwo: -1,
+	sliderModeZero: 0,
+	sliderModeOne: 1,
+	sliderModeTwo: 2,
 	turboShotCount: 5,
 	reversePin: -1,
 	reversePinLED: -1,
@@ -1025,26 +1037,62 @@ export default function AddonsConfigPage() {
 							id="JSliderInputOptions"
 							hidden={!values.JSliderInputEnabled}>
 							<Row className="mb-3">
-								<FormControl type="number"
-									label={t('AddonsConfig:joystick-selection-slider-ls-pin-label')}
-									name="sliderLSPin"
+								<FormSelect
+									label={t('AddonsConfig:joystick-selection-slider-mode-zero-label')}
+									name="sliderModeZero"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.sliderLSPin}
-									error={errors.sliderLSPin}
-									isInvalid={errors.sliderLSPin}
+									value={values.sliderModeZero}
+									error={errors.sliderModeZero}
+									isInvalid={errors.sliderModeZero}
+									onChange={handleChange}
+								>
+									{DPAD_MODES.map((o, i) => <option key={`sliderModeZero-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormSelect
+									label={t('AddonsConfig:joystick-selection-slider-mode-one-label')}
+									name="sliderModeOne"
+									className="form-select-sm"
+									groupClassName="col-sm-3 mb-3"
+									value={values.sliderModeOne}
+									error={errors.sliderModeOne}
+									isInvalid={errors.sliderModeOne}
+									onChange={handleChange}
+								>
+									{DPAD_MODES.map((o, i) => <option key={`sliderModeOne-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormControl type="number"
+									label={t('AddonsConfig:joystick-selection-slider-pin-one-label')}
+									name="sliderPinOne"
+									className="form-select-sm"
+									groupClassName="col-sm-1 mb-3"
+									value={values.sliderPinOne}
+									error={errors.sliderPinOne}
+									isInvalid={errors.sliderPinOne}
 									onChange={handleChange}
 									min={-1}
 									max={29}
 								/>
-								<FormControl type="number"
-									label={t('AddonsConfig:joystick-selection-slider-rs-pin-label')}
-									name="sliderRSPin"
-									className="form-control-sm"
+								<FormSelect
+									label={t('AddonsConfig:joystick-selection-slider-mode-two-label')}
+									name="sliderModeTwo"
+									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
-									value={values.sliderRSPin}
-									error={errors.sliderRSPin}
-									isInvalid={errors.sliderRSPin}
+									value={values.sliderModeTwo}
+									error={errors.sliderModeTwo}
+									isInvalid={errors.sliderModeTwo}
+									onChange={handleChange}
+								>
+									{DPAD_MODES.map((o, i) => <option key={`sliderModeTwo-option-${i}`} value={o.value}>{o.label}</option>)}
+								</FormSelect>
+								<FormControl type="number"
+									label={t('AddonsConfig:joystick-selection-slider-pin-two-label')}
+									name="sliderPinTwo"
+									className="form-control-sm"
+									groupClassName="col-sm-1 mb-3"
+									value={values.sliderPinTwo}
+									error={errors.sliderPinTwo}
+									isInvalid={errors.sliderPinTwo}
 									onChange={handleChange}
 									min={-1}
 									max={29}
@@ -1060,7 +1108,7 @@ export default function AddonsConfigPage() {
 							checked={Boolean(values.JSliderInputEnabled)}
 							onChange={(e) => {handleCheckbox("JSliderInputEnabled", values); handleChange(e);}}
 						/>
-					</Section>
+					</Section>	
 					<Section title={t('AddonsConfig:input-reverse-header-text')}>
 						<div
 							id="ReverseInputOptions"

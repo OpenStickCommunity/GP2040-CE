@@ -8,7 +8,7 @@
 // You can set any of the main pins as `-1` to disable it.
 // The Turbo pin and LS + RS slider pins can also be set to `-1` to disable that functionality.
 // Please note that only when `PIN_BUTTON_TURBO` is set to `-1` will the `T##` be removed from a connected display.
-// Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
+// Please note that only when `PIN_SLIDER_ONE` and  `PIN_SLIDER_TWO` are set to `-1` will the button combo shortcut for DP/LS/RS work.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
 #define PIN_DPAD_UP 26    // UP
@@ -33,8 +33,8 @@
 #define PIN_BUTTON_FN -1   // Hotkey Function
 #define PIN_BUTTON_REVERSE -1 // UDLR Reverse
 #define PIN_BUTTON_TURBO -1 // Turbo
-#define PIN_SLIDER_LS -1   // Left Stick Slider
-#define PIN_SLIDER_RS -1   // Right Stick Slider
+#define PIN_SLIDER_ONE -1   // Left Stick Slider
+#define PIN_SLIDER_TWO -1   // Right Stick Slider
 
 // This is the SOCD section.
 // SOCD stands for `simultaneous opposing cardinal directions`.
