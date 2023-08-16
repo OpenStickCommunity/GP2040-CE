@@ -31,7 +31,7 @@ void PSPassthroughAddon::setup() {
 }
 
 void PSPassthroughAddon::process() {
-    if (!awaiting_cb)
+    if (awaiting_cb)
         return;
 
     switch ( passthrough_state ) {
