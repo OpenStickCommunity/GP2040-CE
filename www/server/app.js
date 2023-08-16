@@ -281,8 +281,11 @@ app.get('/api/getAddonsOptions', (req, res) => {
 	return res.send({
 		turboPin: -1,
 		turboPinLED: -1,
-		sliderLSPin: -1,
-		sliderRSPin: -1,
+		sliderPinOne: -1,
+		sliderPinTwo: -1,
+		sliderModeZero: 0,
+		sliderModeOne: 1,
+		sliderModeTwo: 2,
 		sliderSOCDPinOne: -1,
 		sliderSOCDPinTwo: -1,
 		turboShotCount: 20,

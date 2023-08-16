@@ -310,8 +310,11 @@ message SliderOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 pinLS = 2;
-	optional int32 pinRS = 3;
+	optional int32 pinSliderOne = 2;
+	optional int32 pinSliderTwo = 3;
+	optional DpadMode modeOne = 4;
+	optional DpadMode modeTwo = 5;
+	optional DpadMode modeZero = 6;
 }
 
 message SOCDSliderOptions
