@@ -37,7 +37,7 @@
 #define PIN_BUTTON_FN   -1          // Hotkey Function
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
-#define PIN_SLIDER_LS    -1         // Left Stick Slider
+#define PIN_SLIDER_ONE    -1         // Left Stick Slider
 #define PIN_SLIDER_TWO    -1         // Right Stick Slider
 #define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
 #define PIN_SLIDER_SOCD_SECOND    -1         // SOCD Slider Pin Two
