@@ -24,6 +24,19 @@ bool send_hid_report(uint8_t report_id, void *report, uint8_t report_size)
 	return false;
 }
 
+bool send_keyboard_report(void *report)
+{
+	if (tud_hid_ready()) {
+		KeyboardReport *keyboard_report = ((KeyboardReport *)report);
+		void *keyboard_report_payload = keyboard_report->reportId == KEYBOARD_KEY_REPORT_ID ? (void *)keyboard_report->keycode : (void *)&keyboard_report->multimedia;
+		uint16_t keyboard_report_size = keyboard_report->reportId == KEYBOARD_KEY_REPORT_ID ? sizeof(KeyboardReport::keycode) : sizeof(KeyboardReport::multimedia);
+
+		return tud_hid_report(keyboard_report->reportId, keyboard_report_payload, keyboard_report_size);
+	}
+
+	return false;
+}
+
 bool hid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
 	if (

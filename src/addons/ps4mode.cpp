@@ -13,105 +13,101 @@
 #include "mbedtls/rsa.h"
 #include "mbedtls/sha256.h"
 
+#define NEW_CONFIG_MPI(name, buf, size) \
+	mbedtls_mpi_uint *bytes ## name = new mbedtls_mpi_uint[size / sizeof(mbedtls_mpi_uint)]; \
+	mbedtls_mpi name = { .s=1, .n=size / sizeof(mbedtls_mpi_uint), .p=bytes ## name }; \
+	memcpy(bytes ## name, buf, size);
+
+#define DELETE_CONFIG_MPI(name) delete bytes ## name;
+
 bool PS4ModeAddon::available() {
   const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
 	return options.enabled
-      && options.serial.size == sizeof(options.serial.bytes)
-      && options.signature.size == sizeof(options.signature.bytes)
-      && options.rsaN.size == sizeof(options.rsaN.bytes)
-      && options.rsaE.size == sizeof(options.rsaE.bytes)
-      && options.rsaD.size == sizeof(options.rsaD.bytes)
-      && options.rsaP.size == sizeof(options.rsaP.bytes)
-      && options.rsaQ.size == sizeof(options.rsaQ.bytes)
-      && options.rsaDP.size == sizeof(options.rsaDP.bytes)
-      && options.rsaDQ.size == sizeof(options.rsaDQ.bytes)
-      && options.rsaQP.size == sizeof(options.rsaQP.bytes)
-      && options.rsaRN.size == sizeof(options.rsaRN.bytes);
+		&& options.serial.size == sizeof(options.serial.bytes)
+		&& options.signature.size == sizeof(options.signature.bytes)
+		&& options.rsaN.size == sizeof(options.rsaN.bytes)
+		&& options.rsaE.size == sizeof(options.rsaE.bytes)
+		&& options.rsaP.size == sizeof(options.rsaP.bytes)
+		&& options.rsaQ.size == sizeof(options.rsaQ.bytes);
 }
 
 void PS4ModeAddon::setup() {
-    const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
+	const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
+	ready = false;
 
-    memcpy(bytesN, options.rsaN.bytes, options.rsaN.size);
-    memcpy(bytesE, options.rsaE.bytes, options.rsaE.size);
-    memcpy(bytesD, options.rsaD.bytes, options.rsaD.size);
-    memcpy(bytesP, options.rsaP.bytes, options.rsaP.size);
-    memcpy(bytesQ, options.rsaQ.bytes, options.rsaQ.size);
-    memcpy(bytesDP, options.rsaDP.bytes, options.rsaDP.size);
-    memcpy(bytesDQ, options.rsaDQ.bytes, options.rsaDQ.size);
-    memcpy(bytesQP, options.rsaQP.bytes, options.rsaQP.size);
-    memcpy(bytesRN, options.rsaRN.bytes, options.rsaRN.size);
+	NEW_CONFIG_MPI(N, options.rsaN.bytes, options.rsaN.size)
+	NEW_CONFIG_MPI(E, options.rsaE.bytes, options.rsaE.size)
+	NEW_CONFIG_MPI(P, options.rsaP.bytes, options.rsaP.size)
+	NEW_CONFIG_MPI(Q, options.rsaQ.bytes, options.rsaQ.size)
 
-    rsa_context = {
-      .ver = 0,
-      .len = 256,
-      .N =  { .s=1, .n=64, .p=bytesN  },
-      .E =  { .s=1, .n=1,  .p=bytesE  },
-      .D =  { .s=1, .n=64, .p=bytesD  },
-      .P =  { .s=1, .n=32, .p=bytesP  },
-      .Q =  { .s=1, .n=32, .p=bytesQ  },
-      .DP = { .s=1, .n=32, .p=bytesDP },
-      .DQ = { .s=1, .n=32, .p=bytesDQ },
-      .QP = { .s=1, .n=32, .p=bytesQP },
-      .RN = { .s=1, .n=64, .p=bytesRN },
-      .RP = { .s=0, .n=0, .p=nullptr },
-      .RQ = { .s=0, .n=0, .p=nullptr },
-      .Vi = { .s=0, .n=0, .p=nullptr },
-      .Vf = { .s=0, .n=0, .p=nullptr },
-      .padding = MBEDTLS_RSA_PKCS_V21, .hash_id = MBEDTLS_MD_SHA256,
-    };
+	mbedtls_rsa_init(&rsa_context, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
+
+	if (mbedtls_rsa_import(&rsa_context, &N, &P, &Q, nullptr, &E) == 0 &&
+			mbedtls_rsa_complete(&rsa_context) == 0) {
+		ready = true;
+	}
+
+	DELETE_CONFIG_MPI(N)
+	DELETE_CONFIG_MPI(E)
+	DELETE_CONFIG_MPI(P)
+	DELETE_CONFIG_MPI(Q)
 }
 
 void PS4ModeAddon::process() {
-    const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
+	if (!ready) {
+		return;
+	}
 
-    int rss_error = 0;
+	const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
 
-    // Check to see if the PS4 Authentication needs work
-    if ( PS4Data::getInstance().ps4State == PS4State::nonce_ready ) {
+	int rss_error = 0;
 
-      // Generate some random for RNG
-      srand(getMillis());
-      auto rng = [](void*p_rng, unsigned char* p, size_t len) {
-          (void) p_rng;
-          p[0] = rand();
-          return 0;
-      };
+	// Check to see if the PS4 Authentication needs work
+	if ( PS4Data::getInstance().ps4State == PS4State::nonce_ready ) {
 
-      uint8_t nonce_signature[256];
-      uint8_t * nonce_buffer = PS4Data::getInstance().nonce_buffer;
-      uint8_t * ps4_auth_buffer = PS4Data::getInstance().ps4_auth_buffer;
+		// Generate some random for RNG
+		srand(getMillis());
+		auto rng = [](void*p_rng, unsigned char* p, size_t len) {
+			(void) p_rng;
+			p[0] = rand();
+			return 0;
+		};
 
-      // Sign the nonce now that we got it!
-      //
-      if ( mbedtls_sha256_ret(nonce_buffer, 256, hashed_nonce, 0) < 0 ) {
-        return;
-      }
+		uint8_t hashed_nonce[32];
+		uint8_t * nonce_buffer = PS4Data::getInstance().nonce_buffer;
+		uint8_t * ps4_auth_buffer = PS4Data::getInstance().ps4_auth_buffer;
 
-      rss_error = mbedtls_rsa_rsassa_pss_sign(&rsa_context, rng, nullptr,
-              MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA256,
-              32, hashed_nonce,
-              nonce_signature);
+		// Sign the nonce now that we got it!
+		//
+		if ( mbedtls_sha256_ret(nonce_buffer, 256, hashed_nonce, 0) < 0 ) {
+			return;
+		}
 
-      if ( rss_error < 0 ) {
-        return;
-      }
-      // copy the parts into our authentication buffer
-      int offset = 0;
-      memcpy(&ps4_auth_buffer[offset], nonce_signature, 256);
-      offset += 256;
-      memcpy(&ps4_auth_buffer[offset], options.serial.bytes, 16);
-      offset += 16;
-      mbedtls_mpi* mpi = static_cast<mbedtls_mpi*>(&rsa_context.N);
-      mbedtls_mpi_write_binary(mpi, &ps4_auth_buffer[offset], 256);
-      offset += 256;
-      mpi = static_cast<mbedtls_mpi*>(&rsa_context.E);
-      mbedtls_mpi_write_binary(mpi, &ps4_auth_buffer[offset], 256);
-      offset += 256;
-      memcpy(&ps4_auth_buffer[offset], options.signature.bytes, 256);
-      offset += 256;
-      memset(&ps4_auth_buffer[offset], 0, 24);
+		rss_error = mbedtls_rsa_rsassa_pss_sign(&rsa_context, rng, nullptr,
+				MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA256,
+				32, hashed_nonce,
+				&ps4_auth_buffer[0]);
 
-      PS4Data::getInstance().ps4State = PS4State::signed_nonce_ready; // signed and ready to party
-    }
+		if ( rss_error < 0 ) {
+			return;
+		}
+		// copy the parts into our authentication buffer
+		size_t offset = 256;
+		memcpy(&ps4_auth_buffer[offset], options.serial.bytes, 16);
+		offset += 16;
+		mbedtls_rsa_export_raw(
+			&rsa_context,
+			&ps4_auth_buffer[offset], 256,
+			nullptr, 0,
+			nullptr, 0,
+			nullptr, 0,
+			&ps4_auth_buffer[offset+256], 256
+		);
+		offset += 512;
+		memcpy(&ps4_auth_buffer[offset], options.signature.bytes, 256);
+		offset += 256;
+		memset(&ps4_auth_buffer[offset], 0, 24);
+
+		PS4Data::getInstance().ps4State = PS4State::signed_nonce_ready; // signed and ready to party
+	}
 }

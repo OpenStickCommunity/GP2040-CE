@@ -28,6 +28,6 @@ class FlashPROM
 		static uint8_t writeCache[EEPROM_SIZE_BYTES];
 };
 
-static FlashPROM EEPROM;
+inline FlashPROM EEPROM;
 
 #endif

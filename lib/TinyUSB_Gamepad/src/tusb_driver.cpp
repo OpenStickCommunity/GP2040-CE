@@ -38,7 +38,7 @@ void initialize_driver(InputMode mode)
 	if (mode == INPUT_MODE_CONFIG)
 		usb_mode = USB_MODE_NET;
 
-	tusb_init();
+	tud_init(TUD_OPT_RHPORT);
 }
 
 void receive_report(uint8_t *buffer)
@@ -64,6 +64,9 @@ void send_report(void *report, uint16_t report_size)
 		{
 			case INPUT_MODE_XINPUT:
 				sent = send_xinput_report(report, report_size);
+				break;
+			case INPUT_MODE_KEYBOARD:
+				sent = send_keyboard_report(report);
 				break;
 
 			default:
@@ -124,8 +127,9 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 			memcpy(buffer, &switch_report, report_size);
 			break;
 		case INPUT_MODE_KEYBOARD:
-			report_size = sizeof(KeyboardReport);
-			memcpy(buffer, &keyboard_report, report_size);
+			report_size = report_id == KEYBOARD_KEY_REPORT_ID ? sizeof(KeyboardReport::keycode) : sizeof(KeyboardReport::multimedia);
+			memcpy(buffer, report_id == KEYBOARD_KEY_REPORT_ID ?
+				(void*) keyboard_report.keycode : (void*) &keyboard_report.multimedia, report_size);
 			break;
 		case INPUT_MODE_PS4:
 			if ( report_type == HID_REPORT_TYPE_FEATURE ) {

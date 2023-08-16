@@ -2,8 +2,7 @@
 $primary: #495057;
 $danger: #7b2d26;
 
-@import '~bootstrap/scss/bootstrap';
-@import '~bootstrap-icons/font/bootstrap-icons';
+@import "~bootstrap/scss/bootstrap";
 
 :root {
 	--bs-primary-rgb: 20, 23, 30;
@@ -15,8 +14,8 @@ $danger: #7b2d26;
 
 body {
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
 		sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -28,7 +27,8 @@ h1 {
 }
 
 code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
 }
 
 input.form-control {
@@ -42,10 +42,8 @@ button {
 	flex-direction: row;
 	align-items: center;
 	flex: 0 0 auto;
-	width: auto !important;
 
 	svg {
-		margin: 0.25rem;
 		transform: translateY(-0.125rem);
 	}
 }
@@ -75,7 +73,10 @@ button {
 
 	.cover {
 		position: fixed;
-		top: 0; right: 0; bottom: 0; left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
 	}
 }
 

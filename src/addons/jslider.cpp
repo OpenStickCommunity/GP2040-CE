@@ -12,32 +12,33 @@
 
 bool JSliderInput::available() {
     const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
-	return ( options.enabled && isValidPin(options.pinLS) && isValidPin(options.pinRS) );
+	return ( options.enabled && (isValidPin(options.pinSliderOne) || isValidPin(options.pinSliderTwo)) );
 }
 
 void JSliderInput::setup()
 {
     const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
-    pinSliderLS = options.pinLS;
-    pinSliderRS = options.pinRS;
-
-    gpio_init(pinSliderLS);             // Initialize pin
-    gpio_set_dir(pinSliderLS, GPIO_IN); // Set as INPUT
-    gpio_pull_up(pinSliderLS);          // Set as PULLUP
-    gpio_init(pinSliderRS);
-    gpio_set_dir(pinSliderRS, GPIO_IN); // Set as INPUT
-    gpio_pull_up(pinSliderRS);          // Set as PULLUP
+    if ( isValidPin(options.pinSliderOne)) {
+        gpio_init(options.pinSliderOne);             // Initialize pin
+        gpio_set_dir(options.pinSliderOne, GPIO_IN); // Set as INPUT
+        gpio_pull_up(options.pinSliderOne);          // Set as PULLUP    
+    }
+    if ( isValidPin(options.pinSliderTwo)) {
+        gpio_init(options.pinSliderTwo);
+        gpio_set_dir(options.pinSliderTwo, GPIO_IN); // Set as INPUT
+        gpio_pull_up(options.pinSliderTwo);          // Set as PULLUP
+    }
 }
 
 DpadMode JSliderInput::read() {
-    if ( pinSliderLS != (uint8_t)-1 && pinSliderRS != (uint8_t)-1) {
-        if ( !gpio_get(pinSliderLS)) {
-            return DPAD_MODE_LEFT_ANALOG;
-        } else if ( !gpio_get(pinSliderRS)) {
-            return DPAD_MODE_RIGHT_ANALOG;
-        }
+    const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
+    if ( isValidPin(options.pinSliderOne) && !gpio_get(options.pinSliderOne)) {
+        return options.modeOne;
     }
-    return  DPAD_MODE_DIGITAL;
+    if ( isValidPin(options.pinSliderTwo) && !gpio_get(options.pinSliderTwo)) {
+        return options.modeTwo;
+    }
+    return options.modeZero;
 }
 
 void JSliderInput::debounce()

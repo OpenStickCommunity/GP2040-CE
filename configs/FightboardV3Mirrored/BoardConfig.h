@@ -14,7 +14,7 @@
 // You can set any of the main pins as `-1` to disable it.
 // The Turbo pin and LS + RS slider pins can also be set to `-1` to disable that functionality.
 // Please note that only when `PIN_BUTTON_TURBO` is set to `-1` will the `T##` be removed from a connected display.
-// Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
+// Please note that only when `PIN_SLIDER_ONE` and  `PIN_SLIDER_TWO` are set to `-1` will the button combo shortcut for DP/LS/RS work.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
 #define PIN_DPAD_UP     0           // UP
@@ -35,10 +35,11 @@
 #define PIN_BUTTON_R3   4           // R3 / RS / RS / R3 / 12 / RS
 #define PIN_BUTTON_A1   6           // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   17          // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_FN   -1          // Hotkey Function
 #define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
-#define PIN_SLIDER_LS    -1         // Left Stick Slider
-#define PIN_SLIDER_RS    -1         // Right Stick Slider
+#define PIN_SLIDER_ONE    -1         // Left Stick Slider
+#define PIN_SLIDER_TWO    -1         // Right Stick Slider
 #define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
 #define PIN_SLIDER_SOCD_TWO    -1         // SOCD Slider Pin Two
 
@@ -59,6 +60,8 @@
 
 #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF // 	FORCED_SETUP_MODE_OFF, FORCED_SETUP_MODE_LOCK_MODE_SWITCH, FORCED_SETUP_MODE_LOCK_WEB_CONFIG, FORCED_SETUP_MODE_LOCK_BOTH
 #define DEFAULT_LOCK_HOTKEYS false // or true
+
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
 
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
@@ -127,8 +130,15 @@
 // The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
 // To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
 
-#define ANALOG_ADC_VRX -1
-#define ANALOG_ADC_VRY -1
+#define ANALOG_ADC_1_VRX -1
+#define ANALOG_ADC_1_VRY -1
+#define ANALOG_ADC_1_MODE DPAD_MODE_LEFT_ANALOG
+#define ANALOG_ADC_1_INVERT INVERT_NONE
+
+#define ANALOG_ADC_2_VRX -1
+#define ANALOG_ADC_2_VRY -1
+#define ANALOG_ADC_2_MODE DPAD_MODE_RIGHT_ANALOG
+#define ANALOG_ADC_2_INVERT INVERT_NONE
 
 
 // This is the I2C Display section (commonly known as the OLED display section).
@@ -255,25 +265,5 @@
 #define KEY_BUTTON_R3   HID_KEY_MINUS         // R3 / RS / RS / R3 / 12 / RS
 #define KEY_BUTTON_A1   HID_KEY_9             // A1 / Guide / Home / PS / 13 / ~
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2 / ~ / Capture / ~ / 14 / ~
-
-// Hotkey Action Mapping
-// Find the list of hotkey actions in GamepadEnums.h
-#define HOTKEY_F1_UP_MASK      GAMEPAD_MASK_UP
-#define HOTKEY_F1_UP_ACTION    HOTKEY_HOME_BUTTON
-#define HOTKEY_F1_DOWN_MASK    GAMEPAD_MASK_DOWN
-#define HOTKEY_F1_DOWN_ACTION  HOTKEY_DPAD_DIGITAL
-#define HOTKEY_F1_LEFT_MASK    GAMEPAD_MASK_LEFT
-#define HOTKEY_F1_LEFT_ACTION  HOTKEY_DPAD_LEFT_ANALOG
-#define HOTKEY_F1_RIGHT_MASK   GAMEPAD_MASK_RIGHT
-#define HOTKEY_F1_RIGHT_ACTION HOTKEY_DPAD_RIGHT_ANALOG
-
-#define HOTKEY_F2_UP_MASK      GAMEPAD_MASK_UP
-#define HOTKEY_F2_UP_ACTION    HOTKEY_SOCD_UP_PRIORITY
-#define HOTKEY_F2_DOWN_MASK    GAMEPAD_MASK_DOWN
-#define HOTKEY_F2_DOWN_ACTION  HOTKEY_SOCD_NEUTRAL
-#define HOTKEY_F2_LEFT_MASK    GAMEPAD_MASK_LEFT
-#define HOTKEY_F2_LEFT_ACTION  HOTKEY_SOCD_LAST_INPUT
-#define HOTKEY_F2_RIGHT_MASK   GAMEPAD_MASK_RIGHT
-#define HOTKEY_F2_RIGHT_ACTION HOTKEY_INVERT_Y_AXIS
 
 #endif

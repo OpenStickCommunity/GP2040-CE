@@ -191,3 +191,7 @@ void AnimationStation::IncreaseBrightness() {
   else if (AnimationStation::options.brightness > getBrightnessStepSize())
     AnimationStation::SetBrightness(brightnessSteps);
 }
+
+void AnimationStation::DimBrightnessTo0() {
+  AnimationStation::brightnessX = 0;
+}

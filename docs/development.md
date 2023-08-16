@@ -9,7 +9,7 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 
 ### Windows Setup
 
-1. Install the latest ARM GNU Toolcahin
+1. Install the latest ARM GNU Toolchain
     - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 1. Install latest version of CMake
     - [CMake](https://cmake.org/download/)
@@ -351,7 +351,7 @@ An example I2C display setup in the `BoardConfig.h` file:
 ```
 
 #### I2C Display Splash
-The firmware also has a splash display feature. The default splash image has been defined in `headers/addons/i2cdisplay.h`. The data for the splash image are bytes representing the bitmap to be displayed on the OLED screen. Although, it can be set via the web-config, the default version of which can be customized with a C define named `DEFAULT_SPLASH` in the active `BoardConfig.h` file, which will persist beyond data wipe.
+The firmware also has a splash display feature. The default splash image has been defined in `headers/addons/i2cdisplay.h`. The data for the splash image are bytes representing the bitmap to be displayed on the OLED screen. The splash image can be set via the web-config. If you would like to change the default version of the splash image (to preserve it beyond data wipe), it can be customized with a C define named `DEFAULT_SPLASH` in the active `BoardConfig.h` file.
 The instructions on how to generate those bytes are as follows:
 
 1. Navigate to Bitmap Converter web utility
