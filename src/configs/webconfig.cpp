@@ -570,6 +570,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
 	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
 	readDoc(gamepadOptions.profileNumber, doc, "profileNumber");
+	readDoc(gamepadOptions.ps4ControllerType, doc, "ps4ControllerType");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -605,6 +606,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
 	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
 	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
+	writeDoc(doc, "ps4ControllerType", gamepadOptions.ps4ControllerType);
 
 	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
 	writeDoc(doc, "fnButtonPin", pinMappings.pinButtonFn);
@@ -1029,8 +1031,11 @@ std::string setAddonOptions()
 	docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-	docToPin(sliderOptions.pinLS, doc, "sliderLSPin");
-	docToPin(sliderOptions.pinRS, doc, "sliderRSPin");
+	docToPin(sliderOptions.pinSliderOne, doc, "sliderPinOne");
+	docToPin(sliderOptions.pinSliderTwo, doc, "sliderPinTwo");
+	docToValue(sliderOptions.modeZero, doc, "sliderModeZero");
+	docToValue(sliderOptions.modeOne, doc, "sliderModeOne");
+	docToValue(sliderOptions.modeTwo, doc, "sliderModeTwo");
 	docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
 
     PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
@@ -1117,6 +1122,11 @@ std::string setAddonOptions()
 	docToValue(keyboardHostOptions.mapping.keyButtonR3, doc, "keyboardHostMap", "R3");
 	docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
 	docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
+
+	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
+	docToValue(psPassthroughOptions.enabled, doc, "PSPassthroughAddonEnabled");
+	docToPin(psPassthroughOptions.pinDplus, doc, "psPassthroughPinDplus");
+	docToPin(psPassthroughOptions.pin5V, doc, "psPassthroughPin5V");
 
 	Storage::getInstance().save();
 
@@ -1262,8 +1272,11 @@ std::string getAddonOptions()
 	writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-	writeDoc(doc, "sliderLSPin", cleanPin(sliderOptions.pinLS));
-	writeDoc(doc, "sliderRSPin", cleanPin(sliderOptions.pinRS));
+	writeDoc(doc, "sliderPinOne", cleanPin(sliderOptions.pinSliderOne));
+	writeDoc(doc, "sliderPinTwo", cleanPin(sliderOptions.pinSliderTwo));
+	writeDoc(doc, "sliderModeZero", sliderOptions.modeZero);
+	writeDoc(doc, "sliderModeOne", sliderOptions.modeOne);
+	writeDoc(doc, "sliderModeTwo", sliderOptions.modeTwo);
 	writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
 
     const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
@@ -1350,6 +1363,11 @@ std::string getAddonOptions()
 	writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
 	writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
 	writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
+
+	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
+	writeDoc(doc, "PSPassthroughAddonEnabled", psPassthroughOptions.enabled);
+	writeDoc(doc, "psPassthroughPinDplus", psPassthroughOptions.pinDplus);
+	writeDoc(doc, "psPassthroughPin5V", psPassthroughOptions.pin5V);
 
 	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
