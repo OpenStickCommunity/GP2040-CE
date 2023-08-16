@@ -125,6 +125,7 @@ src/addonmanager.cpp
 src/configmanager.cpp
 src/storagemanager.cpp
 src/system.cpp
+src/usbhostmanager.cpp
 src/config_legacy.cpp
 src/config_utils.cpp
 src/configs/webconfig.cpp
@@ -143,6 +144,7 @@ src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
 src/addons/ps4mode.cpp
+src/addons/pspassthrough.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp

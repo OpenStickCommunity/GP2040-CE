@@ -33,6 +33,11 @@ const SOCD_MODES = [
 	{ labelKey: 'socd-cleaning-mode-options.off', value: 4 },
 ];
 
+const PS4_MODES = [
+	{ labelKey: 'ps4-mode-options.controller', value: 0 },
+	{ labelKey: 'ps4-mode-options.arcadestick', value: 7 },
+];
+
 const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.no-action', value: 0 },
 	{ labelKey: 'hotkey-actions.dpad-digital', value: 1 },
@@ -88,6 +93,7 @@ const schema = yup.object().shape({
 	lockHotkeys: yup.number().required().label('Lock Hotkeys'),
 	fourWayMode: yup.number().required().label('4-Way Joystick Mode'),
 	profileNumber: yup.number().required().label('Profile Number'),
+	ps4ControllerType: yup.number().required().oneOf(PS4_MODES.map(o => o.value)).label('PS4 Controller Type'),
 });
 
 const FormContext = ({ setButtonLabels }) => {
@@ -120,6 +126,8 @@ const FormContext = ({ setButtonLabels }) => {
 			values.fourWayMode = parseInt(values.fourWayMode);
 		if (!!values.profileNumber)
 			values.profileNumber = parseInt(values.profileNumber);
+        if (!!values.ps4ControllerType)
+		    values.ps4ControllerType = parseInt(values.ps4ControllerType);
 
 		setButtonLabels({ swapTpShareLabels: (values.switchTpShareForDs4 === 1) && (values.inputMode === 4) });
 
@@ -184,6 +192,7 @@ export default function SettingsPage() {
 	const translatedSocdModes = translateArray(SOCD_MODES);
 	const translatedHotkeyActions = translateArray(HOTKEY_ACTIONS);
 	const translatedForcedSetupModes = translateArray(FORCED_SETUP_MODES);
+	const translatedPS4ControllerTypeModes = translateArray(PS4_MODES);
 
 	return (
 		<Formik validationSchema={schema} onSubmit={onSuccess} initialValues={{}}>
@@ -205,16 +214,34 @@ export default function SettingsPage() {
 								</Form.Select>
 								<Form.Control.Feedback type="invalid">{errors.inputMode}</Form.Control.Feedback>
 							</div>
+							{(values.inputMode === PS4Mode) &&
 							<div className="col-sm-3">
-								{values.inputMode === PS4Mode && <Form.Check
+								<Form.Check
 									label={t('SettingsPage:input-mode-extra-label')}
 									type="switch"
 									name="switchTpShareForDs4"
 									isInvalid={false}
 									checked={Boolean(values.switchTpShareForDs4)}
 									onChange={(e) => { setFieldValue("switchTpShareForDs4", e.target.checked ? 1 : 0); }}
-								/>}
-							</div>
+								/>
+							</div>}
+							{(values.inputMode === PS4Mode) && 
+							<div className="col-sm-3">
+								<Form.Select
+									name="ps4ControllerType"
+									className="form-select-sm"
+									value={values.ps4ControllerType}
+									onChange={handleChange}
+									isInvalid={errors.ps4ControllerType}>
+									{translatedPS4ControllerTypeModes.map((o, i) => <option key={`button-ps4ControllerType-option-${i}`} value={o.value}>{o.label}</option>)}
+								</Form.Select>
+							</div>}
+							{(values.inputMode === PS4Mode) &&
+							<div className="mb-3">
+								<Trans ns="SettingsPage" i18nKey="ps4-compatibility-label">
+								For <strong>PS5 compatibility</strong>, use "Arcade Stick" and enable PS Passthrough add-on<br/>For <strong>PS4 support</strong>, use "Controller" and enable PS4 Mode add-on if you have the necessary files
+								</Trans>
+							</div>}
 						</Form.Group>
 						<Form.Group className="row mb-3">
 							<Form.Label>{t('SettingsPage:d-pad-mode-label')}</Form.Label>

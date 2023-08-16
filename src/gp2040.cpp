@@ -8,6 +8,7 @@
 #include "configmanager.h" // Global Managers
 #include "storagemanager.h"
 #include "addonmanager.h"
+#include "usbhostmanager.h"
 
 #include "addons/analog.h" // Inputs for Core0
 #include "addons/bootsel_button.h"
@@ -19,6 +20,7 @@
 #include "addons/i2canalog1219.h"
 #include "addons/jslider.h"
 #include "addons/playernum.h"
+#include "addons/pspassthrough.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
@@ -48,6 +50,13 @@ GP2040::~GP2040() {
 }
 
 void GP2040::setup() {
+	// Reduce CPU if any USB host add-on is enabled
+	const AddonOptions & addonOptions = Storage::getInstance().getAddonOptions();
+	if ( addonOptions.keyboardHostOptions.enabled ||
+			addonOptions.psPassthroughOptions.enabled ){
+	    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+	}
+
     // Setup Gamepad and Gamepad Storage
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->setup();
@@ -98,12 +107,14 @@ void GP2040::setup() {
 				break;
 			}
 	}
-
 	// Initialize our ADC (various add-ons)
 	adc_init();
 
-	// Setup Add-ons
-  	addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
+	// Setup USB add-ons
+	addons.LoadUSBAddon(new KeyboardHostAddon(), CORE0_INPUT);
+	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE0_USBREPORT);
+
+	// Setup Regular Add-ons
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
@@ -137,6 +148,9 @@ void GP2040::run() {
 			continue;
 		}
 
+		USBHostManager::getInstance().process();
+
+		// We can't send faster than USB can poll
 		if (nextRuntime > getMicro()) { // fix for unsigned
 			sleep_us(50); // Give some time back to our CPU (lower power consumption)
 			continue;

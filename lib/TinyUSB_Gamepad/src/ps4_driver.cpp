@@ -17,7 +17,7 @@ uint8_t ps4_endpoint_in = 0;
 uint8_t ps4_endpoint_out = 0;
 uint8_t ps4_out_buffer[PS4_OUT_SIZE] = {};
 
-// Alternative version
+// Controller descriptor (byte[4] = 0x00 for ps4, 0x07 for ps5)
 static constexpr uint8_t output_0x03[] = {
 	0x21, 0x27, 0x04, 0xcf, 0x00, 0x2c, 0x56,
     0x08, 0x00, 0x3d, 0x00, 0xe8, 0x03, 0x04, 0x00,
@@ -26,13 +26,6 @@ static constexpr uint8_t output_0x03[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
-
-// Passinglink version
-/*static constexpr uint8_t output_0x03[] = {
-	0x21, 0x27, 0x4, 0x40, 0x7, 0x2c, 0x56, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-	0x0, 0x0,  0xd,  0xd, 0x0,  0x0, 0x0,  0x0,  0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-	0x0, 0x0,  0x0,  0x0, 0x0,  0x0, 0x0,  0x0,  0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-};*/
 
 // Nonce Page Size: 0x38 (56)
 // Response Page Size: 0x38 (56)
@@ -63,12 +56,13 @@ ssize_t get_ps4_report(uint8_t report_id, uint8_t * buf, uint16_t reqlen)
 	uint32_t crc32;
 	ps4_out_buffer[0] = report_id;
 	switch(report_id) {
-		// Not sure on 0x03? maybe a controller qualifier
-		case PS4AuthReport::PS4_UNKNOWN_0X03:
+		// Controller Definition Report
+		case PS4AuthReport::PS4_DEFINITION:
 			if (reqlen != sizeof(output_0x03)) {
 				return -1;
 			}
 			memcpy(buf, output_0x03, reqlen);
+			buf[4] = (uint8_t)PS4Data::getInstance().ps4ControllerType; // Change controller type in definition
 			return reqlen;
 		// Use our private RSA key to sign the nonce and return chunks
 		case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
@@ -147,6 +141,7 @@ void set_ps4_report(uint8_t report_id, uint8_t const * data, uint16_t reqlen)
 		if ( nonce_page == 4 ) {
 			// Copy/append data from buffer[4:64-28] into our nonce
 			noncelen = 32; // from 4 to 64 - 24 - 4
+			PS4Data::getInstance().nonce_id = nonce_id; // for pass-through only
 		} else {
 			// Copy/append data from buffer[4:64-4] into our nonce
 			noncelen = 56;
