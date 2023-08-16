@@ -1,13 +1,16 @@
 export default {
 	'header-text': 'Display Configuration',
-	'sub-header-text': 'A monochrome display can be used to show controller status and button activity. Ensure your display module has the following attributes:',
-	'list-text': '<1>Monochrome display with 128x64 resolution</1> <1>Uses I2C with a SSD1306, SH1106, SH1107 or other compatible display IC</1> <1>Supports 3.3v operation</1>',
-	'table': {
-		'header': 'Use these tables to determine which I2C block to select based on the configured SDA and SCL pins:',
+	'sub-header-text':
+		'A monochrome display can be used to show controller status and button activity. Ensure your display module has the following attributes:',
+	'list-text':
+		'<1>Monochrome display with 128x64 resolution</1> <1>Uses I2C with a SSD1306, SH1106, SH1107 or other compatible display IC</1> <1>Supports 3.3v operation</1>',
+	table: {
+		header:
+			'Use these tables to determine which I2C block to select based on the configured SDA and SCL pins:',
 		'sda-scl-pins-header': 'SDA/SCL Pins',
 		'i2c-block-header': 'I2C Block',
 	},
-	'form': {
+	form: {
 		'i2c-block-label': 'I2C Block',
 		'sda-pin-label': 'SDA Pin',
 		'scl-pin-label': 'SCL Pin',

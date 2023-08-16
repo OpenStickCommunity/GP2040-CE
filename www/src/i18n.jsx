@@ -14,9 +14,9 @@ i18n
 			escapeValue: true,
 		},
 		detection: {
-			order: ['localStorage', 'navigator']
+			order: ['localStorage', 'navigator'],
 		},
-		resources: {en, 'en-GB': enGB}
+		resources: { en, 'en-GB': enGB },
 	});
 
 export default i18n;
