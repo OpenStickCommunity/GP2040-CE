@@ -62,6 +62,8 @@
 #define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT //INPUT_MODE_XINPUT (XInput), INPUT_MODE_SWITCH (Nintendo Switch), INPUT_MODE_HID (D-Input), INPUT_MODE_KEYBOARD (Keyboard)
 #define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL  //DPAD_MODE_DIGITAL, DPAD_MODE_LEFT_ANALOG, DPAD_MODE_RIGHT_ANALOG, 
 
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
+
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
 // The Turbo LED will flash at a speed consistant with the set speed of the Turbo when a Turbo button is active.
@@ -86,7 +88,7 @@
 
 #define TURBO_LED_PIN -1
 
-#define BOARD_LEDS_PIN 28
+#define BOARD_LEDS_PIN -1
 
 #define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
@@ -184,7 +186,7 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define HAS_I2C_DISPLAY 1
+#define HAS_I2C_DISPLAY 0
 #define I2C_SDA_PIN 0
 #define I2C_SCL_PIN 1
 #define I2C_BLOCK i2c0
@@ -295,6 +297,11 @@
 #define KEYBOARD_HOST_ENABLED 0
 #define KEYBOARD_HOST_PIN_DPLUS -1
 #define KEYBOARD_HOST_PIN_5V -1
+
+// PS Passthrough Host Addon defaults
+#define PSPASSTHROUGH_HOST_ENABLED 0
+#define PSPASSTHROUGH_HOST_PIN_DPLUS -1
+#define PSPASSTHROUGH_HOST_PIN_5V -1
 
 // For details on this, see: https://gp2040-ce.info/#/development?id=i2c-display-splash
 #define DEFAULT_SPLASH \

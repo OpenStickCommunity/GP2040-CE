@@ -60,6 +60,8 @@
 #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF // 	FORCED_SETUP_MODE_OFF, FORCED_SETUP_MODE_LOCK_MODE_SWITCH, FORCED_SETUP_MODE_LOCK_WEB_CONFIG, FORCED_SETUP_MODE_LOCK_BOTH
 #define DEFAULT_LOCK_HOTKEYS false // or true
 
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
+
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
 // The Turbo LED will flash at a speed consistant with the set speed of the Turbo when a Turbo button is active.
@@ -223,7 +225,8 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
+#define BOARD_LED_ENABLED 1
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_INPUT_TEST
 
 // Dual Directional Add-on Options
 
