@@ -67,7 +67,7 @@ static const uint8_t switch_string_manufacturer[] = "HORI CO.,LTD.";
 static const uint8_t switch_string_product[]      = "POKKEN CONTROLLER";
 static const uint8_t switch_string_version[]      = "1.0";
 
-static const uint8_t *switch_string_descriptors[] =
+static const uint8_t *switch_string_descriptors[] __attribute__((unused)) =
 {
 	switch_string_language,
 	switch_string_manufacturer,
