@@ -351,7 +351,7 @@ An example I2C display setup in the `BoardConfig.h` file:
 ```
 
 #### I2C Display Splash
-The firmware also has a splash display feature. The default splash image has been defined in `headers/addons/i2cdisplay.h`. The data for the splash image are bytes representing the bitmap to be displayed on the OLED screen. Although, it can be set via the web-config, the default version of which can be customized with a C define named `DEFAULT_SPLASH` in the active `BoardConfig.h` file, which will persist beyond data wipe.
+The firmware also has a splash display feature. The default splash image has been defined in `headers/addons/i2cdisplay.h`. The data for the splash image are bytes representing the bitmap to be displayed on the OLED screen. The splash image can be set via the web-config. If you would like to change the default version of the splash image (to preserve it beyond data wipe), it can be customized with a C define named `DEFAULT_SPLASH` in the active `BoardConfig.h` file.
 The instructions on how to generate those bytes are as follows:
 
 1. Navigate to Bitmap Converter web utility

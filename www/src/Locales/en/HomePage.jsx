@@ -9,5 +9,5 @@ export default {
 	'memory-static-allocations-text': 'Static Allocations',
 	'sub-header-text': 'Please select a menu option to proceed.',
 	'system-stats-header-text': 'System Stats',
-	'version-text': 'Version'
+	'version-text': 'Version',
 };

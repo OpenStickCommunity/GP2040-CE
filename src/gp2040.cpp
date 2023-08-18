@@ -4,9 +4,11 @@
 #include "system.h"
 #include "enums.pb.h"
 
+#include "build_info.h"
 #include "configmanager.h" // Global Managers
 #include "storagemanager.h"
 #include "addonmanager.h"
+#include "usbhostmanager.h"
 
 #include "addons/analog.h" // Inputs for Core0
 #include "addons/bootsel_button.h"
@@ -18,6 +20,7 @@
 #include "addons/i2canalog1219.h"
 #include "addons/jslider.h"
 #include "addons/playernum.h"
+#include "addons/pspassthrough.h"
 #include "addons/reverse.h"
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
@@ -35,8 +38,8 @@
 
 #define GAMEPAD_DEBOUNCE_MILLIS 5 // make this a class object
 
-static const uint32_t WEBCONFIG_HOTKEY_ACTIVATION_TIME_MS = 50;
-static const uint32_t WEBCONFIG_HOTKEY_HOLD_TIME_MS = 4000;
+static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
+static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
 GP2040::GP2040() : nextRuntime(0) {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
@@ -47,11 +50,40 @@ GP2040::~GP2040() {
 }
 
 void GP2040::setup() {
+	// Reduce CPU if any USB host add-on is enabled
+	const AddonOptions & addonOptions = Storage::getInstance().getAddonOptions();
+	if ( addonOptions.keyboardHostOptions.enabled ||
+			addonOptions.psPassthroughOptions.enabled ){
+	    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+	}
+
     // Setup Gamepad and Gamepad Storage
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->setup();
 
+	// Initialize our ADC (various add-ons)
+	adc_init();
+
+	// Setup Add-ons
+	addons.LoadUSBAddon(new KeyboardHostAddon(), CORE0_INPUT);
+	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE0_USBREPORT);
+	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
+	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
+	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
+	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
+	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
+	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
+	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
+	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
+	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
+	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
+	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
+	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
+	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
+	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
+
 	const BootAction bootAction = getBootAction();
+
 	switch (bootAction) {
 		case BootAction::ENTER_WEBCONFIG_MODE:
 			{
@@ -97,26 +129,6 @@ void GP2040::setup() {
 				break;
 			}
 	}
-
-	// Initialize our ADC (various add-ons)
-	adc_init();
-
-	// Setup Add-ons
-  	addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
-	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
-	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
-	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
-  	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
-  	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
-	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
-	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
-	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
-	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
-	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
-	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
-	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
-	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
-	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
 }
 
 void GP2040::run() {
@@ -131,11 +143,14 @@ void GP2040::run() {
 			ConfigManager::getInstance().loop();
 
 			gamepad->read();
-			webConfigHotkey.process(gamepad, configMode);
+			rebootHotkeys.process(gamepad, configMode);
 
 			continue;
 		}
 
+		USBHostManager::getInstance().process();
+
+		// We can't send faster than USB can poll
 		if (nextRuntime > getMicro()) { // fix for unsigned
 			sleep_us(50); // Give some time back to our CPU (lower power consumption)
 			continue;
@@ -147,7 +162,7 @@ void GP2040::run() {
 		gamepad->debounce();
 	#endif
 		gamepad->hotkey(); 	// check for MPGS hotkeys
-		webConfigHotkey.process(gamepad, configMode);
+		rebootHotkeys.process(gamepad, configMode);
 
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
@@ -183,7 +198,20 @@ GP2040::BootAction GP2040::getBootAction() {
 			{
 				// Determine boot action based on gamepad state during boot
 				Gamepad * gamepad = Storage::getInstance().GetGamepad();
+				Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+				
 				gamepad->read();
+
+				// Pre-Process add-ons for MPGS
+				addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+				
+				gamepad->process(); // process through MPGS
+
+				// (Post) Process for add-ons
+				addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+
+				// Copy Processed Gamepad for Core1 (race condition otherwise)
+				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 				ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 				bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
@@ -217,21 +245,22 @@ GP2040::BootAction GP2040::getBootAction() {
 	return BootAction::NONE;
 }
 
-GP2040::WebConfigHotkey::WebConfigHotkey() :
+GP2040::RebootHotkeys::RebootHotkeys() :
 	active(false),
 	noButtonsPressedTimeout(nil_time),
 	webConfigHotkeyMask(GAMEPAD_MASK_S2 | GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4),
-	webConfigHotkeyHoldTimeout(nil_time) {
+	bootselHotkeyMask(GAMEPAD_MASK_S1 | GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4),
+	rebootHotkeysHoldTimeout(nil_time) {
 }
 
-void GP2040::WebConfigHotkey::process(Gamepad* gamepad, bool configMode) {
+void GP2040::RebootHotkeys::process(Gamepad* gamepad, bool configMode) {
 	// We only allow the hotkey to trigger after we observed no buttons pressed for a certain period of time.
 	// We do this to avoid detecting buttons that are held during the boot process. In particular we want to avoid
 	// oscillating between webconfig and default mode when the user keeps holding the hotkey buttons.
 	if (!active) {
 		if (gamepad->state.buttons == 0) {
 			if (is_nil_time(noButtonsPressedTimeout)) {
-				noButtonsPressedTimeout = make_timeout_time_us(WEBCONFIG_HOTKEY_ACTIVATION_TIME_MS);
+				noButtonsPressedTimeout = make_timeout_time_us(REBOOT_HOTKEY_ACTIVATION_TIME_MS);
 			}
 
 			if (time_reached(noButtonsPressedTimeout)) {
@@ -241,17 +270,21 @@ void GP2040::WebConfigHotkey::process(Gamepad* gamepad, bool configMode) {
 			noButtonsPressedTimeout = nil_time;
 		}
 	} else {
-		if (gamepad->state.buttons == webConfigHotkeyMask) {
-			if (is_nil_time(webConfigHotkeyHoldTimeout)) {
-				webConfigHotkeyHoldTimeout = make_timeout_time_ms(WEBCONFIG_HOTKEY_HOLD_TIME_MS);
+		if (gamepad->state.buttons == webConfigHotkeyMask || gamepad->state.buttons == bootselHotkeyMask) {
+			if (is_nil_time(rebootHotkeysHoldTimeout)) {
+				rebootHotkeysHoldTimeout = make_timeout_time_ms(REBOOT_HOTKEY_HOLD_TIME_MS);
 			}
 
-			if (time_reached(webConfigHotkeyHoldTimeout)) {
-				// If we are in webconfig mode we go to gamepad mode and vice versa
-				System::reboot(configMode ? System::BootMode::GAMEPAD : System::BootMode::WEBCONFIG);
+			if (time_reached(rebootHotkeysHoldTimeout)) {
+				if (gamepad->state.buttons == webConfigHotkeyMask) {
+					// If we are in webconfig mode we go to gamepad mode and vice versa
+					System::reboot(configMode ? System::BootMode::GAMEPAD : System::BootMode::WEBCONFIG);
+				} else if (gamepad->state.buttons == bootselHotkeyMask) {
+					System::reboot(System::BootMode::USB);
+				}
 			}
 		} else {
-			webConfigHotkeyHoldTimeout = nil_time;
+			rebootHotkeysHoldTimeout = nil_time;
 		}
 	}
 }
