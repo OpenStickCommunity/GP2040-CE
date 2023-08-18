@@ -337,7 +337,9 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 
 	const auto addPinIfValid = [&](int pin)
 	{
-		if (pin >= 0 && pin < NUM_BANK0_GPIOS)
+		int numBank0GPIOS = NUM_BANK0_GPIOS;
+		
+		if (pin >= 0 && pin < numBank0GPIOS)
 		{
 			usedPins.add(pin);
 		}
