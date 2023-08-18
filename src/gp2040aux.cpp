@@ -34,7 +34,6 @@ void GP2040Aux::setup() {
 }
 
 void GP2040Aux::run() {
-	bool configMode = Storage::getInstance().GetConfigMode();
 	while (1) {
 		if (nextRuntime > getMicro()) { // fix for unsigned
 			continue;

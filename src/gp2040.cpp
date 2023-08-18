@@ -139,7 +139,6 @@ void GP2040::run() {
 		Storage::getInstance().performEnqueuedSaves();
 		// Config Loop (Web-Config does not require gamepad)
 		if (configMode == true) {
-			ConfigManager& configManager = ConfigManager::getInstance();
 			ConfigManager::getInstance().loop();
 
 			gamepad->read();

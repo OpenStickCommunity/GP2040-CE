@@ -251,7 +251,7 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 	} else {
 		if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
 			int splashDuration = getDisplayOptions().splashDuration;
-			if (splashDuration == 0 || getMillis() < splashDuration) {
+			if (splashDuration == 0 || static_cast<uint32_t>(getMillis()) < static_cast<uint32_t>(splashDuration)) {
 				return I2CDisplayAddon::DisplayMode::SPLASH;
 			}
 		}
