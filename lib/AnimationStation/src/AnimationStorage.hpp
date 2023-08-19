@@ -10,6 +10,6 @@ class AnimationStorage
     AnimationOptions getAnimationOptions();
 };
 
-static AnimationStorage AnimationStore __attribute__((unused)) ;
+static AnimationStorage AnimationStore;
 
 #endif
