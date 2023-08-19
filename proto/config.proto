@@ -14,6 +14,7 @@ message GamepadOptions
 	optional bool lockHotkeys = 7;
 	optional bool fourWayMode = 8;
 	optional uint32 profileNumber = 9;
+	optional PS4ControllerType ps4ControllerType = 10;
 }
 
 message KeyboardMapping
@@ -309,8 +310,11 @@ message SliderOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 pinLS = 2;
-	optional int32 pinRS = 3;
+	optional int32 pinSliderOne = 2;
+	optional int32 pinSliderTwo = 3;
+	optional DpadMode modeOne = 4;
+	optional DpadMode modeTwo = 5;
+	optional DpadMode modeZero = 6;
 }
 
 message SOCDSliderOptions
@@ -420,6 +424,13 @@ message PS4Options
 	optional bytes rsaRN = 12 [(nanopb).max_size = 256];
 }
 
+message PSPassthroughOptions
+{
+	optional bool enabled = 1;
+	optional int32 pinDplus = 2;
+	optional int32 pin5V = 3;
+}
+
 message WiiOptions
 {
 	optional bool enabled = 1;
@@ -503,7 +514,8 @@ message AddonOptions
 	optional FocusModeOptions focusModeOptions = 16;
 	optional KeyboardHostOptions keyboardHostOptions = 17;
 	optional TiltOptions tiltOptions = 18;
-	optional MacroOptions macroOptions = 19;
+	optional PSPassthroughOptions psPassthroughOptions = 19;
+	optional MacroOptions macroOptions = 20;
 }
 
 message Config

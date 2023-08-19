@@ -6,7 +6,8 @@ const DangerSection = ({ className, titleClassName, ...props }) => {
 		<Section
 			className={`border-danger ${className}`}
 			titleClassName={`text-white bg-danger ${titleClassName}`}
-			{...props} />
+			{...props}
+		/>
 	);
 };
 

@@ -2,19 +2,19 @@
  * GP2040-CE Configurator Development Server
  */
 
-import express from "express";
-import cors from "cors";
-import mapValues from "lodash/mapValues.js";
-import { readFileSync } from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { DEFAULT_KEYBOARD_MAPPING } from "../src/Data/Keyboard.js";
+import express from 'express';
+import cors from 'cors';
+import mapValues from 'lodash/mapValues.js';
+import { readFileSync } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { DEFAULT_KEYBOARD_MAPPING } from '../src/Data/Keyboard.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const { pico: picoController } = JSON.parse(
-	readFileSync(path.resolve(__dirname, "../src/Data/Controllers.json"), "utf8")
+	readFileSync(path.resolve(__dirname, '../src/Data/Controllers.json'), 'utf8'),
 );
 
 const port = process.env.PORT || 8080;
@@ -23,24 +23,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use((req, res, next) => {
-	console.log("Request:", req.method, req.url);
+	console.log('Request:', req.method, req.url);
 	next();
 });
 
-app.get("/api/getUsedPins", (req, res) => {
+app.get('/api/getUsedPins', (req, res) => {
 	return res.send({ usedPins: Object.values(picoController) });
 });
 
-app.get("/api/resetSettings", (req, res) => {
+app.get('/api/resetSettings', (req, res) => {
 	return res.send({ success: true });
 });
 
-app.get("/api/getDisplayOptions", (req, res) => {
+app.get('/api/getDisplayOptions', (req, res) => {
 	const data = {
 		enabled: 1,
 		sdaPin: 0,
 		sclPin: 1,
-		i2cAddress: "0x3D",
+		i2cAddress: '0x3D',
 		i2cBlock: 0,
 		i2cSpeed: 400000,
 		flipDisplay: 0,
@@ -70,19 +70,19 @@ app.get("/api/getDisplayOptions", (req, res) => {
 
 		displaySaverTimeout: 0,
 	};
-	console.log("data", data);
+	console.log('data', data);
 	return res.send(data);
 });
 
-app.get("/api/getSplashImage", (req, res) => {
+app.get('/api/getSplashImage', (req, res) => {
 	const data = {
 		splashImage: Array(16 * 64).fill(255),
 	};
-	console.log("data", data);
+	console.log('data', data);
 	return res.send(data);
 });
 
-app.get("/api/getGamepadOptions", (req, res) => {
+app.get('/api/getGamepadOptions', (req, res) => {
 	return res.send({
 		dpadMode: 0,
 		inputMode: 4,
@@ -93,70 +93,71 @@ app.get("/api/getGamepadOptions", (req, res) => {
 		fourWayMode: 0,
 		fnButtonPin: -1,
 		profileNumber: 1,
+		ps4ControllerType: 0,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
-			action: 4
+			action: 4,
 		},
 		hotkey02: {
 			auxMask: 0,
 			buttonsMask: 131840,
-			action: 1
+			action: 1,
 		},
 		hotkey03: {
 			auxMask: 0,
 			buttonsMask: 262912,
-			action: 2
+			action: 2,
 		},
 		hotkey04: {
 			auxMask: 0,
 			buttonsMask: 525056,
-			action: 3
+			action: 3,
 		},
 		hotkey05: {
 			auxMask: 0,
 			buttonsMask: 70144,
-			action: 6
+			action: 6,
 		},
 		hotkey06: {
 			auxMask: 0,
 			buttonsMask: 135680,
-			action: 7
+			action: 7,
 		},
 		hotkey07: {
 			auxMask: 0,
 			buttonsMask: 266752,
-			action: 8
+			action: 8,
 		},
 		hotkey08: {
 			auxMask: 0,
 			buttonsMask: 528896,
-			action: 10
+			action: 10,
 		},
 		hotkey09: {
 			auxMask: 0,
 			buttonsMask: 0,
-			action: 0
+			action: 0,
 		},
 		hotkey10: {
 			auxMask: 0,
 			buttonsMask: 0,
-			action: 0
+			action: 0,
 		},
 		hotkey11: {
 			auxMask: 0,
 			buttonsMask: 0,
-			action: 0
+			action: 0,
 		},
 		hotkey12: {
 			auxMask: 0,
 			buttonsMask: 0,
-			action: 0
-		}
+			action: 0,
+		},
 	});
 });
 
-app.get("/api/getLedOptions", (req, res) => {
+app.get('/api/getLedOptions', (req, res) => {
 	return res.send({
 		brightnessMaximum: 255,
 		brightnessSteps: 5,
@@ -194,8 +195,8 @@ app.get("/api/getLedOptions", (req, res) => {
 	});
 });
 
-app.get("/api/getCustomTheme", (req, res) => {
-	console.log("/api/getCustomTheme");
+app.get('/api/getCustomTheme', (req, res) => {
+	console.log('/api/getCustomTheme');
 	return res.send({
 		enabled: true,
 		Up: { u: 16711680, d: 255 },
@@ -219,65 +220,72 @@ app.get("/api/getCustomTheme", (req, res) => {
 	});
 });
 
-app.get("/api/getPinMappings", (req, res) => {
+app.get('/api/getPinMappings', (req, res) => {
 	return res.send(picoController);
 });
 
-app.get("/api/getKeyMappings", (req, res) =>
-	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING))
+app.get('/api/getKeyMappings', (req, res) =>
+	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
 );
 
-app.get("/api/getProfileOptions", (req, res) => {
+app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
-		alternativePinMappings: [{
-			B1: 10,
-			B2: 6,
-			B3: 11,
-			B4: 12,
-			L1: 13,
-			R1: 9,
-			L2: 7,
-			R2: 8,
-			Up: 2,
-			Down: 3,
-			Left: 5,
-			Right: 4
-		},{
-			B1: 10,
-			B2: 11,
-			B3: 12,
-			B4: 13,
-			L1: 6,
-			R1: 8,
-			L2: 7,
-			R2: 9,
-			Up: 3,
-			Down: 2,
-			Left: 4,
-			Right: 5
-		},{
-			B1: 6,
-			B2: 7,
-			B3: 8,
-			B4: 9,
-			L1: 10,
-			R1: 12,
-			L2: 11,
-			R2: 13,
-			Up: 3,
-			Down: 5,
-			Left: 4,
-			Right: 2
-		}]
+		alternativePinMappings: [
+			{
+				B1: 10,
+				B2: 6,
+				B3: 11,
+				B4: 12,
+				L1: 13,
+				R1: 9,
+				L2: 7,
+				R2: 8,
+				Up: 2,
+				Down: 3,
+				Left: 5,
+				Right: 4,
+			},
+			{
+				B1: 10,
+				B2: 11,
+				B3: 12,
+				B4: 13,
+				L1: 6,
+				R1: 8,
+				L2: 7,
+				R2: 9,
+				Up: 3,
+				Down: 2,
+				Left: 4,
+				Right: 5,
+			},
+			{
+				B1: 6,
+				B2: 7,
+				B3: 8,
+				B4: 9,
+				L1: 10,
+				R1: 12,
+				L2: 11,
+				R2: 13,
+				Up: 3,
+				Down: 5,
+				Left: 4,
+				Right: 2,
+			},
+		],
 	});
 });
 
-app.get("/api/getAddonsOptions", (req, res) => {
+app.get('/api/getAddonsOptions', (req, res) => {
 	return res.send({
 		turboPin: -1,
 		turboPinLED: -1,
-		sliderLSPin: -1,
-		sliderRSPin: -1,
+		sliderPinOne: -1,
+		sliderPinTwo: -1,
+		sliderModeZero: 0,
+		sliderModeOne: 1,
+		sliderModeTwo: 2,
 		sliderSOCDPinOne: -1,
 		sliderSOCDPinTwo: -1,
 		turboShotCount: 20,
@@ -361,6 +369,8 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		keyboardHostPinDplus: 0,
 		keyboardHostPin5V: -1,
 		keyboardHostMap: DEFAULT_KEYBOARD_MAPPING,
+		psPassthroughPinDplus: 0,
+		psPassthroughPin5V: -1,
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
@@ -379,17 +389,18 @@ app.get("/api/getAddonsOptions", (req, res) => {
 		TurboInputEnabled: 1,
 		WiiExtensionAddonEnabled: 1,
 		SNESpadAddonEnabled: 1,
+		PSPassthroughAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });
 
-app.get("/api/getFirmwareVersion", (req, res) => {
+app.get('/api/getFirmwareVersion', (req, res) => {
 	return res.send({
 		version: process.env.VITE_CURRENT_VERSION,
 	});
 });
 
-app.get("/api/getButtonLayoutCustomOptions", (req, res) => {
+app.get('/api/getButtonLayoutCustomOptions', (req, res) => {
 	return res.send({
 		params: {
 			layout: 2,
@@ -408,11 +419,11 @@ app.get("/api/getButtonLayoutCustomOptions", (req, res) => {
 	});
 });
 
-app.get("/api/reboot", (req, res) => {
+app.get('/api/reboot', (req, res) => {
 	return res.send({});
 });
 
-app.get("/api/getMemoryReport", (req, res) => {
+app.get('/api/getMemoryReport', (req, res) => {
 	return res.send({
 		totalFlash: 2048,
 		usedFlash: 1048,
@@ -422,7 +433,7 @@ app.get("/api/getMemoryReport", (req, res) => {
 	});
 });
 
-app.post("/api/*", (req, res) => {
+app.post('/api/*', (req, res) => {
 	console.log(req.body);
 	return res.send(req.body);
 });

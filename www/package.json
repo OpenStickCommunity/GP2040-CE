@@ -27,6 +27,7 @@
 		"build": "vite build && npm run makefsdata",
 		"dev-server": "nodemon -r dotenv/config ./server/app.js",
 		"dev": "concurrently --kill-others \"npm run dev-server\" \"npm start\"",
+		"format": "prettier --write \"{src,server}/**/*.{tsx,ts,jsx,js,json,scss}\"",
 		"lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
 		"makefsdata": "node makefsdata.js",
 		"start": "vite"
@@ -43,6 +44,7 @@
 		"eslint-plugin-react-refresh": "^0.4.1",
 		"express": "^4.18.2",
 		"nodemon": "^2.0.22",
+		"prettier": "^3.0.1",
 		"sass": "^1.62.1",
 		"source-map-explorer": "^2.5.3",
 		"vite": "^4.3.9"
