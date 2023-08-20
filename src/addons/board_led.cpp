@@ -24,13 +24,6 @@ void BoardLedAddon::process() {
     bool state = 0;
     Gamepad * processedGamepad;
     switch (onBoardLedMode) {
-        case OnBoardLedMode::ON_BOARD_LED_MODE_PS_AUTH:
-            state = PS4Data::getInstance().authsent == true;
-            if (prevState != state) {
-                gpio_put(BOARD_LED_PIN, state ? 1 : 0);
-            }
-            prevState = state;
-            break;
         case OnBoardLedMode::ON_BOARD_LED_MODE_INPUT_TEST: // Blinks on input
             processedGamepad = Storage::getInstance().GetProcessedGamepad();
             state =    (processedGamepad->state.buttons != 0)
@@ -71,8 +64,15 @@ void BoardLedAddon::process() {
                 }
             }
             break;
+        case OnBoardLedMode::ON_BOARD_LED_MODE_PS_AUTH:
+            state = PS4Data::getInstance().authsent == true;
+            if (prevState != state) {
+                gpio_put(BOARD_LED_PIN, state ? 1 : 0);
+            }
+            prevState = state;
+            break;
         case OnBoardLedMode::ON_BOARD_LED_MODE_OFF:
-            return;
+        default:
             break;
     }
 }
