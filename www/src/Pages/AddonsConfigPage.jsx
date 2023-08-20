@@ -212,7 +212,7 @@ const verifyAndSavePS4 = async () => {
 
 		if (success) {
 			document.getElementById('ps4alert').textContent =
-				'Verified and Saved PS4 Mode! Reboot to take effect';
+				'Verified and Saved PS4 File Authentication! Reboot to take effect';
 			document.getElementById('save').click();
 		} else {
 			throw Error('ERROR: Failed to upload the key to the board');
@@ -518,7 +518,7 @@ const schema = yup.object().shape({
 		.label('Player Number')
 		.validateRangeWhenValue('PlayerNumAddonEnabled', 1, 4),
 
-	PS4ModeAddonEnabled: yup.number().required().label('PS4 Mode Add-on Enabled'),
+	PS4ModeAddonEnabled: yup.number().required().label('PS4 File Authentication Add-on Enabled'),
 
 	ReverseInputEnabled: yup.number().required().label('Reverse Input Enabled'),
 	reversePin: yup
@@ -2352,7 +2352,7 @@ export default function AddonsConfigPage() {
 									</h2>
 									<p>
 										Please upload the 3 required files and click the
-										&quot;Verify & Save&quot; button to use PS4 Mode.
+										&quot;Verify & Save&quot; button to use PS4 File Authentication.
 									</p>
 								</Trans>
 							</Row>

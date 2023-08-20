@@ -20,7 +20,7 @@ The 8-minute timeout works like this:
 5. User unplugs their non-functional controller
 6. Go back to step 1 and repeat
 
-GP2040-CE allows you to upload the files required to authenticate your device via the [PS4 Mode addon](web-configurator?id=ps4-mode), which effectively removes this timeout issue. If you're using an OLED display, the input mode will change from `PS4` to `PS4:AS` to indicate your device has successfully authenticated with the PS4/PS5 console.
+GP2040-CE allows you to upload the files required to authenticate your device via the [PS4 File Authentication addon](web-configurator?id=ps4-mode), which effectively removes this timeout issue. If you're using an OLED display, the input mode will change from `PS4` to `PS4:AS` to indicate your device has successfully authenticated with the PS4/PS5 console.
 
 !> **The GP2040-CE project will not provide files or information related to authenticating your device beyond what the firmware has implemented. Please do not ask via any of our communication channels as this may result in a blacklist/ban.**
 

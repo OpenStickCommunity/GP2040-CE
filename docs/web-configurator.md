@@ -274,9 +274,9 @@ Values are:
 * `SOCD Slider Mode Two` - The SOCD mode you would like to have enabled for the second slder position.
 * `Pin Two` - The GPIO pin used for second SOCD mode slider position.
 
-### PS4 Mode
+### PS4 File Authentication
 
-![GP2040 Configurator - PS4 Mode](assets/images/gpc-add-ons-ps4-mode.png)
+![GP2040 Configurator - PS4 File Authentication](assets/images/gpc-add-ons-ps4-mode.png)
 
 Please note that GP2040-CE will never provide these files!
 

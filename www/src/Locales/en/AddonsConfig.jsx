@@ -106,9 +106,9 @@ export default {
 	'socd-cleaning-mode-selection-slider-pin-one-label': 'Pin One',
 	'socd-cleaning-mode-selection-slider-mode-two-label': 'SOCD Slider Mode Two',
 	'socd-cleaning-mode-selection-slider-pin-two-label': 'Pin Two',
-	'ps4-mode-header-text': 'PS4 Mode',
+	'ps4-mode-header-text': 'PS4 File Authentication',
 	'ps4-mode-sub-header-text':
-		'<0>!!!! DISCLAIMER: GP2040-CE WILL NEVER SUPPLY THESE FILES !!!!</0> <1>Please upload the 3 required files and click the "Verify & Save" button to use PS4 Mode.</1>',
+		'<0>!!!! DISCLAIMER: GP2040-CE WILL NEVER SUPPLY THESE FILES !!!!</0> <1>Please upload the 3 required files and click the "Verify & Save" button to use PS4 File Authentication.</1>',
 	'ps4-mode-private-key-label': 'Private Key (PEM)',
 	'ps4-mode-serial-number-label': 'Serial Number (16 Bytes in Hex Ascii)',
 	'ps4-mode-signature-label': 'Signature (256 Bytes in Binary)',
@@ -133,7 +133,7 @@ export default {
 	'keyboard-host-d-plus-label': 'D+',
 	'keyboard-host-d-minus-label': 'D-',
 	'keyboard-host-five-v-label': '5V Power (optional)',
-	'pspassthrough-header-text': 'PS Passthrough',
+	'pspassthrough-header-text': 'PS Passthrough Authentication',
 	'pspassthrough-sub-header-text':
 		'Following set the data +, - and 5V (optional) pins. Only the + and 5V pin can be configured.',
 	'pspassthrough-d-plus-label': 'D+',

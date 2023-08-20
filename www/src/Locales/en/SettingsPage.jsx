@@ -31,7 +31,7 @@ export default {
 	},
 	'profile-number-label': 'Profile Number',
 	'ps4-compatibility-label':
-		'For <strong>PS5 compatibility</strong>, use "Arcade Stick" and enable PS Passthrough add-on<br/>For <strong>PS4 support</strong>, use "Controller" and enable PS4 Mode add-on if you have the necessary files',
+		'For <strong>PS5 compatibility</strong>, use "Arcade Stick" and enable PS Passthrough add-on<br/>For <strong>PS4 support</strong>, use "Controller" and enable either "PS4 File Authentication" add-on if you have the necessary files, or use "PS Passthrough" with a PS4 compatible controller/dongle',
 	'hotkey-settings-label': 'Hotkey Settings',
 	'hotkey-settings-sub-header':
 		"The <1>Fn</1> slider provides a mappable Function button in the <3 exact='true' to='/pin-mapping'>Pin Mapping</3> page. By selecting the <1>Fn</1> slider option, the Function button must be held along with the selected hotkey settings.<5 />Additionally, select <1>None</1> from the dropdown to unassign any button.",

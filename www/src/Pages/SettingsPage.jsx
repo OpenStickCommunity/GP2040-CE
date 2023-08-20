@@ -315,7 +315,7 @@ export default function SettingsPage() {
 												Stick" and enable PS Passthrough add-on
 												<br />
 												For <strong>PS4 support</strong>, use "Controller" and
-												enable PS4 Mode add-on if you have the necessary files
+												enable PS4 File Authentication add-on if you have the necessary files
 											</Trans>
 										</div>
 									)}
