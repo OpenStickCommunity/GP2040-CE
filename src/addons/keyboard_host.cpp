@@ -10,8 +10,6 @@ bool KeyboardHostAddon::available() {
 }
 
 void KeyboardHostAddon::setup() {
-  set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
-
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
   const KeyboardMapping& keyboardMapping = keyboardHostOptions.mapping;
 
