@@ -28,6 +28,55 @@ void SNESpadInput::setup() {
         snesOptions.dataPin);
     snes->begin();
     snes->start();
+
+    // Run during setup to catch boot selection mode
+    snes->poll();
+
+    if (snes->type == SNES_PAD_BASIC) {
+        buttonA = snes->buttonA;
+        buttonB = snes->buttonB;
+        buttonX = snes->buttonX;
+        buttonY = snes->buttonY;
+        buttonL = snes->buttonL;
+        buttonR = snes->buttonR;
+        dpadUp = snes->directionUp;
+        dpadDown = snes->directionDown;
+        dpadLeft = snes->directionLeft;
+        dpadRight = snes->directionRight;
+        buttonSelect = snes->buttonSelect;
+        buttonStart = snes->buttonStart;
+
+    } else if (snes->type == SNES_PAD_NES) {
+        buttonA = snes->buttonA;
+        buttonB = snes->buttonB;
+        buttonX = false;
+        buttonY = false;
+        buttonL = false;
+        buttonR = false;
+        dpadUp = snes->directionUp;
+        dpadDown = snes->directionDown;
+        dpadLeft = snes->directionLeft;
+        dpadRight = snes->directionRight;
+        buttonSelect = snes->buttonSelect;
+        buttonStart = snes->buttonStart;
+
+    } else if (snes->type == SNES_PAD_MOUSE){
+        buttonA = snes->buttonA;
+        buttonB = snes->buttonB;
+        buttonX = false;
+        buttonY = false;
+        buttonL = false;
+        buttonR = false;
+        dpadUp = false;
+        dpadDown = false;
+        dpadLeft = false;
+        dpadRight = false;
+        buttonSelect = false;
+        buttonStart = false;
+
+        leftX = map(snes->mouseX,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        leftY = map(snes->mouseY,0,255,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+    }
 }
 
 void SNESpadInput::process() {

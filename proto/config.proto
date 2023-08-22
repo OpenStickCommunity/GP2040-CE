@@ -13,6 +13,8 @@ message GamepadOptions
 	optional bool switchTpShareForDs4 = 6;
 	optional bool lockHotkeys = 7;
 	optional bool fourWayMode = 8;
+	optional uint32 profileNumber = 9;
+	optional PS4ControllerType ps4ControllerType = 10;
 }
 
 message KeyboardMapping
@@ -113,6 +115,29 @@ message PinMappings
 	optional int32 pinButtonA1 = 17;
 	optional int32 pinButtonA2 = 18;
 	optional int32 pinButtonFn = 19;
+}
+
+
+message AlternativePinMappings
+{
+	optional int32 pinButtonB1 = 1;
+	optional int32 pinButtonB2 = 2;
+	optional int32 pinButtonB3 = 3;
+	optional int32 pinButtonB4 = 4;
+	optional int32 pinButtonL1 = 5;
+	optional int32 pinButtonR1 = 6;
+	optional int32 pinButtonL2 = 7;
+	optional int32 pinButtonR2 = 8;
+	optional int32 pinDpadUp = 9;
+	optional int32 pinDpadDown = 10;
+	optional int32 pinDpadLeft = 11;
+	optional int32 pinDpadRight = 12;
+}
+
+
+message ProfileOptions
+{
+	repeated AlternativePinMappings alternativePinMappings = 1 [(nanopb).max_count = 3];
 }
 
 message DisplayOptions
@@ -285,8 +310,11 @@ message SliderOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 pinLS = 2;
-	optional int32 pinRS = 3;
+	optional int32 pinSliderOne = 2;
+	optional int32 pinSliderTwo = 3;
+	optional DpadMode modeOne = 4;
+	optional DpadMode modeTwo = 5;
+	optional DpadMode modeZero = 6;
 }
 
 message SOCDSliderOptions
@@ -396,6 +424,13 @@ message PS4Options
 	optional bytes rsaRN = 12 [(nanopb).max_size = 256];
 }
 
+message PSPassthroughOptions
+{
+	optional bool enabled = 1;
+	optional int32 pinDplus = 2;
+	optional int32 pin5V = 3;
+}
+
 message WiiOptions
 {
 	optional bool enabled = 1;
@@ -418,6 +453,7 @@ message KeyboardHostOptions
 	optional bool enabled = 1;
 	optional int32 pinDplus = 2;
 	optional KeyboardMapping mapping = 3;
+	optional int32 pin5V = 4;
 }
 
 message FocusModeOptions
@@ -450,6 +486,7 @@ message AddonOptions
 	optional FocusModeOptions focusModeOptions = 16;
 	optional KeyboardHostOptions keyboardHostOptions = 17;
 	optional TiltOptions tiltOptions = 18;
+	optional PSPassthroughOptions psPassthroughOptions = 19;
 }
 
 message Config
@@ -465,4 +502,5 @@ message Config
 	optional AnimationOptions_Proto animationOptions = 8;
 	optional AddonOptions addonOptions = 9;
 	optional ForcedSetupOptions forcedSetupOptions = 10;
+	optional ProfileOptions profileOptions = 11;
 }

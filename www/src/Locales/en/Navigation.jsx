@@ -12,6 +12,7 @@ export default {
 	'led-config-label': 'LED Configuration',
 	'links-label': 'Links',
 	'pin-mapping-label': 'Pin Mapping',
+	'profile-settings-label': 'Profile Settings',
 	'reboot-label': 'Reboot',
 	'reboot-modal-body': 'Select a mode to reboot to',
 	'reboot-modal-button-bootsel-label': 'USB (BOOTSEL)',
@@ -22,5 +23,5 @@ export default {
 	'reboot-modal-label': 'Reboot?',
 	'reboot-modal-success': 'Done rebooting, this browser tab can now be closed.',
 	'resetSettings-label': 'Reset Settings',
-	'settings-label': 'Settings'
+	'settings-label': 'Settings',
 };

@@ -29,6 +29,78 @@ void WiiExtensionInput::setup() {
         WII_EXTENSION_I2C_ADDR);
     wii->begin();
     wii->start();
+
+    // Run during setup to catch boot selection mode
+    wii->poll();
+
+    if (wii->extensionType == WII_EXTENSION_NUNCHUCK) {
+        buttonZ = wii->buttonZ;
+        buttonC = wii->buttonC;
+
+        leftX = map(wii->joy1X,0,1023,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        leftY = map(wii->joy1Y,1023,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        rightX = GAMEPAD_JOYSTICK_MID;
+        rightY = GAMEPAD_JOYSTICK_MID;
+
+        triggerLeft = 0;
+        triggerRight = 0;
+    } else if ((wii->extensionType == WII_EXTENSION_CLASSIC) || (wii->extensionType == WII_EXTENSION_CLASSIC_PRO)) {
+        buttonA = wii->buttonA;
+        buttonB = wii->buttonB;
+        buttonX = wii->buttonX;
+        buttonY = wii->buttonY;
+        buttonL = wii->buttonZL;
+        buttonZL = wii->buttonLT;
+        buttonR = wii->buttonZR;
+        buttonZR = wii->buttonRT;
+        dpadUp = wii->directionUp;
+        dpadDown = wii->directionDown;
+        dpadLeft = wii->directionLeft;
+        dpadRight = wii->directionRight;
+        buttonSelect = wii->buttonMinus;
+        buttonStart = wii->buttonPlus;
+        buttonHome = wii->buttonHome;
+
+        if (wii->extensionType == WII_EXTENSION_CLASSIC) {
+            triggerLeft  = wii->triggerLeft;
+            triggerRight = wii->triggerRight;
+        }
+
+        leftX = map(wii->joy1X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        leftY = map(wii->joy1Y,WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        rightX = map(wii->joy2X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        rightY = map(wii->joy2Y,WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+    } else if (wii->extensionType == WII_EXTENSION_GUITAR) {
+        buttonSelect = wii->buttonMinus;
+        buttonStart = wii->buttonPlus;
+
+        dpadUp = wii->directionUp;
+        dpadDown = wii->directionDown;
+
+        buttonB = wii->fretGreen;
+        buttonA = wii->fretRed;
+        buttonX = wii->fretYellow;
+        buttonY = wii->fretBlue;
+        buttonL = wii->fretOrange;
+
+        // whammy currently maps to Joy2X in addition to the raw whammy value
+        whammyBar = wii->whammyBar;
+        buttonR = wii->pedalButton;
+
+        leftX = map(wii->joy1X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        leftY = map(wii->joy1Y,WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        rightX = map(wii->joy2X,0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
+        rightY = GAMEPAD_JOYSTICK_MID;
+
+        triggerLeft = 0;
+        triggerRight = 0;
+    } else if (wii->extensionType == WII_EXTENSION_TAIKO) {
+        buttonL = wii->rimLeft;
+        buttonR = wii->rimRight;
+
+        dpadLeft = wii->drumLeft;
+        buttonA = wii->drumRight;
+    }
 }
 
 void WiiExtensionInput::process() {

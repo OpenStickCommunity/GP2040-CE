@@ -23,17 +23,18 @@ private:
     Gamepad snapshot;
     AddonManager addons;
 
-    struct WebConfigHotkey {
-        WebConfigHotkey();
+    struct RebootHotkeys {
+        RebootHotkeys();
         void process(Gamepad* gamepad, bool configMode);
 
         bool active;
 
         absolute_time_t noButtonsPressedTimeout;
         uint16_t webConfigHotkeyMask;
-        absolute_time_t webConfigHotkeyHoldTimeout;
+        uint16_t bootselHotkeyMask;
+        absolute_time_t rebootHotkeysHoldTimeout;
     };
-    WebConfigHotkey webConfigHotkey;
+    RebootHotkeys rebootHotkeys;
 
     enum class BootAction {
         NONE,
@@ -45,7 +46,7 @@ private:
         SET_INPUT_MODE_KEYBOARD,
         SET_INPUT_MODE_PS4
     };
-    static BootAction getBootAction();
+    BootAction getBootAction();
 };
 
 #endif

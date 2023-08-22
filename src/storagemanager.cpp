@@ -9,6 +9,7 @@
 #include "AnimationStorage.hpp"
 #include "Effects/StaticColor.hpp"
 #include "FlashPROM.h"
+#include "config.pb.h"
 #include "hardware/watchdog.h"
 #include "Animation.hpp"
 #include "CRC32.h"
@@ -130,6 +131,41 @@ void Storage::ResetSettings()
 {
 	EEPROM.reset();
 	watchdog_reboot(0, SRAM_END, 2000);
+}
+
+PinMappings& Storage::getProfilePinMappings() {
+	if (functionalPinMappings == nullptr) {
+		functionalPinMappings = (PinMappings*)malloc(sizeof(PinMappings));
+		setFunctionalPinMappings(config.gamepadOptions.profileNumber);
+	}
+	return *functionalPinMappings;
+}
+
+void Storage::setProfile(const uint32_t profileNum)
+{
+	if (profileNum < 1 || profileNum > 4) return;
+	setFunctionalPinMappings(profileNum);
+	this->config.gamepadOptions.profileNumber = profileNum;
+}
+
+void Storage::setFunctionalPinMappings(const uint32_t profileNum)
+{
+	memcpy(functionalPinMappings, &config.pinMappings, sizeof(PinMappings));
+	if (profileNum < 2 || profileNum > 4) return;
+
+	AlternativePinMappings alts = this->config.profileOptions.alternativePinMappings[profileNum-2];
+	if (isValidPin(alts.pinButtonB1)) functionalPinMappings->pinButtonB1 = alts.pinButtonB1;
+	if (isValidPin(alts.pinButtonB2)) functionalPinMappings->pinButtonB2 = alts.pinButtonB2;
+	if (isValidPin(alts.pinButtonB3)) functionalPinMappings->pinButtonB3 = alts.pinButtonB3;
+	if (isValidPin(alts.pinButtonB4)) functionalPinMappings->pinButtonB4 = alts.pinButtonB4;
+	if (isValidPin(alts.pinButtonL1)) functionalPinMappings->pinButtonL1 = alts.pinButtonL1;
+	if (isValidPin(alts.pinButtonR1)) functionalPinMappings->pinButtonR1 = alts.pinButtonR1;
+	if (isValidPin(alts.pinButtonL2)) functionalPinMappings->pinButtonL2 = alts.pinButtonL2;
+	if (isValidPin(alts.pinButtonR2)) functionalPinMappings->pinButtonR2 = alts.pinButtonR2;
+	if (isValidPin(alts.pinDpadUp)) functionalPinMappings->pinDpadUp = alts.pinDpadUp;
+	if (isValidPin(alts.pinDpadDown)) functionalPinMappings->pinDpadDown = alts.pinDpadDown;
+	if (isValidPin(alts.pinDpadLeft)) functionalPinMappings->pinDpadLeft = alts.pinDpadLeft;
+	if (isValidPin(alts.pinDpadRight)) functionalPinMappings->pinDpadRight = alts.pinDpadRight;
 }
 
 void Storage::SetConfigMode(bool mode) { // hack for config mode

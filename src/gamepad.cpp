@@ -12,6 +12,10 @@
 #include "CRC32.h"
 
 #include "storagemanager.h"
+#include "system.h"
+
+// PS5 compatibility
+#include "ps4_driver.h"
 
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
@@ -94,7 +98,8 @@ Gamepad::Gamepad(int debounceMS) :
 void Gamepad::setup()
 {
 	// Configure pin mapping
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
+	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
+	const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
 	const auto convertPin = [](int32_t pin) -> uint8_t { return isValidPin(pin) ? pin : 0xff; };
 	mapDpadUp    = new GamepadButtonMapping(convertPin(pinMappings.pinDpadUp),		GAMEPAD_MASK_UP);
@@ -141,6 +146,34 @@ void Gamepad::setup()
 		gpio_set_dir(pinMappings.pinButtonFn, GPIO_IN); // Set as INPUT
 		gpio_pull_up(pinMappings.pinButtonFn);          // Set as PULLUP
 	}
+
+	// setup PS5 compatibility
+	PS4Data::getInstance().ps4ControllerType = gamepadOptions.ps4ControllerType;
+}
+
+/**
+ * @brief Undo setup().
+ */
+void Gamepad::teardown_and_reinit(const uint32_t profileNum)
+{
+	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
+	// deinitialize the GPIO pins so we don't have orphans
+	for (int i = 0; i < GAMEPAD_DIGITAL_INPUT_COUNT; i++)
+	{
+		if (gamepadMappings[i]->isAssigned())
+		{
+			gpio_deinit(gamepadMappings[i]->pin);
+		}
+	}
+	if (isValidPin(pinMappings.pinButtonFn)) {
+		gpio_deinit(pinMappings.pinButtonFn);
+	}
+
+	// set to new profile
+	Storage::getInstance().setProfile(profileNum);
+
+	// reinitialize pin mappings
+	this->setup();
 }
 
 void Gamepad::process()
@@ -212,8 +245,7 @@ void Gamepad::process()
 
 void Gamepad::read()
 {
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-
+	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
 
@@ -295,11 +327,14 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 		case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; reqSave = true; break;
 		case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; reqSave = true; break;
 		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
+		case HOTKEY_L3_BUTTON         : state.buttons |= GAMEPAD_MASK_L3; break; // Press the L3 button
+		case HOTKEY_R3_BUTTON         : state.buttons |= GAMEPAD_MASK_R3; break; // Press the R3 button
 		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; reqSave = true; break;
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;  reqSave = true;break;
 		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; reqSave = true; break;
+		case HOTKEY_REBOOT_DEFAULT    : System::reboot(System::BootMode::DEFAULT); break;
 		case HOTKEY_CAPTURE_BUTTON    :
 			if (options.inputMode == INPUT_MODE_PS4 && options.switchTpShareForDs4) {
 				state.buttons |= GAMEPAD_MASK_A2;
@@ -307,6 +342,13 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 				state.buttons |= GAMEPAD_MASK_S1;
 			}
 			break;
+		case HOTKEY_TOUCHPAD_BUTTON    :
+			if (options.inputMode == INPUT_MODE_PS4) {
+				state.buttons |= GAMEPAD_MASK_A2;
+			} else {
+				state.buttons |= GAMEPAD_MASK_S1;
+			}
+			break;				
 		case HOTKEY_INVERT_X_AXIS     :
 			if (action != lastAction) {
 				options.invertXAxis = !options.invertXAxis;
@@ -329,6 +371,30 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 			if (action != lastAction) {
 				DualDirectionalOptions& ddiOpt = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
 				ddiOpt.fourWayMode = !ddiOpt.fourWayMode;
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_1:
+			if (action != lastAction) {
+				this->teardown_and_reinit(1);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_2:
+			if (action != lastAction) {
+				this->teardown_and_reinit(2);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_3:
+			if (action != lastAction) {
+				this->teardown_and_reinit(3);
+				reqSave = true;
+			}
+			break;
+		case HOTKEY_LOAD_PROFILE_4:
+			if (action != lastAction) {
+				this->teardown_and_reinit(4);
 				reqSave = true;
 			}
 			break;
