@@ -3,7 +3,7 @@
 - [Installation](installation "GP2040-CE | Installation")
 - [Wiring](wiring "GP2040-CE | Wiring Guide")
 - [Usage](usage "GP2040-CE | Usage")
-- [Shortcuts](gp2040-shortcuts "GP2040-CE | Shortcuts")
+- [Shortcuts](gp2040-ce-shortcuts "GP2040-CE | Shortcuts")
 - [Web Configurator](web-configurator "GP2040-CE | Web Configurator")
 - [FAQ](faq "GP2040-CE | Frequently Asked Questions (FAQ)")
 - [PS4 Mode](ps4 "GP2040-CE | PS4 Mode")
