@@ -1,5 +1,6 @@
 #include "addons/board_led.h"
 #include "usb_driver.h" // Required to check USB state
+#include "ps4_driver.h"
 #include "helper.h"
 #include "config.pb.h"
 
@@ -63,8 +64,15 @@ void BoardLedAddon::process() {
                 }
             }
             break;
+        case OnBoardLedMode::ON_BOARD_LED_MODE_PS_AUTH:
+            state = PS4Data::getInstance().authsent == true;
+            if (prevState != state) {
+                gpio_put(BOARD_LED_PIN, state ? 1 : 0);
+            }
+            prevState = state;
+            break;
         case OnBoardLedMode::ON_BOARD_LED_MODE_OFF:
-            return;
+        default:
             break;
     }
 }

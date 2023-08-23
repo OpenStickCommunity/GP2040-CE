@@ -73,6 +73,7 @@ enum OnBoardLedMode
     ON_BOARD_LED_MODE_OFF = 0;
     ON_BOARD_LED_MODE_MODE_INDICATOR = 1;
     ON_BOARD_LED_MODE_INPUT_TEST = 2;
+    ON_BOARD_LED_MODE_PS_AUTH = 3;
 }
 
 enum InputMode
