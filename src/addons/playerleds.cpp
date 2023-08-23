@@ -108,12 +108,9 @@ void PlayerLEDAddon::process()
 		if (pwmLEDs != nullptr)
 			pwmLEDs->display();
 
-		switch (gamepad->getOptions().inputMode)
-		{
-			case INPUT_MODE_XINPUT:
-				animationState = getXInputAnimationPWM(featureData);
-				break;
-		}
+		if (gamepad->getOptions().inputMode == INPUT_MODE_XINPUT)
+			animationState = getXInputAnimationPWM(featureData);
+
 		if (pwmLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
 			pwmLEDs->animate(animationState);
 	}
