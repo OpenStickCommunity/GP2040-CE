@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <set>
 
 #include <pico/types.h>
 
@@ -1398,6 +1399,72 @@ std::string getMemoryReport()
 	return serialize_json(doc);
 }
 
+static bool _abortGetHeldPins = false;
+
+std::string getHeldPins()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	_abortGetHeldPins = false;
+
+	// Initialize unassigned pins so that they can be read from
+	std::vector<uint> uninitPins;
+	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		switch (pin) {
+			case 23:
+			case 24:
+			case 25:
+			case 29:
+				continue;
+		}
+		if (gpio_get_function(pin) == GPIO_FUNC_NULL) {
+			uninitPins.push_back(pin);
+			gpio_init(pin);             // Initialize pin
+			gpio_set_dir(pin, GPIO_IN); // Set as INPUT
+			gpio_pull_up(pin);          // Set as PULLUP
+		}
+	}
+
+	uint32_t timePinWait = 0;
+	timePinWait = getMillis();
+	uint32_t oldState = ~gpio_get_all();
+	uint32_t newState = 0;
+	std::set<uint> heldPinsSet;
+
+	bool isAnyPinHeld = false;
+	while ((isAnyPinHeld || ((getMillis() - timePinWait) < 5000))) {
+		ConfigManager::getInstance().loop();
+		if (_abortGetHeldPins) { doc["stopped"] = true; break; }
+		if (isAnyPinHeld && newState == oldState) { break; }
+		newState = ~gpio_get_all();
+		uint32_t newPin = newState ^ oldState;
+		for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+			if (gpio_get_function(pin) == GPIO_FUNC_SIO &&
+			   !gpio_is_dir_out(pin) && (newPin & (1 << pin))) {
+				heldPinsSet.insert(pin);
+				isAnyPinHeld = true;
+			}
+		}
+	}
+
+	auto heldPins = doc.createNestedArray("heldPins");
+	for (uint32_t pin : heldPinsSet) {
+		heldPins.add(pin);
+	}
+
+	for (uint32_t pin: uninitPins) {
+		gpio_deinit(pin);
+	}
+	return serialize_json(doc);
+}
+
+std::string abortGetHeldPins()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	_abortGetHeldPins = true;
+	doc["stopped"] = true;
+	return serialize_json(doc);
+}
+
 std::string getConfig()
 {
 	return ConfigUtils::toJSON(Storage::getInstance().getConfig());
@@ -1496,6 +1563,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getSplashImage", getSplashImage },
 	{ "/api/getFirmwareVersion", getFirmwareVersion },
 	{ "/api/getMemoryReport", getMemoryReport },
+	{ "/api/getHeldPins", getHeldPins },
+	{ "/api/abortGetHeldPins", abortGetHeldPins },
 	{ "/api/getUsedPins", getUsedPins },
 	{ "/api/getConfig", getConfig },
 #if !defined(NDEBUG)

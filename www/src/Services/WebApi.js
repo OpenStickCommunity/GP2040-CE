@@ -473,6 +473,29 @@ async function getUsedPins(setLoading) {
 	}
 }
 
+async function getHeldPins(setLoading, createAbortSignal) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getHeldPins`, {
+			signal: createAbortSignal()
+		});
+		setLoading(false);
+		return response.data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
+}
+
+async function abortGetHeldPins() {
+	try {
+		await axios.get(`${baseUrl}/api/abortGetHeldPins`);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 async function reboot(bootMode) {
 	return axios
 		.post(`${baseUrl}/api/reboot`, { bootMode })
@@ -514,6 +537,8 @@ const WebApi = {
 	getFirmwareVersion,
 	getMemoryReport,
 	getUsedPins,
+	getHeldPins,
+	abortGetHeldPins,
 	reboot,
 };
 
