@@ -98,7 +98,6 @@ void I2CDisplayAddon::setDisplayPower(uint8_t status)
 }
 
 void I2CDisplayAddon::process() {
-	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 	if (!configMode && isDisplayPowerOff()) return;
 
 	clearScreen(0);
@@ -250,7 +249,7 @@ I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 		return prevDisplayMode;
 	} else {
 		if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
-			int splashDuration = getDisplayOptions().splashDuration;
+			uint32_t splashDuration = getDisplayOptions().splashDuration;
 			if (splashDuration == 0 || getMillis() < splashDuration) {
 				return I2CDisplayAddon::DisplayMode::SPLASH;
 			}
@@ -299,7 +298,7 @@ bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
 
 	const uint8_t RANDOM_DATA[] = { 0xbf, 0x88, 0x13, 0x41, 0x00 };
 	uint8_t buffer[4];
-	int i = 0;
+	uint8_t i = 0;
 	for (; i < sizeof(RANDOM_DATA); ++i) {
 		buffer[0] = 0x80; // one command
 		buffer[1] = 0xE0; // read-modify-write
@@ -925,7 +924,6 @@ void I2CDisplayAddon::drawText(int x, int y, std::string text) {
 
 void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 {
-	const DisplayOptions& options = getDisplayOptions();
 	const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
 
 	// Limit to 21 chars with 6x8 font for now
