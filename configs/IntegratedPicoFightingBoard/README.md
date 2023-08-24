@@ -1,6 +1,6 @@
 # GP2040-CE Configuration for JasensCustoms Integrated Pico Fighting Board
 
-* GP2040-CE layout for the JasensCustoms [Integrated Pico Fighting Board(IPFB)](https://jasenscustomsarchive.com/product/integrated-pico-fighting-board/)
+* GP2040-CE layout for the JasensCustoms [Integrated Pico Fighting Board(IPFB)](https://jasenscustoms.com/collections/fight-stick-pcbs/products/integrated-pico-fighting-board-gp2040ce)
 
 Turbo on pin 28, with LED on 23. RGB LED Data set to pin 15.
 
