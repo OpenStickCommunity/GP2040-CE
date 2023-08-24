@@ -41,6 +41,16 @@
 #define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
 #define PIN_SLIDER_SOCD_TWO    -1         // SOCD Slider Pin Two
 
+// Keyboard Host Addon defaults
+#define KEYBOARD_HOST_ENABLED 0
+#define KEYBOARD_HOST_PIN_DPLUS -1
+
+// PS Passthrough Host Addon defaults
+#define PSPASSTHROUGH_HOST_ENABLED 1
+#define PSPASSTHROUGH_HOST_PIN_DPLUS 24
+#define PSPASSTHROUGH_HOST_PIN_5V -1
+
+
 
 // This is the SOCD section.
 // SOCD stands for `simultaneous opposing cardinal directions`.
@@ -58,6 +68,8 @@
 
 #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF // 	FORCED_SETUP_MODE_OFF, FORCED_SETUP_MODE_LOCK_MODE_SWITCH, FORCED_SETUP_MODE_LOCK_WEB_CONFIG, FORCED_SETUP_MODE_LOCK_BOTH
 #define DEFAULT_LOCK_HOTKEYS false // or true
+
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
 
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
