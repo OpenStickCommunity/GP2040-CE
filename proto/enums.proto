@@ -73,6 +73,7 @@ enum OnBoardLedMode
     ON_BOARD_LED_MODE_OFF = 0;
     ON_BOARD_LED_MODE_MODE_INDICATOR = 1;
     ON_BOARD_LED_MODE_INPUT_TEST = 2;
+    ON_BOARD_LED_MODE_PS_AUTH = 3;
 }
 
 enum InputMode
@@ -143,6 +144,7 @@ enum GamepadHotkey
     HOTKEY_L3_BUTTON             = 19;
     HOTKEY_R3_BUTTON             = 20;
     HOTKEY_TOUCHPAD_BUTTON       = 21;
+    HOTKEY_REBOOT_DEFAULT        = 22;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
@@ -180,3 +182,11 @@ enum ForcedSetupMode
 	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
 	FORCED_SETUP_MODE_LOCK_BOTH = 3;
 };
+
+enum PS4ControllerType
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    PS4_CONTROLLER = 0;
+    PS4_ARCADESTICK = 7;
+}

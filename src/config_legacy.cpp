@@ -987,8 +987,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SliderOptions& sliderOptions = config.addonOptions.sliderOptions;
         config.addonOptions.has_sliderOptions = true;
         SET_PROPERTY(sliderOptions, enabled, legacyAddonOptions.JSliderInputEnabled);
-        SET_PROPERTY(sliderOptions, pinLS, bytePinToIntPin(legacyAddonOptions.pinSliderLS));
-        SET_PROPERTY(sliderOptions, pinRS, bytePinToIntPin(legacyAddonOptions.pinSliderRS));
+        SET_PROPERTY(sliderOptions, pinSliderOne, bytePinToIntPin(legacyAddonOptions.pinSliderLS));
+        SET_PROPERTY(sliderOptions, pinSliderTwo, bytePinToIntPin(legacyAddonOptions.pinSliderRS));
 
         PlayerNumberOptions& playerNumberOptions = config.addonOptions.playerNumberOptions;
         config.addonOptions.has_playerNumberOptions = true;

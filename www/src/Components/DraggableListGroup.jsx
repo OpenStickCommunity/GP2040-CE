@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import './DraggableListGroup.scss'
+import React, { useEffect, useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import './DraggableListGroup.scss';
 
 const reorder = (list, startIndex, endIndex) => {
 	const result = Array.from(list);
@@ -24,31 +24,46 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 	return result;
 };
 
-const DraggableListGroup = ({ groupName, titles, dataSources, onChange, ...props }) => {
+const DraggableListGroup = ({
+	groupName,
+	titles,
+	dataSources,
+	onChange,
+	...props
+}) => {
 	const [droppableIds, setDroppableIds] = useState([]);
 	const [listData, setListData] = useState({});
 
 	useEffect(() => {
 		if (onChange)
-			onChange(Object.keys(listData).reduce((p, n) => { p.push(listData[n]); return p; }, []));
+			onChange(
+				Object.keys(listData).reduce((p, n) => {
+					p.push(listData[n]);
+					return p;
+				}, []),
+			);
 	}, [listData]);
 
 	useEffect(() => {
 		setDroppableIds(dataSources.map((v, i) => `${groupName}-${i}`));
-		setListData(dataSources.reduce((p, n) => ({ ...p, [`${groupName}-${dataSources.indexOf(n)}`]: n }), {}));
+		setListData(
+			dataSources.reduce(
+				(p, n) => ({ ...p, [`${groupName}-${dataSources.indexOf(n)}`]: n }),
+				{},
+			),
+		);
 	}, [dataSources, setDroppableIds, setListData]);
 
-	const onDragEnd = result => {
+	const onDragEnd = (result) => {
 		const { source, destination } = result;
 
-		if (!destination)
-			return;
+		if (!destination) return;
 
 		if (source.droppableId === destination.droppableId) {
 			const items = reorder(
 				listData[source.droppableId],
 				source.index,
-				destination.index
+				destination.index,
 			);
 
 			const newListData = { ...listData };
@@ -59,7 +74,7 @@ const DraggableListGroup = ({ groupName, titles, dataSources, onChange, ...props
 				listData[source.droppableId],
 				listData[destination.droppableId],
 				source,
-				destination
+				destination,
 			);
 
 			const newListData = { ...listData };
@@ -72,7 +87,7 @@ const DraggableListGroup = ({ groupName, titles, dataSources, onChange, ...props
 	return (
 		<div className="draggable-list-group">
 			<DragDropContext onDragEnd={onDragEnd}>
-				{droppableIds.map((droppableId, i) =>
+				{droppableIds.map((droppableId, i) => (
 					<div key={droppableId} className="draggable-list-container">
 						<div className="draggable-list-title">{titles[i]}</div>
 						<Droppable key={droppableId} droppableId={droppableId}>
@@ -80,20 +95,24 @@ const DraggableListGroup = ({ groupName, titles, dataSources, onChange, ...props
 								<div
 									{...droppableProvided.droppableProps}
 									ref={droppableProvided.innerRef}
-									className={`draggable-list ${droppableSnapshot.isDraggingOver ? 'list-group bg-primary' : 'list-group'} border border-dark rounded-1`}
+									className={`draggable-list ${
+										droppableSnapshot.isDraggingOver
+											? 'list-group bg-primary'
+											: 'list-group'
+									} border border-dark rounded-1`}
 								>
 									{listData[droppableId].map((item, l) => (
-										<Draggable
-											key={item.id}
-											draggableId={item.id}
-											index={l}
-										>
+										<Draggable key={item.id} draggableId={item.id} index={l}>
 											{(draggableProvided, draggableSnapshot) => (
 												<div
 													ref={draggableProvided.innerRef}
 													{...draggableProvided.draggableProps}
 													{...draggableProvided.dragHandleProps}
-													className={draggableSnapshot.isDragging ? 'list-group-item active' : 'list-group-item'}
+													className={
+														draggableSnapshot.isDragging
+															? 'list-group-item active'
+															: 'list-group-item'
+													}
 												>
 													{item.label}
 												</div>
@@ -105,7 +124,7 @@ const DraggableListGroup = ({ groupName, titles, dataSources, onChange, ...props
 							)}
 						</Droppable>
 					</div>
-				)}
+				))}
 			</DragDropContext>
 		</div>
 	);

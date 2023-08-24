@@ -143,7 +143,9 @@ PinMappings& Storage::getProfilePinMappings() {
 
 void Storage::setProfile(const uint32_t profileNum)
 {
+	if (profileNum < 1 || profileNum > 4) return;
 	setFunctionalPinMappings(profileNum);
+	this->config.gamepadOptions.profileNumber = profileNum;
 }
 
 void Storage::setFunctionalPinMappings(const uint32_t profileNum)

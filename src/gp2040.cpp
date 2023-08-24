@@ -8,6 +8,7 @@
 #include "configmanager.h" // Global Managers
 #include "storagemanager.h"
 #include "addonmanager.h"
+#include "usbhostmanager.h"
 
 #include "addons/analog.h" // Inputs for Core0
 #include "addons/bootsel_button.h"
@@ -48,11 +49,40 @@ GP2040::~GP2040() {
 }
 
 void GP2040::setup() {
+	// Reduce CPU if any USB host add-on is enabled
+	const AddonOptions & addonOptions = Storage::getInstance().getAddonOptions();
+	if ( addonOptions.keyboardHostOptions.enabled ||
+			addonOptions.psPassthroughOptions.enabled ){
+	    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+	}
+
     // Setup Gamepad and Gamepad Storage
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->setup();
 
+	// Initialize our ADC (various add-ons)
+	adc_init();
+
+	// Setup Add-ons
+	addons.LoadUSBAddon(new KeyboardHostAddon(), CORE0_INPUT);
+	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
+	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
+	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
+	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
+	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
+	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
+	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
+	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
+	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
+	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
+	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
+	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
+	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
+	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
+
+
 	const BootAction bootAction = getBootAction();
+
 	switch (bootAction) {
 		case BootAction::ENTER_WEBCONFIG_MODE:
 			{
@@ -98,26 +128,6 @@ void GP2040::setup() {
 				break;
 			}
 	}
-
-	// Initialize our ADC (various add-ons)
-	adc_init();
-
-	// Setup Add-ons
-  	addons.LoadAddon(new KeyboardHostAddon(), CORE0_INPUT);
-	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
-	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
-	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
-  	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
-  	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
-	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
-	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
-	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
-	addons.LoadAddon(new TurboInput(), CORE0_INPUT);
-	addons.LoadAddon(new WiiExtensionInput(), CORE0_INPUT);
-	addons.LoadAddon(new SNESpadInput(), CORE0_INPUT);
-	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
-	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
-	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
 }
 
 void GP2040::run() {
@@ -128,7 +138,6 @@ void GP2040::run() {
 		Storage::getInstance().performEnqueuedSaves();
 		// Config Loop (Web-Config does not require gamepad)
 		if (configMode == true) {
-			ConfigManager& configManager = ConfigManager::getInstance();
 			ConfigManager::getInstance().loop();
 
 			gamepad->read();
@@ -137,6 +146,9 @@ void GP2040::run() {
 			continue;
 		}
 
+		USBHostManager::getInstance().process();
+
+		// We can't send faster than USB can poll
 		if (nextRuntime > getMicro()) { // fix for unsigned
 			sleep_us(50); // Give some time back to our CPU (lower power consumption)
 			continue;
@@ -184,7 +196,20 @@ GP2040::BootAction GP2040::getBootAction() {
 			{
 				// Determine boot action based on gamepad state during boot
 				Gamepad * gamepad = Storage::getInstance().GetGamepad();
+				Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+				
 				gamepad->read();
+
+				// Pre-Process add-ons for MPGS
+				addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+				
+				gamepad->process(); // process through MPGS
+
+				// (Post) Process for add-ons
+				addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+
+				// Copy Processed Gamepad for Core1 (race condition otherwise)
+				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 				ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 				bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||

@@ -136,7 +136,7 @@ This section is for custom add-ons that can be enabled to expand the functionali
 
 ### BOOTSEL Button Configuration
 
-![GP2040 Configurator - Add-Ons BOOTSEL Button Configuration](assets/images/gpc-add-ons-bootsel-button.png)
+![GP2040-CE Configurator - Add-Ons BOOTSEL Button Configuration](assets/images/gpc-add-ons-bootsel-button.png)
 
 * `BOOTSEL Button` - Choose an input to be mapped to the BOOTSEL button.
 
@@ -144,7 +144,7 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ### On-board LED Configuration
 
-![GP2040 Configurator - Add-Ons On-Board LED Configuration](assets/images/gpc-add-ons-onboard-led.png)
+![GP2040-CE Configurator - Add-Ons On-Board LED Configuration](assets/images/gpc-add-ons-onboard-led.png)
 
 * `Off` - LED is off
 * `Mode Indicator` - LED is solid if unit is powered with connected data, LED blinks rapidly if powered with no data, LED blinks slowly when in web-config mode.
@@ -152,7 +152,7 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ### Analog
 
-![GP2040 Configurator - Add-Ons Analog](assets/images/gpc-add-ons-analog.png)
+![GP2040-CE Configurator - Add-Ons Analog](assets/images/gpc-add-ons-analog.png)
 
 * `Analog Stick 1 X Pin` - The GPIO pin used for the Analog Stick 1 X value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
 * `Analog Stick 1 Y Pin` - The GPIO pin used for the Analog Stick 1 Y value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
@@ -179,7 +179,7 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ### Turbo - SHMUP MODE
 
-![GP2040 Configurator - Add-Ons Turbo SHMUP MODE](assets/images/gpc-add-ons-turbo-shmup.png)
+![GP2040-CE Configurator - Add-Ons Turbo SHMUP MODE](assets/images/gpc-add-ons-turbo-shmup.png)
 
 * `Turbo Always On 1` - The GPIO pin used for a Turbo button that will always be on.
 * `Turbo Always On 2` - The GPIO pin used for a Turbo button that will always be on.
@@ -225,7 +225,7 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 ### Dual Directional Input
 
-![GP2040 Configuration - Add-Ons Dual Directional Input](assets/images/gpc-add-ons-dual-directional.png)
+![GP2040-CE Configuration - Add-Ons Dual Directional Input](assets/images/gpc-add-ons-dual-directional.png)
 
 * `Dual Up Pin` - The GPIO pin used for the secondary Up direction.
 * `Dual Down Pin` - The GPIO pin used for the secondary Down direction.
@@ -253,20 +253,20 @@ Values are:
 
 ### Extra Button Configuration
 
-![GP2040 Configurator - Extra Button](assets/images/gpc-add-ons-extra-button.png)
+![GP2040-CE Configurator - Extra Button](assets/images/gpc-add-ons-extra-button.png)
 
 * `Extra Button Pin` - The GPIO pin used for the extra instance of a button.
 * `Extra Button` - The button that will have an extra instance.
 
 ### Player Number (X-INPUT ONLY)
 
-![GP2040 Configurator - Player Number](assets/images/gpc-add-ons-player-number.png)
+![GP2040-CE Configurator - Player Number](assets/images/gpc-add-ons-player-number.png)
 
 * `Player Number` - Choose what player number this RP2040 based device will be representing.  This is only for X-INPUT mode.
 
 ### SOCD Selection Slider
 
-![GP2040 Configurator - SOCD Selection Slider](assets/images/gpc-add-ons-socd-slider.png)
+![GP2040-CE Configurator - SOCD Selection Slider](assets/images/gpc-add-ons-socd-slider.png)
 
 * `SOCD Slider Mode Default` - The default SOCD mode to be used when the slider pin is not activated.
 * `SOCD Slider Mode Tne` - The SOCD mode you would like to have enabled for the first slder position.
@@ -276,7 +276,7 @@ Values are:
 
 ### PS4 Mode
 
-![GP2040 Configurator - PS4 Mode](assets/images/gpc-add-ons-ps4-mode.png)
+![GP2040-CE Configurator - PS4 Mode](assets/images/gpc-add-ons-ps4-mode.png)
 
 Please note that GP2040-CE will never provide these files!
 
@@ -288,7 +288,7 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 
 ### Wii Extensions
 
-![GP2040 Configurator - Wii Extensions](assets/images/gpc-add-ons-wii-extensions.png)
+![GP2040-CE Configurator - Wii Extensions](assets/images/gpc-add-ons-wii-extensions.png)
 
 * `I2C SDA Pin` - The GPIO pin used for Wii Extension SDA.
 * `I2C SCL Pin` - The GPIO pin used for Wii Extension SCL.
@@ -319,7 +319,7 @@ Original Classic Controller L & R triggers are analog sensitive, where Pro trigg
 
 ### SNES Input
 
-![GP2040 Configurator - SNES Input](assets/images/gpc-add-ons-snespad-input.png)
+![GP2040-CE Configurator - SNES Input](assets/images/gpc-add-ons-snespad-input.png)
 
 * `CLOCK Pin` - The GPIO pin used for SNES CLOCK.
 * `LATCH Pin` - The GPIO pin used for SNES LATCH.
@@ -345,7 +345,7 @@ Supported controller types and their mapping is as follows:
 
 ### Focus Mode Configuration
 
-![GP2040 Configurator - Focus Mode](assets/images/gpc-add-ons-focus-mode.png)
+![GP2040-CE Configurator - Focus Mode](assets/images/gpc-add-ons-focus-mode.png)
 
 * `Focus Mode Pin` - The GPIO pin used to enable Focus Mode (this needs to always be held so a slider or latching switch is recommended).
 * `Lock OLED Screen` - When enabled the OLED screen will not display anything during Focus Mode.
@@ -354,10 +354,11 @@ Supported controller types and their mapping is as follows:
 
 ### Keyboard Host Configuration
 
-![GP2040 Configurator - Keyboard Host Configuration](assets/images/gpc-add-ons-keyboard-host-configuration.png)
+![GP2040-CE Configurator - Keyboard Host Configuration](assets/images/gpc-add-ons-keyboard-host-configuration.png)
 
 * `D+` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040
 * `D-` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
+* `5V Power (optional)` - The GPIO Pin used to enable 5V power to the host port on the board. This is not applicable to all boards.
 
 #### Example Wiring Diagram
 
@@ -365,7 +366,7 @@ Supported controller types and their mapping is as follows:
 
 * `VCC` - Connects to 5V power (Example: VBUS on the Raspberry Pi Pico)
 * `D+` - Connects to the `D+` GPIO Pin above, set in the Web Configurator. (Example: GPIO0 on the Raspberry Pi Pico)
-* `D+` - Connects to the `D-` GPIO Pin above, set in the Web Configurator. (Example: GPIO1 on the Raspberry Pi Pico)
+* `D-` - Connects to the `D-` GPIO Pin above, set in the Web Configurator. (Example: GPIO1 on the Raspberry Pi Pico)
 * `GND` - Connects to a ground pin, any `GND` pin will work. (Example: VBUS on the Raspberry Pi Pico)
 
 ## Data Backup and Restoration

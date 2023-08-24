@@ -11,7 +11,7 @@
 #include "xinput_driver.h"
 
 // GP2040-CE Version (32 character limit)
-#define GP2040VERSION "v0.7.3"
+#define GP2040VERSION "v0.7.4"
 
 #define PLED_REPORT_SIZE 32
 
@@ -34,6 +34,8 @@
 #define PLED_COLOR ColorWhite // White
 #endif
 
-static inline bool isValidPin(int32_t pin) { return pin >= 0 && pin < NUM_BANK0_GPIOS; }
+static inline bool isValidPin(int32_t pin) {
+    int32_t numBank0GPIOS = NUM_BANK0_GPIOS;
+    return pin >= 0 && pin < numBank0GPIOS; }
 
 #endif

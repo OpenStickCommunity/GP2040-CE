@@ -46,7 +46,7 @@ private:
         SET_INPUT_MODE_KEYBOARD,
         SET_INPUT_MODE_PS4
     };
-    static BootAction getBootAction();
+    BootAction getBootAction();
 };
 
 #endif

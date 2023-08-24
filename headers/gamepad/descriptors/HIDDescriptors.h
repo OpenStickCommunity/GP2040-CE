@@ -127,7 +127,7 @@ static const uint8_t hid_string_manufacturer[] = "Open Stick Community";
 static const uint8_t hid_string_product[]      = "GP2040-CE (D-Input)";
 static const uint8_t hid_string_version[]      = "1.0";
 
-static const uint8_t *hid_string_descriptors[] =
+static const uint8_t *hid_string_descriptors[] __attribute__((unused)) =
 {
 	hid_string_language,
 	hid_string_manufacturer,

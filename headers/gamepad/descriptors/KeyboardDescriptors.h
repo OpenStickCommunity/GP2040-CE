@@ -27,7 +27,7 @@ static const uint8_t keyboard_string_manfacturer[] = "Open Stick Community";
 static const uint8_t keyboard_string_product[]     = "GP2040-CE (Keyboard)";
 static const uint8_t keyboard_string_version[]     = "1.1";
 
-static const uint8_t *keyboard_string_descriptors[] =
+static const uint8_t *keyboard_string_descriptors[] __attribute__((unused)) =
 {
 	keyboard_string_language,
 	keyboard_string_manfacturer,
