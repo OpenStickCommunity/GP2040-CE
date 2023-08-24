@@ -358,6 +358,7 @@ Supported controller types and their mapping is as follows:
 
 * `D+` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040
 * `D-` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
+* `5V Power (optional)` - The GPIO Pin used to enable 5V power to the host port on the board. This is not applicable to all boards.
 
 #### Example Wiring Diagram
 
@@ -365,7 +366,7 @@ Supported controller types and their mapping is as follows:
 
 * `VCC` - Connects to 5V power (Example: VBUS on the Raspberry Pi Pico)
 * `D+` - Connects to the `D+` GPIO Pin above, set in the Web Configurator. (Example: GPIO0 on the Raspberry Pi Pico)
-* `D+` - Connects to the `D-` GPIO Pin above, set in the Web Configurator. (Example: GPIO1 on the Raspberry Pi Pico)
+* `D-` - Connects to the `D-` GPIO Pin above, set in the Web Configurator. (Example: GPIO1 on the Raspberry Pi Pico)
 * `GND` - Connects to a ground pin, any `GND` pin will work. (Example: VBUS on the Raspberry Pi Pico)
 
 ## Data Backup and Restoration
