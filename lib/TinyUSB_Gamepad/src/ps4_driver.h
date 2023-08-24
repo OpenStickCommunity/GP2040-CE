@@ -10,11 +10,13 @@
 
 #include "gamepad/descriptors/PS4Descriptors.h"
 
+#include "enums.pb.h"
+
 #define PS4_OUT_SIZE 64
 
 typedef enum
 {
-	PS4_UNKNOWN_0X03         = 0x03,    // Unknown (PS4 Report 0x03)
+	PS4_DEFINITION           = 0x03,    // PS4 Controller Definition
 	PS4_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
 	PS4_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
 	PS4_GET_SIGNING_STATE    = 0xF2,    // Get Signing State
@@ -34,7 +36,8 @@ typedef enum {
 	no_nonce = 0,
 	receiving_nonce = 1,
 	nonce_ready = 2,
-	signed_nonce_ready = 3
+	signed_nonce_ready = 3,
+	sending_nonce = 4
 } PS4State;
 
 // Storage manager for board, LED options, and thread-safe settings
@@ -51,6 +54,7 @@ public:
 	PS4State ps4State;
 	bool authsent;
 	uint8_t nonce_buffer[256];
+	uint8_t nonce_id; // used in pass-through mode
 
 	// Send back in 56 byte chunks:
 	//    256 byte - nonce signature
@@ -63,11 +67,14 @@ public:
 	// buffer = 256 + 16 + 256 + 256 + 256 + 24
 	// == 1064 bytes (almost 1 kb)
 	uint8_t ps4_auth_buffer[1064];
+	uint32_t ps4ControllerType;
+
 private:
 	PS4Data() {
 		ps4State = PS4State::no_nonce;
 		authsent = false;
 		memset(nonce_buffer, 0, 256);
 		memset(ps4_auth_buffer, 0, 1064);
+		ps4ControllerType = PS4ControllerType::PS4_CONTROLLER;
 	}
 };

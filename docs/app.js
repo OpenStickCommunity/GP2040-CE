@@ -61,6 +61,12 @@ const configData = {
 		website: 'https://learn.adafruit.com/adafruit-kb2040',
 		desc: 'Another RP2040 board in the Pro Micro form factor, with 2 additional pins for USB data. This build is configured for DIY gamepad mods.'
 	},
+	KeyboardConverter: {
+		name: 'GP2040-CE Keyboard Converter',
+		category: configCategories[1],
+		website: 'https://github.com/OpenStickCommunity/Hardware/blob/main/GP2040%20Keyboard%20Converter/Waveshare%20Zero-PCB/README.md',
+		desc: 'The GP2040-CE Keyboard Converter Case is designed to be a USB Host Device for the use of a keyboard with the GP2040-CE project. The end result is a device that allows you to play on a keyboard, but have it registered just as GP2040-CE controller, whether that is XInput, DInput, PS4, or Switch.'
+	},
 	MavercadeKeebfighter: {
 		name: 'Mavercade Keebfighter',
 		category: configCategories[2],
@@ -87,6 +93,14 @@ const configData = {
 		website: 'https://github.com/FeralAI/PicoFightingBoard',
 		desc: 'Arcade encoder board designed by <a target="_blank" href="https://github.com/FeralAI">FeralAI</a> using a Raspberry Pi Pico or pin-equivalent RP2040 board.'
 	},
+	PicoW: {
+		name: 'Raspberry Pi Pico W',
+		category: configCategories[0],
+		pos: 2,
+		pinout: '/#/wiring?id=raspberry-pi-pico',
+		website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
+		desc: 'The Raspberry Pi Pico W is a powerful, low-cost board based on the Raspberry Pi RP2040 microcontroller.'
+	},
 	RP2040AdvancedBreakoutBoard: {
 		name: 'RP2040 Advanced Breakout',
 		category: configCategories[1],
@@ -104,6 +118,18 @@ const configData = {
 		category: configCategories[1],
 		website: 'https://github.com/misteraddons/ReflexFightingBoard',
 		desc: 'Arcade encoder board designed and sold by <a target="_blank" href="https://github.com/misteraddons">MiSTerAddons</a> using an embedded RP2040 chip.'
+	},
+	ReflexCtrlSNES: {
+		name: 'Reflex CTRL SNES',
+		category: configCategories[1],
+		website: 'https://github.com/misteraddons/Reflex-CTRL',
+		desc: 'Reflex Board Open source PCB for SNES Controller replacement PCBs designed and sold by <a target="_blank" href="https://github.com/misteraddons">MiSTerAddons</a> using an embedded RP2040 chip.'
+	},
+	SGFDevices: {
+		name: 'SGF Flatbox',
+		category: configCategories[1],
+		website: 'https://github.com/sgfdevices/SGFlatbox',
+		desc: 'Configuration for the <a target="_blank" href="https://github.com/sgfdevices/SGFlatbox">SGF Flatbox-based controllers</a>, based on the excellent revisions of the Flatbox design by jfedor2 powered by an RP2040 MCU.'
 	},
 	SparkFunProMicro: {
 		name: 'SparkFun Pro Micro',

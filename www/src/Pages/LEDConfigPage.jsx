@@ -59,65 +59,133 @@ const defaultValue = {
 };
 
 const schema = yup.object().shape({
-	brightnessMaximum : yup.number().required().positive().integer().min(0).max(255).label('Max Brightness'),
-	brightnessSteps   : yup.number().required().positive().integer().min(1).max(10).label('Brightness Steps'),
-	dataPin           : yup.number().required().validatePinWhenValue('dataPin'),
-	ledFormat         : yup.number().required().positive().integer().min(0).max(3).label('LED Format'),
-	ledLayout         : yup.number().required().positive().integer().min(0).max(2).label('LED Layout'),
-	ledsPerButton     : yup.number().required().positive().integer().min(1).label('LEDs Per Pixel'),
-	pledType          : yup.number().required().label('Player LED Type'),
-	pledColor         : yup.string().label('RGB Player LEDs').validateColor(),
-	pledPin1          : yup.number().label('PLED 1').validatePinWhenEqualTo('pledPins1', 'pledType', 0),
-	pledPin2          : yup.number().label('PLED 2').validatePinWhenEqualTo('pledPins2', 'pledType', 0),
-	pledPin3          : yup.number().label('PLED 3').validatePinWhenEqualTo('pledPins3', 'pledType', 0),
-	pledPin4          : yup.number().label('PLED 4').validatePinWhenEqualTo('pledPins4', 'pledType', 0),
-	pledIndex1        : yup.number().label('PLED Index 1').validateMinWhenEqualTo('pledType', 1, 0),
-	pledIndex2        : yup.number().label('PLED Index 2').validateMinWhenEqualTo('pledType', 1, 0),
-	pledIndex3        : yup.number().label('PLED Index 3').validateMinWhenEqualTo('pledType', 1, 0),
-	pledIndex4        : yup.number().label('PLED Index 4').validateMinWhenEqualTo('pledType', 1, 0),
+	brightnessMaximum: yup
+		.number()
+		.required()
+		.positive()
+		.integer()
+		.min(0)
+		.max(255)
+		.label('Max Brightness'),
+	brightnessSteps: yup
+		.number()
+		.required()
+		.positive()
+		.integer()
+		.min(1)
+		.max(10)
+		.label('Brightness Steps'),
+	dataPin: yup.number().required().validatePinWhenValue('dataPin'),
+	ledFormat: yup
+		.number()
+		.required()
+		.positive()
+		.integer()
+		.min(0)
+		.max(3)
+		.label('LED Format'),
+	ledLayout: yup
+		.number()
+		.required()
+		.positive()
+		.integer()
+		.min(0)
+		.max(2)
+		.label('LED Layout'),
+	ledsPerButton: yup
+		.number()
+		.required()
+		.positive()
+		.integer()
+		.min(1)
+		.label('LEDs Per Pixel'),
+	pledType: yup.number().required().label('Player LED Type'),
+	pledColor: yup.string().label('RGB Player LEDs').validateColor(),
+	pledPin1: yup
+		.number()
+		.label('PLED 1')
+		.validatePinWhenEqualTo('pledPins1', 'pledType', 0),
+	pledPin2: yup
+		.number()
+		.label('PLED 2')
+		.validatePinWhenEqualTo('pledPins2', 'pledType', 0),
+	pledPin3: yup
+		.number()
+		.label('PLED 3')
+		.validatePinWhenEqualTo('pledPins3', 'pledType', 0),
+	pledPin4: yup
+		.number()
+		.label('PLED 4')
+		.validatePinWhenEqualTo('pledPins4', 'pledType', 0),
+	pledIndex1: yup
+		.number()
+		.label('PLED Index 1')
+		.validateMinWhenEqualTo('pledType', 1, 0),
+	pledIndex2: yup
+		.number()
+		.label('PLED Index 2')
+		.validateMinWhenEqualTo('pledType', 1, 0),
+	pledIndex3: yup
+		.number()
+		.label('PLED Index 3')
+		.validateMinWhenEqualTo('pledType', 1, 0),
+	pledIndex4: yup
+		.number()
+		.label('PLED Index 4')
+		.validateMinWhenEqualTo('pledType', 1, 0),
 });
 
 const getLedButtons = (buttonLabels, map, excludeNulls, swapTpShareLabels) => {
 	return orderBy(
-		Object
-			.keys(BUTTONS[buttonLabels])
-			.filter(p => p !== 'label' && p !== 'value')
-			.filter(p => excludeNulls ? map[p] > -1 : true)
-			.map(p => {
+		Object.keys(BUTTONS[buttonLabels])
+			.filter((p) => p !== 'label' && p !== 'value')
+			.filter((p) => (excludeNulls ? map[p] > -1 : true))
+			.map((p) => {
 				let label = BUTTONS[buttonLabels][p];
-				if (p === "S1" && swapTpShareLabels && buttonLabels === "ps4") {
-					label = BUTTONS[buttonLabels]["A2"];
+				if (p === 'S1' && swapTpShareLabels && buttonLabels === 'ps4') {
+					label = BUTTONS[buttonLabels]['A2'];
 				}
-				if (p === "A2" && swapTpShareLabels && buttonLabels === "ps4") {
-					label = BUTTONS[buttonLabels]["S1"];
+				if (p === 'A2' && swapTpShareLabels && buttonLabels === 'ps4') {
+					label = BUTTONS[buttonLabels]['S1'];
 				}
-				return ({ id: p, label: BUTTONS[buttonLabels][p], value: map[p] });
+				return { id: p, label: BUTTONS[buttonLabels][p], value: map[p] };
 			}),
-		"value"
+		'value',
 	);
-}
+};
 
 const getLedMap = (buttonLabels, ledButtons, excludeNulls) => {
-	if (!ledButtons)
-		return;
+	if (!ledButtons) return;
 
-	const map = Object
-		.keys(BUTTONS[buttonLabels])
-		.filter(p => p !== 'label' && p !== 'value')
-		.filter(p => excludeNulls ? ledButtons[p].value > -1 : true)
-		.reduce((p, n) => { p[n] = null; return p }, {});
+	const map = Object.keys(BUTTONS[buttonLabels])
+		.filter((p) => p !== 'label' && p !== 'value')
+		.filter((p) => (excludeNulls ? ledButtons[p].value > -1 : true))
+		.reduce((p, n) => {
+			p[n] = null;
+			return p;
+		}, {});
 
-	for (let i = 0; i < ledButtons.length; i++)
-		map[ledButtons[i].id] = i;
+	for (let i = 0; i < ledButtons.length; i++) map[ledButtons[i].id] = i;
 
 	return map;
-}
+};
 
 const FormContext = ({
-	buttonLabels, ledButtonMap, ledFormat, pledColor, pledType, swapTpShareLabels,
-	pledPin1, pledPin2, pledPin3, pledPin4,
-	pledIndex1, pledIndex2, pledIndex3, pledIndex4,
-	setDataSources
+	buttonLabels,
+	ledButtonMap,
+	ledFormat,
+	pledColor,
+	pledType,
+	swapTpShareLabels,
+	pledPin1,
+	pledPin2,
+	pledPin3,
+	pledPin4,
+	pledIndex1,
+	pledIndex2,
+	pledIndex3,
+	pledIndex4,
+	setDataSources,
 }) => {
 	const { setFieldValue, setValues } = useFormikContext();
 	const { setLoading } = useContext(AppContext);
@@ -129,11 +197,9 @@ const FormContext = ({
 			let available = {};
 			let assigned = {};
 
-			Object.keys(data.ledButtonMap).forEach(p => {
-				if (data.ledButtonMap[p] === null)
-					available[p] = data.ledButtonMap[p];
-				else
-					assigned[p] = data.ledButtonMap[p];
+			Object.keys(data.ledButtonMap).forEach((p) => {
+				if (data.ledButtonMap[p] === null) available[p] = data.ledButtonMap[p];
+				else assigned[p] = data.ledButtonMap[p];
 			});
 
 			const dataSources = [
@@ -154,8 +220,7 @@ const FormContext = ({
 	}, [buttonLabels, swapTpShareLabels]);
 
 	useEffect(() => {
-		if (!!ledFormat)
-			setFieldValue('ledFormat', parseInt(ledFormat));
+		if (!!ledFormat) setFieldValue('ledFormat', parseInt(ledFormat));
 	}, [ledFormat, setFieldValue]);
 
 	useEffect(() => {
@@ -163,40 +228,31 @@ const FormContext = ({
 	}, [ledButtonMap, setFieldValue]);
 
 	useEffect(() => {
-		if (!!pledPin1)
-			setFieldValue('pledPin1', parseInt(pledPin1));
+		if (!!pledPin1) setFieldValue('pledPin1', parseInt(pledPin1));
 	}, [pledPin1, setFieldValue]);
 	useEffect(() => {
-		if (!!pledPin2)
-			setFieldValue('pledPin2', parseInt(pledPin2));
+		if (!!pledPin2) setFieldValue('pledPin2', parseInt(pledPin2));
 	}, [pledPin2, setFieldValue]);
 	useEffect(() => {
-		if (!!pledPin3)
-			setFieldValue('pledPin3', parseInt(pledPin3));
+		if (!!pledPin3) setFieldValue('pledPin3', parseInt(pledPin3));
 	}, [pledPin3, setFieldValue]);
 	useEffect(() => {
-		if (!!pledPin4)
-			setFieldValue('pledPin4', parseInt(pledPin4));
+		if (!!pledPin4) setFieldValue('pledPin4', parseInt(pledPin4));
 	}, [pledPin4, setFieldValue]);
 	useEffect(() => {
-		if (!!pledIndex1)
-			setFieldValue('pledIndex1', parseInt(pledIndex1));
+		if (!!pledIndex1) setFieldValue('pledIndex1', parseInt(pledIndex1));
 	}, [pledIndex1, setFieldValue]);
 	useEffect(() => {
-		if (!!pledIndex2)
-			setFieldValue('pledIndex2', parseInt(pledIndex2));
+		if (!!pledIndex2) setFieldValue('pledIndex2', parseInt(pledIndex2));
 	}, [pledIndex2, setFieldValue]);
 	useEffect(() => {
-		if (!!pledIndex3)
-			setFieldValue('pledIndex3', parseInt(pledIndex3));
+		if (!!pledIndex3) setFieldValue('pledIndex3', parseInt(pledIndex3));
 	}, [pledIndex3, setFieldValue]);
 	useEffect(() => {
-		if (!!pledIndex4)
-			setFieldValue('pledIndex4', parseInt(pledIndex4));
+		if (!!pledIndex4) setFieldValue('pledIndex4', parseInt(pledIndex4));
 	}, [pledIndex4, setFieldValue]);
 	useEffect(() => {
-		if (!!pledColor)
-			setFieldValue('pledColor', pledColor);
+		if (!!pledColor) setFieldValue('pledColor', pledColor);
 	}, [pledColor, setFieldValue]);
 
 	return null;
@@ -221,12 +277,15 @@ export default function LEDConfigPage() {
 		p[1] = t(`LedConfig:pled-index-label`, { index: n });
 	});
 
-
 	const ledOrderChanged = (ledOrderArrays, ledsPerButton) => {
 		if (ledOrderArrays.length === 2) {
 			setLedButtonMap(getLedMap(buttonLabelType, ledOrderArrays[1]));
 			setRgbLedStartIndex(ledOrderArrays[1].length * (ledsPerButton || 0));
-			console.log('new start index: ', ledOrderArrays[1].length * (ledsPerButton || 0), ledOrderArrays);
+			console.log(
+				'new start index: ',
+				ledOrderArrays[1].length * (ledsPerButton || 0),
+				ledOrderArrays,
+			);
 		}
 	};
 
@@ -254,14 +313,16 @@ export default function LEDConfigPage() {
 	const onSuccess = async (values) => {
 		const data = { ...values };
 		data.pledType = parseInt(values.pledType);
-		if (data.pledColor)
-			data.pledColor = hexToInt(values.pledColor);
+		if (data.pledColor) data.pledColor = hexToInt(values.pledColor);
 
 		const success = await WebApi.setLedOptions(data);
-		if (success)
-			updateUsedPins();
+		if (success) updateUsedPins();
 
-		setSaveMessage(success ? t('Common:saved-success-message') : t('Common:saved-error-message'));
+		setSaveMessage(
+			success
+				? t('Common:saved-success-message')
+				: t('Common:saved-error-message'),
+		);
 	};
 
 	const onSubmit = (e, handleSubmit, setValues, values) => {
@@ -296,7 +357,11 @@ export default function LEDConfigPage() {
 	};
 
 	return (
-		<Formik validationSchema={schema} onSubmit={onSuccess} initialValues={defaultValue}>
+		<Formik
+			validationSchema={schema}
+			onSubmit={onSuccess}
+			initialValues={defaultValue}
+		>
 			{({
 				handleSubmit,
 				handleChange,
@@ -305,10 +370,14 @@ export default function LEDConfigPage() {
 				values,
 				errors,
 			}) => (
-				<Form noValidate onSubmit={(e) => onSubmit(e, handleSubmit, setValues, values)}>
+				<Form
+					noValidate
+					onSubmit={(e) => onSubmit(e, handleSubmit, setValues, values)}
+				>
 					<Section title={t('LedConfig:rgb.header-text')}>
 						<Row>
-							<FormControl type="number"
+							<FormControl
+								type="number"
 								label={t('LedConfig:rgb.data-pin-label')}
 								name="dataPin"
 								className="form-control-sm"
@@ -330,7 +399,11 @@ export default function LEDConfigPage() {
 								isInvalid={errors.ledFormat}
 								onChange={handleChange}
 							>
-								{LED_FORMATS.map((o, i) => <option key={`ledFormat-option-${i}`} value={o.value}>{o.label}</option>)}
+								{LED_FORMATS.map((o, i) => (
+									<option key={`ledFormat-option-${i}`} value={o.value}>
+										{o.label}
+									</option>
+								))}
 							</FormSelect>
 							<FormSelect
 								label={t('LedConfig:rgb.led-layout-label')}
@@ -342,11 +415,16 @@ export default function LEDConfigPage() {
 								isInvalid={errors.ledLayout}
 								onChange={handleChange}
 							>
-								{BUTTON_LAYOUTS.map((o, i) => <option key={`ledLayout-option-${i}`} value={o.value}>{o.label}</option>)}
+								{BUTTON_LAYOUTS.map((o, i) => (
+									<option key={`ledLayout-option-${i}`} value={o.value}>
+										{o.label}
+									</option>
+								))}
 							</FormSelect>
 						</Row>
 						<Row>
-							<FormControl type="number"
+							<FormControl
+								type="number"
 								label={t('LedConfig:rgb.leds-per-button-label')}
 								name="ledsPerButton"
 								className="form-control-sm"
@@ -357,7 +435,8 @@ export default function LEDConfigPage() {
 								onChange={(e) => ledsPerButtonChanged(e, handleChange)}
 								min={1}
 							/>
-							<FormControl type="number"
+							<FormControl
+								type="number"
 								label={t('LedConfig:rgb.led-brightness-maximum-label')}
 								name="brightnessMaximum"
 								className="form-control-sm"
@@ -369,7 +448,8 @@ export default function LEDConfigPage() {
 								min={0}
 								max={255}
 							/>
-							<FormControl type="number"
+							<FormControl
+								type="number"
 								label={t('LedConfig:rgb.led-brightness-steps-label')}
 								name="brightnessSteps"
 								className="form-control-sm"
@@ -396,11 +476,18 @@ export default function LEDConfigPage() {
 									isInvalid={errors.pledType}
 									onChange={handleChange}
 								>
-									<option value="-1" defaultValue={true}>{t('LedConfig:player.pled-type-off')}</option>
-									<option value="0">{t('LedConfig:player.pled-type-pwm')}</option>
-									<option value="1">{t('LedConfig:player.pled-type-rgb')}</option>
+									<option value="-1" defaultValue={true}>
+										{t('LedConfig:player.pled-type-off')}
+									</option>
+									<option value="0">
+										{t('LedConfig:player.pled-type-pwm')}
+									</option>
+									<option value="1">
+										{t('LedConfig:player.pled-type-rgb')}
+									</option>
 								</FormSelect>
-								<FormControl type="number"
+								<FormControl
+									type="number"
 									name="pledPin1"
 									hidden={parseInt(values.pledType) !== 0}
 									label={PLED_LABELS[0][values.pledType]}
@@ -412,7 +499,8 @@ export default function LEDConfigPage() {
 									onChange={handleChange}
 									min={0}
 								/>
-								<FormControl type="number"
+								<FormControl
+									type="number"
 									name="pledPin2"
 									hidden={parseInt(values.pledType) !== 0}
 									label={PLED_LABELS[1][values.pledType]}
@@ -424,7 +512,8 @@ export default function LEDConfigPage() {
 									onChange={handleChange}
 									min={0}
 								/>
-								<FormControl type="number"
+								<FormControl
+									type="number"
 									name="pledPin3"
 									hidden={parseInt(values.pledType) !== 0}
 									label={PLED_LABELS[2][values.pledType]}
@@ -436,7 +525,8 @@ export default function LEDConfigPage() {
 									onChange={handleChange}
 									min={0}
 								/>
-								<FormControl type="number"
+								<FormControl
+									type="number"
 									name="pledPin4"
 									hidden={parseInt(values.pledType) !== 0}
 									label={PLED_LABELS[3][values.pledType]}
@@ -448,7 +538,8 @@ export default function LEDConfigPage() {
 									onChange={handleChange}
 									min={0}
 								/>
-								<FormControl type="number"
+								<FormControl
+									type="number"
 									name="pledIndex1"
 									hidden={parseInt(values.pledType) !== 1}
 									label={PLED_LABELS[0][values.pledType]}
@@ -460,7 +551,8 @@ export default function LEDConfigPage() {
 									onChange={handleChange}
 									min={0}
 								/>
-								<FormControl type="number"
+								<FormControl
+									type="number"
 									name="pledIndex2"
 									hidden={parseInt(values.pledType) !== 1}
 									label={PLED_LABELS[1][values.pledType]}
@@ -472,7 +564,8 @@ export default function LEDConfigPage() {
 									onChange={handleChange}
 									min={0}
 								/>
-								<FormControl type="number"
+								<FormControl
+									type="number"
 									name="pledIndex3"
 									hidden={parseInt(values.pledType) !== 1}
 									label={PLED_LABELS[2][values.pledType]}
@@ -484,7 +577,8 @@ export default function LEDConfigPage() {
 									onChange={handleChange}
 									min={0}
 								/>
-								<FormControl type="number"
+								<FormControl
+									type="number"
 									name="pledIndex4"
 									hidden={parseInt(values.pledType) !== 1}
 									label={PLED_LABELS[3][values.pledType]}
@@ -518,15 +612,26 @@ export default function LEDConfigPage() {
 									onChange={(c, e) => setPledColor(values, c)}
 									onDismiss={(e) => setShowPicker(false)}
 									placement="bottom"
-									presetColors={LEDColors.map(c => ({ title: c.name, color: c.value }))}
+									presetColors={LEDColors.map((c) => ({
+										title: c.name,
+										color: c.value,
+									}))}
 									show={showPicker}
 									target={colorPickerTarget}
 								></ColorPicker>
 							</Row>
-							<p hidden={parseInt(values.pledType) !== 0}>{t('LedConfig:player.pwm-sub-header-text')}</p>
+							<p hidden={parseInt(values.pledType) !== 0}>
+								{t('LedConfig:player.pwm-sub-header-text')}
+							</p>
 							<p hidden={parseInt(values.pledType) !== 1}>
-								<Trans ns="LedConfig" i18nKey="player.rgb-sub-header-text" rgbLedStartIndex={rgbLedStartIndex}>
-									For RGB LEDs, the indexes must be after the last LED button defined in <em>RGB LED Button Order</em> section and likely <strong>starts at index {{ rgbLedStartIndex }}</strong>.
+								<Trans
+									ns="LedConfig"
+									i18nKey="player.rgb-sub-header-text"
+									rgbLedStartIndex={rgbLedStartIndex}
+								>
+									For RGB LEDs, the indexes must be after the last LED button
+									defined in <em>RGB LED Button Order</em> section and likely{' '}
+									<strong>starts at index {{ rgbLedStartIndex }}</strong>.
 								</Trans>
 							</p>
 						</Form.Group>
@@ -540,20 +645,25 @@ export default function LEDConfigPage() {
 						</p>
 						<DraggableListGroup
 							groupName="test"
-							titles={[t('LedConfig:rgb-order.available-header-text'), t('LedConfig:rgb-order.assigned-header-text')]}
+							titles={[
+								t('LedConfig:rgb-order.available-header-text'),
+								t('LedConfig:rgb-order.assigned-header-text'),
+							]}
 							dataSources={dataSources}
 							onChange={(a) => ledOrderChanged(a, values.ledsPerButton)}
 						/>
 					</Section>
 					<Button type="submit">{t('Common:button-save-label')}</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}
-					<FormContext {...{
-						buttonLabels: buttonLabelType,
-						swapTpShareLabels,
-						ledButtonMap,
-						setDataSources,
-						ledFormat: values.ledFormat
-					}} />
+					<FormContext
+						{...{
+							buttonLabels: buttonLabelType,
+							swapTpShareLabels,
+							ledButtonMap,
+							setDataSources,
+							ledFormat: values.ledFormat,
+						}}
+					/>
 				</Form>
 			)}
 		</Formik>

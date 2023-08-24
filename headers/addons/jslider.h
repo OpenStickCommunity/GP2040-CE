@@ -9,12 +9,24 @@
 #define JSLIDER_ENABLED 0
 #endif
 
-#ifndef PIN_SLIDER_LS
-#define PIN_SLIDER_LS    -1
+#ifndef PIN_SLIDER_ONE
+#define PIN_SLIDER_ONE    -1
 #endif
 
-#ifndef PIN_SLIDER_RS
-#define PIN_SLIDER_RS    -1
+#ifndef PIN_SLIDER_TWO
+#define PIN_SLIDER_TWO    -1
+#endif
+
+#ifndef SLIDER_MODE_ONE
+#define SLIDER_MODE_ONE DPAD_MODE_LEFT_ANALOG
+#endif
+
+#ifndef SLIDER_MODE_TWO
+#define SLIDER_MODE_TWO DPAD_MODE_RIGHT_ANALOG
+#endif
+
+#ifndef SLIDER_MODE_ZERO
+#define SLIDER_MODE_ZERO DPAD_MODE_DIGITAL
 #endif
 
 // JSlider Module Name

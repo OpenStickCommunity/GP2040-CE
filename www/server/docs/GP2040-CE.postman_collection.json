@@ -12,13 +12,8 @@
 				"header": [],
 				"url": {
 					"raw": "{{baseUrl}}/api/getGamepadOptions",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"api",
-						"getGamepadOptions"
-					]
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "getGamepadOptions"]
 				}
 			},
 			"response": []
@@ -30,13 +25,8 @@
 				"header": [],
 				"url": {
 					"raw": "{{baseUrl}}/api/getPinMappings",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"api",
-						"getPinMappings"
-					]
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "getPinMappings"]
 				}
 			},
 			"response": []
@@ -48,13 +38,8 @@
 				"header": [],
 				"url": {
 					"raw": "{{baseUrl}}/api/getAddonsOptions",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"api",
-						"getAddonsOptions"
-					]
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "getAddonsOptions"]
 				}
 			},
 			"response": []
@@ -66,13 +51,8 @@
 				"header": [],
 				"url": {
 					"raw": "{{baseUrl}}/api/resetSettings",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"api",
-						"resetSettings"
-					]
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "resetSettings"]
 				}
 			},
 			"response": []
@@ -93,13 +73,8 @@
 				},
 				"url": {
 					"raw": "{{baseUrl}}/api/setGamepadOptions",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"api",
-						"setGamepadOptions"
-					]
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "setGamepadOptions"]
 				}
 			},
 			"response": []
@@ -120,13 +95,8 @@
 				},
 				"url": {
 					"raw": "{{baseUrl}}/api/setGamepadOptions",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"api",
-						"setGamepadOptions"
-					]
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "setGamepadOptions"]
 				}
 			},
 			"response": []
@@ -137,18 +107,14 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"exec": [
-					""
-				]
+				"exec": [""]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"exec": [
-					""
-				]
+				"exec": [""]
 			}
 		}
 	]
