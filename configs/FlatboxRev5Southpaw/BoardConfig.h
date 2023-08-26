@@ -10,12 +10,12 @@
 
 // Mapping between Flatbox rev5 southpaw switch number (as silkscreened) and GPIO pin
 
-#define FLATBOX_SW1_PIN    7
-#define FLATBOX_SW2_PIN    6
-#define FLATBOX_SW3_PIN    5
-#define FLATBOX_SW4_PIN    4
-#define FLATBOX_SW5_PIN    3
-#define FLATBOX_SW6_PIN    2
+#define FLATBOX_SW1_PIN    4
+#define FLATBOX_SW2_PIN    3
+#define FLATBOX_SW3_PIN    2
+#define FLATBOX_SW4_PIN    5
+#define FLATBOX_SW5_PIN    6
+#define FLATBOX_SW6_PIN    7
 #define FLATBOX_SW7_PIN    13 // LEFT
 #define FLATBOX_SW8_PIN    12 // DOWN
 #define FLATBOX_SW9_PIN    11 // RIGHT
