@@ -26,7 +26,7 @@
 #define FLATBOX_SW14_PIN    9 // K1 / CROSS
 #define FLATBOX_SW15_PIN   15 // K2 / CIRCLE
 #define FLATBOX_SW16_PIN   27 // K3
-#define FLATBOX_SW17_PIN   15 // K4
+#define FLATBOX_SW17_PIN   13 // K4
 #define FLATBOX_SW18_PIN   10 // UP / THUMB
 
 
