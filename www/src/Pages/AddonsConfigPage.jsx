@@ -21,7 +21,7 @@ import Bootsel, { bootselScheme, bootselState } from '../Addons/Bootsel';
 import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
-} from '../Addons/OnboardLed';
+} from '../Addons/OnBoardLed';
 
 const I2C_BLOCKS = [
 	{ label: 'i2c0', value: 0 },
