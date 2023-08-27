@@ -337,7 +337,9 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 
 	const auto addPinIfValid = [&](int pin)
 	{
-		if (pin >= 0 && pin < NUM_BANK0_GPIOS)
+		int numBank0GPIOS = NUM_BANK0_GPIOS;
+		
+		if (pin >= 0 && pin < numBank0GPIOS)
 		{
 			usedPins.add(pin);
 		}
@@ -1139,7 +1141,6 @@ std::string setPS4Options()
 	PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
 	std::string encoded;
 	std::string decoded;
-	size_t length;
 
 	const auto readEncoded = [&](const char* key) -> bool
 	{
@@ -1405,8 +1406,6 @@ std::string getConfig()
 
 DataAndStatusCode setConfig()
 {
-	bool success = false;
-
 	// Store config struct on the heap to avoid stack overflow
 	std::unique_ptr<Config> config(new Config);
 	*config.get() = Config Config_init_default;
@@ -1527,7 +1526,6 @@ int fs_open_custom(struct fs_file *file, const char *name)
 		}
 	}
 
-	bool isExclude = false;
 	for (const char* excludePath : excludePaths)
 		if (strcmp(excludePath, name) == 0)
 			return 0;
