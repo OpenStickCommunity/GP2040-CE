@@ -3,6 +3,11 @@ import { Button, Form, Row, FormCheck } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
+import JSEncrypt from 'jsencrypt';
+import CryptoJS from 'crypto-js';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import isNil from 'lodash/isNil';
 
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
@@ -10,22 +15,17 @@ import FormSelect from '../Components/FormSelect';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
-import JSEncrypt from 'jsencrypt';
-import CryptoJS from 'crypto-js';
-import get from 'lodash/get';
-import set from 'lodash/set';
-import isNil from 'lodash/isNil';
+import { BUTTON_MASKS } from '../Data/Addons';
+
+import Bootsel, { bootselScheme, bootselState } from '../Addons/Bootsel';
+import OnBoardLed, {
+	onBoardLedScheme,
+	onBoardLedState,
+} from '../Addons/OnboardLed';
 
 const I2C_BLOCKS = [
 	{ label: 'i2c0', value: 0 },
 	{ label: 'i2c1', value: 1 },
-];
-
-const ON_BOARD_LED_MODES = [
-	{ label: 'Off', value: 0 },
-	{ label: 'Mode Indicator', value: 1 },
-	{ label: 'Input Test', value: 2 },
-	{ label: 'PS4/5 Authentication', value: 3},
 ];
 
 const DUAL_STICK_MODES = [
@@ -65,28 +65,6 @@ const INVERT_MODES = [
 ];
 
 const ANALOG_PINS = [26, 27, 28, 29];
-
-const BUTTON_MASKS = [
-	{ label: 'None', value: 0 },
-	{ label: 'B1', value: 1 << 0 },
-	{ label: 'B2', value: 1 << 1 },
-	{ label: 'B3', value: 1 << 2 },
-	{ label: 'B4', value: 1 << 3 },
-	{ label: 'L1', value: 1 << 4 },
-	{ label: 'R1', value: 1 << 5 },
-	{ label: 'L2', value: 1 << 6 },
-	{ label: 'R2', value: 1 << 7 },
-	{ label: 'S1', value: 1 << 8 },
-	{ label: 'S2', value: 1 << 9 },
-	{ label: 'L3', value: 1 << 10 },
-	{ label: 'R3', value: 1 << 11 },
-	{ label: 'A1', value: 1 << 12 },
-	{ label: 'A2', value: 1 << 13 },
-	{ label: 'Up', value: 1 << 16 },
-	{ label: 'Down', value: 1 << 17 },
-	{ label: 'Left', value: 1 << 18 },
-	{ label: 'Right', value: 1 << 19 },
-];
 
 const TURBO_MASKS = [
 	{ label: 'None', value: 0 },
@@ -307,24 +285,6 @@ const schema = yup.object().shape({
 		.number()
 		.label('Auto Calibration')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
-
-	BoardLedAddonEnabled: yup
-		.number()
-		.required()
-		.label('Board LED Add-On Enabled'),
-	onBoardLedMode: yup
-		.number()
-		.label('On-Board LED Mode')
-		.validateSelectionWhenValue('BoardLedAddonEnabled', ON_BOARD_LED_MODES),
-
-	BootselButtonAddonEnabled: yup
-		.number()
-		.required()
-		.label('Boot Select Button Add-On Enabled'),
-	bootselButtonMap: yup
-		.number()
-		.label('BOOTSEL Button Map')
-		.validateSelectionWhenValue('BootselButtonAddonEnabled', BUTTON_MASKS),
 
 	FocusModeAddonEnabled: yup
 		.number()
@@ -629,7 +589,6 @@ const schema = yup.object().shape({
 		.number()
 		.label('Charge Shot Button 4 Map')
 		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
-
 	WiiExtensionAddonEnabled: yup
 		.number()
 		.required()
@@ -653,6 +612,8 @@ const schema = yup.object().shape({
 		.number()
 		.label('WiiExtension I2C Speed')
 		.validateNumberWhenValue('WiiExtensionAddonEnabled'),
+	...bootselScheme,
+	...onBoardLedScheme,
 });
 
 const defaultValues = {
@@ -673,7 +634,6 @@ const defaultValues = {
 	i2cAnalog1219Block: 0,
 	i2cAnalog1219Speed: 400000,
 	i2cAnalog1219Address: 0x40,
-	onBoardLedMode: 0,
 	dualDirUpPin: -1,
 	dualDirDownPin: -1,
 	dualDirLeftPin: -1,
@@ -702,7 +662,6 @@ const defaultValues = {
 	forced_circularity: 0,
 	analog_deadzone: 5,
 	auto_calibrate: 0,
-	bootselButtonMap: 0,
 	buzzerPin: -1,
 	buzzerVolume: 100,
 	extrabuttonPin: -1,
@@ -737,10 +696,8 @@ const defaultValues = {
 	keyboardHostPin5V: -1,
 	keyboardHostMap: baseButtonMappings,
 	AnalogInputEnabled: 0,
-	BoardLedAddonEnabled: 0,
 	FocusModeAddonEnabled: 0,
 	BuzzerSpeakerAddonEnabled: 0,
-	BootselButtonAddonEnabled: 0,
 	DualDirectionalInputEnabled: 0,
 	TiltInputEnabled: 0,
 	ExtraButtonAddonEnabled: 0,
@@ -754,6 +711,8 @@ const defaultValues = {
 	TurboInputEnabled: 0,
 	WiiExtensionAddonEnabled: 0,
 	SNESpadAddonEnabled: 0,
+	...bootselState,
+	...onBoardLedState,
 };
 
 const FormContext = ({ setStoredData }) => {
@@ -890,77 +849,18 @@ export default function AddonsConfigPage() {
 					<Section title={t('AddonsConfig:header-text')}>
 						<p>{t('AddonsConfig:sub-header-text')}</p>
 					</Section>
-					<Section title={t('AddonsConfig:bootsel-header-text')}>
-						<div
-							id="BootselButtonAddonOptions"
-							hidden={!values.BootselButtonAddonEnabled}
-						>
-							<p>{t('AddonsConfig:bootsel-sub-header-text')}</p>
-							<FormSelect
-								label={t('AddonsConfig:bootsel-button-pin-label')}
-								name="bootselButtonMap"
-								className="form-select-sm"
-								groupClassName="col-sm-3 mb-3"
-								value={values.bootselButtonMap}
-								error={errors.bootselButtonMap}
-								isInvalid={errors.bootselButtonMap}
-								onChange={handleChange}
-							>
-								{BUTTON_MASKS.map((o, i) => (
-									<option key={`bootselButtonMap-option-${i}`} value={o.value}>
-										{o.label}
-									</option>
-								))}
-							</FormSelect>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="BootselButtonAddonButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.BootselButtonAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('BootselButtonAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
-					<Section title={t('AddonsConfig:on-board-led-configuration-label')}>
-						<div
-							id="BoardLedAddonEnabledOptions"
-							hidden={!values.BoardLedAddonEnabled}
-						>
-							<FormSelect
-								label={t('AddonsConfig:on-board-led-mode-label')}
-								name="onBoardLedMode"
-								className="form-select-sm"
-								groupClassName="col-sm-4 mb-3"
-								value={values.onBoardLedMode}
-								error={errors.onBoardLedMode}
-								isInvalid={errors.onBoardLedMode}
-								onChange={handleChange}
-							>
-								{ON_BOARD_LED_MODES.map((o, i) => (
-									<option key={`onBoardLedMode-option-${i}`} value={o.value}>
-										{o.label}
-									</option>
-								))}
-							</FormSelect>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="BoardLedAddonButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.BoardLedAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('BoardLedAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
+					<Bootsel
+						values={values}
+						errors={errors}
+						handleChange={handleChange}
+						handleCheckbox={handleCheckbox}
+					/>
+					<OnBoardLed
+						values={values}
+						errors={errors}
+						handleChange={handleChange}
+						handleCheckbox={handleCheckbox}
+					/>
 					<Section title={t('AddonsConfig:analog-header-text')}>
 						<div id="AnalogInputOptions" hidden={!values.AnalogInputEnabled}>
 							<p>{t('AddonsConfig:analog-warning')}</p>
