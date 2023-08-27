@@ -1,5 +1,5 @@
 export default {
-	'header-text': 'GPIO Mapping',
+	'header-text': 'GPIO Pin Mapping',
 	'sub-header-text':
 		'Use the form below to reconfigure your button-to-GPIO pin mapping.',
 	'alert-text':
