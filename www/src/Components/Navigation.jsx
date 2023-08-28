@@ -98,7 +98,7 @@ const Navigation = (props) => {
 							{t('Navigation:backup-label')}
 						</NavDropdown.Item>
 					</NavDropdown>
-					<NavDropdown title="Links">
+					<NavDropdown title={t('Navigation:links-label')}>
 						<NavDropdown.Item href="https://gp2040-ce.info/" target="_blank">
 							{t('Navigation:docs-label')}
 						</NavDropdown.Item>
@@ -170,8 +170,8 @@ const Navigation = (props) => {
 						{isRebooting !== BOOT_MODES.BOOTSEL
 							? t('Navigation:reboot-modal-button-bootsel-label')
 							: isRebooting
-							? t('Navigation:reboot-modal-button-progress-label')
-							: t('Navigation:reboot-modal-button-success-label')}
+								? t('Navigation:reboot-modal-button-progress-label')
+								: t('Navigation:reboot-modal-button-success-label')}
 					</Button>
 					<Button
 						variant="primary"
@@ -180,8 +180,8 @@ const Navigation = (props) => {
 						{isRebooting !== BOOT_MODES.WEBCONFIG
 							? t('Navigation:reboot-modal-button-web-config-label')
 							: isRebooting
-							? t('Navigation:reboot-modal-button-progress-label')
-							: t('Navigation:reboot-modal-button-success-label')}
+								? t('Navigation:reboot-modal-button-progress-label')
+								: t('Navigation:reboot-modal-button-success-label')}
 					</Button>
 					<Button
 						variant="success"
@@ -190,8 +190,8 @@ const Navigation = (props) => {
 						{isRebooting !== BOOT_MODES.GAMEPAD
 							? t('Navigation:reboot-modal-button-controller-label')
 							: isRebooting
-							? t('Navigation:reboot-modal-button-progress-label')
-							: t('Navigation:reboot-modal-button-success-label')}
+								? t('Navigation:reboot-modal-button-progress-label')
+								: t('Navigation:reboot-modal-button-success-label')}
 					</Button>
 				</Modal.Footer>
 			</Modal>

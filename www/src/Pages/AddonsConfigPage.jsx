@@ -25,7 +25,7 @@ const ON_BOARD_LED_MODES = [
 	{ label: 'Off', value: 0 },
 	{ label: 'Mode Indicator', value: 1 },
 	{ label: 'Input Test', value: 2 },
-	{ label: 'PS4/5 Authentication', value: 3},
+	{ label: 'PS4/5 Authentication', value: 3 },
 ];
 
 const DUAL_STICK_MODES = [
@@ -1584,8 +1584,8 @@ export default function AddonsConfigPage() {
 								/>
 								<FormControl
 									type="number"
-									label="Reverse Input Pin LED"
-									name={t('AddonsConfig:input-reverse-led-pin-label')}
+									label={t('AddonsConfig:input-reverse-led-pin-label')}
+									name="reversePinLED"
 									className="form-select-sm"
 									groupClassName="col-sm-3 mb-3"
 									value={values.reversePinLED}
@@ -2718,7 +2718,7 @@ export default function AddonsConfigPage() {
 													setFieldValue(
 														'focusModeButtonLockMask',
 														(values.focusModeButtonLockMask ^ mask.value) |
-															e.target.value,
+														e.target.value,
 													);
 												}}
 											>
