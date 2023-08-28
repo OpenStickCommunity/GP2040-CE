@@ -1,8 +1,9 @@
 export default {
 	'language-selector': {
-		'en-GB': 'British English',
-		en: 'English',
-		nl: 'Dutch',
+		'en-GB': '英国英语',
+		en: '英语',
+		nl: '荷兰语',
+		'zh-CN': '中文',
 	},
 	'color-scheme': {
 		dark: '黑暗',
