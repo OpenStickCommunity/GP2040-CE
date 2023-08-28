@@ -7,7 +7,6 @@ WiiExtension::WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, 
     iSDA = sda;
     iSCL = scl;
     picoI2C = i2cCtl;
-    bWire = bWire;
     iSpeed = speed;
     address = addr;
 }
@@ -320,7 +319,6 @@ void WiiExtension::reset(){
 }
 
 void WiiExtension::poll() {
-    uint8_t reg = _u(0x08);
     uint8_t regWrite[16];
     uint8_t regRead[16];
     int8_t result;

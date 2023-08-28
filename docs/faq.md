@@ -32,7 +32,7 @@ Not at all! The RP2040 processor of the Pico has two cores. GP2040-CE dedicates 
 
 ### Why do the buttons have weird labels like B3, A1, S2, etc.?
 
-GP2040-CE uses a generic system for handling button inputs that resembles a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040-CE documentation and web configurator both provide a dropdown to change the button labels to more familiar controller layouts. You can refer to the button mapping table on the [GP2040 Usage](http://gp2040-ce.info/#/usage?id=buttons) page.
+GP2040-CE uses a generic system for handling button inputs that resembles a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040-CE documentation and web configurator both provide a dropdown to change the button labels to more familiar controller layouts. You can refer to the button mapping table on the [GP2040-CE Usage](http://gp2040-ce.info/#/usage?id=buttons) page.
 
 ## Technical Questions
 
@@ -40,7 +40,7 @@ GP2040-CE uses a generic system for handling button inputs that resembles a trad
 
 There's no magic here, just a few cool libraries working together:
 
-* Single page application using React and Bootstrap is embedded in the GP2040 firmware
+* Single page application using React and Bootstrap is embedded in the GP2040-CE firmware
 * TinyUSB library provides virtual network connection via RNDIS
 * lwIP library provides an HTTP server which serves up the embedded React app and the web configuration API
 * ArduinoJson library is used for serialization and deserialization of web API requests
