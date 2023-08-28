@@ -34,6 +34,8 @@ Here you can select the basic settings which are normally available via hotkeys.
 * `Forced Setup Mode` - Allows you to lock out Input Mode, the ability to enter Web-Config or both.  Enabling a web-config lockout will require you to nuke and reload the firmware if you wish to make further changes.
 * `4-Way Joystick Mode` - Enables 4-Way Jostick mode which will prevent cardinal directions.
 
+Please note that if you choose `PS4` mode you will have an additional option to set the device as a `Controller` or a `Fightstick`.  If you choose `Fightstick` and want to use this device with compatible PS5 games you will need to enable the `PS Passthrough` add-on and have a way to connect the device you with to use for passthrough authentication to the RP2040-CE based device via a USB passthrough port.  
+
 
 ### Hotkeys
 
@@ -285,6 +287,16 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 * `Private Key (PEM)` - Choose your PEM file.
 * `Serial Number (16 Bytes in Hex Ascii)` - Choose your serial number file.
 * `Signature (256 Bytes in Binary)` - Choose your signature file.
+
+### PS Passthrough
+
+![GP2040-CE Configurator - PS Passthrough](assets/images/gpc-add-ons-ps-passthrough.png)
+
+Enabeling this add-on will allow you to use a licenced 3rd party device to authenticate off of.  This addon requires that you have something like the ![USB Passthrough Board](https://github.com/OpenStickCommunity/Hardware/tree/main/USB%20Passthrough%20Board) or a board with a USB passthrough port on it already.  If you have passthrough enabled you can turn off the above `PS4 Mode` addon as the two will not work together.  Please also ensure that under the `Settings` section you have chosen PS4 mode and picked if you want the GP2040-CE unit to function as a controller or as a fightstick.   
+
+* `D+` - Choose the RP2040 GPIO to be used for Data +.
+* `D-` - This will automatically be set as the next GPIO based on the Data + choice.  
+* `5V Power (optional)` - This is only needed if you are using something like the Adafruit passthrough board.  Most boards have access to 5V on them directly.
 
 ### Wii Extensions
 
