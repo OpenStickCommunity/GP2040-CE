@@ -184,7 +184,7 @@ Start in the GP2040-CE folder
 
 1. Your UF2 file should be in the build directory.
 
-### Windows Setup Guide For Dummies
+## Windows Setup Guide For Dummies
 
 #### Preparing Your Environment
 1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
