@@ -356,8 +356,8 @@ Supported controller types and their mapping is as follows:
 
 ![GP2040-CE Configurator - Keyboard Host Configuration](assets/images/gpc-add-ons-keyboard-host-configuration.png)
 
-* `D+` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040
-* `D-` - The GPIO Pin used to carry Data Positive between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
+* `D+` - The GPIO Pin used to carry Data Plus between the USB Host Port and RP2040
+* `D-` - The GPIO Pin used to carry Data Minus between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
 * `5V Power (optional)` - The GPIO Pin used to enable 5V power to the host port on the board. This is not applicable to all boards.
 
 #### Example Wiring Diagram
