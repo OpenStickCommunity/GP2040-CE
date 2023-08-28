@@ -17,36 +17,39 @@ const CaptureButton = ({ buttonName, onChange, abortSignalRef, triggerCapture, o
 	const timeout = (ms) => (new Promise(resolve => setTimeout(resolve, ms)));
 
 	const getHeldPins = async () => {
-		await timeout(50); // Workaround to prevent hardfault, probably has to do with the extra `loop` call
 		const data = await WebApi.getHeldPins(setModalVisible, newAbortSignal);
         const pin = data?.heldPins?.at(0);
 		if (!isNaN(pin))
 			onChange(pin);
+		if (data.canceled) {
+			await timeout(50);
+			await WebApi.abortGetHeldPins();
+			await timeout(50);
+		}
         if (triggerNextRef.current) {
-            if (triggerCapture) onTriggeredCaptureComplete();
+			triggerNextRef.current = false;
+            onTriggeredCaptureComplete();
         }
 	};
 
 	useEffect(() => () => controller?.current?.abort(), []);
 
-	const closeModal = async () => {
+	const signalAbort = async () => {
+		await timeout(50);
 		controller?.current?.abort();
-		await timeout(50);
-		await WebApi.abortGetHeldPins();
-		await timeout(50);
 		setModalVisible(false);
 	};
 
     useEffect(() => {
-        console.log('triggerCapture', triggerCapture); if (triggerCapture) {
-            getHeldPins().then();
+        if (triggerCapture) {
             triggerNextRef.current = true;
+            getHeldPins().then();
         }
     }, [triggerCapture]);
 
 	return (
 		<>
-			<Modal centered show={modalVisible} onHide={() => closeModal()}>
+			<Modal centered show={modalVisible} onHide={() => signalAbort()}>
 				<Modal.Header closeButton>
 					<Modal.Title className="me-auto">{`${t('CaptureButton:capture-button-modal-title')} (${buttonName})`}</Modal.Title>
 				</Modal.Header>
@@ -57,7 +60,7 @@ const CaptureButton = ({ buttonName, onChange, abortSignalRef, triggerCapture, o
 					</span>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant="secondary" onClick={() => closeModal()}>
+					<Button variant="secondary" onClick={() => signalAbort()}>
 						Cancel
 					</Button>
 					{triggerCapture && onStopCaptureSequence && 
@@ -65,7 +68,7 @@ const CaptureButton = ({ buttonName, onChange, abortSignalRef, triggerCapture, o
                         onClick={async () => {
                             triggerNextRef.current = false;
                             onStopCaptureSequence();
-                            await closeModal();
+                            await signalAbort();
                         }}>
 						Stop Capture
 					</Button>}

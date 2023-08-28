@@ -2,7 +2,7 @@ import axios from 'axios';
 import { intToHex, hexToInt, rgbIntToHex } from './Utilities';
 
 const baseUrl =
-	process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
+	process.env.NODE_ENV === 'production' ? '' : 'http://192.168.7.1';
 
 export const baseButtonMappings = {
 	Up: { pin: -1, key: 0, error: null },
@@ -474,17 +474,19 @@ async function getUsedPins(setLoading) {
 }
 
 async function getHeldPins(setLoading, createAbortSignal) {
-	setLoading(true);
+	setLoading && setLoading(true);
 
 	try {
 		const response = await axios.get(`${baseUrl}/api/getHeldPins`, {
 			signal: createAbortSignal()
 		});
-		setLoading(false);
+		setLoading && setLoading(false);
 		return response.data;
 	} catch (error) {
-		setLoading(false);
-		console.error(error);
+		setLoading && setLoading(false);
+		if (error?.code === 'ERR_CANCELED')
+			return { canceled: true };
+		else console.error(error);
 	}
 }
 
@@ -492,7 +494,7 @@ async function abortGetHeldPins() {
 	try {
 		await axios.get(`${baseUrl}/api/abortGetHeldPins`);
 	} catch (error) {
-		console.error(error);
+		// Expected to fail
 	}
 }
 

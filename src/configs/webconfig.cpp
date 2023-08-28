@@ -213,6 +213,8 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 
 int set_file_data(fs_file *file, string&& data)
 {
+	if (data.empty())
+		return 0;
 	return set_file_data(file, DataAndStatusCode(std::move(data), HttpStatusCode::_200));
 }
 
@@ -1404,7 +1406,6 @@ static bool _abortGetHeldPins = false;
 std::string getHeldPins()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-	_abortGetHeldPins = false;
 
 	// Initialize unassigned pins so that they can be read from
 	std::vector<uint> uninitPins;
@@ -1424,17 +1425,18 @@ std::string getHeldPins()
 		}
 	}
 
-	uint32_t timePinWait = 0;
-	timePinWait = getMillis();
+	uint32_t timePinWait = getMillis();
 	uint32_t oldState = ~gpio_get_all();
 	uint32_t newState = 0;
 	std::set<uint> heldPinsSet;
-
 	bool isAnyPinHeld = false;
+
 	while ((isAnyPinHeld || ((getMillis() - timePinWait) < 5000))) {
-		ConfigManager::getInstance().loop();
-		if (_abortGetHeldPins) { doc["stopped"] = true; break; }
-		if (isAnyPinHeld && newState == oldState) { break; }
+		ConfigManager::getInstance().loop(); // Keep the loop going for interrupt call
+		if (_abortGetHeldPins)
+			break;
+		if (isAnyPinHeld && newState == oldState) // Should match old state when pins are released
+			break;
 		newState = ~gpio_get_all();
 		uint32_t newPin = newState ^ oldState;
 		for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
@@ -1450,19 +1452,22 @@ std::string getHeldPins()
 	for (uint32_t pin : heldPinsSet) {
 		heldPins.add(pin);
 	}
-
 	for (uint32_t pin: uninitPins) {
 		gpio_deinit(pin);
 	}
-	return serialize_json(doc);
+
+	if (_abortGetHeldPins) {
+		_abortGetHeldPins = false;
+		return {};
+	} else {
+		return serialize_json(doc);
+	}
 }
 
 std::string abortGetHeldPins()
 {
-	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	_abortGetHeldPins = true;
-	doc["stopped"] = true;
-	return serialize_json(doc);
+	return {};
 }
 
 std::string getConfig()
