@@ -3,6 +3,7 @@ export default {
 		'en-GB': 'British English',
 		en: 'English',
 		nl: 'Dutch',
+		'zh-CN': 'Chinese',
 	},
 	'color-scheme': {
 		dark: 'Dark',

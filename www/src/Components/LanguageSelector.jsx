@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next';
 import GlobeIcon from '../Icons/Globe';
 import GbFlag from '../Icons/Flags/Gb';
 import UsFlag from '../Icons/Flags/Us';
+import zhCNFlag from '../Icons/Flags/zhCN';
 
 const dropdownOptions = [
 	{ code: 'en', icon: UsFlag },
 	{ code: 'en-GB', icon: GbFlag },
+	{ code: 'zh-CN', icon: zhCNFlag },
 ];
 
 const LanguageSelector = () => {
@@ -42,9 +44,8 @@ const LanguageSelector = () => {
 				{dropdownOptions.map((option) => (
 					<Dropdown.Item
 						key={option.code}
-						className={`dropdown-item ${
-							savedLanguage === option.code ? 'active' : ''
-						}`}
+						className={`dropdown-item ${savedLanguage === option.code ? 'active' : ''
+							}`}
 						onClick={() => setLanguageAndState(option.code)}
 					>
 						<option.icon /> {t(`language-selector.${option.code}`)}
