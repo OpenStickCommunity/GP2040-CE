@@ -38,12 +38,20 @@ void Rainbow::Animate(RGB (&frame)[100]) {
   this->nextRunTime = make_timeout_time_ms(AnimationStation::options.rainbowCycleTime);
 }
 
+#define RAINBOW_CYCLE_INCREMENT 10
 void Rainbow::ParameterUp() {
-  AnimationStation::options.rainbowCycleTime =AnimationStation::options.rainbowCycleTime + 10;
+  if (AnimationStation::options.chaseCycleTime < 65535 - RAINBOW_CYCLE_INCREMENT) {
+    AnimationStation::options.rainbowCycleTime = AnimationStation::options.rainbowCycleTime + RAINBOW_CYCLE_INCREMENT;
+  } else {
+    AnimationStation::options.rainbowCycleTime = 65535;
+  }
 }
 
 void Rainbow::ParameterDown() {
-  if (AnimationStation::options.rainbowCycleTime > 0) {
-    AnimationStation::options.rainbowCycleTime = AnimationStation::options.rainbowCycleTime - 10;
+  if (AnimationStation::options.rainbowCycleTime > RAINBOW_CYCLE_INCREMENT) {
+    AnimationStation::options.rainbowCycleTime = AnimationStation::options.rainbowCycleTime - RAINBOW_CYCLE_INCREMENT;
+  } else {
+    AnimationStation::options.rainbowCycleTime = 1;
   }
 }
+#undef RAINBOW_CYCLE_INCREMENT
