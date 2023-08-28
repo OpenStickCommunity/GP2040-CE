@@ -44,8 +44,9 @@ const LanguageSelector = () => {
 				{dropdownOptions.map((option) => (
 					<Dropdown.Item
 						key={option.code}
-						className={`dropdown-item ${savedLanguage === option.code ? 'active' : ''
-							}`}
+						className={`dropdown-item ${
+							savedLanguage === option.code ? 'active' : ''
+						}`}
 						onClick={() => setLanguageAndState(option.code)}
 					>
 						<option.icon /> {t(`language-selector.${option.code}`)}

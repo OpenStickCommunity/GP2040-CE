@@ -35,8 +35,7 @@ export default {
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
 		"<1>Fn</1> 组合映射在<4 exact='true' to='/pin-mapping'>引脚映射</4>页面提供了一个可映射的Function按键。 要选择 <1>Fn</1> 组合映射选项，请同时按住 Function 按键和其他快捷键。<5 />此外, 可从下拉列表中选择 <1>None</1> 以取消分配按钮",
-	'hotkey-settings-warning':
-		'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
+	'hotkey-settings-warning': 'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
 	'hotkey-actions': {
 		'no-action': '无',
 		'dpad-digital': '十字键模式',

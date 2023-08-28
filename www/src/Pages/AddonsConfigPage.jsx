@@ -2718,7 +2718,7 @@ export default function AddonsConfigPage() {
 													setFieldValue(
 														'focusModeButtonLockMask',
 														(values.focusModeButtonLockMask ^ mask.value) |
-														e.target.value,
+															e.target.value,
 													);
 												}}
 											>

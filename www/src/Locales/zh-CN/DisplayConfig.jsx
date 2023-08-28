@@ -5,8 +5,7 @@ export default {
 	'list-text':
 		'<1>分辨率为 128x64 的单色显示屏</1> <1>使用 I2C 协议驱动的SSD1306, SH1106, SH1107 或其他可兼容的显示屏 IC </1> <1>支持 3.3v 电压运行</1>',
 	table: {
-		header:
-			'使用这些配置的 SDA and SCL 引脚表格，来决定选择哪一个 I2C block :',
+		header: '使用这些配置的 SDA and SCL 引脚表格，来决定选择哪一个 I2C block :',
 		'sda-scl-pins-header': 'SDA/SCL 引脚',
 		'i2c-block-header': 'I2C Block',
 	},

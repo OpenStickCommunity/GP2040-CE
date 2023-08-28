@@ -1,7 +1,6 @@
 export default {
 	'header-text': '附加功能配置',
-	'sub-header-text':
-		'使用下面的选项重新配置 GP2040-CE 中的附加功能。',
+	'sub-header-text': '使用下面的选项重新配置 GP2040-CE 中的附加功能。',
 	'bootsel-header-text': 'BOOTSEL 键配置',
 	'bootsel-sub-header-text':
 		'注意：如果设置了按键，OLED 可能会失去响应，取消设置以恢复。',
@@ -96,12 +95,10 @@ export default {
 	'player-number-sub-header-text':
 		'警告: 请仅在连接了多个启用玩家编号功能的 GP2040-CE 设备时启用此功能 ',
 	'player-number-label': '玩家编号',
-	'socd-cleaning-mode-selection-slider-header-text':
-		'SOCD 覆盖模式',
+	'socd-cleaning-mode-selection-slider-header-text': 'SOCD 覆盖模式',
 	'socd-cleaning-mode-selection-slider-sub-header-text':
 		'注意：PS4, PS3 and Nintendo Switch输入模式不支持设置SOCD覆盖模式为关闭，默认设置为回中模式。',
-	'socd-cleaning-mode-selection-slider-mode-default-label':
-		'SOCD 默认模式',
+	'socd-cleaning-mode-selection-slider-mode-default-label': 'SOCD 默认模式',
 	'socd-cleaning-mode-selection-slider-mode-one-label': 'SOCD 模式1',
 	'socd-cleaning-mode-selection-slider-pin-one-label': '引脚 1',
 	'socd-cleaning-mode-selection-slider-mode-two-label': 'SOCD 模式2',
