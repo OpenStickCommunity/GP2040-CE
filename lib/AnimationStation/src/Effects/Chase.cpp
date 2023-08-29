@@ -85,20 +85,23 @@ int Chase::WheelFrame(int i) {
   return frame;
 }
 
-#define CHASE_CYCLE_INCREMENT 10
+// clamp chaseCycleTime to [1 ... INT16_MAX]
+#define CHASE_CYCLE_INCREMENT   10
+#define CHASE_CYCLE_MAX         INT16_MAX - CHASE_CYCLE_INCREMENT
+#define CHASE_CYCLE_MIN         1         + CHASE_CYCLE_INCREMENT
+
 void Chase::ParameterUp() {
-  if (AnimationStation::options.chaseCycleTime < 65535 - CHASE_CYCLE_INCREMENT) {
+  if (AnimationStation::options.chaseCycleTime < CHASE_CYCLE_MAX) {
     AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime + CHASE_CYCLE_INCREMENT;
   } else {
-    AnimationStation::options.chaseCycleTime = 65535;
+    AnimationStation::options.chaseCycleTime = INT16_MAX;
   }
 }
 
 void Chase::ParameterDown() {
-  if (AnimationStation::options.chaseCycleTime > CHASE_CYCLE_INCREMENT) {
+  if (AnimationStation::options.chaseCycleTime > CHASE_CYCLE_MIN) {
     AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime - CHASE_CYCLE_INCREMENT;
   } else {
     AnimationStation::options.chaseCycleTime = 1;
   }
 }
-#undef CHASE_CYCLE_INCREMENT
