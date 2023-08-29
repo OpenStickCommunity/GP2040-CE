@@ -42,9 +42,9 @@
 #include "helper.h"
 
 static MacroInput _inputsShoryuken[] = {
-    { .has_state = true, { .has_dpad = true, .dpad = GAMEPAD_MASK_RIGHT, .has_buttons = true }, .duration = 100},
-    { .has_state = true, { .has_dpad = true, .dpad = GAMEPAD_MASK_DOWN, .has_buttons = true }, .duration = 100},
-    { .has_state = true, { .has_dpad = true, .dpad = GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT, .has_buttons = true, .buttons = GAMEPAD_MASK_B4 }, .duration = 100}
+    { .has_buttonMask = true, .buttonMask = GAMEPAD_MASK_DR, .has_duration = true, .duration = 100 },
+    { .has_buttonMask = true, .buttonMask = GAMEPAD_MASK_DD, .has_duration = true, .duration = 100 },
+    { .has_buttonMask = true, .buttonMask = GAMEPAD_MASK_DD | GAMEPAD_MASK_DR | GAMEPAD_MASK_B4, .has_duration = true, .duration = 100 }
 };
 
 Storage::Storage()
@@ -56,10 +56,6 @@ Storage::Storage()
 
 bool Storage::save()
 {
-	config.addonOptions.macroOptions.macroList[0].macroInputsSize = 3;
-	config.addonOptions.macroOptions.macroList[0].macroInputs[0] = _inputsShoryuken[0];
-	config.addonOptions.macroOptions.macroList[0].macroInputs[1] = _inputsShoryuken[1];
-	config.addonOptions.macroOptions.macroList[0].macroInputs[2] = _inputsShoryuken[2];
 	return ConfigUtils::save(config);
 }
 

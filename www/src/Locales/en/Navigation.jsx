@@ -11,6 +11,7 @@ export default {
 	'keyboard-mapping-label': 'Keyboard Mapping',
 	'led-config-label': 'LED Configuration',
 	'links-label': 'Links',
+	'macro-label': 'Macro',
 	'pin-mapping-label': 'Pin Mapping',
 	'profile-settings-label': 'Profile Settings',
 	'reboot-label': 'Reboot',

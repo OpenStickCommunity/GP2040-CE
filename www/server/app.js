@@ -394,6 +394,22 @@ app.get('/api/getAddonsOptions', (req, res) => {
 	});
 });
 
+app.get('/api/getMacroAddonOptions', (req, res) => {
+	return res.send({
+		macroList: [
+			{
+				enabled: true,
+				macroType: 1,
+				macroLabel: "Shoryuken",
+				macroInputs: [{ buttonMask: 1 << 19, duration: 100 }, { buttonMask: 1 << 17, duration: 100 }, { buttonMask: 1 << 17 | 1 << 19 | 1 << 3, duration: 100 }]
+			}
+		],
+		macroPin: -1,
+		InputMacroAddonEnabled: 1,
+		usedPins: Object.values(picoController),
+	});
+});
+
 app.get('/api/getFirmwareVersion', (req, res) => {
 	return res.send({
 		version: process.env.VITE_CURRENT_VERSION,

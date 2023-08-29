@@ -35,7 +35,7 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme" };
+const static char* spaPaths[] = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -1380,6 +1380,73 @@ std::string getAddonOptions()
 	return serialize_json(doc);
 }
 
+std::string setMacroAddonOptions()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
+
+	docToValue(macroOptions.enabled, doc, "InputMacroAddonEnabled");
+	docToPin(macroOptions.pin, doc, "macroPin");
+
+	JsonObject options = doc.as<JsonObject>();
+	JsonArray macros = options["macroList"];
+	int macrosIndex = 0;
+
+	for (JsonObject macro : macros) {
+		strcpy(macroOptions.macroList[macrosIndex].macroLabel, macro["macroLabel"]);
+		macroOptions.macroList[macrosIndex].macroType = macro["macroType"].as<MacroType>();
+		macroOptions.macroList[macrosIndex].enabled = macro["enabled"] == true;
+		macroOptions.macroList[macrosIndex].has_enabled = true;
+		macroOptions.macroList[macrosIndex].has_macroLabel = true;
+		macroOptions.macroList[macrosIndex].has_macroType = true;
+		JsonArray macroInputs = macro["macroInputs"];
+		int macroInputsIndex = 0;
+
+		for (JsonObject input: macroInputs) {
+			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].duration = input["duration"].as<uint32_t>();
+			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].buttonMask = input["buttonMask"].as<uint32_t>();
+			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].has_duration = true;
+			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].has_buttonMask = true;
+			macroOptions.macroList[macrosIndex].macroInputs_count = ++macroInputsIndex;
+			if (macroInputsIndex > 24) break;
+		}
+
+		macroOptions.macroList_count = ++macrosIndex;
+		if (macrosIndex > 12) break;
+	}
+
+	Storage::getInstance().save();
+	return serialize_json(doc);
+}
+
+std::string getMacroAddonOptions()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+	MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
+	JsonArray macroList = doc.createNestedArray("macroList");
+
+	doc["macroPin"] = macroOptions.pin;
+	doc["InputMacroAddonEnabled"] = macroOptions.enabled;
+
+	for (int i = 0; i < macroOptions.macroList_count; i++) {
+		JsonObject macro = macroList.createNestedObject();
+		macro["enabled"] = macroOptions.macroList[i].enabled;
+		macro["macroType"] = macroOptions.macroList[i].macroType;
+		macro["macroLabel"] = macroOptions.macroList[i].macroLabel;
+
+		JsonArray macroInputs = macro.createNestedArray("macroInputs");
+		for (int j = 0; j < macroOptions.macroList[i].macroInputs_count; j++) {
+			JsonObject macroInput = macroInputs.createNestedObject();
+			macroInput["buttonMask"] = macroOptions.macroList[i].macroInputs[j].buttonMask;
+			macroInput["duration"] = macroOptions.macroList[i].macroInputs[j].duration;
+		}
+	}
+
+	return serialize_json(doc);
+}
+
 std::string getFirmwareVersion()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
@@ -1482,6 +1549,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/setProfileOptions", setProfileOptions },
 	{ "/api/setKeyMappings", setKeyMappings },
 	{ "/api/setAddonsOptions", setAddonOptions },
+	{ "/api/setMacroAddonOptions", setMacroAddonOptions },
 	{ "/api/setPS4Options", setPS4Options },
 	{ "/api/setSplashImage", setSplashImage },
 	{ "/api/reboot", reboot },
@@ -1492,6 +1560,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getProfileOptions", getProfileOptions },
 	{ "/api/getKeyMappings", getKeyMappings },
 	{ "/api/getAddonsOptions", getAddonOptions },
+	{ "/api/getMacroAddonOptions", getMacroAddonOptions },
 	{ "/api/resetSettings", resetSettings },
 	{ "/api/getSplashImage", getSplashImage },
 	{ "/api/getFirmwareVersion", getFirmwareVersion },

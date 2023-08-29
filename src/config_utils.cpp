@@ -527,10 +527,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, !!FOCUS_MODE_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, pin, FOCUS_MODE_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, macroListSize, 1);
-    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[0], macroType, ON_HOLD);
-    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[0], macroInputsSize, 3);
-    INIT_UNSET_PROPERTY_STR(config.addonOptions.macroOptions.macroList[0], macroName, "Shoryuken");
+    config.addonOptions.macroOptions.macroList_count = 13;
 }
 
 

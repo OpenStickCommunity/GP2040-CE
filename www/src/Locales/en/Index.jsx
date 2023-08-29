@@ -12,6 +12,7 @@ import CustomTheme from './CustomTheme';
 import BackupPage from './BackupPage';
 import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
+import InputMacroAddon from './InputMacroAddon';
 
 export default {
 	Common,
@@ -28,4 +29,5 @@ export default {
 	BackupPage,
 	DisplayConfig,
 	AddonsConfig,
+	InputMacroAddon,
 };

@@ -466,32 +466,25 @@ message FocusModeOptions
 	optional bool buttonLockEnabled = 6;
 }
 
-message MacroGamepadState
-{
-	optional uint32 dpad = 1;
-	optional uint32 buttons = 2;
-}
-
 message MacroInput
 {
-	optional MacroGamepadState state = 1;
+	optional uint32 buttonMask = 1;
 	optional uint32 duration = 2;
 }
 
 message Macro
 {
 	optional MacroType macroType = 1;
-	optional string macroName = 2 [(nanopb).max_length = 256];
-	optional uint32 macroInputsSize = 3;
-	repeated MacroInput macroInputs = 4 [(nanopb).max_count = 25];
+	optional string macroLabel = 2 [(nanopb).max_length = 256];
+	repeated MacroInput macroInputs = 3 [(nanopb).max_count = 25];
+	optional bool enabled = 4;
 }
 
 message MacroOptions
 {
 	optional bool enabled = 1;
 	optional int32 pin = 2;
-	optional uint32 macroListSize = 3;
-	repeated Macro macroList = 4 [(nanopb).max_count = 10];
+	repeated Macro macroList = 3 [(nanopb).max_count = 13];
 }
 
 message AddonOptions

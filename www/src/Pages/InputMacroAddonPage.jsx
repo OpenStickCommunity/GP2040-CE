@@ -1,0 +1,356 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../Contexts/AppContext';
+import { Button, Form, Modal } from 'react-bootstrap';
+import { Formik, useFormikContext } from 'formik';
+import { NavLink } from 'react-router-dom';
+import * as yup from 'yup';
+import { Trans, useTranslation } from 'react-i18next';
+
+import Section from '../Components/Section';
+import FormControl from '../Components/FormControl';
+import WebApi from '../Services/WebApi';
+import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
+
+const MACRO_TYPES = [
+	{ label: 'InputMacroAddon:input-macro-type.release', value: 1 },
+	{ label: 'InputMacroAddon:input-macro-type.hold', value: 2 },
+	{ label: 'InputMacroAddon:input-macro-type.hold-repeat', value: 3 },
+	{ label: 'InputMacroAddon:input-macro-type.release-toggle', value: 4 },
+];
+
+const schema = yup.object().shape({
+	macroList: yup.array().of(
+		yup.object().shape({
+			macroType: yup.number(),
+			macroLabel: yup.string(),
+			macroInputs: yup.array().of(
+				yup.object().shape({
+					buttonMask: yup.number(),
+					duration: yup.number(),
+				}),
+			),
+		}),
+	),
+});
+
+const defaultValues = {
+	macroList: Array(BUTTON_MASKS.length).fill(
+		{
+			macroType: 1,
+			macroLabel: '',
+			macroInputs: [
+				{ buttonMask: 0, duration: 0 },
+			],
+		}),
+	macroPin: -1,
+	InputMacroAddonEnabled: 1,
+};
+
+const EMPTY_INPUT = {};
+
+const FormContext = ({ setButtonLabels }) => {
+	const { values, setValues } = useFormikContext();
+	const { setLoading } = useContext(AppContext);
+
+	useEffect(() => {
+		async function fetchData() {
+			const options = await WebApi.getMacroAddonOptions(setLoading);
+			setValues(options);
+		}
+		fetchData();
+	}, [setValues]);
+
+	useEffect(() => {}, [values, setValues]);
+
+	return null;
+};
+
+const ButtonMasksComponent = (props) => {
+	const { id: key, value, onChange, error, isInvalid, className } = props;
+
+	return (
+		<div key={key} className={className}>
+			<Form.Select
+				size="sm"
+				name={`${key}.buttonMask`}
+				className="form-control col-sm-auto"
+				groupClassName="col-sm-1"
+				value={value}
+				error={error}
+				isInvalid={isInvalid}
+				onChange={onChange}>
+				{BUTTON_MASKS.map((o, i2) => (
+					<option key={`${key}.mask[${i2}]`}
+						value={o.value}>
+						{o.label}
+					</option>
+				))}
+			</Form.Select>
+		</div>)
+}
+
+const MacroInputComponent = (props) => {
+	const { value: { duration, buttonMask },
+			errors, handleChange,
+			id: key, translation: t,
+			setFieldValue } = props;
+
+	return (
+		<div key={key} className="row">
+			<div className="col-sm-auto">
+				<Form.Control
+					size="sm"
+					type="number"
+					placeholder={t('InputMacroAddon:input-macro-duration-label')}
+					name={`${key}.duration`}
+					value={duration}
+					error={errors?.duration}
+					isInvalid={errors?.duration}
+					onChange={handleChange}
+					min={0} />
+			</div>
+			<div key={`${key}.buttons`}
+				 className="col row mb-2">
+				{BUTTON_MASKS.map((mask, i1) =>
+					buttonMask & mask.value ? (
+						<ButtonMasksComponent
+							key={`${key}.buttonMask[${i1}]`}
+							id={`${key}.buttonMask[${i1}]`}
+							className="px-1 col-sm-auto"
+							value={ buttonMask & mask.value }
+							onChange={(e) => { setFieldValue(`${key}.buttonMask`, (buttonMask ^ mask.value) | e.target.value,); }}
+							error={errors?.buttonMask}
+							isInvalid={errors?.buttonMask}
+							translation={t}
+							handleChange={handleChange}
+							mask={mask}
+							setFieldValue={setFieldValue} />
+					) : (
+						<></>
+					),
+				)}
+				<div key={`${key}.buttonMask[placeholder]`}
+					className="px-1 col-sm-auto">
+					<ButtonMasksComponent
+						key={`${key}.buttonMaskPlaceholder`}
+						id={`${key}.buttonMaskPlaceholder`}
+						className="col-sm-auto"
+						value={0}
+						onChange={(e) => { setFieldValue(`${key}.buttonMask`, buttonMask | e.target.value,); }}
+						error={errors?.buttonMask}
+						isInvalid={errors?.buttonMask}
+						translation={t}
+						handleChange={handleChange}
+						setFieldValue={setFieldValue} />
+				</div>
+				<Button variant="transparent" className="col-sm-auto" size="sm" onDoubleClick={(e) => { setFieldValue(key, EMPTY_INPUT)}}>&times;</Button>
+			</div>
+		</div>
+	)
+}
+
+const MacroComponent = (props) => {
+	const { value, value: { macroLabel, macroType, macroInputs, enabled },
+			errors, handleChange, mask, id: key, translation: t,
+			setFieldValue, disabled } = props;
+
+	const filteredMacroInputs = macroInputs.filter(i => i != EMPTY_INPUT);
+
+	return (
+		<div key={key} className="row mb-2">
+			<div className="col-sm-auto">
+				<Form.Check
+					name={`${key}.enabled`}
+					label="Activated"
+					type="switch"
+					className="form-select-sm"
+					disabled={disabled}
+					checked={enabled}
+					onChange={(e) => { setFieldValue(`${key}.enabled`, e.target.checked); }}
+					isInvalid={false} />
+				{/*<Form.Control.Feedback type="invalid">
+														{errors[o] && errors[o]?.action}
+													</Form.Control.Feedback>*/}
+			</div>
+			<div className="col-sm-auto">
+				<Form.Control
+					size="sm"
+					type="text"
+					placeholder={t('InputMacroAddon:input-macro-macro-label-label')}
+					name={`${key}.macroLabel`}
+					value={macroLabel}
+					error={errors?.macroLabel}
+					isInvalid={errors?.macroLabel}
+					onChange={handleChange}
+					maxLength={256} />
+			</div>
+			<div className="col-sm-auto">
+				<Form.Select
+					className="form-select-sm"
+					groupClassName="mb-3"
+					value={mask.value}
+					onChange={(e) => {
+						setFieldValue(`macroList[${Math.log2(mask.value)}]`, { macroType: 0 });
+						setFieldValue(`macroList[${Math.log2(e.target.value)}]`, value);
+					}}>
+					{BUTTON_MASKS.map((o, i2) => (
+						<option key={`${key}-button${i2}`} value={o.value}>
+							{o.label}
+						</option>
+					))}
+				</Form.Select>
+			</div>
+			<div className="col-sm-auto">
+				<Form.Select
+					name={`${key}.macroType`}
+					className="form-select-sm sm-1"
+					groupClassName="mb-3"
+					value={macroType}
+					onChange={(e) => { setFieldValue( `${key}.macroType`, parseInt(e.target.value),); }}>
+					{MACRO_TYPES.map((o, i2) => (
+						<option key={`${key}-macroType${i2}`} value={o.value}>
+							{t(o.label)}
+						</option>
+					))}
+				</Form.Select>
+			</div>
+			<div className="row mt-2">
+				<div className="ms-4">
+					{filteredMacroInputs.map((input, a) => (
+						<MacroInputComponent key={`${key}.macroInputs[${a}]`}
+							id={`${key}.macroInputs[${a}]`}
+							value={macroInputs?.at(a)}
+							errors={errors?.macroInputs?.at(a)}
+							translation={t}
+							handleChange={handleChange}
+							setFieldValue={setFieldValue} />
+					))}
+					{macroInputs.length < 25 ? <Button variant="success" className="col px-2" size="sm" onClick={(e) => { setFieldValue(`${key}.macroInputs[${filteredMacroInputs.length}]`, ({})) }}>+</Button> : <></>}
+				</div>
+			</div>
+		</div>
+	);
+};
+export default function SettingsPage() {
+	const { buttonLabels, setButtonLabels } = useContext(AppContext);
+	const [saveMessage, setSaveMessage] = useState('');
+
+	const saveSettings = async (values) => {
+		const success = await WebApi.setMacroAddonOptions(values);
+		setSaveMessage(
+			success
+				? t('Common:saved-success-message')
+				: t('Common:saved-error-message'),
+		);
+	};
+
+	const onSuccess = async (values) => await saveSettings(values);
+
+	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+
+	const { t } = useTranslation('');
+
+	const handleCheckbox = async (name, values) => {
+		values[name] = values[name] === 1 ? 0 : 1;
+	};
+
+	return (
+		<Formik validationSchema={schema}
+			onSubmit={onSuccess}
+			initialValues={defaultValues}>
+			{({ handleSubmit, handleChange, values, errors, setFieldValue }) =>
+				((window.values = values) && console.log('values', values)) || console.log('errors', errors) || (
+					<div>
+						<Form noValidate onSubmit={handleSubmit}>
+							<Section title={t('InputMacroAddon:input-macro-header-text')}>
+								<div className="mb-3">
+									<Trans ns="SettingsPage" i18nKey="hotkey-settings-sub-header">
+										The <strong>Fn</strong> slider provides a mappable Function
+										button in the{' '}
+										<NavLink exact="true" to="/pin-mapping">
+											Pin Mapping
+										</NavLink>{' '}
+										page. By selecting the Fn slider option, the Function button
+										must be held along with the selected hotkey settings.
+										<br />
+										Additionally, select <strong>None</strong> from the dropdown
+										to unassign any button.
+									</Trans>
+								</div>
+								{values.macroPin === -1 && (
+									<div className="alert alert-warning">
+										{t('SettingsPage:hotkey-settings-warning')}
+									</div>
+								)}
+								<div className="row mb-3">
+									<FormControl
+										type="number"
+										label={t('InputMacroAddon:input-macro-pin-label')}
+										name="macroPin"
+										className="form-select-sm"
+										groupClassName="col-sm-auto mb-3"
+										value={values.macroPin}
+										error={errors.macroPin}
+										isInvalid={errors.macroPin}
+										onChange={handleChange}
+										min={-1}
+										max={29} />
+									<Form.Check
+										label={t('Common:switch-enabled')}
+										className="col me-3"
+										type="switch"
+										id="InputMacroAddonButton"
+										reverse
+										isInvalid={false}
+										checked={Boolean(values.InputMacroAddonEnabled)}
+										onChange={(e) => {
+											handleCheckbox('InputMacroAddonEnabled', values);
+											handleChange(e);
+										}} />
+								</div>
+								<div id="Macros">
+									<div className="row mb-3">
+										{BUTTON_MASKS.filter((mask) => mask.value !== 0).map(
+											(mask, i) => values.macroList?.at(i)?.macroInputs?.length ? (
+												<MacroComponent
+													key={`macroList[${i}]`}
+													id={`macroList[${i}]`}
+													value={values.macroList?.at(i)}
+													errors={errors?.macroList?.at(i)}
+													disabled={!values.InputMacroAddonEnabled}
+													translation={t}
+													handleChange={handleChange}
+													mask={mask}
+													setFieldValue={setFieldValue} />
+											) : (
+												<></>
+											),
+										)}
+									</div>
+									<div className="col-sm-3">
+										<span>Add Macro to:</span>
+										<Form.Select
+											className="form-select-sm"
+											groupClassName="mb-3"
+											value={-1}
+											onChange={(e) => { setFieldValue(`macroList[${e.target.value}]`, {...defaultValues.macroList[0]}); }}>
+											{BUTTON_MASKS.map((o, i2) => (
+												!(values.macroList[i2 - 1]?.macroInputs?.length) ?
+													(<option key={`macroList[placeholder]-button${i2}`} value={i2 - 1}>
+														{o.label}
+													</option>) : (<></>)
+											))}
+										</Form.Select>
+									</div>
+								</div>
+							</Section>
+							<Button type="submit">{t('Common:button-save-label')}</Button>
+							{saveMessage ? (<span className="alert">{saveMessage}</span>) : null}
+							<FormContext setButtonLabels={setButtonLabels} />
+						</Form>
+					</div>
+				)
+			}
+		</Formik>
+	);
+}
