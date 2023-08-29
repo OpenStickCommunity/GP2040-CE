@@ -7,31 +7,30 @@ See [Getting Started with the Raspberry Pi Pico](https://rptl.io/pico-get-starte
 
 Most of this will be parroting the above linked PDF from the Raspberry Pi Foundation.
 
-If you are very new to GP2040-CE development and working on a Windows machine,
-you can refer to the 'Windows Setup Guide For Dummies' section in this page.
+If you are very new to GP2040-CE development and working on a Windows machine, You can refer to the 'Windows Setup (Pi Pico SDK Installer)' section in this page.
 It's a bit more comprehensive and uses the Raspberry Pi Pico SDK installer, which makes everything a tad bit easier.
 
-### Windows Setup
+### Windows Setup (Manual)
 
 1. Install the latest ARM GNU Toolchain
     - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
-1. Install latest version of CMake
+2. Install latest version of CMake
     - [CMake](https://cmake.org/download/)
-1. Install Visual Studio Build tools, or the full Visual Studio IDE
+3. Install Visual Studio Build tools, or the full Visual Studio IDE
     - Make sure to select the Desktop development with C++ workload
     - Select the latest Windows 10 or Windows 11 SDK from the Individual Components
     - [Visual Studio Build tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022)
     - [Visual Studio Community Edition](https://visualstudio.microsoft.com/downloads/#visual-studio-community-2022)
-1. Install Python 3.10
+4. Install Python 3.10
     - At the end of the installation, there is an option to disable max file path length. You want to select this.
     - [Python](https://www.python.org/downloads/windows/)
-1. Install Visual Studio Code - Optional
+5. Install Visual Studio Code - Optional
      - [Visual Studio Code](https://code.visualstudio.com/)
-1. Install git
+6. Install git
      - Set default editor to anything other than VIM, such as Visual Studio Code
-1. Install NodeJS and NPM
+7. Install NodeJS and NPM
     - [Download and install NodeJS](https://nodejs.org/en/download)
-1. Clone the Pico SDK to your local computer
+8. Clone the Pico SDK to your local computer
 
     ```bash
     git clone https://github.com/raspberrypi/pico-sdk.git
@@ -40,7 +39,7 @@ It's a bit more comprehensive and uses the Raspberry Pi Pico SDK installer, whic
     cd ..
     ```
 
-1. Clone GP2040-CE to your local computer
+9. Clone GP2040-CE to your local computer
 
     ```bash
     git clone https://github.com/OpenStickCommunity/GP2040-CE.git
@@ -48,6 +47,26 @@ It's a bit more comprehensive and uses the Raspberry Pi Pico SDK installer, whic
     git submodule update --init
     ```
 
+### Windows Setup (Pico SDK)
+1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
+2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
+3. Download and install VSCode.
+4. Download and install [Windows Terminal](https://github.com/microsoft/terminal/releases/tag/v1.17.11461.0).
+5. Open Windows Terminal.
+6. Download the GP2040-CE-main repository by running the following commands in the Windows Terminal. This will download the folder to `C:\Users\user\GP2040-CE`.
+
+    ```bash
+    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
+    cd GP2040-CE
+    git submodule update --init
+    ```
+
+   After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search).
+   
+7. Open "Pico-Visual Studio Code" via Windows search. This is a shortcut with pre-configured environment variables (this will be explained later).
+8. Navigate to the Extensions window by pressing `Ctrl+Shift+X`.
+9. Install "CMake Tools" by Microsoft.
+10. Open the GP2040-CE folder you downloaded earlier via "File > Open Folder."
 ### Linux Setup (Ubuntu)
 
 This setup assumes an understanding of Linux terminal usage.
@@ -133,7 +152,7 @@ A number of new environment variables have been setup to control parts of the bu
 
 | Name | Default | Description |
 | ----------- | --------- | ----------- |
-|GP2040_BOARDCONFIG |Pico |The boards.h config file to use for the build.|
+|GP2040_BOARDCONFIG |Pico |The boards. H config file to use for the build.|
 |SKIP_WEBBUILD|FALSE|Determines whether the web configurator is built during the cmake configuration step.|
 |SKIP_SUBMODULES|FALSE|Determines whether the submodule init command is run automatically during the cmake configuration step.|
 
@@ -145,7 +164,7 @@ There are a few SDK variables we take advantage of for our builds.
 | ----------- | --------- | ----------- |
 |PICO_BOARD|pico| This is the embedded board that the RP2040 chip is part of. By default, it assumes the Pico. This variable would match the `<boardname.h>` file in the board's configs folder.|
 
-### Windows
+### Windows (Manual)
 
 Start in the GP2040-CE folder. **From a Developer Powershell or Developer Command Command Prompt**:
 
@@ -165,44 +184,8 @@ Start in the GP2040-CE folder. **From a Developer Powershell or Developer Comman
     ```
 
 4. Your UF2 file should be in the build directory.
-
-### Linux
-
-Start in the GP2040-CE folder
-
-1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
-1. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
-    - Default value is `Pico`
-1. Create a build directory, configure the build, and execute the build.
-
-    ```bash
-    mkdir build
-    cd build
-    cmake ..
-    make
-    ```
-
-1. Your UF2 file should be in the build directory.
-
-## Windows Setup Guide For Dummies
-
-#### Preparing Your Environment
-1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
-2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
-3. Download and install VSCode.
-4. Download and install [Windows Terminal](https://github.com/microsoft/terminal/releases/tag/v1.17.11461.0).
-
-#### Setting Up the Project
-1. Open Windows Terminal.
-2. Download the GP2040-CE-main repository by running the following commands in the Windows Terminal. This will download the folder to `C:\Users\user\GP2040-CE`.
-    ```bash
-    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
-    cd GP2040-CE
-    git submodule update --init
-    ```
-
-#### Configuring Environment Variables
-If you've installed the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search). This shortcut should already have everything configured, **allowing you to skip to step 7**. If you're experiencing compilation issues, consider following the manual steps outlined here.
+### Windows (Pico SDK)
+After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search). This shortcut should already have everything configured, **allowing you to skip to step 7**. If you're experiencing compilation issues, consider following the manual steps outlined here.
 
 1. Ensure the `PICO_SDK_PATH` environment variable is set:
     1. Search for "Edit environment variables for your account" in Windows.
@@ -221,22 +204,32 @@ You can also set the variable within VSCode:
 5. Key: `GP2040_BOARDCONFIG`
 6. Value: `SparkFunProMicro` (or your working folder name).
 
-#### Getting Started with Visual Studio Code
-1. Open "Pico-Visual Studio Code" via Windows search. This is a shortcut with pre-configured environment variables. If you encounter any issues, refer to "Configuring Environment Variables."
-2. Navigate to the Extensions window by pressing `Ctrl+Shift+X`.
-3. Install CMake Tools by Microsoft.
-4. Open the GP2040-CE folder you downloaded earlier via "File > Open Folder."
+When prompted, choose `GCC 10.3.1 ARM NONE EABI` for "Select a kit for GP2040-CE."
 
-#### Building the Project
-1. When prompted, choose `GCC 10.3.1 ARM NONE EABI` for "Select a kit for GP2040-CE."
-2. Click the CMake icon on the left sidebar of VSCode.
-3. You'll see three icons at the top-right corner of the CMake project outline.
-4. Click the "Configure All Projects" icon (looks like a page with an arrow).
+From inside VSCode:
 
-#### Final Steps
-1. Wait for the configuration process to complete. If progress isn't visible, open a new terminal in VSCode and go to the "Output" tab.
-2. Click "Build All Projects" in the CMake project outline.
-3. The files should be in a new folder named "build" inside the GP2040-CE folder
+1. Click the CMake icon on the left sidebar of VSCode.
+2. You'll see three icons at the top-right corner of the CMake project outline. Click the "Configure All Projects" icon (looks like a page with an arrow).
+3. Wait for the configuration process to complete. If progress isn't visible, open a new terminal in VSCode by clicking on the "Termina" tab (at the top) then "new terminal". A new terminal window will open at the bottom, navigate the "Output" tab. 
+4. Click "Build All Projects" in the CMake project outline.
+5. The files should be in a new folder named "build" inside the GP2040-CE folder
+### Linux
+
+Start in the GP2040-CE folder
+
+1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
+1. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
+    - Default value is `Pico`
+1. Create a build directory, configure the build, and execute the build.
+
+    ```bash
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ```
+
+1. Your UF2 file should be in the build directory.
 
 ## Configuration
 
@@ -262,8 +255,8 @@ The following board options are available in the `BoardConfig.h` file:
 | Name             | Description                  | Required? |
 | ---------------- | ---------------------------- | --------- |
 | **PIN_DPAD_*X***<br>**PIN_BUTTON_*X*** | The GPIO pin for the button. Replace the *`X`* with GP2040-CE button or D-pad direction. | Yes |
-| **DEFAULT_SOCD_MODE** | The default SOCD mode to use, defaults to `SOCD_MODE_NEUTRAL`.<br>Available options are:<br>`SOCD_MODE_NEUTRAL`<br>`SOCD_MODE_UP_PRIORITY`<br>`SOCD_MODE_SECOND_INPUT_PRIORITY` | No |
-| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_STICKLESS`<br>`BUTTON_LAYOUT_WASD` | Yes |
+| **DEFAULT_SOCD_MODE** | The default SOCD mode to use, defaults to `SOCD_MODE_NEUTRAL`.<br>Available options are:<br> `SOCD_MODE_NEUTRAL` <br> `SOCD_MODE_UP_PRIORITY` <br> `SOCD_MODE_SECOND_INPUT_PRIORITY` | No |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br> `BUTTON_LAYOUT_STICKLESS` <br> `BUTTON_LAYOUT_WASD` | Yes |
 
 Create `configs/NewBoard/BoardConfig.h` and add your pin configuration and options. An example `BoardConfig.h` file:
 
@@ -306,9 +299,9 @@ The following RGB LED options are available in the `BoardConfig.h` file:
 
 | Name             | Description                  | Required? |
 | ---------------- | ---------------------------- | --------- |
-| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_STICKLESS`<br>`BUTTON_LAYOUT_WASD` | Yes |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br> `BUTTON_LAYOUT_STICKLESS` <br> `BUTTON_LAYOUT_WASD` | Yes |
 | **BOARD_LEDS_PIN** | Data PIN for your LED strand | Yes       |
-| **LED_FORMAT** | The color data format for the LED chain.<br>Available options are:<br>`LED_FORMAT_GRB`<br>`LED_FORMAT_RGB`<br>`LED_FORMAT_GRBW`<br>`LED_FORMAT_RGBW` | No, default value `LED_FORMAT_GRB` |
+| **LED_FORMAT** | The color data format for the LED chain.<br>Available options are:<br> `LED_FORMAT_GRB` <br> `LED_FORMAT_RGB` <br> `LED_FORMAT_GRBW` <br> `LED_FORMAT_RGBW` | No, default value `LED_FORMAT_GRB` |
 | **LEDS_PER_PIXEL** | The number of LEDs per button. | Yes |
 | **LED_BRIGHTNESS_MAXIMUM** | Max brightness value, `uint8_t` 0-255. | Yes |
 | **LED_BRIGHTNESS_STEPS** | The number of brightness steps when using the up/down hotkey. | Yes |
@@ -362,10 +355,10 @@ The following PLED options are available in the `BoardConfig.h` file:
 | Name             | Description                  | Required? |
 | ---------------- | ---------------------------- | --------- |
 | **PLED_TYPE** | Configures the type of PLEDs.<br>Available options are: `PLED_TYPE_PWM`, `PLED_TYPE_RGB` | Yes |
-| **PLED1_PIN** | (PWM) The GPIO pin for PLED #1.<br>(RGB) The index of PLED #1 on the LED chain. | Yes |
-| **PLED2_PIN** | (PWM) The GPIO pin for PLED #2.<br>(RGB) The index of PLED #2 on the LED chain. | Yes |
-| **PLED3_PIN** | (PWM) The GPIO pin for PLED #3.<br>(RGB) The index of PLED #3 on the LED chain. | Yes |
-| **PLED4_PIN** | (PWM) The GPIO pin for PLED #4.<br>(RGB) The index of PLED #4 on the LED chain. | Yes |
+| **PLED1_PIN** | (PWM) The GPIO pin for PLED #1 .<br>(RGB) The index of PLED #1 on the LED chain. | Yes |
+| **PLED2_PIN** | (PWM) The GPIO pin for PLED #2 .<br>(RGB) The index of PLED #2 on the LED chain. | Yes |
+| **PLED3_PIN** | (PWM) The GPIO pin for PLED #3 .<br>(RGB) The index of PLED #3 on the LED chain. | Yes |
+| **PLED4_PIN** | (PWM) The GPIO pin for PLED #4 .<br>(RGB) The index of PLED #4 on the LED chain. | Yes |
 
 An example PLED setup in the `BoardConfig.h` file:
 
@@ -387,17 +380,17 @@ GP2040-CE supports 128x64 monochrome displays that run on the SSD1306, SH1106 or
 
 | Name | Description | Required? |
 | - | - | - |
-| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br>`BUTTON_LAYOUT_STICKLESS`<br>`BUTTON_LAYOUT_WASD` | Yes |
+| **BUTTON_LAYOUT** | The layout of controls/buttons for use with per-button LEDs and external displays.<br>Available options are:<br> `BUTTON_LAYOUT_STICKLESS` <br> `BUTTON_LAYOUT_WASD` | Yes |
 | **HAS_I2C_DISPLAY** | Flag to indicate the controller contains an I2C display module. | No |
 | **DISPLAY_I2C_ADDR** | The I2C address of the display. | No, defaults to `0x3C` |
 | **I2C_SDA_PIN** | The GPIO pin for the I2C SDA line. | If `HAS_I2C_DISPLAY` is enabled |
 | **I2C_SCL_PIN** | The GPIO pin for the I2C SCL line. | If `HAS_I2C_DISPLAY` is enabled |
-| **I2C_BLOCK** | The I2C block on the Pico. Refer to the [Pico Pinout Diagram](https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf) to identify which block is in use based on the SDA and SCL pins being used.<br>Available options are:<br>`i2c0`<br>`i2c1` | No, defaults to `i2c0` |
+| **I2C_BLOCK** | The I2C block on the Pico. Refer to the [Pico Pinout Diagram](https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf) to identify which block is in use based on the SDA and SCL pins being used.<br>Available options are:<br> `i2c0` <br> `i2c1` | No, defaults to `i2c0` |
 | **I2C_SPEED** | The speed of the I2C bus. `100000` is standard mode, while `400000` is used for fast mode communication. Higher values may be used but will require testing the device for support. | No, defaults to `400000` |
 | **DISPLAY_FLIP** | Flag to flip the rendered display output. Set to `1` to enable. | No, defaults to `0` |
 | **DISPLAY_INVERT** | Flag to invert the rendered display output. Set to `1` to enable. | No, defaults to `0` |
 
-An example I2C display setup in the `BoardConfig.h` file:
+An example I2C display setup in the `BoardConfig. H` file:
 
 ```cpp
 #define BUTTON_LAYOUT BUTTON_LAYOUT_WASD
@@ -409,18 +402,18 @@ An example I2C display setup in the `BoardConfig.h` file:
 ```
 
 #### I2C Display Splash
-The firmware also has a splash display feature. The default splash image has been defined in `headers/addons/i2cdisplay.h`. The data for the splash image are bytes representing the bitmap to be displayed on the OLED screen. The splash image can be set via the web-config. If you would like to change the default version of the splash image (to preserve it beyond data wipe), it can be customized with a C define named `DEFAULT_SPLASH` in the active `BoardConfig.h` file.
+The firmware also has a splash display feature. The default splash image has been defined in `headers/addons/i2cdisplay. H`. The data for the splash image are bytes representing the bitmap to be displayed on the OLED screen. The splash image can be set via the web-config. If you would like to change the default version of the splash image (to preserve it beyond data wipe), it can be customized with a C define named `DEFAULT_SPLASH` in the active `BoardConfig. H` file.
 The instructions on how to generate those bytes are as follows:
 
 1. Navigate to Bitmap Converter web utility
     - https://marlinfw.org/tools/u8glib/converter.html
 2. Configure generated code
-    - Select Marlin 2.x and Bitmap, untick all the rest.
+    - Select Marlin 2. X and Bitmap, untick all the rest.
 3. Upload the splash image file
     - Set the image file after clicking on "Choose file". The image file needs to be preprocessed to your liking and cropped to 128x64.  This should populate a code block below.
 4. Use the generated code
     - Copy the hex numbers inside the curly braces from the code block.
-    - Navigate to the `BoardConfig.h` of your choice and at the end of the file right before `#endif`. Create a C define like so:
+    - Navigate to the `BoardConfig. H` of your choice and at the end of the file right before ` #endif `. Create a C define like so:
         ```cpp
         #define DEFAULT_SPLASH \
         ```
@@ -431,7 +424,7 @@ The instructions on how to generate those bytes are as follows:
         ... // All lines below previous ones end in \ similar to those above
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 // Last line doesn't have an \ to escape the new line
         ```
-    - Here's a sample entry from Pico `BoardConfig.h`:
+    - Here's a sample entry from Pico `BoardConfig. H`:
         ```cpp
         #define DEFAULT_SPLASH \
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
@@ -452,37 +445,37 @@ The instructions on how to generate those bytes are as follows:
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x20,0x00,0x00, \
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x40,0x80,0x00, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xE0,0xDF,0xC0, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x02,0xC1,0xFF,0xA0, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x1F,0xCF,0xFE,0x80, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x3F,0xFF,0xE0,0x00, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x7F,0xAB,0xC0,0x00, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x2C,0x00,0x00,0xFB,0x83,0xFF,0x00, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x0C,0x01,0xFF,0x00,0x01,0xF3,0x07,0xFC,0x00, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x1C,0x07,0xFF,0x00,0x03,0xE0,0x3F,0xF4,0x00, \
-        0x00,0x00,0x00,0x00,0x00,0x00,0x2C,0x38,0x0A,0xE7,0x80,0x03,0xC0,0x5F,0x80,0x00, \
-        0x00,0x00,0x00,0x20,0x07,0x81,0xFF,0x39,0xC3,0xC7,0x01,0xD7,0x80,0x3F,0x00,0x00, \
-        0x00,0x00,0x00,0xE0,0x1F,0xE7,0xFF,0x79,0xC7,0x87,0x9F,0xA7,0x80,0x6E,0x3C,0x00, \
-        0x00,0x00,0xA0,0xC0,0x3F,0xEA,0xE7,0xF3,0xEF,0x07,0x7F,0xC7,0x01,0xCF,0xFF,0x80, \
-        0x00,0x03,0x8F,0xFC,0x7F,0xC3,0xC7,0x7F,0xFE,0x0F,0x7E,0x8F,0x87,0xDF,0xFC,0x00, \
-        0x00,0x0F,0xFF,0xFF,0x73,0xC7,0x87,0xFF,0xDE,0x0E,0x50,0x07,0x1F,0x1F,0xD0,0x00, \
-        0x00,0x1F,0x57,0xFF,0xE7,0x8F,0x07,0xFF,0x1C,0x3E,0x00,0x0F,0xFF,0x7F,0x00,0x00, \
-        0x00,0x7E,0x0B,0x8F,0x8F,0x8E,0x0F,0xFF,0x9E,0x7C,0x00,0x07,0xFD,0xFC,0x00,0x00, \
-        0x00,0x7C,0x37,0x9F,0x1F,0x1E,0x0F,0x87,0x1E,0xF8,0x00,0x07,0xF0,0x30,0x00,0x00, \
-        0x00,0xF1,0xF7,0xFE,0x1E,0x1C,0x3E,0x0E,0x1F,0xF0,0x00,0x01,0x40,0x28,0x00,0x00, \
-        0x01,0xEF,0xE7,0xF8,0x3C,0x3E,0x7C,0x0F,0x1F,0xE0,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x03,0xFF,0x8F,0xF0,0x7F,0xFE,0xF8,0x0E,0x0F,0x80,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x03,0xFF,0xCF,0xC0,0xFF,0xFF,0xF0,0x0C,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x07,0x8B,0xFF,0x01,0xFF,0x8F,0xC0,0x06,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x07,0x87,0xFE,0x01,0xFE,0x0F,0x80,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x07,0x1F,0xDE,0x03,0xF0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x07,0xBF,0x9E,0x01,0xC0,0x00,0x00,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x07,0xFF,0x9C,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x07,0xFB,0x38,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xE0,0xDF, 0xC0, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x02,0xC1,0xFF, 0xA0, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x1F, 0xCF, 0xFE, 0x80, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x3F, 0xFF, 0xE0,0x00, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x7F, 0xAB, 0xC0,0x00, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x2C, 0x00,0x00,0xFB, 0x83,0xFF, 0x00, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x0C, 0x01,0xFF, 0x00,0x01,0xF3,0x07,0xFC, 0x00, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x1C, 0x07,0xFF, 0x00,0x03,0xE0,0x3F, 0xF4,0x00, \
+        0x00,0x00,0x00,0x00,0x00,0x00,0x2C, 0x38,0x0A, 0xE7,0x80,0x03,0xC0,0x5F, 0x80,0x00, \
+        0x00,0x00,0x00,0x20,0x07,0x81,0xFF, 0x39,0xC3,0xC7,0x01,0xD7,0x80,0x3F, 0x00,0x00, \
+        0x00,0x00,0x00,0xE0,0x1F, 0xE7,0xFF, 0x79,0xC7,0x87,0x9F, 0xA7,0x80,0x6E, 0x3C, 0x00, \
+        0x00,0x00,0xA0,0xC0,0x3F, 0xEA, 0xE7,0xF3,0xEF, 0x07,0x7F, 0xC7,0x01,0xCF, 0xFF, 0x80, \
+        0x00,0x03,0x8F, 0xFC, 0x7F, 0xC3,0xC7,0x7F, 0xFE, 0x0F, 0x7E, 0x8F, 0x87,0xDF, 0xFC, 0x00, \
+        0x00,0x0F, 0xFF, 0xFF, 0x73,0xC7,0x87,0xFF, 0xDE, 0x0E, 0x50,0x07,0x1F, 0x1F, 0xD0,0x00, \
+        0x00,0x1F, 0x57,0xFF, 0xE7,0x8F, 0x07,0xFF, 0x1C, 0x3E, 0x00,0x0F, 0xFF, 0x7F, 0x00,0x00, \
+        0x00,0x7E, 0x0B, 0x8F, 0x8F, 0x8E, 0x0F, 0xFF, 0x9E, 0x7C, 0x00,0x07,0xFD, 0xFC, 0x00,0x00, \
+        0x00,0x7C, 0x37,0x9F, 0x1F, 0x1E, 0x0F, 0x87,0x1E, 0xF8,0x00,0x07,0xF0,0x30,0x00,0x00, \
+        0x00,0xF1,0xF7,0xFE, 0x1E, 0x1C, 0x3E, 0x0E, 0x1F, 0xF0,0x00,0x01,0x40,0x28,0x00,0x00, \
+        0x01,0xEF, 0xE7,0xF8,0x3C, 0x3E, 0x7C, 0x0F, 0x1F, 0xE0,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x03,0xFF, 0x8F, 0xF0,0x7F, 0xFE, 0xF8,0x0E, 0x0F, 0x80,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x03,0xFF, 0xCF, 0xC0,0xFF, 0xFF, 0xF0,0x0C, 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x07,0x8B, 0xFF, 0x01,0xFF, 0x8F, 0xC0,0x06,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x07,0x87,0xFE, 0x01,0xFE, 0x0F, 0x80,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x07,0x1F, 0xDE, 0x03,0xF0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x07,0xBF, 0x9E, 0x01,0xC0,0x00,0x00,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x07,0xFF, 0x9C, 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x07,0xFB, 0x38,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
         0x03,0xE7,0x30,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
         0x01,0x47,0x28,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x00,0x0E,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
-        0x00,0x0C,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x00,0x0E, 0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
+        0x00,0x0C, 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
         0x00,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
         0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
