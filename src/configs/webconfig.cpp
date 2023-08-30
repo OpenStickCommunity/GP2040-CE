@@ -1428,22 +1428,29 @@ std::string getHeldPins()
 	uint32_t timePinWait = getMillis();
 	uint32_t oldState = ~gpio_get_all();
 	uint32_t newState = 0;
+	uint32_t debounceStartTime = 0;
 	std::set<uint> heldPinsSet;
 	bool isAnyPinHeld = false;
 
-	while ((isAnyPinHeld || ((getMillis() - timePinWait) < 5000))) {
+	uint32_t currentMillis = 0;
+	while ((isAnyPinHeld || (((currentMillis = getMillis()) - timePinWait) < 5000))) { // 5 seconds of idle time
 		ConfigManager::getInstance().loop(); // Keep the loop going for interrupt call
+
 		if (_abortGetHeldPins)
 			break;
 		if (isAnyPinHeld && newState == oldState) // Should match old state when pins are released
 			break;
+
 		newState = ~gpio_get_all();
 		uint32_t newPin = newState ^ oldState;
 		for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
 			if (gpio_get_function(pin) == GPIO_FUNC_SIO &&
 			   !gpio_is_dir_out(pin) && (newPin & (1 << pin))) {
-				heldPinsSet.insert(pin);
-				isAnyPinHeld = true;
+				if (debounceStartTime == 0) debounceStartTime = currentMillis;
+				if ((currentMillis - debounceStartTime) > 5) { // wait 5ms
+					heldPinsSet.insert(pin);
+					isAnyPinHeld = true;
+				}
 			}
 		}
 	}
