@@ -270,7 +270,7 @@ export default function PinMappingPage() {
 													handlePinChange({ target: { value: pin } }, button, true)}
 												abortRef={controller}
 												triggerCapture={button === buttonNames[capturingButtonIndex]}
-												buttonName={button}
+												buttonName={label}
 												onTriggeredCaptureComplete={onTriggeredCaptureComplete}
 												onStopCaptureSequence={onStopCaptureSequence}
 											/>
