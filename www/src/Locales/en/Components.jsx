@@ -3,6 +3,7 @@ export default {
 		'en-GB': 'British English',
 		en: 'English',
 		nl: 'Dutch',
+		'pt-BR': 'Brazilian Portuguese'
 	},
 	'color-scheme': {
 		dark: 'Dark',
