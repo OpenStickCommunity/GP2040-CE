@@ -34,6 +34,10 @@ import DualDirection, {
 } from '../Addons/DualDirection';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
 import Buzzer, { buzzerScheme, buzzerState } from '../Addons/Buzzer';
+import ExtraButton, {
+	extraButtonScheme,
+	extraButtonState,
+} from '../Addons/ExtraButton';
 
 const verifyAndSavePS4 = async () => {
 	let PS4Key = document.getElementById('ps4key-input');
@@ -177,19 +181,6 @@ const schema = yup.object().shape({
 		.label('Focus Mode Button Lock Map')
 		.validateRangeWhenValue('FocusModeAddonEnabled', 0, (1 << 20) - 1),
 
-	ExtraButtonAddonEnabled: yup
-		.number()
-		.required()
-		.label('Extra Button Add-On Enabled'),
-	extraButtonPin: yup
-		.number()
-		.label('Extra Button Pin')
-		.validatePinWhenValue('ExtraButtonAddonEnabled'),
-	extraButtonMap: yup
-		.number()
-		.label('Extra Button Map')
-		.validateSelectionWhenValue('ExtraButtonAddonEnabled', BUTTON_MASKS),
-
 	KeyboardHostAddonEnabled: yup
 		.number()
 		.required()
@@ -285,14 +276,13 @@ const schema = yup.object().shape({
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
+	...extraButtonScheme,
 });
 
 const defaultValues = {
 	sliderSOCDPinOne: -1,
 	sliderSOCDPinTwo: -1,
 
-	extrabuttonPin: -1,
-	extraButtonMap: 0,
 	playerNumber: 1,
 
 	sliderSOCDModeOne: 0,
@@ -312,8 +302,6 @@ const defaultValues = {
 	focusModeOledLockEnabled: 0,
 	focusModeRgbLockEnabled: 0,
 
-	ExtraButtonAddonEnabled: 0,
-
 	KeyboardHostAddonEnabled: 0,
 	SliderSOCDInputEnabled: 0,
 	PlayerNumAddonEnabled: 0,
@@ -331,6 +319,7 @@ const defaultValues = {
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
+	...extraButtonState,
 };
 
 const ADDONS = [
@@ -344,6 +333,7 @@ const ADDONS = [
 	DualDirection,
 	Tilt,
 	Buzzer,
+	ExtraButton,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -464,56 +454,6 @@ export default function AddonsConfigPage() {
 						/>
 					))}
 
-					<Section title={t('AddonsConfig:extra-button-header-text')}>
-						<div
-							id="ExtraButtonAddonOptions"
-							hidden={!values.ExtraButtonAddonEnabled}
-						>
-							<Row className="mb-3">
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:extra-button-pin-label')}
-									name="extraButtonPin"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.extraButtonPin}
-									error={errors.extraButtonPin}
-									isInvalid={errors.extraButtonPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<FormSelect
-									label={t('AddonsConfig:extra-button-map-label')}
-									name="extraButtonMap"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.extraButtonMap}
-									error={errors.extraButtonMap}
-									isInvalid={errors.extraButtonMap}
-									onChange={handleChange}
-								>
-									{BUTTON_MASKS.map((o, i) => (
-										<option key={`extraButtonMap-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="ExtraButtonAddonButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.ExtraButtonAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('ExtraButtonAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
 					<Section title={t('AddonsConfig:player-number-header-text')}>
 						<div
 							id="PlayerNumAddonOptions"
