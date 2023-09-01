@@ -11,4 +11,3 @@ export default {
 	'system-stats-header-text': 'Estatísticas do Sistema',
 	'version-text': 'Versão',
 };
-  
