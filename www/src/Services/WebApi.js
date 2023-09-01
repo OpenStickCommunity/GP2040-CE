@@ -2,7 +2,7 @@ import axios from 'axios';
 import { intToHex, hexToInt, rgbIntToHex } from './Utilities';
 
 const baseUrl =
-	process.env.NODE_ENV === 'production' ? '' : 'http://192.168.7.1';
+	process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
 
 export const baseButtonMappings = {
 	Up: { pin: -1, key: 0, error: null },
