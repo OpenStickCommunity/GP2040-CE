@@ -33,6 +33,7 @@ import DualDirection, {
 	dualDirectionState,
 } from '../Addons/DualDirection';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
+import Buzzer, { buzzerScheme, buzzerState } from '../Addons/Buzzer';
 
 const verifyAndSavePS4 = async () => {
 	let PS4Key = document.getElementById('ps4key-input');
@@ -176,19 +177,6 @@ const schema = yup.object().shape({
 		.label('Focus Mode Button Lock Map')
 		.validateRangeWhenValue('FocusModeAddonEnabled', 0, (1 << 20) - 1),
 
-	BuzzerSpeakerAddonEnabled: yup
-		.number()
-		.required()
-		.label('Buzzer Speaker Add-On Enabled'),
-	buzzerPin: yup
-		.number()
-		.label('Buzzer Pin')
-		.validatePinWhenValue('BuzzerSpeakerAddonEnabled'),
-	buzzerVolume: yup
-		.number()
-		.label('Buzzer Volume')
-		.validateRangeWhenValue('BuzzerSpeakerAddonEnabled', 0, 100),
-
 	ExtraButtonAddonEnabled: yup
 		.number()
 		.required()
@@ -296,14 +284,13 @@ const schema = yup.object().shape({
 	...i2cScheme,
 	...dualDirectionScheme,
 	...tiltScheme,
+	...buzzerScheme,
 });
 
 const defaultValues = {
 	sliderSOCDPinOne: -1,
 	sliderSOCDPinTwo: -1,
 
-	buzzerPin: -1,
-	buzzerVolume: 100,
 	extrabuttonPin: -1,
 	extraButtonMap: 0,
 	playerNumber: 1,
@@ -324,9 +311,7 @@ const defaultValues = {
 	FocusModeAddonEnabled: 0,
 	focusModeOledLockEnabled: 0,
 	focusModeRgbLockEnabled: 0,
-	BuzzerSpeakerAddonEnabled: 0,
 
-	TiltInputEnabled: 0,
 	ExtraButtonAddonEnabled: 0,
 
 	KeyboardHostAddonEnabled: 0,
@@ -345,6 +330,7 @@ const defaultValues = {
 	...i2cState,
 	...dualDirectionState,
 	...tiltState,
+	...buzzerState,
 };
 
 const ADDONS = [
@@ -357,6 +343,7 @@ const ADDONS = [
 	I2c,
 	DualDirection,
 	Tilt,
+	Buzzer,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -477,53 +464,6 @@ export default function AddonsConfigPage() {
 						/>
 					))}
 
-					<Section title={t('AddonsConfig:buzzer-speaker-header-text')}>
-						<div
-							id="BuzzerSpeakerAddonOptions"
-							hidden={!values.BuzzerSpeakerAddonEnabled}
-						>
-							<Row className="mb-3">
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:buzzer-speaker-pin-label')}
-									name="buzzerPin"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.buzzerPin}
-									error={errors.buzzerPin}
-									isInvalid={errors.buzzerPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:buzzer-speaker-volume-label')}
-									name="buzzerVolume"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.buzzerVolume}
-									error={errors.buzzerVolume}
-									isInvalid={errors.buzzerVolume}
-									onChange={handleChange}
-									min={0}
-									max={100}
-								/>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="BuzzerSpeakerAddonButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.BuzzerSpeakerAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('BuzzerSpeakerAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
 					<Section title={t('AddonsConfig:extra-button-header-text')}>
 						<div
 							id="ExtraButtonAddonOptions"
