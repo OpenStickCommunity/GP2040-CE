@@ -38,6 +38,10 @@ import ExtraButton, {
 	extraButtonScheme,
 	extraButtonState,
 } from '../Addons/ExtraButton';
+import PlayerNumber, {
+	playerNumberScheme,
+	playerNumberState,
+} from '../Addons/PlayerNumber';
 
 const verifyAndSavePS4 = async () => {
 	let PS4Key = document.getElementById('ps4key-input');
@@ -207,15 +211,6 @@ const schema = yup.object().shape({
 		.label('PS Passthrough 5V Power Pin')
 		.validatePinWhenValue('PSPassthroughAddonEnabled'),
 
-	PlayerNumAddonEnabled: yup
-		.number()
-		.required()
-		.label('Player Number Add-On Enabled'),
-	playerNumber: yup
-		.number()
-		.label('Player Number')
-		.validateRangeWhenValue('PlayerNumAddonEnabled', 1, 4),
-
 	PS4ModeAddonEnabled: yup.number().required().label('PS4 Mode Add-on Enabled'),
 
 	SliderSOCDInputEnabled: yup
@@ -277,13 +272,12 @@ const schema = yup.object().shape({
 	...tiltScheme,
 	...buzzerScheme,
 	...extraButtonScheme,
+	...playerNumberScheme,
 });
 
 const defaultValues = {
 	sliderSOCDPinOne: -1,
 	sliderSOCDPinTwo: -1,
-
-	playerNumber: 1,
 
 	sliderSOCDModeOne: 0,
 	sliderSOCDModeTwo: 2,
@@ -304,7 +298,7 @@ const defaultValues = {
 
 	KeyboardHostAddonEnabled: 0,
 	SliderSOCDInputEnabled: 0,
-	PlayerNumAddonEnabled: 0,
+
 	PS4ModeAddonEnabled: 0,
 
 	WiiExtensionAddonEnabled: 0,
@@ -320,6 +314,7 @@ const defaultValues = {
 	...tiltState,
 	...buzzerState,
 	...extraButtonState,
+	...playerNumberState,
 };
 
 const ADDONS = [
@@ -334,6 +329,7 @@ const ADDONS = [
 	Tilt,
 	Buzzer,
 	ExtraButton,
+	PlayerNumber,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -454,45 +450,6 @@ export default function AddonsConfigPage() {
 						/>
 					))}
 
-					<Section title={t('AddonsConfig:player-number-header-text')}>
-						<div
-							id="PlayerNumAddonOptions"
-							hidden={!values.PlayerNumAddonEnabled}
-						>
-							<p>
-								<strong>
-									{t('AddonsConfig:player-number-sub-header-text')}
-								</strong>
-							</p>
-							<Row className="mb-3">
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:player-number-label')}
-									name="playerNumber"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.playerNumber}
-									error={errors.playerNumber}
-									isInvalid={errors.playerNumber}
-									onChange={handleChange}
-									min={1}
-									max={4}
-								/>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="PlayerNumAddonButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.PlayerNumAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('PlayerNumAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
 					<Section
 						title={t(
 							'AddonsConfig:socd-cleaning-mode-selection-slider-header-text',
