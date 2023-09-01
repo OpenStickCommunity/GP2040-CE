@@ -132,7 +132,6 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
 				type="switch"
 				id="WiiExtensionButton"
 				reverse={true}
-				error={undefined}
 				isInvalid={false}
 				checked={Boolean(values.WiiExtensionAddonEnabled)}
 				onChange={(e) => {
