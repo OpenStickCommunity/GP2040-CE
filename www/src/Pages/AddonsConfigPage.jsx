@@ -26,6 +26,7 @@ import Analog, { analogScheme, analogState } from '../Addons/Analog';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
 import { DUAL_STICK_MODES } from '../Data/Addons';
 import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
+import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 
 const I2C_BLOCKS = [
 	{ label: 'i2c0', value: 0 },
@@ -43,12 +44,6 @@ const TILT_SOCD_MODES = [
 	{ label: 'Up Priority', value: 0 },
 	{ label: 'Neutral', value: 1 },
 	{ label: 'Last Win', value: 2 },
-];
-
-const REVERSE_ACTION = [
-	{ label: 'Disable', value: 0 },
-	{ label: 'Enable', value: 1 },
-	{ label: 'Neutral', value: 2 },
 ];
 
 const verifyAndSavePS4 = async () => {
@@ -371,16 +366,6 @@ const schema = yup.object().shape({
 
 	PS4ModeAddonEnabled: yup.number().required().label('PS4 Mode Add-on Enabled'),
 
-	ReverseInputEnabled: yup.number().required().label('Reverse Input Enabled'),
-	reversePin: yup
-		.number()
-		.label('Reverse Pin')
-		.validatePinWhenValue('ReverseInputEnabled'),
-	reversePinLED: yup
-		.number()
-		.label('Reverse Pin LED')
-		.validatePinWhenValue('ReverseInputEnabled'),
-
 	SliderSOCDInputEnabled: yup
 		.number()
 		.required()
@@ -434,14 +419,13 @@ const schema = yup.object().shape({
 	...onBoardLedScheme,
 	...turboScheme,
 	...joystickScheme,
+	...reverseScheme,
 });
 
 const defaultValues = {
 	sliderSOCDPinOne: -1,
 	sliderSOCDPinTwo: -1,
 
-	reversePin: -1,
-	reversePinLED: -1,
 	i2cAnalog1219SDAPin: -1,
 	i2cAnalog1219SCLPin: -1,
 	i2cAnalog1219Block: 0,
@@ -497,7 +481,6 @@ const defaultValues = {
 	SliderSOCDInputEnabled: 0,
 	PlayerNumAddonEnabled: 0,
 	PS4ModeAddonEnabled: 0,
-	ReverseInputEnabled: 0,
 
 	WiiExtensionAddonEnabled: 0,
 	SNESpadAddonEnabled: 0,
@@ -506,6 +489,7 @@ const defaultValues = {
 	...onBoardLedState,
 	...turboState,
 	...joystickState,
+	...reverseState,
 };
 
 const FormContext = ({ setStoredData }) => {
@@ -564,11 +548,6 @@ export default function AddonsConfigPage() {
 	const [validated, setValidated] = useState(false);
 
 	const { t } = useTranslation();
-
-	const translatedReverseAction = REVERSE_ACTION.map((option) => ({
-		...option,
-		label: t(`AddonsConfig:reverse-action-${option.label.toLowerCase()}-label`),
-	}));
 
 	const handleKeyChange = (values, setFieldValue) => (value, button) => {
 		const newMappings = { ...values.keyboardHostMap };
@@ -651,125 +630,12 @@ export default function AddonsConfigPage() {
 						handleChange={handleChange}
 						handleCheckbox={handleCheckbox}
 					/>
-					<Section title={t('AddonsConfig:input-reverse-header-text')}>
-						<div id="ReverseInputOptions" hidden={!values.ReverseInputEnabled}>
-							<Row className="mb-3">
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:input-reverse-button-pin-label')}
-									name="reversePin"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.reversePin}
-									error={errors.reversePin}
-									isInvalid={errors.reversePin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<FormControl
-									type="number"
-									label="Reverse Input Pin LED"
-									name={t('AddonsConfig:input-reverse-led-pin-label')}
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.reversePinLED}
-									error={errors.reversePinLED}
-									isInvalid={errors.reversePinLED}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-							</Row>
-							<Row className="mb-3">
-								<FormSelect
-									label={t('AddonsConfig:input-reverse-action-up-label')}
-									name="reverseActionUp"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.reverseActionUp}
-									error={errors.reverseActionUp}
-									isInvalid={errors.reverseActionUp}
-									onChange={handleChange}
-								>
-									{translatedReverseAction.map((o, i) => (
-										<option key={`reverseActionUp-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormSelect
-									label={t('AddonsConfig:input-reverse-action-down-label')}
-									name="reverseActionDown"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.reverseActionDown}
-									error={errors.reverseActionDown}
-									isInvalid={errors.reverseActionDown}
-									onChange={handleChange}
-								>
-									{translatedReverseAction.map((o, i) => (
-										<option
-											key={`reverseActionDown-option-${i}`}
-											value={o.value}
-										>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormSelect
-									label={t('AddonsConfig:input-reverse-action-left-label')}
-									name="reverseActionLeft"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.reverseActionLeft}
-									error={errors.reverseActionLeft}
-									isInvalid={errors.reverseActionLeft}
-									onChange={handleChange}
-								>
-									{translatedReverseAction.map((o, i) => (
-										<option
-											key={`reverseActionLeft-option-${i}`}
-											value={o.value}
-										>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormSelect
-									label={t('AddonsConfig:input-reverse-action-right-label')}
-									name="reverseActionRight"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.reverseActionRight}
-									error={errors.reverseActionRight}
-									isInvalid={errors.reverseActionRight}
-									onChange={handleChange}
-								>
-									{translatedReverseAction.map((o, i) => (
-										<option
-											key={`reverseActionRight-option-${i}`}
-											value={o.value}
-										>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="ReverseInputButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.ReverseInputEnabled)}
-							onChange={(e) => {
-								handleCheckbox('ReverseInputEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
+					<Reverse
+						values={values}
+						errors={errors}
+						handleChange={handleChange}
+						handleCheckbox={handleCheckbox}
+					/>
 					<Section title={t('AddonsConfig:i2c-analog-ads1219-header-text')}>
 						<div
 							id="I2CAnalog1219InputOptions"
