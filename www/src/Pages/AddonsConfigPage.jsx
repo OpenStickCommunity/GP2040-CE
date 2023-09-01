@@ -43,6 +43,10 @@ import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
 import { BUTTON_MASKS } from '../Data/Buttons';
 import { I2C_BLOCKS } from '../Data/Addons';
 import Ps4, { ps4Scheme, ps4State } from '../Addons/Ps4';
+import PSPassthrough, {
+	psPassthroughScheme,
+	psPassthroughState,
+} from '../Addons/Passthrough';
 
 const schema = yup.object().shape({
 	FocusModeAddonEnabled: yup
@@ -83,19 +87,6 @@ const schema = yup.object().shape({
 		.label('Keyboard Host 5V Power Pin')
 		.validatePinWhenValue('KeyboardHostAddonEnabled'),
 
-	PSPassthroughAddonEnabled: yup
-		.number()
-		.required()
-		.label('PS Passthrough Add-On Enabled'),
-	psPassthroughPinDplus: yup
-		.number()
-		.label('PS Passthrough D+ Pin')
-		.validatePinWhenValue('PSPassthroughAddonEnabled'),
-	psPassthroughPin5V: yup
-		.number()
-		.label('PS Passthrough 5V Power Pin')
-		.validatePinWhenValue('PSPassthroughAddonEnabled'),
-
 	WiiExtensionAddonEnabled: yup
 		.number()
 		.required()
@@ -133,6 +124,7 @@ const schema = yup.object().shape({
 	...playerNumberScheme,
 	...socdScheme,
 	...ps4Scheme,
+	...psPassthroughScheme,
 });
 
 const defaultValues = {
@@ -168,6 +160,7 @@ const defaultValues = {
 	...playerNumberState,
 	...socdState,
 	...ps4State,
+	...psPassthroughState,
 };
 
 const ADDONS = [
@@ -185,6 +178,7 @@ const ADDONS = [
 	PlayerNumber,
 	SOCD,
 	Ps4,
+	PSPassthrough,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -305,66 +299,6 @@ export default function AddonsConfigPage() {
 						/>
 					))}
 
-					<Section title={t('AddonsConfig:pspassthrough-header-text')}>
-						<div
-							id="PSPassthroughAddonOptions"
-							hidden={!values.PSPassthroughAddonEnabled}
-						>
-							<Row className="mb-3">
-								<p>{t('AddonsConfig:pspassthrough-sub-header-text')}</p>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:pspassthrough-d-plus-label')}
-									name="psPassthroughPinDplus"
-									className="form-select-sm"
-									groupClassName="col-sm-1 mb-3"
-									value={values.psPassthroughPinDplus}
-									error={errors.psPassthroughPinDplus}
-									isInvalid={errors.psPassthroughPinDplus}
-									onChange={handleChange}
-									min={-1}
-									max={28}
-								/>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:pspassthrough-d-minus-label')}
-									disabled
-									className="form-select-sm"
-									groupClassName="col-sm-1 mb-3"
-									value={
-										values.psPassthroughPinDplus === -1
-											? -1
-											: values.psPassthroughPinDplus + 1
-									}
-								/>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:pspassthrough-five-v-label')}
-									name="psPassthroughPin5V"
-									className="form-select-sm"
-									groupClassName="col-sm-auto mb-3"
-									value={values.psPassthroughPin5V}
-									error={errors.psPassthroughPin5V}
-									isInvalid={errors.psPassthroughPin5V}
-									onChange={handleChange}
-									min={-1}
-									max={28}
-								/>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="PSPassthroughAddonButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.PSPassthroughAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('PSPassthroughAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
 					<Section title={t('AddonsConfig:wii-extension-header-text')}>
 						<div
 							id="WiiExtensionAddonOptions"
