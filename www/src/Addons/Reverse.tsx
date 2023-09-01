@@ -60,8 +60,8 @@ const Reverse = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 					<FormControl
 						type="number"
-						label="Reverse Input Pin LED"
-						name={t('AddonsConfig:input-reverse-led-pin-label')}
+						label={t('AddonsConfig:input-reverse-led-pin-label')}
+						name="reversePinLED"
 						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
 						value={values.reversePinLED}

@@ -4,7 +4,7 @@ import { Form, FormControlProps } from 'react-bootstrap';
 type formTypes = {
 	onClick?: () => void;
 	label: string;
-	error: string;
+	error?: string;
 	groupClassName?: string;
 	hidden?: boolean;
 } & FormControlProps &

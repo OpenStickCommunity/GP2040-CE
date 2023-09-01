@@ -134,8 +134,8 @@ static const uint16_t *convertStringDescriptor(uint16_t *payloadSize, const char
 
 static const uint16_t *getStringDescriptor(uint16_t *size, InputMode mode, uint8_t index)
 {
-	uint8_t charCount;
-	char *str;
+	uint8_t charCount = 0;
+	char *str = 0;
 
 	if (index == 0)
 	{

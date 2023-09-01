@@ -98,7 +98,7 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
 {
     // Get Interface Number for our HID class
     uint16_t temp_buf[128];
-    tusb_desc_configuration_t const* desc_cfg;
+    
     if (XFER_RESULT_SUCCESS == tuh_descriptor_get_configuration_sync(dev_addr, 0, temp_buf, sizeof(temp_buf)))
     {
         tusb_desc_configuration_t const* desc_cfg = (tusb_desc_configuration_t*) temp_buf;
@@ -175,7 +175,6 @@ static void get_report_complete(tuh_xfer_t* xfer)
 {
   if (tuh_hid_get_report_complete_cb)
   {
-    uint8_t const itf_num     = (uint8_t) tu_le16toh(xfer->setup->wIndex);
     uint8_t const instance    = 0;
 
     uint8_t const report_type = tu_u16_high(xfer->setup->wValue);

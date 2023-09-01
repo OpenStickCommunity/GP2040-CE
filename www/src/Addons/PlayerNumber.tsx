@@ -28,16 +28,13 @@ const PlayerNumber = ({ values, errors, handleChange, handleCheckbox }) => {
 	return (
 		<Section title={t('AddonsConfig:player-number-header-text')}>
 			<div id="PlayerNumAddonOptions" hidden={!values.PlayerNumAddonEnabled}>
-				<p>
-					<strong></strong>
-				</p>
-
 				<Alert variant="danger">
 					<Alert.Heading>
 						{t('AddonsConfig:player-number-sub-header')}
 					</Alert.Heading>
 					<p>{t('AddonsConfig:player-number-sub-header-text')}</p>
 				</Alert>
+
 				<Row className="mb-3">
 					<FormControl
 						type="number"

@@ -14,35 +14,35 @@ import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
-import WebApi, { baseButtonMappings } from '../Services/WebApi';
-import { BUTTON_MASKS } from '../Data/Buttons';
 
-import Bootsel, { bootselScheme, bootselState } from '../Addons/Bootsel';
-import OnBoardLed, {
-	onBoardLedScheme,
-	onBoardLedState,
-} from '../Addons/OnBoardLed';
+import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import Analog, { analogScheme, analogState } from '../Addons/Analog';
-import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
-import { I2C_BLOCKS, SOCD_MODES } from '../Data/Addons';
-import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
-import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
-import I2c, { i2cScheme, i2cState } from '../Addons/I2c';
+import Bootsel, { bootselScheme, bootselState } from '../Addons/Bootsel';
+import Buzzer, { buzzerScheme, buzzerState } from '../Addons/Buzzer';
 import DualDirection, {
 	dualDirectionScheme,
 	dualDirectionState,
 } from '../Addons/DualDirection';
-import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
-import Buzzer, { buzzerScheme, buzzerState } from '../Addons/Buzzer';
 import ExtraButton, {
 	extraButtonScheme,
 	extraButtonState,
 } from '../Addons/ExtraButton';
+import I2c, { i2cScheme, i2cState } from '../Addons/I2c';
+import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
+import OnBoardLed, {
+	onBoardLedScheme,
+	onBoardLedState,
+} from '../Addons/OnboardLed';
 import PlayerNumber, {
 	playerNumberScheme,
 	playerNumberState,
 } from '../Addons/PlayerNumber';
+import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
+import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
+import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
+import { BUTTON_MASKS } from '../Data/Buttons';
+import { I2C_BLOCKS } from '../Data/Addons';
 
 const verifyAndSavePS4 = async () => {
 	let PS4Key = document.getElementById('ps4key-input');
