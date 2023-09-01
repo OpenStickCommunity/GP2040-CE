@@ -41,13 +41,13 @@ import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
 import { BUTTON_MASKS } from '../Data/Buttons';
-import { I2C_BLOCKS } from '../Data/Addons';
 import Ps4, { ps4Scheme, ps4State } from '../Addons/Ps4';
 import PSPassthrough, {
 	psPassthroughScheme,
 	psPassthroughState,
 } from '../Addons/Passthrough';
 import Wii, { wiiScheme, wiiState } from '../Addons/Wii';
+import SNES, { snesState } from '../Addons/SNES';
 
 const schema = yup.object().shape({
 	FocusModeAddonEnabled: yup
@@ -107,9 +107,6 @@ const schema = yup.object().shape({
 });
 
 const defaultValues = {
-	snesPadClockPin: -1,
-	snesPadLatchPin: -1,
-	snesPadDataPin: -1,
 	keyboardHostPinDplus: -1,
 	keyboardHostPin5V: -1,
 	keyboardHostMap: baseButtonMappings,
@@ -119,7 +116,6 @@ const defaultValues = {
 
 	KeyboardHostAddonEnabled: 0,
 
-	SNESpadAddonEnabled: 0,
 	...analogState,
 	...bootselState,
 	...onBoardLedState,
@@ -136,6 +132,7 @@ const defaultValues = {
 	...ps4State,
 	...psPassthroughState,
 	...wiiState,
+	...snesState,
 };
 
 const ADDONS = [
@@ -155,6 +152,7 @@ const ADDONS = [
 	Ps4,
 	PSPassthrough,
 	Wii,
+	SNES,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -275,88 +273,6 @@ export default function AddonsConfigPage() {
 						/>
 					))}
 
-					<Section title={t('AddonsConfig:snes-extension-header-text')}>
-						<div id="SNESpadAddonOptions" hidden={!values.SNESpadAddonEnabled}>
-							<Row>
-								<Trans
-									ns="AddonsConfig"
-									i18nKey="snes-extension-sub-header-text"
-								>
-									<p>
-										Note: If the Display is enabled at the same time, this Addon
-										will be disabled.
-									</p>
-									<h3>Currently Supported Controllers</h3>
-									<p>
-										SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L
-										= L1, R = R1, Select = S1, Start = S2
-									</p>
-									<p>
-										SNES mouse: Analog Stick Supported. Left Click = B1, Right
-										Click = B2
-									</p>
-									<p>
-										NES: D-Pad Supported. B = B1, A = B2, Select = S1, Start =
-										S2
-									</p>
-								</Trans>
-							</Row>
-							<Row className="mb-3">
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:snes-extension-clock-pin-label')}
-									name="snesPadClockPin"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.snesPadClockPin}
-									error={errors.snesPadClockPin}
-									isInvalid={errors.snesPadClockPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:snes-extension-latch-pin-label')}
-									name="snesPadLatchPin"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.snesPadLatchPin}
-									error={errors.snesPadLatchPin}
-									isInvalid={errors.snesPadLatchPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:snes-extension-data-pin-label')}
-									name="snesPadDataPin"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.snesPadDataPin}
-									error={errors.snesPadDataPin}
-									isInvalid={errors.snesPadDataPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="SNESpadButton"
-							reverse={true}
-							error={undefined}
-							isInvalid={false}
-							checked={Boolean(values.SNESpadAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('SNESpadAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
 					<Section title={t('AddonsConfig:focus-mode-header-text')}>
 						<div
 							id="FocusModeAddonOptions"
