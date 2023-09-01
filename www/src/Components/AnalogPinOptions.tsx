@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ANALOG_PINS } from '../Data/Addons';
+import { ANALOG_PINS } from '../Data/Buttons';
 
 const AnalogPinOptions = () => {
 	const { t } = useTranslation();
