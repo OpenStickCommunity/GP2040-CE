@@ -26,7 +26,7 @@ import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
 import OnBoardLed, {
 	onBoardLedScheme,
 	onBoardLedState,
-} from '../Addons/OnboardLed';
+} from '../Addons/OnBoardLed';
 import PlayerNumber, {
 	playerNumberScheme,
 	playerNumberState,
