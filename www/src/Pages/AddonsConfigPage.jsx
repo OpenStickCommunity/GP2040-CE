@@ -1,20 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Form, Row, FormCheck } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import get from 'lodash/get';
 import set from 'lodash/set';
-import isNil from 'lodash/isNil';
 
 import { AppContext } from '../Contexts/AppContext';
-import FormControl from '../Components/FormControl';
-import FormSelect from '../Components/FormSelect';
-import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
-import Section from '../Components/Section';
 
-import WebApi, { baseButtonMappings } from '../Services/WebApi';
+import WebApi from '../Services/WebApi';
 import Analog, { analogScheme, analogState } from '../Addons/Analog';
 import Bootsel, { bootselScheme, bootselState } from '../Addons/Bootsel';
 import Buzzer, { buzzerScheme, buzzerState } from '../Addons/Buzzer';
@@ -40,7 +35,6 @@ import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
-import { BUTTON_MASKS } from '../Data/Buttons';
 import Ps4, { ps4Scheme, ps4State } from '../Addons/Ps4';
 import PSPassthrough, {
 	psPassthroughScheme,
@@ -52,21 +46,9 @@ import FocusMode, {
 	focusModeScheme,
 	focusModeState,
 } from '../Addons/FocusMode';
+import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 
 const schema = yup.object().shape({
-	KeyboardHostAddonEnabled: yup
-		.number()
-		.required()
-		.label('Keyboard Host Add-On Enabled'),
-	keyboardHostPinDplus: yup
-		.number()
-		.label('Keyboard Host D+ Pin')
-		.validatePinWhenValue('KeyboardHostAddonEnabled'),
-	keyboardHostPin5V: yup
-		.number()
-		.label('Keyboard Host 5V Power Pin')
-		.validatePinWhenValue('KeyboardHostAddonEnabled'),
-
 	...analogScheme,
 	...bootselScheme,
 	...onBoardLedScheme,
@@ -84,14 +66,10 @@ const schema = yup.object().shape({
 	...psPassthroughScheme,
 	...wiiScheme,
 	...focusModeScheme,
+	...keyboardScheme,
 });
 
 const defaultValues = {
-	keyboardHostPinDplus: -1,
-	keyboardHostPin5V: -1,
-	keyboardHostMap: baseButtonMappings,
-	KeyboardHostAddonEnabled: 0,
-
 	...analogState,
 	...bootselState,
 	...onBoardLedState,
@@ -110,6 +88,7 @@ const defaultValues = {
 	...wiiState,
 	...snesState,
 	...focusModeState,
+	...keyboardState,
 };
 
 const ADDONS = [
@@ -131,6 +110,7 @@ const ADDONS = [
 	Wii,
 	SNES,
 	FocusMode,
+	Keyboard,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -183,24 +163,11 @@ function flattenObject(object) {
 }
 
 export default function AddonsConfigPage() {
-	const { buttonLabels, updateUsedPins } = useContext(AppContext);
+	const { updateUsedPins } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [storedData, setStoredData] = useState({});
-	const [validated, setValidated] = useState(false);
 
 	const { t } = useTranslation();
-
-	const handleKeyChange = (values, setFieldValue) => (value, button) => {
-		const newMappings = { ...values.keyboardHostMap };
-		newMappings[button].key = value;
-		const mappings = validateMappings(newMappings, t);
-		setFieldValue('keyboardHostMap', mappings);
-		setValidated(true);
-	};
-
-	const getKeyMappingForButton = (values) => (button) => {
-		return values.keyboardHostMap[button];
-	};
 
 	const onSuccess = async (values) => {
 		const flattened = flattenObject(storedData);
@@ -252,75 +219,6 @@ export default function AddonsConfigPage() {
 						/>
 					))}
 
-					<Section title={t('AddonsConfig:keyboard-host-header-text')}>
-						<div
-							id="KeyboardHostAddonOptions"
-							hidden={!values.KeyboardHostAddonEnabled}
-						>
-							<Row className="mb-3">
-								<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:keyboard-host-d-plus-label')}
-									name="keyboardHostPinDplus"
-									className="form-select-sm"
-									groupClassName="col-sm-1 mb-3"
-									value={values.keyboardHostPinDplus}
-									error={errors.keyboardHostPinDplus}
-									isInvalid={Boolean(errors.keyboardHostPinDplus)}
-									onChange={handleChange}
-									min={-1}
-									max={28}
-								/>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:keyboard-host-d-minus-label')}
-									disabled
-									className="form-select-sm"
-									groupClassName="col-sm-1 mb-3"
-									value={
-										values.keyboardHostPinDplus === -1
-											? -1
-											: values.keyboardHostPinDplus + 1
-									}
-								/>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:keyboard-host-five-v-label')}
-									name="keyboardHostPin5V"
-									className="form-select-sm"
-									groupClassName="col-sm-auto mb-3"
-									value={values.keyboardHostPin5V}
-									error={errors.keyboardHostPin5V}
-									isInvalid={Boolean(errors.keyboardHostPin5V)}
-									onChange={handleChange}
-									min={-1}
-									max={28}
-								/>
-							</Row>
-							<Row className="mb-3">
-								<p>{t('KeyboardMapping:sub-header-text')}</p>
-								<KeyboardMapper
-									buttonLabels={buttonLabels}
-									handleKeyChange={handleKeyChange(values, setFieldValue)}
-									validated={validated}
-									getKeyMappingForButton={getKeyMappingForButton(values)}
-								/>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="KeyboardHostAddonButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.KeyboardHostAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('KeyboardHostAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
 					<div className="mt-3">
 						<Button type="submit" id="save">
 							{t('Common:button-save-label')}
