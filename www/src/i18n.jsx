@@ -4,6 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import en from './Locales/en/Index';
 import enGB from './Locales/en-GB/Index';
 import zhCN from './Locales/zh-CN/Index';
+import ptBR from './Locales/pt-BR/Index';
 
 i18n
 	.use(LanguageDetector)
@@ -17,7 +18,7 @@ i18n
 		detection: {
 			order: ['localStorage', 'navigator'],
 		},
-		resources: { en, 'en-GB': enGB, 'zh-CN': zhCN },
+		resources: { en, 'en-GB': enGB, 'pt-BR': ptBR, 'zh-CN': zhCN },
 	});
 
 export default i18n;
