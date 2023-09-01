@@ -8,6 +8,7 @@ import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
 import AnalogPinOptions from '../Components/AnalogPinOptions';
 import { BUTTON_MASKS } from '../Data/Buttons';
+import { DUAL_STICK_MODES } from '../Data/Addons';
 
 const SHMUP_MIXED_MODES = [
 	{ label: 'Turbo Priority', value: 0 },

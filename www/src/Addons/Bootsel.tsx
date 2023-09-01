@@ -1,11 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { FormCheck } from 'react-bootstrap';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
-import { BUTTON_MASKS } from '../Data/Addons';
-import { FormCheck } from 'react-bootstrap';
+import { BUTTON_MASKS } from '../Data/Buttons';
 
 export const bootselScheme = {
 	BootselButtonAddonEnabled: yup

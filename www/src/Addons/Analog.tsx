@@ -5,7 +5,7 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
-import { ANALOG_PINS } from '../Data/Addons';
+import { ANALOG_PINS } from '../Data/Buttons';
 import AnalogPinOptions from '../Components/AnalogPinOptions';
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';

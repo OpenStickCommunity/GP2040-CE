@@ -24,16 +24,11 @@ import OnBoardLed, {
 } from '../Addons/OnBoardLed';
 import Analog, { analogScheme, analogState } from '../Addons/Analog';
 import Turbo, { turboScheme } from '../Addons/Turbo';
+import { DUAL_STICK_MODES } from '../Data/Addons';
 
 const I2C_BLOCKS = [
 	{ label: 'i2c0', value: 0 },
 	{ label: 'i2c1', value: 1 },
-];
-
-const DUAL_STICK_MODES = [
-	{ label: 'D-Pad', value: 0 },
-	{ label: 'Left Analog', value: 1 },
-	{ label: 'Right Analog', value: 2 },
 ];
 
 const DUAL_COMBINE_MODES = [
