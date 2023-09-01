@@ -48,33 +48,12 @@ import PSPassthrough, {
 } from '../Addons/Passthrough';
 import Wii, { wiiScheme, wiiState } from '../Addons/Wii';
 import SNES, { snesState } from '../Addons/SNES';
+import FocusMode, {
+	focusModeScheme,
+	focusModeState,
+} from '../Addons/FocusMode';
 
 const schema = yup.object().shape({
-	FocusModeAddonEnabled: yup
-		.number()
-		.required()
-		.label('Focus Mode Add-On Enabled'),
-	focusModePin: yup
-		.number()
-		.label('Focus Mode Pin')
-		.validatePinWhenValue('FocusModeAddonEnabled'),
-	focusModeButtonLockEnabled: yup
-		.number()
-		.label('Focus Mode Button Lock Enabled')
-		.validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
-	focusModeOledLockEnabled: yup
-		.number()
-		.label('Focus Mode OLED Lock Enabled')
-		.validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
-	focusModeRgbLockEnabled: yup
-		.number()
-		.label('Focus Mode RGB Lock Enabled')
-		.validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
-	focusModeButtonLockMask: yup
-		.number()
-		.label('Focus Mode Button Lock Map')
-		.validateRangeWhenValue('FocusModeAddonEnabled', 0, (1 << 20) - 1),
-
 	KeyboardHostAddonEnabled: yup
 		.number()
 		.required()
@@ -104,16 +83,13 @@ const schema = yup.object().shape({
 	...ps4Scheme,
 	...psPassthroughScheme,
 	...wiiScheme,
+	...focusModeScheme,
 });
 
 const defaultValues = {
 	keyboardHostPinDplus: -1,
 	keyboardHostPin5V: -1,
 	keyboardHostMap: baseButtonMappings,
-	FocusModeAddonEnabled: 0,
-	focusModeOledLockEnabled: 0,
-	focusModeRgbLockEnabled: 0,
-
 	KeyboardHostAddonEnabled: 0,
 
 	...analogState,
@@ -133,6 +109,7 @@ const defaultValues = {
 	...psPassthroughState,
 	...wiiState,
 	...snesState,
+	...focusModeState,
 };
 
 const ADDONS = [
@@ -153,6 +130,7 @@ const ADDONS = [
 	PSPassthrough,
 	Wii,
 	SNES,
+	FocusMode,
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -270,144 +248,10 @@ export default function AddonsConfigPage() {
 							errors={errors}
 							handleChange={handleChange}
 							handleCheckbox={handleCheckbox}
+							setFieldValue={setFieldValue}
 						/>
 					))}
 
-					<Section title={t('AddonsConfig:focus-mode-header-text')}>
-						<div
-							id="FocusModeAddonOptions"
-							hidden={!values.FocusModeAddonEnabled}
-						>
-							<Row className="mb-3">
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:focus-mode-pin-label')}
-									name="focusModePin"
-									className="form-select-sm col-3"
-									groupClassName="col-sm-3 mb-3"
-									value={values.focusModePin}
-									error={errors.focusModePin}
-									isInvalid={errors.focusModePin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<div className="col-sm-3">
-									<FormCheck
-										label={t('Common:lock-oled-screen')}
-										className="form-check-sm"
-										type="switch"
-										reverse
-										id="FocusModeAddonOLEDButton"
-										isInvalid={false}
-										checked={Boolean(values.focusModeOledLockEnabled)}
-										onChange={(e) => {
-											handleCheckbox('focusModeOledLockEnabled', values);
-											handleChange(e);
-										}}
-									/>
-								</div>
-								<div className="col-sm-3">
-									<FormCheck
-										label={t('Common:lock-rgb-led')}
-										className="form-check-sm"
-										type="switch"
-										reverse
-										id="FocusModeAddonButton"
-										isInvalid={false}
-										checked={Boolean(values.focusModeRgbLockEnabled)}
-										onChange={(e) => {
-											handleCheckbox('focusModeRgbLockEnabled', values);
-											handleChange(e);
-										}}
-									/>
-								</div>
-								<div className="col-sm-3">
-									<FormCheck
-										label={t('Common:lock-buttons')}
-										className="form-check-sm"
-										type="switch"
-										reverse
-										id="FocusModeAddonButton"
-										isInvalid={false}
-										checked={Boolean(values.focusModeButtonLockEnabled)}
-										onChange={(e) => {
-											handleCheckbox('focusModeButtonLockEnabled', values);
-											handleChange(e);
-										}}
-									/>
-								</div>
-								<Row>
-									{BUTTON_MASKS.map((mask) =>
-										values.focusModeButtonLockMask & mask.value ? (
-											<FormSelect
-												key={`focusModeButtonLockMask-${mask.label}`}
-												name="focusModeButtonLockMask"
-												className="form-select-sm"
-												groupClassName="col-sm-3 mb-3"
-												value={values.focusModeButtonLockMask & mask.value}
-												error={errors.focusModeButtonLockMask}
-												isInvalid={errors.focusModeButtonLockMask}
-												onChange={(e) => {
-													setFieldValue(
-														'focusModeButtonLockMask',
-														(values.focusModeButtonLockMask ^ mask.value) |
-															e.target.value,
-													);
-												}}
-											>
-												{BUTTON_MASKS.map((o, i) => (
-													<option
-														key={`focusModeButtonLockMask-option-${i}`}
-														value={o.value}
-													>
-														{o.label}
-													</option>
-												))}
-											</FormSelect>
-										) : (
-											<></>
-										),
-									)}
-									<FormSelect
-										name="focusModeButtonLockMask"
-										className="form-select-sm"
-										groupClassName="col-sm-3 mb-3"
-										value={0}
-										error={errors.focusModeButtonLockMask}
-										isInvalid={errors.focusModeButtonLockMask}
-										onChange={(e) => {
-											setFieldValue(
-												'focusModeButtonLockMask',
-												values.focusModeButtonLockMask | e.target.value,
-											);
-										}}
-									>
-										{BUTTON_MASKS.map((o, i) => (
-											<option
-												key={`focusModeButtonLockMask-option-${i}`}
-												value={o.value}
-											>
-												{o.label}
-											</option>
-										))}
-									</FormSelect>
-								</Row>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="FocusModeAddonButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.FocusModeAddonEnabled)}
-							onChange={(e) => {
-								handleCheckbox('FocusModeAddonEnabled', values);
-								handleChange(e);
-							}}
-						/>
-					</Section>
 					<Section title={t('AddonsConfig:keyboard-host-header-text')}>
 						<div
 							id="KeyboardHostAddonOptions"
@@ -423,7 +267,7 @@ export default function AddonsConfigPage() {
 									groupClassName="col-sm-1 mb-3"
 									value={values.keyboardHostPinDplus}
 									error={errors.keyboardHostPinDplus}
-									isInvalid={errors.keyboardHostPinDplus}
+									isInvalid={Boolean(errors.keyboardHostPinDplus)}
 									onChange={handleChange}
 									min={-1}
 									max={28}
@@ -448,7 +292,7 @@ export default function AddonsConfigPage() {
 									groupClassName="col-sm-auto mb-3"
 									value={values.keyboardHostPin5V}
 									error={errors.keyboardHostPin5V}
-									isInvalid={errors.keyboardHostPin5V}
+									isInvalid={Boolean(errors.keyboardHostPin5V)}
 									onChange={handleChange}
 									min={-1}
 									max={28}
