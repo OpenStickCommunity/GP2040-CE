@@ -697,6 +697,8 @@ const defaultValues = {
 	keyboardHostMap: baseButtonMappings,
 	AnalogInputEnabled: 0,
 	FocusModeAddonEnabled: 0,
+	focusModeOledLockEnabled: 0,
+	focusModeRgbLockEnabled: 0,
 	BuzzerSpeakerAddonEnabled: 0,
 	DualDirectionalInputEnabled: 0,
 	TiltInputEnabled: 0,
