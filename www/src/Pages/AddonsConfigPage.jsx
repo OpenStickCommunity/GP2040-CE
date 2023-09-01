@@ -848,9 +848,8 @@ export default function AddonsConfigPage() {
 		>
 			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
 				<Form noValidate onSubmit={handleSubmit}>
-					<Section title={t('AddonsConfig:header-text')}>
-						<p>{t('AddonsConfig:sub-header-text')}</p>
-					</Section>
+					<h1>{t('AddonsConfig:header-text')}</h1>
+					<p>{t('AddonsConfig:sub-header-text')}</p>
 					<Bootsel
 						values={values}
 						errors={errors}
