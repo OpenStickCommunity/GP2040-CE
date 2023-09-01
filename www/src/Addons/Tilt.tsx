@@ -58,6 +58,7 @@ export const tiltScheme = {
 };
 
 export const tiltState = {
+	TiltInputEnabled: 0,
 	tilt1Pin: -1,
 	tilt2Pin: -1,
 	tiltLeftAnalogUpPin: -1,
