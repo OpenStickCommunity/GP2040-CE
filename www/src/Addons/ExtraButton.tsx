@@ -26,7 +26,7 @@ export const extraButtonScheme = {
 
 export const extraButtonState = {
 	ExtraButtonAddonEnabled: 0,
-	extrabuttonPin: -1,
+	extraButtonPin: -1,
 	extraButtonMap: 0,
 };
 
