@@ -24,14 +24,10 @@ import OnBoardLed, {
 } from '../Addons/OnBoardLed';
 import Analog, { analogScheme, analogState } from '../Addons/Analog';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
-import { DUAL_STICK_MODES } from '../Data/Addons';
+import { DUAL_STICK_MODES, I2C_BLOCKS } from '../Data/Addons';
 import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
-
-const I2C_BLOCKS = [
-	{ label: 'i2c0', value: 0 },
-	{ label: 'i2c1', value: 1 },
-];
+import I2c, { i2cScheme, i2cState } from '../Addons/I2c';
 
 const DUAL_COMBINE_MODES = [
 	{ label: 'Mixed', value: 0 },
@@ -171,28 +167,6 @@ const SOCD_MODES = [
 ];
 
 const schema = yup.object().shape({
-	I2CAnalog1219InputEnabled: yup.number().label('I2C Analog1219 Input Enabled'),
-	i2cAnalog1219SDAPin: yup
-		.number()
-		.label('I2C Analog1219 SDA Pin')
-		.validatePinWhenValue('I2CAnalog1219InputEnabled'),
-	i2cAnalog1219SCLPin: yup
-		.number()
-		.label('I2C Analog1219 SCL Pin')
-		.validatePinWhenValue('I2CAnalog1219InputEnabled'),
-	i2cAnalog1219Block: yup
-		.number()
-		.label('I2C Analog1219 Block')
-		.validateSelectionWhenValue('I2CAnalog1219InputEnabled', I2C_BLOCKS),
-	i2cAnalog1219Speed: yup
-		.number()
-		.label('I2C Analog1219 Speed')
-		.validateNumberWhenValue('I2CAnalog1219InputEnabled'),
-	i2cAnalog1219Address: yup
-		.number()
-		.label('I2C Analog1219 Address')
-		.validateNumberWhenValue('I2CAnalog1219InputEnabled'),
-
 	FocusModeAddonEnabled: yup
 		.number()
 		.required()
@@ -420,17 +394,13 @@ const schema = yup.object().shape({
 	...turboScheme,
 	...joystickScheme,
 	...reverseScheme,
+	...i2cScheme,
 });
 
 const defaultValues = {
 	sliderSOCDPinOne: -1,
 	sliderSOCDPinTwo: -1,
 
-	i2cAnalog1219SDAPin: -1,
-	i2cAnalog1219SCLPin: -1,
-	i2cAnalog1219Block: 0,
-	i2cAnalog1219Speed: 400000,
-	i2cAnalog1219Address: 0x40,
 	dualDirUpPin: -1,
 	dualDirDownPin: -1,
 	dualDirLeftPin: -1,
@@ -475,7 +445,6 @@ const defaultValues = {
 	DualDirectionalInputEnabled: 0,
 	TiltInputEnabled: 0,
 	ExtraButtonAddonEnabled: 0,
-	I2CAnalog1219InputEnabled: 0,
 
 	KeyboardHostAddonEnabled: 0,
 	SliderSOCDInputEnabled: 0,
@@ -490,7 +459,10 @@ const defaultValues = {
 	...turboState,
 	...joystickState,
 	...reverseState,
+	...i2cState,
 };
+
+const ADDONS = [Bootsel, OnBoardLed, Analog, Turbo, Joystick, Reverse, I2c];
 
 const FormContext = ({ setStoredData }) => {
 	const { values, setValues } = useFormikContext();
@@ -600,129 +572,15 @@ export default function AddonsConfigPage() {
 				<Form noValidate onSubmit={handleSubmit}>
 					<h1>{t('AddonsConfig:header-text')}</h1>
 					<p>{t('AddonsConfig:sub-header-text')}</p>
-					<Bootsel
-						values={values}
-						errors={errors}
-						handleChange={handleChange}
-						handleCheckbox={handleCheckbox}
-					/>
-					<OnBoardLed
-						values={values}
-						errors={errors}
-						handleChange={handleChange}
-						handleCheckbox={handleCheckbox}
-					/>
-					<Analog
-						values={values}
-						errors={errors}
-						handleChange={handleChange}
-						handleCheckbox={handleCheckbox}
-					/>
-					<Turbo
-						values={values}
-						errors={errors}
-						handleChange={handleChange}
-						handleCheckbox={handleCheckbox}
-					/>
-					<Joystick
-						values={values}
-						errors={errors}
-						handleChange={handleChange}
-						handleCheckbox={handleCheckbox}
-					/>
-					<Reverse
-						values={values}
-						errors={errors}
-						handleChange={handleChange}
-						handleCheckbox={handleCheckbox}
-					/>
-					<Section title={t('AddonsConfig:i2c-analog-ads1219-header-text')}>
-						<div
-							id="I2CAnalog1219InputOptions"
-							hidden={!values.I2CAnalog1219InputEnabled}
-						>
-							<Row className="mb-3">
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:i2c-analog-ads1219-sda-pin-label')}
-									name="i2cAnalog1219SDAPin"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.i2cAnalog1219SDAPin}
-									error={errors.i2cAnalog1219SDAPin}
-									isInvalid={errors.i2cAnalog1219SDAPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<FormControl
-									type="number"
-									label={t('AddonsConfig:i2c-analog-ads1219-scl-pin-label')}
-									name="i2cAnalog1219SCLPin"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.i2cAnalog1219SCLPin}
-									error={errors.i2cAnalog1219SCLPin}
-									isInvalid={errors.i2cAnalog1219SCLPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<FormSelect
-									label={t('AddonsConfig:i2c-analog-ads1219-block-label')}
-									name="i2cAnalog1219Block"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.i2cAnalog1219Block}
-									error={errors.i2cAnalog1219Block}
-									isInvalid={errors.i2cAnalog1219Block}
-									onChange={handleChange}
-								>
-									{I2C_BLOCKS.map((o, i) => (
-										<option key={`i2cBlock-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormControl
-									label={t('AddonsConfig:i2c-analog-ads1219-speed-label')}
-									name="i2cAnalog1219Speed"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.i2cAnalog1219Speed}
-									error={errors.i2cAnalog1219Speed}
-									isInvalid={errors.i2cAnalog1219Speed}
-									onChange={handleChange}
-									min={100000}
-								/>
-							</Row>
-							<Row className="mb-3">
-								<FormControl
-									label={t('AddonsConfig:i2c-analog-ads1219-address-label')}
-									name="i2cAnalog1219Address"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.i2cAnalog1219Address}
-									error={errors.i2cAnalog1219Address}
-									isInvalid={errors.i2cAnalog1219Address}
-									onChange={handleChange}
-									maxLength={4}
-								/>
-							</Row>
-						</div>
-						<FormCheck
-							label={t('Common:switch-enabled')}
-							type="switch"
-							id="I2CAnalog1219InputButton"
-							reverse
-							isInvalid={false}
-							checked={Boolean(values.I2CAnalog1219InputEnabled)}
-							onChange={(e) => {
-								handleCheckbox('I2CAnalog1219InputEnabled', values);
-								handleChange(e);
-							}}
+					{ADDONS.map((Addon, index) => (
+						<Addon
+							key={`addon-${index}`}
+							values={values}
+							errors={errors}
+							handleChange={handleChange}
+							handleCheckbox={handleCheckbox}
 						/>
-					</Section>
+					))}
 					<Section title={t('AddonsConfig:dual-directional-input-header-text')}>
 						<div
 							id="DualDirectionalInputOptions"

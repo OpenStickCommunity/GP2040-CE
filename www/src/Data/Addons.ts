@@ -9,3 +9,8 @@ export const DPAD_MODES = [
 	{ label: 'Left Analog', value: 1 },
 	{ label: 'Right Analog', value: 2 },
 ];
+
+export const I2C_BLOCKS = [
+	{ label: 'i2c0', value: 0 },
+	{ label: 'i2c1', value: 1 },
+];
