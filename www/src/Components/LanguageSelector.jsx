@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next';
 import GlobeIcon from '../Icons/Globe';
 import GbFlag from '../Icons/Flags/Gb';
 import UsFlag from '../Icons/Flags/Us';
+import CnFlag from '../Icons/Flags/Cn';
 
 const dropdownOptions = [
 	{ code: 'en', icon: UsFlag },
 	{ code: 'en-GB', icon: GbFlag },
+	{ code: 'zh-CN', icon: CnFlag },
 ];
 
 const LanguageSelector = () => {
