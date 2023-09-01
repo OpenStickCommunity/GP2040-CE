@@ -93,8 +93,9 @@ export default {
 	'extra-button-pin-label': 'Extra Button Pin',
 	'extra-button-map-label': 'Extra Button',
 	'player-number-header-text': 'Player Number (X-INPUT ONLY)',
+	'player-number-sub-header': 'Warning',
 	'player-number-sub-header-text':
-		'WARNING: ONLY ENABLE THIS OPTION IF YOU ARE CONNECTING MULTIPLE GP2040-CE DEVICES WITH PLAYER NUMBER ENABLED',
+		'Only enable this option if you are connecting multiple gp2040-ce devices with player number enabled',
 	'player-number-label': 'Player Number',
 	'socd-cleaning-mode-selection-slider-header-text':
 		'SOCD Cleaning Mode Selection Slider',

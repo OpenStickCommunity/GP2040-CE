@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormCheck, Row } from 'react-bootstrap';
+import { Alert, FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
@@ -29,8 +29,15 @@ const PlayerNumber = ({ values, errors, handleChange, handleCheckbox }) => {
 		<Section title={t('AddonsConfig:player-number-header-text')}>
 			<div id="PlayerNumAddonOptions" hidden={!values.PlayerNumAddonEnabled}>
 				<p>
-					<strong>{t('AddonsConfig:player-number-sub-header-text')}</strong>
+					<strong></strong>
 				</p>
+
+				<Alert variant="danger">
+					<Alert.Heading>
+						{t('AddonsConfig:player-number-sub-header')}
+					</Alert.Heading>
+					<p>{t('AddonsConfig:player-number-sub-header-text')}</p>
+				</Alert>
 				<Row className="mb-3">
 					<FormControl
 						type="number"
