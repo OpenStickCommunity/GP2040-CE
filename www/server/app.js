@@ -374,6 +374,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
+		focusModeOledLockEnabled: 0,
+		focusModeRgbLockEnabled: 0,
 		BuzzerSpeakerAddonEnabled: 1,
 		BootselButtonAddonEnabled: 1,
 		DualDirectionalInputEnabled: 1,

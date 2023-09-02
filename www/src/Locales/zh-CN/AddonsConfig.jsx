@@ -104,8 +104,10 @@ export default {
 	'socd-cleaning-mode-selection-slider-mode-two-label': 'SOCD 模式2',
 	'socd-cleaning-mode-selection-slider-pin-two-label': '引脚 2',
 	'ps4-mode-header-text': 'PS4 模式',
-	'ps4-mode-sub-header-text':
-		'<0>！！！！ 免责声明：GP2040-CE 从不会提供这些文件！！！！</0> <1>请上传以下3个文件，然后点击"验证并保存"启用PS4模式。</1>',
+
+	'ps4-mode-sub-header': '免责声明!',
+	'ps4-mode-sub-header-text': 'GP2040-CE 从不会提供这些文件!!!',
+	'ps4-mode-text': '请上传以下3个文件，然后点击"验证并保存"启用PS4模式。',
 	'ps4-mode-private-key-label': 'Private Key (PEM)',
 	'ps4-mode-serial-number-label': 'Serial Number (16 Bytes in Hex Ascii)',
 	'ps4-mode-signature-label': 'Signature (256 Bytes in Binary)',
