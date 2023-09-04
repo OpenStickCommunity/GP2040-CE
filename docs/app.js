@@ -54,6 +54,12 @@ const configData = {
 		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/Flatbox%20Rev%205%20RGB',
 		desc: 'Stickless PCB designed by <a target="_blank" href="https://github.com/jfedor2">jfedor2</a> and <a target="_blank" href="https://github.com/TheTrainGoes">TheTrain</a> using the Waveshare RP2040-Zero.'
 	},
+	FlatboxRev5Southpaw: {
+		name: 'Flatbox Rev 5 Southpaw',
+		category: configCategories[1],
+		website: 'https://github.com/SkylaHila/flatbox-southpaw',
+		desc: 'Stickless PCB spinoff done by <a target="_blank" href="https://github.com/skylahila">SkylaHila</a> based on the Flatbox Rev5 by <a target="_blank" href="https://github.com/jfedor2">jfedor2</a> using the Waveshare RP2040-Zero.'
+	},
 	KB2040: {
 		name: 'Adafruit KB2040',
 		category: configCategories[0],
