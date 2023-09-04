@@ -10,7 +10,7 @@
 #ifndef _ADS1219_H_
 #define _ADS1219_H_
 
-#include <I2CIF.hpp>
+#include <I2CIF.h>
 
 #define CONFIG_REGISTER_ADDRESS 0x40
 #define STATUS_REGISTER_ADDRESS 0x24

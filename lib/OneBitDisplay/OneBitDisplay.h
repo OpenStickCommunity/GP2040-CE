@@ -1,7 +1,7 @@
 #ifndef __ONEBITDISPLAY__
 #define __ONEBITDISPLAY__
 
-#include <I2CIF.hpp>
+#include <I2CIF.h>
 #include "hardware/i2c.h"
 
 // Proportional font data taken from Adafruit_GFX library
