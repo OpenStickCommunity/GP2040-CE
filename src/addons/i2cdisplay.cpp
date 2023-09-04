@@ -301,12 +301,12 @@ bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
 		buffer[0] = 0x80; // one command
 		buffer[1] = 0xE0; // read-modify-write
 		buffer[2] = 0xC0; // one data
-		if (obd.i2c_if.Write(obd.oled_addr, buffer, 3) == 0) {
+		if (obd.i2c_if.write(obd.oled_addr, buffer, 3) == 0) {
 			break;
 		}
 
 		// Read two bytes back, the first byte is a dummy read and the second byte is the byte was actually want.
-		if (obd.i2c_if.Read(obd.oled_addr, buffer, 2) == 0) {
+		if (obd.i2c_if.read(obd.oled_addr, buffer, 2) == 0) {
 			break;
 		}
 
@@ -320,7 +320,7 @@ bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
 		buffer[1] = RANDOM_DATA[i]; // data byte
 		buffer[2] = 0x80; // one command
 		buffer[3] = 0xEE; // end read-modify-write
-		if (obd.i2c_if.Write(obd.oled_addr, buffer, 4) == 0) {
+		if (obd.i2c_if.write(obd.oled_addr, buffer, 4) == 0) {
 			break;
 		}
 	}

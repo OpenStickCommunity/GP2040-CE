@@ -455,7 +455,7 @@ int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int s
 	i2c_if.picoI2C = picoI2C;
 	pOBD->com_mode = COM_I2C; // communication mode
 
-	i2c_if.Init(iSpeed); // on Linux, SDA = bus number, SCL = device address
+	i2c_if.init(iSpeed); // on Linux, SDA = bus number, SCL = device address
 
 	// Reset it
 	if (reset != -1)
@@ -471,10 +471,10 @@ int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int s
 	// find the device address if requested
 	if (iAddr == -1 || iAddr == 0 || iAddr == 0xff) // find it
 	{
-		i2c_if.Test(0x3c);
-		if (i2c_if.Test(0x3c))
+		i2c_if.test(0x3c);
+		if (i2c_if.test(0x3c))
 			pOBD->oled_addr = 0x3c;
-		else if (i2c_if.Test(0x3d))
+		else if (i2c_if.test(0x3d))
 			pOBD->oled_addr = 0x3d;
 		else
 			return rc; // no display found!
@@ -482,14 +482,14 @@ int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int s
 	else
 	{
 		pOBD->oled_addr = iAddr;
-		i2c_if.Test(iAddr);
-		if (!i2c_if.Test(iAddr))
+		i2c_if.test(iAddr);
+		if (!i2c_if.test(iAddr))
 			return rc; // no display found
 	}
 
 	// Detect the display controller (SSD1306, SH1107 or SH1106)
 	uint8_t u = 0;
-	i2c_if.ReadRegister(pOBD->oled_addr, 0x00, &u, 1); // read the status register
+	i2c_if.readRegister(pOBD->oled_addr, 0x00, &u, 1); // read the status register
 	u &= 0x0f;                                                   // mask off power on/off bit
 	if ((u == 0x7 || u == 0xf) && pOBD->type == OLED_128x128)    // SH1107
 	{                                                            // A single SSD1306 display returned 7, so only act on it if the

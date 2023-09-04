@@ -608,7 +608,7 @@ static void _I2CWrite(OBDISP *pOBD, unsigned char *pData, int iLen)
 			iLen--;            // don't count the 0x40 byte the first time through
 			while (iLen >= 31) // max 31 data byes + data introducer
 			{
-				pOBD->i2c_if.Write(pOBD->oled_addr, pData, 32);
+				pOBD->i2c_if.write(pOBD->oled_addr, pData, 32);
 				iLen -= 31;
 				pData += 31;
 				pData[0] = 0x40;
@@ -618,7 +618,7 @@ static void _I2CWrite(OBDISP *pOBD, unsigned char *pData, int iLen)
 		}
 		if (iLen) // if any data remaining
 		{
-			pOBD->i2c_if.Write(pOBD->oled_addr, pData, iLen);
+			pOBD->i2c_if.write(pOBD->oled_addr, pData, iLen);
 		}
 	} // I2C
 } /* _I2CWrite() */
@@ -1181,7 +1181,7 @@ int obdSetPixel(OBDISP *pOBD, int x, int y, unsigned char ucColor, int bRender)
 		_I2CWrite(pOBD, ucTemp, 3);
 
 		// read a dummy byte followed by the data byte we want
-		pOBD->i2c_if.Read(pOBD->oled_addr, ucTemp, 2);
+		pOBD->i2c_if.read(pOBD->oled_addr, ucTemp, 2);
 		uc = ucOld = ucTemp[1]; // first byte is garbage
 	}
 	else

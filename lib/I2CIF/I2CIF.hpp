@@ -45,7 +45,7 @@ struct I2C_IF {
   // Initialize the I2C BitBang library
   // Pass the pin numbers used for SDA and SCL
   // as well as the clock rate in Hz
-  void Init(uint32_t iClock) {
+  void init(uint32_t iClock) {
     if ((iSDA + 2 * i2c_hw_index(picoI2C))%4 != 0) return ;
     if ((iSCL + 3 + 2 * i2c_hw_index(picoI2C))%4 != 0) return ;
 
@@ -58,12 +58,12 @@ struct I2C_IF {
   }
 
   // Read N bytes
-  int Read(uint8_t iAddr, uint8_t *pData, int iLen) {
+  int read(uint8_t iAddr, uint8_t *pData, int iLen) {
     return (i2c_read_blocking(picoI2C, iAddr, pData, iLen, false) >= 0);
   }
 
   // Read N bytes starting at a specific I2C internal register
-  int ReadRegister(uint8_t iAddr, uint8_t u8Register, uint8_t *pData, int iLen) {
+  int readRegister(uint8_t iAddr, uint8_t u8Register, uint8_t *pData, int iLen) {
     int rc = i2c_write_blocking(picoI2C, iAddr, &u8Register, 1, true); // true to keep master control of bus 
     if (rc >= 0) {
         rc = i2c_read_blocking(picoI2C, iAddr, pData, iLen, false);
@@ -74,7 +74,7 @@ struct I2C_IF {
   // Write I2C data
   // quits if a NACK is received and returns 0
   // otherwise returns the number of bytes written
-  int Write(uint8_t iAddr, uint8_t *pData, int iLen) { 
+  int write(uint8_t iAddr, uint8_t *pData, int iLen) { 
     return (i2c_write_blocking(picoI2C, iAddr, pData, iLen, true) >= 0) ? iLen : 0; 
   }
 
@@ -83,19 +83,19 @@ struct I2C_IF {
   //
   // Test if an address responds
   // returns 0 if no response, 1 if it responds
-  uint8_t Test(uint8_t addr) {
+  uint8_t test(uint8_t addr) {
     uint8_t rxdata;
     return (i2c_read_blocking(picoI2C, addr, &rxdata, 1, false) >= 0);
   }
 
   // A set bit indicates that a device responded at that address
-  void Scan(uint8_t *pMap) {
+  void scan(uint8_t *pMap) {
     int i;
     for (i=0; i<16; i++) // clear the bitmap
       pMap[i] = 0;
     for (i=1; i<128; i++) // try every address
     {
-      if (Test(i))
+      if (test(i))
       {
         pMap[i >> 3] |= (1 << (i & 7));
       }
