@@ -98,7 +98,7 @@ const Navigation = (props) => {
 							{t('Navigation:backup-label')}
 						</NavDropdown.Item>
 					</NavDropdown>
-					<NavDropdown title="Links">
+					<NavDropdown title={t('Navigation:links-label')}>
 						<NavDropdown.Item href="https://gp2040-ce.info/" target="_blank">
 							{t('Navigation:docs-label')}
 						</NavDropdown.Item>

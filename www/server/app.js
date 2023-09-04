@@ -374,6 +374,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
+		focusModeOledLockEnabled: 0,
+		focusModeRgbLockEnabled: 0,
 		BuzzerSpeakerAddonEnabled: 1,
 		BootselButtonAddonEnabled: 1,
 		DualDirectionalInputEnabled: 1,
@@ -432,6 +434,15 @@ app.get('/api/getMemoryReport', (req, res) => {
 		usedHeap: 1048,
 	});
 });
+
+app.get('/api/getHeldPins', async (req, res) => {
+	await new Promise(resolve => setTimeout(resolve, 2000));
+	return res.send({
+		heldPins: [7]
+	});
+});
+
+app.get('/api/abortGetHeldPins', async (req, res) => {return res.send()});
 
 app.post('/api/*', (req, res) => {
 	console.log(req.body);
