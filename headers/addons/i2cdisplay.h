@@ -50,10 +50,6 @@
 #define DISPLAY_INVERT 0
 #endif
 
-#ifndef DISPLAY_USEWIRE
-#define DISPLAY_USEWIRE 1
-#endif
-
 #ifndef DISPLAY_SAVER_TIMEOUT
 #define DISPLAY_SAVER_TIMEOUT 0
 #endif

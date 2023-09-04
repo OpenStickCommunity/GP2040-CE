@@ -21,7 +21,7 @@ void I2CAnalog1219Input::setup() {
     nextTimer = getMillis();
 
     // Init our ADS1219 library
-    ads = new ADS1219(1,
+    ads = new ADS1219(
         options.i2cSDAPin,
         options.i2cSCLPin,
         options.i2cBlock == 0 ? i2c0 : i2c1,

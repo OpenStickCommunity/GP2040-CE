@@ -44,7 +44,7 @@ Features:<br>
 - 16x16 Tile/Sprite drawing at any angle.<br>
 - Run full frame animations at high frame rates with a simple API<br>
 <br>
-This code depends on the BitBang_I2C library. You can download it here:<br>
+This modified code depends on a modified version of the BitBang_I2C library, namely I2C_IF. You can download the original here:<br>
 https://github.com/bitbank2/BitBang_I2C
 <br>
 See the Wiki for help getting started<br>

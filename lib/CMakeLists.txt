@@ -1,6 +1,6 @@
 add_subdirectory(ADS1219)
 add_subdirectory(AnimationStation)
-add_subdirectory(BitBang_I2C)
+add_subdirectory(I2CIF)
 add_subdirectory(CRC32)
 add_subdirectory(FlashPROM)
 add_subdirectory(httpd)
