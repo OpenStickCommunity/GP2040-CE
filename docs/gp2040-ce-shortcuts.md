@@ -1,4 +1,4 @@
-# GP2040 Shortcuts
+# GP2040-CE Shortcuts
 
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
 

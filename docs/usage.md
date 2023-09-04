@@ -1,4 +1,4 @@
-# GP2040 Usage
+# GP2040-CE Usage
 
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
 
@@ -74,7 +74,7 @@ D-Pad mode is saved across power cycles.
 
 ## SOCD Modes
 
-[Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040 users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button default combinations:**
+[Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040-CE users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button default combinations:**
 
 * <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Standard stickless behavior).
 * <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.

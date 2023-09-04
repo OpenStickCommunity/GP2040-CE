@@ -8,6 +8,7 @@
 class USBAddon : public GPAddon
 {
 public:
+	virtual ~USBAddon() { }
 	virtual bool available() = 0;
 	virtual void setup() = 0;
 	virtual void process() = 0;

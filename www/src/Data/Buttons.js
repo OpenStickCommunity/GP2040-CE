@@ -229,3 +229,5 @@ export const BUTTON_MASKS = [
 	{ label: 'Left', value: 1 << 18 },
 	{ label: 'Right', value: 1 << 19 },
 ];
+
+export const ANALOG_PINS = [26, 27, 28, 29];

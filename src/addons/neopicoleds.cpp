@@ -138,12 +138,10 @@ void NeoPicoLEDAddon::process()
 	AnimationHotkey action = animationHotkeys(gamepad);
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		inputMode = gamepad->getOptions().inputMode; // HACK
-		switch (gamepad->getOptions().inputMode) {
-			case INPUT_MODE_XINPUT:
-				animationState = getXInputAnimationNEOPICO(featureData);
-				if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
-					neoPLEDs->animate(animationState);
-				break;
+		if (inputMode == INPUT_MODE_XINPUT) {
+			animationState = getXInputAnimationNEOPICO(featureData);
+			if (neoPLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
+				neoPLEDs->animate(animationState);
 		}
 	}
 
@@ -184,19 +182,18 @@ void NeoPicoLEDAddon::process()
 
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
-		switch (inputMode) { // HACK
-			case INPUT_MODE_XINPUT:
-				LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
-				int32_t pledPins[] = { ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4 };
-				for (int i = 0; i < PLED_COUNT; i++) {
-					if (pledPins[i] < 0)
-						continue;
+		if (inputMode == INPUT_MODE_XINPUT) { // HACK
+			LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
+			int32_t pledPins[] = { ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4 };
+			for (int i = 0; i < PLED_COUNT; i++) {
+				if (pledPins[i] < 0)
+					continue;
 
-					float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
-					float brightness = as.GetBrightnessX() * level;
-					rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico->GetFormat(), brightness);
-					frame[pledPins[i]] = rgbPLEDValues[i];
-				}
+				float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
+				float brightness = as.GetBrightnessX() * level;
+				rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico->GetFormat(), brightness);
+				frame[pledPins[i]] = rgbPLEDValues[i];
+			}
 		}
 	}
 
@@ -492,7 +489,7 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 	buttonPositions.emplace(BUTTON_LABEL_A1, ledOptions.indexA1);
 	buttonPositions.emplace(BUTTON_LABEL_A2, ledOptions.indexA2);
 	uint8_t buttonCount = 0;
-	for (auto const buttonPosition : buttonPositions)
+	for (auto const& buttonPosition : buttonPositions)
 	{
 		if (buttonPosition.second > -1)
 			buttonCount++;
