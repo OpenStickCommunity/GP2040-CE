@@ -1,0 +1,15 @@
+Pico W SDK Notes:
+https://github.com/raspberrypi/pico-sdk/releases/tag/1.5.0
+
+Standalone PICO example: (is LE mode)
+https://github.com/raspberrypi/pico-examples/tree/master/pico_w/bt/standalone
+
+Classic BT PICO example:
+https://github.com/MrGreensWorkshop/RasPiPicoSDK_BT_Classic_SPP
+
+Keyboard Example:
+https://github.com/bluekitchen/btstack/blob/master/example/hid_keyboard_demo.c
+
+Gamepad Example: (very out of date)
+https://github.com/bluekitchen/btstack/blob/1d20facba516eaeba1c5de014b16b0aeb8e8ae6d/example/hid_gamepad_example.c
+
