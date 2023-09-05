@@ -3,23 +3,6 @@
 #include "helper.h"
 #include "config.pb.h"
 
-// These constants define the adjustment factors for gamepad analog inputs under different tilt states.
-// Defines the behavior of the left analog stick when the Tilt1 and Tilt2 buttons are pressed.
-// The main purpose of the left analog stick is to move the character.
-// Pressing it simultaneously with Tilt 1 will make the character walk.
-// Pressing it simultaneously with Tilt 2 will make the character walk more slowly.
-const double TILT1_FACTOR_LEFT_X = 0.35; // Adjustment factor for left analog stick X direction
-const double TILT1_FACTOR_LEFT_Y = 0.45; // Adjustment factor for left analog stick Y direction
-const double TILT2_FACTOR_LEFT_X = 0.65; // Adjustment factor for left analog stick X direction
-const double TILT2_FACTOR_LEFT_Y = 0.35; // Adjustment factor for left analog stick Y direction
-
-// The Right analog stick has 8 directions, which can be handled by pressing up, down, left, right, and simultaneously.
-// This function adds to that the ability to tilt it at an angle closer to horizontal than diagonal.
-const double TILT1_FACTOR_RIGHT_X = 0.3; // Adjustment factor for right analog stick X direction
-const double TILT1_FACTOR_RIGHT_Y = 1.7; // Adjustment factor for right analog stick Y direction
-const double TILT2_FACTOR_RIGHT_X = 0.3; // Adjustment factor for right analog stick X direction
-const double TILT2_FACTOR_RIGHT_Y = 0.3; // Adjustment factor for right analog stick Y direction
-
 bool TiltInput::available() {
 	return Storage::getInstance().getAddonOptions().tiltOptions.enabled;
 }
@@ -169,12 +152,12 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	bool pinTilt2Pressed = pinTilt2 != (uint8_t)-1 && !gpio_get(pinTilt2);
 
 	if (pinTilt1Pressed) {
-		gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * TILT1_FACTOR_LEFT_X;
-		gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * TILT1_FACTOR_LEFT_Y;
+		gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * tilt1FactorLeftX;
+		gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * tilt1FactorLeftY;
 	}
 	else if (pinTilt2Pressed) {
-		gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * TILT2_FACTOR_LEFT_X;
-		gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * TILT2_FACTOR_LEFT_Y;
+		gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * tilt2FactorLeftX;
+		gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * tilt2FactorLeftY;
 	}
 	else {
 		gamepad->state.lx = dpadToAnalogX(dpad1);
@@ -186,8 +169,8 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	}
 	else if (pinTilt1Pressed) {
 		if (dpad2 & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
-			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * TILT1_FACTOR_RIGHT_X;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * TILT1_FACTOR_RIGHT_Y;
+			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * tilt1FactorRightX;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * tilt1FactorRightY;
 		}
 		else {
 			gamepad->state.rx = dpadToAnalogX(dpad2);
@@ -196,8 +179,8 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	}
 	else if (pinTilt2Pressed) {
 		if (dpad2 & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
-			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * TILT2_FACTOR_RIGHT_X;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * TILT2_FACTOR_RIGHT_Y;
+			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * tilt2FactorRightX;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * tilt2FactorRightY;
 		}
 		else {
 			gamepad->state.rx = dpadToAnalogX(dpad2);

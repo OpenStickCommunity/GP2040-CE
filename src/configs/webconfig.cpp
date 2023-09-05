@@ -1002,7 +1002,15 @@ std::string setAddonOptions()
 
 		TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
 	docToPin(tiltOptions.tilt1Pin, doc, "tilt1Pin");
+	docToPin(tiltOptions.tilt1FactorLeftX, doc, "tilt1FactorLeftX");
+	docToPin(tiltOptions.tilt1FactorLeftY, doc, "tilt1FactorLeftY");
+	docToPin(tiltOptions.tilt1FactorRightX, doc, "tilt1FactorRightX");
+	docToPin(tiltOptions.tilt1FactorRightY, doc, "tilt1FactorRightY");
 	docToPin(tiltOptions.tilt2Pin, doc, "tilt2Pin");
+	docToPin(tiltOptions.tilt2FactorLeftX, doc, "tilt2FactorLeftX");
+	docToPin(tiltOptions.tilt2FactorLeftY, doc, "tilt2FactorLeftY");
+	docToPin(tiltOptions.tilt2FactorRightX, doc, "tilt2FactorRightX");
+	docToPin(tiltOptions.tilt2FactorRightY, doc, "tilt2FactorRightY");
 	docToPin(tiltOptions.tiltLeftAnalogUpPin, doc, "tiltLeftAnalogUpPin");
 	docToPin(tiltOptions.tiltLeftAnalogDownPin, doc, "tiltLeftAnalogDownPin");
 	docToPin(tiltOptions.tiltLeftAnalogLeftPin, doc, "tiltLeftAnalogLeftPin");
@@ -1250,7 +1258,15 @@ std::string getAddonOptions()
 
 		const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
 	writeDoc(doc, "tilt1Pin", cleanPin(tiltOptions.tilt1Pin));
+	writeDoc(doc, "tilt1FactorLeftX", cleanPin(tiltOptions.tilt1FactorLeftX));
+	writeDoc(doc, "tilt1FactorLeftY", cleanPin(tiltOptions.tilt1FactorLeftY));
+	writeDoc(doc, "tilt1FactorRightX", cleanPin(tiltOptions.tilt1FactorRightX));
+	writeDoc(doc, "tilt1FactorRightY", cleanPin(tiltOptions.tilt1FactorRightY));
 	writeDoc(doc, "tilt2Pin", cleanPin(tiltOptions.tilt2Pin));
+	writeDoc(doc, "tilt2FactorLeftX", cleanPin(tiltOptions.tilt2FactorLeftX));
+	writeDoc(doc, "tilt2FactorLeftY", cleanPin(tiltOptions.tilt2FactorLeftY));
+	writeDoc(doc, "tilt2FactorRightX", cleanPin(tiltOptions.tilt2FactorRightX));
+	writeDoc(doc, "tilt2FactorRightY", cleanPin(tiltOptions.tilt2FactorRightY));
 	writeDoc(doc, "tiltLeftAnalogUpPin", cleanPin(tiltOptions.tiltLeftAnalogUpPin));
 	writeDoc(doc, "tiltLeftAnalogDownPin", cleanPin(tiltOptions.tiltLeftAnalogDownPin));
 	writeDoc(doc, "tiltLeftAnalogLeftPin", cleanPin(tiltOptions.tiltLeftAnalogLeftPin));

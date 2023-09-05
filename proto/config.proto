@@ -372,18 +372,26 @@ message TiltOptions
 	optional bool enabled = 1;
 
 	optional int32 tilt1Pin = 2;
-	optional int32 tilt2Pin = 3;
-	optional int32 tiltFunctionPin = 4;
-	optional int32 tiltLeftAnalogUpPin = 5;
-	optional int32 tiltLeftAnalogDownPin = 6;
-	optional int32 tiltLeftAnalogLeftPin = 7;
-	optional int32 tiltLeftAnalogRightPin = 8;
-	optional int32 tiltRightAnalogUpPin = 9;
-	optional int32 tiltRightAnalogDownPin = 10;
-	optional int32 tiltRightAnalogLeftPin = 11;
-	optional int32 tiltRightAnalogRightPin = 12;
+	optional int32 tilt1FactorLeftX =  3;
+	optional int32 tilt1FactorLeftY =  4;
+	optional int32 tilt1FactorRightX =  5;
+	optional int32 tilt1FactorRightY =  6;
+	optional int32 tilt2Pin = 7;
+	optional int32 tilt2FactorLeftX =  8;
+	optional int32 tilt2FactorLeftY =  9;
+	optional int32 tilt2FactorRightX =  10;
+	optional int32 tilt2FactorRightY =  11;
+	optional int32 tiltFunctionPin = 12;
+	optional int32 tiltLeftAnalogUpPin = 13;
+	optional int32 tiltLeftAnalogDownPin = 14;
+	optional int32 tiltLeftAnalogLeftPin = 15;
+	optional int32 tiltLeftAnalogRightPin = 16;
+	optional int32 tiltRightAnalogUpPin = 17;
+	optional int32 tiltRightAnalogDownPin = 18;
+	optional int32 tiltRightAnalogLeftPin = 19;
+	optional int32 tiltRightAnalogRightPin = 20;
 
-	optional SOCDMode tiltSOCDMode = 13;
+	optional SOCDMode tiltSOCDMode = 21;
 }
 
 message BuzzerOptions

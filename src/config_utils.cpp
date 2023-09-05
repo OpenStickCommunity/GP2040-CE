@@ -437,7 +437,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 		// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1Pin, PIN_TILT_1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1FactorLeftX, TILT1_FACTOR_LEFT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1FactorLeftY, TILT1_FACTOR_LEFT_Y);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1FactorRightX, TILT1_FACTOR_RIGHT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1FactorRightY, TILT1_FACTOR_RIGHT_Y);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2Pin, PIN_TILT_2);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2FactorLeftX, TILT2_FACTOR_LEFT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2FactorLeftY, TILT2_FACTOR_LEFT_Y);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2FactorRightX, TILT2_FACTOR_RIGHT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2FactorRightY, TILT2_FACTOR_RIGHT_Y);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogDownPin, PIN_TILT_LEFT_ANALOG_DOWN);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogUpPin, PIN_TILT_LEFT_ANALOG_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogLeftPin, PIN_TILT_LEFT_ANALOG_LEFT);
