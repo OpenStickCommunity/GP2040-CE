@@ -697,18 +697,47 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
         // Not implemented for extension fields
         assert(PB_LTYPE(iter.type) != PB_LTYPE_EXTENSION);
 
-        if (PB_HTYPE(iter.type) == PB_HTYPE_OPTIONAL && iter.pSize)
+        switch (PB_HTYPE(iter.type))
         {
-            *reinterpret_cast<char*>(iter.pSize) = true;
-        }
+            case PB_HTYPE_OPTIONAL:
+            {
+                *reinterpret_cast<bool*>(iter.pSize) = true;
 
-        // Recurse into sub-messages
-        if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
-        {
-            assert(iter.submsg_desc);
-            assert(iter.pData);
+                // Recurse into sub-messages
+                if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
+                {
+                    assert(iter.submsg_desc);
+                    assert(iter.pData);
 
-            setHasFlags(iter.submsg_desc, iter.pData);
+                    setHasFlags(iter.submsg_desc, iter.pData);
+                }
+                break;
+            }
+
+            case PB_HTYPE_REPEATED:
+            {
+                // Recurse into sub-messages
+                if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
+                {
+                    assert(iter.submsg_desc);
+                    assert(iter.pData);
+                    assert(iter.pSize);
+
+                    const pb_size_t array_size = *reinterpret_cast<pb_size_t*>(iter.pSize);
+                    pb_byte_t* item_ptr = reinterpret_cast<pb_byte_t*>(iter.pData);
+                    for (pb_size_t index = 0; index < array_size; ++index)
+                    {
+                        setHasFlags(iter.submsg_desc, item_ptr);
+                        item_ptr += iter.data_size;
+                    }
+                }
+                break;
+            }
+
+            default:
+                // We do not support any other htypes of fields
+                assert(false);
+                continue;
         }
     } while (pb_field_iter_next(&iter));
 }
