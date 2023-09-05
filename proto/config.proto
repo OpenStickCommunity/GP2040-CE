@@ -372,15 +372,15 @@ message TiltOptions
 	optional bool enabled = 1;
 
 	optional int32 tilt1Pin = 2;
-	optional int32 tilt1FactorLeftX =  3;
-	optional int32 tilt1FactorLeftY =  4;
-	optional int32 tilt1FactorRightX =  5;
-	optional int32 tilt1FactorRightY =  6;
+	optional int32 factorTilt1LeftX =  3;
+	optional int32 factorTilt1LeftY =  4;
+	optional int32 factorTilt1RightX =  5;
+	optional int32 factorTilt1RightY =  6;
 	optional int32 tilt2Pin = 7;
-	optional int32 tilt2FactorLeftX =  8;
-	optional int32 tilt2FactorLeftY =  9;
-	optional int32 tilt2FactorRightX =  10;
-	optional int32 tilt2FactorRightY =  11;
+	optional int32 factorTilt2LeftX =  8;
+	optional int32 factorTilt2LeftY =  9;
+	optional int32 factorTilt2RightX =  10;
+	optional int32 factorTilt2RightY =  11;
 	optional int32 tiltFunctionPin = 12;
 	optional int32 tiltLeftAnalogUpPin = 13;
 	optional int32 tiltLeftAnalogDownPin = 14;

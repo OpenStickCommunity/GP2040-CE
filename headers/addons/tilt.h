@@ -14,19 +14,19 @@
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_X
-#define TILT1_FACTOR_LEFT_X 0.35
+#define TILT1_FACTOR_LEFT_X -1
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_Y
-#define TILT1_FACTOR_LEFT_Y 0.45
+#define TILT1_FACTOR_LEFT_Y -1
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_X
-#define TILT1_FACTOR_RIGHT_X 0.3
+#define TILT1_FACTOR_RIGHT_X -1
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_Y
-#define TILT1_FACTOR_RIGHT_Y 1.7
+#define TILT1_FACTOR_RIGHT_Y -1
 #endif
 
 #ifndef PIN_TILT_2
@@ -34,19 +34,19 @@
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_X
-#define TILT2_FACTOR_LEFT_X 0.65
+#define TILT2_FACTOR_LEFT_X -1
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_Y
-#define TILT2_FACTOR_LEFT_Y 0.35
+#define TILT2_FACTOR_LEFT_Y -1
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_X
-#define TILT2_FACTOR_RIGHT_X 0.3
+#define TILT2_FACTOR_RIGHT_X -1
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_Y
-#define TILT2_FACTOR_RIGHT_Y 0.3
+#define TILT2_FACTOR_RIGHT_Y -1
 #endif
 
 
@@ -112,15 +112,15 @@ private:
 	DpadDirection lastTiltLR; // Gamepad Last Left-Right
 	uint32_t dpadTime[4];
 	uint8_t pinTilt1;
-	double tilt1FactorLeftX = TILT1_FACTOR_LEFT_X;
-    double tilt1FactorLeftY = TILT1_FACTOR_LEFT_Y;
-    double tilt1FactorRightX = TILT1_FACTOR_RIGHT_X;
-    double tilt1FactorRightY = TILT1_FACTOR_RIGHT_Y;
+	uint8_t tilt1FactorLeftX;
+    uint8_t tilt1FactorLeftY;
+    uint8_t tilt1FactorRightX;
+    uint8_t tilt1FactorRightY;
 	uint8_t pinTilt2;
-    double tilt2FactorLeftX = TILT2_FACTOR_LEFT_X;
-    double tilt2FactorLeftY = TILT2_FACTOR_LEFT_Y;
-    double tilt2FactorRightX = TILT2_FACTOR_RIGHT_X;
-    double tilt2FactorRightY = TILT2_FACTOR_RIGHT_Y;
+    uint8_t tilt2FactorLeftX;
+    uint8_t tilt2FactorLeftY;
+    uint8_t tilt2FactorRightX;
+    uint8_t tilt2FactorRightY;
 	uint8_t pinTiltLeftAnalogDown;
 	uint8_t pinTiltLeftAnalogUp;
 	uint8_t pinTiltLeftAnalogLeft;
