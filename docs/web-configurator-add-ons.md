@@ -128,9 +128,13 @@ Values are:
 * `Tilt SOCD Mode` - Choose the default SOCD Cleaning Mode (Neutral, Last Win, First Win). 
 
 The Tilt feature in this add-on allows users to control analog stick values on both Left and Right Analogs.
+
 Tilt 1 and Tilt 2 buttons, when pressed with directional buttons, adjust the analog values.
+
 Default settings tilt the Left stick at 65% for Tilt 1 and 35% for Tilt 2.
+
 The Right stick shifts down for Tilt 1 and up for Tilt 2 by default.
+
 Additionally, pressing Tilt 1 and Tilt 2 simultaneously allows the Right stick to function as the D-Pad directions.
 
 ## Buzzer Speaker
