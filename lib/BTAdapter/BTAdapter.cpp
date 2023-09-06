@@ -8,191 +8,192 @@
 #include <inttypes.h>
 #include <btstack.h>
 
-static const char hid_device_name[] = "Bluetooth Gamepad";
-static const char service_name[] = "Wireless Gamepad";
+#include "BTHelper.h"
 
-// no idea how big this needs to be
-// 250 for gamepad with reportMap[44] (but outdated/missing options)
-// 300 for keyboard with reportMap[65]
-static uint8_t hid_service_buffer[300]; 
-static uint8_t device_id_sdp_service_buffer[100];
+#include "ble/gatt-service/hids_device.h"
+
+
 
 #define GAMEPAD_DEVICE_ID 0x2508
+#define GAMEPAD_PERIOD_MS 5
 
+static const char hid_device_name[] = "GP2040-CE Gamepad";
 
-// static uint8_t device_id_sdp_service_buffer[100]; // unused in gamepad?
-static btstack_packet_callback_registration_t hci_event_callback_registration;
-static uint16_t hid_cid;
-
-const uint8_t reportMap[] = {
+const uint8_t gamepadReport[] = {
   0x05, 0x01,                   //  USAGE_PAGE (Generic Desktop)
   0x09, 0x05,                   //  USAGE (Game Pad)
   0xa1, 0x01,                   //  COLLECTION (Application)
+  0x85, 0x01,                   //    REPORT_ID (1)
   0xa1, 0x02,                   //    COLLECTION (Logical)
-  0x85, 0x30,                   //      REPORT_ID (48)
-  
-  0x75, 0x08,                   //      REPORT_SIZE (8)
-  0x95, 0x02,                   //      REPORT_COUNT (2)
+
   0x05, 0x01,                   //      USAGE_PAGE (Generic Desktop)
   0x09, 0x30,                   //      USAGE (X)
   0x09, 0x31,                   //      USAGE (Y)
   0x15, 0x81,                   //      LOGICAL_MINIMUM (-127)
   0x25, 0x7f,                   //      LOGICAL_MAXIMUM (127)
+  0x95, 0x02,                   //      REPORT_COUNT (2)
+  0x75, 0x08,                   //      REPORT_SIZE (8)
   0x81, 0x02,                   //      INPUT (Data, Var, Abs)
-  
-  0x75, 0x01,                   //      REPORT_SIZE (1)
-  0x95, 0x08,                   //      REPORT_COUNT (8)
-  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
-  0x25, 0x01,                   //      LOGICAL_MAXIMUM (1)
+
   0x05, 0x09,                   //      USAGE_PAGE (Button)
   0x19, 0x01,                   //      USAGE_MINIMUM (Button 1)
   0x29, 0x08,                   //      USAGE_MAXIMUM (Button 8)
+  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
+  0x25, 0x01,                   //      LOGICAL_MAXIMUM (1)
+  0x95, 0x08,                   //      REPORT_COUNT (8)
+  0x75, 0x01,                   //      REPORT_SIZE (1)
   0x81, 0x02,                   //      INPUT (Data, Var, Abs)      
+
   0xc0,                         //    END_COLLECTION
   0xc0                          //  END_COLLECTION
 };
 
-// * implies it is adapted from gamepad example
-const hid_sdp_record_t hid_params = {
+const uint8_t advertisedData[] = {
+    // Flags general discoverable
+    0x02, BLUETOOTH_DATA_TYPE_FLAGS, 0x2,
+    // Name
+    0x0f, BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME, 'H', 'I', 'D', ' ', 'C', 'o', 'n', 't', 'r', 'o', 'l', 'l', 'e', 'r',
+    // 16-bit Service UUIDs
+    0x03, BLUETOOTH_DATA_TYPE_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS, ORG_BLUETOOTH_SERVICE_HUMAN_INTERFACE_DEVICE & 0xff, ORG_BLUETOOTH_SERVICE_HUMAN_INTERFACE_DEVICE >> 8,
+    // Appearance HID - Gamepad
+    0x03, BLUETOOTH_DATA_TYPE_APPEARANCE, 0xC4, 0x03,
+};
+
+const hid_sdp_record_t hidParams = {
   GAMEPAD_DEVICE_ID, // hid_device_subclass: gamepad
-  0, //* hid_country_code (0 in gamepad, 33 in keyboard)
+  33, //* hid_country_code (0 in gamepad, 33 in keyboard)
   0, //* hid_virtual_cable
-  0, // hid_remote_wake (added) (0? its 1 in keyboard)
-  0, //* hid_reconnect_initiate (0 in gamepad, 1 in keyboard)
-  false, // hid_normally_connectable (added) (true in keyboard)
+  1, // hid_remote_wake (added) (0? its 1 in keyboard)
+  1, //* hid_reconnect_initiate (0 in gamepad, 1 in keyboard)
+  true, // hid_normally_connectable (added) (true in keyboard)
   false, //* hid_boot_device (changed to bool)
   1600, // host_max_latency (added, based on keyboard)
   3200, // host_min_timeout (added, based on keyboard)
   3200, // supervision_timeout (added, based on keyboard)
-  reportMap, //* hid_descriptor
-  sizeof(reportMap), //* hid_descriptor size
-  service_name //* device_name
+  gamepadReport, //* hid_descriptor
+  sizeof(gamepadReport), //* hid_descriptor size
+  hid_device_name //* device_name
 };
 
-typedef struct
-{
-  uint8_t left_x;
-  uint8_t left_y;
-  uint8_t buttons;
-}
-gamepad_report_t;
+static uint8_t hidServiceBuffer[300]; 
+static btstack_packet_callback_registration_t hciCallback;
+static btstack_timer_source_t loopTimer;
+static uint16_t hidCID;
 
-static gamepad_report_t joystick;
-
-const char* event_titles[] = {"Off", "Init", "Work", "Halt", "Sleep", "Fall"};
-
-static void send_report_joystick(){
-  printf("send_report!\n");
-  //Dummy report, presses two buttons and moves the stick to the down-right corner
-  joystick.left_x = 120;
-  joystick.left_y = 120;
-  joystick.buttons |= 0x1;
-  joystick.buttons |= 0x4;
-  uint8_t report[] = {0xa1, 0x30,joystick.left_x, joystick.left_y,joystick.buttons};  
-  //send report
-  hid_device_send_interrupt_message(hid_cid, &report[0], sizeof(report));
+static void sendReport(){
+  uint8_t report[] = {0xa1, 0x30,0, 0,0};  
+  hid_device_send_interrupt_message(hidCID, &report[0], sizeof(report));
 }
 
-static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t * packet, uint16_t packet_size){
-  UNUSED(channel);
-  UNUSED(packet_size);
+static void adapterLoop(btstack_timer_source_t * ts){
+  if (hidCID != 0)
+    hid_device_request_can_send_now_event(hidCID);
+
+  btstack_run_loop_set_timer(ts, GAMEPAD_PERIOD_MS);
+  btstack_run_loop_add_timer(ts);
+}
+
+void handleHID(uint8_t *packet){
   uint8_t status;
-  if(packet_type == HCI_EVENT_PACKET) {
-    switch (packet[0]){
-      case BTSTACK_EVENT_STATE:
-        {
-          printf("Event State Packet!\n");
-          const auto event_state = btstack_event_state_get_state(packet);
-          const char* event_title = event_titles[event_state];
-          printf("State: %s\n", event_title);
-          if (event_state != HCI_STATE_WORKING) return;
-        }
-        break;
-
-      case HCI_EVENT_USER_CONFIRMATION_REQUEST:
-        printf("User Confirm Packet!\n");
-        // ssp: inform about user confirmation request
-        //log_info("SSP User Confirmation Request with numeric value '%06"PRIu32"'\n", hci_event_user_confirmation_request_get_numeric_value(packet));
-        //log_info("SSP User Confirmation Auto accept\n");
-        break;
-      case HCI_EVENT_HID_META:
-        printf("HID Meta Packet!\n");
-        switch (hci_event_hid_meta_get_subevent_code(packet)){
-          case HID_SUBEVENT_CONNECTION_OPENED:
-            status = hid_subevent_connection_opened_get_status(packet);
-            if (status) {
-              // outgoing connection failed
-              printf("Connection failed, status 0x%x\n", status);
-              hid_cid = 0;
-              return;
-            }
-            
-            hid_cid = hid_subevent_connection_opened_get_hid_cid(packet);
-            printf("HID Connected\n", status);
-            hid_device_request_can_send_now_event(hid_cid);
-            break;
-          case HID_SUBEVENT_CONNECTION_CLOSED:
-            printf("HID Disconnected\n", status);
-            hid_cid = 0;
-            break;
-          case HID_SUBEVENT_CAN_SEND_NOW:  
-            if(hid_cid!=0){ //Solves crash when disconnecting gamepad on android
-              send_report_joystick();
-              hid_device_request_can_send_now_event(hid_cid);
-            }
-            break;
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
-    }
+  switch (hci_event_hid_meta_get_subevent_code(packet)){
+    case HID_SUBEVENT_CONNECTION_OPENED:
+      status = hid_subevent_connection_opened_get_status(packet);
+      if (status) {
+        // outgoing connection failed
+        printf("Connection failed, status 0x%x\n", status);
+        hidCID = 0;
+        return;
+      }
+      
+      hidCID = hid_subevent_connection_opened_get_hid_cid(packet);
+      printf("HID Connected\n", status);
+      hid_device_request_can_send_now_event(hidCID);
+      break;
+    case HID_SUBEVENT_CONNECTION_CLOSED:
+      printf("HID Disconnected\n");
+      hidCID = 0;
+      break;
+    case HID_SUBEVENT_CAN_SEND_NOW:  
+      if(hidCID!=0){ //Solves crash when disconnecting gamepad on android
+        sendReport();
+      }
+      break;
+    default:
+      break;
   }
-  else {
-    printf("Non-HCI Packet...\n");
+}
+
+void handleLeMeta(uint8_t *packet) {
+  switch(hci_event_le_meta_get_subevent_code(packet)){
+    case HCI_SUBEVENT_LE_CONNECTION_COMPLETE: 
+      // handshake onto other mode?
+       
+      //gap_advertisements_enable(0); 
+      break;
+    default: break;
+  }
+}
+
+static void handlePacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, uint16_t packet_size){
+  (void)channel; (void)packet_size;
+
+  if (packet_type != HCI_EVENT_PACKET) return;
+
+  printEventType(packet);
+  
+  switch (hci_event_packet_get_type(packet)) {
+    case HCI_EVENT_HID_META: handleHID(packet); break;
+    case HCI_EVENT_LE_META: handleLeMeta(packet); break;
+    default: break;
   }
 }
 
 
-static void setup_sdp() {
+static void setupBT() {
+  gap_set_local_name(hid_device_name);
+  //gap_ssp_set_io_capability(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
+  gap_set_class_of_device(GAMEPAD_DEVICE_ID);
+  gap_set_default_link_policy_settings( LM_LINK_POLICY_ENABLE_ROLE_SWITCH | LM_LINK_POLICY_ENABLE_SNIFF_MODE );
+  gap_set_allow_role_switch(true);
+  gap_discoverable_control(1);
+
   l2cap_init();
+
   sdp_init();
-  
 
-  // service record handle is 0x10000 in gamepad, 0x10001 in keyboard
-  memset(hid_service_buffer, 0, sizeof(hid_service_buffer));
-  hid_create_sdp_record(hid_service_buffer, 0x10000, &hid_params);
-  sdp_register_service(hid_service_buffer);
+  memset(hidServiceBuffer, 0, sizeof(hidServiceBuffer));
+  hid_create_sdp_record(hidServiceBuffer, 0x10001, &hidParams);
+  sdp_register_service(hidServiceBuffer);
+  printf("HID service record size: %u\n", de_get_len(hidServiceBuffer));
 
-  //device_id_create_sdp_record(device_id_sdp_service_buffer, 0x10003, DEVICE_ID_VENDOR_ID_SOURCE_BLUETOOTH, BLUETOOTH_COMPANY_ID_BLUEKITCHEN_GMBH, 1, 1);
-  //printf("Device ID SDP service record size: %u\n", de_get_len((uint8_t*)device_id_sdp_service_buffer));
-  //sdp_register_service(device_id_sdp_service_buffer);
+  // setup HID Device service
+  hid_device_init(0, sizeof(gamepadReport), gamepadReport);
 
-  hid_device_init(0, sizeof(reportMap), reportMap);
+  hid_device_register_packet_handler(&handlePacket);
 
-  hci_event_callback_registration.callback = &packet_handler;
-  hci_add_event_handler(&hci_event_callback_registration);
-  hid_device_register_packet_handler(&packet_handler);
+  hciCallback.callback = &handlePacket;
+  hci_add_event_handler(&hciCallback);
+
+  uint16_t adv_int_min = 0x0030;
+  uint16_t adv_int_max = 0x0030;
+  uint8_t adv_type = 0;
+  bd_addr_t null_addr;
+  memset(null_addr, 0, 6);
+  gap_advertisements_set_params(adv_int_min, adv_int_max, adv_type, 0, null_addr, 0x07, 0x00);
+  gap_advertisements_set_data(sizeof(advertisedData), (uint8_t*)advertisedData);
+  gap_advertisements_enable(1);
 }
 
 
 int btstack_main(int argc, const char * argv[]);
 int btstack_main(int argc, const char * argv[]){
-  (void)argc;
-  (void)argv;
+  (void)argc; (void)argv;
 
-  // gap setup
-  //gap_advertisements_enable(1);
-  gap_discoverable_control(1);
-  gap_set_class_of_device(GAMEPAD_DEVICE_ID);
-  gap_set_local_name(hid_device_name);
-  gap_set_default_link_policy_settings( LM_LINK_POLICY_ENABLE_ROLE_SWITCH | LM_LINK_POLICY_ENABLE_SNIFF_MODE );
-  // allow for role switch on outgoing connections - this allow HID Host to become master when we re-connect to it
-  gap_set_allow_role_switch(true);
-
-  setup_sdp();
-
+  setupBT();
   hci_power_control(HCI_POWER_ON);
+
+  loopTimer.process = &adapterLoop;
+  btstack_run_loop_set_timer(&loopTimer, GAMEPAD_PERIOD_MS);
+  btstack_run_loop_add_timer(&loopTimer);
   return 0;
 }

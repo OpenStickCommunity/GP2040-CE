@@ -1,0 +1,11 @@
+PRIMARY_SERVICE, GAP_SERVICE
+CHARACTERISTIC, GAP_DEVICE_NAME, READ, "Connected HID Gamepad"
+
+// add Device ID Service
+#import <device_information_service.gatt>
+
+// add HID Service
+#import <hids.gatt>
+
+PRIMARY_SERVICE, GATT_SERVICE
+CHARACTERISTIC, GATT_DATABASE_HASH, READ,
