@@ -9,19 +9,19 @@ uint8_t FlashPROM::writeCache[EEPROM_SIZE_BYTES];
 volatile static alarm_id_t flashWriteAlarm = 0;
 volatile static spin_lock_t *flashLock = nullptr;
 
+void unsafeWriteToFlash(void* flashCache){
+  flash_range_erase((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, EEPROM_SIZE_BYTES);
+	flash_range_program((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, reinterpret_cast<uint8_t *>(flashCache), EEPROM_SIZE_BYTES);
+}
+
 int64_t writeToFlash(alarm_id_t id, void *flashCache)
 {
 	while (is_spin_locked(flashLock));
-
-	multicore_lockout_start_blocking();
 	uint32_t interrupts = spin_lock_blocking(flashLock);
 
-	flash_range_erase((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, EEPROM_SIZE_BYTES);
-	flash_range_program((intptr_t)EEPROM_ADDRESS_START - (intptr_t)XIP_BASE, reinterpret_cast<uint8_t *>(flashCache), EEPROM_SIZE_BYTES);
+  flash_safe_execute(unsafeWriteToFlash, flashCache, UINT32_MAX);
 
-	flashWriteAlarm = 0;
-
-	multicore_lockout_end_blocking();
+  flashWriteAlarm = 0;
 	spin_unlock(flashLock, interrupts);
 
 	return 0;
@@ -40,10 +40,10 @@ void FlashPROM::start()
 	to commit in that timeframe, we'll hold off until the user is done sending changes. */
 void FlashPROM::commit()
 {
-	while (is_spin_locked(flashLock));
-	if (flashWriteAlarm != 0)
-		cancel_alarm(flashWriteAlarm);
-	flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, writeCache, true);
+	//while (is_spin_locked(flashLock));
+	//if (flashWriteAlarm != 0)
+	//	cancel_alarm(flashWriteAlarm);
+	//flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, writeCache, true);
 }
 
 void FlashPROM::reset()

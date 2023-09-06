@@ -10,7 +10,7 @@
 #include <string.h>
 #include <pico/lock_core.h>
 #include <pico/multicore.h>
-#include <hardware/flash.h>
+#include <pico/flash.h>
 #include <hardware/timer.h>
 
 #define EEPROM_SIZE_BYTES    0x2000           // Reserve 8k of flash memory (ensure this value is divisible by 256)

@@ -189,6 +189,9 @@ pico_mbedtls
 TinyUSB_Gamepad
 nanopb
 BTAdapter
+hardware_flash
+hardware_exception
+pico_flash
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

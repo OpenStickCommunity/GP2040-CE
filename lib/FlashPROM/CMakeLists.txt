@@ -8,4 +8,6 @@ target_link_libraries(FlashPROM
 pico_stdlib
 pico_multicore
 hardware_flash
+hardware_exception
+pico_flash
 )

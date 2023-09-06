@@ -25,12 +25,12 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
-#include "BTInterface.h"
 
 // Pico includes
 #include "pico/bootrom.h"
 #include "pico/time.h"
 #include "hardware/adc.h"
+#include <pico/flash.h>
 
 // TinyUSB
 #include "usb_driver.h"
@@ -57,7 +57,7 @@ void GP2040::setup() {
 	    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
 
-  setupBTInterface();
+  flash_safe_execute_core_init();
 
     // Setup Gamepad and Gamepad Storage
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
