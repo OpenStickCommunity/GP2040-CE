@@ -44,8 +44,40 @@
 Storage::Storage()
 {
 	EEPROM.start();
+	gpioMappingsArray[0] = &config.gpioMappings.pin00;
+	gpioMappingsArray[1] = &config.gpioMappings.pin01;
+	gpioMappingsArray[2] = &config.gpioMappings.pin02;
+	gpioMappingsArray[3] = &config.gpioMappings.pin03;
+	gpioMappingsArray[4] = &config.gpioMappings.pin04;
+	gpioMappingsArray[5] = &config.gpioMappings.pin05;
+	gpioMappingsArray[6] = &config.gpioMappings.pin06;
+	gpioMappingsArray[7] = &config.gpioMappings.pin07;
+	gpioMappingsArray[8] = &config.gpioMappings.pin08;
+	gpioMappingsArray[9] = &config.gpioMappings.pin09;
+	gpioMappingsArray[10] = &config.gpioMappings.pin10;
+	gpioMappingsArray[11] = &config.gpioMappings.pin11;
+	gpioMappingsArray[12] = &config.gpioMappings.pin12;
+	gpioMappingsArray[13] = &config.gpioMappings.pin13;
+	gpioMappingsArray[14] = &config.gpioMappings.pin14;
+	gpioMappingsArray[15] = &config.gpioMappings.pin15;
+	gpioMappingsArray[16] = &config.gpioMappings.pin16;
+	gpioMappingsArray[17] = &config.gpioMappings.pin17;
+	gpioMappingsArray[18] = &config.gpioMappings.pin18;
+	gpioMappingsArray[19] = &config.gpioMappings.pin19;
+	gpioMappingsArray[20] = &config.gpioMappings.pin20;
+	gpioMappingsArray[21] = &config.gpioMappings.pin21;
+	gpioMappingsArray[22] = &config.gpioMappings.pin22;
+	gpioMappingsArray[23] = &config.gpioMappings.pin23;
+	gpioMappingsArray[24] = &config.gpioMappings.pin24;
+	gpioMappingsArray[25] = &config.gpioMappings.pin25;
+	gpioMappingsArray[26] = &config.gpioMappings.pin26;
+	gpioMappingsArray[27] = &config.gpioMappings.pin27;
+	gpioMappingsArray[28] = &config.gpioMappings.pin28;
+	gpioMappingsArray[29] = &config.gpioMappings.pin29;
 	critical_section_init(&animationOptionsCs);
 	ConfigUtils::load(config);
+
+	setFunctionalPinMappings(config.gamepadOptions.profileNumber);
 }
 
 bool Storage::save()
@@ -134,14 +166,6 @@ void Storage::ResetSettings()
 	watchdog_reboot(0, SRAM_END, 2000);
 }
 
-PinMappings& Storage::getProfilePinMappings() {
-	if (functionalPinMappings == nullptr) {
-		functionalPinMappings = (PinMappings*)malloc(sizeof(PinMappings));
-		setFunctionalPinMappings(config.gamepadOptions.profileNumber);
-	}
-	return *functionalPinMappings;
-}
-
 void Storage::setProfile(const uint32_t profileNum)
 {
 	if (profileNum < 1 || profileNum > 4) return;
@@ -151,22 +175,24 @@ void Storage::setProfile(const uint32_t profileNum)
 
 void Storage::setFunctionalPinMappings(const uint32_t profileNum)
 {
-	memcpy(functionalPinMappings, &config.pinMappings, sizeof(PinMappings));
+	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		functionalPinMappings[pin] = *gpioMappingsArray[pin];
+	}
 	if (profileNum < 2 || profileNum > 4) return;
 
 	AlternativePinMappings alts = this->config.profileOptions.alternativePinMappings[profileNum-2];
-	if (isValidPin(alts.pinButtonB1)) functionalPinMappings->pinButtonB1 = alts.pinButtonB1;
-	if (isValidPin(alts.pinButtonB2)) functionalPinMappings->pinButtonB2 = alts.pinButtonB2;
-	if (isValidPin(alts.pinButtonB3)) functionalPinMappings->pinButtonB3 = alts.pinButtonB3;
-	if (isValidPin(alts.pinButtonB4)) functionalPinMappings->pinButtonB4 = alts.pinButtonB4;
-	if (isValidPin(alts.pinButtonL1)) functionalPinMappings->pinButtonL1 = alts.pinButtonL1;
-	if (isValidPin(alts.pinButtonR1)) functionalPinMappings->pinButtonR1 = alts.pinButtonR1;
-	if (isValidPin(alts.pinButtonL2)) functionalPinMappings->pinButtonL2 = alts.pinButtonL2;
-	if (isValidPin(alts.pinButtonR2)) functionalPinMappings->pinButtonR2 = alts.pinButtonR2;
-	if (isValidPin(alts.pinDpadUp)) functionalPinMappings->pinDpadUp = alts.pinDpadUp;
-	if (isValidPin(alts.pinDpadDown)) functionalPinMappings->pinDpadDown = alts.pinDpadDown;
-	if (isValidPin(alts.pinDpadLeft)) functionalPinMappings->pinDpadLeft = alts.pinDpadLeft;
-	if (isValidPin(alts.pinDpadRight)) functionalPinMappings->pinDpadRight = alts.pinDpadRight;
+	if (isValidPin(alts.pinButtonB1))	functionalPinMappings[alts.pinButtonB1] = GpioAction::BUTTON_PRESS_B1;
+	if (isValidPin(alts.pinButtonB2))	functionalPinMappings[alts.pinButtonB2] = GpioAction::BUTTON_PRESS_B2;
+	if (isValidPin(alts.pinButtonB3))	functionalPinMappings[alts.pinButtonB3] = GpioAction::BUTTON_PRESS_B3;
+	if (isValidPin(alts.pinButtonB4))	functionalPinMappings[alts.pinButtonB4] = GpioAction::BUTTON_PRESS_B4;
+	if (isValidPin(alts.pinButtonL1))	functionalPinMappings[alts.pinButtonL1] = GpioAction::BUTTON_PRESS_L1;
+	if (isValidPin(alts.pinButtonR1))	functionalPinMappings[alts.pinButtonR1] = GpioAction::BUTTON_PRESS_R1;
+	if (isValidPin(alts.pinButtonL2))	functionalPinMappings[alts.pinButtonL2] = GpioAction::BUTTON_PRESS_L2;
+	if (isValidPin(alts.pinButtonR2))	functionalPinMappings[alts.pinButtonR2] = GpioAction::BUTTON_PRESS_R2;
+	if (isValidPin(alts.pinDpadUp)) 	functionalPinMappings[alts.pinDpadUp] = GpioAction::BUTTON_PRESS_UP;
+	if (isValidPin(alts.pinDpadDown))	functionalPinMappings[alts.pinDpadDown] = GpioAction::BUTTON_PRESS_DOWN;
+	if (isValidPin(alts.pinDpadLeft))	functionalPinMappings[alts.pinDpadLeft] = GpioAction::BUTTON_PRESS_LEFT;
+	if (isValidPin(alts.pinDpadRight))	functionalPinMappings[alts.pinDpadRight] = GpioAction::BUTTON_PRESS_RIGHT;
 }
 
 void Storage::SetConfigMode(bool mode) { // hack for config mode

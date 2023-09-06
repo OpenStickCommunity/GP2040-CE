@@ -158,25 +158,25 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
 
     // pinMappings
-    INIT_UNSET_PROPERTY(config.pinMappings, pinDpadUp, PIN_DPAD_UP);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinDpadDown, PIN_DPAD_DOWN);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinDpadLeft, PIN_DPAD_LEFT);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinDpadRight, PIN_DPAD_RIGHT);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonB1, PIN_BUTTON_B1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonB2, PIN_BUTTON_B2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonB3, PIN_BUTTON_B3);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonB4, PIN_BUTTON_B4);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonL1, PIN_BUTTON_L1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR1, PIN_BUTTON_R1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonL2, PIN_BUTTON_L2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR2, PIN_BUTTON_R2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonS1, PIN_BUTTON_S1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonS2, PIN_BUTTON_S2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonL3, PIN_BUTTON_L3);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR3, PIN_BUTTON_R3);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA1, PIN_BUTTON_A1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA2, PIN_BUTTON_A2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonFn, PIN_BUTTON_FN);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadUp, PIN_DPAD_UP);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadDown, PIN_DPAD_DOWN);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadLeft, PIN_DPAD_LEFT);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadRight, PIN_DPAD_RIGHT);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB1, PIN_BUTTON_B1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB2, PIN_BUTTON_B2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB3, PIN_BUTTON_B3);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB4, PIN_BUTTON_B4);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL1, PIN_BUTTON_L1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR1, PIN_BUTTON_R1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL2, PIN_BUTTON_L2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR2, PIN_BUTTON_R2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonS1, PIN_BUTTON_S1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonS2, PIN_BUTTON_S2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL3, PIN_BUTTON_L3);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR3, PIN_BUTTON_R3);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonA1, PIN_BUTTON_A1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonA2, PIN_BUTTON_A2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonFn, PIN_BUTTON_FN);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadUp, KEY_DPAD_UP);
@@ -552,6 +552,152 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 // something *other than* the board defaults
 // -----------------------------------------------------
 
+// convert configured core pin mappings to new config
+// NOTE: this also handles initializations for a blank config! if/when the deprecated
+// pin mappings go away, the remainder of this code should go in there (there was no point
+// in duplicating it right now)
+void gpioMappingsMigrationCore(Config& config)
+{
+    PinMappings& deprecatedPinMappings = config.deprecatedPinMappings;
+
+    // create an array of the old
+    GpioAction actions[NUM_BANK0_GPIOS] = {GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE};
+    if (deprecatedPinMappings.has_pinDpadUp && isValidPin(deprecatedPinMappings.pinDpadUp))
+        actions[deprecatedPinMappings.pinDpadUp] = GpioAction::BUTTON_PRESS_UP;
+    else if (isValidPin(PIN_DPAD_UP))
+        actions[PIN_DPAD_UP] = GpioAction::BUTTON_PRESS_UP;
+
+    if (deprecatedPinMappings.has_pinDpadDown && isValidPin(deprecatedPinMappings.pinDpadDown))
+        actions[deprecatedPinMappings.pinDpadDown] = GpioAction::BUTTON_PRESS_DOWN;
+    else if (isValidPin(PIN_DPAD_DOWN))
+        actions[PIN_DPAD_DOWN] = GpioAction::BUTTON_PRESS_DOWN;
+
+    if (deprecatedPinMappings.has_pinDpadLeft && isValidPin(deprecatedPinMappings.pinDpadLeft))
+        actions[deprecatedPinMappings.pinDpadLeft] = GpioAction::BUTTON_PRESS_LEFT;
+    else if (isValidPin(PIN_DPAD_LEFT))
+        actions[PIN_DPAD_LEFT] = GpioAction::BUTTON_PRESS_LEFT;
+
+    if (deprecatedPinMappings.has_pinDpadRight && isValidPin(deprecatedPinMappings.pinDpadRight))
+        actions[deprecatedPinMappings.pinDpadRight] = GpioAction::BUTTON_PRESS_RIGHT;
+    else if (isValidPin(PIN_DPAD_RIGHT))
+        actions[PIN_DPAD_RIGHT] = GpioAction::BUTTON_PRESS_RIGHT;
+
+    if (deprecatedPinMappings.has_pinButtonB1 && isValidPin(deprecatedPinMappings.pinButtonB1))
+        actions[deprecatedPinMappings.pinButtonB1] = GpioAction::BUTTON_PRESS_B1;
+    else if (isValidPin(PIN_BUTTON_B1))
+        actions[PIN_BUTTON_B1] = GpioAction::BUTTON_PRESS_B1;
+
+    if (deprecatedPinMappings.has_pinButtonB2 && isValidPin(deprecatedPinMappings.pinButtonB2))
+        actions[deprecatedPinMappings.pinButtonB2] = GpioAction::BUTTON_PRESS_B2;
+    else if (isValidPin(PIN_BUTTON_B2))
+        actions[PIN_BUTTON_B2] = GpioAction::BUTTON_PRESS_B2;
+
+    if (deprecatedPinMappings.has_pinButtonB3 && isValidPin(deprecatedPinMappings.pinButtonB3))
+        actions[deprecatedPinMappings.pinButtonB3] = GpioAction::BUTTON_PRESS_B3;
+    else if (isValidPin(PIN_BUTTON_B3))
+        actions[PIN_BUTTON_B3] = GpioAction::BUTTON_PRESS_B3;
+
+    if (deprecatedPinMappings.has_pinButtonB4 && isValidPin(deprecatedPinMappings.pinButtonB4))
+        actions[deprecatedPinMappings.pinButtonB4] = GpioAction::BUTTON_PRESS_B4;
+    else if (isValidPin(PIN_BUTTON_B4))
+        actions[PIN_BUTTON_B4] = GpioAction::BUTTON_PRESS_B4;
+
+    if (deprecatedPinMappings.has_pinButtonL1 && isValidPin(deprecatedPinMappings.pinButtonL1))
+        actions[deprecatedPinMappings.pinButtonL1] = GpioAction::BUTTON_PRESS_L1;
+    else if (isValidPin(PIN_BUTTON_L1))
+        actions[PIN_BUTTON_L1] = GpioAction::BUTTON_PRESS_L1;
+
+    if (deprecatedPinMappings.has_pinButtonR1 && isValidPin(deprecatedPinMappings.pinButtonR1))
+        actions[deprecatedPinMappings.pinButtonR1] = GpioAction::BUTTON_PRESS_R1;
+    else if (isValidPin(PIN_BUTTON_R1))
+        actions[PIN_BUTTON_R1] = GpioAction::BUTTON_PRESS_R1;
+
+    if (deprecatedPinMappings.has_pinButtonL2 && isValidPin(deprecatedPinMappings.pinButtonL2))
+        actions[deprecatedPinMappings.pinButtonL2] = GpioAction::BUTTON_PRESS_L2;
+    else if (isValidPin(PIN_BUTTON_L2))
+        actions[PIN_BUTTON_L2] = GpioAction::BUTTON_PRESS_L2;
+
+    if (deprecatedPinMappings.has_pinButtonR2 && isValidPin(deprecatedPinMappings.pinButtonR2))
+        actions[deprecatedPinMappings.pinButtonR2] = GpioAction::BUTTON_PRESS_R2;
+    else if (isValidPin(PIN_BUTTON_R2))
+        actions[PIN_BUTTON_R2] = GpioAction::BUTTON_PRESS_R2;
+
+    if (deprecatedPinMappings.has_pinButtonS1 && isValidPin(deprecatedPinMappings.pinButtonS1))
+        actions[deprecatedPinMappings.pinButtonS1] = GpioAction::BUTTON_PRESS_S1;
+    else if (isValidPin(PIN_BUTTON_S1))
+        actions[PIN_BUTTON_S1] = GpioAction::BUTTON_PRESS_S1;
+
+    if (deprecatedPinMappings.has_pinButtonS2 && isValidPin(deprecatedPinMappings.pinButtonS2))
+        actions[deprecatedPinMappings.pinButtonS2] = GpioAction::BUTTON_PRESS_S2;
+    else if (isValidPin(PIN_BUTTON_S2))
+        actions[PIN_BUTTON_S2] = GpioAction::BUTTON_PRESS_S2;
+
+    if (deprecatedPinMappings.has_pinButtonL3 && isValidPin(deprecatedPinMappings.pinButtonL3))
+        actions[deprecatedPinMappings.pinButtonL3] = GpioAction::BUTTON_PRESS_L3;
+    else if (isValidPin(PIN_BUTTON_L3))
+        actions[PIN_BUTTON_L3] = GpioAction::BUTTON_PRESS_L3;
+
+    if (deprecatedPinMappings.has_pinButtonR3 && isValidPin(deprecatedPinMappings.pinButtonR3))
+        actions[deprecatedPinMappings.pinButtonR3] = GpioAction::BUTTON_PRESS_R3;
+    else if (isValidPin(PIN_BUTTON_R3))
+        actions[PIN_BUTTON_R3] = GpioAction::BUTTON_PRESS_R3;
+
+    if (deprecatedPinMappings.has_pinButtonA1 && isValidPin(deprecatedPinMappings.pinButtonA1))
+        actions[deprecatedPinMappings.pinButtonA1] = GpioAction::BUTTON_PRESS_A1;
+    else if (isValidPin(PIN_BUTTON_A1))
+        actions[PIN_BUTTON_A1] = GpioAction::BUTTON_PRESS_A1;
+
+    if (deprecatedPinMappings.has_pinButtonA2 && isValidPin(deprecatedPinMappings.pinButtonA2))
+        actions[deprecatedPinMappings.pinButtonA2] = GpioAction::BUTTON_PRESS_A2;
+    else if (isValidPin(PIN_BUTTON_A2))
+        actions[PIN_BUTTON_A2] = GpioAction::BUTTON_PRESS_A2;
+
+    if (deprecatedPinMappings.has_pinButtonFn && isValidPin(deprecatedPinMappings.pinButtonFn))
+        actions[deprecatedPinMappings.pinButtonFn] = GpioAction::BUTTON_PRESS_FN;
+    else if (isValidPin(PIN_BUTTON_FN))
+        actions[PIN_BUTTON_FN] = GpioAction::BUTTON_PRESS_FN;
+
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin00, actions[0]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin01, actions[1]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin02, actions[2]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin03, actions[3]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin04, actions[4]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin05, actions[5]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin06, actions[6]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin07, actions[7]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin08, actions[8]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin09, actions[9]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin10, actions[10]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin11, actions[11]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin12, actions[12]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin13, actions[13]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin14, actions[14]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin15, actions[15]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin16, actions[16]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin17, actions[17]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin18, actions[18]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin19, actions[19]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin20, actions[20]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin21, actions[21]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin22, actions[22]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin23, actions[23]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin24, actions[24]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin25, actions[25]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin26, actions[26]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin27, actions[27]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin28, actions[28]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin29, actions[29]);
+}
+
 // populate existing configurations' buttonsMask and auxMask to mirror behavior
 // from the behavior before this code merged. totally new configs get their
 // board defaults via initUnsetPropertiesWithDefaults
@@ -685,6 +831,7 @@ void ConfigUtils::load(Config& config)
 
     // run migrations
     hotkeysMigration(config);
+    gpioMappingsMigrationCore(config);
 
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
@@ -839,7 +986,7 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_BYTES(fieldname, submessageType) str.push_back('"'); str.append(Base64::Encode(reinterpret_cast<const char*>(s.fieldname.bytes), s.fieldname.size)); str.push_back('"');
 #define TO_JSON_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname, indentLevel + 1);
 
-#define TO_JSON_REPEATED_RENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname[i]));
+#define TO_JSON_REPEATED_ENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname[i]));
 #define TO_JSON_REPEATED_UENUM(fieldname, submessageType) appendAsString(str, static_cast<uint32_t>(s.fieldname[i]));
 #define TO_JSON_REPEATED_INT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
 #define TO_JSON_REPEATED_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);

@@ -762,8 +762,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
     {
         legacyConfigFound = true;
 
-        PinMappings& pinMappings = config.pinMappings;
-        config.has_pinMappings = true;
+        PinMappings& pinMappings = config.deprecatedPinMappings;
+        config.has_deprecatedPinMappings = true;
         SET_PROPERTY(pinMappings, pinDpadUp, bytePinToIntPin(legacyBoardOptions.pinDpadUp));
         SET_PROPERTY(pinMappings, pinDpadDown, bytePinToIntPin(legacyBoardOptions.pinDpadDown));
         SET_PROPERTY(pinMappings, pinDpadLeft, bytePinToIntPin(legacyBoardOptions.pinDpadLeft));

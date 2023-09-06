@@ -340,36 +340,12 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 {
 	auto usedPins = doc.createNestedArray("usedPins");
 
-	const auto addPinIfValid = [&](int pin)
-	{
-		int numBank0GPIOS = NUM_BANK0_GPIOS;
-		
-		if (pin >= 0 && pin < numBank0GPIOS)
-		{
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		if (*gpioMappings[pin] != GpioAction::NONE) {
 			usedPins.add(pin);
 		}
-	};
-
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	addPinIfValid(pinMappings.pinDpadUp);
-	addPinIfValid(pinMappings.pinDpadDown);
-	addPinIfValid(pinMappings.pinDpadLeft);
-	addPinIfValid(pinMappings.pinDpadRight);
-	addPinIfValid(pinMappings.pinButtonB1);
-	addPinIfValid(pinMappings.pinButtonB2);
-	addPinIfValid(pinMappings.pinButtonB3);
-	addPinIfValid(pinMappings.pinButtonB4);
-	addPinIfValid(pinMappings.pinButtonL1);
-	addPinIfValid(pinMappings.pinButtonR1);
-	addPinIfValid(pinMappings.pinButtonL2);
-	addPinIfValid(pinMappings.pinButtonR2);
-	addPinIfValid(pinMappings.pinButtonS1);
-	addPinIfValid(pinMappings.pinButtonS2);
-	addPinIfValid(pinMappings.pinButtonL3);
-	addPinIfValid(pinMappings.pinButtonR3);
-	addPinIfValid(pinMappings.pinButtonA1);
-	addPinIfValid(pinMappings.pinButtonA2);
-	addPinIfValid(pinMappings.pinButtonFn);
+	}
 
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(boardOptions.i2cSDAPin);
@@ -617,8 +593,13 @@ std::string getGamepadOptions()
 	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
 	writeDoc(doc, "ps4ControllerType", gamepadOptions.ps4ControllerType);
 
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	writeDoc(doc, "fnButtonPin", pinMappings.pinButtonFn);
+	writeDoc(doc, "fnButtonPin", -1);
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		if (*gpioMappings[pin] == GpioAction::BUTTON_PRESS_FN) {
+			writeDoc(doc, "fnButtonPin", pin);
+		}
+	}
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	load_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -850,34 +831,34 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
 	// PinMappings uses -1 to denote unassigned pins
-	const auto convertPin = [&] (const char* key) -> int32_t
+	const auto convertPin = [&] (const char* key, const GpioAction action) -> void
 	{
 		int pin = 0;
 		readDoc(pin, doc, key);
-		return isValidPin(pin) ? pin : -1;
+		if (isValidPin(pin)) *gpioMappings[pin] = action;
 	};
 
-	PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	pinMappings.pinDpadUp    = convertPin("Up");
-	pinMappings.pinDpadDown  = convertPin("Down");
-	pinMappings.pinDpadLeft  = convertPin("Left");
-	pinMappings.pinDpadRight = convertPin("Right");
-	pinMappings.pinButtonB1  = convertPin("B1");
-	pinMappings.pinButtonB2  = convertPin("B2");
-	pinMappings.pinButtonB3  = convertPin("B3");
-	pinMappings.pinButtonB4  = convertPin("B4");
-	pinMappings.pinButtonL1  = convertPin("L1");
-	pinMappings.pinButtonR1  = convertPin("R1");
-	pinMappings.pinButtonL2  = convertPin("L2");
-	pinMappings.pinButtonR2  = convertPin("R2");
-	pinMappings.pinButtonS1  = convertPin("S1");
-	pinMappings.pinButtonS2  = convertPin("S2");
-	pinMappings.pinButtonL3  = convertPin("L3");
-	pinMappings.pinButtonR3  = convertPin("R3");
-	pinMappings.pinButtonA1  = convertPin("A1");
-	pinMappings.pinButtonA2  = convertPin("A2");
-	pinMappings.pinButtonFn  = convertPin("Fn");
+	convertPin("Up", GpioAction::BUTTON_PRESS_UP);
+	convertPin("Down", GpioAction::BUTTON_PRESS_DOWN);
+	convertPin("Left", GpioAction::BUTTON_PRESS_LEFT);
+	convertPin("Right", GpioAction::BUTTON_PRESS_RIGHT);
+	convertPin("B1", GpioAction::BUTTON_PRESS_B1);
+	convertPin("B2", GpioAction::BUTTON_PRESS_B2);
+	convertPin("B3", GpioAction::BUTTON_PRESS_B3);
+	convertPin("B4", GpioAction::BUTTON_PRESS_B4);
+	convertPin("L1", GpioAction::BUTTON_PRESS_L1);
+	convertPin("R1", GpioAction::BUTTON_PRESS_R1);
+	convertPin("L2", GpioAction::BUTTON_PRESS_L2);
+	convertPin("R2", GpioAction::BUTTON_PRESS_R2);
+	convertPin("S1", GpioAction::BUTTON_PRESS_S1);
+	convertPin("S2", GpioAction::BUTTON_PRESS_S2);
+	convertPin("L3", GpioAction::BUTTON_PRESS_L3);
+	convertPin("R3", GpioAction::BUTTON_PRESS_R3);
+	convertPin("A1", GpioAction::BUTTON_PRESS_A1);
+	convertPin("A2", GpioAction::BUTTON_PRESS_A2);
+	convertPin("Fn", GpioAction::BUTTON_PRESS_FN);
 
 	Storage::getInstance().save();
 
@@ -888,26 +869,32 @@ std::string getPinMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	writeDoc(doc, "Up", cleanPin(pinMappings.pinDpadUp));
-	writeDoc(doc, "Down", cleanPin(pinMappings.pinDpadDown));
-	writeDoc(doc, "Left", cleanPin(pinMappings.pinDpadLeft));
-	writeDoc(doc, "Right", cleanPin(pinMappings.pinDpadRight));
-	writeDoc(doc, "B1", cleanPin(pinMappings.pinButtonB1));
-	writeDoc(doc, "B2", cleanPin(pinMappings.pinButtonB2));
-	writeDoc(doc, "B3", cleanPin(pinMappings.pinButtonB3));
-	writeDoc(doc, "B4", cleanPin(pinMappings.pinButtonB4));
-	writeDoc(doc, "L1", cleanPin(pinMappings.pinButtonL1));
-	writeDoc(doc, "R1", cleanPin(pinMappings.pinButtonR1));
-	writeDoc(doc, "L2", cleanPin(pinMappings.pinButtonL2));
-	writeDoc(doc, "R2", cleanPin(pinMappings.pinButtonR2));
-	writeDoc(doc, "S1", cleanPin(pinMappings.pinButtonS1));
-	writeDoc(doc, "S2", cleanPin(pinMappings.pinButtonS2));
-	writeDoc(doc, "L3", cleanPin(pinMappings.pinButtonL3));
-	writeDoc(doc, "R3", cleanPin(pinMappings.pinButtonR3));
-	writeDoc(doc, "A1", cleanPin(pinMappings.pinButtonA1));
-	writeDoc(doc, "A2", cleanPin(pinMappings.pinButtonA2));
-	writeDoc(doc, "Fn", cleanPin(pinMappings.pinButtonFn));
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+
+	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		switch (*gpioMappings[pin]) {
+			case GpioAction::BUTTON_PRESS_UP:	writeDoc(doc, "Up", pin); break;
+			case GpioAction::BUTTON_PRESS_DOWN:	writeDoc(doc, "Down", pin); break;
+			case GpioAction::BUTTON_PRESS_LEFT:	writeDoc(doc, "Left", pin); break;
+			case GpioAction::BUTTON_PRESS_RIGHT:	writeDoc(doc, "Right", pin); break;
+			case GpioAction::BUTTON_PRESS_B1:	writeDoc(doc, "B1", pin); break;
+			case GpioAction::BUTTON_PRESS_B2:	writeDoc(doc, "B2", pin); break;
+			case GpioAction::BUTTON_PRESS_B3:	writeDoc(doc, "B3", pin); break;
+			case GpioAction::BUTTON_PRESS_B4:	writeDoc(doc, "B4", pin); break;
+			case GpioAction::BUTTON_PRESS_L1:	writeDoc(doc, "L1", pin); break;
+			case GpioAction::BUTTON_PRESS_R1:	writeDoc(doc, "R1", pin); break;
+			case GpioAction::BUTTON_PRESS_L2:	writeDoc(doc, "L2", pin); break;
+			case GpioAction::BUTTON_PRESS_R2:	writeDoc(doc, "R2", pin); break;
+			case GpioAction::BUTTON_PRESS_S1:	writeDoc(doc, "S1", pin); break;
+			case GpioAction::BUTTON_PRESS_S2:	writeDoc(doc, "S2", pin); break;
+			case GpioAction::BUTTON_PRESS_L3:	writeDoc(doc, "L3", pin); break;
+			case GpioAction::BUTTON_PRESS_R3:	writeDoc(doc, "R3", pin); break;
+			case GpioAction::BUTTON_PRESS_A1:	writeDoc(doc, "A1", pin); break;
+			case GpioAction::BUTTON_PRESS_A2:	writeDoc(doc, "A2", pin); break;
+			case GpioAction::BUTTON_PRESS_FN:	writeDoc(doc, "Fn", pin); break;
+			default:				break;
+		}
+	}
 
 	return serialize_json(doc);
 }
