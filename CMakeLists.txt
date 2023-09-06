@@ -188,6 +188,7 @@ SNESpad
 pico_mbedtls
 TinyUSB_Gamepad
 nanopb
+BTAdapter
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

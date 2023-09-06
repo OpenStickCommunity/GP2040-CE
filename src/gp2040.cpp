@@ -25,6 +25,7 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "BTInterface.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -55,6 +56,8 @@ void GP2040::setup() {
 			addonOptions.psPassthroughOptions.enabled ){
 	    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
+
+  setupBTInterface();
 
     // Setup Gamepad and Gamepad Storage
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();

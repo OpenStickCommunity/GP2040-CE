@@ -1,4 +1,4 @@
-add_library(BTAdapter BTAdapter.cpp)
+add_library(BTAdapter BTAdapter.cpp BTInterface.cpp)
 target_include_directories(BTAdapter INTERFACE .)
 target_link_libraries(BTAdapter 
 pico_stdlib

@@ -7,7 +7,7 @@
 #ifndef BT_ADAPTER_H_
 #define BT_ADAPTER_H_
 
-
+void setupBTInterface();
 
 
 #endif
