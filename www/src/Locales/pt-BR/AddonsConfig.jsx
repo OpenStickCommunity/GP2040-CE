@@ -80,15 +80,7 @@ export default {
 		'Modo Joystick de 4 Vias Dual Direcional',
 	'tilt-header-text': 'Entrada de Inclinação',
 	'tilt-1-pin-label': 'Pino 1 de Inclinação',
-	'tilt-1-factor-left-x-label': 'Tilt 1 Factor Left X',
-	'tilt-1-factor-left-y-label': 'Tilt 1 Factor Left Y',
-	'tilt-1-factor-right-x-label': 'Tilt 1 Factor Right X',
-	'tilt-1-factor-right-y-label': 'Tilt 1 Factor Right Y',
 	'tilt-2-pin-label': 'Pino 2 de Inclinação',
-	'tilt-2-factor-left-x-label': 'Tilt 2 Factor Left X',
-	'tilt-2-factor-left-y-label': 'Tilt 2 Factor Left Y',
-	'tilt-2-factor-right-x-label': 'Tilt 2 Factor Right X',
-	'tilt-2-factor-right-y-label': 'Tilt 2 Factor Right Y',
 	'tilt-left-analog-up-pin-label':
 		'Pino de Inclinação Analógica Esquerda para Cima',
 	'tilt-left-analog-down-pin-label':
