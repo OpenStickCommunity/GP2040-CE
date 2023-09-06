@@ -121,7 +121,6 @@ class WiiExtension {
 
     uint8_t iSDA;
     uint8_t iSCL;
-    uint8_t bWire;
     i2c_inst_t *picoI2C;
 	int32_t iSpeed;
 

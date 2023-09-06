@@ -12,7 +12,6 @@ void ExtensionBase::init(uint8_t dataType) {
     isFirstRead = true;
     
     _hasCalibrationData = false;
-    for (i = 0; i < WiiDirectionalPad::WII_MAX_DIRECTIONS; ++i) directionalPad[i] = 0;
     for (i = 0; i < WiiButtons::WII_MAX_BUTTONS; ++i) buttons[i] = 0;
     for (i = 0; i < WiiMotions::WII_MAX_MOTIONS; ++i) motionState[i] = 0;
     for (i = 0; i < WiiAnalogs::WII_MAX_ANALOGS; ++i) {
@@ -66,9 +65,9 @@ void ExtensionBase::postProcess() {
     for (i = 0; i < WiiAnalogs::WII_MAX_ANALOGS; ++i) {
         // scale calibration values before using
         if (i != WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION) {
-            minVal = map(_analogCalibration[i].minimum-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
-            maxVal = map(_analogCalibration[i].maximum-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
-            cenVal = map(_analogCalibration[i].center-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
+            minVal = map(_analogCalibration[i].minimum, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
+            maxVal = map(_analogCalibration[i].maximum, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
+            cenVal = map(_analogCalibration[i].center, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
 
             if (isFirstRead) {
                 // stash the first read as the initial orientation. will reset on hotswap.
@@ -86,7 +85,7 @@ void ExtensionBase::postProcess() {
             }
 
             outVal = map(analogState[i], 0, (_analogPrecision[i].origin-1), 0,(_analogPrecision[i].destination-1));
-            if ((i != WiiAnalogs::WII_ANALOG_TRIGGER_LEFT) && (i != WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT)) {
+            if ((i != WiiAnalogs::WII_ANALOG_LEFT_TRIGGER) && (i != WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER)) {
                 outVal = bounds(outVal, minVal, maxVal);
                 outVal = map(outVal+centerOffset, minVal+centerOffset, maxVal+centerOffset, 0, (_analogPrecision[i].destination-1));
                 outVal = bounds(outVal, minVal, maxVal);
@@ -94,7 +93,7 @@ void ExtensionBase::postProcess() {
                 outVal = bounds(outVal, 0, (_analogPrecision[i].destination-1));
             }
 
-            //applyCalibration(analogState[i], minVal, maxVal, cenVal),
+            applyCalibration(outVal, minVal, maxVal, cenVal);
 
 #if WII_EXTENSION_DEBUG==true
             if (i == WiiAnalogs::WII_ANALOG_RIGHT_Y) {

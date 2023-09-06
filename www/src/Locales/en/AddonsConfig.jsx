@@ -115,13 +115,6 @@ export default {
 	'ps4-mode-private-key-label': 'Private Key (PEM)',
 	'ps4-mode-serial-number-label': 'Serial Number (16 Bytes in Hex Ascii)',
 	'ps4-mode-signature-label': 'Signature (256 Bytes in Binary)',
-	'wii-extension-header-text': 'Wii Extension',
-	'wii-extension-sub-header-text':
-		'<0>Note: If the Display is enabled at the same time, this Addon will be disabled.</0> <1>Currently Supported Controllers</1> <0>Classic/Classic Pro: Both Analogs and D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, ZL = L2, R = R1, ZR = R2, Minus = S1, Plus = S2, Home = A1</0>	<0>Nunchuck: Analog Stick Supported. C = B1, Z = B2</0>	<0>Guitar Hero Guitar: Analog Stick Supported. Green = B1, Red = B2, Blue = B3, Yellow = B4, Orange = L1, Strum Up = Up, Strum Down = Down, Minus = S1, Plus = S2</0>',
-	'wii-extension-sda-pin-label': 'I2C SDA Pin',
-	'wii-extension-scl-pin-label': 'I2C SCL Pin',
-	'wii-extension-block-label': 'I2C Block',
-	'wii-extension-speed-label': 'I2C Speed',
 	'snes-extension-header-text': 'SNES Extension Configuration',
 	'snes-extension-sub-header-text':
 		'<0>Note: If the Display is enabled at the same time, this Addon will be disabled.</0> <1>Currently Supported Controllers</1> <0>SNES pad: D-Pad Supported. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</0> <0>SNES mouse: Analog Stick Supported. Left Click = B1, Right Click = B2</0> <0>NES: D-Pad Supported. B = B1, A = B2, Select = S1, Start = S2</0>',

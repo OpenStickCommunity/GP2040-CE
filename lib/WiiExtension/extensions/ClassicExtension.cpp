@@ -15,10 +15,10 @@ void ClassicExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].origin                          = WII_ANALOG_PRECISION_0;
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].destination                     = WII_ANALOG_PRECISION_3;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].origin                     = WII_ANALOG_PRECISION_0;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].destination                = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_0;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].origin                     = WII_ANALOG_PRECISION_0;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].destination                = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].origin                    = WII_ANALOG_PRECISION_0;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].destination               = WII_ANALOG_PRECISION_2;
 
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
@@ -32,10 +32,10 @@ void ClassicExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].origin                          = WII_ANALOG_PRECISION_3;
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].destination                     = WII_ANALOG_PRECISION_3;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].origin                     = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].destination                = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].origin                     = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].destination                = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].origin                    = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].destination               = WII_ANALOG_PRECISION_2;
 
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
@@ -49,10 +49,10 @@ void ClassicExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].origin                          = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].destination                     = WII_ANALOG_PRECISION_3;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].origin                     = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].destination                = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].origin                     = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].destination                = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].origin                    = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].destination               = WII_ANALOG_PRECISION_2;
 
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
@@ -75,13 +75,13 @@ void ClassicExtension::init(uint8_t dataType) {
     _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center          = WII_CLASSIC_GATE_CENTER;
     _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].maximum         = WII_CLASSIC_GATE_CENTER+WII_CLASSIC_GATE_SIZE;
     
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].minimum    = 1;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].center     = WII_CLASSIC_TRIGGER_MAX/2;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].maximum    = WII_CLASSIC_TRIGGER_MAX;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].minimum    = 1;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].center     = WII_CLASSIC_TRIGGER_MAX/2;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].maximum    = WII_CLASSIC_TRIGGER_MAX;
 
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].minimum   = 1;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].center    = WII_CLASSIC_TRIGGER_MAX/2;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].maximum   = WII_CLASSIC_TRIGGER_MAX;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].minimum   = 1;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].center    = WII_CLASSIC_TRIGGER_MAX/2;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].maximum   = WII_CLASSIC_TRIGGER_MAX;
 }
 
 bool ClassicExtension::calibrate(uint8_t *calibrationData) {
@@ -104,13 +104,13 @@ bool ClassicExtension::calibrate(uint8_t *calibrationData) {
         _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum   = calibrationData[10];
         _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center    = calibrationData[11];
         
-        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].maximum   = calibrationData[12];
-        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].minimum   = 1;
-        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].center    = calibrationData[12]/2;
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].maximum   = calibrationData[12];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].minimum   = 1;
+        _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].center    = calibrationData[12]/2;
 
-        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].maximum   = calibrationData[13];
-        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].minimum   = 1;
-        _analogCalibration[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].center    = calibrationData[12]/2;
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].maximum   = calibrationData[13];
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].minimum   = 1;
+        _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].center    = calibrationData[12]/2;
         return true;
     } else {
     }
@@ -127,11 +127,11 @@ void ClassicExtension::process(uint8_t *inputData) {
         analogState[WiiAnalogs::WII_ANALOG_RIGHT_X]            = ((inputData[0] & 0xC0) >> 3) | ((inputData[1] & 0xC0) >> 5) | ((inputData[2] & 0x80) >> 7);
         analogState[WiiAnalogs::WII_ANALOG_RIGHT_Y]            = (inputData[2] & 0x1F);
 
-        analogState[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT]       = (((inputData[2] & 0x60) >> 2) | ((inputData[3] & 0xE0) >> 5));
-        analogState[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT]      = ((inputData[3] & 0x1F) >> 0);
+        analogState[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER]       = (((inputData[2] & 0x60) >> 2) | ((inputData[3] & 0xE0) >> 5));
+        analogState[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER]      = ((inputData[3] & 0x1F) >> 0);
 
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_RIGHT] = !((inputData[4] & 0x80) >> 7);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN]  = !((inputData[4] & 0x40) >> 6);
+        buttons[WiiButtons::WII_BUTTON_RIGHT]                  = !((inputData[4] & 0x80) >> 7);
+        buttons[WiiButtons::WII_BUTTON_DOWN]                   = !((inputData[4] & 0x40) >> 6);
         buttons[WiiButtons::WII_BUTTON_L]                      = !((inputData[4] & 0x20) >> 5);
         buttons[WiiButtons::WII_BUTTON_MINUS]                  = !((inputData[4] & 0x10) >> 4);
         buttons[WiiButtons::WII_BUTTON_HOME]                   = !((inputData[4] & 0x08) >> 3);
@@ -144,19 +144,19 @@ void ClassicExtension::process(uint8_t *inputData) {
         buttons[WiiButtons::WII_BUTTON_A]                      = !((inputData[5] & 0x10) >> 4);
         buttons[WiiButtons::WII_BUTTON_X]                      = !((inputData[5] & 0x08) >> 3);
         buttons[WiiButtons::WII_BUTTON_ZR]                     = !((inputData[5] & 0x04) >> 2);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_LEFT]  = !((inputData[5] & 0x02) >> 1);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_UP]    = !((inputData[5] & 0x01) >> 0);
+        buttons[WiiButtons::WII_BUTTON_LEFT]                   = !((inputData[5] & 0x02) >> 1);
+        buttons[WiiButtons::WII_BUTTON_UP]                     = !((inputData[5] & 0x01) >> 0);
     } else if (getDataType() == WII_DATA_TYPE_2) {
         analogState[WiiAnalogs::WII_ANALOG_LEFT_X]             = ((inputData[0] << 2) | ((inputData[4] & 0x03) >> 0));
         analogState[WiiAnalogs::WII_ANALOG_LEFT_Y]             = ((inputData[2] << 2) | ((inputData[4] & 0x30) >> 4));
         analogState[WiiAnalogs::WII_ANALOG_RIGHT_X]            = ((inputData[1] << 2) | ((inputData[4] & 0x0C) >> 2));
         analogState[WiiAnalogs::WII_ANALOG_RIGHT_Y]            = ((inputData[3] << 2) | ((inputData[4] & 0xC0) >> 6));
 
-        analogState[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT]       = (inputData[5] & 0xFF);
-        analogState[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT]      = (inputData[6] & 0xFF);
+        analogState[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER]       = (inputData[5] & 0xFF);
+        analogState[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER]      = (inputData[6] & 0xFF);
 
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_RIGHT] = !((inputData[7] & 0x80) >> 7);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN]  = !((inputData[7] & 0x40) >> 6);
+        buttons[WiiButtons::WII_BUTTON_RIGHT]                  = !((inputData[7] & 0x80) >> 7);
+        buttons[WiiButtons::WII_BUTTON_DOWN]                   = !((inputData[7] & 0x40) >> 6);
         buttons[WiiButtons::WII_BUTTON_L]                      = !((inputData[7] & 0x20) >> 5);
         buttons[WiiButtons::WII_BUTTON_MINUS]                  = !((inputData[7] & 0x10) >> 4);
         buttons[WiiButtons::WII_BUTTON_HOME]                   = !((inputData[7] & 0x08) >> 3);
@@ -169,19 +169,19 @@ void ClassicExtension::process(uint8_t *inputData) {
         buttons[WiiButtons::WII_BUTTON_A]                      = !((inputData[8] & 0x10) >> 4);
         buttons[WiiButtons::WII_BUTTON_X]                      = !((inputData[8] & 0x08) >> 3);
         buttons[WiiButtons::WII_BUTTON_ZR]                     = !((inputData[8] & 0x04) >> 2);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_LEFT]  = !((inputData[8] & 0x02) >> 1);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_UP]    = !((inputData[8] & 0x01) >> 0);
+        buttons[WiiButtons::WII_BUTTON_LEFT]                   = !((inputData[8] & 0x02) >> 1);
+        buttons[WiiButtons::WII_BUTTON_UP]                     = !((inputData[8] & 0x01) >> 0);
     } else if (getDataType() == WII_DATA_TYPE_3) {
         analogState[WiiAnalogs::WII_ANALOG_LEFT_X]             = (inputData[0] & 0xFF);
         analogState[WiiAnalogs::WII_ANALOG_LEFT_Y]             = (inputData[2] & 0xFF);
         analogState[WiiAnalogs::WII_ANALOG_RIGHT_X]            = (inputData[1] & 0xFF);
         analogState[WiiAnalogs::WII_ANALOG_RIGHT_Y]            = (inputData[3] & 0xFF);
 
-        analogState[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT]       = (inputData[4] & 0xFF);
-        analogState[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT]      = (inputData[5] & 0xFF);
+        analogState[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER]       = (inputData[4] & 0xFF);
+        analogState[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER]      = (inputData[5] & 0xFF);
 
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_RIGHT] = !((inputData[6] & 0x80) >> 7);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN]  = !((inputData[6] & 0x40) >> 6);
+        buttons[WiiButtons::WII_BUTTON_RIGHT]                  = !((inputData[6] & 0x80) >> 7);
+        buttons[WiiButtons::WII_BUTTON_DOWN]                   = !((inputData[6] & 0x40) >> 6);
         buttons[WiiButtons::WII_BUTTON_L]                      = !((inputData[6] & 0x20) >> 5);
         buttons[WiiButtons::WII_BUTTON_MINUS]                  = !((inputData[6] & 0x10) >> 4);
         buttons[WiiButtons::WII_BUTTON_HOME]                   = !((inputData[6] & 0x08) >> 3);
@@ -194,8 +194,8 @@ void ClassicExtension::process(uint8_t *inputData) {
         buttons[WiiButtons::WII_BUTTON_A]                      = !((inputData[7] & 0x10) >> 4);
         buttons[WiiButtons::WII_BUTTON_X]                      = !((inputData[7] & 0x08) >> 3);
         buttons[WiiButtons::WII_BUTTON_ZR]                     = !((inputData[7] & 0x04) >> 2);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_LEFT]  = !((inputData[7] & 0x02) >> 1);
-        directionalPad[WiiDirectionalPad::WII_DIRECTION_UP]    = !((inputData[7] & 0x01) >> 0);
+        buttons[WiiButtons::WII_BUTTON_LEFT]                   = !((inputData[7] & 0x02) >> 1);
+        buttons[WiiButtons::WII_BUTTON_UP]                     = !((inputData[7] & 0x01) >> 0);
     } else {
         // unknown
     }

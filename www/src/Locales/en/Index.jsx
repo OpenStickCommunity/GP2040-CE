@@ -13,6 +13,7 @@ import BackupPage from './BackupPage';
 import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
 import CaptureButton from './CaptureButton';
+import WiiAddon from './Addons/WiiAddon';
 
 export default {
 	Common,
@@ -30,4 +31,5 @@ export default {
 	DisplayConfig,
 	AddonsConfig,
 	CaptureButton,
+	WiiAddon,
 };

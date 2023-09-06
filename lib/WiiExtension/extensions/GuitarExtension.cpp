@@ -17,10 +17,10 @@ void GuitarExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].origin                          = WII_ANALOG_PRECISION_0;
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].destination                     = WII_ANALOG_PRECISION_3;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].origin                     = WII_ANALOG_PRECISION_0;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].destination                = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_0;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].origin                     = WII_ANALOG_PRECISION_0;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].destination                = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].origin                    = WII_ANALOG_PRECISION_0;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].destination               = WII_ANALOG_PRECISION_2;
 
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
@@ -34,10 +34,10 @@ void GuitarExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].origin                          = WII_ANALOG_PRECISION_3;
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].destination                     = WII_ANALOG_PRECISION_3;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].origin                     = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].destination                = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].origin                     = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].destination                = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].origin                    = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].destination               = WII_ANALOG_PRECISION_2;
 
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
@@ -51,10 +51,10 @@ void GuitarExtension::init(uint8_t dataType) {
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].origin                          = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_Y].destination                     = WII_ANALOG_PRECISION_3;
 
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].origin                     = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_LEFT].destination                = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].origin                    = WII_ANALOG_PRECISION_2;
-        _analogPrecision[WiiAnalogs::WII_ANALOG_TRIGGER_RIGHT].destination               = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].origin                     = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER].destination                = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].origin                    = WII_ANALOG_PRECISION_2;
+        _analogPrecision[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER].destination               = WII_ANALOG_PRECISION_2;
 
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin            = WII_ANALOG_PRECISION_2;
         _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination       = WII_ANALOG_PRECISION_3;
@@ -112,7 +112,7 @@ void GuitarExtension::process(uint8_t *inputData) {
             whammyBar                                                   = (inputData[3] & 0x1F);
             analogState[WiiAnalogs::WII_ANALOG_RIGHT_X]                 = (inputData[3] & 0x1F);
 
-            directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN]       = !((inputData[4] & 0x40) >> 6);
+            buttons[WiiButtons::WII_BUTTON_DOWN]                        = !((inputData[4] & 0x40) >> 6);
             buttons[WiiButtons::WII_BUTTON_MINUS]                       = !((inputData[4] & 0x10) >> 4);
             buttons[WiiButtons::WII_BUTTON_PLUS]                        = !((inputData[4] & 0x04) >> 2);
 
@@ -122,7 +122,7 @@ void GuitarExtension::process(uint8_t *inputData) {
             buttons[GuitarButtons::GUITAR_GREEN]                        = !((inputData[5] & 0x10) >> 4);
             buttons[GuitarButtons::GUITAR_YELLOW]                       = !((inputData[5] & 0x08) >> 3);
             buttons[GuitarButtons::GUITAR_PEDAL]                        = !((inputData[5] & 0x04) >> 2);
-            directionalPad[WiiDirectionalPad::WII_DIRECTION_UP]         = !((inputData[5] & 0x01) >> 0);
+            buttons[WiiButtons::WII_BUTTON_UP]                          = !((inputData[5] & 0x01) >> 0);
 
             isTouched                                                   = (touchBar != WII_GUITAR_TOUCHPAD_NONE);
 
@@ -135,7 +135,7 @@ void GuitarExtension::process(uint8_t *inputData) {
                 buttons[GuitarButtons::GUITAR_YELLOW]                   = (TOUCH_BETWEEN_RANGE(touchBar,WII_GUITAR_TOUCHPAD_YELLOW,WII_GUITAR_TOUCHPAD_BLUE));
                 buttons[GuitarButtons::GUITAR_BLUE]                     = (TOUCH_BETWEEN_RANGE(touchBar,WII_GUITAR_TOUCHPAD_BLUE,WII_GUITAR_TOUCHPAD_ORANGE));
                 buttons[GuitarButtons::GUITAR_ORANGE]                   = (TOUCH_BETWEEN_RANGE(touchBar,WII_GUITAR_TOUCHPAD_ORANGE,WII_GUITAR_TOUCHPAD_MAX));
-                directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN]   = isTouched;
+                buttons[WiiButtons::WII_BUTTON_DOWN]                    = isTouched;
             }
         } else if (getDataType() == WII_DATA_TYPE_2) {
             analogState[WiiAnalogs::WII_ANALOG_LEFT_X]                  = ((inputData[0] << 2) | ((inputData[4] & 0x03) >> 0));
@@ -146,7 +146,7 @@ void GuitarExtension::process(uint8_t *inputData) {
             whammyBar                                                   = (inputData[6] & 0xFF);
             analogState[WiiAnalogs::WII_ANALOG_RIGHT_X]                 = (inputData[6] & 0xFF);
 
-            directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN]       = !((inputData[7] & 0x40) >> 6);
+            buttons[WiiButtons::WII_BUTTON_DOWN]                        = !((inputData[7] & 0x40) >> 6);
             buttons[WiiButtons::WII_BUTTON_MINUS]                       = !((inputData[7] & 0x10) >> 4);
             buttons[WiiButtons::WII_BUTTON_PLUS]                        = !((inputData[7] & 0x04) >> 2);
 
@@ -156,7 +156,7 @@ void GuitarExtension::process(uint8_t *inputData) {
             buttons[GuitarButtons::GUITAR_GREEN]                        = !((inputData[8] & 0x10) >> 4);
             buttons[GuitarButtons::GUITAR_YELLOW]                       = !((inputData[8] & 0x08) >> 3);
             buttons[GuitarButtons::GUITAR_PEDAL]                        = !((inputData[8] & 0x04) >> 2);
-            directionalPad[WiiDirectionalPad::WII_DIRECTION_UP]         = !((inputData[8] & 0x01) >> 0);
+            buttons[WiiButtons::WII_BUTTON_UP]                          = !((inputData[8] & 0x01) >> 0);
         } else if (getDataType() == WII_DATA_TYPE_3) {
             analogState[WiiAnalogs::WII_ANALOG_LEFT_X]                  = (inputData[0] & 0xFF);
             analogState[WiiAnalogs::WII_ANALOG_LEFT_Y]                  = (inputData[2] & 0xFF);
@@ -166,7 +166,7 @@ void GuitarExtension::process(uint8_t *inputData) {
             whammyBar                                                   = (inputData[5] & 0xFF);
             analogState[WiiAnalogs::WII_ANALOG_RIGHT_X]                 = (inputData[5] & 0xFF);
 
-            directionalPad[WiiDirectionalPad::WII_DIRECTION_DOWN]       = !((inputData[6] & 0x40) >> 6);
+            buttons[WiiButtons::WII_BUTTON_DOWN]                        = !((inputData[6] & 0x40) >> 6);
             buttons[WiiButtons::WII_BUTTON_MINUS]                       = !((inputData[6] & 0x10) >> 4);
             buttons[WiiButtons::WII_BUTTON_PLUS]                        = !((inputData[6] & 0x04) >> 2);
 
@@ -176,7 +176,7 @@ void GuitarExtension::process(uint8_t *inputData) {
             buttons[GuitarButtons::GUITAR_GREEN]                        = !((inputData[7] & 0x10) >> 4);
             buttons[GuitarButtons::GUITAR_YELLOW]                       = !((inputData[7] & 0x08) >> 3);
             buttons[GuitarButtons::GUITAR_PEDAL]                        = !((inputData[7] & 0x04) >> 2);
-            directionalPad[WiiDirectionalPad::WII_DIRECTION_UP]         = !((inputData[7] & 0x01) >> 0);
+            buttons[WiiButtons::WII_BUTTON_UP]                          = !((inputData[7] & 0x01) >> 0);
         }
     }
 #if WII_EXTENSION_DEBUG==true

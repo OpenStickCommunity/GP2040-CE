@@ -3,6 +3,8 @@
 
 #include <string>
 #include <map>
+#include <vector>
+#include <numeric>
 #include <stdint.h>
 #include <hardware/i2c.h>
 #include "BoardConfig.h"
@@ -40,11 +42,43 @@
 
 #define WII_SET_MASK(bits, check, val) ((check) ? ((bits) |= (val)) : ((bits) &= ~(val)))
 
+typedef enum {
+    WII_ANALOG_TYPE_NONE,
+    WII_ANALOG_TYPE_LEFT_STICK_X,
+    WII_ANALOG_TYPE_LEFT_STICK_Y,
+    WII_ANALOG_TYPE_RIGHT_STICK_X,
+    WII_ANALOG_TYPE_RIGHT_STICK_Y,
+    WII_ANALOG_TYPE_DPAD_X,
+    WII_ANALOG_TYPE_DPAD_Y,
+    WII_ANALOG_TYPE_LEFT_TRIGGER,
+    WII_ANALOG_TYPE_RIGHT_TRIGGER,
+    WII_ANALOG_TYPE_LEFT_STICK_X_PLUS,
+    WII_ANALOG_TYPE_LEFT_STICK_X_MINUS,
+    WII_ANALOG_TYPE_LEFT_STICK_Y_PLUS,
+    WII_ANALOG_TYPE_LEFT_STICK_Y_MINUS,
+    WII_ANALOG_TYPE_RIGHT_STICK_X_PLUS,
+    WII_ANALOG_TYPE_RIGHT_STICK_X_MINUS,
+    WII_ANALOG_TYPE_RIGHT_STICK_Y_PLUS,
+    WII_ANALOG_TYPE_RIGHT_STICK_Y_MINUS,
+    WII_ANALOG_TYPE_COUNT
+} WiiAnalogType;
+
+typedef struct {
+    uint16_t axisType;
+    uint16_t minRange;
+    uint16_t maxRange;
+} WiiAnalogAxis;
+
 typedef struct {
     // button ID = gamepad mask value
-    std::unordered_map<uint16_t, uint16_t> buttonMap;
-    std::unordered_map<uint16_t, uint16_t> dpadMap;
+    std::unordered_map<uint16_t, uint32_t> buttonMap;
+    std::unordered_map<uint16_t, WiiAnalogAxis> analogMap;
 } WiiExtensionConfig;
+
+typedef struct {
+    uint16_t analogInput;
+    uint16_t analogValue;
+} WiiAnalogChange;
 
 class WiiExtensionInput : public GPAddon {
 public:
@@ -62,16 +96,26 @@ private:
     // defaults if no defined config
     std::unordered_map<uint16_t, WiiExtensionConfig> extensionConfigs = {
         {
-            WII_EXTENSION_NUNCHUCK,
+            WiiExtensionController::WII_EXTENSION_NUNCHUCK,
             {
                 {
                     {WiiButtons::WII_BUTTON_C,GAMEPAD_MASK_B1},
-                    {WiiButtons::WII_BUTTON_C,GAMEPAD_MASK_B2},
-                },{/* No D-Pad */}
+                    {WiiButtons::WII_BUTTON_Z,GAMEPAD_MASK_B2},
+                },
+                {
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_X,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_X, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_Y,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_Y, 0, 0 }
+                    },
+                }
             }
         },
         {
-            WII_EXTENSION_CLASSIC,
+            WiiExtensionController::WII_EXTENSION_CLASSIC,
             {
                 {
                     {WiiButtons::WII_BUTTON_B, GAMEPAD_MASK_B1},
@@ -85,30 +129,53 @@ private:
                     {WiiButtons::WII_BUTTON_MINUS, GAMEPAD_MASK_S1},
                     {WiiButtons::WII_BUTTON_PLUS, GAMEPAD_MASK_S2},
                     {WiiButtons::WII_BUTTON_HOME, GAMEPAD_MASK_A1},
+                    {WiiButtons::WII_BUTTON_UP, GAMEPAD_MASK_DU},
+                    {WiiButtons::WII_BUTTON_DOWN, GAMEPAD_MASK_DD},
+                    {WiiButtons::WII_BUTTON_LEFT, GAMEPAD_MASK_DL},
+                    {WiiButtons::WII_BUTTON_RIGHT, GAMEPAD_MASK_DR},
                 },
                 {
-                    {WiiDirectionalPad::WII_DIRECTION_UP, GAMEPAD_MASK_UP},
-                    {WiiDirectionalPad::WII_DIRECTION_DOWN, GAMEPAD_MASK_DOWN},
-                    {WiiDirectionalPad::WII_DIRECTION_LEFT, GAMEPAD_MASK_LEFT},
-                    {WiiDirectionalPad::WII_DIRECTION_RIGHT, GAMEPAD_MASK_RIGHT},
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_X,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_X, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_Y,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_Y, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_RIGHT_X,
+                        { WiiAnalogType::WII_ANALOG_TYPE_RIGHT_STICK_X, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_RIGHT_Y,
+                        { WiiAnalogType::WII_ANALOG_TYPE_RIGHT_STICK_Y, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_TRIGGER,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_TRIGGER, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER,
+                        { WiiAnalogType::WII_ANALOG_TYPE_RIGHT_TRIGGER, 0, 0 }
+                    },
                 }
             }
         },
         {
-            WII_EXTENSION_TAIKO,
+            WiiExtensionController::WII_EXTENSION_TAIKO,
             {
                 {
                     {TaikoButtons::TATA_KAT_LEFT, GAMEPAD_MASK_L2},
                     {TaikoButtons::TATA_KAT_RIGHT, GAMEPAD_MASK_R2},
                     {TaikoButtons::TATA_DON_RIGHT, GAMEPAD_MASK_B1},
+                    {TaikoButtons::TATA_DON_LEFT, GAMEPAD_MASK_DL},
                 },
-                {
-                    {TaikoButtons::TATA_DON_LEFT, GAMEPAD_MASK_LEFT},
-                }
+                {}
             }
         },
         {
-            WII_EXTENSION_GUITAR,
+            WiiExtensionController::WII_EXTENSION_GUITAR,
             {
                 {
                     {GuitarButtons::GUITAR_RED, GAMEPAD_MASK_B2},
@@ -119,11 +186,27 @@ private:
                     {GuitarButtons::GUITAR_PEDAL, GAMEPAD_MASK_R2},
                     {WiiButtons::WII_BUTTON_MINUS, GAMEPAD_MASK_S1},
                     {WiiButtons::WII_BUTTON_PLUS, GAMEPAD_MASK_S2},
-                },{/* No D-Pad */}
+                    {WiiButtons::WII_BUTTON_UP, GAMEPAD_MASK_DU},
+                    {WiiButtons::WII_BUTTON_DOWN, GAMEPAD_MASK_DD},
+                },
+                {
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_X,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_X, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_Y,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_Y, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_RIGHT_X,
+                        { WiiAnalogType::WII_ANALOG_TYPE_RIGHT_STICK_X, 0, 0 }
+                    },
+                }
             }
         },
         {
-            WII_EXTENSION_DRUMS,
+            WiiExtensionController::WII_EXTENSION_DRUMS,
             {
                 {
                     {DrumButtons::DRUM_RED, GAMEPAD_MASK_B2},
@@ -134,24 +217,58 @@ private:
                     {DrumButtons::DRUM_PEDAL, GAMEPAD_MASK_R2},
                     {WiiButtons::WII_BUTTON_MINUS, GAMEPAD_MASK_S1},
                     {WiiButtons::WII_BUTTON_PLUS, GAMEPAD_MASK_S2},
-                },{/* No D-Pad */}
+                },
+                {
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_X,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_X, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_Y,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_Y, 0, 0 }
+                    },
+                }
             }
         },
         {
-            WII_EXTENSION_TURNTABLE,
+            WiiExtensionController::WII_EXTENSION_TURNTABLE,
             {
                 {
                     {TurntableButtons::TURNTABLE_RIGHT_GREEN, GAMEPAD_MASK_B3},
                     {TurntableButtons::TURNTABLE_RIGHT_RED, GAMEPAD_MASK_B4},
                     {TurntableButtons::TURNTABLE_RIGHT_BLUE, GAMEPAD_MASK_B2},
                     {TurntableButtons::TURNTABLE_EUPHORIA, GAMEPAD_MASK_R1},
+                    {TurntableButtons::TURNTABLE_LEFT_GREEN, GAMEPAD_MASK_DL},
+                    {TurntableButtons::TURNTABLE_LEFT_RED, GAMEPAD_MASK_DU},
+                    {TurntableButtons::TURNTABLE_LEFT_BLUE, GAMEPAD_MASK_DR},
                     {WiiButtons::WII_BUTTON_MINUS, GAMEPAD_MASK_S1},
                     {WiiButtons::WII_BUTTON_PLUS, GAMEPAD_MASK_S2},
                 },
                 {
-                    {TurntableDirectionalPad::TURNTABLE_LEFT_GREEN, GAMEPAD_MASK_LEFT},
-                    {TurntableDirectionalPad::TURNTABLE_LEFT_RED, GAMEPAD_MASK_UP},
-                    {TurntableDirectionalPad::TURNTABLE_LEFT_BLUE, GAMEPAD_MASK_RIGHT},
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_X,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_X, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_Y,
+                        { WiiAnalogType::WII_ANALOG_TYPE_LEFT_STICK_Y, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_RIGHT_X,
+                        { WiiAnalogType::WII_ANALOG_TYPE_RIGHT_STICK_X, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_RIGHT_Y,
+                        { WiiAnalogType::WII_ANALOG_TYPE_RIGHT_STICK_Y, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_LEFT_TRIGGER,
+                        { WiiAnalogType::WII_ANALOG_TYPE_RIGHT_STICK_X, 0, 0 }
+                    },
+                    {
+                        WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER,
+                        { WiiAnalogType::WII_ANALOG_TYPE_RIGHT_STICK_X, 0, 0 }
+                    },
                 }
             }
         },
@@ -181,17 +298,56 @@ private:
 
     uint16_t triggerLeft  = 0;
     uint16_t triggerRight = 0;
+    uint16_t lastTriggerLeft  = 0;
+    uint16_t lastTriggerRight = 0;
     uint16_t whammyBar    = 0;
 
     uint16_t leftX = 0;
+    uint16_t lastLeftX = 0;
+
     uint16_t leftY = 0;
+    uint16_t lastLeftY = 0;
+
     uint16_t rightX = 0;
+    uint16_t lastRightX = 0;
+
     uint16_t rightY = 0;
+    uint16_t lastRightY = 0;
+
+    std::map<uint16_t, std::vector<WiiAnalogChange>> analogChanges = {
+        {WII_ANALOG_TYPE_LEFT_STICK_X,{}},
+        {WII_ANALOG_TYPE_LEFT_STICK_Y,{}},
+        {WII_ANALOG_TYPE_RIGHT_STICK_X,{}},
+        {WII_ANALOG_TYPE_RIGHT_STICK_Y,{}},
+        {WII_ANALOG_TYPE_DPAD_X,{}},
+        {WII_ANALOG_TYPE_DPAD_Y,{}},
+        {WII_ANALOG_TYPE_LEFT_TRIGGER,{}},
+        {WII_ANALOG_TYPE_RIGHT_TRIGGER,{}},
+
+        {WII_ANALOG_TYPE_LEFT_STICK_X_PLUS,{}},
+        {WII_ANALOG_TYPE_LEFT_STICK_X_MINUS,{}},
+        {WII_ANALOG_TYPE_LEFT_STICK_Y_PLUS,{}},
+        {WII_ANALOG_TYPE_LEFT_STICK_Y_MINUS,{}},
+        {WII_ANALOG_TYPE_RIGHT_STICK_X_PLUS,{}},
+        {WII_ANALOG_TYPE_RIGHT_STICK_X_MINUS,{}},
+        {WII_ANALOG_TYPE_RIGHT_STICK_Y_PLUS,{}},
+        {WII_ANALOG_TYPE_RIGHT_STICK_Y_MINUS,{}},
+    };
 
     uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
     uint16_t bounds(uint16_t x, uint16_t out_min, uint16_t out_max);
 
     void update();
+    void setControllerButton(uint16_t controllerID, uint16_t buttonID, uint32_t buttonMask);
+    void setControllerAnalog(uint16_t controllerID, uint16_t analogID, uint32_t axisType);
+    void setControllerStickMode(uint16_t controllerID, uint16_t analogID, uint32_t axisType);
+    void setButtonState(bool buttonState, uint16_t buttonMask);
+    void queueAnalogChange(uint16_t analogInput, uint16_t analogValue, uint16_t lastAnalogValue);
+    void updateAnalogState();
+    void reloadConfig();
+
+    uint16_t getAverage(std::vector<WiiAnalogChange> const& changes);
+    uint16_t getDelta(std::vector<uint16_t> const& changes, uint16_t baseValue);
 };
 
 #endif  // _WIIExtensionAddon_H

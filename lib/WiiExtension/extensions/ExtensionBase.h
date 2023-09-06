@@ -5,14 +5,6 @@
 #include <cstdio>
 
 typedef enum {
-    WII_DIRECTION_UP,
-    WII_DIRECTION_DOWN,
-    WII_DIRECTION_LEFT,
-    WII_DIRECTION_RIGHT,
-    WII_MAX_DIRECTIONS
-} WiiDirectionalPad;
-
-typedef enum {
     WII_BUTTON_A,
     WII_BUTTON_B,
     WII_BUTTON_C,
@@ -26,6 +18,10 @@ typedef enum {
     WII_BUTTON_MINUS,
     WII_BUTTON_HOME,
     WII_BUTTON_PLUS,
+    WII_BUTTON_UP,
+    WII_BUTTON_DOWN,
+    WII_BUTTON_LEFT,
+    WII_BUTTON_RIGHT,
     WII_MAX_BUTTONS
 } WiiButtons;
 
@@ -34,11 +30,18 @@ typedef enum {
     WII_ANALOG_LEFT_Y,
     WII_ANALOG_RIGHT_X,
     WII_ANALOG_RIGHT_Y,
-    WII_ANALOG_TRIGGER_LEFT,
-    WII_ANALOG_TRIGGER_RIGHT,
+    WII_ANALOG_LEFT_TRIGGER,
+    WII_ANALOG_RIGHT_TRIGGER,
     WII_ANALOG_CALIBRATION_PRECISION,
     WII_MAX_ANALOGS
 } WiiAnalogs;
+
+typedef enum {
+    WII_JOYSTICK_NONE,
+    WII_JOYSTICK_LEFT_ANALOG,
+    WII_JOYSTICK_RIGHT_ANALOG,
+    WII_JOYSTICK_DPAD
+} WiiJoystickModes;
 
 typedef enum {
     WII_MOTION_X,
@@ -73,7 +76,6 @@ class ExtensionBase {
     private:
         uint16_t applyCalibration(uint16_t pos, uint16_t min, uint16_t max, uint16_t cen);
     public:
-        bool directionalPad[WiiDirectionalPad::WII_MAX_DIRECTIONS];
         bool buttons[WiiButtons::WII_MAX_BUTTONS];
         uint16_t analogState[WiiAnalogs::WII_MAX_ANALOGS];
         uint16_t motionState[WiiMotions::WII_MAX_MOTIONS];
