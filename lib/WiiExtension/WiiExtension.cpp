@@ -48,9 +48,9 @@ void WiiExtension::start(){
             extensionController = new NunchuckExtension();
         } else if (idRead[5] == 0x01) {
             extensionType = WII_EXTENSION_CLASSIC;
-            if (idRead[0] == 0x01) {
-                extensionType = WII_EXTENSION_CLASSIC_PRO;
-            }
+            //if (idRead[0] == 0x01) {
+            //    extensionType = WII_EXTENSION_CLASSIC_PRO;
+            //}
             extensionController = new ClassicExtension();
         } else if (idRead[5] == 0x03) {
             extensionType = WII_EXTENSION_GUITAR;
