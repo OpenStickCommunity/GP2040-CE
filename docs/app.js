@@ -292,7 +292,7 @@ window.$docsify = {
 						const releaseInfo = data;
 						/* 
 						Tries to find a board and redirects to download url based on the URL
-						e.g: http://localhost:3000/#/download?RP2040AdvancedBreakoutBoard
+						e.g: https://gp2040-ce.info/#/download?RP2040AdvancedBreakoutBoard
 						*/
 						const uf2ToDownload = window.location.hash
 							.split('?')?.[1]
