@@ -1015,11 +1015,6 @@ std::string setAddonOptions()
 	docToValue(tiltOptions.tiltSOCDMode, doc, "tiltSOCDMode");
 	docToValue(tiltOptions.enabled, doc, "TiltInputEnabled");
 
-    ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
-	docToPin(extraButtonOptions.pin, doc, "extraButtonPin");
-	docToValue(extraButtonOptions.buttonMap, doc, "extraButtonMap");
-	docToValue(extraButtonOptions.enabled, doc, "ExtraButtonAddonEnabled");
-
     FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 	docToPin(focusModeOptions.pin, doc, "focusModePin");
 	docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
@@ -1435,11 +1430,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "tiltRightAnalogRightPin", cleanPin(tiltOptions.tiltRightAnalogRightPin));
 	writeDoc(doc, "tiltSOCDMode", tiltOptions.tiltSOCDMode);
 	writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
-
-    const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
-	writeDoc(doc, "extraButtonPin", cleanPin(extraButtonOptions.pin));
-	writeDoc(doc, "extraButtonMap", extraButtonOptions.buttonMap);
-	writeDoc(doc, "ExtraButtonAddonEnabled", extraButtonOptions.enabled);
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 	writeDoc(doc, "i2cAnalog1219SDAPin", cleanPin(analogADS1219Options.i2cSDAPin));

@@ -975,8 +975,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         }
         SET_PROPERTY(dualDirectionalOptions, combineMode, legacyAddonOptions.dualDirCombineMode);
 
-        ExtraButtonOptions& extraButtonOptions = config.addonOptions.extraButtonOptions;
-        config.addonOptions.has_extraButtonOptions = true;
+        ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
+        config.addonOptions.has_deprecatedExtraButtonOptions = true;
         SET_PROPERTY(extraButtonOptions, enabled, legacyAddonOptions.ExtraButtonAddonEnabled);
         SET_PROPERTY(extraButtonOptions, pin, bytePinToIntPin(legacyAddonOptions.extraButtonPin));
         SET_PROPERTY(extraButtonOptions, buttonMap, legacyAddonOptions.extraButtonMap);

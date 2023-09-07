@@ -15,7 +15,6 @@
 #include "addons/buzzerspeaker.h"
 #include "addons/dualdirectional.h"
 #include "addons/tilt.h"
-#include "addons/extra_button.h"
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
 #include "addons/i2cdisplay.h"
@@ -83,6 +82,20 @@
 #endif
 #ifndef DEFAULT_SOCD_MODE
     #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
+#endif
+
+// -----------------------------------------------------
+// Migration leftovers
+// -----------------------------------------------------
+
+#ifndef EXTRA_BUTTON_MASK
+    #define EXTRA_BUTTON_ENABLED 0
+#endif
+#ifndef EXTRA_BUTTON_PIN
+    #define EXTRA_BUTTON_PIN -1
+#endif
+#ifndef EXTRA_BUTTON_MASK
+    #define EXTRA_BUTTON_MASK 0
 #endif
 
 void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
@@ -466,11 +479,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, pin, BUZZER_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
 
-    // addonOptions.extraOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, enabled, !!EXTRA_BUTTON_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, pin, EXTRA_BUTTON_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, buttonMap, EXTRA_BUTTON_MASK);
-
     // addonOptions.playerNumberOptions
     INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, number, PLAYER_NUMBER);
@@ -552,13 +560,61 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 // something *other than* the board defaults
 // -----------------------------------------------------
 
-// convert configured core pin mappings to new config
+// convert core and addon pin mappings to GPIO mapping config
 // NOTE: this also handles initializations for a blank config! if/when the deprecated
 // pin mappings go away, the remainder of this code should go in there (there was no point
 // in duplicating it right now)
 void gpioMappingsMigrationCore(Config& config)
 {
     PinMappings& deprecatedPinMappings = config.deprecatedPinMappings;
+    ExtraButtonOptions extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
+
+    const auto gamepadMaskToGpioAction = [&](uint32_t gpMask) -> GpioAction
+    {
+        switch (gpMask)
+        {
+            case GAMEPAD_MASK_DU:
+                return GpioAction::BUTTON_PRESS_UP;
+            case GAMEPAD_MASK_DD:
+                return GpioAction::BUTTON_PRESS_DOWN;
+            case GAMEPAD_MASK_DL:
+                return GpioAction::BUTTON_PRESS_LEFT;
+            case GAMEPAD_MASK_DR:
+                return GpioAction::BUTTON_PRESS_RIGHT;
+            case GAMEPAD_MASK_B1:
+                return GpioAction::BUTTON_PRESS_B1;
+            case GAMEPAD_MASK_B2:
+                return GpioAction::BUTTON_PRESS_B2;
+            case GAMEPAD_MASK_B3:
+                return GpioAction::BUTTON_PRESS_B3;
+            case GAMEPAD_MASK_B4:
+                return GpioAction::BUTTON_PRESS_B4;
+            case GAMEPAD_MASK_L1:
+                return GpioAction::BUTTON_PRESS_L1;
+            case GAMEPAD_MASK_R1:
+                return GpioAction::BUTTON_PRESS_R1;
+            case GAMEPAD_MASK_L2:
+                return GpioAction::BUTTON_PRESS_L2;
+            case GAMEPAD_MASK_R2:
+                return GpioAction::BUTTON_PRESS_R2;
+            case GAMEPAD_MASK_S1:
+                return GpioAction::BUTTON_PRESS_S1;
+            case GAMEPAD_MASK_S2:
+                return GpioAction::BUTTON_PRESS_S2;
+            case GAMEPAD_MASK_L3:
+                return GpioAction::BUTTON_PRESS_L3;
+            case GAMEPAD_MASK_R3:
+                return GpioAction::BUTTON_PRESS_R3;
+            case GAMEPAD_MASK_A1:
+                return GpioAction::BUTTON_PRESS_A1;
+            case GAMEPAD_MASK_A2:
+                return GpioAction::BUTTON_PRESS_A2;
+            case AUX_MASK_FUNCTION:
+                return GpioAction::BUTTON_PRESS_FN;
+            default:
+                return GpioAction::NONE;
+        }
+    };
 
     // create an array of the old
     GpioAction actions[NUM_BANK0_GPIOS] = {GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
@@ -665,6 +721,14 @@ void gpioMappingsMigrationCore(Config& config)
         actions[deprecatedPinMappings.pinButtonFn] = GpioAction::BUTTON_PRESS_FN;
     else if (isValidPin(PIN_BUTTON_FN))
         actions[PIN_BUTTON_FN] = GpioAction::BUTTON_PRESS_FN;
+
+    // convert extra pin mapping to GPIO mapping config
+    if (extraButtonOptions.enabled && isValidPin(extraButtonOptions.pin)) {
+        // previous config had a value we haven't migrated yet, it can/should apply in the new config
+	actions[extraButtonOptions.pin] = gamepadMaskToGpioAction(extraButtonOptions.buttonMap);
+    }
+    else if (isValidPin(EXTRA_BUTTON_PIN))
+	actions[EXTRA_BUTTON_PIN] = gamepadMaskToGpioAction(EXTRA_BUTTON_MASK);
 
     INIT_UNSET_PROPERTY(config.gpioMappings, pin00, actions[0]);
     INIT_UNSET_PROPERTY(config.gpioMappings, pin01, actions[1]);
