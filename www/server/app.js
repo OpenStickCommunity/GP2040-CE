@@ -398,6 +398,9 @@ app.get('/api/getAddonsOptions', (req, res) => {
 
 app.get('/api/getFirmwareVersion', (req, res) => {
 	return res.send({
+		boardConfigLabel: "Pico",
+		boardConfigFileName: `GP2040_${process.env.VITE_CURRENT_VERSION}_Pico`,
+		boardConfig: "Pico",
 		version: process.env.VITE_CURRENT_VERSION,
 	});
 });

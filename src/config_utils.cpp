@@ -89,6 +89,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     const uint8_t emptyByteArray[0] = {};
 
     INIT_UNSET_PROPERTY_STR(config, boardVersion, GP2040VERSION);
+    INIT_UNSET_PROPERTY_STR(config, boardConfig, GP2040_BOARDCONFIG);
 
     // gamepadOptions
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
