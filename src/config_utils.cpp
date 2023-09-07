@@ -764,6 +764,7 @@ void gpioMappingsMigrationCore(Config& config)
     if (extraButtonOptions.enabled && isValidPin(extraButtonOptions.pin)) {
         // previous config had a value we haven't migrated yet, it can/should apply in the new config
 	actions[extraButtonOptions.pin] = gamepadMaskToGpioAction(extraButtonOptions.buttonMap);
+	extraButtonOptions.pin = -1;
     }
     else if (isValidPin(EXTRA_BUTTON_PIN))
 	actions[EXTRA_BUTTON_PIN] = gamepadMaskToGpioAction(EXTRA_BUTTON_MASK);
