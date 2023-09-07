@@ -39,8 +39,11 @@ export default function HomePage() {
 						setLatestVersion(sortedData[0].name);
 						const latestTag = sortedData[0].tag_name;
 						setLatestDownloadUrl(
-							sortedData[0]?.assets?.find(a => a?.name?.includes(boardConfig))?.browser_download_url ||
-							`https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`
+							sortedData[0]?.assets?.find(({ name }) => {
+								return name?.substring(name.lastIndexOf('_') + 1)
+									?.replace('.uf2', '')
+									?.toLowerCase() === boardConfig.toLowerCase()
+							})?.browser_download_url || `https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`
 						);
 					})
 					.catch(console.error)
