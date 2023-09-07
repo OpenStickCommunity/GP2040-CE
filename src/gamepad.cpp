@@ -283,7 +283,7 @@ void Gamepad::read()
 	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
 
 	state.aux = 0
-		| (values & (1 << mapButtonFn->pinMask)) ? mapButtonFn->buttonMask : 0;
+		| (values & mapButtonFn->pinMask)   ? mapButtonFn->buttonMask : 0;
 
 	state.dpad = 0
 		| ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
