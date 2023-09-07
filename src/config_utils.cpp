@@ -627,98 +627,136 @@ void gpioMappingsMigrationCore(Config& config)
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE};
-    if (deprecatedPinMappings.has_pinDpadUp && isValidPin(deprecatedPinMappings.pinDpadUp))
+    if (deprecatedPinMappings.has_pinDpadUp && isValidPin(deprecatedPinMappings.pinDpadUp)) {
         actions[deprecatedPinMappings.pinDpadUp] = GpioAction::BUTTON_PRESS_UP;
+        deprecatedPinMappings.pinDpadUp = -1;
+    }
     else if (isValidPin(PIN_DPAD_UP))
         actions[PIN_DPAD_UP] = GpioAction::BUTTON_PRESS_UP;
 
-    if (deprecatedPinMappings.has_pinDpadDown && isValidPin(deprecatedPinMappings.pinDpadDown))
+    if (deprecatedPinMappings.has_pinDpadDown && isValidPin(deprecatedPinMappings.pinDpadDown)) {
         actions[deprecatedPinMappings.pinDpadDown] = GpioAction::BUTTON_PRESS_DOWN;
+        deprecatedPinMappings.pinDpadDown = -1;
+    }
     else if (isValidPin(PIN_DPAD_DOWN))
         actions[PIN_DPAD_DOWN] = GpioAction::BUTTON_PRESS_DOWN;
 
-    if (deprecatedPinMappings.has_pinDpadLeft && isValidPin(deprecatedPinMappings.pinDpadLeft))
+    if (deprecatedPinMappings.has_pinDpadLeft && isValidPin(deprecatedPinMappings.pinDpadLeft)) {
         actions[deprecatedPinMappings.pinDpadLeft] = GpioAction::BUTTON_PRESS_LEFT;
+        deprecatedPinMappings.pinDpadLeft = -1;
+    }
     else if (isValidPin(PIN_DPAD_LEFT))
         actions[PIN_DPAD_LEFT] = GpioAction::BUTTON_PRESS_LEFT;
 
-    if (deprecatedPinMappings.has_pinDpadRight && isValidPin(deprecatedPinMappings.pinDpadRight))
+    if (deprecatedPinMappings.has_pinDpadRight && isValidPin(deprecatedPinMappings.pinDpadRight)) {
         actions[deprecatedPinMappings.pinDpadRight] = GpioAction::BUTTON_PRESS_RIGHT;
+        deprecatedPinMappings.pinDpadRight = -1;
+    }
     else if (isValidPin(PIN_DPAD_RIGHT))
         actions[PIN_DPAD_RIGHT] = GpioAction::BUTTON_PRESS_RIGHT;
 
-    if (deprecatedPinMappings.has_pinButtonB1 && isValidPin(deprecatedPinMappings.pinButtonB1))
+    if (deprecatedPinMappings.has_pinButtonB1 && isValidPin(deprecatedPinMappings.pinButtonB1)) {
         actions[deprecatedPinMappings.pinButtonB1] = GpioAction::BUTTON_PRESS_B1;
+        deprecatedPinMappings.pinButtonB1 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_B1))
         actions[PIN_BUTTON_B1] = GpioAction::BUTTON_PRESS_B1;
 
-    if (deprecatedPinMappings.has_pinButtonB2 && isValidPin(deprecatedPinMappings.pinButtonB2))
+    if (deprecatedPinMappings.has_pinButtonB2 && isValidPin(deprecatedPinMappings.pinButtonB2)) {
         actions[deprecatedPinMappings.pinButtonB2] = GpioAction::BUTTON_PRESS_B2;
+        deprecatedPinMappings.pinButtonB2 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_B2))
         actions[PIN_BUTTON_B2] = GpioAction::BUTTON_PRESS_B2;
 
-    if (deprecatedPinMappings.has_pinButtonB3 && isValidPin(deprecatedPinMappings.pinButtonB3))
+    if (deprecatedPinMappings.has_pinButtonB3 && isValidPin(deprecatedPinMappings.pinButtonB3)) {
         actions[deprecatedPinMappings.pinButtonB3] = GpioAction::BUTTON_PRESS_B3;
+        deprecatedPinMappings.pinButtonB3 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_B3))
         actions[PIN_BUTTON_B3] = GpioAction::BUTTON_PRESS_B3;
 
-    if (deprecatedPinMappings.has_pinButtonB4 && isValidPin(deprecatedPinMappings.pinButtonB4))
+    if (deprecatedPinMappings.has_pinButtonB4 && isValidPin(deprecatedPinMappings.pinButtonB4)) {
         actions[deprecatedPinMappings.pinButtonB4] = GpioAction::BUTTON_PRESS_B4;
+        deprecatedPinMappings.pinButtonB4 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_B4))
         actions[PIN_BUTTON_B4] = GpioAction::BUTTON_PRESS_B4;
 
-    if (deprecatedPinMappings.has_pinButtonL1 && isValidPin(deprecatedPinMappings.pinButtonL1))
+    if (deprecatedPinMappings.has_pinButtonL1 && isValidPin(deprecatedPinMappings.pinButtonL1)) {
         actions[deprecatedPinMappings.pinButtonL1] = GpioAction::BUTTON_PRESS_L1;
+        deprecatedPinMappings.pinButtonL1 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_L1))
         actions[PIN_BUTTON_L1] = GpioAction::BUTTON_PRESS_L1;
 
-    if (deprecatedPinMappings.has_pinButtonR1 && isValidPin(deprecatedPinMappings.pinButtonR1))
+    if (deprecatedPinMappings.has_pinButtonR1 && isValidPin(deprecatedPinMappings.pinButtonR1)) {
         actions[deprecatedPinMappings.pinButtonR1] = GpioAction::BUTTON_PRESS_R1;
+        deprecatedPinMappings.pinButtonR1 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_R1))
         actions[PIN_BUTTON_R1] = GpioAction::BUTTON_PRESS_R1;
 
-    if (deprecatedPinMappings.has_pinButtonL2 && isValidPin(deprecatedPinMappings.pinButtonL2))
+    if (deprecatedPinMappings.has_pinButtonL2 && isValidPin(deprecatedPinMappings.pinButtonL2)) {
         actions[deprecatedPinMappings.pinButtonL2] = GpioAction::BUTTON_PRESS_L2;
+        deprecatedPinMappings.pinButtonL2 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_L2))
         actions[PIN_BUTTON_L2] = GpioAction::BUTTON_PRESS_L2;
 
-    if (deprecatedPinMappings.has_pinButtonR2 && isValidPin(deprecatedPinMappings.pinButtonR2))
+    if (deprecatedPinMappings.has_pinButtonR2 && isValidPin(deprecatedPinMappings.pinButtonR2)) {
         actions[deprecatedPinMappings.pinButtonR2] = GpioAction::BUTTON_PRESS_R2;
+        deprecatedPinMappings.pinButtonR2 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_R2))
         actions[PIN_BUTTON_R2] = GpioAction::BUTTON_PRESS_R2;
 
-    if (deprecatedPinMappings.has_pinButtonS1 && isValidPin(deprecatedPinMappings.pinButtonS1))
+    if (deprecatedPinMappings.has_pinButtonS1 && isValidPin(deprecatedPinMappings.pinButtonS1)) {
         actions[deprecatedPinMappings.pinButtonS1] = GpioAction::BUTTON_PRESS_S1;
+        deprecatedPinMappings.pinButtonS1 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_S1))
         actions[PIN_BUTTON_S1] = GpioAction::BUTTON_PRESS_S1;
 
-    if (deprecatedPinMappings.has_pinButtonS2 && isValidPin(deprecatedPinMappings.pinButtonS2))
+    if (deprecatedPinMappings.has_pinButtonS2 && isValidPin(deprecatedPinMappings.pinButtonS2)) {
         actions[deprecatedPinMappings.pinButtonS2] = GpioAction::BUTTON_PRESS_S2;
+        deprecatedPinMappings.pinButtonS2 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_S2))
         actions[PIN_BUTTON_S2] = GpioAction::BUTTON_PRESS_S2;
 
-    if (deprecatedPinMappings.has_pinButtonL3 && isValidPin(deprecatedPinMappings.pinButtonL3))
+    if (deprecatedPinMappings.has_pinButtonL3 && isValidPin(deprecatedPinMappings.pinButtonL3)) {
         actions[deprecatedPinMappings.pinButtonL3] = GpioAction::BUTTON_PRESS_L3;
+        deprecatedPinMappings.pinButtonL3 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_L3))
         actions[PIN_BUTTON_L3] = GpioAction::BUTTON_PRESS_L3;
 
-    if (deprecatedPinMappings.has_pinButtonR3 && isValidPin(deprecatedPinMappings.pinButtonR3))
+    if (deprecatedPinMappings.has_pinButtonR3 && isValidPin(deprecatedPinMappings.pinButtonR3)) {
         actions[deprecatedPinMappings.pinButtonR3] = GpioAction::BUTTON_PRESS_R3;
+        deprecatedPinMappings.pinButtonR3 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_R3))
         actions[PIN_BUTTON_R3] = GpioAction::BUTTON_PRESS_R3;
 
-    if (deprecatedPinMappings.has_pinButtonA1 && isValidPin(deprecatedPinMappings.pinButtonA1))
+    if (deprecatedPinMappings.has_pinButtonA1 && isValidPin(deprecatedPinMappings.pinButtonA1)) {
         actions[deprecatedPinMappings.pinButtonA1] = GpioAction::BUTTON_PRESS_A1;
+        deprecatedPinMappings.pinButtonA1 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_A1))
         actions[PIN_BUTTON_A1] = GpioAction::BUTTON_PRESS_A1;
 
-    if (deprecatedPinMappings.has_pinButtonA2 && isValidPin(deprecatedPinMappings.pinButtonA2))
+    if (deprecatedPinMappings.has_pinButtonA2 && isValidPin(deprecatedPinMappings.pinButtonA2)) {
         actions[deprecatedPinMappings.pinButtonA2] = GpioAction::BUTTON_PRESS_A2;
+        deprecatedPinMappings.pinButtonA2 = -1;
+    }
     else if (isValidPin(PIN_BUTTON_A2))
         actions[PIN_BUTTON_A2] = GpioAction::BUTTON_PRESS_A2;
 
-    if (deprecatedPinMappings.has_pinButtonFn && isValidPin(deprecatedPinMappings.pinButtonFn))
+    if (deprecatedPinMappings.has_pinButtonFn && isValidPin(deprecatedPinMappings.pinButtonFn)) {
         actions[deprecatedPinMappings.pinButtonFn] = GpioAction::BUTTON_PRESS_FN;
+        deprecatedPinMappings.pinButtonFn = -1;
+    }
     else if (isValidPin(PIN_BUTTON_FN))
         actions[PIN_BUTTON_FN] = GpioAction::BUTTON_PRESS_FN;
 
