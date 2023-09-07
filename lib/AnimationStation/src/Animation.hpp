@@ -10,7 +10,11 @@
 #include "NeoPico.hpp"
 
 struct RGB {
-  RGB() : r(0), g(0), b(0) {}
+  // defaults allows trivial constructor, avoiding compiler complaints and avoiding unnessecary initialization
+  // animation always memsets the frame before use, to this is safe.
+  RGB() = default; 
+  RGB(const RGB&) = default;
+
 
   constexpr RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b), w(0) {}
 

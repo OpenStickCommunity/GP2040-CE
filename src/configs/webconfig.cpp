@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <set>
 
 #include <pico/types.h>
 
@@ -212,6 +213,8 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 
 int set_file_data(fs_file *file, string&& data)
 {
+	if (data.empty())
+		return 0;
 	return set_file_data(file, DataAndStatusCode(std::move(data), HttpStatusCode::_200));
 }
 
@@ -1399,6 +1402,82 @@ std::string getMemoryReport()
 	return serialize_json(doc);
 }
 
+static bool _abortGetHeldPins = false;
+
+std::string getHeldPins()
+{
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+	// Initialize unassigned pins so that they can be read from
+	std::vector<uint> uninitPins;
+	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		switch (pin) {
+			case 23:
+			case 24:
+			case 25:
+			case 29:
+				continue;
+		}
+		if (gpio_get_function(pin) == GPIO_FUNC_NULL) {
+			uninitPins.push_back(pin);
+			gpio_init(pin);             // Initialize pin
+			gpio_set_dir(pin, GPIO_IN); // Set as INPUT
+			gpio_pull_up(pin);          // Set as PULLUP
+		}
+	}
+
+	uint32_t timePinWait = getMillis();
+	uint32_t oldState = ~gpio_get_all();
+	uint32_t newState = 0;
+	uint32_t debounceStartTime = 0;
+	std::set<uint> heldPinsSet;
+	bool isAnyPinHeld = false;
+
+	uint32_t currentMillis = 0;
+	while ((isAnyPinHeld || (((currentMillis = getMillis()) - timePinWait) < 5000))) { // 5 seconds of idle time
+		ConfigManager::getInstance().loop(); // Keep the loop going for interrupt call
+
+		if (_abortGetHeldPins)
+			break;
+		if (isAnyPinHeld && newState == oldState) // Should match old state when pins are released
+			break;
+
+		newState = ~gpio_get_all();
+		uint32_t newPin = newState ^ oldState;
+		for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+			if (gpio_get_function(pin) == GPIO_FUNC_SIO &&
+			   !gpio_is_dir_out(pin) && (newPin & (1 << pin))) {
+				if (debounceStartTime == 0) debounceStartTime = currentMillis;
+				if ((currentMillis - debounceStartTime) > 5) { // wait 5ms
+					heldPinsSet.insert(pin);
+					isAnyPinHeld = true;
+				}
+			}
+		}
+	}
+
+	auto heldPins = doc.createNestedArray("heldPins");
+	for (uint32_t pin : heldPinsSet) {
+		heldPins.add(pin);
+	}
+	for (uint32_t pin: uninitPins) {
+		gpio_deinit(pin);
+	}
+
+	if (_abortGetHeldPins) {
+		_abortGetHeldPins = false;
+		return {};
+	} else {
+		return serialize_json(doc);
+	}
+}
+
+std::string abortGetHeldPins()
+{
+	_abortGetHeldPins = true;
+	return {};
+}
+
 std::string getConfig()
 {
 	return ConfigUtils::toJSON(Storage::getInstance().getConfig());
@@ -1495,6 +1574,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getSplashImage", getSplashImage },
 	{ "/api/getFirmwareVersion", getFirmwareVersion },
 	{ "/api/getMemoryReport", getMemoryReport },
+	{ "/api/getHeldPins", getHeldPins },
+	{ "/api/abortGetHeldPins", abortGetHeldPins },
 	{ "/api/getUsedPins", getUsedPins },
 	{ "/api/getConfig", getConfig },
 #if !defined(NDEBUG)

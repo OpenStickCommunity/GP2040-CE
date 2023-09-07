@@ -159,11 +159,11 @@ void GP2040::run() {
 	#if GAMEPAD_DEBOUNCE_MILLIS > 0
 		gamepad->debounce();
 	#endif
-		gamepad->hotkey(); 	// check for MPGS hotkeys
-		rebootHotkeys.process(gamepad, configMode);
-
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+
+		gamepad->hotkey(); 	// check for MPGS hotkeys
+		rebootHotkeys.process(gamepad, configMode);
 		
 		gamepad->process(); // process through MPGS
 

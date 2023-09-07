@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
+import CaptureButton from '../Components/CaptureButton';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import boards from '../Data/Boards.json';
 import { BUTTONS } from '../Data/Buttons';
@@ -25,8 +26,12 @@ export default function PinMappingPage() {
 	const [buttonMappings, setButtonMappings] = useState(baseButtonMappings);
 	const [selectedController] = useState(import.meta.env.VITE_GP2040_CONTROLLER);
 	const [selectedBoard] = useState(import.meta.env.VITE_GP2040_BOARD);
+	const [capturingButtonIndex, setCapturingButtonIndex] = useState(-1);
+	const [isCapturingPinsInProgress, setIsCapturingPinsInProgress] = useState(false);
+	const controller = useRef();
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const { setLoading } = useContext(AppContext);
+	const buttonNames = Object.keys(BUTTONS[buttonLabelType])?.filter((p) => p !== 'label' && p !== 'value');
 
 	const { t } = useTranslation('');
 
@@ -48,12 +53,12 @@ export default function PinMappingPage() {
 		fetchData();
 	}, [setButtonMappings, selectedController]);
 
-	const handlePinChange = (e, prop) => {
+	const handlePinChange = (e, prop, unassignOthersOnConflict) => {
 		const newMappings = { ...buttonMappings };
 		if (e.target.value) newMappings[prop].pin = parseInt(e.target.value);
 		else newMappings[prop].pin = '';
 
-		validateMappings(newMappings);
+		validateMappings(newMappings, unassignOthersOnConflict, prop);
 	};
 
 	const handleSubmit = async (e) => {
@@ -77,7 +82,7 @@ export default function PinMappingPage() {
 		);
 	};
 
-	const validateMappings = (mappings) => {
+	const validateMappings = (mappings, unassignOthersOnConflict, targetButton) => {
 		const buttons = Object.keys(mappings);
 
 		// Create some mapped pin groups for easier error checking
@@ -102,7 +107,6 @@ export default function PinMappingPage() {
 
 		for (let button of buttons) {
 			mappings[button].error = '';
-
 			// Validate required button
 			if (
 				(mappings[button].pin < boards[selectedBoard].minPin ||
@@ -112,7 +116,8 @@ export default function PinMappingPage() {
 				mappings[button].error = translatedErrorType.required;
 			// Identify conflicted pins
 			else if (conflictedPins.indexOf(mappings[button].pin) > -1)
-				mappings[button].error = translatedErrorType.conflict;
+				if (unassignOthersOnConflict && targetButton !== button) mappings[button].pin = -1;
+				else if (!unassignOthersOnConflict) mappings[button].error = translatedErrorType.conflict;
 			// Identify invalid pin assignments
 			else if (invalidPins.indexOf(mappings[button].pin) > -1)
 				mappings[button].error = translatedErrorType.invalid;
@@ -170,6 +175,27 @@ export default function PinMappingPage() {
 		return <></>;
 	};
 
+	const setAllButtonsPins = () => {
+		setIsCapturingPinsInProgress(true);	
+		setCapturingButtonIndex(0);
+	}
+
+	const onTriggeredCaptureComplete = () => {
+		if (!isCapturingPinsInProgress) return;
+		if (capturingButtonIndex + 1 < buttonNames.length)
+			setCapturingButtonIndex(capturingButtonIndex + 1);
+		else {
+			setIsCapturingPinsInProgress(false);
+			setCapturingButtonIndex(-1);
+		}
+	}
+
+	const onStopCaptureSequence = () => {
+		if (!isCapturingPinsInProgress) return;
+		setCapturingButtonIndex(-1);
+		setIsCapturingPinsInProgress(false);
+	};
+
 	return (
 		<Section title={t('PinMapping:header-text')}>
 			<Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -189,6 +215,10 @@ export default function PinMappingPage() {
 						page.
 					</Trans>
 				</div>
+				<Button className="mb-3"
+					onClick={setAllButtonsPins}>
+						{t("PinMapping:all-capture-button-label")}
+				</Button>
 				<table className="table table-sm pin-mapping-table">
 					<thead className="table">
 						<tr>
@@ -199,9 +229,7 @@ export default function PinMappingPage() {
 						</tr>
 					</thead>
 					<tbody>
-						{Object.keys(BUTTONS[buttonLabelType])
-							?.filter((p) => p !== 'label' && p !== 'value')
-							.map((button, i) => {
+						{buttonNames.map((button, i) => {
 								let label = BUTTONS[buttonLabelType][button];
 								if (
 									button === 'S1' &&
@@ -237,6 +265,15 @@ export default function PinMappingPage() {
 												isInvalid={buttonMappings[button].error}
 												onChange={(e) => handlePinChange(e, button)}
 											></Form.Control>
+											<CaptureButton
+												onChange={(pin) =>
+													handlePinChange({ target: { value: pin } }, button, true)}
+												abortRef={controller}
+												triggerCapture={button === buttonNames[capturingButtonIndex]}
+												buttonName={label}
+												onTriggeredCaptureComplete={onTriggeredCaptureComplete}
+												onStopCaptureSequence={onStopCaptureSequence}
+											/>
 											<Form.Control.Feedback type="invalid">
 												{renderError(button)}
 											</Form.Control.Feedback>
