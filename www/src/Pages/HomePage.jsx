@@ -29,17 +29,11 @@ export default function HomePage() {
 			.then(({ version, boardConfigLabel, boardConfigFileName, boardConfig }) => {
 				setCurrentVersion(version);
 				setBoardConfigProperties({ label: boardConfigLabel, fileName: boardConfigFileName});
-				axios
-					.get('https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases')
+				axios.get('https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest')
 					.then((response) => {
-						// Filter out pre-releases
-						response.data = response.data.filter((release) => !release.prerelease);
-
-						const sortedData = orderBy(response.data, 'published_at', 'desc');
-						setLatestVersion(sortedData[0].name);
-						const latestTag = sortedData[0].tag_name;
+						const latestTag = response.data.tag_name;
 						setLatestDownloadUrl(
-							sortedData[0]?.assets?.find(({ name }) => {
+							response.data?.assets?.find(({ name }) => {
 								return name?.substring(name.lastIndexOf('_') + 1)
 									?.replace('.uf2', '')
 									?.toLowerCase() === boardConfig.toLowerCase()
