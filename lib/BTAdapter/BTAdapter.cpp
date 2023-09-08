@@ -33,18 +33,6 @@ static const char hid_device_name[] = "GP2040-CE Gamepad";
 static const char hid_sevice_name[] = "GP2040-CE Gamepad";
 
 
-
-const uint8_t advertisedData[] = {
-  // Flags general discoverable
-  0x02, BLUETOOTH_DATA_TYPE_FLAGS, 0x6,
-  // Name
-  0x0f, BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME, 'H', 'I', 'D', ' ', 'C', 'o', 'n', 't', 'r', 'o', 'l', 'l', 'e', 'r',
-  // 16-bit Service UUIDs
-  0x03, BLUETOOTH_DATA_TYPE_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS, ORG_BLUETOOTH_SERVICE_HUMAN_INTERFACE_DEVICE & 0xff, ORG_BLUETOOTH_SERVICE_HUMAN_INTERFACE_DEVICE >> 8,
-  // Appearance HID - Gamepad
-  0x03, BLUETOOTH_DATA_TYPE_APPEARANCE, 0xC4, 0x03,
-};
-
 const hid_sdp_record_t hidParams = {
   GAMEPAD_DEVICE_ID, // hid_device_subclass: gamepad
   33, //* hid_country_code (0 in gamepad, 33 in keyboard)
@@ -64,7 +52,6 @@ const hid_sdp_record_t hidParams = {
 static uint8_t didServiceBuffer[600]; 
 static uint8_t hidServiceBuffer[600]; 
 static btstack_packet_callback_registration_t hciCallback;
-static btstack_packet_callback_registration_t smCallback;
 static btstack_timer_source_t loopTimer;
 static uint16_t hidCID;
 static hci_con_handle_t leConnectionHandle = HCI_CON_HANDLE_INVALID;
@@ -82,9 +69,6 @@ static XBoneData currentData;
 
     handleHCIPacket:
       LE Discconect
-      handleLeMeta: Handles BLE connection state setup and migrates to Classic
-    
-    handleSMPacket: Serves authentication confirmation on BLE connection setup
 */
 
 void handleHIDPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, uint16_t packet_size) {
@@ -122,19 +106,6 @@ void handleHIDPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, ui
   }
 }
 
-void handleLeMeta(uint8_t * packet) {
-  switch(hci_event_le_meta_get_subevent_code(packet)){
-    case HCI_SUBEVENT_LE_CONNECTION_COMPLETE: 
-    printf("LE Connected\n");
-      leConnectionHandle = hci_subevent_le_connection_complete_get_connection_handle(packet);
-      // handshake onto other mode?
-       
-      // gap_advertisements_enable(0); 
-      break;
-    default: break;
-  }
-}
-
 void handleHCIPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, uint16_t packet_size) {
   printf("HCI: ");
   printEventType(packet);
@@ -145,22 +116,7 @@ void handleHCIPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, ui
       leConnectionHandle = HCI_CON_HANDLE_INVALID;
       // gap_advertisements_enable(1);
       break;
-    case HCI_EVENT_LE_META: handleLeMeta(packet); break;
     default: break;
-  }
-}
-
-void handleSMPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, uint16_t packet_size) {
-  printf("SM:  ");
-  printEventType(packet);
-
-  switch (hci_event_packet_get_type(packet)) {
-    case SM_EVENT_JUST_WORKS_REQUEST:
-      printf("Just Works requested\n");
-      sm_just_works_confirm(sm_event_just_works_request_get_handle(packet)); 
-      break;
-    default:
-      break;
   }
 }
 
@@ -170,28 +126,9 @@ void handleSMPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, uin
 ###########################################################################################################
 */
 
-// LE is used to advertise the device, the device is automatically migrated to classic on connection
-void setupLE() {
-  //sm_init();
-  //sm_set_io_capabilities(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
-  //sm_set_authentication_requirements(SM_AUTHREQ_SECURE_CONNECTION );
-
-  uint16_t adv_int_min = 0x0030;
-  uint16_t adv_int_max = 0x0030;
-  uint8_t adv_type = 0;
-  bd_addr_t null_addr;
-  memset(null_addr, 0, 6);
-  gap_advertisements_set_params(adv_int_min, adv_int_max, adv_type, 0, null_addr, 0x07, 0x00);
-  gap_advertisements_set_data(sizeof(advertisedData), (uint8_t*)advertisedData);
-  gap_advertisements_enable(1);
-}
-
 void setupCallbacks() {
   hciCallback.callback = &handleHCIPacket;
   hci_add_event_handler(&hciCallback);
-
-  smCallback.callback = &handleSMPacket;
-  sm_add_event_handler(&smCallback);
 
   hid_device_register_packet_handler(&handleHIDPacket);
 }
@@ -231,7 +168,6 @@ int btstack_main(int argc, const char * argv[]){
   (void)argc; (void)argv;
 
   l2cap_init();
-  setupLE();
   setupClassic();
   setupCallbacks();
 
@@ -259,7 +195,7 @@ void sendReport() {
   printf("...\n");
 
   fakeUpdateData();
-  uint8_t report[18]; 
+  uint8_t report[17]; 
   currentData.makeReportOne(report);
 
   hid_device_send_interrupt_message(hidCID, &report[0], sizeof(report));

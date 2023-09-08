@@ -262,7 +262,7 @@ struct XBoneData {
   uint8_t SMM = 0x00;
   uint8_t Battery = 255;
 
-  void makeReportOne(uint8_t (&buffer)[18]) {
+  void makeReportOne(uint8_t (&buffer)[17]) {
     buffer[0] = 0xa1;
     buffer[1] = 0x01;
 
@@ -287,8 +287,6 @@ struct XBoneData {
     //memcpy(&buffer[2], static_cast<uint8_t*>((void*)this), 15);
     //buffer[17] = 0x00;
     //buffer[18] = Battery;
-
-    buffer[17] = 0x00;
   }
   void makeReportTwo(uint8_t (&buffer)[4]) {
     buffer[0] = 0xa1;
