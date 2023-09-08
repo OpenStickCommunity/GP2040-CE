@@ -32,45 +32,44 @@ static const char hid_device_name[] = "GP2040-CE Gamepad";
 static const char hid_sevice_name[] = "GP2040-CE Gamepad";
 
 const uint8_t gamepadReport[] = {
-  // preamble
+  // Preamble
   0x05, 0x01,                   //  USAGE_PAGE (Generic Desktop)
   0x09, 0x05,                   //  USAGE (Game Pad)
   0xa1, 0x01,                   //  COLLECTION (Application)
-  0x85, REPORT_ID,              //    REPORT_ID
-  0xa1, 0x02,                   //    COLLECTION (Logical)
 
-  // Buttons
-  0x05, 0x09,                   //      USAGE_PAGE (Button)
-  0x19, 0x01,                   //      USAGE_MINIMUM (Button 1)
-  0x29, 0x10,                   //      USAGE_MAXIMUM (Button 16)
-  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
-  0x25, 0x01,                   //      LOGICAL_MAXIMUM (1)
-  0x95, 0x10,                   //      REPORT_COUNT (16)
-  0x75, 0x01,                   //      REPORT_SIZE (1)
-  0x81, 0x02,                   //      INPUT (Data, Var, Abs)    
-
-  // Left Stick
-  0x05, 0x01,                   //      USAGE_PAGE (Generic Desktop)
+  // Joystick 1
+  0xA1, 0x00,                   //    COLLECTION (Physical)
   0x09, 0x30,                   //      USAGE (X)
   0x09, 0x31,                   //      USAGE (Y)
-  0x16, 0x00, 0x80,             //      LOGICAL_MINIMUM (-32,768)
-  0x26, 0xFF, 0x7F,             //      LOGICAL_MINIMUM (32,767)
+  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
+  0x27, 0xFF, 0xFF, 0x00, 0x00, //      LOGICAL_MAXIMUM (65535)
   0x95, 0x02,                   //      REPORT_COUNT (2)
   0x75, 0x10,                   //      REPORT_SIZE (16)
   0x81, 0x02,                   //      INPUT (Data, Var, Abs)
+  0xc0,                         //    END_COLLECTION
 
-  // Right Stick
-  0x05, 0x01,                   //      USAGE_PAGE (Generic Desktop)
-  0x09, 0x30,                   //      USAGE (X)
-  0x09, 0x31,                   //      USAGE (Y)
-  0x16, 0x00, 0x80,             //      LOGICAL_MINIMUM (-32,768)
-  0x26, 0xFF, 0x7F,             //      LOGICAL_MINIMUM (32,767)
+  // Joystick 2
+  0xA1, 0x00,                   //    COLLECTION (Physical)
+  0x09, 0x33,                   //      USAGE (rX)
+  0x09, 0x34,                   //      USAGE (rY)
+  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
+  0x27, 0xFF, 0xFF, 0x00, 0x00, //      LOGICAL_MAXIMUM (65535)
   0x95, 0x02,                   //      REPORT_COUNT (2)
   0x75, 0x10,                   //      REPORT_SIZE (16)
-  0x81, 0x02,                   //      INPUT (Data, Var, Abs) 
-   
-  // closing
+  0x81, 0x02,                   //      INPUT (Data, Var, Abs)
   0xc0,                         //    END_COLLECTION
+  
+  // Buttons
+  0x05, 0x09,                   //    USAGE_PAGE (Button)
+  0x19, 0x01,                   //    USAGE_MINIMUM (Button 1)
+  0x29, 0x10,                   //    USAGE_MAXIMUM (Button 16)
+  0x15, 0x00,                   //    LOGICAL_MINIMUM (0)
+  0x25, 0x01,                   //    LOGICAL_MAXIMUM (1)
+  0x95, 0x10,                   //    REPORT_COUNT (16)
+  0x75, 0x01,                   //    REPORT_SIZE (1)
+  0x81, 0x02,                   //    INPUT (Data, Var, Abs)    
+   
+  // Closing
   0xc0                          //  END_COLLECTION
 };
 
@@ -110,8 +109,8 @@ static uint16_t hidCID;
 static hci_con_handle_t leConnectionHandle = HCI_CON_HANDLE_INVALID;
 
 struct GamePadData {
-  uint8_t but_a, but_b, lt, rt;
-  int16_t lx, ly, rx, ry;
+  uint16_t lx, ly, rx, ry;
+  uint8_t but_a, but_b;
 };
 
 static GamePadData currentData;
@@ -251,7 +250,7 @@ void setupClassic() {
   gap_discoverable_control(1);
 
   memset(hidServiceBuffer, 0, sizeof(hidServiceBuffer));
-  hid_create_sdp_record(hidServiceBuffer, 0x10000, &hidParams);
+  hid_create_sdp_record(hidServiceBuffer, 0x10001, &hidParams);
   sdp_register_service(hidServiceBuffer);
   printf("HID service record size: %u\n", de_get_len(hidServiceBuffer));
 
@@ -274,14 +273,14 @@ void setupClassic() {
 int btstack_main(int argc, const char * argv[]){
   (void)argc; (void)argv;
 
-  currentData.lx = -32000;
-  currentData.ly = -32000;
-  currentData.rx = -32000;
-  currentData.ry = -32000;
+  currentData.lx = 0;
+  currentData.ly = 0;
+  currentData.rx = 0;
+  currentData.ry = 0;
   currentData.but_a = 1;
   currentData.but_b = 1;
-  currentData.lt = 0;
-  currentData.rt = 0;
+  //currentData.lt = 0;
+  //currentData.rt = 0;
 
   l2cap_init();
   setupLE();
@@ -299,42 +298,39 @@ int btstack_main(int argc, const char * argv[]){
 void updateData(uint8_t but_a, uint8_t but_b, uint8_t lt, uint8_t rt, uint16_t lx, uint16_t rx) {
   currentData.but_a = but_a;
   currentData.but_b = but_b;
-  currentData.lt = lt;
-  currentData.rt = rt;
+  //currentData.lt = lt;
+  //currentData.rt = rt;
   currentData.lx = lx;
+  //currentData.ly = ly;
   currentData.rx = rx;
+  //currentData.ry = ry;
 }
 
 void updateJoystick() {
-  currentData.lx += 10;
-  if (currentData.lx > 32000) currentData.lx = -32000;
-  currentData.ly = currentData.lx;
-
-  currentData.rx += 20;
-  if (currentData.rx > 32000) currentData.rx = -32000;
-  currentData.ry = currentData.rx;
-
-  if (currentData.lx % 500 == 0){
-    if( currentData.but_a == 128 )
-      currentData.but_a = 1;
-    else
-      currentData.but_a = currentData.but_a << 1;
-    if( currentData.but_b == 1 )
-      currentData.but_b = 128;
-    else
-      currentData.but_b = currentData.but_b >> 1;
+  currentData.lx += 100;
+  if (currentData.lx > 60000){
+    currentData.lx = 0;
   }
+  currentData.ly = -currentData.lx;
+  currentData.rx = currentData.lx;
+  currentData.ry = -currentData.lx;
+
+  currentData.but_a = currentData.but_a << 1;
+  currentData.but_b = currentData.but_b >> 1;
+
+  if( currentData.but_a == 0 ) currentData.but_a = 1;
+  if( currentData.but_b == 0 ) currentData.but_b = 128;
 }
 
 void sendReport() {
   updateJoystick();
   uint8_t report[] = {
-    0xa1, REPORT_ID, 
-    currentData.but_a, currentData.but_b, 
+    0xa1, 
     currentData.lx & 0xff, currentData.lx >> 8, 
     currentData.ly & 0xff, currentData.ly >> 8,
     currentData.rx & 0xff, currentData.rx >> 8, 
     currentData.ry & 0xff, currentData.ry >> 8,
+    currentData.but_a, currentData.but_b,
     0
   };
   printf("...\n");
