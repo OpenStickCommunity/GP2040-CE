@@ -1,65 +1,21 @@
 
 #define __BTSTACK_FILE__ "BTAdapter.cpp"
 
-//#include "BTAdapter.h"
-
+//stdlib
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
-#include <btstack.h>
 
+//btstack
+#include <btstack.h>
+#include "ble/gatt-service/hids_device.h"
+
+//private
 #include "BTHelper.h"
 #include "descriptor.h"
 
-#include "ble/gatt-service/hids_device.h"
-
-void sendReport();
-void adapterLoop(btstack_timer_source_t * ts);
-int btstack_main(int argc, const char * argv[]);
-
-/*
-########################################################################################################### 
-  Device Configuration
-###########################################################################################################
-*/
-
-#define GAMEPAD_DEVICE_ID 0x2508
-
-// this limits the rate we send at, useful to raise it when analyzing traffic
-// theoretically setting this too low could cause a mysterious buffer to overflow
-#define GAMEPAD_PERIOD_MS 2
-#define REPORT_ID 0x01
-
-static const char hid_device_name[] = "GP2040-CE Gamepad";
-
-// This is one of the two SDP record we give to the host.
-// Be very carefuly touching this, if you break it you may corrupt your BT cache (see Here Be Dragons)
-const hid_sdp_record_t hidParams = {
-  GAMEPAD_DEVICE_ID, // hid_device_subclass: gamepad
-  33, //* hid_country_code (0 in gamepad, 33 in keyboard)
-  1, //* hid_virtual_cable
-  0, // hid_remote_wake (added) (0? 1 in keyboard, 0 in xbone dump)
-  1, //* hid_reconnect_initiate (0 in gamepad, 1 in keyboard)
-  true, // hid_normally_connectable (added) (true in keyboard)
-  false, //* hid_boot_device (changed to bool)
-  1600, // host_max_latency (added, based on keyboard, xbone doesn't have this)
-  3200, // host_min_timeout (added, based on keyboard, xbone doesn't have this)
-  3200, // supervision_timeout (added, keyboard and xbone both set it to this)
-  xboneReport, //* hid_descriptor
-  sizeof(xboneReport), //* hid_descriptor_size
-  hid_device_name //* device_name
-};
-
-// SDP record buffers
-static uint8_t didServiceBuffer[200]; 
-static uint8_t hidServiceBuffer[600]; 
-
-static btstack_packet_callback_registration_t hciCallback;
-static btstack_timer_source_t loopTimer; // event timer for send loop
-static uint16_t hidCID; // HID device ID handle from local HCI
-static XBoneData currentData; // Actual Controller data, and report constructor
 
 /*
 ########################################################################################################### 
@@ -70,6 +26,8 @@ static XBoneData currentData; // Actual Controller data, and report constructor
 
     handleHCIPacket: Discconect
 */
+
+static uint16_t hidCID = 0; // HID device ID handle from local HCI
 
 void handleHIDPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, uint16_t packet_size) {
   printf("HID: ");
@@ -95,11 +53,6 @@ void handleHIDPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, ui
       printf("HID Disconnected\n");
       hidCID = 0;
       break;
-    /*case HID_SUBEVENT_CAN_SEND_NOW:  
-      if(hidCID!=0){ // Solves crash when disconnecting gamepad on android
-        sendReport();
-      }
-      break;*/
     default:
       printf("Unknown HID subevent: %x\n", subevent);
       break;
@@ -124,6 +77,11 @@ void handleHCIPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, ui
   Setup
 ###########################################################################################################
 */
+
+// SDP record buffers
+static uint8_t didServiceBuffer[200]; 
+static uint8_t hidServiceBuffer[600]; 
+static btstack_packet_callback_registration_t hciCallback;
 
 void setupClassic() {
   l2cap_init();
@@ -166,6 +124,34 @@ void setupClassic() {
 ###########################################################################################################
 */
 
+// this limits the rate we send at, useful to raise it when analyzing traffic
+// theoretically setting this too low could cause a mysterious buffer to overflow
+#define GAMEPAD_PERIOD_MS 2
+static btstack_timer_source_t loopTimer; // event timer for send loop
+static uint8_t reportBuffer[17];
+
+extern void btTickGamepad(uint8_t (&reportBuffer)[17]);
+
+void sendReport() {
+  // we could send hid_device_request_can_send_now_event and 
+  // call sendReport from HID_SUBEVENT_CAN_SEND_NOW, but we don't actually have to
+  // may cause crashes on disconnect, currently reconnecting doesn't work regardless
+  hid_device_send_interrupt_message(hidCID, &reportBuffer[0], sizeof(reportBuffer));
+}
+
+void adapterLoop(btstack_timer_source_t * ts){
+  btTickGamepad(reportBuffer);
+
+  if (hidCID != 0){
+    sendReport();
+  }
+
+  // do it again
+  btstack_run_loop_set_timer(ts, GAMEPAD_PERIOD_MS);
+  btstack_run_loop_add_timer(ts);
+}
+
+int btstack_main(int argc, const char * argv[]);
 int btstack_main(int argc, const char * argv[]){
   (void)argc; (void)argv;
 
@@ -180,35 +166,4 @@ int btstack_main(int argc, const char * argv[]){
   btstack_run_loop_set_timer(&loopTimer, GAMEPAD_PERIOD_MS);
   btstack_run_loop_add_timer(&loopTimer);
   return 0;
-}
-
-void sendReport() {
-  printf("...\n");
-
-  uint8_t report[17]; 
-  currentData.makeReportOne(report);
-
-  // we could send hid_device_request_can_send_now_event and 
-  // call sendReport from HID_SUBEVENT_CAN_SEND_NOW, but we don't actually have to
-  // may cause crashes on disconnect, currently reconnecting doesn't work regardless
-  hid_device_send_interrupt_message(hidCID, &report[0], sizeof(report));
-}
-
-void adapterLoop(btstack_timer_source_t * ts){
-  if (hidCID != 0){
-    sendReport();
-  }
-
-  // do it again
-  btstack_run_loop_set_timer(ts, GAMEPAD_PERIOD_MS);
-  btstack_run_loop_add_timer(ts);
-}
-
-// API for main loop to update the device state
-void updateBluetoothInputs(uint16_t leftX, uint16_t leftY, uint16_t rightX, uint16_t rightY, uint16_t buttons){
-  currentData.X = leftX;
-  currentData.Y = leftY;
-  currentData.Rx = rightX;
-  currentData.Ry = rightY;
-  currentData.Buttons = buttons;
 }

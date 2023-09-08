@@ -1,9 +1,12 @@
-#include <stdint.h>
-#include <string.h>
-
 #ifndef BT_DESCRIPTORS_H_
 #define BT_DESCRIPTORS_H_
 
+#include <stdint.h>
+#include <string.h>
+
+#define GAMEPAD_DEVICE_ID 0x2508
+
+static const char hid_device_name[] = "GP2040-CE Gamepad";
 
 // This is a combination of a personnaly Wireshark dumped Xbone One HID Descriptor
 // and one I found online (that was slightly different, not sure if it matters)
@@ -157,6 +160,24 @@ const uint8_t xboneReport[] = {
 0xC0,              // End Collection
 };
 
+// This is one of the two SDP record we give to the host.
+// Be very carefuly touching this, if you break it you may corrupt your BT cache (see Here Be Dragons)
+const hid_sdp_record_t hidParams = {
+  GAMEPAD_DEVICE_ID, // hid_device_subclass: gamepad
+  33, //* hid_country_code (0 in gamepad, 33 in keyboard)
+  1, //* hid_virtual_cable
+  0, // hid_remote_wake (added) (0? 1 in keyboard, 0 in xbone dump)
+  1, //* hid_reconnect_initiate (0 in gamepad, 1 in keyboard)
+  true, // hid_normally_connectable (added) (true in keyboard)
+  false, //* hid_boot_device (changed to bool)
+  1600, // host_max_latency (added, based on keyboard, xbone doesn't have this)
+  3200, // host_min_timeout (added, based on keyboard, xbone doesn't have this)
+  3200, // supervision_timeout (added, keyboard and xbone both set it to this)
+  xboneReport, //* hid_descriptor
+  sizeof(xboneReport), //* hid_descriptor_size
+  hid_device_name //* device_name
+};
+
 /* Xbone Reports:
 1:
   X,Y [IN]: uint16_t[2] [0,65534]
@@ -184,77 +205,23 @@ const uint8_t xboneReport[] = {
 
 */
 
-// For 2 Refined, we'll encode your directional inputs in an even worse way
-uint8_t makeHat(bool up, bool right, bool down, bool left){
-  constexpr const int shift = 0; 
-  if(up){
-    if(right) return 2u << shift;
-    else if(left) return 8u << shift;
-    else return 1u << shift;
-  }
-  else if(down){
-    if(right) return 4u << shift;
-    else if(left) return 6u << shift;
-    else return 5u << shift;
-  }
-  else {
-    if(right) return 3u << shift;
-    else if(left) return 7u << shift;
-    else return 0u << shift;
-  }
+/*
+void makeReportTwo(uint8_t (&buffer)[4]) {
+  buffer[0] = 0xa1;
+  buffer[1] = 0x02;
+
+  buffer[2] = smm ? 127 : 0;
+
+  buffer[3] = 0x00;
 }
+void makeReportFour(uint8_t (&buffer)[4]) {
+  buffer[0] = 0xa1;
+  buffer[1] = 0x03;
 
-uint8_t makeSMM(bool smm){
-  return smm ? 127 : 0;
+  buffer[2] = Battery;
+
+  buffer[3] = 0x00;
 }
-
-struct XBoneData {
-  uint16_t X = (1<<15), Y = (1<<15), Rx = (1<<15), Ry = (1<<15), Z = (1<<9), Rz = (1<<9);
-  uint8_t Hat = 0x00;
-  uint16_t Buttons = 0x00;
-  uint8_t SMM = 0x00;
-  uint8_t Battery = 255;
-
-  void makeReportOne(uint8_t (&buffer)[17]) {
-    // there's probably a better way to do this, but its like 2AM
-    buffer[0] = 0xa1;
-    buffer[1] = 0x01;
-
-    buffer[2] = X & 0xff;
-    buffer[3] = (X >> 8) & 0xff;
-    buffer[4] = Y & 0xff;
-    buffer[5] = (Y >> 8) & 0xff;
-    buffer[6] = Rx & 0xff;
-    buffer[7] = (Rx >> 8) & 0xff;
-    buffer[8] = Ry & 0xff;
-    buffer[9] = (Ry >> 8) & 0xff;
-
-    buffer[10] = (Z >> 6) & 0xff;
-    buffer[11] = (Z >> 14) & 0xff;
-    buffer[12] = (Rz >> 6) & 0xff;
-    buffer[13] = (Rz >> 14) & 0xff;
-
-    buffer[14] = Hat;
-
-    buffer[15] = Buttons & 0xff;
-    buffer[16] = 0x00;
-  }
-  void makeReportTwo(uint8_t (&buffer)[4]) {
-    buffer[0] = 0xa1;
-    buffer[1] = 0x02;
-
-    buffer[2] = SMM;
-
-    buffer[3] = 0x00;
-  }
-  void makeReportFour(uint8_t (&buffer)[4]) {
-    buffer[0] = 0xa1;
-    buffer[1] = 0x03;
-
-    buffer[2] = Battery;
-
-    buffer[3] = 0x00;
-  }
-};
+*/
 
 #endif

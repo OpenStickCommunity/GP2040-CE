@@ -630,6 +630,78 @@ PS4Report *Gamepad::getPS4Report()
 	return &ps4Report;
 }
 
+uint8_t makeHat(bool up, bool right, bool down, bool left){
+  constexpr const int shift = 0; 
+  if(up){
+    if(right) return 2u << shift;
+    else if(left) return 8u << shift;
+    else return 1u << shift;
+  }
+  else if(down){
+    if(right) return 4u << shift;
+    else if(left) return 6u << shift;
+    else return 5u << shift;
+  }
+  else {
+    if(right) return 3u << shift;
+    else if(left) return 7u << shift;
+    else return 0u << shift;
+  }
+}
+
+void Gamepad::fillXInputBtReport(uint8_t (&reportBuffer)[17]) {
+  reportBuffer[0] = 0xa1;
+  reportBuffer[1] = 0x01;
+
+  // X
+  reportBuffer[2] = state.lx & 0xff;
+  reportBuffer[3] = (state.lx >> 8) & 0xff;
+
+  // Y
+  reportBuffer[4] = state.ly & 0xff;
+  reportBuffer[5] = (state.ly >> 8) & 0xff;
+
+  // Rx
+  reportBuffer[6] = state.rx & 0xff;
+  reportBuffer[7] = (state.rx >> 8) & 0xff;
+
+  //Ry
+  reportBuffer[8] = state.ry & 0xff;
+  reportBuffer[9] = (state.ry >> 8) & 0xff;
+
+  // Z
+  const bool pL2 = pressedL2();
+  reportBuffer[10] = pL2 ? 0xff : 0x0; //(Z >> 6) & 0xff;
+  reportBuffer[11] = pL2 ? 0x03 : 0x0; //(Z >> 14) & 0xff;
+
+  // Rz
+  const bool pR2 = pressedR2();
+  reportBuffer[12] = pR2 ? 0xff : 0x0; //(Rz >> 6) & 0xff;
+  reportBuffer[13] = pR2 ? 0x03 : 0x0; //(Rz >> 14) & 0xff;
+
+  // if you didn't do socd cleaning, we're doing it now (and you won't like it)
+  reportBuffer[14] = makeHat(pressedUp(), pressedRight(), pressedDown(), pressedLeft());
+
+  // Buttons[0:7]
+  reportBuffer[15] = 0
+		| (pressedB1()    ? (1u<<0) : 0) // b0 A
+		| (pressedB2()    ? (1u<<1) : 0) // b1 B
+		| (pressedB3()    ? (1u<<2) : 0) // b2 X
+		| (pressedB4()    ? (1u<<3) : 0) // b3 Y 
+		| (pressedL1()    ? (1u<<4) : 0) // b4 LB
+		| (pressedR1()    ? (1u<<5) : 0) // b5 RB
+		| (pressedS2()    ? (1u<<6) : 0) // b8 Start
+		| (pressedS1()    ? (1u<<7) : 0) // b9 Select
+	;
+
+  /* Buttons[8:10]
+    assigns to b10, b11, b12 (which aren't mapped buttons)
+    the rest won't even map regardless of the usage size in the descriptor 
+  */
+  reportBuffer[16] = 0x0; 
+	
+}
+
 uint8_t Gamepad::getModifier(uint8_t code) {
 	switch (code) {
 		case HID_KEY_CONTROL_LEFT : return KEYBOARD_MODIFIER_LEFTCTRL  ;

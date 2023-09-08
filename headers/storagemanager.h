@@ -58,6 +58,10 @@ public:
 	void SetConfigMode(bool); 			// Config Mode (on-boot)
 	bool GetConfigMode();
 
+  void SetBtMode(bool value) { BLUETOOTH_MODE = value; }
+  bool GetBtMode() const { return BLUETOOTH_MODE; }
+
+
 	void SetGamepad(Gamepad *); 		// MPGS Gamepad Get/Set
 	Gamepad * GetGamepad();
 
@@ -76,6 +80,7 @@ public:
 private:
 	Storage();
 	bool CONFIG_MODE = false; 			// Config mode (boot)
+  bool BLUETOOTH_MODE = true;
 	Gamepad * gamepad = nullptr;    		// Gamepad data
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
 	uint8_t featureData[32]; // USB X-Input Feature Data

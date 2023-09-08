@@ -93,6 +93,8 @@ public:
 	KeyboardReport *getKeyboardReport();
 	PS4Report *getPS4Report();
 
+  void fillXInputBtReport(uint8_t (&reportBuffer)[17]);
+
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
 	 */

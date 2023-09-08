@@ -25,7 +25,7 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
-#include "BTAdapter.h"
+#include "BTInterface.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -41,6 +41,8 @@
 
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
+
+GP2040* gpContext = nullptr;
 
 GP2040::GP2040() : nextRuntime(0) {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
@@ -132,64 +134,80 @@ void GP2040::setup() {
 				break;
 			}
 	}
+  gpContext = this;
+}
+
+void btTickGamepad(uint8_t (&reportBuffer)[17]) {
+  assert(gpContext);
+  gpContext->tick();
+  Storage::getInstance().GetProcessedGamepad()->fillXInputBtReport(reportBuffer);
+}
+
+void GP2040::tick() {
+  Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
+
+  Storage::getInstance().performEnqueuedSaves();
+
+  // Gamepad Features
+  gamepad->read(); 	// gpio pin reads
+#if GAMEPAD_DEBOUNCE_MILLIS > 0
+  gamepad->debounce();
+#endif
+  // Pre-Process add-ons for MPGS
+  addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+
+  gamepad->hotkey(); 	// check for MPGS hotkeys
+  rebootHotkeys.process(gamepad, false);
+  
+  gamepad->process(); // process through MPGS
+
+  // (Post) Process for add-ons
+  addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+
+  // Copy Processed Gamepad for Core1 (race condition otherwise)
+  memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 }
 
 void GP2040::run() {
+  if(Storage::getInstance().GetBtMode()){
+    setupBTInterface(); // this never returns
+  }
+
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
-	bool configMode = Storage::getInstance().GetConfigMode();
+	const bool configMode = Storage::getInstance().GetConfigMode();
 	while (1) { // LOOP
-		Storage::getInstance().performEnqueuedSaves();
 		// Config Loop (Web-Config does not require gamepad)
-		if (configMode == true) {
-			ConfigManager::getInstance().loop();
+    if (configMode == true) {
+      ConfigManager::getInstance().loop();
 
-			gamepad->read();
-			rebootHotkeys.process(gamepad, configMode);
+      gamepad->read();
+      rebootHotkeys.process(gamepad, true);
 
-			continue;
-		}
+      continue;
+    }
 
-		USBHostManager::getInstance().process();
+    USBHostManager::getInstance().process();
 
-		// We can't send faster than USB can poll
-		if (nextRuntime > getMicro()) { // fix for unsigned
-			sleep_us(50); // Give some time back to our CPU (lower power consumption)
-			continue;
-		}
+    // We can't send faster than USB can poll
+    if (nextRuntime > getMicro()) { // fix for unsigned
+      sleep_us(50); // Give some time back to our CPU (lower power consumption)
+      continue;
+    }
 
-		// Gamepad Features
-		gamepad->read(); 	// gpio pin reads
-	#if GAMEPAD_DEBOUNCE_MILLIS > 0
-		gamepad->debounce();
-	#endif
-		// Pre-Process add-ons for MPGS
-		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
+    tick();
 
-		gamepad->hotkey(); 	// check for MPGS hotkeys
-		rebootHotkeys.process(gamepad, configMode);
-		
-		gamepad->process(); // process through MPGS
+    // USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
+    send_report(gamepad->getReport(), gamepad->getReportSize());
+    Storage::getInstance().ClearFeatureData();
+    receive_report(Storage::getInstance().GetFeatureData());
 
-		// (Post) Process for add-ons
-		addons.ProcessAddons(ADDON_PROCESS::CORE0_INPUT);
+    // Process USB Reports
+    addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
 
-		// Copy Processed Gamepad for Core1 (race condition otherwise)
-		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+    tud_task(); // TinyUSB Task update
 
-    updateBluetoothInputs(gamepad->state.lx, gamepad->state.ly, gamepad->state.rx, gamepad->state.ry, gamepad->state.buttons);
-
-		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
-		send_report(gamepad->getReport(), gamepad->getReportSize());
-		Storage::getInstance().ClearFeatureData();
-		receive_report(Storage::getInstance().GetFeatureData());
-
-		// Process USB Reports
-		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
-
-		tud_task(); // TinyUSB Task update
-
-		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
+    nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}
 }
 
