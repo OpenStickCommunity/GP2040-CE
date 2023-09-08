@@ -25,6 +25,7 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "BTAdapter.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -175,6 +176,8 @@ void GP2040::run() {
 
 		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
+
+    updateBluetoothInputs(gamepad->state.lx, gamepad->state.ly, gamepad->state.rx, gamepad->state.ry, gamepad->state.buttons);
 
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
 		send_report(gamepad->getReport(), gamepad->getReportSize());

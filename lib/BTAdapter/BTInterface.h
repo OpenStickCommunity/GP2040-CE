@@ -4,8 +4,8 @@
  * Interface for Bluetooth stack
  */
 
-#ifndef BT_ADAPTER_H_
-#define BT_ADAPTER_H_
+#ifndef BT_INTERFACE_H_
+#define BT_INTERFACE_H_
 
 void setupBTInterface();
 

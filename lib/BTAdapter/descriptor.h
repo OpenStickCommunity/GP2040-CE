@@ -4,53 +4,10 @@
 #ifndef BT_DESCRIPTORS_H_
 #define BT_DESCRIPTORS_H_
 
-const uint8_t gamepadReport[] = {
-  // Preamble
-  0x05, 0x01,                   //  USAGE_PAGE (Generic Desktop)
-  0x09, 0x05,                   //  USAGE (Game Pad)
-  0xa1, 0x01,                   //  COLLECTION (Application)
 
-  // Joystick 1
-  0xA1, 0x00,                   //    COLLECTION (Physical)
-  0x09, 0x30,                   //      USAGE (X)
-  0x09, 0x31,                   //      USAGE (Y)
-  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
-  0x27, 0xFF, 0xFF, 0x00, 0x00, //      LOGICAL_MAXIMUM (65535)
-  0x95, 0x02,                   //      REPORT_COUNT (2)
-  0x75, 0x10,                   //      REPORT_SIZE (16)
-  0x81, 0x02,                   //      INPUT (Data, Var, Abs)
-  0xc0,                         //    END_COLLECTION
-
-  // Joystick 2
-  0xA1, 0x00,                   //    COLLECTION (Physical)
-  0x09, 0x33,                   //      USAGE (rX)
-  0x09, 0x34,                   //      USAGE (rY)
-  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
-  0x27, 0xFF, 0xFF, 0x00, 0x00, //      LOGICAL_MAXIMUM (65535)
-  0x95, 0x02,                   //      REPORT_COUNT (2)
-  0x75, 0x10,                   //      REPORT_SIZE (16)
-  0x81, 0x02,                   //      INPUT (Data, Var, Abs)
-  0xc0,                         //    END_COLLECTION
-  
-  // Buttons
-  0x05, 0x09,                   //    USAGE_PAGE (Button)
-  0x19, 0x01,                   //    USAGE_MINIMUM (Button 1)
-  0x29, 0x10,                   //    USAGE_MAXIMUM (Button 16)
-  0x15, 0x00,                   //    LOGICAL_MINIMUM (0)
-  0x25, 0x01,                   //    LOGICAL_MAXIMUM (1)
-  0x95, 0x10,                   //    REPORT_COUNT (16)
-  0x75, 0x01,                   //    REPORT_SIZE (1)
-  0x81, 0x02,                   //    INPUT (Data, Var, Abs)    
-   
-  // Closing
-  0xc0                          //  END_COLLECTION
-};
-
-struct GamePadData {
-  uint16_t lx, ly, rx, ry;
-  uint8_t but_a, but_b;
-};
-
+// This is a combination of a personnaly Wireshark dumped Xbone One HID Descriptor
+// and one I found online (that was slightly different, not sure if it matters)
+// If you break this, check device manager for a broken HID device, it'll tell you what's wrong
 const uint8_t xboneReport[] = {
 0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
 0x09, 0x05,        // Usage (Game Controls)
@@ -227,6 +184,7 @@ const uint8_t xboneReport[] = {
 
 */
 
+// For 2 Refined, we'll encode your directional inputs in an even worse way
 uint8_t makeHat(bool up, bool right, bool down, bool left){
   constexpr const int shift = 0; 
   if(up){
@@ -246,11 +204,6 @@ uint8_t makeHat(bool up, bool right, bool down, bool left){
   }
 }
 
-// uint16_t to uint10 + 6 const
-uint16_t makeMask1023(uint16_t in){
-  return (in && 1023u) << 0;
-}
-
 uint8_t makeSMM(bool smm){
   return smm ? 127 : 0;
 }
@@ -263,6 +216,7 @@ struct XBoneData {
   uint8_t Battery = 255;
 
   void makeReportOne(uint8_t (&buffer)[17]) {
+    // there's probably a better way to do this, but its like 2AM
     buffer[0] = 0xa1;
     buffer[1] = 0x01;
 
@@ -283,10 +237,7 @@ struct XBoneData {
     buffer[14] = Hat;
 
     buffer[15] = Buttons & 0xff;
-    buffer[16] = SMM;
-    //memcpy(&buffer[2], static_cast<uint8_t*>((void*)this), 15);
-    //buffer[17] = 0x00;
-    //buffer[18] = Battery;
+    buffer[16] = 0x00;
   }
   void makeReportTwo(uint8_t (&buffer)[4]) {
     buffer[0] = 0xa1;

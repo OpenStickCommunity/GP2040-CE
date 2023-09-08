@@ -1,5 +1,19 @@
+# BTStack Integration
 
-HERE BE DRAGONS
+This is an extremely WIP integration of the BTStack Bluetooth framework.
+If you use this as is, be ready to mess with Bluetooth in your settings a lot, as this frequently refuses to connect.
+
+## Todo:
+- BLE transport handoff to BR/EDR (will improve the time it takes for the device to appear when connecting.)
+- Integrate Async framework around main core loop, and run BTStack on the main core if Bluetooth is enabled.
+- Make the XInput mappings sane (I just winged them as a proof of concept.)
+- Add support for modes other than XInput/HID
+- Manually set the flash memory offset, ensure that BTStack and the config aren't corrupting each other.
+- Investigate why reconnecting consistently causes driver failures.
+- Optimize report packing
+- Don't run send loop if we aren't connected
+
+## HERE BE DRAGONS
 
 If you want to debug the actual bluetooth connection on Windows via Wireshark. Use a Bluetooth USB dongle. Internal chipset bluetooth can't be inspected by Wireshark on Windows.
 Wireshark capture USBPcap, with a filter along the lines of:

@@ -86,12 +86,7 @@
  // classic only
 #define HAVE_BTSTACK_STDIN
 
-// To get the audio demos working even with HCI dump at 115200, this truncates long ACL packets
-//#define HCI_DUMP_STDOUT_MAX_SIZE_ACL 100
-
-#ifdef ENABLE_CLASSIC
 #define ENABLE_L2CAP_ENHANCED_RETRANSMISSION_MODE
-#endif
 
 
 #endif // MICROPY_INCLUDED_EXTMOD_BTSTACK_BTSTACK_CONFIG_H
