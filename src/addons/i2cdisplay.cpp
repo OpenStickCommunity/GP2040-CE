@@ -221,7 +221,7 @@ void I2CDisplayAddon::process() {
 			}
 			break;
 	}
-
+    drawHistory(gamepad);
 	obdDumpBuffer(&obd, NULL);
 }
 
@@ -976,6 +976,117 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
 	}
 	drawText(0, 0, statusBar);
+}
+
+void I2CDisplayAddon::drawHistory(Gamepad *gamepad)
+{
+	std::deque<std::string> pressed;
+
+    // Get key states
+	std::array<bool, 17> current = {
+        pressedUp(), 
+        pressedDown(),
+        pressedLeft(),
+        pressedRight(),
+        gamepad->pressedB1(),
+        gamepad->pressedB2(),
+        gamepad->pressedR2(),
+        gamepad->pressedL2(),
+        gamepad->pressedB3(),
+        gamepad->pressedB4(),
+        gamepad->pressedR1(),
+        gamepad->pressedL1(),
+        gamepad->pressedL3(),
+        gamepad->pressedS1(),
+        gamepad->pressedA1(),
+        gamepad->pressedS2(),
+        gamepad->pressedR3(),
+    };
+
+    // Key names shown on display
+    std::string displayNames[][17] = { 
+        {   // DInput
+            "U", "D", "L", "R",
+            "X", "O", "R2", "L2",
+            "#", "^", "R1", "L1",
+            "LS", "SL", "H", "ST", "RS"
+        },
+        {   // Switch
+            "U", "D", "L", "R",
+            "B", "A", "ZR", "ZL",
+            "Y", "X", "R", "L",
+            "LS", "-", "H", "+", "RS"
+        },
+        {   // XInput
+            "U", "D", "L", "R",
+            "A", "B", "RT", "LT",
+            "X", "Y", "RB", "LB",
+            "L3", "S1", "A1", "S2", "R3"
+        },
+		{   // PS4
+            "U", "D", "L", "R",
+            "X", "O", "R2", "L2",
+            "#", "^", "R1", "L1",
+            "LS", "SL", "H", "ST", "RS"
+        }
+    };
+
+    uint8_t mode;
+	switch (gamepad->getOptions().inputMode)
+	{
+		case INPUT_MODE_HID:     mode=0; break;
+		case INPUT_MODE_SWITCH:  mode=1; break;
+		case INPUT_MODE_XINPUT:  mode=2; break;
+		case INPUT_MODE_PS4:     mode=3; break;
+	}
+
+	// Check if any new keys have been pressed
+	if (last != current) {
+		// Iterate through array
+		for (uint8_t x=0; x<17; x++) {
+			// Add any pressed keys to deque
+			if (current[x]) pressed.push_back(displayNames[mode][x]);
+		}
+		// Update the last keypress array
+		last = current;
+	}
+
+	if (pressed.size() > 0) {
+	    std::string newInput;
+	    for(const auto &s : pressed) {
+	        if(!newInput.empty())
+	            newInput += "+";
+	        newInput += s;
+	    }
+
+        history.push_back(newInput);
+	}
+
+	if (history.size() > 10) {
+		history.pop_front();
+	}
+
+	std::string ret;
+
+	for (auto it = history.crbegin(); it != history.crend(); ++it) {
+		if (ret.size() < 22) {
+			std::string newRet = ret;
+			if (!newRet.empty())
+				newRet = " " + newRet;
+
+			newRet = *it + newRet;
+
+			if (newRet.size() < 22) {
+				ret = newRet;
+			}
+			else {
+				break;
+			}
+  		}
+	}
+
+    // Draw history at bottom of display
+	obdWriteString(&obd, 0, 0, 7, (char *)ret.c_str(), FONT_6x8, 0, 0);
 }
 
 bool I2CDisplayAddon::pressedUp()
