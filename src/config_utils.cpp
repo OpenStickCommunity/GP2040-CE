@@ -567,7 +567,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 void gpioMappingsMigrationCore(Config& config)
 {
     PinMappings& deprecatedPinMappings = config.deprecatedPinMappings;
-    ExtraButtonOptions extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
+    ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
 
     const auto gamepadMaskToGpioAction = [&](uint32_t gpMask) -> GpioAction
     {
@@ -765,6 +765,7 @@ void gpioMappingsMigrationCore(Config& config)
         // previous config had a value we haven't migrated yet, it can/should apply in the new config
 	actions[extraButtonOptions.pin] = gamepadMaskToGpioAction(extraButtonOptions.buttonMap);
 	extraButtonOptions.pin = -1;
+	extraButtonOptions.enabled = false;
     }
     else if (isValidPin(EXTRA_BUTTON_PIN))
 	actions[EXTRA_BUTTON_PIN] = gamepadMaskToGpioAction(EXTRA_BUTTON_MASK);
