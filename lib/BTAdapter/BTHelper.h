@@ -22,13 +22,13 @@ void printEventType(uint8_t *packet) {
 
     "READ_REMOTE_VERSION_INFORMATION_COMPLETE",
     "QOS_SETUP_COMPLETE",
-    0, //"COMMAND_COMPLETE", // ignored
+    "COMMAND_COMPLETE", // ignored
     "COMMAND_STATUS",
 
     "HARDWARE_ERROR",
     "FLUSH_OCCURRED",
     "ROLE_CHANGE",
-    0, //"NUMBER_OF_COMPLETED_PACKETS", // ignored
+    "NUMBER_OF_COMPLETED_PACKETS", // ignored
 
     "MODE_CHANGE",
     "RETURN_LINK_KEYS",
@@ -86,8 +86,8 @@ void printEventType(uint8_t *packet) {
     case BTSTACK_EVENT_SCAN_MODE_CHANGED: printf("Type: BTSTACK_EVENT_SCAN_MODE_CHANGED\n"); break;
     case BTSTACK_EVENT_NR_CONNECTIONS_CHANGED: printf("Type: BTSTACK_EVENT_NR_CONNECTIONS_CHANGED\n"); break;
 
-    case HCI_EVENT_TRANSPORT_PACKET_SENT: /*printf("Type: HCI_EVENT_TRANSPORT_PACKET_SENT\n");*/ break;
-    case HCI_EVENT_HID_META: /*printf("Type: HCI_EVENT_HID_META\n");*/ break;
+    case HCI_EVENT_TRANSPORT_PACKET_SENT: printf("Type: HCI_EVENT_TRANSPORT_PACKET_SENT\n"); break;
+    case HCI_EVENT_HID_META: printf("Type: HCI_EVENT_HID_META\n"); break;
     case HCI_EVENT_VENDOR_SPECIFIC: printf("Type: HCI_EVENT_VENDOR_SPECIFIC\n"); break;
     
     case GAP_EVENT_SECURITY_LEVEL: printf("Type: GAP_EVENT_SECURITY_LEVEL\n"); break;
