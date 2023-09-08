@@ -26,7 +26,10 @@ int btstack_main(int argc, const char * argv[]);
 */
 
 #define GAMEPAD_DEVICE_ID 0x2508
-#define GAMEPAD_PERIOD_MS 50
+
+// this limits the rate we send at, useful to raise it when analyzing traffic
+// theoretically setting this too low could cause a mysterious buffer to overflow
+#define GAMEPAD_PERIOD_MS 2
 #define REPORT_ID 0x01
 
 static const char hid_device_name[] = "GP2040-CE Gamepad";
