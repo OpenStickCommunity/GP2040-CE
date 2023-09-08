@@ -1,0 +1,45 @@
+
+Attribute List (PnP Information)
+  Service Attribute: Service Record Handle (0x0), value = 0x00010000 (65536)
+  Service Attribute: Service Class ID List (0x1), value = PnP Information
+  Service Attribute: Service Record State (0x2), value = 0x00000e72 (3698)
+  Service Attribute: Protocol Descriptor List (0x4), value = L2CAP:1 -> SDP
+  Service Attribute: Browse Group List (0x5), value = Public Browse Group
+  Service Attribute: Language Base Attribute ID List (0x6), value = (Lang: en, Encoding: UTF-8, Attribute Base: 0x0100)
+  Service Attribute: Bluetooth Profile Descriptor List (0x9), value = PnP Information 1.0
+  Service Attribute: Service Name (0x100), value = 
+  Service Attribute: Service Description (0x101), value = 
+  Service Attribute: Provider Name (0x102), value = 
+  Service Attribute: (DID) Specification ID (0x200), value = 1.03 (0x0103)
+  Service Attribute: (DID) Vendor ID (0x201), value = Microsoft Corp. (0x045e)
+  Service Attribute: (DID) Product ID (0x202), value = Xbox One Wireless Controller (0x02e0)
+  Service Attribute: (DID) Version (0x203), value = 9.0.3 (0x0903)
+  Service Attribute: (DID) Primary Record (0x204), value = true
+  Service Attribute: (DID) Vendor ID Source (0x205), value = USB Implementer's Forum (0x0002)
+Attribute List (Human Interface Device Service)
+  Service Attribute: Service Record Handle (0x0), value = 0x00010001 (65537)
+  Service Attribute: Service Class ID List (0x1), value = Human Interface Device Service
+  Service Attribute: Service Record State (0x2), value = 0x00000e7b (3707)
+  Service Attribute: Protocol Descriptor List (0x4), value = L2CAP:17 -> HIDP
+  Service Attribute: Browse Group List (0x5), value = Public Browse Group
+  Service Attribute: Language Base Attribute ID List (0x6), value = (Lang: en, Encoding: UTF-8, Attribute Base: 0x0100)
+  Service Attribute: Bluetooth Profile Descriptor List (0x9), value = Human Interface Device Service 1.0
+  Service Attribute: Additional Protocol Descriptor Lists (0xd), value = [L2CAP:19 -> HIDP] 
+  Service Attribute: Service Name (0x100), value = Xbox Bluetooth Gamepad
+  Service Attribute: Service Description (0x101), value = Gamepad
+  Service Attribute: Provider Name (0x102), value = Microsoft Corporation
+  Service Attribute: (HID) Device Release Number (0x200), value = 1.0.0 (0x0100)
+  Service Attribute: (HID) Parser Version (0x201), value = 1.1.1 (0x0111)
+  Service Attribute: (HID) Device Subclass (0x202), value = Keyboard, Uncategorized device
+  Service Attribute: (HID) Country Code (0x203), value = US
+  Service Attribute: (HID) Virtual Cable (0x204), value = true
+  Service Attribute: (HID) Reconnect Initiate (0x205), value = true
+  Service Attribute: (HID) Descriptor List (0x206), value = Report
+  Service Attribute: (HID) LANG ID Base List (0x207), value = [Lang ID: English (United States), Attribute Base: 0x0100]
+  Service Attribute: (HID) SDP Disable (0x208), value = false
+  Service Attribute: (HID) Battery Power (0x209), value = true
+  Service Attribute: (HID) Remote Wake (0x20a), value = false
+  Service Attribute: (HID) Profile Version (0x20b), value = 1.0.0 (0x0100)
+  Service Attribute: (HID) Supervision Timeout (0x20c), value = 3200
+  Service Attribute: (HID) Normally Connectable (0x20d), value = true
+  Service Attribute: (HID) BootDevice (0x20e), value = false

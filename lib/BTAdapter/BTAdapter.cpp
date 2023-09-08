@@ -87,9 +87,9 @@ const uint8_t advertisedData[] = {
 const hid_sdp_record_t hidParams = {
   GAMEPAD_DEVICE_ID, // hid_device_subclass: gamepad
   33, //* hid_country_code (0 in gamepad, 33 in keyboard)
-  0, //* hid_virtual_cable
-  1, // hid_remote_wake (added) (0? its 1 in keyboard)
-  0, //* hid_reconnect_initiate (0 in gamepad, 1 in keyboard)
+  1, //* hid_virtual_cable
+  0, // hid_remote_wake (added) (0? its 1 in keyboard)
+  1, //* hid_reconnect_initiate (0 in gamepad, 1 in keyboard)
   true, // hid_normally_connectable (added) (true in keyboard)
   false, //* hid_boot_device (changed to bool)
   1600, // host_max_latency (added, based on keyboard)
@@ -215,9 +215,9 @@ void handleSMPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, uin
 
 // LE is used to advertise the device, the device is automatically migrated to classic on connection
 void setupLE() {
-  sm_init();
-  sm_set_io_capabilities(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
-  sm_set_authentication_requirements(SM_AUTHREQ_SECURE_CONNECTION );
+  //sm_init();
+  //sm_set_io_capabilities(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
+  //sm_set_authentication_requirements(SM_AUTHREQ_SECURE_CONNECTION );
 
   uint16_t adv_int_min = 0x0030;
   uint16_t adv_int_max = 0x0030;
@@ -243,19 +243,19 @@ void setupClassic() {
   sdp_init();
 
   gap_set_local_name(hid_sevice_name);
-  gap_ssp_set_io_capability(SSP_IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
+  //gap_ssp_set_io_capability(SSP_IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
   gap_set_class_of_device(GAMEPAD_DEVICE_ID);
   gap_set_default_link_policy_settings( LM_LINK_POLICY_ENABLE_ROLE_SWITCH | LM_LINK_POLICY_ENABLE_SNIFF_MODE );
   gap_set_allow_role_switch(true);
   gap_discoverable_control(1);
 
   memset(hidServiceBuffer, 0, sizeof(hidServiceBuffer));
-  hid_create_sdp_record(hidServiceBuffer, 0x10001, &hidParams);
+  hid_create_sdp_record(hidServiceBuffer, sdp_create_service_record_handle(), &hidParams);
   sdp_register_service(hidServiceBuffer);
   printf("HID service record size: %u\n", de_get_len(hidServiceBuffer));
 
-#if 0
-  device_id_create_sdp_record(didServiceBuffer, 0x10003, DEVICE_ID_VENDOR_ID_SOURCE_BLUETOOTH, BLUETOOTH_COMPANY_ID_BLUEKITCHEN_GMBH, 1, 1);
+#if 1 // forge xbone PnP
+  device_id_create_sdp_record(didServiceBuffer, sdp_create_service_record_handle(), 0x0002, 0x045e, 0x02e0, 0x0903);
   sdp_register_service(didServiceBuffer);
   printf("DID service record size: %u\n", de_get_len(didServiceBuffer));
 #endif

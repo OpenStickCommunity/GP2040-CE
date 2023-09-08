@@ -1,0 +1,204 @@
+
+//--------------------------------------------------------------------------------
+// Report descriptor data in hex (length 262 bytes)
+//--------------------------------------------------------------------------------
+
+
+// 05010905 A101A100 09300931 150027FF FF000095 02751081 02C0A100 09330934
+// 150027FF FF000095 02751081 02C00501 09321500 26FF0395 01750A81 02150025
+// 00750695 01810305 01093515 0026FF03 9501750A 81021500 25007506 95018103
+// 05091901 290A950A 75018102 15002500 75069501 81030501 09391501 25083500
+// 463B0166 14007504 95018142 75049501 15002500 35004500 65008103 A102050F
+// 09971500 25017504 95019102 15002500 91030970 15002564 75089504 91020950
+// 66011055 0E26FF00 95019102 09A79102 65005500 097C9102 C0050109 80A10009
+// 85150025 01950175 01810215 00250075 07950181 03C00506 09201500 26FF0075
+// 08950181 02C0      
+
+
+//--------------------------------------------------------------------------------
+// Decoded Application Collection
+//--------------------------------------------------------------------------------
+
+/*
+05 01        (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
+09 05        (LOCAL)  USAGE              0x00010005 Game Pad (Application Collection)  
+A1 01        (MAIN)   COLLECTION         0x01 Application (Usage=0x00010005: Page=Generic Desktop Page, Usage=Game Pad, Type=Application Collection)
+A1 00          (MAIN)   COLLECTION         0x00 Physical (Usage=0x0: Page=, Usage=, Type=) <-- Error: COLLECTION must be preceded by a USAGE <-- Warning: USAGE type should be CP (Physical Collection)
+09 30            (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
+09 31            (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
+15 00            (GLOBAL) LOGICAL_MINIMUM    0x00 (0)  <-- Info: Consider replacing 15 00 with 14
+27 FFFF0000      (GLOBAL) LOGICAL_MAXIMUM    0x0000FFFF (65535)  
+95 02            (GLOBAL) REPORT_COUNT       0x02 (2) Number of fields  
+75 10            (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
+81 02            (MAIN)   INPUT              0x00000002 (2 fields x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+C0             (MAIN)   END_COLLECTION     Physical 
+A1 00          (MAIN)   COLLECTION         0x00 Physical (Usage=0x0: Page=, Usage=, Type=) <-- Error: COLLECTION must be preceded by a USAGE <-- Warning: USAGE type should be CP (Physical Collection)
+09 33            (LOCAL)  USAGE              0x00010033 Rx (Dynamic Value)  
+09 34            (LOCAL)  USAGE              0x00010034 Ry (Dynamic Value)  
+15 00            (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+27 FFFF0000      (GLOBAL) LOGICAL_MAXIMUM    0x0000FFFF (65535) <-- Redundant: LOGICAL_MAXIMUM is already 65535 
+95 02            (GLOBAL) REPORT_COUNT       0x02 (2) Number of fields <-- Redundant: REPORT_COUNT is already 2 
+75 10            (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field <-- Redundant: REPORT_SIZE is already 16 
+81 02            (MAIN)   INPUT              0x00000002 (2 fields x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+C0             (MAIN)   END_COLLECTION     Physical 
+05 01          (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page <-- Redundant: USAGE_PAGE is already 0x0001
+09 32          (LOCAL)  USAGE              0x00010032 Z (Dynamic Value)  
+15 00          (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+26 FF03        (GLOBAL) LOGICAL_MAXIMUM    0x03FF (1023)  
+95 01          (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
+75 0A          (GLOBAL) REPORT_SIZE        0x0A (10) Number of bits per field  
+81 02          (MAIN)   INPUT              0x00000002 (1 field x 10 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+15 00          (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+25 00          (GLOBAL) LOGICAL_MAXIMUM    0x00 (0)  <-- Info: Consider replacing 25 00 with 24
+75 06          (GLOBAL) REPORT_SIZE        0x06 (6) Number of bits per field  
+95 01          (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+81 03          (MAIN)   INPUT              0x00000003 (1 field x 6 bits) 1=Constant 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+05 01          (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page <-- Redundant: USAGE_PAGE is already 0x0001
+09 35          (LOCAL)  USAGE              0x00010035 Rz (Dynamic Value)  
+15 00          (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+26 FF03        (GLOBAL) LOGICAL_MAXIMUM    0x03FF (1023)  
+95 01          (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+75 0A          (GLOBAL) REPORT_SIZE        0x0A (10) Number of bits per field  
+81 02          (MAIN)   INPUT              0x00000002 (1 field x 10 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+15 00          (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+25 00          (GLOBAL) LOGICAL_MAXIMUM    0x00 (0)  <-- Info: Consider replacing 25 00 with 24
+75 06          (GLOBAL) REPORT_SIZE        0x06 (6) Number of bits per field  
+95 01          (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+81 03          (MAIN)   INPUT              0x00000003 (1 field x 6 bits) 1=Constant 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+05 09          (GLOBAL) USAGE_PAGE         0x0009 Button Page 
+19 01          (LOCAL)  USAGE_MINIMUM      0x00090001 Button 1 Primary/trigger (Selector, On/Off Control, Momentary Control, or One Shot Control)  
+29 0A          (LOCAL)  USAGE_MAXIMUM      0x0009000A Button 10 (Selector, On/Off Control, Momentary Control, or One Shot Control)  
+95 0A          (GLOBAL) REPORT_COUNT       0x0A (10) Number of fields  
+75 01          (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field  
+81 02          (MAIN)   INPUT              0x00000002 (10 fields x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+15 00          (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+25 00          (GLOBAL) LOGICAL_MAXIMUM    0x00 (0) <-- Redundant: LOGICAL_MAXIMUM is already 0 <-- Info: Consider replacing 25 00 with 24
+75 06          (GLOBAL) REPORT_SIZE        0x06 (6) Number of bits per field  
+95 01          (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
+81 03          (MAIN)   INPUT              0x00000003 (1 field x 6 bits) 1=Constant 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+05 01          (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
+09 39          (LOCAL)  USAGE              0x00010039 Hat switch (Dynamic Value)  
+15 01          (GLOBAL) LOGICAL_MINIMUM    0x01 (1)  
+25 08          (GLOBAL) LOGICAL_MAXIMUM    0x08 (8)  
+35 00          (GLOBAL) PHYSICAL_MINIMUM   0x00 (0)  <-- Info: Consider replacing 35 00 with 34
+46 3B01        (GLOBAL) PHYSICAL_MAXIMUM   0x013B (315)  
+66 1400        (GLOBAL) UNIT               0x0014 Rotation in degrees [1° units] (4=System=English Rotation, 1=Rotation=Degrees)  <-- Info: Consider replacing 66 1400 with 65 14
+75 04          (GLOBAL) REPORT_SIZE        0x04 (4) Number of bits per field  
+95 01          (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+81 42          (MAIN)   INPUT              0x00000042 (1 field x 4 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 1=Null 0=NonVolatile 0=Bitmap 
+75 04          (GLOBAL) REPORT_SIZE        0x04 (4) Number of bits per field <-- Redundant: REPORT_SIZE is already 4 
+95 01          (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+15 00          (GLOBAL) LOGICAL_MINIMUM    0x00 (0)  <-- Info: Consider replacing 15 00 with 14
+25 00          (GLOBAL) LOGICAL_MAXIMUM    0x00 (0)  <-- Info: Consider replacing 25 00 with 24
+35 00          (GLOBAL) PHYSICAL_MINIMUM   0x00 (0) <-- Redundant: PHYSICAL_MINIMUM is already 0 <-- Info: Consider replacing 35 00 with 34
+45 00          (GLOBAL) PHYSICAL_MAXIMUM   0x00 (0)  <-- Info: Consider replacing 45 00 with 44
+65 00          (GLOBAL) UNIT               0x00 No unit (0=None)  <-- Info: Consider replacing 65 00 with 64
+81 03          (MAIN)   INPUT              0x00000003 (1 field x 4 bits) 1=Constant 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+A1 02          (MAIN)   COLLECTION         0x02 Logical (Usage=0x0: Page=, Usage=, Type=) <-- Error: COLLECTION must be preceded by a USAGE <-- Warning: USAGE type should be CL (Logical Collection)
+05 0F            (GLOBAL) USAGE_PAGE         0x000F Physical Interface Device Page 
+09 97            (LOCAL)  USAGE              0x000F0097 DC Enable Actuators (Selector)  
+15 00            (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+25 01            (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)  
+75 04            (GLOBAL) REPORT_SIZE        0x04 (4) Number of bits per field <-- Redundant: REPORT_SIZE is already 4 
+95 01            (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+91 02            (MAIN)   OUTPUT             0x00000002 (1 field x 4 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+15 00            (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+25 00            (GLOBAL) LOGICAL_MAXIMUM    0x00 (0)  <-- Info: Consider replacing 25 00 with 24
+91 03            (MAIN)   OUTPUT             0x00000003 (1 field x 4 bits) 1=Constant 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+09 70            (LOCAL)  USAGE              0x000F0070 Magnitude (Dynamic Value)  
+15 00            (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+25 64            (GLOBAL) LOGICAL_MAXIMUM    0x64 (100)  
+75 08            (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field  
+95 04            (GLOBAL) REPORT_COUNT       0x04 (4) Number of fields  
+91 02            (MAIN)   OUTPUT             0x00000002 (4 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+09 50            (LOCAL)  USAGE              0x000F0050 Duration (Dynamic Value)  
+66 0110          (GLOBAL) UNIT               0x1001 Time in seconds [1 s units] (1=System=SI Linear, 1=Time=Seconds)  
+55 0E            (GLOBAL) UNIT_EXPONENT      0x0E (Unit Value x 10⁻²)  
+26 FF00          (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)  
+95 01            (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
+91 02            (MAIN)   OUTPUT             0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+09 A7            (LOCAL)  USAGE              0x000F00A7 Start Delay (Dynamic Value)  
+91 02            (MAIN)   OUTPUT             0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+65 00            (GLOBAL) UNIT               0x00 No unit (0=None)  <-- Info: Consider replacing 65 00 with 64
+55 00            (GLOBAL) UNIT_EXPONENT      0x00 (Unit Value x 10⁰)  <-- Info: Consider replacing 55 00 with 54
+09 7C            (LOCAL)  USAGE              0x000F007C Loop Count (Dynamic Value)  
+91 02            (MAIN)   OUTPUT             0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+C0             (MAIN)   END_COLLECTION     Logical 
+05 01          (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
+09 80          (LOCAL)  USAGE              0x00010080 System Control (Application Collection)  
+A1 00          (MAIN)   COLLECTION         0x00 Physical (Usage=0x00010080: Page=Generic Desktop Page, Usage=System Control, Type=Application Collection) <-- Warning: USAGE type should be CP (Physical Collection)
+09 85            (LOCAL)  USAGE              0x00010085 System Main Menu (One Shot Control)  
+15 00            (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+25 01            (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)  
+95 01            (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+75 01            (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field  
+81 02            (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+15 00            (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+25 00            (GLOBAL) LOGICAL_MAXIMUM    0x00 (0)  <-- Info: Consider replacing 25 00 with 24
+75 07            (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field  
+95 01            (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+81 03            (MAIN)   INPUT              0x00000003 (1 field x 7 bits) 1=Constant 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+C0             (MAIN)   END_COLLECTION     Physical 
+05 06          (GLOBAL) USAGE_PAGE         0x0006 Generic Device Controls Page 
+09 20          (LOCAL)  USAGE              0x00060020 Battery Strength (Dynamic Value)  
+15 00          (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
+26 FF00        (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)  
+75 08          (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field  
+95 01          (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields <-- Redundant: REPORT_COUNT is already 1 
+81 02          (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
+C0           (MAIN)   END_COLLECTION     Application 
+*/
+
+//--------------------------------------------------------------------------------
+// Generic Desktop Page inputReport (Device --> Host)
+//--------------------------------------------------------------------------------
+
+typedef struct
+{
+                                                     // No REPORT ID byte
+                                                     // Collection: CA:GamePad CP:
+  uint16_t GD_GamePadX;                              // Usage 0x00010030: X, Value = 0 to 65535
+  uint16_t GD_GamePadY;                              // Usage 0x00010031: Y, Value = 0 to 65535
+  uint16_t GD_GamePadRx;                             // Usage 0x00010033: Rx, Value = 0 to 65535
+  uint16_t GD_GamePadRy;                             // Usage 0x00010034: Ry, Value = 0 to 65535
+                                                     // Collection: CA:GamePad
+  uint16_t GD_GamePadZ : 10;                         // Usage 0x00010032: Z, Value = 0 to 1023
+  uint8_t  : 6;                                      // Pad
+  uint16_t GD_GamePadRz : 10;                        // Usage 0x00010035: Rz, Value = 0 to 1023
+  uint8_t  : 6;                                      // Pad
+  uint8_t  BTN_GamePadButton1 : 1;                   // Usage 0x00090001: Button 1 Primary/trigger, Value = 0 to 0
+  uint8_t  BTN_GamePadButton2 : 1;                   // Usage 0x00090002: Button 2 Secondary, Value = 0 to 0
+  uint8_t  BTN_GamePadButton3 : 1;                   // Usage 0x00090003: Button 3 Tertiary, Value = 0 to 0
+  uint8_t  BTN_GamePadButton4 : 1;                   // Usage 0x00090004: Button 4, Value = 0 to 0
+  uint8_t  BTN_GamePadButton5 : 1;                   // Usage 0x00090005: Button 5, Value = 0 to 0
+  uint8_t  BTN_GamePadButton6 : 1;                   // Usage 0x00090006: Button 6, Value = 0 to 0
+  uint8_t  BTN_GamePadButton7 : 1;                   // Usage 0x00090007: Button 7, Value = 0 to 0
+  uint8_t  BTN_GamePadButton8 : 1;                   // Usage 0x00090008: Button 8, Value = 0 to 0
+  uint8_t  BTN_GamePadButton9 : 1;                   // Usage 0x00090009: Button 9, Value = 0 to 0
+  uint8_t  BTN_GamePadButton10 : 1;                  // Usage 0x0009000A: Button 10, Value = 0 to 0
+  uint8_t  : 6;                                      // Pad
+  uint8_t  GD_GamePadHatSwitch : 4;                  // Usage 0x00010039: Hat switch, Value = 1 to 8, Physical = (Value - 1) x 45 in degrees
+  uint8_t  : 4;                                      // Pad
+                                                     // Collection: CA:GamePad CP:SystemControl
+  uint8_t  GD_GamePadSystemControlSystemMainMenu : 1; // Usage 0x00010085: System Main Menu, Value = 0 to 1
+  uint8_t  : 7;                                      // Pad
+                                                     // Collection: CA:GamePad
+  uint8_t  GEN_GamePadBatteryStrength;               // Usage 0x00060020: Battery Strength, Value = 0 to 255
+} inputReport_t;
+
+
+//--------------------------------------------------------------------------------
+// Physical Interface Device Page outputReport (Device <-- Host)
+//--------------------------------------------------------------------------------
+
+typedef struct
+{
+                                                     // No REPORT ID byte
+                                                     // Collection: CA:GamePad CL:
+  uint8_t  PID_GamePadDcEnableActuators : 4;         // Usage 0x000F0097: DC Enable Actuators, Value = 0 to 1
+  uint8_t  : 4;                                      // Pad
+  uint8_t  PID_GamePadMagnitude[4];                  // Usage 0x000F0070: Magnitude, Value = 0 to 100
+  uint8_t  PID_GamePadDuration;                      // Usage 0x000F0050: Duration, Value = 0 to 255, Physical = Value in 10⁻² s units
+  uint8_t  PID_GamePadStartDelay;                    // Usage 0x000F00A7: Start Delay, Value = 0 to 255, Physical = Value in 10⁻² s units
+  uint8_t  PID_GamePadLoopCount;                     // Usage 0x000F007C: Loop Count, Value = 0 to 255
+} outputReport_t;

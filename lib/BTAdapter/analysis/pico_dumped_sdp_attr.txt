@@ -1,0 +1,21 @@
+Attribute List (Human Interface Device Service)
+  Service Attribute: Service Record Handle (0x0), value = 0x00010001 (65537)
+  Service Attribute: Service Class ID List (0x1), value = Human Interface Device Service
+  Service Attribute: Protocol Descriptor List (0x4), value = L2CAP:17 -> HIDP
+  Service Attribute: Language Base Attribute ID List (0x6), value = (Lang: en, Encoding: UTF-8, Attribute Base: 0x0100)
+  Service Attribute: Additional Protocol Descriptor Lists (0xd), value = [L2CAP:19 -> HIDP] 
+  Service Attribute: Service Name (0x100), value = GP2040-CE Gamepad
+  Service Attribute: Bluetooth Profile Descriptor List (0x9), value = Human Interface Device Service 1.1
+  Service Attribute: (HID) Parser Version (0x201), value = 1.1.1 (0x0111)
+  Service Attribute: (HID) Device Subclass (0x202), value = Not Keyboard / Not Pointing Device, Gamepad
+  Service Attribute: (HID) Country Code (0x203), value = US
+  Service Attribute: (HID) Virtual Cable (0x204), value = true
+  Service Attribute: (HID) Reconnect Initiate (0x205), value = true
+  Service Attribute: (HID) Descriptor List (0x206), value = Report
+  Service Attribute: (HID) LANG ID Base List (0x207), value = [Lang ID: English (United States), Attribute Base: 0x0100]
+  Service Attribute: (HID) Remote Wake (0x20a), value = false
+  Service Attribute: (HID) Supervision Timeout (0x20c), value = 3200
+  Service Attribute: (HID) Normally Connectable (0x20d), value = true
+  Service Attribute: (HID) BootDevice (0x20e), value = false
+  Service Attribute: (HID) SSR Host Max Latency (0x20f), value = 1600
+  Service Attribute: (HID) SSR Host Min Timeout (0x210), value = 3200
