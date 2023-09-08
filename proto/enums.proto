@@ -125,9 +125,11 @@ enum GpioAction
 {
     option (nanopb_enumopt).long_names = false;
 
-    RESERVED                     = -2;
-    ASSIGNED_TO_ADDON            = -1;
-    NONE                         = 0;
+    // the lowest value is the default, which should be NONE;
+    // reserving some numbers in case we need more not-mapped type values
+    NONE                         = -10;
+    RESERVED                     = -5;
+    ASSIGNED_TO_ADDON            = 0;
     BUTTON_PRESS_UP              = 1;
     BUTTON_PRESS_DOWN            = 2;
     BUTTON_PRESS_LEFT            = 3;
