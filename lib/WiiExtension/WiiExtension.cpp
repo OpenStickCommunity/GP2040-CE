@@ -211,9 +211,11 @@ void WiiExtension::poll() {
             extensionController->process(regRead);
             extensionController->postProcess();
 
+#if WII_EXTENSION_DEBUG==true
             for (int i = 0; i < result; ++i) {
                 _lastRead[i] = regRead[i];
             }
+#endif
 
             if (extensionType == WII_EXTENSION_TURNTABLE) {
                 regWrite[0] = 0xFB;
@@ -254,7 +256,7 @@ int WiiExtension::doI2CRead(uint8_t *pData, int iLen) {
 }
 
 uint8_t WiiExtension::doI2CTest() {
-	int result;
+    int result;
     uint8_t rxdata;
     result = doI2CRead(&rxdata, 1);
 #if WII_EXTENSION_DEBUG==true
@@ -264,8 +266,8 @@ uint8_t WiiExtension::doI2CTest() {
 }
 
 void WiiExtension::doI2CInit() {
-	if ((iSDA + 2 * i2c_hw_index(picoI2C))%4 != 0) return;
-	if ((iSCL + 3 + 2 * i2c_hw_index(picoI2C))%4 != 0) return;
+    if ((iSDA + 2 * i2c_hw_index(picoI2C))%4 != 0) return;
+    if ((iSCL + 3 + 2 * i2c_hw_index(picoI2C))%4 != 0) return;
 
     i2c_init(picoI2C, iSpeed);
     gpio_set_function(iSDA, GPIO_FUNC_I2C);

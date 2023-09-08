@@ -59,6 +59,7 @@ typedef enum {
 #endif
 
 #ifndef WII_EXTENSION_ENCRYPTION
+// if a device acts funny with "unencrypted" mode, enable this. used in very rare cases.
 #define WII_EXTENSION_ENCRYPTION false
 #endif
 
@@ -99,7 +100,7 @@ static volatile bool WiiExtension_alarmFired;
 
 class WiiExtension {
   protected:
-	uint8_t address;
+    uint8_t address;
   public:
     int8_t extensionType = WII_EXTENSION_NONE;
     int8_t dataType = WII_DATA_TYPE_0;
@@ -107,24 +108,26 @@ class WiiExtension {
     bool isReady         = false;
 
     // Constructor 
-	WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr);
+    WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr);
 
     // Methods
     void begin();
-	void reset();
-  	void start();
-  	void poll();
+    void reset();
+    void start();
+    void poll();
 
     ExtensionBase* getController() { return extensionController; };
   private:
-	ExtensionBase *extensionController = NULL;
+    ExtensionBase *extensionController = NULL;
 
     uint8_t iSDA;
     uint8_t iSCL;
     i2c_inst_t *picoI2C;
-	int32_t iSpeed;
+    int32_t iSpeed;
 
+#if WII_EXTENSION_DEBUG==true
     uint8_t _lastRead[16] = {0xFF};
+#endif
 
     int doI2CWrite(uint8_t *pData, int iLen);
     int doI2CRead(uint8_t *pData, int iLen);

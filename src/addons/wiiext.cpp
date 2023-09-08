@@ -498,17 +498,17 @@ void WiiExtensionInput::updateAnalogState() {
 }
 
 uint16_t WiiExtensionInput::getAverage(std::vector<WiiAnalogChange> const& changes) {
-    std::vector<uint16_t> values;
+    uint16_t values = 0;
 
     if (changes.empty()) {
         return 0;
     }
 
     for (auto currVal = changes.begin(); currVal != changes.end(); ++currVal) {
-        values.push_back(currVal->analogValue);
+        values += currVal->analogValue;
     }
 
-    return std::accumulate(values.begin(), values.end(), 0) / values.size();
+    return values / changes.size();
 }
 
 uint16_t WiiExtensionInput::getDelta(std::vector<uint16_t> const& changes, uint16_t baseValue) {

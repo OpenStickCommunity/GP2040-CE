@@ -82,11 +82,11 @@ typedef struct {
 
 class WiiExtensionInput : public GPAddon {
 public:
-	virtual bool available();
-	virtual void setup();       // WiiExtension Setup
-	virtual void process();     // WiiExtension Process
-	virtual void preprocess() {}
-	virtual std::string name() { return WiiExtensionName; }
+    virtual bool available();
+    virtual void setup();       // WiiExtension Setup
+    virtual void process();     // WiiExtension Process
+    virtual void preprocess() {}
+    virtual std::string name() { return WiiExtensionName; }
 private:
     WiiExtension * wii;
     uint32_t uIntervalMS;
