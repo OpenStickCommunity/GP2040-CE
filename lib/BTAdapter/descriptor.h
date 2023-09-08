@@ -1,32 +1,61 @@
-Raw HID Descriptor
+#include <stdint.h>
+#include <string.h>
 
-05 01
-09 05 a1 01 85 01 09 01 a1 00 09 30 09 31 15 00
-27 ff ff 00 00 95 02 75 10 81 02 c0 09 01 a1 00
-09 33 09 34 15 00 27 ff ff 00 00 95 02 75 10 81
-02 c0 05 01 09 32 15 00 26 ff 03 95 01 75 0a 81
-02 15 00 25 00 75 06 95 01 81 03 05 01 09 35 15
-00 26 ff 03 95 01 75 0a 81 02 15 00 25 00 75 06
-95 01 81 03 05 01 09 39 15 01 25 08 35 00 46 3b
-01 66 14 00 75 04 95 01 81 42 75 04 95 01 15 00
-25 00 35 00 45 00 65 00 81 03 05 09 19 01 29 0a
-15 00 25 01 75 01 95 0a 81 02 15 00 25 00 75 06
-95 01 81 03 05 01 09 80 85 02 a1 00 09 85 15 00
-25 01 95 01 75 01 81 02 15 00 25 00 75 07 95 01
-81 03 c0 05 0f 09 21 85 03 a1 02 09 97 15 00 25
-01 75 04 95 01 91 02 15 00 25 00 75 04 95 01 91
-03 09 70 15 00 25 64 75 08 95 04 91 02 09 50 66
-01 10 55 0e 15 00 26 ff 00 75 08 95 01 91 02 09
-a7 15 00 26 ff 00 75 08 95 01 91 02 65 00 55 00
-09 7c 15 00 26 ff 00 75 08 95 01 91 02 c0 85 04
-05 06 09 20 15 00 26 ff 00 75 08 95 01 81 02 c0
+#ifndef BT_DESCRIPTORS_H_
+#define BT_DESCRIPTORS_H_
 
-Parsed HID Descriptor
-0x05, 0x01,         // Usage Page (Generic Desktop Ctrls)
-0x09, 0x05,        // Usage (0x05)
+const uint8_t gamepadReport[] = {
+  // Preamble
+  0x05, 0x01,                   //  USAGE_PAGE (Generic Desktop)
+  0x09, 0x05,                   //  USAGE (Game Pad)
+  0xa1, 0x01,                   //  COLLECTION (Application)
+
+  // Joystick 1
+  0xA1, 0x00,                   //    COLLECTION (Physical)
+  0x09, 0x30,                   //      USAGE (X)
+  0x09, 0x31,                   //      USAGE (Y)
+  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
+  0x27, 0xFF, 0xFF, 0x00, 0x00, //      LOGICAL_MAXIMUM (65535)
+  0x95, 0x02,                   //      REPORT_COUNT (2)
+  0x75, 0x10,                   //      REPORT_SIZE (16)
+  0x81, 0x02,                   //      INPUT (Data, Var, Abs)
+  0xc0,                         //    END_COLLECTION
+
+  // Joystick 2
+  0xA1, 0x00,                   //    COLLECTION (Physical)
+  0x09, 0x33,                   //      USAGE (rX)
+  0x09, 0x34,                   //      USAGE (rY)
+  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
+  0x27, 0xFF, 0xFF, 0x00, 0x00, //      LOGICAL_MAXIMUM (65535)
+  0x95, 0x02,                   //      REPORT_COUNT (2)
+  0x75, 0x10,                   //      REPORT_SIZE (16)
+  0x81, 0x02,                   //      INPUT (Data, Var, Abs)
+  0xc0,                         //    END_COLLECTION
+  
+  // Buttons
+  0x05, 0x09,                   //    USAGE_PAGE (Button)
+  0x19, 0x01,                   //    USAGE_MINIMUM (Button 1)
+  0x29, 0x10,                   //    USAGE_MAXIMUM (Button 16)
+  0x15, 0x00,                   //    LOGICAL_MINIMUM (0)
+  0x25, 0x01,                   //    LOGICAL_MAXIMUM (1)
+  0x95, 0x10,                   //    REPORT_COUNT (16)
+  0x75, 0x01,                   //    REPORT_SIZE (1)
+  0x81, 0x02,                   //    INPUT (Data, Var, Abs)    
+   
+  // Closing
+  0xc0                          //  END_COLLECTION
+};
+
+struct GamePadData {
+  uint16_t lx, ly, rx, ry;
+  uint8_t but_a, but_b;
+};
+
+const uint8_t xboneReport[] = {
+0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
+0x09, 0x05,        // Usage (Game Controls)
 0xA1, 0x01,        // Collection (Application)
 0x85, 0x01,        //   Report ID (1)
-0x09, 0x01,        //   Usage (0x01)
 0xA1, 0x00,        //   Collection (Physical)
 0x09, 0x30,        //     Usage (0x30)
 0x09, 0x31,        //     Usage (0x31)
@@ -36,7 +65,6 @@ Parsed HID Descriptor
 0x75, 0x10,        //     Report Size (16)
 0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
 0xC0,              //   End Collection
-0x09, 0x01,        //   Usage (0x01)
 0xA1, 0x00,        //   Collection (Physical)
 0x09, 0x33,        //     Usage (0x33)
 0x09, 0x34,        //     Usage (0x34)
@@ -170,3 +198,114 @@ Parsed HID Descriptor
 0x95, 0x01,        //   Report Count (1)
 0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
 0xC0,              // End Collection
+};
+
+/* Xbone Reports:
+1:
+  X,Y [IN]: uint16_t[2] [0,65534]
+  rX,rY [IN]: uint16_t[2] [0,65534]
+  Z [IN]: bit[10]
+  Const: bit[6]
+  rZ [IN]: bit[10]
+  Const: bit[6]
+  Hat switch a: uint4[1] (centimeters?)
+  Const: bit[4]
+  Buttons: bit[10]
+  Const: bit[6]
+2: 
+  Sys Main Menu [IN]: bit[1]
+  Const: bit[7]
+3:
+  "0x97 A" [OUT]: bit[4] (enable actuators)
+  Const: bit[4]
+  "0x70" [OUT]: uint8_t[4] [0,100] (actuator magnitudes)
+  "0x50" [OUT]: uint8_t[1] [0,255] (time?) (actuator duration)
+  "0xA7" [OUT]: uint8_t[1] [0,255] (time?) (acturator delay)
+  "0x7C" [OUT]: uint8_t[1] [0,255] (actuator loop count)
+4:
+  Battery Strength [IN]: uint8_t[1] [0,255]
+
+*/
+
+uint8_t makeHat(bool up, bool right, bool down, bool left){
+  constexpr const int shift = 0; 
+  if(up){
+    if(right) return 2u << shift;
+    else if(left) return 8u << shift;
+    else return 1u << shift;
+  }
+  else if(down){
+    if(right) return 4u << shift;
+    else if(left) return 6u << shift;
+    else return 5u << shift;
+  }
+  else {
+    if(right) return 3u << shift;
+    else if(left) return 7u << shift;
+    else return 0u << shift;
+  }
+}
+
+// uint16_t to uint10 + 6 const
+uint16_t makeMask1023(uint16_t in){
+  return (in && 1023u) << 0;
+}
+
+uint8_t makeSMM(bool smm){
+  return smm ? 127 : 0;
+}
+
+struct XBoneData {
+  uint16_t X = (1<<15), Y = (1<<15), Rx = (1<<15), Ry = (1<<15), Z = (1<<9), Rz = (1<<9);
+  uint8_t Hat = 0x00;
+  uint16_t Buttons = 0x00;
+  uint8_t SMM = 0x00;
+  uint8_t Battery = 255;
+
+  void makeReportOne(uint8_t (&buffer)[18]) {
+    buffer[0] = 0xa1;
+    buffer[1] = 0x01;
+
+    buffer[2] = X & 0xff;
+    buffer[3] = (X >> 8) & 0xff;
+    buffer[4] = Y & 0xff;
+    buffer[5] = (Y >> 8) & 0xff;
+    buffer[6] = Rx & 0xff;
+    buffer[7] = (Rx >> 8) & 0xff;
+    buffer[8] = Ry & 0xff;
+    buffer[9] = (Ry >> 8) & 0xff;
+
+    buffer[10] = (Z >> 6) & 0xff;
+    buffer[11] = (Z >> 14) & 0xff;
+    buffer[12] = (Rz >> 6) & 0xff;
+    buffer[13] = (Rz >> 14) & 0xff;
+
+    buffer[14] = Hat;
+
+    buffer[15] = Buttons & 0xff;
+    buffer[16] = SMM;
+    //memcpy(&buffer[2], static_cast<uint8_t*>((void*)this), 15);
+    //buffer[17] = 0x00;
+    //buffer[18] = Battery;
+
+    buffer[17] = 0x00;
+  }
+  void makeReportTwo(uint8_t (&buffer)[4]) {
+    buffer[0] = 0xa1;
+    buffer[1] = 0x02;
+
+    buffer[2] = SMM;
+
+    buffer[3] = 0x00;
+  }
+  void makeReportFour(uint8_t (&buffer)[4]) {
+    buffer[0] = 0xa1;
+    buffer[1] = 0x03;
+
+    buffer[2] = Battery;
+
+    buffer[3] = 0x00;
+  }
+};
+
+#endif

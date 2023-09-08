@@ -11,6 +11,7 @@
 #include <btstack.h>
 
 #include "BTHelper.h"
+#include "descriptor.h"
 
 #include "ble/gatt-service/hids_device.h"
 
@@ -25,53 +26,13 @@ int btstack_main(int argc, const char * argv[]);
 */
 
 #define GAMEPAD_DEVICE_ID 0x2508
-#define GAMEPAD_PERIOD_MS 5
+#define GAMEPAD_PERIOD_MS 50
 #define REPORT_ID 0x01
 
 static const char hid_device_name[] = "GP2040-CE Gamepad";
 static const char hid_sevice_name[] = "GP2040-CE Gamepad";
 
-const uint8_t gamepadReport[] = {
-  // Preamble
-  0x05, 0x01,                   //  USAGE_PAGE (Generic Desktop)
-  0x09, 0x05,                   //  USAGE (Game Pad)
-  0xa1, 0x01,                   //  COLLECTION (Application)
 
-  // Joystick 1
-  0xA1, 0x00,                   //    COLLECTION (Physical)
-  0x09, 0x30,                   //      USAGE (X)
-  0x09, 0x31,                   //      USAGE (Y)
-  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
-  0x27, 0xFF, 0xFF, 0x00, 0x00, //      LOGICAL_MAXIMUM (65535)
-  0x95, 0x02,                   //      REPORT_COUNT (2)
-  0x75, 0x10,                   //      REPORT_SIZE (16)
-  0x81, 0x02,                   //      INPUT (Data, Var, Abs)
-  0xc0,                         //    END_COLLECTION
-
-  // Joystick 2
-  0xA1, 0x00,                   //    COLLECTION (Physical)
-  0x09, 0x33,                   //      USAGE (rX)
-  0x09, 0x34,                   //      USAGE (rY)
-  0x15, 0x00,                   //      LOGICAL_MINIMUM (0)
-  0x27, 0xFF, 0xFF, 0x00, 0x00, //      LOGICAL_MAXIMUM (65535)
-  0x95, 0x02,                   //      REPORT_COUNT (2)
-  0x75, 0x10,                   //      REPORT_SIZE (16)
-  0x81, 0x02,                   //      INPUT (Data, Var, Abs)
-  0xc0,                         //    END_COLLECTION
-  
-  // Buttons
-  0x05, 0x09,                   //    USAGE_PAGE (Button)
-  0x19, 0x01,                   //    USAGE_MINIMUM (Button 1)
-  0x29, 0x10,                   //    USAGE_MAXIMUM (Button 16)
-  0x15, 0x00,                   //    LOGICAL_MINIMUM (0)
-  0x25, 0x01,                   //    LOGICAL_MAXIMUM (1)
-  0x95, 0x10,                   //    REPORT_COUNT (16)
-  0x75, 0x01,                   //    REPORT_SIZE (1)
-  0x81, 0x02,                   //    INPUT (Data, Var, Abs)    
-   
-  // Closing
-  0xc0                          //  END_COLLECTION
-};
 
 const uint8_t advertisedData[] = {
   // Flags general discoverable
@@ -95,8 +56,8 @@ const hid_sdp_record_t hidParams = {
   1600, // host_max_latency (added, based on keyboard)
   3200, // host_min_timeout (added, based on keyboard)
   3200, // supervision_timeout (added, based on keyboard)
-  gamepadReport, //* hid_descriptor
-  sizeof(gamepadReport), //* hid_descriptor size
+  xboneReport, //* hid_descriptor
+  sizeof(xboneReport), //* hid_descriptor size
   hid_device_name //* device_name
 };
 
@@ -108,12 +69,9 @@ static btstack_timer_source_t loopTimer;
 static uint16_t hidCID;
 static hci_con_handle_t leConnectionHandle = HCI_CON_HANDLE_INVALID;
 
-struct GamePadData {
-  uint16_t lx, ly, rx, ry;
-  uint8_t but_a, but_b;
-};
 
-static GamePadData currentData;
+
+static XBoneData currentData;
 
 /*
 ########################################################################################################### 
@@ -148,7 +106,6 @@ void handleHIDPacket(uint8_t packet_type, uint16_t channel, uint8_t * packet, ui
       
       hidCID = hid_subevent_connection_opened_get_hid_cid(packet);
       printf("HID Connected\n", status);
-      hid_device_request_can_send_now_event(hidCID);
       break;
     case HID_SUBEVENT_CONNECTION_CLOSED:
       printf("HID Disconnected\n");
@@ -261,7 +218,7 @@ void setupClassic() {
 #endif
 
   // setup HID Device service
-  hid_device_init(0, sizeof(gamepadReport), gamepadReport);
+  hid_device_init(0, sizeof(xboneReport), xboneReport);
 }
 
 /*
@@ -272,15 +229,6 @@ void setupClassic() {
 
 int btstack_main(int argc, const char * argv[]){
   (void)argc; (void)argv;
-
-  currentData.lx = 0;
-  currentData.ly = 0;
-  currentData.rx = 0;
-  currentData.ry = 0;
-  currentData.but_a = 1;
-  currentData.but_b = 1;
-  //currentData.lt = 0;
-  //currentData.rt = 0;
 
   l2cap_init();
   setupLE();
@@ -295,53 +243,33 @@ int btstack_main(int argc, const char * argv[]){
   return 0;
 }
 
-void updateData(uint8_t but_a, uint8_t but_b, uint8_t lt, uint8_t rt, uint16_t lx, uint16_t rx) {
-  currentData.but_a = but_a;
-  currentData.but_b = but_b;
-  //currentData.lt = lt;
-  //currentData.rt = rt;
-  currentData.lx = lx;
-  //currentData.ly = ly;
-  currentData.rx = rx;
-  //currentData.ry = ry;
-}
-
-void updateJoystick() {
-  currentData.lx += 100;
-  if (currentData.lx > 60000){
-    currentData.lx = 0;
+void fakeUpdateData() {
+  currentData.X += 1000;
+  if (currentData.X > 60000){
+    currentData.X = 0;
   }
-  currentData.ly = -currentData.lx;
-  currentData.rx = currentData.lx;
-  currentData.ry = -currentData.lx;
+  currentData.Y = -currentData.X;
+  currentData.Rx = currentData.X;
+  currentData.Ry = -currentData.X;
 
-  currentData.but_a = currentData.but_a << 1;
-  currentData.but_b = currentData.but_b >> 1;
-
-  if( currentData.but_a == 0 ) currentData.but_a = 1;
-  if( currentData.but_b == 0 ) currentData.but_b = 128;
+  currentData.Buttons = currentData.Buttons ^ 1;
 }
 
 void sendReport() {
-  updateJoystick();
-  uint8_t report[] = {
-    0xa1, 
-    currentData.lx & 0xff, currentData.lx >> 8, 
-    currentData.ly & 0xff, currentData.ly >> 8,
-    currentData.rx & 0xff, currentData.rx >> 8, 
-    currentData.ry & 0xff, currentData.ry >> 8,
-    currentData.but_a, currentData.but_b,
-    0
-  };
   printf("...\n");
 
+  fakeUpdateData();
+  uint8_t report[18]; 
+  currentData.makeReportOne(report);
 
   hid_device_send_interrupt_message(hidCID, &report[0], sizeof(report));
 }
 
 void adapterLoop(btstack_timer_source_t * ts){
-  if (hidCID != 0)
-    hid_device_request_can_send_now_event(hidCID);
+  if (hidCID != 0){
+    sendReport();
+    //hid_device_request_can_send_now_event(hidCID);
+  }
 
   btstack_run_loop_set_timer(ts, GAMEPAD_PERIOD_MS);
   btstack_run_loop_add_timer(ts);
