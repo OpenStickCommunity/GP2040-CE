@@ -290,6 +290,25 @@ window.$docsify = {
 					.then(response => response.json())
 					.then(data => {
 						const releaseInfo = data;
+						/* 
+						Tries to find a board and redirects to download url based on the URL
+						e.g: https://gp2040-ce.info/#/download?RP2040AdvancedBreakoutBoard
+						*/
+						const uf2ToDownload = window.location.hash
+							.split('?')?.[1]
+							?.toLowerCase();
+						if (uf2ToDownload) {
+							releaseInfo.assets.forEach(({ browser_download_url, name }) => {
+								if (
+									name
+										.substring(name.lastIndexOf('_') + 1)
+										.replace('.uf2', '')
+										.toLowerCase() === uf2ToDownload
+								) {
+									window.location.href = browser_download_url;
+								}
+							});
+						}
 
 						this.$root.releaseNotes = releaseInfo.body;
 						this.$root.releaseVersion = releaseInfo.name;
