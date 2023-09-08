@@ -503,4 +503,6 @@ message Config
 	optional AddonOptions addonOptions = 9;
 	optional ForcedSetupOptions forcedSetupOptions = 10;
 	optional ProfileOptions profileOptions = 11;
+	
+	optional string boardConfig = 12 [(nanopb).max_length = 63];
 }
