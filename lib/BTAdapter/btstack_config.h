@@ -1,6 +1,8 @@
 #ifndef _BTADAPTER_BTSTACK_CONFIG_H
 #define _BTADAPTER_BTSTACK_CONFIG_H
 
+#include <stdint.h>
+
 // Taken from Standalone PICO example, adapted with Classic BT example
 
 #ifndef ENABLE_CLASSIC

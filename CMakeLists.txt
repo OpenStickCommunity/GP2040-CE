@@ -104,6 +104,8 @@ add_compile_options(-Wall
 include(compile_proto.cmake)
 compile_proto()
 
+add_compile_definitions(pico_flash_bank_get_storage_offset_func=custom_btstack_storage_offset)
+
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 

@@ -8,7 +8,6 @@ If you use this as is, be ready to mess with Bluetooth in your settings a lot, a
 - Integrate Async framework around main core loop, and run BTStack on the main core if Bluetooth is enabled.
 - Make the XInput mappings sane (I just winged them as a proof of concept.)
 - Add support for modes other than XInput/HID
-- Manually set the flash memory offset, ensure that BTStack and the config aren't corrupting each other.
 - Investigate why reconnecting consistently causes driver failures.
 - Optimize report packing
 - Don't run send loop if we aren't connected

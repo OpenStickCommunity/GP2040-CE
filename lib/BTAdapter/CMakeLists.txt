@@ -5,5 +5,9 @@ pico_stdlib
 pico_btstack_classic
 pico_btstack_cyw43
 pico_cyw43_arch_none
+hardware_flash
+hardware_exception
+pico_flash
+FlashPROM
 )
 target_include_directories(BTAdapter PRIVATE ${CMAKE_CURRENT_LIST_DIR})

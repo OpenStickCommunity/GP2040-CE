@@ -40,10 +40,10 @@ void FlashPROM::start()
 	to commit in that timeframe, we'll hold off until the user is done sending changes. */
 void FlashPROM::commit()
 {
-	//while (is_spin_locked(flashLock));
-	//if (flashWriteAlarm != 0)
-	//	cancel_alarm(flashWriteAlarm);
-	//flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, writeCache, true);
+	while (is_spin_locked(flashLock));
+	if (flashWriteAlarm != 0)
+		cancel_alarm(flashWriteAlarm);
+	flashWriteAlarm = add_alarm_in_ms(EEPROM_WRITE_WAIT, writeToFlash, writeCache, true);
 }
 
 void FlashPROM::reset()
