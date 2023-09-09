@@ -254,7 +254,7 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
                         fill
                     >
                         {WII_EXTENSION_CONTROLS.map((controlObj, controlID) => (
-                            <Tab eventKey={`wii${controlObj.id}Config`} title={t(`WiiAddon:controller-${controlObj.id.toLowerCase()}`)}>
+                            <Tab key={`wii-addon-controller-${controlID}`} eventKey={`wii${controlObj.id}Config`} title={t(`WiiAddon:controller-${controlObj.id.toLowerCase()}`)}>
                                 <Row className="mb-3">
                                     {controlObj.inputs.digital?.length > 0 ? <h1>{t('WiiAddon:section-digital')}</h1> : ''}
                                     {controlObj.inputs.digital?.map((buttonObj,buttonID) => (
@@ -272,7 +272,7 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
 
                                     {controlObj.inputs.analog?.length > 0 ? <h1>{t('WiiAddon:section-analog')}</h1> : ''}
                                     {controlObj.inputs.analog?.map((analogObj,analogID) => (
-                                        <div className="row">
+                                        <div className="row" key={`analog-input-${analogID}`}>
                                             <div className="col-sm-1 mb-2" key={`wiiExtensionController${controlObj.id}Analog${analogID}`}>
                                                 {t(`WiiAddon:controller-analog-${analogObj.id.toLowerCase()}`)}
                                             </div>
