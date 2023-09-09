@@ -163,27 +163,11 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 * `I2C Block` - The block of I2C to use (i2c0 or i2c1).
 * `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, or `400000` for fast.
 
-Supported Extension Controllers and their mapping is as follows:
-
-| GP2040-CE | Nunchuck | Classic      | Guitar Hero Guitar |
-|-----------|----------|--------------|--------------------|
-| B1        | C        | B            | Green              |
-| B2        | Z        | A            | Red                |
-| B3        |          | Y            | Blue               |
-| B4        |          | X            | Yellow             |
-| L1        |          | L            |                    |
-| L2        |          | ZL           |                    |
-| R1        |          | R            |                    |
-| R2        |          | ZR           |                    |
-| S1        |          | Select       |                    |
-| S2        |          | Start        |                    |
-| A1        |          | Home         |                    |
-| D-Pad     |          | D-Pad        | Strum Up/Down      |
-| Analog    | Left     | Left & Right | Left               |
-
-Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Controllers. 
+Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Controllers.
 
 Original Classic Controller L & R triggers are analog sensitive, where Pro triggers are not.
+
+Due to an accessory hardware issue, Drum & DJ turntable controllers may require hot-swapping from a Nunchuk or Classic controller before being usable.
 
 ## SNES Input
 

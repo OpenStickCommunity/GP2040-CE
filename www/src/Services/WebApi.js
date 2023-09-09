@@ -73,6 +73,75 @@ export const baseProfileOptions = {
 	],
 };
 
+export const baseWiiControls = {
+    "nunchuk.analogStick.axisType": 1,
+    "nunchuk.buttonC": 1,
+    "nunchuk.buttonZ": 2,
+    "classic.analogLeftStick.x.axisType": 1,
+    "classic.analogLeftStick.y.axisType": 2,
+    "classic.analogRightStick.x.axisType": 3,
+    "classic.analogRightStick.y.axisType": 4,
+    "classic.analogLeftTrigger.axisType": 7,
+    "classic.analogRightTrigger.axisType": 8,
+    "classic.buttonA": 2,
+    "classic.buttonB": 1,
+    "classic.buttonX": 8,
+    "classic.buttonY": 4,
+    "classic.buttonL": 64,
+    "classic.buttonR": 128,
+    "classic.buttonZL": 16,
+    "classic.buttonZR": 32,
+    "classic.buttonMinus": 256,
+    "classic.buttonHome": 4096,
+    "classic.buttonPlus": 512,
+    "classic.buttonUp": 65536,
+    "classic.buttonDown": 131072,
+    "classic.buttonLeft": 262144,
+    "classic.buttonRight": 524288,
+    "guitar.analogStick.x.axisType": 1,
+    "guitar.analogStick.y.axisType": 2,
+    "guitar.analogWhammyBar.axisType": 14,
+    "guitar.buttonOrange": 64,
+    "guitar.buttonRed": 2,
+    "guitar.buttonBlue": 4,
+    "guitar.buttonGreen": 1,
+    "guitar.buttonYellow": 8,
+    "guitar.buttonPedal": 128,
+    "guitar.buttonMinus": 256,
+    "guitar.buttonPlus": 512,
+    "guitar.buttonStrumUp": 65536,
+    "guitar.buttonStrumDown": 131072,
+    "drum.analogStick.x.axisType": 1,
+    "drum.analogStick.y.axisType": 2,
+    "drum.buttonOrange": 64,
+    "drum.buttonRed": 2,
+    "drum.buttonBlue": 8,
+    "drum.buttonGreen": 1,
+    "drum.buttonYellow": 4,
+    "drum.buttonPedal": 128,
+    "drum.buttonMinus": 256,
+    "drum.buttonPlus": 512,
+    "turntable.analogStick.x.axisType": 1,
+    "turntable.analogStick.y.axisType": 2,
+    "turntable.analogLeftTurntable.axisType": 13,
+    "turntable.analogRightTurntable.axisType": 15,
+    "turntable.analogFader.axisType": 7,
+    "turntable.analogEffects.axisType": 8,
+    "turntable.buttonLeftGreen": 262144,
+    "turntable.buttonLeftRed": 65536,
+    "turntable.buttonLeftBlue": 524288,
+    "turntable.buttonRightGreen": 4,
+    "turntable.buttonRightRed": 8,
+    "turntable.buttonRightBlue": 2,
+    "turntable.buttonEuphoria": 32,
+    "turntable.buttonMinus": 256,
+    "turntable.buttonPlus": 512,
+    "taiko.buttonDonLeft": 262144,
+    "taiko.buttonKatLeft": 64,
+    "taiko.buttonDonRight": 1,
+    "taiko.buttonKatRight": 128,
+};
+
 async function resetSettings() {
 	return axios
 		.get(`${baseUrl}/api/resetSettings`)
@@ -434,6 +503,36 @@ async function setPS4Options(options) {
 		});
 }
 
+async function getWiiControls(setLoading) {
+	setLoading(true);
+
+    try {
+		const response = await axios.get(`${baseUrl}/api/getWiiControls`);
+		setLoading(false);
+
+		let mappings = { ...baseWiiControls, ...response.data };
+		return mappings;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
+}
+
+async function setWiiControls(mappings) {
+    console.dir(mappings);
+
+	return axios
+		.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
 async function getFirmwareVersion(setLoading) {
 	setLoading(true);
 
@@ -534,6 +633,8 @@ const WebApi = {
 	getAddonsOptions,
 	setAddonsOptions,
 	setPS4Options,
+	getWiiControls,
+	setWiiControls,
 	getSplashImage,
 	setSplashImage,
 	getFirmwareVersion,
