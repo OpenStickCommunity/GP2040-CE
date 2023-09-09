@@ -25,7 +25,10 @@
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+
+#ifdef ENABLE_BTADAPTER
 #include "BTInterface.h"
+#endif
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -137,11 +140,13 @@ void GP2040::setup() {
   gpContext = this;
 }
 
+#ifdef ENABLE_BTADAPTER
 void btTickGamepad(uint8_t (&reportBuffer)[17]) {
   assert(gpContext);
   gpContext->tick();
   Storage::getInstance().GetProcessedGamepad()->fillXInputBtReport(reportBuffer);
 }
+#endif
 
 void GP2040::tick() {
   Gamepad * gamepad = Storage::getInstance().GetGamepad();
@@ -172,9 +177,12 @@ void GP2040::tick() {
 void GP2040::run() {
   const bool configMode = Storage::getInstance().GetConfigMode();
   Gamepad * gamepad = Storage::getInstance().GetGamepad();
+
+#ifdef ENABLE_BTADAPTER
   if( !configMode && gamepad->getOptions().enableBluetooth ){
     setupBTInterface(); // this never returns
   }
+#endif
   
 	while (1) { // LOOP
 		// Config Loop (Web-Config does not require gamepad)

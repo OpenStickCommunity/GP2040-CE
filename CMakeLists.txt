@@ -104,7 +104,13 @@ add_compile_options(-Wall
 include(compile_proto.cmake)
 compile_proto()
 
-add_compile_definitions(pico_flash_bank_get_storage_offset_func=custom_btstack_storage_offset)
+if(DEFINED ENV{PICO_BOARD})
+  if($ENV{PICO_BOARD} MATCHES "pico_w")
+    SET(ENABLE_BTADAPTER)
+    add_compile_definitions(ENABLE_BTADAPTER=1)
+    add_compile_definitions(pico_flash_bank_get_storage_offset_func=custom_btstack_storage_offset)
+  endif()
+endif()
 
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
@@ -190,11 +196,14 @@ SNESpad
 pico_mbedtls
 TinyUSB_Gamepad
 nanopb
-BTAdapter
 hardware_flash
 hardware_exception
 pico_flash
 )
+
+if(DEFINED ENABLE_BTADAPTER)
+  target_link_libraries(${PROJECT_NAME})
+endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 headers
