@@ -106,7 +106,7 @@ compile_proto()
 
 if(DEFINED ENV{PICO_BOARD})
   if($ENV{PICO_BOARD} MATCHES "pico_w")
-    SET(ENABLE_BTADAPTER)
+    SET(ENABLE_BTADAPTER 1)
     add_compile_definitions(ENABLE_BTADAPTER=1)
     add_compile_definitions(pico_flash_bank_get_storage_offset_func=custom_btstack_storage_offset)
   endif()
@@ -202,7 +202,7 @@ pico_flash
 )
 
 if(DEFINED ENABLE_BTADAPTER)
-  target_link_libraries(${PROJECT_NAME})
+  target_link_libraries(${PROJECT_NAME} BTAdapter)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
