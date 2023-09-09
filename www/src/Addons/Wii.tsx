@@ -103,7 +103,7 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
         .reduce(
             (o, i) => {
                 let modeID = i.value;
-                let joyMode = WII_JOYSTICK_MODES.filter((o,i) => o.value == modeID)[0];
+                let joyMode = getJoystickMode(modeID);
                 if (joyMode && joyMode.options) {
                     let r = o;
                     Object.keys(joyMode.options).forEach(key => {
@@ -128,19 +128,12 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
         }
     };
 
-    const setWiiControlEntry = (controlID,buttonID,e) => {
-        let controlEntry = {};
-        controlEntry[`${controlID.toLowerCase()}.button${buttonID}`] = e.target.value;
-        setWiiControls(controls => ({
-            ...wiiControls,
-            ...controlEntry
-        }));
-    };
+    const getJoystickMode = (searchValue: number) => WII_JOYSTICK_MODES.find(({ value }) => parseInt(value) === parseInt(searchValue));
 
     const setWiiAnalogEntry = (controlID,analogID,e) => {
         let analogEntry = {};
         let modeID = e.target.value;
-        let joyMode = WII_JOYSTICK_MODES.filter((o,i) => o.value == modeID)[0];
+        let joyMode = getJoystickMode(modeID);
         if (joyMode && joyMode.options) {
             let r = analogEntry;
             Object.keys(joyMode.options).forEach(key => {
@@ -267,7 +260,7 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
                                     {controlObj.inputs.digital?.map((buttonObj,buttonID) => (
                                         <div className="col-sm-12 col-md-6 col-lg-2 mb-2" key={`wiiExtensionController${controlObj.id}Digital${buttonID}`}>
                                             <label className="form-label" htmlFor={`wiiExtensionController${controlObj.id}Button${buttonObj.id}`}>{t(`WiiAddon:controller-button-${buttonObj.id.toLowerCase()}`)}</label>
-                                            <select className="form-select-sm form-control wii-buttons" controlid={`${controlObj.id.toLowerCase()}`} buttonid={`${buttonObj.id}`} id={`wiiExtensionController${controlObj.id}Button${buttonObj.id}`} value={wiiControls[controlObj.id.toLowerCase()+'.button'+buttonObj.id]} onChange={(e) => setWiiControlEntry(controlObj.id, buttonObj.id, e)}>
+                                            <select className="form-select-sm form-control wii-buttons" controlid={`${controlObj.id.toLowerCase()}`} buttonid={`${buttonObj.id}`} id={`wiiExtensionController${controlObj.id}Button${buttonObj.id}`} value={wiiControls[controlObj.id.toLowerCase()+'.button'+buttonObj.id]} onChange={(e) => setWiiControls((controls) => ({...controls,[`${controlObj.id.toLowerCase()}.button${buttonObj.id}`]: e.target.value,}))}>
                                             {BUTTON_MASKS.map((o, i) => (
                                                 <option key={`wiiExtensionController${controlObj.id}Button${buttonObj.id}-option-${i}`} value={o.value}>
                                                     {o.label}
