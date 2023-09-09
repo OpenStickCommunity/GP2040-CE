@@ -1552,6 +1552,9 @@ std::string getFirmwareVersion()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	writeDoc(doc, "version", GP2040VERSION);
+	writeDoc(doc, "boardConfigLabel", BOARD_CONFIG_LABEL);
+	writeDoc(doc, "boardConfigFileName", BOARD_CONFIG_FILE_NAME);
+	writeDoc(doc, "boardConfig", GP2040_BOARDCONFIG);
 	return serialize_json(doc);
 }
 

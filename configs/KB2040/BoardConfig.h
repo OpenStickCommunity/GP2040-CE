@@ -5,8 +5,9 @@
 
 #ifndef PICO_BOARD_CONFIG_H_
 #define PICO_BOARD_CONFIG_H_
+#include "enums.pb.h"
 
-#include <GamepadEnums.h>
+#define BOARD_CONFIG_LABEL "Flatbox Rev. 5 Southpaw"
 
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too. 
