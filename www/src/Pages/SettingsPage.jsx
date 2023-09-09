@@ -127,6 +127,7 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(PS4_MODES.map((o) => o.value))
 		.label('PS4 Controller Type'),
+  enableBluetooth: yup.number().required().label('Enable Bluetooth'),
 });
 
 const FormContext = ({ setButtonLabels }) => {
@@ -159,6 +160,7 @@ const FormContext = ({ setButtonLabels }) => {
 			values.profileNumber = parseInt(values.profileNumber);
 		if (!!values.ps4ControllerType)
 			values.ps4ControllerType = parseInt(values.ps4ControllerType);
+      if (!!values.enableBluetooth) values.enableBluetooth = parseInt(values.enableBluetooth);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -397,16 +399,21 @@ export default function SettingsPage() {
 										</Form.Control.Feedback>
 									</div>
 								</Form.Group>
-								<Form.Check
-									label={t('SettingsPage:4-way-joystick-mode-label')}
-									type="switch"
-									id="fourWayMode"
-									isInvalid={false}
-									checked={Boolean(values.fourWayMode)}
-									onChange={(e) => {
-										setFieldValue('fourWayMode', e.target.checked ? 1 : 0);
-									}}
-								/>
+                <Form.Group className="row mb-3"></Form.Group>
+                  <Form.Label>
+										{t('SettingsPage:4-way-joystick-mode-label')}
+									</Form.Label>
+                  <div className="col-sm-3">
+                    <Form.Check
+                        type="switch"
+                        id="fourWayMode"
+                        isInvalid={false}
+                        checked={Boolean(values.fourWayMode)}
+                        onChange={(e) => {
+                          setFieldValue('fourWayMode', e.target.checked ? 1 : 0);
+                        }}
+                      />
+                  </div>
 								<Form.Group className="row mb-3">
 									<Form.Label>
 										{t('SettingsPage:profile-number-label')}
@@ -414,7 +421,6 @@ export default function SettingsPage() {
 									<div className="col-sm-3">
 										<Form.Control
 											type="number"
-											className="row mb-3"
 											value={values.profileNumber}
 											min={1}
 											max={4}
@@ -426,6 +432,22 @@ export default function SettingsPage() {
 												);
 											}}
 										></Form.Control>
+									</div>
+								</Form.Group>
+                <Form.Group className="row mb-3">
+									<Form.Label>
+										{t('SettingsPage:bluetooth-enable-label')}
+									</Form.Label>
+									<div className="col-sm-3">
+                    <Form.Check
+                        type="switch"
+                        id="enableBluetooth"
+                        isInvalid={false}
+                        checked={Boolean(values.enableBluetooth)}
+                        onChange={(e) => {
+                          setFieldValue('enableBluetooth', e.target.checked ? 1 : 0);
+                        }}
+                      />
 									</div>
 								</Form.Group>
 							</Section>

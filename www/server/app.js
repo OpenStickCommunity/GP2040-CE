@@ -94,6 +94,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		fnButtonPin: -1,
 		profileNumber: 1,
 		ps4ControllerType: 0,
+    enableBluetooth: 0,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
@@ -154,6 +155,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 			buttonsMask: 0,
 			action: 0,
 		},
+    enableBluetooth: 0
 	});
 });
 

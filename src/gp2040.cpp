@@ -170,12 +170,12 @@ void GP2040::tick() {
 }
 
 void GP2040::run() {
-  if(Storage::getInstance().GetBtMode()){
+  const bool configMode = Storage::getInstance().GetConfigMode();
+  Gamepad * gamepad = Storage::getInstance().GetGamepad();
+  if( !configMode && gamepad->getOptions().enableBluetooth ){
     setupBTInterface(); // this never returns
   }
-
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	const bool configMode = Storage::getInstance().GetConfigMode();
+  
 	while (1) { // LOOP
 		// Config Loop (Web-Config does not require gamepad)
     if (configMode == true) {

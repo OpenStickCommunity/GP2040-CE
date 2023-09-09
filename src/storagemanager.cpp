@@ -171,7 +171,6 @@ void Storage::setFunctionalPinMappings(const uint32_t profileNum)
 void Storage::SetConfigMode(bool mode) { // hack for config mode
 	CONFIG_MODE = mode;
 	previewDisplayOptions = config.displayOptions;
-  if(mode) BLUETOOTH_MODE = false;
 }
 
 bool Storage::GetConfigMode()
