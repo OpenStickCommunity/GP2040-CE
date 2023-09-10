@@ -370,28 +370,28 @@ message DualDirectionalOptions
 message TiltOptions
 {
 	optional bool enabled = 1;
-	optional int32 tilt1Pin = 1;
-	optional int32 tilt2Pin = 2;
-	optional int32 tiltFunctionPin = 3;
-	optional int32 tiltLeftAnalogUpPin = 4;
-	optional int32 tiltLeftAnalogDownPin = 5;
-	optional int32 tiltLeftAnalogLeftPin = 6;
-	optional int32 tiltLeftAnalogRightPin = 7;
-	optional int32 tiltRightAnalogUpPin = 8;
-	optional int32 tiltRightAnalogDownPin = 9;
-	optional int32 tiltRightAnalogLeftPin = 10;
-	optional int32 tiltRightAnalogRightPin = 11;
+	optional int32 tilt1Pin = 2;
+	optional int32 tilt2Pin = 3;
+	optional int32 tiltFunctionPin = 4;
+	optional int32 tiltLeftAnalogUpPin = 5;
+	optional int32 tiltLeftAnalogDownPin = 6;
+	optional int32 tiltLeftAnalogLeftPin = 7;
+	optional int32 tiltLeftAnalogRightPin = 8;
+	optional int32 tiltRightAnalogUpPin = 9;
+	optional int32 tiltRightAnalogDownPin = 10;
+	optional int32 tiltRightAnalogLeftPin = 11;
+	optional int32 tiltRightAnalogRightPin = 12;
 
-	optional SOCDMode tiltSOCDMode = 12;
+	optional SOCDMode tiltSOCDMode = 13;
 	
-	optional int32 factorTilt1LeftX =  13;
-	optional int32 factorTilt1LeftY =  14;
-	optional int32 factorTilt1RightX =  15;
-	optional int32 factorTilt1RightY =  16;
-	optional int32 factorTilt2LeftX =  17;
-	optional int32 factorTilt2LeftY =  18;
-	optional int32 factorTilt2RightX =  19;
-	optional int32 factorTilt2RightY =  20;
+	optional int32 factorTilt1LeftX =  14;
+	optional int32 factorTilt1LeftY =  15;
+	optional int32 factorTilt1RightX =  16;
+	optional int32 factorTilt1RightY =  17;
+	optional int32 factorTilt2LeftX =  18;
+	optional int32 factorTilt2LeftY =  19;
+	optional int32 factorTilt2RightX =  20;
+	optional int32 factorTilt2RightY =  21;
 
 message BuzzerOptions
 {
