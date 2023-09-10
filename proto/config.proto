@@ -370,7 +370,7 @@ message DualDirectionalOptions
 message TiltOptions
 {
 	optional bool enabled = 1;
-	
+
 	optional int32 tilt1Pin = 2;
 	optional int32 tilt2Pin = 3;
 	optional int32 tiltFunctionPin = 4;
@@ -393,6 +393,7 @@ message TiltOptions
 	optional int32 factorTilt2LeftY =  19;
 	optional int32 factorTilt2RightX =  20;
 	optional int32 factorTilt2RightY =  21;
+}
 
 message BuzzerOptions
 {
