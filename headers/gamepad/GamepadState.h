@@ -74,6 +74,10 @@
 #define GAMEPAD_JOYSTICK_MID 0x7FFF
 #define GAMEPAD_JOYSTICK_MAX 0xFFFF
 
+#define GAMEPAD_TRIGGER_MIN 0
+#define GAMEPAD_TRIGGER_MID 0x7F
+#define GAMEPAD_TRIGGER_MAX 0xFF
+
 /**
  * @brief AUX defines --- gamepad state that doesn't translate to an output button/dpad/etc.
  */
