@@ -134,6 +134,8 @@ void GP2040::run() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 	bool configMode = Storage::getInstance().GetConfigMode();
+	uint8_t * featureData = Storage::getInstance().GetFeatureData();
+	memset(featureData, 0, 32); // X-Input is the only feature data currently supported
 	while (1) { // LOOP
 		Storage::getInstance().performEnqueuedSaves();
 		// Config Loop (Web-Config does not require gamepad)
@@ -166,12 +168,14 @@ void GP2040::run() {
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
-		if ( send_report(gamepad->getReport(), gamepad->getReportSize()) == true ) {
-			Storage::getInstance().ClearFeatureData();
-			receive_report(Storage::getInstance().GetFeatureData());
-			// Process USB Reports
-			addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
-		}
+		send_report(gamepad->getReport(), gamepad->getReportSize());
+		
+		// GET USB REPORT (If Endpoint Available)
+		receive_report(featureData);
+
+		// Process USB Report Addons
+		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
+		
 		tud_task(); // TinyUSB Task update
 	}
 }
