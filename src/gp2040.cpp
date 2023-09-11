@@ -40,7 +40,7 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
-GP2040::GP2040() : nextRuntime(0) {
+GP2040::GP2040() {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 }
@@ -139,20 +139,12 @@ void GP2040::run() {
 		// Config Loop (Web-Config does not require gamepad)
 		if (configMode == true) {
 			ConfigManager::getInstance().loop();
-
 			gamepad->read();
 			rebootHotkeys.process(gamepad, configMode);
-
 			continue;
 		}
 
 		USBHostManager::getInstance().process();
-
-		// We can't send faster than USB can poll
-		if (nextRuntime > getMicro()) { // fix for unsigned
-			sleep_us(50); // Give some time back to our CPU (lower power consumption)
-			continue;
-		}
 
 		// Gamepad Features
 		gamepad->read(); 	// gpio pin reads
@@ -174,16 +166,13 @@ void GP2040::run() {
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
-		send_report(gamepad->getReport(), gamepad->getReportSize());
-		Storage::getInstance().ClearFeatureData();
-		receive_report(Storage::getInstance().GetFeatureData());
-
-		// Process USB Reports
-		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
-
+		if ( send_report(gamepad->getReport(), gamepad->getReportSize()) == true ) {
+			Storage::getInstance().ClearFeatureData();
+			receive_report(Storage::getInstance().GetFeatureData());
+			// Process USB Reports
+			addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);
+		}
 		tud_task(); // TinyUSB Task update
-
-		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
 	}
 }
 
