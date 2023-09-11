@@ -5,20 +5,26 @@
 
 // Taken from Standalone PICO example, adapted with Classic BT example
 
+
 #ifndef ENABLE_CLASSIC
 #error Please link to pico_btstack_classic
 #endif
 
-// BTstack features that can be enabled
-//
-#ifdef ENABLE_BLE
-#define ENABLE_LE_PERIPHERAL
-#define ENABLE_LE_CENTRAL
-#define ENABLE_L2CAP_LE_CREDIT_BASED_FLOW_CONTROL_MODE
+#ifndef ENABLE_BLE
+#error Please link to pico_btstack_ble
 #endif
 
-#define ENABLE_LOG_INFO
-#define ENABLE_LOG_ERROR
+#define ENABLE_LE_PERIPHERAL
+//#define ENABLE_LE_CENTRAL // might be uneeded
+#define ENABLE_L2CAP_LE_CREDIT_BASED_FLOW_CONTROL_MODE
+#define ENABLE_LE_SECURE_CONNECTIONS
+
+// DO NOT enable, for some reason this does not work and will cause auth failures when the host starts encryption, probably an issue with cyw43
+// instead we just simple-pair reauth the connection
+//#define ENABLE_CROSS_TRANSPORT_KEY_DERIVATION
+
+// #define ENABLE_LOG_INFO
+// #define ENABLE_LOG_ERROR
 #define ENABLE_PRINTF_HEXDUMP
 
 // for the client
@@ -39,7 +45,7 @@
 #define MAX_NR_BTSTACK_LINK_KEY_DB_MEMORY_ENTRIES  2
 
 
-#define MAX_NR_HCI_CONNECTIONS 1 // 1 in std, 2 in classic
+#define MAX_NR_HCI_CONNECTIONS 2 // 1 in std, 2 in classic
 
 // classic only
 #define MAX_NR_HID_HOST_CONNECTIONS 1
@@ -53,7 +59,7 @@
 #define MAX_NR_SERVICE_RECORD_ITEMS 4
 
 
-#define MAX_NR_SM_LOOKUP_ENTRIES 3 // both
+#define MAX_NR_SM_LOOKUP_ENTRIES 4 // both
 #define MAX_NR_WHITELIST_ENTRIES 16 // both
 #define MAX_NR_LE_DEVICE_DB_ENTRIES 16 // both
 
@@ -64,16 +70,16 @@
 // Enable and configure HCI Controller to Host Flow Control to avoid cyw43 shared bus overrun
 #define ENABLE_HCI_CONTROLLER_TO_HOST_FLOW_CONTROL // both
 #define HCI_HOST_ACL_PACKET_LEN 1024 // (255+4) in std, 1024 in classic
-#define HCI_HOST_ACL_PACKET_NUM 3 // both
+#define HCI_HOST_ACL_PACKET_NUM 4 // both
 #define HCI_HOST_SCO_PACKET_LEN 120 // both
-#define HCI_HOST_SCO_PACKET_NUM 3 // both
+#define HCI_HOST_SCO_PACKET_NUM 4 // both
 
 // Link Key DB and LE Device DB using TLV on top of Flash Sector interface
 #define NVM_NUM_DEVICE_DB_ENTRIES 16 // both
 #define NVM_NUM_LINK_KEYS 16 // both
 
 // We don't give btstack a malloc, so use a fixed-size ATT DB.
-#define MAX_ATT_DB_SIZE 512 // both
+#define MAX_ATT_DB_SIZE 1024 // both
 
 // BTstack HAL configuration
 #define HAVE_EMBEDDED_TIME_MS // both

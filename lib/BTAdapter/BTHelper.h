@@ -1,6 +1,9 @@
 #ifndef BT_HELPER_H_
 #define BT_HELPER_H_
 
+#include <array>
+#include <string_view>
+
 void printEventType(uint8_t *packet) {
 
   const unsigned int event_type = hci_event_packet_get_type(packet);
@@ -28,7 +31,7 @@ void printEventType(uint8_t *packet) {
     "HARDWARE_ERROR",
     "FLUSH_OCCURRED",
     "ROLE_CHANGE",
-    "NUMBER_OF_COMPLETED_PACKETS", // ignored
+    0, // ignored
 
     "MODE_CHANGE",
     "RETURN_LINK_KEYS",
@@ -86,7 +89,7 @@ void printEventType(uint8_t *packet) {
     case BTSTACK_EVENT_SCAN_MODE_CHANGED: printf("Type: BTSTACK_EVENT_SCAN_MODE_CHANGED\n"); break;
     case BTSTACK_EVENT_NR_CONNECTIONS_CHANGED: printf("Type: BTSTACK_EVENT_NR_CONNECTIONS_CHANGED\n"); break;
 
-    case HCI_EVENT_TRANSPORT_PACKET_SENT: printf("Type: HCI_EVENT_TRANSPORT_PACKET_SENT\n"); break;
+    case HCI_EVENT_TRANSPORT_PACKET_SENT: /*printf("Type: HCI_EVENT_TRANSPORT_PACKET_SENT\n");*/ break;
     case HCI_EVENT_HID_META: printf("Type: HCI_EVENT_HID_META\n"); break;
     case HCI_EVENT_VENDOR_SPECIFIC: printf("Type: HCI_EVENT_VENDOR_SPECIFIC\n"); break;
     
@@ -154,12 +157,47 @@ void printEventType(uint8_t *packet) {
     case SM_EVENT_IDENTITY_RESOLVING_FAILED: printf("Type: SM_EVENT_IDENTITY_RESOLVING_FAILED\n"); break;
     case SM_EVENT_IDENTITY_RESOLVING_SUCCEEDED: printf("Type: SM_EVENT_IDENTITY_RESOLVING_SUCCEEDED\n"); break;
     case SM_EVENT_IDENTITY_CREATED: printf("Type: SM_EVENT_IDENTITY_CREATED\n"); break;
-    case SM_EVENT_PAIRING_COMPLETE: printf("Type: SM_EVENT_PAIRING_COMPLETE\n"); break;
+    case SM_EVENT_PAIRING_COMPLETE: 
+      switch (sm_event_pairing_complete_get_status(packet)){
+                case ERROR_CODE_SUCCESS:
+                    printf("Pairing complete, success\n");
+                    break;
+                case ERROR_CODE_CONNECTION_TIMEOUT:
+                    printf("Pairing failed, timeout\n");
+                    break;
+                case ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION:
+                    printf("Pairing failed, disconnected\n");
+                    break;
+                case ERROR_CODE_AUTHENTICATION_FAILURE:
+                    printf("Pairing failed, authentication failure with reason = %u\n", sm_event_pairing_complete_get_reason(packet));
+                    break;
+                default:
+                    break;
+            }
+            break;
     case SM_EVENT_REENCRYPTION_STARTED: printf("Type: SM_EVENT_REENCRYPTION_STARTED\n"); break;
     case SM_EVENT_REENCRYPTION_COMPLETE: printf("Type: SM_EVENT_REENCRYPTION_COMPLETE\n"); break;
 
     default: printf("Type: %x\n", event_type); break;
   }
 }
+
+
+#define BUILD_STR_ROW(tid, input_str) {\
+  constexpr auto data = std::string_view(input_str); \
+  static_assert(data.size()+1 <= 255, "BLE AD row is too long"); \
+  result[offset++] = (uint8_t)data.size() + 1; \
+  result[offset++] = tid; \
+  for(std::size_t i=0; i < data.size(); ++i) result[offset++] = data[i]; \
+}
+
+#define NUMARGS(...)  ()
+#define BUILD_DAT_ROW(...) { \
+  constexpr uint8_t data[] = {__VA_ARGS__}; \
+  static_assert(sizeof(data) <= 255, "BLE AD row is too long"); \
+  result[offset++] = (uint8_t)sizeof(data); \
+  for(std::size_t i=0; i < sizeof(data); ++i) result[offset++] = data[i]; \
+}
+
 
 #endif

@@ -4,13 +4,42 @@ This is an extremely WIP integration of the BTStack Bluetooth framework.
 If you use this as is, be ready to mess with Bluetooth in your settings a lot, as this frequently refuses to connect.
 
 ## Todo:
-- BLE transport handoff to BR/EDR (will improve the time it takes for the device to appear when connecting.)
-- Integrate Async framework around main core loop, and run BTStack on the main core if Bluetooth is enabled.
-- Make the XInput mappings sane (I just winged them as a proof of concept.)
-- Add support for modes other than XInput/HID
-- Investigate why reconnecting consistently causes driver failures.
-- Optimize report packing
-- Don't run send loop if we aren't connected
+- Keep testing BLE transport handoff to BR/EDR
+- Clean up Integration of Async framework around main core loop
+- Clean up XInput mappings
+  - They are more sane/documented now, but likely still odd
+- Add support for modes other than XInput
+  - I (pbozi) don't have other controllers to dump BT interactions from
+  - keyboard is a viable next target
+- Investigate why reconnecting consistently causes driver failures. (Fixed?)
+- Optimize report packing and descriptors
+- Add Bluetooth mode preference (default/fallback if no USB)
+- Add Battery support
+- Automatic reconnect to known host on boot of device, so you don't have to manually pair each time.
+
+
+## What's what
+
+- BTAdapter.cpp
+  - This is the "core" file of the bluetooth driver, it contains the setup and hooks into BTStack.
+- BTAdapter.h 
+  - provides hook for updating controller inputs from main tick function (replace with extern?)
+- BTInterface.cpp / BTInterface.h
+  - Sets up and call BTAdapter code (merge into BTAdapter.cpp?)
+- BTHelper.h
+  - provides callback debug printing method and helpers for building AD data
+- BTAdapter.gatt
+  - This is a BTStack markup file for the GATT database, it is compiled via compile_gatt.py (pico-sdk/lib/btstack/tools) into GATT.h
+- GATT.h
+  - auto-compiled GATT static database and dynamic GATT attribute handles (integrate generation via cmake, move from src to build)
+- btstack_config.h
+  - compilation definitions for BTStack features and target platform capabilities
+- descriptor.h
+  - XInput/HID descriptors
+
+## BLE Handoff Work (warning: jargon ahead)
+
+To support connection to more modern devices that do not support (or are slow to scan) classic device discovery. We should support BR/EDR handoff from BLE, an extension of TDS handoff. All that this means is that the device "advertises" itself on the more modern (but for our purposes not usable) BLE standard. Then when a device connects via BLE, we tell them to connect via classic instead. Currently the BLE TDS system seems to work somewhat. Windows connects via BLE then using the data in the TDS AD data (part of the BLE AD data) it immediately connects on classic as well. TDS GATT system is incomplete. This is hard to finish because Windows is bypassing it in favor of the AD data (which is allowed by the standard, but makes debugging hard.) So if AD data fails the GATT data won't currently work. 
 
 ## HERE BE DRAGONS
 
@@ -41,7 +70,7 @@ If it STILL doesn't work:
 5) restart your computer
 
 
-USEFUL STUFF
+## USEFUL STUFF
 
 Pico W SDK Notes:
 https://github.com/raspberrypi/pico-sdk/releases/tag/1.5.0
