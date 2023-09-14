@@ -965,10 +965,10 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         DualDirectionalOptions& dualDirectionalOptions = config.addonOptions.dualDirectionalOptions;
         config.addonOptions.has_dualDirectionalOptions = true;
         SET_PROPERTY(dualDirectionalOptions, enabled, legacyAddonOptions.DualDirectionalInputEnabled);
-        SET_PROPERTY(dualDirectionalOptions, upPin, bytePinToIntPin(legacyAddonOptions.pinDualDirUp));
-        SET_PROPERTY(dualDirectionalOptions, downPin, bytePinToIntPin(legacyAddonOptions.pinDualDirDown));
-        SET_PROPERTY(dualDirectionalOptions, leftPin, bytePinToIntPin(legacyAddonOptions.pinDualDirLeft));
-        SET_PROPERTY(dualDirectionalOptions, rightPin, bytePinToIntPin(legacyAddonOptions.pinDualDirRight));
+        SET_PROPERTY(dualDirectionalOptions, deprecatedUpPin, bytePinToIntPin(legacyAddonOptions.pinDualDirUp));
+        SET_PROPERTY(dualDirectionalOptions, deprecatedDownPin, bytePinToIntPin(legacyAddonOptions.pinDualDirDown));
+        SET_PROPERTY(dualDirectionalOptions, deprecatedLeftPin, bytePinToIntPin(legacyAddonOptions.pinDualDirLeft));
+        SET_PROPERTY(dualDirectionalOptions, deprecatedRightPin, bytePinToIntPin(legacyAddonOptions.pinDualDirRight));
         if (isValidDpadMode(legacyAddonOptions.dualDirDpadMode))
         {
             SET_PROPERTY(dualDirectionalOptions, dpadMode, static_cast<DpadMode>(legacyAddonOptions.dualDirDpadMode));

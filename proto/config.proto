@@ -394,10 +394,10 @@ message DualDirectionalOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 upPin = 2;
-	optional int32 downPin = 3;
-	optional int32 leftPin = 4;
-	optional int32 rightPin = 5;
+	optional int32 deprecatedUpPin = 2;
+	optional int32 deprecatedDownPin = 3;
+	optional int32 deprecatedLeftPin = 4;
+	optional int32 deprecatedRightPin = 5;
 	
 	optional DpadMode dpadMode = 6;
 	optional uint32 combineMode = 7;

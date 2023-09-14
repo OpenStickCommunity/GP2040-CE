@@ -149,6 +149,10 @@ enum GpioAction
     BUTTON_PRESS_L3              = 17;
     BUTTON_PRESS_R3              = 18;
     BUTTON_PRESS_FN              = 19;
+    BUTTON_PRESS_DDI_UP          = 20;
+    BUTTON_PRESS_DDI_DOWN        = 21;
+    BUTTON_PRESS_DDI_LEFT        = 22;
+    BUTTON_PRESS_DDI_RIGHT       = 23;
 }
 
 enum GamepadHotkey

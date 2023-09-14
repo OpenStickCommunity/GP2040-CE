@@ -444,10 +444,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.dualDirectionalOptions
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, upPin, PIN_DUAL_DIRECTIONAL_UP);
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, downPin, PIN_DUAL_DIRECTIONAL_DOWN)
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, leftPin, PIN_DUAL_DIRECTIONAL_LEFT);
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, rightPin, PIN_DUAL_DIRECTIONAL_RIGHT);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode>(DUAL_DIRECTIONAL_STICK_MODE));
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, fourWayMode, false);
@@ -568,6 +564,7 @@ void gpioMappingsMigrationCore(Config& config)
 {
     PinMappings& deprecatedPinMappings = config.deprecatedPinMappings;
     ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
+    DualDirectionalOptions& ddiOptions = config.addonOptions.dualDirectionalOptions;
 
     const auto gamepadMaskToGpioAction = [&](uint32_t gpMask) -> GpioAction
     {
@@ -769,6 +766,36 @@ void gpioMappingsMigrationCore(Config& config)
     }
     else if (isValidPin(EXTRA_BUTTON_PIN))
 	actions[EXTRA_BUTTON_PIN] = gamepadMaskToGpioAction(EXTRA_BUTTON_MASK);
+
+    // convert DDI direction pin mapping to GPIO mapping config
+    if (ddiOptions.enabled && isValidPin(ddiOptions.deprecatedUpPin)) {
+        actions[ddiOptions.deprecatedUpPin] = GpioAction::BUTTON_PRESS_DDI_UP;
+	ddiOptions.deprecatedUpPin = -1;
+    }
+    else if (isValidPin(PIN_DUAL_DIRECTIONAL_UP)) {
+        actions[PIN_DUAL_DIRECTIONAL_UP] = GpioAction::BUTTON_PRESS_DDI_UP;
+    }
+    if (ddiOptions.enabled && isValidPin(ddiOptions.deprecatedDownPin)) {
+        actions[ddiOptions.deprecatedDownPin] = GpioAction::BUTTON_PRESS_DDI_DOWN;
+	ddiOptions.deprecatedDownPin = -1;
+    }
+    else if (isValidPin(PIN_DUAL_DIRECTIONAL_DOWN)) {
+        actions[PIN_DUAL_DIRECTIONAL_DOWN] = GpioAction::BUTTON_PRESS_DDI_DOWN;
+    }
+    if (ddiOptions.enabled && isValidPin(ddiOptions.deprecatedLeftPin)) {
+        actions[ddiOptions.deprecatedLeftPin] = GpioAction::BUTTON_PRESS_DDI_LEFT;
+	ddiOptions.deprecatedLeftPin = -1;
+    }
+    else if (isValidPin(PIN_DUAL_DIRECTIONAL_LEFT)) {
+        actions[PIN_DUAL_DIRECTIONAL_LEFT] = GpioAction::BUTTON_PRESS_DDI_LEFT;
+    }
+    if (ddiOptions.enabled && isValidPin(ddiOptions.deprecatedRightPin)) {
+        actions[ddiOptions.deprecatedRightPin] = GpioAction::BUTTON_PRESS_DDI_RIGHT;
+	ddiOptions.deprecatedRightPin = -1;
+    }
+    else if (isValidPin(PIN_DUAL_DIRECTIONAL_RIGHT)) {
+        actions[PIN_DUAL_DIRECTIONAL_RIGHT] = GpioAction::BUTTON_PRESS_DDI_RIGHT;
+    }
 
     INIT_UNSET_PROPERTY(config.gpioMappings, pin00, actions[0]);
     INIT_UNSET_PROPERTY(config.gpioMappings, pin01, actions[1]);
