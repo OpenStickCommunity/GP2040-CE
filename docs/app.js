@@ -10,12 +10,12 @@ const configData = {
 		name: 'Alpaca-OwO',
 		category: configCategories[1],
 		website: 'https://github.com/Project-Alpaca/Alpaca-OwO',
-		desc: 'Arcade controller I/O platform designed by <a target="_blank" href="https://github.com/dogtopus">dogtopus</a>.'
+		desc: 'Arcade controller I/O platform designed by <a href="https://github.com/dogtopus">dogtopus</a>.'
 	},
 	BentoBox: {
 		name: 'ScrubTier BentoBox',
 		category: configCategories[2],
-		website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/RP2040-arcade-board/configs/BentoBox',
+		website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/BentoBox',
 		desc: ''
 	},
 	DURAL: {
