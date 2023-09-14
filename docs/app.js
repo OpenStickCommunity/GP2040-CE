@@ -163,6 +163,8 @@ window.$docsify = {
 	loadSidebar: '_sidebar.md',
 	auto2top: true,
 	subMaxLevel: 3,
+	externalLinkTarget: '_self',
+	cornerExternalLinkTarget: '_self',
 	themeable: {
 		readyTransition : true, // default
 		responsiveTables: true  // default
