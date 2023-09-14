@@ -312,13 +312,19 @@ window.$docsify = {
 
 						this.$root.releaseNotes = releaseInfo.body;
 						this.$root.releaseVersion = releaseInfo.name;
-						if (window.location.hostname === 'localhost') {
-							this.$root.releases = Object.keys(this.configData)
-							.map(key => {
+
+						this.$root.releases = releaseInfo.assets
+							.filter(a => a.name.startsWith('GP2040-CE_'))
+							.filter(a => {
+								const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
+								return Object.keys(this.configData).indexOf(key) > -1;
+							})
+							.map(a => {
+								const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
 								return {
 									key,
 									...this.configData[key],
-									url: '',
+									url: a.browser_download_url,
 									img: `/assets/boards/${key}.jpg`,
 								};
 							})
@@ -336,41 +342,6 @@ window.$docsify = {
 								values[r.category].push(r);
 								return values;
 							}, { });
-						}
-						else {
-							this.$root.releases = releaseInfo.assets
-								.filter(a => a.name.startsWith('GP2040-CE_'))
-								.filter(a => {
-									const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
-									return Object.keys(this.configData).indexOf(key) > -1;
-								})
-								.map(a => {
-									const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
-									return {
-										key,
-										...this.configData[key],
-										url: a.browser_download_url,
-										img: `/assets/boards/${key}.jpg`,
-									};
-								})
-								.sort((a, b) => {
-									if (a.name < b.name) return -1;
-									if (a.name > b.name) return 1;
-									return 0;
-								})
-								.sort((a, b) => (a.pos === undefined ? Number.MAX_VALUE : a.pos) - (b.pos === undefined ? Number.MAX_VALUE : b.pos))
-								.reduce((p, r) => {
-									let values = { ...p };
-									if (!values[r.category])
-										values[r.category] = [];
-
-									values[r.category].push(r);
-									return values;
-								}, { });
-						}
-
-
-						console.log(this.$root.releases);
 
 						this.fetched = true;
 					});
