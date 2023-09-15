@@ -832,7 +832,9 @@ std::string setPinMappings()
 	DynamicJsonDocument doc = get_post_data();
 
 	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
-	// PinMappings uses -1 to denote unassigned pins
+	// PinMappings uses -1 to denote unassigned pins ---
+	// TODO: either solve for unsetting via -1 in current UI, or get help to
+	// implement a UI that supports the new model
 	const auto convertPin = [&] (const char* key, const GpioAction action) -> void
 	{
 		int pin = 0;
