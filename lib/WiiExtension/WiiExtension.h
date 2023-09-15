@@ -7,18 +7,24 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 
-#define WII_EXTENSION_NONE          -1
-#define WII_EXTENSION_NUNCHUCK      0
-#define WII_EXTENSION_CLASSIC       1
-#define WII_EXTENSION_CLASSIC_PRO   2
-#define WII_EXTENSION_DRAWSOME      3
-#define WII_EXTENSION_GUITAR        4
-#define WII_EXTENSION_DRUMS         5
-#define WII_EXTENSION_TURNTABLE     6
-#define WII_EXTENSION_TAIKO         7
-#define WII_EXTENSION_UDRAW         8
-#define WII_EXTENSION_BALANCE_BOARD 9
-#define WII_EXTENSION_MOTION_PLUS   10
+#include "extensions/Extensions.h"
+
+#define WII_EXTENSION_NONE -1
+
+typedef enum {
+    WII_EXTENSION_NUNCHUCK,
+    WII_EXTENSION_CLASSIC,
+    WII_EXTENSION_CLASSIC_PRO,
+    WII_EXTENSION_GUITAR,
+    WII_EXTENSION_DRUMS,
+    WII_EXTENSION_TURNTABLE,
+    WII_EXTENSION_TAIKO,
+    WII_EXTENSION_TRAIN,
+    WII_EXTENSION_DRAWSOME,
+    WII_EXTENSION_UDRAW,
+    WII_EXTENSION_MOTION_PLUS,
+    WII_EXTENSION_COUNT
+} WiiExtensionController;
 
 #define WII_DATA_TYPE_0             0
 #define WII_DATA_TYPE_1             1
@@ -52,6 +58,11 @@
 #define WII_EXTENSION_DEBUG false
 #endif
 
+#ifndef WII_EXTENSION_ENCRYPTION
+// if a device acts funny with "unencrypted" mode, enable this. used in very rare cases.
+#define WII_EXTENSION_ENCRYPTION false
+#endif
+
 #ifndef WII_EXTENSION_DELAY
 #define WII_EXTENSION_DELAY 300
 #endif
@@ -61,11 +72,15 @@
 #endif
 
 #ifndef WII_EXTENSION_CALIBRATION
-#define WII_EXTENSION_CALIBRATION false
+#define WII_EXTENSION_CALIBRATION true
 #endif
 
 #define WII_ALARM_NUM 0
 #define WII_ALARM_IRQ TIMER_IRQ_0
+
+#define WII_CHECKSUM_MAGIC 0x55
+#define WII_CALIBRATION_SIZE 0x10
+#define WII_CALIBRATION_CHECKSUM_SIZE 0x02
 
 static volatile bool WiiExtension_alarmFired;
 
@@ -81,123 +96,38 @@ static volatile bool WiiExtension_alarmFired;
   ((byte) & 0x01 ? '1' : '0') 
 
 #define TOUCH_BETWEEN_RANGE(val,beg,end) (((val) >= ((beg)-WII_GUITAR_TOUCHPAD_OVERLAP)) && ((val) < (end)))
+#define WII_DECRYPT_BYTE(x) (((x) ^ 0x17) + 0x17)
 
 class WiiExtension {
   protected:
-	uint8_t address;
+    uint8_t address;
   public:
     int8_t extensionType = WII_EXTENSION_NONE;
     int8_t dataType = WII_DATA_TYPE_0;
 
-    uint16_t joy1X        = 0;
-    uint16_t joy1Y        = 0;
-    uint16_t joy2X        = 0;
-    uint16_t joy2Y        = 0;
-    uint16_t accelX       = 0;
-    uint16_t accelY       = 0;
-    uint16_t accelZ       = 0;
-
-    bool buttonZ         = false;
-    bool buttonC         = false;
-    bool buttonZR        = false;
-    bool buttonZL        = false;
-    bool buttonA         = false;
-    bool buttonB         = false;
-    bool buttonX         = false;
-    bool buttonY         = false;
-    bool buttonPlus      = false;
-    bool buttonHome      = false;
-    bool buttonMinus     = false;
-    bool buttonLT        = false;
-    bool buttonRT        = false;
-
-    bool directionUp     = false;
-    bool directionDown   = false;
-    bool directionLeft   = false;
-    bool directionRight  = false;
-
-    uint16_t triggerLeft  = 0;
-    uint16_t triggerRight = 0;
-
-    bool fretGreen       = false;
-    bool fretRed         = false;
-    bool fretYellow      = false;
-    bool fretBlue        = false;
-    bool fretOrange      = false;
-    bool pedalButton     = false;
-
-    uint16_t whammyBar   = 0;
-    int8_t touchBar      = 0;
-    bool isTouched       = 0;
-
-    bool rimLeft         = false;
-    bool rimRight        = false;
-    bool drumLeft        = false;
-    bool drumRight       = false;
-
     bool isReady         = false;
 
     // Constructor 
-	WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr);
+    WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr);
 
     // Methods
     void begin();
-	void reset();
-  	void start();
-  	void poll();
+    void reset();
+    void start();
+    void poll();
+
+    ExtensionBase* getController() { return extensionController; };
   private:
-	
+    ExtensionBase *extensionController = NULL;
+
     uint8_t iSDA;
     uint8_t iSCL;
-    uint8_t bWire;
     i2c_inst_t *picoI2C;
+    int32_t iSpeed;
 
-	int32_t iSpeed;
-
-    uint16_t _minX1 = 0;
-    uint16_t _maxX1 = 1;
-    uint16_t _cenX1 = 0;
-
-    uint16_t _minY1 = 0;
-    uint16_t _maxY1 = 1;
-    uint16_t _cenY1 = 0;
-
-    uint16_t _minX2 = 0;
-    uint16_t _maxX2 = 1;
-    uint16_t _cenX2 = 0;
-
-    uint16_t _minY2 = 0;
-    uint16_t _maxY2 = 1;
-    uint16_t _cenY2 = 0;
-
-    uint16_t _accelX0G = 0;
-    uint16_t _accelY0G = 0;
-    uint16_t _accelZ0G = 0;
-    uint16_t _accelX1G = 0;
-    uint16_t _accelY1G = 0;
-    uint16_t _accelZ1G = 0;
-
-    //uint8_t _lastRead[16];
-
-    uint16_t _calibrationPrecision1From = WII_ANALOG_PRECISION_0;
-    uint16_t _calibrationPrecision1To = WII_ANALOG_PRECISION_0;
-    uint16_t _calibrationPrecision2From = WII_ANALOG_PRECISION_0;
-    uint16_t _calibrationPrecision2To = WII_ANALOG_PRECISION_0;
-
-    uint16_t _analogPrecision1From = WII_ANALOG_PRECISION_0;
-    uint16_t _analogPrecision1To = WII_ANALOG_PRECISION_0;
-    uint16_t _analogPrecision2From = WII_ANALOG_PRECISION_0;
-    uint16_t _analogPrecision2To = WII_ANALOG_PRECISION_0;
-
-    uint16_t _triggerPrecision1From = WII_ANALOG_PRECISION_0;
-    uint16_t _triggerPrecision1To = WII_ANALOG_PRECISION_0;
-    uint16_t _triggerPrecision2From = WII_ANALOG_PRECISION_0;
-    uint16_t _triggerPrecision2To = WII_ANALOG_PRECISION_0;
-
-    uint8_t _guitarType   = WII_GUITAR_UNSET;
-
-    uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
-    uint16_t calibrate(uint16_t pos, uint16_t min, uint16_t max, uint16_t center);
+#if WII_EXTENSION_DEBUG==true
+    uint8_t _lastRead[16] = {0xFF};
+#endif
 
     int doI2CWrite(uint8_t *pData, int iLen);
     int doI2CRead(uint8_t *pData, int iLen);

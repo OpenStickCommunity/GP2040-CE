@@ -158,7 +158,7 @@ void TiltInput::process()
 void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
 	bool pinTilt1Pressed = (pinTilt1 != (uint8_t)-1) ? !gpio_get(pinTilt1) : false;
 	bool pinTilt2Pressed = (pinTilt2 != (uint8_t)-1) ? !gpio_get(pinTilt2) : false;
-	
+
 	double scaledTilt1FactorLeftX  = tilt1FactorLeftX  / 100.0;
 	double scaledTilt1FactorLeftY  = tilt1FactorLeftY  / 100.0;
 	double scaledTilt1FactorRightX = tilt1FactorRightX / 100.0;
@@ -167,6 +167,7 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	double scaledTilt2FactorLeftY  = tilt2FactorLeftY  / 100.0;
 	double scaledTilt2FactorRightX = tilt2FactorRightX / 100.0;
 	double scaledTilt2FactorRightY = tilt2FactorRightY / 100.0;
+
 
     if (pinTilt1Pressed) {
         gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * scaledTilt1FactorLeftX;

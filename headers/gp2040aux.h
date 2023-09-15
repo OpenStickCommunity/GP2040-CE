@@ -18,7 +18,6 @@ public:
     void setup();           // setup core1
     void run();             // loop core1
 private:
-    uint64_t nextRuntime;
     AddonManager addons;
 };
 

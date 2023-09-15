@@ -13,6 +13,11 @@
 // GP2040-CE Version (32 character limit)
 #define GP2040VERSION "v0.7.4"
 
+// GP2040-CE Board Config (64 character limit)
+#ifndef GP2040_BOARDCONFIG
+#define GP2040_BOARDCONFIG "Unknown"
+#endif
+
 #define PLED_REPORT_SIZE 32
 
 #ifndef PLED1_PIN

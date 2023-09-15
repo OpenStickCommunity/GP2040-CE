@@ -48,6 +48,10 @@ hr {
 	margin-bottom: 4px;
 }
 
+.sidebar .search .clear-button {
+	margin: auto;
+}
+
 /*************/
 /* Downloads */
 /*************/

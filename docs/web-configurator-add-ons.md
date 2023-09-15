@@ -1,6 +1,6 @@
 # Add-Ons Configuration
 
-This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE.  Please note that not all add-ons may work together.  These should be considered experimental.
+This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE.  Some of these add-ons are experimental.  Please note that not all add-ons may work together.
 
 ## BOOTSEL Button Configuration
 
@@ -24,7 +24,7 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 
 * `Analog Stick 1 X Pin` - The GPIO pin used for the Analog Stick 1 X value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
 * `Analog Stick 1 Y Pin` - The GPIO pin used for the Analog Stick 1 Y value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
-* `Analog Stick 1 Mode` - Choose if Analog Stick 1 is to be used for Left Analog or Right Analog.  
+* `Analog Stick 1 Mode` - Choose if Analog Stick 1 is to be used for Left Analog or Right Analog.
 * `Analog Stick 1 Invert` - Choose if you would like to flip the X or Y axis Analog Stick 1 inputs (or both).
 * `Analog Stick 2 X Pin` - The GPIO pin used for the Analog Stick 2 X value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
 * `Analog Stick 2 Y Pin` - The GPIO pin used for the Analog Stick 2 Y value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
@@ -111,6 +111,32 @@ Values are:
 `Dual Directional` - Dual always takes over when pressed, otherwise Gamepad and Dual act independently.
 `None` - Gamepad input and dual directional act independently of each other.
 
+## Tilt Input
+
+![GP2040-CE Configuration - Add-Ons Tilt Input](assets/images/gpc-add-ons-tilt.png)
+
+* `Tilt 1 Pin` - The GPIO pin used for the Tilt 1 direction.
+* `Tilt 2 Pin` - The GPIO pin used for the Tilt 2 direction.
+* `Tilt Left Analog Up Pin` - The GPIO pin used for the Up direction on the Left analog stick.
+* `Tilt Left Analog Down Pin` - The GPIO pin used for the Down direction on the Left analog stick.
+* `Tilt Left Analog Left Pin` - The GPIO pin used for the Left direction on the Left analog stick.
+* `Tilt Left Analog Right Pin` - The GPIO pin used for the Right direction on the Left analog stick.
+* `Tilt Right Analog Up Pin` - The GPIO pin used for the Up direction on the Right analog stick.
+* `Tilt Right Analog Down Pin` - The GPIO pin used for the Down direction on the Right analog stick.
+* `Tilt Right Analog Left Pin` - The GPIO pin used for the Left direction on the Right analog stick.
+* `Tilt Right Analog Right Pin` - The GPIO pin used for the Right direction on the Right analog stick.
+* `Tilt SOCD Mode` - Choose the default SOCD Cleaning Mode (Neutral, Last Win, First Win). 
+
+The Tilt feature in this add-on allows users to control analog stick values on both Left and Right Analogs.
+
+Tilt 1 and Tilt 2 buttons, when pressed with directional buttons, adjust the analog values.
+
+Default settings tilt the Left stick at 65% for Tilt 1 and 35% for Tilt 2.
+
+The Right stick shifts down for Tilt 1 and up for Tilt 2 by default.
+
+Additionally, pressing Tilt 1 and Tilt 2 simultaneously allows the Right stick to function as the D-Pad directions.
+
 ## Buzzer Speaker
 
 ![GP2040-CE Configurator - Add-Ons Buzzer](assets/images/gpc-add-ons-buzzer.png)
@@ -163,27 +189,11 @@ Enabling this add-on will allow you to use GP2040-CE on a PS4 with an 8 minute t
 * `I2C Block` - The block of I2C to use (i2c0 or i2c1).
 * `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, or `400000` for fast.
 
-Supported Extension Controllers and their mapping is as follows:
-
-| GP2040-CE | Nunchuck | Classic      | Guitar Hero Guitar |
-|-----------|----------|--------------|--------------------|
-| B1        | C        | B            | Green              |
-| B2        | Z        | A            | Red                |
-| B3        |          | Y            | Blue               |
-| B4        |          | X            | Yellow             |
-| L1        |          | L            |                    |
-| L2        |          | ZL           |                    |
-| R1        |          | R            |                    |
-| R2        |          | ZR           |                    |
-| S1        |          | Select       |                    |
-| S2        |          | Start        |                    |
-| A1        |          | Home         |                    |
-| D-Pad     |          | D-Pad        | Strum Up/Down      |
-| Analog    | Left     | Left & Right | Left               |
-
-Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Controllers. 
+Classic Controller support includes Classic, Classic Pro, and NES/SNES Mini Controllers.
 
 Original Classic Controller L & R triggers are analog sensitive, where Pro triggers are not.
+
+Due to an accessory hardware issue, Drum & DJ turntable controllers may require hot-swapping from a Nunchuk or Classic controller before being usable.
 
 ## SNES Input
 
@@ -232,7 +242,7 @@ These addons are predicated on having and using a USB Host Port on the device. T
 
 ![GP2040-CE Configurator - PS Passthrough](assets/images/gpc-add-ons-ps-passthrough.png)
 
-Enabling this add-on will allow you to use a licenced 3rd party device to authenticate off of.  This addon requires that you have something like the ![USB Passthrough Board](https://github.com/OpenStickCommunity/Hardware/tree/main/USB%20Passthrough%20Board) or a board with a USB passthrough port on it already.  If you have passthrough enabled you can turn off the above `PS4 Mode` addon as the two will not work together.  Please also ensure that under the `Settings` section you have chosen PS4 mode and picked if you want the GP2040-CE unit to function as a controller or as a fightstick.   
+Enabling this add-on will allow you to use a licenced 3rd party device to authenticate off of.  This addon requires that you have something like the ![USB Passthrough Board](https://github.com/OpenStickCommunity/Hardware/tree/main/USB%20Passthrough%20Board) or a board with a USB passthrough port on it already.  If you have passthrough enabled you can turn off the above `PS4 Mode` addon as the two will not work together.  Please also ensure that under the `Settings` section you have chosen PS4 mode and picked if you want the GP2040-CE unit to function as a controller or as a fightstick.
 
 ### Keyboard Host Configuration
 

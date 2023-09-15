@@ -48,7 +48,7 @@ void ReverseInput::update() {
     state = !gpio_get(pinButtonReverse);
 }
 
-uint8_t ReverseInput::input(uint8_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis) {
+uint8_t ReverseInput::input(uint32_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis) {
     if (state && action == 2) {
         return 0;
     }
