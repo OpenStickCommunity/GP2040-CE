@@ -38,9 +38,11 @@ Unlike other controllers, Keyboard gets different keys for directional buttons.
 
 ?> You can change the key mappings for Keyboard mode in [Webconfig mode](web-configurator.md)
 
-## Additional Features: Turbo & LS/RS Emulation
+## Additional Features and Add-Ons
 
 Please note that the documentation for these new features is yet to be written. A future version will include updated docs.
+
+There are a number of add-ons that expand the functionality of GP2040-CE, such as [analog stick emulation](web-configurator-add-ons#analog) and [turbo functions](web-configurator-add-ons#turbo). Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to [Web Configurator - Add-ons](web-configurator-add-ons) for more information.
 
 ## Bootsel Mode
 
