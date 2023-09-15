@@ -85,7 +85,7 @@ class ExtensionBase {
 
         virtual void init(uint8_t dataType);
         virtual bool calibrate(uint8_t *calibrationData);
-        virtual void process(uint8_t *inputData);
+        virtual void process(uint8_t *inputData) = 0;
         virtual void postProcess();
 
 #if WII_EXTENSION_DEBUG==true
