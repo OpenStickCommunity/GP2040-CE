@@ -159,6 +159,12 @@ window.$docsify = {
 	name: 'GP2040-CE',
 	repo: 'https://github.com/OpenStickCommunity/GP2040-CE',
 	homepage: 'https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/README.md',
+	search: {
+		maxAge: 86400000, // Expiration time, the default one day
+		placeholder: 'Type to search',
+		depth: 6,
+		hideOtherSidebarContent: false,
+	},
 	logo: 'assets/images/gp2040-ce-logo.png',
 	loadSidebar: '_sidebar.md',
 	auto2top: true,
