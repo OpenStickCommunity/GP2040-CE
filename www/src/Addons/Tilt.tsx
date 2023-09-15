@@ -14,11 +14,43 @@ export const tiltScheme = {
 	tilt1Pin: yup
 		.number()
 		.label('Tilt 1 Pin')
-		.validatePinWhenValue('TiltInputEnabled'),
+		.validatePinWhenValue('TiltInputEnabled'),	
+	factorTilt1LeftX: yup
+		.number()
+		.label('Tilt 1 Factor Left X')
+		.validateNumberWhenValue('TiltInputEnabled'),
+	factorTilt1LeftY: yup
+		.number()
+		.label('Tilt 1 Factor Left Y')
+		.validateNumberWhenValue('TiltInputEnabled'),
+	factorTilt1RightX: yup
+		.number()
+		.label('Tilt 1 Factor Right X')
+		.validateNumberWhenValue('TiltInputEnabled'),
+	factorTilt1RightY: yup
+		.number()
+		.label('Tilt 1 Factor Right Y')
+		.validateNumberWhenValue('TiltInputEnabled'),
 	tilt2Pin: yup
 		.number()
 		.label('Tilt 2 Pin')
 		.validatePinWhenValue('TiltInputEnabled'),
+	factorTilt2LeftX: yup
+		.number()
+		.label('Tilt 2 Factor Left X')
+		.validateNumberWhenValue('TiltInputEnabled'),
+	factorTilt2LeftY: yup
+		.number()
+		.label('Tilt 2 Factor Left Y')
+		.validateNumberWhenValue('TiltInputEnabled'),
+	factorTilt2RightX: yup
+		.number()
+		.label('Tilt 2 Factor Right X')
+		.validateNumberWhenValue('TiltInputEnabled'),
+	factorTilt2RightY: yup
+		.number()
+		.label('Tilt 2 Factor Right Y')
+		.validateNumberWhenValue('TiltInputEnabled'),
 	tiltLeftAnalogUpPin: yup
 		.number()
 		.label('Tilt Left Analog Up Pin')
@@ -60,7 +92,15 @@ export const tiltScheme = {
 export const tiltState = {
 	TiltInputEnabled: 0,
 	tilt1Pin: -1,
+	factorTilt1LeftX: -1,
+	factorTilt1LeftY: -1,
+	factorTilt1RightX: -1,
+	factorTilt1ightY: -1,
 	tilt2Pin: -1,
+	factorTilt2LeftX: -1,
+	factorTilt2LeftY: -1,
+	factorTilt2RightX: -1,
+	factorTilt2RightY: -1,
 	tiltLeftAnalogUpPin: -1,
 	tiltLeftAnalogDownPin: -1,
 	tiltLeftAnalogLeftPin: -1,
@@ -90,6 +130,62 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={-1}
 						max={29}
 					/>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-1-factor-left-x-label')}
+						name="factorTilt1LeftX"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.factorTilt1LeftX}
+						error={errors.factorTilt1LeftX}
+						isInvalid={errors.factorTilt1LeftX}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-1-factor-left-y-label')}
+						name="factorTilt1LeftY"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.factorTilt1LeftY}
+						error={errors.factorTilt1LeftY}
+						isInvalid={errors.factorTilt1LeftY}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-1-factor-right-x-label')}
+						name="factorTilt1RightX"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.factorTilt1RightX}
+						error={errors.factorTilt1RightX}
+						isInvalid={errors.factorTilt1RightX}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-1-factor-right-y-label')}
+						name="factorTilt1RightY"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.factorTilt1RightY}
+						error={errors.factorTilt1RightY}
+						isInvalid={errors.factorTilt1RightY}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+				</Row>
+				<Row className="mb-3">
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:tilt-2-pin-label')}
@@ -102,6 +198,60 @@ const Tilt = ({ values, errors, handleChange, handleCheckbox }) => {
 						onChange={handleChange}
 						min={-1}
 						max={29}
+					/>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-2-factor-left-x-label')}
+						name="factorTilt2LeftX"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.factorTilt2LeftX}
+						error={errors.factorTilt2LeftX}
+						isInvalid={errors.factorTilt2LeftX}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-2-factor-left-y-label')}
+						name="factorTilt2LeftY"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.factorTilt2LeftY}
+						error={errors.factorTilt2LeftY}
+						isInvalid={errors.factorTilt2LeftY}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-2-factor-right-x-label')}
+						name="factorTilt2RightX"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.factorTilt2RightX}
+						error={errors.factorTilt2RightX}
+						isInvalid={errors.factorTilt2RightX}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-2-factor-right-y-label')}
+						name="factorTilt2RightY"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.factorTilt2RightY}
+						error={errors.factorTilt2RightY}
+						isInvalid={errors.factorTilt2RightY}
+						onChange={handleChange}
+						min={-1}
+						max={200}
 					/>
 				</Row>
 				<Row className="mb-3">

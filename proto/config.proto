@@ -384,6 +384,15 @@ message TiltOptions
 	optional int32 tiltRightAnalogRightPin = 12;
 
 	optional SOCDMode tiltSOCDMode = 13;
+	
+	optional int32 factorTilt1LeftX =  14;
+	optional int32 factorTilt1LeftY =  15;
+	optional int32 factorTilt1RightX =  16;
+	optional int32 factorTilt1RightY =  17;
+	optional int32 factorTilt2LeftX =  18;
+	optional int32 factorTilt2LeftY =  19;
+	optional int32 factorTilt2RightX =  20;
+	optional int32 factorTilt2RightY =  21;
 }
 
 message BuzzerOptions
