@@ -62,6 +62,10 @@
 #define SPLASH_DURATION 7500 // Duration in milliseconds
 #endif
 
+#ifndef DISPLAY_TURN_OFF_WHEN_SUSPENDED
+#define DISPLAY_TURN_OFF_WHEN_SUSPENDED 0
+#endif
+
 #ifndef DEFAULT_SPLASH
 #define DEFAULT_SPLASH \
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
@@ -211,6 +215,7 @@ private:
 	uint16_t prevButtonState;
 	bool isFocusModeEnabled;
 	bool focusModePrevState;
+	bool turnOffWhenSuspended;
 };
 
 #endif
