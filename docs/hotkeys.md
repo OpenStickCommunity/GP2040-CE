@@ -97,7 +97,7 @@ This hotkey will invert the X-axis of your controller (i.e. pressing the Right b
 
 ## Invert Y Axis
 
-This hotkey will invert the Y-axis of your controller (i.e. pressing the Up button will result a Down input and vice versa).
+This hotkey will invert the Y-axis of your controller (i.e. pressing the Up button will result in a Down input and vice versa).
 
 **Default**: <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey>
 

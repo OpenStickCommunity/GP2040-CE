@@ -1,6 +1,6 @@
 # How to Contribute
 
-Thank you for takingg the time to read this and contributing to the project! 
+Thank you for taking the time to read this and contributing to the project! 
 
 Third-party contributions help us grow and improve GP2040-CE. We want to make the pull request and contribution process useful and easy for both contributors and maintainers. 
 
@@ -8,7 +8,7 @@ To this end we’ve put together some guidelines for contributors to help your p
 
 ## Project Overview
 
-GP2040-CE is largely written in C/C++, with the a significant portion of the web configurator written in Javascript within a React framework.
+GP2040-CE is largely written in C/C++, with a significant portion of the web configurator written in JavaScript within a React framework.
 
 ## How do I make a contribution?
 

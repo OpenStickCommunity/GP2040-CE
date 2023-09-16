@@ -9,7 +9,7 @@ If you need help with something, the best place to get quick support is our [Dis
 3. What version of the firmware are you currently running? Check this via the Web Configurator (e.g. 0.4.3, 0.5.0, 0.7.4, etc.)
 4. Which distribution of the firmware are you currently running? Provide the exact file name (e.g. GP2040-CE_X.X.X_Pico.uf2).
 5. What is the problem that you are having?
-6. What trouble shooting steps have you already done?
+6. What troubleshooting steps have you already done?
 
 If this is a custom device, a hardware issue or you believe the firmware issue may be caused by hardware include any images .
 
