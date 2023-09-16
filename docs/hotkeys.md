@@ -111,7 +111,7 @@ This hotkey will alter the behavior of the directional buttons mapped with the [
 
 ## Load Profile # 1-4
 
-This hotkey will load various input to pin mapping profiles set in 
+This hotkey will load various input to pin mapping profiles set in [Profile Settings](web-configurator#profile-settings) in the Web Configurator.
 
 ## L3 Button
 
