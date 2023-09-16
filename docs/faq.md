@@ -20,7 +20,7 @@ These consoles implement security measures that prevent unauthorized accessories
 
 Yes! Each GP2040-CE board is treated as a separate controller. Be sure to only run the embedded web configurator for each controller one at a time.
 
-If you're installing boards with GP2040-CE in an arcade cabinet, check out the [Player Number addon](https://gp2040-ce.info/#/web-configurator?id=player-number-x-input-only) to force each board to a specific player number.
+If you're installing boards with GP2040-CE in an arcade cabinet, check out the [Player Number add-on](https://gp2040-ce.info/#/web-configurator?id=player-number-x-input-only) to force each board to a specific player number.
 
 ### Does GP2040-CE really have less than 1 ms of input latency?
 
