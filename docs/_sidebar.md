@@ -4,7 +4,7 @@
 **Tutorial**
 
 - [Introduction](introduction "GP2040-CE | Introduction")
-- [Installing Firmware](installation "GP2040-CE | Installation")
+- [Firmware Installation](installation "GP2040-CE | Firmware Installation")
 - [Usage](usage "GP2040-CE | Usage")
 - [Shortcuts](gp2040-ce-shortcuts "GP2040-CE | Shortcuts")
 - [Getting Help/Support](getting-help-support "GP2040-CE | Getting Help")
