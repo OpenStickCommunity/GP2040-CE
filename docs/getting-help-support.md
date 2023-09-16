@@ -11,7 +11,7 @@ If you need help with something, the best place to get quick support is our [Dis
 5. What is the problem that you are having?
 6. What trouble shooting steps have you already done?
 
-If this is a custom device, a hardware issue or you believe the firmware issue may be cuased by hardware include any images .
+If this is a custom device, a hardware issue or you believe the firmware issue may be caused by hardware include any images .
 
 ## Github Issues
 

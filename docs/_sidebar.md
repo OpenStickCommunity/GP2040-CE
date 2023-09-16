@@ -1,12 +1,13 @@
 - [Home](README "GP2040-CE | RP2040 Gamepad Firmware Documentation")
 - [Download](download "GP2040-CE | Download")
 
-**Tutorial**
+**General**
 
 - [Introduction](introduction "GP2040-CE | Introduction")
 - [Firmware Installation](installation "GP2040-CE | Firmware Installation")
 - [Usage](usage "GP2040-CE | Usage")
-- [Shortcuts](gp2040-ce-shortcuts "GP2040-CE | Shortcuts")
+- [Hotkeys](hotkeys "GP2040-CE | Hotkeys")
+- [RGB LEDs](rgb-leds "GP2040-CE | RGB LEDs")
 - [Getting Help/Support](getting-help-support "GP2040-CE | Getting Help")
 
 **FAQs**

@@ -10,7 +10,7 @@ This section of the documentation is primarily geared towards end users who are 
 
 - [Firmware Installation](installation "GP2040-CE | Firmware Installation"): In the event that you need to install firmware (e.g. setting up a new board, updating to a new version, or as part of troubleshooting) 
 - [Usage](usage "GP2040-CE | Usage"): Descriptions of the various features and functions available for use with GP2040-CE
-- [Shortcuts](gp2040-ce-shortcuts "GP2040-CE | Shortcuts"): A list of the various hotkey shortcuts available for use with GP2040-CE. 
+- [Hotkeys](hotkeys "GP2040-CE | Hotkeys"): A list of the various hotkey shortcuts available for use with GP2040-CE. 
 
 > The actual buttons for the shortcut may differ as they are customizable and can be set by your device's vendor or seller. 
 
