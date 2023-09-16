@@ -2,36 +2,6 @@
 
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
 
-## Button Map
-
-| GP2040-CE  | XInput | Switch  | PS4          | PS3          | DirectInput  | Arcade |
-| ---------- | ------ | ------- | ------------ | ------------ | ------------ | ------ |
-| B1         | A      | B       | Cross        | Cross        | 2            | K1     |
-| B2         | B      | A       | Circle       | Circle       | 3            | K2     |
-| B3         | X      | Y       | Square       | Square       | 1            | P1     |
-| B4         | Y      | X       | Triangle     | Triangle     | 4            | P2     |
-| L1         | LB     | L       | L1           | L1           | 5            | P4     |
-| R1         | RB     | R       | R1           | R1           | 6            | P3     |
-| L2         | LT     | ZL      | L2           | L2           | 7            | K4     |
-| R2         | RT     | ZR      | R2           | R2           | 8            | K3     |
-| S1         | Back   | Minus   | Share        | Select       | 9            | Coin   |
-| S2         | Start  | Plus    | Options      | Start        | 10           | Start  |
-| L3         | LS     | LS      | L3           | L3           | 11           | LS     |
-| R3         | RS     | RS      | R3           | R3           | 12           | RS     |
-| A1         | Guide  | Home    | PS           | PS           | 13           | Home   |
-| A2         | -      | Capture | Touchpad     | -            | 14           | -      |
-
-Unlike other controllers, Keyboard gets different keys for directional buttons.
-
-| Direction | Keyboard   |
-| --------- | ---------- |
-| Up        | Up Arrow   |
-| Down      | Down Arrow |
-| Left      | Left Arrow |
-| Right     | Right Arrow|
-
-?> You can change the key mappings for Keyboard mode in [Webconfig mode](web-configurator.md)
-
 ## Mode Selection
 
 **To Enter Bootsel Mode (flash mode)**: hold the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> buttons as the controller is plugged in.
@@ -40,34 +10,134 @@ Unlike other controllers, Keyboard gets different keys for directional buttons.
 
 **To Select Input Mode**: hold one of the following buttons as the controller is plugged in:
 
-* <hotkey v-bind:buttons='["B1"]'></hotkey> for Nintendo Switch
-* <hotkey v-bind:buttons='["B2"]'></hotkey> for XInput
-* <hotkey v-bind:buttons='["B3"]'></hotkey> for DirectInput/PS3
-* <hotkey v-bind:buttons='["B4"]'></hotkey> for PS4
-* <hotkey v-bind:buttons='["R2"]'></hotkey> for Keyboard
+|    Input Mode   |                   Button                  |
+|:----------------|:------------------------------------------|
+| Nintendo Switch | <hotkey v-bind:buttons='["B1"]'></hotkey> |
+| XInput          | <hotkey v-bind:buttons='["B2"]'></hotkey> |
+| DirectInput/PS3 | <hotkey v-bind:buttons='["B2"]'></hotkey> |
+| PS4             | <hotkey v-bind:buttons='["B4"]'></hotkey> |
+| Keyboard        | <hotkey v-bind:buttons='["R2"]'></hotkey> |
 
-## Button Input Hotkeys
+## Hotkeys
 
-Home button shortcut if you do not have a Home button - <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey>.
+> All of the following hotkey bindings can be changed or assigned to different button combinations in [Hotkeys Settings](web-configurator.md#hotkey-settings) section of the Web Configurator.
 
-D-Pad mode **while the controller is in use by pressing one of the following default combinations:**
+### No Action
 
-* <hotkey v-bind:buttons='["S1", "S2", "Down"]'></hotkey> - D-Pad
-* <hotkey v-bind:buttons='["S1", "S2", "Left"]'></hotkey> - Emulate Left Analog stick
-* <hotkey v-bind:buttons='["S1", "S2", "Right"]'></hotkey> - Emulate Right Analog stick
+This hotkey does nothing. Use this hotkey to disable a specific hotkey combination.
 
-SOCD mode **while the controller is in use by pressing one of the following default combinations:**
+### DPad Digital
 
-* <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Stickless behavior).
-* <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.
-* <hotkey v-bind:buttons='["S2", "A1", "Left"]'></hotkey> - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
+This hotkey changes the DPad mode such the directions to be read as digital inputs on the DPad.
 
-Invert the Y-axis input of the D-pad.  Press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey> by default.
+### DPad Left Analog
 
-### Changing Hotkeys
+This hotkey changes the DPad mode to such the directions to be read as inputs on the Left Analog Stick. The directional input is always the minimum, maximum, or zero value on that axis.
 
-The D-Pad Mode, SOCD Mode, and Invert D-Pad Y-axis hotkey bindings can be changed or assigned to different
-actions in [the web configurator](web-configurator.md#hotkeys).
+### DPad Right Analog
+
+This hotkey changes the DPad mode to such the directions to be read as inputs on the Right Analog Stick. The directional input is always the minimum, maximum, or zero value on that axis.
+
+### Home Button
+
+This hotkey emulates a press of the <hotkey v-bind:buttons='["A1"]'></hotkey> button as not all controllers may have this button natively on the controller.
+
+### Capture Button
+
+This hotkey emulates a press of the <hotkey v-bind:buttons='["A2"]'></hotkey> button as not all controllers may have this button natively on the controller.
+
+### SOCD Up Priority
+
+This hotkey changes the SOCD cleaning method to resolve to a neutral input (no input) on the X-axis, but prioritize the `Up` input on the Y-axis when both directions are pressed simultaneously. 
+
+| 1st Input + 2nd Input |  Result |
+|:---------------------:|:-------:|
+|      Left + Right     | Neutral |
+|      Right + Left     | Neutral |
+|       Up + Down       |    Up   |
+|       Down + Up       |    Up   |
+
+### SOCD Neutral
+
+This hotkey changes the SOCD cleaning method to resolve to a neutral input (no input) on both the X-axis and Y-axis when both directions are pressed simultaneously. 
+
+| 1st Input + 2nd Input |  Result |
+|:---------------------:|:-------:|
+|      Left + Right     | Neutral |
+|      Right + Left     | Neutral |
+|       Up + Down       | Neutral |
+|       Down + Up       | Neutral |
+
+### SOCD Last Win
+
+This hotkey changes the SOCD cleaning method to prioritize the second directional input on both the X-axis and Y-axis when both directions are pressed simultaneously. 
+
+| 1st Input + 2nd Input | Result |
+|:---------------------:|:------:|
+|      Left + Right     |  Right |
+|      Right + Left     |  Left  |
+|       Up + Down       |  Down  |
+|       Down + Up       |   Up   |
+
+### SOCD First Wins
+
+This hotkey changes the SOCD cleaning method to prioritize the first directional input on both the X-axis and Y-axis when both directions are pressed simultaneously. 
+
+| 1st Input + 2nd Input | Result |
+|:---------------------:|:------:|
+|      Left + Right     |  Left  |
+|      Right + Left     |  Right |
+|       Up + Down       |   Up   |
+|       Down + Up       |  Down  |
+
+### SOCD Cleaning Off
+
+This hotkey changes the SOCD cleaning method to not resolve any directional inputs on both the X-axis and Y-axis when both directions are pressed simultaneously. The controller will send both directional inputs. 
+
+?> This cleaning mode is only available in XInput mode as PS3/DirectInput, PS4 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.
+
+| 1st Input + 2nd Input |     Result     |
+|:---------------------:|:--------------:|
+|      Left + Right     | Left and Right |
+|      Right + Left     | Left and Right |
+|       Up + Down       |   Up and Down  |
+|       Down + Up       |   Up and Down  |
+
+### Invert X Axis
+
+This hotkey will invert the X-axis of your controller (i.e. pressing the Right button will result a Left input and vice versa).
+
+### Invert Y Axis
+
+This hotkey will invert the Y-axis of your controller (i.e. pressing the Up button will result a Down input and vice versa).
+
+### Toggle 4-Way Joystick Mode
+
+This hotkey will alter the behavior of the directional buttons such that only the cardinal directions will register as inputs and diagonal directions will be disabled and ignored.
+
+### Toggle DDI 4-Way Joystick Mode
+
+This hotkey will alter the behavior of the directional buttons mapped with the [Dual Direction Input](add-ons.md#dual-directional-input) add-on such that only the cardinal directions will register as inputs and diagonal directions will be disabled and ignored.
+
+### Load Profile # 1-4
+
+This hotkey will load various input to pin mapping profiles set in 
+
+### L3 Button
+
+This hotkey emulates a press of the <hotkey v-bind:buttons='["L3"]'></hotkey> button as not all controllers may have this button natively on the controller.
+
+### R3 Button
+
+This hotkey emulates a press of the <hotkey v-bind:buttons='["R3"]'></hotkey> button as not all controllers may have this button natively on the controller.
+
+### Touchpad Button
+
+This hotkey emulates a press of the <hotkey v-bind:buttons='["A2"]'></hotkey> button as not all controllers may have this button natively on the controller.
+
+### Restart GP2040-CE
+
+This hotkey will restart the controller without pressing the hardware reset button on the board (if present) or requiring the controller to be unplugged from the PC or game console.
 
 ## LED Control Hotkeys
 
