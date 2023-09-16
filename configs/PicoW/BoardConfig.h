@@ -8,6 +8,8 @@
 
 #include "enums.pb.h"
 
+#define BOARD_CONFIG_LABEL "Pico-W"
+
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.

@@ -489,7 +489,7 @@ uint8_t NeoPicoLEDAddon::setupButtonPositions()
 	buttonPositions.emplace(BUTTON_LABEL_A1, ledOptions.indexA1);
 	buttonPositions.emplace(BUTTON_LABEL_A2, ledOptions.indexA2);
 	uint8_t buttonCount = 0;
-	for (auto const buttonPosition : buttonPositions)
+	for (auto const& buttonPosition : buttonPositions)
 	{
 		if (buttonPosition.second > -1)
 			buttonCount++;

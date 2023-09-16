@@ -8,6 +8,8 @@
 
 #include "enums.pb.h"
 
+#define BOARD_CONFIG_LABEL "Flatbox Rev. 5"
+
 // Mapping between Flatbox rev5 switch number (as silkscreened) and GPIO pin
 
 #define FLATBOX_SW1_PIN    14

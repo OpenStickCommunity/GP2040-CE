@@ -28,6 +28,7 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
   if (action == HOTKEY_LEDS_NONE || !time_reached(AnimationStation::nextChange)) {
     return;
   }
+  AnimationStation::nextChange = make_timeout_time_ms(250);
 
   if (action == HOTKEY_LEDS_BRIGHTNESS_UP) {
     AnimationStation::IncreaseBrightness();
@@ -45,6 +46,11 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
     ChangeAnimation(-1);
   }
 
+
+  if (this->baseAnimation == nullptr || this->buttonAnimation == nullptr) {
+    return;
+  }
+  
   if (action == HOTKEY_LEDS_PARAMETER_UP) {
     this->baseAnimation->ParameterUp();
   }
@@ -60,8 +66,7 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) {
     this->buttonAnimation->ParameterDown();
   }
-
-  AnimationStation::nextChange = make_timeout_time_ms(250);
+  
 }
 
 void AnimationStation::ChangeAnimation(int changeSize) {

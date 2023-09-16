@@ -10,14 +10,14 @@ import WebApi from '../Services/WebApi';
 
 const percentage = (x, y) => ((x / y) * 100).toFixed(2);
 const toKB = (x) => parseFloat((x / 1024).toFixed(2));
-let loading = true;
 
 export default function HomePage() {
 	const [latestVersion, setLatestVersion] = useState('');
-	const [latestTag, setLatestTag] = useState('');
+	const [latestDownloadUrl, setLatestDownloadUrl] = useState('');
 	const [currentVersion, setCurrentVersion] = useState(
 		import.meta.env.VITE_CURRENT_VERSION,
 	);
+	const [boardConfigProperties, setBoardConfigProperties] = useState({});
 	const [memoryReport, setMemoryReport] = useState(null);
 
 	const { t } = useTranslation('');
@@ -26,8 +26,21 @@ export default function HomePage() {
 
 	useEffect(() => {
 		WebApi.getFirmwareVersion(setLoading)
-			.then((response) => {
-				setCurrentVersion(response.version);
+			.then(({ version, boardConfigLabel, boardConfigFileName, boardConfig }) => {
+				setCurrentVersion(version);
+				setBoardConfigProperties({ label: boardConfigLabel, fileName: boardConfigFileName});
+				axios.get('https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest')
+					.then((response) => {
+						const latestTag = response.data.tag_name;
+						setLatestDownloadUrl(
+							response.data?.assets?.find(({ name }) => {
+								return name?.substring(name.lastIndexOf('_') + 1)
+									?.replace('.uf2', '')
+									?.toLowerCase() === boardConfig.toLowerCase()
+							})?.browser_download_url || `https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`
+						);
+					})
+					.catch(console.error)
 			})
 			.catch(console.error);
 
@@ -47,18 +60,6 @@ export default function HomePage() {
 				});
 			})
 			.catch(console.error);
-
-		axios
-			.get('https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases')
-			.then((response) => {
-				// Filter out pre-releases
-				response.data = response.data.filter((release) => !release.prerelease);
-
-				const sortedData = orderBy(response.data, 'published_at', 'desc');
-				setLatestVersion(sortedData[0].name);
-				setLatestTag(sortedData[0].tag_name);
-			})
-			.catch(console.error);
 	}, []);
 
 	return (
@@ -70,6 +71,7 @@ export default function HomePage() {
 					<div>
 						<strong>{t('HomePage:version-text')}</strong>
 					</div>
+					<div>{`${boardConfigProperties.label} (${boardConfigProperties.fileName}.uf2)`}</div>
 					<div>{t('HomePage:current-text', { version: currentVersion })}</div>
 					<div>{t('HomePage:latest-text', { version: latestVersion })}</div>
 					{latestVersion && currentVersion !== latestVersion && (
@@ -77,7 +79,7 @@ export default function HomePage() {
 							<a
 								target="_blank"
 								rel="noreferrer"
-								href={`https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`}
+								href={latestDownloadUrl}
 								className="btn btn-primary"
 							>
 								{t('HomePage:get-update-text')}

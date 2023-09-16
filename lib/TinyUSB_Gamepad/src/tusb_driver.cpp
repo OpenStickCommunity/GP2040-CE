@@ -50,16 +50,17 @@ void receive_report(uint8_t *buffer)
 	}
 }
 
-void send_report(void *report, uint16_t report_size)
+bool send_report(void *report, uint16_t report_size)
 {
 	static uint8_t previous_report[CFG_TUD_ENDPOINT0_SIZE] = { };
+
+	bool sent = false;
 
 	if (tud_suspended())
 		tud_remote_wakeup();
 
 	if (memcmp(previous_report, report, report_size) != 0)
 	{
-		bool sent = false;
 		switch (input_mode)
 		{
 			case INPUT_MODE_XINPUT:
@@ -77,6 +78,8 @@ void send_report(void *report, uint16_t report_size)
 		if (sent)
 			memcpy(previous_report, report, report_size);
 	}
+	
+	return sent;
 }
 
 /* USB Driver Callback (Required for XInput) */
