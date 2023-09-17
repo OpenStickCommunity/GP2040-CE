@@ -30,9 +30,23 @@ function correctincludes() {
 }
 
 function makefsdata() {
-      execFile(path.normalize(process.platform !== "darwin" ? `${root}/tools/makefsdata` : `${root}/tools/makefsdata.darwin`), [path.normalize(`${rootwww}/build`), '-defl:10', '-xc:png,json', `-f:`+ path.normalize(`${root}/lib/httpd/fsdata.c`)], function(error, data) {
+    // select the correct binary based on platfomrm and architecture
+    let execPath = `${root}/tools/makefsdata`;
+
+    const { arch, platform } = process;
+
+    if (platform === 'linux') {
+       // for linux, append the architecture to the binary path
+       execPath += `.${arch}`;
+    } else if (platform === 'darwin') {
+        // for mac, append the platform to the binary path
+        execPath += '.darwin';
+    }
+    // windows will append .exe silently for us
+
+    execFile(path.normalize(execPath), [path.normalize(`${rootwww}/build`), '-defl:10', '-xc:png,json', `-f:`+ path.normalize(`${root}/lib/httpd/fsdata.c`)], function(error, data) {
         if (error) {
-            console.error(error);
+            console.error(error)
         } else {
             correctincludes();
         }
