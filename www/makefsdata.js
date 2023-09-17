@@ -46,10 +46,11 @@ function makefsdata() {
 
     execFile(path.normalize(execPath), [path.normalize(`${rootwww}/build`), '-defl:10', '-xc:png,json', `-f:`+ path.normalize(`${root}/lib/httpd/fsdata.c`)], function(error, data) {
         if (error) {
-            console.error(error)
+            console.error(error);
         } else {
             correctincludes();
         }
     });  
 }
 makefsdata();
+
