@@ -15,6 +15,8 @@ The options in the main menu are:
 * [Home](#home) - The start page.
 * [Settings](#settings) - Adjust settings like input mode, d-pad mode, etc.
 * [Configuration > Pin Mapping](#pin-mapping) - Allows for remapping of GPIO pins to different buttons.
+* [Configuration > Keyboard Mapping](#keyboard-mapping) - Allows for remapping of keyboard keys to different controller inputs.
+* * [Configuration > Profile Settings](#profile-settings) - Allows for remapping of GPIO pins to different buttons.
 * [Configuration > LED Configuration](#led-configuration) - Enable and configure RGB LEDs here.
 * [Configuration > Display Configuration](#display-configuration) - Enable and configure display options.
 * [Configuration > Add-Ons Configuration](#add-ons-configuration) - Enable and configure available add-ons.
@@ -37,7 +39,9 @@ Here you can select the basic settings which are normally available via hotkeys.
 Please note that if you choose `PS4` mode you will have an additional option to set the device as a `Controller` or a `Fightstick`.  If you choose `Fightstick` and want to use this device with compatible PS5 games you will need to enable the `PS Passthrough` add-on and have a way to connect the device you with to use for passthrough authentication to the RP2040-CE based device via a USB passthrough port.  
 
 
-### Hotkeys
+### Hotkey Settings
+
+![GP2040-CE Configurator - Hotkey Settings](assets/images/gpc-hotkey-settings.png)
 
 An arbitrary number of buttons and directions, plus the optional Function (Fn) button, can be used to define
 desired hotkey actions. Select Fn if desired, plus one or more buttons/directions, and associate them with a
@@ -51,6 +55,18 @@ configure in the future.
 ![GP2040-CE Configurator - Pin Mapping](assets/images/gpc-pin-mapping.png)
 
 Here you can remap the GP2040-CE buttons to different GPIO pins on the RP2040 chip. This can be used to simply remap buttons, or bypass a GPIO pin that may have issues on your device.
+
+## Keyboard Mapping
+
+![GP2040-CE Configurator - Keyboard Mapping](assets/images/gpc-keyboard-mapping.png)
+
+Here you can remap the GP2040-CE buttons to different keyboard keycodes that will be sent to the PC or game console when pressed in Keyboard Mode.
+
+## Profile Settings
+
+![GP2040-CE Configurator - Profile Settings](assets/images/gpc-profile-settings.png)
+
+Here you can set profiles that will change the GPIO to GP2040-CE button mapping based on what profile you have set. You can change the profile number either using the Web Configurator or using a hotkey shortcut.
 
 ## LED Configuration
 

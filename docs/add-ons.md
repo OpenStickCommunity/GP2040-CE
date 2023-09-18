@@ -232,7 +232,7 @@ Supported controller types and their mapping is as follows:
 
 ## USB Host Based Add-ons
 
-These addons are predicated on having and using a USB Host Port on the device. These settings are shared between the addons in this section.
+These add-ons are predicated on having and using a USB Host Port on the device. These settings are shared between the add-ons in this section.
 
 * `D+` - The GPIO Pin used to carry Data Plus between the USB Host Port and RP2040
 * `D-` - The GPIO Pin used to carry Data Minus between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
@@ -242,7 +242,7 @@ These addons are predicated on having and using a USB Host Port on the device. T
 
 ![GP2040-CE Configurator - PS Passthrough](assets/images/gpc-add-ons-ps-passthrough.png)
 
-Enabling this add-on will allow you to use a licenced 3rd party device to authenticate off of.  This addon requires that you have something like the ![USB Passthrough Board](https://github.com/OpenStickCommunity/Hardware/tree/main/USB%20Passthrough%20Board) or a board with a USB passthrough port on it already.  If you have passthrough enabled you can turn off the above `PS4 Mode` addon as the two will not work together.  Please also ensure that under the `Settings` section you have chosen PS4 mode and picked if you want the GP2040-CE unit to function as a controller or as a fightstick.
+Enabling this add-on will allow you to use a licenced 3rd party device to authenticate off of.  This add-on requires that you have something like the ![USB Passthrough Board](https://github.com/OpenStickCommunity/Hardware/tree/main/USB%20Passthrough%20Board) or a board with a USB passthrough port on it already.  If you have passthrough enabled you can turn off the above `PS4 Mode` add-on as the two will not work together.  Please also ensure that under the `Settings` section you have chosen PS4 mode and picked if you want the GP2040-CE unit to function as a controller or as a fightstick.
 
 ### Keyboard Host Configuration
 
