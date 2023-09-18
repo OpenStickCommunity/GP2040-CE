@@ -12,6 +12,7 @@
 #include "addons/neopicoleds.h"
 #include "addons/pleds.h"
 #include "themes.h"
+#include "usb_driver.h"
 
 #include "enums.h"
 #include "helper.h"
@@ -110,6 +111,7 @@ void NeoPicoLEDAddon::setup()
 {
 	// Set Default LED Options
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
 
 	if ( ledOptions.pledType == PLED_TYPE_RGB ) {
 		neoPLEDs = new NeoPicoPlayerLEDs();
@@ -178,6 +180,13 @@ void NeoPicoLEDAddon::process()
 			}
 		}
 	}
+
+	if (turnOffWhenSuspended && get_usb_suspended()) {
+		as.DimBrightnessTo0();
+	} else {
+		as.SetBrightness(AnimationStation::GetBrightness());
+	}
+
 	as.ApplyBrightness(frame);
 
 	// Apply the player LEDs to our first 4 leds if we're in NEOPIXEL mode

@@ -69,6 +69,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		},
 
 		displaySaverTimeout: 0,
+		turnOffWhenSuspended: 0,
 	};
 	console.log('data', data);
 	return res.send(data);
@@ -192,6 +193,7 @@ app.get('/api/getLedOptions', (req, res) => {
 		pledPin3: 14,
 		pledPin4: 15,
 		pledColor: 65280,
+		turnOffWhenSuspended: 0,
 	});
 });
 
