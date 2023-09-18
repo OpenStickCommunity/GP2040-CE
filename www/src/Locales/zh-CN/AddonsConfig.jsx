@@ -42,6 +42,7 @@ export default {
 	'turbo-shmup-button-mask-3-label': '蓄力按钮 3 分配',
 	'turbo-shmup-button-mask-4-label': '蓄力按钮 4 分配',
 	'turbo-shmup-mix-mode-label': '同时优先模式',
+	'reset-timer-label': '按下按钮重置计时器',
 	'joystick-selection-slider-header-text': '方向模式选择',
 	'joystick-selection-slider-pin-one-label': '引脚1',
 	'joystick-selection-slider-pin-two-label': '引脚2',

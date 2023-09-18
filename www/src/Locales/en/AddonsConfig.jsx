@@ -43,6 +43,7 @@ export default {
 	'turbo-shmup-button-mask-3-label': 'Charge Button 3 Assignment',
 	'turbo-shmup-button-mask-4-label': 'Charge Button 4 Assignment',
 	'turbo-shmup-mix-mode-label': 'Simultaneous Priority Mode',
+	'reset-timer-label': 'Reset Timer at Pushing Button',
 	'joystick-selection-slider-header-text': 'Joystick Selection Slider',
 	'joystick-selection-slider-pin-one-label': 'Slider Pin One',
 	'joystick-selection-slider-pin-two-label': 'Slider Pin Two',

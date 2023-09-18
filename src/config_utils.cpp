@@ -391,6 +391,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask3, SHMUP_BUTTON3);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupBtnMask4, SHMUP_BUTTON4);
     INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, shmupMixMode, SHMUP_MIX_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.turboOptions, resetTimer, !!RESET_TIMER_ENABLED);
 
     // addonOptions.sliderOptions
     INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, enabled, !!JSLIDER_ENABLED);

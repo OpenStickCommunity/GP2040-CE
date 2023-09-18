@@ -103,6 +103,10 @@ export const turboScheme = {
 		.number()
 		.label('Charge Shot Button 4 Map')
 		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+	resetTimer: yup
+		.number()
+		.label('Reset Timer')
+		.validateRangeWhenValue('TurboInputEnabled', 0, 1),
 };
 
 export const turboState = {
@@ -125,6 +129,7 @@ export const turboState = {
 	turboPin: -1,
 	turboPinLED: -1,
 	turboShotCount: 5,
+	resetTimer: 0,
 };
 
 const Turbo = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -403,6 +408,20 @@ const Turbo = ({ values, errors, handleChange, handleCheckbox }) => {
 							))}
 						</FormSelect>
 					</div>
+					<Row className="mb-3">
+						<FormCheck
+							label={t('AddonsConfig:reset-timer-label')}
+							type="switch"
+							id="ResetTimer"
+							className="col-sm-3 ms-2"
+							isInvalid={false}
+							checked={Boolean(values.resetTimer)}
+							onChange={(e) => {
+								handleCheckbox('resetTimer', values);
+								handleChange(e);
+							}}
+						/>
+					</Row>
 				</Row>
 			</div>
 			<FormCheck

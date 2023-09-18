@@ -43,6 +43,7 @@ export default {
 	'turbo-shmup-button-mask-3-label': 'Atribuição do Botão de Carregamento 3',
 	'turbo-shmup-button-mask-4-label': 'Atribuição do Botão de Carregamento 4',
 	'turbo-shmup-mix-mode-label': 'Modo de Prioridade Simultânea',
+	'reset-timer-label': 'Reiniciar o timer ao pressionar o botão',
 	'joystick-selection-slider-header-text':
 		'Controle Deslizante de Seleção de Joystick',
 	'joystick-selection-slider-pin-one-label': 'Pino Um do Controle Deslizante',

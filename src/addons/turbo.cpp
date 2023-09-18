@@ -177,6 +177,15 @@ void TurboInput::process()
         dialValue = rawValue;
     }
 
+    // Reset timer if no turbo buttons were pressed last time and one or more are pressed now
+    if ( options.resetTimer ) {
+        if((lastButtons & turboButtonsPressed) == 0 && (gamepad->state.buttons & turboButtonsPressed) != 0){
+            bTurboFlicker = false; // reset flicker state to ON
+            nextTimer = getMillis() + uIntervalMS; // interval to flicker-off button
+        }
+        lastButtons = gamepad->state.buttons;
+    }
+
     // Set TURBO LED if a button is going or turbo is too fast
     if ( isValidPin(options.ledPin) ) {
         if ((gamepad->state.buttons & turboButtonsPressed) && !bTurboFlicker) {

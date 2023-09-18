@@ -83,6 +83,11 @@
 #define PIN_SHMUP_DIAL -1
 #endif
 
+// RESET TIMER
+#ifndef RESET_TIMER_ENABLED
+#define RESET_TIMER_ENABLED 0
+#endif
+
 // Turbo Module Name
 #define TurboName "Turbo"
 
@@ -117,5 +122,6 @@ private:
     uint8_t turboDialIncrements;    // Turbo Increments based on max/min
     uint8_t shmupBtnPin[4];     // Turbo SHMUP Non-Turbo Pins
     uint16_t shmupBtnMask[4]; // Turbo SHMUP Non-Turbo Button Masks
+    uint16_t lastButtons;
 };
 #endif  // TURBO_H_

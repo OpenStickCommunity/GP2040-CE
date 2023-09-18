@@ -304,6 +304,8 @@ message TurboOptions
 	optional uint32 shmupBtnMask3 = 17;
 	optional uint32 shmupBtnMask4 = 18;
 	optional ShmupMixMode shmupMixMode = 19;
+	
+	optional bool resetTimer = 20;
 }
 
 message SliderOptions
