@@ -196,6 +196,7 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 	returnData.append(
 		"Server: GP2040-CE " GP2040VERSION "\r\n"
 		"Content-Type: application/json\r\n"
+		"Access-Control-Allow-Origin: *\r\n"
 		"Content-Length: "
 	);
 	returnData.append(std::to_string(dataAndStatusCode.data.length()));
