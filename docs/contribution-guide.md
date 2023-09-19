@@ -12,7 +12,7 @@ GP2040-CE is largely written in C/C++, with a significant portion of the web con
 
 ## How do I make a contribution?
 
-Never made an open source contribution before? Wondering how contributions work in QMK? Here’s a quick rundown!
+Never made an open source contribution before? Wondering how contributions work in GP2040-CE? Here’s a quick rundown!
 
 1. Sign up for a GitHub account.
 2. Find an issue you are interested in addressing, or a feature you would like to add.
