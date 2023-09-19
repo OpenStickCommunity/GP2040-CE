@@ -68,10 +68,10 @@ void DualDirectionalInput::preprocess()
     uint32_t values = ~gpio_get_all();
 
     dualState = 0
-            | (values & mapDpadUp->pinMask)   ? mapDpadUp->buttonMask : 0
-            | (values & mapDpadDown->pinMask) ? mapDpadDown->buttonMask : 0
-            | (values & mapDpadLeft->pinMask) ? mapDpadLeft->buttonMask : 0
-            | (values & mapDpadRight->pinMask)? mapDpadRight->buttonMask : 0;
+            | ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
+            | ((values & mapDpadDown->pinMask)  ? mapDpadDown->buttonMask : 0)
+            | ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask : 0)
+            | ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0);
 
     // Debounce our directional pins
     debounce();
