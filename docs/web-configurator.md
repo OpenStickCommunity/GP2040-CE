@@ -16,7 +16,7 @@ The options in the main menu are:
 * [Settings](#settings) - Adjust settings like input mode, d-pad mode, etc.
 * [Configuration > Pin Mapping](#pin-mapping) - Allows for remapping of GPIO pins to different buttons.
 * [Configuration > Keyboard Mapping](#keyboard-mapping) - Allows for remapping of keyboard keys to different controller inputs.
-* * [Configuration > Profile Settings](#profile-settings) - Allows for remapping of GPIO pins to different buttons.
+* [Configuration > Profile Settings](#profile-settings) - Allows for remapping of GPIO pins to different buttons.
 * [Configuration > LED Configuration](#led-configuration) - Enable and configure RGB LEDs here.
 * [Configuration > Display Configuration](#display-configuration) - Enable and configure display options.
 * [Configuration > Add-Ons Configuration](#add-ons-configuration) - Enable and configure available add-ons.
@@ -37,7 +37,6 @@ Here you can select the basic settings which are normally available via hotkeys.
 * `4-Way Joystick Mode` - Enables 4-Way Jostick mode which will prevent cardinal directions.
 
 Please note that if you choose `PS4` mode you will have an additional option to set the device as a `Controller` or a `Fightstick`.  If you choose `Fightstick` and want to use this device with compatible PS5 games you will need to enable the `PS Passthrough` add-on and have a way to connect the device you with to use for passthrough authentication to the RP2040-CE based device via a USB passthrough port.  
-
 
 ### Hotkey Settings
 
@@ -163,7 +162,7 @@ This section is for custom add-ons that can be enabled to expand the functionali
 
 ![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
 
-# Linux Setup
+## Linux Setup
 
 When you plug in your controller while holding <hotkey v-bind:buttons='["S2"]'></hotkey>, you should see it connect in the kernel logs if you run `dmesg`:
 
