@@ -10,7 +10,7 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 For GP2040-CE development on the Windows platform using the Pico SDK Installer, please skip ahead to the 'Windows Setup (Pico SDK Installer)' section on this page.
 
 <!-- tabs:start -->
-### **Windows Setup (Manual)**
+### **Windows (Manual)**
 
 1. Install the latest ARM GNU Toolchain
     - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
@@ -46,7 +46,7 @@ For GP2040-CE development on the Windows platform using the Pico SDK Installer, 
     cd GP2040-CE
     ```
 
-### **Windows Setup (Pico SDK)**
+### **Windows (Pico SDK)**
 
 1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
 2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
@@ -68,7 +68,7 @@ For GP2040-CE development on the Windows platform using the Pico SDK Installer, 
 9. Install "CMake Tools" by Microsoft.
 10. Open the GP2040-CE folder you downloaded earlier via "File > Open Folder."
 
-### **Linux Setup**
+### **Linux**
 
 #### Ubuntu
 
