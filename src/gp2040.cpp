@@ -18,6 +18,7 @@
 #include "addons/extra_button.h"
 #include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
+#include "addons/i2cmpu6050.h"
 #include "addons/jslider.h"
 #include "addons/playernum.h"
 #include "addons/reverse.h"
@@ -71,6 +72,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new ExtraButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new FocusModeAddon(), CORE0_INPUT);
 	addons.LoadAddon(new I2CAnalog1219Input(), CORE0_INPUT);
+	addons.LoadAddon(new I2CMPU6050Input(), CORE0_INPUT);
 	addons.LoadAddon(new JSliderInput(), CORE0_INPUT);
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
 	addons.LoadAddon(new TurboInput(), CORE0_INPUT);

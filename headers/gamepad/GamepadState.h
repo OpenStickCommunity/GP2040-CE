@@ -122,6 +122,12 @@ struct GamepadState
 	uint16_t ry {GAMEPAD_JOYSTICK_MID};
 	uint8_t lt {0};
 	uint8_t rt {0};
+	float accelX {0}; // G
+	float accelY {0};
+	float accelZ {0};
+	float gyroX {0}; // deg/sec
+	float gyroY {0};
+	float gyroZ {0};
 };
 
 // Convert the horizontal GamepadState dpad axis value into an analog value

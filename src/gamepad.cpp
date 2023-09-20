@@ -46,8 +46,13 @@ static PS4Report ps4Report
 	.dpad = 0x08,
 	.button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
 	.button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
-	.button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0,
-	.padding = 0,
+	.button_select = 0, .button_start = 0, .button_l3 = 0, .button_r3 = 0, .button_home = 0, .button_touchpad = 0,
+	.report_counter = 0,
+	.left_trigger = 0, .right_trigger = 0,
+	.timestamp = 0, 
+	.battery_level = (uint8_t)0xff, // Default to full battery
+	.gyro_x = 0, .gyro_y = 0, .gyro_z = 0,
+	.accel_x = 0, .accel_y = 0, .accel_z = 0,
 	.mystery = { },
 	.touchpad_data = TouchpadData(),
 	.mystery_2 = { }
@@ -610,6 +615,15 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.left_stick_y = static_cast<uint8_t>(state.ly >> 8);
 	ps4Report.right_stick_x = static_cast<uint8_t>(state.rx >> 8);
 	ps4Report.right_stick_y = static_cast<uint8_t>(state.ry >> 8);
+
+	ps4Report.gyro_x = static_cast<int16_t>(state.gyroX * 32767.0f / 2000.0f);
+	ps4Report.gyro_y = static_cast<int16_t>(state.gyroY * 32767.0f / 2000.0f);
+	ps4Report.gyro_z = static_cast<int16_t>(state.gyroZ * 32767.0f / 2000.0f);
+	ps4Report.accel_x = static_cast<int16_t>(state.accelX * 8192.0f);
+	ps4Report.accel_y = static_cast<int16_t>(state.accelY * 8192.0f);
+	ps4Report.accel_z = static_cast<int16_t>(state.accelZ * 8192.0f);
+	ps4Report.timestamp += 188; // FIXME: Make this time dependent. 188 is 1.25ms on official controller
+
 
 	if (hasAnalogTriggers)
 	{

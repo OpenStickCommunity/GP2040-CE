@@ -102,32 +102,42 @@ typedef struct __attribute__((packed)) {
   uint8_t right_stick_y;
 
   // 4 bits for the d-pad.
-  uint32_t dpad : 4;
+  uint8_t dpad : 4;
+  // 4 bits for face buttons
+  uint8_t button_west : 1;
+  uint8_t button_south : 1;
+  uint8_t button_east : 1;
+  uint8_t button_north : 1;
 
-  // 14 bits for buttons.
-  uint32_t button_west : 1;
-  uint32_t button_south : 1;
-  uint32_t button_east : 1;
-  uint32_t button_north : 1;
-  uint32_t button_l1 : 1;
-  uint32_t button_r1 : 1;
-  uint32_t button_l2 : 1;
-  uint32_t button_r2 : 1;
-  uint32_t button_select : 1;
-  uint32_t button_start : 1;
-  uint32_t button_l3 : 1;
-  uint32_t button_r3 : 1;
-  uint32_t button_home : 1;
-  uint32_t button_touchpad : 1;
+  // 8 bits for l1, r1, l2, r2, Share, Option, l3, r3 buttons
+  uint8_t button_l1 : 1;
+  uint8_t button_r1 : 1;
+  uint8_t button_l2 : 1;
+  uint8_t button_r2 : 1;
+  uint8_t button_select : 1;
+  uint8_t button_start : 1;
+  uint8_t button_l3 : 1;
+  uint8_t button_r3 : 1;
+
+  // 2 bits for home, touchpad buttons
+  uint8_t button_home : 1;
+  uint8_t button_touchpad : 1;
 
   // 6 bit report counter.
-  uint32_t report_counter : 6;
+  uint8_t report_counter : 6;
 
-  uint32_t left_trigger : 8;
-  uint32_t right_trigger : 8;
+  uint8_t left_trigger;
+  uint8_t right_trigger;
 
-  uint32_t padding : 24;
-  uint8_t mystery[22];
+  uint16_t timestamp;
+  uint8_t battery_level;
+  int16_t gyro_x; // Gyro X: angular velocity measures (follows right-hand-rule) 
+  int16_t gyro_y;
+  int16_t gyro_z;
+  int16_t accel_x; // Accel X (signed): acceleration (positive: right)
+  int16_t accel_y; // Accel Y (signed): acceleration (positive: up)
+  int16_t accel_z; // Accel Z (signed): acceleration (positive: toward player)
+  uint8_t mystery[10];
   TouchpadData touchpad_data;
   uint8_t mystery_2[21];
 } PS4Report;

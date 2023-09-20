@@ -18,6 +18,7 @@
 #include "addons/extra_button.h"
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
+#include "addons/i2cmpu6050.h"
 #include "addons/i2cdisplay.h"
 #include "addons/jslider.h"
 #include "addons/keyboard_host.h"
@@ -426,6 +427,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, i2cSCLPin, I2C_ANALOG1219_SCL_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, i2cAddress, I2C_ANALOG1219_ADDRESS);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, i2cSpeed, I2C_ANALOG1219_SPEED);
+
+    // addonOptions.MPU6050Options
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, enabled, !!I2C_MPU6050_ENABLED);
 
     // addonOptions.dualDirectionalOptions
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);
