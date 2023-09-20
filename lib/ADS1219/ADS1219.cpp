@@ -3,18 +3,12 @@
 #include <cstring>
 
 ADS1219::ADS1219(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t speed, uint8_t addr) {
-  bbi2c.iSDA = sda;
-  bbi2c.iSCL = scl;
-  bbi2c.picoI2C = picoI2C;
-  bbi2c.bWire = bWire;
-  iSpeed = speed;
-  address = addr;
+  i2c = new I2C(picoI2C, sda, scl, speed, addr);
   config = 0x00;
   singleShot = true;
 }
 
 void ADS1219::begin() {
-  I2CInit(&bbi2c, iSpeed); // on Linux, SDA = bus number, SCL = device address
   reset();
 }
 
@@ -26,7 +20,7 @@ void ADS1219::begin() {
 //  resets the digital filter and restarts continuous conversions.
 void ADS1219::start(){
   uc[0] = 0x08;
-  I2CWrite(&bbi2c, address, uc, 1);
+  i2c->write(uc, 1);
 }
 
 // 8.5.3.4 POWERDOWN (0000 001x)
@@ -36,7 +30,7 @@ void ADS1219::start(){
 //  START/SYNC command is issued, all analog components return to their previous states.
 void ADS1219::powerDown(){
   uc[0] = 0x02;
-  I2CWrite(&bbi2c, address, uc, 1);
+  i2c->write(uc, 1);
 }
 
 
@@ -49,8 +43,8 @@ void ADS1219::powerDown(){
 //  in this second I2C frame.
 uint8_t ADS1219::readRegister(adsRegister_t reg){ // reg must be 0 or 1
   uc[0] = 0x20 | (reg<<2); // this is a guess
-  I2CWrite(&bbi2c, address, uc, 1);
-  I2CRead(&bbi2c, address, uc, 1);
+  i2c->write(uc, 1);
+  i2c->read(uc, 1);
   return uc[0];
 }
 
@@ -61,7 +55,7 @@ uint8_t ADS1219::readRegister(adsRegister_t reg){ // reg must be 0 or 1
 void ADS1219::writeRegister(uint8_t data){
   uc[0] = CONFIG_REGISTER_ADDRESS;
   uc[1] = data;
-  I2CWrite(&bbi2c, address, uc, 2);
+  i2c->write(uc, 2);
 }
 
 // 8.5.3.5 RDATA (0001 xxxx)
@@ -76,8 +70,8 @@ void ADS1219::writeRegister(uint8_t data){
 //  high.
 uint32_t ADS1219::readConversionResult(){
   uc[0] = 0x10; // Read from 24-bit conversion
-  I2CWrite(&bbi2c, address, uc, 1);
-  I2CRead(&bbi2c, address, uc, 3);
+  i2c->write(uc, 1);
+  i2c->read(uc, 3);
   uint32_t data32 = (uc[0] << 16) | (uc[1] << 8) | (uc[2]);
   if (data32 >= 0x800000)
 			data32 = data32-0x1000000;
@@ -90,7 +84,7 @@ uint32_t ADS1219::readConversionResult(){
 //  Requirements table) for the (repeated) START and STOP conditions are met.
 void ADS1219::reset(){
   uc[0] = 0x6;
-  I2CWrite(&bbi2c, address, uc, 1);
+  i2c->write(uc, 1);
 }
 
 void ADS1219::resetConfig(){

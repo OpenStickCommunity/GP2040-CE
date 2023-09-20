@@ -2,7 +2,7 @@
 // category=Signal Input/Output
 // url=https://github.com/OM222O/ADS1219
 
-// Original Author: OM222O <techelectroyt@gmail.com> 
+// Original Author: OM222O <techelectroyt@gmail.com>
 
 // Ported to BitBang by:
 //   Luke Arntson <arntsonl@gmail.com>
@@ -10,7 +10,8 @@
 #ifndef _ADS1219_H_
 #define _ADS1219_H_
 
-#include <BitBang_I2C.h>
+#include "hardware/i2c.h"
+#include "hardware/gpio.h"
 
 #define CONFIG_REGISTER_ADDRESS 0x40
 #define STATUS_REGISTER_ADDRESS 0x24
@@ -74,11 +75,47 @@ typedef enum{
   CHANNEL_3 = MUX_SINGLE_3
 }adsChannel_t;
 
+class I2C {
+	private:
+		i2c_inst_t  *i2c;
+		uint8_t     sda_pin;
+		uint8_t     scl_pin;
+		uint32_t    baudrate;
+		uint8_t     addr;
+
+	public:
+		I2C(i2c_inst_t *i2c, uint8_t sda_pin, uint8_t scl_pin, uint32_t baudrate,
+				uint8_t addr)
+		{
+			I2C::i2c = i2c;
+			I2C::sda_pin = sda_pin;
+			I2C::scl_pin = scl_pin;
+			I2C::baudrate = baudrate;
+			I2C::addr = addr;
+
+			i2c_init(i2c, baudrate);
+
+			gpio_set_function(sda_pin, GPIO_FUNC_I2C);
+			gpio_set_function(sda_pin, GPIO_FUNC_I2C);
+
+			gpio_pull_up(sda_pin);
+			gpio_pull_up(scl_pin);
+		}
+
+		int write(uint8_t *data, size_t len)
+		{
+			return i2c_write_blocking(this->i2c, this->addr, data, len, true);
+		}
+
+		int read(uint8_t *data, size_t len)
+		{
+			return i2c_read_blocking(this->i2c, this->addr, data, len, false);
+		}
+};
+
 class ADS1219  {
-  protected:
-	uint8_t address;
   public:
-    // Constructor 
+    // Constructor
 	ADS1219(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t iSpeed, uint8_t addr = 0x40);
 
     // Methods
@@ -101,9 +138,8 @@ class ADS1219  {
 	uint32_t readConversionResult();
   private:
 	void writeRegister(uint8_t data);
-	
-	BBI2C bbi2c;
-	int32_t iSpeed;
+
+	I2C *i2c;
 	uint8_t config;
 	bool singleShot;
 	int data_ready;
