@@ -90,3 +90,4 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 * [deeebug](https://github.com/deeebug) for improvements to the web-UI and fixing the PS3 homebutton issue
 * [TheTrain](https://github.com/TheTrainGoes/GP2040-Projects) and [Fortinbra](https://github.com/Fortinbra) for helping keep our community chugging along
 * [PassingLink](https://github.com/passinglink/passinglink) for the technical details and code for PS4 implementation
+* [Youssef Habchi](https://youssef-habchi.com/) for allowing us to purchase a licence to use Road Rage font for the porject
