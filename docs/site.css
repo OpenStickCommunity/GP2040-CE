@@ -31,7 +31,7 @@ hr {
 
 .sticky-label-select {
 	/* width: 100%; */
-	position: fixed!important;
+	position: fixed !important;
 	top: var(--sidebar-toggle-offset-top);
 	height: var(--sidebar-toggle-height);
 	right: 0px;
