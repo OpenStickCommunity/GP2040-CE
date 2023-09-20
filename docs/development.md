@@ -8,7 +8,9 @@ See [Getting Started with the Raspberry Pi Pico](https://rptl.io/pico-get-starte
 Most of this will be parroting the above linked PDF from the Raspberry Pi Foundation.
 
 For GP2040-CE development on the Windows platform using the Pico SDK Installer, please skip ahead to the 'Windows Setup (Pico SDK Installer)' section on this page.
-### Windows Setup (Manual)
+
+<!-- tabs:start -->
+### **Windows Setup (Manual)**
 
 1. Install the latest ARM GNU Toolchain
     - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
@@ -44,7 +46,7 @@ For GP2040-CE development on the Windows platform using the Pico SDK Installer, 
     cd GP2040-CE
     ```
 
-### Windows Setup (Pico SDK)
+### **Windows Setup (Pico SDK)**
 1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
 2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
 3. Download and install VSCode.
@@ -64,7 +66,10 @@ For GP2040-CE development on the Windows platform using the Pico SDK Installer, 
 8. Navigate to the Extensions window by pressing `Ctrl+Shift+X`.
 9. Install "CMake Tools" by Microsoft.
 10. Open the GP2040-CE folder you downloaded earlier via "File > Open Folder."
-### Linux Setup (Ubuntu)
+
+### **Linux Setup**
+
+#### Ubuntu
 
 This setup assumes an understanding of Linux terminal usage.
 
@@ -104,7 +109,7 @@ This setup assumes an understanding of Linux terminal usage.
     git submodule update --init
     ```
 
-### Linux Setup (Raspberry Pi)
+#### Raspberry Pi
 
 This setup script requires approximately 2.5GB of disk space on your SD card.
 
@@ -141,6 +146,8 @@ This setup script requires approximately 2.5GB of disk space on your SD card.
     git submodule update --init
     ```
 
+<!-- tabs:end -->
+
 ## Building
 
 ### Environment Variables
@@ -161,7 +168,9 @@ There are a few SDK variables we take advantage of for our builds.
 | ----------- | --------- | ----------- |
 |PICO_BOARD|pico| This is the embedded board that the RP2040 chip is part of. By default, it assumes the Pico. This variable would match the `<boardname.h>` file in the board's configs folder.|
 
-### Windows (Manual)
+<!-- tabs:start -->
+
+### **Windows (Manual)**
 
 Start in the GP2040-CE folder. **From a Developer Powershell or Developer Command Command Prompt**:
 
@@ -181,7 +190,7 @@ Start in the GP2040-CE folder. **From a Developer Powershell or Developer Comman
     ```
 
 4. Your UF2 file should be in the build directory.
-### Windows (Pico SDK)
+### **Windows (Pico SDK)**
 After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search). This shortcut should already have everything configured, **allowing you to skip to step 7**. If you're experiencing compilation issues, consider following the manual steps outlined here.
 
 Ensure the `PICO_SDK_PATH` environment variable is set:
@@ -209,14 +218,15 @@ From inside VSCode:
 3. Wait for the configuration process to complete. If progress isn't visible, open a new terminal in VSCode by clicking on the "Termina" tab (at the top) then "new terminal". A new terminal window will open at the bottom, navigate the "Output" tab. 
 4. Click "Build All Projects" in the CMake project outline.
 5. The files should be in a new folder named "build" inside the GP2040-CE folder
-### Linux
+   
+### **Linux**
 
 Start in the GP2040-CE folder
 
 1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
-1. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
+2. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
     - Default value is `Pico`
-1. Create a build directory, configure the build, and execute the build.
+3. Create a build directory, configure the build, and execute the build.
 
     ```bash
     mkdir build
@@ -224,8 +234,9 @@ Start in the GP2040-CE folder
     cmake ..
     make
     ```
+4. Your UF2 file should be in the build directory.
 
-1. Your UF2 file should be in the build directory.
+<!-- tabs:end -->
 
 ## Configuration
 

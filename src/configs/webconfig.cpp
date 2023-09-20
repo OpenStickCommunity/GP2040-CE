@@ -196,6 +196,7 @@ int set_file_data(fs_file* file, const DataAndStatusCode& dataAndStatusCode)
 	returnData.append(
 		"Server: GP2040-CE " GP2040VERSION "\r\n"
 		"Content-Type: application/json\r\n"
+		"Access-Control-Allow-Origin: *\r\n"
 		"Content-Length: "
 	);
 	returnData.append(std::to_string(dataAndStatusCode.data.length()));
@@ -415,6 +416,7 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 	readDoc(displayOptions.splashChoice, doc, "splashChoice");
 	readDoc(displayOptions.splashDuration, doc, "splashDuration");
 	readDoc(displayOptions.displaySaverTimeout, doc, "displaySaverTimeout");
+	readDoc(displayOptions.turnOffWhenSuspended, doc, "turnOffWhenSuspended");
 
 	readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.layout, doc, "buttonLayoutCustomOptions", "params", "layout");
 	readDoc(displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX, doc, "buttonLayoutCustomOptions", "params", "startX");
@@ -461,6 +463,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	writeDoc(doc, "splashChoice", displayOptions.splashChoice);
 	writeDoc(doc, "splashDuration", displayOptions.splashDuration);
 	writeDoc(doc, "displaySaverTimeout", displayOptions.displaySaverTimeout);
+	writeDoc(doc, "turnOffWhenSuspended", displayOptions.turnOffWhenSuspended);
 
 	writeDoc(doc, "buttonLayoutCustomOptions", "params", "layout", displayOptions.buttonLayoutCustomOptions.paramsLeft.layout);
 	writeDoc(doc, "buttonLayoutCustomOptions", "params", "startX", displayOptions.buttonLayoutCustomOptions.paramsLeft.common.startX);
@@ -655,6 +658,7 @@ std::string setLedOptions()
 	readDoc(ledOptions.ledsPerButton, doc, "ledsPerButton");
 	readDoc(ledOptions.brightnessMaximum, doc, "brightnessMaximum");
 	readDoc(ledOptions.brightnessSteps, doc, "brightnessSteps");
+	readDoc(ledOptions.turnOffWhenSuspended, doc, "turnOffWhenSuspended");
 	readIndex(ledOptions.indexUp, "ledButtonMap", "Up");
 	readIndex(ledOptions.indexDown, "ledButtonMap", "Down");
 	readIndex(ledOptions.indexLeft, "ledButtonMap", "Left");
@@ -694,6 +698,7 @@ std::string getLedOptions()
 	writeDoc(doc, "ledsPerButton", ledOptions.ledsPerButton);
 	writeDoc(doc, "brightnessMaximum", ledOptions.brightnessMaximum);
 	writeDoc(doc, "brightnessSteps", ledOptions.brightnessSteps);
+	writeDoc(doc, "turnOffWhenSuspended", ledOptions.turnOffWhenSuspended);
 
 	const auto writeIndex = [&](const char* key0, const char* key1, int var)
 	{

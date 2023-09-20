@@ -149,6 +149,7 @@ const schema = yup.object().shape({
 		.oneOf(DISPLAY_FLIP_MODES.map((o) => o.value))
 		.label('Flip Display'),
 	invertDisplay: yup.number().label('Invert Display'),
+	turnOffWhenSuspended: yup.number().label('Turn Off When Suspended'),
 	buttonLayout: buttonLayoutSchema,
 	buttonLayoutRight: buttonLayoutRightSchema,
 	splashMode: yup
@@ -226,6 +227,8 @@ const FormContext = () => {
 				values.splashChoice = parseInt(values.splashChoice);
 			if (!!values.splashDuration)
 				values.splashDuration = parseInt(values.splashDuration);
+			if (!!values.turnOffWhenSuspended)
+				values.turnOffWhenSuspended = parseInt(values.turnOffWhenSuspended);
 
 			await WebApi.setDisplayOptions(values, true);
 		}
@@ -241,6 +244,8 @@ const FormContext = () => {
 				values.flipDisplay = parseInt(values.flipDisplay);
 			if (!!values.invertDisplay)
 				values.invertDisplay = parseInt(values.invertDisplay);
+			if (!!values.turnOffWhenSuspended)
+				values.turnOffWhenSuspended = parseInt(values.turnOffWhenSuspended);
 			if (!!values.buttonLayout)
 				values.buttonLayout = parseInt(values.buttonLayout);
 			if (!!values.buttonLayoutRight)
@@ -291,7 +296,7 @@ export default function DisplayConfigPage() {
 			onSubmit={onSuccess}
 			initialValues={defaultValues}
 		>
-			{({ handleSubmit, handleChange, handleBlur, values, touched, errors }) =>
+			{({ handleSubmit, handleChange, handleBlur, values, touched, errors, setFieldValue }) =>
 				console.log('errors', errors) ||
 				console.log('values', values) || (
 					<Section title={t('DisplayConfig:header-text')}>
@@ -511,6 +516,21 @@ export default function DisplayConfigPage() {
 										</option>
 									))}
 								</FormSelect>
+								<div className="col-sm-3">
+									<Form.Check
+										label={t('DisplayConfig:form.turn-off-when-suspended')}
+										type="switch"
+										name="turnOffWhenSuspended"
+										isInvalid={false}
+										checked={Boolean(values.turnOffWhenSuspended)}
+										onChange={(e) => {
+											setFieldValue(
+												'turnOffWhenSuspended',
+												e.target.checked ? 1 : 0,
+											);
+										}}
+									/>
+								</div>
 							</Row>
 							<Row className="mb-3">
 								<FormSelect

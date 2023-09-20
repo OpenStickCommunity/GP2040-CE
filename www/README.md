@@ -8,9 +8,16 @@ Simple web application for gamepad configuration.
 
 ## Development
 
-Navigate to the `www` folder and run `npm run dev`. This will start up the React app and an Express instance for mock data during development, allowing testing of the configurator without loading it onto the MCU, which is a SLOW process.
+### Mocked board
+
+Run `npm run dev`. This will start up the React app and an Express instance for mock data during development, allowing testing of the configurator without loading it onto the MCU, which is a SLOW process.
 
 The mock data Express server is running at http://localhost:8080.
+
+### Connected board
+
+Run `npm run dev-board`. This will start up the React app and try connect to the board running the
+[web-configurator](https://gp2040-ce.info/#/web-configurator).
 
 ### API Endpoints
 

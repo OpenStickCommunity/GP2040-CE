@@ -13,6 +13,7 @@
 #include "ps4_driver.h"
 #include "helper.h"
 #include "config.pb.h"
+#include "usb_driver.h"
 
 bool I2CDisplayAddon::available() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
@@ -56,10 +57,18 @@ void I2CDisplayAddon::setup() {
 	displaySaverTimer = options.displaySaverTimeout;
 	displaySaverTimeout = displaySaverTimer;
 	configMode = Storage::getInstance().GetConfigMode();
+	turnOffWhenSuspended = options.turnOffWhenSuspended;
 }
 
 bool I2CDisplayAddon::isDisplayPowerOff()
 {
+	if (turnOffWhenSuspended && get_usb_suspended()) {
+		if (displayIsPowerOn) setDisplayPower(0);
+		return true;
+	} else {
+		if (!displayIsPowerOn) setDisplayPower(1);
+	}
+
 	if (!displaySaverTimeout && !isFocusModeEnabled) return false;
 
 	float diffTime = getMillis() - prevMillis;

@@ -164,6 +164,7 @@ message DisplayOptions
 	optional bool invert = 16;
 	
 	optional int32 displaySaverTimeout = 17;
+	optional bool turnOffWhenSuspended = 18;
 }
 
 message LEDOptions
@@ -200,6 +201,8 @@ message LEDOptions
 	optional int32 pledPin3 = 28;
 	optional int32 pledPin4 = 29;
 	optional uint32 pledColor = 30;
+
+	optional bool turnOffWhenSuspended = 31;
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp

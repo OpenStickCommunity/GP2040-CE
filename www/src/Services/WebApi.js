@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { intToHex, hexToInt, rgbIntToHex } from './Utilities';
+import { hexToInt, rgbIntToHex } from './Utilities';
 
 const baseUrl =
-	process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
+	process.env.NODE_ENV === 'production'
+		? ''
+		: import.meta.env.VITE_DEV_BASE_URL;
 
 export const baseButtonMappings = {
 	Up: { pin: -1, key: 0, error: null },
@@ -577,14 +579,13 @@ async function getHeldPins(setLoading, createAbortSignal) {
 
 	try {
 		const response = await axios.get(`${baseUrl}/api/getHeldPins`, {
-			signal: createAbortSignal()
+			signal: createAbortSignal(),
 		});
 		setLoading && setLoading(false);
 		return response.data;
 	} catch (error) {
 		setLoading && setLoading(false);
-		if (error?.code === 'ERR_CANCELED')
-			return { canceled: true };
+		if (error?.code === 'ERR_CANCELED') return { canceled: true };
 		else console.error(error);
 	}
 }

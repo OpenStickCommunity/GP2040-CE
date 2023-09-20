@@ -31,4 +31,5 @@ export default {
 		'available-header-text': 'Available Buttons',
 		'assigned-header-text': 'Assigned Buttons',
 	},
+	'turn-off-when-suspended': 'Turn Off When Suspended'
 };
