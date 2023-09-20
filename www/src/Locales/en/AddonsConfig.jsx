@@ -65,6 +65,7 @@ export default {
 	'i2c-analog-ads1219-block-label': 'I2C Analog ADS1219 Block',
 	'i2c-analog-ads1219-speed-label': 'I2C Analog ADS1219 Speed',
 	'i2c-analog-ads1219-address-label': 'I2C Analog ADS1219 Address',
+	'mpu6050-header-text': 'I2C MPU6050 IMU',
 	'dual-directional-input-header-text': 'Dual Directional Input',
 	'dual-directional-input-up-pin-label': 'Dual Up Pin',
 	'dual-directional-input-down-pin-label': 'Dual Down Pin',

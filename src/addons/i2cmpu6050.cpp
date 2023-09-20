@@ -6,10 +6,12 @@
 #include <math.h>
 
 bool I2CMPU6050Input::available() {
-    return true;
+    return Storage::getInstance().getAddonOptions().mpu6050Options.enabled;
 }
 
 void I2CMPU6050Input::setup() {
+    //const MPU6050Options& options = Storage::getInstance().getAddonOptions().mpu6050Options;
+    
     imu = new MPU6050(1, 14, 15, i2c1, 40000, I2C_MPU6050_ADDRESS);
     imu->init();
 }

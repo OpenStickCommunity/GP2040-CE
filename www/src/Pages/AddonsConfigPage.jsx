@@ -47,6 +47,7 @@ import FocusMode, {
 	focusModeState,
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
+import MPU6050, { MPU6050Scheme, MPU6050State } from '../Addons/MPU6050';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -67,6 +68,7 @@ const schema = yup.object().shape({
 	...wiiScheme,
 	...focusModeScheme,
 	...keyboardScheme,
+	...MPU6050Scheme,
 });
 
 const defaultValues = {
@@ -89,6 +91,7 @@ const defaultValues = {
 	...snesState,
 	...focusModeState,
 	...keyboardState,
+	...MPU6050State,
 };
 
 const ADDONS = [
@@ -111,6 +114,7 @@ const ADDONS = [
 	SNES,
 	FocusMode,
 	Keyboard,
+	MPU6050,
 ];
 
 const FormContext = ({ setStoredData }) => {

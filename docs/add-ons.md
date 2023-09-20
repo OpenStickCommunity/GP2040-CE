@@ -91,6 +91,10 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 * `I2C Analog ADS1219 Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
 * `I2C Analog ADS1219 Address` - Sets the address for the I2C Analog ADS1219.
 
+## I2C MPU6050 IMU
+
+
+
 ## Dual Directional Input
 
 ![GP2040-CE Configuration - Add-Ons Dual Directional Input](assets/images/gpc-add-ons-dual-directional.png)
