@@ -616,6 +616,9 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.right_stick_x = static_cast<uint8_t>(state.rx >> 8);
 	ps4Report.right_stick_y = static_cast<uint8_t>(state.ry >> 8);
 
+	// DS4 uses 2000deg/sec max supposedly, based on JoyShockLibrary as reference
+	// This could maybe faster/more accurate by storing the value directly as int16_t or int32_t
+	// instead of converting to and from float in state.gyro and state.accel
 	ps4Report.gyro_x = static_cast<int16_t>(state.gyroX * 32767.0f / 2000.0f);
 	ps4Report.gyro_y = static_cast<int16_t>(state.gyroY * 32767.0f / 2000.0f);
 	ps4Report.gyro_z = static_cast<int16_t>(state.gyroZ * 32767.0f / 2000.0f);

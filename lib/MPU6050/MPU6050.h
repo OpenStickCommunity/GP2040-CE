@@ -85,7 +85,7 @@ class MPU6050
 
         // Initialize the device before reading data
         bool init(Mpu6050AccelerometerRange accelRange = Max2g,
-                  Mpu6050GyroscopeRange gyroRange = Max250Dps,
+                  Mpu6050GyroscopeRange gyroRange = Max2000Dps,
                   Mpu6050DLPFBandwidth bandwidth = Max260Hz,
                   uint8_t SampleRateDivider = 7);
 
