@@ -98,7 +98,40 @@ bool MPU6050::init(Mpu6050AccelerometerRange accelRange,
     setGyroscopeRange(gyroRange);
     setDLPFBandwidth(bandwidth);
 
+    calibrateGyro();
+
     return true;
+}
+
+void MPU6050::calibrateGyro()
+{
+    // Busy wait so it can settle.
+    // NOTE: If this is put onto a hotkey, the wait will need to be much longer so that user
+    // has a chance to put down the controller onto a flat surface.
+    busy_wait_ms(100);
+
+    // Take a sum of 1000 samples of the raw gyro
+    int32_t sumx = 0;
+    int32_t sumy = 0;
+    int32_t sumz = 0;
+
+    for (int i = 0; i < 1000; i++)
+    {
+        int16_t x, y, z;
+        readRawGyroscope(x, y, z);
+        sumx += x;
+        sumy += y;
+        sumz += z;
+    }
+    // Average the sum
+    sumx /= 1000.0;
+    sumy /= 1000.0;
+    sumz /= 1000.0;
+
+    // Save offsets
+    gyroOffsetX = -sumx;
+    gyroOffsetY = -sumy;
+    gyroOffsetZ = -sumz;
 }
 
 Mpu6050Data MPU6050::readData()
@@ -152,6 +185,9 @@ Vector3f MPU6050::readGyroscope()
 {
     int16_t rawGyroX, rawGyroY, rawGyroZ;
     readRawGyroscope(rawGyroX, rawGyroY, rawGyroZ);
+    rawGyroX += gyroOffsetX;
+    rawGyroY += gyroOffsetY;
+    rawGyroZ += gyroOffsetZ;
 
     // Convert each integer value to physical units
     Vector3f gyro = Vector3f();

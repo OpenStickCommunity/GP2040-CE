@@ -89,6 +89,8 @@ class MPU6050
                   Mpu6050DLPFBandwidth bandwidth = Max260Hz,
                   uint8_t SampleRateDivider = 7);
 
+        void calibrateGyro();
+
         // Methods to read measurements
         Mpu6050Data readData();
         void readRawAcceleration(int16_t &rawAccelX, int16_t &rawAccelY, int16_t &rawAccelZ);
@@ -130,6 +132,10 @@ class MPU6050
         Mpu6050GyroscopeRange m_gyroscopeRange;
 
         BBI2C bbi2c;
+
+        int16_t gyroOffsetX = 0;
+        int16_t gyroOffsetY = 0;
+        int16_t gyroOffsetZ = 0;
 
         // Raw data to real-world units
         float rawTemperatureToCelsius(int16_t rawTemperature);
