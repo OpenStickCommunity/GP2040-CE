@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import Select from 'react-select';
 import usePinStore, { BUTTON_ACTIONS } from '../Store/usePinStore';
 import invert from 'lodash/invert';
+import map from 'lodash/map';
+import { Button } from 'react-bootstrap';
 
 const options = Object.entries(BUTTON_ACTIONS).map(([key, value]) => ({
 	label: key,
@@ -14,7 +16,7 @@ const getOption = (actionId) => ({
 });
 
 export default function PlaygroundPage() {
-	const { pins, setPinAction, fetchPins } = usePinStore();
+	const { pins, setPinAction, fetchPins, savePins } = usePinStore();
 
 	useEffect(() => {
 		fetchPins();
@@ -24,9 +26,9 @@ export default function PlaygroundPage() {
 		<div>
 			<h2>Button mapping</h2>
 			<div style={{ columnCount: 2 }}>
-				{Object.values(pins).map((pin, pinId) => (
+				{map(pins, (pinAction, pin) => (
 					<div
-						key={pinId}
+						key={`pin-${pin}`}
 						style={{
 							padding: '20px 0',
 							borderTop: '1px solid black',
@@ -34,21 +36,29 @@ export default function PlaygroundPage() {
 							flexDirection: 'row',
 						}}
 					>
-						<label
-							style={{ alignSelf: 'center', paddingRight: '1em' }}
-						>{`GP${pinId}`}</label>
+						<label style={{ alignSelf: 'center', paddingRight: '1em' }}>
+							{pin.toUpperCase()}
+						</label>
 						<div style={{ flexGrow: 1, color: 'black' }}>
 							<Select
 								isClearable
 								isSearchable
 								options={options}
-								value={getOption(pin.action)}
-								onChange={(change) => setPinAction(pinId, change?.value)}
+								value={getOption(pinAction)}
+								onChange={(change) =>
+									setPinAction(
+										pin,
+										change?.value === undefined ? -10 : change.value, // On clear set to -10
+									)
+								}
 							/>
 						</div>
 					</div>
 				))}
 			</div>
+			<Button variant="primary" onClick={() => savePins()}>
+				{'Save'}
+			</Button>
 		</div>
 	);
 }
