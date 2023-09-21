@@ -591,6 +591,7 @@ message FocusModeOptions
 message MPU6050Options
 {
 	optional bool enabled = 1;
+	optional int32 i2cSDAPin = 2;
 }
 
 message AddonOptions

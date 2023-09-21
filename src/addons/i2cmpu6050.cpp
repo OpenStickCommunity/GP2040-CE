@@ -6,13 +6,15 @@
 #include <math.h>
 
 bool I2CMPU6050Input::available() {
-    return Storage::getInstance().getAddonOptions().mpu6050Options.enabled;
+    const MPU6050Options& option = Storage::getInstance().getAddonOptions().mpu6050Options;
+    return (option.enabled && isValidPin(option.i2cSDAPin));
 }
 
 void I2CMPU6050Input::setup() {
-    //const MPU6050Options& options = Storage::getInstance().getAddonOptions().mpu6050Options;
+    const MPU6050Options& options = Storage::getInstance().getAddonOptions().mpu6050Options;
+    int i2cSDAPin = options.i2cSDAPin;
     
-    imu = new MPU6050(1, 14, 15, i2c1, 40000, I2C_MPU6050_ADDRESS);
+    imu = new MPU6050(1, i2cSDAPin, 15, i2c1, 40000, I2C_MPU6050_ADDRESS);
     imu->init();
 }
 
