@@ -183,7 +183,7 @@ void AnalogInput::radialDeadzone(float& x, float& y, float deadzone, float x_mag
         y = ANALOG_CENTER;
     }
     else {
-        float scaling_factor = (magnitude - deadzone) / (1.0f - (deadzone + (deadzone * 0.42 )));
+        float scaling_factor = (magnitude - deadzone) / (1.0f - (deadzone + (deadzone * 0.6f)));
         x = ((x_magnitude / magnitude) * scaling_factor) + ANALOG_CENTER;
         y = ((y_magnitude / magnitude) * scaling_factor) + ANALOG_CENTER;
 
