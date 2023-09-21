@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { hexToInt, rgbIntToHex } from './Utilities';
 
-const baseUrl =
+export const baseUrl =
 	process.env.NODE_ENV === 'production'
 		? ''
 		: import.meta.env.VITE_DEV_BASE_URL;
