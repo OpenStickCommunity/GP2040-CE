@@ -850,11 +850,36 @@ std::string getPinMappings()
 
 	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
 
-	char pinName[6];
-	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-		snprintf(pinName, 6, "pin%0*d", 2, pin);
-		writeDoc(doc, pinName, *gpioMappings[pin]);
-	}
+	writeDoc(doc, "pin00", *gpioMappings[0]);
+	writeDoc(doc, "pin01", *gpioMappings[1]);
+	writeDoc(doc, "pin02", *gpioMappings[2]);
+	writeDoc(doc, "pin03", *gpioMappings[3]);
+	writeDoc(doc, "pin04", *gpioMappings[4]);
+	writeDoc(doc, "pin05", *gpioMappings[5]);
+	writeDoc(doc, "pin06", *gpioMappings[6]);
+	writeDoc(doc, "pin07", *gpioMappings[7]);
+	writeDoc(doc, "pin08", *gpioMappings[8]);
+	writeDoc(doc, "pin09", *gpioMappings[9]);
+	writeDoc(doc, "pin10", *gpioMappings[10]);
+	writeDoc(doc, "pin11", *gpioMappings[11]);
+	writeDoc(doc, "pin12", *gpioMappings[12]);
+	writeDoc(doc, "pin13", *gpioMappings[13]);
+	writeDoc(doc, "pin14", *gpioMappings[14]);
+	writeDoc(doc, "pin15", *gpioMappings[15]);
+	writeDoc(doc, "pin16", *gpioMappings[16]);
+	writeDoc(doc, "pin17", *gpioMappings[17]);
+	writeDoc(doc, "pin18", *gpioMappings[18]);
+	writeDoc(doc, "pin19", *gpioMappings[19]);
+	writeDoc(doc, "pin20", *gpioMappings[20]);
+	writeDoc(doc, "pin21", *gpioMappings[21]);
+	writeDoc(doc, "pin22", *gpioMappings[22]);
+	writeDoc(doc, "pin23", *gpioMappings[23]);
+	writeDoc(doc, "pin24", *gpioMappings[24]);
+	writeDoc(doc, "pin25", *gpioMappings[25]);
+	writeDoc(doc, "pin26", *gpioMappings[26]);
+	writeDoc(doc, "pin27", *gpioMappings[27]);
+	writeDoc(doc, "pin28", *gpioMappings[28]);
+	writeDoc(doc, "pin29", *gpioMappings[29]);
 
 	return serialize_json(doc);
 }
