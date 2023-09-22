@@ -24,7 +24,7 @@
 /* Ported for GP2040 by HoloPengin 2023 */
 
 /* TODO:
-    - Gyro drift cal (average 1000 measurements with no motion and save it as an offset)
+    - On-demand gyro cal
     - Automatic cal (if no motion for 5 seconds, calibrate gyro. Figure out thresholds)
     - Add support for alternative orientations
 */
@@ -57,7 +57,7 @@ enum Mpu6050GyroscopeRange
 // Always select the smallest possible range for precision.
 enum Mpu6050AccelerometerRange
 {
-    Max2g, // +/- 2g (19.6 m/s^2) of acceleration
+    Max2g, // +/- 2g
     Max4g,
     Max8g,
     Max16g
@@ -84,7 +84,7 @@ class MPU6050
         MPU6050(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t speed, uint8_t addr);
 
         // Initialize the device before reading data
-        bool init(Mpu6050AccelerometerRange accelRange = Max2g,
+        bool init(Mpu6050AccelerometerRange accelRange = Max16g,
                   Mpu6050GyroscopeRange gyroRange = Max2000Dps,
                   Mpu6050DLPFBandwidth bandwidth = Max260Hz,
                   uint8_t SampleRateDivider = 7);

@@ -13,6 +13,7 @@
 
 #include "storagemanager.h"
 #include "system.h"
+#include <cmath>
 
 // PS5 compatibility
 #include "ps4_driver.h"
@@ -619,12 +620,12 @@ PS4Report *Gamepad::getPS4Report()
 	// DS4 uses 2000deg/sec max supposedly, based on JoyShockLibrary as reference
 	// This could maybe faster/more accurate by storing the value directly as int16_t or int32_t
 	// instead of converting to and from float in state.gyro and state.accel
-	ps4Report.gyro_x = static_cast<int16_t>(state.gyroX * 32767.0f / 2000.0f);
-	ps4Report.gyro_y = static_cast<int16_t>(state.gyroY * 32767.0f / 2000.0f);
-	ps4Report.gyro_z = static_cast<int16_t>(state.gyroZ * 32767.0f / 2000.0f);
-	ps4Report.accel_x = static_cast<int16_t>(state.accelX * 8192.0f);
-	ps4Report.accel_y = static_cast<int16_t>(state.accelY * 8192.0f);
-	ps4Report.accel_z = static_cast<int16_t>(state.accelZ * 8192.0f);
+	ps4Report.gyro_x = static_cast<int16_t>(round(state.gyroX * 8.192f));
+	ps4Report.gyro_y = static_cast<int16_t>(round(state.gyroY * 8.192f));
+	ps4Report.gyro_z = static_cast<int16_t>(round(state.gyroZ * 8.192f));
+	ps4Report.accel_x = static_cast<int16_t>(round(state.accelX * 8192.0f));
+	ps4Report.accel_y = static_cast<int16_t>(round(state.accelY * 8192.0f));
+	ps4Report.accel_z = static_cast<int16_t>(round(state.accelZ * 8192.0f));
 	ps4Report.timestamp += 188; // FIXME: Make this time dependent. 188 is 1.25ms on official controller
 
 
