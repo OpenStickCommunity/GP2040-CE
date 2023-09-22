@@ -2,6 +2,9 @@ import axios from 'axios';
 import { create } from 'zustand';
 import { baseUrl } from '../Services/WebApi';
 
+// Hide from select options / Disable select if returned from board
+export const NON_SELECTABLE_BUTTON_ACTIONS = [-5, 0];
+
 // These could theoretically be created from enums.proto
 export const BUTTON_ACTIONS = {
 	NONE: -10,

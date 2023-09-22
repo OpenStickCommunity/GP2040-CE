@@ -1,14 +1,23 @@
 import React, { useEffect } from 'react';
 import Select from 'react-select';
-import usePinStore, { BUTTON_ACTIONS } from '../Store/usePinStore';
+import { Button } from 'react-bootstrap';
 import invert from 'lodash/invert';
 import map from 'lodash/map';
-import { Button } from 'react-bootstrap';
 
-const options = Object.entries(BUTTON_ACTIONS).map(([key, value]) => ({
-	label: key,
-	value,
-}));
+import usePinStore, {
+	BUTTON_ACTIONS,
+	NON_SELECTABLE_BUTTON_ACTIONS,
+} from '../Store/usePinStore';
+
+const isNonSelectable = (value) =>
+	NON_SELECTABLE_BUTTON_ACTIONS.includes(value);
+
+const options = Object.entries(BUTTON_ACTIONS)
+	.filter(([_, value]) => !isNonSelectable(value))
+	.map(([key, value]) => ({
+		label: key,
+		value,
+	}));
 
 const getOption = (actionId) => ({
 	label: invert(BUTTON_ACTIONS)[actionId],
@@ -45,6 +54,7 @@ export default function PlaygroundPage() {
 								isSearchable
 								options={options}
 								value={getOption(pinAction)}
+								isDisabled={isNonSelectable(pinAction)}
 								onChange={(change) =>
 									setPinAction(
 										pin,
