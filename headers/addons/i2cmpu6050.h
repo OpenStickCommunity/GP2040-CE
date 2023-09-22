@@ -19,6 +19,26 @@
 #define I2C_MPU6050_ADDRESS 0x68
 #endif
 
+#ifndef I2C_MPU6050_SDA_PIN
+#define I2C_MPU6050_SDA_PIN -1
+#endif
+
+#ifndef I2C_MPU6050_SCL_PIN
+#define I2C_MPU6050_SCL_PIN -1
+#endif
+
+#ifndef I2C_MPU6050_BLOCK
+#define I2C_MPU6050_BLOCK i2c0
+#endif
+
+#ifndef I2C_MPU6050_SPEED
+#define I2C_MPU6050_SPEED 400000
+#endif
+
+#ifndef I2C_MPU6050_ADDRESS
+#define I2C_MPU6050_ADDRESS 0x68
+#endif
+
 // IMU Module Name
 #define I2CMPU6050Name "I2CMPU6050"
 

@@ -475,6 +475,11 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		SNESpadAddonEnabled: 1,
 		PSPassthroughAddonEnabled: 1,
 		MPU6050InputEnabled: 1,
+		MPU6050i2cSDAPin: -1,
+		MPU6050i2cSCLPin: -1,
+		MPU6050i2cBlock: 0,
+		MPU6050i2cSpeed: 400000,
+		MPU6050i2cAddress: 0x68,
 		usedPins: Object.values(picoController),
 	});
 });

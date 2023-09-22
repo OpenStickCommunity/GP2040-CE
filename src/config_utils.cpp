@@ -430,6 +430,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.MPU6050Options
     INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, enabled, !!I2C_MPU6050_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, i2cSDAPin, I2C_MPU6050_SDA_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, i2cSCLPin, I2C_MPU6050_SCL_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, i2cBlock, (I2C_MPU6050_BLOCK == i2c0) ? 0 : 1);
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, i2cSpeed, I2C_MPU6050_SPEED);
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, i2cAddress, I2C_MPU6050_ADDRESS);
 
     // addonOptions.dualDirectionalOptions
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);

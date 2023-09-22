@@ -1049,8 +1049,11 @@ std::string setAddonOptions()
 	docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
 	MPU6050Options& mpu6050Options = Storage::getInstance().getAddonOptions().mpu6050Options;
-	docToPin(mpu6050Options.i2cSDAPin, doc, "MPU6050SDAPin");
-	docToPin(mpu6050Options.i2cSCLPin, doc, "MPU6050SCLPin");
+	docToPin(mpu6050Options.i2cSDAPin, doc, "MPU6050i2cSDAPin");
+	docToPin(mpu6050Options.i2cSCLPin, doc, "MPU6050i2cSCLPin");
+	docToValue(mpu6050Options.i2cBlock, doc, "MPU6050i2cBlock");
+	docToValue(mpu6050Options.i2cSpeed, doc, "MPU6050i2cSpeed");
+	docToValue(mpu6050Options.i2cAddress, doc, "MPU6050i2cAddress");
 	docToValue(mpu6050Options.enabled, doc, "MPU6050InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1572,8 +1575,11 @@ std::string getAddonOptions()
 	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
 	const MPU6050Options& mpu6050Options = Storage::getInstance().getAddonOptions().mpu6050Options;
-	writeDoc(doc, "MPU6050SDAPin", cleanPin(mpu6050Options.i2cSDAPin));
-	writeDoc(doc, "MPU6050SCLPin", cleanPin(mpu6050Options.i2cSCLPin));
+	writeDoc(doc, "MPU6050i2cSDAPin", cleanPin(mpu6050Options.i2cSDAPin));
+	writeDoc(doc, "MPU6050i2cSCLPin", cleanPin(mpu6050Options.i2cSCLPin));
+	writeDoc(doc, "MPU6050i2cBlock", mpu6050Options.i2cBlock);
+	writeDoc(doc, "MPU6050i2cSpeed", mpu6050Options.i2cSpeed);
+	writeDoc(doc, "MPU6050i2cAddress", mpu6050Options.i2cAddress);
 	writeDoc(doc, "MPU6050InputEnabled", mpu6050Options.enabled);
 
 	return serialize_json(doc);

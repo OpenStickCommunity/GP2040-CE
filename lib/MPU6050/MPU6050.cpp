@@ -83,7 +83,10 @@ bool MPU6050::init(Mpu6050AccelerometerRange accelRange,
 {
     // Pull sensor out of sleep mode
     I2CInit(&bbi2c, iSpeed);
-    wakeUp();
+    if (!wakeUp())
+    {
+        return false;
+    }
 
     // Test connection between the Arduino and the sensor
     if (!isConnected())
@@ -289,9 +292,9 @@ void MPU6050::sleepMode()
     write8(MPU6050_REGISTER_PWR_MGMT_1, 0b01000000);
 }
 
-void MPU6050::wakeUp()
+int MPU6050::wakeUp()
 {
-    write8(MPU6050_REGISTER_PWR_MGMT_1, 0b00000000);
+    return write8(MPU6050_REGISTER_PWR_MGMT_1, 0b00000000);
 }
 
 void MPU6050::set_ad0(bool ad0)
@@ -378,9 +381,9 @@ int16_t MPU6050::read16(uint8_t registerAddr)
 }
 
 // write one register 
-void MPU6050::write8(uint8_t registerAddr, uint8_t value)
+int MPU6050::write8(uint8_t registerAddr, uint8_t value)
 {
     uc[0] = registerAddr;
     uc[1] = value;
-    I2CWrite(&bbi2c, address, uc, 2);
+    return I2CWrite(&bbi2c, address, uc, 2);
 }

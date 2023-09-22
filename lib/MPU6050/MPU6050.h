@@ -119,7 +119,7 @@ class MPU6050
 
         // Set sensor in sleep mode (power saving mode, no data measurements)
         void sleepMode();
-        void wakeUp();
+        int wakeUp();
 
         void set_ad0(bool ad0);
         bool get_ad0();
@@ -145,7 +145,7 @@ class MPU6050
         // For convenience:
         uint8_t read8(uint8_t registerAddr);
         int16_t read16(uint8_t registerAddr);
-        void write8(uint8_t registerAddr, uint8_t value);
+        int write8(uint8_t registerAddr, uint8_t value);
 
         // Buffer for I2C communication
 	    unsigned char uc[16];
