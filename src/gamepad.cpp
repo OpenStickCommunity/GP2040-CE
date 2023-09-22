@@ -626,7 +626,7 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.accel_x = static_cast<int16_t>(round(state.accelX * 8192.0f));
 	ps4Report.accel_y = static_cast<int16_t>(round(state.accelY * 8192.0f));
 	ps4Report.accel_z = static_cast<int16_t>(round(state.accelZ * 8192.0f));
-	ps4Report.timestamp += 188; // FIXME: Make this time dependent. 188 is 1.25ms on official controller
+	ps4Report.timestamp = getMillis() * 150; // DS4: 1.25ms polling results in 188ms timestamp, 150*millis should be close if not perfect
 
 
 	if (hasAnalogTriggers)
