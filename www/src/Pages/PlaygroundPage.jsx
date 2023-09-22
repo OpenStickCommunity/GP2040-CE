@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Select from 'react-select';
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import invert from 'lodash/invert';
 import map from 'lodash/map';
 
@@ -26,20 +27,20 @@ const getOption = (actionId) => ({
 
 export default function PlaygroundPage() {
 	const { pins, setPinAction, fetchPins, savePins } = usePinStore();
-
+	const { t } = useTranslation('');
 	useEffect(() => {
 		fetchPins();
 	}, []);
 
 	return (
-		<div>
-			<h2>Button mapping</h2>
-			<div style={{ columnCount: 2 }}>
+		<Form onSubmit={() => savePins()}>
+			<h1>Button mapping</h1>
+			<div style={{ columnCount: 3 }}>
 				{map(pins, (pinAction, pin) => (
 					<div
 						key={`pin-${pin}`}
 						style={{
-							padding: '20px 0',
+							padding: '5px 0',
 							borderTop: '1px solid black',
 							display: 'flex',
 							flexDirection: 'row',
@@ -66,9 +67,8 @@ export default function PlaygroundPage() {
 					</div>
 				))}
 			</div>
-			<Button variant="primary" onClick={() => savePins()}>
-				{'Save'}
-			</Button>
-		</div>
+
+			<Button type="submit">{t('Common:button-save-label')}</Button>
+		</Form>
 	);
 }
