@@ -16,7 +16,7 @@ The options in the main menu are:
 * [Settings](#settings) - Adjust settings like input mode, d-pad mode, etc.
 * [Configuration > Pin Mapping](#pin-mapping) - Allows for remapping of GPIO pins to different buttons.
 * [Configuration > Keyboard Mapping](#keyboard-mapping) - Allows for remapping of keyboard keys to different controller inputs.
-* * [Configuration > Profile Settings](#profile-settings) - Allows for remapping of GPIO pins to different buttons.
+* [Configuration > Profile Settings](#profile-settings) - Allows for remapping of GPIO pins to different buttons.
 * [Configuration > LED Configuration](#led-configuration) - Enable and configure RGB LEDs here.
 * [Configuration > Display Configuration](#display-configuration) - Enable and configure display options.
 * [Configuration > Add-Ons Configuration](#add-ons-configuration) - Enable and configure available add-ons.
