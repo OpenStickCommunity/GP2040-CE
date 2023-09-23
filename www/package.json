@@ -27,15 +27,18 @@
 		"build": "vite build && npm run makefsdata",
 		"dev-server": "nodemon -r dotenv/config ./server/app.js",
 		"dev": "concurrently --kill-others \"npm run dev-server\" \"npm start\"",
+		"dev-board": "cross-env VITE_DEV_BASE_URL=http://192.168.7.1 npm start ",
 		"format": "prettier --write \"{src,server}/**/*.{tsx,ts,jsx,js,json,scss}\"",
 		"lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
 		"makefsdata": "node makefsdata.js",
 		"start": "vite"
 	},
 	"devDependencies": {
+		"@types/node": "^20.5.9",
 		"@vitejs/plugin-react": "^4.0.0",
 		"concurrently": "^8.0.1",
 		"cors": "^2.8.5",
+		"cross-env": "^7.0.3",
 		"dotenv": "^16.1.4",
 		"eslint": "^8.38.0",
 		"eslint-plugin-i18next": "^6.0.3",

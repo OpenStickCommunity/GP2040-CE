@@ -13,6 +13,11 @@
 // GP2040-CE Version (32 character limit)
 #define GP2040VERSION "v0.7.4"
 
+// GP2040-CE Board Config (64 character limit)
+#ifndef GP2040_BOARDCONFIG
+#define GP2040_BOARDCONFIG "Unknown"
+#endif
+
 #define PLED_REPORT_SIZE 32
 
 #ifndef PLED1_PIN
@@ -34,6 +39,8 @@
 #define PLED_COLOR ColorWhite // White
 #endif
 
-static inline bool isValidPin(int32_t pin) { return pin >= 0 && pin < NUM_BANK0_GPIOS; }
+static inline bool isValidPin(int32_t pin) {
+    int32_t numBank0GPIOS = NUM_BANK0_GPIOS;
+    return pin >= 0 && pin < numBank0GPIOS; }
 
 #endif

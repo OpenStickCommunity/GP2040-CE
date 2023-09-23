@@ -95,6 +95,12 @@ elseif(NOT DEFINED PICO_PIO_USB_PATH)
   set(PICO_PIO_USB_PATH ${CMAKE_SOURCE_DIR}/lib/pico_pio_usb)
 endif()
 
+add_compile_options(-Wall
+        -Wtype-limits
+        -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
+        -Wno-unused-function # we have some for the docs that aren't called
+        )
+
 include(compile_proto.cmake)
 compile_proto()
 
@@ -196,6 +202,8 @@ ${PROTO_OUTPUT_DIR}
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
   PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
+  BOARD_CONFIG_FILE_NAME="$<TARGET_FILE_BASE_NAME:${PROJECT_NAME}>"
+  GP2040_BOARDCONFIG="${GP2040_BOARDCONFIG}"
 )
 
 target_include_directories(${PROJECT_NAME}  PRIVATE
@@ -205,14 +213,7 @@ target_include_directories(${PROJECT_NAME}  PRIVATE
 
 pico_add_extra_outputs(${PROJECT_NAME})
 
-add_compile_options(-Wall
-        -Wtype-limits
-        -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
-        -Wno-unused-function # we have some for the docs that aren't called
-        -Wno-maybe-uninitialized
-        )
-
-        install(FILES
+install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.uf2
     ${CMAKE_CURRENT_LIST_DIR}/README.md
     DESTINATION .

@@ -1,8 +1,8 @@
-# GP2040 Usage
+# GP2040-CE Usage
 
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
 
-!> The v0.5 release has some breaking changes to boards other than the RPi Pico. If you are using such a board, do not update from an older version unless you have a backup .uf2 from a known good version, or you know what you're doing.
+!> The v0.5+ release has some breaking changes to boards other than the Raspberry Pi Pico. If you are using such a board, do not update from an older version unless you have a backup .uf2 from a known good version, or you know what you're doing.
 
 ## Buttons
 
@@ -25,9 +25,9 @@ GP2040-CE uses generic button labeling for gamepad state, which is then converte
 | A1         | Guide  | Home    | PS           | PS           | 13           | Home   |
 | A2         | -      | Capture | Touchpad     | -            | 14           | -      |
 
-If you do not have a dedicated Home button, you can activate it via the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> button combination.
+If your controller is missing dedicated buttons for any specific inputs, check the [Hotkeys page](hotkeys) on how to map a button combination that will emulate those missing inputs.
 
-Unlike other controllers, Keyboard gets different keys for directional buttons.
+?> Unlike other controllers, Keyboard gets different keys for directional buttons. <br> You can change the key mappings for Keyboard mode in [Webconfig mode > Configuration > Keyboard Mapping](web-configurator.md#keyboard-mapping)
 
 | Direction | Keyboard   |
 | --------- | ---------- |
@@ -36,111 +36,51 @@ Unlike other controllers, Keyboard gets different keys for directional buttons.
 | Left      | Left Arrow |
 | Right     | Right Arrow|
 
-?> You can change the key mappings for Keyboard mode in [Webconfig mode](web-configurator.md)
-
-## Additional Features: Turbo & LS/RS Emulation
-
-Please note that the documentation for these new features is yet to be written. A future version will include updated docs.
-
 ## Bootsel Mode
 
-To boot into Bootsel mode (to flash your controller for example), hold the <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> button combination then plug in your controller.
+Bootsel Mode is the state of the board where firmware can be flashed onto the board. You will need to use this whenever there is an update or as part of the troubleshooting process. 
+
+You can boot into Bootsel Mode by either holding <hotkey v-bind:buttons='["S1", "S2", "Up"]'></hotkey> buttons while plugging in the controller or by booting into the Web Configurator and then restarting in Bootsel Mode.
 
 ## Webconfig Mode
 
-To boot into [Webconfig mode](web-configurator.md) (to access the web configurator), hold the <hotkey v-bind:buttons='["S2"]'></hotkey> button combination then plug in your controller.
+Webconfig Mode is the state of the board where built-in web browser-based configuration application is launched. From here, you can customize and configure your controller as needed.
+
+You can boot into Webconfig Mode by holding the <hotkey v-bind:buttons='["S2"]'></hotkey> button while plugging in the controller.
 
 ## Input Modes
 
-To change the input mode, **hold one of the following buttons as the controller is plugged in:**
+GP2040-CE is compatible with a number of systems and input modes. To change the input mode, **hold one of the following buttons as the controller is plugged in:**
 
-* <hotkey v-bind:buttons='["B1"]'></hotkey> for Nintendo Switch
-* <hotkey v-bind:buttons='["B2"]'></hotkey> for XInput
-* <hotkey v-bind:buttons='["B3"]'></hotkey> for DirectInput/PS3
-* <hotkey v-bind:buttons='["B4"]'></hotkey> for PS4
-* <hotkey v-bind:buttons='["R2"]'></hotkey> for Keyboard
+|    Input Mode   |                Button Held                |
+|:----------------|:-----------------------------------------:|
+| Nintendo Switch | <hotkey v-bind:buttons='["B1"]'></hotkey> |
+| XInput          | <hotkey v-bind:buttons='["B2"]'></hotkey> |
+| DirectInput/PS3 | <hotkey v-bind:buttons='["B2"]'></hotkey> |
+| PS4             | <hotkey v-bind:buttons='["B4"]'></hotkey> |
+| Keyboard        | <hotkey v-bind:buttons='["R2"]'></hotkey> |
 
-Input mode is saved across power cycles.
+?> Input mode is saved across power cycles.
 
-## D-Pad Modes
+## Hotkeys
 
-You can switch between the 3 modes for the D-Pad **while the controller is in use by pressing one of the following default combinations:**
+A number of useful hotkeys exist that change the functionality of GP2040 without needing to access the Web Configurator. Commonly used hotkeys include changing the directions to emulate a digital DPad, Left Analog Stick, Right Analog Stick or to change [Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOC) cleaning modes. Different SOCD cleaning modes will ensure the controller obeys certain directional input rules when sending inputs to the computer or game console. 
 
-* <hotkey v-bind:buttons='["S1", "S2", "Down"]'></hotkey> - D-Pad
-* <hotkey v-bind:buttons='["S1", "S2", "Left"]'></hotkey> - Emulate Left Analog stick
-* <hotkey v-bind:buttons='["S1", "S2", "Right"]'></hotkey> - Emulate Right Analog stick
+A number of hotkeys are enabled by default and if you are encountering issues with unexpected behavior on your controller, verify that you did not accidentally trigger a hotkey.
 
-D-Pad mode is saved across power cycles.
+|    Hotkeys Enabled By Default                       |                   Inputs                               |
+|:----------------------------------------------------|:-------------------------------------------------------|
+| [Home Button](hotkeys.md#home-button)               | <hotkey v-bind:buttons='["S1","S2","Up"]'></hotkey>    |
+| [Dpad Digital](hotkeys.md#dpad-digital)             | <hotkey v-bind:buttons='["S1","S2","Down"]'></hotkey>  |
+| [Dpad Left Analog](hotkeys.md#dpad-left-analog)     | <hotkey v-bind:buttons='["S1","S2","Left"]'></hotkey>  |
+| [Dpad Right Analog](hotkeys.md#dpad-right-analog)   | <hotkey v-bind:buttons='["S2","A1","Right"]'></hotkey> |
+| [SOCD Up Priority](hotkeys.md#socd-up-priority)     | <hotkey v-bind:buttons='["S2","A1","Up"]'></hotkey>    |
+| [SOCD Neutral](hotkeys.md#socd-neutral)             | <hotkey v-bind:buttons='["S2","A1","Down"]'></hotkey>  |
+| [SOCD Last Wins](hotkeys.md#socd-last-win)          | <hotkey v-bind:buttons='["S2","A1","Left"]'></hotkey>  |
+| [SOCD Invert Y Axis](hotkeys.md#invert-y-axis)      | <hotkey v-bind:buttons='["S2","A1","Right"]'></hotkey> |
 
-## SOCD Modes
+?> Selected D-Pad mode and SOCD cleaning mode are saved across power cycles.
 
-[Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOC) cleaning will ensure the controller obeys certain directional input rules when sending inputs to the computer/console. GP2040 users can choose 1 of the 3 SOCD Modes **while the controller is in use by pressing one of the following button default combinations:**
+## Add-Ons and Additional Features
 
-* <hotkey v-bind:buttons='["S2", "A1", "Up"]'></hotkey> - **Up Priority mode**: Up + Down = Up, Left + Right = Neutral (Standard stickless behavior).
-* <hotkey v-bind:buttons='["S2", "A1", "Down"]'></hotkey> - **Neutral mode**: Up + Down = Neutral, Left + Right = Neutral.
-* <hotkey v-bind:buttons='["S2", "A1", "Left"]'></hotkey> - **Last Input Priority (Last Win)**: Hold Up then hold Down = Down, then release and re-press Up = Up. Applies to both axes.
-
-The selected SOCD mode is saved across power cycles.
-
-## Invert D-Pad Y-axis
-
-A toggle is available to invert the Y-axis input of the D-pad, allowing some additional input flexibility. The default hotkey to toggle is to press <hotkey v-bind:buttons='["S2", "A1", "Right"]'></hotkey>. This is a temporary hotkey mapping for this feature, so keep an eye on updated releases for this to change.
-
-### Hotkeys
-
-The D-Pad Mode, SOCD Mode, and Invert D-Pad Y-axis hotkey bindings can be changed or assigned to different
-actions in [the web configurator](web-configurator.md#hotkeys).
-
-## RGB LEDs
-
-### RGB LED Animations
-
-The following animations are available:
-
-| Name | Description | LED Parameter |
-| - | - | - |
-| Off | Turn off per-button RGB LEDs | - |
-| Static Color | Sets all LEDs to the same color | Cycle through colors: *Red*, *Orange*, *Yellow*, *Lime Green*, *Green*, *Seafoam*, *Aqua*, *Sky Blue*, *Blue*, *Purple*, *Pink*, *Magenta* |
-| Rainbow Cycle | All LEDs cycle through the color wheel displaying the same color | Adjust animation speed |
-| Rainbow Chase | A fading, rainbow cycling lines travels across the LED chain | Adjust animation speed |
-| Static Theme | Set the LEDs to a pre-defined static theme | Cycle through themes, see [RGB LED Static Themes](#rgb-led-static-themes) for details. |
-
-### RGB LED Hotkeys
-
-| Hotkey | Description |
-| - | - |
-| <hotkey v-bind:buttons='["S1", "S2", "B3"]'></hotkey> | Next Animation |
-| <hotkey v-bind:buttons='["S1", "S2", "B1"]'></hotkey> | Previous Animation |
-| <hotkey v-bind:buttons='["S1", "S2", "B4"]'></hotkey> | Brightness Up |
-| <hotkey v-bind:buttons='["S1", "S2", "B2"]'></hotkey> | Brightness Down |
-| <hotkey v-bind:buttons='["S1", "S2", "R1"]'></hotkey> | LED Parameter Up |
-| <hotkey v-bind:buttons='["S1", "S2", "R2"]'></hotkey> | LED Parameter Down |
-| <hotkey v-bind:buttons='["S1", "S2", "L1"]'></hotkey> | Pressed Parameter Up |
-| <hotkey v-bind:buttons='["S1", "S2", "L2"]'></hotkey> | Pressed Parameter Down |
-
-The `LED Parameter` hotkeys may affect color, speed or theme depending on the current RGB LED animation. The `Pressed Parameter` options will change the colors/effects for the on-press animations.
-
-### RGB LED Static Themes
-
-| Name | Preview |
-| - | - |
-| **Static Rainbow** | ![Static Rainbow](./assets/images/led-themes/static-rainbow.png) |
-| **Xbox** | ![Xbox](./assets/images/led-themes/xbox.png) |
-| **Xbox (All)** | ![Xbox (All)](./assets/images/led-themes/xbox-all.png) |
-| **Super Famicom** | ![Super Famicom](./assets/images/led-themes/super-famicom.png) |
-| **Super Famicom (All)** | ![Super Famicom (All)](./assets/images/led-themes/super-famicom-all.png) |
-| **PlayStation** | ![Xbox](./assets/images/led-themes/playstation.png) |
-| **PlayStation (All)** | ![Xbox (All)](./assets/images/led-themes/playstation-all.png) |
-| **Neo Geo Straight** | ![Neo Geo Classic](./assets/images/led-themes/neogeo-straight.png) |
-| **Neo Geo Curved** | ![Neo Geo Curved](./assets/images/led-themes/neogeo-curved.png) |
-| **Neo Geo Modern** | ![Neo Geo Modern](./assets/images/led-themes/neogeo-modern.png) |
-| **Six Button Fighter** | ![Six Button Fighter](./assets/images/led-themes/six-button-fighter.png) |
-| **Six Button Fighter +** | ![Six Button Fighter +](./assets/images/led-themes/six-button-fighter-plus.png) |
-| **Street Fighter 2** | ![Street Fighter 2](./assets/images/led-themes/street-fighter-2.png) |
-| **Tekken** | ![Tekken](./assets/images/led-themes/tekken.png) |
-| **Guilty Gear Type-A** | ![Guilty Gear Type-A](./assets/images/led-themes/guilty-gear-type-a.png) |
-| **Guilty Gear Type-B** | ![Guilty Gear Type-B](./assets/images/led-themes/guilty-gear-type-b.png) |
-| **Guilty Gear Type-C** | ![Guilty Gear Type-C](./assets/images/led-themes/guilty-gear-type-c.png) |
-| **Guilty Gear Type-D** | ![Guilty Gear Type-D](./assets/images/led-themes/guilty-gear-type-d.png) |
-| **Guilty Gear Type-E** | ![Guilty Gear Type-E](./assets/images/led-themes/guilty-gear-type-e.png) |
-| **Fightboard** | ![Fightboard](./assets/images/led-themes/fightboard.png) |
+There are a number of add-ons that expand the functionality of GP2040-CE, such as [analog stick emulation](add-ons#analog) and [turbo functions](add-ons#turbo). Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to [Add-Ons page](add-ons) for more information on the individual add-ons.

@@ -8,6 +8,8 @@
 
 #include "enums.pb.h"
 
+#define BOARD_CONFIG_LABEL "Mavercade Keebfighter"
+
 // Mapping between Mavercade Keebfighter switch number (as silkscreened) and GPIO pin
 
 #define FLATBOX_SW1_PIN    14

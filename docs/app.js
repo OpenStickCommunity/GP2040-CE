@@ -10,12 +10,12 @@ const configData = {
 		name: 'Alpaca-OwO',
 		category: configCategories[1],
 		website: 'https://github.com/Project-Alpaca/Alpaca-OwO',
-		desc: 'Arcade controller I/O platform designed by <a target="_blank" href="https://github.com/dogtopus">dogtopus</a>.'
+		desc: 'Arcade controller I/O platform designed by <a href="https://github.com/dogtopus">dogtopus</a>.'
 	},
 	BentoBox: {
 		name: 'ScrubTier BentoBox',
 		category: configCategories[2],
-		website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/RP2040-arcade-board/configs/BentoBox',
+		website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/BentoBox',
 		desc: ''
 	},
 	DURAL: {
@@ -40,19 +40,19 @@ const configData = {
 		name: 'Flatbox Rev 4',
 		category: configCategories[1],
 		website: 'https://github.com/jfedor2/flatbox/tree/master/hardware-rev4',
-		desc: 'Stickless PCB designed by <a target="_blank" href="https://github.com/jfedor2">jfedor2</a> using an embedded RP2040 chip.'
+		desc: 'Stickless PCB designed by <a href="https://github.com/jfedor2">jfedor2</a> using an embedded RP2040 chip.'
 	},
 	FlatboxRev5: {
 		name: 'Flatbox Rev 5',
 		category: configCategories[1],
 		website: 'https://github.com/jfedor2/flatbox/tree/master/hardware-rev5',
-		desc: 'Stickless PCB designed by <a target="_blank" href="https://github.com/jfedor2">jfedor2</a> using the Waveshare RP2040-Zero.'
+		desc: 'Stickless PCB designed by <a href="https://github.com/jfedor2">jfedor2</a> using the Waveshare RP2040-Zero.'
 	},
 	FlatboxRev5RGB: {
 		name: 'Flatbox Rev 5 RGB',
 		category: configCategories[1],
 		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/Flatbox%20Rev%205%20RGB',
-		desc: 'Stickless PCB designed by <a target="_blank" href="https://github.com/jfedor2">jfedor2</a> and <a target="_blank" href="https://github.com/TheTrainGoes">TheTrain</a> using the Waveshare RP2040-Zero.'
+		desc: 'Stickless PCB designed by <a href="https://github.com/jfedor2">jfedor2</a> and <a href="https://github.com/TheTrainGoes">TheTrain</a> using the Waveshare RP2040-Zero.'
 	},
 	KB2040: {
 		name: 'Adafruit KB2040',
@@ -61,10 +61,16 @@ const configData = {
 		website: 'https://learn.adafruit.com/adafruit-kb2040',
 		desc: 'Another RP2040 board in the Pro Micro form factor, with 2 additional pins for USB data. This build is configured for DIY gamepad mods.'
 	},
+	KeyboardConverter: {
+		name: 'GP2040-CE Keyboard Converter',
+		category: configCategories[1],
+		website: 'https://github.com/OpenStickCommunity/Hardware/blob/main/GP2040%20Keyboard%20Converter/Waveshare%20Zero-PCB/README.md',
+		desc: 'The GP2040-CE Keyboard Converter Case is designed to be a USB Host Device for the use of a keyboard with the GP2040-CE project. The end result is a device that allows you to play on a keyboard, but have it registered just as GP2040-CE controller, whether that is XInput, DInput, PS4, or Switch.'
+	},
 	MavercadeKeebfighter: {
 		name: 'Mavercade Keebfighter',
 		category: configCategories[2],
-		website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/RP2040-arcade-board/configs/MavercadeKeebfighter',
+		website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/MavercadeKeebfighter',
 		desc: ''
 	},
 	Pico: {
@@ -85,25 +91,45 @@ const configData = {
 		name: 'Pico Fighting Board',
 		category: configCategories[1],
 		website: 'https://github.com/FeralAI/PicoFightingBoard',
-		desc: 'Arcade encoder board designed by <a target="_blank" href="https://github.com/FeralAI">FeralAI</a> using a Raspberry Pi Pico or pin-equivalent RP2040 board.'
+		desc: 'Arcade encoder board designed by <a href="https://github.com/FeralAI">FeralAI</a> using a Raspberry Pi Pico or pin-equivalent RP2040 board.'
+	},
+	PicoW: {
+		name: 'Raspberry Pi Pico W',
+		category: configCategories[0],
+		pos: 2,
+		pinout: '/#/wiring?id=raspberry-pi-pico',
+		website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
+		desc: 'The Raspberry Pi Pico W is a powerful, low-cost board based on the Raspberry Pi RP2040 microcontroller.'
 	},
 	RP2040AdvancedBreakoutBoard: {
 		name: 'RP2040 Advanced Breakout',
 		category: configCategories[1],
 		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Advanced%20Breakout%20Board',
-		desc: 'Arcade encoder board designed by <a target="_blank" href="https://github.com/TheTrainGoes">TheTrain</a> using an embedded RP2040, and is the official board of the GP2040-CE project.'
+		desc: 'Arcade encoder board designed by <a href="https://github.com/TheTrainGoes">TheTrain</a> using an embedded RP2040, and is the official board of the GP2040-CE project.'
 	},
 	RP2040MiniBreakoutBoard: {
 		name: 'RP2040 Mini Breakout',
 		category: configCategories[1],
 		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Mini%20Breakout%20Board',
-		desc: 'A reduced-footprint spin off of the RP2040 Advanced Breakout Board designed by <a target="_blank" href="https://github.com/TheTrainGoes">TheTrain</a>.'
+		desc: 'A reduced-footprint spin off of the RP2040 Advanced Breakout Board designed by <a href="https://github.com/TheTrainGoes">TheTrain</a>.'
 	},
 	ReflexEncoder: {
 		name: 'Reflex Arcade Encoder',
 		category: configCategories[1],
 		website: 'https://github.com/misteraddons/ReflexFightingBoard',
-		desc: 'Arcade encoder board designed and sold by <a target="_blank" href="https://github.com/misteraddons">MiSTerAddons</a> using an embedded RP2040 chip.'
+		desc: 'Arcade encoder board designed and sold by <a href="https://github.com/misteraddons">MiSTerAddons</a> using an embedded RP2040 chip.'
+	},
+	ReflexCtrlSNES: {
+		name: 'Reflex CTRL SNES',
+		category: configCategories[1],
+		website: 'https://github.com/misteraddons/Reflex-CTRL',
+		desc: 'Reflex Board Open source PCB for SNES Controller replacement PCBs designed and sold by <a href="https://github.com/misteraddons">MiSTerAddons</a> using an embedded RP2040 chip.'
+	},
+	SGFDevices: {
+		name: 'SGF Flatbox',
+		category: configCategories[1],
+		website: 'https://github.com/sgfdevices/SGFlatbox',
+		desc: 'Configuration for the <a href="https://github.com/sgfdevices/SGFlatbox">SGF Flatbox-based controllers</a>, based on the excellent revisions of the Flatbox design by jfedor2 powered by an RP2040 MCU.'
 	},
 	SparkFunProMicro: {
 		name: 'SparkFun Pro Micro',
@@ -111,13 +137,13 @@ const configData = {
 		pos: 2,
 		pinout: '/#/wiring?id=sparkfun-pro-micro-rp2040',
 		website: 'https://learn.sparkfun.com/tutorials/pro-micro-rp2040-hookup-guide',
-		desc: 'An RP2040 board in the Pro Micro form factor. This build is a drop-in replacement for the <a target="_blank" href="https://github.com/MickGyver/DaemonBite-Arcade-Encoder">Daemonbite Arcade Encoder</a>.'
+		desc: 'An RP2040 board in the Pro Micro form factor. This build is a drop-in replacement for the <a href="https://github.com/MickGyver/DaemonBite-Arcade-Encoder">Daemonbite Arcade Encoder</a>.'
 	},
 	Stress: {
 		name: 'Stress',
 		category: configCategories[1],
 		website: 'https://github.com/GroooveBob/Stress',
-		desc: 'A small and portable PCB-as-a-controller designed by <a target="_blank" href="https://github.com/GroooveBob">GroooveBob</a> using the Waveshare RP-2040-Zero.'
+		desc: 'A small and portable PCB-as-a-controller designed by <a href="https://github.com/GroooveBob">GroooveBob</a> using the Waveshare RP-2040-Zero.'
 	},
 	WaveshareZero: {
 		name: 'Waveshare RP2040-Zero',
@@ -125,7 +151,7 @@ const configData = {
 		pos: 3,
 		pinout: '/#/wiring?id=waveshare-rp2040-zero',
 		website: 'https://www.waveshare.com/wiki/RP2040-Zero',
-		desc: 'The <a target="_blank" href="https://www.waveshare.com/rp2040-zero.htm">Waveshare RP2040-Zero</a> is a small form factor board with castellated pins and USB-C, making this a popular choice for custom built PCBs without the need for SMT assembly.'
+		desc: 'The <a href="https://www.waveshare.com/rp2040-zero.htm">Waveshare RP2040-Zero</a> is a small form factor board with castellated pins and USB-C, making this a popular choice for custom built PCBs without the need for SMT assembly.'
 	},
 };
 
@@ -133,10 +159,18 @@ window.$docsify = {
 	name: 'GP2040-CE',
 	repo: 'https://github.com/OpenStickCommunity/GP2040-CE',
 	homepage: 'https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/README.md',
+	search: {
+		maxAge: 86400000, // Expiration time, the default one day
+		placeholder: 'Type to search',
+		depth: 6,
+		hideOtherSidebarContent: false,
+	},
 	logo: 'assets/images/gp2040-ce-logo.png',
 	loadSidebar: '_sidebar.md',
 	auto2top: true,
 	subMaxLevel: 3,
+	externalLinkTarget: '_self',
+	cornerExternalLinkTarget: '_self',
 	themeable: {
 		readyTransition : true, // default
 		responsiveTables: true  // default
@@ -179,13 +213,13 @@ window.$docsify = {
 								</a>
 							</li>
 							<li v-if="release.pinout">
-								<a :href="release.pinout" target="_blank">
+								<a :href="release.pinout">
 									<i class="fa-solid fa-gamepad fa-2xl"></i>
 									Pinout
 								</a>
 							</li>
 							<li v-if="release.website">
-								<a :href="release.website" target="_blank">
+								<a :href="release.website">
 									<i class="fa-solid fa-globe fa-2xl"></i>
 									Website
 								</a>
@@ -264,16 +298,41 @@ window.$docsify = {
 					.then(response => response.json())
 					.then(data => {
 						const releaseInfo = data;
+						/* 
+						Tries to find a board and redirects to download url based on the URL
+						e.g: https://gp2040-ce.info/#/download?RP2040AdvancedBreakoutBoard
+						*/
+						const uf2ToDownload = window.location.hash
+							.split('?')?.[1]
+							?.toLowerCase();
+						if (uf2ToDownload) {
+							releaseInfo.assets.forEach(({ browser_download_url, name }) => {
+								if (
+									name
+										.substring(name.lastIndexOf('_') + 1)
+										.replace('.uf2', '')
+										.toLowerCase() === uf2ToDownload
+								) {
+									window.location.href = browser_download_url;
+								}
+							});
+						}
 
 						this.$root.releaseNotes = releaseInfo.body;
 						this.$root.releaseVersion = releaseInfo.name;
-						if (window.location.hostname === 'localhost') {
-							this.$root.releases = Object.keys(this.configData)
-							.map(key => {
+
+						this.$root.releases = releaseInfo.assets
+							.filter(a => a.name.startsWith('GP2040-CE_'))
+							.filter(a => {
+								const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
+								return Object.keys(this.configData).indexOf(key) > -1;
+							})
+							.map(a => {
+								const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
 								return {
 									key,
 									...this.configData[key],
-									url: '',
+									url: a.browser_download_url,
 									img: `/assets/boards/${key}.jpg`,
 								};
 							})
@@ -291,41 +350,6 @@ window.$docsify = {
 								values[r.category].push(r);
 								return values;
 							}, { });
-						}
-						else {
-							this.$root.releases = releaseInfo.assets
-								.filter(a => a.name.startsWith('GP2040-CE_'))
-								.filter(a => {
-									const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
-									return Object.keys(this.configData).indexOf(key) > -1;
-								})
-								.map(a => {
-									const key = a.name.substring(a.name.lastIndexOf('_') + 1).replace('.uf2', '');
-									return {
-										key,
-										...this.configData[key],
-										url: a.browser_download_url,
-										img: `/assets/boards/${key}.jpg`,
-									};
-								})
-								.sort((a, b) => {
-									if (a.name < b.name) return -1;
-									if (a.name > b.name) return 1;
-									return 0;
-								})
-								.sort((a, b) => (a.pos === undefined ? Number.MAX_VALUE : a.pos) - (b.pos === undefined ? Number.MAX_VALUE : b.pos))
-								.reduce((p, r) => {
-									let values = { ...p };
-									if (!values[r.category])
-										values[r.category] = [];
-
-									values[r.category].push(r);
-									return values;
-								}, { });
-						}
-
-
-						console.log(this.$root.releases);
 
 						this.fetched = true;
 					});
@@ -398,5 +422,12 @@ window.$docsify = {
 			},
 		},
 
-	}
+	},
+	tabs: {
+		persist    : true,      // default
+		sync       : true,      // default
+		theme      : 'classic', // default
+		tabComments: true,      // default
+		tabHeadings: true       // default
+	  }
 };

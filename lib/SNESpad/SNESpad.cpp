@@ -47,18 +47,17 @@ void SNESpad::begin() {
 }
 
 void SNESpad::start() {
-    uint32_t packet;
-
 #if SNES_PAD_DEBUG==true
     printf("SNESpad::start\n");
 #endif
 
     type = SNES_PAD_NONE;
 
-    packet = read();
-
 #if SNES_PAD_DEBUG==true
+    uint32_t packet = read();
     // printf("Data Packet: %02x\n",packet);
+#else
+    read();
 #endif
 
     if (type != SNES_PAD_NONE) {

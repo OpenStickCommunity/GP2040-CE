@@ -26,7 +26,7 @@
 
 ## Links
 
-[Downloads](https://gp2040-ce.info/#/download) | [Installation](https://gp2040-ce.info/#/installation) | [Wiring](https://gp2040-ce.info/#/wiring) | [Usage](https://gp2040-ce.info/#/usage) | [FAQ](https://gp2040-ce.info/#/faq)
+[Downloads](https://gp2040-ce.info/#/download) | [Installation](https://gp2040-ce.info/#/installation) | [Wiring](https://gp2040-ce.info/#/wiring) | [Usage](https://gp2040-ce.info/#/usage) | [FAQ](https://gp2040-ce.info/#/faq) | [GitHub](https://github.com/OpenStickCommunity/GP2040-CE)
 
 Full documentation can be found at <https://gp2040-ce.info>
 
@@ -38,7 +38,7 @@ Full documentation can be found at <https://gp2040-ce.info>
 * Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches.
 * Dual direction via D-pad + LS/RS.
 * Reversed input via a button.
-* Turbo and Turbo LED with selectable speed
+* [Turbo and Turbo LED](https://gp2040-ce.info/#/web-configurator-add-ons?id=turbo) with selectable speed
 * Per-button RGB LED support.
 * PWM Player indicator LED support (XInput only).
 * Multiple LED profiles support.
@@ -90,3 +90,4 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 * [deeebug](https://github.com/deeebug) for improvements to the web-UI and fixing the PS3 homebutton issue
 * [TheTrain](https://github.com/TheTrainGoes/GP2040-Projects) and [Fortinbra](https://github.com/Fortinbra) for helping keep our community chugging along
 * [PassingLink](https://github.com/passinglink/passinglink) for the technical details and code for PS4 implementation
+* [Youssef Habchi](https://youssef-habchi.com/) for allowing us to purchase a licence to use Road Rage font for the porject

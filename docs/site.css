@@ -7,6 +7,8 @@
   --sidebar-width : 20rem;
 	/* --sidebar-padding: 0 0.75rem; */
 	--content-max-width: 70em;
+	--docsifytabs-border-color: #ededed;
+    --docsifytabs-tab-highlight-color: #C73C8B;
 }
 
 hr {
@@ -46,6 +48,10 @@ hr {
 	text-align: center;
 	margin-top: -4px;
 	margin-bottom: 4px;
+}
+
+.sidebar .search .clear-button {
+	margin: auto;
 }
 
 /*************/

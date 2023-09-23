@@ -25,7 +25,7 @@ public:
     virtual std::string name() { return ReverseName; }
 private:
     void update();
-    uint8_t input(uint8_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis);
+    uint8_t input(uint32_t valueMask, uint16_t buttonMask, uint16_t buttonMaskReverse, uint8_t action, bool invertAxis);
 
 	bool state;
 

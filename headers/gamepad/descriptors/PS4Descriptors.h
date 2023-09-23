@@ -137,7 +137,7 @@ static const uint8_t ps4_string_manufacturer[] = "Open Stick Community";
 static const uint8_t ps4_string_product[]      = "GP2040-CE (PS4)";
 static const uint8_t ps4_string_version[]      = "1.0";
 
-static const uint8_t *ps4_string_descriptors[] =
+static const uint8_t *ps4_string_descriptors[] __attribute__((unused)) =
 {
 	ps4_string_language,
 	ps4_string_manufacturer,
