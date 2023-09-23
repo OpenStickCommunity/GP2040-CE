@@ -507,7 +507,7 @@ export default function SettingsPage() {
 																		key={`hotkey-${i}-button${i2}`}
 																		value={o.value}
 																	>
-																		{o.label}
+																		{ (o.label in BUTTONS[buttonLabelType])? BUTTONS[buttonLabelType][o.label]:o.label}
 																	</option>
 																))}
 															</Form.Select>
