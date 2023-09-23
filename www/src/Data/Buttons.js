@@ -135,6 +135,7 @@ export const BUTTONS = {
 		R3: 'R3',
 		A1: 'PS',
 		A2: 'Touchpad',
+		Fn: 'Function',
 	},
 	dinput: {
 		label: 'DirectInput',
