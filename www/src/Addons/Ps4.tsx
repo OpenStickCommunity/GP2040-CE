@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import JSEncrypt from 'jsencrypt';
 import CryptoJS from 'crypto-js';
 import isNil from 'lodash/isNil';
+import WebApi from '../Services/WebApi';
 
 import Section from '../Components/Section';
 
@@ -120,7 +121,7 @@ const verifyAndSavePS4 = async () => {
 		}
 	} catch (e) {
 		document.getElementById('ps4alert').textContent =
-			'ERROR: Could not verify required files: ${e}';
+			`ERROR: Could not verify required files: ${e}`;
 	}
 };
 
