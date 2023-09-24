@@ -13,21 +13,23 @@ import usePinStore, {
 const isNonSelectable = (value) =>
 	NON_SELECTABLE_BUTTON_ACTIONS.includes(value);
 
-const options = Object.entries(BUTTON_ACTIONS)
-	.filter(([_, value]) => !isNonSelectable(value))
-	.map(([key, value]) => ({
-		label: key,
-		value,
-	}));
+const createOptions = (t) =>
+	Object.entries(BUTTON_ACTIONS)
+		.filter(([_, value]) => !isNonSelectable(value))
+		.map(([key, value]) => ({
+			label: t(`PinMapping:actions.${key}`),
+			value,
+		}));
 
-const getOption = (actionId) => ({
-	label: invert(BUTTON_ACTIONS)[actionId],
+const getOption = (t, actionId) => ({
+	label: t(`PinMapping:actions.${invert(BUTTON_ACTIONS)[actionId]}`),
 	value: actionId,
 });
 
 export default function PlaygroundPage() {
 	const { pins, setPinAction, fetchPins, savePins } = usePinStore();
 	const { t } = useTranslation('');
+	const options = createOptions(t);
 	useEffect(() => {
 		fetchPins();
 	}, []);
@@ -35,35 +37,30 @@ export default function PlaygroundPage() {
 	return (
 		<Form onSubmit={() => savePins()}>
 			<h1>Button mapping</h1>
-			<div style={{ columnCount: 3 }}>
+			<div className="row row-cols-lg-3 row-cols-md-2 gx-3">
 				{map(pins, (pinAction, pin) => (
 					<div
 						key={`pin-${pin}`}
-						style={{
-							padding: '5px 0',
-							borderTop: '1px solid black',
-							display: 'flex',
-							flexDirection: 'row',
-						}}
+						className="d-flex justify-content-center py-2"
 					>
-						<label style={{ alignSelf: 'center', paddingRight: '1em' }}>
-							{pin.toUpperCase()}
-						</label>
-						<div style={{ flexGrow: 1, color: 'black' }}>
-							<Select
-								isClearable
-								isSearchable
-								options={options}
-								value={getOption(pinAction)}
-								isDisabled={isNonSelectable(pinAction)}
-								onChange={(change) =>
-									setPinAction(
-										pin,
-										change?.value === undefined ? -10 : change.value, // On clear set to -10
-									)
-								}
-							/>
+						<div className="d-flex align-items-center pe-2">
+							<label htmlFor={pin}>{pin.toUpperCase()}</label>
 						</div>
+						<Select
+							id={pin}
+							className="flex-grow-1 text-primary"
+							isClearable
+							isSearchable
+							options={options}
+							value={getOption(t, pinAction)}
+							isDisabled={isNonSelectable(pinAction)}
+							onChange={(change) =>
+								setPinAction(
+									pin,
+									change?.value === undefined ? -10 : change.value, // On clear set to -10
+								)
+							}
+						/>
 					</div>
 				))}
 			</div>
