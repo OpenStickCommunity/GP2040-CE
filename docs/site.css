@@ -150,3 +150,27 @@ hr {
 		grid-template-columns: 1fr 1fr 1fr;
 	}
 }
+
+/*************/
+/* Table of Contents */
+/*************/
+
+@media only screen and (max-width: 1299px) {
+    aside.toc-nav {
+      max-width: 0%;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+	section.content {
+		padding-right: 285px;
+	}
+}
+
+aside.toc-nav {
+	right: 1%;
+	margin-right: 0px;
+	width: 270px;
+	max-height: 85vh;
+}
+  
