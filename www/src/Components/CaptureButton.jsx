@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import WebApi from '../Services/WebApi';
 
-const CaptureButton = ({ buttonName, onChange, abortSignalRef, triggerCapture, onTriggeredCaptureComplete, onStopCaptureSequence }) => {
+const CaptureButton = ({ buttonName, onChange, abortSignalRef, triggerCapture, onTriggeredCaptureComplete, onStopCaptureSequence, size }) => {
 	const { t } = useTranslation('');
 	const controller = abortSignalRef || useRef();
     const triggerNextRef = useRef(true);
@@ -76,6 +76,7 @@ const CaptureButton = ({ buttonName, onChange, abortSignalRef, triggerCapture, o
 			</Modal>
 			<Button
 				className="ms-3"
+				size={size}
 				variant="secondary"
 				onClick={() => getHeldPins()}
 			>

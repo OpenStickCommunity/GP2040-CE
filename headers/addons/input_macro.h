@@ -5,6 +5,14 @@
 
 #include "GamepadEnums.h"
 
+#ifndef INPUT_MACRO_ENABLED
+#define INPUT_MACRO_ENABLED 0
+#endif
+
+#ifndef INPUT_MACRO_PIN
+#define INPUT_MACRO_PIN -1
+#endif
+
 // Input Macro Module Name
 #define InputMacroName "Input Macro"
 

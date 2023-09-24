@@ -1585,24 +1585,22 @@ std::string setMacroAddonOptions()
 	for (JsonObject macro : macros) {
 		strcpy(macroOptions.macroList[macrosIndex].macroLabel, macro["macroLabel"]);
 		macroOptions.macroList[macrosIndex].macroType = macro["macroType"].as<MacroType>();
+		macroOptions.macroList[macrosIndex].useMacroTriggerButton = macro["useMacroTriggerButton"].as<bool>();
+		macroOptions.macroList[macrosIndex].macroTriggerPin = macro["macroTriggerPin"].as<int>();
+		macroOptions.macroList[macrosIndex].macroTriggerButton = macro["macroTriggerButton"].as<uint32_t>();
 		macroOptions.macroList[macrosIndex].enabled = macro["enabled"] == true;
-		macroOptions.macroList[macrosIndex].has_enabled = true;
-		macroOptions.macroList[macrosIndex].has_macroLabel = true;
-		macroOptions.macroList[macrosIndex].has_macroType = true;
 		JsonArray macroInputs = macro["macroInputs"];
 		int macroInputsIndex = 0;
 
 		for (JsonObject input: macroInputs) {
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].duration = input["duration"].as<uint32_t>();
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].buttonMask = input["buttonMask"].as<uint32_t>();
-			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].has_duration = true;
-			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].has_buttonMask = true;
 			macroOptions.macroList[macrosIndex].macroInputs_count = ++macroInputsIndex;
-			if (macroInputsIndex > 24) break;
+			if (macroInputsIndex > 64) break;
 		}
 
 		macroOptions.macroList_count = ++macrosIndex;
-		if (macrosIndex > 12) break;
+		if (macrosIndex > 4) break;
 	}
 
 	Storage::getInstance().save();
@@ -1623,6 +1621,9 @@ std::string getMacroAddonOptions()
 		JsonObject macro = macroList.createNestedObject();
 		macro["enabled"] = macroOptions.macroList[i].enabled;
 		macro["macroType"] = macroOptions.macroList[i].macroType;
+		macro["useMacroTriggerButton"] = macroOptions.macroList[i].useMacroTriggerButton;
+		macro["macroTriggerPin"] = macroOptions.macroList[i].macroTriggerPin;
+		macro["macroTriggerButton"] = macroOptions.macroList[i].macroTriggerButton;
 		macro["macroLabel"] = macroOptions.macroList[i].macroLabel;
 
 		JsonArray macroInputs = macro.createNestedArray("macroInputs");

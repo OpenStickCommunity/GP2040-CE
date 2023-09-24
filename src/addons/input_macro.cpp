@@ -1,11 +1,10 @@
 #include "addons/input_macro.h"
 #include "storagemanager.h"
-
 #include "GamepadState.h"
 
 #include "hardware/gpio.h"
 
-#define INPUT_HOLD_MS 100
+#define INPUT_HOLD_MS 24
 
 static MacroOptions inputMacroOptions;
 
@@ -33,6 +32,16 @@ void InputMacro::setup() {
 	gpio_init(inputMacroOptions.pin);             // Initialize pin
 	gpio_set_dir(inputMacroOptions.pin, GPIO_IN); // Set as INPUT
 	gpio_pull_up(inputMacroOptions.pin);          // Set as PULLUP
+
+    for (int i = 0; i < inputMacroOptions.macroList_count; i++) {
+        Macro& macro = inputMacroOptions.macroList[i];
+        if (!macro.enabled) continue;
+        if (!macro.useMacroTriggerButton && !isValidPin(macro.macroTriggerPin)) continue;
+
+        gpio_init(macro.macroTriggerPin);             // Initialize pin
+        gpio_set_dir(macro.macroTriggerPin, GPIO_IN); // Set as INPUT
+        gpio_pull_up(macro.macroTriggerPin);          // Set as PULLUP
+    }
 }
 
 void InputMacro::preprocess()
@@ -42,35 +51,41 @@ void InputMacro::preprocess()
     if (!hasInit) { if (getMillis() < 1000) return; else hasInit = true; }
     bootselPressed = otherButtonsPressed;
 
-    if (!isProcessing && !gpio_get(inputMacroOptions.pin) && !prevBootselPressed) {
-        switch (gamepad->state.buttons & ((1 << 14) - 1)) {
-            case GAMEPAD_MASK_B1: macroPosition = 0; break;
-            case GAMEPAD_MASK_B2: macroPosition = 1; break;
-            case GAMEPAD_MASK_B3: macroPosition = 2; break;
-            case GAMEPAD_MASK_B4: macroPosition = 3; break;
-            case GAMEPAD_MASK_L1: macroPosition = 4; break;
-            case GAMEPAD_MASK_R1: macroPosition = 5; break;
-            case GAMEPAD_MASK_L2: macroPosition = 6; break;
-            case GAMEPAD_MASK_R2: macroPosition = 7; break;
-            case GAMEPAD_MASK_S1: macroPosition = 8; break;
-            case GAMEPAD_MASK_S2: macroPosition = 9; break;
-            case GAMEPAD_MASK_L3: macroPosition = 10; break;
-            case GAMEPAD_MASK_R3: macroPosition = 11; break;
-            case GAMEPAD_MASK_A1: macroPosition = 12; break;
-            case GAMEPAD_MASK_A2: macroPosition = 13; break;
-            default: break; 
-        }
+    if (!isProcessing && !prevBootselPressed) {
+        for (int i = 0; i < inputMacroOptions.macroList_count; i++) {
+            Macro& macro = inputMacroOptions.macroList[i];
+            if (!macro.enabled) continue;
+            if (!macro.useMacroTriggerButton && !isValidPin(macro.macroTriggerPin)) continue;
+            if (macro.useMacroTriggerButton && macro.macroTriggerButton == 0) continue;
+
+            if (macro.useMacroTriggerButton) {
+                if (!gpio_get(inputMacroOptions.pin) && (gamepad->state.buttons & macro.macroTriggerButton)) {
+                    bootselPressed = true;
+                    macroPosition = i; break;
+                }
+            } else {
+                if (!gpio_get(macro.macroTriggerPin)) {
+                    bootselPressed = true;
+                    macroPosition = i; break;
+                }
+            }
+        } 
     }
 
     if (macroPosition == -1) {
-        prevBootselPressed = otherButtonsPressed; 
+        prevBootselPressed = false; 
         return;
     }
 
     Macro& macro = inputMacroOptions.macroList[macroPosition];
-    if (!macro.enabled) {
-        macroPosition = -1;
-        return;
+    if (macro.useMacroTriggerButton) {
+        if (!gpio_get(inputMacroOptions.pin) && (gamepad->state.buttons & macro.macroTriggerButton)) {
+            bootselPressed = true;
+        }
+    } else {
+        if (!gpio_get(macro.macroTriggerPin)) {
+            bootselPressed = true;
+        }
     }
 
     // light_up(bootselPressed);
@@ -108,10 +123,11 @@ void InputMacro::preprocess()
     if (!isProcessing && trigger) {
         isProcessing = 1;
         heldAt = getMillis();
-        shouldHold = macroInputs[position].duration == -1 ? INPUT_HOLD_MS : macroInputs[position].duration;
+        shouldHold = macroInputs[position].duration <= 0 ? INPUT_HOLD_MS : macroInputs[position].duration;
     }
     
     if (!isProcessing) return;
+
     uint32_t buttonMask = macroInputs[position].buttonMask;
     gamepad->state.dpad = 0;
     gamepad->state.buttons = 0;
