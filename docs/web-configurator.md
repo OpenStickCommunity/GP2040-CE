@@ -38,7 +38,6 @@ Here you can select the basic settings which are normally available via hotkeys.
 
 Please note that if you choose `PS4` mode you will have an additional option to set the device as a `Controller` or a `Fightstick`.  If you choose `Fightstick` and want to use this device with compatible PS5 games you will need to enable the `PS Passthrough` add-on and have a way to connect the device you with to use for passthrough authentication to the RP2040-CE based device via a USB passthrough port.  
 
-
 ### Hotkey Settings
 
 ![GP2040-CE Configurator - Hotkey Settings](assets/images/gpc-hotkey-settings.png)

@@ -4,7 +4,7 @@
 
 ### README Template
 
-```
+```md
 # Board Name
 
 ![Image of Board](assets/board-image.jpeg)
@@ -54,7 +54,7 @@ Hardware Availability: List where one can purchase the boards that share this co
 
 ### Add-On Template
 
-```
+```md
 ## Add-On Name
 
 Purpose: The intended function and purpose of this add-on for an end user.
