@@ -201,12 +201,12 @@ void Gamepad::process()
 			state.dpad |= mapDpadUp->buttonMask;
 	}
 
-	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
-
-	// SOCD cleaning first, allows for control over which diagonal to take/filter
+	// 4-way before SOCD, might have better history without losing any coherent functionality
 	if (options.fourWayMode) {
 		state.dpad = filterToFourWayMode(state.dpad);
 	}
+
+	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
 
 	switch (options.dpadMode)
 	{

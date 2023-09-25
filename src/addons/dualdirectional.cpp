@@ -65,6 +65,7 @@ void DualDirectionalInput::debounce()
 
 void DualDirectionalInput::preprocess()
 {
+    const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
  	// Need to invert since we're using pullups
@@ -88,6 +89,11 @@ void DualDirectionalInput::preprocess()
     // Convert gamepad from process() output to uint8 value
     uint8_t gamepadState = gamepad->state.dpad;
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
+
+    // 4-way before SOCD, might have better history without losing any coherent functionality
+    if (options.fourWayMode) {
+        dualState = filterToFourWayMode(dualState);
+    }
 
     // Combined Mode
     if ( combineMode == DUAL_COMBINE_MODE_MIXED ) {
@@ -126,11 +132,6 @@ void DualDirectionalInput::process()
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint8_t dualOut = dualState;
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
-
-    // SOCD cleaning already happened, allows for control over which diagonal to take/filter
-    if (options.fourWayMode) {
-        dualOut = filterToFourWayMode(dualOut);
-    }
 
     // If we're in mixed mode
     if (combineMode == DUAL_COMBINE_MODE_MIXED) {
