@@ -73,6 +73,7 @@ void TurboInput::setup()
         turboButtonsPressed = 0;
     }
 
+    lastButtons = 0;
     bDebState = false;
     uDebTime = now;
     debChargeState = 0;
@@ -176,6 +177,13 @@ void TurboInput::process()
         }
         dialValue = rawValue;
     }
+
+    // Reset Turbo flicker on a new button press
+    if((lastButtons & turboButtonsPressed) == 0 && (gamepad->state.buttons & turboButtonsPressed) != 0){
+        bTurboFlicker = false; // reset flicker state to ON
+        nextTimer = getMillis() + uIntervalMS; // interval to flicker-off button
+    }
+    lastButtons = gamepad->state.buttons;
 
     // Set TURBO LED if a button is going or turbo is too fast
     if ( isValidPin(options.ledPin) ) {
