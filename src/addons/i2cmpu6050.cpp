@@ -50,22 +50,57 @@ void I2CMPU6050Input::setup() {
 }
 
 void I2CMPU6050Input::process() {
+    // TODO: Remove Vector3f, plain floats instead
     Vector3f angular = imu->readGyroscope(); // deg/sec
     Vector3f accel = imu->readAcceleration(); // G
     
-    Gamepad* gamepad = Storage::getInstance().GetGamepad();
 
-    // Convert from MPU6050 orientation to PS4
-    // PS4 report orientation: x right, y up, z backward
-    // MPU6050 orientation (top pcb, dot facing NW): x right, y forward, z up
-    gamepad->state.accelX = accel.x;
-    gamepad->state.gyroX = angular.x;
+    // Flip X and Z if mounted on back of PCB (rotate around Y axis 180deg)
+    bool upsidedown = false;
+    if (upsidedown) {
+        accel.x = -accel.x;
+        angular.x = -angular.x;
+        accel.z = -accel.z;
+        angular.z = -angular.z;
+    }
+    
+    // TODO: Make orientation an enum
+    // TODO: Make configurable in UI
+    
+    // Convert MPU6050 axes to PS4 axes, depending on orientation
+    // PS4: x right, y up, z towards user.
+    // Default MPU6050 orientation: x right, y away from user, z up
+    Gamepad* gamepad = Storage::getInstance().GetGamepad();
 
     gamepad->state.accelY = accel.z;
     gamepad->state.gyroY = angular.z;
-    
-    gamepad->state.accelZ = -accel.y;
-    gamepad->state.gyroZ = -angular.y;
+    uint8_t orientation = 0;
+    switch (orientation) {
+        case 0: // 0 deg
+            gamepad->state.accelX = accel.x;
+            gamepad->state.gyroX = angular.x;
+            gamepad->state.accelZ = -accel.y;
+            gamepad->state.gyroZ = -angular.y;
+            break;
+        case 1: // 90 deg counterclockwise
+            gamepad->state.accelX = -accel.y;
+            gamepad->state.gyroX = -angular.y;
+            gamepad->state.accelZ = -accel.x;
+            gamepad->state.gyroZ = -angular.x;
+            break;
+        case 2: // 180 deg
+            gamepad->state.accelX = -accel.x;
+            gamepad->state.gyroX = -angular.x;
+            gamepad->state.accelZ = accel.y;
+            gamepad->state.gyroZ = angular.y;
+            break;
+        case 3: // 270 deg counterclockwise
+            gamepad->state.accelX = accel.y;
+            gamepad->state.gyroX = angular.y;
+            gamepad->state.accelZ = accel.x;
+            gamepad->state.gyroZ = angular.x;
+            break;
+    }
 
     return;
 }
