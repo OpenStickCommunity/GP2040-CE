@@ -10,7 +10,36 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 For GP2040-CE development on the Windows platform using the Pico SDK Installer, please skip ahead to the 'Windows Setup (Pico SDK Installer)' section on this page.
 
 <!-- tabs:start -->
-### **Windows Setup (Manual)**
+
+### **Windows (Pico SDK)**
+
+### Windows (Pico SDK)
+
+
+1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
+2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
+3. Download and install VSCode.
+4. Download and install [Windows Terminal](https://github.com/microsoft/terminal/releases/tag/v1.17.11461.0).
+5. Open Windows Terminal.
+6. Download the GP2040-CE-main repository by running the following commands in the Windows Terminal. This will download the folder to `C:\Users\user\GP2040-CE`.
+
+    ```console
+    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
+    cd GP2040-CE
+    git submodule update --init
+    ```
+
+   After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search).
+
+7. Open "Pico-Visual Studio Code" via Windows search. This is a shortcut with pre-configured environment variables (this will be explained later).
+8. Navigate to the Extensions window by pressing `Ctrl+Shift+X`.
+9. Install "CMake Tools" by Microsoft.
+10. Open the GP2040-CE folder you downloaded earlier via "File > Open Folder."
+
+### **Windows (Manual)**
+
+### Windows (Manual)
+
 
 1. Install the latest ARM GNU Toolchain
     - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
@@ -46,28 +75,10 @@ For GP2040-CE development on the Windows platform using the Pico SDK Installer, 
     cd GP2040-CE
     ```
 
-### **Windows Setup (Pico SDK)**
-1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
-2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
-3. Download and install VSCode.
-4. Download and install [Windows Terminal](https://github.com/microsoft/terminal/releases/tag/v1.17.11461.0).
-5. Open Windows Terminal.
-6. Download the GP2040-CE-main repository by running the following commands in the Windows Terminal. This will download the folder to `C:\Users\user\GP2040-CE`.
+### **Linux**
 
-    ```console
-    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
-    cd GP2040-CE
-    git submodule update --init
-    ```
+### Linux
 
-   After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search).
-   
-7. Open "Pico-Visual Studio Code" via Windows search. This is a shortcut with pre-configured environment variables (this will be explained later).
-8. Navigate to the Extensions window by pressing `Ctrl+Shift+X`.
-9. Install "CMake Tools" by Microsoft.
-10. Open the GP2040-CE folder you downloaded earlier via "File > Open Folder."
-
-### **Linux Setup**
 
 #### Ubuntu
 
@@ -170,7 +181,44 @@ There are a few SDK variables we take advantage of for our builds.
 
 <!-- tabs:start -->
 
+### **Windows (Pico SDK)**
+
+### Windows (Pico SDK)
+
+After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search). This shortcut should already have everything configured, **allowing you to skip to step 7**. If you're experiencing compilation issues, consider following the manual steps outlined here.
+
+Ensure the `PICO_SDK_PATH` environment variable is set:
+
+1. Search for "Edit environment variables for your account" in Windows.
+2. Under "User Variables," click "New...".
+3. In the dialog that appears, enter `PICO_SDK_PATH` for the Variable Name.
+4. Click "Browse Directory" and navigate to `C:\Program Files\Raspberry Pi\Pico SDK v1.5.1\pico-sdk` for the Variable Value.
+5. Create another new variable.
+6. Enter `GP2040_BOARDCONFIG` for the Variable Name.
+7. Enter `Pico` (or the name of your edited config folder) for the Variable Value.
+
+You can also set the variable within VSCode:
+
+1. Press `Ctrl + ,` to open the settings.
+2. Use the search bar to find "CMake."
+3. Scroll until you see "CMake: Configure Environment."
+4. Click "Add Item."
+5. Key: `GP2040_BOARDCONFIG`
+6. Value: `Pico` (or your working folder name).
+
+When prompted, choose `GCC 10.3.1 ARM NONE EABI` for "Select a kit for GP2040-CE"
+
+From inside VSCode:
+
+1. Click the CMake icon on the left sidebar of VSCode.
+2. You'll see three icons at the top-right corner of the CMake project outline. Click the "Configure All Projects" icon (looks like a page with an arrow).
+3. Wait for the configuration process to complete. If progress isn't visible, open a new terminal in VSCode by clicking on the "Terminal" menu, then "New Terminal". A new terminal window will open at the bottom, navigate the "Output" tab.
+4. Click "Build All Projects" in the CMake project outline.
+5. The files should be in a new folder named "build" inside the GP2040-CE folder
+
 ### **Windows (Manual)**
+
+### Windows (Manual)
 
 Start in the GP2040-CE folder. **From a Developer Powershell or Developer Command Command Prompt**:
 
@@ -190,36 +238,10 @@ Start in the GP2040-CE folder. **From a Developer Powershell or Developer Comman
     ```
 
 4. Your UF2 file should be in the build directory.
-### **Windows (Pico SDK)**
-After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search). This shortcut should already have everything configured, **allowing you to skip to step 7**. If you're experiencing compilation issues, consider following the manual steps outlined here.
 
-Ensure the `PICO_SDK_PATH` environment variable is set:
-1. Search for "Edit environment variables for your account" in Windows.
-2. Under "User Variables," click "New...".
-3. In the dialog that appears, enter `PICO_SDK_PATH` for the Variable Name.
-4. Click "Browse Directory" and navigate to `C:\Program Files\Raspberry Pi\Pico SDK v1.5.1\pico-sdk` for the Variable Value.
-5. Create another new variable.
-6. Enter `GP2040_BOARDCONFIG` for the Variable Name.
-7. Enter `Pico` (or the name of your edited config folder) for the Variable Value.
-
-You can also set the variable within VSCode:
-1. Press `Ctrl + ,` to open the settings.
-2. Use the search bar to find "CMake."
-3. Scroll until you see "CMake: Configure Environment."
-4. Click "Add Item."
-5. Key: `GP2040_BOARDCONFIG`
-6. Value: `Pico` (or your working folder name).
-
-When prompted, choose `GCC 10.3.1 ARM NONE EABI` for "Select a kit for GP2040-CE"
-
-From inside VSCode:
-1. Click the CMake icon on the left sidebar of VSCode.
-2. You'll see three icons at the top-right corner of the CMake project outline. Click the "Configure All Projects" icon (looks like a page with an arrow).
-3. Wait for the configuration process to complete. If progress isn't visible, open a new terminal in VSCode by clicking on the "Termina" tab (at the top) then "new terminal". A new terminal window will open at the bottom, navigate the "Output" tab. 
-4. Click "Build All Projects" in the CMake project outline.
-5. The files should be in a new folder named "build" inside the GP2040-CE folder
-   
 ### **Linux**
+
+### Linux
 
 Start in the GP2040-CE folder
 
@@ -234,6 +256,7 @@ Start in the GP2040-CE folder
     cmake ..
     make
     ```
+
 4. Your UF2 file should be in the build directory.
 
 <!-- tabs:end -->
@@ -409,11 +432,12 @@ An example I2C display setup in the `BoardConfig.h` file:
 ```
 
 #### I2C Display Splash
+
 The firmware also has a splash display feature. The default splash image has been defined in `headers/addons/i2cdisplay.h`. The data for the splash image are bytes representing the bitmap to be displayed on the OLED screen. The splash image can be set via the web-config. If you would like to change the default version of the splash image (to preserve it beyond data wipe), it can be customized with a C define named `DEFAULT_SPLASH` in the active `BoardConfig.h` file.
 The instructions on how to generate those bytes are as follows:
 
 1. Navigate to Bitmap Converter web utility
-    - https://marlinfw.org/tools/u8glib/converter.html
+    - <https://marlinfw.org/tools/u8glib/converter.html>
 2. Configure generated code
     - Select Marlin 2.x and Bitmap, untick all the rest.
 3. Upload the splash image file
@@ -421,17 +445,22 @@ The instructions on how to generate those bytes are as follows:
 4. Use the generated code
     - Copy the hex numbers inside the curly braces from the code block.
     - Navigate to the `BoardConfig.h` of your choice and at the end of the file right before `#endif`. Create a C define like so:
+
         ```cpp
         #define DEFAULT_SPLASH \
         ```
+
     - Then paste what you copied below what you just typed. Be sure to edit the array of bytes as follows:
+
         ```cpp
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \ // First line
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \ // Second line
         ... // All lines below previous ones end in \ similar to those above
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 // Last line doesn't have an \ to escape the new line
         ```
+
     - Here's a sample entry from Pico `BoardConfig.h`:
+
         ```cpp
         #define DEFAULT_SPLASH \
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
@@ -499,6 +528,7 @@ The instructions on how to generate those bytes are as follows:
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
         ```
+
 6. Test and verify
     - Compile, if you did everything right, it should compile fine
     - Load the UF2 after the compile. Check and verify in the web-config, if you have set a custom image before, you might need to reset data.
