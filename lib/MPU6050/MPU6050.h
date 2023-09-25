@@ -134,14 +134,15 @@ class MPU6050
 
         BBI2C bbi2c;
 
-        int16_t gyroOffsetX = 0;
-        int16_t gyroOffsetY = 0;
-        int16_t gyroOffsetZ = 0;
+        float gyroOffsetX = 0;
+        float gyroOffsetY = 0;
+        float gyroOffsetZ = 0;
 
         // Raw data to real-world units
         float rawTemperatureToCelsius(int16_t rawTemperature);
         float rawGyroscopeToDps(int16_t rawGyroscope); // degree/s
-        float rawAccelerationToG(int16_t rawAcceleration); // m/s^2
+        float rawGyroscopeToDps(float rawGyroscope); // degree/s
+        float rawAccelerationToG(int16_t rawAcceleration); // G
 
         // For convenience:
         uint8_t read8(uint8_t registerAddr);

@@ -21,6 +21,7 @@
 /* Ported for GP2040 by HoloPengin 2023 */
 
 #include "MPU6050.h"
+#include <cmath>
 
 // Selected Mpu6050 register addresses (found in the invensense datasheet)
 #define MPU6050_REGISTER_SMPRT_DIV 0x19 // Sample rate divider
@@ -57,8 +58,7 @@
 #define MPU6050_GYRO_FACTOR_1000 (1.0/32.8)
 #define MPU6050_GYRO_FACTOR_2000 (1.0/16.4)
 
-// Constant to convert raw acceleration to m/s^2
-#define GRAVITATIONAL_CONSTANT_G 9.81
+// Constant to convert raw acceleration to G
 #define MPU6050_ACCEL_FACTOR_2 (1.0 / 16384.0)
 #define MPU6050_ACCEL_FACTOR_4 (1.0 / 8192.0)
 #define MPU6050_ACCEL_FACTOR_8 (1.0 / 4096.0)
@@ -118,7 +118,8 @@ void MPU6050::calibrateGyro()
     int32_t sumy = 0;
     int32_t sumz = 0;
 
-    for (int i = 0; i < 1000; i++)
+    const int32_t SAMPLES = 1000;
+    for (int i = 0; i < SAMPLES; i++)
     {
         int16_t x, y, z;
         readRawGyroscope(x, y, z);
@@ -127,14 +128,14 @@ void MPU6050::calibrateGyro()
         sumz += z;
     }
     // Average the sum
-    sumx /= 1000.0;
-    sumy /= 1000.0;
-    sumz /= 1000.0;
+    float averagex = (float)sumx / (float)SAMPLES;
+    float averagey = (float)sumy / (float)SAMPLES;
+    float averagez = (float)sumz / (float)SAMPLES;
 
     // Save offsets
-    gyroOffsetX = -sumx;
-    gyroOffsetY = -sumy;
-    gyroOffsetZ = -sumz;
+    gyroOffsetX = -rawGyroscopeToDps(averagex);
+    gyroOffsetY = -rawGyroscopeToDps(averagey);
+    gyroOffsetZ = -rawGyroscopeToDps(averagez);
 }
 
 Mpu6050Data MPU6050::readData()
@@ -188,15 +189,12 @@ Vector3f MPU6050::readGyroscope()
 {
     int16_t rawGyroX, rawGyroY, rawGyroZ;
     readRawGyroscope(rawGyroX, rawGyroY, rawGyroZ);
-    rawGyroX += gyroOffsetX;
-    rawGyroY += gyroOffsetY;
-    rawGyroZ += gyroOffsetZ;
 
     // Convert each integer value to physical units
     Vector3f gyro = Vector3f();
-    gyro.x = rawGyroscopeToDps(rawGyroX);
-    gyro.y = rawGyroscopeToDps(rawGyroY);
-    gyro.z = rawGyroscopeToDps(rawGyroZ);
+    gyro.x = rawGyroscopeToDps(rawGyroX) + gyroOffsetX;
+    gyro.y = rawGyroscopeToDps(rawGyroY) + gyroOffsetY;
+    gyro.z = rawGyroscopeToDps(rawGyroZ) + gyroOffsetZ;
 
     return gyro;
 }
@@ -336,6 +334,29 @@ float MPU6050::rawGyroscopeToDps(int16_t rawGyroscope)
             return rawGyroscope * MPU6050_GYRO_FACTOR_2000;
             break;
         default:
+            return 0;
+            break;
+    }
+}
+
+float MPU6050::rawGyroscopeToDps(float rawGyroscope)
+{
+    switch (m_gyroscopeRange)
+    {
+        case Max250Dps:
+            return rawGyroscope * MPU6050_GYRO_FACTOR_250;
+            break;
+        case Max500Dps:
+            return rawGyroscope * MPU6050_GYRO_FACTOR_500;
+            break;
+        case Max1000Dps:
+            return rawGyroscope * MPU6050_GYRO_FACTOR_1000;
+            break;
+        case Max2000Dps:
+            return rawGyroscope * MPU6050_GYRO_FACTOR_2000;
+            break;
+        default:
+            return 0;
             break;
     }
 }
@@ -357,6 +378,7 @@ float MPU6050::rawAccelerationToG(int16_t rawAcceleration)
             return rawAcceleration * MPU6050_ACCEL_FACTOR_16;
             break;
         default:
+            return 0;
             break;
     }
 }
