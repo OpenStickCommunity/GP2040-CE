@@ -43,7 +43,7 @@ type PinState = {
 	fetchPins: () => void;
 	validate: () => void;
 	setPinAction: (pin: number, action: PinActionValues) => void;
-	savePins: () => void;
+	savePins: () => Promise<{}>;
 };
 
 const usePinStore = create<PinState>()((set, get) => ({
@@ -92,16 +92,7 @@ const usePinStore = create<PinState>()((set, get) => ({
 			...state,
 			pins: { ...state.pins, [pin]: action },
 		})),
-	savePins: async () => {
-		await axios
-			.post(`${baseUrl}/api/setPinMappings`, get().pins)
-			.then((response) => {
-				console.log(response.data);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-	},
+	savePins: async () => axios.post(`${baseUrl}/api/setPinMappings`, get().pins),
 }));
 
 export default usePinStore;
