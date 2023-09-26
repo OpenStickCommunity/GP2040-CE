@@ -41,7 +41,6 @@ type PinActionValues = (typeof BUTTON_ACTIONS)[PinActionKeys];
 type PinState = {
 	pins: { [key: number]: PinActionValues };
 	fetchPins: () => void;
-	validate: () => void;
 	setPinAction: (pin: number, action: PinActionValues) => void;
 	savePins: () => Promise<{}>;
 };
@@ -86,7 +85,6 @@ const usePinStore = create<PinState>()((set, get) => ({
 			pins: { ...state.pins, ...data }, // Merge saved pins with defaults
 		}));
 	},
-	validate: () => {}, // Run yup on pins
 	setPinAction: (pin, action) =>
 		set((state) => ({
 			...state,
