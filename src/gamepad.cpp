@@ -617,16 +617,13 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.right_stick_x = static_cast<uint8_t>(state.rx >> 8);
 	ps4Report.right_stick_y = static_cast<uint8_t>(state.ry >> 8);
 
-	// DS4 uses 2000deg/sec max supposedly, based on JoyShockLibrary as reference
-	// This could maybe faster/more accurate by storing the value directly as int16_t or int32_t
-	// instead of converting to and from float in state.gyro and state.accel
 	ps4Report.gyro_x = static_cast<int16_t>(round(state.gyroX * 8.192f));
 	ps4Report.gyro_y = static_cast<int16_t>(round(state.gyroY * 8.192f));
 	ps4Report.gyro_z = static_cast<int16_t>(round(state.gyroZ * 8.192f));
 	ps4Report.accel_x = static_cast<int16_t>(round(state.accelX * 8192.0f));
 	ps4Report.accel_y = static_cast<int16_t>(round(state.accelY * 8192.0f));
 	ps4Report.accel_z = static_cast<int16_t>(round(state.accelZ * 8192.0f));
-	ps4Report.timestamp = getMillis() * 150; // DS4: 1.25ms polling results in 188ms timestamp, 150*millis should be close if not perfect
+	ps4Report.timestamp = getMillis() * 150; // DS4 with 1.25ms polling has ~+188 timestamp. Correct value should be 150/ms
 
 
 	if (hasAnalogTriggers)

@@ -1054,6 +1054,8 @@ std::string setAddonOptions()
 	docToValue(mpu6050Options.i2cBlock, doc, "MPU6050i2cBlock");
 	docToValue(mpu6050Options.i2cSpeed, doc, "MPU6050i2cSpeed");
 	docToValue(mpu6050Options.i2cAddress, doc, "MPU6050i2cAddress");
+	docToValue(mpu6050Options.orientation, doc, "MPU6050Orientation");
+	docToValue(mpu6050Options.upsideDown, doc, "MPU6050UpsideDown");
 	docToValue(mpu6050Options.enabled, doc, "MPU6050InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1580,6 +1582,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "MPU6050i2cBlock", mpu6050Options.i2cBlock);
 	writeDoc(doc, "MPU6050i2cSpeed", mpu6050Options.i2cSpeed);
 	writeDoc(doc, "MPU6050i2cAddress", mpu6050Options.i2cAddress);
+	writeDoc(doc, "MPU6050Orientation", mpu6050Options.orientation);
+	writeDoc(doc, "MPU6050UpsideDown", mpu6050Options.upsideDown);
 	writeDoc(doc, "MPU6050InputEnabled", mpu6050Options.enabled);
 
 	return serialize_json(doc);

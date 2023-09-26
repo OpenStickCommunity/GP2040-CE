@@ -480,6 +480,8 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		MPU6050i2cBlock: 0,
 		MPU6050i2cSpeed: 400000,
 		MPU6050i2cAddress: 0x68,
+		MPU6050Orientation: 0,
+		MPU6050UpsideDown: 0,
 		usedPins: Object.values(picoController),
 	});
 });

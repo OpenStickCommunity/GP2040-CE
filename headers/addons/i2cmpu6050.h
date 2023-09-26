@@ -39,6 +39,14 @@
 #define I2C_MPU6050_ADDRESS 0x68
 #endif
 
+#ifndef I2C_MPU6050_ORIENTATION
+#define I2C_MPU6050_ORIENTATION 0
+#endif
+
+#ifndef I2C_MPU6050_UPSIDEDOWN
+#define I2C_MPU6050_UPSIDEDOWN false
+#endif
+
 // IMU Module Name
 #define I2CMPU6050Name "I2CMPU6050"
 
@@ -52,6 +60,8 @@ public:
     virtual std::string name() { return I2CMPU6050Name; }
 private:
     MPU6050 * imu;
+    uint8_t orientation = 0;
+    bool upsideDown = false;
 };
 
 #endif // _I2CMPU6050_H_

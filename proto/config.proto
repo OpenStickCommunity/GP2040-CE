@@ -596,6 +596,8 @@ message MPU6050Options
 	optional int32 i2cBlock = 4;
 	optional uint32 i2cSpeed = 5;
 	optional uint32 i2cAddress = 6;
+	optional uint32 orientation = 7;
+	optional bool upsideDown = 8;
 }
 
 message AddonOptions

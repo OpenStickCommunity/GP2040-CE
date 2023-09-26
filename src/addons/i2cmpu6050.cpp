@@ -33,6 +33,11 @@ bool I2CMPU6050Input::available() {
     if (options.i2cAddress != 0x68 && options.i2cAddress != 0x69) {
         return false;
     }
+
+    // Make sure orientation is valid
+    if (options.orientation < 0 || options.orientation > 3) {
+        return false;
+    }
     
     return true;
 }
@@ -47,6 +52,9 @@ void I2CMPU6050Input::setup() {
         options.i2cSpeed,
         options.i2cAddress);
     imu->init();
+
+    orientation = options.orientation;
+    upsideDown = options.upsideDown;
 }
 
 void I2CMPU6050Input::process() {
@@ -55,17 +63,13 @@ void I2CMPU6050Input::process() {
     Vector3f accel = imu->readAcceleration(); // G
     
 
-    // Flip X and Z if mounted on back of PCB (rotate around Y axis 180deg)
-    bool upsidedown = false;
-    if (upsidedown) {
+    // Flip X and Z if mounted on back of PCB (rotate around sensor Y axis 180deg)
+    if (upsideDown) {
         accel.x = -accel.x;
         angular.x = -angular.x;
         accel.z = -accel.z;
         angular.z = -angular.z;
     }
-    
-    // TODO: Make orientation an enum
-    // TODO: Make configurable in UI
     
     // Convert MPU6050 axes to PS4 axes, depending on orientation
     // PS4: x right, y up, z towards user.
@@ -74,8 +78,8 @@ void I2CMPU6050Input::process() {
 
     gamepad->state.accelY = accel.z;
     gamepad->state.gyroY = angular.z;
-    uint8_t orientation = 0;
     switch (orientation) {
+        default:
         case 0: // 0 deg
             gamepad->state.accelX = accel.x;
             gamepad->state.gyroX = angular.x;
