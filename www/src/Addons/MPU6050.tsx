@@ -50,6 +50,10 @@ export const MPU6050State = {
 	MPU6050i2cAddress: 0x68,
 	MPU6050Orientation: 0,
 	MPU6050UpsideDown: 0,
+	MPU6050CalibrateGyro: 1,
+	MPU6050GyroOffsetX: 0,
+	MPU6050GyroOffsetY: 0,
+	MPU6050GyroOffsetZ: 0,
 };
 
 const MPU6050 = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -162,7 +166,24 @@ const MPU6050 = ({ values, errors, handleChange, handleCheckbox }) => {
 							handleChange(e);
 						}}
 					/>
+					<FormCheck
+						label={t('AddonsConfig:mpu6050-recalibrate-gyro-label')}
+						type="switch"
+						className="col-sm-3 ms-2"
+						id="MPU6050CalibrateGyroToggle"
+						isInvalid={false}
+						checked={Boolean(values.MPU6050CalibrateGyro)}
+						onChange={(e) => {
+							handleCheckbox('MPU6050CalibrateGyro', values);
+							handleChange(e);
+						}}
+					/>
 				</Row>
+				<div>
+					<p>Gyro Offset X: {values.MPU6050GyroOffsetX}</p>
+					<p>Gyro Offset Y: {values.MPU6050GyroOffsetY}</p>
+					<p>Gyro Offset Z: {values.MPU6050GyroOffsetZ}</p>
+				</div>
             </div>
 			<FormCheck
 				label={t('Common:switch-enabled')}

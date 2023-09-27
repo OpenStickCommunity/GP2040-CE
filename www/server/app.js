@@ -482,6 +482,10 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		MPU6050i2cAddress: 0x68,
 		MPU6050Orientation: 0,
 		MPU6050UpsideDown: 0,
+		MPU6050CalibrateGyro: 1,
+		MPU6050GyroOffsetX: 0,
+		MPU6050GyroOffsetY: 0,
+		MPU6050GyroOffsetZ: 0,
 		usedPins: Object.values(picoController),
 	});
 });

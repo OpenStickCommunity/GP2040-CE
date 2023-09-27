@@ -437,6 +437,12 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, i2cAddress, I2C_MPU6050_ADDRESS);
     INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, orientation, I2C_MPU6050_ORIENTATION);
     INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, upsideDown, !!I2C_MPU6050_UPSIDEDOWN);
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, calibrateGyro, !!I2C_MPU6050_CALIBRATE_GYRO);
+    // Gyro offsets (r/w backend, read-only in frontend)
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, gyroOffsetX, I2C_MPU6050_GYRO_OFFSET_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, gyroOffsetY, I2C_MPU6050_GYRO_OFFSET_Y);
+    INIT_UNSET_PROPERTY(config.addonOptions.mpu6050Options, gyroOffsetZ, I2C_MPU6050_GYRO_OFFSET_Z);
+
 
     // addonOptions.dualDirectionalOptions
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);
@@ -833,10 +839,16 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
     str.append(std::to_string(value));
 }
 
+static void __attribute__((noinline)) appendAsString(std::string& str, float value)
+{
+    str.append(std::to_string(value));
+}
+
 #define TO_JSON_ENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname));
 #define TO_JSON_UENUM(fieldname, submessageType) appendAsString(str, static_cast<uint32_t>(s.fieldname));
 #define TO_JSON_INT32(fieldname, submessageType) appendAsString(str, s.fieldname);
 #define TO_JSON_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname);
+#define TO_JSON_FLOAT(fieldname, submessageType) appendAsString(str, s.fieldname);
 #define TO_JSON_BOOL(fieldname, submessageType) str.append((s.fieldname) ? "true" : "false");
 #define TO_JSON_STRING(fieldname, submessageType) str.push_back('"'); str.append(s.fieldname); str.push_back('"');
 #define TO_JSON_BYTES(fieldname, submessageType) str.push_back('"'); str.append(Base64::Encode(reinterpret_cast<const char*>(s.fieldname.bytes), s.fieldname.size)); str.push_back('"');
@@ -1025,6 +1037,27 @@ static bool fromJsonUint32(JsonObjectConst jsonObject, const char* fieldname, ui
 }
 
 #define FROM_JSON_UINT32(fieldname, submessageType) if (!fromJsonUint32(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonFloat(JsonObjectConst jsonObject, const char* fieldname, float& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<float>())
+        {
+            value = jsonVariant.as<float>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+#define FROM_JSON_FLOAT(fieldname, submessageType) if (!fromJsonFloat(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
 
 static bool fromJsonBool(JsonObjectConst jsonObject, const char* fieldname, bool& value, bool& flag)
 {

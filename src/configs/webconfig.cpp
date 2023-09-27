@@ -1056,6 +1056,10 @@ std::string setAddonOptions()
 	docToValue(mpu6050Options.i2cAddress, doc, "MPU6050i2cAddress");
 	docToValue(mpu6050Options.orientation, doc, "MPU6050Orientation");
 	docToValue(mpu6050Options.upsideDown, doc, "MPU6050UpsideDown");
+	docToValue(mpu6050Options.calibrateGyro, doc, "MPU6050CalibrateGyro");
+	docToValue(mpu6050Options.gyroOffsetX, doc, "MPU6050GyroOffsetX");
+	docToValue(mpu6050Options.gyroOffsetY, doc, "MPU6050GyroOffsetY");
+	docToValue(mpu6050Options.gyroOffsetZ, doc, "MPU6050GyroOffsetZ");
 	docToValue(mpu6050Options.enabled, doc, "MPU6050InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
@@ -1584,6 +1588,10 @@ std::string getAddonOptions()
 	writeDoc(doc, "MPU6050i2cAddress", mpu6050Options.i2cAddress);
 	writeDoc(doc, "MPU6050Orientation", mpu6050Options.orientation);
 	writeDoc(doc, "MPU6050UpsideDown", mpu6050Options.upsideDown);
+	writeDoc(doc, "MPU6050CalibrateGyro", mpu6050Options.calibrateGyro);
+	writeDoc(doc, "MPU6050GyroOffsetX", mpu6050Options.gyroOffsetX);
+	writeDoc(doc, "MPU6050GyroOffsetY", mpu6050Options.gyroOffsetY);
+	writeDoc(doc, "MPU6050GyroOffsetZ", mpu6050Options.gyroOffsetZ);
 	writeDoc(doc, "MPU6050InputEnabled", mpu6050Options.enabled);
 
 	return serialize_json(doc);

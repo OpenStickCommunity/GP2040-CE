@@ -47,6 +47,23 @@
 #define I2C_MPU6050_UPSIDEDOWN false
 #endif
 
+#ifndef I2C_MPU6050_CALIBRATE_GYRO
+#define I2C_MPU6050_CALIBRATE_GYRO true
+#endif
+
+#ifndef I2C_MPU6050_GYRO_OFFSET_X
+#define I2C_MPU6050_GYRO_OFFSET_X 0
+#endif
+
+#ifndef I2C_MPU6050_GYRO_OFFSET_Y
+#define I2C_MPU6050_GYRO_OFFSET_Y 0
+#endif
+
+#ifndef I2C_MPU6050_GYRO_OFFSET_Z
+#define I2C_MPU6050_GYRO_OFFSET_Z 0
+#endif
+
+
 // IMU Module Name
 #define I2CMPU6050Name "I2CMPU6050"
 

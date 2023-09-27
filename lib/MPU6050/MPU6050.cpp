@@ -101,7 +101,6 @@ bool MPU6050::init(Mpu6050AccelerometerRange accelRange,
     setGyroscopeRange(gyroRange);
     setDLPFBandwidth(bandwidth);
 
-    calibrateGyro();
 
     return true;
 }
@@ -110,7 +109,7 @@ void MPU6050::calibrateGyro()
 {
     // Busy wait so it can settle.
     // NOTE: If this is put onto a hotkey, the wait will need to be much longer so that user
-    // has a chance to put down the controller onto a flat surface.
+    // has a chance to let go of the controller on a flat surface.
     busy_wait_ms(100);
 
     // Take a sum of 1000 samples of the raw gyro
@@ -136,6 +135,20 @@ void MPU6050::calibrateGyro()
     gyroOffsetX = -rawGyroscopeToDps(averagex);
     gyroOffsetY = -rawGyroscopeToDps(averagey);
     gyroOffsetZ = -rawGyroscopeToDps(averagez);
+}
+
+void MPU6050::getGyroOffsets(float &x, float &y, float &z)
+{
+    x = gyroOffsetX;
+    y = gyroOffsetY;
+    z = gyroOffsetZ;
+}
+
+void MPU6050::setGyroOffsets(float x, float y, float z)
+{
+    gyroOffsetX = x;
+    gyroOffsetY = y;
+    gyroOffsetZ = z;
 }
 
 Mpu6050Data MPU6050::readData()

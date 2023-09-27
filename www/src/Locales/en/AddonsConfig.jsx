@@ -73,6 +73,7 @@ export default {
 	'mpu6050-i2c-address-label': 'MPU6050 I2C Address',
 	'mpu6050-orientation-label': 'Sensor Orientation \u27F2',
 	'mpu6050-upside-down-label': 'Sensor Upside Down',
+	'mpu6050-recalibrate-gyro-label': 'Recalibrate Gyro on next Reboot',
 	'dual-directional-input-header-text': 'Dual Directional Input',
 	'dual-directional-input-up-pin-label': 'Dual Up Pin',
 	'dual-directional-input-down-pin-label': 'Dual Down Pin',

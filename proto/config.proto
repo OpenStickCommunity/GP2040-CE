@@ -598,6 +598,10 @@ message MPU6050Options
 	optional uint32 i2cAddress = 6;
 	optional uint32 orientation = 7;
 	optional bool upsideDown = 8;
+	optional bool calibrateGyro = 9;
+	optional float gyroOffsetX = 10;
+	optional float gyroOffsetY = 11;
+	optional float gyroOffsetZ = 12;
 }
 
 message AddonOptions

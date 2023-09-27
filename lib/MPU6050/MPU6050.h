@@ -91,6 +91,8 @@ class MPU6050
                   uint8_t SampleRateDivider = 7);
 
         void calibrateGyro();
+        void getGyroOffsets(float &x, float &y, float &z);
+        void setGyroOffsets(float x, float y, float z);
 
         // Methods to read measurements
         Mpu6050Data readData();

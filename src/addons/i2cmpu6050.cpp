@@ -52,6 +52,20 @@ void I2CMPU6050Input::setup() {
         options.i2cSpeed,
         options.i2cAddress);
     imu->init();
+    if (options.calibrateGyro) {
+        imu->calibrateGyro();
+        float x, y, z;
+        imu->getGyroOffsets(x, y, z);
+
+        MPU6050Options& options = Storage::getInstance().getAddonOptions().mpu6050Options;
+        options.calibrateGyro = false; // Only calibrate once until user sets this again in WebUI
+        options.gyroOffsetX = x;
+        options.gyroOffsetY = y;
+        options.gyroOffsetZ = z;
+        Storage::getInstance().save();
+    } else {
+        imu->setGyroOffsets(options.gyroOffsetX, options.gyroOffsetY, options.gyroOffsetZ);
+    }
 
     orientation = options.orientation;
     upsideDown = options.upsideDown;
