@@ -152,6 +152,9 @@ void I2CDisplayAddon::process() {
 				case BUTTON_LAYOUT_KEYBOARDA:
 					drawMAMEA(8, 28, 10, 1);
 					break;
+				case BUTTON_LAYOUT_OPENCORE0WASDA:
+					drawOpenCore0WASDA(16, 28, 10, 1);
+					break;
 				case BUTTON_LAYOUT_DANCEPADA:
 					drawDancepadA(39, 12, 15, 2);
 					break;
@@ -206,6 +209,12 @@ void I2CDisplayAddon::process() {
 				case BUTTON_LAYOUT_KEYBOARDB:
 					drawMAMEB(68, 28, 10, 1);
 					break;
+				case BUTTON_LAYOUT_KEYBOARD8B:
+					drawMAME8B(68, 28, 10, 1);
+					break;
+				case BUTTON_LAYOUT_OPENCORE0WASDB:
+					drawOpenCore0WASDB(68, 28, 10, 1);
+					break;				
 				case BUTTON_LAYOUT_DANCEPADB:
 					drawDancepadB(39, 12, 15, 2);
 					break;
@@ -371,6 +380,9 @@ void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutParamsLeft& options)
 			case BUTTON_LAYOUT_KEYBOARDA:
 				drawMAMEA(startX, startY, buttonRadius, buttonPadding);
 				break;
+			case BUTTON_LAYOUT_OPENCORE0WASDA:
+				drawOpenCore0WASDA(startX, startY, buttonRadius, buttonPadding);
+				break;			
 			case BUTTON_LAYOUT_DANCEPADA:
 				drawDancepadA(startX, startY, buttonRadius, buttonPadding);
 				break;
@@ -430,6 +442,12 @@ void I2CDisplayAddon::drawButtonLayoutRight(ButtonLayoutParamsRight& options)
 				break;
 			case BUTTON_LAYOUT_KEYBOARDB:
 				drawMAMEB(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_KEYBOARD8B:
+				drawMAME8B(startX, startY, buttonRadius, buttonPadding);
+				break;
+			case BUTTON_LAYOUT_OPENCORE0WASDB:
+				drawOpenCore0WASDB(startX, startY, buttonRadius, buttonPadding);
 				break;
 			case BUTTON_LAYOUT_DANCEPADB:
 				drawDancepadB(startX, startY, buttonRadius, buttonPadding);
@@ -661,6 +679,27 @@ void I2CDisplayAddon::drawMAMEA(int startX, int startY, int buttonSize, int butt
 	obdRectangle(&obd, startX + buttonMargin, startY + buttonMargin, startX + buttonSize + buttonMargin, startY + buttonSize + buttonMargin, 1, pressedDown());
 	obdRectangle(&obd, startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, pressedUp());
 	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, pressedRight());
+
+}
+
+void I2CDisplayAddon::drawOpenCore0WASDA(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	const int buttonMargin = buttonPadding + buttonSize;
+
+	// Open_Core0 WASD
+	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonSize + buttonMargin, 1, pressedLeft());
+	obdRectangle(&obd, startX + buttonMargin, startY + buttonMargin, startX + buttonSize + buttonMargin, startY + buttonSize + buttonMargin, 1, pressedDown());
+	obdRectangle(&obd, startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, pressedUp());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, pressedRight());
+
+	// Aux buttons
+    obdPreciseEllipse(&obd, startX - 15 + buttonMargin * 0.5, startY - 25 + (buttonMargin * 1.5), 3, 3, 1, pGamepad->pressedS2());
+    obdPreciseEllipse(&obd, startX - 15 + buttonMargin * 1.25, startY - 25 + (buttonMargin * 1.5), 3, 3, 1, pGamepad->pressedS1());
+    obdPreciseEllipse(&obd, startX - 15 + buttonMargin * 2, startY -25 + (buttonMargin * 1.5), 3, 3, 1, pGamepad->pressedA1());
+    obdPreciseEllipse(&obd, startX - 15 + buttonMargin * 2.75, startY -25 + (buttonMargin * 1.5), 3, 3, 1, pGamepad->pressedA2());
+    obdPreciseEllipse(&obd, startX - 15 + buttonMargin * 3.5, startY -25 + (buttonMargin * 1.5), 3, 3, 1, pGamepad->pressedL3());
+	obdPreciseEllipse(&obd, startX - 15 + buttonMargin * 4.25, startY -25 + (buttonMargin * 1.5), 3, 3, 1, pGamepad->pressedR3());
+
 }
 
 void I2CDisplayAddon::drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding)
@@ -675,6 +714,40 @@ void I2CDisplayAddon::drawMAMEB(int startX, int startY, int buttonSize, int butt
 	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonMargin + buttonSize, 1, pGamepad->pressedB1());
 	obdRectangle(&obd, startX + buttonMargin, startY + buttonMargin, startX + buttonSize + buttonMargin, startY + buttonMargin + buttonSize, 1, pGamepad->pressedB2());
 	obdRectangle(&obd, startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonMargin + buttonSize, 1, pGamepad->pressedR2());
+
+}
+
+void I2CDisplayAddon::drawMAME8B(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	const int buttonMargin = buttonPadding + buttonSize;
+
+	// 8-button MAME Style
+	obdRectangle(&obd, startX, startY, startX + buttonSize, startY + buttonSize, 1, pGamepad->pressedB3());
+	obdRectangle(&obd, startX + buttonMargin, startY - (buttonMargin / 3), startX + buttonSize + buttonMargin, startY - (buttonMargin / 3) + buttonSize, 1, pGamepad->pressedB4());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY - (buttonMargin / 3), startX + buttonSize + buttonMargin * 2, startY - (buttonMargin / 3)+ buttonSize, 1, pGamepad->pressedR1());
+	obdRectangle(&obd, startX + buttonMargin * 3, startY, startX + buttonSize + buttonMargin * 3, startY + buttonSize, 1, pGamepad->pressedL1());
+
+	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonMargin + buttonSize, 1, pGamepad->pressedB1());
+	obdRectangle(&obd, startX + buttonMargin, startY - (buttonMargin / 3) + buttonMargin, startX + buttonSize + buttonMargin, startY - (buttonMargin / 3) + buttonMargin + buttonSize, 1, pGamepad->pressedB2());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY - (buttonMargin / 3) + buttonMargin, startX + buttonSize + buttonMargin * 2, startY - (buttonMargin / 3) + buttonMargin + buttonSize, 1, pGamepad->pressedR2());
+	obdRectangle(&obd, startX + buttonMargin * 3, startY + buttonMargin, startX + buttonSize + buttonMargin * 3, startY + buttonMargin + buttonSize, 1, pGamepad->pressedL2());
+
+}
+
+void I2CDisplayAddon::drawOpenCore0WASDB(int startX, int startY, int buttonSize, int buttonPadding)
+{
+	const int buttonMargin = buttonPadding + buttonSize;
+
+	// 8-button Open_Core0 WASD
+	obdRectangle(&obd, startX, startY, startX + buttonSize, startY + buttonSize, 1, pGamepad->pressedB3());
+	obdRectangle(&obd, startX + buttonMargin, startY - (buttonMargin / 3), startX + buttonSize + buttonMargin, startY - (buttonMargin / 3) + buttonSize, 1, pGamepad->pressedB4());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY - (buttonMargin / 3), startX + buttonSize + buttonMargin * 2, startY - (buttonMargin / 3)+ buttonSize, 1, pGamepad->pressedR1());
+	obdRectangle(&obd, startX + buttonMargin * 3, startY, startX + buttonSize + buttonMargin * 3, startY + buttonSize, 1, pGamepad->pressedL1());
+
+	obdRectangle(&obd, startX, startY + buttonMargin, startX + buttonSize, startY + buttonMargin + buttonSize, 1, pGamepad->pressedB1());
+	obdRectangle(&obd, startX + buttonMargin, startY - (buttonMargin / 3) + buttonMargin, startX + buttonSize + buttonMargin, startY - (buttonMargin / 3) + buttonMargin + buttonSize, 1, pGamepad->pressedB2());
+	obdRectangle(&obd, startX + buttonMargin * 2, startY - (buttonMargin / 3) + buttonMargin, startX + buttonSize + buttonMargin * 2, startY - (buttonMargin / 3) + buttonMargin + buttonSize, 1, pGamepad->pressedR2());
+	obdRectangle(&obd, startX + buttonMargin * 3, startY + buttonMargin, startX + buttonSize + buttonMargin * 3, startY + buttonMargin + buttonSize, 1, pGamepad->pressedL2());
 
 }
 

@@ -109,7 +109,6 @@ void AnalogInput::process()
         x_magnitude_1 = adc_1_x - ANALOG_CENTER;
         y_magnitude_1 = adc_1_y - ANALOG_CENTER;
         magnitude = sqrt((x_magnitude_1 * x_magnitude_1) + (y_magnitude_1 * y_magnitude_1));
-
         if (adc_deadzone) {
             radialDeadzone(adc_1_x, adc_1_y, adc_deadzone, x_magnitude_1, y_magnitude_1, magnitude);
         }
