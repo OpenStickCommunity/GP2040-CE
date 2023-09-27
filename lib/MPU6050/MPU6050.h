@@ -23,13 +23,6 @@
 
 /* Ported for GP2040 by HoloPengin 2023 */
 
-/* TODO:
-    - On-demand gyro cal
-    - Automatic cal (if no motion for 5 seconds, calibrate gyro. Figure out thresholds)
-    - Add support for alternative orientations
-    - Add three step calibration routine for accelerometer?
-*/
-
 #ifndef MPU6050_H
 #define MPU6050_H
 

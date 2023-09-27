@@ -5,6 +5,11 @@
 #include "enums.pb.h"
 #include <math.h>
 
+/* TODO:
+    - Add calibration routine for accelerometer?
+    - Add automatic calibration at standstill for gyro?
+*/
+
 bool I2CMPU6050Input::available() {
     const MPU6050Options& options = Storage::getInstance().getAddonOptions().mpu6050Options;
     if (!options.enabled) {
