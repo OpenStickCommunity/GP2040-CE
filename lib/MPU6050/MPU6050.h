@@ -34,15 +34,6 @@
 #define MPU6050_H
 
 #include <BitBang_I2C.h>
-#include "Vector3f.h"
-
-struct Mpu6050Data
-{
-    public:
-        Vector3f acceleration; // G
-        Vector3f gyroscope; // degree/s
-        float temperature; // Celsius degrees
-};
 
 // Used to select the gyroscope measurement range.
 // Always select the smallest possible range for precision.
@@ -95,11 +86,10 @@ class MPU6050
         void setGyroOffsets(float x, float y, float z);
 
         // Methods to read measurements
-        Mpu6050Data readData();
         void readRawAcceleration(int16_t &rawAccelX, int16_t &rawAccelY, int16_t &rawAccelZ);
         void readRawGyroscope(int16_t &rawGyroX, int16_t &rawGyroY, int16_t &rawGyroZ);
-        Vector3f readAcceleration();
-        Vector3f readGyroscope();
+        void readAcceleration(float &x, float &y, float &z);
+        void readGyroscope(float &x, float &y, float &z);
         float readTemperature();
 
         // Configuration of the sensors

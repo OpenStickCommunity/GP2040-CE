@@ -151,17 +151,6 @@ void MPU6050::setGyroOffsets(float x, float y, float z)
     gyroOffsetZ = z;
 }
 
-Mpu6050Data MPU6050::readData()
-{
-    Mpu6050Data data;
-
-    data.acceleration = readAcceleration();
-    data.gyroscope = readGyroscope();
-    data.temperature = readTemperature();
-
-    return data;
-}
-
 void MPU6050::readRawAcceleration(int16_t &rawAccelX, int16_t &rawAccelY, int16_t &rawAccelZ)
 {
     uc[0] = MPU6050_REGISTER_ACCEL_XOUT_H; // accelX register (followed by y and z)
@@ -173,18 +162,15 @@ void MPU6050::readRawAcceleration(int16_t &rawAccelX, int16_t &rawAccelY, int16_
     rawAccelZ = uc[4]<<8 | uc[5];
 }
 
-Vector3f MPU6050::readAcceleration()
+void MPU6050::readAcceleration(float &x, float &y, float &z)
 {
     int16_t rawAccelX, rawAccelY, rawAccelZ;
     readRawAcceleration(rawAccelX, rawAccelY, rawAccelZ);
 
     // Convert each integer value to physical units
-    Vector3f accel = Vector3f();
-    accel.x = rawAccelerationToG(rawAccelX);
-    accel.y = rawAccelerationToG(rawAccelY);
-    accel.z = rawAccelerationToG(rawAccelZ);
-
-    return accel;
+    x = rawAccelerationToG(rawAccelX);
+    y = rawAccelerationToG(rawAccelY);
+    z = rawAccelerationToG(rawAccelZ);
 }
 
 void MPU6050::readRawGyroscope(int16_t &rawGyroX, int16_t &rawGyroY, int16_t &rawGyroZ)
@@ -198,18 +184,15 @@ void MPU6050::readRawGyroscope(int16_t &rawGyroX, int16_t &rawGyroY, int16_t &ra
     rawGyroZ = uc[4]<<8 | uc[5];
 }
 
-Vector3f MPU6050::readGyroscope()
+void MPU6050::readGyroscope(float &x, float &y, float &z)
 {
     int16_t rawGyroX, rawGyroY, rawGyroZ;
     readRawGyroscope(rawGyroX, rawGyroY, rawGyroZ);
 
     // Convert each integer value to physical units
-    Vector3f gyro = Vector3f();
-    gyro.x = rawGyroscopeToDps(rawGyroX) + gyroOffsetX;
-    gyro.y = rawGyroscopeToDps(rawGyroY) + gyroOffsetY;
-    gyro.z = rawGyroscopeToDps(rawGyroZ) + gyroOffsetZ;
-
-    return gyro;
+    x = rawGyroscopeToDps(rawGyroX) + gyroOffsetX;
+    y = rawGyroscopeToDps(rawGyroY) + gyroOffsetY;
+    z = rawGyroscopeToDps(rawGyroZ) + gyroOffsetZ;
 }
 
 float MPU6050::readTemperature()
