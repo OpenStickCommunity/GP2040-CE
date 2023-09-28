@@ -157,7 +157,7 @@ const MPU6050 = ({ values, errors, handleChange, handleCheckbox }) => {
 					<FormCheck
 						label={t('AddonsConfig:mpu6050-upside-down-label')}
 						type="switch"
-						className="col-sm-3 ms-2"
+						className="col ms-3"
 						id="MPU6050UpsideDownToggle"
 						isInvalid={false}
 						checked={Boolean(values.MPU6050UpsideDown)}
@@ -169,7 +169,7 @@ const MPU6050 = ({ values, errors, handleChange, handleCheckbox }) => {
 					<FormCheck
 						label={t('AddonsConfig:mpu6050-recalibrate-gyro-label')}
 						type="switch"
-						className="col-sm-3 ms-2"
+						className="col ms-3"
 						id="MPU6050CalibrateGyroToggle"
 						isInvalid={false}
 						checked={Boolean(values.MPU6050CalibrateGyro)}
@@ -180,9 +180,11 @@ const MPU6050 = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 				</Row>
 				<div>
-					<p>Gyro Offset X: {values.MPU6050GyroOffsetX}</p>
-					<p>Gyro Offset Y: {values.MPU6050GyroOffsetY}</p>
-					<p>Gyro Offset Z: {values.MPU6050GyroOffsetZ}</p>
+					<p>
+						Gyro Offset X: {values.MPU6050GyroOffsetX}<br />
+						Gyro Offset Y: {values.MPU6050GyroOffsetY}<br />
+						Gyro Offset Z: {values.MPU6050GyroOffsetZ}
+					</p>
 				</div>
             </div>
 			<FormCheck

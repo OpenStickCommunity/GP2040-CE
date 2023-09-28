@@ -91,8 +91,6 @@ Please note that this can only be used on devices that have a BOOTSEL button.  P
 * `I2C Analog ADS1219 Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
 * `I2C Analog ADS1219 Address` - Sets the address for the I2C Analog ADS1219.
 
-## I2C MPU6050 IMU
-
 
 
 ## Dual Directional Input
@@ -234,6 +232,27 @@ Supported controller types and their mapping is as follows:
 * `Lock RGB LED` - When enabled the RGB LEDs that are controlled by the RP2040 device will not display anything during Focus Mode.
 * `Lock Buttons` - When enabled the You can specify specific buttons to not function during Focus Mode.  You can add as many additional buttons as needed here.
 
+
+## I2C MPU6050 IMU
+
+![GP2040-CE Configurator - Add-Ons I2C MPU6050 IMU](assets/images/gpc-add-ons-mpu6050-imu.png)
+
+Allows connecting an MPU6050 IMU via i2c, for full accelerometer and gyro support in PS4 Mode.
+
+* `I2C SDA Pin` - The GPIO pin used for the MPU6050's SDA pin
+* `I2C SCL Pin` - The GPIO pin used for the MPU6050's SCL pin.
+* `I2C Block` - The i2c block which is connected to the SDA and SCL GPIO pins.
+* `I2C Speed` - The rate to run i2c communications.
+* `MPU6050 I2C Address` - The MPU6050 i2c address defaults to 0x68. If the ADO pin is pulled high, this changes to 0x69.
+* `Sensor Orientation` - Compensates for rotation of the sensor as mounted on your device. Degrees are measured counter-clockwise around the up axis of the sensor (right-hand rule).
+* `Sensor Upside Down` - Compensates for back-side (upside-down) PCB mounting of the sensor.
+* `Recalibrate Gyro on next Reboot` - Recalculates gyro drift compensation next time GP2040 boots, after which this setting turns itself off. Turn it back on to trigger a new calibration on reboot.
+* `Gyro Offset` - Current gyro drift calibration values
+
+Hardware Requirements:
+
+* MPU6050 IMU (such as a GY-521 breakout board)
+
 ## USB Host Based Add-ons
 
 These add-ons are predicated on having and using a USB Host Port on the device. These settings are shared between the add-ons in this section.
@@ -251,7 +270,6 @@ Enabling this add-on will allow you to use a licenced 3rd party device to authen
 ### Keyboard Host Configuration
 
 ![GP2040-CE Configurator - Keyboard Host Configuration](assets/images/gpc-add-ons-keyboard-host-configuration.png)
-
 
 ### Example Wiring Diagram
 
