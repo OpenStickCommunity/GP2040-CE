@@ -34,13 +34,15 @@ const schema = yup.object().shape({
 	),
 });
 
+const defaultMacroInput = { buttonMask: 0, duration: 16, waitDuration: 0 };
+
 const defaultValues = {
 	macroList: Array(BUTTON_MASKS.length).fill(
 		{
 			macroType: 1,
 			macroLabel: '',
 			macroInputs: [
-				{ buttonMask: 0, duration: 0 },
+				defaultMacroInput,
 			],
 		}),
 	macroPin: -1,
@@ -90,7 +92,7 @@ const ButtonMasksComponent = (props) => {
 }
 
 const MacroInputComponent = (props) => {
-	const { value: { duration, buttonMask },
+	const { value: { duration, buttonMask, waitDuration },
 			buttonLabelType,
 			errors, handleChange,
 			id: key, translation: t,
@@ -98,7 +100,7 @@ const MacroInputComponent = (props) => {
 
 	return (
 		<div key={key} className="row">
-			<div className="col-sm-auto">
+			<div className="col-sm-1">
 				<Form.Control
 					size="sm"
 					type="number"
@@ -111,7 +113,7 @@ const MacroInputComponent = (props) => {
 					min={0} />
 			</div>
 			<div key={`${key}.buttons`}
-				 className="col row mb-2">
+				 className="col-sm-11 row mb-2">
 				{BUTTON_MASKS.map((mask, i1) =>
 					buttonMask & mask.value ? (
 						<ButtonMasksComponent
@@ -141,6 +143,19 @@ const MacroInputComponent = (props) => {
 						translation={t}
 						buttonLabelType={buttonLabelType} />
 				</div>
+				<div className="col-auto">|</div>
+				<div className="col-sm-1">
+					<Form.Control
+						size="sm"
+						type="number"
+						placeholder={t('InputMacroAddon:input-macro-waitDuration-label')}
+						name={`${key}.waitDuration`}
+						value={waitDuration}
+						error={errors?.waitDuration}
+						isInvalid={errors?.waitDuration}
+						onChange={handleChange}
+						min={0} />
+				</div>
 				<Button variant="transparent" className="col-sm-auto" size="sm" onDoubleClick={(e) => { setFieldValue(key, EMPTY_INPUT)}}>&times;</Button>
 			</div>
 		</div>
@@ -148,12 +163,12 @@ const MacroInputComponent = (props) => {
 }
 
 const MacroComponent = (props) => {
-	const { value: { macroLabel, macroType, macroInputs, enabled, useMacroTriggerButton, macroTriggerButton, macroTriggerPin },
+	const { value: { macroLabel, macroType, macroInputs, enabled, exclusive, interruptible,
+					 useMacroTriggerButton, macroTriggerButton, macroTriggerPin },
 			errors, handleChange, id: key, translation: t, index, isMacroPinMapped, buttonLabelType,
 			setFieldValue, disabled } = props;
 
 	const filteredMacroInputs = macroInputs.filter(i => i != EMPTY_INPUT);
-
 	return (
 		<div key={key} className="row mb-2">
 			<div className="row">
@@ -167,9 +182,6 @@ const MacroComponent = (props) => {
 						checked={enabled}
 						onChange={(e) => { setFieldValue(`${key}.enabled`, e.target.checked); }}
 						isInvalid={false} />
-					{/*<Form.Control.Feedback type="invalid">
-														{errors[o] && errors[o]?.action}
-													</Form.Control.Feedback>*/}
 				</div>
 				<div className="col-sm-auto">
 					<Form.Control
@@ -182,6 +194,28 @@ const MacroComponent = (props) => {
 						isInvalid={errors?.macroLabel}
 						onChange={handleChange}
 						maxLength={256} />
+				</div>
+				<div className="col-sm-auto">
+					<Form.Check
+						name={`${key}.interruptible`}
+						label="Interruptible"
+						type="switch"
+						className="form-select-sm"
+						disabled={disabled}
+						checked={interruptible}
+						onChange={(e) => { setFieldValue(`${key}.interruptible`, e.target.checked); }}
+						isInvalid={false} />
+				</div>
+				<div className="col-sm-auto">
+					<Form.Check
+						name={`${key}.exclusive`}
+						label="Exclusive"
+						type="switch"
+						className="form-select-sm"
+						disabled={disabled}
+						checked={exclusive}
+						onChange={(e) => { setFieldValue(`${key}.exclusive`, e.target.checked); }}
+						isInvalid={false} />
 				</div>
 			</div>
 			<div className="row mt-2">
@@ -259,7 +293,7 @@ const MacroComponent = (props) => {
 							handleChange={handleChange}
 							setFieldValue={setFieldValue} />
 					))}
-					{macroInputs.length < 60 ? <Button variant="success" className="col px-2" size="sm" onClick={(e) => { setFieldValue(`${key}.macroInputs[${filteredMacroInputs.length}]`, ({})) }}>+</Button> : <></>}
+					{macroInputs.length < 50 ? <Button variant="success" className="col px-2" size="sm" onClick={(e) => { setFieldValue(`${key}.macroInputs[${filteredMacroInputs.length}]`, ({...defaultMacroInput})) }}>+</Button> : <></>}
 				</div>
 			</div>
 		</div>

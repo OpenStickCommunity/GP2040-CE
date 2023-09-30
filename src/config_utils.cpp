@@ -539,7 +539,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, !!INPUT_MACRO_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, pin, INPUT_MACRO_PIN);
-    config.addonOptions.macroOptions.macroList_count = 5;
+    config.addonOptions.macroOptions.macroList_count = 6;
 }
 
 

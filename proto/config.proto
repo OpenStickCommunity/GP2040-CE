@@ -592,6 +592,7 @@ message MacroInput
 {
 	optional uint32 buttonMask = 1;
 	optional uint32 duration = 2;
+	optional uint32 waitDuration = 3 [default = 0];
 }
 
 message Macro
@@ -603,6 +604,8 @@ message Macro
 	optional bool useMacroTriggerButton = 5;
 	optional int32 macroTriggerPin = 6 [default = -1];
 	optional uint32 macroTriggerButton = 7;
+	optional bool exclusive = 8 [default = true];
+	optional bool interruptible = 9 [default = true];
 }
 
 message MacroOptions

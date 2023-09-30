@@ -1589,11 +1589,14 @@ std::string setMacroAddonOptions()
 		macroOptions.macroList[macrosIndex].macroTriggerPin = macro["macroTriggerPin"].as<int>();
 		macroOptions.macroList[macrosIndex].macroTriggerButton = macro["macroTriggerButton"].as<uint32_t>();
 		macroOptions.macroList[macrosIndex].enabled = macro["enabled"] == true;
+		macroOptions.macroList[macrosIndex].exclusive = macro["exclusive"] == true;
+		macroOptions.macroList[macrosIndex].interruptible = macro["interruptible"] == true;
 		JsonArray macroInputs = macro["macroInputs"];
 		int macroInputsIndex = 0;
 
 		for (JsonObject input: macroInputs) {
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].duration = input["duration"].as<uint32_t>();
+			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].waitDuration = input["waitDuration"].as<uint32_t>();
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].buttonMask = input["buttonMask"].as<uint32_t>();
 			macroOptions.macroList[macrosIndex].macroInputs_count = ++macroInputsIndex;
 			if (macroInputsIndex > 64) break;
@@ -1620,6 +1623,8 @@ std::string getMacroAddonOptions()
 	for (int i = 0; i < macroOptions.macroList_count; i++) {
 		JsonObject macro = macroList.createNestedObject();
 		macro["enabled"] = macroOptions.macroList[i].enabled;
+		macro["exclusive"] = macroOptions.macroList[i].exclusive;
+		macro["interruptible"] = macroOptions.macroList[i].interruptible;
 		macro["macroType"] = macroOptions.macroList[i].macroType;
 		macro["useMacroTriggerButton"] = macroOptions.macroList[i].useMacroTriggerButton;
 		macro["macroTriggerPin"] = macroOptions.macroList[i].macroTriggerPin;
@@ -1631,6 +1636,7 @@ std::string getMacroAddonOptions()
 			JsonObject macroInput = macroInputs.createNestedObject();
 			macroInput["buttonMask"] = macroOptions.macroList[i].macroInputs[j].buttonMask;
 			macroInput["duration"] = macroOptions.macroList[i].macroInputs[j].duration;
+			macroInput["waitDuration"] = macroOptions.macroList[i].macroInputs[j].waitDuration;
 		}
 	}
 
