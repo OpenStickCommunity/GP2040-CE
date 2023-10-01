@@ -148,7 +148,7 @@ const MacroInputComponent = (props) => {
 					<Form.Control
 						size="sm"
 						type="number"
-						placeholder={t('InputMacroAddon:input-macro-waitDuration-label')}
+						placeholder={t('InputMacroAddon:input-macro-wait-duration-label')}
 						name={`${key}.waitDuration`}
 						value={waitDuration}
 						error={errors?.waitDuration}
@@ -175,7 +175,7 @@ const MacroComponent = (props) => {
 				<div className="col-sm-auto">
 					<Form.Check
 						name={`${key}.enabled`}
-						label="Activated"
+						label={t('InputMacroAddon:input-macro-macro-activated')}
 						type="switch"
 						className="form-select-sm"
 						disabled={disabled}
@@ -198,7 +198,7 @@ const MacroComponent = (props) => {
 				<div className="col-sm-auto">
 					<Form.Check
 						name={`${key}.interruptible`}
-						label="Interruptible"
+						label={t('InputMacroAddon:input-macro-macro-interruptible')}
 						type="switch"
 						className="form-select-sm"
 						disabled={disabled}
@@ -209,7 +209,7 @@ const MacroComponent = (props) => {
 				<div className="col-sm-auto">
 					<Form.Check
 						name={`${key}.exclusive`}
-						label="Exclusive"
+						label={t('InputMacroAddon:input-macro-macro-exclusive')}
 						type="switch"
 						className="form-select-sm"
 						disabled={disabled}
@@ -222,7 +222,7 @@ const MacroComponent = (props) => {
 				<div className="col-sm-auto">
 					<Form.Check
 						name={`${key}.useMacroTriggerButton`}
-						label="Uses Buttons"
+						label={t('InputMacroAddon:input-macro-macro-uses-buttons')}
 						type="switch"
 						className="form-select-sm"
 						disabled={disabled || !isMacroPinMapped}
@@ -234,7 +234,7 @@ const MacroComponent = (props) => {
 													</Form.Control.Feedback>*/}
 				</div>
 				{useMacroTriggerButton ? <>
-					<div className="col-sm-auto pt-1">Macro Button Pin + </div>
+					<div className="col-sm-auto pt-1">{t('input-macro-macro-macro-button-pin-plus')}</div>
 					<div className="col-sm-auto px-0">
 						<ButtonMasksComponent
 							className="col-sm-auto"
@@ -333,22 +333,11 @@ export default function SettingsPage() {
 						<Form noValidate onSubmit={handleSubmit}>
 							<Section title={t('InputMacroAddon:input-macro-header-text')}>
 								<div className="mb-3">
-									<Trans ns="SettingsPage" i18nKey="hotkey-settings-sub-header">
-										The <strong>Fn</strong> slider provides a mappable Function
-										button in the{' '}
-										<NavLink exact="true" to="/pin-mapping">
-											Pin Mapping
-										</NavLink>{' '}
-										page. By selecting the Fn slider option, the Function button
-										must be held along with the selected hotkey settings.
-										<br />
-										Additionally, select <strong>None</strong> from the dropdown
-										to unassign any button.
-									</Trans>
+									<Trans ns="InputMacroAddon" i18nKey="input-macro-sub-header" />
 								</div>
 								{values.macroPin === -1 && (
 									<div className="alert alert-warning">
-										{t('SettingsPage:hotkey-settings-warning')}
+										{t('InputMacroAddon:input-macro-warning')}
 									</div>
 								)}
 								<div className="row mb-3">
