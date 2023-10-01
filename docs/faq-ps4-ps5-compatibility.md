@@ -12,7 +12,7 @@ PS4 mode is an add-on that grants GP2040-CE compatibility with the Playstation 4
 
 The team behind Passing Link are in no way affiliated with the GP2040-CE project, however the work and information they've made available was greatly appreciated so we could bring this highly-requested feature to our users.
 
-For more information, refer to [PS4 Mode](web-configurator-add-ons.md#ps4-mode) in the `Web Configurator - Add-ons` section of the documentation.
+For more information, refer to [PS4 Mode](add-ons.md#ps4-mode) in the `Web Configurator - Add-ons` section of the documentation.
 
 ## What is PS Passthrough?
 
@@ -20,7 +20,7 @@ PS Passthrough is an add-on that grants GP2040-CE compatibility with the Playsta
 
 Depending on the controller or dongle used, you may be limited to only Playstation 4 support. 
 
-For more information, refer to [PS Passthrough](web-configurator-add-ons.md#ps-passthrough) in the `Web Configurator - Add-ons` section of the documention.
+For more information, refer to [PS Passthrough](add-ons.md#ps-passthrough) in the `Web Configurator - Add-ons` section of the documention.
 
 ## Why does my controller stop responding after a while on PS4 or PS5?
 

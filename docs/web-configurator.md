@@ -149,7 +149,7 @@ Check out our collection of great custom splash screens from the community [HERE
 
 ## Add-Ons Configuration
 
-This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE. Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to [Web Configurator - Add-ons](web-configurator-add-ons "GP2040-CE | Web Configurator - Add-ons") for more information.
+This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE. Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to [Web Configurator - Add-ons](add-ons "GP2040-CE | Web Configurator - Add-ons") for more information.
 
 ## Data Backup and Restoration
 
