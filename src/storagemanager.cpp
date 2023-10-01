@@ -41,12 +41,6 @@
 
 #include "helper.h"
 
-static MacroInput _inputsShoryuken[] = {
-    { .has_buttonMask = true, .buttonMask = GAMEPAD_MASK_DR, .has_duration = true, .duration = 100 },
-    { .has_buttonMask = true, .buttonMask = GAMEPAD_MASK_DD, .has_duration = true, .duration = 100 },
-    { .has_buttonMask = true, .buttonMask = GAMEPAD_MASK_DD | GAMEPAD_MASK_DR | GAMEPAD_MASK_B4, .has_duration = true, .duration = 100 }
-};
-
 Storage::Storage()
 {
 	EEPROM.start();
@@ -279,87 +273,3 @@ void AnimationStorage::save()
 {
 	Storage::getInstance().enqueueAnimationOptionsSave(AnimationStation::options);
 }
-
-// Macro *createMacro(MacroInput* inputs, const char* name, MacroType type, int size) {
-//     Macro* macro = new Macro;
-//     for (int i = 0; i < size; i++) {
-//         macro->inputs[i] = inputs[i];
-//     }
-//     macro->type = type;
-//     //macro->name = name;
-
-//     return macro;
-// }
-
-// const Macro* sampleMacro = createMacro(
-//     _inputsShoryuken,
-//     "Shoryuken",
-//     ON_HOLD,
-// 	3
-// );
-
-// MacroInput _inputsFf7[] = {
-//     {{ .dpad = 0 }, .duration = 200},  {{ .dpad = GAMEPAD_MASK_RIGHT }, .duration = 500},
-//     {{ .dpad = 0 }, .duration = 200},  {{ .dpad = GAMEPAD_MASK_LEFT }, .duration = 500},
-//     {{ .dpad = 0 }, .duration = 500},  {{ .dpad = 0, .buttons = GAMEPAD_MASK_B2 }, .duration = 500},
-//     {{ .dpad = 0 }, .duration = 500},  {{ .dpad = 0, .buttons = GAMEPAD_MASK_B2 }, .duration = 500},
-//     {{ .dpad = 0 }, .duration = 500},  {{ .dpad = 0, .buttons = GAMEPAD_MASK_B2 }, .duration = 500},
-//     {{ .dpad = 0 }, .duration = 500},  {{ .dpad = 0, .buttons = GAMEPAD_MASK_B2 }, .duration = 500}
-// };
-
-// const Macro* sampleMacro2 = createMacro(
-//     _inputsFf7,
-//     "Ff7",
-//     ON_RELEASE_TOGGLE,
-//     12
-// );
-
-// MacroInput _inputsTatsu[] = {
-//     {{ .dpad = GAMEPAD_MASK_DOWN }, .duration = 100},
-//     {{ .dpad = GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT }, .duration = 100},
-//     {{ .dpad = GAMEPAD_MASK_LEFT, .buttons = GAMEPAD_MASK_B2 }, .duration = 100}
-// };
-
-// const Macro* sampleMacro3 = createMacro(
-//     _inputsTatsu,
-//     "Tatsumaki Senpuukyaku",
-//     ON_RELEASE,
-//     3
-// );
-
-// MacroInput _inputsHadouken[] = {
-//     {{ .dpad = GAMEPAD_MASK_DOWN }, .duration = 100},
-//     {{ .dpad = GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT }, .duration = 100},
-//     {{ .dpad = GAMEPAD_MASK_RIGHT, .buttons = GAMEPAD_MASK_B4 }, .duration = 100}
-// };
-
-// const Macro* sampleMacro4 = createMacro(
-//     _inputsHadouken,
-//     "Hadouken",
-//     ON_HOLD_REPEAT,
-//     3
-// );
-
-// void Storage::setDefaultMacros()
-// {
-// 	macros.size = 4;
-// 	macros.list[0] = (*sampleMacro);
-// 	macros.list[1] = (*sampleMacro2);
-// 	macros.list[2] = (*sampleMacro3);
-// 	macros.list[3] = (*sampleMacro4);
-// 	setMacros(macros);
-// }
-
-// void Storage::initMacros() {
-// 	EEPROM.get(MACRO_STORAGE_INDEX, macros);
-// 	uint32_t lastCRC = macros.checksum;
-// 	macros.checksum = CHECKSUM_MAGIC;
-// 	if (lastCRC != CRC32::calculate(&macros)) {
-// 		setDefaultMacros();
-// 	}
-// }
-
-// Macros Storage::getMacrosForInit()
-// {
-// 	return macros;
-// }

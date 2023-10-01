@@ -102,6 +102,9 @@ void InputMacro::preprocess()
         }
     } else {
         switch (macro.macroType) {
+            case ON_HOLD:
+            case ON_RELEASE:
+                break; // no-op
             case ON_RELEASE_TOGGLE:
                 if (prevMacroInputPressed && !macroInputPressed)
                     isMacroTriggerHeld = false;
