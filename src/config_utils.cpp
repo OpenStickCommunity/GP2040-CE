@@ -411,11 +411,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.sliderOptions
     INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, enabled, !!JSLIDER_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinSliderOne, PIN_SLIDER_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinSliderTwo, PIN_SLIDER_TWO);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeZero, SLIDER_MODE_ZERO);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeOne, SLIDER_MODE_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeTwo, SLIDER_MODE_TWO);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, defaultMode, SLIDER_MODE_ZERO);
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
@@ -565,6 +561,7 @@ void gpioMappingsMigrationCore(Config& config)
     PinMappings& deprecatedPinMappings = config.deprecatedPinMappings;
     ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
     DualDirectionalOptions& ddiOptions = config.addonOptions.dualDirectionalOptions;
+    SliderOptions& jsSliderOptions = config.addonOptions.sliderOptions;
 
     const auto gamepadMaskToGpioAction = [&](uint32_t gpMask) -> GpioAction
     {
@@ -795,6 +792,66 @@ void gpioMappingsMigrationCore(Config& config)
     }
     else if (isValidPin(PIN_DUAL_DIRECTIONAL_RIGHT)) {
         actions[PIN_DUAL_DIRECTIONAL_RIGHT] = GpioAction::BUTTON_PRESS_DDI_RIGHT;
+    }
+
+    // convert JS slider pin mappings to GPIO mapping config
+    if (jsSliderOptions.enabled && isValidPin(jsSliderOptions.deprecatedPinSliderOne)) {
+        switch (jsSliderOptions.deprecatedPinSliderOne) {
+            case DpadMode::DPAD_MODE_DIGITAL: {
+                actions[jsSliderOptions.deprecatedPinSliderOne] = GpioAction::SUSTAIN_DP_MODE_DP; break;
+            }
+            case DpadMode::DPAD_MODE_LEFT_ANALOG: {
+                actions[jsSliderOptions.deprecatedPinSliderOne] = GpioAction::SUSTAIN_DP_MODE_LS; break;
+            }
+            case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
+                actions[jsSliderOptions.deprecatedPinSliderOne] = GpioAction::SUSTAIN_DP_MODE_RS; break;
+            }
+            default: break;
+        }
+        jsSliderOptions.deprecatedPinSliderOne = -1;
+    }
+    else if (isValidPin(PIN_SLIDER_ONE)) {
+        switch (PIN_SLIDER_ONE) {
+            case DpadMode::DPAD_MODE_DIGITAL: {
+                actions[PIN_SLIDER_ONE] = GpioAction::SUSTAIN_DP_MODE_DP; break;
+            }
+            case DpadMode::DPAD_MODE_LEFT_ANALOG: {
+                actions[PIN_SLIDER_ONE] = GpioAction::SUSTAIN_DP_MODE_LS; break;
+            }
+            case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
+                actions[PIN_SLIDER_ONE] = GpioAction::SUSTAIN_DP_MODE_RS; break;
+            }
+            default: break;
+        }
+    }
+    if (jsSliderOptions.enabled && isValidPin(jsSliderOptions.deprecatedPinSliderTwo)) {
+        switch (jsSliderOptions.deprecatedPinSliderTwo) {
+            case DpadMode::DPAD_MODE_DIGITAL: {
+                actions[jsSliderOptions.deprecatedPinSliderTwo] = GpioAction::SUSTAIN_DP_MODE_DP; break;
+            }
+            case DpadMode::DPAD_MODE_LEFT_ANALOG: {
+                actions[jsSliderOptions.deprecatedPinSliderTwo] = GpioAction::SUSTAIN_DP_MODE_LS; break;
+            }
+            case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
+                actions[jsSliderOptions.deprecatedPinSliderTwo] = GpioAction::SUSTAIN_DP_MODE_RS; break;
+            }
+            default: break;
+        }
+        jsSliderOptions.deprecatedPinSliderTwo = -1;
+    }
+    else if (isValidPin(PIN_SLIDER_TWO)) {
+        switch (SLIDER_MODE_TWO) {
+            case DpadMode::DPAD_MODE_DIGITAL: {
+                actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_DP; break;
+            }
+            case DpadMode::DPAD_MODE_LEFT_ANALOG: {
+                actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_LS; break;
+            }
+            case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
+                actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_RS; break;
+            }
+            default: break;
+        }
     }
 
     INIT_UNSET_PROPERTY(config.gpioMappings, pin00, actions[0]);

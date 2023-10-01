@@ -45,6 +45,10 @@ private:
     DpadMode dpadState;           // Saved locally for debounce
     DpadMode dDebState;          // Debounce JSlider State
     uint32_t uDebTime;          // Debounce JSlider Time
+
+    uint32_t dpModeMask = 0;
+    uint32_t lsModeMask = 0;
+    uint32_t rsModeMask = 0;
 };
 
 #endif  // _JSlider_H_

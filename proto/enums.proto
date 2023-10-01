@@ -153,6 +153,9 @@ enum GpioAction
     BUTTON_PRESS_DDI_DOWN        = 21;
     BUTTON_PRESS_DDI_LEFT        = 22;
     BUTTON_PRESS_DDI_RIGHT       = 23;
+    SUSTAIN_DP_MODE_DP           = 24;
+    SUSTAIN_DP_MODE_LS           = 25;
+    SUSTAIN_DP_MODE_RS           = 26;
 }
 
 enum GamepadHotkey

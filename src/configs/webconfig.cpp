@@ -1025,12 +1025,8 @@ std::string setAddonOptions()
 	docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-	docToPin(sliderOptions.pinSliderOne, doc, "sliderPinOne");
-	docToPin(sliderOptions.pinSliderTwo, doc, "sliderPinTwo");
-	docToValue(sliderOptions.modeZero, doc, "sliderModeZero");
-	docToValue(sliderOptions.modeOne, doc, "sliderModeOne");
-	docToValue(sliderOptions.modeTwo, doc, "sliderModeTwo");
-	docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
+    docToValue(sliderOptions.defaultMode, doc, "sliderModeZero");
+    docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
 
     PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
 	docToValue(playerNumberOptions.number, doc, "playerNumber");
@@ -1439,12 +1435,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-	writeDoc(doc, "sliderPinOne", cleanPin(sliderOptions.pinSliderOne));
-	writeDoc(doc, "sliderPinTwo", cleanPin(sliderOptions.pinSliderTwo));
-	writeDoc(doc, "sliderModeZero", sliderOptions.modeZero);
-	writeDoc(doc, "sliderModeOne", sliderOptions.modeOne);
-	writeDoc(doc, "sliderModeTwo", sliderOptions.modeTwo);
-	writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
+    writeDoc(doc, "sliderModeZero", sliderOptions.defaultMode);
+    writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
 
     const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
 	writeDoc(doc, "playerNumber", playerNumberOptions.number);
