@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
-import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -60,7 +59,7 @@ const defaultValues = {
 
 const EMPTY_INPUT = {};
 
-const FormContext = ({ setButtonLabels }) => {
+const FormContext = () => {
 	const { values, setValues } = useFormikContext();
 	const { setLoading } = useContext(AppContext);
 
@@ -238,9 +237,6 @@ const MacroComponent = (props) => {
 						checked={useMacroTriggerButton}
 						onChange={(e) => { setFieldValue(`${key}.useMacroTriggerButton`, e.target.checked); }}
 						isInvalid={false} />
-					{/*<Form.Control.Feedback type="invalid">
-														{errors[o] && errors[o]?.action}
-													</Form.Control.Feedback>*/}
 				</div>
 				{useMacroTriggerButton ? <>
 					<div className="col-sm-auto pt-1">{t('input-macro-macro-macro-button-pin-plus')}</div>
