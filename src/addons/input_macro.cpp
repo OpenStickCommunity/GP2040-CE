@@ -22,6 +22,7 @@ bool isProcessing = 0;
 bool trigger = false;
 bool hasInit = false;
 uint32_t heldAt = 0;
+uint32_t macroTriggerDebounceStartTime = 0;
 
 void InputMacro::setup() {
     macroInputPosition = 0;
@@ -87,6 +88,21 @@ void InputMacro::preprocess()
         bootselPressed = (allPins & 1 << macro.macroTriggerPin);
     }
 
+    uint32_t currentMillis = getMillis();
+
+    if (!isProcessing && bootselPressed && macroTriggerDebounceStartTime == 0) {
+        macroTriggerDebounceStartTime = currentMillis;
+        return;
+    }
+
+    if (macroTriggerDebounceStartTime != 0) {
+        if (((currentMillis - macroTriggerDebounceStartTime) > 5)) {
+            macroTriggerDebounceStartTime = 0;
+        } else {
+            return;
+        }
+    }
+
     // light_up(bootselPressed);
     if (!isProcessing) {
         switch (macro.macroType) {
@@ -114,12 +130,10 @@ void InputMacro::preprocess()
                 break;
         }
     }
-
     prevBootselPressed = bootselPressed;
 
     MacroInput& macroInput = macro.macroInputs[macroInputPosition];
     uint32_t macroInputDuration = macroInput.duration + macroInput.waitDuration;
-    uint32_t currentMillis = getMillis();
 
     if (!isProcessing && trigger) {
         isProcessing = 1;
