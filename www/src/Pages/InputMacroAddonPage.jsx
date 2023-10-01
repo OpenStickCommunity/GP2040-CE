@@ -24,15 +24,21 @@ const schema = yup.object().shape({
 		yup.object().shape({
 			macroType: yup.number(),
 			macroLabel: yup.string(),
+			enabled: yup.number(),
+			exclusive: yup.number(),
+			interruptible: yup.number(),
 			macroInputs: yup.array().of(
 				yup.object().shape({
 					buttonMask: yup.number(),
 					duration: yup.number(),
+					waitDuration: yup.number(),
 				}),
 			),
 		}),
 	),
 });
+
+const MACRO_INPUTS_MAX = 50;
 
 const defaultMacroInput = { buttonMask: 0, duration: 16, waitDuration: 0 };
 
@@ -41,6 +47,9 @@ const defaultValues = {
 		{
 			macroType: 1,
 			macroLabel: '',
+			enabled: 1,
+			exclusive: 1,
+			interruptible: 1,
 			macroInputs: [
 				defaultMacroInput,
 			],
@@ -293,7 +302,7 @@ const MacroComponent = (props) => {
 							handleChange={handleChange}
 							setFieldValue={setFieldValue} />
 					))}
-					{macroInputs.length < 50 ? <Button variant="success" className="col px-2" size="sm" onClick={(e) => { setFieldValue(`${key}.macroInputs[${filteredMacroInputs.length}]`, ({...defaultMacroInput})) }}>+</Button> : <></>}
+					{macroInputs.length < MACRO_INPUTS_MAX ? <Button variant="success" className="col px-2" size="sm" onClick={(e) => { setFieldValue(`${key}.macroInputs[${filteredMacroInputs.length}]`, ({...defaultMacroInput})) }}>+</Button> : <></>}
 				</div>
 			</div>
 		</div>

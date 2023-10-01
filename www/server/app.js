@@ -484,6 +484,7 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 			{
 				enabled: true,
 				exclusive: true,
+				interruptible: true,
 				macroType: 1,
 				useMacroTriggerButton: 0,
 				macroTriggerPin: -1,
