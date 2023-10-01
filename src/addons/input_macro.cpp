@@ -4,30 +4,12 @@
 
 #include "hardware/gpio.h"
 
-#define INPUT_HOLD_MS 16
-
-static MacroOptions inputMacroOptions;
-
 bool InputMacro::available() {
     inputMacroOptions = Storage::getInstance().getAddonOptions().macroOptions;
 	return inputMacroOptions.enabled;
 }
 
-int macroPosition = -1;
-int macroInputPosition = 0;
-bool bootselPressed = 0;
-uint32_t macroInputHoldTime = INPUT_HOLD_MS;
-bool prevBootselPressed = 0;
-bool isProcessing = 0;
-bool trigger = false;
-bool hasInit = false;
-uint32_t heldAt = 0;
-uint32_t macroTriggerDebounceStartTime = 0;
-
 void InputMacro::setup() {
-    macroInputPosition = 0;
-    isProcessing = 0;
-    bootselPressed = 0;
     inputMacroOptions = Storage::getInstance().getAddonOptions().macroOptions;
 
 	gpio_init(inputMacroOptions.pin);             // Initialize pin
@@ -59,22 +41,22 @@ void InputMacro::preprocess()
 
             if (macro.useMacroTriggerButton) {
                 if ((allPins & 1 << inputMacroOptions.pin) && (gamepad->state.buttons & macro.macroTriggerButton)) {
-                    bootselPressed = true;
+                    macroInputPressed = true;
                     macroPosition = i; break;
                 }
             } else {
                 if ((allPins & 1 << macro.macroTriggerPin)) {
-                    bootselPressed = true;
+                    macroInputPressed = true;
                     macroPosition = i; break;
                 }
             }
         } 
 
         if (macroPosition != -1) {
-            isProcessing = false;
-            heldAt = 0;
+            isMacroRunning = false;
+            macroStartTime = 0;
         } else {
-            prevBootselPressed = false; 
+            prevMacroInputPressed = false; 
             return;
         }
     }
@@ -82,15 +64,15 @@ void InputMacro::preprocess()
     Macro& macro = inputMacroOptions.macroList[macroPosition];
 
     if (macro.useMacroTriggerButton) {
-        bootselPressed = (allPins & 1 << inputMacroOptions.pin)
+        macroInputPressed = (allPins & 1 << inputMacroOptions.pin)
             && (gamepad->state.buttons & macro.macroTriggerButton);
     } else {
-        bootselPressed = (allPins & 1 << macro.macroTriggerPin);
+        macroInputPressed = (allPins & 1 << macro.macroTriggerPin);
     }
 
     uint32_t currentMillis = getMillis();
 
-    if (!isProcessing && bootselPressed && macroTriggerDebounceStartTime == 0) {
+    if (!isMacroRunning && macroInputPressed && macroTriggerDebounceStartTime == 0) {
         macroTriggerDebounceStartTime = currentMillis;
         return;
     }
@@ -103,18 +85,17 @@ void InputMacro::preprocess()
         }
     }
 
-    // light_up(bootselPressed);
-    if (!isProcessing) {
+    if (!isMacroRunning) {
         switch (macro.macroType) {
             case ON_RELEASE_TOGGLE:
             case ON_RELEASE:
-                trigger = prevBootselPressed && !bootselPressed;
+                isMacroTriggerHeld = prevMacroInputPressed && !macroInputPressed;
                 break;
             case ON_HOLD:
-                trigger = !prevBootselPressed && bootselPressed;
+                isMacroTriggerHeld = !prevMacroInputPressed && macroInputPressed;
                 break;
             case ON_HOLD_REPEAT:
-                trigger = bootselPressed;
+                isMacroTriggerHeld = macroInputPressed;
                 break;
             default:
                 break;
@@ -122,28 +103,26 @@ void InputMacro::preprocess()
     } else {
         switch (macro.macroType) {
             case ON_RELEASE_TOGGLE:
-                if (prevBootselPressed && !bootselPressed)
-                    trigger = false;
+                if (prevMacroInputPressed && !macroInputPressed)
+                    isMacroTriggerHeld = false;
                 break;
             case ON_HOLD_REPEAT:
-                trigger = bootselPressed;
+                isMacroTriggerHeld = macroInputPressed;
                 break;
         }
     }
-    prevBootselPressed = bootselPressed;
+    prevMacroInputPressed = macroInputPressed;
 
     MacroInput& macroInput = macro.macroInputs[macroInputPosition];
     uint32_t macroInputDuration = macroInput.duration + macroInput.waitDuration;
 
-    if (!isProcessing && trigger) {
-        isProcessing = 1;
-        heldAt = currentMillis;
+    if (!isMacroRunning && isMacroTriggerHeld) {
+        isMacroRunning = true;
+        macroStartTime = currentMillis;
         macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_MS : macroInputDuration;
     }
     
-    if (!isProcessing) return;
-
-    if (!trigger && macro.interruptible) {
+    if (!isMacroRunning || (!isMacroTriggerHeld && macro.interruptible)) {
         macroPosition = -1;
         return;
     }
@@ -167,7 +146,7 @@ void InputMacro::preprocess()
         gamepad->state.buttons ^= macro.macroTriggerButton;
     }
 
-    if ((currentMillis - heldAt) <= macroInput.duration) {
+    if ((currentMillis - macroStartTime) <= macroInput.duration) {
         uint32_t buttonMask = macroInput.buttonMask;
         if (buttonMask & GAMEPAD_MASK_DU) {
             gamepad->state.dpad |= GAMEPAD_MASK_UP;
@@ -184,18 +163,19 @@ void InputMacro::preprocess()
         gamepad->state.buttons |= buttonMask;
     }
 
-    if ((currentMillis - heldAt) >= macroInputHoldTime) {
-        heldAt = currentMillis; macroInputPosition++;
+    if ((currentMillis - macroStartTime) >= macroInputHoldTime) {
+        macroStartTime = currentMillis; macroInputPosition++;
         macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_MS : macroInputDuration;
     }
     
-    if (isProcessing && macroInputPosition >= (macro.macroInputs_count)) {
+    if (isMacroRunning && macroInputPosition >= (macro.macroInputs_count)) {
         macroInputPosition = 0;
-        trigger = trigger && (macro.macroType == ON_RELEASE_TOGGLE || macro.macroType == ON_HOLD_REPEAT);
-        isProcessing = trigger;
-        macroPosition = ((macro.macroType == ON_RELEASE_TOGGLE || macro.macroType == ON_HOLD_REPEAT) && trigger) ? macroPosition : -1;
-        if ((macro.macroType == ON_RELEASE_TOGGLE || macro.macroType == ON_HOLD_REPEAT) && !trigger) {
-            heldAt = 0;
+        bool isMacroTypeLoopable = macro.macroType == ON_RELEASE_TOGGLE || macro.macroType == ON_HOLD_REPEAT;
+        isMacroTriggerHeld = isMacroTriggerHeld && isMacroTypeLoopable;
+        isMacroRunning = isMacroTriggerHeld;
+        macroPosition = (isMacroTypeLoopable && isMacroTriggerHeld) ? macroPosition : -1;
+        if (isMacroTypeLoopable && !isMacroTriggerHeld) {
+            macroStartTime = 0;
             macroInputHoldTime = INPUT_HOLD_MS;
         }
     }
