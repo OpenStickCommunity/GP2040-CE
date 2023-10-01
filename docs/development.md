@@ -10,7 +10,36 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 For GP2040-CE development on the Windows platform using the Pico SDK Installer, please skip ahead to the 'Windows Setup (Pico SDK Installer)' section on this page.
 
 <!-- tabs:start -->
+
+### **Windows (Pico SDK)**
+
+### Windows (Pico SDK)
+
+
+1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
+2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
+3. Download and install VSCode.
+4. Download and install [Windows Terminal](https://github.com/microsoft/terminal/releases/tag/v1.17.11461.0).
+5. Open Windows Terminal.
+6. Download the GP2040-CE-main repository by running the following commands in the Windows Terminal. This will download the folder to `C:\Users\user\GP2040-CE`.
+
+    ```console
+    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
+    cd GP2040-CE
+    git submodule update --init
+    ```
+
+   After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search).
+
+7. Open "Pico-Visual Studio Code" via Windows search. This is a shortcut with pre-configured environment variables (this will be explained later).
+8. Navigate to the Extensions window by pressing `Ctrl+Shift+X`.
+9. Install "CMake Tools" by Microsoft.
+10. Open the GP2040-CE folder you downloaded earlier via "File > Open Folder."
+
 ### **Windows (Manual)**
+
+### Windows (Manual)
+
 
 1. Install the latest ARM GNU Toolchain
     - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
@@ -46,29 +75,10 @@ For GP2040-CE development on the Windows platform using the Pico SDK Installer, 
     cd GP2040-CE
     ```
 
-### **Windows (Pico SDK)**
-
-1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
-2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
-3. Download and install VSCode.
-4. Download and install [Windows Terminal](https://github.com/microsoft/terminal/releases/tag/v1.17.11461.0).
-5. Open Windows Terminal.
-6. Download the GP2040-CE-main repository by running the following commands in the Windows Terminal. This will download the folder to `C:\Users\user\GP2040-CE`.
-
-    ```console
-    git clone https://github.com/OpenStickCommunity/GP2040-CE.git
-    cd GP2040-CE
-    git submodule update --init
-    ```
-
-   After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search).
-
-7. Open "Pico-Visual Studio Code" via Windows search. This is a shortcut with pre-configured environment variables (this will be explained later).
-8. Navigate to the Extensions window by pressing `Ctrl+Shift+X`.
-9. Install "CMake Tools" by Microsoft.
-10. Open the GP2040-CE folder you downloaded earlier via "File > Open Folder."
-
 ### **Linux**
+
+### Linux
+
 
 #### Ubuntu
 
@@ -171,28 +181,9 @@ There are a few SDK variables we take advantage of for our builds.
 
 <!-- tabs:start -->
 
-### **Windows (Manual)**
-
-Start in the GP2040-CE folder. **From a Developer Powershell or Developer Command Command Prompt**:
-
-?> A new Powershell or Command Prompt session will be required after setting an environment variable.
-
-1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
-2. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
-    - Default value is `Pico`
-
-3. Create a build directory, configure the build, and execute the build.
-
-    ```console
-    mkdir build
-    cd build
-    cmake -G "NMake Makefiles" ..
-    nmake
-    ```
-
-4. Your UF2 file should be in the build directory.
-
 ### **Windows (Pico SDK)**
+
+### Windows (Pico SDK)
 
 After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search). This shortcut should already have everything configured, **allowing you to skip to step 7**. If you're experiencing compilation issues, consider following the manual steps outlined here.
 
@@ -225,7 +216,32 @@ From inside VSCode:
 4. Click "Build All Projects" in the CMake project outline.
 5. The files should be in a new folder named "build" inside the GP2040-CE folder
 
+### **Windows (Manual)**
+
+### Windows (Manual)
+
+Start in the GP2040-CE folder. **From a Developer Powershell or Developer Command Command Prompt**:
+
+?> A new Powershell or Command Prompt session will be required after setting an environment variable.
+
+1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
+2. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
+    - Default value is `Pico`
+
+3. Create a build directory, configure the build, and execute the build.
+
+    ```console
+    mkdir build
+    cd build
+    cmake -G "NMake Makefiles" ..
+    nmake
+    ```
+
+4. Your UF2 file should be in the build directory.
+
 ### **Linux**
+
+### Linux
 
 Start in the GP2040-CE folder
 

@@ -35,6 +35,7 @@ const BUTTON_LAYOUTS = [
 	{ label: 'Fightboard', value: 10 }, // BUTTON_LAYOUT_FIGHTBOARD_STICK
 	{ label: 'Fightboard Mirrored', value: 11 }, // BUTTON_LAYOUT_FIGHTBOARD_MIRRORED
 	{ label: 'Custom', value: 12 }, // BUTTON_LAYOUT_CUSTOM
+	{ label: 'Open_Core0 WASD', value: 13 }, // BUTTON_LAYOUT_OPENCORE0WASDA
 ];
 
 const BUTTON_LAYOUTS_RIGHT = [
@@ -55,6 +56,8 @@ const BUTTON_LAYOUTS_RIGHT = [
 	{ label: 'Fightboard', value: 14 }, // BUTTON_LAYOUT_FIGHTBOARD
 	{ label: 'Fightboard Mirrored', value: 15 }, // BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED
 	{ label: 'Custom', value: 16 }, // BUTTON_LAYOUT_CUSTOM
+	{ label: 'Keyboard 8', value: 17 }, // BUTTON_LAYOUT_KEYBOARD8B
+	{ label: 'Open_Core0 WASD', value: 18 }, // BUTTON_LAYOUT_OPENCORE0WASDB
 ];
 
 const SPLASH_MODES = [

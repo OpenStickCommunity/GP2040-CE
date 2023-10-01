@@ -109,6 +109,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_FIGHTBOARD_STICK,
         BUTTON_LAYOUT_FIGHTBOARD_MIRRORED,
         BUTTON_LAYOUT_CUSTOMA,
+        BUTTON_LAYOUT_OPENCORE0WASDA,
     };
 
     enum ButtonLayoutRight
@@ -130,6 +131,8 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_FIGHTBOARD,
         BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED,
         BUTTON_LAYOUT_CUSTOMB,
+        BUTTON_LAYOUT_KEYBOARD8B,
+        BUTTON_LAYOUT_OPENCORE0WASDB,
     };
 
     enum SplashMode
@@ -547,6 +550,7 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
         case BUTTON_LAYOUT_FIGHTBOARD_STICK:
         case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
         case BUTTON_LAYOUT_CUSTOMA:
+        case BUTTON_LAYOUT_OPENCORE0WASDA:
             return true;
     }
     return false;
@@ -573,6 +577,8 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_FIGHTBOARD:
         case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
         case BUTTON_LAYOUT_CUSTOMB:
+        case BUTTON_LAYOUT_KEYBOARD8B:
+        case BUTTON_LAYOUT_OPENCORE0WASDB:
             return true;
     }
     return false;
