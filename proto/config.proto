@@ -351,7 +351,7 @@ message SliderOptions
 	optional int32 deprecatedPinSliderTwo = 3;
 	optional DpadMode deprecatedModeOne = 4;
 	optional DpadMode deprecatedModeTwo = 5;
-	optional DpadMode defaultMode = 6;
+	optional DpadMode modeDefault = 6;
 }
 
 message SOCDSliderOptions

@@ -35,7 +35,7 @@ DpadMode JSliderInput::read() {
     if (values & dpModeMask)            return DpadMode::DPAD_MODE_DIGITAL;
     else if (values & lsModeMask)       return DpadMode::DPAD_MODE_LEFT_ANALOG;
     else if (values & rsModeMask)       return DpadMode::DPAD_MODE_RIGHT_ANALOG;
-    return options.defaultMode;
+    return options.modeDefault;
 }
 
 void JSliderInput::debounce()
