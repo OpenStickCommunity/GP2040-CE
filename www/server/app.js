@@ -482,9 +482,9 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 	return res.send({
 		macroList: [
 			{
-				enabled: true,
-				exclusive: true,
-				interruptible: true,
+				enabled: 1,
+				exclusive: 1,
+				interruptible: 1,
 				macroType: 1,
 				useMacroTriggerButton: 0,
 				macroTriggerPin: -1,

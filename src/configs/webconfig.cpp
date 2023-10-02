@@ -1617,14 +1617,14 @@ std::string getMacroAddonOptions()
 	MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
 	JsonArray macroList = doc.createNestedArray("macroList");
 
-	doc["macroPin"] = macroOptions.pin;
-	doc["InputMacroAddonEnabled"] = macroOptions.enabled;
+	writeDoc(doc, "macroPin", macroOptions.pin);
+	writeDoc(doc, "InputMacroAddonEnabled", macroOptions.enabled);
 
 	for (int i = 0; i < macroOptions.macroList_count; i++) {
 		JsonObject macro = macroList.createNestedObject();
-		macro["enabled"] = macroOptions.macroList[i].enabled;
-		macro["exclusive"] = macroOptions.macroList[i].exclusive;
-		macro["interruptible"] = macroOptions.macroList[i].interruptible;
+		macro["enabled"] = macroOptions.macroList[i].enabled ? 1 : 0;
+		macro["exclusive"] = macroOptions.macroList[i].exclusive ? 1 : 0;
+		macro["interruptible"] = macroOptions.macroList[i].interruptible ? 1 : 0;
 		macro["macroType"] = macroOptions.macroList[i].macroType;
 		macro["useMacroTriggerButton"] = macroOptions.macroList[i].useMacroTriggerButton;
 		macro["macroTriggerPin"] = macroOptions.macroList[i].macroTriggerPin;
