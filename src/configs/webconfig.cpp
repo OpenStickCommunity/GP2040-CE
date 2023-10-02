@@ -1626,7 +1626,7 @@ std::string getMacroAddonOptions()
 		macro["exclusive"] = macroOptions.macroList[i].exclusive ? 1 : 0;
 		macro["interruptible"] = macroOptions.macroList[i].interruptible ? 1 : 0;
 		macro["macroType"] = macroOptions.macroList[i].macroType;
-		macro["useMacroTriggerButton"] = macroOptions.macroList[i].useMacroTriggerButton;
+		macro["useMacroTriggerButton"] = macroOptions.macroList[i].useMacroTriggerButton ? 1 : 0;
 		macro["macroTriggerPin"] = macroOptions.macroList[i].macroTriggerPin;
 		macro["macroTriggerButton"] = macroOptions.macroList[i].macroTriggerButton;
 		macro["macroLabel"] = macroOptions.macroList[i].macroLabel;
