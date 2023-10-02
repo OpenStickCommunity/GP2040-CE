@@ -26,6 +26,9 @@ const schema = yup.object().shape({
 			enabled: yup.number(),
 			exclusive: yup.number(),
 			interruptible: yup.number(),
+			useMacroTriggerButton: yup.number(),
+			macroTriggerPin: yup.number().checkUsedPins(),
+			macroTriggerButton: yup.number(),
 			macroInputs: yup.array().of(
 				yup.object().shape({
 					buttonMask: yup.number(),
@@ -35,6 +38,8 @@ const schema = yup.object().shape({
 			),
 		}),
 	),
+	macroPin: yup.number().checkUsedPins(),
+	InputMacroAddonEnabled: yup.number(),
 });
 
 const MACRO_INPUTS_MAX = 50;
@@ -188,7 +193,7 @@ const MacroComponent = (props) => {
 						className="form-select-sm"
 						disabled={disabled}
 						checked={enabled}
-						onChange={(e) => { setFieldValue(`${key}.enabled`, e.target.checked); }}
+						onChange={(e) => { setFieldValue(`${key}.enabled`, e.target.checked ? 1 : 0); }}
 						isInvalid={false} />
 				</div>
 				<div className="col-sm-auto">
@@ -211,7 +216,7 @@ const MacroComponent = (props) => {
 						className="form-select-sm"
 						disabled={disabled}
 						checked={interruptible}
-						onChange={(e) => { setFieldValue(`${key}.interruptible`, e.target.checked); }}
+						onChange={(e) => { setFieldValue(`${key}.interruptible`, e.target.checked ? 1 : 0); }}
 						isInvalid={false} />
 				</div>
 				<div className="col-sm-auto">
@@ -222,7 +227,7 @@ const MacroComponent = (props) => {
 						className="form-select-sm"
 						disabled={disabled}
 						checked={exclusive}
-						onChange={(e) => { setFieldValue(`${key}.exclusive`, e.target.checked); }}
+						onChange={(e) => { setFieldValue(`${key}.exclusive`, e.target.checked ? 1 : 0); }}
 						isInvalid={false} />
 				</div>
 			</div>
@@ -235,7 +240,7 @@ const MacroComponent = (props) => {
 						className="form-select-sm"
 						disabled={disabled || !isMacroPinMapped}
 						checked={useMacroTriggerButton}
-						onChange={(e) => { setFieldValue(`${key}.useMacroTriggerButton`, e.target.checked); }}
+						onChange={(e) => { setFieldValue(`${key}.useMacroTriggerButton`, e.target.checked ? 1 : 0); }}
 						isInvalid={false} />
 				</div>
 				{useMacroTriggerButton ? <>
