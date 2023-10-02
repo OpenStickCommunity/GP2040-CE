@@ -244,7 +244,7 @@ const MacroComponent = (props) => {
 						isInvalid={false} />
 				</div>
 				{useMacroTriggerButton ? <>
-					<div className="col-sm-auto pt-1">{t('input-macro-macro-macro-button-pin-plus')}</div>
+					<div className="col-sm-auto pt-1">{t('InputMacroAddon:input-macro-macro-button-pin-plus')}</div>
 					<div className="col-sm-auto px-0">
 						<ButtonMasksComponent
 							className="col-sm-auto"

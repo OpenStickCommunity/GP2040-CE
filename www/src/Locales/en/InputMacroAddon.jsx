@@ -3,7 +3,7 @@ export default {
 	'input-macro-macro-exclusive': 'Exclusive',
 	'input-macro-macro-interruptible': 'Interruptible',
 	'input-macro-macro-uses-buttons': 'Uses Buttons',
-	'input-macro-macro-macro-button-pin-plus': 'Macro Button Pin + ',
+	'input-macro-macro-button-pin-plus': 'Macro Button Pin + ',
 	'input-macro-header-text': 'Macro Settings',
 	'input-macro-duration-label': 'Duration (in ms)',
 	'input-macro-wait-duration-label': 'Wait Duration (in ms)',
