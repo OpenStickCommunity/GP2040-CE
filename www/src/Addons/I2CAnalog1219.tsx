@@ -1,15 +1,16 @@
-import React from 'react';
+import { AppContext } from '../Contexts/AppContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormCheck, Row } from 'react-bootstrap';
+import { FormCheck, Row, FormLabel } from 'react-bootstrap';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 
 import FormControl from '../Components/FormControl';
-import { I2C_BLOCKS } from '../Data/Addons';
+import { I2C_BLOCKS, PERIPHERAL_DEVICES } from '../Data/Peripherals';
 
-export const i2cScheme = {
+export const i2cAnalogScheme = {
 	I2CAnalog1219InputEnabled: yup.number().label('I2C Analog1219 Input Enabled'),
 	i2cAnalog1219SDAPin: yup
 		.number()
@@ -33,7 +34,7 @@ export const i2cScheme = {
 		.validateNumberWhenValue('I2CAnalog1219InputEnabled'),
 };
 
-export const i2cState = {
+export const i2cAnalogState = {
 	I2CAnalog1219InputEnabled: 0,
 	i2cAnalog1219SDAPin: -1,
 	i2cAnalog1219SCLPin: -1,
@@ -42,41 +43,26 @@ export const i2cState = {
 	i2cAnalog1219Address: 0x40,
 };
 
-const I2c = ({ values, errors, handleChange, handleCheckbox }) => {
+const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
+    const { setLoading, getAvailablePeripherals, getSelectedPeripheral } = useContext(AppContext);
+
+    const handlePeripheralChange = (e) => {
+        let device = getSelectedPeripheral('i2c', e.target.value);
+        values.i2cAnalog1219SDAPin = device.sda;
+        values.i2cAnalog1219SCLPin = device.scl;
+        values.i2cAnalog1219Speed = device.speed;
+        handleChange(e);
+    };
+
 	return (
 		<Section title={t('AddonsConfig:i2c-analog-ads1219-header-text')}>
 			<div
 				id="I2CAnalog1219InputOptions"
-				hidden={!values.I2CAnalog1219InputEnabled}
+				hidden={!(values.I2CAnalog1219InputEnabled && getAvailablePeripherals('i2c'))}
 			>
 				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:i2c-analog-ads1219-sda-pin-label')}
-						name="i2cAnalog1219SDAPin"
-						className="form-control-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.i2cAnalog1219SDAPin}
-						error={errors.i2cAnalog1219SDAPin}
-						isInvalid={errors.i2cAnalog1219SDAPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:i2c-analog-ads1219-scl-pin-label')}
-						name="i2cAnalog1219SCLPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.i2cAnalog1219SCLPin}
-						error={errors.i2cAnalog1219SCLPin}
-						isInvalid={errors.i2cAnalog1219SCLPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
+                    {getAvailablePeripherals('i2c') ?
 					<FormSelect
 						label={t('AddonsConfig:i2c-analog-ads1219-block-label')}
 						name="i2cAnalog1219Block"
@@ -85,27 +71,15 @@ const I2c = ({ values, errors, handleChange, handleCheckbox }) => {
 						value={values.i2cAnalog1219Block}
 						error={errors.i2cAnalog1219Block}
 						isInvalid={errors.i2cAnalog1219Block}
-						onChange={handleChange}
+						onChange={handlePeripheralChange}
 					>
-						{I2C_BLOCKS.map((o, i) => (
+						{getAvailablePeripherals('i2c').map((o, i) => (
 							<option key={`i2cBlock-option-${i}`} value={o.value}>
 								{o.label}
 							</option>
 						))}
 					</FormSelect>
-					<FormControl
-						label={t('AddonsConfig:i2c-analog-ads1219-speed-label')}
-						name="i2cAnalog1219Speed"
-						className="form-control-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.i2cAnalog1219Speed}
-						error={errors.i2cAnalog1219Speed}
-						isInvalid={errors.i2cAnalog1219Speed}
-						onChange={handleChange}
-						min={100000}
-					/>
-				</Row>
-				<Row className="mb-3">
+                    : ''}
 					<FormControl
 						label={t('AddonsConfig:i2c-analog-ads1219-address-label')}
 						name="i2cAnalog1219Address"
@@ -119,20 +93,24 @@ const I2c = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 				</Row>
 			</div>
+            {getAvailablePeripherals('i2c') ?
 			<FormCheck
 				label={t('Common:switch-enabled')}
 				type="switch"
 				id="I2CAnalog1219InputButton"
 				reverse
 				isInvalid={false}
-				checked={Boolean(values.I2CAnalog1219InputEnabled)}
+				checked={Boolean(values.I2CAnalog1219InputEnabled) && getAvailablePeripherals('i2c')}
 				onChange={(e) => {
 					handleCheckbox('I2CAnalog1219InputEnabled', values);
 					handleChange(e);
 				}}
 			/>
+            :
+            <FormLabel>{t('PeripheralMapping:peripheral-toggle-unavailable',{'name':'I2C'})}</FormLabel>
+            }
 		</Section>
 	);
 };
 
-export default I2c;
+export default I2CAnalog1219;

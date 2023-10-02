@@ -12,6 +12,7 @@
 #include "gpaddon.h"
 #include "gamepad.h"
 #include "storagemanager.h"
+#include "peripheralmanager.h"
 #include "WiiExtension.h"
 
 // WiiExtension Module Name

@@ -75,6 +75,37 @@ export const baseProfileOptions = {
 	],
 };
 
+export const basePeripheralMapping = {
+    peripheral: {
+        i2c0: {
+            enabled: 0,
+            sda: -1,
+            scl: -1,
+            speed: 400000,
+        },
+        i2c1: {
+            enabled: 0,
+            sda: -1,
+            scl: -1,
+            speed: 400000,
+        },
+        spi0: {
+            enabled: 0,
+            rx:  -1,
+            cs:  -1,
+            sck: -1,
+            tx:  -1,
+        },
+        spi1: {
+            enabled: 0,
+            rx:  -1,
+            cs:  -1,
+            sck: -1,
+            tx:  -1,
+        }
+    }
+};
+
 export const baseWiiControls = {
     "nunchuk.analogStick.axisType": 1,
     "nunchuk.buttonC": 1,
@@ -156,7 +187,7 @@ async function getDisplayOptions() {
 		const response = await axios.get(`${baseUrl}/api/getDisplayOptions`);
 
 		if (response.data.i2cAddress) {
-			response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
+			response.data.i2cAddress = (response.data.i2cAddress.indexOf('0x') == -1 ? '0x' : '') + response.data.i2cAddress.toString(16);
 		}
 		response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
 		response.data.displaySaverTimeout =
@@ -535,6 +566,35 @@ async function setWiiControls(mappings) {
 		});
 }
 
+async function getPeripheralOptions(setLoading) {
+    setLoading(true);
+    try {
+		const response = await axios.get(`${baseUrl}/api/getPeripheralOptions`);
+		setLoading(false);
+
+		let mappings = { ...basePeripheralMapping, ...response.data };
+		return mappings;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
+}
+
+async function setPeripheralOptions(mappings) {
+    console.dir(mappings);
+
+	return axios
+		.post(`${baseUrl}/api/setPeripheralOptions`, sanitizeRequest(mappings))
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
 async function getFirmwareVersion(setLoading) {
 	setLoading(true);
 
@@ -636,6 +696,8 @@ const WebApi = {
 	setPS4Options,
 	getWiiControls,
 	setWiiControls,
+    getPeripheralOptions,
+    setPeripheralOptions,
 	getSplashImage,
 	setSplashImage,
 	getFirmwareVersion,

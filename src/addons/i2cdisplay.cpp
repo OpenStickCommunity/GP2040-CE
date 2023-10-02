@@ -17,13 +17,12 @@
 
 bool I2CDisplayAddon::available() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-	return options.enabled && 
-		isValidPin(options.i2cSDAPin) && 
-		isValidPin(options.i2cSCLPin);
+	return options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock);
 }
 
 void I2CDisplayAddon::setup() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 
 	obdI2CInit(&obd,
 	    options.size,
@@ -31,11 +30,8 @@ void I2CDisplayAddon::setup() {
 		options.flip,
 		options.invert,
 		DISPLAY_USEWIRE,
-		options.i2cSDAPin,
-		options.i2cSCLPin,
-		options.i2cBlock == 0 ? i2c0 : i2c1,
-		-1,
-		options.i2cSpeed);
+		i2c,
+		-1);
 
 	const int detectedDisplay = initDisplay(0);
 	if (isSH1106(detectedDisplay)) {
@@ -284,17 +280,15 @@ const DisplayOptions& I2CDisplayAddon::getDisplayOptions() {
 
 int I2CDisplayAddon::initDisplay(int typeOverride) {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 	return obdI2CInit(&obd,
 	    typeOverride > 0 ? typeOverride : options.size,
 		options.i2cAddress,
 		options.flip,
 		options.invert,
 		DISPLAY_USEWIRE,
-		options.i2cSDAPin,
-		options.i2cSCLPin,
-		options.i2cBlock == 0 ? i2c0 : i2c1,
-		-1,
-		options.i2cSpeed);
+		i2c,
+		-1);
 }
 
 bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
@@ -321,12 +315,12 @@ bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
 		buffer[0] = 0x80; // one command
 		buffer[1] = 0xE0; // read-modify-write
 		buffer[2] = 0xC0; // one data
-		if (I2CWrite(&obd.bbi2c, obd.oled_addr, buffer, 3) == 0) {
+		if (obd.i2c->write(obd.oled_addr, buffer, 3) == 0) {
 			break;
 		}
 
 		// Read two bytes back, the first byte is a dummy read and the second byte is the byte was actually want.
-		if (I2CRead(&obd.bbi2c, obd.oled_addr, buffer, 2) == 0) {
+		if (obd.i2c->read(obd.oled_addr, buffer, 2) == 0) {
 			break;
 		}
 
@@ -340,7 +334,7 @@ bool I2CDisplayAddon::isSH1106(int detectedDisplay) {
 		buffer[1] = RANDOM_DATA[i]; // data byte
 		buffer[2] = 0x80; // one command
 		buffer[3] = 0xEE; // end read-modify-write
-		if (I2CWrite(&obd.bbi2c, obd.oled_addr, buffer, 4) == 0) {
+		if (obd.i2c->write(obd.oled_addr, buffer, 4) == 0) {
 			break;
 		}
 	}

@@ -129,6 +129,7 @@ src/gp2040aux.cpp
 src/gamepad.cpp
 src/addonmanager.cpp
 src/configmanager.cpp
+src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp
 src/usbhostmanager.cpp
@@ -183,6 +184,7 @@ OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
+PicoPeripherals
 WiiExtension
 SNESpad
 pico_mbedtls

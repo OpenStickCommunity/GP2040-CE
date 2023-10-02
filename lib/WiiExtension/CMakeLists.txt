@@ -8,6 +8,6 @@ add_library(WiiExtension
     extensions/TaikoExtension.cpp
     extensions/TurntableExtension.cpp
 )
-target_link_libraries(WiiExtension PUBLIC pico_stdlib hardware_i2c)
+target_link_libraries(WiiExtension PUBLIC pico_stdlib PicoPeripherals)
 target_include_directories(WiiExtension INTERFACE .)
-target_include_directories(WiiExtension PUBLIC .)
+target_include_directories(WiiExtension PUBLIC . PicoPeripherals)

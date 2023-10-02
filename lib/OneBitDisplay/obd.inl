@@ -596,19 +596,19 @@ static void _I2CWrite(OBDISP *pOBD, unsigned char *pData, int iLen)
 			gpio_put(pOBD->iCSPin, LOW);
 		}
 
-		spi_write_blocking(pOBD->bbi2c.picoSPI, &pData[1], iLen - 1);
+		spi_write_blocking(pOBD->spi->getController(), &pData[1], iLen - 1);
 
 		if (pOBD->type < SHARP_144x168)
 			gpio_put(pOBD->iCSPin, HIGH);
 	}
 	else // must be I2C
 	{
-		if (pOBD->bbi2c.bWire && iLen > 32) // Hardware I2C has write length limits
+		if (pOBD->bWire && iLen > 32) // Hardware I2C has write length limits
 		{
 			iLen--;            // don't count the 0x40 byte the first time through
 			while (iLen >= 31) // max 31 data byes + data introducer
 			{
-				I2CWrite(&pOBD->bbi2c, pOBD->oled_addr, pData, 32);
+				pOBD->i2c->write(pOBD->oled_addr, pData, 32);
 				iLen -= 31;
 				pData += 31;
 				pData[0] = 0x40;
@@ -618,7 +618,7 @@ static void _I2CWrite(OBDISP *pOBD, unsigned char *pData, int iLen)
 		}
 		if (iLen) // if any data remaining
 		{
-			I2CWrite(&pOBD->bbi2c, pOBD->oled_addr, pData, iLen);
+			pOBD->i2c->write(pOBD->oled_addr, pData, iLen);
 		}
 	} // I2C
 } /* _I2CWrite() */
@@ -640,7 +640,7 @@ void obdWriteCommand(OBDISP *pOBD, unsigned char c)
 		gpio_put(pOBD->iCSPin, LOW);
 
 		if (pOBD->iMOSIPin == 0xff)
-			spi_write_blocking(pOBD->bbi2c.picoSPI, &c, 1);
+			spi_write_blocking(pOBD->spi->getController(), &c, 1);
 		else
 			SPI_BitBang(pOBD, &c, 1, pOBD->iMOSIPin, pOBD->iCLKPin);
 
@@ -844,7 +844,7 @@ void obdWriteDataBlock(OBDISP *pOBD, unsigned char *ucBuf, int iLen, int bRender
 			if (pOBD->iMOSIPin != 0xff) // Bit Bang
 				SPI_BitBang(pOBD, ucBuf, iLen, pOBD->iMOSIPin, pOBD->iCLKPin);
 			else
-				spi_write_blocking(pOBD->bbi2c.picoSPI, ucBuf, iLen);
+				spi_write_blocking(pOBD->spi->getController(), ucBuf, iLen);
 
 			gpio_put(pOBD->iCSPin, HIGH);
 		}
@@ -1181,7 +1181,7 @@ int obdSetPixel(OBDISP *pOBD, int x, int y, unsigned char ucColor, int bRender)
 		_I2CWrite(pOBD, ucTemp, 3);
 
 		// read a dummy byte followed by the data byte we want
-		I2CRead(&pOBD->bbi2c, pOBD->oled_addr, ucTemp, 2);
+		pOBD->i2c->read(pOBD->oled_addr, ucTemp, 2);
 		uc = ucOld = ucTemp[1]; // first byte is garbage
 	}
 	else

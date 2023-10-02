@@ -12,6 +12,7 @@ export default {
 	'led-config-label': 'LED Configuration',
 	'links-label': 'Links',
 	'pin-mapping-label': 'Pin Mapping',
+	'peripheral-mapping-label': 'Peripheral Mapping',
 	'profile-settings-label': 'Profile Settings',
 	'reboot-label': 'Reboot',
 	'reboot-modal-body': 'Select a mode to reboot to',

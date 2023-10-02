@@ -230,6 +230,39 @@ app.get('/api/getKeyMappings', (req, res) =>
 	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
 );
 
+app.get('/api/getPeripheralOptions', (req, res) => {
+    return res.send({
+        peripheral: {
+            i2c0: {
+                enabled: 0,
+                sda: -1,
+                scl: -1,
+                speed: 400000,
+            },
+            i2c1: {
+                enabled: 0,
+                sda: -1,
+                scl: -1,
+                speed: 400000,
+            },
+            spi0: {
+                enabled: 0,
+                rx: -1,
+                cs: -1,
+                sck: -1,
+                tx: -1,
+            },
+            spi1: {
+                enabled: 0,
+                rx: -1,
+                cs: -1,
+                sck: -1,
+                tx: -1,
+            }
+        }
+    });
+});
+
 app.get('/api/getWiiControls', (req, res) =>
     res.send({
         "nunchuk.analogStick.x.axisType": 1,
