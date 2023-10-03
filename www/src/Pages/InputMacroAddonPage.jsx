@@ -54,6 +54,9 @@ const defaultValues = {
 			enabled: 1,
 			exclusive: 1,
 			interruptible: 1,
+			useMacroTriggerButton: 0,
+			macroTriggerPin: -1,
+			macroTriggerButton: 0,
 			macroInputs: [
 				defaultMacroInput,
 			],
