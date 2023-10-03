@@ -40,7 +40,9 @@ void InputMacro::preprocess()
             if (macro.useMacroTriggerButton && macro.macroTriggerButton == 0) continue;
 
             if (macro.useMacroTriggerButton) {
-                if ((allPins & 1 << inputMacroOptions.pin) && (gamepad->state.buttons & macro.macroTriggerButton)) {
+                if ((allPins & 1 << inputMacroOptions.pin) &&
+                    ((gamepad->state.buttons & macro.macroTriggerButton) ||
+                    (gamepad->state.dpad & (macro.macroTriggerButton >> 16)))) {
                     macroInputPressed = true;
                     macroPosition = i; break;
                 }
@@ -64,8 +66,9 @@ void InputMacro::preprocess()
     Macro& macro = inputMacroOptions.macroList[macroPosition];
 
     if (macro.useMacroTriggerButton) {
-        macroInputPressed = (allPins & 1 << inputMacroOptions.pin)
-            && (gamepad->state.buttons & macro.macroTriggerButton);
+        macroInputPressed = (allPins & 1 << inputMacroOptions.pin) &&
+                            ((gamepad->state.buttons & macro.macroTriggerButton) ||
+                             (gamepad->state.dpad & (macro.macroTriggerButton >> 16)));
     } else {
         macroInputPressed = (allPins & 1 << macro.macroTriggerPin);
     }
