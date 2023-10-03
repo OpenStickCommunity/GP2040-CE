@@ -109,8 +109,9 @@ void AnalogInput::process()
         x_magnitude_1 = adc_1_x - ANALOG_CENTER;
         y_magnitude_1 = adc_1_y - ANALOG_CENTER;
         magnitude = sqrt((x_magnitude_1 * x_magnitude_1) + (y_magnitude_1 * y_magnitude_1));
-
-        radialDeadzone(adc_1_x, adc_1_y, adc_deadzone, x_magnitude_1, y_magnitude_1, magnitude);
+        if (adc_deadzone) {
+            radialDeadzone(adc_1_x, adc_1_y, adc_deadzone, x_magnitude_1, y_magnitude_1, magnitude);
+        }
     }
 
     if (adc_2_x != ANALOG_CENTER && adc_2_y != ANALOG_CENTER) {
@@ -118,7 +119,9 @@ void AnalogInput::process()
         y_magnitude_2 = adc_2_y - ANALOG_CENTER;
         magnitude = sqrt((x_magnitude_2 * x_magnitude_2) + (y_magnitude_2 * y_magnitude_2));
 
-        radialDeadzone(adc_2_x, adc_2_y, adc_deadzone, x_magnitude_2, y_magnitude_2, magnitude);
+        if (adc_deadzone) {
+            radialDeadzone(adc_2_x, adc_2_y, adc_deadzone, x_magnitude_2, y_magnitude_2, magnitude);
+        }
     }
 
     // Alter coordinates to force perfect circularity
