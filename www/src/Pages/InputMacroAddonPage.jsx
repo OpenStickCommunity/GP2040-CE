@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
@@ -107,6 +107,12 @@ const ButtonMasksComponent = (props) => {
 		</div>)
 }
 
+const tooltip = (
+	<Tooltip id="tooltip">
+	  Double click to delete.
+	</Tooltip>
+  );
+
 const MacroInputComponent = (props) => {
 	const { value: { duration, buttonMask, waitDuration },
 			buttonLabelType,
@@ -172,7 +178,11 @@ const MacroInputComponent = (props) => {
 						onChange={handleChange}
 						min={0} />
 				</div>
-				<Button variant="transparent" className="col-sm-auto" size="sm" onDoubleClick={(e) => { setFieldValue(key, EMPTY_INPUT)}}>&times;</Button>
+				<OverlayTrigger placement="right" overlay={tooltip} delay={{ show: 500, hide: 100 }}>
+					<Button variant="transparent"
+						className="col-sm-auto" size="sm"
+						onDoubleClick={(e) => { setFieldValue(key, EMPTY_INPUT) }}>&times;</Button>
+				</OverlayTrigger>
 			</div>
 		</div>
 	)
