@@ -194,7 +194,7 @@ const MacroComponent = (props) => {
 			errors, handleChange, id: key, translation: t, index, isMacroPinMapped, buttonLabelType,
 			setFieldValue, disabled } = props;
 
-	const filteredMacroInputs = macroInputs.filter(i => i != EMPTY_INPUT);
+	const filteredMacroInputs = macroInputs.filter(i => i !== EMPTY_INPUT);
 	return (
 		<div key={key} className="row mb-2">
 			<div className="row">
@@ -323,12 +323,16 @@ const MacroComponent = (props) => {
 	);
 };
 
+const filterMacroInputs = (values) => {
+	return { ...values, macroList: values.macroList.map(a => { a.macroInputs = a.macroInputs.filter(i => i !== EMPTY_INPUT); return a; }) };
+}
+
 export default function SettingsPage() {
 	const { buttonLabels, setButtonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const saveSettings = async (values) => {
-		const success = await WebApi.setMacroAddonOptions(values);
+		const success = await WebApi.setMacroAddonOptions(filterMacroInputs(values));
 		setSaveMessage(
 			success
 				? t('Common:saved-success-message')
