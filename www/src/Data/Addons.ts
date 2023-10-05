@@ -21,6 +21,12 @@ export const TILT_SOCD_MODES = [
 	{ label: 'Last Win', value: 2 },
 ];
 
+export const ROTATE_SOCD_MODES = [
+	{ label: 'Up Priority', value: 0 },
+	{ label: 'Neutral', value: 1 },
+	{ label: 'Last Win', value: 2 },
+];
+
 export const SOCD_MODES = [
 	{ label: 'Up Priority', value: 0 },
 	{ label: 'Neutral', value: 1 },

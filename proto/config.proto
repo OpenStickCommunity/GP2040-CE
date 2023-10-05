@@ -398,6 +398,34 @@ message TiltOptions
 	optional int32 factorTilt2RightY =  21;
 }
 
+message RotateOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 rotate1Pin = 2;
+	optional int32 rotate2Pin = 3;
+	optional int32 rotateFunctionPin = 4;
+	optional int32 rotateLeftAnalogUpPin = 5;
+	optional int32 rotateLeftAnalogDownPin = 6;
+	optional int32 rotateLeftAnalogLeftPin = 7;
+	optional int32 rotateLeftAnalogRightPin = 8;
+	optional int32 rotateRightAnalogUpPin = 9;
+	optional int32 rotateRightAnalogDownPin = 10;
+	optional int32 rotateRightAnalogLeftPin = 11;
+	optional int32 rotateRightAnalogRightPin = 12;
+
+	optional SOCDMode rotateSOCDMode = 13;
+	
+	optional int32 factorRotate1LeftX =  14;
+	optional int32 factorRotate1LeftY =  15;
+	optional int32 factorRotate1RightX =  16;
+	optional int32 factorRotate1RightY =  17;
+	optional int32 factorRotate2LeftX =  18;
+	optional int32 factorRotate2LeftY =  19;
+	optional int32 factorRotate2RightX =  20;
+	optional int32 factorRotate2RightY =  21;
+}
+
 message BuzzerOptions
 {
 	optional bool enabled = 1;
@@ -609,6 +637,7 @@ message AddonOptions
 	optional KeyboardHostOptions keyboardHostOptions = 17;
 	optional TiltOptions tiltOptions = 18;
 	optional PSPassthroughOptions psPassthroughOptions = 19;
+	optional RotateOptions rotateOptions = 20;
 }
 
 message Config
