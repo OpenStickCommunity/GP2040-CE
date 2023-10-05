@@ -97,10 +97,18 @@ void TiltInput::debounce()
 
 void TiltInput::preprocess()
 {
+	bool sliderLeft;
+	bool sliderRight;
+	
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+	sliderLeft = gamepad->getOptions().dpadMode == DPAD_MODE_LEFT_ANALOG;
+	sliderRight = gamepad->getOptions().dpadMode == DPAD_MODE_RIGHT_ANALOG;
 
 	// Need to invert since we're using pullups
 	tiltLeftState = 0;
+	if ((pinTiltLeftAnalogUp == (uint8_t)-1) && (pinTiltLeftAnalogDown == (uint8_t)-1) && (pinTiltLeftAnalogLeft == (uint8_t)-1) && (pinTiltLeftAnalogRight == (uint8_t)-1) && sliderLeft) {
+		tiltLeftState |= gamepad->state.dpad;
+	}
 	if (pinTiltLeftAnalogUp != (uint8_t)-1) {
 		tiltLeftState |= (!gpio_get(pinTiltLeftAnalogUp) ? gamepad->mapDpadUp->buttonMask : 0);
 	}
@@ -115,6 +123,9 @@ void TiltInput::preprocess()
 	}
 
 	tiltRightState = 0;
+	if ((pinTiltRightAnalogUp == (uint8_t)-1) && (pinTiltRightAnalogDown == (uint8_t)-1) && (pinTiltRightAnalogLeft == (uint8_t)-1) && (pinTiltRightAnalogRight == (uint8_t)-1) && sliderRight) {
+		tiltRightState |= gamepad->state.dpad;
+	}
 	if (pinTiltRightAnalogUp != (uint8_t)-1) {
 		tiltRightState |= (!gpio_get(pinTiltRightAnalogUp) ? gamepad->mapDpadUp->buttonMask : 0);
 	}
@@ -184,6 +195,9 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 
 	if (pinTilt1Pressed && pinTilt2Pressed) {
 		gamepad->state.dpad = dpad2; //Hold tilt1 + tilt2 turn on D-Pad
+		gamepad->state.rx = GAMEPAD_JOYSTICK_MID;
+		gamepad->state.ry = GAMEPAD_JOYSTICK_MID;
+		
 	}
 	else if (pinTilt1Pressed) {
 		if (dpad2 & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
