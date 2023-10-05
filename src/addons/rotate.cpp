@@ -194,6 +194,14 @@ void RotateInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2
 	double rotate1RightCOS = cos(rotate1degreeRight / 180 * M_PI) * stickradius;
 	double rotate1RightDiagSIN = sin(rotate1degreeRight / 180 * M_PI + M_PI/4) * stickradius;
 	double rotate1RightDiagCOS = cos(rotate1degreeRight / 180 * M_PI + M_PI/4) * stickradius;
+	double rotate2LeftSIN = sin(rotate2degreeLeft / 180 * M_PI) * stickradius;
+	double rotate2LeftCOS = cos(rotate2degreeLeft / 180 * M_PI) * stickradius;
+	double rotate2LeftDiagSIN = sin(rotate2degreeLeft / 180 * M_PI - M_PI/4) * stickradius;
+	double rotate2LeftDiagCOS = cos(rotate2degreeLeft / 180 * M_PI - M_PI/4) * stickradius;
+	double rotate2RightSIN = sin(rotate2degreeRight / 180 * M_PI) * stickradius;
+	double rotate2RightCOS = cos(rotate2degreeRight / 180 * M_PI) * stickradius;
+	double rotate2RightDiagSIN = sin(rotate2degreeRight / 180 * M_PI - M_PI/4) * stickradius;
+	double rotate2RightDiagCOS = cos(rotate2degreeRight / 180 * M_PI - M_PI/4) * stickradius;
 
     if (pinRotate1Pressed) {
 		switch (rotateLeftState) {
@@ -236,8 +244,44 @@ void RotateInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2
 		}
     }
     else if (pinRotate2Pressed) {
-        gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * scaledRotate2FactorLeftX;
-        gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * scaledRotate2FactorLeftY;
+		switch (rotateLeftState) {
+		case (GAMEPAD_MASK_UP):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftCOS;
+			break;
+		case (GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftCOS;
+			break;
+		case (GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftSIN;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagCOS;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagCOS;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagSIN;
+			break;
+		default:
+			gamepad->state.lx = dpadToAnalogX(dpad1);
+			gamepad->state.ly = dpadToAnalogY(dpad1);
+			break;
+		}
     }
 	else {
 		gamepad->state.lx = dpadToAnalogX(dpad1);
@@ -251,7 +295,7 @@ void RotateInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2
 		
 	}
 	else if (pinRotate1Pressed) {
-		switch (dpad2 & rotateRightState) {
+		switch (rotateRightState) {
 		case (GAMEPAD_MASK_UP):
 			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate1RightSIN;
 			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate1RightCOS;
@@ -285,19 +329,49 @@ void RotateInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2
 			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate1RightDiagSIN;
 			break;
 		default:
-			gamepad->state.rx = dpadToAnalogX(dpad1);
-			gamepad->state.ry = dpadToAnalogY(dpad1);
+			gamepad->state.rx = dpadToAnalogX(dpad2);
+			gamepad->state.ry = dpadToAnalogY(dpad2);
 			break;
 		}
 	}
 	else if (pinRotate2Pressed) {
-		if (dpad2 & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
-			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * scaledRotate2FactorRightX;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * scaledRotate2FactorRightY;
-		}
-		else {
+		switch (rotateRightState) {
+		case (GAMEPAD_MASK_UP):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightCOS;
+			break;
+		case (GAMEPAD_MASK_RIGHT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightCOS;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightCOS;
+			break;
+		case (GAMEPAD_MASK_LEFT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightCOS;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightSIN;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightDiagSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightDiagCOS;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightDiagCOS;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightDiagSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightDiagSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightDiagCOS;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightDiagCOS;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightDiagSIN;
+			break;
+		default:
 			gamepad->state.rx = dpadToAnalogX(dpad2);
 			gamepad->state.ry = dpadToAnalogY(dpad2);
+			break;
 		}
 	}
 	else {
