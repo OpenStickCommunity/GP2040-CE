@@ -65,7 +65,20 @@ const defaultValues = {
 	InputMacroAddonEnabled: 1,
 };
 
-const EMPTY_INPUT = {};
+const EMPTY_INPUT = null;
+
+const filterMacroInputs = (values) => {
+	let updated = false;
+	const newValues = { ...values, macroList: values.macroList.map(a => {
+		a.macroInputs = a.macroInputs.filter(i => {
+			const keep = i !== EMPTY_INPUT;
+			updated = updated && !keep;
+			return keep;
+		});
+		return a;
+	}) };
+	return updated ? newValues : values;
+}
 
 const FormContext = () => {
 	const { values, setValues } = useFormikContext();
@@ -79,7 +92,9 @@ const FormContext = () => {
 		fetchData();
 	}, [setValues]);
 
-	useEffect(() => {}, [values, setValues]);
+	useEffect(() => {
+		setValues(filterMacroInputs(values));
+	}, [values, setValues]);
 
 	return null;
 };
@@ -309,8 +324,8 @@ const MacroComponent = (props) => {
 					{filteredMacroInputs.map((input, a) => (
 						<MacroInputComponent key={`${key}.macroInputs[${a}]`}
 							id={`${key}.macroInputs[${a}]`}
-							value={macroInputs?.at(a)}
-							errors={errors?.macroInputs?.at(a)}
+							value={filteredMacroInputs?.at(a)}
+							errors={errors?.filteredMacroInputs?.at(a)}
 							translation={t}
 							buttonLabelType={buttonLabelType}
 							handleChange={handleChange}
@@ -322,10 +337,6 @@ const MacroComponent = (props) => {
 		</div>
 	);
 };
-
-const filterMacroInputs = (values) => {
-	return { ...values, macroList: values.macroList.map(a => { a.macroInputs = a.macroInputs.filter(i => i !== EMPTY_INPUT); return a; }) };
-}
 
 export default function SettingsPage() {
 	const { buttonLabels, setButtonLabels } = useContext(AppContext);
