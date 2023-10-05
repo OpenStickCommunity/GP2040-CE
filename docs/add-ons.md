@@ -142,7 +142,11 @@ Additionally, pressing Tilt 1 and Tilt 2 simultaneously allows the Right stick t
 ![GP2040-CE Configuration - Add-Ons Rotate Input](assets/images/gpc-add-ons-rotate.png)
 
 * `Rotate 1 Pin` - The GPIO pin used for the Rotate 1 (Clockwise Rotation).
+* `Rotate 1 Degree for Left Stick`
+* `Rotate 1 Degree for Right Stick`
 * `Rotate 2 Pin` - The GPIO pin used for the Rotate 2 (Counter Clockwise Rotation).
+* `Rotate 2 Degree for Left Stick`
+* `Rotate 2 Degree for Right Stick`
 * `Rotate SOCD Mode` - Choose the default SOCD Cleaning Mode (Neutral, Last Win, Up Priority). 
 
 The Rotate feature in this add-on allows users to control analog stick values on both Left and Right Analogs.
