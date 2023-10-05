@@ -137,6 +137,22 @@ The Right stick shifts down for Tilt 1 and up for Tilt 2 by default.
 
 Additionally, pressing Tilt 1 and Tilt 2 simultaneously allows the Right stick to function as the D-Pad directions.
 
+## Rotate Input
+
+![GP2040-CE Configuration - Add-Ons Rotate Input](assets/images/gpc-add-ons-rotate.png)
+
+* `Rotate 1 Pin` - The GPIO pin used for the Rotate 1 (Clockwise Rotation).
+* `Rotate 2 Pin` - The GPIO pin used for the Rotate 2 (Counter Clockwise Rotation).
+* `Rotate SOCD Mode` - Choose the default SOCD Cleaning Mode (Neutral, Last Win, Up Priority). 
+
+The Rotate feature in this add-on allows users to control analog stick values on both Left and Right Analogs.
+
+Rotate 1 and Rotate 2 buttons, when pressed with directional buttons, adjust the analog values, with Rotate 1 makes your sticks rotate clockwise and Rotate 2 makes them rotate counter clockwise.
+
+The angle can be adjusted in the web configurator. If you set the rotation angle to be 180, you will effectively swap your Up&Down and Left&Right for your sticks.
+
+Additionally, pressing Rotate 1 and Rotate 2 simultaneously allows the Right stick to function as the D-Pad directions.
+
 ## Buzzer Speaker
 
 ![GP2040-CE Configurator - Add-Ons Buzzer](assets/images/gpc-add-ons-buzzer.png)

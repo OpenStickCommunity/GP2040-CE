@@ -404,26 +404,13 @@ message RotateOptions
 
 	optional int32 rotate1Pin = 2;
 	optional int32 rotate2Pin = 3;
-	optional int32 rotateFunctionPin = 4;
-	optional int32 rotateLeftAnalogUpPin = 5;
-	optional int32 rotateLeftAnalogDownPin = 6;
-	optional int32 rotateLeftAnalogLeftPin = 7;
-	optional int32 rotateLeftAnalogRightPin = 8;
-	optional int32 rotateRightAnalogUpPin = 9;
-	optional int32 rotateRightAnalogDownPin = 10;
-	optional int32 rotateRightAnalogLeftPin = 11;
-	optional int32 rotateRightAnalogRightPin = 12;
 
-	optional SOCDMode rotateSOCDMode = 13;
+	optional SOCDMode rotateSOCDMode = 4;
 	
-	optional int32 factorRotate1LeftX =  14;
-	optional int32 factorRotate1LeftY =  15;
-	optional int32 factorRotate1RightX =  16;
-	optional int32 factorRotate1RightY =  17;
-	optional int32 factorRotate2LeftX =  18;
-	optional int32 factorRotate2LeftY =  19;
-	optional int32 factorRotate2RightX =  20;
-	optional int32 factorRotate2RightY =  21;
+	optional int32 factorRotate1Left =  5;
+	optional int32 factorRotate1Right =  6;
+	optional int32 factorRotate2Left =  7;
+	optional int32 factorRotate2Right =  8;
 }
 
 message BuzzerOptions

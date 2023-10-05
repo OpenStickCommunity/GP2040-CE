@@ -1029,23 +1029,11 @@ std::string setAddonOptions()
 
 		RotateOptions& rotateOptions = Storage::getInstance().getAddonOptions().rotateOptions;
 	docToPin(rotateOptions.rotate1Pin, doc, "rotate1Pin");
-	docToValue(rotateOptions.factorRotate1LeftX, doc, "factorRotate1LeftX");
-	docToValue(rotateOptions.factorRotate1LeftY, doc, "factorRotate1LeftY");
-	docToValue(rotateOptions.factorRotate1RightX, doc, "factorRotate1RightX");
-	docToValue(rotateOptions.factorRotate1RightY, doc, "factorRotate1RightY");
+	docToValue(rotateOptions.factorRotate1Left, doc, "factorRotate1Left");
+	docToValue(rotateOptions.factorRotate1Right, doc, "factorRotate1Right");
 	docToPin(rotateOptions.rotate2Pin, doc, "rotate2Pin");
-	docToValue(rotateOptions.factorRotate2LeftX, doc, "factorRotate2LeftX");
-	docToValue(rotateOptions.factorRotate2LeftY, doc, "factorRotate2LeftY");
-	docToValue(rotateOptions.factorRotate2RightX, doc, "factorRotate2RightX");
-	docToValue(rotateOptions.factorRotate2RightY, doc, "factorRotate2RightY");
-	docToPin(rotateOptions.rotateLeftAnalogUpPin, doc, "rotateLeftAnalogUpPin");
-	docToPin(rotateOptions.rotateLeftAnalogDownPin, doc, "rotateLeftAnalogDownPin");
-	docToPin(rotateOptions.rotateLeftAnalogLeftPin, doc, "rotateLeftAnalogLeftPin");
-	docToPin(rotateOptions.rotateLeftAnalogRightPin, doc, "rotateLeftAnalogRightPin");
-	docToPin(rotateOptions.rotateRightAnalogUpPin, doc, "rotateRightAnalogUpPin");
-	docToPin(rotateOptions.rotateRightAnalogDownPin, doc, "rotateRightAnalogDownPin");
-	docToPin(rotateOptions.rotateRightAnalogLeftPin, doc, "rotateRightAnalogLeftPin");
-	docToPin(rotateOptions.rotateRightAnalogRightPin, doc, "rotateRightAnalogRightPin");
+	docToValue(rotateOptions.factorRotate2Left, doc, "factorRotate2Left");
+	docToValue(rotateOptions.factorRotate2Right, doc, "factorRotate2Right");
 	docToValue(rotateOptions.rotateSOCDMode, doc, "rotateSOCDMode");
 	docToValue(rotateOptions.enabled, doc, "RotateInputEnabled");
 
@@ -1471,23 +1459,11 @@ std::string getAddonOptions()
 	
 		const RotateOptions& rotateOptions = Storage::getInstance().getAddonOptions().rotateOptions;
 	writeDoc(doc, "rotate1Pin", cleanPin(rotateOptions.rotate1Pin));
-	writeDoc(doc, "factorRotate1LeftX", rotateOptions.factorRotate1LeftX);
-	writeDoc(doc, "factorRotate1LeftY", rotateOptions.factorRotate1LeftY);
-	writeDoc(doc, "factorRotate1RightX", rotateOptions.factorRotate1RightX);
-	writeDoc(doc, "factorRotate1RightY", rotateOptions.factorRotate1RightY);
+	writeDoc(doc, "factorRotate1Left", rotateOptions.factorRotate1Left);
+	writeDoc(doc, "factorRotate1Right", rotateOptions.factorRotate1Right);
 	writeDoc(doc, "rotate2Pin", cleanPin(rotateOptions.rotate2Pin));
-	writeDoc(doc, "factorRotate2LeftX", rotateOptions.factorRotate2LeftX);
-	writeDoc(doc, "factorRotate2LeftY", rotateOptions.factorRotate2LeftY);
-	writeDoc(doc, "factorRotate2RightX", rotateOptions.factorRotate2RightX);
-	writeDoc(doc, "factorRotate2RightY", rotateOptions.factorRotate2RightY);
-	writeDoc(doc, "rotateLeftAnalogUpPin", cleanPin(rotateOptions.rotateLeftAnalogUpPin));
-	writeDoc(doc, "rotateLeftAnalogDownPin", cleanPin(rotateOptions.rotateLeftAnalogDownPin));
-	writeDoc(doc, "rotateLeftAnalogLeftPin", cleanPin(rotateOptions.rotateLeftAnalogLeftPin));
-	writeDoc(doc, "rotateLeftAnalogRightPin", cleanPin(rotateOptions.rotateLeftAnalogRightPin));
-	writeDoc(doc, "rotateRightAnalogUpPin", cleanPin(rotateOptions.rotateRightAnalogUpPin));
-	writeDoc(doc, "rotateRightAnalogDownPin", cleanPin(rotateOptions.rotateRightAnalogDownPin));
-	writeDoc(doc, "rotateRightAnalogLeftPin", cleanPin(rotateOptions.rotateRightAnalogLeftPin));
-	writeDoc(doc, "rotateRightAnalogRightPin", cleanPin(rotateOptions.rotateRightAnalogRightPin));
+	writeDoc(doc, "factorRotate2Left", rotateOptions.factorRotate2Left);
+	writeDoc(doc, "factorRotate2Right", rotateOptions.factorRotate2Right);
 	writeDoc(doc, "rotateSOCDMode", rotateOptions.rotateSOCDMode);
 	writeDoc(doc, "RotateInputEnabled", rotateOptions.enabled);
 

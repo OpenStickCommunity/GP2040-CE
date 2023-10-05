@@ -13,37 +13,17 @@ void RotateInput::setup() {
 	rotateSOCDMode = options.rotateSOCDMode;
 
 	pinRotate1 = options.rotate1Pin;
-	rotate1FactorLeftX = options.factorRotate1LeftX;
-	rotate1FactorLeftY = options.factorRotate1LeftY;
-	rotate1FactorRightX = options.factorRotate1RightX;
-	rotate1FactorRightY = options.factorRotate1RightY;
+	rotate1FactorLeft = options.factorRotate1Left;
+	rotate1FactorRight = options.factorRotate1Right;
 	pinRotate2 = options.rotate2Pin;
-	rotate2FactorLeftX = options.factorRotate2LeftX;
-	rotate2FactorLeftY = options.factorRotate2LeftY;
-	rotate2FactorRightX = options.factorRotate2RightX;
-	rotate2FactorRightY = options.factorRotate2RightY;
-	pinRotateLeftAnalogDown = options.rotateLeftAnalogDownPin;
-	pinRotateLeftAnalogUp = options.rotateLeftAnalogUpPin;
-	pinRotateLeftAnalogLeft = options.rotateLeftAnalogLeftPin;
-	pinRotateLeftAnalogRight = options.rotateLeftAnalogRightPin;
-	pinRotateRightAnalogDown = options.rotateRightAnalogDownPin;
-	pinRotateRightAnalogUp = options.rotateRightAnalogUpPin;
-	pinRotateRightAnalogLeft = options.rotateRightAnalogLeftPin;
-	pinRotateRightAnalogRight = options.rotateRightAnalogRightPin;
+	rotate2FactorLeft = options.factorRotate2Left;
+	rotate2FactorRight = options.factorRotate2Right;
 
 
 	// Setup Rotate Key
 	uint8_t pinRotate[10] = {
 											pinRotate1,
-											pinRotate2,
-											pinRotateLeftAnalogDown,
-											pinRotateLeftAnalogUp,
-											pinRotateLeftAnalogLeft,
-											pinRotateLeftAnalogRight,
-											pinRotateRightAnalogDown,
-											pinRotateRightAnalogUp,
-											pinRotateRightAnalogLeft,
-											pinRotateRightAnalogRight };
+											pinRotate2 };
 
 	for (int i = 0; i < 10; i++) {
 		if (pinRotate[i] != (uint8_t)-1) {
@@ -107,37 +87,14 @@ void RotateInput::preprocess()
 
 	// Need to invert since we're using pullups
 	rotateLeftState = 0;
-	if ((pinRotateLeftAnalogUp == (uint8_t)-1) && (pinRotateLeftAnalogDown == (uint8_t)-1) && (pinRotateLeftAnalogLeft == (uint8_t)-1) && (pinRotateLeftAnalogRight == (uint8_t)-1) && sliderLeft) {
+	if (sliderLeft) {
 		rotateLeftState |= gamepad->state.dpad;
 	}
-	if (pinRotateLeftAnalogUp != (uint8_t)-1) {
-		rotateLeftState |= (!gpio_get(pinRotateLeftAnalogUp) ? gamepad->mapDpadUp->buttonMask : 0);
-	}
-	if (pinRotateLeftAnalogDown != (uint8_t)-1) {
-		rotateLeftState |= (!gpio_get(pinRotateLeftAnalogDown) ? gamepad->mapDpadDown->buttonMask : 0);
-	}
-	if (pinRotateLeftAnalogLeft != (uint8_t)-1) {
-		rotateLeftState |= (!gpio_get(pinRotateLeftAnalogLeft) ? gamepad->mapDpadLeft->buttonMask : 0);
-	}
-	if (pinRotateLeftAnalogRight != (uint8_t)-1) {
-		rotateLeftState |= (!gpio_get(pinRotateLeftAnalogRight) ? gamepad->mapDpadRight->buttonMask : 0);
-	}
+
 
 	rotateRightState = 0;
-	if ((pinRotateRightAnalogUp == (uint8_t)-1) && (pinRotateRightAnalogDown == (uint8_t)-1) && (pinRotateRightAnalogLeft == (uint8_t)-1) && (pinRotateRightAnalogRight == (uint8_t)-1) && sliderRight) {
+	if (sliderRight) {
 		rotateRightState |= gamepad->state.dpad;
-	}
-	if (pinRotateRightAnalogUp != (uint8_t)-1) {
-		rotateRightState |= (!gpio_get(pinRotateRightAnalogUp) ? gamepad->mapDpadUp->buttonMask : 0);
-	}
-	if (pinRotateRightAnalogDown != (uint8_t)-1) {
-		rotateRightState |= (!gpio_get(pinRotateRightAnalogDown) ? gamepad->mapDpadDown->buttonMask : 0);
-	}
-	if (pinRotateRightAnalogLeft != (uint8_t)-1) {
-		rotateRightState |= (!gpio_get(pinRotateRightAnalogLeft) ? gamepad->mapDpadLeft->buttonMask : 0);
-	}
-	if (pinRotateRightAnalogRight != (uint8_t)-1) {
-		rotateRightState |= (!gpio_get(pinRotateRightAnalogRight) ? gamepad->mapDpadRight->buttonMask : 0);
 	}
 
 	// Debounce our directional pins
@@ -170,21 +127,12 @@ void RotateInput::process()
 void RotateInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
 	bool pinRotate1Pressed = (pinRotate1 != (uint8_t)-1) ? !gpio_get(pinRotate1) : false;
 	bool pinRotate2Pressed = (pinRotate2 != (uint8_t)-1) ? !gpio_get(pinRotate2) : false;
-
-	double scaledRotate1FactorLeftX  = rotate1FactorLeftX  / 100.0;
-	double scaledRotate1FactorLeftY  = rotate1FactorLeftY  / 100.0;
-	double scaledRotate1FactorRightX = rotate1FactorRightX / 100.0;
-	double scaledRotate1FactorRightY = rotate1FactorRightY / 100.0;
-	double scaledRotate2FactorLeftX  = rotate2FactorLeftX  / 100.0;
-	double scaledRotate2FactorLeftY  = rotate2FactorLeftY  / 100.0;
-	double scaledRotate2FactorRightX = rotate2FactorRightX / 100.0;
-	double scaledRotate2FactorRightY = rotate2FactorRightY / 100.0;
 	
 	uint16_t stickradius = GAMEPAD_JOYSTICK_MAX - GAMEPAD_JOYSTICK_MID;
-	double rotate1degreeLeft = rotate1FactorLeftX;
-	double rotate1degreeRight = rotate1FactorRightX;
-	double rotate2degreeLeft = rotate2FactorLeftX;
-	double rotate2degreeRight = rotate2FactorRightX;
+	double rotate1degreeLeft = rotate1FactorLeft;
+	double rotate1degreeRight = rotate1FactorRight;
+	double rotate2degreeLeft = rotate2FactorLeft;
+	double rotate2degreeRight = rotate2FactorRight;
 	
 	double rotate1LeftSIN = sin(rotate1degreeLeft / 180 * M_PI) * stickradius;
 	double rotate1LeftCOS = cos(rotate1degreeLeft / 180 * M_PI) * stickradius;

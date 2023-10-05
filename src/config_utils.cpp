@@ -463,23 +463,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 		// addonOptions.rotateOptions
     INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, enabled, !!ROTATE_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotate1Pin, PIN_ROTATE_1);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate1LeftX, ROTATE1_FACTOR_LEFT_X);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate1LeftY, ROTATE1_FACTOR_LEFT_Y);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate1RightX, ROTATE1_FACTOR_RIGHT_X);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate1RightY, ROTATE1_FACTOR_RIGHT_Y);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate1Left, ROTATE1_FACTOR_LEFT);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate1Right, ROTATE1_FACTOR_RIGHT);
     INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotate2Pin, PIN_ROTATE_2);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate2LeftX, ROTATE2_FACTOR_LEFT_X);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate2LeftY, ROTATE2_FACTOR_LEFT_Y);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate2RightX, ROTATE2_FACTOR_RIGHT_X);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate2RightY, ROTATE2_FACTOR_RIGHT_Y);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateLeftAnalogDownPin, PIN_ROTATE_LEFT_ANALOG_DOWN);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateLeftAnalogUpPin, PIN_ROTATE_LEFT_ANALOG_UP);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateLeftAnalogLeftPin, PIN_ROTATE_LEFT_ANALOG_LEFT);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateLeftAnalogRightPin, PIN_ROTATE_LEFT_ANALOG_RIGHT);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateRightAnalogDownPin, PIN_ROTATE_RIGHT_ANALOG_DOWN);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateRightAnalogUpPin, PIN_ROTATE_RIGHT_ANALOG_UP);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateRightAnalogLeftPin, PIN_ROTATE_RIGHT_ANALOG_LEFT);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateRightAnalogRightPin, PIN_ROTATE_RIGHT_ANALOG_RIGHT);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate2Left, ROTATE2_FACTOR_LEFT);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate2Right, ROTATE2_FACTOR_RIGHT);
     INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateSOCDMode, ROTATE_SOCD_MODE);
 
     // addonOptions.buzzerOptions
