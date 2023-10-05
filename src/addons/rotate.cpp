@@ -2,6 +2,7 @@
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
+#include "math.h"
 
 bool RotateInput::available() {
 	return Storage::getInstance().getAddonOptions().rotateOptions.enabled;
@@ -178,11 +179,61 @@ void RotateInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2
 	double scaledRotate2FactorLeftY  = rotate2FactorLeftY  / 100.0;
 	double scaledRotate2FactorRightX = rotate2FactorRightX / 100.0;
 	double scaledRotate2FactorRightY = rotate2FactorRightY / 100.0;
-
+	
+	uint16_t stickradius = GAMEPAD_JOYSTICK_MAX - GAMEPAD_JOYSTICK_MID;
+	double rotate1degreeLeft = rotate1FactorLeftX;
+	double rotate1degreeRight = rotate1FactorRightX;
+	double rotate2degreeLeft = rotate2FactorLeftX;
+	double rotate2degreeRight = rotate2FactorRightX;
+	
+	double rotate1LeftSIN = sin(rotate1degreeLeft / 180 * M_PI) * stickradius;
+	double rotate1LeftCOS = cos(rotate1degreeLeft / 180 * M_PI) * stickradius;
+	double rotate1LeftDiagSIN = sin(rotate1degreeLeft / 180 * M_PI + M_PI/4) * stickradius;
+	double rotate1LeftDiagCOS = cos(rotate1degreeLeft / 180 * M_PI + M_PI/4) * stickradius;
+	double rotate1RightSIN = sin(rotate1degreeRight / 180 * M_PI) * stickradius;
+	double rotate1RightCOS = cos(rotate1degreeRight / 180 * M_PI) * stickradius;
+	double rotate1RightDiagSIN = sin(rotate1degreeRight / 180 * M_PI + M_PI/4) * stickradius;
+	double rotate1RightDiagCOS = cos(rotate1degreeRight / 180 * M_PI + M_PI/4) * stickradius;
 
     if (pinRotate1Pressed) {
-        gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * scaledRotate1FactorLeftX;
-        gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * scaledRotate1FactorLeftY;
+		switch (rotateLeftState) {
+		case (GAMEPAD_MASK_UP):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate1LeftSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate1LeftCOS;
+			break;
+		case (GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate1LeftCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate1LeftSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate1LeftSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate1LeftCOS;
+			break;
+		case (GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate1LeftCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate1LeftSIN;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate1LeftDiagSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate1LeftDiagCOS;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate1LeftDiagCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate1LeftDiagSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate1LeftDiagSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate1LeftDiagCOS;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate1LeftDiagCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate1LeftDiagSIN;
+			break;
+		default:
+			gamepad->state.lx = dpadToAnalogX(dpad1);
+			gamepad->state.ly = dpadToAnalogY(dpad1);
+			break;
+		}
     }
     else if (pinRotate2Pressed) {
         gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * scaledRotate2FactorLeftX;
@@ -200,13 +251,43 @@ void RotateInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2
 		
 	}
 	else if (pinRotate1Pressed) {
-		if (dpad2 & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
-			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * scaledRotate1FactorRightX;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * scaledRotate1FactorRightY;
-		}
-		else {
-			gamepad->state.rx = dpadToAnalogX(dpad2);
-			gamepad->state.ry = dpadToAnalogY(dpad2);
+		switch (dpad2 & rotateRightState) {
+		case (GAMEPAD_MASK_UP):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate1RightSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate1RightCOS;
+			break;
+		case (GAMEPAD_MASK_RIGHT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate1RightCOS;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate1RightSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate1RightSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate1RightCOS;
+			break;
+		case (GAMEPAD_MASK_LEFT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate1RightCOS;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate1RightSIN;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate1RightDiagSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate1RightDiagCOS;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate1RightDiagCOS;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate1RightDiagSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate1RightDiagSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate1RightDiagCOS;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT):
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate1RightDiagCOS;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate1RightDiagSIN;
+			break;
+		default:
+			gamepad->state.rx = dpadToAnalogX(dpad1);
+			gamepad->state.ry = dpadToAnalogY(dpad1);
+			break;
 		}
 	}
 	else if (pinRotate2Pressed) {
@@ -261,6 +342,55 @@ void RotateInput::SOCDRotateClean(SOCDMode socdMode) {
 		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) {
 			if (lastRotateLR != DIRECTION_NONE)
 				rotateLeftState ^= (lastRotateLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
+			else
+				lastRotateLR = DIRECTION_NONE;
+		}
+		break;
+	case GAMEPAD_MASK_LEFT:
+		lastRotateLR = DIRECTION_LEFT;
+		break;
+	case GAMEPAD_MASK_RIGHT:
+		lastRotateLR = DIRECTION_RIGHT;
+		break;
+	default:
+		lastRotateLR = DIRECTION_NONE;
+		break;
+	}
+	
+	// Rotate SOCD Last-Win Clean
+	switch (rotateRightState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
+	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
+		if (socdMode == SOCD_MODE_UP_PRIORITY) {
+			rotateRightState ^= GAMEPAD_MASK_DOWN; // Remove Down
+			lastRotateUD = DIRECTION_UP; // We're in UP mode
+		}
+		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastRotateUD != DIRECTION_NONE) {
+			rotateRightState ^= (lastRotateUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+		}
+		else {
+			rotateRightState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
+			lastRotateUD = DIRECTION_NONE;
+		}
+		break;
+	case GAMEPAD_MASK_UP:
+		lastRotateUD = DIRECTION_UP;
+		break;
+	case GAMEPAD_MASK_DOWN:
+		lastRotateUD = DIRECTION_DOWN;
+		break;
+	default:
+		lastRotateUD = DIRECTION_NONE;
+		break;
+	}
+	switch (rotateRightState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
+	case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
+		if (socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL) {
+			rotateRightState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT); // Remove L + R to Neutral
+			lastRotateLR = DIRECTION_NONE;
+		}
+		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) {
+			if (lastRotateLR != DIRECTION_NONE)
+				rotateRightState ^= (lastRotateLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
 			else
 				lastRotateLR = DIRECTION_NONE;
 		}
