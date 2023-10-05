@@ -14,7 +14,7 @@ import Section from '../Components/Section';
 import DraggableListGroup from '../Components/DraggableListGroup';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
-import { BUTTONS } from '../Data/Buttons';
+import { getButtonLabels } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 import { hexToInt } from '../Services/Utilities';
 import WebApi from '../Services/WebApi';
@@ -137,19 +137,13 @@ const schema = yup.object().shape({
 });
 
 const getLedButtons = (buttonLabels, map, excludeNulls, swapTpShareLabels) => {
+	const current_buttons = getButtonLabels(buttonLabels, swapTpShareLabels);
 	return orderBy(
-		Object.keys(BUTTONS[buttonLabels])
+		Object.keys(current_buttons)
 			.filter((p) => p !== 'label' && p !== 'value')
 			.filter((p) => (excludeNulls ? map[p] > -1 : true))
 			.map((p) => {
-				let label = BUTTONS[buttonLabels][p];
-				if (p === 'S1' && swapTpShareLabels && buttonLabels === 'ps4') {
-					label = BUTTONS[buttonLabels]['A2'];
-				}
-				if (p === 'A2' && swapTpShareLabels && buttonLabels === 'ps4') {
-					label = BUTTONS[buttonLabels]['S1'];
-				}
-				return { id: p, label: BUTTONS[buttonLabels][p], value: map[p] };
+				return { id: p, label: current_buttons[p], value: map[p] };
 			}),
 		'value',
 	);
@@ -158,7 +152,8 @@ const getLedButtons = (buttonLabels, map, excludeNulls, swapTpShareLabels) => {
 const getLedMap = (buttonLabels, ledButtons, excludeNulls) => {
 	if (!ledButtons) return;
 
-	const map = Object.keys(BUTTONS[buttonLabels])
+	const buttons = getButtonLabels(buttonLabels, false);
+	const map = Object.keys(buttons)
 		.filter((p) => p !== 'label' && p !== 'value')
 		.filter((p) => (excludeNulls ? ledButtons[p].value > -1 : true))
 		.reduce((p, n) => {
