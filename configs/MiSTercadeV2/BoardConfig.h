@@ -20,20 +20,20 @@
 #define PIN_DPAD_DOWN   3           // DOWN
 #define PIN_DPAD_RIGHT  4           // RIGHT
 #define PIN_DPAD_LEFT   5           // LEFT
-#define PIN_BUTTON_B1   6           // B1 / A / B / Cross / 2 / K1
-#define PIN_BUTTON_B2   7           // B2 / B / A / Circle / 3 / K2
-#define PIN_BUTTON_R2   8           // R2 / RT / ZR / R2 / 8 / K3
-#define PIN_BUTTON_L2   9           // L2 / LT / ZL / L2 / 7 / K4
-#define PIN_BUTTON_B3   10          // B3 / X / Y / Square / 1 / P1
-#define PIN_BUTTON_B4   11          // B4 / Y / X / Triangle / 4 / P2
-#define PIN_BUTTON_R1   12          // R1 / RB / R / R1 / 6 / P3
-#define PIN_BUTTON_L1   13          // L1 / LB / L / L1 / 5 / P4
+#define PIN_BUTTON_B1   12           // B1 / A / B / Cross / 2 / K1
+#define PIN_BUTTON_B2   11           // B2 / B / A / Circle / 3 / K2
+#define PIN_BUTTON_R2   7           // R2 / RT / ZR / R2 / 8 / K3
+#define PIN_BUTTON_L2   6           // L2 / LT / ZL / L2 / 7 / K4
+#define PIN_BUTTON_B3   13          // B3 / X / Y / Square / 1 / P1
+#define PIN_BUTTON_B4   10          // B4 / Y / X / Triangle / 4 / P2
+#define PIN_BUTTON_R1   8          // R1 / RB / R / R1 / 6 / P3
+#define PIN_BUTTON_L1   15          // L1 / LB / L / L1 / 5 / P4
 #define PIN_BUTTON_S1   16          // S1 / Back / Minus / Select / 9 / Coin
 #define PIN_BUTTON_S2   17          // S2 / Start / Plus / Start / 10 / Start
-#define PIN_BUTTON_L3   15          // L3 / LS / LS / L3 / 11 / LS ____PAUSE____
-#define PIN_BUTTON_R3   18          // R3 / RS / RS / R3 / 12 / RS ____P2 UP____
-#define PIN_BUTTON_A1   20          // A1 / Guide / Home / PS / 13 / ~
-#define PIN_BUTTON_A2   19          // A2 / ~ / Capture / ~ / 14 / ~ ____P2 DOWN____
+#define PIN_BUTTON_L3   18          // L3 / LS / LS / L3 / 11 / LS ____PAUSE____
+#define PIN_BUTTON_R3   19          // R3 / RS / RS / R3 / 12 / RS ____P2 UP____
+#define PIN_BUTTON_A1   21          // A1 / Guide / Home / PS / 13 / ~
+#define PIN_BUTTON_A2   22          // A2 / ~ / Capture / ~ / 14 / ~ ____P2 DOWN____
 #define PIN_BUTTON_FN   -1          // Hotkey Function
 #define PIN_BUTTON_TURBO 29         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
