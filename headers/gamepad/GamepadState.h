@@ -9,7 +9,7 @@
 #include "GamepadEnums.h"
 #include "enums.pb.h"
 
-#define GAMEPAD_BUTTON_COUNT 14
+#define GAMEPAD_BUTTON_COUNT 15
 
 /*
 	Gamepad button mapping table:
