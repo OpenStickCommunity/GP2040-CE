@@ -467,6 +467,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		BuzzerSpeakerAddonEnabled: 1,
 		BootselButtonAddonEnabled: 1,
 		DualDirectionalInputEnabled: 1,
+		AnalogModInputEnabled: 1,
 		ExtraButtonAddonEnabled: 1,
 		I2CAnalog1219InputEnabled: 1,
 		JSliderInputEnabled: 1,
