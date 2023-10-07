@@ -57,9 +57,14 @@ void InputMacro::preprocess()
 
         if (macroPosition == -1 && newMacroPosition == -1) return;
 
-        if (macroPosition != -1 && newMacroPosition != -1 && newMacroPosition != macroPosition) {
-            reset();
-            return;
+        if (macroPosition != -1 && newMacroPosition != -1) {
+            if (newMacroPosition != macroPosition ||
+                (newMacroPosition == macroPosition &&
+                 inputMacroOptions.macroList[newMacroPosition].macroType == ON_PRESS &&
+                 isMacroRunning)) {
+                    reset();
+                    return;
+                 }
         }
 
         if (newMacroPosition != -1 && !isMacroRunning) {
@@ -136,7 +141,7 @@ void InputMacro::preprocess()
         return;
     }
 
-    if (macro.exclusive) {
+    if (!macro.interruptible && macro.exclusive) {
         gamepad->state.dpad = 0;
         gamepad->state.buttons = 0;
     } else {
@@ -190,4 +195,5 @@ void InputMacro::reset() {
     isMacroRunning = false;
     macroStartTime = 0;
     prevMacroInputPressed = false;
+    macroInputPosition = 0;
 }
