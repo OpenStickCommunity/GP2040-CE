@@ -33,7 +33,7 @@ import PlayerNumber, {
 } from '../Addons/PlayerNumber';
 import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
-import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
+import AnalogMod, { analogmodScheme, analogmodState } from '../Addons/AnalogMod';
 import Rotate, { rotateScheme, rotateState } from '../Addons/Rotate';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
 import Ps4, { ps4Scheme, ps4State } from '../Addons/Ps4';
@@ -58,7 +58,7 @@ const schema = yup.object().shape({
 	...reverseScheme,
 	...i2cScheme,
 	...dualDirectionScheme,
-	...tiltScheme,
+	...analogmodScheme,
 	...rotateScheme,
 	...buzzerScheme,
 	...extraButtonScheme,
@@ -80,7 +80,7 @@ const defaultValues = {
 	...reverseState,
 	...i2cState,
 	...dualDirectionState,
-	...tiltState,
+	...analogmodState,
 	...rotateState,
 	...buzzerState,
 	...extraButtonState,
@@ -103,7 +103,7 @@ const ADDONS = [
 	Reverse,
 	I2c,
 	DualDirection,
-	Tilt,
+	AnalogMod,
 	Rotate,
 	Buzzer,
 	ExtraButton,

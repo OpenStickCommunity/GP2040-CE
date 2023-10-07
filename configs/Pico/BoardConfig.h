@@ -237,7 +237,7 @@
 #define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
 #define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
 
-// TILTAdd-on Options
+// ANALOGMOD Add-on Options
 #define PIN_TILT_1 -1
 #define TILT1_FACTOR_LEFT_X  35  //Default value for the TILT button to function.
 #define TILT1_FACTOR_LEFT_Y  45  //Default value for the TILT button to function.
@@ -248,25 +248,22 @@
 #define TILT2_FACTOR_LEFT_Y  35  //Default value for the TILT button to function.
 #define TILT2_FACTOR_RIGHT_X 30  //Default value for the TILT button to function.
 #define TILT2_FACTOR_RIGHT_Y 30  //Default value for the TILT button to function.
-#define PIN_TILT_FUNCTION -1
-#define PIN_TILT_LEFT_ANALOG_UP -1
-#define PIN_TILT_LEFT_ANALOG_DOWN -1
-#define PIN_TILT_LEFT_ANALOG_LEFT -1
-#define PIN_TILT_LEFT_ANALOG_RIGHT -1
-#define PIN_TILT_RIGHT_ANALOG_UP -1
-#define PIN_TILT_RIGHT_ANALOG_DOWN -1
-#define PIN_TILT_RIGHT_ANALOG_LEFT -1
-#define PIN_TILT_RIGHT_ANALOG_RIGHT -1
-#define TILT_SOCD_MODE SOCD_MODE_NEUTRAL
-
-// ROTATEAdd-on Options
+#define PIN_ANALOGMOD_FUNCTION -1
+#define PIN_ANALOGMOD_LEFT_ANALOG_UP -1
+#define PIN_ANALOGMOD_LEFT_ANALOG_DOWN -1
+#define PIN_ANALOGMOD_LEFT_ANALOG_LEFT -1
+#define PIN_ANALOGMOD_LEFT_ANALOG_RIGHT -1
+#define PIN_ANALOGMOD_RIGHT_ANALOG_UP -1
+#define PIN_ANALOGMOD_RIGHT_ANALOG_DOWN -1
+#define PIN_ANALOGMOD_RIGHT_ANALOG_LEFT -1
+#define PIN_ANALOGMOD_RIGHT_ANALOG_RIGHT -1
+#define ANALOGMOD_SOCD_MODE SOCD_MODE_NEUTRAL
 #define PIN_ROTATE_1 -1
 #define ROTATE1_FACTOR_LEFT  0  //Default value for the ROTATE button to function.
 #define ROTATE1_FACTOR_RIGHT 0  //Default value for the ROTATE button to function.
 #define PIN_ROTATE_2 -1
 #define ROTATE2_FACTOR_LEFT  0  //Default value for the ROTATE button to function.
 #define ROTATE2_FACTOR_RIGHT 0  //Default value for the ROTATE button to function.
-#define ROTATE_SOCD_MODE SOCD_MODE_NEUTRAL
 
 // BOOTSEL Button Add-on setting
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h

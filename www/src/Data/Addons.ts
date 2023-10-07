@@ -15,7 +15,7 @@ export const I2C_BLOCKS = [
 	{ label: 'i2c1', value: 1 },
 ];
 
-export const TILT_SOCD_MODES = [
+export const ANALOGMOD_SOCD_MODES = [
 	{ label: 'Up Priority', value: 0 },
 	{ label: 'Neutral', value: 1 },
 	{ label: 'Last Win', value: 2 },
