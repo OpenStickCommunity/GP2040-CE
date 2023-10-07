@@ -198,8 +198,7 @@ enum MacroType
 {
     option (nanopb_enumopt).long_names = false;
 
-    ON_RELEASE = 1;
-    ON_HOLD = 2;
-    ON_HOLD_REPEAT = 3;
-    ON_RELEASE_TOGGLE = 4;
+    ON_PRESS = 1;
+    ON_HOLD_REPEAT = 2;
+    ON_TOGGLE = 3;
 };

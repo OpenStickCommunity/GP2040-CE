@@ -13,9 +13,8 @@ export default {
 	'input-macro-pin-label': 'Macro Button Pin',
 	'input-macro-macro-label-label': 'Label',
 	'input-macro-type': {
-		release: 'Release',
-		hold: 'Hold',
+		press: 'Press',
 		'hold-repeat': 'Hold Repeat',
-		'release-toggle': 'Release Toggle',
+		'toggle': 'Toggle',
 	},
 };

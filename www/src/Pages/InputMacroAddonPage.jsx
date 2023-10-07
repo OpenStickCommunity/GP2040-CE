@@ -12,10 +12,9 @@ import WebApi from '../Services/WebApi';
 import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
 
 const MACRO_TYPES = [
-	{ label: 'InputMacroAddon:input-macro-type.release', value: 1 },
-	{ label: 'InputMacroAddon:input-macro-type.hold', value: 2 },
-	{ label: 'InputMacroAddon:input-macro-type.hold-repeat', value: 3 },
-	{ label: 'InputMacroAddon:input-macro-type.release-toggle', value: 4 },
+	{ label: 'InputMacroAddon:input-macro-type.press', value: 1 },
+	{ label: 'InputMacroAddon:input-macro-type.hold-repeat', value: 2 },
+	{ label: 'InputMacroAddon:input-macro-type.toggle', value: 3 },
 ];
 
 const schema = yup.object().shape({
