@@ -13,7 +13,7 @@
 #define INPUT_MACRO_PIN -1
 #endif
 
-#define INPUT_HOLD_MS 16
+#define INPUT_HOLD_US 16666
 
 // Input Macro Module Name
 #define InputMacroName "Input Macro"
@@ -29,15 +29,17 @@ private:
 	int macroPosition = -1;
 	bool isMacroRunning = false;
 	bool isMacroTriggerHeld = false;
-	uint32_t macroStartTime = 0;
-	uint32_t macroTriggerDebounceStartTime = 0;
+
+	uint64_t macroStartTime = 0;
+	uint64_t macroTriggerDebounceStartTime = 0;
 
 	int macroInputPosition = 0;
 	bool macroInputPressed = false;
-	uint32_t macroInputHoldTime = INPUT_HOLD_MS;
+	uint32_t macroInputHoldTime = INPUT_HOLD_US;
 	bool prevMacroInputPressed = false;
 
 	MacroOptions inputMacroOptions;
+	void reset();
 };
 
 #endif  // _InputMacro_H_

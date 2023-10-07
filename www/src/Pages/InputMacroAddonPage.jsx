@@ -25,6 +25,7 @@ const schema = yup.object().shape({
 			enabled: yup.number(),
 			exclusive: yup.number(),
 			interruptible: yup.number(),
+			showFrames: yup.number(),
 			useMacroTriggerButton: yup.number(),
 			macroTriggerPin: yup.number().checkUsedPins(),
 			macroTriggerButton: yup.number(),
@@ -53,6 +54,7 @@ const defaultValues = {
 			enabled: 1,
 			exclusive: 1,
 			interruptible: 1,
+			showFrames: 1,
 			useMacroTriggerButton: 0,
 			macroTriggerPin: -1,
 			macroTriggerButton: 0,
@@ -65,6 +67,8 @@ const defaultValues = {
 };
 
 const EMPTY_INPUT = null;
+
+const ONE_FRAME_US = 16666;
 
 const filterMacroInputs = (values) => {
 	let updated = false;
@@ -129,7 +133,7 @@ const tooltip = (
 
 const MacroInputComponent = (props) => {
 	const { value: { duration, buttonMask, waitDuration },
-			buttonLabelType,
+			buttonLabelType, showFrames,
 			errors, handleChange,
 			id: key, translation: t,
 			setFieldValue } = props;
@@ -142,10 +146,11 @@ const MacroInputComponent = (props) => {
 					type="number"
 					placeholder={t('InputMacroAddon:input-macro-duration-label')}
 					name={`${key}.duration`}
-					value={duration}
+					value={duration / (showFrames ? ONE_FRAME_US : 1)}
+					step={showFrames ? 1 : ONE_FRAME_US}
 					error={errors?.duration}
 					isInvalid={errors?.duration}
-					onChange={handleChange}
+					onChange={(e) => { setFieldValue(`${key}.duration`, e.target.value * (showFrames ? ONE_FRAME_US : 1)); }}
 					min={0} />
 			</div>
 			<div key={`${key}.buttons`}
@@ -186,10 +191,11 @@ const MacroInputComponent = (props) => {
 						type="number"
 						placeholder={t('InputMacroAddon:input-macro-wait-duration-label')}
 						name={`${key}.waitDuration`}
-						value={waitDuration}
+						value={waitDuration / (showFrames ? ONE_FRAME_US : 1)}
+						step={showFrames ? 1 : ONE_FRAME_US}
 						error={errors?.waitDuration}
 						isInvalid={errors?.waitDuration}
-						onChange={handleChange}
+						onChange={(e) => { setFieldValue(`${key}.waitDuration`, e.target.value * (showFrames ? ONE_FRAME_US : 1)); }}
 						min={0} />
 				</div>
 				<OverlayTrigger placement="right" overlay={tooltip} delay={{ show: 500, hide: 100 }}>
@@ -203,7 +209,7 @@ const MacroInputComponent = (props) => {
 }
 
 const MacroComponent = (props) => {
-	const { value: { macroLabel, macroType, macroInputs, enabled, exclusive, interruptible,
+	const { value: { macroLabel, macroType, macroInputs, enabled, exclusive, interruptible, showFrames,
 					 useMacroTriggerButton, macroTriggerButton, macroTriggerPin },
 			errors, handleChange, id: key, translation: t, index, isMacroPinMapped, buttonLabelType,
 			setFieldValue, disabled } = props;
@@ -255,6 +261,17 @@ const MacroComponent = (props) => {
 						disabled={disabled}
 						checked={exclusive}
 						onChange={(e) => { setFieldValue(`${key}.exclusive`, e.target.checked ? 1 : 0); }}
+						isInvalid={false} />
+				</div>
+				<div className="col-sm-auto">
+					<Form.Check
+						name={`${key}.showFrames`}
+						label={t('InputMacroAddon:input-macro-macro-show-frames')}
+						type="switch"
+						className="form-select-sm"
+						disabled={disabled}
+						checked={showFrames}
+						onChange={(e) => { setFieldValue(`${key}.showFrames`, e.target.checked ? 1 : 0); }}
 						isInvalid={false} />
 				</div>
 			</div>
@@ -325,6 +342,7 @@ const MacroComponent = (props) => {
 							id={`${key}.macroInputs[${a}]`}
 							value={filteredMacroInputs?.at(a)}
 							errors={errors?.filteredMacroInputs?.at(a)}
+							showFrames={showFrames}
 							translation={t}
 							buttonLabelType={buttonLabelType}
 							handleChange={handleChange}

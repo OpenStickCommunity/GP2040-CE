@@ -78,15 +78,15 @@ void InputMacro::preprocess()
         macroInputPressed = (allPins & 1 << macro.macroTriggerPin);
     }
 
-    uint32_t currentMillis = getMillis();
+    uint64_t currentMicros = getMicro();
 
     if (!isMacroRunning && macroInputPressed && macroTriggerDebounceStartTime == 0) {
-        macroTriggerDebounceStartTime = currentMillis;
+        macroTriggerDebounceStartTime = currentMicros;
         return;
     }
 
     if (macroTriggerDebounceStartTime != 0) {
-        if (((currentMillis - macroTriggerDebounceStartTime) > 5)) {
+        if (((currentMicros - macroTriggerDebounceStartTime) > 500)) {
             macroTriggerDebounceStartTime = 0;
         } else {
             return;
@@ -125,8 +125,8 @@ void InputMacro::preprocess()
 
     if (!isMacroRunning && isMacroTriggerHeld) {
         isMacroRunning = true;
-        macroStartTime = currentMillis;
-        macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_MS : macroInputDuration;
+        macroStartTime = currentMicros;
+        macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
     }
     
     if (!isMacroRunning) return;
@@ -150,7 +150,7 @@ void InputMacro::preprocess()
         }
     }
 
-    if ((currentMillis - macroStartTime) <= macroInput.duration) {
+    if ((currentMicros - macroStartTime) <= macroInput.duration) {
         uint32_t buttonMask = macroInput.buttonMask;
         if (buttonMask & GAMEPAD_MASK_DU) {
             gamepad->state.dpad |= GAMEPAD_MASK_UP;
@@ -167,9 +167,9 @@ void InputMacro::preprocess()
         gamepad->state.buttons |= buttonMask;
     }
 
-    if ((currentMillis - macroStartTime) >= macroInputHoldTime) {
-        macroStartTime = currentMillis; macroInputPosition++;
-        macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_MS : macroInputDuration;
+    if ((currentMicros - macroStartTime) >= macroInputHoldTime) {
+        macroStartTime = currentMicros; macroInputPosition++;
+        macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
     }
     
     if (isMacroRunning && macroInputPosition >= (macro.macroInputs_count)) {
@@ -180,7 +180,7 @@ void InputMacro::preprocess()
         macroPosition = (isMacroTypeLoopable && isMacroTriggerHeld) ? macroPosition : -1;
         if (isMacroTypeLoopable && !isMacroTriggerHeld) {
             macroStartTime = 0;
-            macroInputHoldTime = INPUT_HOLD_MS;
+            macroInputHoldTime = INPUT_HOLD_US;
         }
     }
 }

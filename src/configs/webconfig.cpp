@@ -1591,6 +1591,7 @@ std::string setMacroAddonOptions()
 		macroOptions.macroList[macrosIndex].enabled = macro["enabled"] == true;
 		macroOptions.macroList[macrosIndex].exclusive = macro["exclusive"] == true;
 		macroOptions.macroList[macrosIndex].interruptible = macro["interruptible"] == true;
+		macroOptions.macroList[macrosIndex].showFrames = macro["showFrames"] == true;
 		JsonArray macroInputs = macro["macroInputs"];
 		int macroInputsIndex = 0;
 
@@ -1625,6 +1626,7 @@ std::string getMacroAddonOptions()
 		macro["enabled"] = macroOptions.macroList[i].enabled ? 1 : 0;
 		macro["exclusive"] = macroOptions.macroList[i].exclusive ? 1 : 0;
 		macro["interruptible"] = macroOptions.macroList[i].interruptible ? 1 : 0;
+		macro["showFrames"] = macroOptions.macroList[i].showFrames ? 1 : 0;
 		macro["macroType"] = macroOptions.macroList[i].macroType;
 		macro["useMacroTriggerButton"] = macroOptions.macroList[i].useMacroTriggerButton ? 1 : 0;
 		macro["macroTriggerPin"] = macroOptions.macroList[i].macroTriggerPin;

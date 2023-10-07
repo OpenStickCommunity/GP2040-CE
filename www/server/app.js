@@ -485,12 +485,13 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 				enabled: 1,
 				exclusive: 1,
 				interruptible: 1,
+				showFrames: 1,
 				macroType: 1,
 				useMacroTriggerButton: 0,
 				macroTriggerPin: -1,
 				macroTriggerButton: 0,
 				macroLabel: "Shoryuken",
-				macroInputs: [{ buttonMask: 1 << 19, duration: 100, waitDuration: 0 }, { buttonMask: 1 << 17, duration: 100, waitDuration: 0 }, { buttonMask: 1 << 17 | 1 << 19 | 1 << 3, duration: 100, waitDuration: 0 }]
+				macroInputs: [{ buttonMask: 1 << 19, duration: 16666, waitDuration: 0 }, { buttonMask: 1 << 17, duration: 16666, waitDuration: 0 }, { buttonMask: 1 << 17 | 1 << 19 | 1 << 3, duration: 16666, waitDuration: 0 }]
 			}
 		],
 		macroPin: -1,
