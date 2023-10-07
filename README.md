@@ -38,7 +38,7 @@ Full documentation can be found at <https://gp2040-ce.info>
 * Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches.
 * Dual direction via D-pad + LS/RS.
 * Reversed input via a button.
-* [Turbo and Turbo LED](https://gp2040-ce.info/#/add-ons?id=turbo) with selectable speed
+* [Turbo and Turbo LED](https://gp2040-ce.info/#/add-ons/turbo) with selectable speed
 * Per-button RGB LED support.
 * PWM Player indicator LED support (XInput only).
 * Multiple LED profiles support.
