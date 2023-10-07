@@ -15,7 +15,6 @@
 #include "addons/focus_mode.h"
 #include "addons/dualdirectional.h"
 #include "addons/analogmod.h"
-#include "addons/rotate.h"
 #include "addons/extra_button.h"
 #include "addons/keyboard_host.h"
 #include "addons/i2canalog1219.h"
@@ -80,7 +79,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 	addons.LoadAddon(new AnalogModInput(), CORE0_INPUT);
-	addons.LoadAddon(new RotateInput(), CORE0_INPUT);
 
 
 	const BootAction bootAction = getBootAction();

@@ -14,43 +14,43 @@ export const analogmodScheme = {
 	tilt1Pin: yup
 		.number()
 		.label('Tilt 1 Pin')
-		.validatePinWhenValue('TiltInputEnabled'),	
+		.validatePinWhenValue('AnalogModInputEnabled'),	
 	factorTilt1LeftX: yup
 		.number()
 		.label('Tilt 1 Factor Left X')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	factorTilt1LeftY: yup
 		.number()
 		.label('Tilt 1 Factor Left Y')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	factorTilt1RightX: yup
 		.number()
 		.label('Tilt 1 Factor Right X')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	factorTilt1RightY: yup
 		.number()
 		.label('Tilt 1 Factor Right Y')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	tilt2Pin: yup
 		.number()
 		.label('Tilt 2 Pin')
-		.validatePinWhenValue('TiltInputEnabled'),
+		.validatePinWhenValue('AnalogModInputEnabled'),
 	factorTilt2LeftX: yup
 		.number()
 		.label('Tilt 2 Factor Left X')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	factorTilt2LeftY: yup
 		.number()
 		.label('Tilt 2 Factor Left Y')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	factorTilt2RightX: yup
 		.number()
 		.label('Tilt 2 Factor Right X')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	factorTilt2RightY: yup
 		.number()
 		.label('Tilt 2 Factor Right Y')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	analogmodLeftAnalogUpPin: yup
 		.number()
 		.label('AnalogMod Left Analog Up Pin')
@@ -83,6 +83,30 @@ export const analogmodScheme = {
 		.number()
 		.label('AnalogMod Right Analog Right Pin')
 		.validatePinWhenValue('AnalogModInputEnabled'),
+	rotate1Pin: yup
+		.number()
+		.label('Rotate 1 Pin (Clockwise Rotation)')
+		.validatePinWhenValue('AnalogModInputEnabled'),	
+	factorRotate1Left: yup
+		.number()
+		.label('Rotate 1 Degree for Left Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled'),
+	factorRotate1Right: yup
+		.number()
+		.label('Rotate 1 Degree for Right Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled'),
+	rotate2Pin: yup
+		.number()
+		.label('Rotate 2 Pin (Counter Clockwise Rotation)')
+		.validatePinWhenValue('AnalogModInputEnabled'),
+	factorRotate2Left: yup
+		.number()
+		.label('Rotate 2 Degree for Left Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled'),
+	factorRotate2Right: yup
+		.number()
+		.label('Rotate 2 Degree for Right Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled'),
 	analogmodSOCDMode: yup
 		.number()
 		.label('AnalogMod SOCE Mode')
@@ -109,6 +133,12 @@ export const analogmodState = {
 	analogmodRightAnalogDownPin: -1,
 	analogmodRightAnalogLeftPin: -1,
 	analogmodRightAnalogRightPin: -1,
+	rotate1Pin: -1,
+	factorRotate1Left: 0,
+	factorRotate1Right: 0,
+	rotate2Pin: -1,
+	factorRotate2Left: 0,
+	factorRotate2Right: 0,
 };
 
 const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -122,7 +152,7 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:tilt-1-pin-label')}
 						name="tilt1Pin"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-1 mb-3"
 						value={values.tilt1Pin}
 						error={errors.tilt1Pin}
 						isInvalid={errors.tilt1Pin}
@@ -130,14 +160,12 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={-1}
 						max={29}
 					/>
-				</Row>
-				<Row className="mb-3">
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:tilt-1-factor-left-x-label')}
 						name="factorTilt1LeftX"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-2 mb-3"
 						value={values.factorTilt1LeftX}
 						error={errors.factorTilt1LeftX}
 						isInvalid={errors.factorTilt1LeftX}
@@ -150,7 +178,7 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:tilt-1-factor-left-y-label')}
 						name="factorTilt1LeftY"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-2 mb-3"
 						value={values.factorTilt1LeftY}
 						error={errors.factorTilt1LeftY}
 						isInvalid={errors.factorTilt1LeftY}
@@ -163,7 +191,7 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:tilt-1-factor-right-x-label')}
 						name="factorTilt1RightX"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-2 mb-3"
 						value={values.factorTilt1RightX}
 						error={errors.factorTilt1RightX}
 						isInvalid={errors.factorTilt1RightX}
@@ -176,7 +204,7 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:tilt-1-factor-right-y-label')}
 						name="factorTilt1RightY"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-2 mb-3"
 						value={values.factorTilt1RightY}
 						error={errors.factorTilt1RightY}
 						isInvalid={errors.factorTilt1RightY}
@@ -191,7 +219,7 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:tilt-2-pin-label')}
 						name="tilt2Pin"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-1 mb-3"
 						value={values.tilt2Pin}
 						error={errors.tilt2Pin}
 						isInvalid={errors.tilt2Pin}
@@ -199,14 +227,12 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={-1}
 						max={29}
 					/>
-				</Row>
-				<Row className="mb-3">
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:tilt-2-factor-left-x-label')}
 						name="factorTilt2LeftX"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-2 mb-3"
 						value={values.factorTilt2LeftX}
 						error={errors.factorTilt2LeftX}
 						isInvalid={errors.factorTilt2LeftX}
@@ -219,7 +245,7 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:tilt-2-factor-left-y-label')}
 						name="factorTilt2LeftY"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-2 mb-3"
 						value={values.factorTilt2LeftY}
 						error={errors.factorTilt2LeftY}
 						isInvalid={errors.factorTilt2LeftY}
@@ -232,7 +258,7 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:tilt-2-factor-right-x-label')}
 						name="factorTilt2RightX"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-2 mb-3"
 						value={values.factorTilt2RightX}
 						error={errors.factorTilt2RightX}
 						isInvalid={errors.factorTilt2RightX}
@@ -245,7 +271,7 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						label={t('AddonsConfig:tilt-2-factor-right-y-label')}
 						name="factorTilt2RightY"
 						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
+						groupClassName="col-sm-2 mb-3"
 						value={values.factorTilt2RightY}
 						error={errors.factorTilt2RightY}
 						isInvalid={errors.factorTilt2RightY}
@@ -255,6 +281,106 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 				</Row>
 				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-1-pin-label')}
+						name="rotate1Pin"
+						className="form-select-sm"
+						groupClassName="col-sm-1 mb-3"
+						value={values.rotate1Pin}
+						error={errors.rotate1Pin}
+						isInvalid={errors.rotate1Pin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-1-factor-left-label')}
+						name="factorRotate1Left"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate1Left}
+						error={errors.factorRotate1Left}
+						isInvalid={errors.factorRotate1Left}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-1-factor-right-label')}
+						name="factorRotate1Right"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate1Right}
+						error={errors.factorRotate1Right}
+						isInvalid={errors.factorRotate1Right}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-2-pin-label')}
+						name="rotate2Pin"
+						className="form-select-sm"
+						groupClassName="col-sm-1 mb-3"
+						value={values.rotate2Pin}
+						error={errors.rotate2Pin}
+						isInvalid={errors.rotate2Pin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-2-factor-left-label')}
+						name="factorRotate2Left"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate2Left}
+						error={errors.factorRotate2Left}
+						isInvalid={errors.factorRotate2Left}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-2-factor-right-label')}
+						name="factorRotate2Right"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate2Right}
+						error={errors.factorRotate2Right}
+						isInvalid={errors.factorRotate2Right}
+						onChange={handleChange}
+						min={-1}
+						max={200}
+					/>
+				</Row>
+				<Row className="mb-3">
+					<FormSelect
+						label={t('AddonsConfig:analogmod-socd-mode-label')}
+						name="analogmodSOCDMode"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.analogmodSOCDMode}
+						error={errors.analogmodSOCDMode}
+						isInvalid={errors.analogmodSOCDMode}
+						onChange={handleChange}
+					>
+						{ANALOGMOD_SOCD_MODES.map((o, i) => (
+							<option key={`button-analogmodSOCDMode-option-${i}`} value={o.value}>
+								{o.label}
+							</option>
+						))}
+					</FormSelect>
+				</Row>
+<Row className="mb-3">
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:analogmod-left-analog-up-pin-label')}
@@ -361,24 +487,6 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={-1}
 						max={29}
 					/>
-				</Row>
-				<Row className="mb-3">
-					<FormSelect
-						label={t('AddonsConfig:analogmod-socd-mode-label')}
-						name="analogmodSOCDMode"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodSOCDMode}
-						error={errors.analogmodSOCDMode}
-						isInvalid={errors.analogmodSOCDMode}
-						onChange={handleChange}
-					>
-						{ANALOGMOD_SOCD_MODES.map((o, i) => (
-							<option key={`button-analogmodSOCDMode-option-${i}`} value={o.value}>
-								{o.label}
-							</option>
-						))}
-					</FormSelect>
 				</Row>
 			</div>
 			<FormCheck

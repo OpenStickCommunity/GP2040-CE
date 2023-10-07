@@ -248,7 +248,6 @@
 #define TILT2_FACTOR_LEFT_Y  35  //Default value for the TILT button to function.
 #define TILT2_FACTOR_RIGHT_X 30  //Default value for the TILT button to function.
 #define TILT2_FACTOR_RIGHT_Y 30  //Default value for the TILT button to function.
-#define PIN_ANALOGMOD_FUNCTION -1
 #define PIN_ANALOGMOD_LEFT_ANALOG_UP -1
 #define PIN_ANALOGMOD_LEFT_ANALOG_DOWN -1
 #define PIN_ANALOGMOD_LEFT_ANALOG_LEFT -1

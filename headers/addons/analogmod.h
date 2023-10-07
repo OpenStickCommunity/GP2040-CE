@@ -82,6 +82,30 @@
 #define PIN_ANALOGMOD_RIGHT_ANALOG_RIGHT -1
 #endif
 
+#ifndef PIN_ROTATION_1
+#define PIN_ROTATION_1 -1
+#endif
+
+#ifndef ROTATE1_FACTOR_LEFT
+#define ROTATE1_FACTOR_LEFT -1
+#endif
+
+#ifndef ROTATE1_FACTOR_RIGHT
+#define ROTATE1_FACTOR_RIGHT -1
+#endif
+
+#ifndef PIN_ROTATE_2
+#define PIN_ROTATE_2 -1
+#endif
+
+#ifndef ROTATE2_FACTOR_LEFT
+#define ROTATE2_FACTOR_LEFT -1
+#endif
+
+#ifndef ROTATE2_FACTOR_RIGHT
+#define ROTATE2_FACTOR_RIGHT -1
+#endif
+
 #ifndef ANALOGMOD_SOCD_MODE
 #define ANALOGMOD_SOCD_MODE SOCD_MODE_NEUTRAL
 #endif
@@ -129,6 +153,12 @@ private:
 	uint8_t pinAnalogModRightAnalogUp;
 	uint8_t pinAnalogModRightAnalogLeft;
 	uint8_t pinAnalogModRightAnalogRight;
+	uint8_t pinRotate1;
+	uint8_t rotate1FactorLeft;
+    uint8_t rotate1FactorRight;
+	uint8_t pinRotate2;
+    uint8_t rotate2FactorLeft;
+    uint8_t rotate2FactorRight;
 	SOCDMode analogmodSOCDMode;
 };
 

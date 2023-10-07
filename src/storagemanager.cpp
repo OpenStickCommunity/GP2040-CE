@@ -33,7 +33,6 @@
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
 #include "addons/analogmod.h"
-#include "addons/rotate.h"
 
 #include "config_utils.h"
 

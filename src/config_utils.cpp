@@ -15,7 +15,6 @@
 #include "addons/buzzerspeaker.h"
 #include "addons/dualdirectional.h"
 #include "addons/analogmod.h"
-#include "addons/rotate.h"
 #include "addons/extra_button.h"
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
@@ -458,17 +457,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodRightAnalogUpPin, PIN_ANALOGMOD_RIGHT_ANALOG_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodRightAnalogLeftPin, PIN_ANALOGMOD_RIGHT_ANALOG_LEFT);
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodRightAnalogRightPin, PIN_ANALOGMOD_RIGHT_ANALOG_RIGHT);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodSOCDMode, ANALOGMOD_SOCD_MODE);
-	
-	// addonOptions.rotateOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, enabled, !!ROTATE_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotate1Pin, PIN_ROTATE_1);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate1Left, ROTATE1_FACTOR_LEFT);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate1Right, ROTATE1_FACTOR_RIGHT);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotate2Pin, PIN_ROTATE_2);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate2Left, ROTATE2_FACTOR_LEFT);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, factorRotate2Right, ROTATE2_FACTOR_RIGHT);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotateOptions, rotateSOCDMode, ROTATE_SOCD_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodSOCDMode, ANALOGMOD_SOCD_MODE);	
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, rotate1Pin, PIN_ROTATE_1);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate1Left, ROTATE1_FACTOR_LEFT);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate1Right, ROTATE1_FACTOR_RIGHT);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, rotate2Pin, PIN_ROTATE_2);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate2Left, ROTATE2_FACTOR_LEFT);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate2Right, ROTATE2_FACTOR_RIGHT);
 
     // addonOptions.buzzerOptions
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);

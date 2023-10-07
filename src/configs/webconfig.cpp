@@ -1025,17 +1025,13 @@ std::string setAddonOptions()
 	docToPin(analogmodOptions.analogmodRightAnalogLeftPin, doc, "analogmodRightAnalogLeftPin");
 	docToPin(analogmodOptions.analogmodRightAnalogRightPin, doc, "analogmodRightAnalogRightPin");
 	docToValue(analogmodOptions.analogmodSOCDMode, doc, "analogmodSOCDMode");
+	docToPin(analogmodOptions.rotate1Pin, doc, "rotate1Pin");
+	docToValue(analogmodOptions.factorRotate1Left, doc, "factorRotate1Left");
+	docToValue(analogmodOptions.factorRotate1Right, doc, "factorRotate1Right");
+	docToPin(analogmodOptions.rotate2Pin, doc, "rotate2Pin");
+	docToValue(analogmodOptions.factorRotate2Left, doc, "factorRotate2Left");
+	docToValue(analogmodOptions.factorRotate2Right, doc, "factorRotate2Right");
 	docToValue(analogmodOptions.enabled, doc, "AnalogModInputEnabled");
-
-	RotateOptions& rotateOptions = Storage::getInstance().getAddonOptions().rotateOptions;
-	docToPin(rotateOptions.rotate1Pin, doc, "rotate1Pin");
-	docToValue(rotateOptions.factorRotate1Left, doc, "factorRotate1Left");
-	docToValue(rotateOptions.factorRotate1Right, doc, "factorRotate1Right");
-	docToPin(rotateOptions.rotate2Pin, doc, "rotate2Pin");
-	docToValue(rotateOptions.factorRotate2Left, doc, "factorRotate2Left");
-	docToValue(rotateOptions.factorRotate2Right, doc, "factorRotate2Right");
-	docToValue(rotateOptions.rotateSOCDMode, doc, "rotateSOCDMode");
-	docToValue(rotateOptions.enabled, doc, "RotateInputEnabled");
 
     ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	docToPin(extraButtonOptions.pin, doc, "extraButtonPin");
@@ -1455,17 +1451,13 @@ std::string getAddonOptions()
 	writeDoc(doc, "analogmodRightAnalogLeftPin", cleanPin(analogmodOptions.analogmodRightAnalogLeftPin));
 	writeDoc(doc, "analogmodRightAnalogRightPin", cleanPin(analogmodOptions.analogmodRightAnalogRightPin));
 	writeDoc(doc, "analogmodSOCDMode", analogmodOptions.analogmodSOCDMode);
+	writeDoc(doc, "rotate1Pin", cleanPin(analogmodOptions.rotate1Pin));
+	writeDoc(doc, "factorRotate1Left", analogmodOptions.factorRotate1Left);
+	writeDoc(doc, "factorRotate1Right", analogmodOptions.factorRotate1Right);
+	writeDoc(doc, "rotate2Pin", cleanPin(analogmodOptions.rotate2Pin));
+	writeDoc(doc, "factorRotate2Left", analogmodOptions.factorRotate2Left);
+	writeDoc(doc, "factorRotate2Right", analogmodOptions.factorRotate2Right);
 	writeDoc(doc, "AnalogModInputEnabled", analogmodOptions.enabled);
-	
-	const RotateOptions& rotateOptions = Storage::getInstance().getAddonOptions().rotateOptions;
-	writeDoc(doc, "rotate1Pin", cleanPin(rotateOptions.rotate1Pin));
-	writeDoc(doc, "factorRotate1Left", rotateOptions.factorRotate1Left);
-	writeDoc(doc, "factorRotate1Right", rotateOptions.factorRotate1Right);
-	writeDoc(doc, "rotate2Pin", cleanPin(rotateOptions.rotate2Pin));
-	writeDoc(doc, "factorRotate2Left", rotateOptions.factorRotate2Left);
-	writeDoc(doc, "factorRotate2Right", rotateOptions.factorRotate2Right);
-	writeDoc(doc, "rotateSOCDMode", rotateOptions.rotateSOCDMode);
-	writeDoc(doc, "RotateInputEnabled", rotateOptions.enabled);
 
     const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
 	writeDoc(doc, "extraButtonPin", cleanPin(extraButtonOptions.pin));
