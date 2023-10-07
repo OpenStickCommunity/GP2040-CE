@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://gp2040-ce.info">
-    <img alt="GP2040-CE" src="https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/docs/assets/images/gp2040-ce-logo.png">
+    <img alt="GP2040-CE" src="https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/docs/assets/images/gp2040-ce-logo.png" />
   </a>
 </p>
 
@@ -9,11 +9,11 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/license/OpenStickCommunity/GP2040-CE">
-  <img src="https://img.shields.io/github/actions/workflow/status/OpenStickCommunity/GP2040-CE/cmake.yml">
-  <br>
-  <img src="https://img.shields.io/badge/inputlag.science-0.86%20ms-blue">
-  <img src="https://img.shields.io/badge/MiSTer%20latency-0.765%20ms-blue">
+  <img src="https://img.shields.io/github/license/OpenStickCommunity/GP2040-CE" />
+  <img src="https://img.shields.io/github/actions/workflow/status/OpenStickCommunity/GP2040-CE/cmake.yml" />
+  <br />
+  <img src="https://img.shields.io/badge/inputlag.science-0.86%20ms-blue" />
+  <img src="https://img.shields.io/badge/MiSTer%20latency-0.765%20ms-blue" />
 </p>
 
 <p>
