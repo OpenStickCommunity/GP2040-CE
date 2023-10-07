@@ -140,21 +140,22 @@ const MacroInputComponent = (props) => {
 
 	return (
 		<div key={key} className="row">
-			<div className="col-sm-1">
+			<div className="col-sm-1 mb-2">
 				<Form.Control
 					size="sm"
 					type="number"
 					placeholder={t('InputMacroAddon:input-macro-duration-label')}
 					name={`${key}.duration`}
-					value={duration / (showFrames ? ONE_FRAME_US : 1)}
-					step={showFrames ? 1 : ONE_FRAME_US}
+					value={duration / (showFrames ? ONE_FRAME_US : 1000)}
+					step="any"
 					error={errors?.duration}
 					isInvalid={errors?.duration}
-					onChange={(e) => { setFieldValue(`${key}.duration`, e.target.value * (showFrames ? ONE_FRAME_US : 1)); }}
+					onChange={(e) => { setFieldValue(`${key}.duration`, e.target.value * (showFrames ? ONE_FRAME_US : 1000)); }}
 					min={0} />
 			</div>
+			<span className="col-sm-auto ps-0">{t(showFrames ? 'InputMacroAddon:input-macro-time-label-frames' : 'InputMacroAddon:input-macro-time-label-ms')}</span>
 			<div key={`${key}.buttons`}
-				 className="col-sm-11 row mb-2">
+				 className="col-sm-10 row mb-2">
 				{BUTTON_MASKS.map((mask, i1) =>
 					buttonMask & mask.value ? (
 						<ButtonMasksComponent
@@ -167,9 +168,7 @@ const MacroInputComponent = (props) => {
 							isInvalid={errors?.buttonMask}
 							translation={t}
 							buttonLabelType={buttonLabelType} />
-					) : (
-						<></>
-					),
+					) : (<></>),
 				)}
 				<div key={`${key}.buttonMask[placeholder]`}
 					className="px-1 col-sm-auto">
@@ -191,13 +190,14 @@ const MacroInputComponent = (props) => {
 						type="number"
 						placeholder={t('InputMacroAddon:input-macro-wait-duration-label')}
 						name={`${key}.waitDuration`}
-						value={waitDuration / (showFrames ? ONE_FRAME_US : 1)}
-						step={showFrames ? 1 : ONE_FRAME_US}
+						value={waitDuration / (showFrames ? ONE_FRAME_US : 1000)}
+						step="any"
 						error={errors?.waitDuration}
 						isInvalid={errors?.waitDuration}
-						onChange={(e) => { setFieldValue(`${key}.waitDuration`, e.target.value * (showFrames ? ONE_FRAME_US : 1)); }}
+						onChange={(e) => { setFieldValue(`${key}.waitDuration`, e.target.value * (showFrames ? ONE_FRAME_US : 1000)); }}
 						min={0} />
 				</div>
+				<span className="col-sm-auto ps-0">{t(showFrames ? 'InputMacroAddon:input-macro-time-label-frames' : 'InputMacroAddon:input-macro-time-label-ms')}</span>
 				<OverlayTrigger placement="right" overlay={tooltip} delay={{ show: 500, hide: 100 }}>
 					<Button variant="transparent"
 						className="col-sm-auto" size="sm"
@@ -258,7 +258,7 @@ const MacroComponent = (props) => {
 						label={t('InputMacroAddon:input-macro-macro-exclusive')}
 						type="switch"
 						className="form-select-sm"
-						disabled={disabled}
+						disabled={disabled || interruptible}
 						checked={exclusive}
 						onChange={(e) => { setFieldValue(`${key}.exclusive`, e.target.checked ? 1 : 0); }}
 						isInvalid={false} />
