@@ -44,7 +44,7 @@ const schema = yup.object().shape({
 
 const MACRO_INPUTS_MAX = 50;
 
-const defaultMacroInput = { buttonMask: 0, duration: 16, waitDuration: 0 };
+const defaultMacroInput = { buttonMask: 0, duration: 16666, waitDuration: 0 };
 
 const defaultValues = {
 	macroList: Array(BUTTON_MASKS.length).fill(
