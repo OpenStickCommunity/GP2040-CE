@@ -174,7 +174,9 @@ void InputMacro::preprocess()
 
     if ((currentMicros - macroStartTime) >= macroInputHoldTime) {
         macroStartTime = currentMicros; macroInputPosition++;
-        macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
+        MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
+        uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
+        macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
     }
     
     if (isMacroRunning && macroInputPosition >= (macro.macroInputs_count)) {
