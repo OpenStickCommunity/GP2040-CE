@@ -23,10 +23,6 @@ const sidebars = {
       id: 'home',
     },
     {
-      type: 'doc',
-      id: 'download'
-    },
-    {
       type: 'category',
       label: 'General',
       items: [ 
@@ -51,6 +47,7 @@ const sidebars = {
       label: 'Web Configurator',
       items: [ 
         'web-configurator',
+        'macros',
         {
           type: 'category',
           label: 'Add-Ons',
@@ -78,7 +75,7 @@ const sidebars = {
         'templates',
       ]
     },
-  ]
+  ],
 };
 
 module.exports = sidebars;
