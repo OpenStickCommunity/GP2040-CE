@@ -31,6 +31,7 @@
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/input_macro.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -541,6 +542,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, enabled, PSPASSTHROUGH_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, pinDplus, PSPASSTHROUGH_PIN_DPLUS);
     INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, pin5V, PSPASSTHROUGH_PIN_5V);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, !!INPUT_MACRO_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, pin, INPUT_MACRO_PIN);
+    config.addonOptions.macroOptions.macroList_count = 6;
 }
 
 
