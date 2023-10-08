@@ -91,8 +91,20 @@ const config = {
 					{
 						type: 'docSidebar',
 						position: 'left',
+						sidebarId: 'webConfigSidebar',
+						label: 'Web Configurator',
+					},
+					{
+						type: 'docSidebar',
+						position: 'left',
 						sidebarId: 'devSidebar',
 						label: 'Development',
+					},
+					{
+						type: 'doc',
+						position: 'left',
+						docId: 'downloads/download-page',
+						label: 'Downloads',
 					},
 					{
 						href: 'https://discord.gg/k2pxhke7q8',
