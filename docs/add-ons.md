@@ -5,6 +5,7 @@ This section is for custom add-ons that can be enabled to expand the functionali
 ## Available Add-ons
 
 - [Analog](add-ons/analog.md)
+- [Analog Modification Input](add-ons/analogmod.md)
 - [BOOTSEL Button Configuration](add-ons/bootsel-button.md)
 - [Buzzer Speaker](add-ons/buzzer-speaker.md)
 - [Dual Directional Input](add-ons/dual-direction-input.md)
