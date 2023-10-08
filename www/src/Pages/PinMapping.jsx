@@ -6,7 +6,7 @@ import Section from '../Components/Section';
 import CaptureButton from '../Components/CaptureButton';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
 import boards from '../Data/Boards.json';
-import { BUTTONS } from '../Data/Buttons';
+import { getButtonLabels} from '../Data/Buttons';
 import './PinMappings.scss';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -30,8 +30,9 @@ export default function PinMappingPage() {
 	const [isCapturingPinsInProgress, setIsCapturingPinsInProgress] = useState(false);
 	const controller = useRef();
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels)
 	const { setLoading } = useContext(AppContext);
-	const buttonNames = Object.keys(BUTTONS[buttonLabelType])?.filter((p) => p !== 'label' && p !== 'value');
+	const buttonNames = Object.keys(CURRENT_BUTTONS)?.filter((p) => p !== 'label' && p !== 'value');
 
 	const { t } = useTranslation('');
 
@@ -135,7 +136,7 @@ export default function PinMappingPage() {
 			return (
 				<span key="required" className="error-message">
 					{t('PinMapping:errors.required', {
-						button: BUTTONS[buttonLabelType][button],
+						button: CURRENT_BUTTONS[button],
 					})}
 				</span>
 			);
@@ -143,7 +144,7 @@ export default function PinMappingPage() {
 			const conflictedMappings = Object.keys(buttonMappings)
 				.filter((b) => b !== button)
 				.filter((b) => buttonMappings[b].pin === buttonMappings[button].pin)
-				.map((b) => BUTTONS[buttonLabelType][b]);
+				.map((b) => CURRENT_BUTTONS[b]);
 
 			return (
 				<span key="conflict" className="error-message">
@@ -223,28 +224,14 @@ export default function PinMappingPage() {
 					<thead className="table">
 						<tr>
 							<th className="table-header-button-label">
-								{BUTTONS[buttonLabelType].label}
+								{CURRENT_BUTTONS.label}
 							</th>
 							<th>{t('PinMapping:pin-header-label')}</th>
 						</tr>
 					</thead>
 					<tbody>
 						{buttonNames.map((button, i) => {
-								let label = BUTTONS[buttonLabelType][button];
-								if (
-									button === 'S1' &&
-									swapTpShareLabels &&
-									buttonLabelType === 'ps4'
-								) {
-									label = BUTTONS[buttonLabelType]['A2'];
-								}
-								if (
-									button === 'A2' &&
-									swapTpShareLabels &&
-									buttonLabelType === 'ps4'
-								) {
-									label = BUTTONS[buttonLabelType]['S1'];
-								}
+								let label = CURRENT_BUTTONS[button];
 								return (
 									<tr
 										key={`button-map-${i}`}

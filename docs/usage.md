@@ -83,4 +83,4 @@ A number of hotkeys are enabled by default and if you are encountering issues wi
 
 ## Add-Ons and Additional Features
 
-There are a number of add-ons that expand the functionality of GP2040-CE, such as [analog stick emulation](add-ons#analog) and [turbo functions](add-ons#turbo). Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to [Add-Ons page](add-ons) for more information on the individual add-ons.
+There are a number of add-ons that expand the functionality of GP2040-CE, such as [analog stick emulation](add-ons/analog) and [turbo functions](add-ons/turbo). Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to [Add-Ons page](add-ons) for more information on the individual add-ons.

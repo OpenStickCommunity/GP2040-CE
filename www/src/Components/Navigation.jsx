@@ -97,6 +97,9 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} exact="true" to="/add-ons">
 							{t('Navigation:add-ons-label')}
 						</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} exact="true" to="/macro">
+							{t('Navigation:macro-label')}
+						</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact="true" to="/backup">
 							{t('Navigation:backup-label')}
 						</NavDropdown.Item>

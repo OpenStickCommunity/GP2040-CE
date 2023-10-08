@@ -18,6 +18,7 @@ import CustomThemePage from './Pages/CustomThemePage';
 import AddonsConfigPage from './Pages/AddonsConfigPage';
 import BackupPage from './Pages/BackupPage';
 import PlaygroundPage from './Pages/PlaygroundPage';
+import InputMacroAddonPage from './Pages/InputMacroAddonPage';
 
 import { loadButtonLabels } from './Services/Storage';
 import './App.scss';
@@ -42,6 +43,7 @@ const App = () => {
 						<Route path="/add-ons" element={<AddonsConfigPage />} />
 						<Route path="/backup" element={<BackupPage />} />
 						<Route path="/playground" element={<PlaygroundPage />} />
+						<Route path="/macro" element={<InputMacroAddonPage />} />
 					</Routes>
 				</div>
 			</Router>

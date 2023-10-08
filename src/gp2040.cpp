@@ -24,6 +24,7 @@
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
+#include "addons/input_macro.h"
 #include "addons/snes_input.h"
 
 // Pico includes
@@ -79,6 +80,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
+	addons.LoadAddon(new InputMacro(), CORE0_INPUT);
 
 
 	const BootAction bootAction = getBootAction();

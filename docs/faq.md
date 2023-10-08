@@ -14,13 +14,13 @@ This will depend on the platform you will be playing on:
 
 ### Will GP2040-CE natively support PS5, Xbox One, or Xbox Series consoles?
 
-These consoles implement security measures that prevent unauthorized accessories from being used. The process of cracking or bypassing that security may not be legal everywhere. These consoles could be supported in the future if a user-friendly and completely legal implementation method is found, such as the implementation of [PS4 Mode](add-ons.md#ps4-mode).
+These consoles implement security measures that prevent unauthorized accessories from being used. The process of cracking or bypassing that security may not be legal everywhere. These consoles could be supported in the future if a user-friendly and completely legal implementation method is found, such as the implementation of [PS4 Mode](add-ons/ps4-mode).
 
 ### Can I use multiple controllers with GP2040-CE on the same system?
 
 Yes! Each GP2040-CE board is treated as a separate controller. Be sure to only run the embedded web configurator for each controller one at a time.
 
-If you're installing boards with GP2040-CE in an arcade cabinet, check out the [Player Number add-on](add-ons.md#player-number-x-input-only) to force each board to a specific player number.
+If you're installing boards with GP2040-CE in an arcade cabinet, check out the [Player Number add-on](add-ons/player-number.md) to force each board to a specific player number.
 
 ### Does GP2040-CE really have less than 1 ms of input latency?
 
