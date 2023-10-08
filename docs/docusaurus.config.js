@@ -52,7 +52,16 @@ const config = {
 			}),
 		],
 	],
-
+	themes: [
+		[
+			'@easyops-cn/docusaurus-search-local',
+			{
+				hashed: true,
+				highlightSearchTermsOnTargetPage: true,
+				docsRouteBasePath: '/',
+			},
+		],
+	],
 	themeConfig:
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({
