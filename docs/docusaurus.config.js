@@ -56,6 +56,14 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      announcementBar: {
+        id: 'new_release',
+        content:
+          'New Version Available! To get the v0.7.4 update, go to <a href="https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/v0.7.4">GP2040-CE Releases<a/>',
+        backgroundColor: '#ec008c',
+        textColor: '#FFFFFF',
+        isCloseable: true,
+      },
       // Replace with your project's social card
       // image: 'img/social-card.jpg',
       navbar: {
@@ -65,6 +73,18 @@ const config = {
           src: 'img/gp2040-ce-logo.svg',
         },
         items: [
+          {
+            type: 'docSidebar',
+            position: 'left',
+            sidebarId: 'docSidebar',
+            label: 'Docs',
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
+            sidebarId: 'devSidebar',
+            label: 'Development',
+          },
           {
             href: 'https://discord.gg/k2pxhke7q8',
             label: 'Discord',
