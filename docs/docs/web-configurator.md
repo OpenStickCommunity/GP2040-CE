@@ -12,17 +12,17 @@ Here you can see the current version of your firmware and the latest version ava
 
 The options in the main menu are:
 
-* [Home](#home) - The start page.
-* [Settings](#settings) - Adjust settings like input mode, d-pad mode, etc.
-* [Configuration > Pin Mapping](#pin-mapping) - Allows for remapping of GPIO pins to different buttons.
-* [Configuration > Keyboard Mapping](#keyboard-mapping) - Allows for remapping of keyboard keys to different controller inputs.
-* [Configuration > Profile Settings](#profile-settings) - Allows for remapping of GPIO pins to different buttons.
-* [Configuration > LED Configuration](#led-configuration) - Enable and configure RGB LEDs here.
-* [Configuration > Display Configuration](#display-configuration) - Enable and configure display options.
-* [Configuration > Add-Ons Configuration](#add-ons-configuration) - Enable and configure available add-ons.
-* [Configuration > Data Backup and Restoration](#data-backup-and-restoration) - Backup and restore settings.
-* Links - Useful links to the project and documentation
-* [DANGER ZONE](#danger-zone) - Don't be afraid of the big red button. If something becomes misconfigured, you can reset your settings here.
+- [Home](#home) - The start page.
+- [Settings](#settings) - Adjust settings like input mode, d-pad mode, etc.
+- [Configuration > Pin Mapping](#pin-mapping) - Allows for remapping of GPIO pins to different buttons.
+- [Configuration > Keyboard Mapping](#keyboard-mapping) - Allows for remapping of keyboard keys to different controller inputs.
+- [Configuration > Profile Settings](#profile-settings) - Allows for remapping of GPIO pins to different buttons.
+- [Configuration > LED Configuration](#led-configuration) - Enable and configure RGB LEDs here.
+- [Configuration > Display Configuration](#display-configuration) - Enable and configure display options.
+- [Configuration > Add-Ons Configuration](#add-ons-configuration) - Enable and configure available add-ons.
+- [Configuration > Data Backup and Restoration](#data-backup-and-restoration) - Backup and restore settings.
+- Links - Useful links to the project and documentation
+- [DANGER ZONE](#danger-zone) - Don't be afraid of the big red button. If something becomes misconfigured, you can reset your settings here.
 
 ## Settings
 
@@ -30,13 +30,13 @@ The options in the main menu are:
 
 Here you can select the basic settings which are normally available via hotkeys.
 
-* `Input Mode` - Choose the main input mode (XINPUT, DINPUT, Switch, PS4, HID-Keyboard) this connected device will boot into when powered on.  This selection will persist through unplug / replug.
-* `D-Pad Mode` - Choose the default D-Pad mode (D-Pad, Left Stick or Right Stick).
-* `SOCD Cleaning Mode` - Choose the default SOCD Cleaning Mode (Neutral, Last Win, First Win, OFF).  Please note that PS4, PS3 and Nintendo Switch modes do not support setting SOCD to off and will default to Neutral SOCD.
-* `Forced Setup Mode` - Allows you to lock out Input Mode, the ability to enter Web-Config or both.  Enabling a web-config lockout will require you to nuke and reload the firmware if you wish to make further changes.
-* `4-Way Joystick Mode` - Enables 4-Way Joystick mode which will prevent cardinal directions.
+- `Input Mode` - Choose the main input mode (XINPUT, DINPUT, Switch, PS4, HID-Keyboard) this connected device will boot into when powered on. This selection will persist through unplug / replug.
+- `D-Pad Mode` - Choose the default D-Pad mode (D-Pad, Left Stick or Right Stick).
+- `SOCD Cleaning Mode` - Choose the default SOCD Cleaning Mode (Neutral, Last Win, First Win, OFF). Please note that PS4, PS3 and Nintendo Switch modes do not support setting SOCD to off and will default to Neutral SOCD.
+- `Forced Setup Mode` - Allows you to lock out Input Mode, the ability to enter Web-Config or both. Enabling a web-config lockout will require you to nuke and reload the firmware if you wish to make further changes.
+- `4-Way Joystick Mode` - Enables 4-Way Joystick mode which will prevent cardinal directions.
 
-Please note that if you choose `PS4` mode you will have an additional option to set the device as a `Controller` or a `Fightstick`.  If you choose `Fightstick` and want to use this device with compatible PS5 games you will need to enable the `PS Passthrough` add-on and have a way to connect the device you with to use for passthrough authentication to the RP2040-CE based device via a USB passthrough port.  
+Please note that if you choose `PS4` mode you will have an additional option to set the device as a `Controller` or a `Fightstick`. If you choose `Fightstick` and want to use this device with compatible PS5 games you will need to enable the `PS Passthrough` add-on and have a way to connect the device you with to use for passthrough authentication to the RP2040-CE based device via a USB passthrough port.
 
 ### Hotkey Settings
 
@@ -75,12 +75,12 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 
 ![GP2040-CE Configurator - LED Configuration](assets/images/gpc-rgb-led-config.png)
 
-* `Data Pin` - The GPIO pin that will drive the data line for your RGB LED chain. Set to `-1` to disable RGB LEDs.
-* `LED Format` - The data format used to communicate with your RGB LEDs. If unsure the default `GRB` value is usually safe.
-* `LED Layout` - Select the layout for your controls/buttons. This is used for static themes and some per-button animations.
-* `LEDs Per Button` - Set the number of LEDs in each button on your chain.
-* `Max Brightness` - Set the maximum brightness for the LEDs. Ranges from 0-255.
-* `Brightness Steps` - The number of levels of brightness to cycle through when turning brightness up and down.
+- `Data Pin` - The GPIO pin that will drive the data line for your RGB LED chain. Set to `-1` to disable RGB LEDs.
+- `LED Format` - The data format used to communicate with your RGB LEDs. If unsure the default `GRB` value is usually safe.
+- `LED Layout` - Select the layout for your controls/buttons. This is used for static themes and some per-button animations.
+- `LEDs Per Button` - Set the number of LEDs in each button on your chain.
+- `Max Brightness` - Set the maximum brightness for the LEDs. Ranges from 0-255.
+- `Brightness Steps` - The number of levels of brightness to cycle through when turning brightness up and down.
 
 ### RGB LED Button Order
 
@@ -88,7 +88,7 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 
 ![GP2040-CE Configurator - RGB LED Button Order](assets/images/gpc-rgb-led-button-order.png)
 
-* `LED Button Order` - Configure which buttons and what order they reside on the LED chain.
+- `LED Button Order` - Configure which buttons and what order they reside on the LED chain.
 
 ### Player LEDs (XInput)
 
@@ -98,7 +98,7 @@ Available selections for `Player LED Type` are `None`, `PWM` or `RGB`.
 
 ![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-pwm.png)
 
-* `PLED #[1-4] Pin` - The GPIO pin the standard LED is connected to.
+- `PLED #[1-4] Pin` - The GPIO pin the standard LED is connected to.
 
 #### RGB Player LEDs
 
@@ -106,21 +106,21 @@ Available selections for `Player LED Type` are `None`, `PWM` or `RGB`.
 
 ![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-rgb.png)
 
-* `PLED #[1-4] Index` - The index of the LED module on the RGB strip.
-* `RGB PLED Color` - Click the box to reveal a color picker, or manually enter the color.
+- `PLED #[1-4] Index` - The index of the LED module on the RGB strip.
+- `RGB PLED Color` - Click the box to reveal a color picker, or manually enter the color.
 
 ## Custom LED Theme
 
 ![GP2040-CE Configurator - Custom LED Theme](assets/images/gpc-rgb-led-custom-theme.png)
 
-* `Enable` - Enables the use of Custom LED Theme.
-* `Preview Layout` - Predefined layouts for previewing LED theme. **NOTE:** This is for preview only, does not affect controller operation.
-* `Clear All` - Prompts for confirmation to reset the current theme to all buttons black (LEDs off). Make sure you have saved and have a backup if you don't want to lose your customizations.
-* `Set All To Color` - Presents a color picker to set all buttons to the same normal or pressed color.
-* `Set Gradient` - Sets a horizontal gradient across the action buttons according to the `Preview Layout` selection.
-* `Set Pressed Gradient` - Same as `Set Gradient`, but for pressed button state.
-* `Save Color` - Save a custom color to the color picker palette.
-* `Delete Color` - Deletes a custom color from the color picker palette. Stock colors cannot be deleted.
+- `Enable` - Enables the use of Custom LED Theme.
+- `Preview Layout` - Predefined layouts for previewing LED theme. **NOTE:** This is for preview only, does not affect controller operation.
+- `Clear All` - Prompts for confirmation to reset the current theme to all buttons black (LEDs off). Make sure you have saved and have a backup if you don't want to lose your customizations.
+- `Set All To Color` - Presents a color picker to set all buttons to the same normal or pressed color.
+- `Set Gradient` - Sets a horizontal gradient across the action buttons according to the `Preview Layout` selection.
+- `Set Pressed Gradient` - Same as `Set Gradient`, but for pressed button state.
+- `Save Color` - Save a custom color to the color picker palette.
+- `Delete Color` - Deletes a custom color from the color picker palette. Stock colors cannot be deleted.
 
 ?> All saved colors and gradient selections are saved to your browser's local storage.
 
@@ -130,33 +130,33 @@ If enabled, the Custom LED Theme will be available as another animation mode and
 
 ![GP2040-CE Configurator - Display Configuration](assets/images/gpc-display-config.png)
 
-* `Use Display` - Turns on/off the display module.
-* `I2C Block` - The Pico I2C block that will be used. Set based on pins, refer to table on page.
-* `SDA Pin` - The GPIO pin used for the I2C SDA channel.
-* `SCL Pin` - The GPIO pin used for the I2C SCL channel.
-* `I2C Address` - The I2C address of your device, defaults to the very commonly used `0x3C`.
-* `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
-* `Flip Display` - Allows you to flip or mirror the display in a variety of ways.
-* `Invert Display` - Inverts the pixel colors, effectively giving you a negative image when enabled.
-* `Button Layout (Left)` - Changes the onscreen layout for the left side of the display and stick.
-* `Button Layout (Right)` - Changes the onscreen layout for the right side of the display and stick.
-* `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
-* `Splash Duration` - Sets the amount of time the splash screen displays for on boot.
-* `Display Saver Timeout` - Will cause the display to turn off after the specified number of minutes. Pressing any input will cause the display to turn back on.
-* `Choose File` - This will allow you to upload your own image to be used for the splash screen. It is recommend that you use a two color 128x64 image (or one that is sized appropriately for your display). Uploading any other type of image will result in a conversion and sizing of the image automatically. If the image is inverted upon upload, just check off the `Invert` box.
+- `Use Display` - Turns on/off the display module.
+- `I2C Block` - The Pico I2C block that will be used. Set based on pins, refer to table on page.
+- `SDA Pin` - The GPIO pin used for the I2C SDA channel.
+- `SCL Pin` - The GPIO pin used for the I2C SCL channel.
+- `I2C Address` - The I2C address of your device, defaults to the very commonly used `0x3C`.
+- `I2C Speed` - Sets the speed of I2C communication. Common values are `100000` for standard, `400000` for fast and `800000` ludicrous speed.
+- `Flip Display` - Allows you to flip or mirror the display in a variety of ways.
+- `Invert Display` - Inverts the pixel colors, effectively giving you a negative image when enabled.
+- `Button Layout (Left)` - Changes the onscreen layout for the left side of the display and stick.
+- `Button Layout (Right)` - Changes the onscreen layout for the right side of the display and stick.
+- `Splash Mode` - Enables or disables a splash screen displaying when the unit is turned on.
+- `Splash Duration` - Sets the amount of time the splash screen displays for on boot.
+- `Display Saver Timeout` - Will cause the display to turn off after the specified number of minutes. Pressing any input will cause the display to turn back on.
+- `Choose File` - This will allow you to upload your own image to be used for the splash screen. It is recommend that you use a two color 128x64 image (or one that is sized appropriately for your display). Uploading any other type of image will result in a conversion and sizing of the image automatically. If the image is inverted upon upload, just check off the `Invert` box.
 
 Check out our collection of great custom splash screens from the community [HERE](community-splash-screens.md)
 
 ## Add-Ons Configuration
 
-This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE. Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to [Web Configurator - Add-ons](add-ons "GP2040-CE | Web Configurator - Add-ons") for more information.
+This section is for custom add-ons that can be enabled to expand the functionality of GP2040-CE. Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to Web Configurator - Add-ons for more information.
 
 ## Data Backup and Restoration
 
 ![GP2040-CE Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
 
-* `Backup To File` - Allows you to select what to backup to a file (default is all selected).
-* `Restore From File` - Allows you to select what to restore from a file (default is all selected).
+- `Backup To File` - Allows you to select what to backup to a file (default is all selected).
+- `Restore From File` - Allows you to select what to restore from a file (default is all selected).
 
 ## DANGER ZONE
 
