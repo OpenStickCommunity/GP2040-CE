@@ -55,7 +55,8 @@ void InputMacro::preprocess()
             }
         } 
 
-        if (macroPosition == -1 && newMacroPosition == -1) return;
+        if (macroPosition == -1 && newMacroPosition == -1)
+            return;
 
         if (macroPosition != -1 && newMacroPosition != -1) {
             if (newMacroPosition != macroPosition ||
@@ -101,8 +102,10 @@ void InputMacro::preprocess()
     if (!isMacroRunning) {
         switch (macro.macroType) {
             case ON_TOGGLE:
-            case ON_PRESS:
                 isMacroTriggerHeld = prevMacroInputPressed && !macroInputPressed;
+                break;
+            case ON_PRESS:
+                isMacroTriggerHeld = !prevMacroInputPressed && macroInputPressed;
                 break;
             case ON_HOLD_REPEAT:
                 isMacroTriggerHeld = macroInputPressed;
@@ -134,7 +137,8 @@ void InputMacro::preprocess()
         macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
     }
     
-    if (!isMacroRunning) return;
+    if (!isMacroRunning)
+        return;
     
     if ((!isMacroTriggerHeld && macro.interruptible)) {
         reset();
