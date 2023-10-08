@@ -16,6 +16,7 @@
 **Web Configurator**
 
 - [Web Configurator](web-configurator "GP2040-CE | Web Configurator")
+- [Macros](macros "GP2040-CE | Macros")
 - [Add-Ons](add-ons "GP2040-CE | Web Configurator - Add-ons")
   - [Analog](add-ons/analog.md)
   - [BOOTSEL Button](add-ons/bootsel-button.md)

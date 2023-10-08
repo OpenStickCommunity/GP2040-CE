@@ -14,6 +14,7 @@ import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
 import CaptureButton from './CaptureButton';
 import WiiAddon from './Addons/WiiAddon';
+import InputMacroAddon from './InputMacroAddon';
 
 export default {
 	Common,
@@ -32,4 +33,5 @@ export default {
 	AddonsConfig,
 	CaptureButton,
 	WiiAddon,
+	InputMacroAddon,
 };
