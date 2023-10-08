@@ -82,8 +82,8 @@
 #define PIN_ANALOGMOD_RIGHT_ANALOG_RIGHT -1
 #endif
 
-#ifndef PIN_ROTATION_1
-#define PIN_ROTATION_1 -1
+#ifndef PIN_ROTATE_1
+#define PIN_ROTATE_1 -1
 #endif
 
 #ifndef ROTATE1_FACTOR_LEFT
