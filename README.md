@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Multi-platform Gamepad Firmware for RP2040
+  Multi-Platform Gamepad Firmware for RP2040
 </p>
 
 <p align="center">
