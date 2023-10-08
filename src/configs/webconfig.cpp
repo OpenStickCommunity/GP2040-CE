@@ -25,6 +25,7 @@
 #include "lwip/apps/httpd.h"
 #include "lwip/def.h"
 #include "lwip/mem.h"
+#include "addons/input_macro.h"
 
 #include "bitmaps.h"
 
@@ -1599,13 +1600,14 @@ std::string setMacroAddonOptions()
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].duration = input["duration"].as<uint32_t>();
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].waitDuration = input["waitDuration"].as<uint32_t>();
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].buttonMask = input["buttonMask"].as<uint32_t>();
-			macroOptions.macroList[macrosIndex].macroInputs_count = ++macroInputsIndex;
-			if (macroInputsIndex > 64) break;
+			if (++macroInputsIndex > MAX_MACRO_INPUT_LIMIT) break;
 		}
+		macroOptions.macroList[macrosIndex].macroInputs_count = macroInputsIndex;
 
-		macroOptions.macroList_count = ++macrosIndex;
-		if (macrosIndex > 4) break;
+		if (++macrosIndex > MAX_MACRO_LIMIT) break;
 	}
+	
+	macroOptions.macroList_count = MAX_MACRO_LIMIT;
 
 	Storage::getInstance().save();
 	return serialize_json(doc);

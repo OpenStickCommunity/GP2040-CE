@@ -13,6 +13,8 @@
 #define INPUT_MACRO_PIN -1
 #endif
 
+#define MAX_MACRO_INPUT_LIMIT 50
+#define MAX_MACRO_LIMIT 6
 #define INPUT_HOLD_US 16666
 
 // Input Macro Module Name
