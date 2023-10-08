@@ -69,4 +69,4 @@ Some devices that do work for PS5 include, but are not limited to;
 - [N5 for PXN Game Steering Wheel](https://pxn-game.com/products/n5-for-pxn-game-steering-wheel)
 - PCBs from Licensed PS4 Arcade Sticks
 
-Because your experience and purchased products may vary, GP2040-CE will not bear the responsibility of providing specific recommendations beyond these known working devices.
+Because your experience and purchased products may vary, GP2040-CE will not provide specific recommendations beyond these known working devices.
