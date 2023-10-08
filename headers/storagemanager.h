@@ -15,9 +15,7 @@
 #include "gamepad.h"
 
 #include "config.pb.h"
-
 #include <atomic>
-
 #include "pico/critical_section.h"
 
 #define SI Storage::getInstance()

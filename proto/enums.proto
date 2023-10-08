@@ -193,3 +193,12 @@ enum PS4ControllerType
     PS4_CONTROLLER = 0;
     PS4_ARCADESTICK = 7;
 }
+
+enum MacroType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    ON_PRESS = 1;
+    ON_HOLD_REPEAT = 2;
+    ON_TOGGLE = 3;
+};
