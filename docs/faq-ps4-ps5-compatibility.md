@@ -61,7 +61,7 @@ For avoiding the 8 minute timeout on PS4, any PS4 controller or converter should
 
 ### Playstation 5
 
-For PS5 compatibility, there are a number of devices that the PS5 recognizes as a "specialty" controller (e.g. arcade stick, racing wheel, flight sim joystick, etc.) where the developer of the game has supported the use of "specialty" controllers. Any device works as a specialty PS4 controller (arcade stick/racing wheel/flight sim joystick) or a dongle that allows a controller to authenticates as such should work for games that support it. Note that this is not all games, but most fighting games and vehicle simulators do.
+For PS5 compatibility, there are a number of devices that the PS5 recognizes as a "categorized" controller (e.g. arcade stick, racing wheel, flight sim joystick, etc.) where the developer of the game has supported the use of "categorized" controllers. Any USB device that works as a categorized PS4 controller (arcade stick/racing wheel/flight sim joystick) or a USB dongle that allows a controller to authenticate should work with GP2040-CE. Note that this functionality is not present in all games, but is common in fighting games and racing simulators.
 
 Some devices that do work for PS5 include, but are not limited to;
 
