@@ -214,7 +214,11 @@ From inside VSCode:
 
 Start in the GP2040-CE folder. **From a Developer Powershell or Developer Command Command Prompt**:
 
-?> A new Powershell or Command Prompt session will be required after setting an environment variable.
+:::note
+
+A new Powershell or Command Prompt session will be required after setting an environment variable.
+
+:::
 
 1. Ensure you have the `PICO_SDK_PATH` environment variable set to the path to your pico-sdk folder.
 2. (optional) Set the `GP2040_BOARDCONFIG` environment variable to the folder name for your board configuration.
@@ -255,7 +259,11 @@ Start in the GP2040-CE folder
 
 ## Configuration
 
-?> We're moving away from compile time configuration, in favor of runtime configuration.
+:::note
+
+We're looking to move away from compile time configuration, in favor of runtime configuration.
+
+:::
 
 There are two simple options for building GP2040-CE for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
 
@@ -370,7 +378,11 @@ An example RGB LED setup in the `BoardConfig.h` file:
 
 GP2040-CE supports PWM and RGB player LEDs (PLEDs) and can be configured in the `BoardConfig.h` file.
 
-?> RGB PLEDs require [RGB LEDs](#rgb-leds) to be configured.
+:::note
+
+RGB PLEDs require [RGB LEDs](#rgb-leds) to be configured.
+
+:::
 
 The following PLED options are available in the `BoardConfig.h` file:
 

@@ -84,7 +84,11 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 
 ### RGB LED Button Order
 
-!> Please note that RGB Button LEDs must be the first LEDs configured. They will start at index 0 on the RGB LED strip.
+:::note
+
+Please note that RGB Button LEDs must be the first LEDs configured. They will start at index 0 on the RGB LED strip.
+
+:::
 
 ![GP2040-CE Configurator - RGB LED Button Order](assets/images/gpc-rgb-led-button-order.png)
 
@@ -102,7 +106,11 @@ Available selections for `Player LED Type` are `None`, `PWM` or `RGB`.
 
 #### RGB Player LEDs
 
-!> Please note that RGB Player LEDs must be located at an index after the RGB LED Buttons on the LED strip! The Web Config interface will suggest a starting index based on the number of LED buttons mapped in [RGB LED Button Order](#rgb-led-button-order) and the select `LEDs Per Button` value. We hope to remove this limitation in the future.
+:::note
+
+Please note that RGB Player LEDs must be located at an index after the RGB LED Buttons on the LED strip! The Web Config interface will suggest a starting index based on the number of LED buttons mapped in [RGB LED Button Order](#rgb-led-button-order) and the select `LEDs Per Button` value. We hope to remove this limitation in the future.
+
+:::
 
 ![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-rgb.png)
 
@@ -122,7 +130,11 @@ Available selections for `Player LED Type` are `None`, `PWM` or `RGB`.
 - `Save Color` - Save a custom color to the color picker palette.
 - `Delete Color` - Deletes a custom color from the color picker palette. Stock colors cannot be deleted.
 
-?> All saved colors and gradient selections are saved to your browser's local storage.
+:::note
+
+All saved colors and gradient selections are saved to your browser's local storage.
+
+:::
 
 If enabled, the Custom LED Theme will be available as another animation mode and will cycle with the `Previous Animation` and `Next Animation` shortcuts on your controller. You can also use the [Data Backup and Restoration](#data-backup-and-restoration) feature to create and share themes!
 
