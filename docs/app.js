@@ -166,9 +166,13 @@ window.$docsify = {
 		hideOtherSidebarContent: false,
 	},
 	logo: 'assets/images/gp2040-ce-logo.png',
-	loadSidebar: '_sidebar.md',
+	loadSidebar: true,
+	alias: {
+		'/.*/_sidebar.md': '/_sidebar.md',
+	  },
 	auto2top: true,
 	subMaxLevel: 1,
+	sidebarDisplayLevel: 3, // set sidebar display level
 	externalLinkTarget: '_self',
 	cornerExternalLinkTarget: '_self',
 	themeable: {

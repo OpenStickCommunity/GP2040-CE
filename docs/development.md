@@ -265,11 +265,11 @@ Start in the GP2040-CE folder
 
 ?> We're moving away from compile time configuration, in favor of runtime configuration.
 
-There are two simple options for building GP2040-CE for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
+There are two simple options for building GP2040-CE for your board. You can either edit an existing board definition, or create your own. Several example configurations are located in the repository **[configs](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs)** folder. This document will outline setting up a new build configuration.
 
 ### Board Configuration Folder
 
-Each subfolder in [`configs`](https://github.com/OpenStickFoundation/GP2040-CE/tree/main/configs) contains a separate board configuration, which consists of the following:
+Each subfolder in [`configs`](https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs) contains a separate board configuration, which consists of the following:
 
 | Name | Required? | Description |
 | ----------- | --------- | ----------- |

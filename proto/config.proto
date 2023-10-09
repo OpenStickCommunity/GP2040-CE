@@ -588,6 +588,34 @@ message FocusModeOptions
 	optional bool buttonLockEnabled = 6;
 }
 
+message MacroInput
+{
+	optional uint32 buttonMask = 1;
+	optional uint32 duration = 2;
+	optional uint32 waitDuration = 3 [default = 0];
+}
+
+message Macro
+{
+	optional MacroType macroType = 1;
+	optional string macroLabel = 2 [(nanopb).max_length = 256];
+	repeated MacroInput macroInputs = 3 [(nanopb).max_count = 50];
+	optional bool enabled = 4;
+	optional bool useMacroTriggerButton = 5;
+	optional int32 macroTriggerPin = 6 [default = -1];
+	optional uint32 macroTriggerButton = 7;
+	optional bool exclusive = 8 [default = true];
+	optional bool interruptible = 9 [default = true];
+	optional bool showFrames = 10 [default = false];
+}
+
+message MacroOptions
+{
+	optional bool enabled = 1;
+	optional int32 pin = 2;
+	repeated Macro macroList = 3 [(nanopb).max_count = 6];
+}
+
 message AddonOptions
 {
 	optional BootselButtonOptions bootselButtonOptions = 1;
@@ -609,6 +637,7 @@ message AddonOptions
 	optional KeyboardHostOptions keyboardHostOptions = 17;
 	optional TiltOptions tiltOptions = 18;
 	optional PSPassthroughOptions psPassthroughOptions = 19;
+	optional MacroOptions macroOptions = 20;
 }
 
 message Config

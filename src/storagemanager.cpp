@@ -31,6 +31,7 @@
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
+#include "addons/input_macro.h"
 #include "addons/snes_input.h"
 #include "addons/tilt.h"
 
