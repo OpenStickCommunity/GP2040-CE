@@ -25,6 +25,7 @@ const sidebars = {
 		{
 			type: 'doc',
 			id: 'download',
+			label: 'Download',
 		},
 		{
 			type: 'category',
