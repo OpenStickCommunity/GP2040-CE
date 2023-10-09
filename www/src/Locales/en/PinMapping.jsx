@@ -39,5 +39,13 @@ export default {
 		BUTTON_PRESS_DDI_DOWN: 'DDI Down',
 		BUTTON_PRESS_DDI_LEFT: 'DDI Left',
 		BUTTON_PRESS_DDI_RIGHT: 'DDI Right',
+		SUSTAIN_DP_MODE_DP: 'D-Pad Mode: D-Pad',
+		SUSTAIN_DP_MODE_LS: 'D-Pad Mode: Left Stick',
+		SUSTAIN_DP_MODE_RS: 'D-Pad Mode: Right Stick',
+		SUSTAIN_SOCD_MODE_UP_PRIO: 'Up Priority SOCD Cleaning',
+		SUSTAIN_SOCD_MODE_NEUTRAL: 'Neutral SOCD Cleaning',
+		SUSTAIN_SOCD_MODE_SECOND_WIN: 'Last Win SOCD Cleaning',
+		SUSTAIN_SOCD_MODE_FIRST_WIN: 'First Win SOCD Cleaning',
+		SUSTAIN_SOCD_MODE_BYPASS: 'SOCD Cleaning Off',
 	},
 };
