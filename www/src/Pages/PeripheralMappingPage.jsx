@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
-import { Button, Form, FormCheck, FormSelect, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Form, FormCheck, FormSelect, Table } from 'react-bootstrap';
 import { Formik, useFormikContext, getIn, setIn } from 'formik';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
+import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
 import get from 'lodash/get';
 import set from 'lodash/set';
@@ -13,8 +14,6 @@ import Section from '../Components/Section';
 import WebApi, { basePeripheralMapping } from '../Services/WebApi';
 import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
 import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
-
-import InfoCircle from '../Icons/InfoCircle';
 
 let peripheralFieldsSchema = {peripheral: yup.object().shape(Object.assign({}, ...PERIPHERAL_DEVICES.map((device) => {
     let deviceProps = Object.assign({}, ...device.blocks.map((block) => { 
@@ -78,7 +77,36 @@ export default function PeripheralMappingPage() {
 		);
 	};
 
-    const defineTooltip = (content) => <Tooltip id="tooltip">{content}</Tooltip>;
+    const generatePeripheralDetails = (header,peripheral) => {
+        return (
+            <div key={`details-${peripheral.value}-${peripheral.label}`}>
+                <div key={`details-${peripheral.value}-header`} className="mb-3">{header}</div>
+                {peripheral.blocks.map((block,i) => {
+                    let colCount = Math.max.apply(null, Object.keys(block.pins).map((pin) => block.pins[pin].length));                        
+                    return (
+                    <Table className="caption-top" striped="columns" responsive bordered hover variant="dark" size="sm">
+                        <caption>{block.label.toUpperCase()}</caption>
+                        <tbody>
+                            <tr>
+                                <th scope="row"></th>
+                                <th colSpan={colCount}>{t('PeripheralMapping:pins-label')}</th>
+                            </tr>
+                            {Object.keys(block.pins).map((pinName) => (
+                                <tr key={`block-info-${pinName}`}>
+                                    <th scope="row" className="col-2">{pinName.toUpperCase()}</th>
+                                    {block.pins[pinName].map((pin) => (
+                                        <td key={`block-info-${pinName}-${pin}`}>{pin}</td>
+                                    ))}
+                                    {block.pins[pinName].length < colCount ? <td></td> : ''}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                    );
+                })}
+            </div>
+        );
+    };
 
 	const { t } = useTranslation('');
 
@@ -94,9 +122,7 @@ export default function PeripheralMappingPage() {
                                     <Form.Group key={`peripheral-${peripheral.value}`} className="row mb-3">
                                         <Form.Label>
                                             {t(`PeripheralMapping:${peripheral.label}-label`)}
-                                            <OverlayTrigger placement="right" className="mb-2" overlay={defineTooltip(t(`PeripheralMapping:${peripheral.label}-description`))}>
-                                                <Button variant="link"><InfoCircle /></Button>
-                                            </OverlayTrigger>
+                                            <ContextualHelpOverlay title={t(`PeripheralMapping:${peripheral.label}-desc-header`)} body={generatePeripheralDetails(t(`PeripheralMapping:${peripheral.label}-description`),peripheral)}></ContextualHelpOverlay>
                                         </Form.Label>
                                         {peripheral.blocks.map((block,i) => (
                                             <div key={`peripheral${peripheral.value}block${block.value}`} className="row mb-3">
