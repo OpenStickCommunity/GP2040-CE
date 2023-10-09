@@ -121,10 +121,6 @@ class WiiExtension {
   private:
     ExtensionBase *extensionController = NULL;
 
-//    uint8_t iSDA;
-//    uint8_t iSCL;
-//    i2c_inst_t *picoI2C;
-//    int32_t iSpeed;
     PeripheralI2C* i2c;
 
 #if WII_EXTENSION_DEBUG==true

@@ -43,7 +43,7 @@ public:
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
 	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
-    PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
+	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 
 	bool save();
 

@@ -1007,61 +1007,61 @@ std::string getKeyMappings()
 
 std::string getPeripheralOptions()
 {
-    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-    const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+	const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
-    writeDoc(doc, "peripheral", "i2c0", "enabled", peripheralOptions.blockI2C0.enabled);
-    writeDoc(doc, "peripheral", "i2c0", "sda",     peripheralOptions.blockI2C0.sda);
-    writeDoc(doc, "peripheral", "i2c0", "scl",     peripheralOptions.blockI2C0.scl);
-    writeDoc(doc, "peripheral", "i2c0", "speed",   peripheralOptions.blockI2C0.speed);
+	writeDoc(doc, "peripheral", "i2c0", "enabled", peripheralOptions.blockI2C0.enabled);
+	writeDoc(doc, "peripheral", "i2c0", "sda",     peripheralOptions.blockI2C0.sda);
+	writeDoc(doc, "peripheral", "i2c0", "scl",     peripheralOptions.blockI2C0.scl);
+	writeDoc(doc, "peripheral", "i2c0", "speed",   peripheralOptions.blockI2C0.speed);
 
-    writeDoc(doc, "peripheral", "i2c1", "enabled", peripheralOptions.blockI2C1.enabled);
-    writeDoc(doc, "peripheral", "i2c1", "sda",     peripheralOptions.blockI2C1.sda);
-    writeDoc(doc, "peripheral", "i2c1", "scl",     peripheralOptions.blockI2C1.scl);
-    writeDoc(doc, "peripheral", "i2c1", "speed",   peripheralOptions.blockI2C1.speed);
+	writeDoc(doc, "peripheral", "i2c1", "enabled", peripheralOptions.blockI2C1.enabled);
+	writeDoc(doc, "peripheral", "i2c1", "sda",     peripheralOptions.blockI2C1.sda);
+	writeDoc(doc, "peripheral", "i2c1", "scl",     peripheralOptions.blockI2C1.scl);
+	writeDoc(doc, "peripheral", "i2c1", "speed",   peripheralOptions.blockI2C1.speed);
 
-    writeDoc(doc, "peripheral", "spi0", "enabled", peripheralOptions.blockSPI0.enabled);
-    writeDoc(doc, "peripheral", "spi0", "rx",      peripheralOptions.blockSPI0.rx);
-    writeDoc(doc, "peripheral", "spi0", "cs",      peripheralOptions.blockSPI0.cs);
-    writeDoc(doc, "peripheral", "spi0", "sck",     peripheralOptions.blockSPI0.sck);
-    writeDoc(doc, "peripheral", "spi0", "tx",      peripheralOptions.blockSPI0.tx);
+	writeDoc(doc, "peripheral", "spi0", "enabled", peripheralOptions.blockSPI0.enabled);
+	writeDoc(doc, "peripheral", "spi0", "rx",      peripheralOptions.blockSPI0.rx);
+	writeDoc(doc, "peripheral", "spi0", "cs",      peripheralOptions.blockSPI0.cs);
+	writeDoc(doc, "peripheral", "spi0", "sck",     peripheralOptions.blockSPI0.sck);
+	writeDoc(doc, "peripheral", "spi0", "tx",      peripheralOptions.blockSPI0.tx);
 
-    writeDoc(doc, "peripheral", "spi1", "enabled", peripheralOptions.blockSPI1.enabled);
-    writeDoc(doc, "peripheral", "spi1", "rx",      peripheralOptions.blockSPI1.rx);
-    writeDoc(doc, "peripheral", "spi1", "cs",      peripheralOptions.blockSPI1.cs);
-    writeDoc(doc, "peripheral", "spi1", "sck",     peripheralOptions.blockSPI1.sck);
-    writeDoc(doc, "peripheral", "spi1", "tx",      peripheralOptions.blockSPI1.tx);
+	writeDoc(doc, "peripheral", "spi1", "enabled", peripheralOptions.blockSPI1.enabled);
+	writeDoc(doc, "peripheral", "spi1", "rx",      peripheralOptions.blockSPI1.rx);
+	writeDoc(doc, "peripheral", "spi1", "cs",      peripheralOptions.blockSPI1.cs);
+	writeDoc(doc, "peripheral", "spi1", "sck",     peripheralOptions.blockSPI1.sck);
+	writeDoc(doc, "peripheral", "spi1", "tx",      peripheralOptions.blockSPI1.tx);
 
-    return serialize_json(doc);
+	return serialize_json(doc);
 }
 
 std::string setPeripheralOptions()
 {
-    DynamicJsonDocument doc = get_post_data();
+	DynamicJsonDocument doc = get_post_data();
 
-    PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+	PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
-    docToValue(peripheralOptions.blockI2C0.enabled, doc, "peripheral", "i2c0", "enabled");
-    docToPin(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
-    docToPin(peripheralOptions.blockI2C0.scl, doc, "peripheral", "i2c0", "scl");
-    docToValue(peripheralOptions.blockI2C0.speed, doc, "peripheral", "i2c0", "speed");
+	docToValue(peripheralOptions.blockI2C0.enabled, doc, "peripheral", "i2c0", "enabled");
+	docToPin(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
+	docToPin(peripheralOptions.blockI2C0.scl, doc, "peripheral", "i2c0", "scl");
+	docToValue(peripheralOptions.blockI2C0.speed, doc, "peripheral", "i2c0", "speed");
 
-    docToValue(peripheralOptions.blockI2C1.enabled, doc, "peripheral", "i2c1", "enabled");
-    docToPin(peripheralOptions.blockI2C1.sda, doc, "peripheral", "i2c1", "sda");
-    docToPin(peripheralOptions.blockI2C1.scl, doc, "peripheral", "i2c1", "scl");
-    docToValue(peripheralOptions.blockI2C1.speed, doc, "peripheral", "i2c1", "speed");
+	docToValue(peripheralOptions.blockI2C1.enabled, doc, "peripheral", "i2c1", "enabled");
+	docToPin(peripheralOptions.blockI2C1.sda, doc, "peripheral", "i2c1", "sda");
+	docToPin(peripheralOptions.blockI2C1.scl, doc, "peripheral", "i2c1", "scl");
+	docToValue(peripheralOptions.blockI2C1.speed, doc, "peripheral", "i2c1", "speed");
 
-    docToValue(peripheralOptions.blockSPI0.enabled, doc,  "peripheral", "spi0", "enabled");
-    docToPin(peripheralOptions.blockSPI0.rx, doc,  "peripheral", "spi0", "rx");
-    docToPin(peripheralOptions.blockSPI0.cs, doc,  "peripheral", "spi0", "cs");
-    docToPin(peripheralOptions.blockSPI0.sck, doc, "peripheral", "spi0", "sck");
-    docToPin(peripheralOptions.blockSPI0.tx, doc,  "peripheral", "spi0", "tx");
+	docToValue(peripheralOptions.blockSPI0.enabled, doc,  "peripheral", "spi0", "enabled");
+	docToPin(peripheralOptions.blockSPI0.rx, doc,  "peripheral", "spi0", "rx");
+	docToPin(peripheralOptions.blockSPI0.cs, doc,  "peripheral", "spi0", "cs");
+	docToPin(peripheralOptions.blockSPI0.sck, doc, "peripheral", "spi0", "sck");
+	docToPin(peripheralOptions.blockSPI0.tx, doc,  "peripheral", "spi0", "tx");
 
-    docToValue(peripheralOptions.blockSPI1.enabled, doc,  "peripheral", "spi1", "enabled");
-    docToPin(peripheralOptions.blockSPI1.rx, doc,  "peripheral", "spi1", "rx");
-    docToPin(peripheralOptions.blockSPI1.cs, doc,  "peripheral", "spi1", "cs");
-    docToPin(peripheralOptions.blockSPI1.sck, doc, "peripheral", "spi1", "sck");
-    docToPin(peripheralOptions.blockSPI1.tx, doc,  "peripheral", "spi1", "tx");
+	docToValue(peripheralOptions.blockSPI1.enabled, doc,  "peripheral", "spi1", "enabled");
+	docToPin(peripheralOptions.blockSPI1.rx, doc,  "peripheral", "spi1", "rx");
+	docToPin(peripheralOptions.blockSPI1.cs, doc,  "peripheral", "spi1", "cs");
+	docToPin(peripheralOptions.blockSPI1.sck, doc, "peripheral", "spi1", "sck");
+	docToPin(peripheralOptions.blockSPI1.tx, doc,  "peripheral", "spi1", "tx");
 
 	Storage::getInstance().save();
 

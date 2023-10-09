@@ -8,7 +8,7 @@
 
 bool I2CAnalog1219Input::available() {
     const AnalogADS1219Options& options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-	return (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
+    return (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
 }
 
 void I2CAnalog1219Input::setup() {

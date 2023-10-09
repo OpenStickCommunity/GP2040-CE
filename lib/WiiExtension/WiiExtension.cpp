@@ -4,10 +4,6 @@
 #include <cstdio>
 
 WiiExtension::WiiExtension(PeripheralI2C *i2cController, uint8_t addr) {
-    //iSDA = sda;
-    //iSCL = scl;
-    //picoI2C = i2cCtl;
-    //iSpeed = speed;
     i2c = i2cController;
     address = addr;
 }
@@ -240,14 +236,12 @@ void WiiExtension::poll() {
 }
 
 int WiiExtension::doI2CWrite(uint8_t *pData, int iLen) {
-    //int result = i2c_write_blocking(picoI2C, address, pData, iLen, false);
     int result = i2c->write(address, pData, iLen, false);
     waitUntil_us(WII_EXTENSION_DELAY);
     return result;
 }
 
 int WiiExtension::doI2CRead(uint8_t *pData, int iLen) {
-    //int result = i2c_read_blocking(picoI2C, address, pData, iLen, false);
     int result = i2c->read(address, pData, iLen, false);
     waitUntil_us(WII_EXTENSION_DELAY);
 #if WII_EXTENSION_ENCRYPTION==true
@@ -269,17 +263,6 @@ uint8_t WiiExtension::doI2CTest() {
 }
 
 void WiiExtension::doI2CInit() {
-//    if ((iSDA + 2 * i2c_hw_index(picoI2C))%4 != 0) return;
-//    if ((iSCL + 3 + 2 * i2c_hw_index(picoI2C))%4 != 0) return;
-//
-//    i2c_init(picoI2C, iSpeed);
-//    gpio_set_function(iSDA, GPIO_FUNC_I2C);
-//    gpio_set_function(iSCL, GPIO_FUNC_I2C);
-//
-//    gpio_pull_up(iSDA);
-//    gpio_pull_up(iSCL);
-//
-//    return;
 }
 
 void WiiExtension::waitUntil_us(uint64_t us) {

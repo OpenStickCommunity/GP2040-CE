@@ -22,7 +22,7 @@ bool I2CDisplayAddon::available() {
 
 void I2CDisplayAddon::setup() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
+	PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 
 	obdI2CInit(&obd,
 	    options.size,
@@ -280,7 +280,7 @@ const DisplayOptions& I2CDisplayAddon::getDisplayOptions() {
 
 int I2CDisplayAddon::initDisplay(int typeOverride) {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
+	PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 	return obdI2CInit(&obd,
 	    typeOverride > 0 ? typeOverride : options.size,
 		options.i2cAddress,
