@@ -7,8 +7,8 @@ PeripheralManager::PeripheralManager() {
     if (peripheralOptions.blockI2C0.enabled) blockI2C0 = new PeripheralI2C(0, peripheralOptions.blockI2C0.sda, peripheralOptions.blockI2C0.scl, peripheralOptions.blockI2C0.speed);
     if (peripheralOptions.blockI2C1.enabled) blockI2C1 = new PeripheralI2C(1, peripheralOptions.blockI2C1.sda, peripheralOptions.blockI2C1.scl, peripheralOptions.blockI2C1.speed);
     
-    //if (peripheralOptions.blockSPI0.enabled) blockSPI0 = new PeripheralSPI();
-    //if (peripheralOptions.blockSPI1.enabled) blockSPI1 = new PeripheralSPI();
+    if (peripheralOptions.blockSPI0.enabled) blockSPI0 = new PeripheralSPI(0, peripheralOptions.blockSPI0.tx, peripheralOptions.blockSPI0.rx, peripheralOptions.blockSPI0.sck, peripheralOptions.blockSPI0.cs);
+    if (peripheralOptions.blockSPI1.enabled) blockSPI1 = new PeripheralSPI(1, peripheralOptions.blockSPI1.tx, peripheralOptions.blockSPI1.rx, peripheralOptions.blockSPI1.sck, peripheralOptions.blockSPI1.cs);
 }
 
 PeripheralI2C* PeripheralManager::getI2C(uint8_t block) {
