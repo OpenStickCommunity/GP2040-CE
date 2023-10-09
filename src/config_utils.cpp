@@ -793,7 +793,7 @@ void gpioMappingsMigrationCore(Config& config)
 
     // convert JS slider pin mappings to GPIO mapping config
     if (jsSliderOptions.enabled && isValidPin(jsSliderOptions.deprecatedPinSliderOne)) {
-        switch (jsSliderOptions.deprecatedPinSliderOne) {
+        switch (jsSliderOptions.deprecatedModeOne) {
             case DpadMode::DPAD_MODE_DIGITAL: {
                 actions[jsSliderOptions.deprecatedPinSliderOne] = GpioAction::SUSTAIN_DP_MODE_DP; break;
             }
@@ -808,21 +808,10 @@ void gpioMappingsMigrationCore(Config& config)
         jsSliderOptions.deprecatedPinSliderOne = -1;
     }
     else if (isValidPin(PIN_SLIDER_ONE)) {
-        switch (PIN_SLIDER_ONE) {
-            case DpadMode::DPAD_MODE_DIGITAL: {
-                actions[PIN_SLIDER_ONE] = GpioAction::SUSTAIN_DP_MODE_DP; break;
-            }
-            case DpadMode::DPAD_MODE_LEFT_ANALOG: {
-                actions[PIN_SLIDER_ONE] = GpioAction::SUSTAIN_DP_MODE_LS; break;
-            }
-            case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
-                actions[PIN_SLIDER_ONE] = GpioAction::SUSTAIN_DP_MODE_RS; break;
-            }
-            default: break;
-        }
+        actions[PIN_SLIDER_ONE] = GpioAction::SUSTAIN_DP_MODE_LS;
     }
     if (jsSliderOptions.enabled && isValidPin(jsSliderOptions.deprecatedPinSliderTwo)) {
-        switch (jsSliderOptions.deprecatedPinSliderTwo) {
+        switch (jsSliderOptions.deprecatedModeTwo) {
             case DpadMode::DPAD_MODE_DIGITAL: {
                 actions[jsSliderOptions.deprecatedPinSliderTwo] = GpioAction::SUSTAIN_DP_MODE_DP; break;
             }
@@ -837,18 +826,7 @@ void gpioMappingsMigrationCore(Config& config)
         jsSliderOptions.deprecatedPinSliderTwo = -1;
     }
     else if (isValidPin(PIN_SLIDER_TWO)) {
-        switch (SLIDER_MODE_TWO) {
-            case DpadMode::DPAD_MODE_DIGITAL: {
-                actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_DP; break;
-            }
-            case DpadMode::DPAD_MODE_LEFT_ANALOG: {
-                actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_LS; break;
-            }
-            case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
-                actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_RS; break;
-            }
-            default: break;
-        }
+        actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_RS;
     }
 
     // convert SOCD slider pin mappings to GPIO mapping config
