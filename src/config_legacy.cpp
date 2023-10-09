@@ -1014,19 +1014,19 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
         config.addonOptions.has_socdSliderOptions = true;
         SET_PROPERTY(socdSliderOptions, enabled, legacyAddonOptions.SliderSOCDInputEnabled);
-        SET_PROPERTY(socdSliderOptions, pinOne, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDOne));
-        SET_PROPERTY(socdSliderOptions, pinTwo, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDTwo));
+        SET_PROPERTY(socdSliderOptions, deprecatedPinOne, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDOne));
+        SET_PROPERTY(socdSliderOptions, deprecatedPinTwo, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDTwo));
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeDefault))
         {
             SET_PROPERTY(socdSliderOptions, modeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
         }
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeOne))
         {
-            SET_PROPERTY(socdSliderOptions, modeOne, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeOne));
+            SET_PROPERTY(socdSliderOptions, deprecatedModeOne, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeOne));
         }
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeTwo))
         {
-            SET_PROPERTY(socdSliderOptions, modeTwo, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeTwo));
+            SET_PROPERTY(socdSliderOptions, deprecatedModeTwo, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeTwo));
         }
 
         OnBoardLedOptions& onBoardLedOptions = config.addonOptions.onBoardLedOptions;

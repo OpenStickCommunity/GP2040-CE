@@ -1042,12 +1042,8 @@ std::string setAddonOptions()
 	docToValue(reverseOptions.actionRight, doc, "reverseActionRight");
 
     SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-	docToValue(socdSliderOptions.enabled, doc, "SliderSOCDInputEnabled");
-	docToPin(socdSliderOptions.pinOne, doc, "sliderSOCDPinOne");
-	docToPin(socdSliderOptions.pinTwo, doc, "sliderSOCDPinTwo");
-	docToValue(socdSliderOptions.modeOne, doc, "sliderSOCDModeOne");
-	docToValue(socdSliderOptions.modeTwo, doc, "sliderSOCDModeTwo");
-	docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
+    docToValue(socdSliderOptions.enabled, doc, "SliderSOCDInputEnabled");
+    docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
 
     OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
 	docToValue(onBoardLedOptions.mode, doc, "onBoardLedMode");
@@ -1452,12 +1448,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "ReverseInputEnabled", reverseOptions.enabled);
 
     const SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-	writeDoc(doc, "sliderSOCDPinOne", cleanPin(socdSliderOptions.pinOne));
-	writeDoc(doc, "sliderSOCDPinTwo", cleanPin(socdSliderOptions.pinTwo));
-	writeDoc(doc, "sliderSOCDModeOne", socdSliderOptions.modeOne);
-	writeDoc(doc, "sliderSOCDModeTwo", socdSliderOptions.modeTwo);
-	writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
-	writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
+    writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
+    writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
 
     const OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
 	writeDoc(doc, "onBoardLedMode", onBoardLedOptions.mode);

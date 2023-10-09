@@ -358,12 +358,12 @@ message SOCDSliderOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 pinOne = 2;
-	optional int32 pinTwo = 3;
+	optional int32 deprecatedPinOne = 2;
+	optional int32 deprecatedPinTwo = 3;
 	
 	optional SOCDMode modeDefault = 4;
-	optional SOCDMode modeOne = 5;
-	optional SOCDMode modeTwo = 6;
+	optional SOCDMode deprecatedModeOne = 5;
+	optional SOCDMode deprecatedModeTwo = 6;
 }
 
 message ReverseOptions

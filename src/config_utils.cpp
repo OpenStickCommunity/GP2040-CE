@@ -424,11 +424,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.socdSliderOptions
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, enabled, !!SLIDER_SOCD_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, pinOne, PIN_SLIDER_SOCD_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, pinTwo, PIN_SLIDER_SOCD_TWO);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeDefault, SLIDER_SOCD_SLOT_DEFAULT);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeOne, SLIDER_SOCD_SLOT_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeTwo, SLIDER_SOCD_SLOT_TWO);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
@@ -562,6 +558,7 @@ void gpioMappingsMigrationCore(Config& config)
     ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
     DualDirectionalOptions& ddiOptions = config.addonOptions.dualDirectionalOptions;
     SliderOptions& jsSliderOptions = config.addonOptions.sliderOptions;
+    SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
 
     const auto gamepadMaskToGpioAction = [&](uint32_t gpMask) -> GpioAction
     {
@@ -849,6 +846,90 @@ void gpioMappingsMigrationCore(Config& config)
             }
             case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
                 actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_RS; break;
+            }
+            default: break;
+        }
+    }
+
+    // convert SOCD slider pin mappings to GPIO mapping config
+    if (socdSliderOptions.enabled && isValidPin(socdSliderOptions.deprecatedPinOne)) {
+        switch (socdSliderOptions.deprecatedPinOne) {
+            case SOCDMode::SOCD_MODE_UP_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO; break;
+            }
+            case SOCDMode::SOCD_MODE_NEUTRAL: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL; break;
+            }
+            case SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_BYPASS: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
+            }
+            default: break;
+        }
+        socdSliderOptions.deprecatedPinOne = -1;
+    }
+    else if (isValidPin(PIN_SLIDER_SOCD_ONE)) {
+        switch (PIN_SLIDER_SOCD_ONE) {
+            case SOCDMode::SOCD_MODE_UP_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO; break;
+            }
+            case SOCDMode::SOCD_MODE_NEUTRAL: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL; break;
+            }
+            case SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_BYPASS: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
+            }
+            default: break;
+        }
+    }
+    if (socdSliderOptions.enabled && isValidPin(socdSliderOptions.deprecatedPinTwo)) {
+        switch (socdSliderOptions.deprecatedPinTwo) {
+            case SOCDMode::SOCD_MODE_UP_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO; break;
+            }
+            case SOCDMode::SOCD_MODE_NEUTRAL: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL; break;
+            }
+            case SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_BYPASS: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
+            }
+            default: break;
+        }
+        socdSliderOptions.deprecatedPinTwo = -1;
+    }
+    else if (isValidPin(PIN_SLIDER_SOCD_TWO)) {
+        switch (PIN_SLIDER_SOCD_TWO) {
+            case SOCDMode::SOCD_MODE_UP_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO; break;
+            }
+            case SOCDMode::SOCD_MODE_NEUTRAL: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL; break;
+            }
+            case SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_BYPASS: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
             }
             default: break;
         }
