@@ -27,6 +27,11 @@ const Joystick = ({ values, errors, handleChange, handleCheckbox }) => {
 		<Section title={t('AddonsConfig:joystick-selection-slider-header-text')}>
 			<div id="JSliderInputOptions" hidden={!values.JSliderInputEnabled}>
 				<Row className="mb-3">
+					<p>
+						{t(
+							'AddonsConfig:pin-config-moved-to-core-text',
+						)}
+					</p>
 					<FormSelect
 						label={t('AddonsConfig:joystick-selection-slider-mode-zero-label')}
 						name="sliderModeZero"
