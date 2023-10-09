@@ -26,7 +26,11 @@ If you would like to customize your device, check out the built-in [Web Configur
 
 ## Flash Nuke process
 
-!> *Warning* - Flash nuking your board wipes all your custom configuration for pin mappings and addons.
+:::caution
+
+*Warning* - Flash nuking your board wipes all your custom configuration for pin mappings and addons.
+
+:::
 
 1. Download the [flash_nuke.uf2 file](https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/docs/downloads/flash_nuke.uf2)
 2. Boot into bootsel/RPI drive (multiple methods to do so)

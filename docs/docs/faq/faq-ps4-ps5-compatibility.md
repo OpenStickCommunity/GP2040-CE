@@ -49,7 +49,11 @@ If you're using an OLED display, the input mode will change from `PS4` to `PS4:A
 
 The GP2040-CE project will not provide ***any*** files or information related to acquiring these keys and files.
 
-!> **Do not ask via any of communication channels (e.g. social media, direct messages, Github Issues, GP2040-CE) as this will result in a permanent blacklist/ban.**
+:::danger
+
+**Do not ask via any of communication channels (e.g. social media, direct messages, Github Issues, GP2040-CE) as this will result in a permanent blacklist/ban.**
+
+:::
 
 ## What controller or dongle do I use for PS Passthrough?
 
