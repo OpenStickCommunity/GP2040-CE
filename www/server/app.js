@@ -40,7 +40,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		enabled: 1,
 		sdaPin: 0,
 		sclPin: 1,
-		i2cAddress: '0x3D',
+		i2cAddress: 61,
 		i2cBlock: 0,
 		i2cSpeed: 400000,
 		flipDisplay: 0,
@@ -234,9 +234,9 @@ app.get('/api/getPeripheralOptions', (req, res) => {
     return res.send({
         peripheral: {
             i2c0: {
-                enabled: 0,
-                sda: -1,
-                scl: -1,
+                enabled: 1,
+                sda: 0,
+                scl: 1,
                 speed: 400000,
             },
             i2c1: {

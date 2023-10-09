@@ -187,7 +187,7 @@ async function getDisplayOptions() {
 		const response = await axios.get(`${baseUrl}/api/getDisplayOptions`);
 
 		if (response.data.i2cAddress) {
-			response.data.i2cAddress = (response.data.i2cAddress.indexOf('0x') == -1 ? '0x' : '') + response.data.i2cAddress.toString(16);
+			response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
 		}
 		response.data.splashDuration = response.data.splashDuration / 1000; // milliseconds to seconds
 		response.data.displaySaverTimeout =
