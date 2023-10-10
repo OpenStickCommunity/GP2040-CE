@@ -26,6 +26,10 @@ export const focusModeScheme = {
 		.number()
 		.label('Focus Mode OLED Lock Enabled')
 		.validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
+	focusModeMacroLockEnabled: yup
+		.number()
+		.label('Focus Mode Macro Lock Enabled')
+		.validateRangeWhenValue('FocusModeAddonEnabled', 0, 1),
 	focusModeRgbLockEnabled: yup
 		.number()
 		.label('Focus Mode RGB Lock Enabled')
@@ -40,6 +44,7 @@ export const focusModeState = {
 	FocusModeAddonEnabled: 0,
 	focusModeOledLockEnabled: 0,
 	focusModeRgbLockEnabled: 0,
+	focusModeMacroLockEnabled: 0,
 };
 
 const FocusMode = ({
@@ -93,6 +98,21 @@ const FocusMode = ({
 							checked={Boolean(values.focusModeRgbLockEnabled)}
 							onChange={(e) => {
 								handleCheckbox('focusModeRgbLockEnabled', values);
+								handleChange(e);
+							}}
+						/>
+					</div>
+					<div className="col-sm-3">
+						<FormCheck
+							label={t('Common:lock-macro')}
+							className="form-check-sm"
+							type="switch"
+							reverse
+							id="FocusModeAddonMacroButton"
+							isInvalid={false}
+							checked={Boolean(values.focusModeMacroLockEnabled)}
+							onChange={(e) => {
+								handleCheckbox('focusModeMacroLockEnabled', values);
 								handleChange(e);
 							}}
 						/>
