@@ -14,19 +14,19 @@
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_X
-#define TILT1_FACTOR_LEFT_X -1
+#define TILT1_FACTOR_LEFT_X 0
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_Y
-#define TILT1_FACTOR_LEFT_Y -1
+#define TILT1_FACTOR_LEFT_Y 0
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_X
-#define TILT1_FACTOR_RIGHT_X -1
+#define TILT1_FACTOR_RIGHT_X 0
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_Y
-#define TILT1_FACTOR_RIGHT_Y -1
+#define TILT1_FACTOR_RIGHT_Y 0
 #endif
 
 #ifndef PIN_TILT_2
@@ -34,19 +34,19 @@
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_X
-#define TILT2_FACTOR_LEFT_X -1
+#define TILT2_FACTOR_LEFT_X 0
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_Y
-#define TILT2_FACTOR_LEFT_Y -1
+#define TILT2_FACTOR_LEFT_Y 0
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_X
-#define TILT2_FACTOR_RIGHT_X -1
+#define TILT2_FACTOR_RIGHT_X 0
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_Y
-#define TILT2_FACTOR_RIGHT_Y -1
+#define TILT2_FACTOR_RIGHT_Y 0
 #endif
 
 
@@ -105,7 +105,7 @@ private:
 	uint8_t dDebLeftState;          // Debounce State (stored)
 	uint8_t dDebRightState;          // Debounce State (stored)
 	uint8_t tiltLeftState;          // Tilt State
-	uint8_t tiltRightState;          // Tilt Righjt Analog State
+	uint8_t tiltRightState;          // Tilt Right Analog State
 	DpadDirection lastGPUD; // Gamepad Last Up-Down
 	DpadDirection lastGPLR; // Gamepad Last Left-Right
 	DpadDirection lastTiltUD; // Tilt Last Up-Down
