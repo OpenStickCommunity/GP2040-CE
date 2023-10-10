@@ -1045,6 +1045,7 @@ std::string setAddonOptions()
 	docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
 	docToValue(focusModeOptions.oledLockEnabled, doc, "focusModeOledLockEnabled");
 	docToValue(focusModeOptions.rgbLockEnabled, doc, "focusModeRgbLockEnabled");
+	docToValue(focusModeOptions.macroLockEnabled, doc, "focusModeMacroLockEnabled");
 	docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
@@ -1576,6 +1577,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
 	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
 	writeDoc(doc, "focusModeOledLockEnabled", focusModeOptions.oledLockEnabled);
+	writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
 	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
 	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
