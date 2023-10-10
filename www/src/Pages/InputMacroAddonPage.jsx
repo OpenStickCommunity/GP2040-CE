@@ -42,7 +42,7 @@ const schema = yup.object().shape({
 	InputMacroAddonEnabled: yup.number(),
 });
 
-const MACRO_INPUTS_MAX = 50;
+const MACRO_INPUTS_MAX = 30;
 
 const defaultMacroInput = { buttonMask: 0, duration: 16666, waitDuration: 0 };
 
