@@ -18,19 +18,19 @@ export const analogmodScheme = {
 	factorTilt1LeftX: yup
 		.number()
 		.label('Tilt 1 Factor Left X')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
 	factorTilt1LeftY: yup
 		.number()
 		.label('Tilt 1 Factor Left Y')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
 	factorTilt1RightX: yup
 		.number()
 		.label('Tilt 1 Factor Right X')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
 	factorTilt1RightY: yup
 		.number()
 		.label('Tilt 1 Factor Right Y')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
 	tilt2Pin: yup
 		.number()
 		.label('Tilt 2 Pin')
@@ -38,19 +38,19 @@ export const analogmodScheme = {
 	factorTilt2LeftX: yup
 		.number()
 		.label('Tilt 2 Factor Left X')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
 	factorTilt2LeftY: yup
 		.number()
 		.label('Tilt 2 Factor Left Y')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
 	factorTilt2RightX: yup
 		.number()
 		.label('Tilt 2 Factor Right X')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
 	factorTilt2RightY: yup
 		.number()
 		.label('Tilt 2 Factor Right Y')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
 	analogmodLeftAnalogUpPin: yup
 		.number()
 		.label('AnalogMod Left Analog Up Pin')
@@ -116,15 +116,15 @@ export const analogmodScheme = {
 export const analogmodState = {
 	AnalogModInputEnabled: 0,
 	tilt1Pin: -1,
-	factorTilt1LeftX: -1,
-	factorTilt1LeftY: -1,
-	factorTilt1RightX: -1,
-	factorTilt1ightY: -1,
+	factorTilt1LeftX: 0,
+	factorTilt1LeftY: 0,
+	factorTilt1RightX: 0,
+	factorTilt1RightY: 0,
 	tilt2Pin: -1,
-	factorTilt2LeftX: -1,
-	factorTilt2LeftY: -1,
-	factorTilt2RightX: -1,
-	factorTilt2RightY: -1,
+	factorTilt2LeftX: 0,
+	factorTilt2LeftY: 0,
+	factorTilt2RightX: 0,
+	factorTilt2RightY: 0,
 	analogmodLeftAnalogUpPin: -1,
 	analogmodLeftAnalogDownPin: -1,
 	analogmodLeftAnalogLeftPin: -1,
@@ -134,11 +134,11 @@ export const analogmodState = {
 	analogmodRightAnalogLeftPin: -1,
 	analogmodRightAnalogRightPin: -1,
 	rotate1Pin: -1,
-	factorRotate1Left: 0,
-	factorRotate1Right: 0,
+	factorRotate1Left: 15,
+	factorRotate1Right: 15,
 	rotate2Pin: -1,
-	factorRotate2Left: 0,
-	factorRotate2Right: 0,
+	factorRotate2Left: 15,
+	factorRotate2Right: 15,
 };
 
 const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {

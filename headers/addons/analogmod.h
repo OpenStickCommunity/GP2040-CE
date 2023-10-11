@@ -14,19 +14,19 @@
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_X
-#define TILT1_FACTOR_LEFT_X -1
+#define TILT1_FACTOR_LEFT_X 0
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_Y
-#define TILT1_FACTOR_LEFT_Y -1
+#define TILT1_FACTOR_LEFT_Y 0
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_X
-#define TILT1_FACTOR_RIGHT_X -1
+#define TILT1_FACTOR_RIGHT_X 0
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_Y
-#define TILT1_FACTOR_RIGHT_Y -1
+#define TILT1_FACTOR_RIGHT_Y 0
 #endif
 
 #ifndef PIN_TILT_2
@@ -34,19 +34,19 @@
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_X
-#define TILT2_FACTOR_LEFT_X -1
+#define TILT2_FACTOR_LEFT_X 0
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_Y
-#define TILT2_FACTOR_LEFT_Y -1
+#define TILT2_FACTOR_LEFT_Y 0
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_X
-#define TILT2_FACTOR_RIGHT_X -1
+#define TILT2_FACTOR_RIGHT_X 0
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_Y
-#define TILT2_FACTOR_RIGHT_Y -1
+#define TILT2_FACTOR_RIGHT_Y 0
 #endif
 
 
@@ -87,11 +87,11 @@
 #endif
 
 #ifndef ROTATE1_FACTOR_LEFT
-#define ROTATE1_FACTOR_LEFT -1
+#define ROTATE1_FACTOR_LEFT 15
 #endif
 
 #ifndef ROTATE1_FACTOR_RIGHT
-#define ROTATE1_FACTOR_RIGHT -1
+#define ROTATE1_FACTOR_RIGHT 15
 #endif
 
 #ifndef PIN_ROTATE_2
@@ -99,11 +99,11 @@
 #endif
 
 #ifndef ROTATE2_FACTOR_LEFT
-#define ROTATE2_FACTOR_LEFT -1
+#define ROTATE2_FACTOR_LEFT 15
 #endif
 
 #ifndef ROTATE2_FACTOR_RIGHT
-#define ROTATE2_FACTOR_RIGHT -1
+#define ROTATE2_FACTOR_RIGHT 15
 #endif
 
 #ifndef ANALOGMOD_SOCD_MODE
