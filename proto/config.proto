@@ -606,8 +606,8 @@ message MacroInput
 message Macro
 {
 	optional MacroType macroType = 1;
-	optional string macroLabel = 2 [(nanopb).max_length = 256];
-	repeated MacroInput macroInputs = 3 [(nanopb).max_count = 50];
+	optional string macroLabel = 2 [(nanopb).max_length = 64];
+	repeated MacroInput macroInputs = 3 [(nanopb).max_count = 30];
 	optional bool enabled = 4;
 	optional bool useMacroTriggerButton = 5;
 	optional int32 macroTriggerPin = 6 [default = -1];
