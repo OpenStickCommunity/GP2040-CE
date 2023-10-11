@@ -14,19 +14,19 @@
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_X
-#define TILT1_FACTOR_LEFT_X 0
+#define TILT1_FACTOR_LEFT_X 35
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_Y
-#define TILT1_FACTOR_LEFT_Y 0
+#define TILT1_FACTOR_LEFT_Y 45
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_X
-#define TILT1_FACTOR_RIGHT_X 0
+#define TILT1_FACTOR_RIGHT_X 35
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_Y
-#define TILT1_FACTOR_RIGHT_Y 0
+#define TILT1_FACTOR_RIGHT_Y 170
 #endif
 
 #ifndef PIN_TILT_2
@@ -34,19 +34,19 @@
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_X
-#define TILT2_FACTOR_LEFT_X 0
+#define TILT2_FACTOR_LEFT_X 65
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_Y
-#define TILT2_FACTOR_LEFT_Y 0
+#define TILT2_FACTOR_LEFT_Y 35
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_X
-#define TILT2_FACTOR_RIGHT_X 0
+#define TILT2_FACTOR_RIGHT_X 30
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_Y
-#define TILT2_FACTOR_RIGHT_Y 0
+#define TILT2_FACTOR_RIGHT_Y 30
 #endif
 
 

@@ -239,15 +239,15 @@
 
 // ANALOGMOD Add-on Options
 #define PIN_TILT_1 -1
-#define TILT1_FACTOR_LEFT_X  0  //Default value for the TILT button to function.
-#define TILT1_FACTOR_LEFT_Y  0  //Default value for the TILT button to function.
-#define TILT1_FACTOR_RIGHT_X 0  //Default value for the TILT button to function.
-#define TILT1_FACTOR_RIGHT_Y 0  //Default value for the TILT button to function.
+#define TILT1_FACTOR_LEFT_X  35  //Default value for the TILT button to function.
+#define TILT1_FACTOR_LEFT_Y  45  //Default value for the TILT button to function.
+#define TILT1_FACTOR_RIGHT_X 35  //Default value for the TILT button to function.
+#define TILT1_FACTOR_RIGHT_Y 170 //Default value for the TILT button to function.
 #define PIN_TILT_2 -1
-#define TILT2_FACTOR_LEFT_X  0  //Default value for the TILT button to function.
-#define TILT2_FACTOR_LEFT_Y  0  //Default value for the TILT button to function.
-#define TILT2_FACTOR_RIGHT_X 0  //Default value for the TILT button to function.
-#define TILT2_FACTOR_RIGHT_Y 0  //Default value for the TILT button to function.
+#define TILT2_FACTOR_LEFT_X  65  //Default value for the TILT button to function.
+#define TILT2_FACTOR_LEFT_Y  35  //Default value for the TILT button to function.
+#define TILT2_FACTOR_RIGHT_X 30  //Default value for the TILT button to function.
+#define TILT2_FACTOR_RIGHT_Y 30  //Default value for the TILT button to function.
 #define PIN_ANALOGMOD_LEFT_ANALOG_UP -1
 #define PIN_ANALOGMOD_LEFT_ANALOG_DOWN -1
 #define PIN_ANALOGMOD_LEFT_ANALOG_LEFT -1
