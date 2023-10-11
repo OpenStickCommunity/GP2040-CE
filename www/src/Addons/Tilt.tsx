@@ -18,19 +18,19 @@ export const tiltScheme = {
 	factorTilt1LeftX: yup
 		.number()
 		.label('Tilt 1 Factor Left X')
-		.validateRangeWhenValue('TiltInputEnabled', 0, 200),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt1LeftY: yup
 		.number()
 		.label('Tilt 1 Factor Left Y')
-		.validateRangeWhenValue('TiltInputEnabled', 0, 200),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt1RightX: yup
 		.number()
 		.label('Tilt 1 Factor Right X')
-		.validateRangeWhenValue('TiltInputEnabled', 0, 200),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt1RightY: yup
 		.number()
 		.label('Tilt 1 Factor Right Y')
-		.validateRangeWhenValue('TiltInputEnabled', 0, 200),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	tilt2Pin: yup
 		.number()
 		.label('Tilt 2 Pin')
@@ -38,19 +38,19 @@ export const tiltScheme = {
 	factorTilt2LeftX: yup
 		.number()
 		.label('Tilt 2 Factor Left X')
-		.validateRangeWhenValue('TiltInputEnabled', 0, 200),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt2LeftY: yup
 		.number()
 		.label('Tilt 2 Factor Left Y')
-		.validateRangeWhenValue('TiltInputEnabled', 0, 200),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt2RightX: yup
 		.number()
 		.label('Tilt 2 Factor Right X')
-		.validateRangeWhenValue('TiltInputEnabled', 0, 200),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt2RightY: yup
 		.number()
 		.label('Tilt 2 Factor Right Y')
-		.validateRangeWhenValue('TiltInputEnabled', 0, 200),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	tiltLeftAnalogUpPin: yup
 		.number()
 		.label('Tilt Left Analog Up Pin')
