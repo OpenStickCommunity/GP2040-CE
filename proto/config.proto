@@ -593,6 +593,7 @@ message FocusModeOptions
 	optional bool oledLockEnabled = 4;
 	optional bool rgbLockEnabled = 5;
 	optional bool buttonLockEnabled = 6;
+	optional bool macroLockEnabled = 7;
 }
 
 message MacroInput

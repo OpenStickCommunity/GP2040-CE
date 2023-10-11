@@ -464,6 +464,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		FocusModeAddonEnabled: 1,
 		focusModeOledLockEnabled: 0,
 		focusModeRgbLockEnabled: 0,
+		focusModeMacroLockEnabled: 0,
 		BuzzerSpeakerAddonEnabled: 1,
 		BootselButtonAddonEnabled: 1,
 		DualDirectionalInputEnabled: 1,
