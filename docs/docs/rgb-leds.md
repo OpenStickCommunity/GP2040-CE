@@ -19,7 +19,11 @@ The exception to this are [Player LEDs](add-ons/player-number.md), which can use
 | `["S1", "S2", "L1"]` | Pressed Parameter Up |
 | `["S1", "S2", "L2"]` | Pressed Parameter Down |
 
-?> The `LED Parameter` hotkeys may affect color, speed or theme depending on the current RGB LED animation. The `Pressed Parameter` options will change the colors/effects for the on-press animations.
+:::note
+
+The `LED Parameter` hotkeys may affect color, speed or theme depending on the current RGB LED animation. The `Pressed Parameter` options will change the colors/effects for the on-press animations.
+
+:::
 
 ## RGB LED Animations
 

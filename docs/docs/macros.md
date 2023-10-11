@@ -27,7 +27,11 @@ This is the name of the macro and is optional.
 - `Off` - Additional inputs from user will be sent as the macro continues to execute, resulting in a blend of macro and user inputs.
 - `On` - Filters only the macro inputs through and excludes any additional user gamepad inputs
 
-?> This option is **only** available when `Interruptible` is enabled.
+:::note
+
+This option is **only** available when `Interruptible` is enabled.
+
+:::
 
 ### Show Frames
 
@@ -61,7 +65,11 @@ Each input line is composed of the following elements from left to right.
 - Inputs - The inputs to be held during the execution of the input line.
 - Post Input Wait Duration - The duration in-between when that input line finishes executing and when the next line will start executing. (Maximum 4,294,967ms or 268,435 frames)
 
-?> To delete an input line, double-click the "x" button.
+:::note
+
+To delete an input line, double-click the "x" button.
+
+:::
 
 ## Note
 

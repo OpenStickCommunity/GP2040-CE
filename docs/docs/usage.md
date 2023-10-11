@@ -2,7 +2,11 @@
 
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
 
-!> The v0.5+ release has some breaking changes to boards other than the Raspberry Pi Pico. If you are using such a board, do not update from an older version unless you have a backup .uf2 from a known good version, or you know what you're doing.
+:::caution
+
+The v0.5+ release has some breaking changes to boards other than the Raspberry Pi Pico. If you are using such a board, do not update from an older version unless you have a backup .uf2 from a known good version, or you know what you're doing.
+
+:::
 
 ## Buttons
 
@@ -27,7 +31,11 @@ GP2040-CE uses generic button labeling for gamepad state, which is then converte
 
 If your controller is missing dedicated buttons for any specific inputs, check the [Hotkeys page](hotkeys) on how to map a button combination that will emulate those missing inputs.
 
-?> Unlike other controllers, Keyboard gets different keys for directional buttons. <br /> You can change the key mappings for Keyboard mode in [Webconfig mode > Configuration > Keyboard Mapping](web-configurator.md#keyboard-mapping)
+:::note
+
+Unlike other controllers, Keyboard gets different keys for directional buttons. You can change the key mappings for Keyboard mode in [Webconfig mode > Configuration > Keyboard Mapping](web-configurator.md#keyboard-mapping)
+
+:::
 
 | Direction | Keyboard    |
 | --------- | ----------- |
@@ -60,7 +68,11 @@ GP2040-CE is compatible with a number of systems and input modes. To change the 
 | PS4             |  `["B4"]`   |
 | Keyboard        |  `["R2"]`   |
 
-?> Input mode is saved across power cycles.
+:::note
+
+Input mode is saved across power cycles.
+
+:::
 
 ## Hotkeys
 
@@ -79,7 +91,11 @@ A number of hotkeys are enabled by default and if you are encountering issues wi
 | [SOCD Last Wins](hotkeys.md#socd-last-win)        | `["S2","A1","Left"]`  |
 | [SOCD Invert Y Axis](hotkeys.md#invert-y-axis)    | `["S2","A1","Right"]` |
 
-?> Selected D-Pad mode and SOCD cleaning mode are saved across power cycles.
+:::note
+
+Selected D-Pad mode and SOCD cleaning mode are saved across power cycles.
+
+:::
 
 ## Add-Ons and Additional Features
 

@@ -82,7 +82,11 @@ This hotkey changes the SOCD cleaning method to prioritize the first directional
 
 This hotkey changes the SOCD cleaning method to not resolve any directional inputs on both the X-axis and Y-axis when both directions are pressed simultaneously. The controller will send both directional inputs. 
 
-?> This cleaning mode is only available in XInput mode as PS3/DirectInput, PS4 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.
+:::note
+
+This cleaning mode is only available in XInput mode as PS3/DirectInput, PS4 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.
+
+:::
 
 | 1st Input + 2nd Input |     Result     |
 |:---------------------:|:--------------:|
