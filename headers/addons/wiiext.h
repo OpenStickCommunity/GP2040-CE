@@ -297,6 +297,8 @@ private:
     bool dpadLeft   = false;
     bool dpadRight  = false;
 
+    bool isAnalogTriggers = false;
+
     uint16_t triggerLeft  = 0;
     uint16_t triggerRight = 0;
     uint16_t lastTriggerLeft  = 0;
