@@ -553,6 +553,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, oledLockEnabled, !!FOCUS_MODE_OLED_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, rgbLockEnabled, !!FOCUS_MODE_RGB_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
 
     // PS Passthrough
     INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, enabled, PSPASSTHROUGH_ENABLED);

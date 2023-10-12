@@ -5,8 +5,7 @@
 #include "hardware/gpio.h"
 
 bool InputMacro::available() {
-    inputMacroOptions = Storage::getInstance().getAddonOptions().macroOptions;
-	return inputMacroOptions.enabled;
+    return Storage::getInstance().getAddonOptions().macroOptions.enabled;
 }
 
 void InputMacro::setup() {
@@ -29,6 +28,8 @@ void InputMacro::setup() {
 
 void InputMacro::preprocess()
 {
+    FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
+    if (focusModeOptions.enabled && focusModeOptions.macroLockEnabled) return;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	uint32_t allPins = ~gpio_get_all();
 

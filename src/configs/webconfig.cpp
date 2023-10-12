@@ -1138,6 +1138,7 @@ std::string setAddonOptions()
 	docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
 	docToValue(focusModeOptions.oledLockEnabled, doc, "focusModeOledLockEnabled");
 	docToValue(focusModeOptions.rgbLockEnabled, doc, "focusModeRgbLockEnabled");
+	docToValue(focusModeOptions.macroLockEnabled, doc, "focusModeMacroLockEnabled");
 	docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
@@ -1663,6 +1664,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
 	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
 	writeDoc(doc, "focusModeOledLockEnabled", focusModeOptions.oledLockEnabled);
+	writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
 	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
 	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
@@ -1683,7 +1685,9 @@ std::string setMacroAddonOptions()
 	int macrosIndex = 0;
 
 	for (JsonObject macro : macros) {
-		strcpy(macroOptions.macroList[macrosIndex].macroLabel, macro["macroLabel"]);
+		size_t macroLabelSize = sizeof(macroOptions.macroList[macrosIndex].macroLabel);
+		strncpy(macroOptions.macroList[macrosIndex].macroLabel, macro["macroLabel"], macroLabelSize - 1);
+		macroOptions.macroList[macrosIndex].macroLabel[macroLabelSize - 1] = '\0';
 		macroOptions.macroList[macrosIndex].macroType = macro["macroType"].as<MacroType>();
 		macroOptions.macroList[macrosIndex].useMacroTriggerButton = macro["useMacroTriggerButton"].as<bool>();
 		macroOptions.macroList[macrosIndex].macroTriggerPin = macro["macroTriggerPin"].as<int>();
@@ -1699,11 +1703,11 @@ std::string setMacroAddonOptions()
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].duration = input["duration"].as<uint32_t>();
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].waitDuration = input["waitDuration"].as<uint32_t>();
 			macroOptions.macroList[macrosIndex].macroInputs[macroInputsIndex].buttonMask = input["buttonMask"].as<uint32_t>();
-			if (++macroInputsIndex > MAX_MACRO_INPUT_LIMIT) break;
+			if (++macroInputsIndex >= MAX_MACRO_INPUT_LIMIT) break;
 		}
 		macroOptions.macroList[macrosIndex].macroInputs_count = macroInputsIndex;
 
-		if (++macrosIndex > MAX_MACRO_LIMIT) break;
+		if (++macrosIndex >= MAX_MACRO_LIMIT) break;
 	}
 	
 	macroOptions.macroList_count = MAX_MACRO_LIMIT;
