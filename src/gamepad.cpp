@@ -617,8 +617,8 @@ PS4Report *Gamepad::getPS4Report()
 
 	if (hasAnalogTriggers)
 	{
-		ps4Report.left_trigger = pressedL2() ? 0xFF : state.lt;
-		ps4Report.right_trigger = pressedR2() ? 0xFF : state.rt;
+		ps4Report.left_trigger = state.lt;
+		ps4Report.right_trigger = state.rt;
 	}
 	else
 	{
