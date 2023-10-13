@@ -47,7 +47,7 @@ docSidebar: [
 	{
 	type: 'category',
 	label: 'Controller Building',
-	collapsed: false,
+	collapsed: true,
 	items: [ 
 		'controller-build/wiring',
 	]
