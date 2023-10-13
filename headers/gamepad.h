@@ -21,9 +21,6 @@
 extern uint32_t getMillis();
 extern uint64_t getMicro();
 
-#define GAMEPAD_POLL_MS 1
-#define GAMEPAD_POLL_MICRO 100
-
 #define GAMEPAD_FEATURE_REPORT_SIZE 32
 
 struct GamepadButtonMapping
@@ -154,8 +151,8 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	GamepadDebouncer debouncer;
 	const uint8_t debounceMS;
+	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;
 	GamepadButtonMapping *mapDpadUp;

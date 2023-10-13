@@ -6,7 +6,7 @@ root = true
 [*]
 indent_style = tab
 indent_size = 2
-end_of_line = crlf
+end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
@@ -18,3 +18,6 @@ trim_trailing_whitespace = false
 
 [*.scss]
 end_of_line = lf
+
+[*.{js,jsx,ts,tsx}]
+quote_type = single

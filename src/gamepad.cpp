@@ -12,6 +12,10 @@
 #include "CRC32.h"
 
 #include "storagemanager.h"
+#include "system.h"
+
+// PS5 compatibility
+#include "ps4_driver.h"
 
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
@@ -95,6 +99,7 @@ void Gamepad::setup()
 {
 	// Configure pin mapping
 	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
+	const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
 	const auto convertPin = [](int32_t pin) -> uint8_t { return isValidPin(pin) ? pin : 0xff; };
 	mapDpadUp    = new GamepadButtonMapping(convertPin(pinMappings.pinDpadUp),		GAMEPAD_MASK_UP);
@@ -141,6 +146,9 @@ void Gamepad::setup()
 		gpio_set_dir(pinMappings.pinButtonFn, GPIO_IN); // Set as INPUT
 		gpio_pull_up(pinMappings.pinButtonFn);          // Set as PULLUP
 	}
+
+	// setup PS5 compatibility
+	PS4Data::getInstance().ps4ControllerType = gamepadOptions.ps4ControllerType;
 }
 
 /**
@@ -193,12 +201,12 @@ void Gamepad::process()
 			state.dpad |= mapDpadUp->buttonMask;
 	}
 
-	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
-
-	// SOCD cleaning first, allows for control over which diagonal to take/filter
+	// 4-way before SOCD, might have better history without losing any coherent functionality
 	if (options.fourWayMode) {
 		state.dpad = filterToFourWayMode(state.dpad);
 	}
+
+	state.dpad = runSOCDCleaner(resolveSOCDMode(options), state.dpad);
 
 	switch (options.dpadMode)
 	{
@@ -326,6 +334,7 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;  reqSave = true;break;
 		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; reqSave = true; break;
+		case HOTKEY_REBOOT_DEFAULT    : System::reboot(System::BootMode::DEFAULT); break;
 		case HOTKEY_CAPTURE_BUTTON    :
 			if (options.inputMode == INPUT_MODE_PS4 && options.switchTpShareForDs4) {
 				state.buttons |= GAMEPAD_MASK_A2;
@@ -554,8 +563,8 @@ XInputReport *Gamepad::getXInputReport()
 
 	if (hasAnalogTriggers)
 	{
-		xinputReport.lt = state.lt;
-		xinputReport.rt = state.rt;
+		xinputReport.lt = pressedL2() ? 0xFF : state.lt;
+		xinputReport.rt = pressedR2() ? 0xFF : state.rt;
 	}
 	else
 	{
@@ -597,8 +606,9 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.button_home     = pressedA1();
 	ps4Report.button_touchpad = options.switchTpShareForDs4 ? pressedS1() : pressedA2();
 
-	// report counter is 6 bits, but we circle 0-255
-	ps4Report.report_counter = last_report_counter++;
+	// report counter is 6 bits
+	last_report_counter = (last_report_counter+1) & 63;
+	ps4Report.report_counter = last_report_counter;
 
 	ps4Report.left_stick_x = static_cast<uint8_t>(state.lx >> 8);
 	ps4Report.left_stick_y = static_cast<uint8_t>(state.ly >> 8);

@@ -17,6 +17,10 @@
 #define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT
 #endif
 
+#ifndef DEFAULT_PS4CONTROLLER_TYPE
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
+#endif
+
 /* hotkeys */
 #ifndef HOTKEY_01_AUX_MASK
 #define HOTKEY_01_AUX_MASK 0
@@ -113,13 +117,13 @@
 #define HOTKEY_08_AUX_MASK 0
 #endif
 #ifndef HOTKEY_08_BUTTONS_MASK
-#define HOTKEY_08_BUTTONS_MASK 4608	// S2 | A1
+#define HOTKEY_08_BUTTONS_MASK 0
 #endif
 #ifndef HOTKEY_08_DPAD_MASK
-#define HOTKEY_08_DPAD_MASK 8		// Right
+#define HOTKEY_08_DPAD_MASK 0
 #endif
 #ifndef HOTKEY_08_ACTION
-#define HOTKEY_08_ACTION 10		// invert Y axis
+#define HOTKEY_08_ACTION 0
 #endif
 
 #ifndef HOTKEY_09_AUX_MASK

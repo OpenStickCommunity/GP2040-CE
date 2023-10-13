@@ -50,22 +50,20 @@ void BootselButtonAddon::setup() {
 void BootselButtonAddon::preprocess() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	if (isBootselPressed()) {
-		if (bootselButtonMap > (GAMEPAD_MASK_A2)) {
-			switch (bootselButtonMap) {
-				case (1U << 14):
-					gamepad->state.dpad |= GAMEPAD_MASK_UP;
-					break;
-				case (1U << 15):
-					gamepad->state.dpad |= GAMEPAD_MASK_DOWN;
-					break;
-				case (1U << 16):
-					gamepad->state.dpad |= GAMEPAD_MASK_LEFT;
-					break;
-				case (1U << 17):
-					gamepad->state.dpad |= GAMEPAD_MASK_RIGHT;
-					break;
-			}
+		switch (bootselButtonMap) {
+			case (GAMEPAD_MASK_DU):
+				gamepad->state.dpad |= GAMEPAD_MASK_UP;
+				break;
+			case (GAMEPAD_MASK_DD):
+				gamepad->state.dpad |= GAMEPAD_MASK_DOWN;
+				break;
+			case (GAMEPAD_MASK_DL):
+				gamepad->state.dpad |= GAMEPAD_MASK_LEFT;
+				break;
+			case (GAMEPAD_MASK_DR):
+				gamepad->state.dpad |= GAMEPAD_MASK_RIGHT;
+				break;
+			default: gamepad->state.buttons |= bootselButtonMap;
 		}
-		else gamepad->state.buttons |= bootselButtonMap;
 	}
 }

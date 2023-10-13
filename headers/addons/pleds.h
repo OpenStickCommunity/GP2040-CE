@@ -48,6 +48,9 @@ protected:
 	PLEDType type;
 	PWMPlayerLEDs *pwmLEDs = nullptr;
 	PLEDAnimationState animationState;
+
+private:
+	bool turnOffWhenSuspended;
 };
 
 #endif

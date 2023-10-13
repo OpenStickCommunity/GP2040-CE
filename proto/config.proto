@@ -14,6 +14,7 @@ message GamepadOptions
 	optional bool lockHotkeys = 7;
 	optional bool fourWayMode = 8;
 	optional uint32 profileNumber = 9;
+	optional PS4ControllerType ps4ControllerType = 10;
 }
 
 message KeyboardMapping
@@ -163,6 +164,7 @@ message DisplayOptions
 	optional bool invert = 16;
 	
 	optional int32 displaySaverTimeout = 17;
+	optional bool turnOffWhenSuspended = 18;
 }
 
 message LEDOptions
@@ -199,6 +201,8 @@ message LEDOptions
 	optional int32 pledPin3 = 28;
 	optional int32 pledPin4 = 29;
 	optional uint32 pledColor = 30;
+
+	optional bool turnOffWhenSuspended = 31;
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp
@@ -309,8 +313,11 @@ message SliderOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 pinLS = 2;
-	optional int32 pinRS = 3;
+	optional int32 pinSliderOne = 2;
+	optional int32 pinSliderTwo = 3;
+	optional DpadMode modeOne = 4;
+	optional DpadMode modeTwo = 5;
+	optional DpadMode modeZero = 6;
 }
 
 message SOCDSliderOptions
@@ -380,6 +387,15 @@ message TiltOptions
 	optional int32 tiltRightAnalogRightPin = 12;
 
 	optional SOCDMode tiltSOCDMode = 13;
+	
+	optional int32 factorTilt1LeftX =  14;
+	optional int32 factorTilt1LeftY =  15;
+	optional int32 factorTilt1RightX =  16;
+	optional int32 factorTilt1RightY =  17;
+	optional int32 factorTilt2LeftX =  18;
+	optional int32 factorTilt2LeftY =  19;
+	optional int32 factorTilt2RightX =  20;
+	optional int32 factorTilt2RightY =  21;
 }
 
 message BuzzerOptions
@@ -420,13 +436,130 @@ message PS4Options
 	optional bytes rsaRN = 12 [(nanopb).max_size = 256];
 }
 
+message PSPassthroughOptions
+{
+	optional bool enabled = 1;
+	optional int32 pinDplus = 2;
+	optional int32 pin5V = 3;
+}
+
 message WiiOptions
 {
+    message AnalogAxis
+    {
+        optional int32 axisType = 1;
+        optional int32 minRange = 2;
+        optional int32 maxRange = 3;
+    }
+
+    message StickOptions
+    {
+        optional AnalogAxis x = 1;
+        optional AnalogAxis y = 2;
+    }
+    
+	message NunchukOptions
+	{
+		optional int32 buttonC = 1;
+        optional int32 buttonZ = 2;
+        optional StickOptions stick = 3;
+	}
+
+	message ClassicOptions
+	{
+		optional int32 buttonA = 1;
+        optional int32 buttonB = 2;
+        optional int32 buttonX = 3;
+        optional int32 buttonY = 4;
+        optional int32 buttonL = 5;
+        optional int32 buttonZL = 6;
+        optional int32 buttonR = 7;
+        optional int32 buttonZR = 8;
+        optional int32 buttonMinus = 9;
+        optional int32 buttonPlus = 10;
+        optional int32 buttonHome = 11;
+        optional int32 buttonUp = 12;
+        optional int32 buttonDown = 13;
+        optional int32 buttonLeft = 14;
+        optional int32 buttonRight = 15;
+        optional StickOptions rightStick = 17;
+        optional StickOptions leftStick = 16;
+        optional AnalogAxis leftTrigger = 18;
+        optional AnalogAxis rightTrigger = 19;
+	}
+
+    message TaikoOptions 
+    {
+        optional int32 buttonKatLeft = 1;
+        optional int32 buttonKatRight = 2;
+        optional int32 buttonDonLeft = 3;
+        optional int32 buttonDonRight = 4;
+    }
+
+    message GuitarOptions
+    {
+        optional int32 buttonRed = 1;
+        optional int32 buttonGreen = 2;
+        optional int32 buttonYellow = 3;
+        optional int32 buttonBlue = 4;
+        optional int32 buttonOrange = 5;
+        optional int32 buttonPedal = 6;
+        optional int32 buttonMinus = 7;
+        optional int32 buttonPlus = 8;
+        optional int32 strumUp = 9;
+        optional int32 strumDown = 10;
+        optional StickOptions stick = 11;
+        optional AnalogAxis whammyBar = 12;
+    }
+
+    message DrumOptions
+    {
+        optional int32 buttonRed = 1;
+        optional int32 buttonGreen = 2;
+        optional int32 buttonYellow = 3;
+        optional int32 buttonBlue = 4;
+        optional int32 buttonOrange = 5;
+        optional int32 buttonPedal = 6;
+        optional int32 buttonMinus = 7;
+        optional int32 buttonPlus = 8;
+        optional StickOptions stick = 9;
+    }
+
+    message TurntableOptions
+    {
+        optional int32 buttonLeftRed = 1;
+        optional int32 buttonLeftGreen = 2;
+        optional int32 buttonLeftBlue = 3;
+        optional int32 buttonRightRed = 4;
+        optional int32 buttonRightGreen = 5;
+        optional int32 buttonRightBlue = 6;
+        optional int32 buttonMinus = 7;
+        optional int32 buttonPlus = 8;
+        optional int32 buttonEuphoria = 9;
+        optional StickOptions stick = 10;
+        optional AnalogAxis leftTurntable = 11;
+        optional AnalogAxis rightTurntable = 12;
+        optional AnalogAxis effects = 13;
+        optional AnalogAxis fader = 14;
+    }
+
+    message ControllerOptions
+    {
+        optional NunchukOptions nunchuk = 1;
+        optional ClassicOptions classic = 2;
+        optional TaikoOptions taiko = 3;
+        optional GuitarOptions guitar = 4;
+        optional DrumOptions drum = 5;
+        optional TurntableOptions turntable = 6;
+    }
+
 	optional bool enabled = 1;
 	optional int32 i2cBlock = 2;
 	optional int32 i2cSDAPin = 3;
 	optional int32 i2cSCLPin = 4;
 	optional int32 i2cSpeed = 5;
+
+    optional ControllerOptions controllers = 6;
 }
 
 message SNESOptions
@@ -453,6 +586,35 @@ message FocusModeOptions
 	optional bool oledLockEnabled = 4;
 	optional bool rgbLockEnabled = 5;
 	optional bool buttonLockEnabled = 6;
+	optional bool macroLockEnabled = 7;
+}
+
+message MacroInput
+{
+	optional uint32 buttonMask = 1;
+	optional uint32 duration = 2;
+	optional uint32 waitDuration = 3 [default = 0];
+}
+
+message Macro
+{
+	optional MacroType macroType = 1;
+	optional string macroLabel = 2 [(nanopb).max_length = 64];
+	repeated MacroInput macroInputs = 3 [(nanopb).max_count = 30];
+	optional bool enabled = 4;
+	optional bool useMacroTriggerButton = 5;
+	optional int32 macroTriggerPin = 6 [default = -1];
+	optional uint32 macroTriggerButton = 7;
+	optional bool exclusive = 8 [default = true];
+	optional bool interruptible = 9 [default = true];
+	optional bool showFrames = 10 [default = false];
+}
+
+message MacroOptions
+{
+	optional bool enabled = 1;
+	optional int32 pin = 2;
+	repeated Macro macroList = 3 [(nanopb).max_count = 6];
 }
 
 message AddonOptions
@@ -475,6 +637,8 @@ message AddonOptions
 	optional FocusModeOptions focusModeOptions = 16;
 	optional KeyboardHostOptions keyboardHostOptions = 17;
 	optional TiltOptions tiltOptions = 18;
+	optional PSPassthroughOptions psPassthroughOptions = 19;
+	optional MacroOptions macroOptions = 20;
 }
 
 message Config
@@ -491,4 +655,6 @@ message Config
 	optional AddonOptions addonOptions = 9;
 	optional ForcedSetupOptions forcedSetupOptions = 10;
 	optional ProfileOptions profileOptions = 11;
+	
+	optional string boardConfig = 12 [(nanopb).max_length = 63];
 }

@@ -31,6 +31,7 @@
 #include "addons/turbo.h"
 #include "addons/slider_socd.h"
 #include "addons/wiiext.h"
+#include "addons/input_macro.h"
 #include "addons/snes_input.h"
 #include "addons/tilt.h"
 
@@ -143,7 +144,9 @@ PinMappings& Storage::getProfilePinMappings() {
 
 void Storage::setProfile(const uint32_t profileNum)
 {
+	if (profileNum < 1 || profileNum > 4) return;
 	setFunctionalPinMappings(profileNum);
+	this->config.gamepadOptions.profileNumber = profileNum;
 }
 
 void Storage::setFunctionalPinMappings(const uint32_t profileNum)

@@ -25,11 +25,13 @@
 #include "addons/playernum.h"
 #include "addons/pleds.h"
 #include "addons/ps4mode.h"
+#include "addons/pspassthrough.h"
 #include "addons/reverse.h"
 #include "addons/slider_socd.h"
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/input_macro.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -88,6 +90,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     const uint8_t emptyByteArray[0] = {};
 
     INIT_UNSET_PROPERTY_STR(config, boardVersion, GP2040VERSION);
+    INIT_UNSET_PROPERTY_STR(config, boardConfig, GP2040_BOARDCONFIG);
 
     // gamepadOptions
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
@@ -98,6 +101,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
     INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, profileNumber, 1);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerType, DEFAULT_PS4CONTROLLER_TYPE);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -203,6 +207,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, i2cSpeed, I2C_SPEED);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayout, BUTTON_LAYOUT);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutRight, BUTTON_LAYOUT_RIGHT);
+    INIT_UNSET_PROPERTY(config.displayOptions, turnOffWhenSuspended, DISPLAY_TURN_OFF_WHEN_SUSPENDED);
 
     ButtonLayoutParamsLeft& paramsLeft = config.displayOptions.buttonLayoutCustomOptions.paramsLeft;
     INIT_UNSET_PROPERTY(paramsLeft, layout, BUTTON_LAYOUT);
@@ -274,6 +279,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, ledsPerButton, LEDS_PER_PIXEL);
     INIT_UNSET_PROPERTY(config.ledOptions, brightnessMaximum, LED_BRIGHTNESS_MAXIMUM);
     INIT_UNSET_PROPERTY(config.ledOptions, brightnessSteps, LED_BRIGHTNESS_STEPS);
+    INIT_UNSET_PROPERTY(config.ledOptions, turnOffWhenSuspended, LEDS_TURN_OFF_WHEN_SUSPENDED);
 
     INIT_UNSET_PROPERTY(config.ledOptions, indexUp, LEDS_DPAD_UP);
     INIT_UNSET_PROPERTY(config.ledOptions, indexDown, LEDS_DPAD_DOWN);
@@ -391,8 +397,11 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.sliderOptions
     INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, enabled, !!JSLIDER_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinLS, PIN_SLIDER_LS);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinRS, PIN_SLIDER_RS);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinSliderOne, PIN_SLIDER_ONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinSliderTwo, PIN_SLIDER_TWO);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeZero, SLIDER_MODE_ZERO);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeOne, SLIDER_MODE_ONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeTwo, SLIDER_MODE_TWO);
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
@@ -432,7 +441,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 		// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1Pin, PIN_TILT_1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1LeftX, TILT1_FACTOR_LEFT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1LeftY, TILT1_FACTOR_LEFT_Y);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1RightX, TILT1_FACTOR_RIGHT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1RightY, TILT1_FACTOR_RIGHT_Y);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2Pin, PIN_TILT_2);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2LeftX, TILT2_FACTOR_LEFT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2LeftY, TILT2_FACTOR_LEFT_Y);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2RightX, TILT2_FACTOR_RIGHT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2RightY, TILT2_FACTOR_RIGHT_Y);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogDownPin, PIN_TILT_LEFT_ANALOG_DOWN);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogUpPin, PIN_TILT_LEFT_ANALOG_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogLeftPin, PIN_TILT_LEFT_ANALOG_LEFT);
@@ -514,6 +531,16 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, oledLockEnabled, !!FOCUS_MODE_OLED_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, rgbLockEnabled, !!FOCUS_MODE_RGB_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
+
+    // PS Passthrough
+    INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, enabled, PSPASSTHROUGH_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, pinDplus, PSPASSTHROUGH_PIN_DPLUS);
+    INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, pin5V, PSPASSTHROUGH_PIN_5V);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, !!INPUT_MACRO_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, pin, INPUT_MACRO_PIN);
+    config.addonOptions.macroOptions.macroList_count = 6;
 }
 
 
@@ -687,18 +714,47 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
         // Not implemented for extension fields
         assert(PB_LTYPE(iter.type) != PB_LTYPE_EXTENSION);
 
-        if (PB_HTYPE(iter.type) == PB_HTYPE_OPTIONAL && iter.pSize)
+        switch (PB_HTYPE(iter.type))
         {
-            *reinterpret_cast<char*>(iter.pSize) = true;
-        }
+            case PB_HTYPE_OPTIONAL:
+            {
+                *reinterpret_cast<bool*>(iter.pSize) = true;
 
-        // Recurse into sub-messages
-        if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
-        {
-            assert(iter.submsg_desc);
-            assert(iter.pData);
+                // Recurse into sub-messages
+                if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
+                {
+                    assert(iter.submsg_desc);
+                    assert(iter.pData);
 
-            setHasFlags(iter.submsg_desc, iter.pData);
+                    setHasFlags(iter.submsg_desc, iter.pData);
+                }
+                break;
+            }
+
+            case PB_HTYPE_REPEATED:
+            {
+                // Recurse into sub-messages
+                if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
+                {
+                    assert(iter.submsg_desc);
+                    assert(iter.pData);
+                    assert(iter.pSize);
+
+                    const pb_size_t array_size = *reinterpret_cast<pb_size_t*>(iter.pSize);
+                    pb_byte_t* item_ptr = reinterpret_cast<pb_byte_t*>(iter.pData);
+                    for (pb_size_t index = 0; index < array_size; ++index)
+                    {
+                        setHasFlags(iter.submsg_desc, item_ptr);
+                        item_ptr += iter.data_size;
+                    }
+                }
+                break;
+            }
+
+            default:
+                // We do not support any other htypes of fields
+                assert(false);
+                continue;
         }
     } while (pb_field_iter_next(&iter));
 }

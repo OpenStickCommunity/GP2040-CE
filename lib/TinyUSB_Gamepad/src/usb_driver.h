@@ -16,7 +16,8 @@ typedef enum
 
 InputMode get_input_mode(void);
 bool get_usb_mounted(void);
+bool get_usb_suspended(void);
 void initialize_driver(InputMode mode);
 void receive_report(uint8_t *buffer);
-void send_report(void *report, uint16_t report_size);
+bool send_report(void *report, uint16_t report_size);
 

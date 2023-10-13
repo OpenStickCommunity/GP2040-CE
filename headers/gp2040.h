@@ -19,7 +19,6 @@ public:
     void setup();           // setup core0
     void run();             // loop core0
 private:
-    uint64_t nextRuntime;
     Gamepad snapshot;
     AddonManager addons;
 
@@ -46,7 +45,7 @@ private:
         SET_INPUT_MODE_KEYBOARD,
         SET_INPUT_MODE_PS4
     };
-    static BootAction getBootAction();
+    BootAction getBootAction();
 };
 
 #endif

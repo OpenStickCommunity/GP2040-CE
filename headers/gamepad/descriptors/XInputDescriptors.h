@@ -51,7 +51,7 @@ static const uint8_t xinput_string_manfacturer[] = "Microsoft";
 static const uint8_t xinput_string_product[]     = "XInput STANDARD GAMEPAD";
 static const uint8_t xinput_string_version[]     = "1.0";
 
-static const uint8_t *xinput_string_descriptors[] =
+static const uint8_t *xinput_string_descriptors[] __attribute__((unused)) =
 {
 	xinput_string_language,
 	xinput_string_manfacturer,
