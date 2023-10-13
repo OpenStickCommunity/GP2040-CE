@@ -3,11 +3,16 @@ import styles from './download.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload, faGamepad, faGlobe, faX } from '@fortawesome/free-solid-svg-icons';
 
+const rootRepoURL = "https://github.com/OpenStickCommunity/GP2040-CE/releases/download/";
+const releaseVersion = "0.7.4";
+const downloadURL = rootRepoURL + "v" + releaseVersion + "/GP2040-CE_" + releaseVersion + "_"
+
+
 const configData = {
 	'Microcontroller Boards': [
 		{
 			name: 'Raspberry Pi Pico',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_Pico.uf2',
+			configName: 'Pico',
 			pinout: '/#/wiring?id=raspberry-pi-pico',
 			website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
 			image: require('@site/docs/assets/boards/Pico.jpg').default,
@@ -22,7 +27,7 @@ const configData = {
 		},
 		{
 			name: 'Raspberry Pi Pico W',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_PicoW.uf2',
+			configName: 'PicoW',
 			pinout: '/#/wiring?id=raspberry-pi-pico',
 			website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
 			image: require('@site/docs/assets/boards/PicoW.jpg').default,
@@ -36,7 +41,7 @@ const configData = {
 		},
 		{
 			name: 'SparkFun Pro Micro',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_SparkFunProMicro.uf2',
+			configName: 'SparkFunProMicro',
 			pinout: '/#/wiring?id=sparkfun-pro-micro-rp2040',
 			website: 'https://learn.sparkfun.com/tutorials/pro-micro-rp2040-hookup-guide',
 			image: require('@site/docs/assets/boards/SparkFunProMicro.jpg').default,
@@ -54,7 +59,7 @@ const configData = {
 		},
 		{
 			name: 'Waveshare RP2040-Zero',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_WaveshareZero.uf2',
+			configName: 'WaveshareZero',
 			pinout: '/#/wiring?id=waveshare-rp2040-zero',
 			website: 'https://www.waveshare.com/wiki/RP2040-Zero',
 			image: require('@site/docs/assets/boards/WaveshareZero.jpg').default,
@@ -73,7 +78,7 @@ const configData = {
 		},
 		{
 			name: 'Adafruit KB2040',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_KB2040.uf2',
+			configName: 'KB2040',
 			pinout: '/#/wiring?id=adafruit-kb2040',
 			website: 'https://learn.adafruit.com/adafruit-kb2040',
 			image: require('@site/docs/assets/boards/KB2040.jpg').default,
@@ -89,7 +94,7 @@ const configData = {
 	'Community Devices': [
 		{
 			name: 'Alpaca-OwO',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_AlpacaOwO.uf2',
+			configName: 'AlpacaOwO',
 			pinout: null,
 			website: 'https://github.com/Project-Alpaca/Alpaca-OwO/',
 			image: require('@site/docs/assets/boards/AlpacaOwO.jpg').default,
@@ -102,7 +107,7 @@ const configData = {
 		},
 		{
 			name: 'BatiKING DURAL',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_DURAL.uf2',
+			configName: 'DURAL',
 			pinout: null,
 			website: 'https://github.com/BatiKING/DURAL_DIY',
 			image: require('@site/docs/assets/boards/DURAL.jpg').default,
@@ -115,7 +120,7 @@ const configData = {
 		},
 		{
 			name: 'Flatbox Rev 4',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_FlatboxRev4.uf2',
+			configName: 'FlatboxRev4',
 			pinout: null,
 			website: 'https://github.com/jfedor2/flatbox/tree/master/hardware-rev4',
 			image: require('@site/docs/assets/boards/FlatboxRev4.jpg').default,
@@ -128,7 +133,7 @@ const configData = {
 		},
 		{
 			name: 'Flatbox Rev 5',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_FlatboxRev5.uf2',
+			configName: 'FlatboxRev5',
 			pinout: null,
 			website: 'https://github.com/jfedor2/flatbox/tree/master/hardware-rev5',
 			image: require('@site/docs/assets/boards/FlatboxRev5.jpg').default,
@@ -141,7 +146,7 @@ const configData = {
 		},
 		{
 			name: 'Flatbox Rev 5 RGB',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_FlatboxRev5RGB.uf2',
+			configName: 'FlatboxRev5RGB',
 			pinout: null,
 			website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/Flatbox%20Rev%205%20RGB',
 			image: require('@site/docs/assets/boards/FlatboxRev5RGB.jpg').default,
@@ -154,7 +159,7 @@ const configData = {
 		},
 		{
 			name: 'GP2040-CE Keyboard Converter',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_KeyboardConverter.uf2',
+			configName: 'KeyboardConverter',
 			pinout: null,
 			website: 'https://github.com/OpenStickCommunity/Hardware/blob/main/GP2040%20Keyboard%20Converter/Waveshare%20Zero-PCB/README.md',
 			image: require('@site/docs/assets/boards/KeyboardConverter.jpg').default,
@@ -167,7 +172,7 @@ const configData = {
 		},
 		{
 			name: 'Mavercade Keebfighter',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_MavercadeKeebfighter.uf2',
+			configName: 'MavercadeKeebfighter',
 			pinout: null,
 			website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/MavercadeKeebfighter',
 			image: require('@site/docs/assets/boards/MavercadeKeebfighter.jpg').default,
@@ -180,20 +185,20 @@ const configData = {
 		},
 		{
 			name: 'PicoAnn',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_PicoAnn.uf2',
+			configName: 'PicoAnn',
 			pinout: null,
 			website: '',
 			image: require('@site/docs/assets/boards/PicoAnn.jpg').default,
 			category: "legacy",
 			desc: () => (
 				<p>
-					
+
 				</p>
 			),
 		},
 		{
 			name: 'Pico Fighting Board',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_PicoFightingBoard.uf2',
+			configName: 'PicoFightingBoard',
 			pinout: null,
 			website: 'https://github.com/FeralAI/PicoFightingBoard',
 			image: require('@site/docs/assets/boards/PicoFightingBoard.jpg').default,
@@ -206,7 +211,7 @@ const configData = {
 		},
 		{
 			name: 'Reflex CTRL SNES',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_ReflexCtrlSNES.uf2',
+			configName: 'ReflexCtrlSNES',
 			pinout: null,
 			website: 'https://github.com/misteraddons/Reflex-CTRL',
 			image: require('@site/docs/assets/boards/ReflexCtrlSNES.jpg').default,
@@ -219,7 +224,7 @@ const configData = {
 		},
 		{
 			name: 'ReflexEncoder',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_ReflexEncoder.uf2',
+			configName: 'ReflexEncoder',
 			pinout: null,
 			website: 'https://github.com/misteraddons/ReflexFightingBoard',
 			image: require('@site/docs/assets/boards/ReflexEncoder.jpg').default,
@@ -232,7 +237,7 @@ const configData = {
 		},
 		{
 			name: 'RP2040 Advanced Breakout',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_RP2040AdvancedBreakoutBoard.uf2',
+			configName: 'RP2040AdvancedBreakoutBoard',
 			pinout: null,
 			website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Advanced%20Breakout%20Board',
 			image: require('@site/docs/assets/boards/RP2040AdvancedBreakoutBoard.jpg').default,
@@ -244,8 +249,8 @@ const configData = {
 			),
 		},
 		{
-			name: 'RP2040MiniBreakoutBoard',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_RP2040MiniBreakoutBoard.uf2',
+			name: 'RP2040 Mini Breakout Board',
+			configName: 'RP2040MiniBreakoutBoard',
 			pinout: null,
 			website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Mini%20Breakout%20Board',
 			image: require('@site/docs/assets/boards/RP2040MiniBreakoutBoard.jpg').default,
@@ -258,7 +263,7 @@ const configData = {
 		},
 		{
 			name: 'ScrubTier BentoBox',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_BentoBox.uf2',
+			configName: 'BentoBox',
 			pinout: null,
 			website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/BentoBox',
 			image: require('@site/docs/assets/boards/BentoBox.jpg').default,
@@ -271,7 +276,7 @@ const configData = {
 		},
 		{
 			name: 'SGF Flatbox',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_SGFDevices.uf2',
+			configName: 'SGFDevices',
 			pinout: null,
 			website: 'https://github.com/sgfdevices/SGFlatbox',
 			image: require('@site/docs/assets/boards/SGFDevices.jpg').default,
@@ -284,7 +289,7 @@ const configData = {
 		},
 		{
 			name: 'Stress',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_Stress.uf2',
+			configName: 'Stress',
 			pinout: null,
 			website: 'https://github.com/GroooveBob/Stress',
 			image: require('@site/docs/assets/boards/Stress.jpg').default,
@@ -297,47 +302,47 @@ const configData = {
 		},
 		{
 			name: 'thnikk Fightboard V3',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_FightboardV3.uf2',
+			configName: 'FightboardV3',
 			pinout: null,
 			website: 'https://docs.thnikk.moe/models/fightboard/v3.html',
 			image: require('@site/docs/assets/boards/FightboardV3.jpg').default,
 			category: "legacy",
 			desc: () => (
 				<p>
-					
+					Configuration for the Fightboard v3
 				</p>
 			),
 		},
 		{
 			name: 'thnikk Fightboard V3 (Mirrored)',
-			download: 'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/v0.7.4/GP2040-CE_0.7.4_FightboardV3Mirrored.uf2',
+			configName: 'FightboardV3Mirrored',
 			pinout: null,
 			website: 'https://docs.thnikk.moe/models/fightboard/v3.html',
 			image: require('@site/docs/assets/boards/FightboardV3Mirrored.jpg').default,
 			category: "legacy",
 			desc: () => (
 				<p>
-					
+					Configuration for the Fightboard v3 mirrored with directional inputs on the right hand and the action buttons on the left.
 				</p>
 			),
 		},
 		{
 			name: '',
-			download: '',
+			configName: '',
 			pinout: null,
 			website: '',
 			image: require('@site/docs/assets/boards/Pico.jpg').default,
 			category: "",
 			desc: () => (
 				<p>
-					
+
 				</p>
 			),
 		},
 	],
 };
 
-function DownloadLink({ downloadLink, text }) {
+function CreateLink({ link, text }) {
 	var linkIcon;
 	switch (text) {
 		case 'Download':
@@ -353,9 +358,9 @@ function DownloadLink({ downloadLink, text }) {
 			linkIcon = faX;
 	}
 
-	if(downloadLink) {
+	if (link) {
 		return (<li>
-			<a href={downloadLink}>
+			<a href={link}>
 				<FontAwesomeIcon icon={linkIcon} />
 				{text}
 			</a>
@@ -365,28 +370,38 @@ function DownloadLink({ downloadLink, text }) {
 	}
 }
 
-const renderDownloadBox = ({ name, download, pinout, desc, image, website }) => (
+function CreateDownloadLink({ configName }) {
+	if(configName) {
+		return (downloadURL + configName + ".uf2");
+	} else {
+		return null;
+	}
+}
+
+const renderDownloadBox = ({ name, configName, pinout, desc, image, website }) => (
 	<div key={`download-${name}`} className={styles.box}>
 		<img className={styles.boxImage} src={image} />
 		<div className={styles.boxInfo}>
 			<h3 className={styles.boxTitle}>{name}</h3>
 			<div>
-				<ul className="download-links">
-					<DownloadLink 
-						downloadLink={download}
+				<ul className={styles.downloadLinks}>
+					<CreateLink
+						link={CreateDownloadLink({configName})}
 						text={"Download"}
 					/>
-					<DownloadLink 
-						downloadLink={pinout}
+					<CreateLink
+						link={pinout}
 						text={"Pinout"}
 					/>
-					<DownloadLink 
-						downloadLink={website}
+					<CreateLink
+						link={website}
 						text={"Website"}
 					/>
 				</ul>
 			</div>
-			{desc()}
+			<div className='download-desc'>
+				{desc()}
+			</div>
 		</div>
 	</div>
 );
