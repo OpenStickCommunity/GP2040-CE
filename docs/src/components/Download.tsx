@@ -192,7 +192,7 @@ const configData = {
 			category: "legacy",
 			desc: () => (
 				<p>
-
+					This configuration is commonly used with Aliexpress boards. It cannot be guaranteed that this configuration will work for all devices.
 				</p>
 			),
 		},
