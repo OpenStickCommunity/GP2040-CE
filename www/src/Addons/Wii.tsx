@@ -103,7 +103,8 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
         .reduce(
             (o, i) => {
                 let modeID = i.value;
-                let joyMode = getJoystickMode(modeID);
+                let axes = i.getAttribute('axiscount') || 2;
+                let joyMode = (axes == 2 ? getJoystickMode(modeID) : null);
                 if (joyMode && joyMode.options) {
                     let r = o;
                     Object.keys(joyMode.options).forEach(key => {
@@ -130,10 +131,10 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
 
     const getJoystickMode = (searchValue: number) => WII_JOYSTICK_MODES.find(({ value }) => parseInt(value) === parseInt(searchValue));
 
-    const setWiiAnalogEntry = (controlID,analogID,e) => {
+    const setWiiAnalogEntry = (controlID,analogID,axes,e) => {
         let analogEntry = {};
         let modeID = e.target.value;
-        let joyMode = getJoystickMode(modeID);
+        let joyMode = (axes == 2 ? getJoystickMode(modeID) : null);
         if (joyMode && joyMode.options) {
             let r = analogEntry;
             Object.keys(joyMode.options).forEach(key => {
@@ -280,7 +281,7 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
                                                 <div className="col-sm-12 col-md-6 col-lg-2 mb-2">
                                                     {analogObj.axes?.length == 1 &&
                                                     <div className="row">
-                                                        <select className="form-select-sm form-control wii-analogs" controlid={`${controlObj.id.toLowerCase()}`} analogid={`${analogObj.id}`} axisid={`${analogObj.axes[0].axis}`} id={`wiiExtensionController${controlObj.id}Analog${analogObj.id}`} value={wiiControls[controlObj.id.toLowerCase()+'.analog'+analogObj.id+'.axisType']} onChange={(e) => setWiiAnalogEntry(controlObj.id, analogObj.id, e)}>
+                                                        <select className="form-select-sm form-control wii-analogs" controlid={`${controlObj.id.toLowerCase()}`} analogid={`${analogObj.id}`} axisid={`${analogObj.axes[0].axis}`} axiscount={analogObj.axes?.length} id={`wiiExtensionController${controlObj.id}Analog${analogObj.id}`} value={wiiControls[controlObj.id.toLowerCase()+'.analog'+analogObj.id+'.axisType']} onChange={(e) => setWiiAnalogEntry(controlObj.id, analogObj.id, analogObj.axes?.length, e)}>
                                                             {ANALOG_SINGLE_AXIS_MODES.map((o,i) => (
                                                                 <option key={`wiiSingleAxisMode${controlObj.id}${analogID}${i}`} value={o.value}>{o.label}</option>
                                                             ))}
@@ -289,7 +290,7 @@ const Wii = ({ values, errors, handleChange, handleCheckbox }) => {
                                                     }
                                                     {analogObj.axes?.length == 2 &&
                                                     <div className="row">
-                                                        <select className="form-select-sm form-control wii-analogs" controlid={`${controlObj.id.toLowerCase()}`} analogid={`${analogObj.id}`} axisid={`${analogObj.axes[0].axis}`} id={`wiiExtensionController${controlObj.id}Analog${analogObj.id}`} value={getJoystickModeValue(controlObj, analogObj)} onChange={(e) => setWiiAnalogEntry(controlObj.id, analogObj.id, e)}>
+                                                        <select className="form-select-sm form-control wii-analogs" controlid={`${controlObj.id.toLowerCase()}`} analogid={`${analogObj.id}`} axisid={`${analogObj.axes[0].axis}`} axiscount={analogObj.axes?.length} id={`wiiExtensionController${controlObj.id}Analog${analogObj.id}`} value={getJoystickModeValue(controlObj, analogObj)} onChange={(e) => setWiiAnalogEntry(controlObj.id, analogObj.id, analogObj.axes?.length, e)}>
                                                             {WII_JOYSTICK_MODES.map((o,i) => (
                                                                 <option key={`wiiJoystickMode${controlObj.id}${analogID}${i}`} value={o.value}>{o.label}</option>
                                                             ))}

@@ -563,8 +563,8 @@ XInputReport *Gamepad::getXInputReport()
 
 	if (hasAnalogTriggers)
 	{
-		xinputReport.lt = state.lt;
-		xinputReport.rt = state.rt;
+		xinputReport.lt = pressedL2() ? 0xFF : state.lt;
+		xinputReport.rt = pressedR2() ? 0xFF : state.rt;
 	}
 	else
 	{
