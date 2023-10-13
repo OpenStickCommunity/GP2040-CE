@@ -107,6 +107,11 @@ const config = {
 						label: 'Downloads',
 					},
 					{
+						type: 'docsVersionDropdown',
+						position: 'right',
+						dropdownActiveClassDisabled: true,
+					},
+					{
 						href: 'https://discord.gg/k2pxhke7q8',
 						label: 'Discord',
 						position: 'right',
