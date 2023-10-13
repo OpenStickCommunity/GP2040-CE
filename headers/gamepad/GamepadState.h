@@ -11,7 +11,7 @@ using namespace std;
 #include "GamepadEnums.h"
 #include "enums.pb.h"
 
-#define GAMEPAD_BUTTON_COUNT 15
+#define GAMEPAD_BUTTON_COUNT 14
 
 /*
 	Gamepad button mapping table:

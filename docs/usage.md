@@ -56,7 +56,7 @@ GP2040-CE is compatible with a number of systems and input modes. To change the 
 |:----------------|:-----------------------------------------:|
 | Nintendo Switch | <hotkey v-bind:buttons='["B1"]'></hotkey> |
 | XInput          | <hotkey v-bind:buttons='["B2"]'></hotkey> |
-| DirectInput/PS3 | <hotkey v-bind:buttons='["B3"]'></hotkey> |
+| DirectInput/PS3 | <hotkey v-bind:buttons='["B2"]'></hotkey> |
 | PS4             | <hotkey v-bind:buttons='["B4"]'></hotkey> |
 | Keyboard        | <hotkey v-bind:buttons='["R2"]'></hotkey> |
 

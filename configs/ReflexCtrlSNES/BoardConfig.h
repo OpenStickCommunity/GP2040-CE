@@ -8,14 +8,16 @@
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "Reflex Ctrl SNES"
+#define BOARD_CONFIG_LABEL "Reflex CTRL SNES"
+
+#define DEFAULT_INPUT_MODE INPUT_MODE_SWITCH
 
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.
 // The Turbo pin and LS + RS slider pins can also be set to `-1` to disable that functionality.
 // Please note that only when `PIN_BUTTON_TURBO` is set to `-1` will the `T##` be removed from a connected display.
-// Please note that only when `PIN_SLIDER_ONE` and  `PIN_SLIDER_TWO` are set to `-1` will the button combo shortcut for DP/LS/RS work.
+// Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
 #define PIN_DPAD_UP     2           // UP
@@ -39,8 +41,8 @@
 #define PIN_BUTTON_FN   -1          // Hotkey Function
 #define PIN_BUTTON_TURBO 14         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
-#define PIN_SLIDER_ONE    -1         // Left Stick Slider
-#define PIN_SLIDER_TWO    -1         // Right Stick Slider
+#define PIN_SLIDER_LS    -1         // Left Stick Slider
+#define PIN_SLIDER_RS    -1         // Right Stick Slider
 #define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
 #define PIN_SLIDER_SOCD_TWO    -1         // SOCD Slider Pin Two
 
@@ -84,9 +86,7 @@
 // The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
-#define TURBO_LED_PIN 15
-
-#define BOARD_LEDS_PIN 28
+#define TURBO_LED_PIN -1
 
 #define LED_BRIGHTNESS_MAXIMUM 150
 #define LED_BRIGHTNESS_STEPS 5
@@ -225,7 +225,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_ENABLED 1
+#define BOARD_LED_PIN 25
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_INPUT_TEST
 
 // Dual Directional Add-on Options
