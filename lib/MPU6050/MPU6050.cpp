@@ -132,9 +132,9 @@ void MPU6050::calibrateGyro()
     float averagez = (float)sumz / (float)SAMPLES;
 
     // Save offsets
-    gyroOffsetX = -rawGyroscopeToDps(averagex);
-    gyroOffsetY = -rawGyroscopeToDps(averagey);
-    gyroOffsetZ = -rawGyroscopeToDps(averagez);
+    gyroOffsetX = -averagex;
+    gyroOffsetY = -averagey;
+    gyroOffsetZ = -averagez;
 }
 
 void MPU6050::getGyroOffsets(float &x, float &y, float &z)
@@ -166,8 +166,9 @@ void MPU6050::readAcceleration(float &x, float &y, float &z)
 {
     int16_t rawAccelX, rawAccelY, rawAccelZ;
     readRawAcceleration(rawAccelX, rawAccelY, rawAccelZ);
+    // TODO: Add calibration
 
-    // Convert each integer value to physical units
+    // Conversion to physical units
     x = rawAccelerationToG(rawAccelX);
     y = rawAccelerationToG(rawAccelY);
     z = rawAccelerationToG(rawAccelZ);
@@ -188,11 +189,14 @@ void MPU6050::readGyroscope(float &x, float &y, float &z)
 {
     int16_t rawGyroX, rawGyroY, rawGyroZ;
     readRawGyroscope(rawGyroX, rawGyroY, rawGyroZ);
-
-    // Convert each integer value to physical units
-    x = rawGyroscopeToDps(rawGyroX) + gyroOffsetX;
-    y = rawGyroscopeToDps(rawGyroY) + gyroOffsetY;
-    z = rawGyroscopeToDps(rawGyroZ) + gyroOffsetZ;
+    // Add drift offset
+    rawGyroX = static_cast<int16_t>(round(rawGyroX + gyroOffsetX));
+    rawGyroY = static_cast<int16_t>(round(rawGyroY + gyroOffsetY));
+    rawGyroZ = static_cast<int16_t>(round(rawGyroZ + gyroOffsetZ));
+    // Convert to physical units
+    x = rawGyroscopeToDps(rawGyroX);
+    y = rawGyroscopeToDps(rawGyroY);
+    z = rawGyroscopeToDps(rawGyroZ);
 }
 
 float MPU6050::readTemperature()
@@ -314,28 +318,6 @@ float MPU6050::rawTemperatureToCelsius(int16_t rawTemperature)
 }
 
 float MPU6050::rawGyroscopeToDps(int16_t rawGyroscope)
-{
-    switch (m_gyroscopeRange)
-    {
-        case Max250Dps:
-            return rawGyroscope * MPU6050_GYRO_FACTOR_250;
-            break;
-        case Max500Dps:
-            return rawGyroscope * MPU6050_GYRO_FACTOR_500;
-            break;
-        case Max1000Dps:
-            return rawGyroscope * MPU6050_GYRO_FACTOR_1000;
-            break;
-        case Max2000Dps:
-            return rawGyroscope * MPU6050_GYRO_FACTOR_2000;
-            break;
-        default:
-            return 0;
-            break;
-    }
-}
-
-float MPU6050::rawGyroscopeToDps(float rawGyroscope)
 {
     switch (m_gyroscopeRange)
     {

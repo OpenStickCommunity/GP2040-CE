@@ -81,8 +81,8 @@ class MPU6050
         // Methods to read measurements
         void readRawAcceleration(int16_t &rawAccelX, int16_t &rawAccelY, int16_t &rawAccelZ);
         void readRawGyroscope(int16_t &rawGyroX, int16_t &rawGyroY, int16_t &rawGyroZ);
-        void readAcceleration(float &x, float &y, float &z);
-        void readGyroscope(float &x, float &y, float &z);
+        void readAcceleration(float &x, float &y, float &z); // G
+        void readGyroscope(float &x, float &y, float &z); // deg/sec
         float readTemperature();
 
         // Configuration of the sensors
@@ -126,7 +126,6 @@ class MPU6050
         // Raw data to real-world units
         float rawTemperatureToCelsius(int16_t rawTemperature);
         float rawGyroscopeToDps(int16_t rawGyroscope); // degree/s
-        float rawGyroscopeToDps(float rawGyroscope); // degree/s
         float rawAccelerationToG(int16_t rawAcceleration); // G
 
         // For convenience:

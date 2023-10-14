@@ -617,13 +617,13 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.right_stick_x = static_cast<uint8_t>(state.rx >> 8);
 	ps4Report.right_stick_y = static_cast<uint8_t>(state.ry >> 8);
 
-	ps4Report.gyro_x = static_cast<int16_t>(round(state.gyroX * 8.192f));
-	ps4Report.gyro_y = static_cast<int16_t>(round(state.gyroY * 8.192f));
-	ps4Report.gyro_z = static_cast<int16_t>(round(state.gyroZ * 8.192f));
-	ps4Report.accel_x = static_cast<int16_t>(round(state.accelX * 8192.0f));
-	ps4Report.accel_y = static_cast<int16_t>(round(state.accelY * 8192.0f));
-	ps4Report.accel_z = static_cast<int16_t>(round(state.accelZ * 8192.0f));
-	ps4Report.timestamp = getMillis() * 150; // DS4 with 1.25ms polling has ~+188 timestamp. Correct value should be 150/ms
+	ps4Report.gyro_x = static_cast<int16_t>(round(state.gyroX * 16.0f));		// This scale factor's inverse must be in output_0x03 in ps4_driver.cpp
+	ps4Report.gyro_y = static_cast<int16_t>(round(state.gyroY * 16.0f));		// I chose 16 because I set max gyro to 2000, and 2000*16 = 32000, which fits well inside int16_t
+	ps4Report.gyro_z = static_cast<int16_t>(round(state.gyroZ * 16.0f));
+	ps4Report.accel_x = static_cast<int16_t>(round(state.accelX * 2048.0f));	// This scale factor's inverse must be in output_0x03
+	ps4Report.accel_y = static_cast<int16_t>(round(state.accelY * 2048.0f));
+	ps4Report.accel_z = static_cast<int16_t>(round(state.accelZ * 2048.0f));
+	ps4Report.timestamp = getMillis() * 150;	// DS4 with 1.25ms polling has ~+188 timestamp. Correct value should(?) be 150/ms
 
 
 	if (hasAnalogTriggers)
