@@ -3,9 +3,14 @@ import styles from './download.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload, faGamepad, faGlobe, faX } from '@fortawesome/free-solid-svg-icons';
 
-const rootRepoURL = "https://github.com/OpenStickCommunity/GP2040-CE/releases/download/";
+var releaseURL = "https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest";
 const releaseVersion = "0.7.4";
-const downloadURL = rootRepoURL + "v" + releaseVersion + "/GP2040-CE_" + releaseVersion + "_"
+// let releaseVersion: string = await fetch(releaseURL, { method: "GET", cache: "force-cache" })
+// 	.then(response => response.json())
+// 	// .then(json => json.html_url)
+// 	// .then(url => url.split("/").split(-1));
+// console.log(releaseVersion);
+
 
 
 const configData = {
@@ -16,7 +21,7 @@ const configData = {
 			pinout: '/#/wiring?id=raspberry-pi-pico',
 			website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
 			image: require('@site/docs/assets/boards/Pico.jpg').default,
-			supported: true,
+			category: "",
 			desc: () => (
 				<p>
 					The Raspberry Pi Pico is a powerful, low-cost board based on the
@@ -31,7 +36,7 @@ const configData = {
 			pinout: '/#/wiring?id=raspberry-pi-pico',
 			website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
 			image: require('@site/docs/assets/boards/PicoW.jpg').default,
-			supported: true,
+			category: "",
 			desc: () => (
 				<p>
 					The Raspberry Pi Pico W is a powerful, low-cost board based on the
@@ -45,7 +50,7 @@ const configData = {
 			pinout: '/#/wiring?id=sparkfun-pro-micro-rp2040',
 			website: 'https://learn.sparkfun.com/tutorials/pro-micro-rp2040-hookup-guide',
 			image: require('@site/docs/assets/boards/SparkFunProMicro.jpg').default,
-			supported: true,
+			category: "",
 			desc: () => (
 				<p>
 					An RP2040 board in the Pro Micro form factor. This build is a drop-in
@@ -63,7 +68,7 @@ const configData = {
 			pinout: '/#/wiring?id=waveshare-rp2040-zero',
 			website: 'https://www.waveshare.com/wiki/RP2040-Zero',
 			image: require('@site/docs/assets/boards/WaveshareZero.jpg').default,
-			supported: true,
+			category: "",
 			desc: () => (
 				<p>
 					The{' '}
@@ -82,11 +87,24 @@ const configData = {
 			pinout: '/#/wiring?id=adafruit-kb2040',
 			website: 'https://learn.adafruit.com/adafruit-kb2040',
 			image: require('@site/docs/assets/boards/KB2040.jpg').default,
-			supported: true,
+			category: "",
 			desc: () => (
 				<p>
 					Another RP2040 board in the Pro Micro form factor, with 2 additional
 					pins for USB data. This build is configured for DIY gamepad mods.
+				</p>
+			),
+		},
+		{
+			name: 'Liatris',
+			configName: 'Liatris',
+			pinout: '',
+			website: 'https://splitkb.com/products/liatris',
+			image: require('@site/docs/assets/boards/Liatris.jpg').default,
+			category: "",
+			desc: () => (
+				<p>
+					Basic pin setup for a stock <a href="https://splitkb.com/products/liatris">Liatris</a>.
 				</p>
 			),
 		},
@@ -241,7 +259,7 @@ const configData = {
 			pinout: null,
 			website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Advanced%20Breakout%20Board',
 			image: require('@site/docs/assets/boards/RP2040AdvancedBreakoutBoard.jpg').default,
-			category: "open",
+			category: "official",
 			desc: () => (
 				<p>
 					Arcade encoder board designed by <a href="https://github.com/TheTrainGoes">TheTrain</a> using an embedded RP2040, and is the official board of the GP2040-CE project.
@@ -371,11 +389,10 @@ function CreateLink({ link, text }) {
 }
 
 function CreateDownloadLink({ configName }) {
-	if(configName) {
-		return (downloadURL + configName + ".uf2");
-	} else {
-		return null;
-	}
+	const baseRepoURL = "https://github.com/OpenStickCommunity/GP2040-CE/releases/download/";
+	let firmwarePath = "v" + releaseVersion + "/GP2040-CE_" + releaseVersion + "_" + configName + ".uf2";
+	let downloadURL = new URL(firmwarePath, baseRepoURL);
+	return downloadURL;
 }
 
 const renderDownloadBox = ({ name, configName, pinout, desc, image, website }) => (
@@ -413,6 +430,12 @@ const Container = ({ children }) => (
 export const Microcontrollers = () => (
 	<Container>
 		{configData['Microcontroller Boards'].map(renderDownloadBox)}
+	</Container>
+);
+
+export const OfficialDevices = () => (
+	<Container>
+		{configData['Community Devices'].filter(config => config.category === 'official').map(renderDownloadBox)}
 	</Container>
 );
 
