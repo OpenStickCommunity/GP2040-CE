@@ -39,7 +39,7 @@ const sidebars = {
 			type: 'category',
 			label: 'FAQ',
 			collapsed: false,
-			items: ['faq/faq', 'faq/faq-ps4-ps5-compatibility'],
+			items: ['faq/faq-general', 'faq/faq-ps4-ps5-compatibility'],
 		},
 		{
 			type: 'category',
