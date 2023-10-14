@@ -1,6 +1,13 @@
+---
+title: Focus Mode Configuration
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
 # Focus Mode Configuration
 
-![GP2040-CE Configurator - Focus Mode](@site/docs/assets/images/gpc-add-ons-focus-mode.png)
+![GP2040-CE Configurator - Focus Mode](../assets/images/gpc-add-ons-focus-mode.png)
 
 * `Focus Mode Pin` - The GPIO pin used to enable Focus Mode (this needs to always be held so a slider or latching switch is recommended).
 * `Lock OLED Screen` - When enabled the OLED screen will not display anything during Focus Mode.

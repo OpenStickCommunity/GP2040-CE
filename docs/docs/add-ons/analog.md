@@ -1,6 +1,14 @@
+---
+title: Analog
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Analog
 
-![GP2040-CE Configurator - Add-Ons Analog](@site/docs/assets/images/gpc-add-ons-analog.png)
+![GP2040-CE Configurator - Add-Ons Analog](../assets/images/gpc-add-ons-analog.png)
 
 * `Analog Stick 1 X Pin` - The GPIO pin used for the Analog Stick 1 X value.  Only ADC pins 26, 27, 28 and 29 are allowed here.
 * `Analog Stick 1 Y Pin` - The GPIO pin used for the Analog Stick 1 Y value.  Only ADC pins 26, 27, 28 and 29 are allowed here.

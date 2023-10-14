@@ -1,6 +1,14 @@
+---
+title: BOOTSEL Button Configuration
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # BOOTSEL Button Configuration
 
-![GP2040-CE Configurator - Add-Ons BOOTSEL Button Configuration](@site/docs/assets/images/gpc-add-ons-bootsel-button.png)
+![GP2040-CE Configurator - Add-Ons BOOTSEL Button Configuration](../assets/images/gpc-add-ons-bootsel-button.png)
 
 * `BOOTSEL Button` - Choose an input to be mapped to the BOOTSEL button.
 

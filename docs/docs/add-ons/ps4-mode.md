@@ -1,6 +1,14 @@
+---
+title: PS4 Mode
+tags:
+- PS4
+pagination_next: null
+pagination_prev: null
+---
+
 # PS4 Mode
 
-![GP2040-CE Configurator - PS4 Mode](@site/docs/assets/images/gpc-add-ons-ps4-mode.png)
+![GP2040-CE Configurator - PS4 Mode](../assets/images/gpc-add-ons-ps4-mode.png)
 
 Please note that GP2040-CE will never provide these files!
 

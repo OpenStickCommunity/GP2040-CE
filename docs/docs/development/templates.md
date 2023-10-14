@@ -1,3 +1,11 @@
+---
+title: Templates
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Templates
 
 ## Configuration Templates

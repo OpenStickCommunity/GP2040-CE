@@ -2,7 +2,7 @@
 
 Purpose: Macros are a series or combination of gamepad inputs triggered with a single button or a combination of buttons.
 
-![GP2040-CE Configurator - Macros](@site/docs/assets/images/gpc-macros.png)
+![GP2040-CE Configurator - Macros](./assets/images/gpc-macros.png)
 
 ## Macro Options
 
