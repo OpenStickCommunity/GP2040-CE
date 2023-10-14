@@ -6,7 +6,6 @@ import boards from '../config/boards';
 const rootRepoURL =
 	'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/';
 var releaseURL = "https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest";
-// const releaseVersion = '0.7.4';
 let releaseVersion: string = await fetch(releaseURL, { method: "GET", cache: "force-cache" })
     .then(response => response.json())
     .then(json => { return json.html_url })
