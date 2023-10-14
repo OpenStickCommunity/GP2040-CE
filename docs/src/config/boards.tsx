@@ -265,7 +265,7 @@ const boards = {
 				'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Advanced%20Breakout%20Board',
 			image: require('@site/docs/assets/boards/RP2040AdvancedBreakoutBoard.jpg')
 				.default,
-			category: 'open',
+			category: 'official',
 			desc: () => (
 				<p>
 					Arcade encoder board designed by{' '}
