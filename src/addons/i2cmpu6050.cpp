@@ -1,4 +1,5 @@
 #include "addons/i2cmpu6050.h"
+#include "ps4_driver.h"
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
@@ -44,6 +45,8 @@ bool I2CMPU6050Input::available() {
         return false;
     }
     
+    PS4Data::getInstance().imu_enabled = true;
+
     return true;
 }
 

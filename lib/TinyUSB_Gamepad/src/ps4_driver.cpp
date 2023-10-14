@@ -21,7 +21,7 @@ uint8_t ps4_out_buffer[PS4_OUT_SIZE] = {};
 static constexpr uint8_t output_0x03[] = {
 		0x21,0x27,				// uint16	hid_usage
 		0x04,					// uint8	unknown
-		0b00000010,				// uint8	features (bits: unknown touchpad unknown unknown rumble feedback_led motion unknown)
+		0b00000000,				// uint8	features (bits: unknown touchpad unknown unknown rumble feedback_led motion unknown)
 		0x00,					// uint8	controller_type (0x00: ps4, 0x01: guitar, 0x06: wheel, 0x07: ps5)
 		0x2C,0x56,				// uint8*2	touchpad_params
 		LSB(2000),MSB(2000),	// uint16	gyro range max deg/sec	NOTE: max*gyro_scale_factor should fit in int16
@@ -68,6 +68,7 @@ ssize_t get_ps4_report(uint8_t report_id, uint8_t * buf, uint16_t reqlen)
 		case PS4AuthReport::PS4_DEFINITION:
 			memcpy(buf, output_0x03, sizeof(output_0x03));
 			buf[4] = (uint8_t)PS4Data::getInstance().ps4ControllerType; // Change controller type in definition
+			buf[3] |= PS4Data::getInstance().imu_enabled << 1; // Set enable IMU flag
 			return sizeof(output_0x03);
 		// Use our private RSA key to sign the nonce and return chunks
 		case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:

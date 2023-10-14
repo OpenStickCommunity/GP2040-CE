@@ -69,6 +69,8 @@ public:
 	uint8_t ps4_auth_buffer[1064];
 	uint32_t ps4ControllerType;
 
+	bool imu_enabled;
+
 private:
 	PS4Data() {
 		ps4State = PS4State::no_nonce;
@@ -76,5 +78,6 @@ private:
 		memset(nonce_buffer, 0, 256);
 		memset(ps4_auth_buffer, 0, 1064);
 		ps4ControllerType = PS4ControllerType::PS4_CONTROLLER;
+		imu_enabled = false;
 	}
 };
