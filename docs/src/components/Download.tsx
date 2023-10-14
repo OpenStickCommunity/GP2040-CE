@@ -1,27 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './download.module.css';
 import LinkIcon from './LinkIcon';
 import boards from '../config/boards';
+import { useGitHubInfo } from '../hooks/useGitHubInfo';
 
-const rootRepoURL =
-	'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/';
-var releaseURL = "https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest";
-let releaseVersion: string = await fetch(releaseURL, { method: "GET", cache: "force-cache" })
-    .then(response => response.json())
-    .then(json => { return json.html_url })
-    .then(url => url.split("/").slice(-1)[0]);
-releaseVersion = releaseVersion.replace("v", "");
-
-const downloadURL =
-	rootRepoURL + 'v' + releaseVersion + '/GP2040-CE_' + releaseVersion + '_';
-
-function CreateDownloadLink({ configName }) {
-	if (configName) {
-		return downloadURL + configName + '.uf2';
-	} else {
-		return null;
-	}
-}
+const createDownloadLink = ({ releaseVersion, configName }) =>
+	releaseVersion
+		? `https://github.com/OpenStickCommunity/GP2040-CE/releases/download/${releaseVersion}/GP2040-CE_${releaseVersion.substring(
+				1
+		  )}_${configName}.uf2`
+		: '';
 
 const RenderDownloadBox = ({
 	name,
@@ -30,29 +18,36 @@ const RenderDownloadBox = ({
 	desc,
 	image,
 	website,
-}) => (
-	<div key={`download-${name}`} className={styles.box}>
-		<img className={styles.boxImage} src={image} />
-		<div className={styles.boxInfo}>
-			<h3 className={styles.boxTitle}>{name}</h3>
-			<div>
-				<ul className={styles.downloadLinks}>
-					<LinkIcon
-						link={CreateDownloadLink({ configName })}
-						text={'Download'}
-					/>
-					<LinkIcon link={pinout} text={'Pinout'} />
-					<LinkIcon link={website} text={'Website'} />
-				</ul>
+}) => {
+	const releaseVersion = useGitHubInfo((state) => state.releaseVersion);
+	return (
+		<div key={`download-${name}`} className={styles.box}>
+			<img className={styles.boxImage} src={image} />
+			<div className={styles.boxInfo}>
+				<h3 className={styles.boxTitle}>{name}</h3>
+				<div>
+					<ul className={styles.downloadLinks}>
+						<LinkIcon
+							link={createDownloadLink({ releaseVersion, configName })}
+							text={'Download'}
+						/>
+						<LinkIcon link={pinout} text={'Pinout'} />
+						<LinkIcon link={website} text={'Website'} />
+					</ul>
+				</div>
+				<div className="download-desc">{desc()}</div>
 			</div>
-			<div className="download-desc">{desc()}</div>
 		</div>
-	</div>
-);
+	);
+};
 
-const Container = ({ children }) => (
-	<div className={styles.row}>{children}</div>
-);
+const Container = ({ children }) => {
+	const getInfo = useGitHubInfo((state) => state.getInfo);
+	useEffect(() => {
+		getInfo();
+	}, []);
+	return <div className={styles.row}>{children}</div>;
+};
 
 export const Microcontrollers = () => (
 	<Container>

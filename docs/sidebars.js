@@ -63,7 +63,6 @@ const sidebars = {
 		'development/contribution-guide',
 		'development/templates',
 	],
-
 };
 
 module.exports = sidebars;
