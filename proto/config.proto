@@ -611,10 +611,11 @@ message Macro
 }
 
 message MacroOptions
-{ optional bool enabled = 1;
+{
+	optional bool enabled = 1;
 	optional int32 pin = 2;
-	repeated Macro macroList = 3 [(nanopb).max_count = 6];
 	optional bool macroBoardLedEnabled = 4;
+	repeated Macro macroList = 3 [(nanopb).max_count = 6];
 }
 
 message AddonOptions
