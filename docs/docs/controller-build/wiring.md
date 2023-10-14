@@ -1,3 +1,11 @@
+---
+title: Microcontroller Board Wiring
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Wiring
 
 These are the default pin mappings for each GP2040-CE supported microcontroller board.
@@ -10,16 +18,16 @@ The Raspberry Pi Pico pinout can also be used on clone boards with the same form
 
 :::
 
-![Raspberry Pi Pico Pinout](@site/docs/assets//wiring/RaspberryPiPico_Pinout.png)
+![Raspberry Pi Pico Pinout](../assets//wiring/RaspberryPiPico_Pinout.png)
 
 ## SparkFun Pro Micro - RP2040
 
-![SparkFun Pro Micro - RP2040 Pinout](@site/docs/assets//wiring/SparkFunProMicroRP2040_Pinout.png)
+![SparkFun Pro Micro - RP2040 Pinout](../assets/wiring/SparkFunProMicroRP2040_Pinout.png)
 
 ## Waveshare RP2040-Zero
 
-![Waveshare RP2040-Zero Pinout](@site/docs/assets//wiring/WaveshareRP2040Zero_Pinout.png)
+![Waveshare RP2040-Zero Pinout](../assets/wiring/WaveshareRP2040Zero_Pinout.png)
 
 ## Adafruit KB2040
 
-![Adafruit KB2040 Pinout](@site/docs/assets//wiring/AdafruitKB2040_Pinout.png)
+![Adafruit KB2040 Pinout](../assets/wiring/AdafruitKB2040_Pinout.png)
