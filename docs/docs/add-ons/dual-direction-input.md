@@ -1,6 +1,14 @@
+---
+title: Dual Directional Input
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Dual Directional Input
 
-![GP2040-CE Configuration - Add-Ons Dual Directional Input](@site/docs/assets/images/gpc-add-ons-dual-directional.png)
+![GP2040-CE Configuration - Add-Ons Dual Directional Input](../assets/images/gpc-add-ons-dual-directional.png)
 
 * `Dual Up Pin` - The GPIO pin used for the secondary Up direction.
 * `Dual Down Pin` - The GPIO pin used for the secondary Down direction.

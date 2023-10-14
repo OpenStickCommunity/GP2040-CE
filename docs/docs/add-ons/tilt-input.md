@@ -1,6 +1,14 @@
+---
+title: Tilt Input
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Tilt Input
 
-![GP2040-CE Configuration - Add-Ons Tilt Input](@site/docs/assets/images/gpc-add-ons-tilt.png)
+![GP2040-CE Configuration - Add-Ons Tilt Input](../assets/images/gpc-add-ons-tilt.png)
 
 * `Tilt 1 Pin` - The GPIO pin used for the Tilt 1 direction.
 * `Tilt 2 Pin` - The GPIO pin used for the Tilt 2 direction.

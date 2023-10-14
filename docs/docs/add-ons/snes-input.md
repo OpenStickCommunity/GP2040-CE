@@ -1,6 +1,14 @@
+---
+title: SNES Input
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # SNES Input
 
-![GP2040-CE Configurator - SNES Input](@site/docs/assets/images/gpc-add-ons-snespad-input.png)
+![GP2040-CE Configurator - SNES Input](../assets/images/gpc-add-ons-snespad-input.png)
 
 * `CLOCK Pin` - The GPIO pin used for SNES CLOCK.
 * `LATCH Pin` - The GPIO pin used for SNES LATCH.

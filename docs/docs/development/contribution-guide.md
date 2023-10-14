@@ -1,3 +1,11 @@
+---
+title: How to Contribute
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # How to Contribute
 
 Thank you for taking the time to read this and contributing to the project! 

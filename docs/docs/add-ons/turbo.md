@@ -1,6 +1,14 @@
+---
+title: Turbo
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Turbo
 
-![GP2040-CE Configurator - Add-Ons Turbo](@site/docs/assets/images/gpc-add-ons-turbo.png)
+![GP2040-CE Configurator - Add-Ons Turbo](../assets/images/gpc-add-ons-turbo.png)
 
 * `Turbo Pin` - The GPIO pin used for the Turbo button.
 * `Turbo Pin LED` - The GPIO pin used for the Turbo LED.
@@ -9,7 +17,7 @@
 
 ## Turbo - SHMUP MODE
 
-![GP2040-CE Configurator - Add-Ons Turbo SHMUP MODE](@site/docs/assets/images/gpc-add-ons-turbo-shmup.png)
+![GP2040-CE Configurator - Add-Ons Turbo SHMUP MODE](../assets/images/gpc-add-ons-turbo-shmup.png)
 
 * `Turbo Always On 1` - The GPIO pin used for a Turbo button that will always be on.
 * `Turbo Always On 2` - The GPIO pin used for a Turbo button that will always be on.
