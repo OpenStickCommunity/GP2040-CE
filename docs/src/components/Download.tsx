@@ -5,7 +5,14 @@ import boards from '../config/boards';
 
 const rootRepoURL =
 	'https://github.com/OpenStickCommunity/GP2040-CE/releases/download/';
-const releaseVersion = '0.7.4';
+var releaseURL = "https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest";
+// const releaseVersion = '0.7.4';
+let releaseVersion: string = await fetch(releaseURL, { method: "GET", cache: "force-cache" })
+    .then(response => response.json())
+    .then(json => { return json.html_url })
+    .then(url => url.split("/").slice(-1)[0]);
+releaseVersion = releaseVersion.replace("v", "");
+
 const downloadURL =
 	rootRepoURL + 'v' + releaseVersion + '/GP2040-CE_' + releaseVersion + '_';
 
