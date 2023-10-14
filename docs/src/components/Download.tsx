@@ -57,7 +57,9 @@ export const Microcontrollers = () => (
 
 export const OfficialDevices = () => (
 	<Container>
-		{configData['Community Devices'].filter(config => config.category === 'official').map(renderDownloadBox)}
+		{boards['Community Devices']
+			.filter((config) => config.category === 'official')
+			.map(RenderDownloadBox)}
 	</Container>
 );
 
