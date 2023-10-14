@@ -1,3 +1,11 @@
+---
+title: PS4/PS5 Compatibility
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # FAQ: PS4/PS5 Compatibility
 
 ## How do I get my GP2040-CE unit to work on a Playstation 4 or Playstation 5?
@@ -12,7 +20,7 @@ PS4 mode is an add-on that grants GP2040-CE compatibility with the Playstation 4
 
 The team behind Passing Link are in no way affiliated with the GP2040-CE project, however the work and information they've made available was greatly appreciated so we could bring this highly-requested feature to our users.
 
-For more information, refer to [PS4 Mode](add-ons/ps4-mode) in the `Web Configurator - Add-ons` section of the documentation.
+For more information, refer to [PS4 Mode](./add-ons/ps4-mode) in the `Web Configurator - Add-ons` section of the documentation.
 
 ## What is PS Passthrough?
 
@@ -20,7 +28,7 @@ PS Passthrough is an add-on that grants GP2040-CE compatibility with the Playsta
 
 Depending on the controller or dongle used, you may be limited to only Playstation 4 support. 
 
-For more information, refer to [PS Passthrough](add-ons/ps-passthrough) in the `Web Configurator - Add-ons` section of the documention.
+For more information, refer to [PS Passthrough](./add-ons/ps-passthrough) in the `Web Configurator - Add-ons` section of the documentation.
 
 ## Why does my controller stop responding after a while on PS4 or PS5?
 
@@ -41,7 +49,7 @@ The 8-minute timeout works like this:
 
 ## How do I avoid the 8-Minute Timeout?
 
-GP2040-CE allows you to upload the files required to authenticate your device via the [PS4 Mode add-on](add-ons/ps4-mode), which effectively removes this timeout issue. 
+GP2040-CE allows you to upload the files required to authenticate your device via the [PS4 Mode add-on](./add-ons/ps4-mode), which effectively removes this timeout issue. 
 
 If you're using an OLED display, the input mode will change from `PS4` to `PS4:AS` to indicate your device has successfully authenticated with the PS4/PS5 console.
 
@@ -51,7 +59,7 @@ The GP2040-CE project will not provide ***any*** files or information related to
 
 :::danger
 
-**Do not ask via any of communication channels (e.g. social media, direct messages, Github Issues, GP2040-CE) as this will result in a permanent blacklist/ban.**
+**Do not ask via any of communication channels (e.g. social media, direct messages, Github Issues, GP2040-CE Discord) as this will result in a permanent blacklist/ban.**
 
 :::
 

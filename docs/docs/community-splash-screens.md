@@ -1,3 +1,11 @@
+---
+title: Community Splash Screens
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Community Splash Screens
 
 Here is a collection of community created splash screens that can be used with an optional OLED screen. Upload the image using the web configurator to set it up.

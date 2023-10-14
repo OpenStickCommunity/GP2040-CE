@@ -1,8 +1,16 @@
+---
+title: Hotkeys
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Hotkeys
 
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
 
-> All of the following hotkey bindings can be changed or assigned to different button combinations in [Hotkeys Settings](web-configurator.md#hotkey-settings) section of the Web Configurator.
+> All of the following hotkey bindings can be changed or assigned to different button combinations in [Hotkeys Settings](./web-configurator.md#hotkey-settings) section of the Web Configurator.
 
 ## No Action
 
@@ -111,11 +119,11 @@ This hotkey will alter the behavior of the directional buttons such that only th
 
 ## Toggle DDI 4-Way Joystick Mode
 
-This hotkey will alter the behavior of the directional buttons mapped with the [Dual Direction Input](/add-ons/dual-direction-input) add-on such that only the cardinal directions will register as inputs and diagonal directions will be disabled and ignored.
+This hotkey will alter the behavior of the directional buttons mapped with the [Dual Direction Input](./add-ons/dual-direction-input) add-on such that only the cardinal directions will register as inputs and diagonal directions will be disabled and ignored.
 
 ## Load Profile # 1-4
 
-This hotkey will load various input to pin mapping profiles set in [Profile Settings](web-configurator#profile-settings) in the Web Configurator.
+This hotkey will load various input to pin mapping profiles set in [Profile Settings](./web-configurator#profile-settings) in the Web Configurator.
 
 ## L3 Button
 

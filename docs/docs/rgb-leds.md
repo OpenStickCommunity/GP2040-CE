@@ -1,10 +1,18 @@
+---
+title: RGB LEDs
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # RGB LEDs
 
 ## Hardware Requirements
 
 GP2040-CE requires that addressable RGB LEDs be used for nearly all LED functions.
 
-The exception to this are [Player LEDs](add-ons/player-number.md), which can use pulse width modulation (PWM) to vary the brightness of the LEDs.
+The exception to this are [Player LEDs](./add-ons/player-number.md), which can use pulse width modulation (PWM) to vary the brightness of the LEDs.
 
 ## RGB LED Hotkeys
 

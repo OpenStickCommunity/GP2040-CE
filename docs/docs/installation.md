@@ -1,3 +1,11 @@
+---
+title: Firmware Installation
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Firmware Installation
 
 ## General Process
@@ -12,13 +20,13 @@
 
 Congratulations! The board is now running the GP2040-CE firmware and will appear as a controller on your computer. You can test it in a game, using the website like [Gamepad Tester](https://gamepad-tester.com/), or in another application such as the Steam Input Overlay.
 
-If you would like to customize your device, check out the built-in [Web Configurator](web-configurator).
+If you would like to customize your device, check out the built-in [Web Configurator](./web-configurator.md).
 
 ### Example Process (Raspberry Pi Pico)
 
 **The instructions will slightly vary based on your device. These instructions are for a Raspberry Pi Pico.**
 
-1. Download the latest `GP2040-CE_X.X.X_Pico.uf2` file for the Raspberry Pi Pico from the [Download](downloads/download-page) page.
+1. Download the latest `GP2040-CE_X.X.X_Pico.uf2` file for the Raspberry Pi Pico from the [Download](./downloads/download-page.mdx) page.
 2. Unplug your Pico.
 3. Hold the BOOTSEL button on the Pico and plug into your computer.
 4. Drag and drop the `GP2040-CE_X.X.X_Pico.uf2` file into the removable drive.
