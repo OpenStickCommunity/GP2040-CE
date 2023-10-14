@@ -1,3 +1,11 @@
+---
+title: Getting Help/Support
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Getting Help/Support
 
 ## Discord

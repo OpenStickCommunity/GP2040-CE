@@ -1,3 +1,10 @@
+---
+title: GP2040-CE Web Configurator
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
 # GP2040-CE Web Configurator
 
 Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>
@@ -6,7 +13,7 @@ GP2040-CE contains a built-in web-based configuration application which can be s
 
 ## Home
 
-![GP2040-CE Configurator - Home](assets/images/gpc-home.png)
+![GP2040-CE Configurator - Home](./assets/images/gpc-home.png)
 
 Here you can see the current version of your firmware and the latest version available on GitHub in the releases section. If a firmware update is available, a link to that release will appear.
 
@@ -26,7 +33,7 @@ The options in the main menu are:
 
 ## Settings
 
-![GP2040-CE Configurator - Settings](assets/images/gpc-settings.png)
+![GP2040-CE Configurator - Settings](./assets/images/gpc-settings.png)
 
 Here you can select the basic settings which are normally available via hotkeys.
 
@@ -40,7 +47,7 @@ Please note that if you choose `PS4` mode you will have an additional option to 
 
 ### Hotkey Settings
 
-![GP2040-CE Configurator - Hotkey Settings](assets/images/gpc-hotkey-settings.png)
+![GP2040-CE Configurator - Hotkey Settings](./assets/images/gpc-hotkey-settings.png)
 
 An arbitrary number of buttons and directions, plus the optional Function (Fn) button, can be used to define
 desired hotkey actions. Select Fn if desired, plus one or more buttons/directions, and associate them with a
@@ -51,19 +58,19 @@ configure in the future.
 
 ## Pin Mapping
 
-![GP2040-CE Configurator - Pin Mapping](assets/images/gpc-pin-mapping.png)
+![GP2040-CE Configurator - Pin Mapping](./assets/images/gpc-pin-mapping.png)
 
 Here you can remap the GP2040-CE buttons to different GPIO pins on the RP2040 chip. This can be used to simply remap buttons, or bypass a GPIO pin that may have issues on your device.
 
 ## Keyboard Mapping
 
-![GP2040-CE Configurator - Keyboard Mapping](assets/images/gpc-keyboard-mapping.png)
+![GP2040-CE Configurator - Keyboard Mapping](./assets/images/gpc-keyboard-mapping.png)
 
 Here you can remap the GP2040-CE buttons to different keyboard keycodes that will be sent to the PC or game console when pressed in Keyboard Mode.
 
 ## Profile Settings
 
-![GP2040-CE Configurator - Profile Settings](assets/images/gpc-profile-settings.png)
+![GP2040-CE Configurator - Profile Settings](./assets/images/gpc-profile-settings.png)
 
 Here you can set profiles that will change the GPIO to GP2040-CE button mapping based on what profile you have set. You can change the profile number either using the Web Configurator or using a hotkey shortcut.
 
@@ -73,7 +80,7 @@ If you have a setup with per-button RGB LEDs, they can be configured here.
 
 ### RGB LED Configuration
 
-![GP2040-CE Configurator - LED Configuration](assets/images/gpc-rgb-led-config.png)
+![GP2040-CE Configurator - LED Configuration](./assets/images/gpc-rgb-led-config.png)
 
 - `Data Pin` - The GPIO pin that will drive the data line for your RGB LED chain. Set to `-1` to disable RGB LEDs.
 - `LED Format` - The data format used to communicate with your RGB LEDs. If unsure the default `GRB` value is usually safe.
@@ -90,7 +97,7 @@ Please note that RGB Button LEDs must be the first LEDs configured. They will st
 
 :::
 
-![GP2040-CE Configurator - RGB LED Button Order](assets/images/gpc-rgb-led-button-order.png)
+![GP2040-CE Configurator - RGB LED Button Order](./assets/images/gpc-rgb-led-button-order.png)
 
 - `LED Button Order` - Configure which buttons and what order they reside on the LED chain.
 
@@ -100,7 +107,7 @@ Available selections for `Player LED Type` are `None`, `PWM` or `RGB`.
 
 #### PWM Player LEDs
 
-![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-pwm.png)
+![GP2040-CE Configurator - PWM Player LEDs](./assets/images/gpc-pled-pwm.png)
 
 - `PLED #[1-4] Pin` - The GPIO pin the standard LED is connected to.
 
@@ -112,14 +119,14 @@ Please note that RGB Player LEDs must be located at an index after the RGB LED B
 
 :::
 
-![GP2040-CE Configurator - PWM Player LEDs](assets/images/gpc-pled-rgb.png)
+![GP2040-CE Configurator - PWM Player LEDs](./assets/images/gpc-pled-rgb.png)
 
 - `PLED #[1-4] Index` - The index of the LED module on the RGB strip.
 - `RGB PLED Color` - Click the box to reveal a color picker, or manually enter the color.
 
 ## Custom LED Theme
 
-![GP2040-CE Configurator - Custom LED Theme](assets/images/gpc-rgb-led-custom-theme.png)
+![GP2040-CE Configurator - Custom LED Theme](./assets/images/gpc-rgb-led-custom-theme.png)
 
 - `Enable` - Enables the use of Custom LED Theme.
 - `Preview Layout` - Predefined layouts for previewing LED theme. **NOTE:** This is for preview only, does not affect controller operation.
@@ -140,7 +147,7 @@ If enabled, the Custom LED Theme will be available as another animation mode and
 
 ## Display Configuration
 
-![GP2040-CE Configurator - Display Configuration](assets/images/gpc-display-config.png)
+![GP2040-CE Configurator - Display Configuration](./assets/images/gpc-display-config.png)
 
 - `Use Display` - Turns on/off the display module.
 - `I2C Block` - The Pico I2C block that will be used. Set based on pins, refer to table on page.
@@ -157,7 +164,7 @@ If enabled, the Custom LED Theme will be available as another animation mode and
 - `Display Saver Timeout` - Will cause the display to turn off after the specified number of minutes. Pressing any input will cause the display to turn back on.
 - `Choose File` - This will allow you to upload your own image to be used for the splash screen. It is recommend that you use a two color 128x64 image (or one that is sized appropriately for your display). Uploading any other type of image will result in a conversion and sizing of the image automatically. If the image is inverted upon upload, just check off the `Invert` box.
 
-Check out our collection of great custom splash screens from the community [HERE](community-splash-screens.md)
+Check out our collection of great custom splash screens from the community [HERE](./community-splash-screens.md)
 
 ## Add-Ons Configuration
 
@@ -165,14 +172,14 @@ This section is for custom add-ons that can be enabled to expand the functionali
 
 ## Data Backup and Restoration
 
-![GP2040-CE Configurator - Add-Ons Backup and Restore](assets/images/gpc-backup-and-restore.png)
+![GP2040-CE Configurator - Add-Ons Backup and Restore](./assets/images/gpc-backup-and-restore.png)
 
 - `Backup To File` - Allows you to select what to backup to a file (default is all selected).
 - `Restore From File` - Allows you to select what to restore from a file (default is all selected).
 
 ## DANGER ZONE
 
-![GP2040-CE Configurator - Reset Settings](assets/images/gpc-reset-settings.png)
+![GP2040-CE Configurator - Reset Settings](./assets/images/gpc-reset-settings.png)
 
 ## Linux Setup
 

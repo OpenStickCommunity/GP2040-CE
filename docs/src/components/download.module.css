@@ -13,6 +13,7 @@
 }
 .boxImage {
 	width: 100%;
+	overflow: hidden;
 }
 
 .boxInfo {

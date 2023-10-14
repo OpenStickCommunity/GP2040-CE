@@ -1,6 +1,14 @@
+---
+title: Input Reverse
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Input Reverse
 
-![GP2040-CE Configurator - Add-Ons Input Reverse](@site/docs/assets/images/gpc-add-ons-input-reverse.png)
+![GP2040-CE Configurator - Add-Ons Input Reverse](../assets/images/gpc-add-ons-input-reverse.png)
 
 * `Reverse Input Pin` - The GPIO pin used for the Reverse Input button.
 * `Reverse Input Pin LED` - The GPIO pin used for the Reverse Input LED.

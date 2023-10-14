@@ -54,6 +54,12 @@ export const Microcontrollers = () => (
 	</Container>
 );
 
+export const OfficialDevices = () => (
+	<Container>
+		{configData['Community Devices'].filter(config => config.category === 'official').map(renderDownloadBox)}
+	</Container>
+);
+
 export const OpenSourceDevices = () => (
 	<Container>
 		{boards['Community Devices']

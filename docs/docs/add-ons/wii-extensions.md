@@ -1,6 +1,14 @@
+---
+title: Wii Extensions
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Wii Extensions
 
-![GP2040-CE Configurator - Wii Extensions](@site/docs/assets/images/gpc-add-ons-wii-extensions.png)
+![GP2040-CE Configurator - Wii Extensions](../assets/images/gpc-add-ons-wii-extensions.png)
 
 * `I2C SDA Pin` - The GPIO pin used for Wii Extension SDA.
 * `I2C SCL Pin` - The GPIO pin used for Wii Extension SCL.

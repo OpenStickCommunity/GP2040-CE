@@ -1,6 +1,14 @@
+---
+title: I2C Analog ADS1219
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # I2C Analog ADS1219
 
-![GP2040-CE Configurator - Add-Ons ADS1219](@site/docs/assets/images/gpc-add-ons-ads1219.png)
+![GP2040-CE Configurator - Add-Ons ADS1219](../assets/images/gpc-add-ons-ads1219.png)
 
 * `I2C Analog ADS1219 SDA Pin` - The GPIO pin used for I2C Analog ADS1219 SDA.
 * `I2C Analog ADS1219 SCL Pin` - The GPIO pin used for I2C Analog ADS1219 SCL.

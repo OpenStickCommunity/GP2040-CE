@@ -1,3 +1,11 @@
+---
+title: GP2040-CE Usage
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # GP2040-CE Usage
 
 Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
@@ -29,11 +37,11 @@ GP2040-CE uses generic button labeling for gamepad state, which is then converte
 | A1        | Guide  | Home    | PS       | PS       | 13          | Home   |
 | A2        | -      | Capture | Touchpad | -        | 14          | -      |
 
-If your controller is missing dedicated buttons for any specific inputs, check the [Hotkeys page](hotkeys) on how to map a button combination that will emulate those missing inputs.
+If your controller is missing dedicated buttons for any specific inputs, check the [Hotkeys page](./hotkeys.md) on how to map a button combination that will emulate those missing inputs.
 
 :::note
 
-Unlike other controllers, Keyboard gets different keys for directional buttons. You can change the key mappings for Keyboard mode in [Webconfig mode > Configuration > Keyboard Mapping](web-configurator.md#keyboard-mapping)
+Unlike other controllers, Keyboard gets different keys for directional buttons. You can change the key mappings for Keyboard mode in [Webconfig mode > Configuration > Keyboard Mapping](./web-configurator.md#keyboard-mapping)
 
 :::
 
@@ -99,4 +107,4 @@ Selected D-Pad mode and SOCD cleaning mode are saved across power cycles.
 
 ## Add-Ons and Additional Features
 
-There are a number of add-ons that expand the functionality of GP2040-CE, such as [analog stick emulation](add-ons/analog) and [turbo functions](add-ons/turbo). Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to Add-Ons page for more information on the individual add-ons.
+There are a number of add-ons that expand the functionality of GP2040-CE, such as [analog stick emulation](./add-ons/analog) and [turbo functions](./add-ons/turbo). Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to Add-Ons page for more information on the individual add-ons.

@@ -1,3 +1,12 @@
+---
+title: PS Passthrough
+tags:
+- PS4
+- PS5
+pagination_next: null
+pagination_prev: null
+---
+
 import PinOption from './usb-host-add-on/_pin-options.md'
 import ExampleWiringDiagram from './usb-host-add-on/_example-wiring-diagram.md'
 
@@ -5,7 +14,7 @@ import ExampleWiringDiagram from './usb-host-add-on/_example-wiring-diagram.md'
 
 Purpose: Enabling this add-on will allow you to use a licensed 3rd party device to authenticate off of.
 
-![GP2040-CE Configurator - PS Passthrough](@site/docs/assets/images/gpc-add-ons-ps-passthrough.png)
+![GP2040-CE Configurator - PS Passthrough](../assets/images/gpc-add-ons-ps-passthrough.png)
 
 <PinOption />
 

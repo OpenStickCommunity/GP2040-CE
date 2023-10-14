@@ -1,6 +1,14 @@
+---
+title: SOCD Selection Slider
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # SOCD Selection Slider
 
-![GP2040-CE Configurator - SOCD Selection Slider](@site/docs/assets/images/gpc-add-ons-socd-slider.png)
+![GP2040-CE Configurator - SOCD Selection Slider](../assets/images/gpc-add-ons-socd-slider.png)
 
 * `SOCD Slider Mode Default` - The default SOCD mode to be used when the slider pin is not activated.
 * `SOCD Slider Mode One` - The SOCD mode you would like to have enabled for the first slider position.

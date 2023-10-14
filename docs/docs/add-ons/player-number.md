@@ -1,5 +1,19 @@
-# Player Number (X-INPUT ONLY)
+---
+title: Player Number
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
 
-![GP2040-CE Configurator - Player Number](@site/docs/assets/images/gpc-add-ons-player-number.png)
+# Player Number
 
-* `Player Number` - Choose what player number this RP2040 based device will be representing.  This is only for X-INPUT mode.
+:::note
+
+This add-on is applicable to X-Input mode only.
+
+:::
+
+![GP2040-CE Configurator - Player Number](../assets/images/gpc-add-ons-player-number.png)
+
+* `Player Number` - Choose what player number this RP2040 based device will be representing.
