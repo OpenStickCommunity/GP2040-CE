@@ -6,9 +6,13 @@ pagination_next: null
 pagination_prev: null
 ---
 
+import InputLabelSelector, { Hotkey } from "@site/src/components/LabelSelector.tsx";
+
 # GP2040-CE Usage
 
-Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
+Select the button labels to be displayed in the usage guide: 
+
+<InputLabelSelector /><br />
 
 :::caution
 
@@ -37,7 +41,7 @@ GP2040-CE uses generic button labeling for gamepad state, which is then converte
 | A1        | Guide  | Home    | PS       | PS       | 13          | Home   |
 | A2        | -      | Capture | Touchpad | -        | 14          | -      |
 
-If your controller is missing dedicated buttons for any specific inputs, check the [Hotkeys page](./hotkeys.md) on how to map a button combination that will emulate those missing inputs.
+If your controller is missing dedicated buttons for any specific inputs, check the [Hotkeys page](./hotkeys.mdx) on how to map a button combination that will emulate those missing inputs.
 
 :::note
 
@@ -56,13 +60,13 @@ Unlike other controllers, Keyboard gets different keys for directional buttons. 
 
 Bootsel Mode is the state of the board where firmware can be flashed onto the board. You will need to use this whenever there is an update or as part of the troubleshooting process.
 
-You can boot into Bootsel Mode by either holding `["S1", "S2", "Up"]` buttons while plugging in the controller or by booting into the Web Configurator and then restarting in Bootsel Mode.
+You can boot into Bootsel Mode by either holding <Hotkey buttons={["S1", "S2", "Up"]}/> buttons while plugging in the controller or by booting into the Web Configurator and then restarting in Bootsel Mode.
 
 ## Webconfig Mode
 
 Webconfig Mode is the state of the board where built-in web browser-based configuration application is launched. From here, you can customize and configure your controller as needed.
 
-You can boot into Webconfig Mode by holding the `["S2"]` button while plugging in the controller.
+You can boot into Webconfig Mode by holding the <Hotkey buttons={["S2"]}/> button while plugging in the controller.
 
 ## Input Modes
 
@@ -70,11 +74,11 @@ GP2040-CE is compatible with a number of systems and input modes. To change the 
 
 | Input Mode      | Button Held |
 | :-------------- | :---------: |
-| Nintendo Switch |  `["B1"]`   |
-| XInput          |  `["B2"]`   |
-| DirectInput/PS3 |  `["B2"]`   |
-| PS4             |  `["B4"]`   |
-| Keyboard        |  `["R2"]`   |
+| Nintendo Switch |  <Hotkey buttons={["B1"]}/>   |
+| XInput          |  <Hotkey buttons={["B2"]}/>   |
+| DirectInput/PS3 |  <Hotkey buttons={["B2"]}/>   |
+| PS4             |  <Hotkey buttons={["B4"]}/>   |
+| Keyboard        |  <Hotkey buttons={["R2"]}/>   |
 
 :::note
 
@@ -90,14 +94,14 @@ A number of hotkeys are enabled by default and if you are encountering issues wi
 
 | Hotkeys Enabled By Default                        | Inputs                |
 | :------------------------------------------------ | :-------------------- |
-| [Home Button](hotkeys.md#home-button)             | `["S1","S2","Up"]`    |
-| [Dpad Digital](hotkeys.md#dpad-digital)           | `["S1","S2","Down"]`  |
-| [Dpad Left Analog](hotkeys.md#dpad-left-analog)   | `["S1","S2","Left"]`  |
-| [Dpad Right Analog](hotkeys.md#dpad-right-analog) | `["S2","A1","Right"]` |
-| [SOCD Up Priority](hotkeys.md#socd-up-priority)   | `["S2","A1","Up"]`    |
-| [SOCD Neutral](hotkeys.md#socd-neutral)           | `["S2","A1","Down"]`  |
-| [SOCD Last Wins](hotkeys.md#socd-last-win)        | `["S2","A1","Left"]`  |
-| [SOCD Invert Y Axis](hotkeys.md#invert-y-axis)    | `["S2","A1","Right"]` |
+| [Home Button](hotkeys.mdx#home-button)             | <Hotkey buttons={["S1","S2","Up"]}/>    |
+| [Dpad Digital](hotkeys.mdx#dpad-digital)           | <Hotkey buttons={["S1","S2","Down"]}/>  |
+| [Dpad Left Analog](hotkeys.mdx#dpad-left-analog)   | <Hotkey buttons={["S1","S2","Left"]}/>  |
+| [Dpad Right Analog](hotkeys.mdx#dpad-right-analog) | <Hotkey buttons={["S2","A1","Right"]}/> |
+| [SOCD Up Priority](hotkeys.mdx#socd-up-priority)   | <Hotkey buttons={["S2","A1","Up"]}/>    |
+| [SOCD Neutral](hotkeys.mdx#socd-neutral)           | <Hotkey buttons={["S2","A1","Down"]}/>  |
+| [SOCD Last Wins](hotkeys.mdx#socd-last-win)        | <Hotkey buttons={["S2","A1","Left"]}/>  |
+| [SOCD Invert Y Axis](hotkeys.mdx#invert-y-axis)    | <Hotkey buttons={["S2","A1","Right"]}/> |
 
 :::note
 

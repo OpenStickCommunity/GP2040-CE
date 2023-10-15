@@ -19,8 +19,8 @@ Not sure if your board can run GP2040-CE? As long as it has a RP2040 microproces
 This section of the documentation is primarily geared towards end users who are looking to use their controllers without diving into the minutiae of configuring and customizing their device. Given a controller, how to get to using it as soon as possible. It consists of the following sections.
 
 - [Firmware Installation](./installation.md "GP2040-CE | Firmware Installation"): In the event that you need to install firmware (e.g. setting up a new board, updating to a new version, or as part of troubleshooting)
-- [Usage](./usage.md "GP2040-CE | Usage"): Descriptions of the various features and functions available for use with GP2040-CE
-- [Hotkeys](./hotkeys.md "GP2040-CE | Hotkeys"): A list of the various hotkey shortcuts available for use with GP2040-CE.
+- [Usage](./usage.mdx "GP2040-CE | Usage"): Descriptions of the various features and functions available for use with GP2040-CE
+- [Hotkeys](./hotkeys.mdx "GP2040-CE | Hotkeys"): A list of the various hotkey shortcuts available for use with GP2040-CE.
 
 > The actual buttons for the shortcut may differ as they are customizable and can be set by your device's vendor or seller.
 

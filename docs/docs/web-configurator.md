@@ -9,7 +9,7 @@ pagination_prev: null
 
 Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>
 
-GP2040-CE contains a built-in web-based configuration application which can be started up by holding `["S2"]` when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS. When using the web-based configuration on Windows and Mac, RNDIS works on a default install. Linux distributions may need some extra steps to access the web configurator; see [Linux Setup](#linux-setup).
+GP2040-CE contains a built-in web-based configuration application which can be started up by holding <Hotkey buttons={["S2"]}/> when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS. When using the web-based configuration on Windows and Mac, RNDIS works on a default install. Linux distributions may need some extra steps to access the web configurator; see [Linux Setup](#linux-setup).
 
 ## Home
 
@@ -183,7 +183,7 @@ This section is for custom add-ons that can be enabled to expand the functionali
 
 ## Linux Setup
 
-When you plug in your controller while holding `["S2"]`, you should see it connect in the kernel logs if you run `dmesg`:
+When you plug in your controller while holding <Hotkey buttons={["S2"]}/>, you should see it connect in the kernel logs if you run `dmesg`:
 
 ```sh
 [   72.291060] usb 1-3: new full-speed USB device number 12 using xhci_hcd
