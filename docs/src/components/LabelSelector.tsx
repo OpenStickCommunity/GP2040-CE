@@ -24,34 +24,64 @@ const labelData = {
     "Arcade": { "name": "Arcade", "Up": "Up", "Down": "Down", "Left": "Left", "Right": "Right", "B1": "K1", "B2": "K2", "B3": "P1", "B4": "P2", "L1": "P4", "R1": "P3", "L2": "K4", "R2": "K3", "S1": "Select", "S2": "Start", "L3": "LS", "R3": "RS", "A1": "Home", "A2": "(A2)" }
 }
 
+const customStyles = {
+    option: (styles, { data, isDisabled, isSelected }) => {
+        const color = 0x000000;
+        return {
+            ...styles,
+            color: isDisabled
+                ? '#ccc'
+                : isSelected
+                ? 'white'
+                : 'black',        
+            ':active': {
+                ...styles[':active'],
+                backgroundColor: !isDisabled
+                ? isSelected
+                    ? data.color
+                    : color
+                : undefined,
+            },
+        };
+    }
+}
+
 export default function InputLabelSelector() {
     const [inputLabel, setInputLabel] = useState("");
     const handleChange = (s) => {
-        localStorage.setItem(SELECT_VALUE_KEY, JSON.stringify(s));
-        window.dispatchEvent(new Event('inputLabelChange'))
+        if (typeof window !== 'undefined') {
+            localStorage.setItem(SELECT_VALUE_KEY, JSON.stringify(s));
+            window.dispatchEvent(new Event('inputLabelChange'))
+        }
         setInputLabel(s);
     };
 
     useEffect(() => {
-        const lastSelected = JSON.parse(
-            localStorage.getItem(SELECT_VALUE_KEY) ?? "[]"
-        );
-        setInputLabel(lastSelected);
+        if (typeof window !== 'undefined') {
+            const lastSelected = JSON.parse(
+                localStorage.getItem(SELECT_VALUE_KEY) ?? "[]"
+            );
+            setInputLabel(lastSelected);
+        }
     }, []);
 
     return (
-        <Select 
-            value={inputLabel}
-            className={styles.labelSelector} 
-            options={inputLabels}
-            onChange={handleChange}
-        />
+            <Select 
+                value={inputLabel}
+                className={styles.labelSelector} 
+                options={inputLabels}
+                onChange={handleChange}
+                styles={customStyles}
+                />
     )
   }
 
 export function Hotkey(props) {
     const [hotkeyCombo, setHotkeyCombo] = useState(null)
-    let inputLabel = JSON.parse(localStorage.getItem(SELECT_VALUE_KEY))
+    let inputLabel = { value: "GP2040", label: "GP2040"};
+    if (typeof window !== 'undefined') {
+        inputLabel = JSON.parse(localStorage.getItem(SELECT_VALUE_KEY));
+    }
 
     const createNewHotkey = () => {
         let newHotkeyCombo = "";
@@ -72,10 +102,10 @@ export function Hotkey(props) {
         setHotkeyCombo(createNewHotkey())  
 
         window.addEventListener('inputLabelChange', () => {
-            inputLabel = JSON.parse(localStorage.getItem(SELECT_VALUE_KEY))
+            if (typeof window !== 'undefined') {
+                inputLabel = JSON.parse(localStorage.getItem(SELECT_VALUE_KEY))
+            }
             let newHotkeyCombo = createNewHotkey();
-            console.log(inputLabel.value)
-            console.log(hotkeyCombo)
 
             setHotkeyCombo(newHotkeyCombo)  
         });
@@ -84,6 +114,6 @@ export function Hotkey(props) {
     })
 
     return (
-        <code>{hotkeyCombo}</code>
+                <code>{hotkeyCombo}</code>
     );
   }
