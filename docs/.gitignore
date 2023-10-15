@@ -1,20 +1,45 @@
-# Dependencies
-/node_modules
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.iml
+*.code-workspace
+.changelog
+.history
 
-# Production
-/build
+node_modules
+.yarn
+package-lock.json
 
-# Generated files
+.eslintcache
+
+yarn-error.log
+build
+coverage
 .docusaurus
 .cache-loader
+types
+test-website
+test-website-in-workspace
 
-# Misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+packages/create-docusaurus/lib/
+packages/lqip-loader/lib/
+packages/docusaurus/lib/
+packages/docusaurus-*/lib/*
+packages/eslint-plugin/lib/
+packages/stylelint-copyright/lib/
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+website/netlifyDeployPreview/*
+website/changelog
+!website/netlifyDeployPreview/index.html
+!website/netlifyDeployPreview/_redirects
+
+website/_dogfooding/_swizzle_theme_tests
+
+CrowdinTranslations_*.zip
+
+website/i18n/**/*
+#!website/i18n/fr
+#!website/i18n/fr/**/*
+
+.netlify
