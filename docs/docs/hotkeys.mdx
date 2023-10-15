@@ -6,9 +6,13 @@ pagination_next: null
 pagination_prev: null
 ---
 
+import InputLabelSelector, { Hotkey } from "@site/src/components/LabelSelector.tsx";
+
+<InputLabelSelector />
+
 # Hotkeys
 
-Select the button labels to be displayed in the usage guide: <label-selector></label-selector>
+Select the button labels to be displayed in the usage guide:
 
 > All of the following hotkey bindings can be changed or assigned to different button combinations in [Hotkeys Settings](./web-configurator.md#hotkey-settings) section of the Web Configurator.
 
@@ -20,27 +24,27 @@ This hotkey does nothing. Use this hotkey to disable a specific hotkey combinati
 
 This hotkey changes the DPad mode such the directions to be read as digital inputs on the DPad.
 
-**Default**: `["S1", "S2", "Down"]`
+**Default**: <Hotkey buttons={["S1", "S2", "Down"]}/>
 
 ## DPad Left Analog
 
 This hotkey changes the DPad mode to such the directions to be read as inputs on the Left Analog Stick. The directional input is always the minimum, maximum, or zero value on that axis.
 
-**Default**: `["S1", "S2", "Left"]`
+**Default**: <Hotkey buttons={["S1", "S2", "Left"]}/>
 
 ## DPad Right Analog
 
 This hotkey changes the DPad mode to such the directions to be read as inputs on the Right Analog Stick. The directional input is always the minimum, maximum, or zero value on that axis.
 
-**Default**: `["S1", "S2", "Right"]`
+**Default**: <Hotkey buttons={["S1", "S2", "Right"]}/>
 
 ## Home Button
 
-This hotkey emulates a press of the `["A1"]` button as not all controllers may have this button natively on the controller.
+This hotkey emulates a press of the <Hotkey buttons={["A1"]}/> button as not all controllers may have this button natively on the controller.
 
 ## Capture Button
 
-This hotkey emulates a press of the `["A2"]` button as not all controllers may have this button natively on the controller.
+This hotkey emulates a press of the <Hotkey buttons={["A2"]}/> button as not all controllers may have this button natively on the controller.
 
 ## SOCD Up Priority
 
@@ -111,7 +115,7 @@ This hotkey will invert the X-axis of your controller (i.e. pressing the Right b
 
 This hotkey will invert the Y-axis of your controller (i.e. pressing the Up button will result in a Down input and vice versa).
 
-**Default**: `["S2", "A1", "Right"]`
+**Default**: <Hotkey buttons={["S2", "A1", "Right"]}/>
 
 ## Toggle 4-Way Joystick Mode
 
@@ -127,15 +131,15 @@ This hotkey will load various input to pin mapping profiles set in [Profile Sett
 
 ## L3 Button
 
-This hotkey emulates a press of the `["L3"]` button as not all controllers may have this button natively on the controller.
+This hotkey emulates a press of the <Hotkey buttons={["L3"]}/> button as not all controllers may have this button natively on the controller.
 
 ## R3 Button
 
-This hotkey emulates a press of the `["R3"]` button as not all controllers may have this button natively on the controller.
+This hotkey emulates a press of the <Hotkey buttons={["R3"]}/> button as not all controllers may have this button natively on the controller.
 
 ## Touchpad Button
 
-This hotkey emulates a press of the `["A2"]` button as not all controllers may have this button natively on the controller.
+This hotkey emulates a press of the <Hotkey buttons={["A2"]>/> button as not all controllers may have this button natively on the controller.
 
 ## Restart GP2040-CE
 
