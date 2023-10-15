@@ -10,7 +10,10 @@
 
 #define BOARD_CONFIG_LABEL "Reflex Encode V2"
 
-#define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT //INPUT_MODE_XINPUT (XInput), INPUT_MODE_SWITCH (Nintendo Switch), INPUT_MODE_HID (D-Input), INPUT_MODE_KEYBOARD (Keyboard)
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
+#define DEFAULT_INPUT_MODE INPUT_MODE_PS4
+#define PSPASSTHROUGH_ENABLED 1
+#define PSPASSTHROUGH_PIN_DPLUS 14
 
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.

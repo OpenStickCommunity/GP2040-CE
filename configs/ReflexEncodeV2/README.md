@@ -8,8 +8,8 @@ Open source PCB for arcade sticks using Raspberry Pi Pico's RP2040 microcontroll
 
 V2 add USB passthrough authentication.
 
-D+ = IO14
-D- = IO15
+D+ = 14
+D- = 15
 
 GitHub: https://github.com/misteraddons/ReflexFightingBoard
 Purchase from: https://misteraddons.com/collections/parts/products/reflex-encode-fighting-board
