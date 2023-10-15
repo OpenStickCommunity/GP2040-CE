@@ -8,7 +8,7 @@
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "Reflex Encoder V1"
+#define BOARD_CONFIG_LABEL "Reflex Encode V1"
 
 #define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
 #define DEFAULT_INPUT_MODE INPUT_MODE_PS4
