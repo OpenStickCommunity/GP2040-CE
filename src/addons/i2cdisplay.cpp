@@ -1051,12 +1051,14 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 
 	switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
 	{
-		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
-		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
-		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
-		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
-		case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
+		case SOCD_MODE_NEUTRAL:               statusBar += " SCD-N"; break;
+		case SOCD_MODE_UP_PRIORITY:           statusBar += " SCD-U"; break;
+		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SCD-L"; break;
+		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SCD-F"; break;
+		case SOCD_MODE_BYPASS:                statusBar += " SCD-X"; break;
 	}
+	if (Storage::getInstance().getAddonOptions().macroOptions.enabled)
+		statusBar += " M";
 	drawText(0, 0, statusBar);
 }
 
