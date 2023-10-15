@@ -14,3 +14,4 @@ modules/Custom.cmake
 cmake-*
 env.ini
 
+lib/pico_pio_usb
