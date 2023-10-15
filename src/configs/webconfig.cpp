@@ -1580,6 +1580,7 @@ std::string setMacroAddonOptions()
 
 	docToValue(macroOptions.enabled, doc, "InputMacroAddonEnabled");
 	docToPin(macroOptions.pin, doc, "macroPin");
+	docToValue(macroOptions.macroBoardLedEnabled, doc, "macroBoardLedEnabled");
 
 	JsonObject options = doc.as<JsonObject>();
 	JsonArray macros = options["macroList"];
@@ -1625,6 +1626,7 @@ std::string getMacroAddonOptions()
 	JsonArray macroList = doc.createNestedArray("macroList");
 
 	writeDoc(doc, "macroPin", macroOptions.pin);
+	writeDoc(doc, "macroBoardLedEnabled", macroOptions.macroBoardLedEnabled);
 	writeDoc(doc, "InputMacroAddonEnabled", macroOptions.enabled);
 
 	for (int i = 0; i < macroOptions.macroList_count; i++) {
