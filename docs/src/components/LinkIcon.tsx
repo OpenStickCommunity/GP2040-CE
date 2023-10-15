@@ -6,6 +6,7 @@ import {
 	faGlobe,
 	faX,
 } from '@fortawesome/free-solid-svg-icons';
+import { icon, text } from '@fortawesome/fontawesome-svg-core';
 
 const icons = {
 	Download: faFileDownload,
@@ -18,13 +19,19 @@ type LinkIconTypes = {
 	text: keyof typeof icons;
 };
 
-const LinkIcon = ({ link, text }: LinkIconTypes) => (
-	<li>
-		<a href={link}>
-			<FontAwesomeIcon icon={icons[text]} />
-			{text}
-		</a>
-	</li>
-);
+const LinkIcon = ({ link, text }: LinkIconTypes) => {
+	if(link === null) {
+		return null;
+	}	else{ 
+		return(
+			<li>
+				<a href={link}>
+					<FontAwesomeIcon icon={icons[text]} />
+					{text}
+				</a>
+			</li>
+		)
+	}
+}
 
 export default LinkIcon;
