@@ -105,6 +105,8 @@ void WiiExtensionInput::update() {
         //    WII_SET_MASK(buttonState, wii->getController()->buttons[extensionButton], value);
         //}
 
+        isAnalogTriggers = false;
+
         if (wii->extensionType == WII_EXTENSION_NUNCHUCK) {
             buttonZ = wii->getController()->buttons[WiiButtons::WII_BUTTON_Z];
             buttonC = wii->getController()->buttons[WiiButtons::WII_BUTTON_C];
@@ -136,6 +138,7 @@ void WiiExtensionInput::update() {
             if (wii->extensionType == WII_EXTENSION_CLASSIC) {
                 triggerLeft  = wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_TRIGGER];
                 triggerRight = wii->getController()->analogState[WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER];
+                isAnalogTriggers = true;
             }
 
             leftX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
@@ -211,6 +214,8 @@ void WiiExtensionInput::update() {
 
             triggerLeft  = wii->getController()->analogState[TurntableAnalogs::TURNTABLE_EFFECTS];
             triggerRight = wii->getController()->analogState[TurntableAnalogs::TURNTABLE_CROSSFADE];
+
+            isAnalogTriggers = true;
         }
     } else {
         currentConfig = NULL;
@@ -330,7 +335,7 @@ void WiiExtensionInput::queueAnalogChange(uint16_t analogInput, uint16_t analogV
 
 void WiiExtensionInput::updateAnalogState() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    gamepad->hasAnalogTriggers = true;
+    gamepad->hasAnalogTriggers = isAnalogTriggers;
 
     uint16_t axisType;
     uint16_t analogInput;
@@ -362,6 +367,8 @@ void WiiExtensionInput::updateAnalogState() {
 
             axisToChange = WII_ANALOG_TYPE_NONE;
             adjustedValue = 0;
+
+            if (!isAnalogTriggers && ((analogInput == WiiAnalogs::WII_ANALOG_LEFT_TRIGGER) || (analogInput == WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER))) continue;
 
             // define ranges
             switch (analogInput) {
