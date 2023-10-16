@@ -138,11 +138,11 @@ void InputMacro::preprocess()
 
     MacroInput& macroInput = macro.macroInputs[macroInputPosition];
     uint32_t macroInputDuration = macroInput.duration + macroInput.waitDuration;
+    macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
 
     if (!isMacroRunning && isMacroTriggerHeld) {
         isMacroRunning = true;
         macroStartTime = currentMicros;
-        macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
     }
     
     if (!isMacroRunning)
@@ -205,10 +205,7 @@ void InputMacro::preprocess()
         isMacroTriggerHeld = isMacroTriggerHeld && isMacroTypeLoopable;
         isMacroRunning = isMacroTriggerHeld;
         macroPosition = (isMacroTypeLoopable && isMacroTriggerHeld) ? macroPosition : -1;
-        if (isMacroTypeLoopable && !isMacroTriggerHeld) {
-            macroStartTime = 0;
-            macroInputHoldTime = INPUT_HOLD_US;
-        }
+        macroStartTime = currentMicros;
     }
 }
 
