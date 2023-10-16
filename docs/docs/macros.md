@@ -2,7 +2,7 @@
 
 Purpose: Macros are a series or combination of gamepad inputs triggered with a single button or a combination of buttons.
 
-![GP2040-CE Configurator - Macros](./assets/images/gpc-macros.png)
+![GP2040-CE Configurator - Macros](../assets/images/gpc-macros.png)
 
 ## Macro Options
 
@@ -27,11 +27,7 @@ This is the name of the macro and is optional.
 - `Off` - Additional inputs from user will be sent as the macro continues to execute, resulting in a blend of macro and user inputs.
 - `On` - Filters only the macro inputs through and excludes any additional user gamepad inputs
 
-:::note
-
-This option is **only** available when `Interruptible` is enabled.
-
-:::
+?> This option is **only** available when `Interruptible` is enabled.
 
 ### Show Frames
 
@@ -55,7 +51,7 @@ This describes is how the GPIO pin or the combination set in [`Uses Button`](#us
 
 Each individual macro has a maximum of 50 lines where each input line has a maximum of 18 gamepad inputs (using all available gamepad inputs).
 
-![GP2040-CE Configurator - Macro Input Line](@site/docs/assets/images/gpc-macros-input-line.png)
+![GP2040-CE Configurator - Macro Input Line](../assets/images/gpc-macros-input-line.png)
 
 Each input line is composed of the following elements from left to right.
 
@@ -65,11 +61,7 @@ Each input line is composed of the following elements from left to right.
 - Inputs - The inputs to be held during the execution of the input line.
 - Post Input Wait Duration - The duration in-between when that input line finishes executing and when the next line will start executing. (Maximum 4,294,967ms or 268,435 frames)
 
-:::note
-
-To delete an input line, double-click the "x" button.
-
-:::
+?> To delete an input line, double-click the "x" button.
 
 ## Note
 

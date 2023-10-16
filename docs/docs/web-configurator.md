@@ -5,6 +5,7 @@ title: GP2040-CE Web Configurator
 pagination_next: null
 pagination_prev: null
 ---
+
 # GP2040-CE Web Configurator
 
 Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>

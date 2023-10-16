@@ -7,7 +7,6 @@ pagination_next: null
 pagination_prev: null
 ---
 
-
 # Introduction
 
 Your controller has a control board in it that processes your inputs and translates that to commands that your computer or game console understands. GP2040-CE is firmware that facilitates this process, providing compatibility with a number of consoles and input modes. In addition to this, there are many other useful features through the Web Configurator and the system of community developed add-ons.
