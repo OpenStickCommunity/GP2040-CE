@@ -6,9 +6,14 @@ pagination_next: null
 pagination_prev: null
 ---
 
+import InputLabelSelector, { Hotkey } from "@site/src/components/LabelSelector.tsx";
+
 # GP2040-CE Web Configurator
 
-Select the button labels to be displayed in the web configurator guide: <label-selector></label-selector>
+Select the button labels to be displayed in the usage guide: 
+
+<InputLabelSelector />
+<br />
 
 GP2040-CE contains a built-in web-based configuration application which can be started up by holding <Hotkey buttons={["S2"]}/> when plugging your controller into a PC. Then access <http://192.168.7.1> in a web browser to begin configuration. This mode is compatible with Windows, Mac, Linux and SteamOS. When using the web-based configuration on Windows and Mac, RNDIS works on a default install. Linux distributions may need some extra steps to access the web configurator; see [Linux Setup](#linux-setup).
 

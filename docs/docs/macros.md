@@ -2,7 +2,7 @@
 
 Purpose: Macros are a series or combination of gamepad inputs triggered with a single button or a combination of buttons.
 
-![GP2040-CE Configurator - Macros](../assets/images/gpc-macros.png)
+![GP2040-CE Configurator - Macros](./assets/images/gpc-macros.png)
 
 ## Macro Options
 
@@ -51,7 +51,7 @@ This describes is how the GPIO pin or the combination set in [`Uses Button`](#us
 
 Each individual macro has a maximum of 50 lines where each input line has a maximum of 18 gamepad inputs (using all available gamepad inputs).
 
-![GP2040-CE Configurator - Macro Input Line](../assets/images/gpc-macros-input-line.png)
+![GP2040-CE Configurator - Macro Input Line](./assets/images/gpc-macros-input-line.png)
 
 Each input line is composed of the following elements from left to right.
 

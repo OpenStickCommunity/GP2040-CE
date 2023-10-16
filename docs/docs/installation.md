@@ -20,7 +20,7 @@ pagination_prev: null
 
 Congratulations! The board is now running the GP2040-CE firmware and will appear as a controller on your computer. You can test it in a game, using the website like [Gamepad Tester](https://gamepad-tester.com/), or in another application such as the Steam Input Overlay.
 
-If you would like to customize your device, check out the built-in [Web Configurator](./web-configurator.md).
+If you would like to customize your device, check out the built-in [Web Configurator](./web-configurator.mdx).
 
 ### Example Process (Raspberry Pi Pico)
 
