@@ -38,6 +38,8 @@ void InputMacro::preprocess()
     if (focusModeOptions.enabled && focusModeOptions.macroLockEnabled) return;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	uint32_t allPins = ~gpio_get_all();
+    macroInputPressed = false;
+    uint64_t currentMicros = getMicro();
 
     if (macroPosition == -1 || inputMacroOptions.macroList[macroPosition].interruptible) {
         int newMacroPosition = -1;
@@ -69,10 +71,21 @@ void InputMacro::preprocess()
             if (newMacroPosition != macroPosition ||
                 (newMacroPosition == macroPosition &&
                  inputMacroOptions.macroList[newMacroPosition].macroType == ON_PRESS &&
-                 isMacroRunning)) {
-                    reset();
-                    return;
-                 }
+                 isMacroRunning && (macroTriggerDebounceStartTime != 0 || (!prevMacroInputPressed && macroInputPressed)))) {
+                    if (macroTriggerDebounceStartTime == 0) {
+                        macroTriggerDebounceStartTime = currentMicros;
+                    }
+
+                    if (macroTriggerDebounceStartTime != 0) {
+                        if (((currentMicros - macroTriggerDebounceStartTime) > 500)) {
+                            macroTriggerDebounceStartTime = 0;
+                            if (macroInputPressed) {
+                                reset();
+                                return;
+                            }
+                        }
+                    }
+            }
         }
 
         if (newMacroPosition != -1 && !isMacroRunning) {
@@ -90,8 +103,6 @@ void InputMacro::preprocess()
     } else {
         macroInputPressed = (allPins & 1 << macro.macroTriggerPin);
     }
-
-    uint64_t currentMicros = getMicro();
 
     if (!isMacroRunning && macroInputPressed && macroTriggerDebounceStartTime == 0) {
         macroTriggerDebounceStartTime = currentMicros;
