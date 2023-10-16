@@ -229,7 +229,7 @@
 // INPUT_TEST     - Blinks whenever any input is made
 
 #define BOARD_LED_ENABLED 1
-#define BOARD_LED_TYPE ON_BOARD_LED_MODE_INPUT_TEST
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_PS_AUTH
 
 // Dual Directional Add-on Options
 
