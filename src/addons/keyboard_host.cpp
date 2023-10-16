@@ -69,8 +69,10 @@ void KeyboardHostAddon::preprocess() {
   gamepad->state.ly       |= _keyboard_host_state.ly;
   gamepad->state.rx       |= _keyboard_host_state.rx;
   gamepad->state.ry       |= _keyboard_host_state.ry;
-  gamepad->state.lt       |= _keyboard_host_state.lt;
-  gamepad->state.rt       |= _keyboard_host_state.rt;
+  if (!gamepad->hasAnalogTriggers) {
+    gamepad->state.lt       |= _keyboard_host_state.lt;
+    gamepad->state.rt       |= _keyboard_host_state.rt;
+  }
 }
 
 void KeyboardHostAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {

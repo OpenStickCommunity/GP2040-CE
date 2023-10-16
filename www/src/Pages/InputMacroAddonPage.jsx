@@ -39,10 +39,11 @@ const schema = yup.object().shape({
 		}),
 	),
 	macroPin: yup.number().checkUsedPins(),
+	macroBoardLedEnabled: yup.number(),
 	InputMacroAddonEnabled: yup.number(),
 });
 
-const MACRO_INPUTS_MAX = 50;
+const MACRO_INPUTS_MAX = 30;
 
 const defaultMacroInput = { buttonMask: 0, duration: 16666, waitDuration: 0 };
 
@@ -63,6 +64,7 @@ const defaultValues = {
 			],
 		}),
 	macroPin: -1,
+	macroBoardLedEnabled: 1,
 	InputMacroAddonEnabled: 1,
 };
 
@@ -418,6 +420,18 @@ export default function SettingsPage() {
 										checked={Boolean(values.InputMacroAddonEnabled)}
 										onChange={(e) => {
 											handleCheckbox('InputMacroAddonEnabled', values);
+											handleChange(e);
+										}} />
+									<Form.Check
+										label={t('InputMacroAddon:input-macro-board-led-enabled')}
+										className="col me-3"
+										type="switch"
+										id="InputMacroAddonBoardLed"
+										reverse
+										isInvalid={false}
+										checked={Boolean(values.macroBoardLedEnabled)}
+										onChange={(e) => {
+											handleCheckbox('macroBoardLedEnabled', values);
 											handleChange(e);
 										}} />
 								</div>
