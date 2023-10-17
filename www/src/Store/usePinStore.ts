@@ -46,14 +46,17 @@ export const BUTTON_ACTIONS = {
 type PinActionKeys = keyof typeof BUTTON_ACTIONS;
 type PinActionValues = (typeof BUTTON_ACTIONS)[PinActionKeys];
 
-type PinState = {
-	pins: { [key: number]: PinActionValues };
+type State = {
+	pins: { [key: string]: PinActionValues };
+};
+
+type Actions = {
 	fetchPins: () => void;
-	setPinAction: (pin: number, action: PinActionValues) => void;
+	setPinAction: (pin: string, action: PinActionValues) => void;
 	savePins: () => Promise<{}>;
 };
 
-const usePinStore = create<PinState>()((set, get) => ({
+const INITIAL_STATE: State = {
 	pins: {
 		pin00: -10,
 		pin01: -10,
@@ -86,6 +89,10 @@ const usePinStore = create<PinState>()((set, get) => ({
 		pin28: -10,
 		pin29: -10,
 	},
+};
+
+const usePinStore = create<State & Actions>()((set, get) => ({
+	...INITIAL_STATE,
 	fetchPins: async () => {
 		const { data } = await axios.get(`${baseUrl}/api/getPinMappings`);
 		set((state) => ({
