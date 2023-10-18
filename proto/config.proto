@@ -376,33 +376,34 @@ message AnalogModOptions
 
 	optional int32 tilt1Pin = 2;
 	optional int32 tilt2Pin = 3;
-	optional int32 analogmodLeftAnalogUpPin = 4;
-	optional int32 analogmodLeftAnalogDownPin = 5;
-	optional int32 analogmodLeftAnalogLeftPin = 6;
-	optional int32 analogmodLeftAnalogRightPin = 7;
-	optional int32 analogmodRightAnalogUpPin = 8;
-	optional int32 analogmodRightAnalogDownPin = 9;
-	optional int32 analogmodRightAnalogLeftPin = 10;
-	optional int32 analogmodRightAnalogRightPin = 11;
+	optional int32 unusedFunction = 4;
+	optional int32 analogmodLeftAnalogUpPin = 5;
+	optional int32 analogmodLeftAnalogDownPin = 6;
+	optional int32 analogmodLeftAnalogLeftPin = 7;
+	optional int32 analogmodLeftAnalogRightPin = 8;
+	optional int32 analogmodRightAnalogUpPin = 9;
+	optional int32 analogmodRightAnalogDownPin = 10;
+	optional int32 analogmodRightAnalogLeftPin = 11;
+	optional int32 analogmodRightAnalogRightPin = 12;
 
-	optional SOCDMode analogmodSOCDMode = 12;
+	optional SOCDMode analogmodSOCDMode = 13;
 	
-	optional int32 factorTilt1LeftX =  13;
-	optional int32 factorTilt1LeftY =  14;
-	optional int32 factorTilt1RightX =  15;
-	optional int32 factorTilt1RightY =  16;
-	optional int32 factorTilt2LeftX =  17;
-	optional int32 factorTilt2LeftY =  18;
-	optional int32 factorTilt2RightX =  19;
-	optional int32 factorTilt2RightY =  20;
+	optional int32 factorTilt1LeftX =  14;
+	optional int32 factorTilt1LeftY =  15;
+	optional int32 factorTilt1RightX =  16;
+	optional int32 factorTilt1RightY =  17;
+	optional int32 factorTilt2LeftX =  18;
+	optional int32 factorTilt2LeftY =  19;
+	optional int32 factorTilt2RightX =  20;
+	optional int32 factorTilt2RightY =  21;
 
-	optional int32 rotate1Pin = 21;
-	optional int32 rotate2Pin = 22;
+	optional int32 rotate1Pin = 22;
+	optional int32 rotate2Pin = 23;
 	
-	optional int32 factorRotate1Left =  23;
-	optional int32 factorRotate1Right =  24;
-	optional int32 factorRotate2Left =  25;
-	optional int32 factorRotate2Right =  26;
+	optional int32 factorRotate1Left =  24;
+	optional int32 factorRotate1Right =  25;
+	optional int32 factorRotate2Left =  26;
+	optional int32 factorRotate2Right =  27;
 }
 
 message BuzzerOptions
