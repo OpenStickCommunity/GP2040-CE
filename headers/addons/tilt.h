@@ -108,8 +108,10 @@ private:
 	uint8_t tiltRightState;          // Tilt Right Analog State
 	DpadDirection lastGPUD; // Gamepad Last Up-Down
 	DpadDirection lastGPLR; // Gamepad Last Left-Right
-	DpadDirection lastTiltUD; // Tilt Last Up-Down
-	DpadDirection lastTiltLR; // Gamepad Last Left-Right
+	DpadDirection leftLastTiltUD; // Tilt Last Up-Down
+	DpadDirection leftLastTiltLR; // Gamepad Last Left-Right
+	DpadDirection rightLastTiltUD; // Tilt Last Up-Down
+	DpadDirection rightLastTiltLR; // Gamepad Last Left-Right
 	uint32_t dpadTime[4];
 	uint8_t pinTilt1;
 	uint8_t tilt1FactorLeftX;

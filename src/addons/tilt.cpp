@@ -60,8 +60,11 @@ void TiltInput::setup() {
 	lastGPUD = DIRECTION_NONE;
 	lastGPLR = DIRECTION_NONE;
 
-	lastTiltUD = DIRECTION_NONE;
-	lastTiltLR = DIRECTION_NONE;
+	leftLastTiltUD = DIRECTION_NONE;
+	leftLastTiltLR = DIRECTION_NONE;
+
+	rightLastTiltUD = DIRECTION_NONE;
+	rightLastTiltLR = DIRECTION_NONE;
 
 	uint32_t now = getMillis();
 	for (int i = 0; i < 4; i++) {
@@ -170,7 +173,7 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	double scaledTilt2FactorRightY = 1.0 - (tilt2FactorRightY / 100.0);
 
 
-    if (pinTilt1Pressed) {
+	if (pinTilt1Pressed) {
         gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * scaledTilt1FactorLeftX;
         gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * scaledTilt1FactorLeftY;
     }
@@ -202,52 +205,103 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 
 
 void TiltInput::SOCDTiltClean(SOCDMode socdMode) {
+	// Left Stick SOCD Cleaning
 	// Tilt SOCD Last-Win Clean
 	switch (tiltLeftState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
 	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
 		if (socdMode == SOCD_MODE_UP_PRIORITY) {
 			tiltLeftState ^= GAMEPAD_MASK_DOWN; // Remove Down
-			lastTiltUD = DIRECTION_UP; // We're in UP mode
+			leftLastTiltUD = DIRECTION_UP; // We're in UP mode
 		}
-		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastTiltUD != DIRECTION_NONE) {
-			tiltLeftState ^= (lastTiltUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && leftLastTiltUD != DIRECTION_NONE) {
+			tiltLeftState ^= (leftLastTiltUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
 		}
 		else {
 			tiltLeftState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
-			lastTiltUD = DIRECTION_NONE;
+			leftLastTiltUD = DIRECTION_NONE;
 		}
 		break;
 	case GAMEPAD_MASK_UP:
-		lastTiltUD = DIRECTION_UP;
+		leftLastTiltUD = DIRECTION_UP;
 		break;
 	case GAMEPAD_MASK_DOWN:
-		lastTiltUD = DIRECTION_DOWN;
+		leftLastTiltUD = DIRECTION_DOWN;
 		break;
 	default:
-		lastTiltUD = DIRECTION_NONE;
+		leftLastTiltUD = DIRECTION_NONE;
 		break;
 	}
 	switch (tiltLeftState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
 	case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
 		if (socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL) {
 			tiltLeftState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT); // Remove L + R to Neutral
-			lastTiltLR = DIRECTION_NONE;
+			leftLastTiltLR = DIRECTION_NONE;
 		}
 		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) {
-			if (lastTiltLR != DIRECTION_NONE)
-				tiltLeftState ^= (lastTiltLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
+			if (leftLastTiltLR != DIRECTION_NONE)
+				tiltLeftState ^= (leftLastTiltLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
 			else
-				lastTiltLR = DIRECTION_NONE;
+				leftLastTiltLR = DIRECTION_NONE;
 		}
 		break;
 	case GAMEPAD_MASK_LEFT:
-		lastTiltLR = DIRECTION_LEFT;
+		leftLastTiltLR = DIRECTION_LEFT;
 		break;
 	case GAMEPAD_MASK_RIGHT:
-		lastTiltLR = DIRECTION_RIGHT;
+		leftLastTiltLR = DIRECTION_RIGHT;
 		break;
 	default:
-		lastTiltLR = DIRECTION_NONE;
+		leftLastTiltLR = DIRECTION_NONE;
+		break;
+	}
+
+	// Right Stick SOCD Cleaning
+	// Tilt SOCD Last-Win Clean
+	switch (tiltRightState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
+	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
+		if (socdMode == SOCD_MODE_UP_PRIORITY) {
+			tiltRightState ^= GAMEPAD_MASK_DOWN; // Remove Down
+			rightLastTiltUD = DIRECTION_UP; // We're in UP mode
+		}
+		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && rightLastTiltUD != DIRECTION_NONE) {
+			tiltRightState ^= (rightLastTiltUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+		}
+		else {
+			tiltRightState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
+			rightLastTiltUD = DIRECTION_NONE;
+		}
+		break;
+	case GAMEPAD_MASK_UP:
+		rightLastTiltUD = DIRECTION_UP;
+		break;
+	case GAMEPAD_MASK_DOWN:
+		rightLastTiltUD = DIRECTION_DOWN;
+		break;
+	default:
+		rightLastTiltUD = DIRECTION_NONE;
+		break;
+	}
+	switch (tiltRightState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
+	case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
+		if (socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL) {
+			tiltRightState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT); // Remove L + R to Neutral
+			rightLastTiltLR = DIRECTION_NONE;
+		}
+		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) {
+			if (rightLastTiltLR != DIRECTION_NONE)
+				tiltRightState ^= (rightLastTiltLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
+			else
+				rightLastTiltLR = DIRECTION_NONE;
+		}
+		break;
+	case GAMEPAD_MASK_LEFT:
+		rightLastTiltLR = DIRECTION_LEFT;
+		break;
+	case GAMEPAD_MASK_RIGHT:
+		rightLastTiltLR = DIRECTION_RIGHT;
+		break;
+	default:
+		rightLastTiltLR = DIRECTION_NONE;
 		break;
 	}
 }
