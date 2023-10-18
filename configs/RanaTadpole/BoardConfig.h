@@ -8,9 +8,7 @@
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "Reflex Ctrl SNES"
-
-#define DEFAULT_INPUT_MODE INPUT_MODE_SWITCH
+#define BOARD_CONFIG_LABEL "Rana Tadpole"
 
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
@@ -20,26 +18,26 @@
 // Please note that only when `PIN_SLIDER_ONE` and  `PIN_SLIDER_TWO` are set to `-1` will the button combo shortcut for DP/LS/RS work.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
-#define PIN_DPAD_UP     2           // UP
-#define PIN_DPAD_DOWN   3           // DOWN
-#define PIN_DPAD_RIGHT  4           // RIGHT
-#define PIN_DPAD_LEFT   5           // LEFT
-#define PIN_BUTTON_B1   6           // B1 / A / B / Cross / 2 / K1
-#define PIN_BUTTON_B2   7           // B2 / B / A / Circle / 3 / K2
-#define PIN_BUTTON_R2   8           // R2 / RT / ZR / R2 / 8 / K3
-#define PIN_BUTTON_L2   9           // L2 / LT / ZL / L2 / 7 / K4
-#define PIN_BUTTON_B3   10          // B3 / X / Y / Square / 1 / P1
-#define PIN_BUTTON_B4   11          // B4 / Y / X / Triangle / 4 / P2
-#define PIN_BUTTON_R1   19          // R1 / RB / R / R1 / 6 / P3
-#define PIN_BUTTON_L1   18          // L1 / LB / L / L1 / 5 / P4
-#define PIN_BUTTON_S1   16          // S1 / Back / Minus / Select / 9 / Coin
-#define PIN_BUTTON_S2   17          // S2 / Start / Plus / Start / 10 / Start
-#define PIN_BUTTON_L3   12          // L3 / LS / LS / L3 / 11 / LS
-#define PIN_BUTTON_R3   13          // R3 / RS / RS / R3 / 12 / RS
-#define PIN_BUTTON_A1   20          // A1 / Guide / Home / PS / 13 / ~
-#define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
-#define PIN_BUTTON_FN   -1          // Hotkey Function
-#define PIN_BUTTON_TURBO 14         // Turbo
+#define PIN_DPAD_UP       0         // UP
+#define PIN_DPAD_DOWN     3         // DOWN
+#define PIN_DPAD_RIGHT    2         // RIGHT
+#define PIN_DPAD_LEFT     4         // LEFT
+#define PIN_BUTTON_B1     26         // B1 / A / B / Cross / 2 / K1
+#define PIN_BUTTON_B2     21         // B2 / B / A / Circle / 3 / K2
+#define PIN_BUTTON_R2     19         // R2 / RT / ZR / R2 / 8 / K3
+#define PIN_BUTTON_L2     17         // L2 / LT / ZL / L2 / 7 / K4
+#define PIN_BUTTON_B3     27        // B3 / X / Y / Square / 1 / P1
+#define PIN_BUTTON_B4     22        // B4 / Y / X / Triangle / 4 / P2
+#define PIN_BUTTON_R1     20        // R1 / RB / R / R1 / 6 / P3
+#define PIN_BUTTON_L1     18       // L1 / LB / L / L1 / 5 / P4
+#define PIN_BUTTON_S1     7         // S1 / Back / Minus / Select / 9 / Coin
+#define PIN_BUTTON_S2     6         // S2 / Start / Plus / Start / 10 / Start
+#define PIN_BUTTON_L3     15        // L3 / LS / LS / L3 / 11 / LS
+#define PIN_BUTTON_R3     16        // R3 / RS / RS / R3 / 12 / RS
+#define PIN_BUTTON_A1     13        // A1 / Guide / Home / PS / 13 / ~
+#define PIN_BUTTON_A2     12        // A2 / ~ / Capture / ~ / 14 / ~
+#define PIN_BUTTON_FN     14        // Hotkey Function
+#define PIN_BUTTON_TURBO -1         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_ONE    -1         // Left Stick Slider
 #define PIN_SLIDER_TWO    -1         // Right Stick Slider
@@ -63,6 +61,8 @@
 
 #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF // 	FORCED_SETUP_MODE_OFF, FORCED_SETUP_MODE_LOCK_MODE_SWITCH, FORCED_SETUP_MODE_LOCK_WEB_CONFIG, FORCED_SETUP_MODE_LOCK_BOTH
 #define DEFAULT_LOCK_HOTKEYS false // or true
+
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
 
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
@@ -88,29 +88,25 @@
 
 #define TURBO_LED_PIN -1
 
-#define LED_BRIGHTNESS_MAXIMUM 150
+#define BOARD_LEDS_PIN -1
+
+#define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
 #define LEDS_PER_PIXEL 1
 
-#define LEDS_DPAD_LEFT   11
-#define LEDS_DPAD_DOWN   10
-#define LEDS_DPAD_RIGHT  9
-#define LEDS_DPAD_UP     0
-#define LEDS_BUTTON_B3   8
-#define LEDS_BUTTON_B4   7
+#define LEDS_DPAD_LEFT   0
+#define LEDS_DPAD_DOWN   1
+#define LEDS_DPAD_RIGHT  2
+#define LEDS_DPAD_UP     3
+#define LEDS_BUTTON_B3   4
+#define LEDS_BUTTON_B4   5
 #define LEDS_BUTTON_R1   6
-#define LEDS_BUTTON_L1   5
-#define LEDS_BUTTON_B1   1
-#define LEDS_BUTTON_B2   2
-#define LEDS_BUTTON_R2   3
-#define LEDS_BUTTON_L2   4
-#define LEDS_BUTTON_S1   -1
-#define LEDS_BUTTON_S2   -1
-#define LEDS_BUTTON_L3   -1
-#define LEDS_BUTTON_R3   -1
-#define LEDS_BUTTON_A1   -1
-#define LEDS_BUTTON_A2   -1
+#define LEDS_BUTTON_L1   7
+#define LEDS_BUTTON_B1   8
+#define LEDS_BUTTON_B2   9
+#define LEDS_BUTTON_R2   10
+#define LEDS_BUTTON_L2   11
 
 
 // This is the Player LED section.
@@ -124,16 +120,16 @@
 // 3 - `PLED_TYPE_RGB` - This will enable the Player LEDs as addressible RGB LEDs (please not that this has not been implemented yet)
 
 #define PLED_TYPE PLED_TYPE_NONE
-#define PLED1_PIN 16
-#define PLED2_PIN 17
-#define PLED3_PIN 18
-#define PLED4_PIN 19
+#define PLED1_PIN -1
+#define PLED2_PIN -1
+#define PLED3_PIN -1
+#define PLED4_PIN -1
 
 
 // This is the Analog section.
 // In this section you can specify if Analog is enabled, and, if endabled, which pins will be used for it.
 // The default for `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY` is `-1` which disables them.
-// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired. 
+// To enable a `ANALOG_ADC_VRX` and `ANALOG_ADC_VRY`, replace the `-1` with the GPIO pin numbers that are desired.
 
 #define ANALOG_ADC_1_VRX -1
 #define ANALOG_ADC_1_VRY -1
@@ -145,6 +141,8 @@
 #define ANALOG_ADC_2_MODE DPAD_MODE_RIGHT_ANALOG
 #define ANALOG_ADC_2_INVERT INVERT_NONE
 
+// Reverse Button section
+#define REVERSE_LED_PIN -1
 
 // This is the I2C Display section (commonly known as the OLED display section).
 // In this section you can specify if a display as been enabled, which pins are assined to it, the block address and speed.
@@ -191,30 +189,21 @@
 // 4 - `NOSPLASH` - This will not display a splash screen on boot
 // Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define HAS_I2C_DISPLAY 1
+#define HAS_I2C_DISPLAY -1
 #define I2C_SDA_PIN 0
 #define I2C_SCL_PIN 1
-#define I2C_BLOCK i2c1
+#define I2C_BLOCK i2c0
 #define I2C_SPEED 400000
 #define DISPLAY_FLIP 0
 #define DISPLAY_INVERT 0
 
-// I2C Analog ADS1219 Add-on Options
-#define I2C_ANALOG1219_SDA_PIN -1
-#define I2C_ANALOG1219_SCL_PIN -1
-#define I2C_ANALOG1219_BLOCK i2c0
-#define I2C_ANALOG1219_SPEED 400000
-#define I2C_ANALOG1219_ADDRESS 0x40
-
-// Reverse Button section
-#define REVERSE_LED_PIN -1
 #define REVERSE_UP_DEFAULT 1
 #define REVERSE_DOWN_DEFAULT 1
 #define REVERSE_LEFT_DEFAULT 1
 #define REVERSE_RIGHT_DEFAULT 1
 
-#define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
-#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESSB
+#define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX
 #define SPLASH_MODE SPLASH_MODE_NONE
 #define SPLASH_CHOICE SPLASH_CHOICE_MAIN
 #define SPLASH_DURATION 7500 // Duration in milliseconds
@@ -225,8 +214,8 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
-#define BOARD_LED_ENABLED 1
-#define BOARD_LED_TYPE ON_BOARD_LED_MODE_INPUT_TEST
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR
+#define BOARD_LED_PIN 25
 
 // Dual Directional Add-on Options
 
@@ -241,9 +230,9 @@
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
 
 // Extra Button Add-on setting
-#define EXTRA_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+#define EXTRA_BUTTON_MASK GAMEPAD_MASK_L3 // 0 means none, get other mask from GamepadState.h
                             // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
-#define EXTRA_BUTTON_PIN -1
+#define EXTRA_BUTTON_PIN 5
 
 // Keyboard Mapping Configuration
 // List of HID keycodes can be located here: https://github.com/hathach/tinyusb/blob/3623ba1884ddff23e9b64766cb6dd032f1425846/src/class/hid/hid.h#L356
