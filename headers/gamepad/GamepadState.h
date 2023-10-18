@@ -140,7 +140,7 @@ inline uint16_t GetJoystickMidValue(uint8_t mode) {
             return SWITCH_JOYSTICK_MID << 8;
 
         case INPUT_MODE_HID:
-			return HID_JOYSTICK_MID << 8;
+            return HID_JOYSTICK_MID << 8;
 
         case INPUT_MODE_KEYBOARD:
             return HID_JOYSTICK_MID << 8;
