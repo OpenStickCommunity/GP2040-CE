@@ -7,7 +7,7 @@
 1. Download the compiled firmware (.uf2 file) for your device
 2. Unplug your device.
 3. Put your device into Bootsel/USB mode. A new removable drive named `RPI-RP2` should appear in your file explorer.
-4. Drag and Drag and drop the compiled firmware (.uf2 file) downloaded in step 1 into the removable drive
+4. Drag and drop the compiled firmware (.uf2 file) downloaded in step 1 into the removable drive.
 5. Wait for the device to automatically disconnect.
 
 Congratulations! The board is now running the GP2040-CE firmware and will appear as a controller on your computer. You can test it in a game, using the website like [Gamepad Tester](https://gamepad-tester.com/), or in another application such as the Steam Input Overlay.
