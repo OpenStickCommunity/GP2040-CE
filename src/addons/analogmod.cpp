@@ -66,11 +66,11 @@ void AnalogModInput::setup() {
 	analogmodLeftState = 0;
 	analogmodRightState = 0;
 
-	lastGPUD = DIRECTION_NONE;
-	lastGPLR = DIRECTION_NONE;
+	leftLastAnalogModUD = DIRECTION_NONE;
+	leftLastAnalogModLR = DIRECTION_NONE;
 
-	lastAnalogModUD = DIRECTION_NONE;
-	lastAnalogModLR = DIRECTION_NONE;
+	rightLastAnalogModUD = DIRECTION_NONE;
+	rightLastAnalogModLR = DIRECTION_NONE;
 
 	uint32_t now = getMillis();
 	for (int i = 0; i < 4; i++) {
@@ -182,14 +182,14 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 	bool pinRotate1Pressed = (pinRotate1 != (uint8_t)-1) ? !gpio_get(pinRotate1) : false;
 	bool pinRotate2Pressed = (pinRotate2 != (uint8_t)-1) ? !gpio_get(pinRotate2) : false;
 
-	double scaledTilt1FactorLeftX  = tilt1FactorLeftX  / 100.0;
-	double scaledTilt1FactorLeftY  = tilt1FactorLeftY  / 100.0;
-	double scaledTilt1FactorRightX = tilt1FactorRightX / 100.0;
-	double scaledTilt1FactorRightY = tilt1FactorRightY / 100.0;
-	double scaledTilt2FactorLeftX  = tilt2FactorLeftX  / 100.0;
-	double scaledTilt2FactorLeftY  = tilt2FactorLeftY  / 100.0;
-	double scaledTilt2FactorRightX = tilt2FactorRightX / 100.0;
-	double scaledTilt2FactorRightY = tilt2FactorRightY / 100.0;
+	double scaledTilt1FactorLeftX  = 1.0 - (tilt1FactorLeftX  / 100.0);
+	double scaledTilt1FactorLeftY  = 1.0 - (tilt1FactorLeftY  / 100.0);
+	double scaledTilt1FactorRightX = 1.0 - (tilt1FactorRightX / 100.0);
+	double scaledTilt1FactorRightY = 1.0 - (tilt1FactorRightY / 100.0);
+	double scaledTilt2FactorLeftX  = 1.0 - (tilt2FactorLeftX  / 100.0);
+	double scaledTilt2FactorLeftY  = 1.0 - (tilt2FactorLeftY  / 100.0);
+	double scaledTilt2FactorRightX = 1.0 - (tilt2FactorRightX / 100.0);
+	double scaledTilt2FactorRightY = 1.0 - (tilt2FactorRightY / 100.0);
 	
 	uint16_t stickradius = GAMEPAD_JOYSTICK_MAX - GAMEPAD_JOYSTICK_MID;
 	double rotate1degreeLeft = rotate1FactorLeft;
@@ -214,18 +214,31 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 	double rotate2RightDiagSIN = sin(rotate2degreeRight / 180 * M_PI - M_PI/4) * stickradius;
 	double rotate2RightDiagCOS = cos(rotate2degreeRight / 180 * M_PI - M_PI/4) * stickradius;
 
-	// Tilt 1 has priority over Tilt 2
-    if (pinTilt1Pressed) {
+	// (Tilt1+Tilt2 or Rotate1+Rotate2) = RS as DPad
+	if ((pinTilt1Pressed && pinTilt2Pressed) || (pinRotate1Pressed &&  pinRotate2Pressed)) {
+		gamepad->state.dpad = dpad2;
+		gamepad->state.rx = GAMEPAD_JOYSTICK_MID;
+		gamepad->state.ry = GAMEPAD_JOYSTICK_MID;
+    }
+	
+	// Tilt 1
+	else if ( pinTilt1Pressed && !pinTilt2Pressed && !pinRotate1Pressed && !pinRotate2Pressed) {
         gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * scaledTilt1FactorLeftX;
         gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * scaledTilt1FactorLeftY;
+		gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * scaledTilt1FactorRightX;
+        gamepad->state.ry = dpadToAnalogY(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad2)) * scaledTilt1FactorRightY;
     }
-    else if (pinTilt2Pressed) {
+	
+	// Tilt 2
+    else if (!pinTilt1Pressed &&  pinTilt2Pressed && !pinRotate1Pressed && !pinRotate2Pressed) {
         gamepad->state.lx = dpadToAnalogX(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1)) * scaledTilt2FactorLeftX;
         gamepad->state.ly = dpadToAnalogY(dpad1) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1)) * scaledTilt2FactorLeftY;
+        gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * scaledTilt2FactorRightX;
+        gamepad->state.ry = dpadToAnalogY(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad2)) * scaledTilt2FactorRightY;
     }
-	// Tilt has priority over Rotate
-	// Rotate 1 has priority over Rotate 2
-    else if (pinRotate1Pressed) {
+	
+	// Rotate1
+	else if (!pinTilt1Pressed && !pinTilt2Pressed &&  pinRotate1Pressed && !pinRotate2Pressed) {
 		switch (analogmodLeftState) {
 		case (GAMEPAD_MASK_UP):
 			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate1LeftSIN;
@@ -264,90 +277,7 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 			gamepad->state.ly = dpadToAnalogY(dpad1);
 			break;
 		}
-    }
-    else if (pinRotate2Pressed) {
-		switch (analogmodLeftState) {
-		case (GAMEPAD_MASK_UP):
-			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftSIN;
-			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftCOS;
-			break;
-		case (GAMEPAD_MASK_RIGHT):
-			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftCOS;
-			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftSIN;
-			break;
-		case (GAMEPAD_MASK_DOWN):
-			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftSIN;
-			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftCOS;
-			break;
-		case (GAMEPAD_MASK_LEFT):
-			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftCOS;
-			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftSIN;
-			break;
-		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT):
-			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagSIN;
-			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagCOS;
-			break;
-		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT):
-			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagCOS;
-			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagSIN;
-			break;
-		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT):
-			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagSIN;
-			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagCOS;
-			break;
-		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT):
-			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagCOS;
-			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagSIN;
-			break;
-		default:
-			gamepad->state.lx = dpadToAnalogX(dpad1);
-			gamepad->state.ly = dpadToAnalogY(dpad1);
-			break;
-		}
-    }
-	else {
-		gamepad->state.lx = dpadToAnalogX(dpad1);
-		gamepad->state.ly = dpadToAnalogY(dpad1);
-	}
-	
-	
-	// Tilt 1 has priority over Tilt 2
-	// Hold Tilt1 + Tilt2 turn on D-Pad
-	if (pinTilt1Pressed && pinTilt2Pressed) {
-		gamepad->state.dpad = dpad2;
-		gamepad->state.rx = GAMEPAD_JOYSTICK_MID;
-		gamepad->state.ry = GAMEPAD_JOYSTICK_MID;
-	}
-	else if (pinTilt1Pressed) {
-		if (dpad2 & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
-			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * scaledTilt1FactorRightX;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * scaledTilt1FactorRightY;
-		}
-		else {
-			gamepad->state.rx = dpadToAnalogX(dpad2);
-			gamepad->state.ry = dpadToAnalogY(dpad2);
-		}
-	}
-	else if (pinTilt2Pressed) {
-		if (dpad2 & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
-			gamepad->state.rx = dpadToAnalogX(dpad2) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2)) * scaledTilt2FactorRightX;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID * scaledTilt2FactorRightY;
-		}
-		else {
-			gamepad->state.rx = dpadToAnalogX(dpad2);
-			gamepad->state.ry = dpadToAnalogY(dpad2);
-		}
-	}
-	// Tilt has priority over Rotate
-	// Rotate 1 has priority over Rotate 2
-	// Hold Rotate1 + Rotate2 turn on D-Pad
-	else if (pinRotate1Pressed && pinRotate2Pressed) {
-		gamepad->state.dpad = dpad2;
-		gamepad->state.rx = GAMEPAD_JOYSTICK_MID;
-		gamepad->state.ry = GAMEPAD_JOYSTICK_MID;
 		
-	}
-	else if (pinRotate1Pressed) {
 		switch (analogmodRightState) {
 		case (GAMEPAD_MASK_UP):
 			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate1RightSIN;
@@ -386,48 +316,93 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 			gamepad->state.ry = dpadToAnalogY(dpad2);
 			break;
 		}
-	}
-	else if (pinRotate2Pressed) {
+    }
+	
+	// Rotate2
+    else if (!pinTilt1Pressed && !pinTilt2Pressed && !pinRotate1Pressed &&  pinRotate2Pressed) {
+		switch (analogmodLeftState) {
+		case (GAMEPAD_MASK_UP):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftCOS;
+			break;
+		case (GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftCOS;
+			break;
+		case (GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftSIN;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagCOS;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagSIN;
+			break;
+		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagSIN;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID + rotate2LeftDiagCOS;
+			break;
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT):
+			gamepad->state.lx = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagCOS;
+			gamepad->state.ly = GAMEPAD_JOYSTICK_MID - rotate2LeftDiagSIN;
+			break;
+		default:
+			gamepad->state.lx = dpadToAnalogX(dpad1);
+			gamepad->state.ly = dpadToAnalogY(dpad1);
+			break;
+		}
+		
 		switch (analogmodRightState) {
 		case (GAMEPAD_MASK_UP):
-			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightSIN;
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightSIN;
 			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightCOS;
 			break;
 		case (GAMEPAD_MASK_RIGHT):
 			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightCOS;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightSIN;
 			break;
 		case (GAMEPAD_MASK_DOWN):
-			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightSIN;
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightSIN;
 			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightCOS;
 			break;
 		case (GAMEPAD_MASK_LEFT):
 			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightCOS;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightSIN;
 			break;
 		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT):
-			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightDiagSIN;
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightDiagSIN;
 			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightDiagCOS;
 			break;
 		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT):
 			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightDiagCOS;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightDiagSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightDiagSIN;
 			break;
 		case (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT):
-			gamepad->state.rx = GAMEPAD_JOYSTICK_MID + rotate2RightDiagSIN;
+			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightDiagSIN;
 			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightDiagCOS;
 			break;
 		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT):
 			gamepad->state.rx = GAMEPAD_JOYSTICK_MID - rotate2RightDiagCOS;
-			gamepad->state.ry = GAMEPAD_JOYSTICK_MID + rotate2RightDiagSIN;
+			gamepad->state.ry = GAMEPAD_JOYSTICK_MID - rotate2RightDiagSIN;
 			break;
 		default:
 			gamepad->state.rx = dpadToAnalogX(dpad2);
 			gamepad->state.ry = dpadToAnalogY(dpad2);
 			break;
 		}
-	}
-	else {
+    }
+	
+	// Not presssing any analog mod buttons
+	else if (!pinTilt1Pressed && !pinTilt2Pressed && !pinRotate1Pressed && !pinRotate2Pressed) {
+		gamepad->state.lx = dpadToAnalogX(dpad1);
+		gamepad->state.ly = dpadToAnalogY(dpad1);
 		gamepad->state.rx = dpadToAnalogX(dpad2);
 		gamepad->state.ry = dpadToAnalogY(dpad2);
 	}
@@ -435,101 +410,103 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 
 
 void AnalogModInput::SOCDAnalogModClean(SOCDMode socdMode) {
+	// Left Stick SOCD Cleaning
 	// AnalogMod SOCD Last-Win Clean
 	switch (analogmodLeftState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
 	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
 		if (socdMode == SOCD_MODE_UP_PRIORITY) {
 			analogmodLeftState ^= GAMEPAD_MASK_DOWN; // Remove Down
-			lastAnalogModUD = DIRECTION_UP; // We're in UP mode
+			leftLastAnalogModUD = DIRECTION_UP; // We're in UP mode
 		}
-		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastAnalogModUD != DIRECTION_NONE) {
-			analogmodLeftState ^= (lastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && leftLastAnalogModUD != DIRECTION_NONE) {
+			analogmodLeftState ^= (leftLastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
 		}
 		else {
 			analogmodLeftState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
-			lastAnalogModUD = DIRECTION_NONE;
+			leftLastAnalogModUD = DIRECTION_NONE;
 		}
 		break;
 	case GAMEPAD_MASK_UP:
-		lastAnalogModUD = DIRECTION_UP;
+		leftLastAnalogModUD = DIRECTION_UP;
 		break;
 	case GAMEPAD_MASK_DOWN:
-		lastAnalogModUD = DIRECTION_DOWN;
+		leftLastAnalogModUD = DIRECTION_DOWN;
 		break;
 	default:
-		lastAnalogModUD = DIRECTION_NONE;
+		leftLastAnalogModUD = DIRECTION_NONE;
 		break;
 	}
 	switch (analogmodLeftState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
 	case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
 		if (socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL) {
 			analogmodLeftState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT); // Remove L + R to Neutral
-			lastAnalogModLR = DIRECTION_NONE;
+			leftLastAnalogModLR = DIRECTION_NONE;
 		}
 		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) {
-			if (lastAnalogModLR != DIRECTION_NONE)
-				analogmodLeftState ^= (lastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
+			if (leftLastAnalogModLR != DIRECTION_NONE)
+				analogmodLeftState ^= (leftLastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
 			else
-				lastAnalogModLR = DIRECTION_NONE;
+				leftLastAnalogModLR = DIRECTION_NONE;
 		}
 		break;
 	case GAMEPAD_MASK_LEFT:
-		lastAnalogModLR = DIRECTION_LEFT;
+		leftLastAnalogModLR = DIRECTION_LEFT;
 		break;
 	case GAMEPAD_MASK_RIGHT:
-		lastAnalogModLR = DIRECTION_RIGHT;
+		leftLastAnalogModLR = DIRECTION_RIGHT;
 		break;
 	default:
-		lastAnalogModLR = DIRECTION_NONE;
+		leftLastAnalogModLR = DIRECTION_NONE;
 		break;
 	}
 	
+	// Right Stick SOCD Cleaning
 	// AnalogMod SOCD Last-Win Clean
 	switch (analogmodRightState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
 	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
 		if (socdMode == SOCD_MODE_UP_PRIORITY) {
 			analogmodRightState ^= GAMEPAD_MASK_DOWN; // Remove Down
-			lastAnalogModUD = DIRECTION_UP; // We're in UP mode
+			rightLastAnalogModUD = DIRECTION_UP; // We're in UP mode
 		}
-		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastAnalogModUD != DIRECTION_NONE) {
-			analogmodRightState ^= (lastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && rightLastAnalogModUD != DIRECTION_NONE) {
+			analogmodRightState ^= (rightLastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
 		}
 		else {
 			analogmodRightState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
-			lastAnalogModUD = DIRECTION_NONE;
+			rightLastAnalogModUD = DIRECTION_NONE;
 		}
 		break;
 	case GAMEPAD_MASK_UP:
-		lastAnalogModUD = DIRECTION_UP;
+		rightLastAnalogModUD = DIRECTION_UP;
 		break;
 	case GAMEPAD_MASK_DOWN:
-		lastAnalogModUD = DIRECTION_DOWN;
+		rightLastAnalogModUD = DIRECTION_DOWN;
 		break;
 	default:
-		lastAnalogModUD = DIRECTION_NONE;
+		rightLastAnalogModUD = DIRECTION_NONE;
 		break;
 	}
 	switch (analogmodRightState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
 	case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
 		if (socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL) {
 			analogmodRightState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT); // Remove L + R to Neutral
-			lastAnalogModLR = DIRECTION_NONE;
+			rightLastAnalogModLR = DIRECTION_NONE;
 		}
 		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) {
-			if (lastAnalogModLR != DIRECTION_NONE)
-				analogmodRightState ^= (lastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
+			if (rightLastAnalogModLR != DIRECTION_NONE)
+				analogmodRightState ^= (rightLastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
 			else
-				lastAnalogModLR = DIRECTION_NONE;
+				rightLastAnalogModLR = DIRECTION_NONE;
 		}
 		break;
 	case GAMEPAD_MASK_LEFT:
-		lastAnalogModLR = DIRECTION_LEFT;
+		rightLastAnalogModLR = DIRECTION_LEFT;
 		break;
 	case GAMEPAD_MASK_RIGHT:
-		lastAnalogModLR = DIRECTION_RIGHT;
+		rightLastAnalogModLR = DIRECTION_RIGHT;
 		break;
 	default:
-		lastAnalogModLR = DIRECTION_NONE;
+		rightLastAnalogModLR = DIRECTION_NONE;
 		break;
 	}
 }

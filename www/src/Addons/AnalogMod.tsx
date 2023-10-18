@@ -18,19 +18,19 @@ export const analogmodScheme = {
 	factorTilt1LeftX: yup
 		.number()
 		.label('Tilt 1 Factor Left X')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 100),
 	factorTilt1LeftY: yup
 		.number()
 		.label('Tilt 1 Factor Left Y')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 100),
 	factorTilt1RightX: yup
 		.number()
 		.label('Tilt 1 Factor Right X')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 100),
 	factorTilt1RightY: yup
 		.number()
 		.label('Tilt 1 Factor Right Y')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 100),
 	tilt2Pin: yup
 		.number()
 		.label('Tilt 2 Pin')
@@ -38,19 +38,19 @@ export const analogmodScheme = {
 	factorTilt2LeftX: yup
 		.number()
 		.label('Tilt 2 Factor Left X')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 100),
 	factorTilt2LeftY: yup
 		.number()
 		.label('Tilt 2 Factor Left Y')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 100),
 	factorTilt2RightX: yup
 		.number()
 		.label('Tilt 2 Factor Right X')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 100),
 	factorTilt2RightY: yup
 		.number()
 		.label('Tilt 2 Factor Right Y')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 200),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 100),
 	analogmodLeftAnalogUpPin: yup
 		.number()
 		.label('AnalogMod Left Analog Up Pin')
@@ -90,11 +90,11 @@ export const analogmodScheme = {
 	factorRotate1Left: yup
 		.number()
 		.label('Rotate 1 Degree for Left Stick')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
 	factorRotate1Right: yup
 		.number()
 		.label('Rotate 1 Degree for Right Stick')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
 	rotate2Pin: yup
 		.number()
 		.label('Rotate 2 Pin (Counter Clockwise Rotation)')
@@ -102,11 +102,11 @@ export const analogmodScheme = {
 	factorRotate2Left: yup
 		.number()
 		.label('Rotate 2 Degree for Left Stick')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
 	factorRotate2Right: yup
 		.number()
 		.label('Rotate 2 Degree for Right Stick')
-		.validateNumberWhenValue('AnalogModInputEnabled'),
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
 	analogmodSOCDMode: yup
 		.number()
 		.label('AnalogMod SOCE Mode')
@@ -117,14 +117,14 @@ export const analogmodState = {
 	AnalogModInputEnabled: 0,
 	tilt1Pin: -1,
 	factorTilt1LeftX: 35,
-	factorTilt1LeftY: 45,
+	factorTilt1LeftY: 35,
 	factorTilt1RightX: 35,
-	factorTilt1RightY: 170,
+	factorTilt1RightY: 35,
 	tilt2Pin: -1,
 	factorTilt2LeftX: 65,
-	factorTilt2LeftY: 35,
-	factorTilt2RightX: 30,
-	factorTilt2RightY: 30,
+	factorTilt2LeftY: 65,
+	factorTilt2RightX: 65,
+	factorTilt2RightY: 65,
 	analogmodLeftAnalogUpPin: -1,
 	analogmodLeftAnalogDownPin: -1,
 	analogmodLeftAnalogLeftPin: -1,
@@ -137,8 +137,8 @@ export const analogmodState = {
 	factorRotate1Left: 15,
 	factorRotate1Right: 15,
 	rotate2Pin: -1,
-	factorRotate2Left: 15,
-	factorRotate2Right: 15,
+	factorRotate2Left: 345,
+	factorRotate2Right: 345,
 };
 
 const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -170,8 +170,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorTilt1LeftX}
 						isInvalid={errors.factorTilt1LeftX}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={100}
 					/>
 					<FormControl
 						type="number"
@@ -183,8 +183,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorTilt1LeftY}
 						isInvalid={errors.factorTilt1LeftY}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={100}
 					/>
 					<FormControl
 						type="number"
@@ -196,8 +196,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorTilt1RightX}
 						isInvalid={errors.factorTilt1RightX}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={100}
 					/>
 					<FormControl
 						type="number"
@@ -209,8 +209,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorTilt1RightY}
 						isInvalid={errors.factorTilt1RightY}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={100}
 					/>
 				</Row>
 				<Row className="mb-3">
@@ -237,8 +237,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorTilt2LeftX}
 						isInvalid={errors.factorTilt2LeftX}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={100}
 					/>
 					<FormControl
 						type="number"
@@ -250,8 +250,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorTilt2LeftY}
 						isInvalid={errors.factorTilt2LeftY}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={100}
 					/>
 					<FormControl
 						type="number"
@@ -263,8 +263,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorTilt2RightX}
 						isInvalid={errors.factorTilt2RightX}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={100}
 					/>
 					<FormControl
 						type="number"
@@ -276,8 +276,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorTilt2RightY}
 						isInvalid={errors.factorTilt2RightY}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={100}
 					/>
 				</Row>
 				<Row className="mb-3">
@@ -304,8 +304,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorRotate1Left}
 						isInvalid={errors.factorRotate1Left}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={360}
 					/>
 					<FormControl
 						type="number"
@@ -317,8 +317,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorRotate1Right}
 						isInvalid={errors.factorRotate1Right}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={360}
 					/>
 				</Row>
 				<Row className="mb-3">
@@ -345,8 +345,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorRotate2Left}
 						isInvalid={errors.factorRotate2Left}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={360}
 					/>
 					<FormControl
 						type="number"
@@ -358,8 +358,8 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						error={errors.factorRotate2Right}
 						isInvalid={errors.factorRotate2Right}
 						onChange={handleChange}
-						min={-1}
-						max={200}
+						min={0}
+						max={360}
 					/>
 				</Row>
 				<Row className="mb-3">

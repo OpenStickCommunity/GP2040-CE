@@ -18,7 +18,7 @@
 #endif
 
 #ifndef TILT1_FACTOR_LEFT_Y
-#define TILT1_FACTOR_LEFT_Y 45
+#define TILT1_FACTOR_LEFT_Y 35
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_X
@@ -26,7 +26,7 @@
 #endif
 
 #ifndef TILT1_FACTOR_RIGHT_Y
-#define TILT1_FACTOR_RIGHT_Y 170
+#define TILT1_FACTOR_RIGHT_Y 35
 #endif
 
 #ifndef PIN_TILT_2
@@ -38,15 +38,15 @@
 #endif
 
 #ifndef TILT2_FACTOR_LEFT_Y
-#define TILT2_FACTOR_LEFT_Y 35
+#define TILT2_FACTOR_LEFT_Y 65
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_X
-#define TILT2_FACTOR_RIGHT_X 30
+#define TILT2_FACTOR_RIGHT_X 65
 #endif
 
 #ifndef TILT2_FACTOR_RIGHT_Y
-#define TILT2_FACTOR_RIGHT_Y 30
+#define TILT2_FACTOR_RIGHT_Y 65
 #endif
 
 
@@ -99,11 +99,11 @@
 #endif
 
 #ifndef ROTATE2_FACTOR_LEFT
-#define ROTATE2_FACTOR_LEFT 15
+#define ROTATE2_FACTOR_LEFT 345
 #endif
 
 #ifndef ROTATE2_FACTOR_RIGHT
-#define ROTATE2_FACTOR_RIGHT 15
+#define ROTATE2_FACTOR_RIGHT 345
 #endif
 
 #ifndef ANALOGMOD_SOCD_MODE
@@ -130,10 +130,10 @@ private:
 	uint8_t dDebRightState;          // Debounce State (stored)
 	uint8_t analogmodLeftState;           // AnalogMod Left Analog State
 	uint8_t analogmodRightState;          // AnalogMod Right Analog State
-	DpadDirection lastGPUD; // Gamepad Last Up-Down
-	DpadDirection lastGPLR; // Gamepad Last Left-Right
-	DpadDirection lastAnalogModUD; // Gamepad Last Up-Down
-	DpadDirection lastAnalogModLR; // Gamepad Last Left-Right
+	DpadDirection leftLastAnalogModUD;
+	DpadDirection leftLastAnalogModLR;
+	DpadDirection rightLastAnalogModUD;
+	DpadDirection rightLastAnalogModLR;
 	uint32_t dpadTime[4];
 	uint8_t pinTilt1;
 	uint8_t tilt1FactorLeftX;
@@ -154,11 +154,11 @@ private:
 	uint8_t pinAnalogModRightAnalogLeft;
 	uint8_t pinAnalogModRightAnalogRight;
 	uint8_t pinRotate1;
-	uint8_t rotate1FactorLeft;
-    uint8_t rotate1FactorRight;
+	uint16_t rotate1FactorLeft;
+    uint16_t rotate1FactorRight;
 	uint8_t pinRotate2;
-    uint8_t rotate2FactorLeft;
-    uint8_t rotate2FactorRight;
+    uint16_t rotate2FactorLeft;
+    uint16_t rotate2FactorRight;
 	SOCDMode analogmodSOCDMode;
 };
 

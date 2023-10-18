@@ -241,14 +241,14 @@
 // ANALOGMOD Add-on Options
 #define PIN_TILT_1 -1
 #define TILT1_FACTOR_LEFT_X  35  //Default value for the TILT button to function.
-#define TILT1_FACTOR_LEFT_Y  45  //Default value for the TILT button to function.
+#define TILT1_FACTOR_LEFT_Y  35  //Default value for the TILT button to function.
 #define TILT1_FACTOR_RIGHT_X 35  //Default value for the TILT button to function.
-#define TILT1_FACTOR_RIGHT_Y 170 //Default value for the TILT button to function.
+#define TILT1_FACTOR_RIGHT_Y 35  //Default value for the TILT button to function.
 #define PIN_TILT_2 -1
 #define TILT2_FACTOR_LEFT_X  65  //Default value for the TILT button to function.
-#define TILT2_FACTOR_LEFT_Y  35  //Default value for the TILT button to function.
-#define TILT2_FACTOR_RIGHT_X 30  //Default value for the TILT button to function.
-#define TILT2_FACTOR_RIGHT_Y 30  //Default value for the TILT button to function.
+#define TILT2_FACTOR_LEFT_Y  65  //Default value for the TILT button to function.
+#define TILT2_FACTOR_RIGHT_X 65  //Default value for the TILT button to function.
+#define TILT2_FACTOR_RIGHT_Y 65  //Default value for the TILT button to function.
 #define PIN_ANALOGMOD_LEFT_ANALOG_UP -1
 #define PIN_ANALOGMOD_LEFT_ANALOG_DOWN -1
 #define PIN_ANALOGMOD_LEFT_ANALOG_LEFT -1
@@ -262,8 +262,8 @@
 #define ROTATE1_FACTOR_LEFT  15  //Default value for the ROTATE button to function.
 #define ROTATE1_FACTOR_RIGHT 15  //Default value for the ROTATE button to function.
 #define PIN_ROTATE_2 -1
-#define ROTATE2_FACTOR_LEFT  15  //Default value for the ROTATE button to function.
-#define ROTATE2_FACTOR_RIGHT 15  //Default value for the ROTATE button to function.
+#define ROTATE2_FACTOR_LEFT  345  //Default value for the ROTATE button to function.
+#define ROTATE2_FACTOR_RIGHT 345  //Default value for the ROTATE button to function.
 
 // BOOTSEL Button Add-on setting
 #define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
