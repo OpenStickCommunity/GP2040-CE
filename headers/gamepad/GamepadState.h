@@ -158,7 +158,7 @@ inline uint16_t dpadToAnalogX(uint8_t dpad, uint8_t mode)
 					return HID_JOYSTICK_MID << 8;
 
 				case INPUT_MODE_PS4:
-					return HID_JOYSTICK_MID << 8;
+					return PS4_JOYSTICK_MID << 8;
 
 				default:
 					return GAMEPAD_JOYSTICK_MID;
@@ -195,7 +195,7 @@ inline uint16_t dpadToAnalogY(uint8_t dpad, uint8_t mode)
 					return HID_JOYSTICK_MID << 8;
 
 				case INPUT_MODE_PS4:
-					return HID_JOYSTICK_MID << 8;
+					return PS4_JOYSTICK_MID << 8;
 
 				default:
 					return GAMEPAD_JOYSTICK_MID;
