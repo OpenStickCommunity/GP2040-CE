@@ -218,7 +218,7 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 	double rotate2RightDiagCOS = cos(rotate2degreeRight / 180 * M_PI - M_PI/4) * stickradius;
 
 	// (Tilt1+Tilt2 or Rotate1+Rotate2) = RS as DPad
-	if ((pinTilt1Pressed && pinTilt2Pressed) || (pinRotate1Pressed &&  pinRotate2Pressed)) {
+	if ((pinTilt1Pressed && pinTilt2Pressed && !pinRotate1Pressed && !pinRotate2Pressed) || (!pinTilt1Pressed && !pinTilt2Pressed && pinRotate1Pressed && pinRotate2Pressed)) {
 		gamepad->state.dpad = dpad2;
 		gamepad->state.rx = joystickMid;
 		gamepad->state.ry = joystickMid;
@@ -233,7 +233,7 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
     }
 	
 	// Tilt 2
-    else if (!pinTilt1Pressed &&  pinTilt2Pressed && !pinRotate1Pressed && !pinRotate2Pressed) {
+    else if (!pinTilt1Pressed && pinTilt2Pressed && !pinRotate1Pressed && !pinRotate2Pressed) {
         gamepad->state.lx = dpadToAnalogX(dpad1, input_mode) + (joystickMid - dpadToAnalogX(dpad1, input_mode)) * scaledTilt2FactorLeftX;
         gamepad->state.ly = dpadToAnalogY(dpad1, input_mode) + (joystickMid - dpadToAnalogY(dpad1, input_mode)) * scaledTilt2FactorLeftY;
         gamepad->state.rx = dpadToAnalogX(dpad2, input_mode) + (joystickMid - dpadToAnalogX(dpad2, input_mode)) * scaledTilt2FactorRightX;
@@ -241,7 +241,7 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
     }
 	
 	// Rotate1
-	else if (!pinTilt1Pressed && !pinTilt2Pressed &&  pinRotate1Pressed && !pinRotate2Pressed) {
+	else if (!pinTilt1Pressed && !pinTilt2Pressed && pinRotate1Pressed && !pinRotate2Pressed) {
 		switch (analogmodLeftState) {
 		case (GAMEPAD_MASK_UP):
 			gamepad->state.lx = joystickMid + rotate1LeftSIN;
@@ -322,7 +322,7 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
     }
 	
 	// Rotate2
-    else if (!pinTilt1Pressed && !pinTilt2Pressed && !pinRotate1Pressed &&  pinRotate2Pressed) {
+    else if (!pinTilt1Pressed && !pinTilt2Pressed && !pinRotate1Pressed && pinRotate2Pressed) {
 		switch (analogmodLeftState) {
 		case (GAMEPAD_MASK_UP):
 			gamepad->state.lx = joystickMid + rotate2LeftSIN;
@@ -414,7 +414,6 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 
 void AnalogModInput::SOCDAnalogModClean(SOCDMode socdMode) {
 	// Left Stick SOCD Cleaning
-	// AnalogMod SOCD Last-Win Clean
 	switch (analogmodLeftState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
 	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
 		if (socdMode == SOCD_MODE_UP_PRIORITY) {
@@ -464,7 +463,6 @@ void AnalogModInput::SOCDAnalogModClean(SOCDMode socdMode) {
 	}
 	
 	// Right Stick SOCD Cleaning
-	// AnalogMod SOCD Last-Win Clean
 	switch (analogmodRightState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
 	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
 		if (socdMode == SOCD_MODE_UP_PRIORITY) {

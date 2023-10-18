@@ -2,7 +2,7 @@
 
 ![GP2040-CE Configuration - Add-Ons Tilt Input](assets/images/gpc-add-ons-analogmod.png)
 
-## Analog Stick Pins
+## Dedicated Analog Stick Pins
 User can set dedicated analog stick pins to work with Tilt and Rotate features.
 Setting dedicated analog stick pins will overwrite the settings in DPad mode slider addon.
 If no dedicated analog stick pins are set, Tilt and Rotate features will function when DPad is used as Left or Right Analog.
