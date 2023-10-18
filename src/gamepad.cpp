@@ -185,6 +185,8 @@ void Gamepad::teardown_and_reinit(const uint32_t profileNum)
 void Gamepad::process()
 {
 	memcpy(&rawState, &state, sizeof(GamepadState));
+	// Get the midpoint value for the current mode
+	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
 
 	// NOTE: Inverted X/Y-axis must run before SOCD and Dpad processing
 	if (options.invertXAxis) {
@@ -218,8 +220,8 @@ void Gamepad::process()
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:
 			if (!hasRightAnalogStick) {
-				state.rx = GAMEPAD_JOYSTICK_MID;
-				state.ry = GAMEPAD_JOYSTICK_MID;
+				state.rx = joystickMid;
+				state.ry = joystickMid;
 			}
 			state.lx = dpadToAnalogX(state.dpad, options.inputMode);
 			state.ly = dpadToAnalogY(state.dpad, options.inputMode);
@@ -228,8 +230,8 @@ void Gamepad::process()
 
 		case DpadMode::DPAD_MODE_RIGHT_ANALOG:
 			if (!hasLeftAnalogStick) {
-				state.lx = GAMEPAD_JOYSTICK_MID;
-				state.ly = GAMEPAD_JOYSTICK_MID;
+				state.lx = joystickMid;
+				state.ly = joystickMid;
 			}
 			state.rx = dpadToAnalogX(state.dpad, options.inputMode);
 			state.ry = dpadToAnalogY(state.dpad, options.inputMode);
@@ -238,12 +240,12 @@ void Gamepad::process()
 
 		default:
 			if (!hasLeftAnalogStick) {
-				state.lx = GAMEPAD_JOYSTICK_MID;
-				state.ly = GAMEPAD_JOYSTICK_MID;
+				state.lx = joystickMid;
+				state.ly = joystickMid;
 			}
 			if (!hasRightAnalogStick) {
-				state.rx = GAMEPAD_JOYSTICK_MID;
-				state.ry = GAMEPAD_JOYSTICK_MID;
+				state.rx = joystickMid;
+				state.ry = joystickMid;
 			}
 			break;
 	}
@@ -254,6 +256,8 @@ void Gamepad::read()
 	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
+	// Get the midpoint value for the current mode
+	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
 
 	state.aux = 0
 		| (values & (1 << pinMappings.pinButtonFn)) ? AUX_MASK_FUNCTION : 0;
@@ -282,10 +286,10 @@ void Gamepad::read()
 		| ((values & mapButtonA2->pinMask)  ? mapButtonA2->buttonMask  : 0)
 	;
 
-	state.lx = GAMEPAD_JOYSTICK_MID;
-	state.ly = GAMEPAD_JOYSTICK_MID;
-	state.rx = GAMEPAD_JOYSTICK_MID;
-	state.ry = GAMEPAD_JOYSTICK_MID;
+	state.lx = joystickMid;
+	state.ly = joystickMid;
+	state.rx = joystickMid;
+	state.ry = joystickMid;
 	state.lt = 0;
 	state.rt = 0;
 }
