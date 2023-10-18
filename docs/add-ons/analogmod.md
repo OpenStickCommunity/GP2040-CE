@@ -18,7 +18,8 @@ If no dedicated analog stick pins are set, Tilt and Rotate features will functio
 ## Tilt
 Tilt 1 and Tilt 2 buttons, when pressed with directional buttons, adjust the analog values.
 Pressing Tilt 1 or 2 with a value of N and a direction results in an input that is N% of the maximum direction.
-Pressing Tilt 1 and Tilt 2 simultaneously with Right Stick will function as the D-Pad.
+Pressing Tilt 1 and Tilt 2 simultaneously with Left Stick will have no impact.
+Pressing Tilt 1 and Tilt 2 simultaneously with Right Stick will make it function as the D-Pad.
 
 * Left Analog Stick (LS Tilt 1 Factor XY = 35) - Input Left while holding Tilt 1 = Send input at 35% Left
 * Left Analog Stick (LS Tilt 1 Factor XY = 35) - Input Up while holding Tilt 1 = Send input at 35% Up
@@ -31,8 +32,9 @@ Pressing Tilt 1 and Tilt 2 simultaneously with Right Stick will function as the 
 
 ## Rotate
 Rotate 1 and Rotate 2 buttons, when pressed with directional buttons, adjust the analog values.
-Both Rotate 1 & 2 will make analog sticks rotate clockwise.
-Pressing Rotate 1 and Rotate 2 simultaneously with Right Stick will function as the D-Pad.
+Both Rotate 1 and Rotate 2 will make analog sticks rotate clockwise.
+Pressing Rotate 1 and Rotate 2 simultaneously with Left Stick will have no impact.
+Pressing Rotate 1 and Rotate 2 simultaneously with Right Stick will make it function as the D-Pad.
 * `Rotate 1 Pin` - The GPIO pin used for the Rotate 1 (Clockwise Rotation).
 * `Rotate 2 Pin` - The GPIO pin used for the Rotate 2 (Clockwise Rotation).
 * `Rotate 1 Degree for Left Stick` - Clockwise rotate degree for Left Stick when Pressing Rotate 1
