@@ -149,6 +149,114 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 				<Row className="mb-3">
 					<FormControl
 						type="number"
+						label={t('AddonsConfig:analogmod-left-analog-up-pin-label')}
+						name="analogmodLeftAnalogUpPin"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.analogmodLeftAnalogUpPin}
+						error={errors.analogmodLeftAnalogUpPin}
+						isInvalid={errors.analogmodLeftAnalogUpPin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:analogmod-left-analog-down-pin-label')}
+						name="analogmodLeftAnalogDownPin"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.analogmodLeftAnalogDownPin}
+						error={errors.analogmodLeftAnalogDownPin}
+						isInvalid={errors.analogmodLeftAnalogDownPin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:analogmod-left-analog-left-pin-label')}
+						name="analogmodLeftAnalogLeftPin"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.analogmodLeftAnalogLeftPin}
+						error={errors.analogmodLeftAnalogLeftPin}
+						isInvalid={errors.analogmodLeftAnalogLeftPin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:analogmod-left-analog-right-pin-label')}
+						name="analogmodLeftAnalogRightPin"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.analogmodLeftAnalogRightPin}
+						error={errors.analogmodLeftAnalogRightPin}
+						isInvalid={errors.analogmodLeftAnalogRightPin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:analogmod-right-analog-up-pin-label')}
+						name="analogmodRightAnalogUpPin"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.analogmodRightAnalogUpPin}
+						error={errors.analogmodRightAnalogUpPin}
+						isInvalid={errors.analogmodRightAnalogUpPin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:analogmod-right-analog-down-pin-label')}
+						name="analogmodRightAnalogDownPin"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.analogmodRightAnalogDownPin}
+						error={errors.analogmodRightAnalogDownPin}
+						isInvalid={errors.analogmodRightAnalogDownPin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:analogmod-right-analog-left-pin-label')}
+						name="analogmodRightAnalogLeftPin"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.analogmodRightAnalogLeftPin}
+						error={errors.analogmodRightAnalogLeftPin}
+						isInvalid={errors.analogmodRightAnalogLeftPin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:analogmod-right-analog-right-pin-label')}
+						name="analogmodRightAnalogRightPin"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.analogmodRightAnalogRightPin}
+						error={errors.analogmodRightAnalogRightPin}
+						isInvalid={errors.analogmodRightAnalogRightPin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
 						label={t('AddonsConfig:tilt-1-pin-label')}
 						name="tilt1Pin"
 						className="form-select-sm"
@@ -160,6 +268,47 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={-1}
 						max={29}
 					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-2-pin-label')}
+						name="tilt2Pin"
+						className="form-select-sm"
+						groupClassName="col-sm-1 mb-3"
+						value={values.tilt2Pin}
+						error={errors.tilt2Pin}
+						isInvalid={errors.tilt2Pin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-1-pin-label')}
+						name="rotate1Pin"
+						className="form-select-sm"
+						groupClassName="col-sm-1 mb-3"
+						value={values.rotate1Pin}
+						error={errors.rotate1Pin}
+						isInvalid={errors.rotate1Pin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-2-pin-label')}
+						name="rotate2Pin"
+						className="form-select-sm"
+						groupClassName="col-sm-1 mb-3"
+						value={values.rotate2Pin}
+						error={errors.rotate2Pin}
+						isInvalid={errors.rotate2Pin}
+						onChange={handleChange}
+						min={-1}
+						max={29}
+					/>
+				</Row>
+				<Row className="mb-3">
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:tilt-1-factor-left-x-label')}
@@ -216,19 +365,6 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 				<Row className="mb-3">
 					<FormControl
 						type="number"
-						label={t('AddonsConfig:tilt-2-pin-label')}
-						name="tilt2Pin"
-						className="form-select-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={values.tilt2Pin}
-						error={errors.tilt2Pin}
-						isInvalid={errors.tilt2Pin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
 						label={t('AddonsConfig:tilt-2-factor-left-x-label')}
 						name="factorTilt2LeftX"
 						className="form-select-sm"
@@ -283,19 +419,6 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 				<Row className="mb-3">
 					<FormControl
 						type="number"
-						label={t('AddonsConfig:rotate-1-pin-label')}
-						name="rotate1Pin"
-						className="form-select-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={values.rotate1Pin}
-						error={errors.rotate1Pin}
-						isInvalid={errors.rotate1Pin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
 						label={t('AddonsConfig:rotate-1-factor-left-label')}
 						name="factorRotate1Left"
 						className="form-select-sm"
@@ -322,19 +445,6 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 				</Row>
 				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:rotate-2-pin-label')}
-						name="rotate2Pin"
-						className="form-select-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={values.rotate2Pin}
-						error={errors.rotate2Pin}
-						isInvalid={errors.rotate2Pin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:rotate-2-factor-left-label')}
@@ -379,114 +489,6 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 							</option>
 						))}
 					</FormSelect>
-				</Row>
-<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:analogmod-left-analog-up-pin-label')}
-						name="analogmodLeftAnalogUpPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodLeftAnalogUpPin}
-						error={errors.analogmodLeftAnalogUpPin}
-						isInvalid={errors.analogmodLeftAnalogUpPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:analogmod-left-analog-down-pin-label')}
-						name="analogmodLeftAnalogDownPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodLeftAnalogDownPin}
-						error={errors.analogmodLeftAnalogDownPin}
-						isInvalid={errors.analogmodLeftAnalogDownPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:analogmod-left-analog-left-pin-label')}
-						name="analogmodLeftAnalogLeftPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodLeftAnalogLeftPin}
-						error={errors.analogmodLeftAnalogLeftPin}
-						isInvalid={errors.analogmodLeftAnalogLeftPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:analogmod-left-analog-right-pin-label')}
-						name="analogmodLeftAnalogRightPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodLeftAnalogRightPin}
-						error={errors.analogmodLeftAnalogRightPin}
-						isInvalid={errors.analogmodLeftAnalogRightPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-				</Row>
-				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:analogmod-right-analog-up-pin-label')}
-						name="analogmodRightAnalogUpPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodRightAnalogUpPin}
-						error={errors.analogmodRightAnalogUpPin}
-						isInvalid={errors.analogmodRightAnalogUpPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:analogmod-right-analog-down-pin-label')}
-						name="analogmodRightAnalogDownPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodRightAnalogDownPin}
-						error={errors.analogmodRightAnalogDownPin}
-						isInvalid={errors.analogmodRightAnalogDownPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:analogmod-right-analog-left-pin-label')}
-						name="analogmodRightAnalogLeftPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodRightAnalogLeftPin}
-						error={errors.analogmodRightAnalogLeftPin}
-						isInvalid={errors.analogmodRightAnalogLeftPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:analogmod-right-analog-right-pin-label')}
-						name="analogmodRightAnalogRightPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodRightAnalogRightPin}
-						error={errors.analogmodRightAnalogRightPin}
-						isInvalid={errors.analogmodRightAnalogRightPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
 				</Row>
 			</div>
 			<FormCheck
