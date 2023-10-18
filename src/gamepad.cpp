@@ -215,8 +215,8 @@ void Gamepad::process()
 				state.rx = GAMEPAD_JOYSTICK_MID;
 				state.ry = GAMEPAD_JOYSTICK_MID;
 			}
-			state.lx = dpadToAnalogX(state.dpad);
-			state.ly = dpadToAnalogY(state.dpad);
+			state.lx = dpadToAnalogX(state.dpad, options.inputMode);
+			state.ly = dpadToAnalogY(state.dpad, options.inputMode);
 			state.dpad = 0;
 			break;
 
@@ -225,8 +225,8 @@ void Gamepad::process()
 				state.lx = GAMEPAD_JOYSTICK_MID;
 				state.ly = GAMEPAD_JOYSTICK_MID;
 			}
-			state.rx = dpadToAnalogX(state.dpad);
-			state.ry = dpadToAnalogY(state.dpad);
+			state.rx = dpadToAnalogX(state.dpad, options.inputMode);
+			state.ry = dpadToAnalogY(state.dpad, options.inputMode);
 			state.dpad = 0;
 			break;
 
