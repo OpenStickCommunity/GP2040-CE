@@ -5,7 +5,7 @@
 
 bool TiltInput::available() {
     const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
-	return options.enabled && ((options.tilt1Pin != -1) || (options.tilt2Pin != -1));
+    return options.enabled && ((options.tilt1Pin != -1) || (options.tilt2Pin != -1));
 }
 
 void TiltInput::setup() {
