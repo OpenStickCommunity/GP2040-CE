@@ -18,19 +18,19 @@ export const tiltScheme = {
 	factorTilt1LeftX: yup
 		.number()
 		.label('Tilt 1 Factor Left X')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt1LeftY: yup
 		.number()
 		.label('Tilt 1 Factor Left Y')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt1RightX: yup
 		.number()
 		.label('Tilt 1 Factor Right X')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt1RightY: yup
 		.number()
 		.label('Tilt 1 Factor Right Y')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	tilt2Pin: yup
 		.number()
 		.label('Tilt 2 Pin')
@@ -38,19 +38,19 @@ export const tiltScheme = {
 	factorTilt2LeftX: yup
 		.number()
 		.label('Tilt 2 Factor Left X')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt2LeftY: yup
 		.number()
 		.label('Tilt 2 Factor Left Y')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt2RightX: yup
 		.number()
 		.label('Tilt 2 Factor Right X')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	factorTilt2RightY: yup
 		.number()
 		.label('Tilt 2 Factor Right Y')
-		.validateNumberWhenValue('TiltInputEnabled'),
+		.validateRangeWhenValue('TiltInputEnabled', 0, 100),
 	tiltLeftAnalogUpPin: yup
 		.number()
 		.label('Tilt Left Analog Up Pin')
@@ -92,15 +92,15 @@ export const tiltScheme = {
 export const tiltState = {
 	TiltInputEnabled: 0,
 	tilt1Pin: -1,
-	factorTilt1LeftX: -1,
-	factorTilt1LeftY: -1,
-	factorTilt1RightX: -1,
-	factorTilt1ightY: -1,
+	factorTilt1LeftX: 0,
+	factorTilt1LeftY: 0,
+	factorTilt1RightX: 0,
+	factorTilt1ightY: 0,
 	tilt2Pin: -1,
-	factorTilt2LeftX: -1,
-	factorTilt2LeftY: -1,
-	factorTilt2RightX: -1,
-	factorTilt2RightY: -1,
+	factorTilt2LeftX: 0,
+	factorTilt2LeftY: 0,
+	factorTilt2RightX: 0,
+	factorTilt2RightY: 0,
 	tiltLeftAnalogUpPin: -1,
 	tiltLeftAnalogDownPin: -1,
 	tiltLeftAnalogLeftPin: -1,
