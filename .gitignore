@@ -13,5 +13,3 @@ modules/Custom.cmake
 .idea
 cmake-*
 env.ini
-
-.docusaurus
