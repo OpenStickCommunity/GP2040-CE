@@ -190,39 +190,14 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 
             gamepad->state.rx = dpadToAnalogX(dpad2, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogX(dpad2, input_mode)) * scaledTilt2FactorRightX;
             gamepad->state.ry = dpadToAnalogY(dpad2, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogY(dpad2, input_mode)) * scaledTilt2FactorRightY;
+        } else {
+            gamepad->state.lx = dpadToAnalogX(dpad1, input_mode);
+            gamepad->state.ly = dpadToAnalogY(dpad1, input_mode);
+
+            gamepad->state.rx = dpadToAnalogX(dpad2, input_mode);
+            gamepad->state.ry = dpadToAnalogY(dpad2, input_mode);
         }
     }
-
-/*
-	if (pinTilt1Pressed) {
-        gamepad->state.lx = dpadToAnalogX(dpad1, input_mode) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1, input_mode)) * scaledTilt1FactorLeftX;
-        gamepad->state.ly = dpadToAnalogY(dpad1, input_mode) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1, input_mode)) * scaledTilt1FactorLeftY;
-    }
-    else if (pinTilt2Pressed) {
-        gamepad->state.lx = dpadToAnalogX(dpad1, input_mode) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad1, input_mode)) * scaledTilt2FactorLeftX;
-        gamepad->state.ly = dpadToAnalogY(dpad1, input_mode) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad1, input_mode)) * scaledTilt2FactorLeftY;
-    }
-	else {
-		gamepad->state.lx = dpadToAnalogX(dpad1, input_mode);
-		gamepad->state.ly = dpadToAnalogY(dpad1, input_mode);
-	}
-
-	if (pinTilt1Pressed && pinTilt2Pressed) {
-		gamepad->state.dpad = dpad2; //Hold tilt1 + tilt2 turn on D-Pad
-	}
-	else if (pinTilt1Pressed) {
-		gamepad->state.rx = dpadToAnalogX(dpad2, input_mode) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2, input_mode)) * scaledTilt1FactorRightX;
-        gamepad->state.ry = dpadToAnalogY(dpad2, input_mode) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad2, input_mode)) * scaledTilt1FactorRightY;
-	}
-	else if (pinTilt2Pressed) {
-        gamepad->state.rx = dpadToAnalogX(dpad2, input_mode) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogX(dpad2, input_mode)) * scaledTilt2FactorRightX;
-        gamepad->state.ry = dpadToAnalogY(dpad2, input_mode) + (GAMEPAD_JOYSTICK_MID - dpadToAnalogY(dpad2, input_mode)) * scaledTilt2FactorRightY;
-	}
-	else {
-		gamepad->state.rx = dpadToAnalogX(dpad2, input_mode);
-		gamepad->state.ry = dpadToAnalogY(dpad2, input_mode);
-	}
-*/
 }
 
 
