@@ -21,14 +21,14 @@ Pressing Tilt 1 or 2 with a value of N and a direction results in an input that 
 Pressing Tilt 1 and Tilt 2 simultaneously with Left Stick will have no impact.
 Pressing Tilt 1 and Tilt 2 simultaneously with Right Stick will make it function as the D-Pad.
 
-* Left Analog Stick (LS Tilt 1 Factor XY = 35) - Input Left while holding Tilt 1 = Send input at 35% Left
-* Left Analog Stick (LS Tilt 1 Factor XY = 35) - Input Up while holding Tilt 1 = Send input at 35% Up
-* Left Analog Stick (LS Tilt 2 Factor XY = 65) - Input Left while holding Tilt 1 = Send input at 65% Left
-* Left Analog Stick (LS Tilt 2 Factor XY = 65) - Input Up while holding Tilt 1 = Send input at 65% Up
-* Right Analog Stick (RS Tilt 1 Factor XY = 35) - Input Left while holding Tilt 1 = Send input at 35% Left
-* Right Analog Stick (RS Tilt 1 Factor XY = 35) - Input Up while holding Tilt 1 = Send input at 35% Up
-* Right Analog Stick (RS Tilt 2 Factor XY = 65) - Input Left while holding Tilt 1 = Send input at 65% Left
-* Right Analog Stick (RS Tilt 2 Factor XY = 65) - Input Up while holding Tilt 1 = Send input at 65% Up
+* `Left Analog Stick` - (LS Tilt 1 Factor XY = 35) Input Left while holding Tilt 1 = Send input at 35% Left
+* `Left Analog Stick` - (LS Tilt 1 Factor XY = 35) Input Up while holding Tilt 1 = Send input at 35% Up
+* `Left Analog Stick` - (LS Tilt 2 Factor XY = 65) Input Left while holding Tilt 1 = Send input at 65% Left
+* `Left Analog Stick` - (LS Tilt 2 Factor XY = 65) Input Up while holding Tilt 1 = Send input at 65% Up
+* `Right Analog Stick` - (RS Tilt 1 Factor XY = 35) Input Left while holding Tilt 1 = Send input at 35% Left
+* `Right Analog Stick` - (RS Tilt 1 Factor XY = 35) Input Up while holding Tilt 1 = Send input at 35% Up
+* `Right Analog Stick` - (RS Tilt 2 Factor XY = 65) Input Left while holding Tilt 1 = Send input at 65% Left
+* `Right Analog Stick` - (RS Tilt 2 Factor XY = 65) Input Up while holding Tilt 1 = Send input at 65% Up
 
 ## Rotate
 Rotate 1 and Rotate 2 buttons, when pressed with directional buttons, adjust the analog values.
