@@ -485,16 +485,16 @@ void WiiExtensionInput::updateAnalogState() {
 
             switch (axisType) {
                 case WII_ANALOG_TYPE_LEFT_STICK_X:
-                    gamepad->state.lx = getDelta(currAxis->second, GAMEPAD_JOYSTICK_MID);
+                    gamepad->state.lx = getDelta(currAxis->second, joystickMid);
                     break;
                 case WII_ANALOG_TYPE_LEFT_STICK_Y:
-                    gamepad->state.ly = getDelta(currAxis->second, GAMEPAD_JOYSTICK_MID);
+                    gamepad->state.ly = getDelta(currAxis->second, joystickMid);
                     break;
                 case WII_ANALOG_TYPE_RIGHT_STICK_X:
-                    gamepad->state.rx = getDelta(currAxis->second, GAMEPAD_JOYSTICK_MID);
+                    gamepad->state.rx = getDelta(currAxis->second, joystickMid);
                     break;
                 case WII_ANALOG_TYPE_RIGHT_STICK_Y:
-                    gamepad->state.ry = getDelta(currAxis->second, GAMEPAD_JOYSTICK_MID);
+                    gamepad->state.ry = getDelta(currAxis->second, joystickMid);
                     break;
                 case WII_ANALOG_TYPE_LEFT_TRIGGER:
                     gamepad->state.lt = getDelta(currAxis->second, GAMEPAD_TRIGGER_MID);
