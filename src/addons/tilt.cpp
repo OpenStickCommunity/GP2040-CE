@@ -4,11 +4,12 @@
 #include "config.pb.h"
 
 bool TiltInput::available() {
-	return Storage::getInstance().getAddonOptions().tiltOptions.enabled;
+    const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
+    return options.enabled && ((options.tilt1Pin != -1) || (options.tilt2Pin != -1));
 }
 
 void TiltInput::setup() {
-	const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;	
+	const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
 	tiltSOCDMode = options.tiltSOCDMode;
 
 	pinTilt1 = options.tilt1Pin;
