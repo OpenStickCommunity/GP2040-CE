@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { create } from 'zustand';
 import styles from '@site/src/components/labelselector.module.css';
+import { persist } from 'zustand/middleware';
 
 const inputLabels = [
 	{ value: 'GP2040', label: 'GP2040' },
@@ -177,12 +178,17 @@ const INITIAL_STATE: State = {
 	selected: inputLabels[0],
 };
 
-const useLabelSelector = create<State & Actions>()((set) => ({
-	...INITIAL_STATE,
-	select: (selected) => {
-		set({ selected });
-	},
-}));
+const useLabelSelector = create<State & Actions>()(
+	persist(
+		(set) => ({
+			...INITIAL_STATE,
+			select: (selected) => {
+				set({ selected });
+			},
+		}),
+		{ name: 'SelectedLabel' }
+	)
+);
 
 const customStyles = {
 	option: (styles, { data, isDisabled, isSelected }) => {
