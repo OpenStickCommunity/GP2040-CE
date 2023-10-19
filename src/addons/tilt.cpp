@@ -158,20 +158,20 @@ void TiltInput::process()
 //Since this is an auxiliary function for appeals and such,
 //pressing Tilt1 and Tilt2 at the same time will cause the light analog stick to correspond to each of the DPad methods.
 void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
-	bool pinTilt1Pressed = (pinTilt1 != (uint8_t)-1) ? !gpio_get(pinTilt1) : false;
-	bool pinTilt2Pressed = (pinTilt2 != (uint8_t)-1) ? !gpio_get(pinTilt2) : false;
+	  bool pinTilt1Pressed = (pinTilt1 != (uint8_t)-1) ? !gpio_get(pinTilt1) : false;
+	  bool pinTilt2Pressed = (pinTilt2 != (uint8_t)-1) ? !gpio_get(pinTilt2) : false;
 
-	// Scales input from 0-100% of maximum input
-	double scaledTilt1FactorLeftX  = 1.0 - (tilt1FactorLeftX  / 100.0);
-	double scaledTilt1FactorLeftY  = 1.0 - (tilt1FactorLeftY  / 100.0);
-	double scaledTilt1FactorRightX = 1.0 - (tilt1FactorRightX / 100.0);
-	double scaledTilt1FactorRightY = 1.0 - (tilt1FactorRightY / 100.0);
-	double scaledTilt2FactorLeftX  = 1.0 - (tilt2FactorLeftX  / 100.0);
-	double scaledTilt2FactorLeftY  = 1.0 - (tilt2FactorLeftY  / 100.0);
-	double scaledTilt2FactorRightX = 1.0 - (tilt2FactorRightX / 100.0);
-	double scaledTilt2FactorRightY = 1.0 - (tilt2FactorRightY / 100.0);
+	  // Scales input from 0-100% of maximum input
+	  double scaledTilt1FactorLeftX  = 1.0 - (tilt1FactorLeftX  / 100.0);
+	  double scaledTilt1FactorLeftY  = 1.0 - (tilt1FactorLeftY  / 100.0);
+	  double scaledTilt1FactorRightX = 1.0 - (tilt1FactorRightX / 100.0);
+	  double scaledTilt1FactorRightY = 1.0 - (tilt1FactorRightY / 100.0);
+	  double scaledTilt2FactorLeftX  = 1.0 - (tilt2FactorLeftX  / 100.0);
+	  double scaledTilt2FactorLeftY  = 1.0 - (tilt2FactorLeftY  / 100.0);
+	  double scaledTilt2FactorRightX = 1.0 - (tilt2FactorRightX / 100.0);
+	  double scaledTilt2FactorRightY = 1.0 - (tilt2FactorRightY / 100.0);
 
-	uint8_t input_mode = gamepad->getOptions().inputMode;
+	  uint8_t input_mode = gamepad->getOptions().inputMode;
 
     if (pinTilt1Pressed && pinTilt2Pressed) {
         // inputs act as dpad
