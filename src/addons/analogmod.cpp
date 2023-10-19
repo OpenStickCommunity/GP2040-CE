@@ -414,100 +414,110 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 
 void AnalogModInput::SOCDAnalogModClean(SOCDMode socdMode) {
 	// Left Stick SOCD Cleaning
-	switch (analogmodLeftState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
-	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
-		if (socdMode == SOCD_MODE_UP_PRIORITY) {
-			analogmodLeftState ^= GAMEPAD_MASK_DOWN; // Remove Down
-			leftLastAnalogModUD = DIRECTION_UP; // We're in UP mode
-		}
-		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && leftLastAnalogModUD != DIRECTION_NONE) {
-			analogmodLeftState ^= (leftLastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
-		}
-		else {
-			analogmodLeftState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
+	switch (analogmodLeftState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN))
+	{
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN):
+			if (socdMode == SOCD_MODE_UP_PRIORITY)
+			{
+				analogmodLeftState ^= GAMEPAD_MASK_DOWN; // Remove Down
+				leftLastAnalogModUD = DIRECTION_UP; // We're in UP mode
+			}
+			else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && leftLastAnalogModUD != DIRECTION_NONE)
+				analogmodLeftState ^= (leftLastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+			else if (socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY && leftLastAnalogModUD != DIRECTION_NONE)
+				analogmodLeftState ^= (leftLastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
+			else
+				leftLastAnalogModUD = DIRECTION_NONE;
+			break;
+
+		case GAMEPAD_MASK_UP:
+			leftLastAnalogModUD = DIRECTION_UP;
+			break;
+
+		case GAMEPAD_MASK_DOWN:
+			leftLastAnalogModUD = DIRECTION_DOWN;
+			break;
+
+		default:
 			leftLastAnalogModUD = DIRECTION_NONE;
-		}
-		break;
-	case GAMEPAD_MASK_UP:
-		leftLastAnalogModUD = DIRECTION_UP;
-		break;
-	case GAMEPAD_MASK_DOWN:
-		leftLastAnalogModUD = DIRECTION_DOWN;
-		break;
-	default:
-		leftLastAnalogModUD = DIRECTION_NONE;
-		break;
+			break;
 	}
-	switch (analogmodLeftState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
-	case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
-		if (socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL) {
-			analogmodLeftState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT); // Remove L + R to Neutral
-			leftLastAnalogModLR = DIRECTION_NONE;
-		}
-		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) {
-			if (leftLastAnalogModLR != DIRECTION_NONE)
-				analogmodLeftState ^= (leftLastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
+	
+	switch (analogmodLeftState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
+	{
+		case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
+			if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && leftLastAnalogModLR != DIRECTION_NONE)
+				analogmodLeftState ^= (leftLastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
+			else if (socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY && leftLastAnalogModLR != DIRECTION_NONE)
+				analogmodLeftState ^= (leftLastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
 			else
 				leftLastAnalogModLR = DIRECTION_NONE;
-		}
-		break;
-	case GAMEPAD_MASK_LEFT:
-		leftLastAnalogModLR = DIRECTION_LEFT;
-		break;
-	case GAMEPAD_MASK_RIGHT:
-		leftLastAnalogModLR = DIRECTION_RIGHT;
-		break;
-	default:
-		leftLastAnalogModLR = DIRECTION_NONE;
-		break;
+			break;
+
+		case GAMEPAD_MASK_LEFT:
+			leftLastAnalogModLR = DIRECTION_LEFT;
+			break;
+
+		case GAMEPAD_MASK_RIGHT:
+			leftLastAnalogModLR = DIRECTION_RIGHT;
+			break;
+
+		default:
+			leftLastAnalogModLR = DIRECTION_NONE;
+			break;
 	}
 	
 	// Right Stick SOCD Cleaning
-	switch (analogmodRightState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN)) {
-	case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
-		if (socdMode == SOCD_MODE_UP_PRIORITY) {
-			analogmodRightState ^= GAMEPAD_MASK_DOWN; // Remove Down
-			rightLastAnalogModUD = DIRECTION_UP; // We're in UP mode
-		}
-		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && rightLastAnalogModUD != DIRECTION_NONE) {
-			analogmodRightState ^= (rightLastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
-		}
-		else {
-			analogmodRightState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
+	switch (analogmodRightState & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN))
+	{
+		case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN):
+			if (socdMode == SOCD_MODE_UP_PRIORITY)
+			{
+				analogmodRightState ^= GAMEPAD_MASK_DOWN; // Remove Down
+				rightLastAnalogModUD = DIRECTION_UP; // We're in UP mode
+			}
+			else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && rightLastAnalogModUD != DIRECTION_NONE)
+				analogmodRightState ^= (rightLastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
+			else if (socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY && rightLastAnalogModUD != DIRECTION_NONE)
+				analogmodRightState ^= (rightLastAnalogModUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
+			else
+				rightLastAnalogModUD = DIRECTION_NONE;
+			break;
+
+		case GAMEPAD_MASK_UP:
+			rightLastAnalogModUD = DIRECTION_UP;
+			break;
+
+		case GAMEPAD_MASK_DOWN:
+			rightLastAnalogModUD = DIRECTION_DOWN;
+			break;
+
+		default:
 			rightLastAnalogModUD = DIRECTION_NONE;
-		}
-		break;
-	case GAMEPAD_MASK_UP:
-		rightLastAnalogModUD = DIRECTION_UP;
-		break;
-	case GAMEPAD_MASK_DOWN:
-		rightLastAnalogModUD = DIRECTION_DOWN;
-		break;
-	default:
-		rightLastAnalogModUD = DIRECTION_NONE;
-		break;
+			break;
 	}
-	switch (analogmodRightState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
-	case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
-		if (socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL) {
-			analogmodRightState ^= (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT); // Remove L + R to Neutral
-			rightLastAnalogModLR = DIRECTION_NONE;
-		}
-		else if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) {
-			if (rightLastAnalogModLR != DIRECTION_NONE)
-				analogmodRightState ^= (rightLastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT; // Last Win
+	
+	switch (analogmodRightState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
+	{
+		case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
+			if (socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && rightLastAnalogModLR != DIRECTION_NONE)
+				analogmodRightState ^= (rightLastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_LEFT : GAMEPAD_MASK_RIGHT;
+			else if (socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY && rightLastAnalogModLR != DIRECTION_NONE)
+				analogmodRightState ^= (rightLastAnalogModLR == DIRECTION_LEFT) ? GAMEPAD_MASK_RIGHT : GAMEPAD_MASK_LEFT;
 			else
 				rightLastAnalogModLR = DIRECTION_NONE;
-		}
-		break;
-	case GAMEPAD_MASK_LEFT:
-		rightLastAnalogModLR = DIRECTION_LEFT;
-		break;
-	case GAMEPAD_MASK_RIGHT:
-		rightLastAnalogModLR = DIRECTION_RIGHT;
-		break;
-	default:
-		rightLastAnalogModLR = DIRECTION_NONE;
-		break;
+			break;
+
+		case GAMEPAD_MASK_LEFT:
+			rightLastAnalogModLR = DIRECTION_LEFT;
+			break;
+
+		case GAMEPAD_MASK_RIGHT:
+			rightLastAnalogModLR = DIRECTION_RIGHT;
+			break;
+
+		default:
+			rightLastAnalogModLR = DIRECTION_NONE;
+			break;
 	}
 }

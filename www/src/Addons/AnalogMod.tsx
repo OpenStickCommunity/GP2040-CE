@@ -7,7 +7,7 @@ import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 
 import FormControl from '../Components/FormControl';
-import { SOCD_MODES, ANALOGMOD_SOCD_MODES } from '../Data/Addons';
+import { ANALOGMOD_SOCD_MODES } from '../Data/Addons';
 
 export const analogmodScheme = {
 	AnalogModInputEnabled: yup.number().required().label('Analog Modification Input Enabled'),
@@ -110,7 +110,7 @@ export const analogmodScheme = {
 	analogmodSOCDMode: yup
 		.number()
 		.label('AnalogMod SOCE Mode')
-		.validateSelectionWhenValue('AnalogModInputEnabled', SOCD_MODES),
+		.validateSelectionWhenValue('AnalogModInputEnabled', ANALOGMOD_SOCD_MODES),
 };
 
 export const analogmodState = {

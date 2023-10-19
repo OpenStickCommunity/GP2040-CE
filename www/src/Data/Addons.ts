@@ -19,6 +19,7 @@ export const ANALOGMOD_SOCD_MODES = [
 	{ label: 'Up Priority', value: 0 },
 	{ label: 'Neutral', value: 1 },
 	{ label: 'Last Win', value: 2 },
+	{ label: 'First Win', value: 3 },
 ];
 
 export const SOCD_MODES = [
