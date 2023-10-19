@@ -19,7 +19,6 @@ This section is for custom add-ons that can be enabled to expand the functionali
 - [PS4 Mode](add-ons/ps4-mode.md)
 - [SNES Input](add-ons/snes-input.md)
 - [SOCD Selection Slider](add-ons/socd-selection-slider.md)
-- [Tilt Input](add-ons/tilt-input.md)
 - [Turbo](add-ons/turbo.md)
 - [USB Host Based Add-ons](add-ons/usb-host-based-add-ons.md)
   - [PS Passthrough](add-ons/ps-passthrough.md)
