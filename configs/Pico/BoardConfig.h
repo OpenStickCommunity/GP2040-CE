@@ -257,7 +257,6 @@
 #define PIN_ANALOGMOD_RIGHT_ANALOG_DOWN -1
 #define PIN_ANALOGMOD_RIGHT_ANALOG_LEFT -1
 #define PIN_ANALOGMOD_RIGHT_ANALOG_RIGHT -1
-#define ANALOGMOD_SOCD_MODE SOCD_MODE_NEUTRAL
 #define PIN_ROTATE_1 -1
 #define PIN_ROTATE_2 -1
 #define ROTATE1_FACTOR_LEFT  15  //Default value for the ROTATE button to function.
@@ -272,14 +271,6 @@
 #define ROTATE4_FACTOR_RIGHT 0   //Default value for the ROTATE button to function.
 #define ROTATE5_FACTOR_RIGHT 0   //Default value for the ROTATE button to function.
 #define ROTATE6_FACTOR_RIGHT 0   //Default value for the ROTATE button to function.
-#define PIN_TILT_LEFT_ANALOG_UP -1
-#define PIN_TILT_LEFT_ANALOG_DOWN -1
-#define PIN_TILT_LEFT_ANALOG_LEFT -1
-#define PIN_TILT_LEFT_ANALOG_RIGHT -1
-#define PIN_TILT_RIGHT_ANALOG_UP -1
-#define PIN_TILT_RIGHT_ANALOG_DOWN -1
-#define PIN_TILT_RIGHT_ANALOG_LEFT -1
-#define PIN_TILT_RIGHT_ANALOG_RIGHT -1
 #define ANALOGMOD_LEFT_SOCD_MODE SOCD_MODE_NEUTRAL
 #define ANALOGMOD_RIGHT_SOCD_MODE SOCD_MODE_NEUTRAL
 
