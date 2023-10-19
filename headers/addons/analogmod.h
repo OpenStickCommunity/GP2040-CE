@@ -86,24 +86,56 @@
 #define PIN_ROTATE_1 -1
 #endif
 
-#ifndef ROTATE1_FACTOR_LEFT
-#define ROTATE1_FACTOR_LEFT 15
-#endif
-
-#ifndef ROTATE1_FACTOR_RIGHT
-#define ROTATE1_FACTOR_RIGHT 15
-#endif
-
 #ifndef PIN_ROTATE_2
 #define PIN_ROTATE_2 -1
+#endif
+
+#ifndef ROTATE1_FACTOR_LEFT
+#define ROTATE1_FACTOR_LEFT 15
 #endif
 
 #ifndef ROTATE2_FACTOR_LEFT
 #define ROTATE2_FACTOR_LEFT 345
 #endif
 
+#ifndef ROTATE3_FACTOR_LEFT
+#define ROTATE3_FACTOR_LEFT 0
+#endif
+
+#ifndef ROTATE4_FACTOR_LEFT
+#define ROTATE4_FACTOR_LEFT 0
+#endif
+
+#ifndef ROTATE5_FACTOR_LEFT
+#define ROTATE5_FACTOR_LEFT 0
+#endif
+
+#ifndef ROTATE6_FACTOR_LEFT
+#define ROTATE6_FACTOR_LEFT 0
+#endif
+
+#ifndef ROTATE1_FACTOR_RIGHT
+#define ROTATE1_FACTOR_RIGHT 15
+#endif
+
 #ifndef ROTATE2_FACTOR_RIGHT
 #define ROTATE2_FACTOR_RIGHT 345
+#endif
+
+#ifndef ROTATE3_FACTOR_RIGHT
+#define ROTATE3_FACTOR_RIGHT 0
+#endif
+
+#ifndef ROTATE4_FACTOR_RIGHT
+#define ROTATE4_FACTOR_RIGHT 0
+#endif
+
+#ifndef ROTATE5_FACTOR_RIGHT
+#define ROTATE5_FACTOR_RIGHT 0
+#endif
+
+#ifndef ROTATE6_FACTOR_RIGHT
+#define ROTATE6_FACTOR_RIGHT 0
 #endif
 
 #ifndef ANALOGMOD_LEFT_SOCD_MODE
@@ -156,11 +188,19 @@ private:
 	uint8_t pinAnalogModRightAnalogLeft;
 	uint8_t pinAnalogModRightAnalogRight;
 	uint8_t pinRotate1;
-	uint16_t rotate1FactorLeft;
-    uint16_t rotate1FactorRight;
 	uint8_t pinRotate2;
+	uint16_t rotate1FactorLeft;
     uint16_t rotate2FactorLeft;
-    uint16_t rotate2FactorRight;
+	uint16_t rotate3FactorLeft;
+	uint16_t rotate4FactorLeft;
+	uint16_t rotate5FactorLeft;
+	uint16_t rotate6FactorLeft;
+    uint16_t rotate1FactorRight;
+	uint16_t rotate2FactorRight;
+	uint16_t rotate3FactorRight;
+	uint16_t rotate4FactorRight;
+	uint16_t rotate5FactorRight;
+	uint16_t rotate6FactorRight;
 	SOCDMode analogmodLeftSOCDMode;
 	SOCDMode analogmodRightSOCDMode;
 };

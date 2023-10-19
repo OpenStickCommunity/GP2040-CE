@@ -462,11 +462,19 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodLeftSOCDMode, ANALOGMOD_SOCD_MODE);	
 	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodRightSOCDMode, ANALOGMOD_SOCD_MODE);	
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, rotate1Pin, PIN_ROTATE_1);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, rotate2Pin, PIN_ROTATE_2);
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate1Left, ROTATE1_FACTOR_LEFT);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate1Right, ROTATE1_FACTOR_RIGHT);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, rotate2Pin, PIN_ROTATE_2);
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate2Left, ROTATE2_FACTOR_LEFT);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate2Right, ROTATE2_FACTOR_RIGHT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate3Left, ROTATE3_FACTOR_LEFT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate4Left, ROTATE4_FACTOR_LEFT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate5Left, ROTATE5_FACTOR_LEFT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate6Left, ROTATE6_FACTOR_LEFT);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate1Right, ROTATE1_FACTOR_RIGHT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate2Right, ROTATE2_FACTOR_RIGHT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate3Right, ROTATE3_FACTOR_RIGHT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate4Right, ROTATE4_FACTOR_RIGHT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate5Right, ROTATE5_FACTOR_RIGHT);
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate6Right, ROTATE6_FACTOR_RIGHT);
 
     // addonOptions.buzzerOptions
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);

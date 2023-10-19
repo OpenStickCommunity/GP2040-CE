@@ -85,27 +85,59 @@ export const analogmodScheme = {
 		.validatePinWhenValue('AnalogModInputEnabled'),
 	rotate1Pin: yup
 		.number()
-		.label('Rotate 1 Pin (Clockwise Rotation)')
+		.label('Rotate 1 Pin')
 		.validatePinWhenValue('AnalogModInputEnabled'),	
+	rotate2Pin: yup
+		.number()
+		.label('Rotate 2 Pin')
+		.validatePinWhenValue('AnalogModInputEnabled'),
 	factorRotate1Left: yup
 		.number()
 		.label('Rotate 1 Degree for Left Stick')
 		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
-	factorRotate1Right: yup
-		.number()
-		.label('Rotate 1 Degree for Right Stick')
-		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
-	rotate2Pin: yup
-		.number()
-		.label('Rotate 2 Pin (Counter Clockwise Rotation)')
-		.validatePinWhenValue('AnalogModInputEnabled'),
 	factorRotate2Left: yup
 		.number()
 		.label('Rotate 2 Degree for Left Stick')
 		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
+	factorRotate3Left: yup
+		.number()
+		.label('Rotate 3 Degree for Left Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
+	factorRotate4Left: yup
+		.number()
+		.label('Rotate 4 Degree for Left Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
+	factorRotate5Left: yup
+		.number()
+		.label('Rotate 5 Degree for Left Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
+	factorRotate6Left: yup
+		.number()
+		.label('Rotate 6 Degree for Left Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),		
+	factorRotate1Right: yup
+		.number()
+		.label('Rotate 1 Degree for Right Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
 	factorRotate2Right: yup
 		.number()
 		.label('Rotate 2 Degree for Right Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
+	factorRotate3Right: yup
+		.number()
+		.label('Rotate 3 Degree for Right Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
+	factorRotate4Right: yup
+		.number()
+		.label('Rotate 4 Degree for Right Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
+	factorRotate5Right: yup
+		.number()
+		.label('Rotate 5 Degree for Right Stick')
+		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
+	factorRotate6Right: yup
+		.number()
+		.label('Rotate 6 Degree for Right Stick')
 		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
 	analogmodLeftSOCDMode: yup
 		.number()
@@ -138,11 +170,19 @@ export const analogmodState = {
 	analogmodRightAnalogLeftPin: -1,
 	analogmodRightAnalogRightPin: -1,
 	rotate1Pin: -1,
-	factorRotate1Left: 15,
-	factorRotate1Right: 15,
 	rotate2Pin: -1,
+	factorRotate1Left: 15,
 	factorRotate2Left: 345,
+	factorRotate3Left: 0,
+	factorRotate4Left: 0,
+	factorRotate5Left: 0,
+	factorRotate6Left: 0,
+	factorRotate1Right: 15,
 	factorRotate2Right: 345,
+	factorRotate3Right: 0,
+	factorRotate4Right: 0,
+	factorRotate5Right: 0,
+	factorRotate6Right: 0,
 };
 
 const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -341,34 +381,6 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 					<FormControl
 						type="number"
-						label={t('AddonsConfig:tilt-1-factor-right-x-label')}
-						name="factorTilt1RightX"
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.factorTilt1RightX}
-						error={errors.factorTilt1RightX}
-						isInvalid={errors.factorTilt1RightX}
-						onChange={handleChange}
-						min={0}
-						max={100}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:tilt-1-factor-right-y-label')}
-						name="factorTilt1RightY"
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.factorTilt1RightY}
-						error={errors.factorTilt1RightY}
-						isInvalid={errors.factorTilt1RightY}
-						onChange={handleChange}
-						min={0}
-						max={100}
-					/>
-				</Row>
-				<Row className="mb-3">
-					<FormControl
-						type="number"
 						label={t('AddonsConfig:tilt-2-factor-left-x-label')}
 						name="factorTilt2LeftX"
 						className="form-select-sm"
@@ -389,6 +401,34 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						value={values.factorTilt2LeftY}
 						error={errors.factorTilt2LeftY}
 						isInvalid={errors.factorTilt2LeftY}
+						onChange={handleChange}
+						min={0}
+						max={100}
+					/>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-1-factor-right-x-label')}
+						name="factorTilt1RightX"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorTilt1RightX}
+						error={errors.factorTilt1RightX}
+						isInvalid={errors.factorTilt1RightX}
+						onChange={handleChange}
+						min={0}
+						max={100}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:tilt-1-factor-right-y-label')}
+						name="factorTilt1RightY"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorTilt1RightY}
+						error={errors.factorTilt1RightY}
+						isInvalid={errors.factorTilt1RightY}
 						onChange={handleChange}
 						min={0}
 						max={100}
@@ -436,21 +476,6 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 					<FormControl
 						type="number"
-						label={t('AddonsConfig:rotate-1-factor-right-label')}
-						name="factorRotate1Right"
-						className="form-select-sm"
-						groupClassName="col-sm-2 mb-3"
-						value={values.factorRotate1Right}
-						error={errors.factorRotate1Right}
-						isInvalid={errors.factorRotate1Right}
-						onChange={handleChange}
-						min={0}
-						max={360}
-					/>
-				</Row>
-				<Row className="mb-3">
-					<FormControl
-						type="number"
 						label={t('AddonsConfig:rotate-2-factor-left-label')}
 						name="factorRotate2Left"
 						className="form-select-sm"
@@ -464,6 +489,73 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 					<FormControl
 						type="number"
+						label={t('AddonsConfig:rotate-3-factor-left-label')}
+						name="factorRotate3Left"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate3Left}
+						error={errors.factorRotate3Left}
+						isInvalid={errors.factorRotate3Left}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-4-factor-left-label')}
+						name="factorRotate4Left"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate4Left}
+						error={errors.factorRotate4Left}
+						isInvalid={errors.factorRotate4Left}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-5-factor-left-label')}
+						name="factorRotate5Left"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate5Left}
+						error={errors.factorRotate5Left}
+						isInvalid={errors.factorRotate5Left}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-6-factor-left-label')}
+						name="factorRotate6Left"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate6Left}
+						error={errors.factorRotate6Left}
+						isInvalid={errors.factorRotate6Left}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+				</Row>
+				<Row className="mb-3">
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-1-factor-right-label')}
+						name="factorRotate1Right"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate1Right}
+						error={errors.factorRotate1Right}
+						isInvalid={errors.factorRotate1Right}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+					<FormControl
+						type="number"
 						label={t('AddonsConfig:rotate-2-factor-right-label')}
 						name="factorRotate2Right"
 						className="form-select-sm"
@@ -471,6 +563,58 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 						value={values.factorRotate2Right}
 						error={errors.factorRotate2Right}
 						isInvalid={errors.factorRotate2Right}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-3-factor-right-label')}
+						name="factorRotate3Right"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate3Right}
+						error={errors.factorRotate3Right}
+						isInvalid={errors.factorRotate3Right}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-4-factor-right-label')}
+						name="factorRotate4Right"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate4Right}
+						error={errors.factorRotate4Right}
+						isInvalid={errors.factorRotate4Right}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-5-factor-right-label')}
+						name="factorRotate5Right"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate5Right}
+						error={errors.factorRotate5Right}
+						isInvalid={errors.factorRotate5Right}
+						onChange={handleChange}
+						min={0}
+						max={360}
+					/>
+					<FormControl
+						type="number"
+						label={t('AddonsConfig:rotate-6-factor-right-label')}
+						name="factorRotate6Right"
+						className="form-select-sm"
+						groupClassName="col-sm-2 mb-3"
+						value={values.factorRotate6Right}
+						error={errors.factorRotate6Right}
+						isInvalid={errors.factorRotate6Right}
 						onChange={handleChange}
 						min={0}
 						max={360}

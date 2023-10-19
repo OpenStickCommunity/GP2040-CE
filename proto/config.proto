@@ -404,6 +404,14 @@ message AnalogModOptions
 	optional int32 factorRotate1Right =  25;
 	optional int32 factorRotate2Left =  26;
 	optional int32 factorRotate2Right =  27;
+	optional int32 factorRotate3Left =  28;
+	optional int32 factorRotate3Right =  29;
+	optional int32 factorRotate4Left =  30;
+	optional int32 factorRotate4Right =  31;
+	optional int32 factorRotate5Left =  32;
+	optional int32 factorRotate5Right =  33;
+	optional int32 factorRotate6Left =  34;
+	optional int32 factorRotate6Right =  35;
 }
 
 message BuzzerOptions
