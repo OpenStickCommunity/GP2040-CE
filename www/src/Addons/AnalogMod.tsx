@@ -107,9 +107,13 @@ export const analogmodScheme = {
 		.number()
 		.label('Rotate 2 Degree for Right Stick')
 		.validateNumberWhenValue('AnalogModInputEnabled', 0, 360),
-	analogmodSOCDMode: yup
+	analogmodLeftSOCDMode: yup
 		.number()
-		.label('AnalogMod SOCE Mode')
+		.label('AnalogMod Left Stick SOCD Mode')
+		.validateSelectionWhenValue('AnalogModInputEnabled', ANALOGMOD_SOCD_MODES),
+	analogmodRightSOCDMode: yup
+		.number()
+		.label('AnalogMod Right Stick SOCD Mode')
 		.validateSelectionWhenValue('AnalogModInputEnabled', ANALOGMOD_SOCD_MODES),
 };
 
@@ -474,17 +478,33 @@ const AnalogMod = ({ values, errors, handleChange, handleCheckbox }) => {
 				</Row>
 				<Row className="mb-3">
 					<FormSelect
-						label={t('AddonsConfig:analogmod-socd-mode-label')}
-						name="analogmodSOCDMode"
+						label={t('AddonsConfig:analogmod-left-socd-mode-label')}
+						name="analogmodLeftSOCDMode"
 						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
-						value={values.analogmodSOCDMode}
-						error={errors.analogmodSOCDMode}
-						isInvalid={errors.analogmodSOCDMode}
+						value={values.analogmodLeftSOCDMode}
+						error={errors.analogmodLeftSOCDMode}
+						isInvalid={errors.analogmodLeftSOCDMode}
 						onChange={handleChange}
 					>
 						{ANALOGMOD_SOCD_MODES.map((o, i) => (
-							<option key={`button-analogmodSOCDMode-option-${i}`} value={o.value}>
+							<option key={`button-analogmodLeftSOCDMode-option-${i}`} value={o.value}>
+								{o.label}
+							</option>
+						))}
+					</FormSelect>
+					<FormSelect
+						label={t('AddonsConfig:analogmod-right-socd-mode-label')}
+						name="analogmodRightSOCDMode"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.analogmodRightSOCDMode}
+						error={errors.analogmodRightSOCDMode}
+						isInvalid={errors.analogmodRightSOCDMode}
+						onChange={handleChange}
+					>
+						{ANALOGMOD_SOCD_MODES.map((o, i) => (
+							<option key={`button-analogmodRightSOCDMode-option-${i}`} value={o.value}>
 								{o.label}
 							</option>
 						))}

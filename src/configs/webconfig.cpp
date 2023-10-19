@@ -1025,7 +1025,8 @@ std::string setAddonOptions()
 	docToPin(analogmodOptions.analogmodRightAnalogDownPin, doc, "analogmodRightAnalogDownPin");
 	docToPin(analogmodOptions.analogmodRightAnalogLeftPin, doc, "analogmodRightAnalogLeftPin");
 	docToPin(analogmodOptions.analogmodRightAnalogRightPin, doc, "analogmodRightAnalogRightPin");
-	docToValue(analogmodOptions.analogmodSOCDMode, doc, "analogmodSOCDMode");
+	docToValue(analogmodOptions.analogmodLeftSOCDMode, doc, "analogmodLeftSOCDMode");
+	docToValue(analogmodOptions.analogmodRightSOCDMode, doc, "analogmodRightSOCDMode");
 	docToPin(analogmodOptions.rotate1Pin, doc, "rotate1Pin");
 	docToValue(analogmodOptions.factorRotate1Left, doc, "factorRotate1Left");
 	docToValue(analogmodOptions.factorRotate1Right, doc, "factorRotate1Right");
@@ -1452,7 +1453,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "analogmodRightAnalogDownPin", cleanPin(analogmodOptions.analogmodRightAnalogDownPin));
 	writeDoc(doc, "analogmodRightAnalogLeftPin", cleanPin(analogmodOptions.analogmodRightAnalogLeftPin));
 	writeDoc(doc, "analogmodRightAnalogRightPin", cleanPin(analogmodOptions.analogmodRightAnalogRightPin));
-	writeDoc(doc, "analogmodSOCDMode", analogmodOptions.analogmodSOCDMode);
+	writeDoc(doc, "analogmodLeftSOCDMode", analogmodOptions.analogmodLeftSOCDMode);
+	writeDoc(doc, "analogmodRightSOCDMode", analogmodOptions.analogmodRightSOCDMode);
 	writeDoc(doc, "rotate1Pin", cleanPin(analogmodOptions.rotate1Pin));
 	writeDoc(doc, "factorRotate1Left", analogmodOptions.factorRotate1Left);
 	writeDoc(doc, "factorRotate1Right", analogmodOptions.factorRotate1Right);

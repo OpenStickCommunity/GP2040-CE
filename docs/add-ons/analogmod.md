@@ -43,4 +43,5 @@ Pressing Rotate 1 and Rotate 2 simultaneously with LS or RS directional buttons 
 * `Rotate 2 Degree for Right Stick` - Clockwise rotate degree for Right Stick when Pressing Rotate 2
 
 ## SOCD
-* `Analog Modification SOCD Mode` - Choose the default Analog Mod SOCD Cleaning Mode (Up Priority, Neutral, Last Win, First Win).
+* `Analog Mod Left Stick SOCD Mode` - Choose the SOCD Cleaning Mode for Left Stick (Up Priority, Neutral, Last Win, First Win).
+* `Analog Mod Right Stick SOCD Mode` - Choose the SOCD Cleaning Mode for Right Stick (Up Priority, Neutral, Last Win, First Win).

@@ -106,8 +106,12 @@
 #define ROTATE2_FACTOR_RIGHT 345
 #endif
 
-#ifndef ANALOGMOD_SOCD_MODE
-#define ANALOGMOD_SOCD_MODE SOCD_MODE_NEUTRAL
+#ifndef ANALOGMOD_LEFT_SOCD_MODE
+#define ANALOGMOD_LEFT_SOCD_MODE SOCD_MODE_NEUTRAL
+#endif
+
+#ifndef ANALOGMOD_RIGHT_SOCD_MODE
+#define ANALOGMOD_RIGHT_SOCD_MODE SOCD_MODE_NEUTRAL
 #endif
 
 // AnalogMod Module Name
@@ -122,9 +126,7 @@ public:
 	virtual std::string name() { return AnalogModName; }
 private:
 	void debounce();
-	void SOCDAnalogModClean(SOCDMode);
-	uint8_t SOCDCombine(SOCDMode, uint8_t);
-	uint8_t SOCDGamepadClean(uint8_t);
+	void SOCDAnalogModClean(SOCDMode, SOCDMode);
 	void OverrideGamepad(Gamepad*, uint8_t, uint8_t);
 	uint8_t dDebLeftState;           // Debounce State (stored)
 	uint8_t dDebRightState;          // Debounce State (stored)
@@ -159,7 +161,8 @@ private:
 	uint8_t pinRotate2;
     uint16_t rotate2FactorLeft;
     uint16_t rotate2FactorRight;
-	SOCDMode analogmodSOCDMode;
+	SOCDMode analogmodLeftSOCDMode;
+	SOCDMode analogmodRightSOCDMode;
 };
 
 #endif  // _AnalogMod_H

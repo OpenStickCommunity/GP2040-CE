@@ -459,7 +459,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodRightAnalogUpPin, PIN_ANALOGMOD_RIGHT_ANALOG_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodRightAnalogLeftPin, PIN_ANALOGMOD_RIGHT_ANALOG_LEFT);
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodRightAnalogRightPin, PIN_ANALOGMOD_RIGHT_ANALOG_RIGHT);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodSOCDMode, ANALOGMOD_SOCD_MODE);	
+    INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodLeftSOCDMode, ANALOGMOD_SOCD_MODE);	
+	INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, analogmodRightSOCDMode, ANALOGMOD_SOCD_MODE);	
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, rotate1Pin, PIN_ROTATE_1);
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate1Left, ROTATE1_FACTOR_LEFT);
     INIT_UNSET_PROPERTY(config.addonOptions.analogmodOptions, factorRotate1Right, ROTATE1_FACTOR_RIGHT);
