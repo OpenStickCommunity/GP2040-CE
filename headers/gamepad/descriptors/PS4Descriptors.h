@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-#define HID_ENDPOINT_SIZE 64
+#define PS4_ENDPOINT_SIZE 64
 
 // Mayflash
 //#define PS4_VENDOR_ID     0x33df
@@ -37,38 +37,36 @@
 #define MSB(n) ((n >> 8) & 255)
 
 // HAT report (4 bits)
-#define HID_HAT_UP        0x00
-#define HID_HAT_UPRIGHT   0x01
-#define HID_HAT_RIGHT     0x02
-#define HID_HAT_DOWNRIGHT 0x03
-#define HID_HAT_DOWN      0x04
-#define HID_HAT_DOWNLEFT  0x05
-#define HID_HAT_LEFT      0x06
-#define HID_HAT_UPLEFT    0x07
-#define HID_HAT_NOTHING   0x08
-
+#define PS4_HAT_UP        0x00
+#define PS4_HAT_UPRIGHT   0x01
+#define PS4_HAT_RIGHT     0x02
+#define PS4_HAT_DOWNRIGHT 0x03
+#define PS4_HAT_DOWN      0x04
+#define PS4_HAT_DOWNLEFT  0x05
+#define PS4_HAT_LEFT      0x06
+#define PS4_HAT_UPLEFT    0x07
 #define PS4_HAT_NOTHING   0x0F
 
 // Button report (16 bits)
-#define HID_MASK_SQUARE   (1U <<  0)
-#define HID_MASK_CROSS    (1U <<  1)
-#define HID_MASK_CIRCLE   (1U <<  2)
-#define HID_MASK_TRIANGLE (1U <<  3)
-#define HID_MASK_L1       (1U <<  4)
-#define HID_MASK_R1       (1U <<  5)
-#define HID_MASK_L2       (1U <<  6)
-#define HID_MASK_R2       (1U <<  7)
-#define HID_MASK_SELECT   (1U <<  8)
-#define HID_MASK_START    (1U <<  9)
-#define HID_MASK_L3       (1U << 10)
-#define HID_MASK_R3       (1U << 11)
-#define HID_MASK_PS       (1U << 12)
-#define HID_MASK_TP       (1U << 13)
+#define PS4_MASK_SQUARE   (1U <<  0)
+#define PS4_MASK_CROSS    (1U <<  1)
+#define PS4_MASK_CIRCLE   (1U <<  2)
+#define PS4_MASK_TRIANGLE (1U <<  3)
+#define PS4_MASK_L1       (1U <<  4)
+#define PS4_MASK_R1       (1U <<  5)
+#define PS4_MASK_L2       (1U <<  6)
+#define PS4_MASK_R2       (1U <<  7)
+#define PS4_MASK_SELECT   (1U <<  8)
+#define PS4_MASK_START    (1U <<  9)
+#define PS4_MASK_L3       (1U << 10)
+#define PS4_MASK_R3       (1U << 11)
+#define PS4_MASK_PS       (1U << 12)
+#define PS4_MASK_TP       (1U << 13)
 
-// Switch analog sticks only report 8 bits
-#define HID_JOYSTICK_MIN 0x00
-#define HID_JOYSTICK_MID 0x80
-#define HID_JOYSTICK_MAX 0xFF
+// PS4 analog sticks only report 8 bits
+#define PS4_JOYSTICK_MIN 0x00
+#define PS4_JOYSTICK_MID 0x80
+#define PS4_JOYSTICK_MAX 0xFF
 
 struct TouchpadXY {
   uint8_t counter : 7;

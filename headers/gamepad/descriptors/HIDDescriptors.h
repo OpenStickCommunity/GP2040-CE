@@ -58,7 +58,7 @@
 #define HID_MASK_PS       (1U << 12)
 #define HID_MASK_TP       (1U << 13)
 
-// Switch analog sticks only report 8 bits
+// HID analog sticks only report 8 bits
 #define HID_JOYSTICK_MIN 0x00
 #define HID_JOYSTICK_MID 0x80
 #define HID_JOYSTICK_MAX 0xFF
