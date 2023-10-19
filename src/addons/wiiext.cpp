@@ -99,6 +99,7 @@ uint16_t WiiExtensionInput::bounds(uint16_t x, uint16_t out_min, uint16_t out_ma
 
 void WiiExtensionInput::update() {
     if (wii->extensionType != WII_EXTENSION_NONE) {
+        uint16_t joystickMid = GetJoystickMidValue(Storage::getInstance().getGamepadOptions().inputMode);
         currentConfig = &extensionConfigs[wii->extensionType];
 
         //for (const auto& [extensionButton, value] : currentConfig->buttonMap) {
@@ -113,8 +114,8 @@ void WiiExtensionInput::update() {
 
             leftX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             leftY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_Y],WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightX = GAMEPAD_JOYSTICK_MID;
-            rightY = GAMEPAD_JOYSTICK_MID;
+            rightX = joystickMid;
+            rightY = joystickMid;
 
             triggerLeft = 0;
             triggerRight = 0;
@@ -165,7 +166,7 @@ void WiiExtensionInput::update() {
             leftX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             leftY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_Y],WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             rightX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_RIGHT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightY = GAMEPAD_JOYSTICK_MID;
+            rightY = joystickMid;
 
             triggerLeft = 0;
             triggerRight = 0;
@@ -188,8 +189,8 @@ void WiiExtensionInput::update() {
 
             leftX = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_X],0,WII_ANALOG_PRECISION_3,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
             leftY = map(wii->getController()->analogState[WiiAnalogs::WII_ANALOG_LEFT_Y],WII_ANALOG_PRECISION_3,0,GAMEPAD_JOYSTICK_MIN,GAMEPAD_JOYSTICK_MAX);
-            rightX = GAMEPAD_JOYSTICK_MID;
-            rightY = GAMEPAD_JOYSTICK_MID;
+            rightX = joystickMid;
+            rightY = joystickMid;
 
             triggerLeft = 0;
             triggerRight = 0;
@@ -337,6 +338,8 @@ void WiiExtensionInput::updateAnalogState() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     gamepad->hasAnalogTriggers = isAnalogTriggers;
 
+    uint16_t joystickMid = GetJoystickMidValue(Storage::getInstance().getGamepadOptions().inputMode);
+
     uint16_t axisType;
     uint16_t analogInput;
     uint16_t analogValue;
@@ -345,7 +348,7 @@ void WiiExtensionInput::updateAnalogState() {
     uint16_t adjustedValue;
 
     uint16_t minValue = GAMEPAD_JOYSTICK_MIN;
-    uint16_t midValue = GAMEPAD_JOYSTICK_MID;
+    uint16_t midValue = joystickMid;
     uint16_t maxValue = GAMEPAD_JOYSTICK_MAX;
 
     std::map<uint16_t, std::vector<uint16_t>> axesOfChange = {
@@ -377,7 +380,7 @@ void WiiExtensionInput::updateAnalogState() {
                 case WiiAnalogs::WII_ANALOG_RIGHT_X:
                 case WiiAnalogs::WII_ANALOG_RIGHT_Y:
                     minValue = GAMEPAD_JOYSTICK_MIN;
-                    midValue = GAMEPAD_JOYSTICK_MID;
+                    midValue = joystickMid;
                     maxValue = GAMEPAD_JOYSTICK_MAX;
                     break;
                 case WiiAnalogs::WII_ANALOG_LEFT_TRIGGER:
@@ -424,51 +427,51 @@ void WiiExtensionInput::updateAnalogState() {
                 // advanced types
                 case WII_ANALOG_TYPE_LEFT_STICK_X_PLUS:
                     axisToChange = WII_ANALOG_TYPE_LEFT_STICK_X;
-                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MAX);
-                    minValue = GAMEPAD_JOYSTICK_MID;
+                    adjustedValue = map(analogValue,minValue,maxValue,joystickMid,GAMEPAD_JOYSTICK_MAX);
+                    minValue = joystickMid;
                     maxValue = GAMEPAD_JOYSTICK_MAX;
                     break;
                 case WII_ANALOG_TYPE_LEFT_STICK_X_MINUS:
                     axisToChange = WII_ANALOG_TYPE_LEFT_STICK_X;
-                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MIN);
+                    adjustedValue = map(analogValue,minValue,maxValue,joystickMid,GAMEPAD_JOYSTICK_MIN);
                     minValue = GAMEPAD_JOYSTICK_MIN;
-                    maxValue = GAMEPAD_JOYSTICK_MID;
+                    maxValue = joystickMid;
                     break;
                 case WII_ANALOG_TYPE_LEFT_STICK_Y_PLUS:
                     axisToChange = WII_ANALOG_TYPE_LEFT_STICK_Y;
-                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MAX);
-                    minValue = GAMEPAD_JOYSTICK_MID;
+                    adjustedValue = map(analogValue,minValue,maxValue,joystickMid,GAMEPAD_JOYSTICK_MAX);
+                    minValue = joystickMid;
                     maxValue = GAMEPAD_JOYSTICK_MAX;
                     break;
                 case WII_ANALOG_TYPE_LEFT_STICK_Y_MINUS:
                     axisToChange = WII_ANALOG_TYPE_LEFT_STICK_Y;
-                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MIN);
+                    adjustedValue = map(analogValue,minValue,maxValue,joystickMid,GAMEPAD_JOYSTICK_MIN);
                     minValue = GAMEPAD_JOYSTICK_MIN;
-                    maxValue = GAMEPAD_JOYSTICK_MID;
+                    maxValue = joystickMid;
                     break;
                 case WII_ANALOG_TYPE_RIGHT_STICK_X_PLUS:
                     axisToChange = WII_ANALOG_TYPE_RIGHT_STICK_X;
-                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MAX);
-                    minValue = GAMEPAD_JOYSTICK_MID;
+                    adjustedValue = map(analogValue,minValue,maxValue,joystickMid,GAMEPAD_JOYSTICK_MAX);
+                    minValue = joystickMid;
                     maxValue = GAMEPAD_JOYSTICK_MAX;
                     break;
                 case WII_ANALOG_TYPE_RIGHT_STICK_X_MINUS:
                     axisToChange = WII_ANALOG_TYPE_RIGHT_STICK_X;
-                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MIN);
+                    adjustedValue = map(analogValue,minValue,maxValue,joystickMid,GAMEPAD_JOYSTICK_MIN);
                     minValue = GAMEPAD_JOYSTICK_MIN;
-                    maxValue = GAMEPAD_JOYSTICK_MID;
+                    maxValue = joystickMid;
                     break;
                 case WII_ANALOG_TYPE_RIGHT_STICK_Y_PLUS:
                     axisToChange = WII_ANALOG_TYPE_RIGHT_STICK_Y;
-                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MAX);
-                    minValue = GAMEPAD_JOYSTICK_MID;
+                    adjustedValue = map(analogValue,minValue,maxValue,joystickMid,GAMEPAD_JOYSTICK_MAX);
+                    minValue = joystickMid;
                     maxValue = GAMEPAD_JOYSTICK_MAX;
                     break;
                 case WII_ANALOG_TYPE_RIGHT_STICK_Y_MINUS:
                     axisToChange = WII_ANALOG_TYPE_RIGHT_STICK_Y;
-                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_JOYSTICK_MID,GAMEPAD_JOYSTICK_MIN);
+                    adjustedValue = map(analogValue,minValue,maxValue,joystickMid,GAMEPAD_JOYSTICK_MIN);
                     minValue = GAMEPAD_JOYSTICK_MIN;
-                    maxValue = GAMEPAD_JOYSTICK_MID;
+                    maxValue = joystickMid;
                     break;
             }
 
@@ -482,16 +485,16 @@ void WiiExtensionInput::updateAnalogState() {
 
             switch (axisType) {
                 case WII_ANALOG_TYPE_LEFT_STICK_X:
-                    gamepad->state.lx = getDelta(currAxis->second, GAMEPAD_JOYSTICK_MID);
+                    gamepad->state.lx = getDelta(currAxis->second, joystickMid);
                     break;
                 case WII_ANALOG_TYPE_LEFT_STICK_Y:
-                    gamepad->state.ly = getDelta(currAxis->second, GAMEPAD_JOYSTICK_MID);
+                    gamepad->state.ly = getDelta(currAxis->second, joystickMid);
                     break;
                 case WII_ANALOG_TYPE_RIGHT_STICK_X:
-                    gamepad->state.rx = getDelta(currAxis->second, GAMEPAD_JOYSTICK_MID);
+                    gamepad->state.rx = getDelta(currAxis->second, joystickMid);
                     break;
                 case WII_ANALOG_TYPE_RIGHT_STICK_Y:
-                    gamepad->state.ry = getDelta(currAxis->second, GAMEPAD_JOYSTICK_MID);
+                    gamepad->state.ry = getDelta(currAxis->second, joystickMid);
                     break;
                 case WII_ANALOG_TYPE_LEFT_TRIGGER:
                     gamepad->state.lt = getDelta(currAxis->second, GAMEPAD_TRIGGER_MID);
