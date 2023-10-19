@@ -162,11 +162,9 @@ void AnalogModInput::process()
 	SOCDAnalogModClean(analogmodSOCDMode);
 
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
-	uint8_t analogmodLeftOut = analogmodLeftState;
-	uint8_t analogmodRightOut = analogmodRightState;
 
 	// Set AnalogMod Output
-	OverrideGamepad(gamepad, analogmodLeftOut, analogmodRightOut);
+	OverrideGamepad(gamepad, analogmodLeftState, analogmodRightState);
 }
 
 //The character's movement changes depending on the degree to which the stick is tilted.
@@ -219,7 +217,9 @@ void AnalogModInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dp
 
 	// (Tilt1+Tilt2 or Rotate1+Rotate2) = RS as DPad
 	if ((pinTilt1Pressed && pinTilt2Pressed && !pinRotate1Pressed && !pinRotate2Pressed) || (!pinTilt1Pressed && !pinTilt2Pressed && pinRotate1Pressed && pinRotate2Pressed)) {
-		gamepad->state.dpad = dpad2;
+		gamepad->state.dpad |= dpad1|dpad2;
+		gamepad->state.lx = joystickMid;
+		gamepad->state.ly = joystickMid;
 		gamepad->state.rx = joystickMid;
 		gamepad->state.ry = joystickMid;
     }
