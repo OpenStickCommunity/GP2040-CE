@@ -1,6 +1,6 @@
 # Analog Modification Input
 
-![GP2040-CE Configuration - Add-Ons Tilt Input](assets/images/gpc-add-ons-analogmod.png)
+![GP2040-CE Configuration - Add-Ons Tilt Input](../assets/images/gpc-add-ons-analogmod.png)
 
 ## Dedicated Analog Stick Pins
 User can set dedicated analog stick pins to work with Tilt and Rotate features.
