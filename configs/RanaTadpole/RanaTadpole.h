@@ -21,10 +21,8 @@
 #define PICO_XOSC_STARTUP_DELAY_MULTIPLIER 64
 #endif
 
-// --- LED ---
-#ifndef PICO_DEFAULT_LED_PIN
-#define PICO_DEFAULT_LED_PIN 25
-#endif
+// no onboard LED
+
 // no PICO_DEFAULT_WS2812_PIN
 
 // --- FLASH ---
