@@ -31,10 +31,8 @@
 #define PICO_DEFAULT_UART_RX_PIN 1
 #endif
 
-// --- LED ---
-#ifndef PICO_DEFAULT_LED_PIN
-#define PICO_DEFAULT_LED_PIN 25
-#endif
+// no onboard LED
+
 // no PICO_DEFAULT_WS2812_PIN
 
 // --- I2C ---
