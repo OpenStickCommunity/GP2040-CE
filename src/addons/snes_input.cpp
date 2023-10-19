@@ -83,10 +83,12 @@ void SNESpadInput::process() {
     if (nextTimer < getMillis()) {
         snes->poll();
 
-        leftX = GAMEPAD_JOYSTICK_MID;
-        leftY = GAMEPAD_JOYSTICK_MID;
-        rightX = GAMEPAD_JOYSTICK_MID;
-        rightY = GAMEPAD_JOYSTICK_MID;
+        uint16_t joystickMid = GetJoystickMidValue(Storage::getInstance().getGamepadOptions().inputMode);
+
+        leftX = joystickMid;
+        leftY = joystickMid;
+        rightX = joystickMid;
+        rightY = joystickMid;
 
         if (snes->type == SNES_PAD_BASIC) {
             buttonA = snes->buttonA;

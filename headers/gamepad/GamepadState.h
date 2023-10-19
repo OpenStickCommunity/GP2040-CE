@@ -11,6 +11,11 @@ using namespace std;
 #include "GamepadEnums.h"
 #include "enums.pb.h"
 
+#include "gamepad/descriptors/HIDDescriptors.h"
+#include "gamepad/descriptors/SwitchDescriptors.h"
+#include "gamepad/descriptors/XInputDescriptors.h"
+#include "gamepad/descriptors/PS4Descriptors.h"
+
 #define GAMEPAD_BUTTON_COUNT 14
 
 /*
@@ -124,8 +129,32 @@ struct GamepadState
 	uint8_t rt {0};
 };
 
+// Move the values for the 8-bit modes to the MSB of a 16-bit for conversion later
+// Resolves issues where 0x80 is center and 0x7F is not
+inline uint16_t GetJoystickMidValue(uint8_t mode) {
+    switch (mode) {
+        case INPUT_MODE_XINPUT:
+            return GAMEPAD_JOYSTICK_MID;
+
+        case INPUT_MODE_SWITCH:
+            return SWITCH_JOYSTICK_MID << 8;
+
+        case INPUT_MODE_HID:
+            return HID_JOYSTICK_MID << 8;
+
+        case INPUT_MODE_KEYBOARD:
+            return HID_JOYSTICK_MID << 8;
+
+        case INPUT_MODE_PS4:
+            return PS4_JOYSTICK_MID << 8;
+
+        default:
+            return GAMEPAD_JOYSTICK_MID;
+    }
+}
+
 // Convert the horizontal GamepadState dpad axis value into an analog value
-inline uint16_t dpadToAnalogX(uint8_t dpad)
+inline uint16_t dpadToAnalogX(uint8_t dpad, uint8_t mode)
 {
 	switch (dpad & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
 	{
@@ -136,12 +165,12 @@ inline uint16_t dpadToAnalogX(uint8_t dpad)
 			return GAMEPAD_JOYSTICK_MAX;
 
 		default:
-			return GAMEPAD_JOYSTICK_MID;
+			return GetJoystickMidValue(mode);
 	}
 }
 
 // Convert the vertical GamepadState dpad axis value into an analog value
-inline uint16_t dpadToAnalogY(uint8_t dpad)
+inline uint16_t dpadToAnalogY(uint8_t dpad, uint8_t mode)
 {
 	switch (dpad & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN))
 	{
@@ -152,7 +181,7 @@ inline uint16_t dpadToAnalogY(uint8_t dpad)
 			return GAMEPAD_JOYSTICK_MAX;
 
 		default:
-			return GAMEPAD_JOYSTICK_MID;
+			return GetJoystickMidValue(mode);
 	}
 }
 
