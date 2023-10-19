@@ -175,7 +175,7 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 
     if (pinTilt1Pressed && pinTilt2Pressed) {
         // inputs act as dpad
-        gamepad->state.dpad = dpad1|dpad2;
+        gamepad->state.dpad |= dpad1|dpad2;
     } else {
         // analog input mode
         if (pinTilt1Pressed) {
