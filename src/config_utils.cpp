@@ -913,6 +913,66 @@ void gpioMappingsMigrationCore(Config& config)
         }
     }
 
+    // flag additional pins as being used by an addon not managed here
+    const auto markAddonPinIfUsed = [&](uint32_t gpPin) -> void {
+        if (isValidPin(gpPin)) actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
+    };
+    markAddonPinIfUsed(config.displayOptions.i2cSCLPin);
+    markAddonPinIfUsed(config.displayOptions.i2cSDAPin);
+    markAddonPinIfUsed(config.ledOptions.dataPin);
+    markAddonPinIfUsed(config.ledOptions.pledPin1);
+    markAddonPinIfUsed(config.ledOptions.pledPin2);
+    markAddonPinIfUsed(config.ledOptions.pledPin3);
+    markAddonPinIfUsed(config.ledOptions.pledPin4);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinX);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinY);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinX);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinY);
+    markAddonPinIfUsed(config.addonOptions.buzzerOptions.pin);
+    markAddonPinIfUsed(config.addonOptions.focusModeOptions.pin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.ledPin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.buttonPin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupDialPin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn1Pin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn2Pin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn3Pin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn4Pin);
+    markAddonPinIfUsed(config.addonOptions.reverseOptions.buttonPin);
+    markAddonPinIfUsed(config.addonOptions.reverseOptions.ledPin);
+    markAddonPinIfUsed(config.addonOptions.analogADS1219Options.i2cSCLPin);
+    markAddonPinIfUsed(config.addonOptions.analogADS1219Options.i2cSDAPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tilt1Pin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tilt2Pin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltFunctionPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogUpPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogDownPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogLeftPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogRightPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltRightAnalogUpPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltRightAnalogDownPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltRightAnalogLeftPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltRightAnalogRightPin);
+    markAddonPinIfUsed(config.addonOptions.wiiOptions.i2cSCLPin);
+    markAddonPinIfUsed(config.addonOptions.wiiOptions.i2cSDAPin);
+    markAddonPinIfUsed(config.addonOptions.snesOptions.clockPin);
+    markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
+    markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
+    markAddonPinIfUsed(config.addonOptions.keyboardHostOptions.pin5V);
+    markAddonPinIfUsed(config.addonOptions.keyboardHostOptions.pinDplus);
+    if (isValidPin(config.addonOptions.keyboardHostOptions.pinDplus))
+        actions[config.addonOptions.keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+    markAddonPinIfUsed(config.addonOptions.psPassthroughOptions.pin5V);
+    markAddonPinIfUsed(config.addonOptions.psPassthroughOptions.pinDplus);
+    if (isValidPin(config.addonOptions.psPassthroughOptions.pinDplus))
+        actions[config.addonOptions.psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+    markAddonPinIfUsed(config.addonOptions.macroOptions.pin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[0].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[1].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[2].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[3].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[4].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[5].macroTriggerPin);
+
     INIT_UNSET_PROPERTY(config.gpioMappings, pin00, actions[0]);
     INIT_UNSET_PROPERTY(config.gpioMappings, pin01, actions[1]);
     INIT_UNSET_PROPERTY(config.gpioMappings, pin02, actions[2]);
