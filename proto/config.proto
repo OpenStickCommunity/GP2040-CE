@@ -376,17 +376,17 @@ message AnalogModOptions
 
 	optional int32 tilt1Pin = 2;
 	optional int32 tilt2Pin = 3;
-	optional SOCDMode analogmodLeftSOCDMode = 4;
-	optional int32 analogmodLeftAnalogUpPin = 5;
-	optional int32 analogmodLeftAnalogDownPin = 6;
-	optional int32 analogmodLeftAnalogLeftPin = 7;
-	optional int32 analogmodLeftAnalogRightPin = 8;
-	optional int32 analogmodRightAnalogUpPin = 9;
-	optional int32 analogmodRightAnalogDownPin = 10;
-	optional int32 analogmodRightAnalogLeftPin = 11;
-	optional int32 analogmodRightAnalogRightPin = 12;
-
-	optional SOCDMode analogmodRightSOCDMode = 13;
+	optional int32 tiltFunctionPin = 4;
+	optional int32 tiltLeftAnalogUpPin = 5;
+	optional int32 tiltLeftAnalogDownPin = 6;
+	optional int32 tiltLeftAnalogLeftPin = 7;
+	optional int32 tiltLeftAnalogRightPin = 8;
+	optional int32 tiltRightAnalogUpPin = 9;
+	optional int32 tiltRightAnalogDownPin = 10;
+	optional int32 tiltRightAnalogLeftPin = 11;
+	optional int32 tiltRightAnalogRightPin = 12;
+	
+	optional SOCDMode tiltSOCDMode = 13;
 	
 	optional int32 factorTilt1LeftX =  14;
 	optional int32 factorTilt1LeftY =  15;
@@ -396,7 +396,7 @@ message AnalogModOptions
 	optional int32 factorTilt2LeftY =  19;
 	optional int32 factorTilt2RightX =  20;
 	optional int32 factorTilt2RightY =  21;
-
+	
 	optional int32 rotate1Pin = 22;
 	optional int32 rotate2Pin = 23;
 	
@@ -412,6 +412,18 @@ message AnalogModOptions
 	optional int32 factorRotate5Right =  33;
 	optional int32 factorRotate6Left =  34;
 	optional int32 factorRotate6Right =  35;
+	
+	optional int32 analogmodLeftAnalogUpPin = 36;
+	optional int32 analogmodLeftAnalogDownPin = 37;
+	optional int32 analogmodLeftAnalogLeftPin = 38;
+	optional int32 analogmodLeftAnalogRightPin = 39;
+	optional int32 analogmodRightAnalogUpPin = 40;
+	optional int32 analogmodRightAnalogDownPin = 41;
+	optional int32 analogmodRightAnalogLeftPin = 42;
+	optional int32 analogmodRightAnalogRightPin = 43;
+
+	optional SOCDMode analogmodLeftSOCDMode = 44;
+	optional SOCDMode analogmodRightSOCDMode = 45;	
 }
 
 message BuzzerOptions

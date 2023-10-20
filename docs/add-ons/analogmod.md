@@ -56,7 +56,7 @@ SOCD Cleaning Mode can be separately set for LS and RS. (Up Priority, Neutral, L
 * `Analog Mod Right Stick SOCD Mode` - Choose the SOCD Cleaning Mode for Right Stick.
 
 ## Summary of Analog Mod Add-On
-The table below provides the summary of all functions provided Analog Mod Add-On. 
+The table below provides a summary of all functions offered by Analog Mod.
 `X` = button is pressed; `-` = button is not pressed
 | Tilt1 | Tilt2 | Rotate1 | Rotate2 |   | LS Behavior | RS Behavior |
 |:-----:|:-----:|:-------:|:-------:|:-:|:-----------:|:-----------:|
