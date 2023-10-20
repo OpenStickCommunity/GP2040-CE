@@ -108,10 +108,15 @@ static void __attribute__((noinline)) docToPin(int32_t& pin, const DynamicJsonDo
 	if (doc.containsKey(key))
 	{
 		pin = doc[key];
-	}
-	if (!isValidPin(pin))
-	{
-		pin = -1;
+		if (isValidPin(pin))
+		{
+			GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+			*gpioMappings[pin] = GpioAction::ASSIGNED_TO_ADDON;
+		}
+		else
+		{
+			pin = -1;
+		}
 	}
 }
 
@@ -1089,6 +1094,8 @@ std::string setAddonOptions()
 	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
 	docToPin(keyboardHostOptions.pinDplus, doc, "keyboardHostPinDplus");
+	if (isValidPin(keyboardHostOptions.pinDplus))
+		*gpioMappings[keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
 	docToPin(keyboardHostOptions.pin5V, doc, "keyboardHostPin5V");
 	docToValue(keyboardHostOptions.mapping.keyDpadUp, doc, "keyboardHostMap", "Up");
 	docToValue(keyboardHostOptions.mapping.keyDpadDown, doc, "keyboardHostMap", "Down");
@@ -1112,6 +1119,8 @@ std::string setAddonOptions()
 	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 	docToValue(psPassthroughOptions.enabled, doc, "PSPassthroughAddonEnabled");
 	docToPin(psPassthroughOptions.pinDplus, doc, "psPassthroughPinDplus");
+	if (isValidPin(psPassthroughOptions.pinDplus))
+		*gpioMappings[psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
 	docToPin(psPassthroughOptions.pin5V, doc, "psPassthroughPin5V");
 
 	Storage::getInstance().save();
