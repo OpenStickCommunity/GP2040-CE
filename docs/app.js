@@ -75,7 +75,7 @@ const configData = {
 	},
 	Liatris: {
 		name: 'Liatris',
-		category: configCategories[1],
+		category: configCategories[0],
 		website: 'https://splitkb.com/products/liatris',
 		desc: 'Drop in RP2040 replacement for Pro Micro builds by SplitKB.com'
 	},
