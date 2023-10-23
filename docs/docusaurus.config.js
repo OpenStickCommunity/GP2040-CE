@@ -4,6 +4,8 @@
 const lightCodeTheme = require('prism-react-renderer').themes.github;
 const darkCodeTheme = require('prism-react-renderer').themes.dracula;
 
+const releaseVersion = '0.7.5';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
 	title: 'GP2040-CE',
@@ -73,7 +75,7 @@ const config = {
 			announcementBar: {
 				id: 'new_release',
 				content:
-					'New Version Available! To get the v0.7.4 update, go to <a href="https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/v0.7.4">GP2040-CE Releases<a/>',
+					`New Version Available! To get the v${releaseVersion} update, go to <a href="https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/v${releaseVersion}" target="_blank">GP2040-CE Releases<a/>`,
 				backgroundColor: '#ec008c',
 				textColor: '#FFFFFF',
 				isCloseable: true,
