@@ -1,3 +1,11 @@
+---
+title: Macro Settings
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 # Macro Settings
 
 Purpose: Macros are a series or combination of gamepad inputs triggered with a single button or a combination of buttons.
@@ -21,6 +29,12 @@ This is the name of the macro and is optional.
 
 - `Off` - The macro cannot be stopped and will execute all lines until the macro is completed.
 - `On` - Any input will stop the current ongoing macro or, if the input is another macro, the interrupting macro trigger will start executing instead.
+
+:::note Interrupting Macros
+
+When a macro stops for any reason and are triggered. again, the macro starts again from the beginning.
+
+:::
 
 ### Exclusive
 
@@ -61,8 +75,8 @@ Each input line is composed of the following elements from left to right.
 - Inputs - The inputs to be held during the execution of the input line.
 - Post Input Wait Duration - The duration in-between when that input line finishes executing and when the next line will start executing. (Maximum 4,294,967ms or 268,435 frames)
 
-?> To delete an input line, double-click the "x" button.
+:::note Deleting Input Lines
 
-## Note
+To delete an input line, double-click the "x" button.
 
-- When a macro stops for any reason and are triggered. again, the macro starts again from the beginning.
+:::
