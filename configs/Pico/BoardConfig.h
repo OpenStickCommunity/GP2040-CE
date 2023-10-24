@@ -226,6 +226,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
+#define BOARD_LED_ENABLED 0
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
 
 // Dual Directional Add-on Options
@@ -240,14 +241,14 @@
 // TILTAdd-on Options
 #define PIN_TILT_1 -1
 #define TILT1_FACTOR_LEFT_X  35  //Default value for the TILT button to function.
-#define TILT1_FACTOR_LEFT_Y  45  //Default value for the TILT button to function.
+#define TILT1_FACTOR_LEFT_Y 35 //Default value for the TILT button to function.
 #define TILT1_FACTOR_RIGHT_X 35  //Default value for the TILT button to function.
-#define TILT1_FACTOR_RIGHT_Y 170 //Default value for the TILT button to function.
+#define TILT1_FACTOR_RIGHT_Y 35 //Default value for the TILT button to function.
 #define PIN_TILT_2 -1
 #define TILT2_FACTOR_LEFT_X  65  //Default value for the TILT button to function.
-#define TILT2_FACTOR_LEFT_Y  35  //Default value for the TILT button to function.
-#define TILT2_FACTOR_RIGHT_X 30  //Default value for the TILT button to function.
-#define TILT2_FACTOR_RIGHT_Y 30  //Default value for the TILT button to function.
+#define TILT2_FACTOR_LEFT_Y  65  //Default value for the TILT button to function.
+#define TILT2_FACTOR_RIGHT_X 65  //Default value for the TILT button to function.
+#define TILT2_FACTOR_RIGHT_Y 65  //Default value for the TILT button to function.
 #define PIN_TILT_FUNCTION -1
 #define PIN_TILT_LEFT_ANALOG_UP -1
 #define PIN_TILT_LEFT_ANALOG_DOWN -1

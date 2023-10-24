@@ -54,6 +54,12 @@ const configData = {
 		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/Flatbox%20Rev%205%20RGB',
 		desc: 'Stickless PCB designed by <a href="https://github.com/jfedor2">jfedor2</a> and <a href="https://github.com/TheTrainGoes">TheTrain</a> using the Waveshare RP2040-Zero.'
 	},
+	FlatboxRev5Southpaw: {
+		name: 'Flatbox Rev 5 Southpaw',
+		category: configCategories[1],
+		website: 'https://github.com/SkylaHila/flatbox-southpaw ',
+		desc: 'Mirrored version of the Flatbox Rev 5 by SkylaHila.  Based on the Flatbox Rev 5 by <a href="https://github.com/jfedor2">jfedor2</a>.'
+	},
 	KB2040: {
 		name: 'Adafruit KB2040',
 		category: configCategories[0],
@@ -67,11 +73,29 @@ const configData = {
 		website: 'https://github.com/OpenStickCommunity/Hardware/blob/main/GP2040%20Keyboard%20Converter/Waveshare%20Zero-PCB/README.md',
 		desc: 'The GP2040-CE Keyboard Converter Case is designed to be a USB Host Device for the use of a keyboard with the GP2040-CE project. The end result is a device that allows you to play on a keyboard, but have it registered just as GP2040-CE controller, whether that is XInput, DInput, PS4, or Switch.'
 	},
+	Liatris: {
+		name: 'Liatris',
+		category: configCategories[0],
+		website: 'https://splitkb.com/products/liatris',
+		desc: 'Drop in RP2040 replacement for Pro Micro builds by SplitKB.com'
+	},
 	MavercadeKeebfighter: {
 		name: 'Mavercade Keebfighter',
 		category: configCategories[2],
 		website: 'https://github.com/OpenStickCommunity/GP2040-CE/tree/main/configs/MavercadeKeebfighter',
 		desc: ''
+	},
+	OpenCore0: {
+		name: 'Open Core0',
+		category: configCategories[1],
+		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/Open_Core0',
+		desc: 'Open source stickless controller designed by <a href="https://github.com/TheTrainGoes">TheTrain</a>.'
+	},
+	OpenCore0WASD: {
+		name: 'Open Core0 WASD',
+		category: configCategories[1],
+		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/Open_Core0%20WASD',
+		desc: 'Open source stickless WASD controller designed by <a href="https://github.com/TheTrainGoes">TheTrain</a>.'
 	},
 	Pico: {
 		name: 'Raspberry Pi Pico',
@@ -101,11 +125,23 @@ const configData = {
 		website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
 		desc: 'The Raspberry Pi Pico W is a powerful, low-cost board based on the Raspberry Pi RP2040 microcontroller.'
 	},
+	RanaTadpole: {
+		name: 'Rana Tadpole',
+		category: configCategories[1],
+		website: 'https://github.com/rana-sylvatica/rana-tadpole',
+		desc: 'Pocket-sized digital controller from RanaLabs.'
+	},
 	RP2040AdvancedBreakoutBoard: {
 		name: 'RP2040 Advanced Breakout',
 		category: configCategories[1],
 		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Advanced%20Breakout%20Board',
 		desc: 'Arcade encoder board designed by <a href="https://github.com/TheTrainGoes">TheTrain</a> using an embedded RP2040, and is the official board of the GP2040-CE project.'
+	},
+	RP2040AdvancedBreakoutBoardUSBPassthrough: {
+		name: 'RP2040 Advanced Breakout (USB Passthrough)',
+		category: configCategories[1],
+		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Advanced%20Breakout%20Board%20-%20Passthrough',
+		desc: 'Official USB Passthrough Board of the Open Stick project.  Updated version of the RP2040 Advanced Breakout Board with USB passthrough included on the board.'
 	},
 	RP2040MiniBreakoutBoard: {
 		name: 'RP2040 Mini Breakout',
@@ -113,11 +149,17 @@ const configData = {
 		website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Mini%20Breakout%20Board',
 		desc: 'A reduced-footprint spin off of the RP2040 Advanced Breakout Board designed by <a href="https://github.com/TheTrainGoes">TheTrain</a>.'
 	},
-	ReflexEncoder: {
-		name: 'Reflex Arcade Encoder',
+	ReflexEncodeV1: {
+		name: 'Reflex Arcade Encoder v1',
 		category: configCategories[1],
 		website: 'https://github.com/misteraddons/ReflexFightingBoard',
-		desc: 'Arcade encoder board designed and sold by <a href="https://github.com/misteraddons">MiSTerAddons</a> using an embedded RP2040 chip.'
+		desc: 'Open source PCB for arcade sticks v1 designed and sold by <a href="https://github.com/misteraddons">MiSTerAddons</a> using an embedded RP2040 chip.'
+	},
+	ReflexEncodeV2: {
+		name: 'Reflex Arcade Encoder v2',
+		category: configCategories[1],
+		website: 'https://github.com/misteraddons/ReflexFightingBoard',
+		desc: 'Open source PCB for arcade sticks v2 designed and sold by <a href="https://github.com/misteraddons">MiSTerAddons</a> using an embedded RP2040 chip.'
 	},
 	ReflexCtrlSNES: {
 		name: 'Reflex CTRL SNES',

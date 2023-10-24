@@ -8,15 +8,20 @@
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "Reflex Encoder"
+#define BOARD_CONFIG_LABEL "Reflex Encode v2.0"
+
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
+#define DEFAULT_INPUT_MODE INPUT_MODE_PS4
+#define PSPASSTHROUGH_ENABLED 1
+#define PSPASSTHROUGH_PIN_DPLUS 14
 
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.
 // The Turbo pin and LS + RS slider pins can also be set to `-1` to disable that functionality.
 // Please note that only when `PIN_BUTTON_TURBO` is set to `-1` will the `T##` be removed from a connected display.
-// Please note that only when `PIN_SLIDER_ONE` and  `PIN_SLIDER_TWO` are set to `-1` will the button combo shortcut for DP/LS/RS work.
-// The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
+// Please note that only when `PIN_SLIDER_LS` and  `PIN_SLIDER_RS` are set to `-1` will the button combo shortcut for DP/LS/RS work.
+// The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade
 
 #define PIN_DPAD_UP     2           // UP
 #define PIN_DPAD_DOWN   3           // DOWN
@@ -37,10 +42,10 @@
 #define PIN_BUTTON_A1   20          // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_FN   -1          // Hotkey Function
-#define PIN_BUTTON_TURBO 14         // Turbo
+#define PIN_BUTTON_TURBO 29         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
-#define PIN_SLIDER_ONE    -1         // Left Stick Slider
-#define PIN_SLIDER_TWO    -1         // Right Stick Slider
+#define PIN_SLIDER_LS    -1         // Left Stick Slider
+#define PIN_SLIDER_RS    -1         // Right Stick Slider
 #define PIN_SLIDER_SOCD_ONE    -1         // SOCD Slider Pin One
 #define PIN_SLIDER_SOCD_TWO    -1         // SOCD Slider Pin Two
 
@@ -61,8 +66,6 @@
 
 #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF // 	FORCED_SETUP_MODE_OFF, FORCED_SETUP_MODE_LOCK_MODE_SWITCH, FORCED_SETUP_MODE_LOCK_WEB_CONFIG, FORCED_SETUP_MODE_LOCK_BOTH
 #define DEFAULT_LOCK_HOTKEYS false // or true
-
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
 
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
@@ -86,9 +89,7 @@
 // The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
-#define TURBO_LED_PIN 15
-
-#define BOARD_LEDS_PIN 28
+#define TURBO_LED_PIN -1
 
 #define LED_BRIGHTNESS_MAXIMUM 150
 #define LED_BRIGHTNESS_STEPS 5
@@ -228,7 +229,7 @@
 // INPUT_TEST     - Blinks whenever any input is made
 
 #define BOARD_LED_ENABLED 1
-#define BOARD_LED_TYPE ON_BOARD_LED_MODE_INPUT_TEST
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_PS_AUTH
 
 // Dual Directional Add-on Options
 

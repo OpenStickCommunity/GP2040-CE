@@ -15,6 +15,12 @@ void InputMacro::setup() {
 	gpio_set_dir(inputMacroOptions.pin, GPIO_IN); // Set as INPUT
 	gpio_pull_up(inputMacroOptions.pin);          // Set as PULLUP
 
+    if (inputMacroOptions.macroBoardLedEnabled && isValidPin(BOARD_LED_PIN)) {
+        gpio_init(BOARD_LED_PIN);
+        gpio_set_dir(BOARD_LED_PIN, GPIO_OUT);
+        boardLedEnabled = true;
+    }
+
     for (int i = 0; i < inputMacroOptions.macroList_count; i++) {
         Macro& macro = inputMacroOptions.macroList[i];
         if (!macro.enabled) continue;
@@ -32,6 +38,8 @@ void InputMacro::preprocess()
     if (focusModeOptions.enabled && focusModeOptions.macroLockEnabled) return;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	uint32_t allPins = ~gpio_get_all();
+    macroInputPressed = false;
+    uint64_t currentMicros = getMicro();
 
     if (macroPosition == -1 || inputMacroOptions.macroList[macroPosition].interruptible) {
         int newMacroPosition = -1;
@@ -63,10 +71,21 @@ void InputMacro::preprocess()
             if (newMacroPosition != macroPosition ||
                 (newMacroPosition == macroPosition &&
                  inputMacroOptions.macroList[newMacroPosition].macroType == ON_PRESS &&
-                 isMacroRunning)) {
-                    reset();
-                    return;
-                 }
+                 isMacroRunning && (macroTriggerDebounceStartTime != 0 || (!prevMacroInputPressed && macroInputPressed)))) {
+                    if (macroTriggerDebounceStartTime == 0) {
+                        macroTriggerDebounceStartTime = currentMicros;
+                    }
+
+                    if (macroTriggerDebounceStartTime != 0) {
+                        if (((currentMicros - macroTriggerDebounceStartTime) > 500)) {
+                            macroTriggerDebounceStartTime = 0;
+                            if (macroInputPressed) {
+                                reset();
+                                return;
+                            }
+                        }
+                    }
+            }
         }
 
         if (newMacroPosition != -1 && !isMacroRunning) {
@@ -84,8 +103,6 @@ void InputMacro::preprocess()
     } else {
         macroInputPressed = (allPins & 1 << macro.macroTriggerPin);
     }
-
-    uint64_t currentMicros = getMicro();
 
     if (!isMacroRunning && macroInputPressed && macroTriggerDebounceStartTime == 0) {
         macroTriggerDebounceStartTime = currentMicros;
@@ -127,15 +144,16 @@ void InputMacro::preprocess()
                 break;
         }
     }
+
     prevMacroInputPressed = macroInputPressed;
 
     MacroInput& macroInput = macro.macroInputs[macroInputPosition];
     uint32_t macroInputDuration = macroInput.duration + macroInput.waitDuration;
+    macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
 
     if (!isMacroRunning && isMacroTriggerHeld) {
         isMacroRunning = true;
         macroStartTime = currentMicros;
-        macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
     }
     
     if (!isMacroRunning)
@@ -175,6 +193,14 @@ void InputMacro::preprocess()
             gamepad->state.dpad |= GAMEPAD_MASK_RIGHT;
         }
         gamepad->state.buttons |= buttonMask;
+
+        if (boardLedEnabled) {
+            gpio_put(BOARD_LED_PIN, (gamepad->state.dpad || gamepad->state.buttons) ? 1 : 0);
+        }
+    } else {
+        if (boardLedEnabled) {
+            gpio_put(BOARD_LED_PIN, 0);
+        }
     }
 
     if ((currentMicros - macroStartTime) >= macroInputHoldTime) {
@@ -190,10 +216,7 @@ void InputMacro::preprocess()
         isMacroTriggerHeld = isMacroTriggerHeld && isMacroTypeLoopable;
         isMacroRunning = isMacroTriggerHeld;
         macroPosition = (isMacroTypeLoopable && isMacroTriggerHeld) ? macroPosition : -1;
-        if (isMacroTypeLoopable && !isMacroTriggerHeld) {
-            macroStartTime = 0;
-            macroInputHoldTime = INPUT_HOLD_US;
-        }
+        macroStartTime = currentMicros;
     }
 }
 

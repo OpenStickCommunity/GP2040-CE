@@ -33,7 +33,10 @@ static HIDReport hidReport
 	.l1_btn = 0, .r1_btn = 0, .l2_btn = 0, .r2_btn = 0,
 	.select_btn = 0, .start_btn = 0, .l3_btn = 0, .r3_btn = 0, .ps_btn = 0, .tp_btn = 0,
 	.direction = 0x08,
-	.l_x_axis = 0x80, .l_y_axis = 0x80, .r_x_axis = 0x80, .r_y_axis = 0x80,
+	.l_x_axis = HID_JOYSTICK_MID,
+	.l_y_axis = HID_JOYSTICK_MID,
+	.r_x_axis = HID_JOYSTICK_MID,
+	.r_y_axis = HID_JOYSTICK_MID,
 	.right_axis = 0x00, .left_axis = 0x00, .up_axis = 0x00, .down_axis = 0x00,
 	.triangle_axis = 0x00, .circle_axis = 0x00, .cross_axis = 0x00, .square_axis = 0x00,
 	.l1_axis = 0x00, .r1_axis = 0x00, .l2_axis = 0x00, .r2_axis = 0x00
@@ -42,7 +45,10 @@ static HIDReport hidReport
 static PS4Report ps4Report
 {
 	.report_id = 0x01,
-	.left_stick_x = 0x80, .left_stick_y = 0x80, .right_stick_x = 0x80, .right_stick_y = 0x80,
+	.left_stick_x = PS4_JOYSTICK_MID,
+	.left_stick_y = PS4_JOYSTICK_MID,
+	.right_stick_x = PS4_JOYSTICK_MID,
+	.right_stick_y = PS4_JOYSTICK_MID,
 	.dpad = 0x08,
 	.button_west = 0, .button_south = 0, .button_east = 0, .button_north = 0,
 	.button_l1 = 0, .button_r1 = 0, .button_l2 = 0, .button_r2 = 0,
@@ -179,6 +185,8 @@ void Gamepad::teardown_and_reinit(const uint32_t profileNum)
 void Gamepad::process()
 {
 	memcpy(&rawState, &state, sizeof(GamepadState));
+	// Get the midpoint value for the current mode
+	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
 
 	// NOTE: Inverted X/Y-axis must run before SOCD and Dpad processing
 	if (options.invertXAxis) {
@@ -212,32 +220,32 @@ void Gamepad::process()
 	{
 		case DpadMode::DPAD_MODE_LEFT_ANALOG:
 			if (!hasRightAnalogStick) {
-				state.rx = GAMEPAD_JOYSTICK_MID;
-				state.ry = GAMEPAD_JOYSTICK_MID;
+				state.rx = joystickMid;
+				state.ry = joystickMid;
 			}
-			state.lx = dpadToAnalogX(state.dpad);
-			state.ly = dpadToAnalogY(state.dpad);
+			state.lx = dpadToAnalogX(state.dpad, options.inputMode);
+			state.ly = dpadToAnalogY(state.dpad, options.inputMode);
 			state.dpad = 0;
 			break;
 
 		case DpadMode::DPAD_MODE_RIGHT_ANALOG:
 			if (!hasLeftAnalogStick) {
-				state.lx = GAMEPAD_JOYSTICK_MID;
-				state.ly = GAMEPAD_JOYSTICK_MID;
+				state.lx = joystickMid;
+				state.ly = joystickMid;
 			}
-			state.rx = dpadToAnalogX(state.dpad);
-			state.ry = dpadToAnalogY(state.dpad);
+			state.rx = dpadToAnalogX(state.dpad, options.inputMode);
+			state.ry = dpadToAnalogY(state.dpad, options.inputMode);
 			state.dpad = 0;
 			break;
 
 		default:
 			if (!hasLeftAnalogStick) {
-				state.lx = GAMEPAD_JOYSTICK_MID;
-				state.ly = GAMEPAD_JOYSTICK_MID;
+				state.lx = joystickMid;
+				state.ly = joystickMid;
 			}
 			if (!hasRightAnalogStick) {
-				state.rx = GAMEPAD_JOYSTICK_MID;
-				state.ry = GAMEPAD_JOYSTICK_MID;
+				state.rx = joystickMid;
+				state.ry = joystickMid;
 			}
 			break;
 	}
@@ -248,6 +256,8 @@ void Gamepad::read()
 	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
 	// Need to invert since we're using pullups
 	uint32_t values = ~gpio_get_all();
+	// Get the midpoint value for the current mode
+	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
 
 	state.aux = 0
 		| (values & (1 << pinMappings.pinButtonFn)) ? AUX_MASK_FUNCTION : 0;
@@ -276,10 +286,10 @@ void Gamepad::read()
 		| ((values & mapButtonA2->pinMask)  ? mapButtonA2->buttonMask  : 0)
 	;
 
-	state.lx = GAMEPAD_JOYSTICK_MID;
-	state.ly = GAMEPAD_JOYSTICK_MID;
-	state.rx = GAMEPAD_JOYSTICK_MID;
-	state.ry = GAMEPAD_JOYSTICK_MID;
+	state.lx = joystickMid;
+	state.ly = joystickMid;
+	state.rx = joystickMid;
+	state.ry = joystickMid;
 	state.lt = 0;
 	state.rt = 0;
 }
@@ -580,14 +590,14 @@ PS4Report *Gamepad::getPS4Report()
 {
 	switch (state.dpad & GAMEPAD_MASK_DPAD)
 	{
-		case GAMEPAD_MASK_UP:                        ps4Report.dpad = HID_HAT_UP;        break;
-		case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   ps4Report.dpad = HID_HAT_UPRIGHT;   break;
-		case GAMEPAD_MASK_RIGHT:                     ps4Report.dpad = HID_HAT_RIGHT;     break;
-		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: ps4Report.dpad = HID_HAT_DOWNRIGHT; break;
-		case GAMEPAD_MASK_DOWN:                      ps4Report.dpad = HID_HAT_DOWN;      break;
-		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  ps4Report.dpad = HID_HAT_DOWNLEFT;  break;
-		case GAMEPAD_MASK_LEFT:                      ps4Report.dpad = HID_HAT_LEFT;      break;
-		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    ps4Report.dpad = HID_HAT_UPLEFT;    break;
+		case GAMEPAD_MASK_UP:                        ps4Report.dpad = PS4_HAT_UP;        break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   ps4Report.dpad = PS4_HAT_UPRIGHT;   break;
+		case GAMEPAD_MASK_RIGHT:                     ps4Report.dpad = PS4_HAT_RIGHT;     break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: ps4Report.dpad = PS4_HAT_DOWNRIGHT; break;
+		case GAMEPAD_MASK_DOWN:                      ps4Report.dpad = PS4_HAT_DOWN;      break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  ps4Report.dpad = PS4_HAT_DOWNLEFT;  break;
+		case GAMEPAD_MASK_LEFT:                      ps4Report.dpad = PS4_HAT_LEFT;      break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    ps4Report.dpad = PS4_HAT_UPLEFT;    break;
 		default:                                     ps4Report.dpad = PS4_HAT_NOTHING;   break;
 	}
 
