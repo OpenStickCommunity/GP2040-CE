@@ -106,3 +106,41 @@ Notes
 
 Provide any miscellaneous notes that an end user may want or need to know with regard to this addon.
 ```
+
+### Downloads Page Configurations
+
+#### Microcontroller Boards
+
+```tsx
+{
+    name: 'Microcontroller Board Name',
+    configName: 'ConfigName',
+    pinout: null,
+    website: 'http://www.example.com/index.html',
+    image: require('@site/docs/assets/boards/BoardName.jpg').default,
+    supported: true,
+    desc: () => (
+        <p>
+            Description of Microcontroller board and manufacturer
+        </p>
+    ),
+},
+
+```
+
+#### Controllers
+
+```tsx
+{
+    name: 'Controller Name',
+    configName: 'ConfigName',
+    pinout: null,
+    website: 'http://www.example.com/index.html',
+    image: require('@site/docs/assets/boards/DeviceName.jpg').default,
+    category: 'official/open/closed/legacy',
+    desc: () => 
+        <p>
+            Description of the device and maker.
+        </p>,
+},
+```

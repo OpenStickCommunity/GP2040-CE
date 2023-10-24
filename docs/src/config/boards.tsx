@@ -470,15 +470,6 @@ const boards = {
 				</p>
 			),
 		},
-		{
-			name: '',
-			configName: '',
-			pinout: null,
-			website: '',
-			image: require('@site/docs/assets/boards/Pico.jpg').default,
-			category: '',
-			desc: () => <p></p>,
-		},
 	],
 };
 
