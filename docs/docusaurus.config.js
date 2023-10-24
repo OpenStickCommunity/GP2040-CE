@@ -104,8 +104,8 @@ const config = {
 					{
 						type: 'docSidebar',
 						position: 'left',
-						sidebarId: 'devSidebar',
-						label: 'Development',
+						sidebarId: 'contributeSidebar',
+						label: 'Contribute',
 					},
 					{
 						type: 'doc',
@@ -113,11 +113,12 @@ const config = {
 						docId: 'downloads/download-page',
 						label: 'Downloads',
 					},
-					{
-						type: 'docsVersionDropdown',
-						position: 'right',
-						dropdownActiveClassDisabled: true,
-					},
+					// VersionDropdown - To Be Reconsidered
+					// {
+					// 	type: 'docsVersionDropdown',
+					// 	position: 'right',
+					// 	dropdownActiveClassDisabled: true,
+					// },
 					{
 						href: 'https://discord.gg/k2pxhke7q8',
 						label: 'Discord',
