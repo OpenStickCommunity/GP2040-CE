@@ -347,7 +347,9 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 
 	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
 	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-		if (*gpioMappings[pin] != GpioAction::NONE) {
+		// NOTE: addons in webconfig break by seeing their own pins here; if/when they
+		// are refactored to ignore their own pins from this list, we can include them
+		if (*gpioMappings[pin] != GpioAction::NONE && *gpioMappings[pin] != GpioAction::ASSIGNED_TO_ADDON) {
 			usedPins.add(pin);
 		}
 	}
