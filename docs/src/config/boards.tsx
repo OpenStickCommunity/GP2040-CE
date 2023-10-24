@@ -32,6 +32,38 @@ const boards = {
 			),
 		},
 		{
+			name: 'Adafruit KB2040',
+			configName: 'KB2040',
+			pinout: '/#/wiring?id=adafruit-kb2040',
+			website: 'https://learn.adafruit.com/adafruit-kb2040',
+			image: require('@site/docs/assets/boards/KB2040.jpg').default,
+			supported: true,
+			desc: () => (
+				<p>
+					Another RP2040 board in the Pro Micro form factor, with 2 additional
+					pins for USB data. This build is configured for DIY gamepad mods.
+				</p>
+			),
+		},
+		{
+			name: 'Liatris',
+			configName: 'SparkFunProMicro',
+			pinout: '/#/wiring?id=sparkfun-pro-micro-rp2040',
+			website:
+				'https://splitkb.com/products/liatris',
+			image: require('@site/docs/assets/boards/Liatris.jpg').default,
+			supported: true,
+			desc: () => (
+				<p>
+					Drop in RP2040 replacement for Pro Micro builds by {' '}
+					<a href="SplitKB.com">
+						SplitKB.com
+					</a>
+					.
+				</p>
+			),
+		},
+		{
 			name: 'SparkFun Pro Micro',
 			configName: 'SparkFunProMicro',
 			pinout: '/#/wiring?id=sparkfun-pro-micro-rp2040',
@@ -66,20 +98,6 @@ const boards = {
 					is a small form factor board with castellated pins and USB-C, making
 					this a popular choice for custom built PCBs without the need for SMT
 					assembly.
-				</p>
-			),
-		},
-		{
-			name: 'Adafruit KB2040',
-			configName: 'KB2040',
-			pinout: '/#/wiring?id=adafruit-kb2040',
-			website: 'https://learn.adafruit.com/adafruit-kb2040',
-			image: require('@site/docs/assets/boards/KB2040.jpg').default,
-			supported: true,
-			desc: () => (
-				<p>
-					Another RP2040 board in the Pro Micro form factor, with 2 additional
-					pins for USB data. This build is configured for DIY gamepad mods.
 				</p>
 			),
 		},
@@ -144,6 +162,19 @@ const boards = {
 			),
 		},
 		{
+			name: 'Flatbox Rev 5 Southpaw',
+			configName: 'FlatboxRev5Southpaw',
+			pinout: null,
+			website: 'https://github.com/SkylaHila/flatbox-southpaw',
+			image: require('@site/docs/assets/boards/FlatboxRev5Southpaw.jpg').default,
+			category: 'open',
+			desc: () => (
+				<p>
+					Mirrored version of the Flatbox Rev 5 by SkylaHila. Based on the Flatbox Rev 5 by <a href="https://github.com/jfedor2">jfedor2</a>.
+				</p>
+			),
+		},
+		{
 			name: 'Flatbox Rev 5 RGB',
 			configName: 'FlatboxRev5RGB',
 			pinout: null,
@@ -167,14 +198,11 @@ const boards = {
 			website:
 				'https://github.com/OpenStickCommunity/Hardware/blob/main/GP2040%20Keyboard%20Converter/Waveshare%20Zero-PCB/README.md',
 			image: require('@site/docs/assets/boards/KeyboardConverter.jpg').default,
-			category: '',
+			category: 'open',
 			desc: () => (
 				<p>
 					The GP2040-CE Keyboard Converter Case is designed to be a USB Host
-					Device for the use of a keyboard with the GP2040-CE project. The end
-					result is a device that allows you to play on a keyboard, but have it
-					registered just as GP2040-CE controller, whether that is XInput,
-					DInput, PS4, or Switch.
+					Device for the use of a keyboard with the GP2040-CE project.
 				</p>
 			),
 		},
@@ -194,6 +222,39 @@ const boards = {
 						Mavercade Keebfighters
 					</a>
 					. These revisions use a Waveshare RP2040-Zero board.
+				</p>
+			),
+		},		{
+			name: 'Open Core0',
+			configName: 'OpenCore0',
+			pinout: null,
+			website:
+				'https://github.com/OpenStickCommunity/Hardware/tree/main/Open_Core0',
+			image: require('@site/docs/assets/boards/OpenCore0.jpg').default,
+			category: 'official',
+			desc: () => (
+				<p>
+					Open source stickless controller designed by {' '}
+					<a href="https://github.com/TheTrainGoes">
+						TheTrain
+					</a>.
+				</p>
+			),
+		},
+		{
+			name: 'Open Core0 WASD',
+			configName: 'OpenCore0WASD',
+			pinout: null,
+			website:
+				'https://github.com/OpenStickCommunity/Hardware/tree/main/Open_Core0',
+			image: require('@site/docs/assets/boards/OpenCore0WASD.jpg').default,
+			category: 'official',
+			desc: () => (
+				<p>
+					Open source stickless WASD controller designed by {' '} 
+					<a href="https://github.com/TheTrainGoes"> 
+						TheTrain
+					</a>.
 				</p>
 			),
 		},
@@ -220,9 +281,52 @@ const boards = {
 			category: 'open',
 			desc: () => (
 				<p>
-					Arcade encoder board designed by{' '}
+					Arcade encoder board designed by {' '}
 					<a href="https://github.com/FeralAI">FeralAI</a> using a Raspberry Pi
 					Pico or pin-equivalent RP2040 board.
+				</p>
+			),
+		},
+		{
+			name: 'Rana Tadpole',
+			configName: 'RanaTadpole',
+			pinout: null,
+			website: 'https://github.com/rana-sylvatica/rana-tadpole',
+			image: require('@site/docs/assets/boards/RanaTadpole.jpg').default,
+			category: 'open',
+			desc: () => (
+				<p>
+					Pocket-sized digital controller from RanaLabs.
+				</p>
+			),
+		},
+		{
+			name: 'Reflex Encode v1.2',
+			configName: 'ReflexEncodeV1.2',
+			pinout: null,
+			website: 'https://github.com/misteraddons/ReflexFightingBoard',
+			image: require('@site/docs/assets/boards/ReflexEncode_v1.2.jpg').default,
+			category: 'open',
+			desc: () => (
+				<p>
+					Arcade encoder board designed and sold by{' '}
+					<a href="https://github.com/misteraddons">MiSTerAddons</a> using an
+					embedded RP2040 chip. Specifically <strong><u>V1.2</u></strong> and <strong><u>V1.3</u></strong> of the Reflex Encode Fighting Board.
+				</p>
+			),
+		},
+		{
+			name: 'Reflex Encode v2.0',
+			configName: 'ReflexEncodeV2.0',
+			pinout: null,
+			website: 'https://github.com/misteraddons/ReflexFightingBoard',
+			image: require('@site/docs/assets/boards/ReflexEncode_v2.0.jpg').default,
+			category: 'open',
+			desc: () => (
+				<p>
+					Arcade encoder board designed and sold by {' '}
+					<a href="https://github.com/misteraddons">MiSTerAddons</a> using an
+					embedded RP2040 chip and USB .
 				</p>
 			),
 		},
@@ -243,21 +347,6 @@ const boards = {
 			),
 		},
 		{
-			name: 'ReflexEncoder',
-			configName: 'ReflexEncoder',
-			pinout: null,
-			website: 'https://github.com/misteraddons/ReflexFightingBoard',
-			image: require('@site/docs/assets/boards/ReflexEncoder.jpg').default,
-			category: 'open',
-			desc: () => (
-				<p>
-					Arcade encoder board designed and sold by{' '}
-					<a href="https://github.com/misteraddons">MiSTerAddons</a> using an
-					embedded RP2040 chip.
-				</p>
-			),
-		},
-		{
 			name: 'RP2040 Advanced Breakout',
 			configName: 'RP2040AdvancedBreakoutBoard',
 			pinout: null,
@@ -268,11 +357,23 @@ const boards = {
 			category: 'official',
 			desc: () => (
 				<p>
-					Arcade encoder board designed by{' '}
+					Arcade encoder board designed by {' '}
 					<a href="https://github.com/TheTrainGoes">TheTrain</a> using an
 					embedded RP2040, and is the official board of the GP2040-CE project.
 				</p>
 			),
+		},
+		{
+			name: 'RP2040 Advanced Breakout (USB Passthrough)',
+			configName: 'RP2040AdvancedBreakoutBoardUSBPassthrough',
+			pinout: null,
+			website: 'https://github.com/OpenStickCommunity/Hardware/tree/main/RP2040%20Advanced%20Breakout%20Board%20-%20Passthrough',
+			image: require('@site/docs/assets/boards/RP2040AdvancedBreakoutBoardUSBPassthrough.jpg').default,
+			category: 'official',
+			desc: () => 
+				<p>
+					Official USB Passthrough Board of the Open Stick project.  Updated version of the RP2040 Advanced Breakout Board with USB passthrough included on the board.
+				</p>,
 		},
 		{
 			name: 'RP2040 Mini Breakout Board',
@@ -285,8 +386,10 @@ const boards = {
 			category: 'open',
 			desc: () => (
 				<p>
-					A reduced-footprint spin off of the RP2040 Advanced Breakout Board
-					designed by <a href="https://github.com/TheTrainGoes">TheTrain</a>.
+					A reduced-footprint spin off of the RP2040 Advanced Breakout Board designed by {' '}
+					<a href="https://github.com/TheTrainGoes">
+						TheTrain
+					</a>.
 				</p>
 			),
 		},
