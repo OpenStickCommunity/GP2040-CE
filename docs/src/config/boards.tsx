@@ -170,7 +170,8 @@ const boards = {
 			category: 'open',
 			desc: () => (
 				<p>
-					Mirrored version of the Flatbox Rev 5 by SkylaHila. Based on the Flatbox Rev 5 by <a href="https://github.com/jfedor2">jfedor2</a>.
+					Mirrored version of the Flatbox Rev 5 by SkylaHila. Based on the Flatbox Rev 5 by 
+					<a href="https://github.com/jfedor2">jfedor2</a>.
 				</p>
 			),
 		},
@@ -311,7 +312,7 @@ const boards = {
 				<p>
 					Arcade encoder board designed and sold by{' '}
 					<a href="https://github.com/misteraddons">MiSTerAddons</a> using an
-					embedded RP2040 chip. Specifically <strong><u>V1.2</u></strong> and <strong><u>V1.3</u></strong> of the Reflex Encode Fighting Board.
+					embedded RP2040 chip.
 				</p>
 			),
 		},
@@ -326,7 +327,7 @@ const boards = {
 				<p>
 					Arcade encoder board designed and sold by {' '}
 					<a href="https://github.com/misteraddons">MiSTerAddons</a> using an
-					embedded RP2040 chip and USB .
+					embedded RP2040 chip.
 				</p>
 			),
 		},
@@ -372,7 +373,8 @@ const boards = {
 			category: 'official',
 			desc: () => 
 				<p>
-					Official USB Passthrough Board of the Open Stick project.  Updated version of the RP2040 Advanced Breakout Board with USB passthrough included on the board.
+					Official USB Passthrough Board of the Open Stick project.  Updated version of 
+					the RP2040 Advanced Breakout Board with USB passthrough included on the board.
 				</p>,
 		},
 		{
