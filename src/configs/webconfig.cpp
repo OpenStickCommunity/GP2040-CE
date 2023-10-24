@@ -1006,7 +1006,7 @@ std::string setAddonOptions()
 	docToValue(dualDirectionalOptions.fourWayMode, doc, "dualDirFourWayMode");
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
-		TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
+	TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
 	docToPin(tiltOptions.tilt1Pin, doc, "tilt1Pin");
 	docToValue(tiltOptions.factorTilt1LeftX, doc, "factorTilt1LeftX");
 	docToValue(tiltOptions.factorTilt1LeftY, doc, "factorTilt1LeftY");
@@ -1025,7 +1025,22 @@ std::string setAddonOptions()
 	docToPin(tiltOptions.tiltRightAnalogDownPin, doc, "tiltRightAnalogDownPin");
 	docToPin(tiltOptions.tiltRightAnalogLeftPin, doc, "tiltRightAnalogLeftPin");
 	docToPin(tiltOptions.tiltRightAnalogRightPin, doc, "tiltRightAnalogRightPin");
-	docToValue(tiltOptions.tiltSOCDMode, doc, "tiltSOCDMode");
+	docToValue(tiltOptions.tiltLeftSOCDMode, doc, "tiltLeftSOCDMode");
+	docToValue(tiltOptions.tiltRightSOCDMode, doc, "tiltRightSOCDMode");
+	docToPin(tiltOptions.rotate1Pin, doc, "rotate1Pin");
+	docToPin(tiltOptions.rotate2Pin, doc, "rotate2Pin");
+	docToValue(tiltOptions.factorRotate1Left, doc, "factorRotate1Left");
+	docToValue(tiltOptions.factorRotate2Left, doc, "factorRotate2Left");
+	docToValue(tiltOptions.factorRotate3Left, doc, "factorRotate3Left");
+	docToValue(tiltOptions.factorRotate4Left, doc, "factorRotate4Left");
+	docToValue(tiltOptions.factorRotate5Left, doc, "factorRotate5Left");
+	docToValue(tiltOptions.factorRotate6Left, doc, "factorRotate6Left");
+	docToValue(tiltOptions.factorRotate1Right, doc, "factorRotate1Right");
+	docToValue(tiltOptions.factorRotate2Right, doc, "factorRotate2Right");
+	docToValue(tiltOptions.factorRotate3Right, doc, "factorRotate3Right");
+	docToValue(tiltOptions.factorRotate4Right, doc, "factorRotate4Right");
+	docToValue(tiltOptions.factorRotate5Right, doc, "factorRotate5Right");
+	docToValue(tiltOptions.factorRotate6Right, doc, "factorRotate6Right");
 	docToValue(tiltOptions.enabled, doc, "TiltInputEnabled");
 
     ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
@@ -1427,7 +1442,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "dualDirFourWayMode", dualDirectionalOptions.fourWayMode);
 	writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
-		const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
+	const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
 	writeDoc(doc, "tilt1Pin", cleanPin(tiltOptions.tilt1Pin));
 	writeDoc(doc, "factorTilt1LeftX", tiltOptions.factorTilt1LeftX);
 	writeDoc(doc, "factorTilt1LeftY", tiltOptions.factorTilt1LeftY);
@@ -1446,7 +1461,22 @@ std::string getAddonOptions()
 	writeDoc(doc, "tiltRightAnalogDownPin", cleanPin(tiltOptions.tiltRightAnalogDownPin));
 	writeDoc(doc, "tiltRightAnalogLeftPin", cleanPin(tiltOptions.tiltRightAnalogLeftPin));
 	writeDoc(doc, "tiltRightAnalogRightPin", cleanPin(tiltOptions.tiltRightAnalogRightPin));
-	writeDoc(doc, "tiltSOCDMode", tiltOptions.tiltSOCDMode);
+	writeDoc(doc, "tiltLeftSOCDMode", tiltOptions.tiltLeftSOCDMode);
+	writeDoc(doc, "tiltRightSOCDMode", tiltOptions.tiltRightSOCDMode);
+	writeDoc(doc, "rotate1Pin", cleanPin(tiltOptions.rotate1Pin));
+	writeDoc(doc, "rotate2Pin", cleanPin(tiltOptions.rotate2Pin));
+	writeDoc(doc, "factorRotate1Left", tiltOptions.factorRotate1Left);
+	writeDoc(doc, "factorRotate2Left", tiltOptions.factorRotate2Left);
+	writeDoc(doc, "factorRotate3Left", tiltOptions.factorRotate3Left);
+	writeDoc(doc, "factorRotate4Left", tiltOptions.factorRotate4Left);
+	writeDoc(doc, "factorRotate5Left", tiltOptions.factorRotate5Left);
+	writeDoc(doc, "factorRotate6Left", tiltOptions.factorRotate6Left);
+	writeDoc(doc, "factorRotate1Right", tiltOptions.factorRotate1Right);
+	writeDoc(doc, "factorRotate2Right", tiltOptions.factorRotate2Right);
+	writeDoc(doc, "factorRotate3Right", tiltOptions.factorRotate3Right);
+	writeDoc(doc, "factorRotate4Right", tiltOptions.factorRotate4Right);
+	writeDoc(doc, "factorRotate5Right", tiltOptions.factorRotate5Right);
+	writeDoc(doc, "factorRotate6Right", tiltOptions.factorRotate6Right);
 	writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
     const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;

@@ -81,8 +81,68 @@
 #define PIN_TILT_RIGHT_ANALOG_RIGHT -1
 #endif
 
-#ifndef TILT_SOCD_MODE
-#define TILT_SOCD_MODE SOCD_MODE_NEUTRAL
+#ifndef PIN_ROTATE_1
+#define PIN_ROTATE_1 -1
+#endif
+
+#ifndef PIN_ROTATE_2
+#define PIN_ROTATE_2 -1
+#endif
+
+#ifndef ROTATE1_FACTOR_LEFT
+#define ROTATE1_FACTOR_LEFT 15
+#endif
+
+#ifndef ROTATE2_FACTOR_LEFT
+#define ROTATE2_FACTOR_LEFT 345
+#endif
+
+#ifndef ROTATE3_FACTOR_LEFT
+#define ROTATE3_FACTOR_LEFT 0
+#endif
+
+#ifndef ROTATE4_FACTOR_LEFT
+#define ROTATE4_FACTOR_LEFT 0
+#endif
+
+#ifndef ROTATE5_FACTOR_LEFT
+#define ROTATE5_FACTOR_LEFT 0
+#endif
+
+#ifndef ROTATE6_FACTOR_LEFT
+#define ROTATE6_FACTOR_LEFT 0
+#endif
+
+#ifndef ROTATE1_FACTOR_RIGHT
+#define ROTATE1_FACTOR_RIGHT 15
+#endif
+
+#ifndef ROTATE2_FACTOR_RIGHT
+#define ROTATE2_FACTOR_RIGHT 345
+#endif
+
+#ifndef ROTATE3_FACTOR_RIGHT
+#define ROTATE3_FACTOR_RIGHT 0
+#endif
+
+#ifndef ROTATE4_FACTOR_RIGHT
+#define ROTATE4_FACTOR_RIGHT 0
+#endif
+
+#ifndef ROTATE5_FACTOR_RIGHT
+#define ROTATE5_FACTOR_RIGHT 0
+#endif
+
+#ifndef ROTATE6_FACTOR_RIGHT
+#define ROTATE6_FACTOR_RIGHT 0
+#endif
+
+#ifndef TILT_LEFT_SOCD_MODE
+#define TILT_LEFT_SOCD_MODE SOCD_MODE_NEUTRAL
+#endif
+
+#ifndef TILT_RIGHT_SOCD_MODE
+#define TILT_RIGHT_SOCD_MODE SOCD_MODE_NEUTRAL
 #endif
 
 // Tilt Module Name
@@ -97,16 +157,12 @@ public:
 	virtual std::string name() { return TiltName; }
 private:
 	void debounce();
-	void SOCDTiltClean(SOCDMode);
-	uint8_t SOCDCombine(SOCDMode, uint8_t);
-	uint8_t SOCDGamepadClean(uint8_t);
+	void SOCDTiltClean(SOCDMode, SOCDMode);
 	void OverrideGamepad(Gamepad*, uint8_t, uint8_t);
 	uint8_t dDebLeftState;          // Debounce State (stored)
 	uint8_t dDebRightState;          // Debounce State (stored)
 	uint8_t tiltLeftState;          // Tilt State
 	uint8_t tiltRightState;          // Tilt Right Analog State
-	DpadDirection lastGPUD; // Gamepad Last Up-Down
-	DpadDirection lastGPLR; // Gamepad Last Left-Right
 	DpadDirection leftLastTiltUD; // Tilt Last Up-Down
 	DpadDirection leftLastTiltLR; // Gamepad Last Left-Right
 	DpadDirection rightLastTiltUD; // Tilt Last Up-Down
@@ -130,7 +186,22 @@ private:
 	uint8_t pinTiltRightAnalogUp;
 	uint8_t pinTiltRightAnalogLeft;
 	uint8_t pinTiltRightAnalogRight;
-	SOCDMode tiltSOCDMode;
+	uint8_t pinRotate1;
+	uint8_t pinRotate2;
+	uint16_t rotate1FactorLeft;
+    uint16_t rotate2FactorLeft;
+	uint16_t rotate3FactorLeft;
+	uint16_t rotate4FactorLeft;
+	uint16_t rotate5FactorLeft;
+	uint16_t rotate6FactorLeft;
+    uint16_t rotate1FactorRight;
+	uint16_t rotate2FactorRight;
+	uint16_t rotate3FactorRight;
+	uint16_t rotate4FactorRight;
+	uint16_t rotate5FactorRight;
+	uint16_t rotate6FactorRight;
+	SOCDMode tiltLeftSOCDMode;
+	SOCDMode tiltRightSOCDMode;
 };
 
 #endif  // _Tilt_H
