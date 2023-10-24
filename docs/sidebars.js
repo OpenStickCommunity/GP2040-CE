@@ -59,8 +59,9 @@ const sidebars = {
 		},
 	],
 	devSidebar: [
-		'development/development',
 		'development/contribution-guide',
+		'development/firmware-development',
+		'development/documentation',
 		'development/templates',
 	],
 };

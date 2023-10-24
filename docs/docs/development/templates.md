@@ -60,9 +60,34 @@ Hardware Availability: List where one can purchase the boards that share this co
 
 ## Documentation Templates
 
+### Page Template
+
+```md
+---
+title: TITLE
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
+# Document Title
+
+CONTENT
+
+```
+
 ### Add-On Template
 
 ```md
+---
+title: ADD-ON NAME
+# tags:
+# - 
+pagination_next: null
+pagination_prev: null
+---
+
 ## Add-On Name
 
 Purpose: The intended function and purpose of this add-on for an end user.

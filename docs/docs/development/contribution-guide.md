@@ -52,14 +52,3 @@ Never made an open source contribution before? Wondering how contributions work 
 ## Documentation
 
 Documentation is one of the easiest ways to get started contributing to GP2040-CE. Finding places where the documentation is wrong or incomplete and fixing those is easy! We also very badly need someone to edit our documentation, so if you have editing skills but aren’t sure where or how to jump in please [reach out for help](getting-help-support "GP2040-CE | Getting Help")!
-
-### Previewing Documentation
-
-1. Open a terminal in the root of the GP2040-CE project
-2. Change the directory to `docs`
-3. Run the following commands
-  ```
-  npm install
-  npm start
-  ```
-4. In a web browser, go to `http://localhost:3000`
