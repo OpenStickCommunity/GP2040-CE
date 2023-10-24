@@ -843,7 +843,13 @@ std::string setPinMappings()
 	char pinName[6];
 	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
 		snprintf(pinName, 6, "pin%0*d", 2, pin);
-		readDoc(*gpioMappings[pin], doc, pinName);
+		// setting a pin shouldn't change a new existing addon/reserved pin
+		if (*gpioMappings[pin] != GpioAction::RESERVED &&
+				*gpioMappings[pin] != GpioAction::ASSIGNED_TO_ADDON &&
+				(int32_t)doc[pinName] != GpioAction::RESERVED &&
+				(int32_t)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
+			readDoc(*gpioMappings[pin], doc, pinName);
+		}
 	}
 
 	Storage::getInstance().save();
