@@ -21,9 +21,9 @@ Most of this will be parroting the above linked PDF from the Raspberry Pi Founda
 For GP2040-CE development on the Windows platform using the Pico SDK Installer, please skip ahead to the 'Windows Setup (Pico SDK Installer)' section on this page.
 
 <Tabs groupId="operating-systems" defaultValue="Windows (Pico SDK)">
-    <TabItem value="Windows (Pico SDK)" label="Windows (Pico SDK)" default>
+<TabItem value="Windows (Pico SDK)" label="Windows (Pico SDK)" default>
 
-1. Download and install CMake from the [CMake Website](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
+1. Download and install [CMake](https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-windows-x86_64.msi).
 2. Download and install [pico-setup-windows-x64-standalone](https://github.com/raspberrypi/pico-setup-windows/releases/).
 3. Download and install VSCode.
 4. Download and install [Windows Terminal](https://github.com/microsoft/terminal/releases/tag/v1.17.11461.0).
@@ -36,7 +36,7 @@ For GP2040-CE development on the Windows platform using the Pico SDK Installer, 
     git submodule update --init
     ```
 
-   After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search).
+After installing the Raspberry Pi Pico SDK, you should now have a shortcut to "Pico-Visual Studio Code" (search for it using Windows Search).
 
 7. Open "Pico-Visual Studio Code" via Windows search. This is a shortcut with pre-configured environment variables (this will be explained later).
 8. Navigate to the Extensions window by pressing `Ctrl+Shift+X`.
@@ -46,24 +46,17 @@ For GP2040-CE development on the Windows platform using the Pico SDK Installer, 
 </TabItem>
 <TabItem value="Windows (Manual)" label="Windows (Manual)" default>
 
-1. Install the latest ARM GNU Toolchain
-    - [Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
-2. Install latest version of CMake
-    - [CMake](https://cmake.org/download/)
-3. Install Visual Studio Build tools, or the full Visual Studio IDE
+1. Install the latest[Arm GNU Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+2. Install latest version of [CMake](https://cmake.org/download/)
+3. Install [Visual Studio Build tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022), or the full [Visual Studio Community Edition IDE](https://visualstudio.microsoft.com/downloads/#visual-studio-community-2022)
     - Make sure to select the Desktop development with C++ workload
     - Select the latest Windows 10 or Windows 11 SDK from the Individual Components
-    - [Visual Studio Build tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022)
-    - [Visual Studio Community Edition](https://visualstudio.microsoft.com/downloads/#visual-studio-community-2022)
-4. Install Python 3.10
+4. Install [Python 3.10](https://www.python.org/downloads/windows/)
     - At the end of the installation, there is an option to disable max file path length. You want to select this.
-    - [Python](https://www.python.org/downloads/windows/)
-5. Install Visual Studio Code - Optional
-     - [Visual Studio Code](https://code.visualstudio.com/)
+5. Install [Visual Studio Code](https://code.visualstudio.com/) - Optional
 6. Install git
-     - Set default editor to anything other than VIM, such as Visual Studio Code
-7. Install NodeJS and NPM
-    - [Download and install NodeJS](https://nodejs.org/en/download)
+    - Set default editor to anything other than VIM, such as Visual Studio Code
+7. Install [NodeJS](https://nodejs.org/en/download) and NPM
 8. Clone the Pico SDK to your local computer
 
     ```console
@@ -99,7 +92,7 @@ This setup assumes an understanding of Linux terminal usage.
     cd ..
     ```
 
-1. Install the toolchain
+2. Install the toolchain
 
     ```bash
     sudo apt update
@@ -108,14 +101,14 @@ This setup assumes an understanding of Linux terminal usage.
 
     - May additionally need to install `libstdc++-arm-none-eabi-newlib`
 
-1. Install NodeJS and NPM
+3. Install NodeJS and NPM
 
     ```bash
     curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
     sudo apt-get install -y nodejs
     ```
 
-1. Get GP2040-CE
+4. Get GP2040-CE
 
     ```bash
     git clone https://github.com/OpenStickCommunity/GP2040-CE.git
@@ -133,26 +126,26 @@ This setup script requires approximately 2.5GB of disk space on your SD card.
     wget https://raw.githubusercontent.com/raspberrypi/pico-setup/master/pico_setup.sh
     ```
 
-1. Make script executable and Run it.
+2. Make script executable and Run it.
 
     ```bash
     chmod +x pico_setup.sh
     ```
 
-1. Install NodeJS and NPM
+3. Install NodeJS and NPM
 
     ```bash
     curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
     sudo apt-get install -y nodejs
     ```
 
-1. Reboot your Pi
+4. Reboot your Pi
 
     ```bash
     sudo reboot
     ```
 
-1. Get GP2040-CE
+5. Get GP2040-CE
 
     ```bash
     git clone https://github.com/OpenStickCommunity/GP2040-CE.git

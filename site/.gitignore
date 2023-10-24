@@ -19,8 +19,6 @@ coverage
 .docusaurus
 .cache-loader
 types
-test-website
-test-website-in-workspace
 
 packages/create-docusaurus/lib/
 packages/lqip-loader/lib/
@@ -29,17 +27,6 @@ packages/docusaurus-*/lib/*
 packages/eslint-plugin/lib/
 packages/stylelint-copyright/lib/
 
-website/netlifyDeployPreview/*
-website/changelog
-!website/netlifyDeployPreview/index.html
-!website/netlifyDeployPreview/_redirects
-
-website/_dogfooding/_swizzle_theme_tests
-
 CrowdinTranslations_*.zip
-
-website/i18n/**/*
-#!website/i18n/fr
-#!website/i18n/fr/**/*
 
 .netlify
