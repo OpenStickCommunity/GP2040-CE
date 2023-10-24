@@ -180,18 +180,31 @@ void Storage::setFunctionalPinMappings(const uint32_t profileNum)
 	if (profileNum < 2 || profileNum > 4) return;
 
 	AlternativePinMappings alts = this->config.profileOptions.alternativePinMappings[profileNum-2];
-	if (isValidPin(alts.pinButtonB1))	functionalPinMappings[alts.pinButtonB1] = GpioAction::BUTTON_PRESS_B1;
-	if (isValidPin(alts.pinButtonB2))	functionalPinMappings[alts.pinButtonB2] = GpioAction::BUTTON_PRESS_B2;
-	if (isValidPin(alts.pinButtonB3))	functionalPinMappings[alts.pinButtonB3] = GpioAction::BUTTON_PRESS_B3;
-	if (isValidPin(alts.pinButtonB4))	functionalPinMappings[alts.pinButtonB4] = GpioAction::BUTTON_PRESS_B4;
-	if (isValidPin(alts.pinButtonL1))	functionalPinMappings[alts.pinButtonL1] = GpioAction::BUTTON_PRESS_L1;
-	if (isValidPin(alts.pinButtonR1))	functionalPinMappings[alts.pinButtonR1] = GpioAction::BUTTON_PRESS_R1;
-	if (isValidPin(alts.pinButtonL2))	functionalPinMappings[alts.pinButtonL2] = GpioAction::BUTTON_PRESS_L2;
-	if (isValidPin(alts.pinButtonR2))	functionalPinMappings[alts.pinButtonR2] = GpioAction::BUTTON_PRESS_R2;
-	if (isValidPin(alts.pinDpadUp)) 	functionalPinMappings[alts.pinDpadUp] = GpioAction::BUTTON_PRESS_UP;
-	if (isValidPin(alts.pinDpadDown))	functionalPinMappings[alts.pinDpadDown] = GpioAction::BUTTON_PRESS_DOWN;
-	if (isValidPin(alts.pinDpadLeft))	functionalPinMappings[alts.pinDpadLeft] = GpioAction::BUTTON_PRESS_LEFT;
-	if (isValidPin(alts.pinDpadRight))	functionalPinMappings[alts.pinDpadRight] = GpioAction::BUTTON_PRESS_RIGHT;
+
+	const auto reassignProfilePin = [&](uint32_t targetPin, GpioAction newAction) -> void {
+		// reassign the functional pin if:
+		// 1: it's a real pin (this only matters until profiles are refactored)
+		// 2: the new action isn't RESERVED or ASSIGNED_TO_ADDON (profiles can't affect special addons)
+		// 3: the old action isn't RESERVED or ASSIGNED_TO_ADDON (profiles can't affect special addons)
+		if (isValidPin(targetPin) && newAction != GpioAction::RESERVED &&
+				newAction != GpioAction::ASSIGNED_TO_ADDON &&
+				functionalPinMappings[targetPin] != GpioAction::RESERVED &&
+				functionalPinMappings[targetPin] != GpioAction::ASSIGNED_TO_ADDON) {
+			functionalPinMappings[targetPin] = newAction;
+		}
+	};
+	reassignProfilePin(alts.pinButtonB1,  GpioAction::BUTTON_PRESS_B1);
+	reassignProfilePin(alts.pinButtonB2,  GpioAction::BUTTON_PRESS_B2);
+	reassignProfilePin(alts.pinButtonB3,  GpioAction::BUTTON_PRESS_B3);
+	reassignProfilePin(alts.pinButtonB4,  GpioAction::BUTTON_PRESS_B4);
+	reassignProfilePin(alts.pinButtonL1,  GpioAction::BUTTON_PRESS_L1);
+	reassignProfilePin(alts.pinButtonR1,  GpioAction::BUTTON_PRESS_R1);
+	reassignProfilePin(alts.pinButtonL2,  GpioAction::BUTTON_PRESS_L2);
+	reassignProfilePin(alts.pinButtonR2,  GpioAction::BUTTON_PRESS_R2);
+	reassignProfilePin(alts.pinDpadUp,    GpioAction::BUTTON_PRESS_UP);
+	reassignProfilePin(alts.pinDpadDown,  GpioAction::BUTTON_PRESS_DOWN);
+	reassignProfilePin(alts.pinDpadLeft,  GpioAction::BUTTON_PRESS_LEFT);
+	reassignProfilePin(alts.pinDpadRight, GpioAction::BUTTON_PRESS_RIGHT);
 }
 
 void Storage::SetConfigMode(bool mode) { // hack for config mode
