@@ -170,11 +170,8 @@ void GP2040::run() {
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
-		if (sof_ready) {
-			bool sent = send_report(gamepad->getReport(), gamepad->getReportSize());
-			if (sent) {
-				sof_ready = false;
-			}
+		if (!report_sent && getMicro() >= last_sof_time + 900) {
+			report_sent = send_report(gamepad->getReport(), gamepad->getReportSize());
 		}
 		
 		// GET USB REPORT (If Endpoint Available)

@@ -15,7 +15,8 @@ typedef enum
 	USB_MODE_NET,
 } UsbMode;
 
-extern bool sof_ready;
+extern uint64_t last_sof_time;
+extern bool report_sent;
 
 InputMode get_input_mode(void);
 bool get_usb_mounted(void);

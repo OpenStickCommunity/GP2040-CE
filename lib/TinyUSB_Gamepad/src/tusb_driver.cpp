@@ -22,7 +22,8 @@ UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
 static bool usb_mounted = false;
 static bool usb_suspended = false;
-bool sof_ready = false;
+uint64_t last_sof_time = 0;
+bool report_sent = false;
 
 InputMode get_input_mode(void)
 {
@@ -214,5 +215,6 @@ void sof_callback(uint8_t rhport, uint32_t frame_count)
 {
 	(void)rhport;
 	(void)frame_count;
-	sof_ready = true;
+	last_sof_time = to_us_since_boot(get_absolute_time());
+	report_sent = false;
 }
