@@ -115,4 +115,4 @@ const usbd_class_driver_t xinput_driver =
 		.open = xinput_open,
 		.control_xfer_cb = xinput_device_control_request,
 		.xfer_cb = xinput_xfer_callback,
-		.sof = NULL};
+		.sof = sof_callback};

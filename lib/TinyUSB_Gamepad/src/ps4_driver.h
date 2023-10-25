@@ -25,6 +25,7 @@ typedef enum
 
 // USB endpoint state vars
 extern const usbd_class_driver_t ps4_driver;
+extern void sof_callback(uint8_t rhport, uint32_t frame_count);
 
 ssize_t get_ps4_report(uint8_t report_id, uint8_t * buf, uint16_t reqlen);
 void set_ps4_report(uint8_t report_id, uint8_t const * buf, uint16_t reqlen);

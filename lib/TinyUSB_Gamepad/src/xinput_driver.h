@@ -40,4 +40,6 @@ extern const usbd_class_driver_t xinput_driver;
 void receive_xinput_report(void);
 bool send_xinput_report(void *report, uint8_t report_size);
 
+extern void sof_callback(uint8_t rhport, uint32_t frame_count);
+
 #pragma once

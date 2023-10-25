@@ -22,6 +22,7 @@ UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
 static bool usb_mounted = false;
 static bool usb_suspended = false;
+bool sof_ready = false;
 
 InputMode get_input_mode(void)
 {
@@ -45,6 +46,7 @@ void initialize_driver(InputMode mode)
 		usb_mode = USB_MODE_NET;
 
 	tud_init(TUD_OPT_RHPORT);
+	usbd_sof_enable(BOARD_TUD_RHPORT, true);
 }
 
 void receive_report(uint8_t *buffer)
@@ -204,4 +206,13 @@ void tud_suspend_cb(bool remote_wakeup_en)
 void tud_resume_cb(void)
 {
 	usb_suspended = false;
+}
+
+// Start Of Frame SOF packet callback
+// Used to sycnrhonize send_report() call with host input polling
+void sof_callback(uint8_t rhport, uint32_t frame_count)
+{
+	(void)rhport;
+	(void)frame_count;
+	sof_ready = true;
 }

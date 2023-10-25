@@ -209,4 +209,4 @@ const usbd_class_driver_t ps4_driver =
 		.open = hidd_open,
 		.control_xfer_cb = hidd_control_xfer_cb,
 		.xfer_cb = hidd_xfer_cb,
-		.sof = NULL};
+		.sof = sof_callback};
