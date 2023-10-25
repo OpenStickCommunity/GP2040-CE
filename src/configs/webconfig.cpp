@@ -959,11 +959,6 @@ std::string setAddonOptions()
 	DynamicJsonDocument doc = get_post_data();
 
 	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
-	// PinMappings uses -1 to denote unassigned pins
-	const auto convertPin = [&] (const int32_t pin, const GpioAction action) -> void
-	{
-		if (isValidPin(pin)) *gpioMappings[pin] = action;
-	};
 
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
 	docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
@@ -989,10 +984,6 @@ std::string setAddonOptions()
 	docToValue(buzzerOptions.enabled, doc, "BuzzerSpeakerAddonEnabled");
 
 	DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
-	convertPin(doc["dualDirUpPin"], GpioAction::BUTTON_PRESS_DDI_UP);
-	convertPin(doc["dualDirDownPin"], GpioAction::BUTTON_PRESS_DDI_DOWN);
-	convertPin(doc["dualDirLeftPin"], GpioAction::BUTTON_PRESS_DDI_LEFT);
-	convertPin(doc["dualDirRightPin"], GpioAction::BUTTON_PRESS_DDI_RIGHT);
 	docToValue(dualDirectionalOptions.dpadMode, doc, "dualDirDpadMode");
 	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
 	docToValue(dualDirectionalOptions.fourWayMode, doc, "dualDirFourWayMode");
@@ -1376,17 +1367,6 @@ std::string getWiiControls()
 std::string getAddonOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
-
-	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
-	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-		switch (*gpioMappings[pin]) {
-			case GpioAction::BUTTON_PRESS_DDI_UP:		writeDoc(doc, "dualDirUpPin", pin); break;
-			case GpioAction::BUTTON_PRESS_DDI_DOWN:		writeDoc(doc, "dualDirDownPin", pin); break;
-			case GpioAction::BUTTON_PRESS_DDI_LEFT:		writeDoc(doc, "dualDirLeftPin", pin); break;
-			case GpioAction::BUTTON_PRESS_DDI_RIGHT:	writeDoc(doc, "dualDirRightPin", pin); break;
-			default: break;
-		}
-	}
 
     const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
 	writeDoc(doc, "analogAdc1PinX", cleanPin(analogOptions.analogAdc1PinX));
