@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+
 import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import WebApi, {
@@ -9,8 +10,8 @@ import WebApi, {
 } from '../Services/WebApi';
 import boards from '../Data/Boards.json';
 import { BUTTONS } from '../Data/Buttons';
+
 import './PinMappings.scss';
-import { Trans, useTranslation } from 'react-i18next';
 
 const selectedBoard = import.meta.env.VITE_GP2040_BOARD;
 
