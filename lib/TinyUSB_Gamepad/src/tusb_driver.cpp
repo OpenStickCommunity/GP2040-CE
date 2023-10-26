@@ -215,6 +215,8 @@ void sof_callback(uint8_t rhport, uint32_t frame_count)
 {
 	(void)rhport;
 	(void)frame_count;
-	last_sof_time = to_us_since_boot(get_absolute_time());
-	report_sent = false;
+	if (gamepad_report == NULL) {
+		return;
+	}
+	send_report(gamepad_report, gamepad_report_size);
 }

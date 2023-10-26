@@ -41,6 +41,9 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
+void* gamepad_report = NULL;
+uint16_t gamepad_report_size = 0;
+
 GP2040::GP2040() {
 	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
 	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
@@ -170,9 +173,9 @@ void GP2040::run() {
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
-		if (!report_sent && getMicro() >= last_sof_time + 900) {
-			report_sent = send_report(gamepad->getReport(), gamepad->getReportSize());
-		}
+		gamepad_report = gamepad->getReport();
+		gamepad_report_size = gamepad->getReportSize();
+
 		
 		// GET USB REPORT (If Endpoint Available)
 		receive_report(featureData);
