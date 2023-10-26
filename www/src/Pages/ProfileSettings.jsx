@@ -3,7 +3,6 @@ import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import reduce from 'lodash/reduce';
 import invert from 'lodash/invert';
-import transform from 'lodash/transform';
 
 import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
@@ -59,7 +58,6 @@ export default function ProfileOptionsPage() {
 			/*
 			Converts pinMapping format
 			{pin01: 2} -> {'down': 1}
-
 			*/
 			const pinActions = reduce(
 				pinMappings,
