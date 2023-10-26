@@ -633,7 +633,6 @@ const WebApi = {
 	setLedOptions,
 	getCustomTheme,
 	setCustomTheme,
-	getPinMappings,
 	setPinMappings,
 	getProfileOptions,
 	setProfileOptions,
