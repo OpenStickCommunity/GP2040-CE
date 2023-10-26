@@ -339,12 +339,11 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getPinMappings(setLoading) {
-	setLoading(true);
-
+async function getPinMappings() {
 	try {
 		const response = await axios.get(`${baseUrl}/api/getPinMappings`);
 		let mappings = { ...baseButtonMappings };
+
 		for (let prop of Object.keys(response.data))
 			mappings[prop].pin = parseInt(response.data[prop]);
 

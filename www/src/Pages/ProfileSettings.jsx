@@ -46,7 +46,7 @@ export default function ProfileOptionsPage() {
 
 	useEffect(() => {
 		async function fetchData() {
-			setButtonMappings(await WebApi.getPinMappings(setLoading));
+			setButtonMappings(await WebApi.getPinMappings());
 			setProfileOptions(await WebApi.getProfileOptions(setLoading));
 			setButtonLabels({});
 		}
@@ -258,9 +258,6 @@ export default function ProfileOptionsPage() {
 						</tr>
 					</thead>
 					<tbody>
-						{console.log(
-							Object.keys(profileOptions['alternativePinMappings'][0]),
-						)}
 						{Object.keys(profileOptions['alternativePinMappings'][0]).map(
 							(key) => (
 								<tr key={key}>
