@@ -105,17 +105,19 @@ static void __attribute__((noinline)) docToPinLegacy(uint8_t& pin, const Dynamic
 // Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPin(int32_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
+	int32_t oldPin = pin;
 	if (doc.containsKey(key))
 	{
 		pin = doc[key];
+		GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
 		if (isValidPin(pin))
 		{
-			GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
 			*gpioMappings[pin] = GpioAction::ASSIGNED_TO_ADDON;
 		}
 		else
 		{
 			pin = -1;
+			*gpioMappings[oldPin] = GpioAction::NONE;
 		}
 	}
 }
