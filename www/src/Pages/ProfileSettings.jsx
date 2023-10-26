@@ -21,15 +21,19 @@ const errorType = {
 };
 
 export default function ProfileOptionsPage() {
-	const { buttonLabels, setButtonLabels, usedPins, updateUsedPins } =
-		useContext(AppContext);
+	const {
+		setLoading,
+		buttonLabels,
+		setButtonLabels,
+		usedPins,
+		updateUsedPins,
+	} = useContext(AppContext);
 	const [validated, setValidated] = useState(false);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [buttonMappings, setButtonMappings] = useState(baseButtonMappings);
 	const [profileOptions, setProfileOptions] = useState(baseProfileOptions);
 	const [selectedBoard] = useState(import.meta.env.VITE_GP2040_BOARD);
 	const { buttonLabelType } = buttonLabels;
-	const { setLoading } = useContext(AppContext);
 
 	const { t } = useTranslation('');
 
