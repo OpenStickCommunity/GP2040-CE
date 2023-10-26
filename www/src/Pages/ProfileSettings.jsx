@@ -12,6 +12,8 @@ import { BUTTONS } from '../Data/Buttons';
 import './PinMappings.scss';
 import { Trans, useTranslation } from 'react-i18next';
 
+const selectedBoard = import.meta.env.VITE_GP2040_BOARD;
+
 const requiredButtons = ['S2'];
 const errorType = {
 	required: 'errors.required',
@@ -32,7 +34,6 @@ export default function ProfileOptionsPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 	const [buttonMappings, setButtonMappings] = useState(baseButtonMappings);
 	const [profileOptions, setProfileOptions] = useState(baseProfileOptions);
-	const [selectedBoard] = useState(import.meta.env.VITE_GP2040_BOARD);
 	const { buttonLabelType } = buttonLabels;
 
 	const { t } = useTranslation('');
