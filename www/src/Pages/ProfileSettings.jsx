@@ -1,17 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import reduce from 'lodash/reduce';
+import invert from 'lodash/invert';
+import transform from 'lodash/transform';
 
 import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import WebApi, {
 	baseProfileOptions,
 	baseButtonMappings,
+	baseUrl,
 } from '../Services/WebApi';
 import boards from '../Data/Boards.json';
 import { BUTTONS } from '../Data/Buttons';
 
 import './PinMappings.scss';
+import axios from 'axios';
+import { BUTTON_ACTIONS } from '../Store/usePinStore';
 
 const selectedBoard = import.meta.env.VITE_GP2040_BOARD;
 
@@ -46,7 +52,40 @@ export default function ProfileOptionsPage() {
 
 	useEffect(() => {
 		async function fetchData() {
-			setButtonMappings(await WebApi.getPinMappings());
+			const pinMappings = await axios
+				.get(`${baseUrl}/api/getPinMappings`)
+				.then(({ data }) => data);
+
+			/*
+			Converts pinMapping format
+			{pin01: 2} -> {'down': 1}
+
+			*/
+			const pinActions = reduce(
+				pinMappings,
+				(acc, value, key) => ({
+					...acc,
+					[invert(BUTTON_ACTIONS)
+						[value].split('BUTTON_PRESS_')
+						.pop()
+						.toLowerCase()]: parseInt(key.split('pin').pop()),
+				}),
+				{},
+			);
+
+			/*
+			Map buttonMappings with pinActions
+			Down: { pin: -1, ...} -> Down: { pin: 1, ...}
+			*/
+			const mergedButtonActions = Object.entries(buttonMappings).reduce(
+				(acc, [key, value]) => ({
+					...acc,
+					[key]: { ...value, pin: pinActions[key.toLowerCase()] || -1 },
+				}),
+				{},
+			);
+
+			setButtonMappings(mergedButtonActions);
 			setProfileOptions(await WebApi.getProfileOptions(setLoading));
 			setButtonLabels({});
 		}

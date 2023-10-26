@@ -339,21 +339,6 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getPinMappings() {
-	try {
-		const response = await axios.get(`${baseUrl}/api/getPinMappings`);
-		let mappings = { ...baseButtonMappings };
-
-		for (let prop of Object.keys(response.data))
-			mappings[prop].pin = parseInt(response.data[prop]);
-
-		return mappings;
-	} catch (error) {
-		console.error(error);
-		return false;
-	}
-}
-
 async function setPinMappings(mappings) {
 	let data = {};
 	Object.keys(mappings).map(
