@@ -1094,9 +1094,13 @@ std::string setAddonOptions()
 
 	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
+	int32_t oldKbPinDplus = keyboardHostOptions.pinDplus;
 	docToPin(keyboardHostOptions.pinDplus, doc, "keyboardHostPinDplus");
 	if (isValidPin(keyboardHostOptions.pinDplus))
 		*gpioMappings[keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+	else if (isValidPin(oldKbPinDplus))
+		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
+		*gpioMappings[oldKbPinDplus+1] = GpioAction::NONE;
 	docToPin(keyboardHostOptions.pin5V, doc, "keyboardHostPin5V");
 	docToValue(keyboardHostOptions.mapping.keyDpadUp, doc, "keyboardHostMap", "Up");
 	docToValue(keyboardHostOptions.mapping.keyDpadDown, doc, "keyboardHostMap", "Down");
@@ -1119,9 +1123,13 @@ std::string setAddonOptions()
 
 	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 	docToValue(psPassthroughOptions.enabled, doc, "PSPassthroughAddonEnabled");
+	int32_t oldPsPinDplus = psPassthroughOptions.pinDplus;
 	docToPin(psPassthroughOptions.pinDplus, doc, "psPassthroughPinDplus");
 	if (isValidPin(psPassthroughOptions.pinDplus))
 		*gpioMappings[psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+	else if (isValidPin(oldPsPinDplus))
+		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
+		*gpioMappings[oldPsPinDplus+1] = GpioAction::NONE;
 	docToPin(psPassthroughOptions.pin5V, doc, "psPassthroughPin5V");
 
 	Storage::getInstance().save();
