@@ -71,7 +71,5 @@ void SliderSOCDInput::process()
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     if ( gamepad->getOptions().socdMode != socdState) {
         gamepad->setSOCDMode(socdState);
-	// I don't think we should save here, personally... ~bss
-        // gamepad->save();
     }
 }
