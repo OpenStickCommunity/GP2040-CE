@@ -7,6 +7,7 @@
 #include "gamepad.h"
 #include "enums.pb.h"
 #include "storagemanager.h"
+#include "types.h"
 
 #include "FlashPROM.h"
 #include "CRC32.h"
@@ -127,7 +128,7 @@ void Gamepad::setup()
 	mapButtonA2  = new GamepadButtonMapping(GAMEPAD_MASK_A2);
 	mapButtonFn  = new GamepadButtonMapping(AUX_MASK_FUNCTION);
 
-	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++)
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
 	{
 		if (pinMappings[pin] > 0)
 		{
@@ -191,7 +192,7 @@ void Gamepad::teardown_and_reinit(const uint32_t profileNum)
 	delete mapButtonFn;
 
 	// deinitialize the GPIO pins so we don't have orphans
-	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++)
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
 	{
 		if (pinMappings[pin] > 0)
 		{
@@ -278,7 +279,7 @@ void Gamepad::process()
 void Gamepad::read()
 {
 	// Need to invert since we're using pullups
-	uint32_t values = ~gpio_get_all();
+	Mask_t values = ~gpio_get_all();
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
 

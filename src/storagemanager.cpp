@@ -13,6 +13,7 @@
 #include "hardware/watchdog.h"
 #include "Animation.hpp"
 #include "CRC32.h"
+#include "types.h"
 
 #include "addons/analog.h"
 #include "addons/board_led.h"
@@ -174,14 +175,14 @@ void Storage::setProfile(const uint32_t profileNum)
 
 void Storage::setFunctionalPinMappings(const uint32_t profileNum)
 {
-	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		functionalPinMappings[pin] = *gpioMappingsArray[pin];
 	}
 	if (profileNum < 2 || profileNum > 4) return;
 
 	AlternativePinMappings alts = this->config.profileOptions.alternativePinMappings[profileNum-2];
 
-	const auto reassignProfilePin = [&](uint32_t targetPin, GpioAction newAction) -> void {
+	const auto reassignProfilePin = [&](Pin_t targetPin, GpioAction newAction) -> void {
 		// reassign the functional pin if:
 		// 1: it's a real pin (this only matters until profiles are refactored)
 		// 2: the new action isn't RESERVED or ASSIGNED_TO_ADDON (profiles can't affect special addons)

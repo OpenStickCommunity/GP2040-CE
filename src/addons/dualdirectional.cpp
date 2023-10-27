@@ -3,6 +3,7 @@
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
+#include "types.h"
 
 bool DualDirectionalInput::available() {
     return Storage::getInstance().getAddonOptions().dualDirectionalOptions.enabled;
@@ -19,7 +20,7 @@ void DualDirectionalInput::setup() {
     mapDpadRight = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
 
     GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
-    for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++)
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         switch (pinMappings[pin]) {
             case GpioAction::BUTTON_PRESS_DDI_UP:    mapDpadUp->pinMask |= 1 << pin; break;
@@ -65,7 +66,7 @@ void DualDirectionalInput::preprocess()
 {
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    uint32_t values = ~gpio_get_all();
+    Mask_t values = ~gpio_get_all();
 
     dualState = 0
             | ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)

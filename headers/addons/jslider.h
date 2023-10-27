@@ -4,6 +4,7 @@
 #include "gpaddon.h"
 
 #include "GamepadEnums.h"
+#include "types.h"
 
 #ifndef JSLIDER_ENABLED
 #define JSLIDER_ENABLED 0
@@ -46,9 +47,9 @@ private:
     DpadMode dDebState;          // Debounce JSlider State
     uint32_t uDebTime;          // Debounce JSlider Time
 
-    uint32_t dpModeMask = 0;
-    uint32_t lsModeMask = 0;
-    uint32_t rsModeMask = 0;
+    Mask_t dpModeMask = 0;
+    Mask_t lsModeMask = 0;
+    Mask_t rsModeMask = 0;
 };
 
 #endif  // _JSlider_H_

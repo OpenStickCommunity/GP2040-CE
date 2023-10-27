@@ -7,6 +7,7 @@
 #include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
+#include "types.h"
 
 #include <cstring>
 #include <string>
@@ -103,9 +104,9 @@ static void __attribute__((noinline)) docToPinLegacy(uint8_t& pin, const Dynamic
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) docToPin(int32_t& pin, const DynamicJsonDocument& doc, const char* key)
+static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
-	int32_t oldPin = pin;
+	Pin_t oldPin = pin;
 	if (doc.containsKey(key))
 	{
 		pin = doc[key];
@@ -843,13 +844,13 @@ std::string setPinMappings()
 	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
 
 	char pinName[6];
-	for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		snprintf(pinName, 6, "pin%0*d", 2, pin);
 		// setting a pin shouldn't change a new existing addon/reserved pin
 		if (*gpioMappings[pin] != GpioAction::RESERVED &&
 				*gpioMappings[pin] != GpioAction::ASSIGNED_TO_ADDON &&
-				(int32_t)doc[pinName] != GpioAction::RESERVED &&
-				(int32_t)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
+				(Pin_t)doc[pinName] != GpioAction::RESERVED &&
+				(Pin_t)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
 			readDoc(*gpioMappings[pin], doc, pinName);
 		}
 	}
@@ -1094,7 +1095,7 @@ std::string setAddonOptions()
 
 	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
-	int32_t oldKbPinDplus = keyboardHostOptions.pinDplus;
+	Pin_t oldKbPinDplus = keyboardHostOptions.pinDplus;
 	docToPin(keyboardHostOptions.pinDplus, doc, "keyboardHostPinDplus");
 	if (isValidPin(keyboardHostOptions.pinDplus))
 		*gpioMappings[keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
@@ -1123,7 +1124,7 @@ std::string setAddonOptions()
 
 	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 	docToValue(psPassthroughOptions.enabled, doc, "PSPassthroughAddonEnabled");
-	int32_t oldPsPinDplus = psPassthroughOptions.pinDplus;
+	Pin_t oldPsPinDplus = psPassthroughOptions.pinDplus;
 	docToPin(psPassthroughOptions.pinDplus, doc, "psPassthroughPinDplus");
 	if (isValidPin(psPassthroughOptions.pinDplus))
 		*gpioMappings[psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;

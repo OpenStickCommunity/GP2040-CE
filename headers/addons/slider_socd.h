@@ -2,6 +2,7 @@
 #define _SliderSOCD_H
 
 #include "gpaddon.h"
+#include "types.h"
 
 #include "GamepadEnums.h"
 
@@ -46,11 +47,11 @@ private:
     SOCDMode dDebState;          // Debounce SliderSOCD State
     uint32_t uDebTime;          // Debounce SliderSOCD Time
 
-    uint32_t upPrioModeMask = 0;
-    uint32_t neutralModeMask = 0;
-    uint32_t secondInputModeMask = 0;
-    uint32_t firstInputModeMask = 0;
-    uint32_t bypassModeMask = 0;
+    Mask_t upPrioModeMask = 0;
+    Mask_t neutralModeMask = 0;
+    Mask_t secondInputModeMask = 0;
+    Mask_t firstInputModeMask = 0;
+    Mask_t bypassModeMask = 0;
 };
 
 #endif  // _SliderSOCD_H_

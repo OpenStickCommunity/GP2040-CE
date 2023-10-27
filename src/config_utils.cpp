@@ -5,6 +5,7 @@
 #include "pb_encode.h"
 #include "pb_decode.h"
 #include "pb_common.h"
+#include "types.h"
 
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
@@ -557,7 +558,7 @@ void gpioMappingsMigrationCore(Config& config)
     SliderOptions& jsSliderOptions = config.addonOptions.sliderOptions;
     SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
 
-    const auto gamepadMaskToGpioAction = [&](uint32_t gpMask) -> GpioAction
+    const auto gamepadMaskToGpioAction = [&](Mask_t gpMask) -> GpioAction
     {
         switch (gpMask)
         {
@@ -616,7 +617,7 @@ void gpioMappingsMigrationCore(Config& config)
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE};
 
-    const auto fromPBorBC = [&](bool isInProtobuf, int32_t *protobufEntry, int32_t boardconfigValue,
+    const auto fromPBorBC = [&](bool isInProtobuf, Pin_t *protobufEntry, Pin_t boardconfigValue,
             GpioAction action) -> void {
         // get the core config value for a pin either from protobuf or, failing that, BoardConfig.h
         if (isInProtobuf) {
@@ -812,7 +813,7 @@ void gpioMappingsMigrationCore(Config& config)
     }
 
     // flag additional pins as being used by an addon not managed here
-    const auto markAddonPinIfUsed = [&](uint32_t gpPin) -> void {
+    const auto markAddonPinIfUsed = [&](Pin_t gpPin) -> void {
         if (isValidPin(gpPin)) actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
     };
     markAddonPinIfUsed(config.displayOptions.i2cSCLPin);

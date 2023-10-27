@@ -1,6 +1,7 @@
 #include "addons/jslider.h"
 
 #include "storagemanager.h"
+#include "types.h"
 
 #include "GamepadEnums.h"
 #include "helper.h"
@@ -18,7 +19,7 @@ bool JSliderInput::available() {
 void JSliderInput::setup()
 {
     GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
-    for (uint32_t pin = 0; pin < NUM_BANK0_GPIOS; pin++)
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         switch (pinMappings[pin]) {
             case SUSTAIN_DP_MODE_DP:    dpModeMask |= 1 << pin; break;
@@ -31,7 +32,7 @@ void JSliderInput::setup()
 
 DpadMode JSliderInput::read() {
     const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
-    uint32_t values = ~gpio_get_all();
+    Mask_t values = ~gpio_get_all();
     if (values & dpModeMask)            return DpadMode::DPAD_MODE_DIGITAL;
     else if (values & lsModeMask)       return DpadMode::DPAD_MODE_LEFT_ANALOG;
     else if (values & rsModeMask)       return DpadMode::DPAD_MODE_RIGHT_ANALOG;

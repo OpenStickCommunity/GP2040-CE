@@ -2,6 +2,7 @@
 #define _GAMEPAD_H_
 
 #include "BoardConfig.h"
+#include "types.h"
 #include <string.h>
 
 #include "enums.pb.h"
@@ -25,7 +26,7 @@ extern uint64_t getMicro();
 
 struct GamepadButtonMapping
 {
-	GamepadButtonMapping(uint16_t bm) :
+	GamepadButtonMapping(Mask_t bm) :
 		pinMask(0),
 		buttonMask(bm)
 	{}
