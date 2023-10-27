@@ -7,6 +7,7 @@
 #include "gamepad.h"
 #include "enums.pb.h"
 #include "storagemanager.h"
+#include "types.h"
 
 #include "FlashPROM.h"
 #include "CRC32.h"
@@ -104,53 +105,59 @@ Gamepad::Gamepad(int debounceMS) :
 void Gamepad::setup()
 {
 	// Configure pin mapping
-	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
+	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
 	const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
-	const auto convertPin = [](int32_t pin) -> uint8_t { return isValidPin(pin) ? pin : 0xff; };
-	mapDpadUp    = new GamepadButtonMapping(convertPin(pinMappings.pinDpadUp),		GAMEPAD_MASK_UP);
-	mapDpadDown  = new GamepadButtonMapping(convertPin(pinMappings.pinDpadDown),	GAMEPAD_MASK_DOWN);
-	mapDpadLeft  = new GamepadButtonMapping(convertPin(pinMappings.pinDpadLeft),	GAMEPAD_MASK_LEFT);
-	mapDpadRight = new GamepadButtonMapping(convertPin(pinMappings.pinDpadRight),	GAMEPAD_MASK_RIGHT);
-	mapButtonB1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonB1),	GAMEPAD_MASK_B1);
-	mapButtonB2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonB2),	GAMEPAD_MASK_B2);
-	mapButtonB3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonB3),	GAMEPAD_MASK_B3);
-	mapButtonB4  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonB4),	GAMEPAD_MASK_B4);
-	mapButtonL1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonL1),	GAMEPAD_MASK_L1);
-	mapButtonR1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR1),	GAMEPAD_MASK_R1);
-	mapButtonL2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonL2),	GAMEPAD_MASK_L2);
-	mapButtonR2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR2),	GAMEPAD_MASK_R2);
-	mapButtonS1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonS1),	GAMEPAD_MASK_S1);
-	mapButtonS2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonS2),	GAMEPAD_MASK_S2);
-	mapButtonL3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonL3),	GAMEPAD_MASK_L3);
-	mapButtonR3  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonR3),	GAMEPAD_MASK_R3);
-	mapButtonA1  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA1),	GAMEPAD_MASK_A1);
-	mapButtonA2  = new GamepadButtonMapping(convertPin(pinMappings.pinButtonA2),	GAMEPAD_MASK_A2);
+	mapDpadUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
+	mapDpadDown  = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
+	mapDpadLeft  = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
+	mapDpadRight = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
+	mapButtonB1  = new GamepadButtonMapping(GAMEPAD_MASK_B1);
+	mapButtonB2  = new GamepadButtonMapping(GAMEPAD_MASK_B2);
+	mapButtonB3  = new GamepadButtonMapping(GAMEPAD_MASK_B3);
+	mapButtonB4  = new GamepadButtonMapping(GAMEPAD_MASK_B4);
+	mapButtonL1  = new GamepadButtonMapping(GAMEPAD_MASK_L1);
+	mapButtonR1  = new GamepadButtonMapping(GAMEPAD_MASK_R1);
+	mapButtonL2  = new GamepadButtonMapping(GAMEPAD_MASK_L2);
+	mapButtonR2  = new GamepadButtonMapping(GAMEPAD_MASK_R2);
+	mapButtonS1  = new GamepadButtonMapping(GAMEPAD_MASK_S1);
+	mapButtonS2  = new GamepadButtonMapping(GAMEPAD_MASK_S2);
+	mapButtonL3  = new GamepadButtonMapping(GAMEPAD_MASK_L3);
+	mapButtonR3  = new GamepadButtonMapping(GAMEPAD_MASK_R3);
+	mapButtonA1  = new GamepadButtonMapping(GAMEPAD_MASK_A1);
+	mapButtonA2  = new GamepadButtonMapping(GAMEPAD_MASK_A2);
+	mapButtonFn  = new GamepadButtonMapping(AUX_MASK_FUNCTION);
 
-	gamepadMappings = new GamepadButtonMapping *[GAMEPAD_DIGITAL_INPUT_COUNT]
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
 	{
-		mapDpadUp,   mapDpadDown, mapDpadLeft, mapDpadRight,
-		mapButtonB1, mapButtonB2, mapButtonB3, mapButtonB4,
-		mapButtonL1, mapButtonR1, mapButtonL2, mapButtonR2,
-		mapButtonS1, mapButtonS2, mapButtonL3, mapButtonR3,
-		mapButtonA1, mapButtonA2
-	};
-
-	for (int i = 0; i < GAMEPAD_DIGITAL_INPUT_COUNT; i++)
-	{
-		if (gamepadMappings[i]->isAssigned())
+		if (pinMappings[pin] > 0)
 		{
-			gpio_init(gamepadMappings[i]->pin);             // Initialize pin
-			gpio_set_dir(gamepadMappings[i]->pin, GPIO_IN); // Set as INPUT
-			gpio_pull_up(gamepadMappings[i]->pin);          // Set as PULLUP
+			gpio_init(pin);             // Initialize pin
+			gpio_set_dir(pin, GPIO_IN); // Set as INPUT
+			gpio_pull_up(pin);          // Set as PULLUP
+			switch (pinMappings[pin]) {
+				case GpioAction::BUTTON_PRESS_UP:	mapDpadUp->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_DOWN:	mapDpadDown->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_LEFT:	mapDpadLeft->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_RIGHT:	mapDpadRight->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_B1:	mapButtonB1->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_B2:	mapButtonB2->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_B3:	mapButtonB3->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_B4:	mapButtonB4->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_L1:	mapButtonL1->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_R1:	mapButtonR1->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_L2:	mapButtonL2->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_R2:	mapButtonR2->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_S1:	mapButtonS1->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_S2:	mapButtonS2->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_L3:	mapButtonL3->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_R3:	mapButtonR3->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_A1:	mapButtonA1->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_A2:	mapButtonA2->pinMask |= 1 << pin; break;
+				case GpioAction::BUTTON_PRESS_FN:	mapButtonFn->pinMask |= 1 << pin; break;
+				default:				break;
+			}
 		}
-	}
-
-	// initialize the Function pin button/switch if it is configured
-	if (isValidPin(pinMappings.pinButtonFn)) {
-		gpio_init(pinMappings.pinButtonFn);             // Initialize pin
-		gpio_set_dir(pinMappings.pinButtonFn, GPIO_IN); // Set as INPUT
-		gpio_pull_up(pinMappings.pinButtonFn);          // Set as PULLUP
 	}
 
 	// setup PS5 compatibility
@@ -162,17 +169,35 @@ void Gamepad::setup()
  */
 void Gamepad::teardown_and_reinit(const uint32_t profileNum)
 {
-	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
+	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+
+	delete mapDpadUp;
+	delete mapDpadDown;
+	delete mapDpadLeft;
+	delete mapDpadRight;
+	delete mapButtonB1;
+	delete mapButtonB2;
+	delete mapButtonB3;
+	delete mapButtonB4;
+	delete mapButtonL1;
+	delete mapButtonR1;
+	delete mapButtonL2;
+	delete mapButtonR2;
+	delete mapButtonS1;
+	delete mapButtonS2;
+	delete mapButtonL3;
+	delete mapButtonR3;
+	delete mapButtonA1;
+	delete mapButtonA2;
+	delete mapButtonFn;
+
 	// deinitialize the GPIO pins so we don't have orphans
-	for (int i = 0; i < GAMEPAD_DIGITAL_INPUT_COUNT; i++)
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
 	{
-		if (gamepadMappings[i]->isAssigned())
+		if (pinMappings[pin] > 0)
 		{
-			gpio_deinit(gamepadMappings[i]->pin);
+			gpio_deinit(pin);
 		}
-	}
-	if (isValidPin(pinMappings.pinButtonFn)) {
-		gpio_deinit(pinMappings.pinButtonFn);
 	}
 
 	// set to new profile
@@ -253,14 +278,13 @@ void Gamepad::process()
 
 void Gamepad::read()
 {
-	const PinMappings& pinMappings = Storage::getInstance().getProfilePinMappings();
 	// Need to invert since we're using pullups
-	uint32_t values = ~gpio_get_all();
+	Mask_t values = ~gpio_get_all();
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
 
 	state.aux = 0
-		| (values & (1 << pinMappings.pinButtonFn)) ? AUX_MASK_FUNCTION : 0;
+		| (values & mapButtonFn->pinMask)   ? mapButtonFn->buttonMask : 0;
 
 	state.dpad = 0
 		| ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)

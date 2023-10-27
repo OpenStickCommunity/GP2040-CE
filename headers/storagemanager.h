@@ -35,7 +35,9 @@ public:
 	GamepadOptions& getGamepadOptions() { return config.gamepadOptions; }
 	HotkeyOptions& getHotkeyOptions() { return config.hotkeyOptions; }
 	ForcedSetupOptions& getForcedSetupOptions() { return config.forcedSetupOptions; }
-	PinMappings& getPinMappings() { return config.pinMappings; }
+	PinMappings& getDeprecatedPinMappings() { return config.deprecatedPinMappings; }
+	GpioMappings& getGpioMappings() { return config.gpioMappings; }
+	GpioAction** getGpioMappingsArray() { return gpioMappingsArray; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
@@ -43,10 +45,9 @@ public:
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
 	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
+	GpioAction* getProfilePinMappings() { return functionalPinMappings; }
 
 	bool save();
-
-	PinMappings& getProfilePinMappings();
 
 	// Perform saves that were enqueued from core1
 	void performEnqueuedSaves();
@@ -83,7 +84,8 @@ private:
 	critical_section_t animationOptionsCs;
 	uint32_t animationOptionsCrc = 0;
 	AnimationOptions animationOptionsToSave = {};
-	PinMappings* functionalPinMappings = nullptr;
+	GpioAction functionalPinMappings[NUM_BANK0_GPIOS];
+	GpioAction* gpioMappingsArray[NUM_BANK0_GPIOS];
 };
 
 #endif

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { hexToInt, rgbIntToHex } from './Utilities';
 
-const baseUrl =
+export const baseUrl =
 	process.env.NODE_ENV === 'production'
 		? ''
 		: import.meta.env.VITE_DEV_BASE_URL;
@@ -76,72 +76,72 @@ export const baseProfileOptions = {
 };
 
 export const baseWiiControls = {
-    "nunchuk.analogStick.axisType": 1,
-    "nunchuk.buttonC": 1,
-    "nunchuk.buttonZ": 2,
-    "classic.analogLeftStick.x.axisType": 1,
-    "classic.analogLeftStick.y.axisType": 2,
-    "classic.analogRightStick.x.axisType": 3,
-    "classic.analogRightStick.y.axisType": 4,
-    "classic.analogLeftTrigger.axisType": 7,
-    "classic.analogRightTrigger.axisType": 8,
-    "classic.buttonA": 2,
-    "classic.buttonB": 1,
-    "classic.buttonX": 8,
-    "classic.buttonY": 4,
-    "classic.buttonL": 64,
-    "classic.buttonR": 128,
-    "classic.buttonZL": 16,
-    "classic.buttonZR": 32,
-    "classic.buttonMinus": 256,
-    "classic.buttonHome": 4096,
-    "classic.buttonPlus": 512,
-    "classic.buttonUp": 65536,
-    "classic.buttonDown": 131072,
-    "classic.buttonLeft": 262144,
-    "classic.buttonRight": 524288,
-    "guitar.analogStick.x.axisType": 1,
-    "guitar.analogStick.y.axisType": 2,
-    "guitar.analogWhammyBar.axisType": 14,
-    "guitar.buttonOrange": 64,
-    "guitar.buttonRed": 2,
-    "guitar.buttonBlue": 4,
-    "guitar.buttonGreen": 1,
-    "guitar.buttonYellow": 8,
-    "guitar.buttonPedal": 128,
-    "guitar.buttonMinus": 256,
-    "guitar.buttonPlus": 512,
-    "guitar.buttonStrumUp": 65536,
-    "guitar.buttonStrumDown": 131072,
-    "drum.analogStick.x.axisType": 1,
-    "drum.analogStick.y.axisType": 2,
-    "drum.buttonOrange": 64,
-    "drum.buttonRed": 2,
-    "drum.buttonBlue": 8,
-    "drum.buttonGreen": 1,
-    "drum.buttonYellow": 4,
-    "drum.buttonPedal": 128,
-    "drum.buttonMinus": 256,
-    "drum.buttonPlus": 512,
-    "turntable.analogStick.x.axisType": 1,
-    "turntable.analogStick.y.axisType": 2,
-    "turntable.analogLeftTurntable.axisType": 13,
-    "turntable.analogRightTurntable.axisType": 15,
-    "turntable.analogFader.axisType": 7,
-    "turntable.analogEffects.axisType": 8,
-    "turntable.buttonLeftGreen": 262144,
-    "turntable.buttonLeftRed": 65536,
-    "turntable.buttonLeftBlue": 524288,
-    "turntable.buttonRightGreen": 4,
-    "turntable.buttonRightRed": 8,
-    "turntable.buttonRightBlue": 2,
-    "turntable.buttonEuphoria": 32,
-    "turntable.buttonMinus": 256,
-    "turntable.buttonPlus": 512,
-    "taiko.buttonDonLeft": 262144,
-    "taiko.buttonKatLeft": 64,
-    "taiko.buttonDonRight": 1,
-    "taiko.buttonKatRight": 128,
+	'nunchuk.analogStick.axisType': 1,
+	'nunchuk.buttonC': 1,
+	'nunchuk.buttonZ': 2,
+	'classic.analogLeftStick.x.axisType': 1,
+	'classic.analogLeftStick.y.axisType': 2,
+	'classic.analogRightStick.x.axisType': 3,
+	'classic.analogRightStick.y.axisType': 4,
+	'classic.analogLeftTrigger.axisType': 7,
+	'classic.analogRightTrigger.axisType': 8,
+	'classic.buttonA': 2,
+	'classic.buttonB': 1,
+	'classic.buttonX': 8,
+	'classic.buttonY': 4,
+	'classic.buttonL': 64,
+	'classic.buttonR': 128,
+	'classic.buttonZL': 16,
+	'classic.buttonZR': 32,
+	'classic.buttonMinus': 256,
+	'classic.buttonHome': 4096,
+	'classic.buttonPlus': 512,
+	'classic.buttonUp': 65536,
+	'classic.buttonDown': 131072,
+	'classic.buttonLeft': 262144,
+	'classic.buttonRight': 524288,
+	'guitar.analogStick.x.axisType': 1,
+	'guitar.analogStick.y.axisType': 2,
+	'guitar.analogWhammyBar.axisType': 14,
+	'guitar.buttonOrange': 64,
+	'guitar.buttonRed': 2,
+	'guitar.buttonBlue': 4,
+	'guitar.buttonGreen': 1,
+	'guitar.buttonYellow': 8,
+	'guitar.buttonPedal': 128,
+	'guitar.buttonMinus': 256,
+	'guitar.buttonPlus': 512,
+	'guitar.buttonStrumUp': 65536,
+	'guitar.buttonStrumDown': 131072,
+	'drum.analogStick.x.axisType': 1,
+	'drum.analogStick.y.axisType': 2,
+	'drum.buttonOrange': 64,
+	'drum.buttonRed': 2,
+	'drum.buttonBlue': 8,
+	'drum.buttonGreen': 1,
+	'drum.buttonYellow': 4,
+	'drum.buttonPedal': 128,
+	'drum.buttonMinus': 256,
+	'drum.buttonPlus': 512,
+	'turntable.analogStick.x.axisType': 1,
+	'turntable.analogStick.y.axisType': 2,
+	'turntable.analogLeftTurntable.axisType': 13,
+	'turntable.analogRightTurntable.axisType': 15,
+	'turntable.analogFader.axisType': 7,
+	'turntable.analogEffects.axisType': 8,
+	'turntable.buttonLeftGreen': 262144,
+	'turntable.buttonLeftRed': 65536,
+	'turntable.buttonLeftBlue': 524288,
+	'turntable.buttonRightGreen': 4,
+	'turntable.buttonRightRed': 8,
+	'turntable.buttonRightBlue': 2,
+	'turntable.buttonEuphoria': 32,
+	'turntable.buttonMinus': 256,
+	'turntable.buttonPlus': 512,
+	'taiko.buttonDonLeft': 262144,
+	'taiko.buttonKatLeft': 64,
+	'taiko.buttonDonRight': 1,
+	'taiko.buttonKatRight': 128,
 };
 
 async function resetSettings() {
@@ -339,22 +339,6 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getPinMappings(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await axios.get(`${baseUrl}/api/getPinMappings`);
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(response.data))
-			mappings[prop].pin = parseInt(response.data[prop]);
-
-		return mappings;
-	} catch (error) {
-		console.error(error);
-		return false;
-	}
-}
-
 async function setPinMappings(mappings) {
 	let data = {};
 	Object.keys(mappings).map(
@@ -536,7 +520,7 @@ async function setPS4Options(options) {
 async function getWiiControls(setLoading) {
 	setLoading(true);
 
-    try {
+	try {
 		const response = await axios.get(`${baseUrl}/api/getWiiControls`);
 		setLoading(false);
 
@@ -549,7 +533,7 @@ async function getWiiControls(setLoading) {
 }
 
 async function setWiiControls(mappings) {
-    console.dir(mappings);
+	console.dir(mappings);
 
 	return axios
 		.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
@@ -602,17 +586,13 @@ async function getUsedPins(setLoading) {
 	}
 }
 
-async function getHeldPins(setLoading, createAbortSignal) {
-	setLoading && setLoading(true);
-
+async function getHeldPins(abortSignal) {
 	try {
 		const response = await axios.get(`${baseUrl}/api/getHeldPins`, {
-			signal: createAbortSignal(),
+			signal: abortSignal,
 		});
-		setLoading && setLoading(false);
 		return response.data;
 	} catch (error) {
-		setLoading && setLoading(false);
 		if (error?.code === 'ERR_CANCELED') return { canceled: true };
 		else console.error(error);
 	}
@@ -653,7 +633,6 @@ const WebApi = {
 	setLedOptions,
 	getCustomTheme,
 	setCustomTheme,
-	getPinMappings,
 	setPinMappings,
 	getProfileOptions,
 	setProfileOptions,
