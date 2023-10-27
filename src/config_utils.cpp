@@ -88,9 +88,6 @@
 // Migration leftovers
 // -----------------------------------------------------
 
-#ifndef EXTRA_BUTTON_MASK
-    #define EXTRA_BUTTON_ENABLED 0
-#endif
 #ifndef EXTRA_BUTTON_PIN
     #define EXTRA_BUTTON_PIN -1
 #endif
