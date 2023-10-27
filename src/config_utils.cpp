@@ -901,6 +901,8 @@ void gpioMappingsMigrationCore(Config& config)
     INIT_UNSET_PROPERTY(config.gpioMappings, pin27, actions[27]);
     INIT_UNSET_PROPERTY(config.gpioMappings, pin28, actions[28]);
     INIT_UNSET_PROPERTY(config.gpioMappings, pin29, actions[29]);
+
+    config.migrations.gpioMappingsMigrated = true;
 }
 
 // populate existing configurations' buttonsMask and auxMask to mirror behavior
@@ -950,6 +952,8 @@ void hotkeysMigration(Config& config)
 	INIT_UNSET_PROPERTY(hotkeys.hotkey08, auxMask, 0);
 	INIT_UNSET_PROPERTY(hotkeys.hotkey08, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
     }
+
+    config.migrations.hotkeysMigrated = true;
 }
 
 // -----------------------------------------------------
@@ -1035,8 +1039,8 @@ void ConfigUtils::load(Config& config)
     }
 
     // run migrations
-    hotkeysMigration(config);
-    gpioMappingsMigrationCore(config);
+    if (!config.migrations.hotkeysMigrated) hotkeysMigration(config);
+    if (!config.migrations.gpioMappingsMigrated) gpioMappingsMigrationCore(config);
 
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.

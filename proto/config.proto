@@ -676,6 +676,12 @@ message AddonOptions
 	optional MacroOptions macroOptions = 20;
 }
 
+message MigrationHistory
+{
+	optional bool hotkeysMigrated = 1 [default = false];
+	optional bool gpioMappingsMigrated = 2 [default = false];
+}
+
 message Config
 {
 	optional string boardVersion = 1 [(nanopb).max_length = 31];
@@ -693,4 +699,5 @@ message Config
 	
 	optional string boardConfig = 12 [(nanopb).max_length = 63];
 	optional GpioMappings gpioMappings = 13;
+	optional MigrationHistory migrations = 14;
 }
