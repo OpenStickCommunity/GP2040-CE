@@ -67,12 +67,12 @@ private:
     DpadDirection lastDualUD; // Dual Last Up-Down
     DpadDirection lastDualLR; // Gamepad Last Left-Right
     uint32_t dpadTime[4];
-    uint8_t pinDualDirDown;
-    uint8_t pinDualDirUp;
-    uint8_t pinDualDirLeft;
-    uint8_t pinDualDirRight;
     uint8_t combineMode;
     DpadMode dpadMode;
+    GamepadButtonMapping *mapDpadUp;
+    GamepadButtonMapping *mapDpadDown;
+    GamepadButtonMapping *mapDpadLeft;
+    GamepadButtonMapping *mapDpadRight;
 };
 
 #endif  // _DualDirectional_H

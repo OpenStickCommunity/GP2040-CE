@@ -3,6 +3,7 @@
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
+#include "types.h"
 
 bool DualDirectionalInput::available() {
     return Storage::getInstance().getAddonOptions().dualDirectionalOptions.enabled;
@@ -11,24 +12,22 @@ bool DualDirectionalInput::available() {
 void DualDirectionalInput::setup() {
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
     combineMode = options.combineMode;
-    pinDualDirDown = options.downPin;
-    pinDualDirUp = options.upPin;
-    pinDualDirLeft = options.leftPin;
-    pinDualDirRight = options.rightPin;
-
     dpadMode = options.dpadMode;
 
-    // Setup TURBO Key
-    uint8_t pinDualDir[4] = {pinDualDirDown,
-                        pinDualDirUp,
-                        pinDualDirLeft,
-                        pinDualDirRight};
+    mapDpadUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
+    mapDpadDown  = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
+    mapDpadLeft  = new GamepadButtonMapping(GAMEPAD_MASK_LEFT);
+    mapDpadRight = new GamepadButtonMapping(GAMEPAD_MASK_RIGHT);
 
-    for (int i = 0; i < 4; i++) {
-        if ( isValidPin(pinDualDir[i]) ) {
-            gpio_init(pinDualDir[i]);             // Initialize pin
-            gpio_set_dir(pinDualDir[i], GPIO_IN); // Set as INPUT
-            gpio_pull_up(pinDualDir[i]);          // Set as PULLUP
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        switch (pinMappings[pin]) {
+            case GpioAction::BUTTON_PRESS_DDI_UP:    mapDpadUp->pinMask |= 1 << pin; break;
+            case GpioAction::BUTTON_PRESS_DDI_DOWN:  mapDpadDown->pinMask |= 1 << pin; break;
+            case GpioAction::BUTTON_PRESS_DDI_LEFT:  mapDpadLeft->pinMask |= 1 << pin; break;
+            case GpioAction::BUTTON_PRESS_DDI_RIGHT: mapDpadRight->pinMask |= 1 << pin; break;
+            default:                                 break;
         }
     }
 
@@ -67,21 +66,13 @@ void DualDirectionalInput::preprocess()
 {
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    Mask_t values = ~gpio_get_all();
 
- 	// Need to invert since we're using pullups
-    dualState = 0;
-    if ( pinDualDirUp != (uint8_t)-1 ) {
-        dualState |= (!gpio_get(pinDualDirUp) ? gamepad->mapDpadUp->buttonMask : 0);
-    }
-    if ( pinDualDirDown != (uint8_t)-1 ) {
-        dualState |= (!gpio_get(pinDualDirDown) ? gamepad->mapDpadDown->buttonMask : 0);
-    }
-    if ( pinDualDirLeft != (uint8_t)-1 ) {
-        dualState |= (!gpio_get(pinDualDirLeft) ? gamepad->mapDpadLeft->buttonMask  : 0);
-    }
-    if ( pinDualDirRight != (uint8_t)-1 ) {
-        dualState |= (!gpio_get(pinDualDirRight) ? gamepad->mapDpadRight->buttonMask : 0);
-    }
+    dualState = 0
+            | ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
+            | ((values & mapDpadDown->pinMask)  ? mapDpadDown->buttonMask : 0)
+            | ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask : 0)
+            | ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0);
 
     // Debounce our directional pins
     debounce();

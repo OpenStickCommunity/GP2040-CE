@@ -117,6 +117,40 @@ message PinMappings
 	optional int32 pinButtonFn = 19;
 }
 
+message GpioMappings
+{
+	optional GpioAction pin00 = 1;
+	optional GpioAction pin01 = 2;
+	optional GpioAction pin02 = 3;
+	optional GpioAction pin03 = 4;
+	optional GpioAction pin04 = 5;
+	optional GpioAction pin05 = 6;
+	optional GpioAction pin06 = 7;
+	optional GpioAction pin07 = 8;
+	optional GpioAction pin08 = 9;
+	optional GpioAction pin09 = 10;
+	optional GpioAction pin10 = 11;
+	optional GpioAction pin11 = 12;
+	optional GpioAction pin12 = 13;
+	optional GpioAction pin13 = 14;
+	optional GpioAction pin14 = 15;
+	optional GpioAction pin15 = 16;
+	optional GpioAction pin16 = 17;
+	optional GpioAction pin17 = 18;
+	optional GpioAction pin18 = 19;
+	optional GpioAction pin19 = 20;
+	optional GpioAction pin20 = 21;
+	optional GpioAction pin21 = 22;
+	optional GpioAction pin22 = 23;
+	optional GpioAction pin23 = 24;
+	optional GpioAction pin24 = 25;
+	optional GpioAction pin25 = 26;
+	optional GpioAction pin26 = 27;
+	optional GpioAction pin27 = 28;
+	optional GpioAction pin28 = 29;
+	optional GpioAction pin29 = 30;
+}
+
 
 message AlternativePinMappings
 {
@@ -313,23 +347,23 @@ message SliderOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 pinSliderOne = 2;
-	optional int32 pinSliderTwo = 3;
-	optional DpadMode modeOne = 4;
-	optional DpadMode modeTwo = 5;
-	optional DpadMode modeZero = 6;
+	optional int32 deprecatedPinSliderOne = 2;
+	optional int32 deprecatedPinSliderTwo = 3;
+	optional DpadMode deprecatedModeOne = 4;
+	optional DpadMode deprecatedModeTwo = 5;
+	optional DpadMode modeDefault = 6;
 }
 
 message SOCDSliderOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 pinOne = 2;
-	optional int32 pinTwo = 3;
+	optional int32 deprecatedPinOne = 2;
+	optional int32 deprecatedPinTwo = 3;
 	
 	optional SOCDMode modeDefault = 4;
-	optional SOCDMode modeOne = 5;
-	optional SOCDMode modeTwo = 6;
+	optional SOCDMode deprecatedModeOne = 5;
+	optional SOCDMode deprecatedModeTwo = 6;
 }
 
 message ReverseOptions
@@ -360,10 +394,10 @@ message DualDirectionalOptions
 {
 	optional bool enabled = 1;
 	
-	optional int32 upPin = 2;
-	optional int32 downPin = 3;
-	optional int32 leftPin = 4;
-	optional int32 rightPin = 5;
+	optional int32 deprecatedUpPin = 2;
+	optional int32 deprecatedDownPin = 3;
+	optional int32 deprecatedLeftPin = 4;
+	optional int32 deprecatedRightPin = 5;
 	
 	optional DpadMode dpadMode = 6;
 	optional uint32 combineMode = 7;
@@ -629,7 +663,7 @@ message AddonOptions
 	optional AnalogADS1219Options analogADS1219Options = 7;
 	optional DualDirectionalOptions dualDirectionalOptions = 8;
 	optional BuzzerOptions buzzerOptions = 9;
-	optional ExtraButtonOptions extraButtonOptions = 10;
+	optional ExtraButtonOptions deprecatedExtraButtonOptions = 10;
 	optional PlayerNumberOptions playerNumberOptions = 11;
 	optional PS4Options ps4Options = 12 [(nanopb).disallow_export = true];
 	optional WiiOptions wiiOptions = 13;
@@ -642,13 +676,19 @@ message AddonOptions
 	optional MacroOptions macroOptions = 20;
 }
 
+message MigrationHistory
+{
+	optional bool hotkeysMigrated = 1 [default = false];
+	optional bool gpioMappingsMigrated = 2 [default = false];
+}
+
 message Config
 {
 	optional string boardVersion = 1 [(nanopb).max_length = 31];
 	
 	optional GamepadOptions gamepadOptions = 2;
 	optional HotkeyOptions hotkeyOptions = 3;
-	optional PinMappings pinMappings = 4;
+	optional PinMappings deprecatedPinMappings = 4;
 	optional KeyboardMapping keyboardMapping = 5;
 	optional DisplayOptions displayOptions = 6;
 	optional LEDOptions ledOptions = 7;
@@ -658,4 +698,6 @@ message Config
 	optional ProfileOptions profileOptions = 11;
 	
 	optional string boardConfig = 12 [(nanopb).max_length = 63];
+	optional GpioMappings gpioMappings = 13;
+	optional MigrationHistory migrations = 14;
 }

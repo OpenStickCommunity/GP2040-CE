@@ -121,6 +121,48 @@ enum SOCDMode
     SOCD_MODE_BYPASS = 4;					// U+D=UD, L+R=LR (No cleaning applied)
 }
 
+enum GpioAction
+{
+    option (nanopb_enumopt).long_names = false;
+
+    // the lowest value is the default, which should be NONE;
+    // reserving some numbers in case we need more not-mapped type values
+    NONE                         = -10;
+    RESERVED                     = -5;
+    ASSIGNED_TO_ADDON            = 0;
+    BUTTON_PRESS_UP              = 1;
+    BUTTON_PRESS_DOWN            = 2;
+    BUTTON_PRESS_LEFT            = 3;
+    BUTTON_PRESS_RIGHT           = 4;
+    BUTTON_PRESS_B1              = 5;
+    BUTTON_PRESS_B2              = 6;
+    BUTTON_PRESS_B3              = 7;
+    BUTTON_PRESS_B4              = 8;
+    BUTTON_PRESS_L1              = 9;
+    BUTTON_PRESS_R1              = 10;
+    BUTTON_PRESS_L2              = 11;
+    BUTTON_PRESS_R2              = 12;
+    BUTTON_PRESS_S1              = 13;
+    BUTTON_PRESS_S2              = 14;
+    BUTTON_PRESS_A1              = 15;
+    BUTTON_PRESS_A2              = 16;
+    BUTTON_PRESS_L3              = 17;
+    BUTTON_PRESS_R3              = 18;
+    BUTTON_PRESS_FN              = 19;
+    BUTTON_PRESS_DDI_UP          = 20;
+    BUTTON_PRESS_DDI_DOWN        = 21;
+    BUTTON_PRESS_DDI_LEFT        = 22;
+    BUTTON_PRESS_DDI_RIGHT       = 23;
+    SUSTAIN_DP_MODE_DP           = 24;
+    SUSTAIN_DP_MODE_LS           = 25;
+    SUSTAIN_DP_MODE_RS           = 26;
+    SUSTAIN_SOCD_MODE_UP_PRIO    = 27;
+    SUSTAIN_SOCD_MODE_NEUTRAL    = 28;
+    SUSTAIN_SOCD_MODE_SECOND_WIN = 29;
+    SUSTAIN_SOCD_MODE_FIRST_WIN  = 30;
+    SUSTAIN_SOCD_MODE_BYPASS     = 31;
+}
+
 enum GamepadHotkey
 {
     option (nanopb_enumopt).long_names = false;
