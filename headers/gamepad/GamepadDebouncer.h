@@ -19,8 +19,8 @@ class GamepadDebouncer
 		GamepadDebouncer(const uint8_t debounceMS = 5) : debounceMS(debounceMS) { }
 
 		void debounce(GamepadState *state);
-		uint8_t debounceDpad(uint8_t dpadState, uint32_t changedDpad, uint32_t now, uint8_t delayMS);
-		uint16_t debounceButtons(uint16_t buttonState, uint32_t changedButtons, uint32_t now, uint8_t delayMS);
+		uint8_t debounceDpad(uint8_t dpadState, uint32_t changedDpad);
+		uint16_t debounceButtons(uint16_t buttonState, uint32_t changedButtons);
 
 		const uint8_t debounceMS;
 		GamepadState debounceState;

@@ -11,6 +11,7 @@
 #include "gp2040aux.h"
 
 #include <cstdlib>
+#include <stdio.h>
 
 // Custom implementation of __gnu_cxx::__verbose_terminate_handler() to reduce binary size
 namespace __gnu_cxx {
@@ -31,6 +32,8 @@ void core1() {
 }
 
 int main() {
+	stdio_init_all();
+
 	// Create GP2040 Main Core (core0), Core1 is dependent on Core0
 	GP2040 * gp2040 = new GP2040();
 	gp2040->setup();
