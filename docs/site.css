@@ -7,6 +7,8 @@
   --sidebar-width : 20rem;
 	/* --sidebar-padding: 0 0.75rem; */
 	--content-max-width: 70em;
+	--docsifytabs-border-color: #ededed;
+	--docsifytabs-tab-highlight-color: #C73C8B;
 }
 
 hr {
@@ -29,7 +31,7 @@ hr {
 
 .sticky-label-select {
 	/* width: 100%; */
-	position: fixed!important;
+	position: fixed !important;
 	top: var(--sidebar-toggle-offset-top);
 	height: var(--sidebar-toggle-height);
 	right: 0px;
@@ -46,6 +48,10 @@ hr {
 	text-align: center;
 	margin-top: -4px;
 	margin-bottom: 4px;
+}
+
+.sidebar .search .clear-button {
+	margin: auto;
 }
 
 /*************/
@@ -144,3 +150,27 @@ hr {
 		grid-template-columns: 1fr 1fr 1fr;
 	}
 }
+
+/*************/
+/* Table of Contents */
+/*************/
+
+@media only screen and (max-width: 1299px) {
+    aside.toc-nav {
+      max-width: 0%;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+	section.content {
+		padding-right: 285px;
+	}
+}
+
+aside.toc-nav {
+	right: 1%;
+	margin-right: 0px;
+	width: 270px;
+	max-height: 85vh;
+}
+  

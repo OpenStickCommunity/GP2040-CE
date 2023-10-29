@@ -8,6 +8,8 @@
 
 #include "enums.pb.h"
 
+#define BOARD_CONFIG_LABEL "SGF! Devices"
+
 // Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin
 
 #define FLATBOX_SW1_PIN    6

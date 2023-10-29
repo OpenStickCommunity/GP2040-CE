@@ -5,6 +5,7 @@
 #include "pb_encode.h"
 #include "pb_decode.h"
 #include "pb_common.h"
+#include "types.h"
 
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
@@ -15,7 +16,6 @@
 #include "addons/buzzerspeaker.h"
 #include "addons/dualdirectional.h"
 #include "addons/tilt.h"
-#include "addons/extra_button.h"
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
 #include "addons/i2cdisplay.h"
@@ -31,6 +31,7 @@
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
+#include "addons/input_macro.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -84,11 +85,23 @@
     #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #endif
 
+// -----------------------------------------------------
+// Migration leftovers
+// -----------------------------------------------------
+
+#ifndef EXTRA_BUTTON_PIN
+    #define EXTRA_BUTTON_PIN -1
+#endif
+#ifndef EXTRA_BUTTON_MASK
+    #define EXTRA_BUTTON_MASK 0
+#endif
+
 void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 {
     const uint8_t emptyByteArray[0] = {};
 
     INIT_UNSET_PROPERTY_STR(config, boardVersion, GP2040VERSION);
+    INIT_UNSET_PROPERTY_STR(config, boardConfig, GP2040_BOARDCONFIG);
 
     // gamepadOptions
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
@@ -156,25 +169,25 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
 
     // pinMappings
-    INIT_UNSET_PROPERTY(config.pinMappings, pinDpadUp, PIN_DPAD_UP);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinDpadDown, PIN_DPAD_DOWN);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinDpadLeft, PIN_DPAD_LEFT);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinDpadRight, PIN_DPAD_RIGHT);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonB1, PIN_BUTTON_B1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonB2, PIN_BUTTON_B2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonB3, PIN_BUTTON_B3);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonB4, PIN_BUTTON_B4);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonL1, PIN_BUTTON_L1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR1, PIN_BUTTON_R1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonL2, PIN_BUTTON_L2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR2, PIN_BUTTON_R2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonS1, PIN_BUTTON_S1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonS2, PIN_BUTTON_S2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonL3, PIN_BUTTON_L3);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonR3, PIN_BUTTON_R3);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA1, PIN_BUTTON_A1);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonA2, PIN_BUTTON_A2);
-    INIT_UNSET_PROPERTY(config.pinMappings, pinButtonFn, PIN_BUTTON_FN);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadUp, PIN_DPAD_UP);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadDown, PIN_DPAD_DOWN);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadLeft, PIN_DPAD_LEFT);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadRight, PIN_DPAD_RIGHT);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB1, PIN_BUTTON_B1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB2, PIN_BUTTON_B2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB3, PIN_BUTTON_B3);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB4, PIN_BUTTON_B4);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL1, PIN_BUTTON_L1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR1, PIN_BUTTON_R1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL2, PIN_BUTTON_L2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR2, PIN_BUTTON_R2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonS1, PIN_BUTTON_S1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonS2, PIN_BUTTON_S2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL3, PIN_BUTTON_L3);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR3, PIN_BUTTON_R3);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonA1, PIN_BUTTON_A1);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonA2, PIN_BUTTON_A2);
+    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonFn, PIN_BUTTON_FN);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadUp, KEY_DPAD_UP);
@@ -205,6 +218,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, i2cSpeed, I2C_SPEED);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayout, BUTTON_LAYOUT);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayoutRight, BUTTON_LAYOUT_RIGHT);
+    INIT_UNSET_PROPERTY(config.displayOptions, turnOffWhenSuspended, DISPLAY_TURN_OFF_WHEN_SUSPENDED);
 
     ButtonLayoutParamsLeft& paramsLeft = config.displayOptions.buttonLayoutCustomOptions.paramsLeft;
     INIT_UNSET_PROPERTY(paramsLeft, layout, BUTTON_LAYOUT);
@@ -276,6 +290,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, ledsPerButton, LEDS_PER_PIXEL);
     INIT_UNSET_PROPERTY(config.ledOptions, brightnessMaximum, LED_BRIGHTNESS_MAXIMUM);
     INIT_UNSET_PROPERTY(config.ledOptions, brightnessSteps, LED_BRIGHTNESS_STEPS);
+    INIT_UNSET_PROPERTY(config.ledOptions, turnOffWhenSuspended, LEDS_TURN_OFF_WHEN_SUSPENDED);
 
     INIT_UNSET_PROPERTY(config.ledOptions, indexUp, LEDS_DPAD_UP);
     INIT_UNSET_PROPERTY(config.ledOptions, indexDown, LEDS_DPAD_DOWN);
@@ -354,6 +369,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, buttonMap, BOOTSEL_BUTTON_MASK);
 
     // addonOptions.onBoardLedOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.onBoardLedOptions, enabled, !!BOARD_LED_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.onBoardLedOptions, mode, BOARD_LED_TYPE);
 
     // addonOptions.analogOptions
@@ -393,11 +409,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.sliderOptions
     INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, enabled, !!JSLIDER_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinSliderOne, PIN_SLIDER_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, pinSliderTwo, PIN_SLIDER_TWO);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeZero, SLIDER_MODE_ZERO);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeOne, SLIDER_MODE_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeTwo, SLIDER_MODE_TWO);
+    INIT_UNSET_PROPERTY(config.addonOptions.sliderOptions, modeDefault, SLIDER_MODE_ZERO);
 
     // addonOptions.reverseOptions
     INIT_UNSET_PROPERTY(config.addonOptions.reverseOptions, enabled, !!REVERSE_ENABLED);
@@ -410,11 +422,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.socdSliderOptions
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, enabled, !!SLIDER_SOCD_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, pinOne, PIN_SLIDER_SOCD_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, pinTwo, PIN_SLIDER_SOCD_TWO);
     INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeDefault, SLIDER_SOCD_SLOT_DEFAULT);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeOne, SLIDER_SOCD_SLOT_ONE);
-    INIT_UNSET_PROPERTY(config.addonOptions.socdSliderOptions, modeTwo, SLIDER_SOCD_SLOT_TWO);
 
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
@@ -426,10 +434,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // addonOptions.dualDirectionalOptions
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, upPin, PIN_DUAL_DIRECTIONAL_UP);
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, downPin, PIN_DUAL_DIRECTIONAL_DOWN)
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, leftPin, PIN_DUAL_DIRECTIONAL_LEFT);
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, rightPin, PIN_DUAL_DIRECTIONAL_RIGHT);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode>(DUAL_DIRECTIONAL_STICK_MODE));
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, fourWayMode, false);
@@ -437,7 +441,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 		// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt1Pin, PIN_TILT_1);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1LeftX, TILT1_FACTOR_LEFT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1LeftY, TILT1_FACTOR_LEFT_Y);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1RightX, TILT1_FACTOR_RIGHT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt1RightY, TILT1_FACTOR_RIGHT_Y);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tilt2Pin, PIN_TILT_2);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2LeftX, TILT2_FACTOR_LEFT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2LeftY, TILT2_FACTOR_LEFT_Y);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2RightX, TILT2_FACTOR_RIGHT_X);
+    INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, factorTilt2RightY, TILT2_FACTOR_RIGHT_Y);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogDownPin, PIN_TILT_LEFT_ANALOG_DOWN);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogUpPin, PIN_TILT_LEFT_ANALOG_UP);
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, tiltLeftAnalogLeftPin, PIN_TILT_LEFT_ANALOG_LEFT);
@@ -452,11 +464,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, pin, BUZZER_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
-
-    // addonOptions.extraOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, enabled, !!EXTRA_BUTTON_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, pin, EXTRA_BUTTON_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.extraButtonOptions, buttonMap, EXTRA_BUTTON_MASK);
 
     // addonOptions.playerNumberOptions
     INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);
@@ -519,11 +526,17 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, oledLockEnabled, !!FOCUS_MODE_OLED_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, rgbLockEnabled, !!FOCUS_MODE_RGB_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
 
     // PS Passthrough
     INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, enabled, PSPASSTHROUGH_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, pinDplus, PSPASSTHROUGH_PIN_DPLUS);
     INIT_UNSET_PROPERTY(config.addonOptions.psPassthroughOptions, pin5V, PSPASSTHROUGH_PIN_5V);
+
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, !!INPUT_MACRO_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, pin, INPUT_MACRO_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, macroBoardLedEnabled, INPUT_MACRO_BOARD_LED_ENABLED);
+    config.addonOptions.macroOptions.macroList_count = 6;
 }
 
 
@@ -532,6 +545,366 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 // used for when we might need to populate configs with
 // something *other than* the board defaults
 // -----------------------------------------------------
+
+// convert core and addon pin mappings to GPIO mapping config
+// NOTE: this also handles initializations for a blank config! if/when the deprecated
+// pin mappings go away, the remainder of this code should go in there (there was no point
+// in duplicating it right now)
+void gpioMappingsMigrationCore(Config& config)
+{
+    PinMappings& deprecatedPinMappings = config.deprecatedPinMappings;
+    ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
+    DualDirectionalOptions& ddiOptions = config.addonOptions.dualDirectionalOptions;
+    SliderOptions& jsSliderOptions = config.addonOptions.sliderOptions;
+    SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
+
+    const auto gamepadMaskToGpioAction = [&](Mask_t gpMask) -> GpioAction
+    {
+        switch (gpMask)
+        {
+            case GAMEPAD_MASK_DU:
+                return GpioAction::BUTTON_PRESS_UP;
+            case GAMEPAD_MASK_DD:
+                return GpioAction::BUTTON_PRESS_DOWN;
+            case GAMEPAD_MASK_DL:
+                return GpioAction::BUTTON_PRESS_LEFT;
+            case GAMEPAD_MASK_DR:
+                return GpioAction::BUTTON_PRESS_RIGHT;
+            case GAMEPAD_MASK_B1:
+                return GpioAction::BUTTON_PRESS_B1;
+            case GAMEPAD_MASK_B2:
+                return GpioAction::BUTTON_PRESS_B2;
+            case GAMEPAD_MASK_B3:
+                return GpioAction::BUTTON_PRESS_B3;
+            case GAMEPAD_MASK_B4:
+                return GpioAction::BUTTON_PRESS_B4;
+            case GAMEPAD_MASK_L1:
+                return GpioAction::BUTTON_PRESS_L1;
+            case GAMEPAD_MASK_R1:
+                return GpioAction::BUTTON_PRESS_R1;
+            case GAMEPAD_MASK_L2:
+                return GpioAction::BUTTON_PRESS_L2;
+            case GAMEPAD_MASK_R2:
+                return GpioAction::BUTTON_PRESS_R2;
+            case GAMEPAD_MASK_S1:
+                return GpioAction::BUTTON_PRESS_S1;
+            case GAMEPAD_MASK_S2:
+                return GpioAction::BUTTON_PRESS_S2;
+            case GAMEPAD_MASK_L3:
+                return GpioAction::BUTTON_PRESS_L3;
+            case GAMEPAD_MASK_R3:
+                return GpioAction::BUTTON_PRESS_R3;
+            case GAMEPAD_MASK_A1:
+                return GpioAction::BUTTON_PRESS_A1;
+            case GAMEPAD_MASK_A2:
+                return GpioAction::BUTTON_PRESS_A2;
+            case AUX_MASK_FUNCTION:
+                return GpioAction::BUTTON_PRESS_FN;
+            default:
+                return GpioAction::NONE;
+        }
+    };
+
+    // create an array of the old
+    GpioAction actions[NUM_BANK0_GPIOS] = {GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
+                                           GpioAction::NONE, GpioAction::NONE, GpioAction::NONE};
+
+    const auto fromPBorBC = [&](bool isInProtobuf, Pin_t *protobufEntry, Pin_t boardconfigValue,
+            GpioAction action) -> void {
+        // get the core config value for a pin either from protobuf or, failing that, BoardConfig.h
+        if (isInProtobuf) {
+            if (*protobufEntry >= 0 && *protobufEntry < 30) {
+                actions[*protobufEntry] = action;
+                *protobufEntry = -1;
+            }
+        } else if (isValidPin(boardconfigValue)) {
+            actions[boardconfigValue] = action;
+        }
+    };
+    fromPBorBC(deprecatedPinMappings.has_pinDpadUp,    &deprecatedPinMappings.pinDpadUp,    PIN_DPAD_UP,
+            GpioAction::BUTTON_PRESS_UP);
+    fromPBorBC(deprecatedPinMappings.has_pinDpadDown,  &deprecatedPinMappings.pinDpadDown,  PIN_DPAD_DOWN,
+            GpioAction::BUTTON_PRESS_DOWN);
+    fromPBorBC(deprecatedPinMappings.has_pinDpadLeft,  &deprecatedPinMappings.pinDpadLeft,  PIN_DPAD_LEFT,
+            GpioAction::BUTTON_PRESS_LEFT);
+    fromPBorBC(deprecatedPinMappings.has_pinDpadRight, &deprecatedPinMappings.pinDpadRight, PIN_DPAD_RIGHT,
+            GpioAction::BUTTON_PRESS_RIGHT);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonB1, &deprecatedPinMappings.pinButtonB1, PIN_BUTTON_B1,
+            GpioAction::BUTTON_PRESS_B1);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonB2, &deprecatedPinMappings.pinButtonB2, PIN_BUTTON_B2,
+            GpioAction::BUTTON_PRESS_B2);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonB3, &deprecatedPinMappings.pinButtonB3, PIN_BUTTON_B3,
+            GpioAction::BUTTON_PRESS_B3);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonB4, &deprecatedPinMappings.pinButtonB4, PIN_BUTTON_B4,
+            GpioAction::BUTTON_PRESS_B4);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonL1, &deprecatedPinMappings.pinButtonL1, PIN_BUTTON_L1,
+            GpioAction::BUTTON_PRESS_L1);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonR1, &deprecatedPinMappings.pinButtonR1, PIN_BUTTON_R1,
+            GpioAction::BUTTON_PRESS_R1);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonL2, &deprecatedPinMappings.pinButtonL2, PIN_BUTTON_L2,
+            GpioAction::BUTTON_PRESS_L2);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonR2, &deprecatedPinMappings.pinButtonR2, PIN_BUTTON_R2,
+            GpioAction::BUTTON_PRESS_R2);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonS1, &deprecatedPinMappings.pinButtonS1, PIN_BUTTON_S1,
+            GpioAction::BUTTON_PRESS_S1);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonS2, &deprecatedPinMappings.pinButtonS2, PIN_BUTTON_S2,
+            GpioAction::BUTTON_PRESS_S2);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonL3, &deprecatedPinMappings.pinButtonL3, PIN_BUTTON_L3,
+            GpioAction::BUTTON_PRESS_L3);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonR3, &deprecatedPinMappings.pinButtonR3, PIN_BUTTON_R3,
+            GpioAction::BUTTON_PRESS_R3);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonA1, &deprecatedPinMappings.pinButtonA1, PIN_BUTTON_A1,
+            GpioAction::BUTTON_PRESS_A1);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonA2, &deprecatedPinMappings.pinButtonA2, PIN_BUTTON_A2,
+            GpioAction::BUTTON_PRESS_A2);
+    fromPBorBC(deprecatedPinMappings.has_pinButtonFn, &deprecatedPinMappings.pinButtonFn, PIN_BUTTON_FN,
+            GpioAction::BUTTON_PRESS_FN);
+
+    // convert extra pin mapping to GPIO mapping config
+    if (extraButtonOptions.enabled && isValidPin(extraButtonOptions.pin)) {
+        // previous config had a value we haven't migrated yet, it can/should apply in the new config
+	actions[extraButtonOptions.pin] = gamepadMaskToGpioAction(extraButtonOptions.buttonMap);
+	extraButtonOptions.pin = -1;
+	extraButtonOptions.enabled = false;
+    }
+    else if (isValidPin(EXTRA_BUTTON_PIN))
+	actions[EXTRA_BUTTON_PIN] = gamepadMaskToGpioAction(EXTRA_BUTTON_MASK);
+
+    // convert DDI direction pin mapping to GPIO mapping config
+    if (ddiOptions.enabled) {
+        fromPBorBC(ddiOptions.has_deprecatedUpPin,    &ddiOptions.deprecatedUpPin,    PIN_DUAL_DIRECTIONAL_UP,
+                GpioAction::BUTTON_PRESS_DDI_UP);
+        fromPBorBC(ddiOptions.has_deprecatedDownPin,  &ddiOptions.deprecatedDownPin,  PIN_DUAL_DIRECTIONAL_DOWN,
+                GpioAction::BUTTON_PRESS_DDI_DOWN);
+        fromPBorBC(ddiOptions.has_deprecatedLeftPin,  &ddiOptions.deprecatedLeftPin,  PIN_DUAL_DIRECTIONAL_LEFT,
+                GpioAction::BUTTON_PRESS_DDI_LEFT);
+        fromPBorBC(ddiOptions.has_deprecatedRightPin, &ddiOptions.deprecatedRightPin, PIN_DUAL_DIRECTIONAL_RIGHT,
+                GpioAction::BUTTON_PRESS_DDI_RIGHT);
+    }
+
+    // convert JS slider pin mappings to GPIO mapping config
+    if (jsSliderOptions.enabled && isValidPin(jsSliderOptions.deprecatedPinSliderOne)) {
+        switch (jsSliderOptions.deprecatedModeOne) {
+            case DpadMode::DPAD_MODE_DIGITAL: {
+                actions[jsSliderOptions.deprecatedPinSliderOne] = GpioAction::SUSTAIN_DP_MODE_DP; break;
+            }
+            case DpadMode::DPAD_MODE_LEFT_ANALOG: {
+                actions[jsSliderOptions.deprecatedPinSliderOne] = GpioAction::SUSTAIN_DP_MODE_LS; break;
+            }
+            case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
+                actions[jsSliderOptions.deprecatedPinSliderOne] = GpioAction::SUSTAIN_DP_MODE_RS; break;
+            }
+            default: break;
+        }
+        jsSliderOptions.deprecatedPinSliderOne = -1;
+    }
+    else if (isValidPin(PIN_SLIDER_ONE)) {
+        actions[PIN_SLIDER_ONE] = GpioAction::SUSTAIN_DP_MODE_LS;
+    }
+    if (jsSliderOptions.enabled && isValidPin(jsSliderOptions.deprecatedPinSliderTwo)) {
+        switch (jsSliderOptions.deprecatedModeTwo) {
+            case DpadMode::DPAD_MODE_DIGITAL: {
+                actions[jsSliderOptions.deprecatedPinSliderTwo] = GpioAction::SUSTAIN_DP_MODE_DP; break;
+            }
+            case DpadMode::DPAD_MODE_LEFT_ANALOG: {
+                actions[jsSliderOptions.deprecatedPinSliderTwo] = GpioAction::SUSTAIN_DP_MODE_LS; break;
+            }
+            case DpadMode::DPAD_MODE_RIGHT_ANALOG: {
+                actions[jsSliderOptions.deprecatedPinSliderTwo] = GpioAction::SUSTAIN_DP_MODE_RS; break;
+            }
+            default: break;
+        }
+        jsSliderOptions.deprecatedPinSliderTwo = -1;
+    }
+    else if (isValidPin(PIN_SLIDER_TWO)) {
+        actions[PIN_SLIDER_TWO] = GpioAction::SUSTAIN_DP_MODE_RS;
+    }
+
+    // convert SOCD slider pin mappings to GPIO mapping config
+    if (socdSliderOptions.enabled && isValidPin(socdSliderOptions.deprecatedPinOne)) {
+        switch (socdSliderOptions.deprecatedModeOne) {
+            case SOCDMode::SOCD_MODE_UP_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO; break;
+            }
+            case SOCDMode::SOCD_MODE_NEUTRAL: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL; break;
+            }
+            case SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_BYPASS: {
+                actions[socdSliderOptions.deprecatedPinOne] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
+            }
+            default: break;
+        }
+        socdSliderOptions.deprecatedPinOne = -1;
+    }
+    else if (isValidPin(PIN_SLIDER_SOCD_ONE)) {
+        switch (SLIDER_SOCD_SLOT_ONE) {
+            case SOCDMode::SOCD_MODE_UP_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO; break;
+            }
+            case SOCDMode::SOCD_MODE_NEUTRAL: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL; break;
+            }
+            case SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_BYPASS: {
+                actions[PIN_SLIDER_SOCD_ONE] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
+            }
+            default: break;
+        }
+    }
+    if (socdSliderOptions.enabled && isValidPin(socdSliderOptions.deprecatedPinTwo)) {
+        switch (socdSliderOptions.deprecatedModeTwo) {
+            case SOCDMode::SOCD_MODE_UP_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO; break;
+            }
+            case SOCDMode::SOCD_MODE_NEUTRAL: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL; break;
+            }
+            case SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_BYPASS: {
+                actions[socdSliderOptions.deprecatedPinTwo] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
+            }
+            default: break;
+        }
+        socdSliderOptions.deprecatedPinTwo = -1;
+    }
+    else if (isValidPin(PIN_SLIDER_SOCD_TWO)) {
+        switch (SLIDER_SOCD_SLOT_TWO) {
+            case SOCDMode::SOCD_MODE_UP_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO; break;
+            }
+            case SOCDMode::SOCD_MODE_NEUTRAL: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_NEUTRAL; break;
+            }
+            case SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_FIRST_WIN; break;
+            }
+            case SOCDMode::SOCD_MODE_BYPASS: {
+                actions[PIN_SLIDER_SOCD_TWO] = GpioAction::SUSTAIN_SOCD_MODE_BYPASS; break;
+            }
+            default: break;
+        }
+    }
+
+    // flag additional pins as being used by an addon not managed here
+    const auto markAddonPinIfUsed = [&](Pin_t gpPin) -> void {
+        if (isValidPin(gpPin)) actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
+    };
+    markAddonPinIfUsed(config.displayOptions.i2cSCLPin);
+    markAddonPinIfUsed(config.displayOptions.i2cSDAPin);
+    markAddonPinIfUsed(config.ledOptions.dataPin);
+    markAddonPinIfUsed(config.ledOptions.pledPin1);
+    markAddonPinIfUsed(config.ledOptions.pledPin2);
+    markAddonPinIfUsed(config.ledOptions.pledPin3);
+    markAddonPinIfUsed(config.ledOptions.pledPin4);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinX);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinY);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinX);
+    markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinY);
+    markAddonPinIfUsed(config.addonOptions.buzzerOptions.pin);
+    markAddonPinIfUsed(config.addonOptions.focusModeOptions.pin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.ledPin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.buttonPin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupDialPin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn1Pin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn2Pin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn3Pin);
+    markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn4Pin);
+    markAddonPinIfUsed(config.addonOptions.reverseOptions.buttonPin);
+    markAddonPinIfUsed(config.addonOptions.reverseOptions.ledPin);
+    markAddonPinIfUsed(config.addonOptions.analogADS1219Options.i2cSCLPin);
+    markAddonPinIfUsed(config.addonOptions.analogADS1219Options.i2cSDAPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tilt1Pin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tilt2Pin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltFunctionPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogUpPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogDownPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogLeftPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogRightPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltRightAnalogUpPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltRightAnalogDownPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltRightAnalogLeftPin);
+    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltRightAnalogRightPin);
+    markAddonPinIfUsed(config.addonOptions.wiiOptions.i2cSCLPin);
+    markAddonPinIfUsed(config.addonOptions.wiiOptions.i2cSDAPin);
+    markAddonPinIfUsed(config.addonOptions.snesOptions.clockPin);
+    markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
+    markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
+    markAddonPinIfUsed(config.addonOptions.keyboardHostOptions.pin5V);
+    markAddonPinIfUsed(config.addonOptions.keyboardHostOptions.pinDplus);
+    if (isValidPin(config.addonOptions.keyboardHostOptions.pinDplus))
+        actions[config.addonOptions.keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+    markAddonPinIfUsed(config.addonOptions.psPassthroughOptions.pin5V);
+    markAddonPinIfUsed(config.addonOptions.psPassthroughOptions.pinDplus);
+    if (isValidPin(config.addonOptions.psPassthroughOptions.pinDplus))
+        actions[config.addonOptions.psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+    markAddonPinIfUsed(config.addonOptions.macroOptions.pin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[0].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[1].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[2].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[3].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[4].macroTriggerPin);
+    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[5].macroTriggerPin);
+
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin00, actions[0]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin01, actions[1]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin02, actions[2]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin03, actions[3]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin04, actions[4]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin05, actions[5]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin06, actions[6]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin07, actions[7]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin08, actions[8]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin09, actions[9]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin10, actions[10]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin11, actions[11]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin12, actions[12]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin13, actions[13]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin14, actions[14]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin15, actions[15]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin16, actions[16]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin17, actions[17]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin18, actions[18]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin19, actions[19]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin20, actions[20]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin21, actions[21]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin22, actions[22]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin23, actions[23]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin24, actions[24]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin25, actions[25]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin26, actions[26]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin27, actions[27]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin28, actions[28]);
+    INIT_UNSET_PROPERTY(config.gpioMappings, pin29, actions[29]);
+
+    config.migrations.gpioMappingsMigrated = true;
+}
 
 // populate existing configurations' buttonsMask and auxMask to mirror behavior
 // from the behavior before this code merged. totally new configs get their
@@ -580,6 +953,8 @@ void hotkeysMigration(Config& config)
 	INIT_UNSET_PROPERTY(hotkeys.hotkey08, auxMask, 0);
 	INIT_UNSET_PROPERTY(hotkeys.hotkey08, buttonsMask, GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1);
     }
+
+    config.migrations.hotkeysMigrated = true;
 }
 
 // -----------------------------------------------------
@@ -665,7 +1040,8 @@ void ConfigUtils::load(Config& config)
     }
 
     // run migrations
-    hotkeysMigration(config);
+    if (!config.migrations.hotkeysMigrated) hotkeysMigration(config);
+    if (!config.migrations.gpioMappingsMigrated) gpioMappingsMigrationCore(config);
 
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
@@ -697,18 +1073,47 @@ static void setHasFlags(const pb_msgdesc_t* fields, void* s)
         // Not implemented for extension fields
         assert(PB_LTYPE(iter.type) != PB_LTYPE_EXTENSION);
 
-        if (PB_HTYPE(iter.type) == PB_HTYPE_OPTIONAL && iter.pSize)
+        switch (PB_HTYPE(iter.type))
         {
-            *reinterpret_cast<char*>(iter.pSize) = true;
-        }
+            case PB_HTYPE_OPTIONAL:
+            {
+                *reinterpret_cast<bool*>(iter.pSize) = true;
 
-        // Recurse into sub-messages
-        if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
-        {
-            assert(iter.submsg_desc);
-            assert(iter.pData);
+                // Recurse into sub-messages
+                if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
+                {
+                    assert(iter.submsg_desc);
+                    assert(iter.pData);
 
-            setHasFlags(iter.submsg_desc, iter.pData);
+                    setHasFlags(iter.submsg_desc, iter.pData);
+                }
+                break;
+            }
+
+            case PB_HTYPE_REPEATED:
+            {
+                // Recurse into sub-messages
+                if (PB_LTYPE(iter.type) == PB_LTYPE_SUBMESSAGE)
+                {
+                    assert(iter.submsg_desc);
+                    assert(iter.pData);
+                    assert(iter.pSize);
+
+                    const pb_size_t array_size = *reinterpret_cast<pb_size_t*>(iter.pSize);
+                    pb_byte_t* item_ptr = reinterpret_cast<pb_byte_t*>(iter.pData);
+                    for (pb_size_t index = 0; index < array_size; ++index)
+                    {
+                        setHasFlags(iter.submsg_desc, item_ptr);
+                        item_ptr += iter.data_size;
+                    }
+                }
+                break;
+            }
+
+            default:
+                // We do not support any other htypes of fields
+                assert(false);
+                continue;
         }
     } while (pb_field_iter_next(&iter));
 }
@@ -791,7 +1196,7 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 #define TO_JSON_BYTES(fieldname, submessageType) str.push_back('"'); str.append(Base64::Encode(reinterpret_cast<const char*>(s.fieldname.bytes), s.fieldname.size)); str.push_back('"');
 #define TO_JSON_MESSAGE(fieldname, submessageType) PREPROCESSOR_JOIN(toJSON, submessageType)(str, s.fieldname, indentLevel + 1);
 
-#define TO_JSON_REPEATED_RENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname[i]));
+#define TO_JSON_REPEATED_ENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname[i]));
 #define TO_JSON_REPEATED_UENUM(fieldname, submessageType) appendAsString(str, static_cast<uint32_t>(s.fieldname[i]));
 #define TO_JSON_REPEATED_INT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
 #define TO_JSON_REPEATED_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);

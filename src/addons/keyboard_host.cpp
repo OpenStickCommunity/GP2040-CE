@@ -69,8 +69,10 @@ void KeyboardHostAddon::preprocess() {
   gamepad->state.ly       |= _keyboard_host_state.ly;
   gamepad->state.rx       |= _keyboard_host_state.rx;
   gamepad->state.ry       |= _keyboard_host_state.ry;
-  gamepad->state.lt       |= _keyboard_host_state.lt;
-  gamepad->state.rt       |= _keyboard_host_state.rt;
+  if (!gamepad->hasAnalogTriggers) {
+    gamepad->state.lt       |= _keyboard_host_state.lt;
+    gamepad->state.rt       |= _keyboard_host_state.rt;
+  }
 }
 
 void KeyboardHostAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
@@ -113,12 +115,14 @@ uint8_t KeyboardHostAddon::getKeycodeFromModifier(uint8_t modifier) {
 // convert hid keycode to ascii and print via usb device CDC (ignore non-printable)
 void KeyboardHostAddon::process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
 {
+  uint16_t joystickMid = GetJoystickMidValue(Storage::getInstance().getGamepadOptions().inputMode);
+
   _keyboard_host_state.dpad = 0;
   _keyboard_host_state.buttons = 0;
-  _keyboard_host_state.lx = GAMEPAD_JOYSTICK_MID;
-  _keyboard_host_state.ly = GAMEPAD_JOYSTICK_MID;
-  _keyboard_host_state.rx = GAMEPAD_JOYSTICK_MID;
-  _keyboard_host_state.ry = GAMEPAD_JOYSTICK_MID;
+  _keyboard_host_state.lx = joystickMid;
+  _keyboard_host_state.ly = joystickMid;
+  _keyboard_host_state.rx = joystickMid;
+  _keyboard_host_state.ry = joystickMid;
   _keyboard_host_state.lt = 0;
   _keyboard_host_state.rt = 0;
 
@@ -152,13 +156,6 @@ void KeyboardHostAddon::process_kbd_report(uint8_t dev_addr, hid_keyboard_report
           | ((keycode == _keyboard_host_mapButtonA1.key)  ? _keyboard_host_mapButtonA1.buttonMask  : _keyboard_host_state.buttons)
           | ((keycode == _keyboard_host_mapButtonA2.key)  ? _keyboard_host_mapButtonA2.buttonMask  : _keyboard_host_state.buttons)
         ;
-
-        _keyboard_host_state.lx = GAMEPAD_JOYSTICK_MID;
-        _keyboard_host_state.ly = GAMEPAD_JOYSTICK_MID;
-        _keyboard_host_state.rx = GAMEPAD_JOYSTICK_MID;
-        _keyboard_host_state.ry = GAMEPAD_JOYSTICK_MID;
-        _keyboard_host_state.lt = 0;
-        _keyboard_host_state.rt = 0;
     }
   }
 }

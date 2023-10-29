@@ -58,7 +58,7 @@
 #define HID_MASK_PS       (1U << 12)
 #define HID_MASK_TP       (1U << 13)
 
-// Switch analog sticks only report 8 bits
+// HID analog sticks only report 8 bits
 #define HID_JOYSTICK_MIN 0x00
 #define HID_JOYSTICK_MID 0x80
 #define HID_JOYSTICK_MAX 0xFF
@@ -127,7 +127,7 @@ static const uint8_t hid_string_manufacturer[] = "Open Stick Community";
 static const uint8_t hid_string_product[]      = "GP2040-CE (D-Input)";
 static const uint8_t hid_string_version[]      = "1.0";
 
-static const uint8_t *hid_string_descriptors[] =
+static const uint8_t *hid_string_descriptors[] __attribute__((unused)) =
 {
 	hid_string_language,
 	hid_string_manufacturer,

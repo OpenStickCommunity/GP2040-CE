@@ -69,6 +69,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		},
 
 		displaySaverTimeout: 0,
+		turnOffWhenSuspended: 0,
 	};
 	console.log('data', data);
 	return res.send(data);
@@ -192,6 +193,7 @@ app.get('/api/getLedOptions', (req, res) => {
 		pledPin3: 14,
 		pledPin4: 15,
 		pledColor: 65280,
+		turnOffWhenSuspended: 0,
 	});
 });
 
@@ -226,6 +228,78 @@ app.get('/api/getPinMappings', (req, res) => {
 
 app.get('/api/getKeyMappings', (req, res) =>
 	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
+);
+
+app.get('/api/getWiiControls', (req, res) =>
+    res.send({
+        "nunchuk.analogStick.x.axisType": 1,
+        "nunchuk.analogStick.y.axisType": 2,
+        "nunchuk.buttonC": 1,
+        "nunchuk.buttonZ": 2,
+        "classic.analogLeftStick.x.axisType": 1,
+        "classic.analogLeftStick.y.axisType": 2,
+        "classic.analogRightStick.x.axisType": 3,
+        "classic.analogRightStick.y.axisType": 4,
+        "classic.analogLeftTrigger.axisType": 7,
+        "classic.analogRightTrigger.axisType": 8,
+        "classic.buttonA": 2,
+        "classic.buttonB": 1,
+        "classic.buttonX": 8,
+        "classic.buttonY": 4,
+        "classic.buttonL": 64,
+        "classic.buttonR": 128,
+        "classic.buttonZL": 16,
+        "classic.buttonZR": 32,
+        "classic.buttonMinus": 256,
+        "classic.buttonHome": 4096,
+        "classic.buttonPlus": 512,
+        "classic.buttonUp": 65536,
+        "classic.buttonDown": 131072,
+        "classic.buttonLeft": 262144,
+        "classic.buttonRight": 524288,
+        "guitar.analogStick.x.axisType": 1,
+        "guitar.analogStick.y.axisType": 2,
+        "guitar.analogWhammyBar.axisType": 14,
+        "guitar.buttonOrange": 64,
+        "guitar.buttonRed": 2,
+        "guitar.buttonBlue": 4,
+        "guitar.buttonGreen": 1,
+        "guitar.buttonYellow": 8,
+        "guitar.buttonPedal": 128,
+        "guitar.buttonMinus": 256,
+        "guitar.buttonPlus": 512,
+        "guitar.buttonStrumUp": 65536,
+        "guitar.buttonStrumDown": 131072,
+        "drum.analogStick.x.axisType": 1,
+        "drum.analogStick.y.axisType": 2,
+        "drum.buttonOrange": 64,
+        "drum.buttonRed": 2,
+        "drum.buttonBlue": 8,
+        "drum.buttonGreen": 1,
+        "drum.buttonYellow": 4,
+        "drum.buttonPedal": 128,
+        "drum.buttonMinus": 256,
+        "drum.buttonPlus": 512,
+        "turntable.analogStick.x.axisType": 1,
+        "turntable.analogStick.y.axisType": 2,
+        "turntable.analogLeftTurntable.axisType": 13,
+        "turntable.analogRightTurntable.axisType": 15,
+        "turntable.analogFader.axisType": 7,
+        "turntable.analogEffects.axisType": 8,
+        "turntable.buttonLeftGreen": 262144,
+        "turntable.buttonLeftRed": 65536,
+        "turntable.buttonLeftBlue": 524288,
+        "turntable.buttonRightGreen": 4,
+        "turntable.buttonRightRed": 8,
+        "turntable.buttonRightBlue": 2,
+        "turntable.buttonEuphoria": 32,
+        "turntable.buttonMinus": 256,
+        "turntable.buttonPlus": 512,
+        "taiko.buttonDonLeft": 262144,
+        "taiko.buttonKatLeft": 64,
+        "taiko.buttonDonRight": 1,
+        "taiko.buttonKatRight": 128,
+    }),
 );
 
 app.get('/api/getProfileOptions', (req, res) => {
@@ -281,13 +355,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 	return res.send({
 		turboPin: -1,
 		turboPinLED: -1,
-		sliderPinOne: -1,
-		sliderPinTwo: -1,
 		sliderModeZero: 0,
-		sliderModeOne: 1,
-		sliderModeTwo: 2,
-		sliderSOCDPinOne: -1,
-		sliderSOCDPinTwo: -1,
 		turboShotCount: 20,
 		reversePin: -1,
 		reversePinLED: -1,
@@ -301,15 +369,19 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		i2cAnalog1219Speed: 400000,
 		i2cAnalog1219Address: 0x40,
 		onBoardLedMode: 0,
-		dualDirUpPin: -1,
-		dualDirDownPin: -1,
-		dualDirLeftPin: -1,
-		dualDirRightPin: -1,
 		dualDirDpadMode: 0,
 		dualDirCombineMode: 0,
 		dualDirFourWayMode: 0,
 		tilt1Pin: -1,
+		factorTilt1LeftX: -1,
+		factorTilt1LeftY: -1,
+		factorTilt1RightX: -1,
+		factorTilt1RightY: -1,
 		tilt2Pin: -1,
+		factorTilt2LeftX: -1,
+		factorTilt2LeftY: -1,
+		factorTilt2RightX: -1,
+		factorTilt2RightY: -1,
 		tiltLeftAnalogUpPin: -1,
 		tiltLeftAnalogDownPin: -1,
 		tiltLeftAnalogLeftPin: -1,
@@ -333,8 +405,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		bootselButtonMap: 0,
 		buzzerPin: -1,
 		buzzerVolume: 100,
-		extraButtonPin: -1,
-		extraButtonMap: 0,
 		focusModePin: -1,
 		focusModeButtonLockMask: 0,
 		focusModeButtonLockEnabled: 0,
@@ -356,8 +426,6 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		shmupBtnMask3: 0,
 		shmupBtnMask4: 0,
 		pinShmupDial: -1,
-		sliderSOCDModeOne: 0,
-		sliderSOCDModeTwo: 2,
 		sliderSOCDModeDefault: 1,
 		wiiExtensionSDAPin: -1,
 		wiiExtensionSCLPin: -1,
@@ -374,11 +442,13 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		AnalogInputEnabled: 1,
 		BoardLedAddonEnabled: 1,
 		FocusModeAddonEnabled: 1,
+		focusModeOledLockEnabled: 0,
+		focusModeRgbLockEnabled: 0,
+		focusModeMacroLockEnabled: 0,
 		BuzzerSpeakerAddonEnabled: 1,
 		BootselButtonAddonEnabled: 1,
 		DualDirectionalInputEnabled: 1,
 		TiltInputEnabled: 1,
-		ExtraButtonAddonEnabled: 1,
 		I2CAnalog1219InputEnabled: 1,
 		JSliderInputEnabled: 1,
 		KeyboardHostAddonEnabled: 1,
@@ -394,8 +464,34 @@ app.get('/api/getAddonsOptions', (req, res) => {
 	});
 });
 
+app.get('/api/getMacroAddonOptions', (req, res) => {
+	return res.send({
+		macroList: [
+			{
+				enabled: 1,
+				exclusive: 1,
+				interruptible: 1,
+				showFrames: 1,
+				macroType: 1,
+				useMacroTriggerButton: 0,
+				macroTriggerPin: -1,
+				macroTriggerButton: 0,
+				macroLabel: "Shoryuken",
+				macroInputs: [{ buttonMask: 1 << 19, duration: 16666, waitDuration: 0 }, { buttonMask: 1 << 17, duration: 16666, waitDuration: 0 }, { buttonMask: 1 << 17 | 1 << 19 | 1 << 3, duration: 16666, waitDuration: 0 }]
+			}
+		],
+		macroPin: -1,
+		macroBoardLedEnabled: 1,
+		InputMacroAddonEnabled: 1,
+		usedPins: Object.values(picoController),
+	});
+});
+
 app.get('/api/getFirmwareVersion', (req, res) => {
 	return res.send({
+		boardConfigLabel: "Pico",
+		boardConfigFileName: `GP2040_${process.env.VITE_CURRENT_VERSION}_Pico`,
+		boardConfig: "Pico",
 		version: process.env.VITE_CURRENT_VERSION,
 	});
 });
@@ -432,6 +528,15 @@ app.get('/api/getMemoryReport', (req, res) => {
 		usedHeap: 1048,
 	});
 });
+
+app.get('/api/getHeldPins', async (req, res) => {
+	await new Promise(resolve => setTimeout(resolve, 2000));
+	return res.send({
+		heldPins: [7]
+	});
+});
+
+app.get('/api/abortGetHeldPins', async (req, res) => {return res.send()});
 
 app.post('/api/*', (req, res) => {
 	console.log(req.body);

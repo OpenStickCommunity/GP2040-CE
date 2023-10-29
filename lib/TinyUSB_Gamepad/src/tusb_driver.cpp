@@ -20,7 +20,8 @@
 
 UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
-bool usb_mounted = false;
+static bool usb_mounted = false;
+static bool usb_suspended = false;
 
 InputMode get_input_mode(void)
 {
@@ -30,6 +31,11 @@ InputMode get_input_mode(void)
 bool get_usb_mounted(void)
 {
 	return usb_mounted;
+}
+
+bool get_usb_suspended(void)
+{
+	return usb_suspended;
 }
 
 void initialize_driver(InputMode mode)
@@ -50,16 +56,17 @@ void receive_report(uint8_t *buffer)
 	}
 }
 
-void send_report(void *report, uint16_t report_size)
+bool send_report(void *report, uint16_t report_size)
 {
 	static uint8_t previous_report[CFG_TUD_ENDPOINT0_SIZE] = { };
+
+	bool sent = false;
 
 	if (tud_suspended())
 		tud_remote_wakeup();
 
 	if (memcmp(previous_report, report, report_size) != 0)
 	{
-		bool sent = false;
 		switch (input_mode)
 		{
 			case INPUT_MODE_XINPUT:
@@ -77,6 +84,8 @@ void send_report(void *report, uint16_t report_size)
 		if (sent)
 			memcpy(previous_report, report, report_size);
 	}
+	
+	return sent;
 }
 
 /* USB Driver Callback (Required for XInput) */
@@ -188,9 +197,11 @@ void tud_umount_cb(void)
 void tud_suspend_cb(bool remote_wakeup_en)
 {
 	(void)remote_wakeup_en;
+	usb_suspended = true;
 }
 
 // Invoked when usb bus is resumed
 void tud_resume_cb(void)
 {
+	usb_suspended = false;
 }

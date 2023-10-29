@@ -16,7 +16,7 @@
 
 #include <iterator>
 
-GP2040Aux::GP2040Aux() : nextRuntime(0) {
+GP2040Aux::GP2040Aux() {
 }
 
 GP2040Aux::~GP2040Aux() {
@@ -37,13 +37,7 @@ void GP2040Aux::setup() {
 }
 
 void GP2040Aux::run() {
-	bool configMode = Storage::getInstance().GetConfigMode();
 	while (1) {
-		if (nextRuntime > getMicro()) { // fix for unsigned
-			continue;
-		}
-		
-		addons.ProcessAddons(CORE1_LOOP);	
-		nextRuntime = getMicro() + GAMEPAD_POLL_MICRO;
+		addons.ProcessAddons(CORE1_LOOP);
 	}
 }

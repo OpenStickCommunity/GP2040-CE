@@ -33,9 +33,9 @@ private:
     std::vector<USBAddon*> addons;
     usb_device_t *usb_device;
     uint8_t dataPin;
+    bool tuh_ready;
     bool core0Ready;
     bool core1Ready;
-    bool tuh_ready;
 };
 
 #endif

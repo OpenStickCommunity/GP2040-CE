@@ -73,9 +73,10 @@ private:
 	uint16_t adc_2_x_center = 0;
 	uint16_t adc_2_y_center = 0;
 
-	static float readPin(int pin, uint16_t center, bool autoCalibrate, float deadzone);
+	static float readPin(int pin, uint16_t center, bool autoCalibrate);
 	static uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
-	void adjustCircularity(float& x, float& y);
+	void radialDeadzone(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude);
+	void adjustCircularity(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude);
 };
 
 #endif  // _Analog_H_

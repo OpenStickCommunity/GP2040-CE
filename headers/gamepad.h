@@ -2,6 +2,7 @@
 #define _GAMEPAD_H_
 
 #include "BoardConfig.h"
+#include "types.h"
 #include <string.h>
 
 #include "enums.pb.h"
@@ -21,38 +22,17 @@
 extern uint32_t getMillis();
 extern uint64_t getMicro();
 
-#define GAMEPAD_POLL_MS 1
-#define GAMEPAD_POLL_MICRO 100
-
 #define GAMEPAD_FEATURE_REPORT_SIZE 32
 
 struct GamepadButtonMapping
 {
-	GamepadButtonMapping(uint8_t p, uint16_t bm) : 
-		pin(p < NUM_BANK0_GPIOS ? p : 0xff),
-		pinMask(p < NUM_BANK0_GPIOS? (1 << p) : 0),
+	GamepadButtonMapping(Mask_t bm) :
+		pinMask(0),
 		buttonMask(bm)
 	{}
 
-	uint8_t pin;
 	uint32_t pinMask;
 	const uint16_t buttonMask;
-
-	inline void setPin(uint8_t p)
-	{
-		if (p < NUM_BANK0_GPIOS)
-		{
-			pin = p;
-			pinMask = 1 << p;
-		}
-		else
-		{
-			pin = 0xff;
-			pinMask = 0;
-		}
-	}
-
-	bool isAssigned() const { return pin != 0xff; }
 };
 
 #define GAMEPAD_DIGITAL_INPUT_COUNT 18 // Total number of buttons, including D-pad
@@ -154,8 +134,8 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	GamepadDebouncer debouncer;
 	const uint8_t debounceMS;
+	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;
 	GamepadButtonMapping *mapDpadUp;
@@ -176,7 +156,7 @@ public:
 	GamepadButtonMapping *mapButtonR3;
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
-	GamepadButtonMapping **gamepadMappings;
+	GamepadButtonMapping *mapButtonFn;
 
 	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
 		 return (options.socdMode == SOCD_MODE_BYPASS &&

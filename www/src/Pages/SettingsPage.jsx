@@ -8,7 +8,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
-import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
+import { BUTTON_MASKS, getButtonLabels} from '../Data/Buttons';
 
 const PS4Mode = 4;
 const INPUT_MODES = [
@@ -222,12 +222,7 @@ export default function SettingsPage() {
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
-	const buttonLabelS1 =
-		BUTTONS[buttonLabelType][
-			swapTpShareLabels && buttonLabelType === 'ps4' ? 'A2' : 'S1'
-		];
-	const buttonLabelS2 = BUTTONS[buttonLabelType]['S2'];
-	const buttonLabelA1 = BUTTONS[buttonLabelType]['A1'];
+	const currentButtonLabels= getButtonLabels(buttonLabelType, swapTpShareLabels);
 
 	const { t } = useTranslation('');
 
@@ -397,35 +392,41 @@ export default function SettingsPage() {
 										</Form.Control.Feedback>
 									</div>
 								</Form.Group>
-								<Form.Check
-									label={t('SettingsPage:4-way-joystick-mode-label')}
-									type="switch"
-									id="fourWayMode"
-									isInvalid={false}
-									checked={Boolean(values.fourWayMode)}
-									onChange={(e) => {
-										setFieldValue('fourWayMode', e.target.checked ? 1 : 0);
-									}}
-								/>
+								<div className="row mb-3">
+									<div className="col-sm-3">
+										<Form.Check
+											label={t('SettingsPage:4-way-joystick-mode-label')}
+											type="switch"
+											id="fourWayMode"
+											isInvalid={false}
+											checked={Boolean(values.fourWayMode)}
+											onChange={(e) => {
+												setFieldValue('fourWayMode', e.target.checked ? 1 : 0);
+											}}
+										/>
+									</div>
+								</div>
 								<Form.Group className="row mb-3">
 									<Form.Label>
 										{t('SettingsPage:profile-number-label')}
 									</Form.Label>
 									<div className="col-sm-3">
-										<Form.Control
-											type="number"
-											className="row mb-3"
+										<Form.Select
+											name="profileNumber"
+											className="form-select-sm"
 											value={values.profileNumber}
-											min={1}
-											max={4}
-											isInvalid={false}
-											onChange={(e) => {
-												setFieldValue(
-													'profileNumber',
-													parseInt(e.target.value),
-												);
-											}}
-										></Form.Control>
+											onChange={handleChange}
+											isInvalid={errors.profileNumber}
+										>
+											{[1, 2, 3, 4].map((i) => (
+												<option
+													key={`button-profileNumber-option-${i}`}
+													value={i}
+												>
+													{i}
+												</option>
+											))}
+										</Form.Select>
 									</div>
 								</Form.Group>
 							</Section>
@@ -501,7 +502,7 @@ export default function SettingsPage() {
 																		key={`hotkey-${i}-button${i2}`}
 																		value={o.value}
 																	>
-																		{o.label}
+																		{ (o.label in currentButtonLabels)? currentButtonLabels[o.label]:o.label}
 																	</option>
 																))}
 															</Form.Select>
@@ -531,7 +532,7 @@ export default function SettingsPage() {
 															key={`hotkey-${i}-buttonZero-${i2}`}
 															value={o.value}
 														>
-															{o.label}
+														{ (o.label in currentButtonLabels)? currentButtonLabels[o.label]:o.label}
 														</option>
 													))}
 												</Form.Select>

@@ -28,6 +28,10 @@
 #define FOCUS_MODE_BUTTON_LOCK_ENABLED 0
 #endif
 
+#ifndef FOCUS_MODE_MACRO_LOCK_ENABLED
+#define FOCUS_MODE_MACRO_LOCK_ENABLED 1
+#endif
+
 // FocusMode Module Name
 #define FocusModeName "FocusMode"
 

@@ -6,8 +6,15 @@
 #pragma once
 
 #include <stdint.h>
+#include <list>
+using namespace std;
 #include "GamepadEnums.h"
 #include "enums.pb.h"
+
+#include "gamepad/descriptors/HIDDescriptors.h"
+#include "gamepad/descriptors/SwitchDescriptors.h"
+#include "gamepad/descriptors/XInputDescriptors.h"
+#include "gamepad/descriptors/PS4Descriptors.h"
 
 #define GAMEPAD_BUTTON_COUNT 14
 
@@ -74,6 +81,10 @@
 #define GAMEPAD_JOYSTICK_MID 0x7FFF
 #define GAMEPAD_JOYSTICK_MAX 0xFFFF
 
+#define GAMEPAD_TRIGGER_MIN 0
+#define GAMEPAD_TRIGGER_MID 0x7F
+#define GAMEPAD_TRIGGER_MAX 0xFF
+
 /**
  * @brief AUX defines --- gamepad state that doesn't translate to an output button/dpad/etc.
  */
@@ -118,8 +129,32 @@ struct GamepadState
 	uint8_t rt {0};
 };
 
+// Move the values for the 8-bit modes to the MSB of a 16-bit for conversion later
+// Resolves issues where 0x80 is center and 0x7F is not
+inline uint16_t GetJoystickMidValue(uint8_t mode) {
+    switch (mode) {
+        case INPUT_MODE_XINPUT:
+            return GAMEPAD_JOYSTICK_MID;
+
+        case INPUT_MODE_SWITCH:
+            return SWITCH_JOYSTICK_MID << 8;
+
+        case INPUT_MODE_HID:
+            return HID_JOYSTICK_MID << 8;
+
+        case INPUT_MODE_KEYBOARD:
+            return HID_JOYSTICK_MID << 8;
+
+        case INPUT_MODE_PS4:
+            return PS4_JOYSTICK_MID << 8;
+
+        default:
+            return GAMEPAD_JOYSTICK_MID;
+    }
+}
+
 // Convert the horizontal GamepadState dpad axis value into an analog value
-inline uint16_t dpadToAnalogX(uint8_t dpad)
+inline uint16_t dpadToAnalogX(uint8_t dpad, uint8_t mode)
 {
 	switch (dpad & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT))
 	{
@@ -130,12 +165,12 @@ inline uint16_t dpadToAnalogX(uint8_t dpad)
 			return GAMEPAD_JOYSTICK_MAX;
 
 		default:
-			return GAMEPAD_JOYSTICK_MID;
+			return GetJoystickMidValue(mode);
 	}
 }
 
 // Convert the vertical GamepadState dpad axis value into an analog value
-inline uint16_t dpadToAnalogY(uint8_t dpad)
+inline uint16_t dpadToAnalogY(uint8_t dpad, uint8_t mode)
 {
 	switch (dpad & (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN))
 	{
@@ -146,32 +181,43 @@ inline uint16_t dpadToAnalogY(uint8_t dpad)
 			return GAMEPAD_JOYSTICK_MAX;
 
 		default:
-			return GAMEPAD_JOYSTICK_MID;
+			return GetJoystickMidValue(mode);
 	}
 }
 
-/**
- * @brief DRY method used in filtering diagonals for 4-way mode, checks two adjacent directions
- * and tracks how they toggle.
- *
- * @param dir_a Direction state A to track.
- * @param dir_mask_a Dpad mask state A to check/deselect.
- * @param dir_b Direction state B to track.
- * @param dir_mask_b Dpad mask state B to check/deselect.
- * @param state History for this diagonal (affects which cardinal to deselect).
- * @return uint8_t The modified dpad
- */
-inline uint8_t diagonal_check(uint8_t dpad, DpadDirection dir_a, uint16_t dir_mask_a, DpadDirection dir_b,
-		uint16_t dir_mask_b, DpadDirection* state) {
-	uint8_t newDpad = ~0;
-	if ((dpad & (dir_mask_a | dir_mask_b)) == (dir_mask_a | dir_mask_b)) {
-		newDpad = (*state == dir_a) ? ~dir_mask_a : ~dir_mask_b;
-	} else if ((dpad & (dir_mask_a | dir_mask_b)) == dir_mask_a) {
-		*state = dir_a;
-	} else if ((dpad & (dir_mask_a | dir_mask_b)) == dir_mask_b) {
-		*state = dir_b;
+inline uint8_t getMaskFromDirection(DpadDirection direction)
+{
+	return dpadMasks[direction-1];
+}
+
+inline uint8_t updateDpad(uint8_t dpad, DpadDirection direction)
+{
+	static bool inList[] = {false, false, false, false, false}; // correspond to DpadDirection: none, up, down, left, right
+	static list<DpadDirection> dpadList;
+
+	if(dpad & getMaskFromDirection(direction))
+	{
+		if(!inList[direction])
+		{
+			dpadList.push_back(direction);
+			inList[direction] = true;
+		}
 	}
-	return newDpad;
+	else
+	{
+		if(inList[direction])
+		{
+			dpadList.remove(direction);
+			inList[direction] = false;
+		}
+	}
+
+	if(dpadList.empty()) {
+		return 0;
+	}
+	else {
+		return getMaskFromDirection(dpadList.back());
+	}
 }
 
 /**
@@ -184,17 +230,10 @@ inline uint8_t diagonal_check(uint8_t dpad, DpadDirection dir_a, uint16_t dir_ma
  */
 inline uint8_t filterToFourWayMode(uint8_t dpad)
 {
-	static DpadDirection lastUL = DIRECTION_NONE;
-	static DpadDirection lastUR = DIRECTION_NONE;
-	static DpadDirection lastDR = DIRECTION_NONE;
-	static DpadDirection lastDL = DIRECTION_NONE;
-
-	dpad &= diagonal_check(dpad, DIRECTION_LEFT, GAMEPAD_MASK_LEFT, DIRECTION_UP, GAMEPAD_MASK_UP, &lastUL);
-	dpad &= diagonal_check(dpad, DIRECTION_UP, GAMEPAD_MASK_UP, DIRECTION_RIGHT, GAMEPAD_MASK_RIGHT, &lastUR);
-	dpad &= diagonal_check(dpad, DIRECTION_RIGHT, GAMEPAD_MASK_RIGHT, DIRECTION_DOWN, GAMEPAD_MASK_DOWN, &lastDR);
-	dpad &= diagonal_check(dpad, DIRECTION_DOWN, GAMEPAD_MASK_DOWN, DIRECTION_LEFT, GAMEPAD_MASK_LEFT, &lastDL);
-
-	return dpad;
+	updateDpad(dpad, DIRECTION_UP);
+	updateDpad(dpad, DIRECTION_DOWN);
+	updateDpad(dpad, DIRECTION_LEFT);
+	return updateDpad(dpad, DIRECTION_RIGHT);
 }
 
 /**

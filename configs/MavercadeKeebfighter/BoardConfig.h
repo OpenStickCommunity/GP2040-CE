@@ -8,6 +8,8 @@
 
 #include "enums.pb.h"
 
+#define BOARD_CONFIG_LABEL "Mavercade Keebfighter"
+
 // Mapping between Mavercade Keebfighter switch number (as silkscreened) and GPIO pin
 
 #define FLATBOX_SW1_PIN    14
@@ -247,7 +249,6 @@
 
 // Extra Button Add-on setting
 
-#define EXTRA_BUTTON_ENABLED 1
 #define EXTRA_BUTTON_MASK GAMEPAD_MASK_DU // 0 means none, get other mask from GamepadState.h
                                           // For directions, use GAMEPAD_MASK_DU, GAMEPAD_MASK_DD, GAMEPAD_MASK_DL and GAMEPAD_MASK_DR
 #define EXTRA_BUTTON_PIN 1

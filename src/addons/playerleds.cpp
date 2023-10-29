@@ -9,6 +9,7 @@
 #include "hardware/pwm.h"
 #include "GamepadEnums.h"
 #include "xinput_driver.h"
+#include "usb_driver.h"
 
 // GP2040 Includes
 #include "addons/pleds.h"
@@ -83,6 +84,8 @@ bool PlayerLEDAddon::available() {
 
 void PlayerLEDAddon::setup() {
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+	turnOffWhenSuspended = ledOptions.turnOffWhenSuspended;
+
 	switch (ledOptions.pledType)
 	{
 		case PLED_TYPE_PWM:
@@ -99,6 +102,8 @@ void PlayerLEDAddon::setup() {
 
 void PlayerLEDAddon::process()
 {
+	if (turnOffWhenSuspended && get_usb_suspended()) return;
+
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
 
@@ -108,12 +113,9 @@ void PlayerLEDAddon::process()
 		if (pwmLEDs != nullptr)
 			pwmLEDs->display();
 
-		switch (gamepad->getOptions().inputMode)
-		{
-			case INPUT_MODE_XINPUT:
-				animationState = getXInputAnimationPWM(featureData);
-				break;
-		}
+		if (gamepad->getOptions().inputMode == INPUT_MODE_XINPUT)
+			animationState = getXInputAnimationPWM(featureData);
+
 		if (pwmLEDs != nullptr && animationState.animation != PLED_ANIM_NONE)
 			pwmLEDs->animate(animationState);
 	}

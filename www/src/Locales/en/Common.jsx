@@ -23,6 +23,7 @@ export default {
 	'switch-enabled': 'Enabled',
 	'lock-oled-screen': 'Lock OLED Screen',
 	'lock-rgb-led': 'Lock RGB LED',
+	'lock-macro': 'Lock Macro',
 	'lock-buttons': 'Lock Buttons',
 	'loading-text': 'Loading...',
 };

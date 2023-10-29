@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { intToHex, hexToInt, rgbIntToHex } from './Utilities';
+import { hexToInt, rgbIntToHex } from './Utilities';
 
-const baseUrl =
-	process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8080';
+export const baseUrl =
+	process.env.NODE_ENV === 'production'
+		? ''
+		: import.meta.env.VITE_DEV_BASE_URL;
 
 export const baseButtonMappings = {
 	Up: { pin: -1, key: 0, error: null },
@@ -71,6 +73,75 @@ export const baseProfileOptions = {
 			R2: { pin: -1, key: 0, error: null },
 		},
 	],
+};
+
+export const baseWiiControls = {
+	'nunchuk.analogStick.axisType': 1,
+	'nunchuk.buttonC': 1,
+	'nunchuk.buttonZ': 2,
+	'classic.analogLeftStick.x.axisType': 1,
+	'classic.analogLeftStick.y.axisType': 2,
+	'classic.analogRightStick.x.axisType': 3,
+	'classic.analogRightStick.y.axisType': 4,
+	'classic.analogLeftTrigger.axisType': 7,
+	'classic.analogRightTrigger.axisType': 8,
+	'classic.buttonA': 2,
+	'classic.buttonB': 1,
+	'classic.buttonX': 8,
+	'classic.buttonY': 4,
+	'classic.buttonL': 64,
+	'classic.buttonR': 128,
+	'classic.buttonZL': 16,
+	'classic.buttonZR': 32,
+	'classic.buttonMinus': 256,
+	'classic.buttonHome': 4096,
+	'classic.buttonPlus': 512,
+	'classic.buttonUp': 65536,
+	'classic.buttonDown': 131072,
+	'classic.buttonLeft': 262144,
+	'classic.buttonRight': 524288,
+	'guitar.analogStick.x.axisType': 1,
+	'guitar.analogStick.y.axisType': 2,
+	'guitar.analogWhammyBar.axisType': 14,
+	'guitar.buttonOrange': 64,
+	'guitar.buttonRed': 2,
+	'guitar.buttonBlue': 4,
+	'guitar.buttonGreen': 1,
+	'guitar.buttonYellow': 8,
+	'guitar.buttonPedal': 128,
+	'guitar.buttonMinus': 256,
+	'guitar.buttonPlus': 512,
+	'guitar.buttonStrumUp': 65536,
+	'guitar.buttonStrumDown': 131072,
+	'drum.analogStick.x.axisType': 1,
+	'drum.analogStick.y.axisType': 2,
+	'drum.buttonOrange': 64,
+	'drum.buttonRed': 2,
+	'drum.buttonBlue': 8,
+	'drum.buttonGreen': 1,
+	'drum.buttonYellow': 4,
+	'drum.buttonPedal': 128,
+	'drum.buttonMinus': 256,
+	'drum.buttonPlus': 512,
+	'turntable.analogStick.x.axisType': 1,
+	'turntable.analogStick.y.axisType': 2,
+	'turntable.analogLeftTurntable.axisType': 13,
+	'turntable.analogRightTurntable.axisType': 15,
+	'turntable.analogFader.axisType': 7,
+	'turntable.analogEffects.axisType': 8,
+	'turntable.buttonLeftGreen': 262144,
+	'turntable.buttonLeftRed': 65536,
+	'turntable.buttonLeftBlue': 524288,
+	'turntable.buttonRightGreen': 4,
+	'turntable.buttonRightRed': 8,
+	'turntable.buttonRightBlue': 2,
+	'turntable.buttonEuphoria': 32,
+	'turntable.buttonMinus': 256,
+	'turntable.buttonPlus': 512,
+	'taiko.buttonDonLeft': 262144,
+	'taiko.buttonKatLeft': 64,
+	'taiko.buttonDonRight': 1,
+	'taiko.buttonKatRight': 128,
 };
 
 async function resetSettings() {
@@ -268,22 +339,6 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getPinMappings(setLoading) {
-	setLoading(true);
-
-	try {
-		const response = await axios.get(`${baseUrl}/api/getPinMappings`);
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(response.data))
-			mappings[prop].pin = parseInt(response.data[prop]);
-
-		return mappings;
-	} catch (error) {
-		console.error(error);
-		return false;
-	}
-}
-
 async function setPinMappings(mappings) {
 	let data = {};
 	Object.keys(mappings).map(
@@ -421,9 +476,67 @@ async function setAddonsOptions(options) {
 		});
 }
 
+async function getMacroAddonOptions(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getMacroAddonOptions`);
+		const data = response.data;
+		setLoading(false);
+
+		return data;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
+}
+
+async function setMacroAddonOptions(options) {
+	return axios
+		.post(`${baseUrl}/api/setMacroAddonOptions`, sanitizeRequest(options))
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
 async function setPS4Options(options) {
 	return axios
 		.post(`${baseUrl}/api/setPS4Options`, options)
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
+async function getWiiControls(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getWiiControls`);
+		setLoading(false);
+
+		let mappings = { ...baseWiiControls, ...response.data };
+		return mappings;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
+}
+
+async function setWiiControls(mappings) {
+	console.dir(mappings);
+
+	return axios
+		.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -473,6 +586,26 @@ async function getUsedPins(setLoading) {
 	}
 }
 
+async function getHeldPins(abortSignal) {
+	try {
+		const response = await axios.get(`${baseUrl}/api/getHeldPins`, {
+			signal: abortSignal,
+		});
+		return response.data;
+	} catch (error) {
+		if (error?.code === 'ERR_CANCELED') return { canceled: true };
+		else console.error(error);
+	}
+}
+
+async function abortGetHeldPins() {
+	try {
+		await axios.get(`${baseUrl}/api/abortGetHeldPins`);
+	} catch (error) {
+		// Expected to fail
+	}
+}
+
 async function reboot(bootMode) {
 	return axios
 		.post(`${baseUrl}/api/reboot`, { bootMode })
@@ -500,7 +633,6 @@ const WebApi = {
 	setLedOptions,
 	getCustomTheme,
 	setCustomTheme,
-	getPinMappings,
 	setPinMappings,
 	getProfileOptions,
 	setProfileOptions,
@@ -508,12 +640,18 @@ const WebApi = {
 	setKeyMappings,
 	getAddonsOptions,
 	setAddonsOptions,
+	getMacroAddonOptions,
+	setMacroAddonOptions,
 	setPS4Options,
+	getWiiControls,
+	setWiiControls,
 	getSplashImage,
 	setSplashImage,
 	getFirmwareVersion,
 	getMemoryReport,
 	getUsedPins,
+	getHeldPins,
+	abortGetHeldPins,
 	reboot,
 };
 

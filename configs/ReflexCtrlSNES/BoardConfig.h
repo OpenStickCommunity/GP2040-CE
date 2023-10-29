@@ -8,6 +8,10 @@
 
 #include "enums.pb.h"
 
+#define BOARD_CONFIG_LABEL "Reflex Ctrl SNES"
+
+#define DEFAULT_INPUT_MODE INPUT_MODE_SWITCH
+
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.
@@ -26,12 +30,12 @@
 #define PIN_BUTTON_L2   9           // L2 / LT / ZL / L2 / 7 / K4
 #define PIN_BUTTON_B3   10          // B3 / X / Y / Square / 1 / P1
 #define PIN_BUTTON_B4   11          // B4 / Y / X / Triangle / 4 / P2
-#define PIN_BUTTON_R1   12          // R1 / RB / R / R1 / 6 / P3
-#define PIN_BUTTON_L1   13          // L1 / LB / L / L1 / 5 / P4
+#define PIN_BUTTON_R1   19          // R1 / RB / R / R1 / 6 / P3
+#define PIN_BUTTON_L1   18          // L1 / LB / L / L1 / 5 / P4
 #define PIN_BUTTON_S1   16          // S1 / Back / Minus / Select / 9 / Coin
 #define PIN_BUTTON_S2   17          // S2 / Start / Plus / Start / 10 / Start
-#define PIN_BUTTON_L3   18          // L3 / LS / LS / L3 / 11 / LS
-#define PIN_BUTTON_R3   19          // R3 / RS / RS / R3 / 12 / RS
+#define PIN_BUTTON_L3   12          // L3 / LS / LS / L3 / 11 / LS
+#define PIN_BUTTON_R3   13          // R3 / RS / RS / R3 / 12 / RS
 #define PIN_BUTTON_A1   20          // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   21          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_FN   -1          // Hotkey Function
@@ -82,9 +86,7 @@
 // The default LEDS_[BUTTON] is an order and has nothing to do with what GPIO pin something is connected to.
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
-#define TURBO_LED_PIN 15
-
-#define BOARD_LEDS_PIN 28
+#define TURBO_LED_PIN -1
 
 #define LED_BRIGHTNESS_MAXIMUM 150
 #define LED_BRIGHTNESS_STEPS 5

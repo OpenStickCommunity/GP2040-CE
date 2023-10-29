@@ -8,6 +8,8 @@
 
 #include "enums.pb.h"
 
+#define BOARD_CONFIG_LABEL "Pico"
+
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too. 
 // You can set any of the main pins as `-1` to disable it.
@@ -224,6 +226,7 @@
 //                  on the current mode (config, normal, or no USB data)
 // INPUT_TEST     - Blinks whenever any input is made
 
+#define BOARD_LED_ENABLED 0
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
 
 // Dual Directional Add-on Options
@@ -237,7 +240,15 @@
 
 // TILTAdd-on Options
 #define PIN_TILT_1 -1
+#define TILT1_FACTOR_LEFT_X  35  //Default value for the TILT button to function.
+#define TILT1_FACTOR_LEFT_Y 35 //Default value for the TILT button to function.
+#define TILT1_FACTOR_RIGHT_X 35  //Default value for the TILT button to function.
+#define TILT1_FACTOR_RIGHT_Y 35 //Default value for the TILT button to function.
 #define PIN_TILT_2 -1
+#define TILT2_FACTOR_LEFT_X  65  //Default value for the TILT button to function.
+#define TILT2_FACTOR_LEFT_Y  65  //Default value for the TILT button to function.
+#define TILT2_FACTOR_RIGHT_X 65  //Default value for the TILT button to function.
+#define TILT2_FACTOR_RIGHT_Y 65  //Default value for the TILT button to function.
 #define PIN_TILT_FUNCTION -1
 #define PIN_TILT_LEFT_ANALOG_UP -1
 #define PIN_TILT_LEFT_ANALOG_DOWN -1

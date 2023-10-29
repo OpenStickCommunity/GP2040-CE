@@ -94,11 +94,14 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} exact="true" to="/add-ons">
 							{t('Navigation:add-ons-label')}
 						</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} exact="true" to="/macro">
+							{t('Navigation:macro-label')}
+						</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact="true" to="/backup">
 							{t('Navigation:backup-label')}
 						</NavDropdown.Item>
 					</NavDropdown>
-					<NavDropdown title="Links">
+					<NavDropdown title={t('Navigation:links-label')}>
 						<NavDropdown.Item href="https://gp2040-ce.info/" target="_blank">
 							{t('Navigation:docs-label')}
 						</NavDropdown.Item>

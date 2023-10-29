@@ -12,6 +12,9 @@ import CustomTheme from './CustomTheme';
 import BackupPage from './BackupPage';
 import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
+import CaptureButton from './CaptureButton';
+import WiiAddon from './Addons/WiiAddon';
+import InputMacroAddon from './InputMacroAddon';
 
 export default {
 	Common,
@@ -28,4 +31,7 @@ export default {
 	BackupPage,
 	DisplayConfig,
 	AddonsConfig,
+	CaptureButton,
+	WiiAddon,
+	InputMacroAddon,
 };

@@ -135,6 +135,7 @@ export const BUTTONS = {
 		R3: 'R3',
 		A1: 'PS',
 		A2: 'Touchpad',
+		Fn: 'Function',
 	},
 	dinput: {
 		label: 'DirectInput',
@@ -229,3 +230,22 @@ export const BUTTON_MASKS = [
 	{ label: 'Left', value: 1 << 18 },
 	{ label: 'Right', value: 1 << 19 },
 ];
+
+export const ANALOG_PINS = [26, 27, 28, 29];
+
+// deep copy and swp
+export const getButtonLabels = (labelType, swapTpShareLabels = false)=> {
+	const buttons = BUTTONS[labelType];
+
+	if (labelType == 'ps4' && swapTpShareLabels) {
+		const buttonLabelS1 = buttons['S1'];
+		const buttonLabelA2 = buttons['A2'];
+		return {
+			...buttons,
+			"S1": buttonLabelA2,
+			"A2": buttonLabelS1,
+		}
+	} else {
+		return buttons
+	}
+}
