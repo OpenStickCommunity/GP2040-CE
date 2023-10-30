@@ -278,7 +278,7 @@ const MacroComponent = (props) => {
 						isInvalid={false} />
 				</div>
 			</div>
-			<div className="row mt-2">
+			<div className="row mt-2 align-items-center">
 				<div className="col-sm-auto">
 					<Form.Check
 						name={`${key}.useMacroTriggerButton`}
@@ -316,15 +316,17 @@ const MacroComponent = (props) => {
 							min={-1}
 							max={29} />
 					</div>
-					<div className="col-sm-auto px-0">
-						<CaptureButton
-							size="sm"
-							labels={Object.values(buttonNames)}
-							onChange={(e) => { setFieldValue(`${key}.macroTriggerPin`, e); }}
-							buttonName={`Macro Pin ${index + 1}`}/>
-					</div>
+					<div className="col-sm-auto">
+							<CaptureButton
+								small
+								labels={[`Macro Pin ${index + 1}`]}
+								onChange={(label, pin) => {
+									setFieldValue(`${key}.macroTriggerPin`, pin);
+								}}
+							/>
+						</div>
 				</>}
-				<div className="col-sm-auto">
+				<div className="col-sm-auto px-0">
 					<Form.Select
 						name={`${key}.macroType`}
 						className="form-select-sm sm-1"
@@ -377,7 +379,7 @@ export default function SettingsPage() {
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
 	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
-	
+
 	const { t } = useTranslation('');
 
 	const handleCheckbox = async (name, values) => {
@@ -453,7 +455,7 @@ export default function SettingsPage() {
 													handleChange={handleChange}
 													index={i}
 													isMacroPinMapped={values.macroPin != -1}
-													setFieldValue={setFieldValue} 
+													setFieldValue={setFieldValue}
 													buttonNames={buttonNames} />
 												{values.macroList.length == i + 1 ? <></> : <hr className="mt-3" /> }
 											</>,
