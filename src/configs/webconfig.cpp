@@ -7,6 +7,7 @@
 #include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
+#include "types.h"
 
 #include <cstring>
 #include <string>
@@ -103,15 +104,22 @@ static void __attribute__((noinline)) docToPinLegacy(uint8_t& pin, const Dynamic
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) docToPin(int32_t& pin, const DynamicJsonDocument& doc, const char* key)
+static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
+	Pin_t oldPin = pin;
 	if (doc.containsKey(key))
 	{
 		pin = doc[key];
-	}
-	if (!isValidPin(pin))
-	{
-		pin = -1;
+		GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+		if (isValidPin(pin))
+		{
+			*gpioMappings[pin] = GpioAction::ASSIGNED_TO_ADDON;
+		}
+		else
+		{
+			pin = -1;
+			*gpioMappings[oldPin] = GpioAction::NONE;
+		}
 	}
 }
 
@@ -340,36 +348,14 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 {
 	auto usedPins = doc.createNestedArray("usedPins");
 
-	const auto addPinIfValid = [&](int pin)
-	{
-		int numBank0GPIOS = NUM_BANK0_GPIOS;
-		
-		if (pin >= 0 && pin < numBank0GPIOS)
-		{
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		// NOTE: addons in webconfig break by seeing their own pins here; if/when they
+		// are refactored to ignore their own pins from this list, we can include them
+		if (*gpioMappings[pin] != GpioAction::NONE && *gpioMappings[pin] != GpioAction::ASSIGNED_TO_ADDON) {
 			usedPins.add(pin);
 		}
-	};
-
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	addPinIfValid(pinMappings.pinDpadUp);
-	addPinIfValid(pinMappings.pinDpadDown);
-	addPinIfValid(pinMappings.pinDpadLeft);
-	addPinIfValid(pinMappings.pinDpadRight);
-	addPinIfValid(pinMappings.pinButtonB1);
-	addPinIfValid(pinMappings.pinButtonB2);
-	addPinIfValid(pinMappings.pinButtonB3);
-	addPinIfValid(pinMappings.pinButtonB4);
-	addPinIfValid(pinMappings.pinButtonL1);
-	addPinIfValid(pinMappings.pinButtonR1);
-	addPinIfValid(pinMappings.pinButtonL2);
-	addPinIfValid(pinMappings.pinButtonR2);
-	addPinIfValid(pinMappings.pinButtonS1);
-	addPinIfValid(pinMappings.pinButtonS2);
-	addPinIfValid(pinMappings.pinButtonL3);
-	addPinIfValid(pinMappings.pinButtonR3);
-	addPinIfValid(pinMappings.pinButtonA1);
-	addPinIfValid(pinMappings.pinButtonA2);
-	addPinIfValid(pinMappings.pinButtonFn);
+	}
 
 	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
 	// addPinIfValid(boardOptions.i2cSDAPin);
@@ -617,8 +603,13 @@ std::string getGamepadOptions()
 	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
 	writeDoc(doc, "ps4ControllerType", gamepadOptions.ps4ControllerType);
 
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	writeDoc(doc, "fnButtonPin", pinMappings.pinButtonFn);
+	writeDoc(doc, "fnButtonPin", -1);
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
+		if (*gpioMappings[pin] == GpioAction::BUTTON_PRESS_FN) {
+			writeDoc(doc, "fnButtonPin", pin);
+		}
+	}
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	load_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -850,34 +841,19 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	// PinMappings uses -1 to denote unassigned pins
-	const auto convertPin = [&] (const char* key) -> int32_t
-	{
-		int pin = 0;
-		readDoc(pin, doc, key);
-		return isValidPin(pin) ? pin : -1;
-	};
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
 
-	PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	pinMappings.pinDpadUp    = convertPin("Up");
-	pinMappings.pinDpadDown  = convertPin("Down");
-	pinMappings.pinDpadLeft  = convertPin("Left");
-	pinMappings.pinDpadRight = convertPin("Right");
-	pinMappings.pinButtonB1  = convertPin("B1");
-	pinMappings.pinButtonB2  = convertPin("B2");
-	pinMappings.pinButtonB3  = convertPin("B3");
-	pinMappings.pinButtonB4  = convertPin("B4");
-	pinMappings.pinButtonL1  = convertPin("L1");
-	pinMappings.pinButtonR1  = convertPin("R1");
-	pinMappings.pinButtonL2  = convertPin("L2");
-	pinMappings.pinButtonR2  = convertPin("R2");
-	pinMappings.pinButtonS1  = convertPin("S1");
-	pinMappings.pinButtonS2  = convertPin("S2");
-	pinMappings.pinButtonL3  = convertPin("L3");
-	pinMappings.pinButtonR3  = convertPin("R3");
-	pinMappings.pinButtonA1  = convertPin("A1");
-	pinMappings.pinButtonA2  = convertPin("A2");
-	pinMappings.pinButtonFn  = convertPin("Fn");
+	char pinName[6];
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+		snprintf(pinName, 6, "pin%0*d", 2, pin);
+		// setting a pin shouldn't change a new existing addon/reserved pin
+		if (*gpioMappings[pin] != GpioAction::RESERVED &&
+				*gpioMappings[pin] != GpioAction::ASSIGNED_TO_ADDON &&
+				(Pin_t)doc[pinName] != GpioAction::RESERVED &&
+				(Pin_t)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
+			readDoc(*gpioMappings[pin], doc, pinName);
+		}
+	}
 
 	Storage::getInstance().save();
 
@@ -888,26 +864,38 @@ std::string getPinMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
-	const PinMappings& pinMappings = Storage::getInstance().getPinMappings();
-	writeDoc(doc, "Up", cleanPin(pinMappings.pinDpadUp));
-	writeDoc(doc, "Down", cleanPin(pinMappings.pinDpadDown));
-	writeDoc(doc, "Left", cleanPin(pinMappings.pinDpadLeft));
-	writeDoc(doc, "Right", cleanPin(pinMappings.pinDpadRight));
-	writeDoc(doc, "B1", cleanPin(pinMappings.pinButtonB1));
-	writeDoc(doc, "B2", cleanPin(pinMappings.pinButtonB2));
-	writeDoc(doc, "B3", cleanPin(pinMappings.pinButtonB3));
-	writeDoc(doc, "B4", cleanPin(pinMappings.pinButtonB4));
-	writeDoc(doc, "L1", cleanPin(pinMappings.pinButtonL1));
-	writeDoc(doc, "R1", cleanPin(pinMappings.pinButtonR1));
-	writeDoc(doc, "L2", cleanPin(pinMappings.pinButtonL2));
-	writeDoc(doc, "R2", cleanPin(pinMappings.pinButtonR2));
-	writeDoc(doc, "S1", cleanPin(pinMappings.pinButtonS1));
-	writeDoc(doc, "S2", cleanPin(pinMappings.pinButtonS2));
-	writeDoc(doc, "L3", cleanPin(pinMappings.pinButtonL3));
-	writeDoc(doc, "R3", cleanPin(pinMappings.pinButtonR3));
-	writeDoc(doc, "A1", cleanPin(pinMappings.pinButtonA1));
-	writeDoc(doc, "A2", cleanPin(pinMappings.pinButtonA2));
-	writeDoc(doc, "Fn", cleanPin(pinMappings.pinButtonFn));
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+
+	writeDoc(doc, "pin00", *gpioMappings[0]);
+	writeDoc(doc, "pin01", *gpioMappings[1]);
+	writeDoc(doc, "pin02", *gpioMappings[2]);
+	writeDoc(doc, "pin03", *gpioMappings[3]);
+	writeDoc(doc, "pin04", *gpioMappings[4]);
+	writeDoc(doc, "pin05", *gpioMappings[5]);
+	writeDoc(doc, "pin06", *gpioMappings[6]);
+	writeDoc(doc, "pin07", *gpioMappings[7]);
+	writeDoc(doc, "pin08", *gpioMappings[8]);
+	writeDoc(doc, "pin09", *gpioMappings[9]);
+	writeDoc(doc, "pin10", *gpioMappings[10]);
+	writeDoc(doc, "pin11", *gpioMappings[11]);
+	writeDoc(doc, "pin12", *gpioMappings[12]);
+	writeDoc(doc, "pin13", *gpioMappings[13]);
+	writeDoc(doc, "pin14", *gpioMappings[14]);
+	writeDoc(doc, "pin15", *gpioMappings[15]);
+	writeDoc(doc, "pin16", *gpioMappings[16]);
+	writeDoc(doc, "pin17", *gpioMappings[17]);
+	writeDoc(doc, "pin18", *gpioMappings[18]);
+	writeDoc(doc, "pin19", *gpioMappings[19]);
+	writeDoc(doc, "pin20", *gpioMappings[20]);
+	writeDoc(doc, "pin21", *gpioMappings[21]);
+	writeDoc(doc, "pin22", *gpioMappings[22]);
+	writeDoc(doc, "pin23", *gpioMappings[23]);
+	writeDoc(doc, "pin24", *gpioMappings[24]);
+	writeDoc(doc, "pin25", *gpioMappings[25]);
+	writeDoc(doc, "pin26", *gpioMappings[26]);
+	writeDoc(doc, "pin27", *gpioMappings[27]);
+	writeDoc(doc, "pin28", *gpioMappings[28]);
+	writeDoc(doc, "pin29", *gpioMappings[29]);
 
 	return serialize_json(doc);
 }
@@ -973,6 +961,8 @@ std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
+	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
 	docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
 	docToPin(analogOptions.analogAdc1PinY, doc, "analogAdc1PinY");
@@ -996,11 +986,7 @@ std::string setAddonOptions()
 	docToValue(buzzerOptions.volume, doc, "buzzerVolume");
 	docToValue(buzzerOptions.enabled, doc, "BuzzerSpeakerAddonEnabled");
 
-    DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
-	docToPin(dualDirectionalOptions.downPin, doc, "dualDirDownPin");
-	docToPin(dualDirectionalOptions.upPin, doc, "dualDirUpPin");
-	docToPin(dualDirectionalOptions.leftPin, doc, "dualDirLeftPin");
-	docToPin(dualDirectionalOptions.rightPin, doc, "dualDirRightPin");
+	DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
 	docToValue(dualDirectionalOptions.dpadMode, doc, "dualDirDpadMode");
 	docToValue(dualDirectionalOptions.combineMode, doc, "dualDirCombineMode");
 	docToValue(dualDirectionalOptions.fourWayMode, doc, "dualDirFourWayMode");
@@ -1028,11 +1014,6 @@ std::string setAddonOptions()
 	docToValue(tiltOptions.tiltSOCDMode, doc, "tiltSOCDMode");
 	docToValue(tiltOptions.enabled, doc, "TiltInputEnabled");
 
-    ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
-	docToPin(extraButtonOptions.pin, doc, "extraButtonPin");
-	docToValue(extraButtonOptions.buttonMap, doc, "extraButtonMap");
-	docToValue(extraButtonOptions.enabled, doc, "ExtraButtonAddonEnabled");
-
     FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 	docToPin(focusModeOptions.pin, doc, "focusModePin");
 	docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
@@ -1051,12 +1032,8 @@ std::string setAddonOptions()
 	docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
     SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-	docToPin(sliderOptions.pinSliderOne, doc, "sliderPinOne");
-	docToPin(sliderOptions.pinSliderTwo, doc, "sliderPinTwo");
-	docToValue(sliderOptions.modeZero, doc, "sliderModeZero");
-	docToValue(sliderOptions.modeOne, doc, "sliderModeOne");
-	docToValue(sliderOptions.modeTwo, doc, "sliderModeTwo");
-	docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
+    docToValue(sliderOptions.modeDefault, doc, "sliderModeZero");
+    docToValue(sliderOptions.enabled, doc, "JSliderInputEnabled");
 
     PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
 	docToValue(playerNumberOptions.number, doc, "playerNumber");
@@ -1072,12 +1049,8 @@ std::string setAddonOptions()
 	docToValue(reverseOptions.actionRight, doc, "reverseActionRight");
 
     SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-	docToValue(socdSliderOptions.enabled, doc, "SliderSOCDInputEnabled");
-	docToPin(socdSliderOptions.pinOne, doc, "sliderSOCDPinOne");
-	docToPin(socdSliderOptions.pinTwo, doc, "sliderSOCDPinTwo");
-	docToValue(socdSliderOptions.modeOne, doc, "sliderSOCDModeOne");
-	docToValue(socdSliderOptions.modeTwo, doc, "sliderSOCDModeTwo");
-	docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
+    docToValue(socdSliderOptions.enabled, doc, "SliderSOCDInputEnabled");
+    docToValue(socdSliderOptions.modeDefault, doc, "sliderSOCDModeDefault");
 
     OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
 	docToValue(onBoardLedOptions.mode, doc, "onBoardLedMode");
@@ -1122,7 +1095,13 @@ std::string setAddonOptions()
 
 	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
+	Pin_t oldKbPinDplus = keyboardHostOptions.pinDplus;
 	docToPin(keyboardHostOptions.pinDplus, doc, "keyboardHostPinDplus");
+	if (isValidPin(keyboardHostOptions.pinDplus))
+		*gpioMappings[keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+	else if (isValidPin(oldKbPinDplus))
+		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
+		*gpioMappings[oldKbPinDplus+1] = GpioAction::NONE;
 	docToPin(keyboardHostOptions.pin5V, doc, "keyboardHostPin5V");
 	docToValue(keyboardHostOptions.mapping.keyDpadUp, doc, "keyboardHostMap", "Up");
 	docToValue(keyboardHostOptions.mapping.keyDpadDown, doc, "keyboardHostMap", "Down");
@@ -1145,7 +1124,13 @@ std::string setAddonOptions()
 
 	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 	docToValue(psPassthroughOptions.enabled, doc, "PSPassthroughAddonEnabled");
+	Pin_t oldPsPinDplus = psPassthroughOptions.pinDplus;
 	docToPin(psPassthroughOptions.pinDplus, doc, "psPassthroughPinDplus");
+	if (isValidPin(psPassthroughOptions.pinDplus))
+		*gpioMappings[psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+	else if (isValidPin(oldPsPinDplus))
+		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
+		*gpioMappings[oldPsPinDplus+1] = GpioAction::NONE;
 	docToPin(psPassthroughOptions.pin5V, doc, "psPassthroughPin5V");
 
 	Storage::getInstance().save();
@@ -1417,11 +1402,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "buzzerVolume", buzzerOptions.volume);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", buzzerOptions.enabled);
 
-    const DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
-	writeDoc(doc, "dualDirDownPin", cleanPin(dualDirectionalOptions.downPin));
-	writeDoc(doc, "dualDirUpPin", cleanPin(dualDirectionalOptions.upPin));
-	writeDoc(doc, "dualDirLeftPin", cleanPin(dualDirectionalOptions.leftPin));
-	writeDoc(doc, "dualDirRightPin", cleanPin(dualDirectionalOptions.rightPin));
+	const DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
 	writeDoc(doc, "dualDirDpadMode", dualDirectionalOptions.dpadMode);
 	writeDoc(doc, "dualDirCombineMode", dualDirectionalOptions.combineMode);
 	writeDoc(doc, "dualDirFourWayMode", dualDirectionalOptions.fourWayMode);
@@ -1449,11 +1430,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "tiltSOCDMode", tiltOptions.tiltSOCDMode);
 	writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
-    const ExtraButtonOptions& extraButtonOptions = Storage::getInstance().getAddonOptions().extraButtonOptions;
-	writeDoc(doc, "extraButtonPin", cleanPin(extraButtonOptions.pin));
-	writeDoc(doc, "extraButtonMap", extraButtonOptions.buttonMap);
-	writeDoc(doc, "ExtraButtonAddonEnabled", extraButtonOptions.enabled);
-
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
 	writeDoc(doc, "i2cAnalog1219SDAPin", cleanPin(analogADS1219Options.i2cSDAPin));
 	writeDoc(doc, "i2cAnalog1219SCLPin", cleanPin(analogADS1219Options.i2cSCLPin));
@@ -1463,12 +1439,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
     const SliderOptions& sliderOptions = Storage::getInstance().getAddonOptions().sliderOptions;
-	writeDoc(doc, "sliderPinOne", cleanPin(sliderOptions.pinSliderOne));
-	writeDoc(doc, "sliderPinTwo", cleanPin(sliderOptions.pinSliderTwo));
-	writeDoc(doc, "sliderModeZero", sliderOptions.modeZero);
-	writeDoc(doc, "sliderModeOne", sliderOptions.modeOne);
-	writeDoc(doc, "sliderModeTwo", sliderOptions.modeTwo);
-	writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
+    writeDoc(doc, "sliderModeZero", sliderOptions.modeDefault);
+    writeDoc(doc, "JSliderInputEnabled", sliderOptions.enabled);
 
     const PlayerNumberOptions& playerNumberOptions = Storage::getInstance().getAddonOptions().playerNumberOptions;
 	writeDoc(doc, "playerNumber", playerNumberOptions.number);
@@ -1484,12 +1456,8 @@ std::string getAddonOptions()
 	writeDoc(doc, "ReverseInputEnabled", reverseOptions.enabled);
 
     const SOCDSliderOptions& socdSliderOptions = Storage::getInstance().getAddonOptions().socdSliderOptions;
-	writeDoc(doc, "sliderSOCDPinOne", cleanPin(socdSliderOptions.pinOne));
-	writeDoc(doc, "sliderSOCDPinTwo", cleanPin(socdSliderOptions.pinTwo));
-	writeDoc(doc, "sliderSOCDModeOne", socdSliderOptions.modeOne);
-	writeDoc(doc, "sliderSOCDModeTwo", socdSliderOptions.modeTwo);
-	writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
-	writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
+    writeDoc(doc, "sliderSOCDModeDefault", socdSliderOptions.modeDefault);
+    writeDoc(doc, "SliderSOCDInputEnabled", socdSliderOptions.enabled);
 
     const OnBoardLedOptions& onBoardLedOptions = Storage::getInstance().getAddonOptions().onBoardLedOptions;
 	writeDoc(doc, "onBoardLedMode", onBoardLedOptions.mode);

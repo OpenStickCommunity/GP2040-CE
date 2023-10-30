@@ -13,35 +13,14 @@ export const socdScheme = {
 		.number()
 		.required()
 		.label('Slider SOCD Input Enabled'),
-	sliderSOCDModeOne: yup
-		.number()
-		.label('SOCD Slider Mode One')
-		.validateSelectionWhenValue('SliderSOCDInputEnabled', SOCD_MODES),
-	sliderSOCDModeTwo: yup
-		.number()
-		.label('SOCD Slider Mode Two')
-		.validateSelectionWhenValue('SliderSOCDInputEnabled', SOCD_MODES),
 	sliderSOCDModeDefault: yup
 		.number()
 		.label('SOCD Slider Mode Default')
 		.validateSelectionWhenValue('SliderSOCDInputEnabled', SOCD_MODES),
-	sliderSOCDPinOne: yup
-		.number()
-		.label('Slider SOCD Up Priority Pin')
-		.validatePinWhenValue('SliderSOCDInputEnabled'),
-	sliderSOCDPinTwo: yup
-		.number()
-		.label('Slider SOCD Second Priority Pin')
-		.validatePinWhenValue('SliderSOCDInputEnabled'),
 };
 
 export const socdState = {
 	SliderSOCDInputEnabled: 0,
-	sliderSOCDPinOne: -1,
-	sliderSOCDPinTwo: -1,
-
-	sliderSOCDModeOne: 0,
-	sliderSOCDModeTwo: 2,
 	sliderSOCDModeDefault: 1,
 };
 
@@ -56,6 +35,9 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 					<p>
 						{t(
 							'AddonsConfig:socd-cleaning-mode-selection-slider-sub-header-text',
+						)}<br />
+						{t(
+							'AddonsConfig:pin-config-moved-to-core-text',
 						)}
 					</p>
 					<FormSelect
@@ -76,72 +58,6 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 							</option>
 						))}
 					</FormSelect>
-					<FormSelect
-						label={t(
-							'AddonsConfig:socd-cleaning-mode-selection-slider-mode-one-label',
-						)}
-						name="sliderSOCDModeOne"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.sliderSOCDModeOne}
-						error={errors.sliderSOCDModeOne}
-						isInvalid={errors.sliderSOCDModeOne}
-						onChange={handleChange}
-					>
-						{SOCD_MODES.map((o, i) => (
-							<option key={`sliderSOCDModeOne-option-${i}`} value={o.value}>
-								{o.label}
-							</option>
-						))}
-					</FormSelect>
-					<FormControl
-						type="number"
-						label={t(
-							'AddonsConfig:socd-cleaning-mode-selection-slider-pin-one-label',
-						)}
-						name="sliderSOCDPinOne"
-						className="form-select-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={values.sliderSOCDPinOne}
-						error={errors.sliderSOCDPinOne}
-						isInvalid={errors.sliderSOCDPinOne}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormSelect
-						label={t(
-							'AddonsConfig:socd-cleaning-mode-selection-slider-mode-two-label',
-						)}
-						name="sliderSOCDModeTwo"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.sliderSOCDModeTwo}
-						error={errors.sliderSOCDModeTwo}
-						isInvalid={errors.sliderSOCDModeTwo}
-						onChange={handleChange}
-					>
-						{SOCD_MODES.map((o, i) => (
-							<option key={`sliderSOCDModeTwo-option-${i}`} value={o.value}>
-								{o.label}
-							</option>
-						))}
-					</FormSelect>
-					<FormControl
-						type="number"
-						label={t(
-							'AddonsConfig:socd-cleaning-mode-selection-slider-pin-two-label',
-						)}
-						name="sliderSOCDPinTwo"
-						className="form-control-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={values.sliderSOCDPinTwo}
-						error={errors.sliderSOCDPinTwo}
-						isInvalid={errors.sliderSOCDPinTwo}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
 				</Row>
 			</div>
 			<FormCheck

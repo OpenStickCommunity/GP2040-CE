@@ -143,4 +143,5 @@ export default {
 	'pspassthrough-d-plus-label': 'D+',
 	'pspassthrough-d-minus-label': 'D-',
 	'pspassthrough-five-v-label': '5V Power (optional)',
+	'pin-config-moved-to-core-text': 'Note: the pins for this add-on are now configured on the Pin Mapping page.',
 };

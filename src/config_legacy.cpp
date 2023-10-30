@@ -762,8 +762,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
     {
         legacyConfigFound = true;
 
-        PinMappings& pinMappings = config.pinMappings;
-        config.has_pinMappings = true;
+        PinMappings& pinMappings = config.deprecatedPinMappings;
+        config.has_deprecatedPinMappings = true;
         SET_PROPERTY(pinMappings, pinDpadUp, bytePinToIntPin(legacyBoardOptions.pinDpadUp));
         SET_PROPERTY(pinMappings, pinDpadDown, bytePinToIntPin(legacyBoardOptions.pinDpadDown));
         SET_PROPERTY(pinMappings, pinDpadLeft, bytePinToIntPin(legacyBoardOptions.pinDpadLeft));
@@ -965,18 +965,18 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         DualDirectionalOptions& dualDirectionalOptions = config.addonOptions.dualDirectionalOptions;
         config.addonOptions.has_dualDirectionalOptions = true;
         SET_PROPERTY(dualDirectionalOptions, enabled, legacyAddonOptions.DualDirectionalInputEnabled);
-        SET_PROPERTY(dualDirectionalOptions, upPin, bytePinToIntPin(legacyAddonOptions.pinDualDirUp));
-        SET_PROPERTY(dualDirectionalOptions, downPin, bytePinToIntPin(legacyAddonOptions.pinDualDirDown));
-        SET_PROPERTY(dualDirectionalOptions, leftPin, bytePinToIntPin(legacyAddonOptions.pinDualDirLeft));
-        SET_PROPERTY(dualDirectionalOptions, rightPin, bytePinToIntPin(legacyAddonOptions.pinDualDirRight));
+        SET_PROPERTY(dualDirectionalOptions, deprecatedUpPin, bytePinToIntPin(legacyAddonOptions.pinDualDirUp));
+        SET_PROPERTY(dualDirectionalOptions, deprecatedDownPin, bytePinToIntPin(legacyAddonOptions.pinDualDirDown));
+        SET_PROPERTY(dualDirectionalOptions, deprecatedLeftPin, bytePinToIntPin(legacyAddonOptions.pinDualDirLeft));
+        SET_PROPERTY(dualDirectionalOptions, deprecatedRightPin, bytePinToIntPin(legacyAddonOptions.pinDualDirRight));
         if (isValidDpadMode(legacyAddonOptions.dualDirDpadMode))
         {
             SET_PROPERTY(dualDirectionalOptions, dpadMode, static_cast<DpadMode>(legacyAddonOptions.dualDirDpadMode));
         }
         SET_PROPERTY(dualDirectionalOptions, combineMode, legacyAddonOptions.dualDirCombineMode);
 
-        ExtraButtonOptions& extraButtonOptions = config.addonOptions.extraButtonOptions;
-        config.addonOptions.has_extraButtonOptions = true;
+        ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
+        config.addonOptions.has_deprecatedExtraButtonOptions = true;
         SET_PROPERTY(extraButtonOptions, enabled, legacyAddonOptions.ExtraButtonAddonEnabled);
         SET_PROPERTY(extraButtonOptions, pin, bytePinToIntPin(legacyAddonOptions.extraButtonPin));
         SET_PROPERTY(extraButtonOptions, buttonMap, legacyAddonOptions.extraButtonMap);
@@ -993,8 +993,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SliderOptions& sliderOptions = config.addonOptions.sliderOptions;
         config.addonOptions.has_sliderOptions = true;
         SET_PROPERTY(sliderOptions, enabled, legacyAddonOptions.JSliderInputEnabled);
-        SET_PROPERTY(sliderOptions, pinSliderOne, bytePinToIntPin(legacyAddonOptions.pinSliderLS));
-        SET_PROPERTY(sliderOptions, pinSliderTwo, bytePinToIntPin(legacyAddonOptions.pinSliderRS));
+        SET_PROPERTY(sliderOptions, deprecatedPinSliderOne, bytePinToIntPin(legacyAddonOptions.pinSliderLS));
+        SET_PROPERTY(sliderOptions, deprecatedPinSliderTwo, bytePinToIntPin(legacyAddonOptions.pinSliderRS));
 
         PlayerNumberOptions& playerNumberOptions = config.addonOptions.playerNumberOptions;
         config.addonOptions.has_playerNumberOptions = true;
@@ -1014,19 +1014,19 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
         config.addonOptions.has_socdSliderOptions = true;
         SET_PROPERTY(socdSliderOptions, enabled, legacyAddonOptions.SliderSOCDInputEnabled);
-        SET_PROPERTY(socdSliderOptions, pinOne, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDOne));
-        SET_PROPERTY(socdSliderOptions, pinTwo, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDTwo));
+        SET_PROPERTY(socdSliderOptions, deprecatedPinOne, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDOne));
+        SET_PROPERTY(socdSliderOptions, deprecatedPinTwo, bytePinToIntPin(legacyAddonOptions.pinSliderSOCDTwo));
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeDefault))
         {
             SET_PROPERTY(socdSliderOptions, modeDefault, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeDefault));
         }
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeOne))
         {
-            SET_PROPERTY(socdSliderOptions, modeOne, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeOne));
+            SET_PROPERTY(socdSliderOptions, deprecatedModeOne, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeOne));
         }
         if (isValidSOCDMode(legacyAddonOptions.sliderSOCDModeTwo))
         {
-            SET_PROPERTY(socdSliderOptions, modeTwo, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeTwo));
+            SET_PROPERTY(socdSliderOptions, deprecatedModeTwo, static_cast<SOCDMode>(legacyAddonOptions.sliderSOCDModeTwo));
         }
 
         OnBoardLedOptions& onBoardLedOptions = config.addonOptions.onBoardLedOptions;

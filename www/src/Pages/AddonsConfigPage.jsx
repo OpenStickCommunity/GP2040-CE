@@ -17,10 +17,6 @@ import DualDirection, {
 	dualDirectionScheme,
 	dualDirectionState,
 } from '../Addons/DualDirection';
-import ExtraButton, {
-	extraButtonScheme,
-	extraButtonState,
-} from '../Addons/ExtraButton';
 import I2c, { i2cScheme, i2cState } from '../Addons/I2c';
 import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
 import OnBoardLed, {
@@ -59,7 +55,6 @@ const schema = yup.object().shape({
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
-	...extraButtonScheme,
 	...playerNumberScheme,
 	...socdScheme,
 	...ps4Scheme,
@@ -80,7 +75,6 @@ const defaultValues = {
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
-	...extraButtonState,
 	...playerNumberState,
 	...socdState,
 	...ps4State,
@@ -102,7 +96,6 @@ const ADDONS = [
 	DualDirection,
 	Tilt,
 	Buzzer,
-	ExtraButton,
 	PlayerNumber,
 	SOCD,
 	Ps4,

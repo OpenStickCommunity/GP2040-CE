@@ -21,22 +21,6 @@ export const dualDirectionScheme = {
 		.number()
 		.required()
 		.label('Dual Directional Input Enabled'),
-	dualDirUpPin: yup
-		.number()
-		.label('Dual Directional Up Pin')
-		.validatePinWhenValue('DualDirectionalInputEnabled'),
-	dualDirDownPin: yup
-		.number()
-		.label('Dual Directional Down Pin')
-		.validatePinWhenValue('DualDirectionalInputEnabled'),
-	dualDirLeftPin: yup
-		.number()
-		.label('Dual Directional Left Pin')
-		.validatePinWhenValue('DualDirectionalInputEnabled'),
-	dualDirRightPin: yup
-		.number()
-		.label('Dual Directional Right Pin')
-		.validatePinWhenValue('DualDirectionalInputEnabled'),
 	dualDirDpadMode: yup
 		.number()
 		.label('Dual Stick Mode')
@@ -59,10 +43,6 @@ export const dualDirectionScheme = {
 
 export const dualDirectionState = {
 	DualDirectionalInputEnabled: 0,
-	dualDirUpPin: -1,
-	dualDirDownPin: -1,
-	dualDirLeftPin: -1,
-	dualDirRightPin: -1,
 	dualDirDpadMode: 0,
 	dualDirCombineMode: 0,
 	dualDirFourWayMode: 0,
@@ -77,60 +57,11 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 				hidden={!values.DualDirectionalInputEnabled}
 			>
 				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:dual-directional-input-up-pin-label')}
-						name="dualDirUpPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.dualDirUpPin}
-						error={errors.dualDirUpPin}
-						isInvalid={errors.dualDirUpPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:dual-directional-input-down-pin-label')}
-						name="dualDirDownPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.dualDirDownPin}
-						error={errors.dualDirDownPin}
-						isInvalid={errors.dualDirDownPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:dual-directional-input-left-pin-label')}
-						name="dualDirLeftPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.dualDirLeftPin}
-						error={errors.dualDirLeftPin}
-						isInvalid={errors.dualDirLeftPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:dual-directional-input-right-pin-label')}
-						name="dualDirRightPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.dualDirRightPin}
-						error={errors.dualDirRightPin}
-						isInvalid={errors.dualDirRightPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
-				</Row>
-				<Row className="mb-3">
+					<p>
+						{t(
+							'AddonsConfig:pin-config-moved-to-core-text',
+						)}
+					</p>
 					<FormSelect
 						label={t('AddonsConfig:dual-directional-input-dpad-mode-label')}
 						name="dualDirDpadMode"
