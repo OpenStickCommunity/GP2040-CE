@@ -4,12 +4,13 @@ import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
+import omit from 'lodash/omit';
 
 import Section from '../Components/Section';
 import CaptureButton from '../Components/CaptureButton';
 import FormControl from '../Components/FormControl';
 import WebApi from '../Services/WebApi';
-import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
+import { getButtonLabels, BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
 
 const MACRO_TYPES = [
 	{ label: 'InputMacroAddon:input-macro-type.press', value: 1 },
@@ -214,7 +215,7 @@ const MacroComponent = (props) => {
 	const { value: { macroLabel, macroType, macroInputs, enabled, exclusive, interruptible, showFrames,
 					 useMacroTriggerButton, macroTriggerButton, macroTriggerPin },
 			errors, handleChange, id: key, translation: t, index, isMacroPinMapped, buttonLabelType,
-			setFieldValue, disabled } = props;
+			setFieldValue, disabled, buttonNames } = props;
 
 	const filteredMacroInputs = macroInputs.filter(i => i !== EMPTY_INPUT);
 	return (
@@ -277,7 +278,7 @@ const MacroComponent = (props) => {
 						isInvalid={false} />
 				</div>
 			</div>
-			<div className="row mt-2">
+			<div className="row mt-2 align-items-center">
 				<div className="col-sm-auto">
 					<Form.Check
 						name={`${key}.useMacroTriggerButton`}
@@ -315,14 +316,17 @@ const MacroComponent = (props) => {
 							min={-1}
 							max={29} />
 					</div>
-					<div className="col-sm-auto px-0">
-						<CaptureButton
-							size="sm"
-							onChange={(e) => { setFieldValue(`${key}.macroTriggerPin`, e); }}
-							buttonName={`Macro Pin ${index + 1}`}/>
-					</div>
+					<div className="col-sm-auto">
+							<CaptureButton
+								small
+								labels={[`Macro Pin ${index + 1}`]}
+								onChange={(label, pin) => {
+									setFieldValue(`${key}.macroTriggerPin`, pin);
+								}}
+							/>
+						</div>
 				</>}
-				<div className="col-sm-auto">
+				<div className="col-sm-auto px-0">
 					<Form.Select
 						name={`${key}.macroType`}
 						className="form-select-sm sm-1"
@@ -373,6 +377,8 @@ export default function SettingsPage() {
 	const onSuccess = async (values) => await saveSettings(values);
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
+	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
+	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
 
 	const { t } = useTranslation('');
 
@@ -449,7 +455,8 @@ export default function SettingsPage() {
 													handleChange={handleChange}
 													index={i}
 													isMacroPinMapped={values.macroPin != -1}
-													setFieldValue={setFieldValue} />
+													setFieldValue={setFieldValue}
+													buttonNames={buttonNames} />
 												{values.macroList.length == i + 1 ? <></> : <hr className="mt-3" /> }
 											</>,
 										)}
