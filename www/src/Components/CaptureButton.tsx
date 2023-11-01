@@ -6,9 +6,14 @@ import WebApi from '../Services/WebApi';
 type CaptureButtonTypes = {
 	labels: string[];
 	onChange: (label: string, pin: string) => void;
+	small?: boolean;
 };
 
-const CaptureButton = ({ labels, onChange }: CaptureButtonTypes) => {
+const CaptureButton = ({
+	labels,
+	onChange,
+	small = false,
+}: CaptureButtonTypes) => {
 	const { t } = useTranslation('');
 	const controller = useRef<null | AbortController>(null);
 	const stopRef = useRef(false);
@@ -97,7 +102,7 @@ const CaptureButton = ({ labels, onChange }: CaptureButtonTypes) => {
 				</Modal.Footer>
 			</Modal>
 			<Button variant="secondary" onClick={() => setTriggerCapture(true)}>
-				{t('CaptureButton:capture-button-button-label')}
+				{small ? '🎮' : `${t('CaptureButton:capture-button-button-label')} 🎮`}
 			</Button>
 		</>
 	);
