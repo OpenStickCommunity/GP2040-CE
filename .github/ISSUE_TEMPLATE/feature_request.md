@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-### Have you checked the GP2040-CE documentation [HERE](https://gp2040-ce.info/#/) to confirm this feature doesn't already exist?
+### Have you checked the GP2040-CE documentation [HERE](https://gp2040-ce.info/) to confirm this feature doesn't already exist?
 
 Yes/No
 

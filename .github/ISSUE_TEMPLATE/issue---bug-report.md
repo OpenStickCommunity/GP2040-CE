@@ -12,7 +12,7 @@ assignees: ''
 Please check the following before posting an issue / bug report.
 
 - [ ] I am running the latest version of the firmware found [HERE](https://github.com/OpenStickCommunity/GP2040-CE/releases)
-- [ ] I have checked the documentation [HERE](https://gp2040-ce.info/#/) and found no answer
+- [ ] I have checked the documentation [HERE](https://gp2040-ce.info/) and found no answer
 - [ ] I checked to make sure that this issue has not already been filed [HERE](https://github.com/OpenStickCommunity/GP2040-CE/issues)
 - [ ] I am reporting the issue to the correct repository
 
