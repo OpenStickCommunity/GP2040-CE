@@ -42,7 +42,7 @@ DpadMode JSliderInput::read() {
 void JSliderInput::debounce()
 {
     // Return if the states haven't changed
-    if (dDebState == dpadState) {
+    if (dpadState == dDebState) {
         return;
     }
 

@@ -55,6 +55,7 @@ void DualDirectionalInput::debounce()
         uint32_t changedDpad = dDebState ^ dualState;
 	
         dualState = gamepadDebouncer.debounceDpad(dDebState, changedDpad);
+        dDebState = dualState;
     }
 }
 

@@ -87,6 +87,7 @@ void TiltInput::debounce()
         uint32_t changedDpad = dDebLeftState ^ tiltLeftState;
 
         tiltLeftState = gamepadDebouncer.debounceDpad(dDebLeftState, changedDpad);
+		dDebLeftState = tiltLeftState;
     }
 	
 	// Debounce the tilt right state
@@ -94,6 +95,7 @@ void TiltInput::debounce()
         uint32_t changedDpad = dDebRightState ^ tiltRightState;
 
         tiltRightState = gamepadDebouncer.debounceDpad(dDebRightState, changedDpad);
+		dDebRightState = tiltRightState;
     }
 }
 

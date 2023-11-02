@@ -101,7 +101,6 @@ private:
     uint32_t uDebTime;          // Debounce TURBO Button Time
     uint32_t debChargeState;    // Debounce Charge Button State
     uint32_t debChargeTime[4];  // Debounce Charge Button Time
-    uint32_t debounceMS;        // Debounce MS from Gamepad
     uint16_t lastPressed;       // Last buttons pressed (for Turbo Enable)
     uint16_t lastDpad;          // Last d-pad pressed (for Turbo Change)
     uint16_t turboButtonsPressed;    // Turbo Buttons Enabled
