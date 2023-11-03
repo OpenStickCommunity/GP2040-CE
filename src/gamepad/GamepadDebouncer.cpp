@@ -15,7 +15,6 @@ void GamepadDebouncer::debounce(GamepadState *state)
 
 	// Debounce the Dpad
 	if (debounceState.dpad != state->dpad) {
-		printf("dpad change\n");
 		uint32_t changedDpad = debounceState.dpad ^ state->dpad;
 
 		state->dpad = debounceDpad(debounceState.dpad, changedDpad);
