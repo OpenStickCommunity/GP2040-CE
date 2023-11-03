@@ -1019,7 +1019,6 @@ void ConfigUtils::load(Config& config)
 
     // run migrations
     if (!config.migrations.hotkeysMigrated) hotkeysMigration(config);
-    if (!config.migrations.gpioMappingsMigrated) gpioMappingsMigrationCore(config);
 
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
@@ -1028,6 +1027,9 @@ void ConfigUtils::load(Config& config)
     // ----------------------------------------
     // Further migrations can be performed here
     // ----------------------------------------
+
+    // run migrations that need to happen after initUnset...
+    if (!config.migrations.gpioMappingsMigrated) gpioMappingsMigrationCore(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
