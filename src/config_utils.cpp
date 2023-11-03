@@ -283,45 +283,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, order, USB_PERIPHERAL_PIN_ORDER);
     INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enable5v, USB_PERIPHERAL_PIN_5V);
 
-    // alternate pin mappings
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB1, PIN_BUTTON_B1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB2, PIN_BUTTON_B2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB3, PIN_BUTTON_B3);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB4, PIN_BUTTON_B4);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonL1, PIN_BUTTON_L1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonR1, PIN_BUTTON_R1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonL2, PIN_BUTTON_L2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonR2, PIN_BUTTON_R2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinDpadUp, PIN_DPAD_UP);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinDpadDown, PIN_DPAD_DOWN);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinDpadLeft, PIN_DPAD_LEFT);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinDpadRight, PIN_DPAD_RIGHT);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonB1, PIN_BUTTON_B1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonB2, PIN_BUTTON_B2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonB3, PIN_BUTTON_B3);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonB4, PIN_BUTTON_B4);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonL1, PIN_BUTTON_L1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonR1, PIN_BUTTON_R1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonL2, PIN_BUTTON_L2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinButtonR2, PIN_BUTTON_R2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinDpadUp, PIN_DPAD_UP);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinDpadDown, PIN_DPAD_DOWN);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinDpadLeft, PIN_DPAD_LEFT);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[1], pinDpadRight, PIN_DPAD_RIGHT);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonB1, PIN_BUTTON_B1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonB2, PIN_BUTTON_B2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonB3, PIN_BUTTON_B3);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonB4, PIN_BUTTON_B4);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonL1, PIN_BUTTON_L1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonR1, PIN_BUTTON_R1);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonL2, PIN_BUTTON_L2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinButtonR2, PIN_BUTTON_R2);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinDpadUp, PIN_DPAD_UP);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinDpadDown, PIN_DPAD_DOWN);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinDpadLeft, PIN_DPAD_LEFT);
-    INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[2], pinDpadRight, PIN_DPAD_RIGHT);
-    config.profileOptions.alternativePinMappings_count = 3;
-
     // ledOptions
     INIT_UNSET_PROPERTY(config.ledOptions, dataPin, BOARD_LEDS_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, ledFormat, static_cast<LEDFormat_Proto>(LED_FORMAT));
@@ -925,6 +886,47 @@ void gpioMappingsMigrationCore(Config& config)
     config.migrations.gpioMappingsMigrated = true;
 }
 
+// populate the alternative gpio mapping sets, aka profiles, with
+// the old values or whatever is in the core mappings
+// NOTE: this also handles initializations for a blank config! if/when the deprecated
+// pin mappings go away, the remainder of this code should go in there (there was no point
+// in duplicating it right now)
+void gpioMappingsMigrationProfiles(Config& config)
+{
+    AlternativePinMappings* deprecatedAlts = config.profileOptions.deprecatedAlternativePinMappings;
+
+    const auto assignProfilePinIfUsed = [&](uint8_t profileNum, Pin_t profilePin, GpioAction action) -> void {
+        if (isValidPin(profilePin)) {
+            config.profileOptions.gpioMappingsSets[profileNum].pins[profilePin].action = action;
+        }
+    };
+
+    for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+        for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+            config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = config.gpioMappings.pins[pin].action;
+        }
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB1,  GpioAction::BUTTON_PRESS_B1);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB2,  GpioAction::BUTTON_PRESS_B2);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB3,  GpioAction::BUTTON_PRESS_B3);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonB4,  GpioAction::BUTTON_PRESS_B4);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonL1,  GpioAction::BUTTON_PRESS_L1);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonR1,  GpioAction::BUTTON_PRESS_R1);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonL2,  GpioAction::BUTTON_PRESS_L2);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinButtonR2,  GpioAction::BUTTON_PRESS_R2);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadUp,    GpioAction::BUTTON_PRESS_UP);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadDown,  GpioAction::BUTTON_PRESS_DOWN);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadLeft,  GpioAction::BUTTON_PRESS_LEFT);
+        assignProfilePinIfUsed(profileNum, deprecatedAlts[profileNum].pinDpadRight, GpioAction::BUTTON_PRESS_RIGHT);
+
+        // reminder that this must be set or else nanopb won't retain anything
+        config.profileOptions.gpioMappingsSets[profileNum].pins_count = NUM_BANK0_GPIOS;
+    }
+    // reminder that this must be set or else nanopb won't retain anything
+    config.profileOptions.gpioMappingsSets_count = 3;
+
+    config.migrations.buttonProfilesMigrated = true;
+}
+
 // populate existing configurations' buttonsMask and auxMask to mirror behavior
 // from the behavior before this code merged. totally new configs get their
 // board defaults via initUnsetPropertiesWithDefaults
@@ -1071,6 +1073,7 @@ void ConfigUtils::load(Config& config)
 
     // run migrations that need to happen after initUnset...
     if (!config.migrations.gpioMappingsMigrated) gpioMappingsMigrationCore(config);
+    if (!config.migrations.buttonProfilesMigrated) gpioMappingsMigrationProfiles(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
@@ -1639,6 +1642,10 @@ bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
     }
 
     initUnsetPropertiesWithDefaults(config);
+
+    // we need to run migrations here too, in case the json document changed pins or things derived from pins
+    gpioMappingsMigrationCore(config);
+    gpioMappingsMigrationProfiles(config);
 
     return true;
 }

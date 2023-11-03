@@ -187,7 +187,8 @@ message AlternativePinMappings
 
 message ProfileOptions
 {
-	repeated AlternativePinMappings alternativePinMappings = 1 [(nanopb).max_count = 3];
+	repeated AlternativePinMappings deprecatedAlternativePinMappings = 1 [(nanopb).max_count = 3];
+	repeated GpioMappings gpioMappingsSets = 2 [(nanopb).max_count = 3];
 }
 
 message DisplayOptions
@@ -705,6 +706,7 @@ message MigrationHistory
 {
 	optional bool hotkeysMigrated = 1 [default = false];
 	optional bool gpioMappingsMigrated = 2 [default = false];
+	optional bool buttonProfilesMigrated = 3 [default = false];
 }
 
 message Config
