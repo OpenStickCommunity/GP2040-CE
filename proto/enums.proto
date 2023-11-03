@@ -190,6 +190,18 @@ enum GamepadHotkey
     HOTKEY_R3_BUTTON             = 20;
     HOTKEY_TOUCHPAD_BUTTON       = 21;
     HOTKEY_REBOOT_DEFAULT        = 22;
+    HOTKEY_B1_BUTTON             = 23;
+    HOTKEY_B2_BUTTON             = 24;
+    HOTKEY_B3_BUTTON             = 25;
+    HOTKEY_B4_BUTTON             = 26;
+    HOTKEY_L1_BUTTON             = 27;
+    HOTKEY_R1_BUTTON             = 28;
+    HOTKEY_L2_BUTTON             = 29;
+    HOTKEY_R2_BUTTON             = 30;
+    HOTKEY_S1_BUTTON             = 31;
+    HOTKEY_S2_BUTTON             = 32;
+    HOTKEY_A1_BUTTON             = 33;
+    HOTKEY_A2_BUTTON             = 34;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
