@@ -32,7 +32,7 @@ void GamepadDebouncer::debounce(GamepadState *state)
 
 uint8_t GamepadDebouncer::debounceDpad(uint8_t dpadState, uint32_t changedDpad)
 {
-	uint32_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
+	uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
 
 	uint32_t now = getMillis();
 
@@ -57,7 +57,7 @@ uint8_t GamepadDebouncer::debounceDpad(uint8_t dpadState, uint32_t changedDpad)
 
 uint16_t GamepadDebouncer::debounceButtons(uint16_t buttonState, uint32_t changedButtons)
 {
-	uint32_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
+	uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
 	
 	uint32_t now = getMillis();
 	

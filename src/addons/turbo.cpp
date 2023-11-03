@@ -108,7 +108,7 @@ void TurboInput::read(const TurboOptions & options)
 
 void TurboInput::debounce()
 {
-    uint32_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
+    uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
 
     // Return if the states haven't changed
     if ((bDebState == bTurboState) && (debChargeState == chargeState))

@@ -445,6 +445,7 @@ export default function SettingsPage() {
 											isInvalid={errors.debounceDelay}
 											onChange={handleChange}
 											min={0}
+											max={5000}
 										/>
 									</div>
 								</Form.Group>
