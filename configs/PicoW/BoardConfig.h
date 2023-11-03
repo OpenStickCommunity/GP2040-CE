@@ -235,7 +235,6 @@
 // TILTAdd-on Options
 #define PIN_TILT_1 -1
 #define PIN_TILT_2 -1
-#define PIN_TILT_FUNCTION -1
 #define PIN_TILT_LEFT_ANALOG_UP -1
 #define PIN_TILT_LEFT_ANALOG_DOWN -1
 #define PIN_TILT_LEFT_ANALOG_LEFT -1

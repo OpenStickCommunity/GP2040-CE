@@ -821,7 +821,6 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.analogADS1219Options.i2cSDAPin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tilt1Pin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tilt2Pin);
-    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltFunctionPin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogUpPin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogDownPin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogLeftPin);
