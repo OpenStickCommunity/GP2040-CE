@@ -670,10 +670,10 @@ std::string setLedOptions()
 	readIndex(ledOptions.indexA1, "ledButtonMap", "A1");
 	readIndex(ledOptions.indexA2, "ledButtonMap", "A2");
 	readDoc(ledOptions.pledType, doc, "pledType");
-	readDoc(ledOptions.pledPin1, doc, "pledPin1");
-	readDoc(ledOptions.pledPin2, doc, "pledPin2");
-	readDoc(ledOptions.pledPin3, doc, "pledPin3");
-	readDoc(ledOptions.pledPin4, doc, "pledPin4");
+	docToPin(ledOptions.pledPin1, doc, "pledPin1");
+	docToPin(ledOptions.pledPin2, doc, "pledPin2");
+	docToPin(ledOptions.pledPin3, doc, "pledPin3");
+	docToPin(ledOptions.pledPin4, doc, "pledPin4");
 	readDoc(ledOptions.pledColor, doc, "pledColor");
 
 	Storage::getInstance().save();
