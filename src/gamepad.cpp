@@ -95,9 +95,8 @@ static KeyboardReport keyboardReport
 	.multimedia = 0
 };
 
-Gamepad::Gamepad(int debounceMS) :
-	debounceMS(debounceMS)
-	, debouncer(debounceMS)
+Gamepad::Gamepad() :
+	debouncer()
 	, options(Storage::getInstance().getGamepadOptions())
 	, hotkeyOptions(Storage::getInstance().getHotkeyOptions())
 {}

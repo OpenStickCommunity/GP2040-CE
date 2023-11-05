@@ -95,6 +95,7 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		fnButtonPin: -1,
 		profileNumber: 1,
 		ps4ControllerType: 0,
+		debounceDelay: 5,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,

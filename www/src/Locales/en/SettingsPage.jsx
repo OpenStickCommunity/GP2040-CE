@@ -30,6 +30,7 @@ export default {
 		off: 'Off',
 	},
 	'profile-number-label': 'Profile Number',
+	'debounce-delay-label': 'Debounce Delay in milliseconds',
 	'ps4-compatibility-label':
 		'For <strong>PS5 compatibility</strong>, use "Arcade Stick" and enable PS Passthrough add-on<br/>For <strong>PS4 support</strong>, use "Controller" and enable PS4 Mode add-on if you have the necessary files',
 	'hotkey-settings-label': 'Hotkey Settings',

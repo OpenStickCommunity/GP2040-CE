@@ -127,6 +127,7 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(PS4_MODES.map((o) => o.value))
 		.label('PS4 Controller Type'),
+	debounceDelay: yup.number().required().label('Debounce Delay'),
 });
 
 const FormContext = ({ setButtonLabels }) => {
@@ -427,6 +428,25 @@ export default function SettingsPage() {
 												</option>
 											))}
 										</Form.Select>
+									</div>
+								</Form.Group>
+								<Form.Group className="row mb-3">
+									<Form.Label>
+										{t('SettingsPage:debounce-delay-label')}
+									</Form.Label>
+									<div className="col-sm-3">
+										<Form.Control
+											type="number"
+											name="debounceDelay"
+											className="form-control-sm"
+											groupClassName="col-sm-3 mb-3"
+											value={values.debounceDelay}
+											error={errors.debounceDelay}
+											isInvalid={errors.debounceDelay}
+											onChange={handleChange}
+											min={0}
+											max={5000}
+										/>
 									</div>
 								</Form.Group>
 							</Section>

@@ -35,14 +35,13 @@
 #include "usb_driver.h"
 #include "tusb.h"
 
-#define GAMEPAD_DEBOUNCE_MILLIS 5 // make this a class object
 
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
 GP2040::GP2040() {
-	Storage::getInstance().SetGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
-	Storage::getInstance().SetProcessedGamepad(new Gamepad(GAMEPAD_DEBOUNCE_MILLIS));
+	Storage::getInstance().SetGamepad(new Gamepad());
+	Storage::getInstance().SetProcessedGamepad(new Gamepad());
 }
 
 GP2040::~GP2040() {
@@ -150,9 +149,11 @@ void GP2040::run() {
 
 		// Gamepad Features
 		gamepad->read(); 	// gpio pin reads
-	#if GAMEPAD_DEBOUNCE_MILLIS > 0
-		gamepad->debounce();
-	#endif
+		
+		// Debounce if set
+		if (Storage::getInstance().getGamepadOptions().debounceDelay)
+			gamepad->debounce();
+
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
 
