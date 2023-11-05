@@ -26,7 +26,7 @@
 
 ## Links
 
-[Downloads](https://gp2040-ce.info/downloads/download-page) | [Installation](https://gp2040-ce.info/installation) | [Wiring](https://gp2040-ce.info/controller-build/wiring) | [Usage](https://gp2040-ce.info/usage) | [FAQ](https://gp2040-ce.info/faq/faq-general) | [GitHub](https://github.com/OpenStickCommunity/GP2040-CE)
+[Downloads](https://gp2040-ce.info/#/download) | [Installation](https://gp2040-ce.info/#/installation) | [Wiring](https://gp2040-ce.info/#/wiring) | [Usage](https://gp2040-ce.info/#/usage) | [FAQ](https://gp2040-ce.info/#/faq) | [GitHub](https://github.com/OpenStickCommunity/GP2040-CE)
 
 Full documentation can be found at <https://gp2040-ce.info>
 
@@ -38,16 +38,16 @@ Full documentation can be found at <https://gp2040-ce.info>
 * Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches.
 * Dual direction via D-pad + LS/RS.
 * Reversed input via a button.
-* [Turbo and Turbo LED](https://gp2040-ce.info/add-ons/turbo) with selectable speed
+* [Turbo and Turbo LED](https://gp2040-ce.info/#/add-ons/turbo) with selectable speed
 * Per-button RGB LED support.
 * PWM Player indicator LED support (XInput only).
 * Multiple LED profiles support.
 * Support for 128x64 monochrome I2C displays - SSD1306, SH1106, and SH1107 compatible.
 * Custom startup splash screen and easy image upload via web configuration.
 * Support for passive buzzer speaker (3v or 5v).
-* [Built-in, embedded web configuration](https://gp2040-ce.info/web-configurator) - No download required!
+* [Built-in, embedded web configuration](https://gp2040-ce.info/#/web-configurator) - No download required!
 
-Visit the [GP2040-CE Usage](https://gp2040-ce.info/usage) page for more details.
+Visit the [GP2040-CE Usage](https://gp2040-ce.info/#/usage) page for more details.
 
 ## Performance
 
@@ -58,7 +58,7 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 | v0.7.5 | All modes (except PS4) | 1 ms | 0.45 ms | 1.28 ms | 0.77 ms | 0.24 ms | 96.27% | 3.73% | 0% |
 | v0.7.5 | PS4 Mode | 1 ms | 1.34 ms | 2.01 ms | 1.72 ms | 0.16 ms | 90.55% | 9.45% | 0% |
 
-Full results can be found in the [GP2040-CE Firmware Latency Test Results](https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/site/latency_tests/GP2040-CE_Firmware_Latency_Test_Results.xlsx) .xlsx Sheet.
+Full results can be found in the [GP2040-CE Firmware Latency Test Results](https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/docs/latency_tests/GP2040-CE_Firmware_Latency_Test_Results.xlsx) .xlsx Sheet.
 
 ## Support
 
