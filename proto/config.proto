@@ -410,7 +410,7 @@ message TiltOptions
 
 	optional int32 tilt1Pin = 2;
 	optional int32 tilt2Pin = 3;
-	optional int32 tiltFunctionPin = 4;
+	optional int32 deprecatedTiltFunctionPin = 4;
 	optional int32 tiltLeftAnalogUpPin = 5;
 	optional int32 tiltLeftAnalogDownPin = 6;
 	optional int32 tiltLeftAnalogLeftPin = 7;
