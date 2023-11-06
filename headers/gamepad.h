@@ -39,7 +39,7 @@ struct GamepadButtonMapping
 
 class Gamepad {
 public:
-	Gamepad(int debounceMS = 5);
+	Gamepad();
 
 	void setup();
 	void teardown_and_reinit(const uint32_t profileNum);
@@ -134,7 +134,6 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	const uint8_t debounceMS;
 	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;

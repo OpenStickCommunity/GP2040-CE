@@ -2,6 +2,7 @@
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
+#include "gamepad/GamepadDebouncer.h"
 
 bool TiltInput::available() {
     const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
@@ -75,28 +76,27 @@ void TiltInput::setup() {
 
 void TiltInput::debounce()
 {
-	uint32_t now = getMillis();
-	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+	GamepadDebouncer gamepadDebouncer;
 
-	for (int i = 0; i < 4; i++)
-	{
-		if ((dDebLeftState & dpadMasks[i]) != (tiltLeftState & dpadMasks[i]) && (now - dpadTime[i]) > gamepad->debounceMS)
-		{
-			dDebLeftState ^= dpadMasks[i];
-			dpadTime[i] = now;
-		}
-	}
-	tiltLeftState = dDebLeftState;
+	// Return if the states haven't changed
+    if ((dDebLeftState == tiltLeftState) && (dDebRightState == tiltRightState))
+        return;
 
-	for (int i = 0; i < 4; i++)
-	{
-		if ((dDebRightState & dpadMasks[i]) != (tiltRightState & dpadMasks[i]) && (now - dpadTime[i]) > gamepad->debounceMS)
-		{
-			dDebRightState ^= dpadMasks[i];
-			dpadTime[i] = now;
-		}
-	}
-	tiltRightState = dDebRightState;
+	// Debounce the tilt left state
+    if (dDebLeftState != tiltLeftState) {
+        uint32_t changedDpad = dDebLeftState ^ tiltLeftState;
+
+        tiltLeftState = gamepadDebouncer.debounceDpad(dDebLeftState, changedDpad);
+		dDebLeftState = tiltLeftState;
+    }
+	
+	// Debounce the tilt right state
+	if (dDebRightState != tiltRightState) {
+        uint32_t changedDpad = dDebRightState ^ tiltRightState;
+
+        tiltRightState = gamepadDebouncer.debounceDpad(dDebRightState, changedDpad);
+		dDebRightState = tiltRightState;
+    }
 }
 
 void TiltInput::preprocess()

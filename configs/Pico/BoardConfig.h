@@ -249,7 +249,6 @@
 #define TILT2_FACTOR_LEFT_Y  65  //Default value for the TILT button to function.
 #define TILT2_FACTOR_RIGHT_X 65  //Default value for the TILT button to function.
 #define TILT2_FACTOR_RIGHT_Y 65  //Default value for the TILT button to function.
-#define PIN_TILT_FUNCTION -1
 #define PIN_TILT_LEFT_ANALOG_UP -1
 #define PIN_TILT_LEFT_ANALOG_DOWN -1
 #define PIN_TILT_LEFT_ANALOG_LEFT -1
@@ -317,7 +316,7 @@
 #define PSPASSTHROUGH_HOST_PIN_DPLUS -1
 #define PSPASSTHROUGH_HOST_PIN_5V -1
 
-// For details on this, see: /https://gp2040-ce.info/development?id=i2c-display-splash
+// For details on this, see: https://gp2040-ce.info/development?id=i2c-display-splash
 #define DEFAULT_SPLASH \
     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, \

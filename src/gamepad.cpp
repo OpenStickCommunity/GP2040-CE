@@ -95,9 +95,8 @@ static KeyboardReport keyboardReport
 	.multimedia = 0
 };
 
-Gamepad::Gamepad(int debounceMS) :
-	debounceMS(debounceMS)
-	, debouncer(debounceMS)
+Gamepad::Gamepad() :
+	debouncer()
 	, options(Storage::getInstance().getGamepadOptions())
 	, hotkeyOptions(Storage::getInstance().getHotkeyOptions())
 {}
@@ -363,6 +362,18 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
 		case HOTKEY_L3_BUTTON         : state.buttons |= GAMEPAD_MASK_L3; break; // Press the L3 button
 		case HOTKEY_R3_BUTTON         : state.buttons |= GAMEPAD_MASK_R3; break; // Press the R3 button
+		case HOTKEY_B1_BUTTON         : state.buttons |= GAMEPAD_MASK_B1; break; // Press the L3 button
+		case HOTKEY_B2_BUTTON         : state.buttons |= GAMEPAD_MASK_B2; break; // Press the R3 button
+		case HOTKEY_B3_BUTTON         : state.buttons |= GAMEPAD_MASK_B3; break; // Press the L3 button
+		case HOTKEY_B4_BUTTON         : state.buttons |= GAMEPAD_MASK_B4; break; // Press the R3 button
+		case HOTKEY_L1_BUTTON         : state.buttons |= GAMEPAD_MASK_L1; break; // Press the L3 button
+		case HOTKEY_R1_BUTTON         : state.buttons |= GAMEPAD_MASK_R1; break; // Press the L3 button
+		case HOTKEY_L2_BUTTON         : state.buttons |= GAMEPAD_MASK_L2; break; // Press the R3 button
+		case HOTKEY_R2_BUTTON         : state.buttons |= GAMEPAD_MASK_R2; break; // Press the R3 button
+		case HOTKEY_S1_BUTTON         : state.buttons |= GAMEPAD_MASK_S1; break; // Press the L3 button
+		case HOTKEY_S2_BUTTON         : state.buttons |= GAMEPAD_MASK_S2; break; // Press the R3 button
+		case HOTKEY_A1_BUTTON         : state.buttons |= GAMEPAD_MASK_A1; break; // Press the L3 button
+		case HOTKEY_A2_BUTTON         : state.buttons |= GAMEPAD_MASK_A2; break; // Press the R3 button
 		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; reqSave = true; break;
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;

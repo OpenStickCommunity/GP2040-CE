@@ -566,6 +566,7 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
 	readDoc(gamepadOptions.profileNumber, doc, "profileNumber");
 	readDoc(gamepadOptions.ps4ControllerType, doc, "ps4ControllerType");
+	readDoc(gamepadOptions.debounceDelay, doc, "debounceDelay");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -602,6 +603,7 @@ std::string getGamepadOptions()
 	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
 	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
 	writeDoc(doc, "ps4ControllerType", gamepadOptions.ps4ControllerType);
+	writeDoc(doc, "debounceDelay", gamepadOptions.debounceDelay);
 
 	writeDoc(doc, "fnButtonPin", -1);
 	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
@@ -670,10 +672,10 @@ std::string setLedOptions()
 	readIndex(ledOptions.indexA1, "ledButtonMap", "A1");
 	readIndex(ledOptions.indexA2, "ledButtonMap", "A2");
 	readDoc(ledOptions.pledType, doc, "pledType");
-	readDoc(ledOptions.pledPin1, doc, "pledPin1");
-	readDoc(ledOptions.pledPin2, doc, "pledPin2");
-	readDoc(ledOptions.pledPin3, doc, "pledPin3");
-	readDoc(ledOptions.pledPin4, doc, "pledPin4");
+	docToPin(ledOptions.pledPin1, doc, "pledPin1");
+	docToPin(ledOptions.pledPin2, doc, "pledPin2");
+	docToPin(ledOptions.pledPin3, doc, "pledPin3");
+	docToPin(ledOptions.pledPin4, doc, "pledPin4");
 	readDoc(ledOptions.pledColor, doc, "pledColor");
 
 	Storage::getInstance().save();

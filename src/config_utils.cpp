@@ -113,6 +113,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, profileNumber, 1);
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerType, DEFAULT_PS4CONTROLLER_TYPE);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, debounceDelay, 5);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
@@ -167,27 +168,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // forcedSetupMode
     INIT_UNSET_PROPERTY(config.forcedSetupOptions, mode, DEFAULT_FORCED_SETUP_MODE);
-
-    // pinMappings
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadUp, PIN_DPAD_UP);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadDown, PIN_DPAD_DOWN);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadLeft, PIN_DPAD_LEFT);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinDpadRight, PIN_DPAD_RIGHT);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB1, PIN_BUTTON_B1);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB2, PIN_BUTTON_B2);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB3, PIN_BUTTON_B3);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonB4, PIN_BUTTON_B4);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL1, PIN_BUTTON_L1);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR1, PIN_BUTTON_R1);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL2, PIN_BUTTON_L2);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR2, PIN_BUTTON_R2);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonS1, PIN_BUTTON_S1);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonS2, PIN_BUTTON_S2);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonL3, PIN_BUTTON_L3);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonR3, PIN_BUTTON_R3);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonA1, PIN_BUTTON_A1);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonA2, PIN_BUTTON_A2);
-    INIT_UNSET_PROPERTY(config.deprecatedPinMappings, pinButtonFn, PIN_BUTTON_FN);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.keyboardMapping, keyDpadUp, KEY_DPAD_UP);
@@ -842,7 +822,6 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.analogADS1219Options.i2cSDAPin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tilt1Pin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tilt2Pin);
-    markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltFunctionPin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogUpPin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogDownPin);
     markAddonPinIfUsed(config.addonOptions.tiltOptions.tiltLeftAnalogLeftPin);
@@ -1041,7 +1020,6 @@ void ConfigUtils::load(Config& config)
 
     // run migrations
     if (!config.migrations.hotkeysMigrated) hotkeysMigration(config);
-    if (!config.migrations.gpioMappingsMigrated) gpioMappingsMigrationCore(config);
 
     // Make sure that fields that were not deserialized are properly initialized.
     // They were probably added with a newer version of the firmware.
@@ -1050,6 +1028,9 @@ void ConfigUtils::load(Config& config)
     // ----------------------------------------
     // Further migrations can be performed here
     // ----------------------------------------
+
+    // run migrations that need to happen after initUnset...
+    if (!config.migrations.gpioMappingsMigrated) gpioMappingsMigrationCore(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));

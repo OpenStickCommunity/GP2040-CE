@@ -4,6 +4,7 @@
 #include "helper.h"
 #include "config.pb.h"
 #include "types.h"
+#include "gamepad/GamepadDebouncer.h"
 
 bool DualDirectionalInput::available() {
     return Storage::getInstance().getAddonOptions().dualDirectionalOptions.enabled;
@@ -48,18 +49,14 @@ void DualDirectionalInput::setup() {
 
 void DualDirectionalInput::debounce()
 {
-	uint32_t now = getMillis();
-    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    GamepadDebouncer gamepadDebouncer;
 
-	for (int i = 0; i < 4; i++)
-	{
-		if ((dDebState & dpadMasks[i]) != (dualState & dpadMasks[i]) && (now - dpadTime[i]) > gamepad->debounceMS)
-		{
-			dDebState ^= dpadMasks[i];
-			dpadTime[i] = now;
-		}
-	}
-    dualState = dDebState;
+    if (dDebState != dualState) {	    
+        uint32_t changedDpad = dDebState ^ dualState;
+	
+        dualState = gamepadDebouncer.debounceDpad(dDebState, changedDpad);
+        dDebState = dualState;
+    }
 }
 
 void DualDirectionalInput::preprocess()

@@ -80,7 +80,6 @@ void TurboInput::setup()
     for(uint8_t i = 0; i < 4; i++) {
         debChargeTime[i] = now;
     }
-    debounceMS = gamepad->debounceMS;
     turboDialIncrements = 0xFFF / (TURBO_SHOT_MAX - TURBO_SHOT_MIN); // 12-bit ADC
     incrementValue = 0;
     lastPressed = 0;
@@ -109,25 +108,35 @@ void TurboInput::read(const TurboOptions & options)
 
 void TurboInput::debounce()
 {
+    uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
+
+    // Return if the states haven't changed
+    if ((bDebState == bTurboState) && (debChargeState == chargeState))
+        return;
+
     uint32_t uNowTime = getMillis();
 
     // Debounce turbo button
-    if ((bDebState != bTurboState) && ((uNowTime - uDebTime) > debounceMS)) {
+    if ((bDebState != bTurboState) && ((uNowTime - uDebTime) > debounceDelay)) {
         bDebState ^= true;
         uDebTime = uNowTime;
+        bTurboState = bDebState;
     }
-    bTurboState = bDebState;
 
     // Debounce charge states
-	for (uint8_t i = 0; i < 4; i++)
-	{
-		if ((debChargeState & shmupBtnMask[i]) != (chargeState & shmupBtnMask[i]) && (uNowTime - debChargeTime[i]) > debounceMS)
-		{
-			debChargeState ^= shmupBtnMask[i];
-			debChargeTime[i] = uNowTime;
-		}
-	}
-    chargeState = debChargeState;
+    if (debChargeState != chargeState) {
+        uint32_t changedCharge = debChargeState ^ chargeState;
+
+        for (uint8_t i = 0; i < 4; i++)
+        {
+            if ((changedCharge & shmupBtnMask[i]) && (uNowTime - debChargeTime[i]) > debounceDelay)
+            {
+                debChargeState ^= shmupBtnMask[i];
+                debChargeTime[i] = uNowTime;
+            }
+        }
+        chargeState = debChargeState;
+    }
 }
 
 void TurboInput::process()

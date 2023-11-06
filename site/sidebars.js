@@ -50,7 +50,6 @@ const sidebars = {
 	],
 	webConfigSidebar: [
 		'web-configurator/web-configurator',
-		// 'web-configurator/macros',
 		{
 			type: 'category',
 			label: 'Web Configurator Menu',
