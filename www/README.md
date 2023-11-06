@@ -17,7 +17,7 @@ The mock data Express server is running at http://localhost:8080.
 ### Connected board
 
 Run `npm run dev-board`. This will start up the React app and try connect to the board running the
-[web-configurator](https://gp2040-ce.info/#/web-configurator).
+[web-configurator](https://gp2040-ce.info/web-configurator).
 
 ### API Endpoints
 
