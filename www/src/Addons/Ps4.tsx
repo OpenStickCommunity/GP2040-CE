@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Button, FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 import JSEncrypt from 'jsencrypt';
-import CryptoJS from 'crypto-js';
+import { SHA256 } from 'crypto-js';
 import isNil from 'lodash/isNil';
 import WebApi from '../Services/WebApi';
 
@@ -86,8 +86,8 @@ const verifyAndSavePS4 = async () => {
 		for (let i = 0; i < 256; i++) {
 			bytes[i] = Math.random() * 255;
 		}
-		const hashed = CryptoJS.SHA256(bytes);
-		const signNonce = key.sign(hashed, CryptoJS.SHA256, 'sha256');
+		const hashed = SHA256(bytes);
+		const signNonce = key.sign(hashed, SHA256, 'sha256');
 
 		if (signNonce === false) {
 			throw new Error('Bad Private Key');
