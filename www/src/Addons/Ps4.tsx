@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Button, FormCheck, Row } from 'react-bootstrap';
 import * as yup from 'yup';
 import JSEncrypt from 'jsencrypt';
-import { SHA256 } from 'crypto-js';
+import SHA256 from 'crypto-js/SHA256';
 import isNil from 'lodash/isNil';
 import WebApi from '../Services/WebApi';
 
