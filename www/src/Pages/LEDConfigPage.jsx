@@ -11,7 +11,6 @@ import { Trans, useTranslation } from 'react-i18next';
 import { AppContext } from '../Contexts/AppContext';
 import ColorPicker from '../Components/ColorPicker';
 import Section from '../Components/Section';
-import DraggableListGroup from '../Components/DraggableListGroup';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import { getButtonLabels } from '../Data/Buttons';
@@ -664,23 +663,6 @@ export default function LEDConfigPage() {
 								</Trans>
 							</p>
 						</Form.Group>
-					</Section>
-					<Section title={t('LedConfig:rgb-order.header-text')}>
-						<p className="card-text">
-							{t('LedConfig:rgb-order.sub-header-text')}
-						</p>
-						<p className="card-text">
-							{t('LedConfig:rgb-order.sub-header1-text')}
-						</p>
-						<DraggableListGroup
-							groupName="test"
-							titles={[
-								t('LedConfig:rgb-order.available-header-text'),
-								t('LedConfig:rgb-order.assigned-header-text'),
-							]}
-							dataSources={dataSources}
-							onChange={(a) => ledOrderChanged(a, values.ledsPerButton)}
-						/>
 					</Section>
 					<Button type="submit">{t('Common:button-save-label')}</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}
