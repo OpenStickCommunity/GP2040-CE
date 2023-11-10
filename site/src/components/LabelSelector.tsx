@@ -35,6 +35,7 @@ const labelData = {
 		R3: 'R3',
 		A1: 'A1',
 		A2: 'A2',
+		Function: 'Function',
 	},
 	XInput: {
 		name: 'XInput',
@@ -56,6 +57,7 @@ const labelData = {
 		R3: 'RS',
 		A1: 'Guide',
 		A2: '(A2)',
+		Function: 'Function',
 	},
 	DirectInput: {
 		name: 'DirectInput',
@@ -77,6 +79,7 @@ const labelData = {
 		R3: '12',
 		A1: '13',
 		A2: '14',
+		Function: 'Function',
 	},
 	'Nintendo Switch': {
 		name: 'Nintendo Switch',
@@ -98,6 +101,7 @@ const labelData = {
 		R3: 'RS',
 		A1: 'Home',
 		A2: 'Capture',
+		Function: 'Function',
 	},
 	PS4: {
 		name: 'PS4',
@@ -119,6 +123,7 @@ const labelData = {
 		R3: 'R3',
 		A1: 'PS',
 		A2: 'Touchpad',
+		Function: 'Function',
 	},
 	PS3: {
 		name: 'PS3',
@@ -140,6 +145,7 @@ const labelData = {
 		R3: 'R3',
 		A1: 'PS',
 		A2: '(A2)',
+		Function: 'Function',
 	},
 	Arcade: {
 		name: 'Arcade',
@@ -161,6 +167,7 @@ const labelData = {
 		R3: 'RS',
 		A1: 'Home',
 		A2: '(A2)',
+		Function: 'Function',
 	},
 } as const;
 

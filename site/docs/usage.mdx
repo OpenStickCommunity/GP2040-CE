@@ -1,16 +1,20 @@
 ---
 title: GP2040-CE Usage
 # tags:
-# - 
+# -
 pagination_next: null
 pagination_prev: null
+description: "General How-To on using GP2040-CE"
 ---
 
-import InputLabelSelector, { Hotkey } from "@site/src/components/LabelSelector.tsx";
+import InputLabelSelector, {
+	Hotkey,
+} from "@site/src/components/LabelSelector.tsx";
+import InputTable from "./snippets/_input-table.mdx";
 
 # GP2040-CE Usage
 
-Select the button labels to be displayed in the usage guide: 
+Select the button labels to be displayed in the usage guide:
 
 <InputLabelSelector />
 <br />
@@ -25,28 +29,15 @@ The v0.5+ release has some breaking changes to boards other than the Raspberry P
 
 GP2040-CE uses generic button labeling for gamepad state, which is then converted to the appropriate input type before sending. This table provides a map of GP2040-CE buttons to the supported input types and layouts:
 
-| GP2040-CE | XInput | Switch  | PS4      | PS3      | DirectInput | Arcade |
-| --------- | ------ | ------- | -------- | -------- | ----------- | ------ |
-| B1        | A      | B       | Cross    | Cross    | 2           | K1     |
-| B2        | B      | A       | Circle   | Circle   | 3           | K2     |
-| B3        | X      | Y       | Square   | Square   | 1           | P1     |
-| B4        | Y      | X       | Triangle | Triangle | 4           | P2     |
-| L1        | LB     | L       | L1       | L1       | 5           | P4     |
-| R1        | RB     | R       | R1       | R1       | 6           | P3     |
-| L2        | LT     | ZL      | L2       | L2       | 7           | K4     |
-| R2        | RT     | ZR      | R2       | R2       | 8           | K3     |
-| S1        | Back   | Minus   | Share    | Select   | 9           | Coin   |
-| S2        | Start  | Plus    | Options  | Start    | 10          | Start  |
-| L3        | LS     | LS      | L3       | L3       | 11          | LS     |
-| R3        | RS     | RS      | R3       | R3       | 12          | RS     |
-| A1        | Guide  | Home    | PS       | PS       | 13          | Home   |
-| A2        | -      | Capture | Touchpad | -        | 14          | -      |
+<InputTable />
+
+<InputTable />
 
 If your controller is missing dedicated buttons for any specific inputs, check the [Hotkeys page](./hotkeys.mdx) on how to map a button combination that will emulate those missing inputs.
 
 :::note
 
-Unlike other controllers, Keyboard gets different keys for directional buttons. You can change the key mappings for Keyboard mode in [Webconfig mode > Configuration > Keyboard Mapping](./web-configurator.mdx#keyboard-mapping)
+Unlike other controllers, Keyboard gets different keys for directional buttons. You can change the key mappings for Keyboard mode in [Webconfig mode > Configuration > Keyboard Mapping](./web-configurator/menu-pages/03-keyboard-mapping.mdx)
 
 :::
 
@@ -89,12 +80,12 @@ Input mode is saved across power cycles.
 
 ## Hotkeys
 
-A number of useful hotkeys exist that change the functionality of GP2040 without needing to access the Web Configurator. Commonly used hotkeys include changing the directions to emulate a digital DPad, Left Analog Stick, Right Analog Stick or to change [Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOCD) cleaning modes. Different SOCD cleaning modes will ensure the controller obeys certain directional input rules when sending inputs to the computer or game console.
+A number of useful hotkeys exist that change the functionality of GP2040 without needing to access the Web Configurator. Commonly used hotkeys include changing the directions to emulate a digital DPad, Left analog joystick, Right analog joystick or to change [Simultaneous Opposite Cardinal Direction (SOCD)](https://glossary.infil.net/?t=SOCD) cleaning modes. Different SOCD cleaning modes will ensure the controller obeys certain directional input rules when sending inputs to the computer or game console.
 
 A number of hotkeys are enabled by default and if you are encountering issues with unexpected behavior on your controller, verify that you did not accidentally trigger a hotkey.
 
-| Hotkeys Enabled By Default                        | Inputs                |
-| :------------------------------------------------ | :-------------------- |
+| Hotkeys Enabled By Default                         | Inputs                                  |
+| :------------------------------------------------- | :-------------------------------------- |
 | [Home Button](hotkeys.mdx#home-button)             | <Hotkey buttons={["S1","S2","Up"]}/>    |
 | [Dpad Digital](hotkeys.mdx#dpad-digital)           | <Hotkey buttons={["S1","S2","Down"]}/>  |
 | [Dpad Left Analog](hotkeys.mdx#dpad-left-analog)   | <Hotkey buttons={["S1","S2","Left"]}/>  |
@@ -112,4 +103,4 @@ Selected D-Pad mode and SOCD cleaning mode are saved across power cycles.
 
 ## Add-Ons and Additional Features
 
-There are a number of add-ons that expand the functionality of GP2040-CE, such as [analog stick emulation](./add-ons/analog) and [turbo functions](./add-ons/turbo). Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to Add-Ons page for more information on the individual add-ons.
+There are a number of add-ons that expand the functionality of GP2040-CE, such as [analog joystick emulation](./add-ons/analog) and [turbo functions](./add-ons/turbo). Due to the large number of add-ons created by the community, they are located in a separate documentation page. Navigate to Add-Ons page for more information on the individual add-ons.
