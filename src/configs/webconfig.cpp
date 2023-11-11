@@ -118,7 +118,10 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 		else
 		{
 			pin = -1;
-			*gpioMappings[oldPin] = GpioAction::NONE;
+			if (isValidPin(oldPin))
+			{
+				*gpioMappings[oldPin] = GpioAction::NONE;
+			}
 		}
 	}
 }
