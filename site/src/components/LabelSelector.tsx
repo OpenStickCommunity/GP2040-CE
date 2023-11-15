@@ -193,8 +193,8 @@ const useLabelSelector = create<State & Actions>()(
 				set({ selected });
 			},
 		}),
-		{ name: 'SelectedLabel' }
-	)
+		{ name: 'SelectedLabel' },
+	),
 );
 
 const customStyles = {
@@ -235,5 +235,9 @@ export function Hotkey({ buttons }) {
 		.map((input) => labelData[selected.value][input])
 		.join(' + ');
 
-	return <code>{hotKeyCombo}</code>;
+	return (
+		<a href="/usage#buttons">
+			<code>{hotKeyCombo}</code>
+		</a>
+	);
 }
