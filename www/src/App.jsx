@@ -7,6 +7,7 @@ import Navigation from './Components/Navigation';
 
 import HomePage from './Pages/HomePage';
 import PinMappingPage from './Pages/PinMapping';
+import PeripheralMappingPage from './Pages/PeripheralMappingPage';
 import ProfileSettingsPage from './Pages/ProfileSettings';
 import KeyboardMappingPage from './Pages/KeyboardMapping';
 import ResetSettingsPage from './Pages/ResetSettingsPage';
@@ -32,6 +33,7 @@ const App = () => {
 						<Route path="/" element={<HomePage />} />
 						<Route path="/settings" element={<SettingsPage />} />
 						<Route path="/pin-mapping" element={<PinMappingPage />} />
+						<Route path="/peripheral-mapping" element={<PeripheralMappingPage />} />
 						<Route path="/keyboard-mapping" element={<KeyboardMappingPage />} />
 						<Route path="/profile-settings" element={<ProfileSettingsPage />} />
 						<Route path="/reset-settings" element={<ResetSettingsPage />} />

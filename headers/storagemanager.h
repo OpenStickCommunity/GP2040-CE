@@ -46,6 +46,7 @@ public:
 	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioAction* getProfilePinMappings() { return functionalPinMappings; }
+	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 
 	bool save();
 

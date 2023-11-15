@@ -13,6 +13,7 @@ export default {
 	'links-label': 'Links',
 	'macro-label': 'Macro',
 	'pin-mapping-label': 'Pin Mapping',
+	'peripheral-mapping-label': 'Peripheral Mapping',
 	'profile-settings-label': 'Profile Settings',
 	'reboot-label': 'Reboot',
 	'reboot-modal-body': 'Select a mode to reboot to',

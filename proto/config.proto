@@ -64,6 +64,29 @@ message HotkeyOptions
 	optional HotkeyEntry hotkey12 = 12;
 }
 
+message PeripheralOptions
+{
+	message I2COptions {
+        optional bool enabled = 1;
+        optional int32 sda = 2;
+        optional int32 scl = 3;
+        optional uint32 speed = 4;
+    }
+
+    message SPIOptions {
+        optional bool enabled = 1;
+        optional int32 rx = 2;
+        optional int32 cs = 3;
+        optional int32 sck = 4;
+        optional int32 tx = 5;
+    }
+
+    optional I2COptions blockI2C0 = 1;
+    optional I2COptions blockI2C1 = 2;
+    optional SPIOptions blockSPI0 = 3;
+    optional SPIOptions blockSPI1 = 4;
+}
+
 message ForcedSetupOptions
 {
 	optional ForcedSetupMode mode = 1;
@@ -701,4 +724,5 @@ message Config
 	optional string boardConfig = 12 [(nanopb).max_length = 63];
 	optional GpioMappings gpioMappings = 13;
 	optional MigrationHistory migrations = 14;
+	optional PeripheralOptions peripheralOptions = 15;
 }

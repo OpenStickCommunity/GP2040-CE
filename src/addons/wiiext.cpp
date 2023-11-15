@@ -7,12 +7,12 @@
 bool WiiExtensionInput::available() {
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
-
-    return (!displayOptions.enabled && (options.enabled && isValidPin(options.i2cSDAPin) && isValidPin(options.i2cSCLPin)));
+    return (!displayOptions.enabled && options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
 }
 
 void WiiExtensionInput::setup() {
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
+    PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
     nextTimer = getMillis();
 
 #if WII_EXTENSION_DEBUG==true
@@ -24,10 +24,7 @@ void WiiExtensionInput::setup() {
     currentConfig = NULL;
     
     wii = new WiiExtension(
-        options.i2cSDAPin,
-        options.i2cSCLPin,
-        options.i2cBlock == 0 ? i2c0 : i2c1,
-        options.i2cSpeed,
+        i2c,
         WII_EXTENSION_I2C_ADDR);
     wii->begin();
     wii->start();

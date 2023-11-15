@@ -76,6 +76,9 @@ const Navigation = (props) => {
 						<NavDropdown.Item as={NavLink} exact="true" to="/pin-mapping">
 							{t('Navigation:pin-mapping-label')}
 						</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} exact="true" to="/peripheral-mapping">
+							{t('Navigation:peripheral-mapping-label')}
+						</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} exact="true" to="/keyboard-mapping">
 							{t('Navigation:keyboard-mapping-label')}
 						</NavDropdown.Item>
