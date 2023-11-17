@@ -3,6 +3,7 @@
 
 #include "peripheral_i2c.h"
 #include "peripheral_spi.h"
+#include "peripheral_usb.h"
 
 #define PMGR PeripheralManager::getInstance()
 
@@ -19,15 +20,19 @@ public:
 
     PeripheralI2C* getI2C(uint8_t block);
     PeripheralSPI* getSPI(uint8_t block);
+    PeripheralUSB* getUSB(uint8_t block);
 
     bool isI2CEnabled(uint8_t block);
     bool isSPIEnabled(uint8_t block);
+    bool isUSBEnabled(uint8_t block);
 private:
     PeripheralI2C* blockI2C0 = nullptr;
     PeripheralI2C* blockI2C1 = nullptr;
 
     PeripheralSPI* blockSPI0 = nullptr;
     PeripheralSPI* blockSPI1 = nullptr;
+
+    PeripheralUSB* blockUSB0 = nullptr;
 };
 
 #endif

@@ -1041,6 +1041,10 @@ std::string getPeripheralOptions()
 	writeDoc(doc, "peripheral", "spi1", "sck",     peripheralOptions.blockSPI1.sck);
 	writeDoc(doc, "peripheral", "spi1", "tx",      peripheralOptions.blockSPI1.tx);
 
+	writeDoc(doc, "peripheral", "usb0", "enabled", peripheralOptions.blockUSB0.enabled);
+	writeDoc(doc, "peripheral", "usb0", "dp",     peripheralOptions.blockUSB0.dp);
+	writeDoc(doc, "peripheral", "usb0", "order",   peripheralOptions.blockUSB0.order);
+
 	return serialize_json(doc);
 }
 
@@ -1071,6 +1075,10 @@ std::string setPeripheralOptions()
 	docToPin(peripheralOptions.blockSPI1.cs, doc,  "peripheral", "spi1", "cs");
 	docToPin(peripheralOptions.blockSPI1.sck, doc, "peripheral", "spi1", "sck");
 	docToPin(peripheralOptions.blockSPI1.tx, doc,  "peripheral", "spi1", "tx");
+
+	docToValue(peripheralOptions.blockUSB0.enabled, doc, "peripheral", "usb0", "enabled");
+	docToPin(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
+	docToValue(peripheralOptions.blockUSB0.order, doc, "peripheral", "usb0", "order");
 
 	Storage::getInstance().save();
 

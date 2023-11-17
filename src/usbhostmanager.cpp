@@ -1,4 +1,5 @@
 #include "usbhostmanager.h"
+#include "storagemanager.h"
 
 #include "pio_usb.h"
 #include "tusb.h"
@@ -10,8 +11,10 @@ void USBHostManager::setDataPin(uint8_t inPin) {
 
 void USBHostManager::start() {
     if ( !addons.empty() ) {
+        const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+
         pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-        pio_cfg.pin_dp = dataPin;
+        pio_cfg.pin_dp = usb.dp;
         pio_cfg.sm_tx = 1; // NeoPico uses PIO0:0, move to state machine 1
         tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
         tuh_init(BOARD_TUH_RHPORT);

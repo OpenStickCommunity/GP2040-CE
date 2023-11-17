@@ -81,10 +81,18 @@ message PeripheralOptions
         optional int32 tx = 5;
     }
 
+	message USBOptions {
+        optional bool enabled = 1;
+        optional int32 dp = 2;
+        optional int32 enable5V = 3;
+        optional uint32 order = 4;
+    }
+
     optional I2COptions blockI2C0 = 1;
     optional I2COptions blockI2C1 = 2;
     optional SPIOptions blockSPI0 = 3;
     optional SPIOptions blockSPI1 = 4;
+    optional USBOptions blockUSB0 = 5;
 }
 
 message ForcedSetupOptions

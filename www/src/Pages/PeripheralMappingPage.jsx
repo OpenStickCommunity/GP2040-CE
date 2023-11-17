@@ -14,6 +14,7 @@ import Section from '../Components/Section';
 import WebApi, { basePeripheralMapping } from '../Services/WebApi';
 import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
 import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
+import boards from '../Data/Boards.json';
 
 let peripheralFieldsSchema = {peripheral: yup.object().shape(Object.assign({}, ...PERIPHERAL_DEVICES.map((device) => {
     let deviceProps = Object.assign({}, ...device.blocks.map((block) => { 
@@ -64,6 +65,11 @@ export default function PeripheralMappingPage() {
     const [warning, setWarning] = useState({ show: false, acceptText: '' });
     const [peripheralMappings , setPeripheralMappings] = useState(basePeripheralMapping);
 
+    let allPins = [...Array(boards[import.meta.env.VITE_GP2040_BOARD].maxPin).keys()];
+    const pinLookup = (pinList) => {
+        return ((pinList && pinList.length > 0) ? pinList : allPins);
+    };
+
 	const onSuccess = async (values) => {
         const cleanValues = schema.cast(values);
         console.dir(cleanValues);
@@ -81,8 +87,8 @@ export default function PeripheralMappingPage() {
         return (
             <div key={`details-${peripheral.value}-${peripheral.label}`}>
                 <div key={`details-${peripheral.value}-header`} className="mb-3">{header}</div>
-                {peripheral.blocks.map((block,i) => {
-                    let colCount = Math.max.apply(null, Object.keys(block.pins).map((pin) => block.pins[pin].length));                        
+                {peripheral.pinTable && peripheral.blocks.map((block,i) => {
+                    let colCount = Math.max.apply(null, Object.keys(block.pins).map((pin) => block.pins[pin].length));
                     return (
                     <Table className="caption-top" striped="columns" responsive bordered hover variant="dark" size="sm">
                         <caption>{block.label.toUpperCase()}</caption>
@@ -145,7 +151,7 @@ export default function PeripheralMappingPage() {
                                                 </div>
                                                 {Object.keys(block.pins).map((pin,i) => (
                                                 <div key={`${block.label}.${pin}`} className="col-sm-auto">
-                                                    <Form.Label>{pin.toUpperCase()}</Form.Label>
+                                                    <Form.Label>{t(`PeripheralMapping:pin-${pin.toLowerCase()}-label`)}</Form.Label>
                                                     <FormSelect
                                                         key={`peripheral.${block.label}.${pin}`}
                                                         id={`peripheral.${block.label}.${pin}`}
@@ -159,12 +165,12 @@ export default function PeripheralMappingPage() {
                                                         }}
                                                     >
                                                         <option key={`block-${block.label}-pin-unset`} value="-1">Unset</option>
-                                                        {block.pins[pin].map((o, i2) => (
+                                                        {pinLookup(block.pins[pin]).map((o, i2) => (
                                                             <option
                                                                 key={`block-${block.label}-pin-${i2}`}
                                                                 value={o}
                                                             >
-                                                                {!usedPins.includes(o) ? o : `${o} - in use`}
+                                                                {!usedPins.includes(o) ? o : `${o} - ${t('PeripheralMapping:pin-in-use')}`}
                                                             </option>
                                                         ))}
                                                     </FormSelect>
@@ -172,7 +178,7 @@ export default function PeripheralMappingPage() {
                                                 ))}
                                                 {Object.keys(peripheral.options).map((option,i) => (
                                                 <div key={`${block.label}.${option}`} className="col-sm-auto">
-                                                    <Form.Label style={{textTransform:'capitalize'}}>{option}</Form.Label>
+                                                    <Form.Label>{t(`PeripheralMapping:option-${option.toLowerCase()}-label`)}</Form.Label>
                                                     <FormSelect
                                                         key={`peripheral.${block.label}.${option}`}
                                                         id={`peripheral.${block.label}.${option}`}
@@ -190,7 +196,7 @@ export default function PeripheralMappingPage() {
                                                                 key={`block-${block.label}-option-${option}-${o.value}`}
                                                                 value={o.value}
                                                             >
-                                                                {`${o.label} - ${o.value}`}
+                                                                {`${t(`PeripheralMapping:option-${option}-choice-${o.value}-label`)} - ${o.value}`}
                                                             </option>
                                                         ))}
                                                     </FormSelect>
