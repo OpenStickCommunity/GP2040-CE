@@ -10,7 +10,7 @@ static const std::string displayNames[][18] = {
 			"U", "D", "L", "R",
 			"X", "O", "#", "^",
 			"L1", "R1", "L2", "R2",
-			"SL", "ST", "LS", "RS", "H", "A2"
+			"SL", "ST", "L3", "R3", "PS", "A2"
 	},
 	{		// Switch
 			"U", "D", "L", "R",
@@ -22,7 +22,7 @@ static const std::string displayNames[][18] = {
 			"U", "D", "L", "R",
 			"A", "B", "X", "Y",
 			"LB", "RB", "LT", "RT",
-			"S1", "S2", "L3", "R3", "A1", "A2"
+			"BK", "ST", "LS", "RS", "G", "A2"
 	},
 	{		// Keyboard / HID-KB
 			"U", "D", "L", "R",
@@ -34,7 +34,7 @@ static const std::string displayNames[][18] = {
 			"U", "D", "L", "R",
 			"X", "O", "#", "^",
 			"L1", "R1", "L2", "R2",
-			"SL", "ST", "LS", "RS", "H", "A2"
+			"SH", "OP", "L3", "R3", "PS", "T"
 	},
 	{		// Config
 			"U", "D", "L", "R",
