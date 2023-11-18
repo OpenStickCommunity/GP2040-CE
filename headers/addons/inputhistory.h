@@ -31,7 +31,7 @@ class InputHistoryAddon : public GPAddon
 {
 public:
 	virtual bool available();
-	virtual void setup();	
+	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return InputHistoryName; }
@@ -40,12 +40,12 @@ private:
 	uint32_t historyLength;
 	uint32_t col;
 	uint32_t row;
-    std::string historyString;
+	std::string historyString;
 	std::deque<std::string> inputHistory;
 	std::array<bool, 18> lastInput;
 	Gamepad* gamepad;
 	Gamepad* pGamepad;
-    bool pressedUp();
+	bool pressedUp();
 	bool pressedDown();
 	bool pressedLeft();
 	bool pressedRight();
