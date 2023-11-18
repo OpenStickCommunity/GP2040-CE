@@ -45,8 +45,9 @@ static const std::string displayNames[][18] = {
 };
 
 bool InputHistoryAddon::available() {
+	const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
 	const InputHistoryOptions& options = Storage::getInstance().getAddonOptions().inputHistoryOptions;
-	return options.enabled;
+	return displayOptions.enabled && options.enabled;
 }
 
 void InputHistoryAddon::setup() {
