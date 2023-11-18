@@ -1098,6 +1098,12 @@ std::string setAddonOptions()
 	docToPin(snesOptions.latchPin, doc, "snesPadLatchPin");
 	docToPin(snesOptions.dataPin, doc, "snesPadDataPin");
 
+	InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
+	docToValue(inputHistoryOptions.length, doc, "inputHistoryLength");
+	docToValue(inputHistoryOptions.enabled, doc, "InputHistoryAddonEnabled");
+	docToValue(inputHistoryOptions.col, doc, "inputHistoryCol");
+	docToValue(inputHistoryOptions.row, doc, "inputHistoryRow");
+
 	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
 	Pin_t oldKbPinDplus = keyboardHostOptions.pinDplus;
@@ -1504,6 +1510,12 @@ std::string getAddonOptions()
 	writeDoc(doc, "snesPadLatchPin", cleanPin(snesOptions.latchPin));
 	writeDoc(doc, "snesPadDataPin", cleanPin(snesOptions.dataPin));
 	writeDoc(doc, "SNESpadAddonEnabled", snesOptions.enabled);
+
+	const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
+	writeDoc(doc, "inputHistoryLength", inputHistoryOptions.length);
+	writeDoc(doc, "InputHistoryAddonEnabled", inputHistoryOptions.enabled);
+	writeDoc(doc, "inputHistoryCol", inputHistoryOptions.col);
+	writeDoc(doc, "inputHistoryRow", inputHistoryOptions.row);
 
 	const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	writeDoc(doc, "KeyboardHostAddonEnabled", keyboardHostOptions.enabled);

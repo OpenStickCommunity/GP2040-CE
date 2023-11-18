@@ -43,6 +43,7 @@ import FocusMode, {
 	focusModeState,
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
+import InputHistory, { inputHistoryScheme, inputHistoryState } from '../Addons/InputHistory';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -62,6 +63,7 @@ const schema = yup.object().shape({
 	...wiiScheme,
 	...focusModeScheme,
 	...keyboardScheme,
+	...inputHistoryScheme,
 });
 
 const defaultValues = {
@@ -83,6 +85,7 @@ const defaultValues = {
 	...snesState,
 	...focusModeState,
 	...keyboardState,
+	...inputHistoryState,
 };
 
 const ADDONS = [
@@ -104,6 +107,7 @@ const ADDONS = [
 	SNES,
 	FocusMode,
 	Keyboard,
+	InputHistory
 ];
 
 const FormContext = ({ setStoredData }) => {

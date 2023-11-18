@@ -156,6 +156,7 @@ src/addons/slider_socd.cpp
 src/addons/wiiext.cpp
 src/addons/input_macro.cpp
 src/addons/snes_input.cpp
+src/addons/inputhistory.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
 src/addons/tilt.cpp

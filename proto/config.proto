@@ -653,6 +653,14 @@ message MacroOptions
 	repeated Macro macroList = 3 [(nanopb).max_count = 6];
 }
 
+message InputHistoryOptions
+{
+	optional bool enabled = 1;
+	optional uint32 length = 2;
+	optional uint32 col = 3;
+	optional uint32 row = 4;
+}
+
 message AddonOptions
 {
 	optional BootselButtonOptions bootselButtonOptions = 1;
@@ -675,6 +683,7 @@ message AddonOptions
 	optional TiltOptions tiltOptions = 18;
 	optional PSPassthroughOptions psPassthroughOptions = 19;
 	optional MacroOptions macroOptions = 20;
+	optional InputHistoryOptions inputHistoryOptions = 21;
 }
 
 message MigrationHistory

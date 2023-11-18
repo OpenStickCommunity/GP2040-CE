@@ -15,6 +15,10 @@
 #include "config.pb.h"
 #include "usb_driver.h"
 
+I2CDisplayAddon::I2CDisplayAddon(InputHistoryAddon* pInputHistoryAddon) {
+	inputHistoryAddon = pInputHistoryAddon;
+}
+
 bool I2CDisplayAddon::available() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
 	return options.enabled && 
@@ -58,6 +62,9 @@ void I2CDisplayAddon::setup() {
 	displaySaverTimeout = displaySaverTimer;
 	configMode = Storage::getInstance().GetConfigMode();
 	turnOffWhenSuspended = options.turnOffWhenSuspended;
+
+	const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
+	isInputHistoryEnabled = inputHistoryOptions.enabled;
 }
 
 bool I2CDisplayAddon::isDisplayPowerOff()
@@ -135,37 +142,37 @@ void I2CDisplayAddon::process() {
 
 			switch (options.buttonLayout) {
 				case BUTTON_LAYOUT_STICK:
-					drawArcadeStick(8, 28, 8, 2);
+					drawArcadeStick(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_STICKLESS:
 					drawStickless(8, 20, 8, 2);
 					break;
 				case BUTTON_LAYOUT_BUTTONS_ANGLED:
-					drawWasdBox(8, 28, 7, 3);
+					drawWasdBox(8, (isInputHistoryEnabled ? 22 : 28), 7, 3);
 					break;
 				case BUTTON_LAYOUT_BUTTONS_BASIC:
-					drawUDLR(8, 28, 8, 2);
+					drawUDLR(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_KEYBOARD_ANGLED:
-					drawKeyboardAngled(18, 28, 5, 2);
+					drawKeyboardAngled(18, (isInputHistoryEnabled ? 24 : 28), 5, 2);
 					break;
 				case BUTTON_LAYOUT_KEYBOARDA:
-					drawMAMEA(8, 28, 10, 1);
+					drawMAMEA(8, (isInputHistoryEnabled ? 22 : 28), 10, 1);
 					break;
 				case BUTTON_LAYOUT_OPENCORE0WASDA:
-					drawOpenCore0WASDA(16, 28, 10, 1);
+					drawOpenCore0WASDA(16, (isInputHistoryEnabled ? 22 : 28), 10, 1);
 					break;
 				case BUTTON_LAYOUT_DANCEPADA:
-					drawDancepadA(39, 12, 15, 2);
+					drawDancepadA(39, (isInputHistoryEnabled ? 10 : 12), (isInputHistoryEnabled ? 13 : 15), 2);
 					break;
 				case BUTTON_LAYOUT_TWINSTICKA:
-					drawTwinStickA(8, 28, 8, 2);
+					drawTwinStickA(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_BLANKA:
 					drawBlankA(0, 0, 0, 0);
 					break;
 				case BUTTON_LAYOUT_VLXA:
-					drawVLXA(7, 28, 7, 2);
+					drawVLXA(7, (isInputHistoryEnabled ? 22 : 28), 7, 2);
 					break;
 				case BUTTON_LAYOUT_CUSTOMA:
 					drawButtonLayoutLeft(buttonLayoutCustomOptions.paramsLeft);
@@ -180,52 +187,52 @@ void I2CDisplayAddon::process() {
 
 			switch (options.buttonLayoutRight) {
 				case BUTTON_LAYOUT_ARCADE:
-					drawArcadeButtons(8, 28, 8, 2);
+					drawArcadeButtons(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_STICKLESSB:
 					drawSticklessButtons(8, 20, 8, 2);
 					break;
 				case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
-					drawWasdButtons(8, 28, 7, 3);
+					drawWasdButtons(8, (isInputHistoryEnabled ? 22 : 28), 7, 3);
 					break;
 				case BUTTON_LAYOUT_VEWLIX:
-					drawVewlix(8, 28, 8, 2);
+					drawVewlix(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_VEWLIX7:
-					drawVewlix7(8, 28, 8, 2);
+					drawVewlix7(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_CAPCOM:
-					drawCapcom(6, 28, 8, 2);
+					drawCapcom(6, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_CAPCOM6:
-					drawCapcom6(16, 28, 8, 2);
+					drawCapcom6(16, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_SEGA2P:
-					drawSega2p(8, 28, 8, 2);
+					drawSega2p(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_NOIR8:
-					drawNoir8(8, 28, 8, 2);
+					drawNoir8(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_KEYBOARDB:
-					drawMAMEB(68, 28, 10, 1);
+					drawMAMEB(68, (isInputHistoryEnabled ? 22 : 28), 10, 1);
 					break;
 				case BUTTON_LAYOUT_KEYBOARD8B:
-					drawMAME8B(68, 28, 10, 1);
+					drawMAME8B(68, (isInputHistoryEnabled ? 22 : 28), 10, 1);
 					break;
 				case BUTTON_LAYOUT_OPENCORE0WASDB:
-					drawOpenCore0WASDB(68, 28, 10, 1);
+					drawOpenCore0WASDB(68, (isInputHistoryEnabled ? 22 : 28), 10, 1);
 					break;				
 				case BUTTON_LAYOUT_DANCEPADB:
-					drawDancepadB(39, 12, 15, 2);
+					drawDancepadB(39, (isInputHistoryEnabled ? 10 : 12), (isInputHistoryEnabled ? 13 : 15), 2);
 					break;
 				case BUTTON_LAYOUT_TWINSTICKB:
-					drawTwinStickB(100, 28, 8, 2);
+					drawTwinStickB(100, (isInputHistoryEnabled ? 22 : 28), 8, 2);
 					break;
 				case BUTTON_LAYOUT_BLANKB:
 					drawSticklessButtons(0, 0, 0, 0);
 					break;
 				case BUTTON_LAYOUT_VLXB:
-					drawVLXB(6, 28, 7, 2);
+					drawVLXB(6, (isInputHistoryEnabled ? 22 : 28), 7, 2);
 					break;
 				case BUTTON_LAYOUT_CUSTOMB:
 					drawButtonLayoutRight(buttonLayoutCustomOptions.paramsRight);
@@ -237,6 +244,11 @@ void I2CDisplayAddon::process() {
 					drawArcadeStick(90, 22, 8, 2);
 					break;
 			}
+
+			if(isInputHistoryEnabled) {
+				inputHistoryAddon->drawHistory(&obd);
+			}
+
 			break;
 	}
 
@@ -494,7 +506,7 @@ void I2CDisplayAddon::drawStickless(int startX, int startY, int buttonRadius, in
 	obdPreciseEllipse(&obd, startX, startY, buttonRadius, buttonRadius, 1, pressedLeft());
 	obdPreciseEllipse(&obd, startX + buttonMargin, startY, buttonRadius, buttonRadius, 1, pressedDown());
 	obdPreciseEllipse(&obd, startX + (buttonMargin * 1.875), startY + (buttonMargin / 2), buttonRadius, buttonRadius, 1, pressedRight());
-	obdPreciseEllipse(&obd, startX + (buttonMargin * 2.25), startY + buttonMargin * 1.875, buttonRadius, buttonRadius, 1, pressedUp());
+	obdPreciseEllipse(&obd, startX + (buttonMargin * (isInputHistoryEnabled ? 1.875 : 2.25)), startY + buttonMargin * (isInputHistoryEnabled ? 1.5 : 1.875), buttonRadius, buttonRadius, 1, pressedUp());
 }
 
 void I2CDisplayAddon::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding)

@@ -13,6 +13,7 @@
 #include "addons/ps4mode.h"
 #include "addons/pspassthrough.h"
 #include "addons/neopicoleds.h"
+#include "addons/inputhistory.h"
 
 #include <iterator>
 
@@ -25,7 +26,9 @@ GP2040Aux::~GP2040Aux() {
 void GP2040Aux::setup() {
 	// Setup Add-ons
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
-	addons.LoadAddon(new I2CDisplayAddon(), CORE1_LOOP);
+	InputHistoryAddon* inputHistoryAddon = new InputHistoryAddon();
+	addons.LoadAddon(inputHistoryAddon, CORE1_LOOP);
+	addons.LoadAddon(new I2CDisplayAddon(inputHistoryAddon), CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);

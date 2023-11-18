@@ -445,6 +445,12 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, pin, BUZZER_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
 
+    // addonOptions.inputHistoryOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, enabled, !!INPUT_HISTORY_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, length, INPUT_HISTORY_LENGTH);
+    INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, col, INPUT_HISTORY_COL);
+    INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, row, INPUT_HISTORY_ROW);
+
     // addonOptions.playerNumberOptions
     INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, enabled, !!PLAYERNUM_ADDON_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.playerNumberOptions, number, PLAYER_NUMBER);

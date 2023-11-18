@@ -13,6 +13,7 @@
 #include "gpaddon.h"
 #include "gamepad.h"
 #include "storagemanager.h"
+#include "addons/inputhistory.h"
 
 #ifndef HAS_I2C_DISPLAY
 #define HAS_I2C_DISPLAY -1
@@ -141,6 +142,8 @@
 class I2CDisplayAddon : public GPAddon
 {
 public:
+	I2CDisplayAddon(InputHistoryAddon*);
+	~I2CDisplayAddon() {}
 	virtual bool available();
 	virtual void setup();
 	virtual void preprocess() {}
@@ -219,6 +222,8 @@ private:
 	bool isFocusModeEnabled;
 	bool focusModePrevState;
 	bool turnOffWhenSuspended;
+	bool isInputHistoryEnabled;
+	InputHistoryAddon* inputHistoryAddon;
 };
 
 #endif
