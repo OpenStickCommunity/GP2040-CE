@@ -23,7 +23,7 @@ void USBHostManager::start() {
         if (PeripheralManager::getInstance().isUSBEnabled(0)) {
             pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
             pio_cfg.pin_dp = peripheralOptions.blockUSB0.dp;
-            pio_cfg.pinout = (peripheralOptions.blockUSB0.order ? PIO_USB_PINOUT_DPDM : PIO_USB_PINOUT_DMDP);
+            pio_cfg.pinout = (peripheralOptions.blockUSB0.order == 0 ? PIO_USB_PINOUT_DPDM : PIO_USB_PINOUT_DMDP);
             pio_cfg.sm_tx = 1; // NeoPico uses PIO0:0, move to state machine 1
             tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
             tuh_init(BOARD_TUH_RHPORT);
