@@ -1,26 +1,16 @@
 #include "addons/keyboard_host.h"
 #include "storagemanager.h"
 #include "usbhostmanager.h"
+#include "peripheralmanager.h"
 
 bool KeyboardHostAddon::available() {
     const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
-	return keyboardHostOptions.enabled &&
-         isValidPin(keyboardHostOptions.pinDplus) &&
-         (keyboardHostOptions.pin5V == -1 || isValidPin(keyboardHostOptions.pin5V));
+	return keyboardHostOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
 }
 
 void KeyboardHostAddon::setup() {
   const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
   const KeyboardMapping& keyboardMapping = keyboardHostOptions.mapping;
-
-  if (keyboardHostOptions.pin5V != -1) {
-      const int32_t pin5V = keyboardHostOptions.pin5V;
-	  gpio_init(pin5V);
-	  gpio_set_dir(pin5V, GPIO_IN);
-	  gpio_pull_up(pin5V);
-  }
-
-  USBHostManager::getInstance().setDataPin((uint8_t)keyboardHostOptions.pinDplus);
 
   _keyboard_host_enabled = false;
   _keyboard_host_mapDpadUp.setMask(GAMEPAD_MASK_UP);

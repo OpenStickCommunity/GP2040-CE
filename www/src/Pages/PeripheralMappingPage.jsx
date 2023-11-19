@@ -65,7 +65,7 @@ export default function PeripheralMappingPage() {
     const [warning, setWarning] = useState({ show: false, acceptText: '' });
     const [peripheralMappings , setPeripheralMappings] = useState(basePeripheralMapping);
 
-    let allPins = [...Array(boards[import.meta.env.VITE_GP2040_BOARD].maxPin).keys()];
+    let allPins = [...Array(boards[import.meta.env.VITE_GP2040_BOARD].maxPin+1).keys()];
     const pinLookup = (pinList) => {
         return ((pinList && pinList.length > 0) ? pinList : allPins);
     };

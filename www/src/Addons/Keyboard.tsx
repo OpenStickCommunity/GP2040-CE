@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormCheck, Row } from 'react-bootstrap';
+import { FormCheck, Row, FormLabel } from 'react-bootstrap';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
@@ -39,7 +39,7 @@ const Keyboard = ({
 	handleCheckbox,
 	setFieldValue,
 }) => {
-	const { buttonLabels } = useContext(AppContext);
+	const { buttonLabels, getAvailablePeripherals } = useContext(AppContext);
 	const { t } = useTranslation();
 	const [validated, setValidated] = useState(false);
 
@@ -59,49 +59,8 @@ const Keyboard = ({
 		<Section title={t('AddonsConfig:keyboard-host-header-text')}>
 			<div
 				id="KeyboardHostAddonOptions"
-				hidden={!values.KeyboardHostAddonEnabled}
+				hidden={!(values.KeyboardHostAddonEnabled && getAvailablePeripherals('usb'))}
 			>
-				<Row className="mb-3">
-					<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:keyboard-host-d-plus-label')}
-						name="keyboardHostPinDplus"
-						className="form-select-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={values.keyboardHostPinDplus}
-						error={errors.keyboardHostPinDplus}
-						isInvalid={Boolean(errors.keyboardHostPinDplus)}
-						onChange={handleChange}
-						min={-1}
-						max={28}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:keyboard-host-d-minus-label')}
-						disabled
-						className="form-select-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={
-							values.keyboardHostPinDplus === -1
-								? -1
-								: values.keyboardHostPinDplus + 1
-						}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:keyboard-host-five-v-label')}
-						name="keyboardHostPin5V"
-						className="form-select-sm"
-						groupClassName="col-sm-auto mb-3"
-						value={values.keyboardHostPin5V}
-						error={errors.keyboardHostPin5V}
-						isInvalid={Boolean(errors.keyboardHostPin5V)}
-						onChange={handleChange}
-						min={-1}
-						max={28}
-					/>
-				</Row>
 				<Row className="mb-3">
 					<p>{t('KeyboardMapping:sub-header-text')}</p>
 					<KeyboardMapper
@@ -112,6 +71,7 @@ const Keyboard = ({
 					/>
 				</Row>
 			</div>
+            {getAvailablePeripherals('usb') ?
 			<FormCheck
 				label={t('Common:switch-enabled')}
 				type="switch"
@@ -124,6 +84,9 @@ const Keyboard = ({
 					handleChange(e);
 				}}
 			/>
+            :
+            <FormLabel>{t('PeripheralMapping:peripheral-toggle-unavailable',{'name':'USB'})}</FormLabel>
+            }
 		</Section>
 	);
 };

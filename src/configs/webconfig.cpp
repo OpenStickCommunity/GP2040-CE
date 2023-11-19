@@ -1042,7 +1042,8 @@ std::string getPeripheralOptions()
 	writeDoc(doc, "peripheral", "spi1", "tx",      peripheralOptions.blockSPI1.tx);
 
 	writeDoc(doc, "peripheral", "usb0", "enabled", peripheralOptions.blockUSB0.enabled);
-	writeDoc(doc, "peripheral", "usb0", "dp",     peripheralOptions.blockUSB0.dp);
+	writeDoc(doc, "peripheral", "usb0", "dp",      peripheralOptions.blockUSB0.dp);
+	writeDoc(doc, "peripheral", "usb0", "enable5v",peripheralOptions.blockUSB0.enable5v);
 	writeDoc(doc, "peripheral", "usb0", "order",   peripheralOptions.blockUSB0.order);
 
 	return serialize_json(doc);
@@ -1055,29 +1056,30 @@ std::string setPeripheralOptions()
 	PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
 	docToValue(peripheralOptions.blockI2C0.enabled, doc, "peripheral", "i2c0", "enabled");
-	docToPin(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
-	docToPin(peripheralOptions.blockI2C0.scl, doc, "peripheral", "i2c0", "scl");
+	docToValue(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
+	docToValue(peripheralOptions.blockI2C0.scl, doc, "peripheral", "i2c0", "scl");
 	docToValue(peripheralOptions.blockI2C0.speed, doc, "peripheral", "i2c0", "speed");
 
 	docToValue(peripheralOptions.blockI2C1.enabled, doc, "peripheral", "i2c1", "enabled");
-	docToPin(peripheralOptions.blockI2C1.sda, doc, "peripheral", "i2c1", "sda");
-	docToPin(peripheralOptions.blockI2C1.scl, doc, "peripheral", "i2c1", "scl");
+	docToValue(peripheralOptions.blockI2C1.sda, doc, "peripheral", "i2c1", "sda");
+	docToValue(peripheralOptions.blockI2C1.scl, doc, "peripheral", "i2c1", "scl");
 	docToValue(peripheralOptions.blockI2C1.speed, doc, "peripheral", "i2c1", "speed");
 
 	docToValue(peripheralOptions.blockSPI0.enabled, doc,  "peripheral", "spi0", "enabled");
-	docToPin(peripheralOptions.blockSPI0.rx, doc,  "peripheral", "spi0", "rx");
-	docToPin(peripheralOptions.blockSPI0.cs, doc,  "peripheral", "spi0", "cs");
-	docToPin(peripheralOptions.blockSPI0.sck, doc, "peripheral", "spi0", "sck");
-	docToPin(peripheralOptions.blockSPI0.tx, doc,  "peripheral", "spi0", "tx");
+	docToValue(peripheralOptions.blockSPI0.rx, doc,  "peripheral", "spi0", "rx");
+	docToValue(peripheralOptions.blockSPI0.cs, doc,  "peripheral", "spi0", "cs");
+	docToValue(peripheralOptions.blockSPI0.sck, doc, "peripheral", "spi0", "sck");
+	docToValue(peripheralOptions.blockSPI0.tx, doc,  "peripheral", "spi0", "tx");
 
 	docToValue(peripheralOptions.blockSPI1.enabled, doc,  "peripheral", "spi1", "enabled");
-	docToPin(peripheralOptions.blockSPI1.rx, doc,  "peripheral", "spi1", "rx");
-	docToPin(peripheralOptions.blockSPI1.cs, doc,  "peripheral", "spi1", "cs");
-	docToPin(peripheralOptions.blockSPI1.sck, doc, "peripheral", "spi1", "sck");
-	docToPin(peripheralOptions.blockSPI1.tx, doc,  "peripheral", "spi1", "tx");
+	docToValue(peripheralOptions.blockSPI1.rx, doc,  "peripheral", "spi1", "rx");
+	docToValue(peripheralOptions.blockSPI1.cs, doc,  "peripheral", "spi1", "cs");
+	docToValue(peripheralOptions.blockSPI1.sck, doc, "peripheral", "spi1", "sck");
+	docToValue(peripheralOptions.blockSPI1.tx, doc,  "peripheral", "spi1", "tx");
 
 	docToValue(peripheralOptions.blockUSB0.enabled, doc, "peripheral", "usb0", "enabled");
-	docToPin(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
+	docToValue(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
+	docToValue(peripheralOptions.blockUSB0.enable5v, doc, "peripheral", "usb0", "enable5v");
 	docToValue(peripheralOptions.blockUSB0.order, doc, "peripheral", "usb0", "order");
 
 	Storage::getInstance().save();

@@ -84,7 +84,7 @@ message PeripheralOptions
 	message USBOptions {
         optional bool enabled = 1;
         optional int32 dp = 2;
-        optional int32 enable5V = 3;
+        optional int32 enable5v = 3;
         optional uint32 order = 4;
     }
 

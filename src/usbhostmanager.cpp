@@ -1,5 +1,6 @@
 #include "usbhostmanager.h"
 #include "storagemanager.h"
+#include "peripheralmanager.h"
 
 #include "pio_usb.h"
 #include "tusb.h"
@@ -13,13 +14,22 @@ void USBHostManager::start() {
     if ( !addons.empty() ) {
         const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
-        pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-        pio_cfg.pin_dp = usb.dp;
-        pio_cfg.sm_tx = 1; // NeoPico uses PIO0:0, move to state machine 1
-        tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
-        tuh_init(BOARD_TUH_RHPORT);
-        sleep_us(10); // ensure we are ready
-        tuh_ready = true;
+        if (peripheralOptions.blockUSB0.enable5v != -1) { // Feather USB-A's require this
+            gpio_init(peripheralOptions.blockUSB0.enable5v);
+            gpio_set_dir(peripheralOptions.blockUSB0.enable5v, GPIO_IN);
+            gpio_pull_up(peripheralOptions.blockUSB0.enable5v);
+        }
+
+        if (PeripheralManager::getInstance().isUSBEnabled(0)) {
+            pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
+            pio_cfg.pin_dp = peripheralOptions.blockUSB0.dp;
+            pio_cfg.pinout = (peripheralOptions.blockUSB0.order ? PIO_USB_PINOUT_DPDM : PIO_USB_PINOUT_DMDP);
+            pio_cfg.sm_tx = 1; // NeoPico uses PIO0:0, move to state machine 1
+            tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
+            tuh_init(BOARD_TUH_RHPORT);
+            sleep_us(10); // ensure we are ready
+            tuh_ready = true;
+        }
     }
 }
 
