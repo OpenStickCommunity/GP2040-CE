@@ -3,6 +3,7 @@
 
 #include <hardware/gpio.h>
 #include <hardware/platform_defs.h>
+#include "pio_usb.h"
 
 #ifndef USB_PERIPHERAL_ENABLED
 #define USB_PERIPHERAL_ENABLED 0
@@ -28,14 +29,17 @@ public:
     PeripheralUSB(uint8_t block, int8_t dp, int8_t enable5v, uint8_t order);
     ~PeripheralUSB() {}
 
-//    spi_inst_t* getController() { return _SPI; }
+    pio_usb_configuration_t* getController() { return _USB; }
 
 private:
-    uint8_t _DP;
+    int8_t _DP;
     uint8_t _Order;
     int8_t _Enable5v;
 
-    //spi_inst_t* _hardwareBlocks[NUM_USBS] = {spi0,spi1};
+    pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
+    pio_usb_configuration_t *_USB = (&pio_cfg);
+
+    pio_usb_configuration_t* _hardwareBlocks[NUM_USBS] = {&pio_cfg};
 
     void setup();
 };

@@ -5,4 +5,5 @@ pico_stdlib
 hardware_gpio
 hardware_i2c
 hardware_spi
+tinyusb_pico_pio_usb
 )
