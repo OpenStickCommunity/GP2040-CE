@@ -15,14 +15,10 @@
 #include "config.pb.h"
 #include "usb_driver.h"
 
-I2CDisplayAddon::I2CDisplayAddon(InputHistoryAddon* pInputHistoryAddon) {
-	inputHistoryAddon = pInputHistoryAddon;
-}
-
 bool I2CDisplayAddon::available() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-	return options.enabled && 
-		isValidPin(options.i2cSDAPin) && 
+	return options.enabled &&
+		isValidPin(options.i2cSDAPin) &&
 		isValidPin(options.i2cSCLPin);
 }
 
@@ -86,7 +82,7 @@ bool I2CDisplayAddon::isDisplayPowerOff()
 	} else if (!!displaySaverTimeout && displaySaverTimer <= 0) {
 		setDisplayPower(0);
 	}
-	
+
 	if (isFocusModeEnabled) {
 		const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 		bool isFocusModeActive = !gpio_get(focusModeOptions.pin);
@@ -221,7 +217,7 @@ void I2CDisplayAddon::process() {
 					break;
 				case BUTTON_LAYOUT_OPENCORE0WASDB:
 					drawOpenCore0WASDB(68, (isInputHistoryEnabled ? 22 : 28), 10, 1);
-					break;				
+					break;
 				case BUTTON_LAYOUT_DANCEPADB:
 					drawDancepadB(39, (isInputHistoryEnabled ? 10 : 12), (isInputHistoryEnabled ? 13 : 15), 2);
 					break;
@@ -245,7 +241,7 @@ void I2CDisplayAddon::process() {
 					break;
 			}
 
-			if(isInputHistoryEnabled) {
+			if(isInputHistoryEnabled && inputHistoryAddon != nullptr) {
 				inputHistoryAddon->drawHistory(&obd);
 			}
 
@@ -394,7 +390,7 @@ void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutParamsLeft& options)
 				break;
 			case BUTTON_LAYOUT_OPENCORE0WASDA:
 				drawOpenCore0WASDA(startX, startY, buttonRadius, buttonPadding);
-				break;			
+				break;
 			case BUTTON_LAYOUT_DANCEPADA:
 				drawDancepadA(startX, startY, buttonRadius, buttonPadding);
 				break;
@@ -1120,4 +1116,8 @@ bool I2CDisplayAddon::pressedRight()
 	}
 
 	return false;
+}
+
+void I2CDisplayAddon::attachInputHistoryAddon(InputHistoryAddon* pInputHistoryAddon) {
+	inputHistoryAddon = pInputHistoryAddon;
 }

@@ -142,13 +142,12 @@
 class I2CDisplayAddon : public GPAddon
 {
 public:
-	I2CDisplayAddon(InputHistoryAddon*);
-	~I2CDisplayAddon() {}
 	virtual bool available();
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
+	virtual void attachInputHistoryAddon(InputHistoryAddon*);
 private:
 	int initDisplay(int typeOverride);
 	bool isSH1106(int detectedDisplay);

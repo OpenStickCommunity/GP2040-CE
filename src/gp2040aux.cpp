@@ -24,11 +24,16 @@ GP2040Aux::~GP2040Aux() {
 }
 
 void GP2040Aux::setup() {
+	InputHistoryAddon* inputHistoryAddon = new InputHistoryAddon();
+	I2CDisplayAddon* i2CDisplayAddon = new I2CDisplayAddon();
+
+	if(inputHistoryAddon->available() && i2CDisplayAddon->available())
+		i2CDisplayAddon->attachInputHistoryAddon(inputHistoryAddon);
+
 	// Setup Add-ons
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
-	InputHistoryAddon* inputHistoryAddon = new InputHistoryAddon();
 	addons.LoadAddon(inputHistoryAddon, CORE1_LOOP);
-	addons.LoadAddon(new I2CDisplayAddon(inputHistoryAddon), CORE1_LOOP);
+	addons.LoadAddon(i2CDisplayAddon, CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
