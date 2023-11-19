@@ -50,6 +50,8 @@ This hotkey changes the DPad mode to such the directions to be read as inputs on
 
 This hotkey emulates a press of the <Hotkey buttons={["A1"]}/> button as not all controllers may have this button natively on the controller.
 
+**Default**: <Hotkey buttons={["S1", "S2", "Up"]}/>
+
 ## Capture Button
 
 This hotkey emulates a press of the <Hotkey buttons={["A2"]}/> button as not all controllers may have this button natively on the controller.
@@ -57,6 +59,8 @@ This hotkey emulates a press of the <Hotkey buttons={["A2"]}/> button as not all
 ## SOCD Up Priority
 
 This hotkey changes the SOCD cleaning method to resolve to a neutral input (no input) on the X-axis, but prioritize the `Up` input on the Y-axis when both directions are pressed simultaneously.
+
+**Default**: <Hotkey buttons={["S1", "A1", "Up"]}/>
 
 | 1st Input + 2nd Input | Result  |
 | :-------------------: | :-----: |
@@ -69,6 +73,8 @@ This hotkey changes the SOCD cleaning method to resolve to a neutral input (no i
 
 This hotkey changes the SOCD cleaning method to resolve to a neutral input (no input) on both the X-axis and Y-axis when both directions are pressed simultaneously.
 
+**Default**: <Hotkey buttons={["S1", "A1", "Down"]}/>
+
 | 1st Input + 2nd Input | Result  |
 | :-------------------: | :-----: |
 |     Left + Right      | Neutral |
@@ -79,6 +85,8 @@ This hotkey changes the SOCD cleaning method to resolve to a neutral input (no i
 ## SOCD Last Win
 
 This hotkey changes the SOCD cleaning method to prioritize the second directional input on both the X-axis and Y-axis when both directions are pressed simultaneously.
+
+**Default**: <Hotkey buttons={["S1", "A1", "Left"]}/>
 
 | 1st Input + 2nd Input | Result |
 | :-------------------: | :----: |
