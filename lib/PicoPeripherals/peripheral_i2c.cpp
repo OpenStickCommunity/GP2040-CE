@@ -33,11 +33,6 @@ void PeripheralI2C::setup() {
 
     gpio_pull_up(_SDA);
     gpio_pull_up(_SCL);
-
-    //printf("I2C::setup Index: %d\n", i2c_hw_index(_I2C));
-    //printf("I2C::setup SDA: %d\n", _SDA);
-    //printf("I2C::setup SCL: %d\n", _SCL);
-    //printf("I2C::setup Speed: %d\n", _Speed);
 }
 
 int16_t PeripheralI2C::read(uint8_t address, uint8_t *data, uint16_t len, bool isBlock) {
