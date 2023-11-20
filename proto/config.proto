@@ -118,38 +118,14 @@ message PinMappings
 	optional int32 pinButtonFn = 19;
 }
 
+message GpioMappingInfo
+{
+	optional GpioAction action = 1;
+}
+
 message GpioMappings
 {
-	optional GpioAction pin00 = 1;
-	optional GpioAction pin01 = 2;
-	optional GpioAction pin02 = 3;
-	optional GpioAction pin03 = 4;
-	optional GpioAction pin04 = 5;
-	optional GpioAction pin05 = 6;
-	optional GpioAction pin06 = 7;
-	optional GpioAction pin07 = 8;
-	optional GpioAction pin08 = 9;
-	optional GpioAction pin09 = 10;
-	optional GpioAction pin10 = 11;
-	optional GpioAction pin11 = 12;
-	optional GpioAction pin12 = 13;
-	optional GpioAction pin13 = 14;
-	optional GpioAction pin14 = 15;
-	optional GpioAction pin15 = 16;
-	optional GpioAction pin16 = 17;
-	optional GpioAction pin17 = 18;
-	optional GpioAction pin18 = 19;
-	optional GpioAction pin19 = 20;
-	optional GpioAction pin20 = 21;
-	optional GpioAction pin21 = 22;
-	optional GpioAction pin22 = 23;
-	optional GpioAction pin23 = 24;
-	optional GpioAction pin24 = 25;
-	optional GpioAction pin25 = 26;
-	optional GpioAction pin26 = 27;
-	optional GpioAction pin27 = 28;
-	optional GpioAction pin28 = 29;
-	optional GpioAction pin29 = 30;
+	repeated GpioMappingInfo pins = 1 [(nanopb).max_count = 30];
 }
 
 
