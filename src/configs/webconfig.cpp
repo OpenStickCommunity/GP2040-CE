@@ -143,15 +143,15 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1))
 	{
 		pin = doc[key0][key1];
-        GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+        GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
         if (!isValidPin(pin))
         {
-            *gpioMappings[pin] = GpioAction::ASSIGNED_TO_ADDON;
+            gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
         } else {
 			pin = -1;
 			if (isValidPin(oldPin))
 			{
-				*gpioMappings[oldPin] = GpioAction::NONE;
+				gpioMappings[oldPin].action = GpioAction::NONE;
 			}            
         }
 	}
@@ -164,15 +164,15 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1) && doc[key0][key1].containsKey(key2))
 	{
 		pin = doc[key0][key1][key2];
-        GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+        GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
         if (!isValidPin(pin))
         {
-            *gpioMappings[pin] = GpioAction::ASSIGNED_TO_ADDON;
+            gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
         } else {
 			pin = -1;
 			if (isValidPin(oldPin))
 			{
-				*gpioMappings[oldPin] = GpioAction::NONE;
+				gpioMappings[oldPin].action = GpioAction::NONE;
 			}
         }
 	}
