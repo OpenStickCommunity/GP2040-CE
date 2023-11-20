@@ -154,4 +154,8 @@ export default {
 	'pspassthrough-d-plus-label': 'D+',
 	'pspassthrough-d-minus-label': 'D-',
 	'pspassthrough-five-v-label': 'Alimentação 5V (opcional)',
+	'input-history-header-text': 'Histórico de Entrada',
+	'input-history-length-label': 'Comprimento do histórico (caracteres)',
+	'input-history-col-label': 'Coluna',
+	'input-history-row-label': 'Linha',
 };

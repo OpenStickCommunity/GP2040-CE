@@ -500,6 +500,10 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		WiiExtensionAddonEnabled: 1,
 		SNESpadAddonEnabled: 1,
 		PSPassthroughAddonEnabled: 1,
+		InputHistoryAddonEnabled: 1,
+		inputHistoryLength: 21,
+		inputHistoryCol: 0,
+		inputHistoryRow: 7,
 		usedPins: Object.values(picoController),
 	});
 });

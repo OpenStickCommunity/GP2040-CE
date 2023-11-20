@@ -16,6 +16,7 @@
 #include "peripheralmanager.h"
 #include "peripheral_i2c.h"
 #include "peripheral_spi.h"
+#include "addons/inputhistory.h"
 
 #ifndef HAS_I2C_DISPLAY
 #define HAS_I2C_DISPLAY -1
@@ -149,6 +150,7 @@ public:
 	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return I2CDisplayName; }
+	virtual void attachInputHistoryAddon(InputHistoryAddon*);
 private:
 	int initDisplay(int typeOverride);
 	bool isSH1106(int detectedDisplay);
@@ -222,6 +224,8 @@ private:
 	bool isFocusModeEnabled;
 	bool focusModePrevState;
 	bool turnOffWhenSuspended;
+	bool isInputHistoryEnabled;
+	InputHistoryAddon* inputHistoryAddon;
 };
 
 #endif
