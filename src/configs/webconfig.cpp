@@ -120,17 +120,17 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key))
 	{
 		pin = doc[key];
-		GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 		if (isValidPin(pin))
 		{
-			*gpioMappings[pin] = GpioAction::ASSIGNED_TO_ADDON;
+			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
 		}
 		else
 		{
 			pin = -1;
 			if (isValidPin(oldPin))
 			{
-				*gpioMappings[oldPin] = GpioAction::NONE;
+				gpioMappings[oldPin].action = GpioAction::NONE;
 			}
 		}
 	}
@@ -403,11 +403,12 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 {
 	auto usedPins = doc.createNestedArray("usedPins");
 
-	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
 		// NOTE: addons in webconfig break by seeing their own pins here; if/when they
 		// are refactored to ignore their own pins from this list, we can include them
-		if (*gpioMappings[pin] != GpioAction::NONE && *gpioMappings[pin] != GpioAction::ASSIGNED_TO_ADDON) {
+		if (gpioMappings[pin].action != GpioAction::NONE &&
+				gpioMappings[pin].action != GpioAction::ASSIGNED_TO_ADDON) {
 			usedPins.add(pin);
 		}
 	}
@@ -661,9 +662,9 @@ std::string getGamepadOptions()
 	writeDoc(doc, "debounceDelay", gamepadOptions.debounceDelay);
 
 	writeDoc(doc, "fnButtonPin", -1);
-	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 	for (unsigned int pin = 0; pin < NUM_BANK0_GPIOS; pin++) {
-		if (*gpioMappings[pin] == GpioAction::BUTTON_PRESS_FN) {
+		if (gpioMappings[pin].action == GpioAction::BUTTON_PRESS_FN) {
 			writeDoc(doc, "fnButtonPin", pin);
 		}
 	}
@@ -898,17 +899,17 @@ std::string setPinMappings()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 
 	char pinName[6];
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		snprintf(pinName, 6, "pin%0*d", 2, pin);
 		// setting a pin shouldn't change a new existing addon/reserved pin
-		if (*gpioMappings[pin] != GpioAction::RESERVED &&
-				*gpioMappings[pin] != GpioAction::ASSIGNED_TO_ADDON &&
+		if (gpioMappings[pin].action != GpioAction::RESERVED &&
+				gpioMappings[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
 				(Pin_t)doc[pinName] != GpioAction::RESERVED &&
 				(Pin_t)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
-			readDoc(*gpioMappings[pin], doc, pinName);
+			gpioMappings[pin].action = doc[pinName];
 		}
 	}
 
@@ -921,38 +922,38 @@ std::string getPinMappings()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 
-	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 
-	writeDoc(doc, "pin00", *gpioMappings[0]);
-	writeDoc(doc, "pin01", *gpioMappings[1]);
-	writeDoc(doc, "pin02", *gpioMappings[2]);
-	writeDoc(doc, "pin03", *gpioMappings[3]);
-	writeDoc(doc, "pin04", *gpioMappings[4]);
-	writeDoc(doc, "pin05", *gpioMappings[5]);
-	writeDoc(doc, "pin06", *gpioMappings[6]);
-	writeDoc(doc, "pin07", *gpioMappings[7]);
-	writeDoc(doc, "pin08", *gpioMappings[8]);
-	writeDoc(doc, "pin09", *gpioMappings[9]);
-	writeDoc(doc, "pin10", *gpioMappings[10]);
-	writeDoc(doc, "pin11", *gpioMappings[11]);
-	writeDoc(doc, "pin12", *gpioMappings[12]);
-	writeDoc(doc, "pin13", *gpioMappings[13]);
-	writeDoc(doc, "pin14", *gpioMappings[14]);
-	writeDoc(doc, "pin15", *gpioMappings[15]);
-	writeDoc(doc, "pin16", *gpioMappings[16]);
-	writeDoc(doc, "pin17", *gpioMappings[17]);
-	writeDoc(doc, "pin18", *gpioMappings[18]);
-	writeDoc(doc, "pin19", *gpioMappings[19]);
-	writeDoc(doc, "pin20", *gpioMappings[20]);
-	writeDoc(doc, "pin21", *gpioMappings[21]);
-	writeDoc(doc, "pin22", *gpioMappings[22]);
-	writeDoc(doc, "pin23", *gpioMappings[23]);
-	writeDoc(doc, "pin24", *gpioMappings[24]);
-	writeDoc(doc, "pin25", *gpioMappings[25]);
-	writeDoc(doc, "pin26", *gpioMappings[26]);
-	writeDoc(doc, "pin27", *gpioMappings[27]);
-	writeDoc(doc, "pin28", *gpioMappings[28]);
-	writeDoc(doc, "pin29", *gpioMappings[29]);
+	writeDoc(doc, "pin00", gpioMappings[0].action);
+	writeDoc(doc, "pin01", gpioMappings[1].action);
+	writeDoc(doc, "pin02", gpioMappings[2].action);
+	writeDoc(doc, "pin03", gpioMappings[3].action);
+	writeDoc(doc, "pin04", gpioMappings[4].action);
+	writeDoc(doc, "pin05", gpioMappings[5].action);
+	writeDoc(doc, "pin06", gpioMappings[6].action);
+	writeDoc(doc, "pin07", gpioMappings[7].action);
+	writeDoc(doc, "pin08", gpioMappings[8].action);
+	writeDoc(doc, "pin09", gpioMappings[9].action);
+	writeDoc(doc, "pin10", gpioMappings[10].action);
+	writeDoc(doc, "pin11", gpioMappings[11].action);
+	writeDoc(doc, "pin12", gpioMappings[12].action);
+	writeDoc(doc, "pin13", gpioMappings[13].action);
+	writeDoc(doc, "pin14", gpioMappings[14].action);
+	writeDoc(doc, "pin15", gpioMappings[15].action);
+	writeDoc(doc, "pin16", gpioMappings[16].action);
+	writeDoc(doc, "pin17", gpioMappings[17].action);
+	writeDoc(doc, "pin18", gpioMappings[18].action);
+	writeDoc(doc, "pin19", gpioMappings[19].action);
+	writeDoc(doc, "pin20", gpioMappings[20].action);
+	writeDoc(doc, "pin21", gpioMappings[21].action);
+	writeDoc(doc, "pin22", gpioMappings[22].action);
+	writeDoc(doc, "pin23", gpioMappings[23].action);
+	writeDoc(doc, "pin24", gpioMappings[24].action);
+	writeDoc(doc, "pin25", gpioMappings[25].action);
+	writeDoc(doc, "pin26", gpioMappings[26].action);
+	writeDoc(doc, "pin27", gpioMappings[27].action);
+	writeDoc(doc, "pin28", gpioMappings[28].action);
+	writeDoc(doc, "pin29", gpioMappings[29].action);
 
 	return serialize_json(doc);
 }
@@ -1091,7 +1092,7 @@ std::string setAddonOptions()
 {
 	DynamicJsonDocument doc = get_post_data();
 
-	GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
 
     AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
 	docToPin(analogOptions.analogAdc1PinX, doc, "analogAdc1PinX");
@@ -1228,10 +1229,10 @@ std::string setAddonOptions()
 	Pin_t oldKbPinDplus = keyboardHostOptions.pinDplus;
 	docToPin(keyboardHostOptions.pinDplus, doc, "keyboardHostPinDplus");
 	if (isValidPin(keyboardHostOptions.pinDplus))
-		*gpioMappings[keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+		gpioMappings[keyboardHostOptions.pinDplus+1].action = GpioAction::ASSIGNED_TO_ADDON;
 	else if (isValidPin(oldKbPinDplus))
 		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
-		*gpioMappings[oldKbPinDplus+1] = GpioAction::NONE;
+		gpioMappings[oldKbPinDplus+1].action = GpioAction::NONE;
 	docToPin(keyboardHostOptions.pin5V, doc, "keyboardHostPin5V");
 	docToValue(keyboardHostOptions.mapping.keyDpadUp, doc, "keyboardHostMap", "Up");
 	docToValue(keyboardHostOptions.mapping.keyDpadDown, doc, "keyboardHostMap", "Down");
@@ -1257,10 +1258,10 @@ std::string setAddonOptions()
 	Pin_t oldPsPinDplus = psPassthroughOptions.pinDplus;
 	docToPin(psPassthroughOptions.pinDplus, doc, "psPassthroughPinDplus");
 	if (isValidPin(psPassthroughOptions.pinDplus))
-		*gpioMappings[psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+		gpioMappings[psPassthroughOptions.pinDplus+1].action = GpioAction::ASSIGNED_TO_ADDON;
 	else if (isValidPin(oldPsPinDplus))
 		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
-		*gpioMappings[oldPsPinDplus+1] = GpioAction::NONE;
+		gpioMappings[oldPsPinDplus+1].action = GpioAction::NONE;
 	docToPin(psPassthroughOptions.pin5V, doc, "psPassthroughPin5V");
 
 	Storage::getInstance().save();
