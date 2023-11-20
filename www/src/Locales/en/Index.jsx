@@ -5,6 +5,7 @@ import SettingsPage from './SettingsPage';
 import ResetSettings from './ResetSettings';
 import Components from './Components';
 import PinMapping from './PinMapping';
+import PeripheralMapping from './PeripheralMapping';
 import ProfileSettings from './ProfileSettings';
 import KeyboardMapping from './KeyboardMapping';
 import LedConfig from './LedConfig';
@@ -24,6 +25,7 @@ export default {
 	ResetSettings,
 	Components,
 	PinMapping,
+    PeripheralMapping,
 	ProfileSettings,
 	KeyboardMapping,
 	LedConfig,

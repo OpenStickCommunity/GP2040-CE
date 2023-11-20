@@ -11,14 +11,11 @@ import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 
+import { PERIPHERAL_DEVICES, I2C_BLOCKS } from '../Data/Peripherals';
+
 const ON_OFF_OPTIONS = [
 	{ label: 'Disabled', value: 0 },
 	{ label: 'Enabled', value: 1 },
-];
-
-const I2C_BLOCKS = [
-	{ label: 'i2c0', value: 0 },
-	{ label: 'i2c1', value: 1 },
 ];
 
 const BUTTON_LAYOUTS = [
@@ -270,7 +267,7 @@ const isButtonLayoutCustom = (values) =>
 	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
 
 export default function DisplayConfigPage() {
-	const { updateUsedPins } = useContext(AppContext);
+	const { updateUsedPins, getAvailablePeripherals, getSelectedPeripheral } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const { t } = useTranslation('');
@@ -299,536 +296,413 @@ export default function DisplayConfigPage() {
 			onSubmit={onSuccess}
 			initialValues={defaultValues}
 		>
-			{({ handleSubmit, handleChange, handleBlur, values, touched, errors, setFieldValue }) =>
-				console.log('errors', errors) ||
+			{({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => {
+                const handlePeripheralChange = (e) => {
+                    let device = getSelectedPeripheral('i2c', e.target.value);
+                    values.sdaPin = device.sda;
+                    values.sclPin = device.scl;
+                    values.i2cSpeed = device.speed;
+                    handleChange(e);
+                };
+                
+				return console.log('errors', errors) ||
 				console.log('values', values) || (
 					<Section title={t('DisplayConfig:header-text')}>
-						<p>{t('DisplayConfig:sub-header-text')}</p>
-						<ul>
-							<Trans ns="DisplayConfig" i18nKey="list-text">
-								<li>Monochrome display with 128x64 resolution</li>
-								<li>
-									Uses I2C with a SSD1306, SH1106, SH1107 or other compatible
-									display IC
-								</li>
-								<li>Supports 3.3v operation</li>
-							</Trans>
-						</ul>
-						<p>{t('DisplayConfig:table.header')}</p>
-						<Row>
-							<Col>
-								<table className="table table-sm mb-4">
-									<thead>
-										<tr>
-											<th>{t('DisplayConfig:table.sda-scl-pins-header')}</th>
-											<th>{t('DisplayConfig:table.i2c-block-header')}</th>
-										</tr>
-									</thead>
-									<tbody>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>0/1</td>
-											<td>i2c0</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>2/3</td>
-											<td>i2c1</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>4/5</td>
-											<td>i2c0</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>6/7</td>
-											<td>i2c1</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>8/9</td>
-											<td>i2c0</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>10/11</td>
-											<td>i2c1</td>
-										</tr>
-									</tbody>
-								</table>
-							</Col>
-							<Col>
-								<table className="table table-sm mb-4">
-									<thead>
-										<tr>
-											<th>{t('DisplayConfig:table.sda-scl-pins-header')}</th>
-											<th>{t('DisplayConfig:table.i2c-block-header')}</th>
-										</tr>
-									</thead>
-									<tbody>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>12/13</td>
-											<td>i2c0</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>14/15</td>
-											<td>i2c1</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>16/17</td>
-											<td>i2c0</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>18/19</td>
-											<td>i2c1</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>20/21</td>
-											<td>i2c0</td>
-										</tr>
-										{/* eslint-disable-next-line i18next/no-literal-string */}
-										<tr>
-											<td>26/27</td>
-											<td>i2c1</td>
-										</tr>
-									</tbody>
-								</table>
-							</Col>
-						</Row>
-						<Form noValidate onSubmit={handleSubmit}>
-							<Row>
-								<FormSelect
-									label={t('Common:switch-enabled')}
-									name="enabled"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.enabled}
-									error={errors.enabled}
-									isInvalid={errors.enabled}
-									onChange={handleChange}
-								>
-									{ON_OFF_OPTIONS.map((o, i) => (
-										<option key={`enabled-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormSelect
-									label={t('DisplayConfig:form.i2c-block-label')}
-									name="i2cBlock"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.i2cBlock}
-									error={errors.i2cBlock}
-									isInvalid={errors.i2cBlock}
-									onChange={handleChange}
-								>
-									{I2C_BLOCKS.map((o, i) => (
-										<option key={`i2cBlock-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormControl
-									type="number"
-									label={t('DisplayConfig:form.sda-pin-label')}
-									name="sdaPin"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.sdaPin}
-									error={errors.sdaPin}
-									isInvalid={errors.sdaPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-								<FormControl
-									type="number"
-									label={t('DisplayConfig:form.scl-pin-label')}
-									name="sclPin"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.sclPin}
-									error={errors.sclPin}
-									isInvalid={errors.sclPin}
-									onChange={handleChange}
-									min={-1}
-									max={29}
-								/>
-							</Row>
-							<Row className="mb-3">
-								<FormControl
-									type="text"
-									label={t('DisplayConfig:form.i2c-address-label')}
-									name="i2cAddress"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.i2cAddress}
-									error={errors.i2cAddress}
-									isInvalid={errors.i2cAddress}
-									onChange={handleChange}
-									maxLength={4}
-								/>
-								<FormControl
-									type="number"
-									label={t('DisplayConfig:form.i2c-speed-label')}
-									name="i2cSpeed"
-									className="form-control-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.i2cSpeed}
-									error={errors.i2cSpeed}
-									isInvalid={errors.i2cSpeed}
-									onChange={handleChange}
-									min={100000}
-								/>
-								<FormSelect
-									label={t('DisplayConfig:form.flip-display-label')}
-									name="flipDisplay"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.flipDisplay}
-									error={errors.flipDisplay}
-									isInvalid={errors.flipDisplay}
-									onChange={handleChange}
-								>
-									{DISPLAY_FLIP_MODES.map((o, i) => (
-										<option key={`flipDisplay-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormSelect
-									label={t('DisplayConfig:form.invert-display-label')}
-									name="invertDisplay"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.invertDisplay}
-									error={errors.invertDisplay}
-									isInvalid={errors.invertDisplay}
-									onChange={handleChange}
-								>
-									{ON_OFF_OPTIONS.map((o, i) => (
-										<option key={`invertDisplay-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<div className="col-sm-3">
-									<Form.Check
-										label={t('DisplayConfig:form.turn-off-when-suspended')}
-										type="switch"
-										name="turnOffWhenSuspended"
-										isInvalid={false}
-										checked={Boolean(values.turnOffWhenSuspended)}
-										onChange={(e) => {
-											setFieldValue(
-												'turnOffWhenSuspended',
-												e.target.checked ? 1 : 0,
-											);
-										}}
-									/>
-								</div>
-							</Row>
-							<Row className="mb-3">
-								<FormSelect
-									label={t('DisplayConfig:form.button-layout-label')}
-									name="buttonLayout"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.buttonLayout}
-									error={errors.buttonLayout}
-									isInvalid={errors.buttonLayout}
-									onChange={handleChange}
-								>
-									{BUTTON_LAYOUTS.map((o, i) => (
-										<option key={`buttonLayout-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormSelect
-									label={t('DisplayConfig:form.button-layout-right-label')}
-									name="buttonLayoutRight"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.buttonLayoutRight}
-									error={errors.buttonLayoutRight}
-									isInvalid={errors.buttonLayoutRight}
-									onChange={handleChange}
-								>
-									{BUTTON_LAYOUTS_RIGHT.map((o, i) => (
-										<option
-											key={`buttonLayoutRight-option-${i}`}
-											value={o.value}
-										>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-								<FormSelect
-									label={t('DisplayConfig:form.splash-mode-label')}
-									name="splashMode"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.splashMode}
-									error={errors.splashMode}
-									isInvalid={errors.splashMode}
-									onChange={handleChange}
-								>
-									{SPLASH_MODES.map((o, i) => (
-										<option key={`splashMode-option-${i}`} value={o.value}>
-											{o.label}
-										</option>
-									))}
-								</FormSelect>
-							</Row>
-							{isButtonLayoutCustom(values) && (
-								<Row className="mb-3">
-									<FormLabel>
-										{t('DisplayConfig:form.button-layout-custom-header')}
-									</FormLabel>
-									<Col sm="6">
-										<Form.Group as={Row} name="buttonLayoutCustomOptions">
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-left-label',
-												)}
-											</Form.Label>
-											<FormSelect
-												name="buttonLayoutCustomOptions.params.layout"
-												className="form-select-sm"
-												groupClassName="col-sm-10 mb-1"
-												value={values.buttonLayoutCustomOptions.params.layout}
-												onChange={handleChange}
-											>
-												{BUTTON_LAYOUTS.slice(0, -1).map((o, i) => (
-													<option
-														key={`buttonLayout-option-${i}`}
-														value={o.value}
-													>
-														{o.label}
-													</option>
-												))}
-											</FormSelect>
-										</Form.Group>
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-start-x-label',
-												)}
-											</Form.Label>
-											<Col sm="10">
-												<Field
-													column
-													className="mb-1"
-													name="buttonLayoutCustomOptions.params.startX"
-													type="number"
-													as={Form.Control}
-												/>
-											</Col>
-										</Form.Group>
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-start-y-label',
-												)}
-											</Form.Label>
-											<Col sm="10">
-												<Field
-													column
-													className="mb-1"
-													name="buttonLayoutCustomOptions.params.startY"
-													type="number"
-													as={Form.Control}
-												/>
-											</Col>
-										</Form.Group>
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-button-radius-label',
-												)}
-											</Form.Label>
-											<Col sm="10">
-												<Field
-													column
-													className="mb-1"
-													name="buttonLayoutCustomOptions.params.buttonRadius"
-													type="number"
-													as={Form.Control}
-												/>
-											</Col>
-										</Form.Group>
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-button-padding-label',
-												)}
-											</Form.Label>
-											<Col sm="10">
-												<Field
-													column
-													className="mb-1"
-													name="buttonLayoutCustomOptions.params.buttonPadding"
-													type="number"
-													as={Form.Control}
-												/>
-											</Col>
-										</Form.Group>
-									</Col>
-									<Col sm="6">
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-right-label',
-												)}
-											</Form.Label>
-											<FormSelect
-												name="buttonLayoutCustomOptions.paramsRight.layout"
-												className="form-select-sm"
-												groupClassName="col-sm-10 mb-1"
-												value={
-													values.buttonLayoutCustomOptions.paramsRight.layout
-												}
-												onChange={handleChange}
-											>
-												{BUTTON_LAYOUTS_RIGHT.slice(0, -1).map((o, i) => (
-													<option
-														key={`buttonLayoutRight-option-${i}`}
-														value={o.value}
-													>
-														{o.label}
-													</option>
-												))}
-											</FormSelect>
-										</Form.Group>
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-start-x-label',
-												)}
-											</Form.Label>
-											<Col sm="10">
-												<Field
-													column
-													className="mb-1"
-													name="buttonLayoutCustomOptions.paramsRight.startX"
-													type="number"
-													as={Form.Control}
-												/>
-											</Col>
-										</Form.Group>
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-start-y-label',
-												)}
-											</Form.Label>
-											<Col sm="10">
-												<Field
-													column
-													className="mb-1"
-													name="buttonLayoutCustomOptions.paramsRight.startY"
-													type="number"
-													as={Form.Control}
-												/>
-											</Col>
-										</Form.Group>
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-button-radius-label',
-												)}
-											</Form.Label>
-											<Col sm="10">
-												<Field
-													column
-													className="mb-1"
-													name="buttonLayoutCustomOptions.paramsRight.buttonRadius"
-													type="number"
-													as={Form.Control}
-												/>
-											</Col>
-										</Form.Group>
-										<Form.Group as={Row}>
-											<Form.Label column>
-												{t(
-													'DisplayConfig:form.button-layout-custom-button-padding-label',
-												)}
-											</Form.Label>
-											<Col sm="10">
-												<Field
-													column
-													className="mb-1"
-													name="buttonLayoutCustomOptions.paramsRight.buttonPadding"
-													type="number"
-													as={Form.Control}
-												/>
-											</Col>
-										</Form.Group>
-									</Col>
-								</Row>
-							)}
-							<Row className="mb-3">
-								<FormControl
-									type="number"
-									label={t('DisplayConfig:form.splash-duration-label')}
-									name="splashDuration"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.splashDuration}
-									error={errors.splashDuration}
-									isInvalid={errors.splashDuration}
-									onChange={handleChange}
-									min={0}
-								/>
-								<FormControl
-									type="number"
-									label={t('DisplayConfig:form.display-saver-timeout-label')}
-									name="displaySaverTimeout"
-									className="form-select-sm"
-									groupClassName="col-sm-3 mb-3"
-									value={values.displaySaverTimeout}
-									error={errors.displaySaverTimeout}
-									isInvalid={errors.displaySaverTimeout}
-									onChange={handleChange}
-									min={0}
-								/>
-							</Row>
-							<Row>
-								<Field name="splashImage">
-									{({
-										field, // { name, value, onChange, onBlur }
-										form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-										meta,
-									}) => (
-										<div className="mt-3">
-											<Canvas
-												onChange={(base64) =>
-													onChangeCanvas(base64, form, field)
-												}
-												value={field.value}
-											/>
-										</div>
-									)}
-								</Field>
-							</Row>
-							<div className="mt-3">
-								<Button type="submit">{t('Common:button-save-label')}</Button>
-								{saveMessage ? (
-									<span className="alert">{saveMessage}</span>
-								) : null}
-							</div>
-							<FormContext />
-						</Form>
+                        {getAvailablePeripherals('i2c') ?
+                        <div>
+                            <p>{t('DisplayConfig:sub-header-text')}</p>
+                            <ul>
+                                <Trans ns="DisplayConfig" i18nKey="list-text">
+                                    <li>Monochrome display with 128x64 resolution</li>
+                                    <li>
+                                        Uses I2C with a SSD1306, SH1106, SH1107 or other compatible
+                                        display IC
+                                    </li>
+                                    <li>Supports 3.3v operation</li>
+                                </Trans>
+                            </ul>
+                            <Form noValidate onSubmit={handleSubmit}>
+                                <h1>{t('DisplayConfig:section.hardware-header')}</h1>
+                                <Row className="mb-4">
+                                    <FormSelect
+                                        label={t('Common:switch-enabled')}
+                                        name="enabled"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.enabled}
+                                        error={errors.enabled}
+                                        isInvalid={errors.enabled}
+                                        onChange={handleChange}
+                                    >
+                                        {ON_OFF_OPTIONS.map((o, i) => (
+                                            <option key={`enabled-option-${i}`} value={o.value}>
+                                                {o.label}
+                                            </option>
+                                        ))}
+                                    </FormSelect>
+                                    <FormSelect
+                                        label={t('DisplayConfig:form.i2c-block-label')}
+                                        name="i2cBlock"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.i2cBlock}
+                                        error={errors.i2cBlock}
+                                        isInvalid={errors.i2cBlock}
+                                        onChange={handlePeripheralChange}
+                                    >
+                                        {getAvailablePeripherals('i2c').map((o, i) => (
+                                            <option key={`i2cBlock-option-${i}`} value={o.value}>
+                                                {o.label}
+                                            </option>
+                                        ))}
+                                    </FormSelect>
+                                    <FormControl
+                                        type="text"
+                                        label={t('DisplayConfig:form.i2c-address-label')}
+                                        name="i2cAddress"
+                                        className="form-control-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.i2cAddress}
+                                        error={errors.i2cAddress}
+                                        isInvalid={errors.i2cAddress}
+                                        onChange={handleChange}
+                                        maxLength={4}
+                                    />
+                                </Row>
+                                <h1>{t('DisplayConfig:section.screen-header')}</h1>
+                                <Row className="mb-4">
+                                    <FormSelect
+                                        label={t('DisplayConfig:form.flip-display-label')}
+                                        name="flipDisplay"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.flipDisplay}
+                                        error={errors.flipDisplay}
+                                        isInvalid={errors.flipDisplay}
+                                        onChange={handleChange}
+                                    >
+                                        {DISPLAY_FLIP_MODES.map((o, i) => (
+                                            <option key={`flipDisplay-option-${i}`} value={o.value}>
+                                                {o.label}
+                                            </option>
+                                        ))}
+                                    </FormSelect>
+                                    <FormSelect
+                                        label={t('DisplayConfig:form.invert-display-label')}
+                                        name="invertDisplay"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.invertDisplay}
+                                        error={errors.invertDisplay}
+                                        isInvalid={errors.invertDisplay}
+                                        onChange={handleChange}
+                                    >
+                                        {ON_OFF_OPTIONS.map((o, i) => (
+                                            <option key={`invertDisplay-option-${i}`} value={o.value}>
+                                                {o.label}
+                                            </option>
+                                        ))}
+                                    </FormSelect>
+                                </Row>
+                                <h1>{t('DisplayConfig:section.layout-header')}</h1>
+                                <Row className="mb-4">
+                                    <FormSelect
+                                        label={t('DisplayConfig:form.button-layout-label')}
+                                        name="buttonLayout"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.buttonLayout}
+                                        error={errors.buttonLayout}
+                                        isInvalid={errors.buttonLayout}
+                                        onChange={handleChange}
+                                    >
+                                        {BUTTON_LAYOUTS.map((o, i) => (
+                                            <option key={`buttonLayout-option-${i}`} value={o.value}>
+                                                {o.label}
+                                            </option>
+                                        ))}
+                                    </FormSelect>
+                                    <FormSelect
+                                        label={t('DisplayConfig:form.button-layout-right-label')}
+                                        name="buttonLayoutRight"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.buttonLayoutRight}
+                                        error={errors.buttonLayoutRight}
+                                        isInvalid={errors.buttonLayoutRight}
+                                        onChange={handleChange}
+                                    >
+                                        {BUTTON_LAYOUTS_RIGHT.map((o, i) => (
+                                            <option
+                                                key={`buttonLayoutRight-option-${i}`}
+                                                value={o.value}
+                                            >
+                                                {o.label}
+                                            </option>
+                                        ))}
+                                    </FormSelect>
+                                    <FormSelect
+                                        label={t('DisplayConfig:form.splash-mode-label')}
+                                        name="splashMode"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.splashMode}
+                                        error={errors.splashMode}
+                                        isInvalid={errors.splashMode}
+                                        onChange={handleChange}
+                                    >
+                                        {SPLASH_MODES.map((o, i) => (
+                                            <option key={`splashMode-option-${i}`} value={o.value}>
+                                                {o.label}
+                                            </option>
+                                        ))}
+                                    </FormSelect>
+                                </Row>
+                                {isButtonLayoutCustom(values) && (
+                                    <Row className="mb-3">
+                                        <FormLabel>
+                                            {t('DisplayConfig:form.button-layout-custom-header')}
+                                        </FormLabel>
+                                        <Col sm="6">
+                                            <Form.Group as={Row} name="buttonLayoutCustomOptions">
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-left-label',
+                                                    )}
+                                                </Form.Label>
+                                                <FormSelect
+                                                    name="buttonLayoutCustomOptions.params.layout"
+                                                    className="form-select-sm"
+                                                    groupClassName="col-sm-10 mb-1"
+                                                    value={values.buttonLayoutCustomOptions.params.layout}
+                                                    onChange={handleChange}
+                                                >
+                                                    {BUTTON_LAYOUTS.slice(0, -1).map((o, i) => (
+                                                        <option
+                                                            key={`buttonLayout-option-${i}`}
+                                                            value={o.value}
+                                                        >
+                                                            {o.label}
+                                                        </option>
+                                                    ))}
+                                                </FormSelect>
+                                            </Form.Group>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-start-x-label',
+                                                    )}
+                                                </Form.Label>
+                                                <Col sm="10">
+                                                    <Field
+                                                        column
+                                                        className="mb-1"
+                                                        name="buttonLayoutCustomOptions.params.startX"
+                                                        type="number"
+                                                        as={Form.Control}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-start-y-label',
+                                                    )}
+                                                </Form.Label>
+                                                <Col sm="10">
+                                                    <Field
+                                                        column
+                                                        className="mb-1"
+                                                        name="buttonLayoutCustomOptions.params.startY"
+                                                        type="number"
+                                                        as={Form.Control}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-button-radius-label',
+                                                    )}
+                                                </Form.Label>
+                                                <Col sm="10">
+                                                    <Field
+                                                        column
+                                                        className="mb-1"
+                                                        name="buttonLayoutCustomOptions.params.buttonRadius"
+                                                        type="number"
+                                                        as={Form.Control}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-button-padding-label',
+                                                    )}
+                                                </Form.Label>
+                                                <Col sm="10">
+                                                    <Field
+                                                        column
+                                                        className="mb-1"
+                                                        name="buttonLayoutCustomOptions.params.buttonPadding"
+                                                        type="number"
+                                                        as={Form.Control}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col sm="6">
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-right-label',
+                                                    )}
+                                                </Form.Label>
+                                                <FormSelect
+                                                    name="buttonLayoutCustomOptions.paramsRight.layout"
+                                                    className="form-select-sm"
+                                                    groupClassName="col-sm-10 mb-1"
+                                                    value={
+                                                        values.buttonLayoutCustomOptions.paramsRight.layout
+                                                    }
+                                                    onChange={handleChange}
+                                                >
+                                                    {BUTTON_LAYOUTS_RIGHT.slice(0, -1).map((o, i) => (
+                                                        <option
+                                                            key={`buttonLayoutRight-option-${i}`}
+                                                            value={o.value}
+                                                        >
+                                                            {o.label}
+                                                        </option>
+                                                    ))}
+                                                </FormSelect>
+                                            </Form.Group>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-start-x-label',
+                                                    )}
+                                                </Form.Label>
+                                                <Col sm="10">
+                                                    <Field
+                                                        column
+                                                        className="mb-1"
+                                                        name="buttonLayoutCustomOptions.paramsRight.startX"
+                                                        type="number"
+                                                        as={Form.Control}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-start-y-label',
+                                                    )}
+                                                </Form.Label>
+                                                <Col sm="10">
+                                                    <Field
+                                                        column
+                                                        className="mb-1"
+                                                        name="buttonLayoutCustomOptions.paramsRight.startY"
+                                                        type="number"
+                                                        as={Form.Control}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-button-radius-label',
+                                                    )}
+                                                </Form.Label>
+                                                <Col sm="10">
+                                                    <Field
+                                                        column
+                                                        className="mb-1"
+                                                        name="buttonLayoutCustomOptions.paramsRight.buttonRadius"
+                                                        type="number"
+                                                        as={Form.Control}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                            <Form.Group as={Row}>
+                                                <Form.Label column>
+                                                    {t(
+                                                        'DisplayConfig:form.button-layout-custom-button-padding-label',
+                                                    )}
+                                                </Form.Label>
+                                                <Col sm="10">
+                                                    <Field
+                                                        column
+                                                        className="mb-1"
+                                                        name="buttonLayoutCustomOptions.paramsRight.buttonPadding"
+                                                        type="number"
+                                                        as={Form.Control}
+                                                    />
+                                                </Col>
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                )}
+                                <Row className="mb-3">
+                                    <FormControl
+                                        type="number"
+                                        label={t('DisplayConfig:form.splash-duration-label')}
+                                        name="splashDuration"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.splashDuration}
+                                        error={errors.splashDuration}
+                                        isInvalid={errors.splashDuration}
+                                        onChange={handleChange}
+                                        min={0}
+                                    />
+                                    <FormControl
+                                        type="number"
+                                        label={t('DisplayConfig:form.display-saver-timeout-label')}
+                                        name="displaySaverTimeout"
+                                        className="form-select-sm"
+                                        groupClassName="col-sm-3 mb-3"
+                                        value={values.displaySaverTimeout}
+                                        error={errors.displaySaverTimeout}
+                                        isInvalid={errors.displaySaverTimeout}
+                                        onChange={handleChange}
+                                        min={0}
+                                    />
+                                </Row>
+                                <Row>
+                                    <Field name="splashImage">
+                                        {({
+                                            field, // { name, value, onChange, onBlur }
+                                            form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+                                            meta,
+                                        }) => (
+                                            <div className="mt-3">
+                                                <Canvas
+                                                    onChange={(base64) =>
+                                                        onChangeCanvas(base64, form, field)
+                                                    }
+                                                    value={field.value}
+                                                />
+                                            </div>
+                                        )}
+                                    </Field>
+                                </Row>
+                                <div className="mt-3">
+                                    <Button type="submit">{t('Common:button-save-label')}</Button>
+                                    {saveMessage ? (
+                                        <span className="alert">{saveMessage}</span>
+                                    ) : null}
+                                </div>
+                                <FormContext />
+                            </Form>
+                        </div>
+                        : 
+                        <FormLabel>{t('PeripheralMapping:peripheral-toggle-unavailable',{'name':'I2C'})}</FormLabel>
+                    }
 					</Section>
-				)
+				)}
 			}
 		</Formik>
 	);

@@ -6,6 +6,7 @@
 #include "gpaddon.h"
 
 #include "GamepadEnums.h"
+#include "peripheralmanager.h"
 
 #ifndef I2C_ANALOG1219_ENABLED
 #define I2C_ANALOG1219_ENABLED 0

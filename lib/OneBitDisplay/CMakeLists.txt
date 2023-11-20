@@ -7,5 +7,5 @@ fonts
 )
 target_link_libraries(OneBitDisplay 
 pico_stdlib
-BitBang_I2C
+PicoPeripherals
 )

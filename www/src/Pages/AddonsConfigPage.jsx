@@ -17,7 +17,7 @@ import DualDirection, {
 	dualDirectionScheme,
 	dualDirectionState,
 } from '../Addons/DualDirection';
-import I2c, { i2cScheme, i2cState } from '../Addons/I2c';
+import I2CAnalog1219, { i2cAnalogScheme, i2cAnalogState } from '../Addons/I2CAnalog1219';
 import Joystick, { joystickScheme, joystickState } from '../Addons/Joystick';
 import OnBoardLed, {
 	onBoardLedScheme,
@@ -51,7 +51,7 @@ const schema = yup.object().shape({
 	...turboScheme,
 	...joystickScheme,
 	...reverseScheme,
-	...i2cScheme,
+	...i2cAnalogScheme,
 	...dualDirectionScheme,
 	...tiltScheme,
 	...buzzerScheme,
@@ -71,7 +71,7 @@ const defaultValues = {
 	...turboState,
 	...joystickState,
 	...reverseState,
-	...i2cState,
+	...i2cAnalogState,
 	...dualDirectionState,
 	...tiltState,
 	...buzzerState,
@@ -92,7 +92,7 @@ const ADDONS = [
 	Turbo,
 	Joystick,
 	Reverse,
-	I2c,
+	I2CAnalog1219,
 	DualDirection,
 	Tilt,
 	Buzzer,

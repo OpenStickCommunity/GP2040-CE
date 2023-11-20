@@ -224,6 +224,33 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverTimeout, DISPLAY_SAVER_TIMEOUT);
 
+    // peripheralOptions
+    PeripheralOptions& peripheralOptions = config.peripheralOptions;
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, enabled, (!!HAS_I2C_DISPLAY) && (I2C_BLOCK == i2c0));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, sda, (I2C_BLOCK == i2c0) ? I2C_SDA_PIN : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, scl, (I2C_BLOCK == i2c0) ? I2C_SCL_PIN : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, speed, I2C_SPEED);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, enabled, (!!HAS_I2C_DISPLAY) && (I2C_BLOCK == i2c1));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, sda, (I2C_BLOCK == i2c1) ? I2C_SDA_PIN : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, scl, (I2C_BLOCK == i2c1) ? I2C_SCL_PIN : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, speed, I2C_SPEED);
+
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, enabled, false);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, rx, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, cs, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, sck, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, tx, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, enabled, false);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, rx, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, cs, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, sck, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, tx, -1);
+
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enabled, USB_PERIPHERAL_ENABLED);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, dp, USB_PERIPHERAL_PIN_DPLUS);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, order, USB_PERIPHERAL_PIN_ORDER);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enable5v, USB_PERIPHERAL_PIN_5V);
+
     // alternate pin mappings
     INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB1, PIN_BUTTON_B1);
     INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB2, PIN_BUTTON_B2);

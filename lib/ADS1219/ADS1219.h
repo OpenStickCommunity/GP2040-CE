@@ -10,7 +10,7 @@
 #ifndef _ADS1219_H_
 #define _ADS1219_H_
 
-#include <BitBang_I2C.h>
+#include "peripheral_i2c.h"
 
 #define CONFIG_REGISTER_ADDRESS 0x40
 #define STATUS_REGISTER_ADDRESS 0x24
@@ -79,7 +79,7 @@ class ADS1219  {
 	uint8_t address;
   public:
     // Constructor 
-	ADS1219(int bWire, int sda, int scl, i2c_inst_t *picoI2C, int32_t iSpeed, uint8_t addr = 0x40);
+	ADS1219(PeripheralI2C *i2cController, uint8_t addr = 0x40);
 
     // Methods
     void begin();
@@ -102,8 +102,7 @@ class ADS1219  {
   private:
 	void writeRegister(uint8_t data);
 	
-	BBI2C bbi2c;
-	int32_t iSpeed;
+	PeripheralI2C* i2c;
 	uint8_t config;
 	bool singleShot;
 	int data_ready;
