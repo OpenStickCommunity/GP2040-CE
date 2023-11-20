@@ -75,6 +75,43 @@ export const baseProfileOptions = {
 	],
 };
 
+export const basePeripheralMapping = {
+    peripheral: {
+        i2c0: {
+            enabled: 0,
+            sda: -1,
+            scl: -1,
+            speed: 400000,
+        },
+        i2c1: {
+            enabled: 0,
+            sda: -1,
+            scl: -1,
+            speed: 400000,
+        },
+        spi0: {
+            enabled: 0,
+            rx:  -1,
+            cs:  -1,
+            sck: -1,
+            tx:  -1,
+        },
+        spi1: {
+            enabled: 0,
+            rx:  -1,
+            cs:  -1,
+            sck: -1,
+            tx:  -1,
+        },
+        usb0: {
+            enabled: 0,
+            dp:  -1,
+            enable5v: -1,
+            order: 0,
+        }
+    }
+};
+
 export const baseWiiControls = {
 	'nunchuk.analogStick.axisType': 1,
 	'nunchuk.buttonC': 1,
@@ -339,6 +376,22 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
+async function getPinMappings(setLoading) {
+	setLoading(true);
+
+	try {
+		const response = await axios.get(`${baseUrl}/api/getPinMappings`);
+		let mappings = { ...baseButtonMappings };
+		for (let prop of Object.keys(response.data))
+			mappings[prop].pin = parseInt(response.data[prop]);
+
+		return mappings;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
 async function setPinMappings(mappings) {
 	let data = {};
 	Object.keys(mappings).map(
@@ -520,7 +573,7 @@ async function setPS4Options(options) {
 async function getWiiControls(setLoading) {
 	setLoading(true);
 
-	try {
+    try {
 		const response = await axios.get(`${baseUrl}/api/getWiiControls`);
 		setLoading(false);
 
@@ -533,10 +586,39 @@ async function getWiiControls(setLoading) {
 }
 
 async function setWiiControls(mappings) {
-	console.dir(mappings);
+    console.dir(mappings);
 
 	return axios
 		.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
+async function getPeripheralOptions(setLoading) {
+    setLoading(true);
+    try {
+		const response = await axios.get(`${baseUrl}/api/getPeripheralOptions`);
+		setLoading(false);
+
+		let mappings = { ...basePeripheralMapping, ...response.data };
+		return mappings;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
+}
+
+async function setPeripheralOptions(mappings) {
+    console.dir(mappings);
+
+	return axios
+		.post(`${baseUrl}/api/setPeripheralOptions`, sanitizeRequest(mappings))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -645,6 +727,8 @@ const WebApi = {
 	setPS4Options,
 	getWiiControls,
 	setWiiControls,
+	getPeripheralOptions,
+	setPeripheralOptions,
 	getSplashImage,
 	setSplashImage,
 	getFirmwareVersion,

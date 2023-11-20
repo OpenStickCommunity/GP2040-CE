@@ -6,6 +6,7 @@
 
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
+#include "peripheral_i2c.h"
 
 #include "extensions/Extensions.h"
 
@@ -108,7 +109,7 @@ class WiiExtension {
     bool isReady         = false;
 
     // Constructor 
-    WiiExtension(int sda, int scl, i2c_inst_t *i2cCtl, int32_t speed, uint8_t addr);
+    WiiExtension(PeripheralI2C *i2cController, uint8_t addr);
 
     // Methods
     void begin();
@@ -120,10 +121,7 @@ class WiiExtension {
   private:
     ExtensionBase *extensionController = NULL;
 
-    uint8_t iSDA;
-    uint8_t iSCL;
-    i2c_inst_t *picoI2C;
-    int32_t iSpeed;
+    PeripheralI2C* i2c;
 
 #if WII_EXTENSION_DEBUG==true
     uint8_t _lastRead[16] = {0xFF};

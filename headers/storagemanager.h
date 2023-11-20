@@ -37,7 +37,6 @@ public:
 	ForcedSetupOptions& getForcedSetupOptions() { return config.forcedSetupOptions; }
 	PinMappings& getDeprecatedPinMappings() { return config.deprecatedPinMappings; }
 	GpioMappings& getGpioMappings() { return config.gpioMappings; }
-	GpioAction** getGpioMappingsArray() { return gpioMappingsArray; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
@@ -46,6 +45,7 @@ public:
 	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioAction* getProfilePinMappings() { return functionalPinMappings; }
+	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 
 	bool save();
 
@@ -85,7 +85,6 @@ private:
 	uint32_t animationOptionsCrc = 0;
 	AnimationOptions animationOptionsToSave = {};
 	GpioAction functionalPinMappings[NUM_BANK0_GPIOS];
-	GpioAction* gpioMappingsArray[NUM_BANK0_GPIOS];
 };
 
 #endif

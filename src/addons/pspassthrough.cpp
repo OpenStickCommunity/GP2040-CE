@@ -1,6 +1,7 @@
 #include "addons/pspassthrough.h"
 #include "storagemanager.h"
 #include "usbhostmanager.h"
+#include "peripheralmanager.h"
 
 #include "CRC32.h"
 
@@ -8,22 +9,10 @@
 
 bool PSPassthroughAddon::available() {
     const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
-	  return psOptions.enabled && isValidPin(psOptions.pinDplus) &&
-            (psOptions.pin5V == -1 || isValidPin(psOptions.pin5V));
+	return psOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
 }
 
 void PSPassthroughAddon::setup() {
-    const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
-
-    if (psOptions.pin5V != -1) { // Feather USB-A's require this
-        const int32_t pin5V = psOptions.pin5V;
-        gpio_init(pin5V);
-        gpio_set_dir(pin5V, GPIO_IN);
-        gpio_pull_up(pin5V);
-    }
-
-    USBHostManager::getInstance().setDataPin((uint8_t)psOptions.pinDplus);
-
     nonce_page = 0; // no nonce yet
     send_nonce_part = 0; // which part of the nonce are we getting from send?
     awaiting_cb = false; // did we receive the sign state yet

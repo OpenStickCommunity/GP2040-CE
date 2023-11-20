@@ -1,8 +1,15 @@
 #ifndef __ONEBITDISPLAY__
 #define __ONEBITDISPLAY__
 
-#include <BitBang_I2C.h>
+#include "peripheral_i2c.h"
+#include "peripheral_spi.h"
 #include "hardware/i2c.h"
+
+// legacy defines
+#ifndef LOW
+#define LOW 0
+#define HIGH 1
+#endif
 
 // Proportional font data taken from Adafruit_GFX library
 /// Font data stored PER GLYPH
@@ -32,7 +39,9 @@ uint8_t *ucScreen;
 int iCursorX, iCursorY;
 int width, height;
 int iScreenOffset;
-BBI2C bbi2c;
+PeripheralI2C* i2c;
+PeripheralSPI* spi;
+int bWire;
 uint8_t com_mode; // communication mode (I2C / SPI)
 uint8_t mode; // data/command mode for 9-bit SPI
 uint8_t iDCPin, iMOSIPin, iCLKPin, iCSPin;
@@ -196,7 +205,7 @@ void obdWriteLCDLine(OBDISP *pOBD, uint8_t *pSrc, int iLine);
 // Otherwise use the Wire library.
 // If you don't need to use a separate reset pin, set it to -1
 //
-int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int bWire, int iSDAPin, int iSCLPin, i2c_inst_t *picoI2C, int iResetPin, int32_t iSpeed);
+int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int bWire, PeripheralI2C* i2cController, int iResetPin);
 //
 // Initialize an SPI version of the display
 //

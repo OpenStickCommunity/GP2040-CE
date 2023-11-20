@@ -224,6 +224,33 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
     INIT_UNSET_PROPERTY(config.displayOptions, displaySaverTimeout, DISPLAY_SAVER_TIMEOUT);
 
+    // peripheralOptions
+    PeripheralOptions& peripheralOptions = config.peripheralOptions;
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, enabled, (!!HAS_I2C_DISPLAY) && (I2C_BLOCK == i2c0));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, sda, (I2C_BLOCK == i2c0) ? I2C_SDA_PIN : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, scl, (I2C_BLOCK == i2c0) ? I2C_SCL_PIN : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, speed, I2C_SPEED);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, enabled, (!!HAS_I2C_DISPLAY) && (I2C_BLOCK == i2c1));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, sda, (I2C_BLOCK == i2c1) ? I2C_SDA_PIN : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, scl, (I2C_BLOCK == i2c1) ? I2C_SCL_PIN : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, speed, I2C_SPEED);
+
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, enabled, false);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, rx, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, cs, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, sck, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, tx, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, enabled, false);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, rx, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, cs, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, sck, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, tx, -1);
+
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enabled, USB_PERIPHERAL_ENABLED);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, dp, USB_PERIPHERAL_PIN_DPLUS);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, order, USB_PERIPHERAL_PIN_ORDER);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enable5v, USB_PERIPHERAL_PIN_5V);
+
     // alternate pin mappings
     INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB1, PIN_BUTTON_B1);
     INIT_UNSET_PROPERTY(config.profileOptions.alternativePinMappings[0], pinButtonB2, PIN_BUTTON_B2);
@@ -857,36 +884,11 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[4].macroTriggerPin);
     markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[5].macroTriggerPin);
 
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin00, actions[0]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin01, actions[1]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin02, actions[2]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin03, actions[3]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin04, actions[4]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin05, actions[5]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin06, actions[6]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin07, actions[7]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin08, actions[8]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin09, actions[9]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin10, actions[10]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin11, actions[11]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin12, actions[12]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin13, actions[13]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin14, actions[14]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin15, actions[15]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin16, actions[16]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin17, actions[17]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin18, actions[18]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin19, actions[19]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin20, actions[20]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin21, actions[21]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin22, actions[22]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin23, actions[23]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin24, actions[24]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin25, actions[25]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin26, actions[26]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin27, actions[27]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin28, actions[28]);
-    INIT_UNSET_PROPERTY(config.gpioMappings, pin29, actions[29]);
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+        config.gpioMappings.pins[pin].action = actions[pin];
+    }
+    // reminder that this must be set or else nanopb won't retain anything
+    config.gpioMappings.pins_count = NUM_BANK0_GPIOS;
 
     config.migrations.gpioMappingsMigrated = true;
 }

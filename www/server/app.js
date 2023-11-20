@@ -40,7 +40,7 @@ app.get('/api/getDisplayOptions', (req, res) => {
 		enabled: 1,
 		sdaPin: 0,
 		sclPin: 1,
-		i2cAddress: '0x3D',
+		i2cAddress: 61,
 		i2cBlock: 0,
 		i2cSpeed: 400000,
 		flipDisplay: 0,
@@ -230,6 +230,45 @@ app.get('/api/getPinMappings', (req, res) => {
 app.get('/api/getKeyMappings', (req, res) =>
 	res.send(mapValues(DEFAULT_KEYBOARD_MAPPING)),
 );
+
+app.get('/api/getPeripheralOptions', (req, res) => {
+    return res.send({
+        peripheral: {
+            i2c0: {
+                enabled: 1,
+                sda: 0,
+                scl: 1,
+                speed: 400000,
+            },
+            i2c1: {
+                enabled: 0,
+                sda: -1,
+                scl: -1,
+                speed: 400000,
+            },
+            spi0: {
+                enabled: 0,
+                rx: -1,
+                cs: -1,
+                sck: -1,
+                tx: -1,
+            },
+            spi1: {
+                enabled: 0,
+                rx: -1,
+                cs: -1,
+                sck: -1,
+                tx: -1,
+            },
+            usb0: {
+                enabled: 0,
+                dp: -1,
+                enable5v: -1,
+                order: 0,
+            }
+        }
+    });
+});
 
 app.get('/api/getWiiControls', (req, res) =>
     res.send({

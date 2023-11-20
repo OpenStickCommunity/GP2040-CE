@@ -13,6 +13,9 @@
 #include "gpaddon.h"
 #include "gamepad.h"
 #include "storagemanager.h"
+#include "peripheralmanager.h"
+#include "peripheral_i2c.h"
+#include "peripheral_spi.h"
 #include "addons/inputhistory.h"
 
 #ifndef HAS_I2C_DISPLAY

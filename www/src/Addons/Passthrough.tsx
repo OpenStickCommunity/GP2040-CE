@@ -1,6 +1,7 @@
-import React from 'react';
+import { AppContext } from '../Contexts/AppContext';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormCheck, Row } from 'react-bootstrap';
+import { FormCheck, Row, FormLabel } from 'react-bootstrap';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
@@ -30,54 +31,15 @@ export const psPassthroughState = {
 
 const PSPassthrough = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
+    const { getAvailablePeripherals } = useContext(AppContext);
 	return (
 		<Section title={t('AddonsConfig:pspassthrough-header-text')}>
 			<div
 				id="PSPassthroughAddonOptions"
 				hidden={!values.PSPassthroughAddonEnabled}
 			>
-				<Row className="mb-3">
-					<p>{t('AddonsConfig:pspassthrough-sub-header-text')}</p>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:pspassthrough-d-plus-label')}
-						name="psPassthroughPinDplus"
-						className="form-select-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={values.psPassthroughPinDplus}
-						error={errors.psPassthroughPinDplus}
-						isInvalid={errors.psPassthroughPinDplus}
-						onChange={handleChange}
-						min={-1}
-						max={28}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:pspassthrough-d-minus-label')}
-						disabled
-						className="form-select-sm"
-						groupClassName="col-sm-1 mb-3"
-						value={
-							values.psPassthroughPinDplus === -1
-								? -1
-								: values.psPassthroughPinDplus + 1
-						}
-					/>
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:pspassthrough-five-v-label')}
-						name="psPassthroughPin5V"
-						className="form-select-sm"
-						groupClassName="col-sm-auto mb-3"
-						value={values.psPassthroughPin5V}
-						error={errors.psPassthroughPin5V}
-						isInvalid={errors.psPassthroughPin5V}
-						onChange={handleChange}
-						min={-1}
-						max={28}
-					/>
-				</Row>
 			</div>
+            {getAvailablePeripherals('usb') ?
 			<FormCheck
 				label={t('Common:switch-enabled')}
 				type="switch"
@@ -90,6 +52,9 @@ const PSPassthrough = ({ values, errors, handleChange, handleCheckbox }) => {
 					handleChange(e);
 				}}
 			/>
+            :
+            <FormLabel>{t('PeripheralMapping:peripheral-toggle-unavailable',{'name':'USB'})}</FormLabel>
+            }
 		</Section>
 	);
 };
