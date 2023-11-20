@@ -143,7 +143,7 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1))
 	{
 		pin = doc[key0][key1];
-        GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+        GpioAction** gpioMappings = Storage::getInstance().getGpioMappings();
         if (!isValidPin(pin))
         {
             *gpioMappings[pin] = GpioAction::ASSIGNED_TO_ADDON;
@@ -164,7 +164,7 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1) && doc[key0][key1].containsKey(key2))
 	{
 		pin = doc[key0][key1][key2];
-        GpioAction** gpioMappings = Storage::getInstance().getGpioMappingsArray();
+        GpioAction** gpioMappings = Storage::getInstance().getGpioMappings();
         if (!isValidPin(pin))
         {
             *gpioMappings[pin] = GpioAction::ASSIGNED_TO_ADDON;
