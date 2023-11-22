@@ -59,6 +59,19 @@ void GP2040::setup() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->setup();
 
+    const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+
+    // check setup options and add modes to the list
+    // user modes
+    bootActions.insert({GAMEPAD_MASK_B1, gamepadOptions.inputModeB1});
+    bootActions.insert({GAMEPAD_MASK_B2, gamepadOptions.inputModeB2});
+    bootActions.insert({GAMEPAD_MASK_B3, gamepadOptions.inputModeB3});
+    bootActions.insert({GAMEPAD_MASK_B4, gamepadOptions.inputModeB4});
+    bootActions.insert({GAMEPAD_MASK_L1, gamepadOptions.inputModeL1});
+    bootActions.insert({GAMEPAD_MASK_L2, gamepadOptions.inputModeL2});
+    bootActions.insert({GAMEPAD_MASK_R1, gamepadOptions.inputModeR1});
+    bootActions.insert({GAMEPAD_MASK_R2, gamepadOptions.inputModeR2});
+
 	// Initialize our ADC (various add-ons)
 	adc_init();
 
@@ -78,7 +91,6 @@ void GP2040::setup() {
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
 	addons.LoadAddon(new InputMacro(), CORE0_INPUT);
-
 
 	const BootAction bootAction = getBootAction();
 
@@ -205,30 +217,37 @@ GP2040::BootAction GP2040::getBootAction() {
 				// Copy Processed Gamepad for Core1 (race condition otherwise)
 				memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
-				ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
-				bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
-										forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
+                const ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
+                bool modeSwitchLocked = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_MODE_SWITCH ||
+                                        forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
-				bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
-										forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
+                bool webConfigLocked  = forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_WEB_CONFIG ||
+                                        forcedSetupOptions.mode == FORCED_SETUP_MODE_LOCK_BOTH;
 
 				if (gamepad->pressedS1() && gamepad->pressedS2() && gamepad->pressedUp()) {
 					return BootAction::ENTER_USB_MODE;
 				} else if (!webConfigLocked && gamepad->pressedS2()) {
 					return BootAction::ENTER_WEBCONFIG_MODE;
-				} else if (!modeSwitchLocked && gamepad->pressedB3()) { // P1
-					return BootAction::SET_INPUT_MODE_HID;
-				} else if (!modeSwitchLocked && gamepad->pressedB4()) { // P2
-					return BootAction::SET_INPUT_MODE_PS4;
-				} else if (!modeSwitchLocked && gamepad->pressedB1()) { // K1
-					return BootAction::SET_INPUT_MODE_SWITCH;
-				} else if (!modeSwitchLocked && gamepad->pressedB2()) { // K2
-					return BootAction::SET_INPUT_MODE_XINPUT;
-				} else if (!modeSwitchLocked && gamepad->pressedR2()) { // K3
-					return BootAction::SET_INPUT_MODE_KEYBOARD;
-				} else {
-					return BootAction::NONE;
-				}
+                } else {
+                    if (!modeSwitchLocked) {
+                        if (auto search = bootActions.find(gamepad->state.buttons); search != bootActions.end()) {
+                            switch (search->second) {
+                                case INPUT_MODE_XINPUT: 
+                                    return BootAction::SET_INPUT_MODE_XINPUT;
+                                case INPUT_MODE_SWITCH: 
+                                    return BootAction::SET_INPUT_MODE_SWITCH;
+                                case INPUT_MODE_HID: 
+                                    return BootAction::SET_INPUT_MODE_HID;
+                                case INPUT_MODE_KEYBOARD: 
+                                    return BootAction::SET_INPUT_MODE_KEYBOARD;
+                                case INPUT_MODE_PS4: 
+                                    return BootAction::SET_INPUT_MODE_PS4;
+                                default:
+                                    return BootAction::NONE;
+                            }
+                        }
+                    }
+                }
 
 				break;
 			}

@@ -623,6 +623,14 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.profileNumber, doc, "profileNumber");
 	readDoc(gamepadOptions.ps4ControllerType, doc, "ps4ControllerType");
 	readDoc(gamepadOptions.debounceDelay, doc, "debounceDelay");
+    readDoc(gamepadOptions.inputModeB1, doc, "inputModeB1");
+    readDoc(gamepadOptions.inputModeB2, doc, "inputModeB2");
+    readDoc(gamepadOptions.inputModeB3, doc, "inputModeB3");
+    readDoc(gamepadOptions.inputModeB4, doc, "inputModeB4");
+    readDoc(gamepadOptions.inputModeL1, doc, "inputModeL1");
+    readDoc(gamepadOptions.inputModeL2, doc, "inputModeL2");
+    readDoc(gamepadOptions.inputModeR1, doc, "inputModeR1");
+    readDoc(gamepadOptions.inputModeR2, doc, "inputModeR2");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -660,6 +668,14 @@ std::string getGamepadOptions()
 	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
 	writeDoc(doc, "ps4ControllerType", gamepadOptions.ps4ControllerType);
 	writeDoc(doc, "debounceDelay", gamepadOptions.debounceDelay);
+    writeDoc(doc, "inputModeB1", gamepadOptions.inputModeB1);
+    writeDoc(doc, "inputModeB2", gamepadOptions.inputModeB2);
+    writeDoc(doc, "inputModeB3", gamepadOptions.inputModeB3);
+    writeDoc(doc, "inputModeB4", gamepadOptions.inputModeB4);
+    writeDoc(doc, "inputModeL1", gamepadOptions.inputModeL1);
+    writeDoc(doc, "inputModeL2", gamepadOptions.inputModeL2);
+    writeDoc(doc, "inputModeR1", gamepadOptions.inputModeR1);
+    writeDoc(doc, "inputModeR2", gamepadOptions.inputModeR2);
 
 	writeDoc(doc, "fnButtonPin", -1);
 	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
