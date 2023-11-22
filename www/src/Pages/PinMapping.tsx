@@ -80,18 +80,18 @@ const PinsForm = ({ savePins, pins, setPinAction }: PinsFormTypes) => {
 					}
 				/>
 			</div>
-			<div className="row row-cols-lg-3 row-cols-md-2 gx-3">
+			<div className="gx-3 column-container">
 				{map(pins, (pinAction, pin) => (
-					<div
-						key={`pin-${pin}`}
-						className="d-flex justify-content-center py-2"
-					>
-						<div className="d-flex align-items-center pe-2">
+					<div key={`pin-${pin}`} className="d-flex py-2">
+						<div
+							className="d-flex align-items-center"
+							style={{ width: '4rem' }}
+						>
 							<label htmlFor={pin}>{pin.toUpperCase()}</label>
 						</div>
 						<Select
 							inputId={pin}
-							className="flex-grow-1 text-primary"
+							className="text-primary flex-grow-1"
 							isClearable
 							isSearchable
 							options={options}
