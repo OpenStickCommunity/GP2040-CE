@@ -150,7 +150,7 @@ export default function PinMappingPage() {
 				{t(`PinMapping:profile-pins-warning`)}
 			</div>
 			<Tabs id="profiles">
-				<Tab eventKey="Base" title="Base">
+				<Tab eventKey="Base" title="Base(Profile 1)">
 					<PinsForm
 						pins={pins}
 						savePins={savePins}
@@ -159,9 +159,9 @@ export default function PinMappingPage() {
 				</Tab>
 				{profiles.map((profilePins, profileIndex) => (
 					<Tab
-						key={`Profile${profileIndex + 1}`}
-						eventKey={`Profile${profileIndex + 1}`}
-						title={`Profile ${profileIndex + 1}`}
+						key={`Profile${profileIndex + 2}`}
+						eventKey={`Profile${profileIndex + 2}`}
+						title={`Profile ${profileIndex + 2}`}
 					>
 						<PinsForm
 							pins={profilePins}

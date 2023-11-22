@@ -77,7 +77,9 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 			),
 		})),
 	saveProfiles: async () =>
-		axios.post(`${baseUrl}/api/setPinMappings`, get().profiles),
+		axios.post(`${baseUrl}/api/setProfileOptions`, {
+			alternativePinMappings: get().profiles,
+		}),
 }));
 
 export default useProfilesStore;
