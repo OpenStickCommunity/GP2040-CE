@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 import { NavLink } from 'react-router-dom';
 import { Alert, Button, Form, Tab, Tabs } from 'react-bootstrap';
@@ -135,6 +135,11 @@ export default function PinMappingPage() {
 		fetchProfiles();
 	}, []);
 
+	const saveAll = useCallback(() => {
+		savePins();
+		saveProfiles();
+	}, [savePins, saveProfiles]);
+
 	return (
 		<Section title={t('PinMapping:header-text')}>
 			<p>{t('PinMapping:sub-header-text')}</p>
@@ -153,7 +158,7 @@ export default function PinMappingPage() {
 				<Tab eventKey="Base" title="Base(Profile 1)">
 					<PinsForm
 						pins={pins}
-						savePins={savePins}
+						savePins={saveAll}
 						setPinAction={setPinAction}
 					/>
 				</Tab>
@@ -165,7 +170,7 @@ export default function PinMappingPage() {
 					>
 						<PinsForm
 							pins={profilePins}
-							savePins={saveProfiles}
+							savePins={saveAll}
 							setPinAction={(pin, action) => {
 								setProfileAction(profileIndex, pin, action);
 							}}
