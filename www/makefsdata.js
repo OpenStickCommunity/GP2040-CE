@@ -3,8 +3,6 @@ import fs from 'node:fs';
 
 import { fileURLToPath } from 'node:url';
 
-import assert from 'node:assert';
-
 import pako from 'pako';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -88,8 +86,6 @@ function fixFilenameForC(filename) {
 			varName += c;
 		} else if (c >= '0' && c <= '9') {
 			varName += c;
-		} else if (c === '_') {
-			varName += c;
 		} else {
 			varName += '_';
 		}
@@ -125,7 +121,7 @@ function createHexString(value, prependComment = false) {
 			}
 		});
 	} else {
-		assert(false, 'Invalid value type');
+		throw new Error('Invalid value type');
 	}
 
 	return hexString + '\n';
