@@ -563,20 +563,19 @@ std::string setProfileOptions()
 	JsonObject options = doc.as<JsonObject>();
 	JsonArray alts = options["alternativePinMappings"];
 	int altsIndex = 0;
+	char pinName[6];
 	for (JsonObject alt : alts) {
-		profileOptions.alternativePinMappings[altsIndex].pinButtonB1 = alt["B1"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinButtonB2 = alt["B2"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinButtonB3 = alt["B3"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinButtonB4 = alt["B4"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinButtonL1 = alt["L1"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinButtonR1 = alt["R1"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinButtonL2 = alt["L2"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinButtonR2 = alt["R2"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinDpadUp = alt["Up"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinDpadDown = alt["Down"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinDpadLeft = alt["Left"].as<int>();
-		profileOptions.alternativePinMappings[altsIndex].pinDpadRight = alt["Right"].as<int>();
-		profileOptions.alternativePinMappings_count = ++altsIndex;
+		for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+			snprintf(pinName, 6, "pin%0*d", 2, pin);
+			// setting a pin shouldn't change a new existing addon/reserved pin
+			if (profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
+					profileOptions.gpioMappingsSets[altsIndex].pins[pin].action != GpioAction::RESERVED &&
+					(GpioAction)alt[pinName] != GpioAction::RESERVED &&
+					(GpioAction)alt[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
+				profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName];
+			}
+		}
+		profileOptions.gpioMappingsSets_count = ++altsIndex;
 		if (altsIndex > 2) break;
 	}
 
@@ -590,20 +589,41 @@ std::string getProfileOptions()
 
 	ProfileOptions& profileOptions = Storage::getInstance().getProfileOptions();
 	JsonArray alts = doc.createNestedArray("alternativePinMappings");
-	for (int i = 0; i < profileOptions.alternativePinMappings_count; i++) {
+	for (int i = 0; i < profileOptions.gpioMappingsSets_count; i++) {
 		JsonObject altMappings = alts.createNestedObject();
-		altMappings["B1"] = profileOptions.alternativePinMappings[i].pinButtonB1;
-		altMappings["B2"] = profileOptions.alternativePinMappings[i].pinButtonB2;
-		altMappings["B3"] = profileOptions.alternativePinMappings[i].pinButtonB3;
-		altMappings["B4"] = profileOptions.alternativePinMappings[i].pinButtonB4;
-		altMappings["L1"] = profileOptions.alternativePinMappings[i].pinButtonL1;
-		altMappings["R1"] = profileOptions.alternativePinMappings[i].pinButtonR1;
-		altMappings["L2"] = profileOptions.alternativePinMappings[i].pinButtonL2;
-		altMappings["R2"] = profileOptions.alternativePinMappings[i].pinButtonR2;
-		altMappings["Up"] = profileOptions.alternativePinMappings[i].pinDpadUp;
-		altMappings["Down"] = profileOptions.alternativePinMappings[i].pinDpadDown;
-		altMappings["Left"] = profileOptions.alternativePinMappings[i].pinDpadLeft;
-		altMappings["Right"] = profileOptions.alternativePinMappings[i].pinDpadRight;
+		// this looks duplicative, but something in arduinojson treats the doc
+		// field string by reference so you can't be "clever" and do an snprintf
+		// thing or else you only send the last field in the JSON
+		altMappings["pin00"] = profileOptions.gpioMappingsSets[i].pins[0].action;
+		altMappings["pin01"] = profileOptions.gpioMappingsSets[i].pins[1].action;
+		altMappings["pin02"] = profileOptions.gpioMappingsSets[i].pins[2].action;
+		altMappings["pin03"] = profileOptions.gpioMappingsSets[i].pins[3].action;
+		altMappings["pin04"] = profileOptions.gpioMappingsSets[i].pins[4].action;
+		altMappings["pin05"] = profileOptions.gpioMappingsSets[i].pins[5].action;
+		altMappings["pin06"] = profileOptions.gpioMappingsSets[i].pins[6].action;
+		altMappings["pin07"] = profileOptions.gpioMappingsSets[i].pins[7].action;
+		altMappings["pin08"] = profileOptions.gpioMappingsSets[i].pins[8].action;
+		altMappings["pin09"] = profileOptions.gpioMappingsSets[i].pins[9].action;
+		altMappings["pin10"] = profileOptions.gpioMappingsSets[i].pins[10].action;
+		altMappings["pin11"] = profileOptions.gpioMappingsSets[i].pins[11].action;
+		altMappings["pin12"] = profileOptions.gpioMappingsSets[i].pins[12].action;
+		altMappings["pin13"] = profileOptions.gpioMappingsSets[i].pins[13].action;
+		altMappings["pin14"] = profileOptions.gpioMappingsSets[i].pins[14].action;
+		altMappings["pin15"] = profileOptions.gpioMappingsSets[i].pins[15].action;
+		altMappings["pin16"] = profileOptions.gpioMappingsSets[i].pins[16].action;
+		altMappings["pin17"] = profileOptions.gpioMappingsSets[i].pins[17].action;
+		altMappings["pin18"] = profileOptions.gpioMappingsSets[i].pins[18].action;
+		altMappings["pin19"] = profileOptions.gpioMappingsSets[i].pins[19].action;
+		altMappings["pin20"] = profileOptions.gpioMappingsSets[i].pins[20].action;
+		altMappings["pin21"] = profileOptions.gpioMappingsSets[i].pins[21].action;
+		altMappings["pin22"] = profileOptions.gpioMappingsSets[i].pins[22].action;
+		altMappings["pin23"] = profileOptions.gpioMappingsSets[i].pins[23].action;
+		altMappings["pin24"] = profileOptions.gpioMappingsSets[i].pins[24].action;
+		altMappings["pin25"] = profileOptions.gpioMappingsSets[i].pins[25].action;
+		altMappings["pin26"] = profileOptions.gpioMappingsSets[i].pins[26].action;
+		altMappings["pin27"] = profileOptions.gpioMappingsSets[i].pins[27].action;
+		altMappings["pin28"] = profileOptions.gpioMappingsSets[i].pins[28].action;
+		altMappings["pin29"] = profileOptions.gpioMappingsSets[i].pins[29].action;
 	}
 
 	return serialize_json(doc);
@@ -923,9 +943,9 @@ std::string setPinMappings()
 		// setting a pin shouldn't change a new existing addon/reserved pin
 		if (gpioMappings[pin].action != GpioAction::RESERVED &&
 				gpioMappings[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
-				(Pin_t)doc[pinName] != GpioAction::RESERVED &&
-				(Pin_t)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
-			gpioMappings[pin].action = doc[pinName];
+				(GpioAction)doc[pinName] != GpioAction::RESERVED &&
+				(GpioAction)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
+			gpioMappings[pin].action = (GpioAction)doc[pinName];
 		}
 	}
 
