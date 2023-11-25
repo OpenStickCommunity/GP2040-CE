@@ -4,6 +4,7 @@ import { Formik, useFormikContext, Field } from 'formik';
 import chunk from 'lodash/chunk';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
 
 import { AppContext } from '../Contexts/AppContext';
 import FormControl from '../Components/FormControl';
@@ -699,7 +700,7 @@ export default function DisplayConfigPage() {
                             </Form>
                         </div>
                         : 
-                        <FormLabel>{t('PeripheralMapping:peripheral-toggle-unavailable',{'name':'I2C'})}</FormLabel>
+                        <FormLabel><Trans ns="PeripheralMapping" i18nKey="peripheral-toggle-unavailable" values={{'name':'I2C'}}><NavLink exact="true" to="/peripheral-mapping">{t('PeripheralMapping:header-text')}</NavLink></Trans></FormLabel>
                     }
 					</Section>
 				)}
