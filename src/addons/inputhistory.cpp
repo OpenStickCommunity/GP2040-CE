@@ -5,39 +5,60 @@
 #include "helper.h"
 #include "config.pb.h"
 
+#define CHAR_TRIANGLE "\x80"
+#define CHAR_CIRCLE   "\x81"
+#define CHAR_CROSS    "\x82"
+#define CHAR_SQUARE   "\x83"
+
+#define CHAR_UP       "\x84"
+#define CHAR_DOWN     "\x85"
+#define CHAR_LEFT     "\x86"
+#define CHAR_RIGHT    "\x87"
+
+#define CHAR_HOME_S   "\x88"
+#define CHAR_CAP_S    "\x89"
+
+#define CHAR_VIEW_X   "\x8A"
+#define CHAR_MENU_X   "\x8B"
+#define CHAR_HOME_X   "\x8C"
+
+#define CHAR_TPAD_P   "\x8D"
+#define CHAR_HOME_P   "\x8E"
+#define CHAR_SHARE_P  "\x8F"
+
 static const std::string displayNames[][18] = {
 	{		// HID / DINPUT
-			"U", "D", "L", "R",
-			"X", "O", "#", "^",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+			CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
 			"L1", "R1", "L2", "R2",
 			"SL", "ST", "L3", "R3", "PS", "A2"
 	},
 	{		// Switch
-			"U", "D", "L", "R",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
 			"B", "A", "Y", "X",
 			"L", "R", "ZL", "ZR",
-			"-", "+", "LS", "RS", "H", "C"
+			"-", "+", "LS", "RS", CHAR_HOME_S, CHAR_CAP_S
 	},
 	{		// XInput
-			"U", "D", "L", "R",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
 			"A", "B", "X", "Y",
 			"LB", "RB", "LT", "RT",
-			"BK", "ST", "LS", "RS", "G", "A2"
+			CHAR_VIEW_X, CHAR_MENU_X, "LS", "RS", CHAR_HOME_X, "A2"
 	},
 	{		// Keyboard / HID-KB
-			"U", "D", "L", "R",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
 			"B1", "B2", "B3", "B4",
 			"L1", "R1", "L2", "R2",
 			"S1", "S2", "L3", "R3", "A1", "A2"
 	},
 	{		// PS4
-			"U", "D", "L", "R",
-			"X", "O", "#", "^",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+			CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
 			"L1", "R1", "L2", "R2",
-			"SH", "OP", "L3", "R3", "PS", "T"
+			CHAR_SHARE_P, "OP", "L3", "R3", CHAR_HOME_P, CHAR_TPAD_P
 	},
 	{		// Config
-			"U", "D", "L", "R",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
 			"B1", "B2", "B3", "B4",
 			"L1", "R1", "L2", "R2",
 			"S1", "S2", "L3", "R3", "A1", "A2"
