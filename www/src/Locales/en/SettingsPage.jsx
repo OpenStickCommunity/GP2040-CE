@@ -10,6 +10,7 @@ export default {
 		keyboard: 'Keyboard',
 		ps4: 'PS4',
 		neogeo: 'NEOGEO mini',
+		mdmini: 'Sega Genesis/MegaDrive Mini',
 	},
     'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {

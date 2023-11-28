@@ -14,6 +14,7 @@
 #include "gamepad/descriptors/KeyboardDescriptors.h"
 #include "gamepad/descriptors/PS4Descriptors.h"
 #include "gamepad/descriptors/NeogeoDescriptors.h"
+#include "gamepad/descriptors/MDMiniDescriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -74,6 +75,7 @@ public:
 	KeyboardReport *getKeyboardReport();
 	PS4Report *getPS4Report();
 	NeogeoReport *getNeogeoReport();
+	MDMiniReport *getMDMiniReport();
 
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.

@@ -110,6 +110,18 @@ static NeogeoReport neogeoReport
 	.const17 = 0,	
 };
 
+static MDMiniReport mdminiReport
+{
+	.id = 0x01,				// ID
+	.notuse1 = 0x7f,		// [Not Use] 0x7f
+	.notuse2 = 0x7f,		// [Not Use] 0x7f
+	.hat1 = 0x7f,			// LEFT:0x00, RIGHT:0xFF
+	.hat2 = 0x7f,			// UP:0x00, DOWN:0xFF
+	.buttons1 = 0x0f,		// X A B Y 1b 1b 1b 1b
+	.buttons2 = 0x00,		// 0b 0b START MODE 0b 0b C Z
+	.notuse3 = 0x00,		// [Not Use] 0x00
+};
+
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
 
@@ -497,6 +509,9 @@ void * Gamepad::getReport()
 		case INPUT_MODE_NEOGEO:
 			return getNeogeoReport();
 
+		case INPUT_MODE_MDMINI:
+			return getMDMiniReport();
+
 		default:
 			return getHIDReport();
 	}
@@ -521,6 +536,9 @@ uint16_t Gamepad::getReportSize()
 
 		case INPUT_MODE_NEOGEO:
 			return sizeof(NeogeoReport);
+
+		case INPUT_MODE_MDMINI:
+			return sizeof(MDMiniReport);
 
 		default:
 			return sizeof(HIDReport);
@@ -805,4 +823,33 @@ NeogeoReport *Gamepad::getNeogeoReport()
 	;
 
 	return &neogeoReport;
+}
+
+
+MDMiniReport *Gamepad::getMDMiniReport()
+{
+	mdminiReport.hat1 = 0x7f;
+	mdminiReport.hat2 = 0x7f;
+
+	if (pressedLeft()) { mdminiReport.hat1 = MDMINI_MASK_LEFT; }
+	if (pressedRight()) { mdminiReport.hat1 = MDMINI_MASK_RIGHT; }
+
+	if (pressedUp()) { mdminiReport.hat2 = MDMINI_MASK_UP; }
+	if (pressedDown()) { mdminiReport.hat2 = MDMINI_MASK_DOWN; }
+
+	mdminiReport.buttons1 = 0x0f
+		| (pressedB1()    ? MDMINI_MASK_A     : 0)
+		| (pressedB2()    ? MDMINI_MASK_B     : 0)
+		| (pressedB3()    ? MDMINI_MASK_X     : 0)
+		| (pressedB4()    ? MDMINI_MASK_Y     : 0)
+	;
+
+	mdminiReport.buttons2 = 0x00
+		| (pressedR1()    ? MDMINI_MASK_Z     : 0)
+		| (pressedR2()    ? MDMINI_MASK_C     : 0)
+		| (pressedS2()    ? MDMINI_MASK_START : 0)
+		| (pressedS1()    ? MDMINI_MASK_MODE  : 0)
+	;
+
+	return &mdminiReport;
 }

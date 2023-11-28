@@ -130,6 +130,7 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 	KeyboardReport keyboard_report;
 	PS4Report ps4_report;
 	NeogeoReport neogeo_report;
+	MDMiniReport mdmini_report;
 	switch (input_mode)
 	{
 		case INPUT_MODE_SWITCH:
@@ -139,6 +140,10 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 		case INPUT_MODE_NEOGEO:
 			report_size = sizeof(NeogeoReport);
 			memcpy(buffer, &neogeo_report, report_size);
+			break;
+		case INPUT_MODE_MDMINI:
+			report_size = sizeof(MDMiniReport);
+			memcpy(buffer, &mdmini_report, report_size);
 			break;
 		case INPUT_MODE_KEYBOARD:
 			report_size = report_id == KEYBOARD_KEY_REPORT_ID ? sizeof(KeyboardReport::keycode) : sizeof(KeyboardReport::multimedia);

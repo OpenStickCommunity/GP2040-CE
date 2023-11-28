@@ -51,6 +51,9 @@ uint8_t const *tud_descriptor_device_cb(void)
 		case INPUT_MODE_NEOGEO:
 			return neogeo_device_descriptor;
 
+		case INPUT_MODE_MDMINI:
+			return mdmini_device_descriptor;
+
 		default:
 			return hid_device_descriptor;
 	}
@@ -75,6 +78,9 @@ uint8_t const *tud_hid_descriptor_report_cb(uint8_t itf)
 
 		case INPUT_MODE_NEOGEO:
 			return neogeo_report_descriptor;
+
+		case INPUT_MODE_MDMINI:
+			return mdmini_report_descriptor;
 
 		default:
 			return hid_report_descriptor;
@@ -105,6 +111,9 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 
 		case INPUT_MODE_NEOGEO:
 			return neogeo_configuration_descriptor;
+
+		case INPUT_MODE_MDMINI:
+			return mdmini_configuration_descriptor;
 
 		default:
 			return hid_configuration_descriptor;

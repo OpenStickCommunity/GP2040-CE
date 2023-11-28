@@ -13,6 +13,7 @@
 #include "descriptors/KeyboardDescriptors.h"
 #include "descriptors/PS4Descriptors.h"
 #include "descriptors/NeogeoDescriptors.h"
+#include "descriptors/MDMiniDescriptors.h"
 
 #include "enums.pb.h"
 
@@ -42,6 +43,10 @@ static const uint8_t *getConfigurationDescriptor(uint16_t *size, InputMode mode)
 		case INPUT_MODE_NEOGEO:
 			*size = sizeof(neogeo_configuration_descriptor);
 			return neogeo_configuration_descriptor;
+
+		case INPUT_MODE_MDMINI:
+			*size = sizeof(mdmini_configuration_descriptor);
+			return mdmini_configuration_descriptor;
 
 		default:
 			*size = sizeof(hid_configuration_descriptor);
@@ -73,6 +78,10 @@ static const uint8_t *getDeviceDescriptor(uint16_t *size, InputMode mode)
 			*size = sizeof(neogeo_device_descriptor);
 			return neogeo_device_descriptor;
 
+		case INPUT_MODE_MDMINI:
+			*size = sizeof(mdmini_device_descriptor);
+			return mdmini_device_descriptor;
+
 		default:
 			*size = sizeof(hid_device_descriptor);
 			return hid_device_descriptor;
@@ -99,6 +108,10 @@ static const uint8_t *getHIDDescriptor(uint16_t *size, InputMode mode)
 			*size = sizeof(neogeo_hid_descriptor);
 			return neogeo_hid_descriptor;
 
+		case INPUT_MODE_MDMINI:
+			*size = sizeof(mdmini_hid_descriptor);
+			return mdmini_hid_descriptor;
+
 		default:
 			*size = sizeof(hid_hid_descriptor);
 			return hid_hid_descriptor;
@@ -124,6 +137,10 @@ static const uint8_t *getHIDReport(uint16_t *size, InputMode mode)
 		case INPUT_MODE_NEOGEO:
 			*size = sizeof(neogeo_report_descriptor);
 			return neogeo_report_descriptor;
+
+		case INPUT_MODE_MDMINI:
+			*size = sizeof(mdmini_report_descriptor);
+			return mdmini_report_descriptor;
 
 		default:
 			*size = sizeof(hid_report_descriptor);
@@ -190,6 +207,10 @@ static const uint16_t *getStringDescriptor(uint16_t *size, InputMode mode, uint8
 
 			case INPUT_MODE_NEOGEO:
 				str = (char *)neogeo_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_MDMINI:
+				str = (char *)mdmini_string_descriptors[index];
 				break;
 
 			default:

@@ -116,6 +116,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_PS4:
 		case BootAction::SET_INPUT_MODE_KEYBOARD:
 		case BootAction::SET_INPUT_MODE_NEOGEO:
+		case BootAction::SET_INPUT_MODE_MDMINI:
 		case BootAction::NONE:
 			{
 				InputMode inputMode = gamepad->getOptions().inputMode;
@@ -131,6 +132,8 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_KEYBOARD;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_NEOGEO) {
 					inputMode = INPUT_MODE_NEOGEO;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_MDMINI) {
+					inputMode = INPUT_MODE_MDMINI;
 				}
 
 				if (inputMode != gamepad->getOptions().inputMode) {
@@ -248,6 +251,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_PS4;
                                 case INPUT_MODE_NEOGEO: 
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
+                                case INPUT_MODE_MDMINI: 
+                                    return BootAction::SET_INPUT_MODE_MDMINI;
                                 default:
                                     return BootAction::NONE;
                             }
