@@ -6,6 +6,8 @@
 #ifndef GP2040_H_
 #define GP2040_H_
 
+#include <map>
+
 // GP2040 Classes
 #include "gamepad.h"
 #include "addonmanager.h"
@@ -48,6 +50,9 @@ private:
         SET_INPUT_MODE_PS4
     };
     BootAction getBootAction();
+
+    // input mask, action
+    std::map<uint32_t, int32_t> bootActions;
 };
 
 #endif

@@ -79,6 +79,30 @@
 #ifndef DEFAULT_INPUT_MODE
     #define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT
 #endif
+#ifndef DEFAULT_INPUT_MODE_B1
+    #define DEFAULT_INPUT_MODE_B1 INPUT_MODE_SWITCH
+#endif
+#ifndef DEFAULT_INPUT_MODE_B2
+    #define DEFAULT_INPUT_MODE_B2 INPUT_MODE_XINPUT
+#endif
+#ifndef DEFAULT_INPUT_MODE_B3
+    #define DEFAULT_INPUT_MODE_B3 INPUT_MODE_HID
+#endif
+#ifndef DEFAULT_INPUT_MODE_B4
+    #define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS4
+#endif
+#ifndef DEFAULT_INPUT_MODE_L1
+    #define DEFAULT_INPUT_MODE_L1 -1
+#endif
+#ifndef DEFAULT_INPUT_MODE_L2
+    #define DEFAULT_INPUT_MODE_L2 -1
+#endif
+#ifndef DEFAULT_INPUT_MODE_R1
+    #define DEFAULT_INPUT_MODE_R1 -1
+#endif
+#ifndef DEFAULT_INPUT_MODE_R2
+    #define DEFAULT_INPUT_MODE_R2 INPUT_MODE_KEYBOARD
+#endif
 #ifndef DEFAULT_DPAD_MODE
     #define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL
 #endif
@@ -115,6 +139,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, profileNumber, 1);
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerType, DEFAULT_PS4CONTROLLER_TYPE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, debounceDelay, 5);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeB1, DEFAULT_INPUT_MODE_B1);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeB2, DEFAULT_INPUT_MODE_B2);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeB3, DEFAULT_INPUT_MODE_B3);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeB4, DEFAULT_INPUT_MODE_B4);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeL1, DEFAULT_INPUT_MODE_L1);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeL2, DEFAULT_INPUT_MODE_L2);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeR1, DEFAULT_INPUT_MODE_R1);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeR2, DEFAULT_INPUT_MODE_R2);
 
     // hotkeyOptions
     HotkeyOptions& hotkeyOptions = config.hotkeyOptions;
