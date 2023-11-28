@@ -17,7 +17,7 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.ps3', value: 2 },
 	{ labelKey: 'input-mode-options.keyboard', value: 3 },
 	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
-	{ labelKey: 'input-mode-options.mdmini', value: 5 },
+	{ labelKey: 'input-mode-options.mdmini', value: 6 },
 	{ labelKey: 'input-mode-options.neogeo', value: 7 },
 ];
 
@@ -28,7 +28,7 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.ps3', value: 2 },
 	{ labelKey: 'input-mode-options.keyboard', value: 3 },
 	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
-	{ labelKey: 'input-mode-options.mdmini', value: 5 },
+	{ labelKey: 'input-mode-options.mdmini', value: 6 },
 	{ labelKey: 'input-mode-options.neogeo', value: 7 },
 ];
 
