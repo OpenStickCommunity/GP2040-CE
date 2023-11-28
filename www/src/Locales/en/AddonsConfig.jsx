@@ -147,5 +147,6 @@ export default {
 	'input-history-header-text': 'Input History',
 	'input-history-length-label': 'History length (characters)',
 	'input-history-col-label': 'Column',
-	'input-history-row-label': 'Row'
+	'input-history-row-label': 'Row',
+	'xbonepassthrough-header-text': 'Xbox One Passthrough',
 };
