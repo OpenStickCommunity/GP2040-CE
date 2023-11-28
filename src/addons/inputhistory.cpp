@@ -5,39 +5,45 @@
 #include "helper.h"
 #include "config.pb.h"
 
-static const std::string displayNames[][18] = {
+static const std::string displayNames[][INPUT_HISTORY_MAX_INPUTS] = {
 	{		// HID / DINPUT
-			"U", "D", "L", "R",
-			"X", "O", "#", "^",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+			CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+			CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
 			"L1", "R1", "L2", "R2",
 			"SL", "ST", "L3", "R3", "PS", "A2"
 	},
 	{		// Switch
-			"U", "D", "L", "R",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
 			"B", "A", "Y", "X",
 			"L", "R", "ZL", "ZR",
-			"-", "+", "LS", "RS", "H", "C"
+			"-", "+", "LS", "RS", CHAR_HOME_S, CHAR_CAP_S
 	},
 	{		// XInput
-			"U", "D", "L", "R",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
 			"A", "B", "X", "Y",
 			"LB", "RB", "LT", "RT",
-			"BK", "ST", "LS", "RS", "G", "A2"
+			CHAR_VIEW_X, CHAR_MENU_X, "LS", "RS", CHAR_HOME_X, "A2"
 	},
 	{		// Keyboard / HID-KB
-			"U", "D", "L", "R",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
 			"B1", "B2", "B3", "B4",
 			"L1", "R1", "L2", "R2",
 			"S1", "S2", "L3", "R3", "A1", "A2"
 	},
 	{		// PS4
-			"U", "D", "L", "R",
-			"X", "O", "#", "^",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+			CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
 			"L1", "R1", "L2", "R2",
-			"SH", "OP", "L3", "R3", "PS", "T"
+			CHAR_SHARE_P, "OP", "L3", "R3", CHAR_HOME_P, CHAR_TPAD_P
 	},
 	{		// Config
-			"U", "D", "L", "R",
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
 			"B1", "B2", "B3", "B4",
 			"L1", "R1", "L2", "R2",
 			"S1", "S2", "L3", "R3", "A1", "A2"
@@ -64,11 +70,18 @@ void InputHistoryAddon::process() {
 	std::deque<std::string> pressed;
 
 	// Get key states
-	std::array<bool, 18> currentInput = {
+	std::array<bool, INPUT_HISTORY_MAX_INPUTS> currentInput = {
+
 		pressedUp(),
 		pressedDown(),
 		pressedLeft(),
 		pressedRight(),
+
+		pressedUpLeft(),
+		pressedUpRight(),
+		pressedDownLeft(),
+		pressedDownRight(),
+
 		gamepad->pressedB1(),
 		gamepad->pressedB2(),
 		gamepad->pressedB3(),
@@ -100,7 +113,7 @@ void InputHistoryAddon::process() {
 	// Check if any new keys have been pressed
 	if (lastInput != currentInput) {
 		// Iterate through array
-		for (uint8_t x=0; x<18; x++) {
+		for (uint8_t x=0; x<INPUT_HISTORY_MAX_INPUTS; x++) {
 			// Add any pressed keys to deque
 			if (currentInput[x]) pressed.push_back(displayNames[mode][x]);
 		}
@@ -153,7 +166,7 @@ bool InputHistoryAddon::pressedUp()
 {
 	switch (gamepad->getOptions().dpadMode)
 	{
-		case DPAD_MODE_DIGITAL:      return pGamepad->pressedUp();
+		case DPAD_MODE_DIGITAL:      return ((pGamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_UP);
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.ly == GAMEPAD_JOYSTICK_MIN;
 		case DPAD_MODE_RIGHT_ANALOG: return pGamepad->state.ry == GAMEPAD_JOYSTICK_MIN;
 	}
@@ -165,7 +178,7 @@ bool InputHistoryAddon::pressedDown()
 {
 	switch (gamepad->getOptions().dpadMode)
 	{
-		case DPAD_MODE_DIGITAL:      return pGamepad->pressedDown();
+		case DPAD_MODE_DIGITAL:      return ((pGamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_DOWN);
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.ly == GAMEPAD_JOYSTICK_MAX;
 		case DPAD_MODE_RIGHT_ANALOG: return pGamepad->state.ry == GAMEPAD_JOYSTICK_MAX;
 	}
@@ -177,7 +190,7 @@ bool InputHistoryAddon::pressedLeft()
 {
 	switch (gamepad->getOptions().dpadMode)
 	{
-		case DPAD_MODE_DIGITAL:      return pGamepad->pressedLeft();
+		case DPAD_MODE_DIGITAL:      return ((pGamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_LEFT);
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.lx == GAMEPAD_JOYSTICK_MIN;
 		case DPAD_MODE_RIGHT_ANALOG: return pGamepad->state.rx == GAMEPAD_JOYSTICK_MIN;
 	}
@@ -189,9 +202,57 @@ bool InputHistoryAddon::pressedRight()
 {
 	switch (gamepad->getOptions().dpadMode)
 	{
-		case DPAD_MODE_DIGITAL:      return pGamepad->pressedRight();
+		case DPAD_MODE_DIGITAL:      return ((pGamepad->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_RIGHT);
 		case DPAD_MODE_LEFT_ANALOG:  return pGamepad->state.lx == GAMEPAD_JOYSTICK_MAX;
 		case DPAD_MODE_RIGHT_ANALOG: return pGamepad->state.rx == GAMEPAD_JOYSTICK_MAX;
+	}
+
+	return false;
+}
+
+bool InputHistoryAddon::pressedUpLeft()
+{
+	switch (gamepad->getOptions().dpadMode)
+	{
+		case DPAD_MODE_DIGITAL:      return ((pGamepad->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT));
+		case DPAD_MODE_LEFT_ANALOG:  return (pGamepad->state.lx == GAMEPAD_JOYSTICK_MIN) && (pGamepad->state.ly == GAMEPAD_JOYSTICK_MIN);
+		case DPAD_MODE_RIGHT_ANALOG: return (pGamepad->state.rx == GAMEPAD_JOYSTICK_MIN) && (pGamepad->state.ry == GAMEPAD_JOYSTICK_MIN);
+	}
+
+	return false;
+}
+
+bool InputHistoryAddon::pressedUpRight()
+{
+	switch (gamepad->getOptions().dpadMode)
+	{
+		case DPAD_MODE_DIGITAL:      return ((pGamepad->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT));
+		case DPAD_MODE_LEFT_ANALOG:  return (pGamepad->state.lx == GAMEPAD_JOYSTICK_MAX) && (pGamepad->state.ly == GAMEPAD_JOYSTICK_MIN);
+		case DPAD_MODE_RIGHT_ANALOG: return (pGamepad->state.lx == GAMEPAD_JOYSTICK_MAX) && (pGamepad->state.ly == GAMEPAD_JOYSTICK_MIN);
+	}
+
+	return false;
+}
+
+bool InputHistoryAddon::pressedDownLeft()
+{
+	switch (gamepad->getOptions().dpadMode)
+	{
+		case DPAD_MODE_DIGITAL:      return ((pGamepad->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT));
+		case DPAD_MODE_LEFT_ANALOG:  return (pGamepad->state.lx == GAMEPAD_JOYSTICK_MIN) && (pGamepad->state.ly == GAMEPAD_JOYSTICK_MAX);
+		case DPAD_MODE_RIGHT_ANALOG: return (pGamepad->state.lx == GAMEPAD_JOYSTICK_MIN) && (pGamepad->state.ly == GAMEPAD_JOYSTICK_MAX);
+	}
+
+	return false;
+}
+
+bool InputHistoryAddon::pressedDownRight()
+{
+	switch (gamepad->getOptions().dpadMode)
+	{
+		case DPAD_MODE_DIGITAL:      return ((pGamepad->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT));
+		case DPAD_MODE_LEFT_ANALOG:  return (pGamepad->state.lx == GAMEPAD_JOYSTICK_MAX) && (pGamepad->state.ly == GAMEPAD_JOYSTICK_MAX);
+		case DPAD_MODE_RIGHT_ANALOG: return (pGamepad->state.lx == GAMEPAD_JOYSTICK_MAX) && (pGamepad->state.ly == GAMEPAD_JOYSTICK_MAX);
 	}
 
 	return false;
