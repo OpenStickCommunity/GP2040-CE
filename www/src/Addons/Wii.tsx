@@ -2,6 +2,7 @@ import { AppContext } from '../Contexts/AppContext';
 import React, { useContext, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Button, Form, Row, FormCheck, Tab, Tabs, FormLabel } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
@@ -301,7 +302,7 @@ const Wii = ({ values, errors, handleChange, handleCheckbox, setFieldValue }) =>
 				}}
 			/>
             :
-            <FormLabel>{t('PeripheralMapping:peripheral-toggle-unavailable',{'name':'I2C'})}</FormLabel>
+            <FormLabel><Trans ns="PeripheralMapping" i18nKey="peripheral-toggle-unavailable" values={{'name':'I2C'}}><NavLink exact="true" to="/peripheral-mapping">{t('PeripheralMapping:header-text')}</NavLink></Trans></FormLabel>
             }
 		</Section>
 	);
