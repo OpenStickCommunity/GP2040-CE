@@ -11,6 +11,7 @@ export default {
 		ps4: 'PS4',
 		neogeo: 'NEOGEO mini',
 		mdmini: 'Sega Genesis/MegaDrive Mini',
+		pcemini: 'PC Engine/Turbografx 16 Mini',
 	},
     'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {

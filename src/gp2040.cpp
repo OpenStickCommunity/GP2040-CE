@@ -117,6 +117,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_KEYBOARD:
 		case BootAction::SET_INPUT_MODE_NEOGEO:
 		case BootAction::SET_INPUT_MODE_MDMINI:
+		case BootAction::SET_INPUT_MODE_PCEMINI:
 		case BootAction::NONE:
 			{
 				InputMode inputMode = gamepad->getOptions().inputMode;
@@ -134,6 +135,8 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_NEOGEO;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_MDMINI) {
 					inputMode = INPUT_MODE_MDMINI;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_PCEMINI) {
+					inputMode = INPUT_MODE_PCEMINI;
 				}
 
 				if (inputMode != gamepad->getOptions().inputMode) {
@@ -253,6 +256,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
                                 case INPUT_MODE_MDMINI: 
                                     return BootAction::SET_INPUT_MODE_MDMINI;
+                                case INPUT_MODE_PCEMINI: 
+                                    return BootAction::SET_INPUT_MODE_PCEMINI;
                                 default:
                                     return BootAction::NONE;
                             }

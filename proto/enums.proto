@@ -90,6 +90,7 @@ enum InputMode
     INPUT_MODE_PS4 = 4;
     INPUT_MODE_MDMINI = 6;
     INPUT_MODE_NEOGEO = 7;
+    INPUT_MODE_PCEMINI = 8;
     INPUT_MODE_CONFIG = 255;
 }
 

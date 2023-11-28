@@ -49,7 +49,8 @@ private:
         SET_INPUT_MODE_KEYBOARD,
         SET_INPUT_MODE_PS4,
         SET_INPUT_MODE_NEOGEO,
-        SET_INPUT_MODE_MDMINI
+        SET_INPUT_MODE_MDMINI,
+        SET_INPUT_MODE_PCEMINI
     };
     BootAction getBootAction();
 

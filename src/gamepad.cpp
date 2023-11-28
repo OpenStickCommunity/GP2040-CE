@@ -122,6 +122,17 @@ static MDMiniReport mdminiReport
 	.notuse3 = 0x00,		// [Not Use] 0x00
 };
 
+static PCEngineReport pcengineReport
+{
+	.buttons = 0,
+	.hat = 0xf,
+	.const0 = 0x80,
+	.const1 = 0x80,
+	.const2 = 0x80,
+	.const3 = 0x80,
+	.const4 = 0,	
+};
+
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
 
@@ -512,6 +523,9 @@ void * Gamepad::getReport()
 		case INPUT_MODE_MDMINI:
 			return getMDMiniReport();
 
+		case INPUT_MODE_PCEMINI:
+			return getPCEngineReport();
+
 		default:
 			return getHIDReport();
 	}
@@ -540,9 +554,38 @@ uint16_t Gamepad::getReportSize()
 		case INPUT_MODE_MDMINI:
 			return sizeof(MDMiniReport);
 
+		case INPUT_MODE_PCEMINI:
+			return sizeof(PCEngineReport);
+
 		default:
 			return sizeof(HIDReport);
 	}
+}
+
+PCEngineReport *Gamepad::getPCEngineReport()
+{
+
+	switch (state.dpad & GAMEPAD_MASK_DPAD)
+	{
+		case GAMEPAD_MASK_UP:                        pcengineReport.hat = PCENGINE_HAT_UP;        break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   pcengineReport.hat = PCENGINE_HAT_UPRIGHT;   break;
+		case GAMEPAD_MASK_RIGHT:                     pcengineReport.hat = PCENGINE_HAT_RIGHT;     break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: pcengineReport.hat = PCENGINE_HAT_DOWNRIGHT; break;
+		case GAMEPAD_MASK_DOWN:                      pcengineReport.hat = PCENGINE_HAT_DOWN;      break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  pcengineReport.hat = PCENGINE_HAT_DOWNLEFT;  break;
+		case GAMEPAD_MASK_LEFT:                      pcengineReport.hat = PCENGINE_HAT_LEFT;      break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    pcengineReport.hat = PCENGINE_HAT_UPLEFT;    break;
+		default:                                     pcengineReport.hat = PCENGINE_HAT_NOTHING;   break;
+	}
+
+	pcengineReport.buttons = 0x0
+		| (pressedB3() ? PCENGINE_MASK_Y       : 0)
+		| (pressedB4() ? PCENGINE_MASK_X       : 0)
+		| (pressedS1() ? PCENGINE_MASK_PLUS   : 0)
+		| (pressedS2() ? PCENGINE_MASK_MINUS    : 0)
+	;
+
+	return &pcengineReport;
 }
 
 

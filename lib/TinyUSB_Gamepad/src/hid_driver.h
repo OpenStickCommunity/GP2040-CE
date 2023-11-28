@@ -10,6 +10,7 @@
 #include "gamepad/descriptors/SwitchDescriptors.h"
 #include "gamepad/descriptors/NeogeoDescriptors.h"
 #include "gamepad/descriptors/MDMiniDescriptors.h"
+#include "gamepad/descriptors/PCEngineDescriptors.h"
 
 extern const usbd_class_driver_t hid_driver;
 

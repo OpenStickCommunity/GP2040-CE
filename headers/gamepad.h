@@ -15,6 +15,7 @@
 #include "gamepad/descriptors/PS4Descriptors.h"
 #include "gamepad/descriptors/NeogeoDescriptors.h"
 #include "gamepad/descriptors/MDMiniDescriptors.h"
+#include "gamepad/descriptors/PCEngineDescriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -76,6 +77,7 @@ public:
 	PS4Report *getPS4Report();
 	NeogeoReport *getNeogeoReport();
 	MDMiniReport *getMDMiniReport();
+	PCEngineReport *getPCEngineReport();
 
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
