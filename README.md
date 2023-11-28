@@ -33,7 +33,7 @@ Full documentation can be found at <https://gp2040-ce.info>
 ## Features
 
 * Select from 5 input modes: XInput, Nintendo Switch, PS4, PS3 and Keyboard
-* Overclocked polling rate for less than 1 ms of input latency in all modes.
+* Overclocked polling rate for an average of 0.77ms of input latency in Xinput, Switch and Dinput modes and on average 1.72 for Playstation 4/5.
 * Multiple SOCD cleaning modes - Up Priority (a.k.a. Stickless), Neutral, and Second Input Priority.
 * Left and Right stick emulation via D-pad inputs as well as dedicated toggle switches.
 * Dual direction via D-pad + LS/RS.
