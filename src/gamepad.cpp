@@ -86,6 +86,30 @@ static XInputReport xinputReport
 	._reserved = { },
 };
 
+static NeogeoReport neogeoReport
+{
+	.buttons = 0,
+	.hat = 0xf,
+	.const0 = 0x80,
+	.const1 = 0x80,
+	.const2 = 0x80,
+	.const3 = 0x80,
+	.const4 = 0,	
+	.const5 = 0,	
+	.const6 = 0,	
+	.const7 = 0,	
+	.const8 = 0,	
+	.const9 = 0,	
+	.const10 = 0,	
+	.const11 = 0,	
+	.const12 = 0,	
+	.const13 = 0,	
+	.const14 = 0,	
+	.const15 = 0,	
+	.const16 = 0,	
+	.const17 = 0,	
+};
+
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
 
@@ -470,6 +494,9 @@ void * Gamepad::getReport()
 		case INPUT_MODE_KEYBOARD:
 			return getKeyboardReport();
 
+		case INPUT_MODE_NEOGEO:
+			return getNeogeoReport();
+
 		default:
 			return getHIDReport();
 	}
@@ -491,6 +518,9 @@ uint16_t Gamepad::getReportSize()
 
 		case INPUT_MODE_KEYBOARD:
 			return sizeof(KeyboardReport);
+
+		case INPUT_MODE_NEOGEO:
+			return sizeof(NeogeoReport);
 
 		default:
 			return sizeof(HIDReport);
@@ -747,4 +777,32 @@ KeyboardReport *Gamepad::getKeyboardReport()
 	if(pressedA1()) 	{ pressKey(keyboardMapping.keyButtonA1); }
 	if(pressedA2()) 	{ pressKey(keyboardMapping.keyButtonA2); }
 	return &keyboardReport;
+}
+
+NeogeoReport *Gamepad::getNeogeoReport()
+{
+
+	switch (state.dpad & GAMEPAD_MASK_DPAD)
+	{
+		case GAMEPAD_MASK_UP:                        neogeoReport.hat = NEOGEO_HAT_UP;        break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT:   neogeoReport.hat = NEOGEO_HAT_UPRIGHT;   break;
+		case GAMEPAD_MASK_RIGHT:                     neogeoReport.hat = NEOGEO_HAT_RIGHT;     break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT: neogeoReport.hat = NEOGEO_HAT_DOWNRIGHT; break;
+		case GAMEPAD_MASK_DOWN:                      neogeoReport.hat = NEOGEO_HAT_DOWN;      break;
+		case GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT:  neogeoReport.hat = NEOGEO_HAT_DOWNLEFT;  break;
+		case GAMEPAD_MASK_LEFT:                      neogeoReport.hat = NEOGEO_HAT_LEFT;      break;
+		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    neogeoReport.hat = NEOGEO_HAT_UPLEFT;    break;
+		default:                                     neogeoReport.hat = NEOGEO_HAT_NOTHING;   break;
+	}
+
+	neogeoReport.buttons = 0x0
+		| (pressedB3() ? NEOGEO_MASK_A       : 0)
+		| (pressedB1() ? NEOGEO_MASK_B       : 0)
+		| (pressedB4() ? NEOGEO_MASK_C       : 0)
+		| (pressedB2() ? NEOGEO_MASK_D       : 0)
+		| (pressedS1() ? NEOGEO_MASK_START   : 0)
+		| (pressedS2() ? NEOGEO_MASK_SELECT  : 0)
+	;
+
+	return &neogeoReport;
 }

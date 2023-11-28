@@ -15,6 +15,7 @@ using namespace std;
 #include "gamepad/descriptors/SwitchDescriptors.h"
 #include "gamepad/descriptors/XInputDescriptors.h"
 #include "gamepad/descriptors/PS4Descriptors.h"
+#include "gamepad/descriptors/NeogeoDescriptors.h"
 
 #define GAMEPAD_BUTTON_COUNT 14
 
@@ -147,6 +148,9 @@ inline uint16_t GetJoystickMidValue(uint8_t mode) {
 
         case INPUT_MODE_PS4:
             return PS4_JOYSTICK_MID << 8;
+
+        case INPUT_MODE_NEOGEO:
+            return NEOGEO_JOYSTICK_MID << 8;
 
         default:
             return GAMEPAD_JOYSTICK_MID;

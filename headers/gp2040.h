@@ -47,7 +47,8 @@ private:
         SET_INPUT_MODE_SWITCH,
         SET_INPUT_MODE_XINPUT,
         SET_INPUT_MODE_KEYBOARD,
-        SET_INPUT_MODE_PS4
+        SET_INPUT_MODE_PS4,
+        SET_INPUT_MODE_NEOGEO
     };
     BootAction getBootAction();
 

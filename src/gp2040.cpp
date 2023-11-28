@@ -92,6 +92,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
 	addons.LoadAddon(new InputMacro(), CORE0_INPUT);
 
+
 	const BootAction bootAction = getBootAction();
 
 	switch (bootAction) {
@@ -114,6 +115,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_XINPUT:
 		case BootAction::SET_INPUT_MODE_PS4:
 		case BootAction::SET_INPUT_MODE_KEYBOARD:
+		case BootAction::SET_INPUT_MODE_NEOGEO:
 		case BootAction::NONE:
 			{
 				InputMode inputMode = gamepad->getOptions().inputMode;
@@ -127,6 +129,8 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_PS4;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_KEYBOARD) {
 					inputMode = INPUT_MODE_KEYBOARD;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_NEOGEO) {
+					inputMode = INPUT_MODE_NEOGEO;
 				}
 
 				if (inputMode != gamepad->getOptions().inputMode) {
@@ -242,6 +246,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_KEYBOARD;
                                 case INPUT_MODE_PS4: 
                                     return BootAction::SET_INPUT_MODE_PS4;
+                                case INPUT_MODE_NEOGEO: 
+                                    return BootAction::SET_INPUT_MODE_NEOGEO;
                                 default:
                                     return BootAction::NONE;
                             }
