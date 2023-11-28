@@ -1,6 +1,6 @@
 # GP2040 Configuration for the Haute42 series of devices
 
-![Haute42 Logo](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/Haute42/assets/Haute42_Logo.png)
+![Haute42 Logo](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/Haute42/assets/Haute42_logo.png)
 
 Configuration for the [Haute42](https://haute42.com/) series of devices.  
 
