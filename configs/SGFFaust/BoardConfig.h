@@ -8,7 +8,7 @@
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "SGF! Faust"
+#define BOARD_CONFIG_LABEL "SGF Faust"
 
 // Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin
 

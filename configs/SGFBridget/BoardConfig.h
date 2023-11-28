@@ -8,7 +8,7 @@
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "SGF! Devices"
+#define BOARD_CONFIG_LABEL "SGF Bridget"
 
 // Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin
 

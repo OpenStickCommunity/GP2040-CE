@@ -1,6 +1,8 @@
-# GP2040 Configuration for SGF Flatboxes
+# GP2040 Configuration for the SGF Faust
 
+![SGF Logo](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/SGFFaust/assets/SGF_Logo.png)
 
-Configuration for the SGF Flatbox-based controllers, based on the excellent revisions of the [Flatbox](https://github.com/jfedor2/flatbox) design by [jfedor2](https://github.com/jfedor2) powered by an RP2040 MCU. Available for purchase at [SGF](https://sgfdevices.com). The repo for the PCB itself is [here](https://github.com/sgfdevices/SGFlatbox).
+Configuration for the [SGF Devices Bridget](https://sgfdevices.com/products/sgf-faust-all-button-controller).  
 
-![Layout](assets/bridgetlayout.jpg)
+![SGF Bridget](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/SGFFaust/assets/SGF_Faust.png)
+![SGF Bridget Layout](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/SGFFaust/assets/SGF_Faust_Layout.png)
