@@ -3,12 +3,14 @@ export default {
 	'input-mode-label': 'Input Mode',
 	'input-mode-extra-label': 'Switch Touchpad and Share',
 	'input-mode-options': {
+        none: 'No Mode Selected',
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		ps3: 'PS3/DirectInput',
 		keyboard: 'Keyboard',
 		ps4: 'PS4',
 	},
+    'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {
 		controller: 'Controller',
 		arcadestick: 'Arcade Stick',
