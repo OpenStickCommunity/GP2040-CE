@@ -5,6 +5,7 @@ export default {
 		nl: 'Nederlands (Holandês)',
 		'pt-BR': 'Português Brasil',
 		'zh-CN': '简体中文 (Chinês simplificado)',
+		'de-DE': 'Deutsch (Alemão)',
 	},
 	'color-scheme': {
 		dark: 'Escuro',
