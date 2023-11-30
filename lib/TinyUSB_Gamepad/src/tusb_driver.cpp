@@ -17,6 +17,7 @@
 #include "hid_driver.h"
 #include "xinput_driver.h"
 #include "ps4_driver.h"
+#include "xbone_driver.h"
 
 UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
@@ -72,10 +73,12 @@ bool send_report(void *report, uint16_t report_size)
 			case INPUT_MODE_XINPUT:
 				sent = send_xinput_report(report, report_size);
 				break;
+			case INPUT_MODE_XBONE:
+				sent = send_xbone_report(report, report_size);
+				break;
 			case INPUT_MODE_KEYBOARD:
 				sent = send_keyboard_report(report);
 				break;
-
 			default:
 				sent = send_hid_report(0, report, report_size);
 				break;
@@ -85,6 +88,16 @@ bool send_report(void *report, uint16_t report_size)
 			memcpy(previous_report, report, report_size);
 	}
 	
+	// Move this?
+	switch (input_mode)
+	{
+		case INPUT_MODE_XBONE:
+			tick_xbone_usb();
+			break;
+		default:
+			break;
+	};
+
 	return sent;
 }
 
@@ -107,6 +120,9 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 
 			case INPUT_MODE_PS4:
 				return &ps4_driver;
+
+			case INPUT_MODE_XBONE:
+				return &xbone_driver;
 
 			default:
 				return &hid_driver;
@@ -169,6 +185,8 @@ void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t rep
 			if ( report_type == HID_REPORT_TYPE_FEATURE ) {
 				set_ps4_report(report_id, buffer, bufsize);
 			}
+			break;
+		default:
 			break;
 	}
 

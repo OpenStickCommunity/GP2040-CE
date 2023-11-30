@@ -41,6 +41,13 @@ static const std::string displayNames[][INPUT_HISTORY_MAX_INPUTS] = {
 			"L1", "R1", "L2", "R2",
 			CHAR_SHARE_P, "OP", "L3", "R3", CHAR_HOME_P, CHAR_TPAD_P
 	},
+	{		// Xbox One
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+			"A", "B", "X", "Y",
+			"LB", "RB", "LT", "RT",
+			CHAR_VIEW_X, CHAR_MENU_X, "LS", "RS", CHAR_HOME_X, "A2"
+	},
 	{		// Config
 			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
@@ -101,13 +108,14 @@ void InputHistoryAddon::process() {
 	uint8_t mode;
 	switch (gamepad->getOptions().inputMode)
 	{
-		case INPUT_MODE_HID:				mode=0; break;
+		case INPUT_MODE_HID:			mode=0; break;
 		case INPUT_MODE_SWITCH:			mode=1; break;
 		case INPUT_MODE_XINPUT:			mode=2; break;
 		case INPUT_MODE_KEYBOARD:		mode=3; break;
-		case INPUT_MODE_PS4:				mode=4; break;
-		case INPUT_MODE_CONFIG:			mode=5; break;
-		default:										mode=0; break;
+		case INPUT_MODE_PS4:			mode=4; break;
+		case INPUT_MODE_XBONE:          mode=5; break;
+		case INPUT_MODE_CONFIG:			mode=6; break;
+		default:						mode=0; break;
 	}
 
 	// Check if any new keys have been pressed

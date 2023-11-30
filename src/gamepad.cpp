@@ -86,6 +86,32 @@ static XInputReport xinputReport
 	._reserved = { },
 };
 
+static XboxOneGamepad_Data_t xboneReport
+{
+	.sync = 0,
+	.guide = 0,
+	.start = 0,
+	.back = 0,
+	.a = 0,
+	.b = 0,
+	.x = 0,
+	.y = 0,
+	.dpadUp = 0,
+	.dpadDown = 0,
+	.dpadLeft = 0,
+	.dpadRight = 0,
+	.leftShoulder = 0,
+	.rightShoulder = 0,
+	.leftThumbClick = 0,
+	.rightThumbClick = 0,
+	.leftTrigger = 0,
+	.rightTrigger = 0,
+	.leftStickX = 0,
+	.leftStickY = 0,
+	.rightStickX = 0,
+	.rightStickY = 0
+};
+
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
 
@@ -467,6 +493,9 @@ void * Gamepad::getReport()
 		case INPUT_MODE_PS4:
 			return getPS4Report();
 
+		case INPUT_MODE_XBONE:
+			return getXBOneReport();
+
 		case INPUT_MODE_KEYBOARD:
 			return getKeyboardReport();
 
@@ -488,6 +517,9 @@ uint16_t Gamepad::getReportSize()
 
 		case INPUT_MODE_PS4:
 			return sizeof(PS4Report);
+
+		case INPUT_MODE_XBONE:
+			return sizeof(XboxOneGamepad_Data_t);
 
 		case INPUT_MODE_KEYBOARD:
 			return sizeof(KeyboardReport);
@@ -618,6 +650,47 @@ XInputReport *Gamepad::getXInputReport()
 	}
 
 	return &xinputReport;
+}
+
+XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
+{
+	last_report_counter = last_report_counter++;
+	if ( last_report_counter == 0 )
+		last_report_counter = 1;
+
+	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
+	xboneReport.a = pressedB1();
+	xboneReport.b = pressedB2();
+	xboneReport.x = pressedB3();
+	xboneReport.y = pressedB4();
+	xboneReport.leftShoulder = pressedL1();
+	xboneReport.rightShoulder = pressedR1();
+	xboneReport.leftThumbClick = pressedL3();
+	xboneReport.rightThumbClick = pressedR3();
+	xboneReport.start = pressedS2();
+	xboneReport.back = pressedS1();
+	xboneReport.dpadUp = pressedUp();
+	xboneReport.dpadDown = pressedDown();
+	xboneReport.dpadLeft = pressedLeft();
+	xboneReport.dpadRight = pressedRight();
+
+	xboneReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN;
+	xboneReport.leftStickY = static_cast<int16_t>(state.ly) + INT16_MIN;
+	xboneReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN;
+	xboneReport.rightStickY = static_cast<int16_t>(state.ry) + INT16_MIN;
+
+	if (hasAnalogTriggers)
+	{
+		xboneReport.leftTrigger = pressedL2() ? 0xFF : state.lt;
+		xboneReport.rightTrigger = pressedR2() ? 0xFF : state.rt;
+	}
+	else
+	{
+		xboneReport.leftTrigger = pressedL2() ? 0xFF : 0;
+		xboneReport.rightTrigger = pressedR2() ? 0xFF : 0;
+	}
+
+	return &xboneReport;
 }
 
 

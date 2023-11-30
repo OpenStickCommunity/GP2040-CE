@@ -17,6 +17,7 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.ps3', value: 2 },
 	{ labelKey: 'input-mode-options.keyboard', value: 3 },
 	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
+	{ labelKey: 'input-mode-options.xbone', value: 5 },
 ];
 
 const INPUT_BOOT_MODES = [
@@ -26,6 +27,7 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.ps3', value: 2 },
 	{ labelKey: 'input-mode-options.keyboard', value: 3 },
 	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
+	{ labelKey: 'input-mode-options.xbone', value: 5 },
 ];
 
 const DPAD_MODES = [

@@ -3,101 +3,10 @@
 #include "usbhostmanager.h"
 #include "peripheralmanager.h"
 
+#include "xbone_driver.h"
 #include "xinput_host.h"
 
 #define XBONE_EXTENSION_DEBUG true
-
-// MOVE THIS TO XBOX ONE DRIVER
-typedef enum
-{
-    GIP_ACK_REQUEST                 = 0x01,    // Xbox One ACK
-    GIP_ANNOUNCE                    = 0x02,    // Xbox One Announce
-    GIP_KEEPALIVE                   = 0x03,    // Xbox One Keep-Alive
-	GIP_DEVICE_DESCRIPTOR           = 0x04,    // Xbox One Definition
-    GIP_POWER_MODE_DEVICE_CONFIG    = 0x05,    // Xbox One Power Mode Config
-    GIP_AUTH                        = 0x06,    // Xbox One Authentication
-	GIP_CMD_RUMBLE                  = 0x09,    // Xbox One Rumble Command
-	GIP_INPUT_REPORT                = 0x20,    // Xbox One Input Report
-	GIP_HID_REPORT                  = 0x21,    // Xbox One HID Report
-} XboxOneReport;
-
-typedef struct
-{
-    uint8_t command;
-    uint8_t client : 4;
-    uint8_t needsAck : 1;
-    uint8_t internal : 1;
-    uint8_t chunkStart : 1;
-    uint8_t chunked : 1;
-    uint8_t sequence;
-    uint8_t length;
-} __attribute__((packed)) GipHeader_t;
-
-typedef struct
-{
-    GipHeader_t Header;
-    uint8_t unk1;
-    uint8_t innerCommand;
-    uint8_t innerClient : 4;
-    uint8_t innerNeedsAck : 1;
-    uint8_t innerInternal : 1;
-    uint8_t innerChunkStart : 1;
-    uint8_t innerChunked : 1;
-    uint16_t bytesReceived;
-    uint16_t unk2;
-    uint16_t remainingBuffer;
-} __attribute__((packed)) Gip_Ack_t;
-
-// ACK Header is always {0x01, 0x20, 0x01, 0x09, 0x00};
-#define GIP_ACK_HEADER(packet, seq) \
-    packet->Header.command = 0x01;               \
-    packet->Header.internal = 0x01;              \
-    packet->Header.sequence = seq;               \
-    packet->Header.client = 0;                   \
-    packet->Header.needsAck = 0;                 \
-    packet->Header.chunkStart = 0;               \
-    packet->Header.chunked = 0;                  \
-    packet->Header.length = 0x09;
-
-#define GIP_HEADER(packet, cmd, isInternal, seq) \
-    packet->Header.command = cmd;                \
-    packet->Header.internal = isInternal;        \
-    packet->Header.sequence = seq;               \
-    packet->Header.client = 0;                   \
-    packet->Header.needsAck = 0;                 \
-    packet->Header.chunkStart = 0;               \
-    packet->Header.chunked = 0;                  \
-    packet->Header.length = sizeof(*packet) - sizeof(GipHeader_t);
-
-typedef struct
-{
-    GipHeader_t Header;
-} __attribute__((packed)) GipDescriptor_t;
-
-typedef struct
-{
-    GipHeader_t Header;
-    uint8_t unknown[15];
-} __attribute__((packed)) GipPowerModeDesc_t;
-
-typedef struct
-{
-    GipHeader_t Header;
-    uint8_t subcommand;
-} __attribute__((packed)) GipPowerMode_t;
-
-typedef struct {
-    GipHeader_t Header;
-    uint8_t subCommand;  // Assumed based on the descriptor reporting a larger max length than what this uses
-    uint8_t flags;
-    uint8_t leftTrigger;
-    uint8_t rightTrigger;
-    uint8_t leftMotor;
-    uint8_t rightMotor;
-    uint8_t duration;  // in deciseconds?
-    uint8_t delay;     // in deciseconds?
-    uint8_t repeat;    // in deciseconds?
-} __attribute__((packed)) GipRumble_t;
 
 static GipPowerMode_t xb1_power_mode;
 static GipPowerModeDesc_t xb1_power_desc;

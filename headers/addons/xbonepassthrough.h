@@ -12,14 +12,6 @@
 // KeyboardHost Module Name
 #define XBOnePassthroughName "XBOnePassthrough"
 
-typedef enum {
-	no_device = 0,
-	get_descriptor = 1,
-	power_on = 2,
-	power_on_rumble = 3,
-	awaiting_auth = 4
-} XBOneState;
-
 class XBOnePassthroughAddon : public USBAddon {
 public:
 	virtual bool available();

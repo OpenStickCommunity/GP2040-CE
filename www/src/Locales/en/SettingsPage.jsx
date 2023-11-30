@@ -9,6 +9,7 @@ export default {
 		ps3: 'PS3/DirectInput',
 		keyboard: 'Keyboard',
 		ps4: 'PS4',
+		xbone: 'Xbox One'
 	},
     'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {

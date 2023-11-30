@@ -131,8 +131,6 @@ uint16_t count_interface_total_len(tusb_desc_interface_t const* desc_itf, uint8_
 
 void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)
 {
-    printf("Triggered tuh hid mount cb\n");   
-
     // Get Interface Number for our HID class
     uint16_t temp_buf[128];
     

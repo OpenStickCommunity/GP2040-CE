@@ -9,6 +9,7 @@ src/usb_descriptors.cpp
 src/xinput_driver.cpp
 src/ps4_driver.cpp
 src/xinput_host.cpp
+src/xbone_driver.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.h
 )
 target_include_directories(TinyUSB_Gamepad PUBLIC

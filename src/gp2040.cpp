@@ -113,6 +113,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_SWITCH:
 		case BootAction::SET_INPUT_MODE_XINPUT:
 		case BootAction::SET_INPUT_MODE_PS4:
+		case BootAction::SET_INPUT_MODE_XBONE:
 		case BootAction::SET_INPUT_MODE_KEYBOARD:
 		case BootAction::NONE:
 			{
@@ -125,6 +126,8 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_XINPUT;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_PS4) {
 					inputMode = INPUT_MODE_PS4;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_XBONE) {
+					inputMode = INPUT_MODE_XBONE;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_KEYBOARD) {
 					inputMode = INPUT_MODE_KEYBOARD;
 				}
@@ -242,6 +245,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_KEYBOARD;
                                 case INPUT_MODE_PS4: 
                                     return BootAction::SET_INPUT_MODE_PS4;
+								case INPUT_MODE_XBONE:
+									return BootAction::SET_INPUT_MODE_XBONE;
                                 default:
                                     return BootAction::NONE;
                             }

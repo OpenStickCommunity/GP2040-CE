@@ -13,6 +13,7 @@
 #include "gamepad/descriptors/XInputDescriptors.h"
 #include "gamepad/descriptors/KeyboardDescriptors.h"
 #include "gamepad/descriptors/PS4Descriptors.h"
+#include "gamepad/descriptors/XBOneDescriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -70,6 +71,7 @@ public:
 	HIDReport *getHIDReport();
 	SwitchReport *getSwitchReport();
 	XInputReport *getXInputReport();
+	XboxOneGamepad_Data_t *getXBOneReport();
 	KeyboardReport *getKeyboardReport();
 	PS4Report *getPS4Report();
 
