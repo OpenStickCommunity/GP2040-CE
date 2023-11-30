@@ -190,6 +190,12 @@ message ProfileOptions
 	repeated AlternativePinMappings alternativePinMappings = 1 [(nanopb).max_count = 3];
 }
 
+message SplashFrame
+{
+	optional int32 delay = 1;
+	optional bytes frame = 2 [(nanopb).max_size = 1024];
+}
+
 message DisplayOptions
 {
 	optional bool enabled = 1;
@@ -207,7 +213,7 @@ message DisplayOptions
 	optional SplashMode splashMode = 10;
 	optional SplashChoice splashChoice = 11;
 	optional int32 splashDuration = 12;
-	optional bytes splashImage = 13 [(nanopb).max_size = 1024];
+	repeated SplashFrame splashFrames = 13 [(nanopb).max_count = 20];
 	
 	optional int32 size = 14;
 	optional int32 flip = 15;

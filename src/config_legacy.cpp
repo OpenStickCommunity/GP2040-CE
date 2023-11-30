@@ -1098,14 +1098,14 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
     }
 
     const ConfigLegacy::SplashImage& legacySplashImage = *reinterpret_cast<ConfigLegacy::SplashImage*>(EEPROM_ADDRESS_START + SPLASH_IMAGE_STORAGE_INDEX);
-    if (legacySplashImage.checksum == computeChecksum(reinterpret_cast<const char*>(&legacySplashImage), sizeof(ConfigLegacy::SplashImage), offsetof(ConfigLegacy::SplashImage, checksum)))
-    {
-        legacyConfigFound = true;
+    // if (legacySplashImage.checksum == computeChecksum(reinterpret_cast<const char*>(&legacySplashImage), sizeof(ConfigLegacy::SplashImage), offsetof(ConfigLegacy::SplashImage, checksum)))
+    // {
+    //     legacyConfigFound = true;
 
-        DisplayOptions& displayOptions = config.displayOptions;
-        config.has_displayOptions = true;
-        SET_PROPERTY_BYTES(displayOptions, splashImage, legacySplashImage.data);
-    }
+    //     DisplayOptions& displayOptions = config.displayOptions;
+    //     config.has_displayOptions = true;
+    //     SET_PROPERTY_BYTES(displayOptions, splashImage, legacySplashImage.data);
+    // }
 
-    return legacyConfigFound;
+    return false;
 }

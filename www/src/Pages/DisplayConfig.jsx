@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Button, Form, Row, Col, FormLabel } from 'react-bootstrap';
 import { Formik, useFormikContext, Field } from 'formik';
+import { parseGIF, decompressFrames } from 'gifuct-js'
 import chunk from 'lodash/chunk';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
@@ -305,9 +306,8 @@ export default function DisplayConfigPage() {
                     values.i2cSpeed = device.speed;
                     handleChange(e);
                 };
-                
-				return console.log('errors', errors) ||
-				console.log('values', values) || (
+
+				return (
 					<Section title={t('DisplayConfig:header-text')}>
                         {getAvailablePeripherals('i2c') ?
                         <div>
@@ -709,117 +709,164 @@ export default function DisplayConfigPage() {
 	);
 }
 
+// TODO: Initialize canvas with value
 const Canvas = ({ value: bitsArray, onChange }) => {
-	const [image, setImage] = useState(null);
+	const [frames, setFrames] = useState(null);
+    const [framesImageData, setFramesImageData] = useState(null);
+    const [currentFrame, setCurrentFrame] = useState(0)
 	const [canvasContext, setCanvasContext] = useState(null);
 	const [inverted, setInverted] = useState(false);
+    const [invisibleCanvas, setInvisibleCanvas] = useState(null)
+    const [invisibleCanvasContext, setInvisibleCanvasContext] = useState(null)
 	const canvasRef = useRef();
-
 	const { t } = useTranslation('');
 
-	useEffect(() => {
-		setCanvasContext(canvasRef.current.getContext('2d'));
-	}, []);
+    const resizeAndAdjustColorForFrame = useCallback((frame) => {
+        const { patch } = frame
+        const { width: canvasWidth, height: canvasHeight} = canvasContext.canvas
+        const { width: imgWidth, height: imgHeight} = frame.dims
+        const imgRatio = imgWidth / imgHeight
+        const canvasRatio = canvasWidth / canvasHeight
+        var offsetX = 0
+        var offsetY = 0
+        var finalImageWidth = canvasWidth
+        var finalImageHeight = canvasHeight
 
-	// image to bitsArray (binary)
-	useEffect(() => {
-		if (canvasContext == null || image == null) return;
-
-		const ctxWidth = canvasContext.canvas.width,
-			ctxHeight = canvasContext.canvas.height;
-		const imgWidth = image.width,
-			imgHeight = image.height;
-		const ratioWidth = imgWidth / ctxWidth,
-			ratioHeight = imgHeight / ctxHeight,
-			ratioAspect =
-				ratioWidth > 1 ? ratioWidth : ratioHeight > 1 ? ratioHeight : 1;
-		const newWidth = imgWidth / ratioAspect,
-			newHeight = imgHeight / ratioAspect;
-		const offsetX = ctxWidth / 2 - newWidth / 2,
-			offsetY = ctxHeight / 2 - newHeight / 2;
-		canvasContext.clearRect(
-			0,
-			0,
-			canvasRef.current.width,
-			canvasRef.current.height,
-		);
-		canvasContext.drawImage(image, offsetX, offsetY, newWidth, newHeight);
-
-		var imgPixels = canvasContext.getImageData(
-			0,
-			0,
-			canvasContext.canvas.width,
-			canvasContext.canvas.height,
-		);
-
-		// Convert to monochrome
-		for (var i = 0; i < imgPixels.data.length; i = i + 4) {
-			var avg =
-				(imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
-			if (avg > 123) avg = 255;
-			else avg = 0;
-			imgPixels.data[i] = avg;
-			imgPixels.data[i + 1] = avg;
-			imgPixels.data[i + 2] = avg;
+        // Convert to monochrome
+		for (var i = 0; i < patch.length; i = i + 4) {
+			const avg = (patch[i] + patch[i + 1] + patch[i + 2]) / 3;
+            const color = avg > 123 ? 0 : 255
+ 
+			patch[i] = color;
+			patch[i + 1] = color;
+			patch[i + 2] = color;
 		}
 
-		// Pick only first channel because all of them are same
-		const bitsArray = chunk(
-			[...new Uint8Array(imgPixels.data)].filter((x, y) => y % 4 === 0),
+        // Resize to fit into canvas
+        if (imgRatio < canvasRatio) {
+            finalImageWidth = canvasWidth * imgRatio / canvasRatio
+            offsetX = (canvasWidth - finalImageWidth) / 2
+        }
+        else if (imgRatio > canvasRatio) {
+            finalImageHeight = canvasHeight - canvasHeight * canvasRatio / imgRatio
+            offsetY = (canvasHeight - finalImageHeight) / 2
+        }
+
+        const imageData = new ImageData(patch, imgWidth, imgHeight)
+        invisibleCanvasContext.putImageData(imageData, 0, 0)
+        invisibleCanvasContext.drawImage(invisibleCanvas, 0, 0, imgWidth, imgHeight, offsetX, offsetY, finalImageWidth, finalImageHeight)
+    
+        return invisibleCanvasContext.getImageData(0, 0, canvasWidth, canvasHeight);
+    }, [canvasContext, invisibleCanvasContext, invisibleCanvas, inverted])
+
+	const createFrameObject = useCallback((imgData, delay) => {
+        const bitsArray = [delay]
+        chunk(
+			[...new Uint8Array(imgData)].filter((_data, index) => index % 4 === 0),
 			8,
-		).map((chunks) =>
-			chunks.reduce((acc, curr, i) => {
+		).forEach((chunks) =>{
+            bitsArray.push(chunks.reduce((acc, curr, i) => {
 				return acc + ((curr === 255 ? 1 : 0) << (7 - i));
-			}, 0),
-		);
+			}, 0))
+        })
 
-		onChange(bitsArray.map((a) => (inverted ? 255 - a : a)));
-	}, [image, canvasContext]);
+        console.log('bits array', bitsArray)
+        return bitsArray
+	}, [])
 
-	// binary to RGBA
+    const toggleInverted = useCallback(() => {
+		setInverted(prevState => !prevState);
+	}, []);
+
+    useEffect(() => {
+        const invisibleCanvas = document.createElement('canvas');
+        invisibleCanvas.width = canvasRef.width
+        invisibleCanvas.height = canvasRef.height
+
+		setCanvasContext(canvasRef.current.getContext('2d'));
+        setInvisibleCanvas(invisibleCanvas)
+        setInvisibleCanvasContext(invisibleCanvas.getContext('2d'))
+	}, []);
+
+    useEffect(() => {
+        if (!canvasContext) return;
+        if (!framesImageData) return;
+        if (!frames) return;
+
+        const { width, height}  = canvasContext.canvas
+        const imageData = framesImageData[currentFrame]
+        const frame = frames[currentFrame]
+
+        if (!framesImageData) return;
+        if (!frame)return;
+
+        canvasContext.putImageData(imageData, 0, 0, 0, 0, width, height);
+         
+        const timeout = setTimeout(() => {
+            const nextFrame = currentFrame === frames.length - 1
+                ? 0
+                : currentFrame + 1
+            setCurrentFrame(nextFrame)
+        }, frame.delay)
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [canvasContext, frames, framesImageData, currentFrame])
+
 	useEffect(() => {
 		if (canvasContext == null) return;
+        if (frames == null) return;
 
-		const w = canvasContext.canvas.width;
-		const h = canvasContext.canvas.height;
-		const rgbToRgba = [];
+        const framesData = []
+        const framesArray = [frames.length]
 
-		// expand bytes to individual binary bits and then bits to 255 or 0, because monochrome
-		const bitsArrayArray = bitsArray.flatMap((a) => {
-			const bits = a.toString(2).split('').map(Number);
-			const full = Array(8 - bits.length)
-				.fill(0)
-				.concat(bits);
-			return full.map((a) => (a === 1 ? 255 : 0));
-		});
-
-		// fill up the new array as RGBA
-		bitsArrayArray.forEach((x) => {
-			rgbToRgba.push(x);
-			rgbToRgba.push(x);
-			rgbToRgba.push(x);
-			rgbToRgba.push(255);
-		});
-		const imageDataCopy = new ImageData(new Uint8ClampedArray(rgbToRgba), w, h);
-		canvasContext.putImageData(imageDataCopy, 0, 0, 0, 0, w, h);
-	}, [bitsArray, canvasContext]);
+        frames.forEach((frame) => {
+            const frameData = resizeAndAdjustColorForFrame(frame)
+            framesData.push(frameData)
+            framesArray.push(...createFrameObject(frameData.data, frame.delay)) 
+        })
+        setCurrentFrame(0)
+        setFramesImageData(framesData)
+        onChange(framesArray);
+        console.log("framesArray: ", framesArray)
+	}, [frames, canvasContext, resizeAndAdjustColorForFrame, createFrameObject])
 
 	const onImageAdd = (ev) => {
 		var file = ev.target.files[0];
+		const { type: file_type } = file
 		var fr = new FileReader();
 		fr.onload = () => {
-			const img = new Image();
-			img.onload = () => {
-				setImage(img);
-			};
-			img.src = fr.result;
+			if (file_type == "image/gif") {
+				var gif = parseGIF(fr.result)
+				var frames = decompressFrames(gif, true)
+                const { width, height } = frames[0].dims
+                invisibleCanvas.width = Math.max(width, canvasRef.current.width)
+                invisibleCanvas.height = Math.max(height, canvasRef.current.height)
+                setFrames(frames)
+			}
+			else {
+				const img = new Image();
+                img.onload = () => {
+                    const { width, height } = img
+                    invisibleCanvas.width = Math.max(width, canvasRef.current.width)
+                    invisibleCanvas.height = Math.max(height, canvasRef.current.height)
+                    invisibleCanvasContext.drawImage(img, 0, 0, width, height)
+                    const patch = invisibleCanvasContext.getImageData(0, 0, width, height).data
+                    setFrames([{
+                        patch,
+                        dims: {
+                            height,
+                            width
+                        },
+                        delay: -1
+                    }]);
+                }			
+				img.src = fr.result;
+			}
 		};
-		fr.readAsDataURL(file);
-	};
-
-	const toggleInverted = () => {
-		onChange(bitsArray.map((a) => 255 - a));
-		setInverted(!inverted);
+		if (file_type == "image/gif") fr.readAsArrayBuffer(file);
+		else fr.readAsDataURL(file);
 	};
 
 	return (
@@ -834,7 +881,7 @@ const Canvas = ({ value: bitsArray, onChange }) => {
 				<input
 					type="file"
 					id="image-input"
-					accept="image/jpeg, image/png, image/jpg"
+					accept="image/jpeg, image/png, image/jpg, image/gif"
 					onChange={onImageAdd}
 				/>
 				<br />

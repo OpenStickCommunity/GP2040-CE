@@ -108,6 +108,7 @@ void I2CDisplayAddon::setDisplayPower(uint8_t status)
 void I2CDisplayAddon::process() {
 	if (!configMode && isDisplayPowerOff()) return;
 
+	DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
 	clearScreen(0);
 
 	switch (getDisplayMode()) {
@@ -125,7 +126,7 @@ void I2CDisplayAddon::process() {
 				drawText(0, 4, " Splash NOT enabled.");
 				break;
 			}
-			drawSplashScreen(getDisplayOptions().splashMode, (uint8_t*) Storage::getInstance().getDisplayOptions().splashImage.bytes, 90);
+			drawSplashScreen(getDisplayOptions().splashMode, displayOptions.splashFrames, displayOptions.splashFrames_count);
 			break;
 		case I2CDisplayAddon::DisplayMode::BUTTONS:
 			drawStatusBar(gamepad);
@@ -977,20 +978,28 @@ void I2CDisplayAddon::drawBlankB(int startX, int startY, int buttonSize, int but
 {
 }
 
-void I2CDisplayAddon::drawSplashScreen(int splashMode, uint8_t * splashChoice, int splashSpeed)
+void I2CDisplayAddon::drawSplashScreen(int splashMode, SplashFrame (&splashFrames)[20], pb_size_t size)
 {
+	int splashSpeed = 90;
     int mils = getMillis();
     switch (splashMode)
 	{
 		case SPLASH_MODE_STATIC: // Default, display static or custom image
-			obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
+		{
+			// TODO: Control frame rate
+			obdDrawSprite(&obd, splashFrames[currentFrame].frame.bytes, 128, 64, 16, 0, 0, 1);
+			currentFrame += 1;
+			if (currentFrame >= size){
+				currentFrame = 0;
+			}
 			break;
+		}
 		case SPLASH_MODE_CLOSEIN: // Close-in. Animate the GP2040 logo
 			obdDrawSprite(&obd, (uint8_t *)bootLogoTop, 43, 39, 6, 43, std::min<int>((mils / splashSpeed) - 39, 0), 1);
 			obdDrawSprite(&obd, (uint8_t *)bootLogoBottom, 80, 21, 10, 24, std::max<int>(64 - (mils / (splashSpeed * 2)), 44), 1);
 			break;
         case SPLASH_MODE_CLOSEINCUSTOM: // Close-in on custom image or delayed close-in if custom image does not exist
-            obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
+            // obdDrawSprite(&obd, splashChoice, 128, 64, 16, 0, 0, 1);
             if (mils > 2500) {
                 int milss = mils - 2500;
                 obdRectangle(&obd, 0, 0, 127, 1 + (milss / splashSpeed), 0, 1);

@@ -179,7 +179,7 @@ private:
 	void drawSticklessButtons(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawSplashScreen(int splashMode, uint8_t* splashChoice, int splashSpeed);
+	void drawSplashScreen(int splashMode, SplashFrame (&splashFrames)[20], pb_size_t size);
 	void drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawTwinStickA(int startX, int startY, int buttonSize, int buttonPadding);
@@ -201,6 +201,7 @@ private:
 	const DisplayOptions& getDisplayOptions();
 	bool isDisplayPowerOff();
 	void setDisplayPower(uint8_t status);
+	uint currentFrame = 0;
 	uint32_t displaySaverTimeout = 0;
 	int32_t displaySaverTimer;
 	uint8_t displayIsPowerOn = 1;

@@ -32,7 +32,7 @@
 
 #define PATH_CGI_ACTION "/cgi/action"
 
-#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 8)
+#define LWIP_HTTPD_POST_MAX_PAYLOAD_LEN (1024 * 50)
 
 using namespace std;
 
@@ -529,8 +529,9 @@ std::string getSplashImage()
 
 	JsonArray splashImageArray = doc.createNestedArray("splashImage");
 	const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
-	std::vector<char> temp(sizeof(displayOptions.splashImage.bytes), '\0');
-	memcpy(temp.data(), displayOptions.splashImage.bytes, displayOptions.splashImage.size);
+	const std::size_t size = sizeof(displayOptions.splashFrames);
+	std::vector<char> temp(size, '\0');
+	memcpy(temp.data(), displayOptions.splashFrames, size);
 	copyArray(reinterpret_cast<const uint8_t*>(temp.data()), temp.size(), splashImageArray);
 
 	return serialize_json(doc);
@@ -545,10 +546,16 @@ std::string setSplashImage()
 	std::string decoded;
 	std::string base64String = doc["splashImage"];
 	Base64::Decode(base64String, decoded);
-	const size_t length = std::min(decoded.length(), sizeof(displayOptions.splashImage.bytes));
 
-	memcpy(displayOptions.splashImage.bytes, decoded.data(), length);
-	displayOptions.splashImage.size = length;
+	unsigned int numberOfFrames = decoded.length() / sizeof(SplashFrame);
+	displayOptions.splashFrames_count = numberOfFrames;
+	for (std::size_t i = 0; i < numberOfFrames; ++i) {
+		std::size_t offset = i * sizeof(SplashFrame);
+		displayOptions.splashFrames[i].has_delay = true;
+		memcpy((void*) displayOptions.splashFrames[i].delay, decoded.data() + offset, 1);
+		displayOptions.splashFrames[i].has_frame = true;
+		memcpy((void*) displayOptions.splashFrames[i].frame.bytes, decoded.data() + offset + 1, sizeof(SplashFrame_frame_t)); 
+    }
 
 	Storage::getInstance().save();
 

@@ -249,8 +249,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.displayOptions, splashMode, SPLASH_MODE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashChoice, SPLASH_CHOICE);
     INIT_UNSET_PROPERTY(config.displayOptions, splashDuration, SPLASH_DURATION);
-	const unsigned char defaultSplash[] = { DEFAULT_SPLASH };
-    INIT_UNSET_PROPERTY_BYTES(config.displayOptions, splashImage, defaultSplash);
+
+    SplashFrame (&defaultFrames)[20] = config.displayOptions.splashFrames;
+    memset(defaultFrames, 0, sizeof(defaultFrames));    
+    defaultFrames[0].delay = -1;
+    defaultFrames[0].has_delay = true;
+    defaultFrames[0].has_frame = true;
+    defaultFrames[0].frame = { DEFAULT_SPLASH };
     INIT_UNSET_PROPERTY(config.displayOptions, size, DISPLAY_SIZE);
     INIT_UNSET_PROPERTY(config.displayOptions, flip, DISPLAY_FLIP);
     INIT_UNSET_PROPERTY(config.displayOptions, invert, !!DISPLAY_INVERT);
