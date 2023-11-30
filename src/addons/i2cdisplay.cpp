@@ -999,6 +999,27 @@ void I2CDisplayAddon::drawSplashScreen(int splashMode, uint8_t * splashChoice, i
                 obdDrawSprite(&obd, (uint8_t *)bootLogoBottom, 80, 21, 10, 24, std::max<int>(64 - (milss / (splashSpeed * 2)), 44), 1);
             }
             break;
+		case SPLASH_MODE_GIF:
+		{
+			GifOptions& gifOptions = Storage::getInstance().getAddonOptions().gifOptions;
+			if (!gifOptions.enabled)
+			{
+				drawText(0, 4, " Gif NOT enabled.");
+				break;
+			}
+
+			if (gifAddon->currentFrame == nullptr)
+			{
+				drawText(0, 4, "No gif image on storage.");
+				break;
+			}
+
+			gifAddon->checkBeforeDraw(mils);
+			obdDrawSprite(&obd, gifAddon->currentFrame->frame.bytes , 128, 64, 16, 0, 0, 1);
+			break;
+		}
+		case SPLASH_MODE_NONE:
+			break;
 	}
 }
 
@@ -1114,4 +1135,8 @@ bool I2CDisplayAddon::pressedRight()
 
 void I2CDisplayAddon::attachInputHistoryAddon(InputHistoryAddon* pInputHistoryAddon) {
 	inputHistoryAddon = pInputHistoryAddon;
+}
+
+void I2CDisplayAddon::attachGifAddon(GifAddon* pGifAddon) {
+	gifAddon = pGifAddon;
 }

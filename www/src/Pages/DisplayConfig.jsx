@@ -59,7 +59,8 @@ const BUTTON_LAYOUTS_RIGHT = [
 ];
 
 const SPLASH_MODES = [
-	{ label: 'Enabled', value: 0 }, // STATICSPLASH
+	{ label: 'Static', value: 0 }, // STATICSPLASH
+	{ label: 'Gif', value: 4 }, // STATICSPLASH
 	//	{ label: 'Close In', value: 1 },		 // CLOSEIN
 	{ label: 'Disabled', value: 3 }, // NOSPLASH
 ];

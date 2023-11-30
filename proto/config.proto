@@ -195,6 +195,12 @@ message ProfileOptions
 	repeated GpioMappings gpioMappingsSets = 2 [(nanopb).max_count = 3];
 }
 
+message SplashFrame
+{
+	optional int32 delay = 1;
+	optional bytes frame = 2 [(nanopb).max_size = 1024];
+}
+
 message DisplayOptions
 {
 	optional bool enabled = 1;
@@ -681,6 +687,13 @@ message InputHistoryOptions
 	optional uint32 row = 4;
 }
 
+message GifOptions
+{
+	optional bool enabled = 1;
+	optional uint32 startingGifAddress = 2;
+	optional uint32 numberOfFrames = 3;
+}
+
 message AddonOptions
 {
 	optional BootselButtonOptions bootselButtonOptions = 1;
@@ -704,6 +717,7 @@ message AddonOptions
 	optional PSPassthroughOptions psPassthroughOptions = 19;
 	optional MacroOptions macroOptions = 20;
 	optional InputHistoryOptions inputHistoryOptions = 21;
+	optional GifOptions gifOptions = 22;
 }
 
 message MigrationHistory

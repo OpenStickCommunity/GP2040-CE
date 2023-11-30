@@ -490,6 +490,13 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		inputHistoryCol: 0,
 		inputHistoryRow: 7,
 		usedPins: Object.values(picoController),
+		gifAddonEnabled: 1,
+	});
+});
+
+app.post('/api/getGifPage', (req, res) => {
+	return res.send({
+		gifAddonData: Array(256).fill(0),
 	});
 });
 

@@ -36,6 +36,8 @@ export default {
 		'splash-duration-label': 'Splash Duration (seconds, 0 for Always On)',
 		'display-saver-timeout-label': 'Display Saver Timeout (minutes)',
 		'inverted-label': 'Inverted',
+		'dark-background': 'Dark Background',
+		'contrast': 'Contrast',
 		'turn-off-when-suspended': 'Turn Off When Suspended'
 	},
 };

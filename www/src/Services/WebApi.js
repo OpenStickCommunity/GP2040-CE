@@ -442,12 +442,30 @@ async function getAddonsOptions(setLoading) {
 	try {
 		const response = await axios.get(`${baseUrl}/api/getAddonsOptions`);
 		const data = response.data;
-		setLoading(false);
+
+		const gifAddonNumberOfPages = data['gifAddonNumberOfPages']
+		if (!!gifAddonNumberOfPages) {
+			data.gifAddonData = []
+			for (let pageIndex = 0; pageIndex < gifAddonNumberOfPages; pageIndex++) {
+				const pageResponse = await axios.post(`${baseUrl}/api/getGifPage`,  sanitizeRequest({ pageIndex }));
+				const { gifAddonData } = pageResponse.data
+				data.gifAddonData.push(...gifAddonData)
+			}
+
+			// The last page may contain some unrelated bytes
+			data.gifAddonData = data.gifAddonData.slice(0, data.gifAddonData.length - data.gifAddonData.length % 1036)
+		}
+		else {
+			data.gifAddonData = Array(1036).fill(0)
+		}
 
 		let mappings = { ...baseButtonMappings };
 		for (let prop of Object.keys(data.keyboardHostMap))
 			mappings[prop].key = parseInt(data.keyboardHostMap[prop]);
 		data.keyboardHostMap = mappings;
+
+		setLoading(false);
+
 		return data;
 	} catch (error) {
 		setLoading(false);
@@ -466,6 +484,32 @@ async function setAddonsOptions(options) {
 
 	return axios
 		.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
+async function setGifSectors(body) {
+	return axios
+		.post(`${baseUrl}/api/setGifSectors`, sanitizeRequest(body))
+		.then((response) => {
+			console.log(response.data);
+			return response.data;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
+async function setGifPage(body) {
+	return axios
+		.post(`${baseUrl}/api/setGifPage`, sanitizeRequest(body))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -685,6 +729,8 @@ const WebApi = {
 	getHeldPins,
 	abortGetHeldPins,
 	reboot,
+	setGifSectors,
+	setGifPage
 };
 
 export default WebApi;

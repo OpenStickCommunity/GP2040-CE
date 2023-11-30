@@ -33,5 +33,7 @@ export default {
 			'Duração do Splash (segundos, 0 para sempre ligado)',
 		'display-saver-timeout-label': 'Tempo Limite do Protetor de Tela (minutos)',
 		'inverted-label': 'Invertido',
+		'dark-background': 'Fundo escuro',
+		'contrast': 'Contraste',
 	},
 };

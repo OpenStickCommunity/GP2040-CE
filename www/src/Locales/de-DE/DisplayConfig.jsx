@@ -36,6 +36,8 @@ export default {
 		'splash-duration-label': 'Splash Dauer (Sekunden, 0 für immer eingeschaltet)',
 		'display-saver-timeout-label': 'Timeout für den Bildschirmschoner (Minuten)',
 		'inverted-label': 'Invertiert',
+		'dark-background': 'Dunkler Hintergrund',
+		'contrast': 'Kontrast',
 		'turn-off-when-suspended': 'Ausschalten im Ruhezustand'
 	},
 };

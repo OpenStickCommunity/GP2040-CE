@@ -147,5 +147,6 @@ export default {
 	'input-history-header-text': 'Eingabeverlauf',
 	'input-history-length-label': 'Verlaufslänge (Zeichen)',
 	'input-history-col-label': 'Spalte',
-	'input-history-row-label': 'Reihe'
+	'input-history-row-label': 'Reihe',
+	'gif-header-text': 'Gif'
 };

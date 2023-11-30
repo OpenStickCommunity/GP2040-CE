@@ -8,6 +8,7 @@
 		"axios": "^1.3.5",
 		"bootstrap": "^5.3.0-alpha3",
 		"formik": "^2.2.9",
+		"gifuct-js": "^2.1.2",
 		"i18next": "^23.1.0",
 		"i18next-browser-languagedetector": "^7.0.2",
 		"javascript-color-gradient": "^2.4.4",

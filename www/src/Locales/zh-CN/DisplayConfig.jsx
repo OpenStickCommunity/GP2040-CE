@@ -30,5 +30,7 @@ export default {
 		'splash-duration-label': '启动画面延迟(秒，0表示永远开启)',
 		'display-saver-timeout-label': '屏保超时(分钟)',
 		'inverted-label': '反相',
+		'dark-background': '深色背景',
+		'contrast': '对比',
 	},
 };

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import get from 'lodash/get';
 import set from 'lodash/set';
+import chunk from 'lodash/chunk';
 
 import { AppContext } from '../Contexts/AppContext';
 
@@ -44,6 +45,8 @@ import FocusMode, {
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import InputHistory, { inputHistoryScheme, inputHistoryState } from '../Addons/InputHistory';
+import Gif, { gifScheme, gifState } from '../Addons/Gif';
+import { json } from 'react-router-dom';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -64,6 +67,7 @@ const schema = yup.object().shape({
 	...focusModeScheme,
 	...keyboardScheme,
 	...inputHistoryScheme,
+	...gifScheme
 });
 
 const defaultValues = {
@@ -86,6 +90,7 @@ const defaultValues = {
 	...focusModeState,
 	...keyboardState,
 	...inputHistoryState,
+	...gifState
 };
 
 const ADDONS = [
@@ -107,7 +112,8 @@ const ADDONS = [
 	SNES,
 	FocusMode,
 	Keyboard,
-	InputHistory
+	InputHistory,
+	Gif
 ];
 
 const FormContext = ({ setStoredData }) => {
@@ -172,7 +178,7 @@ export default function AddonsConfigPage() {
 
 		// Compare what's changed and set it to resultObject
 		let resultObject = {};
-		Object.entries(flattened)?.map((entry) => {
+		Object.entries(flattened)?.forEach((entry) => {
 			const [key, oldVal] = entry;
 			const newVal = get(valuesCopy, key);
 			if (newVal !== oldVal) {
@@ -180,10 +186,33 @@ export default function AddonsConfigPage() {
 			}
 		});
 		sanitizeData(resultObject);
+
+		const gifAddonData =  'gifAddonData' in resultObject ? values['gifAddonData'] : null
+		delete resultObject['gifAddonData']
+		
 		const success = await WebApi.setAddonsOptions(resultObject);
+
+
+		let sectorData = {}
+		if (!!gifAddonData)
+			sectorData = await WebApi.setGifSectors({ numberOfBytes: gifAddonData.length });
+
+		let sectorsSuccess = !!sectorData['result']
+		let pagesSuccess = true
+		if (!!gifAddonData && sectorsSuccess) {
+			const pages = chunk(gifAddonData, 256)
+			let pageIndex = 0
+			for (const page of pages) {
+				const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(page)))
+				const pageSuccess = await WebApi.setGifPage({ pageData: base64, pageIndex })
+				pagesSuccess = pagesSuccess && pageSuccess
+				pageIndex += 1
+			}
+		}
+
 		setStoredData(JSON.parse(JSON.stringify(values))); // Update to reflect saved data
 		setSaveMessage(
-			success
+			success && sectorsSuccess && pagesSuccess
 				? t('Common:saved-success-message')
 				: t('Common:saved-error-message'),
 		);

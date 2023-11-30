@@ -2,6 +2,8 @@
 #include "config.pb.h"
 #include "configs/base64.h"
 
+#include "addons/gif.h"
+
 #include "storagemanager.h"
 #include "configmanager.h"
 #include "AnimationStorage.hpp"
@@ -1274,6 +1276,9 @@ std::string setAddonOptions()
 	docToValue(inputHistoryOptions.col, doc, "inputHistoryCol");
 	docToValue(inputHistoryOptions.row, doc, "inputHistoryRow");
 
+	GifOptions& GifOptions = Storage::getInstance().getAddonOptions().gifOptions;
+	docToValue(GifOptions.enabled, doc, "gifAddonEnabled");
+
 	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
 	Pin_t oldKbPinDplus = keyboardHostOptions.pinDplus;
@@ -1724,6 +1729,55 @@ std::string getAddonOptions()
 	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
 	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
+	const GifOptions& gifOptions = Storage::getInstance().getAddonOptions().gifOptions;
+	writeDoc(doc, "gifAddonEnabled", gifOptions.enabled);
+	if (gifOptions.startingGifAddress != GIF_STARTING_GIF_ADDRESS)
+	{	
+		const uint32_t size = gifOptions.numberOfFrames * sizeof(SplashFrame);
+		const uint32_t numberOfPages = (size % FLASH_PAGE_SIZE == 0)
+			? size / FLASH_PAGE_SIZE 
+			: size / FLASH_PAGE_SIZE + 1;
+		writeDoc(doc, "gifAddonNumberOfPages", numberOfPages);
+	}
+
+	return serialize_json(doc);
+}
+
+std::string getGifPage()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	uint32_t pageIndex;
+	readDoc(pageIndex, doc, "pageIndex");
+
+	const GifOptions& gifOptions = Storage::getInstance().getAddonOptions().gifOptions;
+	JsonArray gifData = doc.createNestedArray("gifAddonData");
+	copyArray(reinterpret_cast<const uint8_t*>(gifOptions.startingGifAddress + pageIndex * FLASH_PAGE_SIZE), FLASH_PAGE_SIZE, gifData);
+
+	return serialize_json(doc);
+}
+
+std::string setGifSectors()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	size_t numberOfBytes;
+	readDoc(numberOfBytes, doc, "numberOfBytes");
+	const bool result = GifAddon::setupForWrite(numberOfBytes);
+	doc["result"] = result;
+
+	return serialize_json(doc);
+}
+
+std::string setGifPage()
+{
+	DynamicJsonDocument doc = get_post_data();
+
+	size_t pageIndex;
+	std::string base64String = doc["pageData"];
+	readDoc(pageIndex, doc, "pageIndex");
+	const bool result = GifAddon::writePage(base64String, pageIndex);
+	doc["result"] = result;
 	return serialize_json(doc);
 }
 
@@ -1989,6 +2043,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getPeripheralOptions", getPeripheralOptions },
 	{ "/api/setKeyMappings", setKeyMappings },
 	{ "/api/setAddonsOptions", setAddonOptions },
+	{ "/api/setGifSectors", setGifSectors },
+	{ "/api/setGifPage", setGifPage },
 	{ "/api/setMacroAddonOptions", setMacroAddonOptions },
 	{ "/api/setPS4Options", setPS4Options },
 	{ "/api/setWiiControls", setWiiControls },
@@ -2001,6 +2057,7 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/getProfileOptions", getProfileOptions },
 	{ "/api/getKeyMappings", getKeyMappings },
 	{ "/api/getAddonsOptions", getAddonOptions },
+	{ "/api/getGifPage", getGifPage },
 	{ "/api/getWiiControls", getWiiControls },
 	{ "/api/getMacroAddonOptions", getMacroAddonOptions },
 	{ "/api/resetSettings", resetSettings },
