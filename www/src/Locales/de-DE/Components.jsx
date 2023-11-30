@@ -8,13 +8,13 @@ export default {
 		'de-DE': 'Deutsch (German)',
 	},
 	'color-scheme': {
-		dark: 'Dark',
-		light: 'Light',
-		auto: 'Auto',
+		dark: 'Dunkel',
+		light: 'Hell',
+		auto: 'Automatisch',
 	},
 	'keyboard-mapper': {
-		'key-header': 'Key',
-		'error-conflict': 'Key {{key}} is already assigned',
-		'error-invalid': '{{key}} is invalid for this board',
+		'key-header': 'Taste',
+		'error-conflict': 'Die Taste {{key}} ist bereits zugewiesen',
+		'error-invalid': '{{key}} ist für dieses Board ungültig',
 	},
 };
