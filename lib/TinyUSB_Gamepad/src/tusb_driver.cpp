@@ -54,6 +54,9 @@ void receive_report(uint8_t *buffer)
 	{
 		receive_xinput_report();
 		memcpy(buffer, xinput_out_buffer, XINPUT_OUT_SIZE);
+	} else if (input_mode == INPUT_MODE_XBONE)
+	{
+		receive_xbone_report();
 	}
 }
 
@@ -222,4 +225,20 @@ void tud_suspend_cb(bool remote_wakeup_en)
 void tud_resume_cb(void)
 {
 	usb_suspended = false;
+}
+
+// Vendor Controlled XFER occured
+bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
+                                tusb_control_request_t const *request)
+{
+	bool ret = false;
+	switch (input_mode)
+	{
+		case INPUT_MODE_XBONE:
+			ret = xbone_vendor_control_xfer_cb(rhport, stage, request);
+			break;
+		default:
+			break;
+	}
+	return ret;
 }

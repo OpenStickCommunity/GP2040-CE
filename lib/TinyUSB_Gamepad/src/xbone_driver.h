@@ -18,15 +18,21 @@ extern uint8_t xbone_out_buffer[XBONE_OUT_SIZE];
 extern const usbd_class_driver_t xbone_driver;
 
 bool send_xbone_report(void *report, uint8_t report_size);
+void receive_xbone_report(void);
+bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
+                                tusb_control_request_t const *request);
+
+extern uint32_t timer_wait_for_auth;
 
 void tick_xbone_usb();
 
 typedef enum {
-	driver_loading = 0,
+	reset_state = 0,
 	ready_to_announce = 1,
 	send_descriptor = 2,
 	send_auth = 3,
-	auth_complete = 4
+	auth_complete = 4,
+	idle_state = 5
 } XboxOneState;
 
 // Storage manager for board, LED options, and thread-safe settings
@@ -44,6 +50,6 @@ public:
 	
 private:
 	XBOneData() {
-		xboneState = XboxOneState::driver_loading;
+		xboneState = XboxOneState::reset_state;
 	}
 };

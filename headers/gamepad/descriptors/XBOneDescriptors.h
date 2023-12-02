@@ -15,7 +15,7 @@
 
 static const uint8_t xbone_string_language[]    = { 0x09, 0x04 };
 static const uint8_t xbone_string_manufacturer[] = "Open Stick Community";
-static const uint8_t xbone_string_product[]      = "GP2040-CE (Xbox One)";
+static const uint8_t xbone_string_product[]      = "GP2040-CE (Xbox One)"; // "MAYFLASH MagicBoots for Xbox One"
 static const uint8_t xbone_string_version[]      = "1.0";
 
 static const uint8_t *xbone_string_descriptors[] __attribute__((unused)) =
@@ -26,7 +26,8 @@ static const uint8_t *xbone_string_descriptors[] __attribute__((unused)) =
 	xbone_string_version
 };
 
-static uint8_t xboxSerial[PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 3];
+static uint8_t mayflashSerial[] = "00008E282A231719";
+static uint8_t uniqueSerial[] = "012345678ABCDEFGH";
 static const uint8_t xboxSecurityMethod[] = "Xbox Security Method 3, Version 1.00, \xa9 2005 Microsoft Corporation. All rights reserved.";
 static const uint8_t xboxOSDescriptor[] = "MSFT100\x20\x00"; // PDP is MSFT100 0x90 0x00
 
@@ -35,31 +36,19 @@ static const uint8_t * xbone_get_string_descriptor(int index) {
 	printf("XBONE_DRIVER: Xbox One Get String Descriptor %u\r\n", index);
 	if ( index == 3 ) {
 		// Generate a serial number from the pico's unique ID
-		pico_unique_board_id_t id;
-		pico_get_unique_board_id(&id);
-		memcpy(xboxSerial, (uint8_t*)&id, PICO_UNIQUE_BOARD_ID_SIZE_BYTES);
-		xboxSerial[PICO_UNIQUE_BOARD_ID_SIZE_BYTES] = 6;     // consoleType (Xbox One)
-		xboxSerial[PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1] = 1; // DEVICE_TYPE (Gamepad)
-		xboxSerial[PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 2] = 1; // WINDOWS_USES_XINPUT (??)
-
-		// DEBUG
-		printf("Xbox Serial to use: ");
-		for(uint32_t i=0; i< sizeof(xboxSerial); i++)
-		{
-			if (i%16 == 0) printf("\r\n  ");
-			printf("%02X ", xboxSerial[i]);
-		}
-		printf("\r\n");
-		return xboxSerial; // calculate a string descriptor
+		//pico_unique_board_id_t id;
+		//pico_get_unique_board_id(&id);
+		//memcpy(uniqueSerial, (uint8_t*)&id, PICO_UNIQUE_BOARD_ID_SIZE_BYTES);
+		printf("Xbox Serial to use: %s\r\n", mayflashSerial);
+		return mayflashSerial; // calculate a string descriptor
 	} else if ( index == 4 ) { // security method used
 		return xboxSecurityMethod;
-	} else if ( index == 0xEE ) {
+	} else if ( index == 0xEE ) { // ONLY WINDOWS DOES THIS??
 		return xboxOSDescriptor;
 	}
+
 	return xbone_string_descriptors[index];
 }
-
-
 
 // MOVE THIS TO XBOX ONE DRIVER
 typedef enum
@@ -201,17 +190,30 @@ typedef struct {
     uint8_t back : 1;   // view
 } __attribute__((packed)) XboxOneInputHeader_Data_t;
 
+static const uint8_t xbone_device_qualifier[] =
+{
+    0x0A,         // bLength
+    0x06,         // bDescriptorType (Qualifier Type)
+    0x00, 0x02,   // bcdUSB 2.00
+    0xFF,         // bDeviceClass
+    0xFF,         // bDeviceSubClass
+    0xFF,         // bDeviceProtocol
+    0x40,         // bMaxPacketSize0 64
+    0x01,         // bNumConfigurations
+    0x00          // bReserved
+};
+
 static const uint8_t xbone_device_descriptor[] =
 {
-	0x12,       // bLength
+    0x12,       // bLength
 	0x01,       // bDescriptorType (Device)
 	0x00, 0x02, // bcdUSB 2.00
 	0xFF,	      // bDeviceClass
-	0x47,	      // bDeviceSubClass
-	0xD0,	      // bDeviceProtocol
+	0xFF,	      // bDeviceSubClass
+	0xFF,	      // bDeviceProtocol
 	0x40,	      // bMaxPacketSize0 64
-	0x5E, 0x04, // idVendor 0x045E   0x0E6F = SuperPDP
-	0xEA, 0x02, // idProduct 0x02EA  0x02A4 = Gamepad
+	0x6F, 0x0E, // idVendor 0x045E   0x0E6F = SuperPDP  // 0x0079 = MagicBootS
+	0xA4, 0x02, // idProduct 0x02EA  0x02A4 = Gamepad 0x02D1 Xbox One  0x2DD Xbox One v2 0x2EA Xbox One S   0x1894 = MagicBootS
 	0x01, 0x01, // bcdDevice 1.01?
 	0x01,       // iManufacturer (String Index)
 	0x02,       // iProduct (String Index)
@@ -219,15 +221,16 @@ static const uint8_t xbone_device_descriptor[] =
 	0x01,       // bNumConfigurations 1
 };
 
+
 static const uint8_t xbone_configuration_descriptor[] =
 {
 	0x09,        // bLength
 	0x02,        // bDescriptorType (Configuration)
-	0x30, 0x00,  // wTotalLength 32
+	0x20, 0x00,  // wTotalLength 32
 	0x01,        // bNumInterfaces 1
 	0x01,        // bConfigurationValue
 	0x00,        // iConfiguration (String Index)
-	0x80,        // bmAttributes
+	0xA0,        // bmAttributes (USB_CONFIG_ATTRIBUTE_RESERVED | USB_CONFIG_ATTRIBUTE_REMOTEWAKEUP)
 	0xFA,        // bMaxPower 500mA
 
 	0x09,        // bLength
@@ -240,19 +243,6 @@ static const uint8_t xbone_configuration_descriptor[] =
 	0xD0,        // bInterfaceProtocol
 	0x00,        // iInterface (String Index)
 
-	0x10,        // bLength
-	0x21,        // bDescriptorType (HID)
-	0x10, 0x01,  // bcdHID 1.10
-	0x01,        // bCountryCode
-	0x24,        // bNumDescriptors
-	0x81,        // bDescriptorType[0] (Unknown 0x81)
-	0x14, 0x03,  // wDescriptorLength[0] 788
-	0x00,        // bDescriptorType[1] (Unknown 0x00)
-	0x03, 0x13,  // wDescriptorLength[1] 4867
-	0x01,        // bDescriptorType[2] (Unknown 0x02)
-	0x00, 0x03,  // wDescriptorLength[2] 768
-	0x00,        // bDescriptorType[3] (Unknown 0x00)
-
 	0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
 	0x81,        // bEndpointAddress (IN/D2H)
@@ -262,9 +252,13 @@ static const uint8_t xbone_configuration_descriptor[] =
 
 	0x07,        // bLength
 	0x05,        // bDescriptorType (Endpoint)
-	0x01,        // bEndpointAddress (OUT/H2D)
+	0x02,        // bEndpointAddress (OUT/H2D)
 	0x03,        // bmAttributes (Interrupt)
 	0x40, 0x00,  // wMaxPacketSize 64
 	0x01,        // bInterval 1 (unit depends on device speed)
 };
 
+static uint8_t const * xbone_configuration_descriptor_cb(uint8_t index)
+{
+  return xbone_configuration_descriptor;
+}
