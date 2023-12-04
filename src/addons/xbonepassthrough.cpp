@@ -21,7 +21,7 @@ static uint8_t xb1_power_on[] = {0x06, 0x62, 0x45, 0xb8, 0x77, 0x26, 0x2c, 0x55,
 
 bool XBOnePassthroughAddon::available() {
 #if XBONE_EXTENSION_DEBUG==true
-    printf("Check Xbox One is Enabled?\n");
+    //printf("Check Xbox One is Enabled?\n");
 #endif
     const XBOnePassthroughOptions& xboneOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
 	return xboneOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
@@ -30,7 +30,7 @@ bool XBOnePassthroughAddon::available() {
 void XBOnePassthroughAddon::setup() {
 
 #if XBONE_EXTENSION_DEBUG==true
-    printf("XBOne Passthrough Addon Enabled\n");
+    //printf("XBOne Passthrough Addon Enabled\n");
 #endif
 
     // Packet Chunk Size set to 0
@@ -39,8 +39,36 @@ void XBOnePassthroughAddon::setup() {
 }
 
 void XBOnePassthroughAddon::process() {
-    if (awaiting_cb)
-        return;
+    if ( XboxOneData::getInstance().console_to_host_ready == true ) {
+        /*
+        // Send X chunks
+        uint8_t chunkIdx = 0;
+        uint8_t chunkLen = 0;
+        uint16_t dataLeft = XboxOneData::getInstance().console_to_host_len;
+        while ( dataLeft > 0 ) {
+            if ( dataLeft < 0x3A ) {
+                chunkLen = dataLeft;
+            } else {
+                chunkLen = 0x3A;
+            }
+            dataLeft -= chunkLen;
+            if ( chunkIdx == 0 ) {
+                printf("Beginning of Chunk: ");
+            } else if ( dataLeft != 0 ) {
+
+            } else {
+
+            }
+            chunkIdx++;
+        }
+        XboxOneData::getInstance().console_to_host_len = 0;
+        */
+        //tuh_xinput_send_report(xbone_dev_addr, xbone_instance,
+        //        (uint8_t*)XboxOneData::getInstance().console_to_host,
+        //        XboxOneData::getInstance().console_to_host_len);
+        XboxOneData::getInstance().console_to_host_len = 0;
+        XboxOneData::getInstance().console_to_host_ready = false;
+    }
 }
 
 void XBOnePassthroughAddon::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
@@ -48,7 +76,7 @@ void XBOnePassthroughAddon::xmount(uint8_t dev_addr, uint8_t instance, uint8_t c
     xbone_instance = instance;
 
 #if XBONE_EXTENSION_DEBUG==true
-    printf("XBOnePassthroughAddon Saved values! dev_addr %u instance %u controllerType %u subType %u\r\n", dev_addr, instance, controllerType, subtype);
+    //printf("XBOnePassthroughAddon Saved values! dev_addr %u instance %u controllerType %u subType %u\r\n", dev_addr, instance, controllerType, subtype);
 #endif
 }
 
@@ -57,25 +85,26 @@ void XBOnePassthroughAddon::unmount(uint8_t dev_addr) {
 }
 
 void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    printf("[dev %u: instance %02x] X-Input Report:", dev_addr, instance);
-    for(uint32_t i=0; i<len; i++)
+    //printf("[dev %u: instance %02x] X-Input Report (%u): ", dev_addr, instance, len);
+    /*for(uint32_t i=0; i<len; i++)
     {
         if (i%16 == 0) printf("\r\n  ");
         printf("%02X ", report[i]);
-    }
-    printf("\r\n");
+    }*/
+    //printf("\r\n");
 
     GipHeader_t * header = (GipHeader_t*)report;
+    Gip_Ack_t * ack = (Gip_Ack_t*)report;
     switch ( header->command ) {
         case GIP_ANNOUNCE:
-            printf("GIP_ANNOUNCE : sending descriptor request\r\n");
+            //printf("GIP_ANNOUNCE : sending descriptor request\r\n");
             GIP_HEADER((&xb1_descriptor_request), GIP_DEVICE_DESCRIPTOR, true, 1);
             tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_descriptor_request, sizeof(xb1_descriptor_request));
             break;
         case GIP_DEVICE_DESCRIPTOR:
-            printf("GIP_DEVICE_DESCRIPTOR :\r\n");
+            //printf("GIP_DEVICE_DESCRIPTOR :\r\n");
             if ( header->length == 0 ) {
-                printf("Device Descriptor received! Power on controller!\r\n");
+                //printf("Device Descriptor received! Power on controller!\r\n");
                 packet_chunk_received = 0;
                 
                 GIP_HEADER((&xb1_power_desc), GIP_POWER_MODE_DEVICE_CONFIG, true, 2);
@@ -84,7 +113,7 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
                 break;
             }
             if ( header->chunked != 1 ) {
-                printf("Something went wrong, abort!\r\n");
+                //printf("Something went wrong, abort!\r\n");
                 return;
             }
             // Should be chunked, let's check if its the start
@@ -99,8 +128,31 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
                 send_xbone_ack(dev_addr, instance, header->sequence, packet_chunk_received, descriptor_size);
             }
             break;
+        case GIP_ACK_REQUEST:
+            if ( ack->innerCommand == GIP_AUTH ) {
+			    printf("[XBONE_ADDON] Sending Auth (ack) Host -> Console (%u)\r\n", len);
+                for(uint32_t i=0; i < len; i++)
+                {
+                    if (i%16 == 0) printf("\r\n  ");
+                    printf("%02X ", report[i]);
+                }
+                printf("\r\n\r\n");
+                send_xbone_report((void*)report, len); // send to console
+            }
+            break;
         case GIP_AUTH:
-            printf("GIP_AUTH : Received auth from controller\r\n");
+            //while ( XboxOneData::getInstance().host_to_console_ready == true ) {
+            //    printf("FIX HACK: wait for GP2040 to process\r\n");
+            //    sleep_us(1);
+            //}
+			printf("[XBONE_ADDON] Sending Auth Host -> Console (%u)\r\n", len);
+            for(uint32_t i=0; i < len; i++)
+            {
+                if (i%16 == 0) printf("\r\n  ");
+                printf("%02X ", report[i]);
+            }
+            printf("\r\n\r\n");
+            send_xbone_report((void*)report, len); // send to console
             break;
         default:
             // unknown controller command
@@ -113,25 +165,26 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
 
 void XBOnePassthroughAddon::report_sent(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
     GipHeader_t * header = (GipHeader_t*)report;
-    printf("[dev %u: instance %02x] X-Input Sent:", dev_addr, instance);
-    for(uint32_t i=0; i<len; i++)
+    //printf("[dev %u: instance %02x] X-Input Sent (%u):", dev_addr, instance, len);
+    /*for(uint32_t i=0; i<len; i++)
     {
         if (i%16 == 0) printf("\r\n  ");
         printf("%02X ", report[i]);
     }
-    printf("\r\n");
+    printf("\r\n");*/
     switch ( header->command ) {
         case GIP_POWER_MODE_DEVICE_CONFIG:
             if ( header->length == 0x0f ) {
                 // send second request
-                printf("Sending second half of power-up string\r\n");
+                //printf("Sending second half of power-up string\r\n");
                 GIP_HEADER((&xb1_power_mode), GIP_POWER_MODE_DEVICE_CONFIG, true, 3);
                 xb1_power_mode.subcommand = 0x00;
                 tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_power_mode, sizeof(xb1_power_mode));
             } else if ( header->length == 0x01 ) {
+                /*
                 // send rumble cmd
                 printf("Turn off all rumble\r\n");
-                GIP_HEADER((&xb1_rumble), GIP_CMD_RUMBLE, false, 1);
+                GIP_HEADER((&xb1_rumble), GIP_CMD_WAKEUP, false, 1);
                 xb1_rumble.subCommand = 0;
                 xb1_rumble.flags = 0x0f;
                 xb1_rumble.leftTrigger = 0x00;
@@ -142,10 +195,13 @@ void XBOnePassthroughAddon::report_sent(uint8_t dev_addr, uint8_t instance, uint
                 xb1_rumble.delay = 0x00;
                 xb1_rumble.repeat = 0xeb;
                 tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_rumble, sizeof(xb1_rumble));
+                */
+                uint8_t tmp[] = { 0x0a,0x20,0x04,0x03,0x00,0x01,0x14};
+                tuh_xinput_send_report(dev_addr, instance, (uint8_t*)tmp, sizeof(tmp));
             }
             break;
         case GIP_CMD_RUMBLE:
-            printf("Ready for Auth!!!!\r\n");
+            //printf("Ready for Auth!!!!\r\n");
             break;
         default:
             // unknown controller command
@@ -167,4 +223,8 @@ void XBOnePassthroughAddon::send_xbone_ack(uint8_t dev_addr, uint8_t instance, u
     }
     ackPacket.remainingBuffer = total_size - received;
     tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&ackPacket, sizeof(Gip_Ack_t));
+}
+
+void XBOnePassthroughAddon::send_host_report(void* report, uint16_t len) {
+    tuh_xinput_send_report(xbone_dev_addr, xbone_instance, (uint8_t*)report, len);
 }

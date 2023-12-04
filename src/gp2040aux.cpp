@@ -24,6 +24,14 @@ GP2040Aux::GP2040Aux() {
 GP2040Aux::~GP2040Aux() {
 }
 
+// hack
+static XBOnePassthroughAddon * xbPT = nullptr;
+void send_xbhost_report(void *report, uint8_t report_size) {
+	if ( xbPT != nullptr && xbPT->available() ) {
+		xbPT->send_host_report(report, report_size);
+	}
+}
+
 void GP2040Aux::setup() {
 	InputHistoryAddon* inputHistoryAddon = new InputHistoryAddon();
 	I2CDisplayAddon* i2CDisplayAddon = new I2CDisplayAddon();
@@ -33,7 +41,8 @@ void GP2040Aux::setup() {
 
 	// Setup Add-ons
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
-	addons.LoadUSBAddon(new XBOnePassthroughAddon(), CORE1_LOOP);
+	xbPT = new XBOnePassthroughAddon(); 
+	addons.LoadUSBAddon(xbPT, CORE1_LOOP);
 	addons.LoadAddon(inputHistoryAddon, CORE1_LOOP);
 	addons.LoadAddon(i2CDisplayAddon, CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);

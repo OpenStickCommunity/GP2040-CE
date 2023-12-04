@@ -27,7 +27,7 @@ static const uint8_t *xbone_string_descriptors[] __attribute__((unused)) =
 };
 
 static uint8_t mayflashSerial[] = "00008E282A231719";
-static uint8_t uniqueSerial[] = "012345678ABCDEFGH";
+//static uint8_t uniqueSerial[] = "012345678ABCDEFGH";
 static const uint8_t xboxSecurityMethod[] = "Xbox Security Method 3, Version 1.00, \xa9 2005 Microsoft Corporation. All rights reserved.";
 static const uint8_t xboxOSDescriptor[] = "MSFT100\x20\x00"; // PDP is MSFT100 0x90 0x00
 
@@ -59,7 +59,9 @@ typedef enum
 	GIP_DEVICE_DESCRIPTOR           = 0x04,    // Xbox One Definition
     GIP_POWER_MODE_DEVICE_CONFIG    = 0x05,    // Xbox One Power Mode Config
     GIP_AUTH                        = 0x06,    // Xbox One Authentication
+    GIP_VIRTUAL_KEYCODE             = 0x07,    // XBox One Guide button pressed
 	GIP_CMD_RUMBLE                  = 0x09,    // Xbox One Rumble Command
+    GIP_CMD_WAKEUP                  = 0x0A,    // Xbox One (Wake-up Maybe?)
 	GIP_INPUT_REPORT                = 0x20,    // Xbox One Input Report
 	GIP_HID_REPORT                  = 0x21,    // Xbox One HID Report
 } XboxOneReport;
@@ -153,6 +155,7 @@ typedef struct {
 typedef struct
 {
     GipHeader_t Header;
+
     uint8_t sync : 1;
     uint8_t guide : 1;
     uint8_t start : 1;  // menu
@@ -180,6 +183,8 @@ typedef struct
     int16_t leftStickY;
     int16_t rightStickX;
     int16_t rightStickY;
+
+    uint8_t reserved[18]; // 18-byte padding at the end
 } __attribute__((packed)) XboxOneGamepad_Data_t;
 
 typedef struct {

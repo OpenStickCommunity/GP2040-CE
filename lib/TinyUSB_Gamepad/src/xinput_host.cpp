@@ -89,7 +89,7 @@ bool tuh_xinput_mounted(uint8_t dev_addr, uint8_t instance) {
 bool tuh_xinput_receive_report(uint8_t dev_addr, uint8_t instance) {
     xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
 
-    printf("tuh_xinput_receive_report in xinput_host.cpp\r\n");
+    //printf("tuh_xinput_receive_report in xinput_host.cpp\r\n");
 
     // claim endpoint
     TU_VERIFY(usbh_edpt_claim(dev_addr, hid_itf->ep_in));
@@ -106,7 +106,7 @@ bool tuh_xinput_receive_report(uint8_t dev_addr, uint8_t instance) {
 bool tuh_xinput_ready(uint8_t dev_addr, uint8_t instance) {
     TU_VERIFY(tuh_xinput_mounted(dev_addr, instance));
 
-    printf("tuh_xinput_ready in xinput_host.cpp\r\n");
+    //printf("tuh_xinput_ready in xinput_host.cpp\r\n");
 
     xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
     return !usbh_edpt_busy(dev_addr, hid_itf->ep_in);
@@ -115,7 +115,7 @@ bool tuh_xinput_ready(uint8_t dev_addr, uint8_t instance) {
 bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *report, uint16_t len) {
     xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
 
-    printf("tuh_xinput_send_report in xinput_host.cpp\r\n");
+    //printf("tuh_xinput_send_report in xinput_host.cpp\r\n");
 
     // claim endpoint
     TU_VERIFY(usbh_edpt_claim(dev_addr, hid_itf->ep_out));
@@ -132,13 +132,12 @@ bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *r
 // USBH API
 //--------------------------------------------------------------------+
 void xinputh_init(void) {
-
-    printf("xinputh host init\r\n");
+    //printf("xinputh host init\r\n");
     tu_memclr(_xinputh_dev, sizeof(_xinputh_dev));
 }
 
 bool xinputh_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
-    printf("xinputh xfer cb\r\n");
+    //printf("xinputh xfer cb\r\n");
     (void)result;
 
     uint8_t const dir = tu_edpt_dir(ep_addr);
@@ -146,11 +145,11 @@ bool xinputh_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, ui
     xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
 
     if (dir == TUSB_DIR_IN) {
-        printf("Forwarding to tuh_xinput_report_received_cb\r\n");
+        //printf("Forwarding to tuh_xinput_report_received_cb\r\n");
         tuh_xinput_report_received_cb(dev_addr, instance, hid_itf->epin_buf, (uint16_t)xferred_bytes);
         usbh_edpt_xfer(dev_addr, hid_itf->ep_in, hid_itf->epin_buf, hid_itf->epin_size);
     } else {
-        printf("Is report sent cb called?\r\n");
+        //printf("Is report sent cb called?\r\n");
         if (tuh_xinput_report_sent_cb) {
             tuh_xinput_report_sent_cb(dev_addr, instance, hid_itf->epout_buf, xferred_bytes);
         }

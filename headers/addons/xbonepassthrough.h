@@ -27,6 +27,8 @@ public:
 	virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
 	virtual void report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
 	virtual void report_sent(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
+
+	void send_host_report(void* report, uint16_t len);
 private:
 	void send_xbone_ack(uint8_t dev_addr, uint8_t instance, uint8_t sequence, uint16_t received, uint16_t total_size);
 
@@ -36,34 +38,9 @@ private:
 	uint8_t xbone_ep_in;
 	uint8_t xbone_ep_out;
 
-	// GipHeader_t
-	//   uint8_t command;
-    //   uint8_t client : 4;
-    //   uint8_t needsAck : 1;
-    //   uint8_t internal : 1;
-    //   uint8_t chunkStart : 1;
-    //   uint8_t chunked : 1;
-    //   uint8_t sequence;
-    //   uint8_t length;
-	// XX,XX,XX,XX -> content
-
-	// Controller Descriptors in Game Input Protocol (GIP):
-	uint8_t xb1_desc_header[58] = {};
-	uint8_t xb1_desc_body[400] = {};
-
-	// Xbox One Auth Requests 
-	uint8_t xb1_auth_requested[58]; // (Could shrink to 32 bytes, 256-bit encryption)
-	
-	// Xbox One Auth Requests Response
-	uint8_t xb1_auth_requested_response[346]; // could shrink to 36 bytes?
-
-	uint8_t report_buffer[64];
-
 	// We have to keep track of packet chunks if chunked is set
 	uint16_t descriptor_size;
 	uint16_t packet_chunk_received;
-
-
 
 	bool awaiting_cb;
 };

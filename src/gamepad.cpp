@@ -18,6 +18,9 @@
 // PS5 compatibility
 #include "ps4_driver.h"
 
+// Xbox One compatibility
+#include "xbone_driver.h"
+
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
 	return to_ms_since_boot(get_absolute_time());
@@ -106,10 +109,11 @@ static XboxOneGamepad_Data_t xboneReport
 	.rightThumbClick = 0,
 	.leftTrigger = 0,
 	.rightTrigger = 0,
-	.leftStickX = 0,
-	.leftStickY = 0,
-	.rightStickX = 0,
-	.rightStickY = 0
+	.leftStickX = GAMEPAD_JOYSTICK_MID,
+	.leftStickY = GAMEPAD_JOYSTICK_MID,
+	.rightStickX = GAMEPAD_JOYSTICK_MID,
+	.rightStickY = GAMEPAD_JOYSTICK_MID,
+	.reserved = {}
 };
 
 static TouchpadData touchpadData;
@@ -654,9 +658,15 @@ XInputReport *Gamepad::getXInputReport()
 
 XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 {
-	last_report_counter = last_report_counter++;
-	if ( last_report_counter == 0 )
+	if ( XboxOneData::getInstance().auth_completed == false ) {
+		GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, 0);
+		return &xboneReport;
+	}
+
+	last_report_counter++;
+	if ( last_report_counter == 0 ) {
 		last_report_counter = 1;
+	}
 
 	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
 	xboneReport.a = pressedB1();
@@ -681,13 +691,13 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 
 	if (hasAnalogTriggers)
 	{
-		xboneReport.leftTrigger = pressedL2() ? 0xFF : state.lt;
-		xboneReport.rightTrigger = pressedR2() ? 0xFF : state.rt;
+		xboneReport.leftTrigger = pressedL2() ? 0x03FF : state.lt;
+		xboneReport.rightTrigger = pressedR2() ? 0x03FF : state.rt;
 	}
 	else
 	{
-		xboneReport.leftTrigger = pressedL2() ? 0xFF : 0;
-		xboneReport.rightTrigger = pressedR2() ? 0xFF : 0;
+		xboneReport.leftTrigger = pressedL2() ? 0x03FF : 0;
+		xboneReport.rightTrigger = pressedR2() ? 0x03FF : 0;
 	}
 
 	return &xboneReport;
