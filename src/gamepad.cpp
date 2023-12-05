@@ -173,8 +173,6 @@ Gamepad::Gamepad() :
 
 void Gamepad::setup()
 {
-    stdio_init_all();
-
 	// Configure pin mapping
 	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
 	const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();

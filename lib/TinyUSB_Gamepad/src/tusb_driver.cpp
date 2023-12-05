@@ -4,7 +4,6 @@
  */
 
 #include <stdint.h>
-#include <cstdio>
 
 #include "tusb_config.h"
 #include "tusb.h"
