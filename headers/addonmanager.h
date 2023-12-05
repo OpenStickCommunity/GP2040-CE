@@ -25,6 +25,7 @@ public:
     ~AddonManager() {}
     void LoadAddon(GPAddon*, ADDON_PROCESS);
     void LoadUSBAddon(USBAddon*, ADDON_PROCESS);
+    void ReinitializeAddons(ADDON_PROCESS);
     void PreprocessAddons(ADDON_PROCESS);
     void ProcessAddons(ADDON_PROCESS);
     GPAddon * GetAddon(std::string); // hack for NeoPicoLED

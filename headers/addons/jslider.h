@@ -37,6 +37,7 @@ class JSliderInput : public GPAddon {
 public:
     virtual bool available();
 	virtual void setup();       // JSlider Button Setup
+    virtual void reinit();
     virtual void preprocess() {}
 	virtual void process();     // JSlider process
     virtual std::string name() { return JSliderName; }

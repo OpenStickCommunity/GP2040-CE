@@ -47,6 +47,18 @@ void DualDirectionalInput::setup() {
     }
 }
 
+/**
+ * Reinitialize masks and DDI states.
+ */
+void DualDirectionalInput::reinit()
+{
+    delete mapDpadUp;
+    delete mapDpadDown;
+    delete mapDpadLeft;
+    delete mapDpadRight;
+    this->setup();
+}
+
 void DualDirectionalInput::debounce()
 {
     GamepadDebouncer gamepadDebouncer;

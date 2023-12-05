@@ -37,6 +37,7 @@ class SliderSOCDInput : public GPAddon {
 public:
     virtual bool available();
 	virtual void setup();       // SliderSOCD Button Setup
+    virtual void reinit();
     virtual void preprocess() {}
 	virtual void process();     // SliderSOCD process
     virtual std::string name() { return SliderSOCDName; }
