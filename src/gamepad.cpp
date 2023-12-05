@@ -166,10 +166,8 @@ void Gamepad::setup()
 /**
  * @brief Undo setup().
  */
-void Gamepad::teardown_and_reinit(const uint32_t profileNum)
+void Gamepad::reinit()
 {
-	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
-
 	delete mapDpadUp;
 	delete mapDpadDown;
 	delete mapDpadLeft;
@@ -189,18 +187,6 @@ void Gamepad::teardown_and_reinit(const uint32_t profileNum)
 	delete mapButtonA1;
 	delete mapButtonA2;
 	delete mapButtonFn;
-
-	// deinitialize the GPIO pins so we don't have orphans
-	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
-	{
-		if (pinMappings[pin] > 0)
-		{
-			gpio_deinit(pin);
-		}
-	}
-
-	// set to new profile
-	Storage::getInstance().setProfile(profileNum);
 
 	// reinitialize pin mappings
 	this->setup();
@@ -421,25 +407,29 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 			break;
 		case HOTKEY_LOAD_PROFILE_1:
 			if (action != lastAction) {
-				this->teardown_and_reinit(1);
+				Storage::getInstance().setProfile(1);
+				userRequestedReinit = true;
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_2:
 			if (action != lastAction) {
-				this->teardown_and_reinit(2);
+				Storage::getInstance().setProfile(2);
+				userRequestedReinit = true;
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_3:
 			if (action != lastAction) {
-				this->teardown_and_reinit(3);
+				Storage::getInstance().setProfile(3);
+				userRequestedReinit = true;
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_4:
 			if (action != lastAction) {
-				this->teardown_and_reinit(4);
+				Storage::getInstance().setProfile(4);
+				userRequestedReinit = true;
 				reqSave = true;
 			}
 			break;
