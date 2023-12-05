@@ -66,6 +66,7 @@ public:
 	 */
 	bool hasRightAnalogStick {false};
 
+	void tickReportCounter();
 	void *getReport();
 	uint16_t getReportSize();
 	HIDReport *getHIDReport();

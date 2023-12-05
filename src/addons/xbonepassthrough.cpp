@@ -35,40 +35,35 @@ void XBOnePassthroughAddon::setup() {
 
     // Packet Chunk Size set to 0
     packet_chunk_received = 0;
-    awaiting_cb = false; // did we receive the sign state yet
+    ready_to_auth = false;
 }
 
+// Report Queue for big report sizes from dongle
+#include <queue>
+typedef struct {
+    uint8_t dev_addr;
+    uint8_t instance;
+	uint8_t report[XBONE_ENDPOINT_SIZE];
+	uint16_t len;
+	uint32_t timestamp;
+} report_queue_t;
+
+static std::queue<report_queue_t> report_queue;
+
 void XBOnePassthroughAddon::process() {
-    if ( XboxOneData::getInstance().console_to_host_ready == true ) {
-        /*
-        // Send X chunks
-        uint8_t chunkIdx = 0;
-        uint8_t chunkLen = 0;
-        uint16_t dataLeft = XboxOneData::getInstance().console_to_host_len;
-        while ( dataLeft > 0 ) {
-            if ( dataLeft < 0x3A ) {
-                chunkLen = dataLeft;
-            } else {
-                chunkLen = 0x3A;
-            }
-            dataLeft -= chunkLen;
-            if ( chunkIdx == 0 ) {
-                printf("Beginning of Chunk: ");
-            } else if ( dataLeft != 0 ) {
-
-            } else {
-
-            }
-            chunkIdx++;
-        }
-        XboxOneData::getInstance().console_to_host_len = 0;
-        */
-        //tuh_xinput_send_report(xbone_dev_addr, xbone_instance,
-        //        (uint8_t*)XboxOneData::getInstance().console_to_host,
-        //        XboxOneData::getInstance().console_to_host_len);
-        XboxOneData::getInstance().console_to_host_len = 0;
-        XboxOneData::getInstance().console_to_host_ready = false;
-    }
+    //if ( XboxOneData::getInstance().console_to_host_ready == true ) {
+    //    XboxOneData::getInstance().console_to_host_len = 0;
+    //    XboxOneData::getInstance().console_to_host_ready = false;
+    //}
+    // DOn't do this unless our dongle is ready!
+    if ( ready_to_auth == true && !report_queue.empty() ) {
+		// send the first report off our queue
+		printf("[XBOnePassthroughAddon::process] Sending queued report to dongle size: %u (%u)\r\n", report_queue.front().len, report_queue.front().timestamp);
+		if ( tuh_xinput_send_report(xbone_dev_addr, xbone_instance, report_queue.front().report, report_queue.front().len) )
+			report_queue.pop();
+		else
+			printf("[XBOnePassthroughAddon::process] FAILED: Keeping it on the queue to send again\r\n");
+	}
 }
 
 void XBOnePassthroughAddon::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
@@ -81,7 +76,6 @@ void XBOnePassthroughAddon::xmount(uint8_t dev_addr, uint8_t instance, uint8_t c
 }
 
 void XBOnePassthroughAddon::unmount(uint8_t dev_addr) {
-    awaiting_cb = false; // did we receive the sign state yet
 }
 
 void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
@@ -130,14 +124,15 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
             break;
         case GIP_ACK_REQUEST:
             if ( ack->innerCommand == GIP_AUTH ) {
-			    printf("[XBONE_ADDON] Sending Auth (ack) Host -> Console (%u)\r\n", len);
-                for(uint32_t i=0; i < len; i++)
+			    printf("[XBONE_ADDON %u] Sending Auth (ack) [Dongle -> Console] (%u)\r\n", to_ms_since_boot(get_absolute_time()), len);
+                /*for(uint32_t i=0; i < len; i++)
                 {
                     if (i%16 == 0) printf("\r\n  ");
                     printf("%02X ", report[i]);
                 }
-                printf("\r\n\r\n");
-                send_xbone_report((void*)report, len); // send to console
+                printf("\r\n\r\n");*/
+                //send_xbone_report((void*)report, len); // send to console
+                queue_xbone_report((void*)report, len);
             }
             break;
         case GIP_AUTH:
@@ -145,22 +140,20 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
             //    printf("FIX HACK: wait for GP2040 to process\r\n");
             //    sleep_us(1);
             //}
-			printf("[XBONE_ADDON] Sending Auth Host -> Console (%u)\r\n", len);
-            for(uint32_t i=0; i < len; i++)
+			printf("[XBONE_ADDON %u] Sending Auth [Dongle -> Console] (%u)\r\n", to_ms_since_boot(get_absolute_time()), len);
+            /*for(uint32_t i=0; i < len; i++)
             {
                 if (i%16 == 0) printf("\r\n  ");
                 printf("%02X ", report[i]);
             }
-            printf("\r\n\r\n");
-            send_xbone_report((void*)report, len); // send to console
+            printf("\r\n\r\n");*/
+            //send_xbone_report((void*)report, len); // send to console
+            queue_xbone_report((void*)report, len);
             break;
         default:
             // unknown controller command
             break;
     };
-
-    // Save a state, but for now just check for our announce status
-    awaiting_cb = false;
 }
 
 void XBOnePassthroughAddon::report_sent(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
@@ -180,7 +173,8 @@ void XBOnePassthroughAddon::report_sent(uint8_t dev_addr, uint8_t instance, uint
                 GIP_HEADER((&xb1_power_mode), GIP_POWER_MODE_DEVICE_CONFIG, true, 3);
                 xb1_power_mode.subcommand = 0x00;
                 tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_power_mode, sizeof(xb1_power_mode));
-            } else if ( header->length == 0x01 ) {
+                ready_to_auth = true;
+            } //else if ( header->length == 0x01 ) {
                 /*
                 // send rumble cmd
                 printf("Turn off all rumble\r\n");
@@ -196,9 +190,9 @@ void XBOnePassthroughAddon::report_sent(uint8_t dev_addr, uint8_t instance, uint
                 xb1_rumble.repeat = 0xeb;
                 tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_rumble, sizeof(xb1_rumble));
                 */
-                uint8_t tmp[] = { 0x0a,0x20,0x04,0x03,0x00,0x01,0x14};
-                tuh_xinput_send_report(dev_addr, instance, (uint8_t*)tmp, sizeof(tmp));
-            }
+                //uint8_t tmp[] = { 0x0a,0x20,0x04,0x03,0x00,0x01,0x14};
+                //tuh_xinput_send_report(dev_addr, instance, (uint8_t*)tmp, sizeof(tmp));
+            //}
             break;
         case GIP_CMD_RUMBLE:
             //printf("Ready for Auth!!!!\r\n");
@@ -225,6 +219,15 @@ void XBOnePassthroughAddon::send_xbone_ack(uint8_t dev_addr, uint8_t instance, u
     tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&ackPacket, sizeof(Gip_Ack_t));
 }
 
-void XBOnePassthroughAddon::send_host_report(void* report, uint16_t len) {
-    tuh_xinput_send_report(xbone_dev_addr, xbone_instance, (uint8_t*)report, len);
+void XBOnePassthroughAddon::queue_host_report(void* report, uint16_t len) {
+    //tuh_xinput_send_report(xbone_dev_addr, xbone_instance, (uint8_t*)report, len);
+    if ( report_queue.size() < 8 ) {
+		report_queue_t new_queue;
+		memcpy(new_queue.report, report, len);
+		new_queue.len = len;
+		new_queue.timestamp = to_ms_since_boot(get_absolute_time());
+		report_queue.push(new_queue);
+	} else {
+		printf("[queue_host_report ERROR] Cannot queue more than 8 reports\r\n");
+	}
 }

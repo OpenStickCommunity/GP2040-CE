@@ -26,9 +26,9 @@ GP2040Aux::~GP2040Aux() {
 
 // hack
 static XBOnePassthroughAddon * xbPT = nullptr;
-void send_xbhost_report(void *report, uint8_t report_size) {
+void send_xbhost_report(void *report, uint16_t report_size) {
 	if ( xbPT != nullptr && xbPT->available() ) {
-		xbPT->send_host_report(report, report_size);
+		xbPT->queue_host_report(report, report_size);
 	}
 }
 

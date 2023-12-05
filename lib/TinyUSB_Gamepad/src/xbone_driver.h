@@ -17,12 +17,15 @@
 extern uint8_t xbone_out_buffer[XBONE_OUT_SIZE];
 extern const usbd_class_driver_t xbone_driver;
 
-extern void send_xbhost_report(void *report, uint8_t report_size);
+extern void send_xbhost_report(void *report, uint16_t report_size);
 
-extern bool send_xbone_report(void *report, uint8_t report_size);
+extern bool send_xbone_report(void *report, uint16_t report_size);
 extern void receive_xbone_report(void);
 extern bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
                                 tusb_control_request_t const *request);
+
+// Required for large chunked data
+extern void queue_xbone_report(void *report, uint16_t report_size);
 
 extern uint32_t timer_wait_for_auth;
 

@@ -28,7 +28,7 @@ public:
 	virtual void report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
 	virtual void report_sent(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
 
-	void send_host_report(void* report, uint16_t len);
+	void queue_host_report(void* report, uint16_t len);
 private:
 	void send_xbone_ack(uint8_t dev_addr, uint8_t instance, uint8_t sequence, uint16_t received, uint16_t total_size);
 
@@ -43,6 +43,7 @@ private:
 	uint16_t packet_chunk_received;
 
 	bool awaiting_cb;
+	bool ready_to_auth;
 };
 
 #endif  // _PSPassthrough_H_

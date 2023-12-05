@@ -656,16 +656,28 @@ XInputReport *Gamepad::getXInputReport()
 	return &xinputReport;
 }
 
+// Should really be an on success callback
+void Gamepad::tickReportCounter() {
+	switch( (options.inputMode) ) {
+		case INPUT_MODE_PS4:
+			last_report_counter = (last_report_counter+1) & 63;
+		break;
+		case INPUT_MODE_XBONE:
+			last_report_counter++;
+			if ( last_report_counter == 0 ) {
+				last_report_counter = 1;
+			}
+		break;
+		default:
+		break;
+	};
+}
+
 XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 {
 	if ( XboxOneData::getInstance().auth_completed == false ) {
 		GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, 0);
 		return &xboneReport;
-	}
-
-	last_report_counter++;
-	if ( last_report_counter == 0 ) {
-		last_report_counter = 1;
 	}
 
 	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
@@ -684,9 +696,9 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 	xboneReport.dpadLeft = pressedLeft();
 	xboneReport.dpadRight = pressedRight();
 
-	xboneReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN;
+	xboneReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN + 1;
 	xboneReport.leftStickY = static_cast<int16_t>(state.ly) + INT16_MIN;
-	xboneReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN;
+	xboneReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN + 1;
 	xboneReport.rightStickY = static_cast<int16_t>(state.ry) + INT16_MIN;
 
 	if (hasAnalogTriggers)
@@ -735,7 +747,6 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.button_touchpad = options.switchTpShareForDs4 ? pressedS1() : pressedA2();
 
 	// report counter is 6 bits
-	last_report_counter = (last_report_counter+1) & 63;
 	ps4Report.report_counter = last_report_counter;
 
 	ps4Report.left_stick_x = static_cast<uint8_t>(state.lx >> 8);

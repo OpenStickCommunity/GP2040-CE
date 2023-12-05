@@ -33,13 +33,12 @@ static const uint8_t xboxOSDescriptor[] = "MSFT100\x20\x00"; // PDP is MSFT100 0
 
 static const uint8_t * xbone_get_string_descriptor(int index) {
 	// Do we ever hit this?
-	printf("XBONE_DRIVER: Xbox One Get String Descriptor %u\r\n", index);
 	if ( index == 3 ) {
 		// Generate a serial number from the pico's unique ID
 		//pico_unique_board_id_t id;
 		//pico_get_unique_board_id(&id);
 		//memcpy(uniqueSerial, (uint8_t*)&id, PICO_UNIQUE_BOARD_ID_SIZE_BYTES);
-		printf("Xbox Serial to use: %s\r\n", mayflashSerial);
+		//printf("Xbox Serial to use: %s\r\n", mayflashSerial);
 		return mayflashSerial; // calculate a string descriptor
 	} else if ( index == 4 ) { // security method used
 		return xboxSecurityMethod;

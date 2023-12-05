@@ -33,13 +33,24 @@
 #define REQ_GET_XGIP_HEADER 0x90
 
 static bool sending=false;
+static bool waiting_cb=false;
 static bool waiting_ack=false;
 uint8_t xbone_out_buffer[XBONE_OUT_SIZE] = {};
 uint32_t timer_wait_for_auth = 0;
 uint32_t xbox_one_powered_on = false;
 uint32_t keep_alive_timer = 0;
-uint8_t keep_alive_sequence = 0;
+uint8_t keep_alive_sequence = 1;
 static bool xbox_one_auth_ready=false;
+
+// Report Queue for big report sizes from dongle
+#include <queue>
+typedef struct {
+	uint8_t report[XBONE_ENDPOINT_SIZE];
+	uint16_t len;
+	uint32_t timestamp;
+} report_queue_t;
+
+static std::queue<report_queue_t> report_queue;
 
 typedef struct {
     uint8_t itf_num;
@@ -240,7 +251,8 @@ static void xbone_reset(uint8_t rhport) {
 	printf("xboxone_reset\r\n");
 	(void)rhport;
 
-	sending = false;
+	sending = false; 	// actively sending to EP_IN
+	waiting_cb = false; // waiting on a callback to EP_OUT
 	memset(&descriptor, 0, sizeof(descriptor_handler));
 	changeState(XboxOneState::reset_state);
 
@@ -252,13 +264,16 @@ static void xbone_reset(uint8_t rhport) {
 }
 
 static void xbone_init(void) {
-	printf("xbone_init\r\n");
+	while(!report_queue.empty())
+		report_queue.pop();
+
 	xbone_reset(TUD_OPT_RHPORT);
 }
 
 static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len)
 {
-	printf("Xboxone_Open %u\r\n", max_len);
+	printf("Xbox One Open rhport: %u\r\n", rhport);
+
 	uint16_t drv_len = 0;
     if (TUSB_CLASS_VENDOR_SPECIFIC == itf_desc->bInterfaceClass) {
         TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == itf_desc->bInterfaceClass, 0);
@@ -279,6 +294,7 @@ static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc
         TU_VERIFY(p_xinput, 0);
 		uint8_t const *p_desc = (uint8_t const *)itf_desc;
 
+		// Xbox One interface  (subclass = 0x47, protocol = 0xD0)
         if (itf_desc->bInterfaceSubClass == 0x47 &&
                    itf_desc->bInterfaceProtocol == 0xD0) {
 			p_desc = tu_desc_next(p_desc);
@@ -342,37 +358,39 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
 			descriptor.idx = 0;
 			descriptor.seq = header->sequence;
 			descriptor.sent = 0;
-			sending = false;
+			waiting_cb = false;
 			waiting_ack = false;
 		} else if ( header->command == GIP_ACK_REQUEST ) {
 			Gip_Ack_t * ack = (Gip_Ack_t*)&p_xinput->epout_buf[0];
 			if ( ack->innerCommand == GIP_DEVICE_DESCRIPTOR && ack->Header.sequence == descriptor.seq ) { 
 				//printf("Descriptor: header.sequence %u descriptor.seq %u\r\n", ack->Header.sequence, descriptor.seq);
+				waiting_cb = false;
 				waiting_ack = false;
-				sending = false;
 			} else if ( ack->innerCommand == GIP_AUTH ) {
-				printf("[XBONE_DRIVER] Sending Auth (ACK) Packet to Dongle (%u)\r\n", xferred_bytes);
-				for(uint32_t i=0; i < xferred_bytes; i++)
+				printf("[XBONE_DRIVER %u] Sending Auth (ACK) [Console -> Dongle] (%u)\r\n", to_ms_since_boot(get_absolute_time()), (uint16_t)xferred_bytes);
+				/*for(uint32_t i=0; i < xferred_bytes; i++)
 				{
 					if (i%16 == 0) printf("\r\n  ");
 					printf("%02X ", p_xinput->epout_buf[i]);
 				}
-				printf("\r\n\r\n");
+				printf("\r\n\r\n");*/
 				// Send an ACK between these bytes which will allow the transfer to continue
 				//memcpy(XboxOneData::getInstance().console_to_host, p_xinput->epout_buf, xferred_bytes);
 				//XboxOneData::getInstance().console_to_host_len = xferred_bytes;
 				//XboxOneData::getInstance().console_to_host_ready = true;
-				send_xbhost_report(p_xinput->epout_buf, xferred_bytes);
+				send_xbhost_report(p_xinput->epout_buf, (uint16_t)xferred_bytes);
 			}
 		} else if ( header->command == GIP_POWER_MODE_DEVICE_CONFIG ) {
-			//printf("Got a power-up request!\r\n");
-			//xbox_one_powered_on = true;
-			//keep_alive_timer = 0; // do a keep-alive right away
-		} else if ( header->command == GIP_CMD_WAKEUP) {
-			//printf("Got some kind of rumble/wake-up command? Sending to dongle\r\n");
-			send_xbhost_report(p_xinput->epout_buf, xferred_bytes);
+			printf("[XBONE_DRIVER] Got a power-up request!\r\n");
 			xbox_one_powered_on = true;
 			keep_alive_timer = 0; // do a keep-alive right away
+			keep_alive_sequence = 1;
+		} else if ( header->command == GIP_CMD_WAKEUP) {
+			printf("[XBONE_DRIVER] Got some kind of rumble/wake-up command? Sending to dongle\r\n");
+			send_xbhost_report(p_xinput->epout_buf, (uint16_t)xferred_bytes);
+			xbox_one_powered_on = true;
+			keep_alive_timer = 0; // do a keep-alive right away
+			keep_alive_sequence = 1;
 		} else if ( header->command == GIP_CMD_RUMBLE ) {
 			printf("[+] GOT RUMBLE COMMAND, CHECKING AGAINST KNOWN RUMBLE AUTH\r\n");
 			uint8_t authReady[] = {00,0x0f,00,00,00,00,0xff,00,0xeb};
@@ -400,13 +418,13 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
 				XboxOneData::getInstance().console_to_host_ready = true;
 			}
 			*/
-			printf("[XBONE_DRIVER] Sending Auth Packet to Dongle (%u)\r\n", xferred_bytes);
-			for(uint32_t i=0; i < xferred_bytes; i++)
+			printf("[XBONE_DRIVER %u] Sending Auth [Console -> Dongle] (%u)\r\n", to_ms_since_boot(get_absolute_time()), xferred_bytes);
+			/*for(uint32_t i=0; i < xferred_bytes; i++)
 			{
 				if (i%16 == 0) printf("\r\n  ");
 				printf("%02X ", p_xinput->epout_buf[i]);
 			}
-			printf("\r\n\r\n");
+			printf("\r\n\r\n");*/
 			send_xbhost_report(p_xinput->epout_buf, xferred_bytes);
 		} else {
 			printf("Got some other request\r\n");
@@ -450,11 +468,10 @@ bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
 	return true;
 }
 
-bool send_xbone_report(void *report, uint8_t report_size) {
-	bool sent = false;
-
+bool send_xbone_report(void *report, uint16_t report_size) {
     uint8_t itf = 0;
     xinputd_interface_t *p_xinput = _xinputd_itf;
+	bool ret = false;
 
 	for (;; itf++, p_xinput++) {
         if (itf >= TU_ARRAY_SIZE(_xinputd_itf)) {
@@ -463,29 +480,49 @@ bool send_xbone_report(void *report, uint8_t report_size) {
         if (p_xinput->ep_in)
 			break;
     }
-	if (
-		tud_ready() &&											// Is the device ready?
-		(p_xinput->ep_in != 0) && (!usbd_edpt_busy(0, p_xinput->ep_in)) // Is the IN endpoint available?
+	bool tud_rdy = tud_ready();
+	bool endpt_busy = usbd_edpt_busy(TUD_OPT_RHPORT, p_xinput->ep_in);
+	if ( sending == false &&                                    // are we actively sending?
+		tud_rdy &&											// Is the device ready?
+		(p_xinput->ep_in != 0) && (!endpt_busy) // Is the IN endpoint available?
 	)
 	{
-		usbd_edpt_claim(0, p_xinput->ep_in);								// Take control of IN endpoint
-		usbd_edpt_xfer(0, p_xinput->ep_in, (uint8_t *)report, report_size); // Send report buffer
-		usbd_edpt_release(0, p_xinput->ep_in);								// Release control of IN endpoint
-		sent = true;
-		/*
-		printf("Sent Report:\r\n");
+		usbd_edpt_claim(0, p_xinput->ep_in);										// Take control of IN endpoint
+		ret = usbd_edpt_xfer(0, p_xinput->ep_in, (uint8_t *)report, report_size); 	// Send report buffer
+		usbd_edpt_release(0, p_xinput->ep_in);										// Release control of IN endpoint
+		sending = true;
+		printf("[XBONE_DRIVER SUCCESS!] Sent Report:\r\n");
 		for(uint32_t i=0; i < report_size; i++)
 		{
 			if (i%16 == 0) printf("\r\n  ");
 			printf("%02X ", ((uint8_t*)report)[i]);
 		}
 		printf("\r\n");
-		*/
 	} else {
-		//printf("Could not send this fast, way too busy\r\n");
+		printf("[XBONE_DRIVER ERROR] Could not send this fast, way too busy\r\n");
+		printf("Sending: %u   tud_ready()?: %u  endpoint_busy: %u\r\n", sending, tud_rdy, endpt_busy);
+		printf("Missed Report:\r\n");
+		for(uint32_t i=0; i < report_size; i++)
+		{
+			if (i%16 == 0) printf("\r\n  ");
+			printf("%02X ", ((uint8_t*)report)[i]);
+		}
+		printf("\r\n");
 	}
 
-	return sent;
+	return ret;
+}
+
+void queue_xbone_report(void *report, uint16_t report_size) {
+	if ( report_queue.size() < 8 ) {
+		report_queue_t item;
+		memcpy(item.report, report, report_size);
+		item.len = report_size;
+		item.timestamp = to_ms_since_boot(get_absolute_time());
+		report_queue.push(item);
+	} else {
+		printf("[QUEUE XBONE REPORT ERROR] Cannot queue more than 8 reports\r\n");
+	}
 }
 
 void receive_xbone_report(void) {
@@ -502,7 +539,7 @@ void receive_xbone_report(void) {
 
 	if (
 		tud_ready() &&											// Is the device ready?
-		(p_xinput->ep_out != 0) && (!usbd_edpt_busy(0, p_xinput->ep_out)) // Is the IN endpoint available?
+		(p_xinput->ep_out != 0) && (!usbd_edpt_busy(TUD_OPT_RHPORT, p_xinput->ep_out)) // Is the IN endpoint available?
 	)
 	{
 		usbd_edpt_claim(0, p_xinput->ep_out);								// Take control of IN endpoint
@@ -595,9 +632,6 @@ static uint8_t generateXGIPChunk(uint8_t * buf, const uint8_t * from, uint8_t cm
 void sendKeepAlive(uint32_t now ) {
 	// MagicBoots is 15 seconds
 	if ( xbox_one_powered_on == true && (now - keep_alive_timer) > 15000  ) {	
-		keep_alive_sequence++; // will rollover
-		if ( keep_alive_sequence == 0 )
-			keep_alive_sequence = 1;
 		GipHeader_t keepAlivePacket;
 		memset(&keepAlivePacket, 0, sizeof(GipHeader_t));
 		keepAlivePacket.command = GIP_KEEPALIVE;
@@ -608,12 +642,25 @@ void sendKeepAlive(uint32_t now ) {
 		memset(buf, 0, sizeof(buf));
 		memcpy(buf, &keepAlivePacket, sizeof(GipHeader_t));
 		buf[4] = 0x80;
-		send_xbone_report(buf, 8);
+		queue_xbone_report(buf, 8);
+		keep_alive_sequence++; // will rollover
+		if ( keep_alive_sequence == 0 )
+			keep_alive_sequence = 1;
 		keep_alive_timer = now;
 	}
 }
 
 void tick_xbone_usb() {
+	if ( !report_queue.empty() ) {
+		// send the first report off our queue
+		printf("[Tick_XBOne_USB %u] Sending queued report to Xbox One Driver (%u)\r\n", to_ms_since_boot(get_absolute_time()), report_queue.front().timestamp);
+		if ( send_xbone_report(report_queue.front().report, report_queue.front().len) )
+			report_queue.pop();
+		else
+			printf("[Tick_XBOne_USB] FAILED: Keeping it on the queue to send again\r\n");
+		return;
+	}
+
 	uint32_t now = to_ms_since_boot(get_absolute_time());
 
 	// 5 second keep alive
@@ -630,7 +677,7 @@ void tick_xbone_usb() {
 			//printf("Setting Xbox State as ready to announce!\r\n");
 			changeState(XboxOneState::ready_to_announce);
 		}
-	} else if (state == ready_to_announce && sending == false ) {
+	} else if (state == ready_to_announce && waiting_cb == false ) {
 		//printf("Sending ready to announce!\r\n");
 		GipAnnounce_t announcePacket;
 		GIP_HEADER((&announcePacket), GIP_ANNOUNCE, 1, 1);
@@ -638,9 +685,9 @@ void tick_xbone_usb() {
 		//uint64_t micro = to_us_since_boot(get_absolute_time());
 		//memcpy(&announcePacket.serial[0], &micro, sizeof(uint8_t)*3);
 		send_xbone_report(&announcePacket, sizeof(announcePacket));
-		sending = true;
+		waiting_cb = true;
 		changeState(idle_state);
-	} else if ( state == send_descriptor && sending == false && waiting_ack == false) {
+	} else if ( state == send_descriptor && waiting_cb == false && waiting_ack == false) {
 		uint8_t len = 0;
 		uint8_t buf[0x40];
 		//printf("Total Descriptor Sent So Far %u\r\n", descriptor.sent);
@@ -682,8 +729,8 @@ void tick_xbone_usb() {
 		printf("\r\n");
 		*/
 		send_xbone_report(buf, len);
-		sending = true;
-	} else if ( state == XboxOneState::send_auth && sending == false ) {
+		waiting_cb = true;
+	} else if ( state == XboxOneState::send_auth && waiting_cb == false ) {
 		//printf("Waiting for auth....\r\n");
 	}
 }

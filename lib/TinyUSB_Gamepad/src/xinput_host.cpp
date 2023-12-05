@@ -87,72 +87,89 @@ bool tuh_xinput_mounted(uint8_t dev_addr, uint8_t instance) {
 //--------------------------------------------------------------------+
 
 bool tuh_xinput_receive_report(uint8_t dev_addr, uint8_t instance) {
-    xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
-
-    //printf("tuh_xinput_receive_report in xinput_host.cpp\r\n");
+    xinputh_interface_t *xid_itf = get_instance(dev_addr, instance);
 
     // claim endpoint
-    TU_VERIFY(usbh_edpt_claim(dev_addr, hid_itf->ep_in));
+    TU_VERIFY(usbh_edpt_claim(dev_addr, xid_itf->ep_in));
 
-    if (!usbh_edpt_xfer(dev_addr, hid_itf->ep_in, hid_itf->epin_buf, hid_itf->epin_size)) {
-        printf("ERROR: Could not claim tuh_xinput_receive_report\r\n");
-        usbh_edpt_release(dev_addr, hid_itf->ep_in);
+    if (!usbh_edpt_xfer(dev_addr, xid_itf->ep_in, xid_itf->epin_buf, xid_itf->epin_size)) {
+        usbh_edpt_release(dev_addr, xid_itf->ep_in);
         return false;
     }
 
     return true;
+}
+
+bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *report, uint16_t len) {
+    xinputh_interface_t *xid_itf = get_instance(dev_addr, instance);
+
+    bool ret = false;
+
+    // claim endpoint
+    TU_ASSERT(len <= xid_itf->epout_size);
+    bool tuh_rdy = tuh_ready(dev_addr);
+    bool edpt_busy = usbh_edpt_busy(dev_addr, xid_itf->ep_out);
+    if (tuh_rdy &&
+        (xid_itf->ep_out != 0) && (!edpt_busy)) {
+        TU_VERIFY(usbh_edpt_claim(dev_addr, xid_itf->ep_out));
+        memcpy(xid_itf->epout_buf, report, len);
+        if (!usbh_edpt_xfer(dev_addr, xid_itf->ep_out, xid_itf->epout_buf, len)) {
+            usbh_edpt_release(dev_addr, xid_itf->ep_out);
+            ret = false;
+        }
+        ret = true;
+        printf("[XINPUT-HOST SUCCESS!] Sent Report:\r\n");
+		for(uint32_t i=0; i < len; i++)
+		{
+			if (i%16 == 0) printf("\r\n  ");
+			printf("%02X ", ((uint8_t*)report)[i]);
+		}
+		printf("\r\n");
+    } 
+    if ( ret == false ) {
+        printf("[XINPUT_HOST] Could not send this fast, way too busy\r\n");
+		printf("     time: %u  dev_addr: %u Stud_ready()?: %u  endpoint_busy: %u\r\n", to_ms_since_boot(get_absolute_time()), dev_addr, tuh_rdy, edpt_busy);
+		printf("Missed Report:\r\n");
+		for(uint32_t i=0; i < len; i++)
+		{
+			if (i%16 == 0) printf("\r\n  ");
+			printf("%02X ", ((uint8_t*)report)[i]);
+		}
+		printf("\r\n");
+    }
+
+    return ret;
 }
 
 bool tuh_xinput_ready(uint8_t dev_addr, uint8_t instance) {
     TU_VERIFY(tuh_xinput_mounted(dev_addr, instance));
 
-    //printf("tuh_xinput_ready in xinput_host.cpp\r\n");
-
     xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
     return !usbh_edpt_busy(dev_addr, hid_itf->ep_in);
-}
-
-bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *report, uint16_t len) {
-    xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
-
-    //printf("tuh_xinput_send_report in xinput_host.cpp\r\n");
-
-    // claim endpoint
-    TU_VERIFY(usbh_edpt_claim(dev_addr, hid_itf->ep_out));
-    memcpy(hid_itf->epout_buf, report, len);
-    if (!usbh_edpt_xfer(dev_addr, hid_itf->ep_out, hid_itf->epout_buf, len)) {
-        printf("ERROR: Could not claim tuh_xinput_send_report\r\n");
-        usbh_edpt_release(dev_addr, hid_itf->ep_out);
-        return false;
-    }
-    return true;
 }
 
 //--------------------------------------------------------------------+
 // USBH API
 //--------------------------------------------------------------------+
 void xinputh_init(void) {
-    //printf("xinputh host init\r\n");
     tu_memclr(_xinputh_dev, sizeof(_xinputh_dev));
 }
 
 bool xinputh_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
-    //printf("xinputh xfer cb\r\n");
     (void)result;
 
     uint8_t const dir = tu_edpt_dir(ep_addr);
     uint8_t const instance = get_instance_id_by_epaddr(dev_addr, ep_addr);
-    xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
+    xinputh_interface_t *xinput_itf = get_instance(dev_addr, instance);
 
     if (dir == TUSB_DIR_IN) {
-        //printf("Forwarding to tuh_xinput_report_received_cb\r\n");
-        tuh_xinput_report_received_cb(dev_addr, instance, hid_itf->epin_buf, (uint16_t)xferred_bytes);
-        usbh_edpt_xfer(dev_addr, hid_itf->ep_in, hid_itf->epin_buf, hid_itf->epin_size);
+        tuh_xinput_report_received_cb(dev_addr, instance, xinput_itf->epin_buf, (uint16_t)xferred_bytes);
+        
+        // Is this double sending?
+        usbh_edpt_xfer(dev_addr, xinput_itf->ep_in, xinput_itf->epin_buf, xinput_itf->epin_size);
     } else {
-        //printf("Is report sent cb called?\r\n");
-        if (tuh_xinput_report_sent_cb) {
-            tuh_xinput_report_sent_cb(dev_addr, instance, hid_itf->epout_buf, xferred_bytes);
-        }
+        if (tuh_xinput_report_sent_cb)
+            tuh_xinput_report_sent_cb(dev_addr, instance, xinput_itf->epout_buf, xferred_bytes);
     }
 
     return true;
@@ -175,20 +192,19 @@ typedef enum
 {
     XINPUT_UNKNOWN = 0,
     XBOXONE,
-    XBOX360,
-    XBOXOG,
-    PS4
 } xinput_type_t;
 
 bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const *desc_itf, uint16_t max_len) {
+    printf("xinputh_open Open rhport: %u\r\n", rhport);
+
     (void)rhport;
     (void)max_len;
     TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == desc_itf->bInterfaceClass || TUSB_CLASS_HID == desc_itf->bInterfaceClass, 0);
     xinputh_interface_t *p_xinput = NULL;
     for (uint8_t i = 0; i < CFG_TUH_XINPUT; i++) {
-        xinputh_interface_t *hid_itf = get_instance(dev_addr, i);
-        if (hid_itf->ep_in == 0 && hid_itf->ep_out == 0) {
-            p_xinput = hid_itf;
+        xinputh_interface_t *xid_itf = get_instance(dev_addr, i);
+        if (xid_itf->ep_in == 0 && xid_itf->ep_out == 0) {
+            p_xinput = xid_itf;
             break;
         }
     }
@@ -204,14 +220,17 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
             TU_ASSERT(TUSB_DESC_ENDPOINT == desc_ep->bDescriptorType);
             if (desc_ep->bEndpointAddress & 0x80) {
                 p_xinput->ep_in = desc_ep->bEndpointAddress;
+                p_xinput->epin_size = tu_edpt_packet_size(desc_ep);
                 TU_ASSERT(tuh_edpt_open(dev_addr, desc_ep));
             } else {
                 p_xinput->ep_out = desc_ep->bEndpointAddress;
+                p_xinput->epout_size = tu_edpt_packet_size(desc_ep);
                 TU_ASSERT(tuh_edpt_open(dev_addr, desc_ep));
             }
         }
         p_xinput->itf_num = desc_itf->bInterfaceNumber;
         p_xinput->type = XBOXONE;
+
         _xinputh_dev->inst_count++;
         usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
         return true;
@@ -232,12 +251,13 @@ bool xinputh_set_config(uint8_t dev_addr, uint8_t itf_num) {
 }
 
 static void config_driver_mount_complete(uint8_t dev_addr, uint8_t instance) {
-    xinputh_interface_t *hid_itf = get_instance(dev_addr, instance);
+    xinputh_interface_t *xid_itf = get_instance(dev_addr, instance);
+    
     // enumeration is complete
-    tuh_xinput_mount_cb(dev_addr, instance, hid_itf->type, hid_itf->subtype);
+    tuh_xinput_mount_cb(dev_addr, instance, xid_itf->type, xid_itf->subtype);
 
     // notify usbh that driver enumeration is complete
-    usbh_driver_set_config_complete(dev_addr, hid_itf->itf_num);
+    usbh_driver_set_config_complete(dev_addr, xid_itf->itf_num);
 }
 
 //--------------------------------------------------------------------+
@@ -269,7 +289,6 @@ static uint8_t get_instance_id_by_epaddr(uint8_t dev_addr, uint8_t ep_addr) {
         xinputh_interface_t *hid = get_instance(dev_addr, inst);
         if ((ep_addr == hid->ep_in) || (ep_addr == hid->ep_out)) return inst;
     }
-
     return 0xff;
 }
 
