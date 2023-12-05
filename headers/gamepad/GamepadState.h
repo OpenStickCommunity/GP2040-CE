@@ -18,6 +18,9 @@ using namespace std;
 #include "gamepad/descriptors/NeogeoDescriptors.h"
 #include "gamepad/descriptors/MDMiniDescriptors.h"
 #include "gamepad/descriptors/PCEngineDescriptors.h"
+#include "gamepad/descriptors/EgretDescriptors.h"
+#include "gamepad/descriptors/AstroDescriptors.h"
+#include "gamepad/descriptors/PSClassicDescriptors.h"
 
 #define GAMEPAD_BUTTON_COUNT 14
 
@@ -158,6 +161,15 @@ inline uint16_t GetJoystickMidValue(uint8_t mode) {
             return GAMEPAD_JOYSTICK_MID;
 
         case INPUT_MODE_PCEMINI:
+            return GAMEPAD_JOYSTICK_MID;
+
+        case INPUT_MODE_EGRET:
+            return GAMEPAD_JOYSTICK_MID;
+
+        case INPUT_MODE_ASTRO:
+            return GAMEPAD_JOYSTICK_MID;
+
+        case INPUT_MODE_PSCLASSIC:
             return GAMEPAD_JOYSTICK_MID;
 
         default:

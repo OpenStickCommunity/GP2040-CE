@@ -118,6 +118,9 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_NEOGEO:
 		case BootAction::SET_INPUT_MODE_MDMINI:
 		case BootAction::SET_INPUT_MODE_PCEMINI:
+		case BootAction::SET_INPUT_MODE_EGRET:
+		case BootAction::SET_INPUT_MODE_ASTRO:
+		case BootAction::SET_INPUT_MODE_PSCLASSIC:
 		case BootAction::NONE:
 			{
 				InputMode inputMode = gamepad->getOptions().inputMode;
@@ -137,6 +140,12 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_MDMINI;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_PCEMINI) {
 					inputMode = INPUT_MODE_PCEMINI;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_EGRET) {
+					inputMode = INPUT_MODE_EGRET;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_ASTRO) {
+					inputMode = INPUT_MODE_ASTRO;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_PSCLASSIC) {
+					inputMode = INPUT_MODE_PSCLASSIC;
 				}
 
 				if (inputMode != gamepad->getOptions().inputMode) {
@@ -258,6 +267,12 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_MDMINI;
                                 case INPUT_MODE_PCEMINI: 
                                     return BootAction::SET_INPUT_MODE_PCEMINI;
+                                case INPUT_MODE_EGRET: 
+                                    return BootAction::SET_INPUT_MODE_EGRET;
+                                case INPUT_MODE_ASTRO: 
+                                    return BootAction::SET_INPUT_MODE_ASTRO;
+                                case INPUT_MODE_PSCLASSIC: 
+                                    return BootAction::SET_INPUT_MODE_PSCLASSIC;
                                 default:
                                     return BootAction::NONE;
                             }

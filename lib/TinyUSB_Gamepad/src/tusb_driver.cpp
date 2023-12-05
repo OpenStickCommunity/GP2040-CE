@@ -4,6 +4,7 @@
  */
 
 #include <stdint.h>
+#include <cstdio>
 
 #include "tusb_config.h"
 #include "tusb.h"
@@ -132,6 +133,9 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 	NeogeoReport neogeo_report;
 	MDMiniReport mdmini_report;
 	PCEngineReport pcengine_report;
+	EgretReport egret_report;
+	AstroReport astro_report;
+	PSClassicReport psclassic_report;
 	switch (input_mode)
 	{
 		case INPUT_MODE_SWITCH:
@@ -149,6 +153,18 @@ uint16_t tud_hid_get_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t
 		case INPUT_MODE_PCEMINI:
 			report_size = sizeof(PCEngineReport);
 			memcpy(buffer, &pcengine_report, report_size);
+			break;
+		case INPUT_MODE_EGRET:
+			report_size = sizeof(EgretReport);
+			memcpy(buffer, &egret_report, report_size);
+			break;
+		case INPUT_MODE_ASTRO:
+			report_size = sizeof(AstroReport);
+			memcpy(buffer, &astro_report, report_size);
+			break;
+		case INPUT_MODE_PSCLASSIC:
+			report_size = sizeof(PSClassicReport);
+			memcpy(buffer, &psclassic_report, report_size);
 			break;
 		case INPUT_MODE_KEYBOARD:
 			report_size = report_id == KEYBOARD_KEY_REPORT_ID ? sizeof(KeyboardReport::keycode) : sizeof(KeyboardReport::multimedia);

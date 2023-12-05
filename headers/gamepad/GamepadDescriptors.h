@@ -15,6 +15,9 @@
 #include "descriptors/NeogeoDescriptors.h"
 #include "descriptors/MDMiniDescriptors.h"
 #include "descriptors/PCEngineDescriptors.h"
+#include "descriptors/EgretDescriptors.h"
+#include "descriptors/AstroDescriptors.h"
+#include "descriptors/PSClassicDescriptors.h"
 
 #include "enums.pb.h"
 
@@ -52,6 +55,18 @@ static const uint8_t *getConfigurationDescriptor(uint16_t *size, InputMode mode)
 		case INPUT_MODE_PCEMINI:
 			*size = sizeof(pcengine_configuration_descriptor);
 			return pcengine_configuration_descriptor;
+
+		case INPUT_MODE_EGRET:
+			*size = sizeof(egret_configuration_descriptor);
+			return egret_configuration_descriptor;
+
+		case INPUT_MODE_ASTRO:
+			*size = sizeof(astro_configuration_descriptor);
+			return astro_configuration_descriptor;
+
+		case INPUT_MODE_PSCLASSIC:
+			*size = sizeof(psclassic_configuration_descriptor);
+			return psclassic_configuration_descriptor;
 
 		default:
 			*size = sizeof(hid_configuration_descriptor);
@@ -91,6 +106,18 @@ static const uint8_t *getDeviceDescriptor(uint16_t *size, InputMode mode)
 			*size = sizeof(pcengine_device_descriptor);
 			return pcengine_device_descriptor;
 
+		case INPUT_MODE_EGRET:
+			*size = sizeof(egret_device_descriptor);
+			return egret_device_descriptor;
+
+		case INPUT_MODE_ASTRO:
+			*size = sizeof(astro_device_descriptor);
+			return astro_device_descriptor;
+
+		case INPUT_MODE_PSCLASSIC:
+			*size = sizeof(psclassic_device_descriptor);
+			return psclassic_device_descriptor;
+
 		default:
 			*size = sizeof(hid_device_descriptor);
 			return hid_device_descriptor;
@@ -125,6 +152,18 @@ static const uint8_t *getHIDDescriptor(uint16_t *size, InputMode mode)
 			*size = sizeof(pcengine_hid_descriptor);
 			return pcengine_hid_descriptor;
 
+		case INPUT_MODE_EGRET:
+			*size = sizeof(egret_hid_descriptor);
+			return egret_hid_descriptor;
+
+		case INPUT_MODE_ASTRO:
+			*size = sizeof(astro_hid_descriptor);
+			return astro_hid_descriptor;
+
+		case INPUT_MODE_PSCLASSIC:
+			*size = sizeof(psclassic_hid_descriptor);
+			return psclassic_hid_descriptor;
+
 		default:
 			*size = sizeof(hid_hid_descriptor);
 			return hid_hid_descriptor;
@@ -158,6 +197,18 @@ static const uint8_t *getHIDReport(uint16_t *size, InputMode mode)
 		case INPUT_MODE_PCEMINI:
 			*size = sizeof(pcengine_report_descriptor);
 			return pcengine_report_descriptor;
+
+		case INPUT_MODE_EGRET:
+			*size = sizeof(egret_report_descriptor);
+			return egret_report_descriptor;
+
+		case INPUT_MODE_ASTRO:
+			*size = sizeof(astro_report_descriptor);
+			return astro_report_descriptor;
+
+		case INPUT_MODE_PSCLASSIC:
+			*size = sizeof(psclassic_report_descriptor);
+			return psclassic_report_descriptor;
 
 		default:
 			*size = sizeof(hid_report_descriptor);
@@ -232,6 +283,18 @@ static const uint16_t *getStringDescriptor(uint16_t *size, InputMode mode, uint8
 
 			case INPUT_MODE_PCEMINI:
 				str = (char *)pcengine_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_EGRET:
+				str = (char *)egret_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_ASTRO:
+				str = (char *)astro_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_PSCLASSIC:
+				str = (char *)psclassic_string_descriptors[index];
 				break;
 
 			default:

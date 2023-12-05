@@ -32,6 +32,18 @@ static uint16_t getConfigurationDescriptor(const uint8_t *buffer, InputMode mode
 			buffer = pcengine_configuration_descriptor;
 			return sizeof(pcengine_configuration_descriptor);
 
+		case INPUT_MODE_EGRET:
+			buffer = egret_configuration_descriptor;
+			return sizeof(egret_configuration_descriptor);
+
+		case INPUT_MODE_ASTRO:
+			buffer = astro_configuration_descriptor;
+			return sizeof(astro_configuration_descriptor);
+
+		case INPUT_MODE_PSCLASSIC:
+			buffer = psclassic_configuration_descriptor;
+			return sizeof(psclassic_configuration_descriptor);
+
 		default:
 			buffer = hid_configuration_descriptor;
 			return sizeof(hid_configuration_descriptor);
@@ -70,6 +82,18 @@ static uint16_t getDeviceDescriptor(const uint8_t *buffer, InputMode mode)
 			buffer = pcengine_device_descriptor;
 			return sizeof(pcengine_device_descriptor);
 
+		case INPUT_MODE_EGRET:
+			buffer = egret_device_descriptor;
+			return sizeof(egret_device_descriptor);
+
+		case INPUT_MODE_ASTRO:
+			buffer = astro_device_descriptor;
+			return sizeof(astro_device_descriptor);
+
+		case INPUT_MODE_PSCLASSIC:
+			buffer = psclassic_device_descriptor;
+			return sizeof(psclassic_device_descriptor);
+
 		default:
 			buffer = hid_device_descriptor;
 			return sizeof(hid_device_descriptor);
@@ -100,6 +124,18 @@ static uint16_t getHIDDescriptor(const uint8_t *buffer, InputMode mode)
 			buffer = pcengine_hid_descriptor;
 			return sizeof(pcengine_hid_descriptor);
 
+		case INPUT_MODE_EGRET:
+			buffer = egret_hid_descriptor;
+			return sizeof(egret_hid_descriptor);
+
+		case INPUT_MODE_ASTRO:
+			buffer = astro_hid_descriptor;
+			return sizeof(astro_hid_descriptor);
+
+		case INPUT_MODE_PSCLASSIC:
+			buffer = psclassic_hid_descriptor;
+			return sizeof(psclassic_hid_descriptor);
+
 		default:
 			buffer = hid_hid_descriptor;
 			return sizeof(hid_hid_descriptor);
@@ -129,6 +165,18 @@ static uint16_t getHIDReport(const uint8_t *buffer, InputMode mode)
 		case INPUT_MODE_PCEMINI:
 			buffer = pcengine_report_descriptor;
 			return sizeof(pcengine_report_descriptor);
+
+		case INPUT_MODE_EGRET:
+			buffer = egret_report_descriptor;
+			return sizeof(egret_report_descriptor);
+
+		case INPUT_MODE_ASTRO:
+			buffer = astro_report_descriptor;
+			return sizeof(astro_report_descriptor);
+
+		case INPUT_MODE_PSCLASSIC:
+			buffer = psclassic_report_descriptor;
+			return sizeof(psclassic_report_descriptor);
 
 		default:
 			buffer = hid_report_descriptor;
@@ -179,6 +227,21 @@ static uint16_t getStringDescriptor(const uint16_t *buffer, InputMode mode, uint
 		case INPUT_MODE_PCEMINI:
 			value = (const char *)pcengine_string_descriptors[index];
 			size = sizeof(pcengine_string_descriptors[index]);
+			break;
+
+		case INPUT_MODE_EGRET:
+			value = (const char *)egret_string_descriptors[index];
+			size = sizeof(egret_string_descriptors[index]);
+			break;
+
+		case INPUT_MODE_ASTRO:
+			value = (const char *)astro_string_descriptors[index];
+			size = sizeof(astro_string_descriptors[index]);
+			break;
+
+		case INPUT_MODE_PSCLASSIC:
+			value = (const char *)psclassic_string_descriptors[index];
+			size = sizeof(psclassic_string_descriptors[index]);
 			break;
 
 		default:

@@ -16,6 +16,9 @@
 #include "gamepad/descriptors/NeogeoDescriptors.h"
 #include "gamepad/descriptors/MDMiniDescriptors.h"
 #include "gamepad/descriptors/PCEngineDescriptors.h"
+#include "gamepad/descriptors/EgretDescriptors.h"
+#include "gamepad/descriptors/AstroDescriptors.h"
+#include "gamepad/descriptors/PSClassicDescriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -78,6 +81,9 @@ public:
 	NeogeoReport *getNeogeoReport();
 	MDMiniReport *getMDMiniReport();
 	PCEngineReport *getPCEngineReport();
+    EgretReport *getEgretReport();
+    AstroReport *getAstroReport();
+    PSClassicReport *getPSClassicReport();
 
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.

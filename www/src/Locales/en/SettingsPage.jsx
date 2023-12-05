@@ -12,6 +12,9 @@ export default {
 		neogeo: 'NEOGEO mini',
 		mdmini: 'Sega Genesis/MegaDrive Mini',
 		pcemini: 'PC Engine/Turbografx 16 Mini',
+		egret: 'EGRET II mini',
+		astro: 'ASTROCITY Mini',
+		psclassic: 'Playstation Classic',
 	},
     'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {

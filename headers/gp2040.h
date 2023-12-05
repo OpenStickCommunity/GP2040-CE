@@ -50,7 +50,10 @@ private:
         SET_INPUT_MODE_PS4,
         SET_INPUT_MODE_NEOGEO,
         SET_INPUT_MODE_MDMINI,
-        SET_INPUT_MODE_PCEMINI
+        SET_INPUT_MODE_PCEMINI,
+        SET_INPUT_MODE_EGRET,
+        SET_INPUT_MODE_ASTRO,
+        SET_INPUT_MODE_PSCLASSIC
     };
     BootAction getBootAction();
 

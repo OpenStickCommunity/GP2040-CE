@@ -20,6 +20,9 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.mdmini', value: 6 },
 	{ labelKey: 'input-mode-options.neogeo', value: 7 },
 	{ labelKey: 'input-mode-options.pcemini', value: 8 },
+	{ labelKey: 'input-mode-options.egret', value: 9 },
+	{ labelKey: 'input-mode-options.astro', value: 10 },
+	{ labelKey: 'input-mode-options.psclassic', value: 11 },
 ];
 
 const INPUT_BOOT_MODES = [
@@ -32,6 +35,9 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.mdmini', value: 6 },
 	{ labelKey: 'input-mode-options.neogeo', value: 7 },
 	{ labelKey: 'input-mode-options.pcemini', value: 8 },
+	{ labelKey: 'input-mode-options.egret', value: 9 },
+	{ labelKey: 'input-mode-options.astro', value: 10 },
+    { labelKey: 'input-mode-options.psclassic', value: 11 },
 ];
 
 const DPAD_MODES = [
