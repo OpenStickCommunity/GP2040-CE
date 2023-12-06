@@ -42,7 +42,7 @@ public:
 	Gamepad();
 
 	void setup();
-	void teardown_and_reinit(const uint32_t profileNum);
+	void reinit();
 	void process();
 	void read();
 	void save();
@@ -156,6 +156,8 @@ public:
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping *mapButtonFn;
+
+	bool userRequestedReinit = false;
 
 	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
 		 return (options.socdMode == SOCD_MODE_BYPASS &&

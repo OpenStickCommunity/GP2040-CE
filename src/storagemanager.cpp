@@ -47,7 +47,7 @@ Storage::Storage()
 	critical_section_init(&animationOptionsCs);
 	ConfigUtils::load(config);
 
-	setFunctionalPinMappings(config.gamepadOptions.profileNumber);
+	setFunctionalPinMappings();
 }
 
 bool Storage::save()
@@ -138,19 +138,17 @@ void Storage::ResetSettings()
 
 void Storage::setProfile(const uint32_t profileNum)
 {
-	if (profileNum < 1 || profileNum > 4) return;
-	setFunctionalPinMappings(profileNum);
-	this->config.gamepadOptions.profileNumber = profileNum;
+	this->config.gamepadOptions.profileNumber = (profileNum < 1 || profileNum > 4) ? 1 : profileNum;
 }
 
-void Storage::setFunctionalPinMappings(const uint32_t profileNum)
+void Storage::setFunctionalPinMappings()
 {
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		functionalPinMappings[pin] = this->config.gpioMappings.pins[pin].action;
 	}
-	if (profileNum < 2 || profileNum > 4) return;
+	if (config.gamepadOptions.profileNumber < 2 || config.gamepadOptions.profileNumber > 4) return;
 
-	AlternativePinMappings alts = this->config.profileOptions.alternativePinMappings[profileNum-2];
+	AlternativePinMappings alts = this->config.profileOptions.alternativePinMappings[config.gamepadOptions.profileNumber-2];
 
 	const auto reassignProfilePin = [&](Pin_t targetPin, GpioAction newAction) -> void {
 		// reassign the functional pin if:
