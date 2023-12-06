@@ -199,6 +199,9 @@ void GP2040::run() {
 			// now we can tell the gamepad that the new mappings are in place
 			// and ready to use, and the pins are ready, so it should reinitialize itself
 			gamepad->reinit();
+			// ...and addons on this core, if they implemented reinit (just things
+			// with simple GPIO pin usage, at time of writing)
+			addons.ReinitializeAddons(ADDON_PROCESS::CORE0_INPUT);
 
 			// and we're done
 			gamepad->userRequestedReinit = false;
