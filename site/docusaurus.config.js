@@ -79,7 +79,7 @@ const config = {
 						type: 'docSidebar',
 						position: 'left',
 						sidebarId: 'docSidebar',
-						label: 'Home',
+						label: 'Getting Started',
 					},
 					{
 						type: 'docSidebar',
@@ -120,7 +120,7 @@ const config = {
 			docs: {
 				sidebar: {
 					hideable: true,
-					autoCollapseCategories: false,
+					autoCollapseCategories: true,
 				},
 			},
 			prism: {
