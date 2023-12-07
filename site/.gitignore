@@ -9,24 +9,11 @@
 
 node_modules
 .yarn
-package-lock.json
 
 .eslintcache
 
 yarn-error.log
 build
-coverage
+
 .docusaurus
 .cache-loader
-types
-
-packages/create-docusaurus/lib/
-packages/lqip-loader/lib/
-packages/docusaurus/lib/
-packages/docusaurus-*/lib/*
-packages/eslint-plugin/lib/
-packages/stylelint-copyright/lib/
-
-CrowdinTranslations_*.zip
-
-.netlify
