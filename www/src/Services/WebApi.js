@@ -666,6 +666,7 @@ const WebApi = {
 	setLedOptions,
 	getCustomTheme,
 	setCustomTheme,
+	getPinMappings,
 	setPinMappings,
 	getKeyMappings,
 	setKeyMappings,
