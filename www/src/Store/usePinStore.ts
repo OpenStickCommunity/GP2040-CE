@@ -12,7 +12,7 @@ type State = {
 type Actions = {
 	fetchPins: () => void;
 	setPinAction: (pin: string, action: PinActionValues) => void;
-	savePins: () => Promise<{}>;
+	savePins: () => Promise<object>;
 };
 
 const INITIAL_STATE: State = {

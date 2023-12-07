@@ -16,7 +16,7 @@ type Actions = {
 		pin: string,
 		action: PinActionValues,
 	) => void;
-	saveProfiles: () => Promise<{}>;
+	saveProfiles: () => Promise<object>;
 };
 
 const defaultProfilePins: ProfileType = {

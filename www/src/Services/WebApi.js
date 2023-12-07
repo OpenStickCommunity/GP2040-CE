@@ -312,8 +312,6 @@ async function getLedOptions(setLoading) {
 }
 
 async function setLedOptions(options) {
-	let data = sanitizeRequest(options);
-
 	return axios
 		.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
@@ -394,9 +392,7 @@ async function getPinMappings(setLoading) {
 
 async function setPinMappings(mappings) {
 	let data = {};
-	Object.keys(mappings).map(
-		(button, i) => (data[button] = mappings[button].pin),
-	);
+	Object.keys(mappings).map((button) => (data[button] = mappings[button].pin));
 
 	return axios
 		.post(`${baseUrl}/api/setPinMappings`, sanitizeRequest(data))
@@ -430,9 +426,7 @@ async function getKeyMappings(setLoading) {
 
 async function setKeyMappings(mappings) {
 	let data = {};
-	Object.keys(mappings).map(
-		(button, i) => (data[button] = mappings[button].key),
-	);
+	Object.keys(mappings).map((button) => (data[button] = mappings[button].key));
 
 	return axios
 		.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
@@ -469,7 +463,7 @@ async function setAddonsOptions(options) {
 	if (options.keyboardHostMap) {
 		let data = {};
 		Object.keys(options.keyboardHostMap).map(
-			(button, i) => (data[button] = options.keyboardHostMap[button].key),
+			(button) => (data[button] = options.keyboardHostMap[button].key),
 		);
 		options.keyboardHostMap = data;
 	}
@@ -672,6 +666,7 @@ const WebApi = {
 	setLedOptions,
 	getCustomTheme,
 	setCustomTheme,
+	getPinMappings,
 	setPinMappings,
 	getKeyMappings,
 	setKeyMappings,
