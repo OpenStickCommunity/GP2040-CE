@@ -12,7 +12,7 @@ import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 
-import { PERIPHERAL_DEVICES, I2C_BLOCKS } from '../Data/Peripherals';
+import { I2C_BLOCKS } from '../Data/Peripherals';
 
 const ON_OFF_OPTIONS = [
 	{ label: 'Disabled', value: 0 },
@@ -62,24 +62,6 @@ const SPLASH_MODES = [
 	{ label: 'Enabled', value: 0 }, // STATICSPLASH
 	//	{ label: 'Close In', value: 1 },		 // CLOSEIN
 	{ label: 'Disabled', value: 3 }, // NOSPLASH
-];
-
-const SPLASH_DURATION_CHOICES = [
-	{ label: 'Default', value: 0 },
-	{ label: '5 seconds', value: 5000 },
-	{ label: '10 seconds', value: 10000 },
-	{ label: '30 seconds', value: 30000 },
-	{ label: 'Always ON', value: -1 },
-];
-
-const DISPLAY_SAVER_TIMEOUT_CHOICES = [
-	{ label: 'Off', value: 0 },
-	{ label: '1 minute', value: 1 },
-	{ label: '2 minutes', value: 2 },
-	{ label: '5 minutes', value: 5 },
-	{ label: '10 minutes', value: 10 },
-	{ label: '20 minutes', value: 20 },
-	{ label: '30 minutes', value: 30 },
 ];
 
 const DISPLAY_FLIP_MODES = [
@@ -297,7 +279,7 @@ export default function DisplayConfigPage() {
 			onSubmit={onSuccess}
 			initialValues={defaultValues}
 		>
-			{({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => {
+			{({ handleSubmit, handleChange, values, errors }) => {
                 const handlePeripheralChange = (e) => {
                     let device = getSelectedPeripheral('i2c', e.target.value);
                     values.sdaPin = device.sda;
@@ -677,7 +659,6 @@ export default function DisplayConfigPage() {
                                         {({
                                             field, // { name, value, onChange, onBlur }
                                             form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-                                            meta,
                                         }) => (
                                             <div className="mt-3">
                                                 <Canvas
