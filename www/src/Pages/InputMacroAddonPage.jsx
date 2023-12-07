@@ -145,7 +145,6 @@ const MacroInputComponent = (props) => {
 		buttonLabelType,
 		showFrames,
 		errors,
-		handleChange,
 		id: key,
 		translation: t,
 		setFieldValue,
@@ -291,7 +290,6 @@ const MacroComponent = (props) => {
 		buttonLabelType,
 		setFieldValue,
 		disabled,
-		buttonNames,
 	} = props;
 
 	const filteredMacroInputs = macroInputs.filter((i) => i !== EMPTY_INPUT);
@@ -476,7 +474,7 @@ const MacroComponent = (props) => {
 							variant="success"
 							className="col px-2"
 							size="sm"
-							onClick={(e) => {
+							onClick={() => {
 								setFieldValue(
 									`${key}.macroInputs[${filteredMacroInputs.length}]`,
 									{ ...defaultMacroInput },
@@ -495,7 +493,7 @@ const MacroComponent = (props) => {
 };
 
 export default function SettingsPage() {
-	const { buttonLabels, setButtonLabels } = useContext(AppContext);
+	const { buttonLabels } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const saveSettings = async (values) => {
