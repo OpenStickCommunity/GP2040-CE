@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, Col } from 'react-bootstrap';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
@@ -117,7 +117,7 @@ export default function BackupPage() {
 		setCheckValues((checkValues) => ({ ...checkValues, ...nextCheckValue }));
 	};
 
-	const handleSave = async (values) => {
+	const handleSave = async () => {
 		let exportData = {};
 		for (const [key, value] of Object.entries(checkValues)) {
 			if (key.match('export_') && (value != null || value !== undefined)) {
