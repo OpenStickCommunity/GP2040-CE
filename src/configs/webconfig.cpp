@@ -665,6 +665,10 @@ std::string setGamepadOptions()
 	save_hotkey(&hotkeyOptions.hotkey10, doc, "hotkey10");
 	save_hotkey(&hotkeyOptions.hotkey11, doc, "hotkey11");
 	save_hotkey(&hotkeyOptions.hotkey12, doc, "hotkey12");
+	save_hotkey(&hotkeyOptions.hotkey13, doc, "hotkey13");
+	save_hotkey(&hotkeyOptions.hotkey14, doc, "hotkey14");
+	save_hotkey(&hotkeyOptions.hotkey15, doc, "hotkey15");
+	save_hotkey(&hotkeyOptions.hotkey16, doc, "hotkey16");
 
 	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 	readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");
@@ -718,6 +722,10 @@ std::string getGamepadOptions()
 	load_hotkey(&hotkeyOptions.hotkey10, doc, "hotkey10");
 	load_hotkey(&hotkeyOptions.hotkey11, doc, "hotkey11");
 	load_hotkey(&hotkeyOptions.hotkey12, doc, "hotkey12");
+	load_hotkey(&hotkeyOptions.hotkey13, doc, "hotkey13");
+	load_hotkey(&hotkeyOptions.hotkey14, doc, "hotkey14");
+	load_hotkey(&hotkeyOptions.hotkey15, doc, "hotkey15");
+	load_hotkey(&hotkeyOptions.hotkey16, doc, "hotkey16");
 
 	ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
 	writeDoc(doc, "forcedSetupMode", forcedSetupOptions.mode);
