@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { create } from 'zustand';
-import { baseUrl } from '../Services/WebApi';
+import WebApi, { baseUrl } from '../Services/WebApi';
 import { PinActionValues } from '../Data/Pins';
 
 type ProfileType = { [key: string]: PinActionValues };
@@ -61,10 +61,10 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchProfiles: async () => {
 		set({ loadingProfiles: true });
-		const { data } = await axios.get(`${baseUrl}/api/getProfileOptions`);
+		const profiles = await WebApi.getProfileOptions();
 		set((state) => ({
 			...state,
-			profiles: [...data.alternativePinMappings],
+			profiles,
 			loadingProfiles: false,
 		}));
 	},
@@ -76,10 +76,7 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 				index === profileIndex ? { ...profile, [pin]: action } : profile,
 			),
 		})),
-	saveProfiles: async () =>
-		axios.post(`${baseUrl}/api/setProfileOptions`, {
-			alternativePinMappings: get().profiles,
-		}),
+	saveProfiles: async () => WebApi.setProfileOptions(get().profiles),
 }));
 
 export default useProfilesStore;
