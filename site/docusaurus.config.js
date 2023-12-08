@@ -12,7 +12,7 @@ const config = {
 	tagline: 'Community Edition Firmware',
 	favicon: 'img/favicon.ico',
 
-	url: 'https://gp2040ce.info',
+	url: 'https://gp2040-ce.info',
 	baseUrl: '/',
 
 	organizationName: 'OpenStickCommunity',
