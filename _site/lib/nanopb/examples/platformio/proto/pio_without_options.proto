@@ -1,5 +1,0 @@
-syntax = "proto3";
-
-message TestMessageWithoutOptions {
-  int32 number = 1;
-}
