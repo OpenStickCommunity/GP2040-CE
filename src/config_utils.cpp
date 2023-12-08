@@ -278,10 +278,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, sck, -1);
     INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, tx, -1);
 
-    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enabled, USB_PERIPHERAL_ENABLED);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, dp, USB_PERIPHERAL_PIN_DPLUS);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enabled, (PSPASSTHROUGH_ENABLED ? PSPASSTHROUGH_ENABLED : USB_PERIPHERAL_ENABLED));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, dp, (PSPASSTHROUGH_PIN_DPLUS != -1 ? PSPASSTHROUGH_PIN_DPLUS : USB_PERIPHERAL_PIN_DPLUS));
     INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, order, USB_PERIPHERAL_PIN_ORDER);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enable5v, USB_PERIPHERAL_PIN_5V);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enable5v, (PSPASSTHROUGH_PIN_5V != -1 ? PSPASSTHROUGH_PIN_5V : USB_PERIPHERAL_PIN_5V));
 
     // ledOptions
     INIT_UNSET_PROPERTY(config.ledOptions, dataPin, BOARD_LEDS_PIN);
