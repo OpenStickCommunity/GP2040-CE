@@ -11,6 +11,8 @@
 
 #include "gamepad/descriptors/XBOneDescriptors.h"
 
+#include "xgip_protocol.h"
+
 #define XBONE_OUT_SIZE 64
 
 // USB endpoint state vars
@@ -35,8 +37,8 @@ typedef enum {
 	reset_state = 0,
 	ready_to_announce = 1,
 	send_descriptor = 2,
-	send_auth = 3,
-	auth_complete = 4,
+	send_auth_console_to_dongle = 3,
+	send_auth_dongle_to_console = 4,
 	idle_state = 5
 } XboxOneState;
 
@@ -58,8 +60,10 @@ public:
 	uint8_t console_to_host[256]; 
 	uint16_t console_to_host_len;
 	bool console_to_host_ready;
-
 	bool auth_completed;
+
+	// Auth Buffer
+	uint8_t * authBuffer;
 
 private:
 	XboxOneData() {

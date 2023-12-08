@@ -52,7 +52,7 @@ static const uint8_t * xbone_get_string_descriptor(int index) {
 // MOVE THIS TO XBOX ONE DRIVER
 typedef enum
 {
-    GIP_ACK_REQUEST                 = 0x01,    // Xbox One ACK
+    GIP_ACK_RESPONSE                = 0x01,    // Xbox One ACK
     GIP_ANNOUNCE                    = 0x02,    // Xbox One Announce
     GIP_KEEPALIVE                   = 0x03,    // Xbox One Keep-Alive
 	GIP_DEVICE_DESCRIPTOR           = 0x04,    // Xbox One Definition

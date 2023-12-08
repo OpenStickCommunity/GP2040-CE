@@ -122,7 +122,7 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
                 send_xbone_ack(dev_addr, instance, header->sequence, packet_chunk_received, descriptor_size);
             }
             break;
-        case GIP_ACK_REQUEST:
+        case GIP_ACK_RESPONSE:
             if ( ack->innerCommand == GIP_AUTH ) {
 			    printf("[XBONE_ADDON %u] Sending Auth (ack) [Dongle -> Console] (%u)\r\n", to_ms_since_boot(get_absolute_time()), len);
                 /*for(uint32_t i=0; i < len; i++)

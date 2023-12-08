@@ -191,6 +191,10 @@ void Gamepad::setup()
 
 	// setup PS5 compatibility
 	PS4Data::getInstance().ps4ControllerType = gamepadOptions.ps4ControllerType;
+
+	// Xbox One Keep-Alive
+	keep_alive_timer = 0;
+	keep_alive_sequence = 0;
 }
 
 /**
@@ -675,8 +679,28 @@ void Gamepad::tickReportCounter() {
 
 XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 {
+	uint32_t now = to_ms_since_boot(get_absolute_time());
+
 	if ( XboxOneData::getInstance().auth_completed == false ) {
+		// No input until auth is ready
 		GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, 0);
+		return &xboneReport;
+	} else if ( (now - keep_alive_timer) > 15000) {
+		// Send Keep-Alive every 15 seconds
+		printf("[GAMEPAD] Sending Keep Alive\r\n");
+		GipHeader_t keepAlivePacket;
+		memset(&keepAlivePacket, 0, sizeof(GipHeader_t));
+		keepAlivePacket.command = GIP_KEEPALIVE;
+		keepAlivePacket.internal = 1;
+		keep_alive_sequence++; // will rollover
+		if ( keep_alive_sequence == 0 )
+			keep_alive_sequence = 1;
+		keepAlivePacket.sequence = keep_alive_sequence;
+		keepAlivePacket.length = 4;
+		uint8_t keepAlive[] = { 0x80, 0x00, 0x00, 0x00 };\
+		memcpy(&xboneReport, &keepAlivePacket, sizeof(GipHeader_t));
+		memcpy(&((uint8_t*)&xboneReport)[4], &keepAlive, sizeof(keepAlive));
+		keep_alive_timer = now;
 		return &xboneReport;
 	}
 

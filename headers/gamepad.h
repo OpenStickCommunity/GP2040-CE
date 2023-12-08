@@ -179,6 +179,9 @@ private:
 	const HotkeyOptions& hotkeyOptions;
 
 	GamepadHotkey lastAction = HOTKEY_NONE;
+
+	uint32_t keep_alive_timer;
+	uint8_t keep_alive_sequence;
 };
 
 #endif
