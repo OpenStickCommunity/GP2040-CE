@@ -78,7 +78,7 @@ const config = {
 					{
 						type: 'docSidebar',
 						position: 'left',
-						sidebarId: 'docSidebar',
+						sidebarId: 'startSidebar',
 						label: 'Getting Started',
 					},
 					{
