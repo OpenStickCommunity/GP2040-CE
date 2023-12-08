@@ -12,8 +12,8 @@ const config = {
 	tagline: 'Community Edition Firmware',
 	favicon: 'img/favicon.ico',
 
-	url: 'https://gp2040-ce.info',
-	baseUrl: '/',
+	url: 'https://marsherino.github.io/',
+	baseUrl: '/GP2040-CE',
 
 	organizationName: 'OpenStickCommunity',
 	projectName: 'GP2040-CE',

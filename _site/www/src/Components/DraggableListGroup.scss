@@ -1,0 +1,25 @@
+.draggable-list-group {
+	display: flex;
+	justify-content: space-between;
+
+	.list-group {
+		flex: 1 1 auto;
+	}
+}
+
+.draggable-list-container {
+	display: flex;
+	flex-direction: column;
+	flex: 1 0 auto;
+	margin: 10px;
+	width: 0;
+}
+
+.draggable-list-title {
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.draggable-list {
+	flex-direction: row;
+}
