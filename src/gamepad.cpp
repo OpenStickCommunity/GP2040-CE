@@ -345,41 +345,29 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 		case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; reqSave = true; break;
 		case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; reqSave = true; break;
 		case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; reqSave = true; break;
-		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
-		case HOTKEY_L3_BUTTON         : state.buttons |= GAMEPAD_MASK_L3; break; // Press the L3 button
-		case HOTKEY_R3_BUTTON         : state.buttons |= GAMEPAD_MASK_R3; break; // Press the R3 button
-		case HOTKEY_B1_BUTTON         : state.buttons |= GAMEPAD_MASK_B1; break; // Press the L3 button
-		case HOTKEY_B2_BUTTON         : state.buttons |= GAMEPAD_MASK_B2; break; // Press the R3 button
-		case HOTKEY_B3_BUTTON         : state.buttons |= GAMEPAD_MASK_B3; break; // Press the L3 button
-		case HOTKEY_B4_BUTTON         : state.buttons |= GAMEPAD_MASK_B4; break; // Press the R3 button
-		case HOTKEY_L1_BUTTON         : state.buttons |= GAMEPAD_MASK_L1; break; // Press the L3 button
-		case HOTKEY_R1_BUTTON         : state.buttons |= GAMEPAD_MASK_R1; break; // Press the L3 button
-		case HOTKEY_L2_BUTTON         : state.buttons |= GAMEPAD_MASK_L2; break; // Press the R3 button
-		case HOTKEY_R2_BUTTON         : state.buttons |= GAMEPAD_MASK_R2; break; // Press the R3 button
-		case HOTKEY_S1_BUTTON         : state.buttons |= GAMEPAD_MASK_S1; break; // Press the L3 button
-		case HOTKEY_S2_BUTTON         : state.buttons |= GAMEPAD_MASK_S2; break; // Press the R3 button
-		case HOTKEY_A1_BUTTON         : state.buttons |= GAMEPAD_MASK_A1; break; // Press the L3 button
-		case HOTKEY_A2_BUTTON         : state.buttons |= GAMEPAD_MASK_A2; break; // Press the R3 button
+		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break;
+		case HOTKEY_L3_BUTTON         : state.buttons |= GAMEPAD_MASK_L3; break;
+		case HOTKEY_R3_BUTTON         : state.buttons |= GAMEPAD_MASK_R3; break;
+		case HOTKEY_B1_BUTTON         : state.buttons |= GAMEPAD_MASK_B1; break;
+		case HOTKEY_B2_BUTTON         : state.buttons |= GAMEPAD_MASK_B2; break;
+		case HOTKEY_B3_BUTTON         : state.buttons |= GAMEPAD_MASK_B3; break;
+		case HOTKEY_B4_BUTTON         : state.buttons |= GAMEPAD_MASK_B4; break;
+		case HOTKEY_L1_BUTTON         : state.buttons |= GAMEPAD_MASK_L1; break;
+		case HOTKEY_R1_BUTTON         : state.buttons |= GAMEPAD_MASK_R1; break;
+		case HOTKEY_L2_BUTTON         : state.buttons |= GAMEPAD_MASK_L2; break;
+		case HOTKEY_R2_BUTTON         : state.buttons |= GAMEPAD_MASK_R2; break;
+		case HOTKEY_S1_BUTTON         : state.buttons |= GAMEPAD_MASK_S1; break;
+		case HOTKEY_S2_BUTTON         : state.buttons |= GAMEPAD_MASK_S2; break;
+		case HOTKEY_A1_BUTTON         : state.buttons |= GAMEPAD_MASK_A1; break;
+		case HOTKEY_A2_BUTTON         : state.buttons |= GAMEPAD_MASK_A2; break;
 		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; reqSave = true; break;
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;  reqSave = true;break;
 		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; reqSave = true; break;
 		case HOTKEY_REBOOT_DEFAULT    : System::reboot(System::BootMode::DEFAULT); break;
-		case HOTKEY_CAPTURE_BUTTON    :
-			if (options.inputMode == INPUT_MODE_PS4 && options.switchTpShareForDs4) {
-				state.buttons |= GAMEPAD_MASK_A2;
-			} else {
-				state.buttons |= GAMEPAD_MASK_S1;
-			}
-			break;
-		case HOTKEY_TOUCHPAD_BUTTON    :
-			if (options.inputMode == INPUT_MODE_PS4) {
-				state.buttons |= GAMEPAD_MASK_A2;
-			} else {
-				state.buttons |= GAMEPAD_MASK_S1;
-			}
-			break;				
+		case HOTKEY_CAPTURE_BUTTON    : state.buttons |= GAMEPAD_MASK_A2; break;
+		case HOTKEY_TOUCHPAD_BUTTON   : state.buttons |= GAMEPAD_MASK_A2; break;				
 		case HOTKEY_INVERT_X_AXIS     :
 			if (action != lastAction) {
 				options.invertXAxis = !options.invertXAxis;
