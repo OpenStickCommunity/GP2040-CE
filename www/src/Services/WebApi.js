@@ -374,36 +374,32 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getPinMappings(setLoading) {
-	setLoading(true);
-
+async function getPinMappings() {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getPinMappings`);
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(response.data))
-			mappings[prop].pin = parseInt(response.data[prop]);
-
-		return mappings;
+		const { data } = await axios.get(`${baseUrl}/api/getPinMappings`);
+		return data;
 	} catch (error) {
-		console.error(error);
-		return false;
+		console.log(error);
 	}
 }
 
 async function setPinMappings(mappings) {
-	let data = {};
-	Object.keys(mappings).map((button) => (data[button] = mappings[button].pin));
+	return axios.post(`${baseUrl}/api/setPinMappings`, mappings);
+}
 
-	return axios
-		.post(`${baseUrl}/api/setPinMappings`, sanitizeRequest(data))
-		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
+async function getProfileOptions() {
+	try {
+		const { data } = await axios.get(`${baseUrl}/api/getProfileOptions`);
+		return data?.alternativePinMappings;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function setProfileOptions(mappings) {
+	return axios.post(`${baseUrl}/api/setProfileOptions`, {
+		alternativePinMappings: mappings,
+	});
 }
 
 async function getKeyMappings(setLoading) {
@@ -668,6 +664,8 @@ const WebApi = {
 	setCustomTheme,
 	getPinMappings,
 	setPinMappings,
+	getProfileOptions,
+	setProfileOptions,
 	getKeyMappings,
 	setKeyMappings,
 	getAddonsOptions,

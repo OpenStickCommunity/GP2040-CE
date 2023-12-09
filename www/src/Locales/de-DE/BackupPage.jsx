@@ -11,6 +11,7 @@ export default {
 	'api-gamepad-text': 'Gamepad',
 	'api-led-text': 'LED',
 	'api-ledTheme-text': 'Benutzerdefiniertes LED-Thema',
-	'api-pinmappings-text': 'Pin Zuweisungen',
+	'api-pins-text': 'Pin Zuweisungen',
+	'api-profiles-text': 'Profile Zuweisungen',
 	'api-addons-text': 'Add-Ons',
 };

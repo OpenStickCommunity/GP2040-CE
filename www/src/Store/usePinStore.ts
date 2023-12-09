@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { create } from 'zustand';
 
-import { baseUrl } from '../Services/WebApi';
+import WebApi from '../Services/WebApi';
 import { PinActionValues } from '../Data/Pins';
 
 type State = {
@@ -55,10 +54,10 @@ const usePinStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchPins: async () => {
 		set({ loadingPins: true });
-		const { data } = await axios.get(`${baseUrl}/api/getPinMappings`);
+		const pins = await WebApi.getPinMappings();
 		set((state) => ({
 			...state,
-			pins: { ...state.pins, ...data }, // Merge saved pins with defaults
+			pins: { ...state.pins, ...pins }, // Merge saved pins with defaults
 			loadingPins: false,
 		}));
 	},
@@ -67,7 +66,7 @@ const usePinStore = create<State & Actions>()((set, get) => ({
 			...state,
 			pins: { ...state.pins, [pin]: action },
 		})),
-	savePins: async () => axios.post(`${baseUrl}/api/setPinMappings`, get().pins),
+	savePins: async () => WebApi.setPinMappings(get().pins),
 }));
 
 export default usePinStore;
