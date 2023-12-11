@@ -984,15 +984,15 @@ EgretReport *Gamepad::getEgretReport()
 
 
 	egretReport.buttons = 0
-		| (pressedB1() ? EGRET_MASK_B       : 0)
-		| (pressedB2() ? EGRET_MASK_A       : 0)
-		| (pressedB3() ? EGRET_MASK_Y       : 0)
-		| (pressedB4() ? EGRET_MASK_X       : 0)
-		| (pressedR1() ? EGRET_MASK_R       : 0)
-		| (pressedR2() ? EGRET_MASK_ZR      : 0)
-		| (pressedS1() ? EGRET_MASK_MINUS   : 0)
-		| (pressedS2() ? EGRET_MASK_PLUS    : 0)
-		| (pressedA1() ? EGRET_MASK_HOME    : 0)
+		| (pressedB1() ? EGRET_MASK_A       : 0)
+		| (pressedB2() ? EGRET_MASK_B       : 0)
+		| (pressedB3() ? EGRET_MASK_C       : 0)
+		| (pressedB4() ? EGRET_MASK_D       : 0)
+		| (pressedR1() ? EGRET_MASK_E       : 0)
+		| (pressedR2() ? EGRET_MASK_F       : 0)
+		| (pressedS1() ? EGRET_MASK_CREDIT  : 0)
+		| (pressedS2() ? EGRET_MASK_START   : 0)
+		| (pressedA1() ? EGRET_MASK_MENU    : 0)
 	;
 
 	return &egretReport;

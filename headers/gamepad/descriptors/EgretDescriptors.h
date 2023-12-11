@@ -21,15 +21,15 @@
 #define EGRET_HAT_NOTHING   0x08
 
 // Button report (16 bits)
-#define EGRET_MASK_Y       (1U <<  8)
-#define EGRET_MASK_B       (1U <<  4)
-#define EGRET_MASK_A       (1U <<  2)
-#define EGRET_MASK_X       (1U <<  3)
-#define EGRET_MASK_R       (1U <<  0)
-#define EGRET_MASK_ZR      (1U <<  1)
-#define EGRET_MASK_MINUS   (1U <<  7)
-#define EGRET_MASK_PLUS    (1U <<  6)
-#define EGRET_MASK_HOME    (1U <<  9)
+#define EGRET_MASK_A       (1U <<  4)
+#define EGRET_MASK_B       (1U <<  2)
+#define EGRET_MASK_C       (1U <<  1)
+#define EGRET_MASK_D       (1U <<  8)
+#define EGRET_MASK_E       (1U <<  3)
+#define EGRET_MASK_F       (1U <<  0)
+#define EGRET_MASK_START   (1U <<  6)
+#define EGRET_MASK_CREDIT  (1U <<  7)
+#define EGRET_MASK_MENU    (1U <<  9)
 
 // Switch analog sticks only report 8 bits
 #define EGRET_JOYSTICK_MIN 0x00
@@ -53,7 +53,7 @@ typedef struct
 
 static const uint8_t egret_string_language[]     = { 0x09, 0x04 };
 static const uint8_t egret_string_manufacturer[] = "";
-static const uint8_t egret_string_product[]      = "6B Controller";
+static const uint8_t egret_string_product[]      = "TAITO USB Control Pad";
 static const uint8_t egret_string_version[]      = "1.0";
 
 static const uint8_t *egret_string_descriptors[] __attribute__((unused)) =
@@ -75,7 +75,7 @@ static const uint8_t egret_device_descriptor[] =
     0x40,        // bMaxPacketSize0 64
     0xE4, 0x0A,  // idVendor 0x0AE4
     0x02, 0x07,  // idProduct 0x0702
-    0x00, 0x01,  // bcdDevice 2.00
+    0x01, 0x00,  // bcdDevice 0.01
     0x00,        // iManufacturer (String Index)
     0x02,        // iProduct (String Index)
     0x00,        // iSerialNumber (String Index)
@@ -84,13 +84,13 @@ static const uint8_t egret_device_descriptor[] =
 
 static const uint8_t egret_hid_descriptor[] =
 {
-	0x09,        // bLength
-	0x21,        // bDescriptorType (HID)
-	0x11, 0x01,  // bcdHID 1.11
-	0x00,        // bCountryCode
-	0x01,        // bNumDescriptors
-	0x22,        // bDescriptorType[0] (HID)
-	0x56, 0x00   // wDescriptorLength[0] 86
+    0x09,        // bLength
+    0x21,        // bDescriptorType (HID)
+    0x11, 0x01,  // bcdHID 1.11
+    0x00,        // bCountryCode
+    0x01,        // bNumDescriptors
+    0x22,        // bDescriptorType[0] (HID)
+    0x31, 0x00,  // wDescriptorLength[0] 49
 };
 
 static const uint8_t egret_configuration_descriptor[] =
@@ -102,7 +102,7 @@ static const uint8_t egret_configuration_descriptor[] =
     0x01,        // bConfigurationValue
     0x00,        // iConfiguration (String Index)
     0x80,        // bmAttributes
-    0x32,        // bMaxPower 100mA
+    0xFA,        // bMaxPower 500mA
 
     0x09,        // bLength
     0x04,        // bDescriptorType (Interface)
@@ -120,21 +120,21 @@ static const uint8_t egret_configuration_descriptor[] =
     0x00,        // bCountryCode
     0x01,        // bNumDescriptors
     0x22,        // bDescriptorType[0] (HID)
-    0x65, 0x00,  // wDescriptorLength[0] 101
+    0x31, 0x00,  // wDescriptorLength[0] 49
 
     0x07,        // bLength
     0x05,        // bDescriptorType (Endpoint)
     0x02,        // bEndpointAddress (OUT/H2D)
     0x03,        // bmAttributes (Interrupt)
     0x40, 0x00,  // wMaxPacketSize 64
-    0x01,        // bInterval 1 (unit depends on device speed)
+    0x0A,        // bInterval 10 (unit depends on device speed)
 
     0x07,        // bLength
     0x05,        // bDescriptorType (Endpoint)
     0x81,        // bEndpointAddress (IN/D2H)
     0x03,        // bmAttributes (Interrupt)
     0x40, 0x00,  // wMaxPacketSize 64
-    0x01,        // bInterval 1 (unit depends on device speed)
+    0x0A,        // bInterval 10 (unit depends on device speed)
 };
 
 static const uint8_t egret_report_descriptor[] =
@@ -142,50 +142,25 @@ static const uint8_t egret_report_descriptor[] =
     0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
     0x09, 0x04,        // Usage (Joystick)
     0xA1, 0x01,        // Collection (Application)
-    0xA1, 0x02,        //   Collection (Logical)
-    0x75, 0x08,        //     Report Size (8)
-    0x95, 0x05,        //     Report Count (5)
-    0x15, 0x00,        //     Logical Minimum (0)
-    0x26, 0xFF, 0x00,  //     Logical Maximum (255)
-    0x35, 0x00,        //     Physical Minimum (0)
-    0x46, 0xFF, 0x00,  //     Physical Maximum (255)
-    0x09, 0x30,        //     Usage (X)
-    0x09, 0x30,        //     Usage (X)
-    0x09, 0x30,        //     Usage (X)
-    0x09, 0x30,        //     Usage (X)
-    0x09, 0x31,        //     Usage (Y)
-    0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-    0x75, 0x04,        //     Report Size (4)
-    0x95, 0x01,        //     Report Count (1)
-    0x25, 0x07,        //     Logical Maximum (7)
-    0x46, 0x3B, 0x01,  //     Physical Maximum (315)
-    0x65, 0x14,        //     Unit (System: English Rotation, Length: Centimeter)
-    0x09, 0x00,        //     Usage (Undefined)
-    0x81, 0x42,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,Null State)
-    0x65, 0x00,        //     Unit (None)
-    0x75, 0x01,        //     Report Size (1)
-    0x95, 0x0A,        //     Report Count (10)
-    0x25, 0x01,        //     Logical Maximum (1)
-    0x45, 0x01,        //     Physical Maximum (1)
-    0x05, 0x09,        //     Usage Page (Button)
-    0x19, 0x01,        //     Usage Minimum (0x01)
-    0x29, 0x0A,        //     Usage Maximum (0x0A)
-    0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-    0x06, 0x00, 0xFF,  //     Usage Page (Vendor Defined 0xFF00)
-    0x75, 0x01,        //     Report Size (1)
-    0x95, 0x0A,        //     Report Count (10)
-    0x25, 0x01,        //     Logical Maximum (1)
-    0x45, 0x01,        //     Physical Maximum (1)
-    0x09, 0x01,        //     Usage (0x01)
-    0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-    0xC0,              //   End Collection
-    0xA1, 0x02,        //   Collection (Logical)
-    0x75, 0x08,        //     Report Size (8)
-    0x95, 0x04,        //     Report Count (4)
-    0x46, 0xFF, 0x00,  //     Physical Maximum (255)
-    0x26, 0xFF, 0x00,  //     Logical Maximum (255)
-    0x09, 0x02,        //     Usage (0x02)
-    0x91, 0x02,        //     Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-    0xC0,              //   End Collection
+    0x15, 0x00,        //   Logical Minimum (0)
+    0x25, 0x01,        //   Logical Maximum (1)
+    0x35, 0x00,        //   Physical Minimum (0)
+    0x45, 0x01,        //   Physical Maximum (1)
+    0x75, 0x01,        //   Report Size (1)
+    0x95, 0x0C,        //   Report Count (12)
+    0x05, 0x09,        //   Usage Page (Button)
+    0x19, 0x01,        //   Usage Minimum (0x01)
+    0x29, 0x0C,        //   Usage Maximum (0x0C)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x95, 0x04,        //   Report Count (4)
+    0x81, 0x01,        //   Input (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x05, 0x01,        //   Usage Page (Generic Desktop Ctrls)
+    0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+    0x46, 0xFF, 0x00,  //   Physical Maximum (255)
+    0x09, 0x30,        //   Usage (X)
+    0x09, 0x31,        //   Usage (Y)
+    0x75, 0x08,        //   Report Size (8)
+    0x95, 0x02,        //   Report Count (2)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0xC0,              // End Collection
 };
