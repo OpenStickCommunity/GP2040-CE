@@ -19,7 +19,7 @@
 extern uint8_t xbone_out_buffer[XBONE_OUT_SIZE];
 extern const usbd_class_driver_t xbone_driver;
 
-extern void send_xbhost_report(void *report, uint16_t report_size);
+//extern void send_xbhost_report(void *report, uint16_t report_size);
 
 extern bool send_xbone_report(void *report, uint16_t report_size);
 extern void receive_xbone_report(void);

@@ -3,6 +3,8 @@
 
 #include "usbaddon.h"
 
+#include "xgip_protocol.h"
+
 //#include "ps4_driver.h"
 
 #ifndef XBONEPASSTHROUGH_ENABLED
@@ -30,8 +32,6 @@ public:
 
 	void queue_host_report(void* report, uint16_t len);
 private:
-	void send_xbone_ack(uint8_t dev_addr, uint8_t instance, uint8_t sequence, uint16_t received, uint16_t total_size);
-
 	uint8_t xbone_dev_addr;
 	uint8_t xbone_instance;
 
@@ -44,6 +44,10 @@ private:
 
 	bool awaiting_cb;
 	bool ready_to_auth;
+
+	XGIPProtocol incomingXGIP;
+	XGIPProtocol outgoingXGIP;
+	XGIPProtocol requestXGIP;
 };
 
 #endif  // _PSPassthrough_H_

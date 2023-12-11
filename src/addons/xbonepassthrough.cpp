@@ -4,6 +4,7 @@
 #include "peripheralmanager.h"
 
 #include "xbone_driver.h"
+#include "xgip_protocol.h"
 #include "xinput_host.h"
 
 #define XBONE_EXTENSION_DEBUG true
@@ -51,12 +52,18 @@ typedef struct {
 static std::queue<report_queue_t> report_queue;
 
 void XBOnePassthroughAddon::process() {
+    if ( XboxOneData::getInstance().xboneState == XboxOneState::send_auth_console_to_dongle ) {
+        //queue_host_report();
+        // setup our console->dongle auth counters
+        XboxOneData::getInstance().xboneState = XboxOneState::idle_state;
+    }
+
     //if ( XboxOneData::getInstance().console_to_host_ready == true ) {
     //    XboxOneData::getInstance().console_to_host_len = 0;
     //    XboxOneData::getInstance().console_to_host_ready = false;
     //}
     // DOn't do this unless our dongle is ready!
-    if ( ready_to_auth == true && !report_queue.empty() ) {
+    if ( !report_queue.empty() ) {
 		// send the first report off our queue
 		printf("[XBOnePassthroughAddon::process] Sending queued report to dongle size: %u (%u)\r\n", report_queue.front().len, report_queue.front().timestamp);
 		if ( tuh_xinput_send_report(xbone_dev_addr, xbone_instance, report_queue.front().report, report_queue.front().len) )
@@ -79,144 +86,48 @@ void XBOnePassthroughAddon::unmount(uint8_t dev_addr) {
 }
 
 void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    //printf("[dev %u: instance %02x] X-Input Report (%u): ", dev_addr, instance, len);
-    /*for(uint32_t i=0; i<len; i++)
-    {
-        if (i%16 == 0) printf("\r\n  ");
-        printf("%02X ", report[i]);
-    }*/
-    //printf("\r\n");
+    incomingXGIP.parse(report, len);
+    if ( incomingXGIP.validate() == false ) {
+        incomingXGIP.reset();
+        return;
+    }
 
-    GipHeader_t * header = (GipHeader_t*)report;
-    Gip_Ack_t * ack = (Gip_Ack_t*)report;
-    switch ( header->command ) {
+    switch ( incomingXGIP.getCommand() ) {
+        case GIP_ACK_RESPONSE:
+            // Only do something if we're waiting
+            break;
         case GIP_ANNOUNCE:
-            //printf("GIP_ANNOUNCE : sending descriptor request\r\n");
-            GIP_HEADER((&xb1_descriptor_request), GIP_DEVICE_DESCRIPTOR, true, 1);
-            tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_descriptor_request, sizeof(xb1_descriptor_request));
+            requestXGIP.reset();
+            requestXGIP.setAttributes(GIP_DEVICE_DESCRIPTOR, 1, 1, false);
+            tuh_xinput_send_report(dev_addr, instance, (uint8_t*)requestXGIP.generatePacket(), requestXGIP.getPacketLength());
             break;
         case GIP_DEVICE_DESCRIPTOR:
-            //printf("GIP_DEVICE_DESCRIPTOR :\r\n");
-            if ( header->length == 0 ) {
-                //printf("Device Descriptor received! Power on controller!\r\n");
-                packet_chunk_received = 0;
+            if ( incomingXGIP.endOfChunk() == true ) {
+                // Power-on full string
+                requestXGIP.reset();
+                requestXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 2, 1, false);
+                requestXGIP.setData(xb1_power_on, sizeof(xb1_power_on));
+                //tuh_xinput_send_report(dev_addr, instance, (uint8_t*)requestXGIP.generatePacket(), requestXGIP.getPacketLength());
+                queue_host_report((uint8_t*)requestXGIP.generatePacket(), requestXGIP.getPacketLength());
                 
-                GIP_HEADER((&xb1_power_desc), GIP_POWER_MODE_DEVICE_CONFIG, true, 2);
-                memcpy(&xb1_power_desc.unknown[0], xb1_power_on, sizeof(xb1_power_on));
-                tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_power_desc, sizeof(xb1_power_desc));
-                break;
-            }
-            if ( header->chunked != 1 ) {
-                //printf("Something went wrong, abort!\r\n");
-                return;
-            }
-            // Should be chunked, let's check if its the start
-            if ( header->chunkStart == 1 ) { // Start of Descriptor
-                descriptor_size = *((uint16_t*)&report[4]); // descriptor size is in the first 2 bytes
-                packet_chunk_received = header->length;
-            } else { // Add to our total chunks received
-                packet_chunk_received += header->length;
-            }
-            // Do we need to ack?
-            if ( header->needsAck == 1 ) {
-                send_xbone_ack(dev_addr, instance, header->sequence, packet_chunk_received, descriptor_size);
-            }
-            break;
-        case GIP_ACK_RESPONSE:
-            if ( ack->innerCommand == GIP_AUTH ) {
-			    printf("[XBONE_ADDON %u] Sending Auth (ack) [Dongle -> Console] (%u)\r\n", to_ms_since_boot(get_absolute_time()), len);
-                /*for(uint32_t i=0; i < len; i++)
-                {
-                    if (i%16 == 0) printf("\r\n  ");
-                    printf("%02X ", report[i]);
-                }
-                printf("\r\n\r\n");*/
-                //send_xbone_report((void*)report, len); // send to console
-                queue_xbone_report((void*)report, len);
+                // Power-on with 0x01
+                requestXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 3, 1, false);
+                requestXGIP.setData({0x00}, 1);
+                queue_host_report((uint8_t*)requestXGIP.generatePacket(), requestXGIP.getPacketLength());
+            } else if ( incomingXGIP.ackRequired() == true ) {
+                tuh_xinput_send_report(dev_addr, instance, (uint8_t*)incomingXGIP.generateAckPacket(), incomingXGIP.getPacketLength());
             }
             break;
         case GIP_AUTH:
-            //while ( XboxOneData::getInstance().host_to_console_ready == true ) {
-            //    printf("FIX HACK: wait for GP2040 to process\r\n");
-            //    sleep_us(1);
-            //}
-			printf("[XBONE_ADDON %u] Sending Auth [Dongle -> Console] (%u)\r\n", to_ms_since_boot(get_absolute_time()), len);
-            /*for(uint32_t i=0; i < len; i++)
-            {
-                if (i%16 == 0) printf("\r\n  ");
-                printf("%02X ", report[i]);
-            }
-            printf("\r\n\r\n");*/
-            //send_xbone_report((void*)report, len); // send to console
-            queue_xbone_report((void*)report, len);
+			// Save this auth to our hand-off
             break;
         default:
-            // unknown controller command
             break;
     };
 }
 
 void XBOnePassthroughAddon::report_sent(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    GipHeader_t * header = (GipHeader_t*)report;
-    //printf("[dev %u: instance %02x] X-Input Sent (%u):", dev_addr, instance, len);
-    /*for(uint32_t i=0; i<len; i++)
-    {
-        if (i%16 == 0) printf("\r\n  ");
-        printf("%02X ", report[i]);
-    }
-    printf("\r\n");*/
-    switch ( header->command ) {
-        case GIP_POWER_MODE_DEVICE_CONFIG:
-            if ( header->length == 0x0f ) {
-                // send second request
-                //printf("Sending second half of power-up string\r\n");
-                GIP_HEADER((&xb1_power_mode), GIP_POWER_MODE_DEVICE_CONFIG, true, 3);
-                xb1_power_mode.subcommand = 0x00;
-                tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_power_mode, sizeof(xb1_power_mode));
-                ready_to_auth = true;
-            } //else if ( header->length == 0x01 ) {
-                /*
-                // send rumble cmd
-                printf("Turn off all rumble\r\n");
-                GIP_HEADER((&xb1_rumble), GIP_CMD_WAKEUP, false, 1);
-                xb1_rumble.subCommand = 0;
-                xb1_rumble.flags = 0x0f;
-                xb1_rumble.leftTrigger = 0x00;
-                xb1_rumble.rightTrigger = 0x00;
-                xb1_rumble.leftMotor = 0x00;
-                xb1_rumble.rightMotor = 0x00;
-                xb1_rumble.duration = 0xff;
-                xb1_rumble.delay = 0x00;
-                xb1_rumble.repeat = 0xeb;
-                tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&xb1_rumble, sizeof(xb1_rumble));
-                */
-                //uint8_t tmp[] = { 0x0a,0x20,0x04,0x03,0x00,0x01,0x14};
-                //tuh_xinput_send_report(dev_addr, instance, (uint8_t*)tmp, sizeof(tmp));
-            //}
-            break;
-        case GIP_CMD_RUMBLE:
-            //printf("Ready for Auth!!!!\r\n");
-            break;
-        default:
-            // unknown controller command
-            break;
-    };
-}
-
-// send an ACK packet
-void XBOnePassthroughAddon::send_xbone_ack(uint8_t dev_addr, uint8_t instance, uint8_t sequence, uint16_t received, uint16_t total_size) {
-    Gip_Ack_t ackPacket;
-    memset(&ackPacket, 0x00, sizeof(Gip_Ack_t));
-    GIP_ACK_HEADER((&ackPacket), sequence);
-    ackPacket.innerCommand = GIP_DEVICE_DESCRIPTOR;
-    ackPacket.innerInternal = 1;
-    if ( received > 0x100 ) {
-        ackPacket.bytesReceived = received - 0x100;
-    } else {
-        ackPacket.bytesReceived = received;
-    }
-    ackPacket.remainingBuffer = total_size - received;
-    tuh_xinput_send_report(dev_addr, instance, (uint8_t*)&ackPacket, sizeof(Gip_Ack_t));
+    //printf("[XBOnePassthroughAddon::report_received] report_sent (%u)\r\n", len);
 }
 
 void XBOnePassthroughAddon::queue_host_report(void* report, uint16_t len) {
