@@ -70,6 +70,10 @@ message HotkeyOptions
 	optional HotkeyEntry hotkey10 = 10;
 	optional HotkeyEntry hotkey11 = 11;
 	optional HotkeyEntry hotkey12 = 12;
+	optional HotkeyEntry hotkey13 = 13;
+	optional HotkeyEntry hotkey14 = 14;
+	optional HotkeyEntry hotkey15 = 15;
+	optional HotkeyEntry hotkey16 = 16;
 }
 
 message PeripheralOptions

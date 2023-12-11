@@ -113,7 +113,7 @@ const hotkeySchema = {
 	auxMask: yup.number().required().label('Function Key'),
 };
 
-const hotkeyFields = Array(12)
+const hotkeyFields = Array(16)
 	.fill(0)
 	.reduce((acc, a, i) => {
 		const number = String(i + 1).padStart(2, '0');

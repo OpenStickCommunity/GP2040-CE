@@ -164,6 +164,26 @@ app.get('/api/getGamepadOptions', (req, res) => {
 			buttonsMask: 0,
 			action: 0,
 		},
+		hotkey13: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0,
+		},
+		hotkey14: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0,
+		},
+		hotkey15: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0,
+		},
+		hotkey16: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0,
+		},
 	});
 });
 
