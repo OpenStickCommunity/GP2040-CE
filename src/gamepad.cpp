@@ -1015,8 +1015,8 @@ PSClassicReport *Gamepad::getPSClassicReport()
 	}
 
 	psClassicReport.buttons |=
-          (pressedS2()    ? PSCLASSIC_MASK_START    : 0)
-		| (pressedS1()    ? PSCLASSIC_MASK_SELECT   : 0)
+          (pressedS2()    ? PSCLASSIC_MASK_SELECT   : 0)
+		| (pressedS1()    ? PSCLASSIC_MASK_START    : 0)
 		| (pressedB1()    ? PSCLASSIC_MASK_CROSS    : 0)
 		| (pressedB2()    ? PSCLASSIC_MASK_CIRCLE   : 0)
 		| (pressedB3()    ? PSCLASSIC_MASK_SQUARE   : 0)
