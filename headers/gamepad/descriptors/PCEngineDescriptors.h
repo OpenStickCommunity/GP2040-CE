@@ -21,10 +21,10 @@
 #define PCENGINE_HAT_NOTHING   0x0f
 
 // Button report (16 bits)
-#define PCENGINE_MASK_Y       (1U <<  1)
-#define PCENGINE_MASK_X       (1U <<  2)
-#define PCENGINE_MASK_MINUS   (1U <<  8)
-#define PCENGINE_MASK_PLUS    (1U <<  9)
+#define PCENGINE_MASK_1       (1U <<  1)
+#define PCENGINE_MASK_2       (1U <<  2)
+#define PCENGINE_MASK_SELECT  (1U <<  8)
+#define PCENGINE_MASK_RUN     (1U <<  9)
 
 
 #define PCENGINE_JOYSTICK_MID  0x7f

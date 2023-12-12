@@ -112,14 +112,13 @@ static NeogeoReport neogeoReport
 
 static MDMiniReport mdminiReport
 {
-	.id = 0x01,				// ID
-	.notuse1 = 0x7f,		// [Not Use] 0x7f
-	.notuse2 = 0x7f,		// [Not Use] 0x7f
-	.hat1 = 0x7f,			// LEFT:0x00, RIGHT:0xFF
-	.hat2 = 0x7f,			// UP:0x00, DOWN:0xFF
-	.buttons1 = 0x0f,		// X A B Y 1b 1b 1b 1b
-	.buttons2 = 0x00,		// 0b 0b START MODE 0b 0b C Z
-	.notuse3 = 0x00,		// [Not Use] 0x00
+	.id = 0x01,
+	.notuse1 = 0x7f,
+	.notuse2 = 0x7f,
+	.lx = 0x7f,
+	.ly = 0x7f,
+	.buttons = 0x0f,
+	.notuse3 = 0x00,
 };
 
 static PCEngineReport pcengineReport
@@ -135,13 +134,13 @@ static PCEngineReport pcengineReport
 
 static AstroReport astroReport
 {
-	.const0 = 1,
-	.const1 = ASTRO_JOYSTICK_MID,
-	.const2 = ASTRO_JOYSTICK_MID,
-	.lx = ASTRO_JOYSTICK_MID,
-	.ly = ASTRO_JOYSTICK_MID,
-	.buttons= 0xf,
-	.const3 = 0,	
+	.id = 1,
+	.notuse1 = 0x7f,
+	.notuse2 = 0x7f,
+	.lx = 0x7f,
+	.ly = 0x7f,
+	.buttons = 0xf,
+	.notuse3 = 0,	
 };
 
 static EgretReport egretReport
@@ -871,10 +870,10 @@ PCEngineReport *Gamepad::getPCEngineReport()
 	}
 
 	pcengineReport.buttons = 0x0
-		| (pressedB3() ? PCENGINE_MASK_Y       : 0)
-		| (pressedB4() ? PCENGINE_MASK_X       : 0)
-		| (pressedS1() ? PCENGINE_MASK_PLUS   : 0)
-		| (pressedS2() ? PCENGINE_MASK_MINUS    : 0)
+		| (pressedB1() ? PCENGINE_MASK_1       : 0)
+		| (pressedB2() ? PCENGINE_MASK_2       : 0)
+		| (pressedS1() ? PCENGINE_MASK_SELECT  : 0)
+		| (pressedS2() ? PCENGINE_MASK_RUN     : 0)
 	;
 
 	return &pcengineReport;
@@ -901,8 +900,8 @@ NeogeoReport *Gamepad::getNeogeoReport()
 		| (pressedB1() ? NEOGEO_MASK_B       : 0)
 		| (pressedB4() ? NEOGEO_MASK_C       : 0)
 		| (pressedB2() ? NEOGEO_MASK_D       : 0)
-		| (pressedS1() ? NEOGEO_MASK_START   : 0)
-		| (pressedS2() ? NEOGEO_MASK_SELECT  : 0)
+		| (pressedS1() ? NEOGEO_MASK_SELECT  : 0)
+		| (pressedS2() ? NEOGEO_MASK_START   : 0)
 	;
 
 	return &neogeoReport;
@@ -911,23 +910,20 @@ NeogeoReport *Gamepad::getNeogeoReport()
 
 MDMiniReport *Gamepad::getMDMiniReport()
 {
-	mdminiReport.hat1 = 0x7f;
-	mdminiReport.hat2 = 0x7f;
+	mdminiReport.lx = 0x7f;
+	mdminiReport.ly = 0x7f;
 
-	if (pressedLeft()) { mdminiReport.hat1 = MDMINI_MASK_LEFT; }
-	if (pressedRight()) { mdminiReport.hat1 = MDMINI_MASK_RIGHT; }
+	if (pressedLeft()) { mdminiReport.lx = MDMINI_MASK_LEFT; }
+	if (pressedRight()) { mdminiReport.lx = MDMINI_MASK_RIGHT; }
 
-	if (pressedUp()) { mdminiReport.hat2 = MDMINI_MASK_UP; }
-	if (pressedDown()) { mdminiReport.hat2 = MDMINI_MASK_DOWN; }
+	if (pressedUp()) { mdminiReport.ly = MDMINI_MASK_UP; }
+	if (pressedDown()) { mdminiReport.ly = MDMINI_MASK_DOWN; }
 
-	mdminiReport.buttons1 = 0x0f
+	mdminiReport.buttons = 0x0F
 		| (pressedB1()    ? MDMINI_MASK_A     : 0)
 		| (pressedB2()    ? MDMINI_MASK_B     : 0)
 		| (pressedB3()    ? MDMINI_MASK_X     : 0)
 		| (pressedB4()    ? MDMINI_MASK_Y     : 0)
-	;
-
-	mdminiReport.buttons2 = 0x00
 		| (pressedR1()    ? MDMINI_MASK_Z     : 0)
 		| (pressedR2()    ? MDMINI_MASK_C     : 0)
 		| (pressedS2()    ? MDMINI_MASK_START : 0)
@@ -939,6 +935,9 @@ MDMiniReport *Gamepad::getMDMiniReport()
 
 AstroReport *Gamepad::getAstroReport()
 {
+	astroReport.lx = 0x7f;
+	astroReport.ly = 0x7f;
+
 	switch (state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        astroReport.lx = ASTRO_JOYSTICK_MID; astroReport.ly = ASTRO_JOYSTICK_MIN; break;
@@ -953,15 +952,15 @@ AstroReport *Gamepad::getAstroReport()
 	}
 
 
-	astroReport.buttons = 0xf
-		| (pressedB1() ? ASTRO_MASK_B       : 0)
-		| (pressedB2() ? ASTRO_MASK_A       : 0)
-		| (pressedB3() ? ASTRO_MASK_Y       : 0)
-		| (pressedB4() ? ASTRO_MASK_X       : 0)
-		| (pressedR1() ? ASTRO_MASK_R       : 0)
-		| (pressedR2() ? ASTRO_MASK_ZR      : 0)
-		| (pressedS1() ? ASTRO_MASK_MINUS   : 0)
-		| (pressedS2() ? ASTRO_MASK_PLUS    : 0)
+	astroReport.buttons = 0x0F
+		| (pressedB1() ? ASTRO_MASK_A       : 0)
+		| (pressedB2() ? ASTRO_MASK_B       : 0)
+		| (pressedB3() ? ASTRO_MASK_D       : 0)
+		| (pressedB4() ? ASTRO_MASK_E       : 0)
+		| (pressedR1() ? ASTRO_MASK_C       : 0)
+		| (pressedR2() ? ASTRO_MASK_F       : 0)
+		| (pressedS1() ? ASTRO_MASK_CREDIT  : 0)
+		| (pressedS2() ? ASTRO_MASK_START   : 0)
 	;
 
 	return &astroReport;

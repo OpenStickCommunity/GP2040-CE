@@ -17,27 +17,24 @@
 #define MDMINI_MASK_UP      0x00
 #define MDMINI_MASK_DOWN    0xff
 
-// Buttons 1 (8 bits)
-#define MDMINI_MASK_X       0x80
-#define MDMINI_MASK_A       0x40
-#define MDMINI_MASK_B       0x20
-#define MDMINI_MASK_Y       0x10
-
-// Buttons 2 (8 bits)
-#define MDMINI_MASK_C       0x02
-#define MDMINI_MASK_Z       0x01
-#define MDMINI_MASK_START   0x20
-#define MDMINI_MASK_MODE    0x10
+// Buttons (16 bits)
+#define MDMINI_MASK_A       0x0040
+#define MDMINI_MASK_B       0x0020
+#define MDMINI_MASK_C       0x0200
+#define MDMINI_MASK_X       0x0080
+#define MDMINI_MASK_Y       0x0010
+#define MDMINI_MASK_Z       0x0100
+#define MDMINI_MASK_MODE    0x1000
+#define MDMINI_MASK_START   0x2000
 
 typedef struct __attribute((packed, aligned(1)))
 {
 	uint8_t id;
 	uint8_t notuse1;
 	uint8_t notuse2;
-	uint8_t hat1;
-	uint8_t hat2;
-	uint8_t buttons1;
-	uint8_t buttons2;
+	uint8_t lx;
+	uint8_t ly;
+	uint16_t buttons;
 	uint8_t notuse3;
 } MDMiniReport;
 
@@ -124,7 +121,7 @@ static const uint8_t mdmini_configuration_descriptor[] =
 	0x81,        // bEndpointAddress (IN/D2H)
 	0x03,        // bmAttributes (Interrupt)
 	0x40, 0x00,  // wMaxPacketSize 64
-	0x0A,        // bInterval 10 (unit depends on device speed) - NOTE: This is 125us on fast USB, which means it polls 8 times faster than the code responds.
+	0x0A,        // bInterval 10 (unit depends on device speed)
 };
 
 static const uint8_t mdmini_report_descriptor[] =
