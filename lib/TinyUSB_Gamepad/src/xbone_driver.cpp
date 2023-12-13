@@ -98,7 +98,7 @@ const uint8_t announce[] = {
 
 // Magic-X
 const uint8_t announcePacket[] = {
-    0x00, 0x2a, 0x00, 0xB1, 0x01, 0x57, 0x00, 0x00, 
+    0x00, 0x2a, 0x00, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 
 	0xdf, 0x33, 0x14, 0x00, 0x01, 0x00, 0x01, 0x00, 
 	0x17, 0x01, 0x02, 0x00, 0x01, 0x00, 0x01, 0x00, 
 	0x01, 0x00, 0x01, 0x00};
@@ -666,6 +666,7 @@ void tick_xbone_usb() {
 		}
 	} else if (state == ready_to_announce && waiting_cb == false ) {
 		//printf("Sending ready to announce!\r\n");
+		memcpy((void*)&announcePacket[3], &now, 3);
 		announceXGIP.setAttributes(GIP_ANNOUNCE, 1, 1, false, 0);
 		announceXGIP.setData(announcePacket, sizeof(announcePacket));
 		queue_xbone_report(announceXGIP.generatePacket(), announceXGIP.getPacketLength());
