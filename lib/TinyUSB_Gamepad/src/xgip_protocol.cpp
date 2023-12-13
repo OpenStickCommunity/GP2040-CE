@@ -64,7 +64,7 @@ bool XGIPProtocol::parse(const uint8_t * buffer, uint16_t len) { // Parse incomi
     // Do we have enough room for a header? No, this isn't valid
     if ( len < 4 ) {
         reset();
-        printf("[XGIPProtocol::parse] Invalid due to bad length\r\n");
+        //printf("[XGIPProtocol::parse] Invalid due to bad length\r\n");
         isValidPacket = false;
         return false;
     }

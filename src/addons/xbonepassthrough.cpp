@@ -84,10 +84,14 @@ void XBOnePassthroughAddon::process() {
     if ( !report_queue.empty() ) {
 		// send the first report off our queue
 		//printf("[XBOnePassthroughAddon::process] Sending queued report to dongle size: %u (%u)\r\n", report_queue.front().len, report_queue.front().timestamp);
-		if ( tuh_xinput_send_report(xbone_dev_addr, xbone_instance, report_queue.front().report, report_queue.front().len) )
+		
+        if ( tuh_xinput_send_report(xbone_dev_addr, xbone_instance, report_queue.front().report, report_queue.front().len) ) {
 			report_queue.pop();
-		else
-			printf("[XBOnePassthroughAddon::process] FAILED: Keeping it on the queue to send again\r\n");
+            //sleep_ms(1);
+        } else {
+			//printf("[XBOnePassthroughAddon::process] FAILED: Keeping it on the queue to send again\r\n");
+            sleep_ms(10);
+        }
 	}
 }
 
@@ -106,7 +110,8 @@ void XBOnePassthroughAddon::unmount(uint8_t dev_addr) {
 void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
     incomingXGIP.parse(report, len);
     if ( incomingXGIP.validate() == false ) {
-        printf("[XBOnePassthroughAddon::report_received] INVALID REPORT, DROPPING\r\n");
+        //printf("[XBOnePassthroughAddon::report_received] INVALID REPORT, DROPPING\r\n");
+        sleep_ms(50); // First packet is invalid, drop and wait for dongle to boot
         incomingXGIP.reset();
         return;
     }

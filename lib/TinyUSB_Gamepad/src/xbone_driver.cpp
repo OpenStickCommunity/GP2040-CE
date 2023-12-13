@@ -32,7 +32,6 @@
 #define DESC_EXTENDED_PROPERTIES_DESCRIPTOR 0x0005
 #define REQ_GET_XGIP_HEADER 0x90
 
-static bool sending=false;
 static bool waiting_cb=false;
 static bool waiting_ack=false;
 uint8_t xbone_out_buffer[XBONE_OUT_SIZE] = {};
@@ -313,10 +312,9 @@ void changeState(XboxOneState newState) {
 }
 
 static void xbone_reset(uint8_t rhport) {
-	printf("xboxone_reset\r\n");
+	//printf("xboxone_reset\r\n");
 	(void)rhport;
 
-	sending = false; 	// actively sending to EP_IN
 	waiting_cb = false; // waiting on a callback to EP_OUT
 	memset(&descriptor, 0, sizeof(descriptor_handler));
 	changeState(XboxOneState::reset_state);
@@ -461,10 +459,10 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
 			// Send to Xbox Host dongle
 			//send_xbhost_report(p_xinput->epout_buf, (uint16_t)xferred_bytes);
 		} else if ( packet.getCommand() == GIP_CMD_RUMBLE ) {
-			//printf("[XBONE_XFER_CB] GOT RUMBLE COMMAND, CHECKING AGAINST KNOWN RUMBLE AUTH\r\n");
+			printf("[XBONE_XFER_CB] GOT RUMBLE COMMAND, CHECKING AGAINST KNOWN RUMBLE AUTH\r\n");
 			uint8_t authReady[] = {00,0x0f,00,00,00,00,0xff,00,0xeb};
 			if (packet.getDataLength() == 9 && memcmp(packet.getData(), authReady, sizeof(authReady))==0 ) {
-				//printf("[XBONE_XFER_CB] AUTH COMPLETED! READY FOR REPORTS\r\n");
+				printf("[XBONE_XFER_CB] AUTH COMPLETED! READY FOR REPORTS\r\n");
 				XboxOneData::getInstance().auth_completed = true;
 			}
 		} else if ( packet.getCommand() == GIP_AUTH || packet.getCommand() == GIP_FINAL_AUTH) {
@@ -498,7 +496,7 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
         TU_ASSERT(usbd_edpt_xfer(rhport, p_xinput->ep_out, p_xinput->epout_buf,
                                  sizeof(p_xinput->epout_buf)));
     } else if (ep_addr == p_xinput->ep_in) {
-        sending = false;
+        //sending = false;
     }
     return true;
 }
@@ -547,15 +545,13 @@ bool send_xbone_report(void *report, uint16_t report_size) {
     }
 	bool tud_rdy = tud_ready();
 	bool endpt_busy = usbd_edpt_busy(TUD_OPT_RHPORT, p_xinput->ep_in);
-	if ( sending == false &&                                    // are we actively sending?
-		tud_rdy &&											// Is the device ready?
+	if ( tud_rdy &&											// Is the device ready?
 		(p_xinput->ep_in != 0) && (!endpt_busy) // Is the IN endpoint available?
 	)
 	{
 		usbd_edpt_claim(0, p_xinput->ep_in);										// Take control of IN endpoint
 		ret = usbd_edpt_xfer(0, p_xinput->ep_in, (uint8_t *)report, report_size); 	// Send report buffer
 		usbd_edpt_release(0, p_xinput->ep_in);										// Release control of IN endpoint
-		sending = true;
 		/*printf("[XBONE_DRIVER SUCCESS!] Sent Report:\r\n");
 		for(uint32_t i=0; i < report_size; i++)
 		{
@@ -563,17 +559,20 @@ bool send_xbone_report(void *report, uint16_t report_size) {
 			printf("%02X ", ((uint8_t*)report)[i]);
 		}
 		printf("\r\n");*/
-	}/* else {
+	} else {
+		/*
 		printf("[XBONE_DRIVER ERROR] Could not send this fast, way too busy\r\n");
-		printf("Sending: %u   tud_ready()?: %u  endpoint_busy: %u\r\n", sending, tud_rdy, endpt_busy);
+		printf("tud_ready()?: %u  endpoint_busy: %u\r\n", tud_rdy, endpt_busy);
 		printf("Missed Report:\r\n");
+		
 		for(uint32_t i=0; i < report_size; i++)
 		{
 			if (i%16 == 0) printf("\r\n  ");
 			printf("%02X ", ((uint8_t*)report)[i]);
 		}
 		printf("\r\n");
-	}*/
+		*/
+	}
 
 	return ret;
 }
@@ -638,10 +637,14 @@ void tick_xbone_usb() {
 	if ( !report_queue.empty() ) {
 		// send the first report off our queue
 		//printf("[Tick_XBOne_USB %u] Sending queued report to Xbox One Driver (%u)\r\n", to_ms_since_boot(get_absolute_time()), report_queue.front().timestamp);
-		if ( send_xbone_report(report_queue.front().report, report_queue.front().len) )
+		
+		if ( send_xbone_report(report_queue.front().report, report_queue.front().len) ) {
 			report_queue.pop();
-		else
-			printf("[Tick_XBOne_USB] FAILED: Keeping it on the queue to send again\r\n");
+			//sleep_ms(1); // delay our report queue
+		} else {
+			//printf("[Tick_XBOne_USB] FAILED: Keeping it on the queue to send again\r\n");
+			sleep_ms(50);
+		}
 		return;
 	}
 
