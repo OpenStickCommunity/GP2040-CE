@@ -17,13 +17,17 @@ find_package(Git)
 execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always
 	OUTPUT_VARIABLE RAW_GIT_REPO_VERSION)
 string(REGEX REPLACE "\n" "" GIT_REPO_VERSION ${RAW_GIT_REPO_VERSION})
+string(REGEX REPLACE "v" "" CMAKE_GIT_REPO_VERSION ${GIT_REPO_VERSION})
+string(REGEX REPLACE "-g.*" "" CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION})
+string(REGEX REPLACE "-" "." CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION})
 configure_file("headers/version.h.in" "headers/version.h")
 message("GIT_REPO_VERSION is ${GIT_REPO_VERSION}")
+message("CMAKE_GIT_REPO_VERSION is ${CMAKE_GIT_REPO_VERSION}")
 
 # Uncomment the next line for an unomptimized build for debugging. Use in conjunction with the Debug build type.
 # set(PICO_DEOPTIMIZED_DEBUG 1)
 
-project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.7.5)
+project(GP2040-CE LANGUAGES C CXX ASM VERSION ${CMAKE_GIT_REPO_VERSION})
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
