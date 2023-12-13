@@ -289,8 +289,8 @@ app.get('/api/getPeripheralOptions', (req, res) => {
 				tx: -1,
 			},
 			usb0: {
-				enabled: 0,
-				dp: -1,
+				enabled: 1,
+				dp: 28,
 				enable5v: -1,
 				order: 0,
 			},
