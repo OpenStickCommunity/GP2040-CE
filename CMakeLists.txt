@@ -12,6 +12,14 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.0")
   message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
+# set the version for webconfig, etc. based on git
+find_package(Git)
+execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always
+	OUTPUT_VARIABLE RAW_GIT_REPO_VERSION)
+string(REGEX REPLACE "\n" "" GIT_REPO_VERSION ${RAW_GIT_REPO_VERSION})
+configure_file("headers/version.h.in" "headers/version.h")
+message("GIT_REPO_VERSION is ${GIT_REPO_VERSION}")
+
 # Uncomment the next line for an unomptimized build for debugging. Use in conjunction with the Debug build type.
 # set(PICO_DEOPTIMIZED_DEBUG 1)
 
@@ -168,7 +176,7 @@ ${PROTO_OUTPUT_DIR}/config.pb.c
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
-pico_set_program_version(GP2040-CE "0.7.5")
+pico_set_program_version(GP2040-CE ${GIT_REPO_VERSION})
 
 target_link_libraries(${PROJECT_NAME}
 pico_stdlib
@@ -200,6 +208,7 @@ headers/configs
 headers/gamepad
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}
+${CMAKE_BINARY_DIR}/headers
 )
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC

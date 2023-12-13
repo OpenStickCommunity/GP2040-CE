@@ -8,6 +8,7 @@
 #include "system.h"
 #include "config_utils.h"
 #include "types.h"
+#include "version.h"
 
 #include <cstring>
 #include <string>
