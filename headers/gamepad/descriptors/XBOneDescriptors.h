@@ -61,6 +61,7 @@ typedef enum
     GIP_VIRTUAL_KEYCODE             = 0x07,    // XBox One Guide button pressed
 	GIP_CMD_RUMBLE                  = 0x09,    // Xbox One Rumble Command
     GIP_CMD_WAKEUP                  = 0x0A,    // Xbox One (Wake-up Maybe?)
+    GIP_FINAL_AUTH                  = 0x1E,    // Xbox One (Final auth?)
 	GIP_INPUT_REPORT                = 0x20,    // Xbox One Input Report
 	GIP_HID_REPORT                  = 0x21,    // Xbox One HID Report
 } XboxOneReport;
@@ -125,18 +126,6 @@ typedef struct
 	uint8_t serial[3];
 	uint8_t unk2[22];
 } __attribute__((packed)) GipAnnounce_t;
-
-typedef struct
-{
-    GipHeader_t Header;
-    uint8_t unknown[15];
-} __attribute__((packed)) GipPowerModeDesc_t;
-
-typedef struct
-{
-    GipHeader_t Header;
-    uint8_t subcommand;
-} __attribute__((packed)) GipPowerMode_t;
 
 typedef struct {
     GipHeader_t Header;

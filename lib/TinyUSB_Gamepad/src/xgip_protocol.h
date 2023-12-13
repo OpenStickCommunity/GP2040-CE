@@ -49,6 +49,10 @@
 
 #include "gamepad/descriptors/XBOneDescriptors.h"
 
+// All max chunks are this size
+#define GIP_MAX_CHUNK_SIZE 0x3A
+#define GIP_SHORT_PACKET_LIMIT 0x80
+
 class XGIPProtocol {
 public:
     XGIPProtocol();
@@ -57,7 +61,7 @@ public:
     bool parse(const uint8_t * buffer, uint16_t len); // Parse incoming packet
     bool validate(); // is valid packet?
     bool endOfChunk();
-    bool setAttributes(uint8_t cmd, uint8_t seq, uint8_t internal, bool isChunked);   // Set attributes for next output packet
+    void setAttributes(uint8_t cmd, uint8_t seq, uint8_t internal, uint8_t isChunked, uint8_t needsAck);   // Set attributes for next output packet
     void incrementSequence(); // Add 1 to sequence
     bool setData(const uint8_t* data, uint16_t len);       // Set data
     uint8_t * generatePacket();         // Generate output packet
@@ -65,15 +69,14 @@ public:
     bool validateAck(XGIPProtocol & ackPacket); // Validate an incoming ack packet against 
     uint8_t getCommand();               // Get command of a parsed packet
     uint8_t getSequence();
-    uint8_t getAckCommand();            // Get the command of a parsed ACK packet
+    uint8_t getChunked();               // Is this packet chunked?
     uint8_t getPacketLength();          // Get packet length of our last output
     uint8_t * getData();                // Get data from a packet or packet-chunk
-    uint8_t getDataLength();          // Get length of a packet or packet-chunk
+    uint16_t getDataLength();          // Get length of a packet or packet-chunk
     bool getChunkData(XGIPProtocol & packet); // get chunk data from incoming packet
     bool ackRequired();             // Did our last parsed packet require an ack?
 private:
     GipHeader_t header;
-    GipHeader_t ackHeader;
     uint16_t totalChunkLength;      // How big is the chunk?
     uint16_t totalLengthReceived;   // How much have we received?
     //uint16_t actualDataLength;      // What is the actual calculated data length? (useds in ACKs)

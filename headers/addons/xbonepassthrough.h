@@ -48,6 +48,7 @@ private:
 	XGIPProtocol incomingXGIP;
 	XGIPProtocol outgoingXGIP;
 	XGIPProtocol requestXGIP;
+	XGIPProtocol authXGIP;
 };
 
 #endif  // _PSPassthrough_H_

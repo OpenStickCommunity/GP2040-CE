@@ -39,7 +39,9 @@ typedef enum {
 	send_descriptor = 2,
 	send_auth_console_to_dongle = 3,
 	send_auth_dongle_to_console = 4,
-	idle_state = 5
+	wait_auth_console_to_dongle = 5,
+	wait_auth_dongle_to_console = 6,
+	idle_state = 7
 } XboxOneState;
 
 // Storage manager for board, LED options, and thread-safe settings
@@ -57,20 +59,19 @@ public:
 
 	// Console-to-Host e.g. Xbox One to MagicBoots
 	//  Note: the Xbox One Passthrough can call send_xbone_report() directly but not the other way around
-	uint8_t console_to_host[256]; 
-	uint16_t console_to_host_len;
-	bool console_to_host_ready;
 	bool auth_completed;
 
 	// Auth Buffer
-	uint8_t * authBuffer;
+	uint8_t authBuffer[1024];
+	uint8_t authSequence;
+	uint16_t authLen;
+	uint8_t authType;
 
 private:
 	XboxOneData() {
 		xboneState = XboxOneState::reset_state;
-		console_to_host_ready = false;
-		console_to_host_len = 0;
-
+		authLen = 0;
+		authSequence = 0;
 		auth_completed = false;
 	}
 };
