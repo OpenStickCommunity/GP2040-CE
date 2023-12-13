@@ -116,6 +116,8 @@ static XboxOneGamepad_Data_t xboneReport
 	.reserved = {}
 };
 
+static uint16_t xboneReportSize;
+
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
 
@@ -195,6 +197,7 @@ void Gamepad::setup()
 	// Xbox One Keep-Alive
 	keep_alive_timer = 0;
 	keep_alive_sequence = 0;
+	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
 }
 
 /**
@@ -527,7 +530,7 @@ uint16_t Gamepad::getReportSize()
 			return sizeof(PS4Report);
 
 		case INPUT_MODE_XBONE:
-			return sizeof(XboxOneGamepad_Data_t);
+			return xboneReportSize;
 
 		case INPUT_MODE_KEYBOARD:
 			return sizeof(KeyboardReport);
@@ -660,6 +663,11 @@ XInputReport *Gamepad::getXInputReport()
 	return &xinputReport;
 }
 
+uint8_t xboneIdle[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+					   0xff, 0xff, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00,
+					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 // Should really be an on success callback
 void Gamepad::tickReportCounter() {
 	switch( (options.inputMode) ) {
@@ -667,11 +675,21 @@ void Gamepad::tickReportCounter() {
 			last_report_counter = (last_report_counter+1) & 63;
 		break;
 		case INPUT_MODE_XBONE:
-			last_report_counter++;
-			if ( last_report_counter == 0 ) {
-				last_report_counter = 1;
+			// Only tick counter if we're holding a button down
+			for(uint8_t i = 0; i < sizeof(xboneIdle); i++) {
+				if ( i % 16 == 0 ) printf("\r\n");
+				printf("%02X ", ((uint8_t*)&xboneReport)[4+i]);
+			}
+			printf("\r\n");
+			if ( memcmp((void*)&((uint8_t*)&xboneReport)[4], xboneIdle, sizeof(xboneIdle)) != 0 ) {
+				printf("[Gamepad]:tickReportCounter:   Button Held!\r\n");
+				last_report_counter++;
+				if ( last_report_counter == 0 ) {
+					last_report_counter = 1;
+				}
 			}
 		break;
+
 		default:
 		break;
 	};
@@ -679,32 +697,37 @@ void Gamepad::tickReportCounter() {
 
 XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 {
-	uint32_t now = to_ms_since_boot(get_absolute_time());
-
+	// No input until auth is ready
 	if ( XboxOneData::getInstance().auth_completed == false ) {
-		// No input until auth is ready
 		GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, 0);
 		return &xboneReport;
-	} else if ( (now - keep_alive_timer) > 15000) {
+	}
+
+	uint32_t now = to_ms_since_boot(get_absolute_time());
+
+	if ( (now - keep_alive_timer) > 15000) {
 		// Send Keep-Alive every 15 seconds
 		printf("[GAMEPAD] Sending Keep Alive\r\n");
-		GipHeader_t keepAlivePacket;
-		memset(&keepAlivePacket, 0, sizeof(GipHeader_t));
-		keepAlivePacket.command = GIP_KEEPALIVE;
-		keepAlivePacket.internal = 1;
+		
+		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
+		xboneReport.Header.command = GIP_KEEPALIVE;
+		xboneReport.Header.internal = 1;
 		keep_alive_sequence++; // will rollover
 		if ( keep_alive_sequence == 0 )
 			keep_alive_sequence = 1;
-		keepAlivePacket.sequence = keep_alive_sequence;
-		keepAlivePacket.length = 4;
-		uint8_t keepAlive[] = { 0x80, 0x00, 0x00, 0x00 };\
-		memcpy(&xboneReport, &keepAlivePacket, sizeof(GipHeader_t));
+		xboneReport.Header.sequence = keep_alive_sequence;
+		xboneReport.Header.length = 4;
+		uint8_t keepAlive[] = { 0x80, 0x00, 0x00, 0x00 };
 		memcpy(&((uint8_t*)&xboneReport)[4], &keepAlive, sizeof(keepAlive));
 		keep_alive_timer = now;
+		
+		xboneReportSize = sizeof(GipHeader_t) + sizeof(keepAlive);
+
 		return &xboneReport;
 	}
 
 	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
+
 	xboneReport.a = pressedB1();
 	xboneReport.b = pressedB2();
 	xboneReport.x = pressedB3();
@@ -735,6 +758,16 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 		xboneReport.leftTrigger = pressedL2() ? 0x03FF : 0;
 		xboneReport.rightTrigger = pressedR2() ? 0x03FF : 0;
 	}
+
+	/*
+	for(uint8_t i = 0; i < sizeof(xboneReport); i++) {
+		if ( i % 16 == 0 ) printf("\r\n");
+		printf("%02X ", ((uint8_t*)&xboneReport)[i]);
+	}
+	printf("\r\n");
+	*/
+
+	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
 
 	return &xboneReport;
 }
