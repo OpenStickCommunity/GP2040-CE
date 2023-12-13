@@ -20,7 +20,7 @@ XGIPProtocol::~XGIPProtocol() {
 
 // Reset packet information
 void XGIPProtocol::reset() {
-    printf("[XGIPProtocol::reset]\r\n");
+    //printf("[XGIPProtocol::reset]\r\n");
     memset((void*)&header, 0, sizeof(GipHeader_t));
     totalChunkLength = 0;      // How big is the chunk?
     totalLengthReceived = 0;   // How much have we received?

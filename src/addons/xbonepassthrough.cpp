@@ -59,42 +59,20 @@ void XBOnePassthroughAddon::process() {
             authXGIP.reset();
             if ( XboxOneData::getInstance().authLen > GIP_MAX_CHUNK_SIZE ) {
                 //printf("[XBOnePassthroughAddon::process] Auth buffer will be chunked\r\n");
-                authXGIP.setAttributes(XboxOneData::getInstance().authType, XboxOneData::getInstance().authSequence, 1, true, 1);
+                authXGIP.setAttributes(XboxOneData::getInstance().authType, XboxOneData::getInstance().authSequence, 1, 1, 1);
                 authXGIP.setData(XboxOneData::getInstance().authBuffer, XboxOneData::getInstance().authLen);
                 XboxOneData::getInstance().xboneState = XboxOneState::wait_auth_console_to_dongle;
             } else {
                 //printf("[XBOnePassthroughAddon::process] Auth buffer sent to dongle as one report\r\n");
-                authXGIP.setAttributes(XboxOneData::getInstance().authType, XboxOneData::getInstance().authSequence, 1, false, XboxOneData::getInstance().authLen > 2);
+                if ( XboxOneData::getInstance().authLen > 2 )
+                    authXGIP.setAttributes(XboxOneData::getInstance().authType, XboxOneData::getInstance().authSequence, 1, 0, 1);
+                else // only ACK if auth len > 2
+                    authXGIP.setAttributes(XboxOneData::getInstance().authType, XboxOneData::getInstance().authSequence, 1, 0, 0);
                 authXGIP.setData(XboxOneData::getInstance().authBuffer, XboxOneData::getInstance().authLen);
                 queue_host_report(authXGIP.generatePacket(), authXGIP.getPacketLength());
                 XboxOneData::getInstance().xboneState = XboxOneState::idle_state;
             }
-
-/*
-            // on first auth send, the Xbox does this:
-            // XBONE REQUEST GIP_AUTH:  06,20,02,02,01,01    which means data[0] == 0x01 is probably auth status, and data[1] == 0x01 get ready to send me auth
-            // on final auth confirm, the Xbox does this:
-            // XBONE REQUEST GIP_AUTH:  06,20,02,02,01,00    which means data[0] == 0x01 is probably auth status, and data[1] == 0x00 auth done?
-            // let's just try it?
-            if (XboxOneData::getInstance().authSequence == 1) {
-                uint8_t authStart[] = {0x01, 0x01}; // 0x01, 0x00 is finish
-                authXGIP.incrementSequence();
-                authXGIP.setAttributes(GIP_AUTH, authXGIP.getSequence(), 1, false, 0);
-                authXGIP.setData(authStart, sizeof(authStart));
-                queue_host_report(authXGIP.generatePacket(), authXGIP.getPacketLength());    
-            }
-*/
-            //  06 30 xx 02 01 00
-            /*
-            if (XboxOneData::getInstance().authLen == 2) {
-                printf("Check: %02X %02X\r\n", XboxOneData::getInstance().authBuffer[0], XboxOneData::getInstance().authBuffer[1]);
-                 // Power-on with 0x01
-                requestXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 5, 1, false, 0);
-                requestXGIP.setData(xb1_auth_on, sizeof(xb1_auth_on));
-                queue_host_report((uint8_t*)requestXGIP.generatePacket(), requestXGIP.getPacketLength());                   
-            }*/
         } else if ( XboxOneData::getInstance().xboneState == XboxOneState::wait_auth_console_to_dongle) {
-            //printf("[XBOnePassthroughAddon::process] wait_auth_console_to_dongle sending chunk to Dongle\r\n");
             queue_host_report(authXGIP.generatePacket(), authXGIP.getPacketLength());
             if ( authXGIP.endOfChunk() == true ) {
                 XboxOneData::getInstance().xboneState = XboxOneState::idle_state;
@@ -151,6 +129,7 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
             requestXGIP.reset();
             requestXGIP.setAttributes(GIP_DEVICE_DESCRIPTOR, 1, 1, false, 0);
             tuh_xinput_send_report(dev_addr, instance, (uint8_t*)requestXGIP.generatePacket(), requestXGIP.getPacketLength());
+            //queue_host_report((uint8_t*)requestXGIP.generatePacket(), requestXGIP.getPacketLength());
             break;
         case GIP_DEVICE_DESCRIPTOR:
             if ( incomingXGIP.endOfChunk() == true ) {
@@ -203,6 +182,7 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
     if ( incomingXGIP.ackRequired() == true ) {
         //printf("[XBOnePassthroughAddon::report_received] Ack required, sending ack back\r\n");
         tuh_xinput_send_report(dev_addr, instance, (uint8_t*)incomingXGIP.generateAckPacket(), incomingXGIP.getPacketLength());
+        //queue_host_report((uint8_t*)incomingXGIP.generateAckPacket(), incomingXGIP.getPacketLength());
     }
 }
 

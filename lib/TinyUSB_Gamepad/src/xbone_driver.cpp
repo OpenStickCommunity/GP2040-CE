@@ -491,7 +491,7 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
 
 		// So far only Xbox One Auth requires this, but we can do it in any case
 		if ( packet.ackRequired() == true ) {
-			printf("[XBONE_XFER_CB]: ACK Required, sending back ACK\r\n");
+			//printf("[XBONE_XFER_CB]: ACK Required, sending back ACK\r\n");
 			queue_xbone_report(packet.generateAckPacket(), packet.getPacketLength());
 		}
 
@@ -637,7 +637,7 @@ void sendKeepAlive(uint32_t now ) {
 void tick_xbone_usb() {
 	if ( !report_queue.empty() ) {
 		// send the first report off our queue
-		printf("[Tick_XBOne_USB %u] Sending queued report to Xbox One Driver (%u)\r\n", to_ms_since_boot(get_absolute_time()), report_queue.front().timestamp);
+		//printf("[Tick_XBOne_USB %u] Sending queued report to Xbox One Driver (%u)\r\n", to_ms_since_boot(get_absolute_time()), report_queue.front().timestamp);
 		if ( send_xbone_report(report_queue.front().report, report_queue.front().len) )
 			report_queue.pop();
 		else
@@ -648,7 +648,7 @@ void tick_xbone_usb() {
 	uint32_t now = to_ms_since_boot(get_absolute_time());
 
 	// 15 second keep alive
-	sendKeepAlive(now);
+	//sendKeepAlive(now);
 
 	XboxOneState state = XboxOneData::getInstance().xboneState;
 	if ( state == XboxOneState::reset_state ) {
