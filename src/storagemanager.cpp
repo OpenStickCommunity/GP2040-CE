@@ -47,7 +47,7 @@ Storage::Storage()
 	critical_section_init(&animationOptionsCs);
 	ConfigUtils::load(config);
 
-	setFunctionalPinMappings(config.gamepadOptions.profileNumber);
+	setFunctionalPinMappings();
 }
 
 bool Storage::save()
@@ -138,44 +138,31 @@ void Storage::ResetSettings()
 
 void Storage::setProfile(const uint32_t profileNum)
 {
-	if (profileNum < 1 || profileNum > 4) return;
-	setFunctionalPinMappings(profileNum);
-	this->config.gamepadOptions.profileNumber = profileNum;
+	this->config.gamepadOptions.profileNumber = (profileNum < 1 || profileNum > 4) ? 1 : profileNum;
 }
 
-void Storage::setFunctionalPinMappings(const uint32_t profileNum)
+void Storage::setFunctionalPinMappings()
 {
+	GpioMappingInfo* alts = nullptr;
+	if (config.gamepadOptions.profileNumber >= 2 && config.gamepadOptions.profileNumber <= 4)
+		alts = this->config.profileOptions.gpioMappingsSets[config.gamepadOptions.profileNumber-2].pins;
+
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
-		functionalPinMappings[pin] = this->config.gpioMappings.pins[pin].action;
-	}
-	if (profileNum < 2 || profileNum > 4) return;
-
-	AlternativePinMappings alts = this->config.profileOptions.alternativePinMappings[profileNum-2];
-
-	const auto reassignProfilePin = [&](Pin_t targetPin, GpioAction newAction) -> void {
-		// reassign the functional pin if:
-		// 1: it's a real pin (this only matters until profiles are refactored)
+		// assign the functional pin to the profile pin if:
+		// 1: there was a profile to load
 		// 2: the new action isn't RESERVED or ASSIGNED_TO_ADDON (profiles can't affect special addons)
 		// 3: the old action isn't RESERVED or ASSIGNED_TO_ADDON (profiles can't affect special addons)
-		if (isValidPin(targetPin) && newAction != GpioAction::RESERVED &&
-				newAction != GpioAction::ASSIGNED_TO_ADDON &&
-				functionalPinMappings[targetPin] != GpioAction::RESERVED &&
-				functionalPinMappings[targetPin] != GpioAction::ASSIGNED_TO_ADDON) {
-			functionalPinMappings[targetPin] = newAction;
+		// else use whatever is in the core mapping
+		if (alts != nullptr &&
+				alts[pin].action != GpioAction::RESERVED &&
+				alts[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
+				this->config.gpioMappings.pins[pin].action != GpioAction::RESERVED &&
+				this->config.gpioMappings.pins[pin].action != GpioAction::ASSIGNED_TO_ADDON) {
+			functionalPinMappings[pin] = alts[pin].action;
+		} else {
+			functionalPinMappings[pin] = this->config.gpioMappings.pins[pin].action;
 		}
-	};
-	reassignProfilePin(alts.pinButtonB1,  GpioAction::BUTTON_PRESS_B1);
-	reassignProfilePin(alts.pinButtonB2,  GpioAction::BUTTON_PRESS_B2);
-	reassignProfilePin(alts.pinButtonB3,  GpioAction::BUTTON_PRESS_B3);
-	reassignProfilePin(alts.pinButtonB4,  GpioAction::BUTTON_PRESS_B4);
-	reassignProfilePin(alts.pinButtonL1,  GpioAction::BUTTON_PRESS_L1);
-	reassignProfilePin(alts.pinButtonR1,  GpioAction::BUTTON_PRESS_R1);
-	reassignProfilePin(alts.pinButtonL2,  GpioAction::BUTTON_PRESS_L2);
-	reassignProfilePin(alts.pinButtonR2,  GpioAction::BUTTON_PRESS_R2);
-	reassignProfilePin(alts.pinDpadUp,    GpioAction::BUTTON_PRESS_UP);
-	reassignProfilePin(alts.pinDpadDown,  GpioAction::BUTTON_PRESS_DOWN);
-	reassignProfilePin(alts.pinDpadLeft,  GpioAction::BUTTON_PRESS_LEFT);
-	reassignProfilePin(alts.pinDpadRight, GpioAction::BUTTON_PRESS_RIGHT);
+	}
 }
 
 void Storage::SetConfigMode(bool mode) { // hack for config mode

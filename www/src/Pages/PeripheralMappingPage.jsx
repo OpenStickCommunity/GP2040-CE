@@ -1,26 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, FormCheck, FormSelect, Table } from 'react-bootstrap';
-import { Formik, useFormikContext, getIn, setIn } from 'formik';
-import { NavLink } from 'react-router-dom';
+import { Formik, useFormikContext, getIn } from 'formik';
 import * as yup from 'yup';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
-
-import get from 'lodash/get';
-import set from 'lodash/set';
 
 import Section from '../Components/Section';
 import WebApi, { basePeripheralMapping } from '../Services/WebApi';
-import { BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
 import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
 import boards from '../Data/Boards.json';
 
 let peripheralFieldsSchema = {peripheral: yup.object().shape(Object.assign({}, ...PERIPHERAL_DEVICES.map((device) => {
-    let deviceProps = Object.assign({}, ...device.blocks.map((block) => { 
+    let deviceProps = Object.assign({}, ...device.blocks.map((block) => {
         return {
             [block.label] : yup.object().shape(Object.assign(
-                { enabled: yup.boolean().label(`${block.label} Enabled`) }, 
+                { enabled: yup.boolean().label(`${block.label} Enabled`) },
                 //...Array.from(Object.keys(block.pins), (pin) => ({[pin]: yup.number().label(`${pin} Pin`).validatePinWhenValue(`peripheral.${block.label}.enabled`)}) ),
                 ...Array.from(Object.keys(block.pins), (pin) => ({[pin]: yup.number().label(`${pin} Pin`)}) ),
                 ...Array.from(Object.keys(device.options), (opt) => ({[opt]: yup.number().label('${block.label} ${opt} Setting')}) )
@@ -34,20 +29,16 @@ const schema = yup.object().shape({
     ...peripheralFieldsSchema
 });
 
-const defaultValues = {
-    ...basePeripheralMapping
-};
-
-const FormContext = ({ setButtonLabels }) => {
+const FormContext = () => {
 	const { values, setValues } = useFormikContext();
 	const { setLoading } = useContext(AppContext);
 
 	useEffect(() => {
 		async function fetchData() {
-			const options = await WebApi.getGamepadOptions(setLoading);
-            const peripheralOptions = await WebApi.getPeripheralOptions(setLoading);
+			await WebApi.getGamepadOptions(setLoading);
+			const peripheralOptions = await WebApi.getPeripheralOptions(setLoading);
 
-            setValues(peripheralOptions);
+			setValues(peripheralOptions);
 		}
 		fetchData();
 	}, [setValues]);
@@ -59,11 +50,8 @@ const FormContext = ({ setButtonLabels }) => {
 };
 
 export default function PeripheralMappingPage() {
-    const { updateUsedPins, usedPins, setLoading } = useContext(AppContext);
-	const { buttonLabels, setButtonLabels } = useContext(AppContext);
+    const { setButtonLabels, usedPins } = useContext(AppContext);
     const [saveMessage, setSaveMessage] = useState('');
-    const [warning, setWarning] = useState({ show: false, acceptText: '' });
-    const [peripheralMappings , setPeripheralMappings] = useState(basePeripheralMapping);
 
     let allPins = [...Array(boards[import.meta.env.VITE_GP2040_BOARD].maxPin+1).keys()];
     const pinLookup = (pinList) => {
@@ -117,8 +105,8 @@ export default function PeripheralMappingPage() {
 	const { t } = useTranslation('');
 
 	return (
-		<Formik onSubmit={onSuccess} validationSchema={schema} initialValues={{...peripheralMappings}}>
-			{({ errors, handleBlur, handleChange, handleSubmit, setFieldValue, isSubmitting, isValid, dirty, touched, values }) =>
+		<Formik onSubmit={onSuccess} validationSchema={schema} initialValues={basePeripheralMapping}>
+			{({ errors, handleSubmit, setFieldValue, values }) =>
 				console.log('errors', errors) || (
 					<div>
 						<Form noValidate onSubmit={handleSubmit}>
@@ -211,7 +199,7 @@ export default function PeripheralMappingPage() {
 							{saveMessage ? (
 								<span className="alert">{saveMessage}</span>
 							) : null}
-							<FormContext setButtonLabels={setButtonLabels} />
+							<FormContext/>
 						</Form>
 					</div>
 				)

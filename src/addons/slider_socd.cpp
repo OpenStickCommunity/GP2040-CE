@@ -42,6 +42,19 @@ SOCDMode SliderSOCDInput::read() {
     return options.modeDefault;
 }
 
+/**
+ * Reinitialize masks.
+ */
+void SliderSOCDInput::reinit()
+{
+    upPrioModeMask = 0;
+    neutralModeMask = 0;
+    secondInputModeMask = 0;
+    firstInputModeMask = 0;
+    bypassModeMask = 0;
+    this->setup();
+}
+
 void SliderSOCDInput::debounce()
 {
     uint32_t uNowTime = getMillis();

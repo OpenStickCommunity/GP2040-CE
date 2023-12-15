@@ -10,6 +10,6 @@ export default {
 	'api-gamepad-text': '游戏控制器',
 	'api-led-text': 'LED',
 	'api-ledTheme-text': '自定义 LED 主题',
-	'api-pinmappings-text': '引脚映射',
+	'api-pins-text': '引脚映射',
 	'api-addons-text': '附加功能',
 };

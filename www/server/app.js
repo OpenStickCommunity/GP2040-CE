@@ -164,6 +164,26 @@ app.get('/api/getGamepadOptions', (req, res) => {
 			buttonsMask: 0,
 			action: 0,
 		},
+		hotkey13: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0,
+		},
+		hotkey14: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0,
+		},
+		hotkey15: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0,
+		},
+		hotkey16: {
+			auxMask: 0,
+			buttonsMask: 0,
+			action: 0,
+		},
 	});
 });
 
@@ -240,162 +260,119 @@ app.get('/api/getKeyMappings', (req, res) =>
 );
 
 app.get('/api/getPeripheralOptions', (req, res) => {
-    return res.send({
-        peripheral: {
-            i2c0: {
-                enabled: 1,
-                sda: 0,
-                scl: 1,
-                speed: 400000,
-            },
-            i2c1: {
-                enabled: 0,
-                sda: -1,
-                scl: -1,
-                speed: 400000,
-            },
-            spi0: {
-                enabled: 0,
-                rx: -1,
-                cs: -1,
-                sck: -1,
-                tx: -1,
-            },
-            spi1: {
-                enabled: 0,
-                rx: -1,
-                cs: -1,
-                sck: -1,
-                tx: -1,
-            },
-            usb0: {
-                enabled: 0,
-                dp: -1,
-                enable5v: -1,
-                order: 0,
-            }
-        }
-    });
+	return res.send({
+		peripheral: {
+			i2c0: {
+				enabled: 1,
+				sda: 0,
+				scl: 1,
+				speed: 400000,
+			},
+			i2c1: {
+				enabled: 0,
+				sda: -1,
+				scl: -1,
+				speed: 400000,
+			},
+			spi0: {
+				enabled: 0,
+				rx: -1,
+				cs: -1,
+				sck: -1,
+				tx: -1,
+			},
+			spi1: {
+				enabled: 0,
+				rx: -1,
+				cs: -1,
+				sck: -1,
+				tx: -1,
+			},
+			usb0: {
+				enabled: 1,
+				dp: 28,
+				enable5v: -1,
+				order: 0,
+			},
+		},
+	});
 });
 
 app.get('/api/getWiiControls', (req, res) =>
-    res.send({
-        "nunchuk.analogStick.x.axisType": 1,
-        "nunchuk.analogStick.y.axisType": 2,
-        "nunchuk.buttonC": 1,
-        "nunchuk.buttonZ": 2,
-        "classic.analogLeftStick.x.axisType": 1,
-        "classic.analogLeftStick.y.axisType": 2,
-        "classic.analogRightStick.x.axisType": 3,
-        "classic.analogRightStick.y.axisType": 4,
-        "classic.analogLeftTrigger.axisType": 7,
-        "classic.analogRightTrigger.axisType": 8,
-        "classic.buttonA": 2,
-        "classic.buttonB": 1,
-        "classic.buttonX": 8,
-        "classic.buttonY": 4,
-        "classic.buttonL": 64,
-        "classic.buttonR": 128,
-        "classic.buttonZL": 16,
-        "classic.buttonZR": 32,
-        "classic.buttonMinus": 256,
-        "classic.buttonHome": 4096,
-        "classic.buttonPlus": 512,
-        "classic.buttonUp": 65536,
-        "classic.buttonDown": 131072,
-        "classic.buttonLeft": 262144,
-        "classic.buttonRight": 524288,
-        "guitar.analogStick.x.axisType": 1,
-        "guitar.analogStick.y.axisType": 2,
-        "guitar.analogWhammyBar.axisType": 14,
-        "guitar.buttonOrange": 64,
-        "guitar.buttonRed": 2,
-        "guitar.buttonBlue": 4,
-        "guitar.buttonGreen": 1,
-        "guitar.buttonYellow": 8,
-        "guitar.buttonPedal": 128,
-        "guitar.buttonMinus": 256,
-        "guitar.buttonPlus": 512,
-        "guitar.buttonStrumUp": 65536,
-        "guitar.buttonStrumDown": 131072,
-        "drum.analogStick.x.axisType": 1,
-        "drum.analogStick.y.axisType": 2,
-        "drum.buttonOrange": 64,
-        "drum.buttonRed": 2,
-        "drum.buttonBlue": 8,
-        "drum.buttonGreen": 1,
-        "drum.buttonYellow": 4,
-        "drum.buttonPedal": 128,
-        "drum.buttonMinus": 256,
-        "drum.buttonPlus": 512,
-        "turntable.analogStick.x.axisType": 1,
-        "turntable.analogStick.y.axisType": 2,
-        "turntable.analogLeftTurntable.axisType": 13,
-        "turntable.analogRightTurntable.axisType": 15,
-        "turntable.analogFader.axisType": 7,
-        "turntable.analogEffects.axisType": 8,
-        "turntable.buttonLeftGreen": 262144,
-        "turntable.buttonLeftRed": 65536,
-        "turntable.buttonLeftBlue": 524288,
-        "turntable.buttonRightGreen": 4,
-        "turntable.buttonRightRed": 8,
-        "turntable.buttonRightBlue": 2,
-        "turntable.buttonEuphoria": 32,
-        "turntable.buttonMinus": 256,
-        "turntable.buttonPlus": 512,
-        "taiko.buttonDonLeft": 262144,
-        "taiko.buttonKatLeft": 64,
-        "taiko.buttonDonRight": 1,
-        "taiko.buttonKatRight": 128,
-    }),
+	res.send({
+		'nunchuk.analogStick.x.axisType': 1,
+		'nunchuk.analogStick.y.axisType': 2,
+		'nunchuk.buttonC': 1,
+		'nunchuk.buttonZ': 2,
+		'classic.analogLeftStick.x.axisType': 1,
+		'classic.analogLeftStick.y.axisType': 2,
+		'classic.analogRightStick.x.axisType': 3,
+		'classic.analogRightStick.y.axisType': 4,
+		'classic.analogLeftTrigger.axisType': 7,
+		'classic.analogRightTrigger.axisType': 8,
+		'classic.buttonA': 2,
+		'classic.buttonB': 1,
+		'classic.buttonX': 8,
+		'classic.buttonY': 4,
+		'classic.buttonL': 64,
+		'classic.buttonR': 128,
+		'classic.buttonZL': 16,
+		'classic.buttonZR': 32,
+		'classic.buttonMinus': 256,
+		'classic.buttonHome': 4096,
+		'classic.buttonPlus': 512,
+		'classic.buttonUp': 65536,
+		'classic.buttonDown': 131072,
+		'classic.buttonLeft': 262144,
+		'classic.buttonRight': 524288,
+		'guitar.analogStick.x.axisType': 1,
+		'guitar.analogStick.y.axisType': 2,
+		'guitar.analogWhammyBar.axisType': 14,
+		'guitar.buttonOrange': 64,
+		'guitar.buttonRed': 2,
+		'guitar.buttonBlue': 4,
+		'guitar.buttonGreen': 1,
+		'guitar.buttonYellow': 8,
+		'guitar.buttonPedal': 128,
+		'guitar.buttonMinus': 256,
+		'guitar.buttonPlus': 512,
+		'guitar.buttonStrumUp': 65536,
+		'guitar.buttonStrumDown': 131072,
+		'drum.analogStick.x.axisType': 1,
+		'drum.analogStick.y.axisType': 2,
+		'drum.buttonOrange': 64,
+		'drum.buttonRed': 2,
+		'drum.buttonBlue': 8,
+		'drum.buttonGreen': 1,
+		'drum.buttonYellow': 4,
+		'drum.buttonPedal': 128,
+		'drum.buttonMinus': 256,
+		'drum.buttonPlus': 512,
+		'turntable.analogStick.x.axisType': 1,
+		'turntable.analogStick.y.axisType': 2,
+		'turntable.analogLeftTurntable.axisType': 13,
+		'turntable.analogRightTurntable.axisType': 15,
+		'turntable.analogFader.axisType': 7,
+		'turntable.analogEffects.axisType': 8,
+		'turntable.buttonLeftGreen': 262144,
+		'turntable.buttonLeftRed': 65536,
+		'turntable.buttonLeftBlue': 524288,
+		'turntable.buttonRightGreen': 4,
+		'turntable.buttonRightRed': 8,
+		'turntable.buttonRightBlue': 2,
+		'turntable.buttonEuphoria': 32,
+		'turntable.buttonMinus': 256,
+		'turntable.buttonPlus': 512,
+		'taiko.buttonDonLeft': 262144,
+		'taiko.buttonKatLeft': 64,
+		'taiko.buttonDonRight': 1,
+		'taiko.buttonKatRight': 128,
+	}),
 );
 
 app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
-		alternativePinMappings: [
-			{
-				B1: 10,
-				B2: 6,
-				B3: 11,
-				B4: 12,
-				L1: 13,
-				R1: 9,
-				L2: 7,
-				R2: 8,
-				Up: 2,
-				Down: 3,
-				Left: 5,
-				Right: 4,
-			},
-			{
-				B1: 10,
-				B2: 11,
-				B3: 12,
-				B4: 13,
-				L1: 6,
-				R1: 8,
-				L2: 7,
-				R2: 9,
-				Up: 3,
-				Down: 2,
-				Left: 4,
-				Right: 5,
-			},
-			{
-				B1: 6,
-				B2: 7,
-				B3: 8,
-				B4: 9,
-				L1: 10,
-				R1: 12,
-				L2: 11,
-				R2: 13,
-				Up: 3,
-				Down: 5,
-				Left: 4,
-				Right: 2,
-			},
-		],
+		alternativePinMappings: [picoController, picoController, picoController],
 	});
 });
 
@@ -528,9 +505,17 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 				useMacroTriggerButton: 0,
 				macroTriggerPin: -1,
 				macroTriggerButton: 0,
-				macroLabel: "Shoryuken",
-				macroInputs: [{ buttonMask: 1 << 19, duration: 16666, waitDuration: 0 }, { buttonMask: 1 << 17, duration: 16666, waitDuration: 0 }, { buttonMask: 1 << 17 | 1 << 19 | 1 << 3, duration: 16666, waitDuration: 0 }]
-			}
+				macroLabel: 'Shoryuken',
+				macroInputs: [
+					{ buttonMask: 1 << 19, duration: 16666, waitDuration: 0 },
+					{ buttonMask: 1 << 17, duration: 16666, waitDuration: 0 },
+					{
+						buttonMask: (1 << 17) | (1 << 19) | (1 << 3),
+						duration: 16666,
+						waitDuration: 0,
+					},
+				],
+			},
 		],
 		macroPin: -1,
 		macroBoardLedEnabled: 1,
@@ -541,9 +526,9 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 
 app.get('/api/getFirmwareVersion', (req, res) => {
 	return res.send({
-		boardConfigLabel: "Pico",
+		boardConfigLabel: 'Pico',
 		boardConfigFileName: `GP2040_${process.env.VITE_CURRENT_VERSION}_Pico`,
-		boardConfig: "Pico",
+		boardConfig: 'Pico',
 		version: process.env.VITE_CURRENT_VERSION,
 	});
 });
@@ -582,13 +567,15 @@ app.get('/api/getMemoryReport', (req, res) => {
 });
 
 app.get('/api/getHeldPins', async (req, res) => {
-	await new Promise(resolve => setTimeout(resolve, 2000));
+	await new Promise((resolve) => setTimeout(resolve, 2000));
 	return res.send({
-		heldPins: [7]
+		heldPins: [7],
 	});
 });
 
-app.get('/api/abortGetHeldPins', async (req, res) => {return res.send()});
+app.get('/api/abortGetHeldPins', async (req, res) => {
+	return res.send();
+});
 
 app.post('/api/*', (req, res) => {
 	console.log(req.body);

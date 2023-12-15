@@ -166,10 +166,8 @@ void Gamepad::setup()
 /**
  * @brief Undo setup().
  */
-void Gamepad::teardown_and_reinit(const uint32_t profileNum)
+void Gamepad::reinit()
 {
-	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
-
 	delete mapDpadUp;
 	delete mapDpadDown;
 	delete mapDpadLeft;
@@ -189,18 +187,6 @@ void Gamepad::teardown_and_reinit(const uint32_t profileNum)
 	delete mapButtonA1;
 	delete mapButtonA2;
 	delete mapButtonFn;
-
-	// deinitialize the GPIO pins so we don't have orphans
-	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
-	{
-		if (pinMappings[pin] > 0)
-		{
-			gpio_deinit(pin);
-		}
-	}
-
-	// set to new profile
-	Storage::getInstance().setProfile(profileNum);
 
 	// reinitialize pin mappings
 	this->setup();
@@ -344,6 +330,10 @@ void Gamepad::hotkey()
 	else if (pressedHotkey(hotkeyOptions.hotkey10))	action = selectHotkey(hotkeyOptions.hotkey10);
 	else if (pressedHotkey(hotkeyOptions.hotkey11))	action = selectHotkey(hotkeyOptions.hotkey11);
 	else if (pressedHotkey(hotkeyOptions.hotkey12))	action = selectHotkey(hotkeyOptions.hotkey12);
+	else if (pressedHotkey(hotkeyOptions.hotkey13))	action = selectHotkey(hotkeyOptions.hotkey13);
+	else if (pressedHotkey(hotkeyOptions.hotkey14))	action = selectHotkey(hotkeyOptions.hotkey14);
+	else if (pressedHotkey(hotkeyOptions.hotkey15))	action = selectHotkey(hotkeyOptions.hotkey15);
+	else if (pressedHotkey(hotkeyOptions.hotkey16))	action = selectHotkey(hotkeyOptions.hotkey16);
 	else                                        lastAction = HOTKEY_NONE;
 	processHotkeyIfNewAction(action);
 }
@@ -359,41 +349,29 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 		case HOTKEY_DPAD_DIGITAL      : options.dpadMode = DPAD_MODE_DIGITAL; reqSave = true; break;
 		case HOTKEY_DPAD_LEFT_ANALOG  : options.dpadMode = DPAD_MODE_LEFT_ANALOG; reqSave = true; break;
 		case HOTKEY_DPAD_RIGHT_ANALOG : options.dpadMode = DPAD_MODE_RIGHT_ANALOG; reqSave = true; break;
-		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break; // Press the Home button
-		case HOTKEY_L3_BUTTON         : state.buttons |= GAMEPAD_MASK_L3; break; // Press the L3 button
-		case HOTKEY_R3_BUTTON         : state.buttons |= GAMEPAD_MASK_R3; break; // Press the R3 button
-		case HOTKEY_B1_BUTTON         : state.buttons |= GAMEPAD_MASK_B1; break; // Press the L3 button
-		case HOTKEY_B2_BUTTON         : state.buttons |= GAMEPAD_MASK_B2; break; // Press the R3 button
-		case HOTKEY_B3_BUTTON         : state.buttons |= GAMEPAD_MASK_B3; break; // Press the L3 button
-		case HOTKEY_B4_BUTTON         : state.buttons |= GAMEPAD_MASK_B4; break; // Press the R3 button
-		case HOTKEY_L1_BUTTON         : state.buttons |= GAMEPAD_MASK_L1; break; // Press the L3 button
-		case HOTKEY_R1_BUTTON         : state.buttons |= GAMEPAD_MASK_R1; break; // Press the L3 button
-		case HOTKEY_L2_BUTTON         : state.buttons |= GAMEPAD_MASK_L2; break; // Press the R3 button
-		case HOTKEY_R2_BUTTON         : state.buttons |= GAMEPAD_MASK_R2; break; // Press the R3 button
-		case HOTKEY_S1_BUTTON         : state.buttons |= GAMEPAD_MASK_S1; break; // Press the L3 button
-		case HOTKEY_S2_BUTTON         : state.buttons |= GAMEPAD_MASK_S2; break; // Press the R3 button
-		case HOTKEY_A1_BUTTON         : state.buttons |= GAMEPAD_MASK_A1; break; // Press the L3 button
-		case HOTKEY_A2_BUTTON         : state.buttons |= GAMEPAD_MASK_A2; break; // Press the R3 button
+		case HOTKEY_HOME_BUTTON       : state.buttons |= GAMEPAD_MASK_A1; break;
+		case HOTKEY_L3_BUTTON         : state.buttons |= GAMEPAD_MASK_L3; break;
+		case HOTKEY_R3_BUTTON         : state.buttons |= GAMEPAD_MASK_R3; break;
+		case HOTKEY_B1_BUTTON         : state.buttons |= GAMEPAD_MASK_B1; break;
+		case HOTKEY_B2_BUTTON         : state.buttons |= GAMEPAD_MASK_B2; break;
+		case HOTKEY_B3_BUTTON         : state.buttons |= GAMEPAD_MASK_B3; break;
+		case HOTKEY_B4_BUTTON         : state.buttons |= GAMEPAD_MASK_B4; break;
+		case HOTKEY_L1_BUTTON         : state.buttons |= GAMEPAD_MASK_L1; break;
+		case HOTKEY_R1_BUTTON         : state.buttons |= GAMEPAD_MASK_R1; break;
+		case HOTKEY_L2_BUTTON         : state.buttons |= GAMEPAD_MASK_L2; break;
+		case HOTKEY_R2_BUTTON         : state.buttons |= GAMEPAD_MASK_R2; break;
+		case HOTKEY_S1_BUTTON         : state.buttons |= GAMEPAD_MASK_S1; break;
+		case HOTKEY_S2_BUTTON         : state.buttons |= GAMEPAD_MASK_S2; break;
+		case HOTKEY_A1_BUTTON         : state.buttons |= GAMEPAD_MASK_A1; break;
+		case HOTKEY_A2_BUTTON         : state.buttons |= GAMEPAD_MASK_A2; break;
 		case HOTKEY_SOCD_UP_PRIORITY  : options.socdMode = SOCD_MODE_UP_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_NEUTRAL      : options.socdMode = SOCD_MODE_NEUTRAL; reqSave = true; break;
 		case HOTKEY_SOCD_LAST_INPUT   : options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY; reqSave = true; break;
 		case HOTKEY_SOCD_FIRST_INPUT  : options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;  reqSave = true;break;
 		case HOTKEY_SOCD_BYPASS       : options.socdMode = SOCD_MODE_BYPASS; reqSave = true; break;
 		case HOTKEY_REBOOT_DEFAULT    : System::reboot(System::BootMode::DEFAULT); break;
-		case HOTKEY_CAPTURE_BUTTON    :
-			if (options.inputMode == INPUT_MODE_PS4 && options.switchTpShareForDs4) {
-				state.buttons |= GAMEPAD_MASK_A2;
-			} else {
-				state.buttons |= GAMEPAD_MASK_S1;
-			}
-			break;
-		case HOTKEY_TOUCHPAD_BUTTON    :
-			if (options.inputMode == INPUT_MODE_PS4) {
-				state.buttons |= GAMEPAD_MASK_A2;
-			} else {
-				state.buttons |= GAMEPAD_MASK_S1;
-			}
-			break;				
+		case HOTKEY_CAPTURE_BUTTON    : state.buttons |= GAMEPAD_MASK_A2; break;
+		case HOTKEY_TOUCHPAD_BUTTON   : state.buttons |= GAMEPAD_MASK_A2; break;				
 		case HOTKEY_INVERT_X_AXIS     :
 			if (action != lastAction) {
 				options.invertXAxis = !options.invertXAxis;
@@ -421,25 +399,29 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action)
 			break;
 		case HOTKEY_LOAD_PROFILE_1:
 			if (action != lastAction) {
-				this->teardown_and_reinit(1);
+				Storage::getInstance().setProfile(1);
+				userRequestedReinit = true;
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_2:
 			if (action != lastAction) {
-				this->teardown_and_reinit(2);
+				Storage::getInstance().setProfile(2);
+				userRequestedReinit = true;
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_3:
 			if (action != lastAction) {
-				this->teardown_and_reinit(3);
+				Storage::getInstance().setProfile(3);
+				userRequestedReinit = true;
 				reqSave = true;
 			}
 			break;
 		case HOTKEY_LOAD_PROFILE_4:
 			if (action != lastAction) {
-				this->teardown_and_reinit(4);
+				Storage::getInstance().setProfile(4);
+				userRequestedReinit = true;
 				reqSave = true;
 			}
 			break;

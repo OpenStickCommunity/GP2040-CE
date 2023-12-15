@@ -3,12 +3,12 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef SGF_DEVICES_CONFIG_H_
-#define SGF_DEVICES_CONFIG_H_
+#ifndef SGF_FAUST_CONFIG_H_
+#define SGF_FAUST_CONFIG_H_
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "SGF! Devices"
+#define BOARD_CONFIG_LABEL "SGF Faust"
 
 // Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin
 
@@ -83,7 +83,11 @@
 #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF // 	FORCED_SETUP_MODE_OFF, FORCED_SETUP_MODE_LOCK_MODE_SWITCH, FORCED_SETUP_MODE_LOCK_WEB_CONFIG, FORCED_SETUP_MODE_LOCK_BOTH
 #define DEFAULT_LOCK_HOTKEYS false // or true
 
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
+
+// USB Passthrough settings
+#define PSPASSTHROUGH_ENABLED 1
+#define PSPASSTHROUGH_PIN_DPLUS 12
 
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)

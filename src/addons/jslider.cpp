@@ -39,6 +39,17 @@ DpadMode JSliderInput::read() {
     return options.modeDefault;
 }
 
+/**
+ * Reinitialize masks.
+ */
+void JSliderInput::reinit()
+{
+    dpModeMask = 0;
+    lsModeMask = 0;
+    rsModeMask = 0;
+    this->setup();
+}
+
 void JSliderInput::debounce()
 {
     // Return if the states haven't changed

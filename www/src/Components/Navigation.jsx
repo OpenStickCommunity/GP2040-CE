@@ -24,7 +24,7 @@ const BOOT_MODES = {
 	BOOTSEL: 2,
 };
 
-const Navigation = (props) => {
+const Navigation = () => {
 	const { buttonLabels, setButtonLabels } = useContext(AppContext);
 
 	const [show, setShow] = useState(false);
@@ -66,41 +66,38 @@ const Navigation = (props) => {
 			</Navbar.Brand>
 			<Navbar.Collapse id="basic-navbar-nav">
 				<Nav className="me-auto">
-					<Nav.Link as={NavLink} exact="true" to="/">
+					<Nav.Link as={NavLink} to="/">
 						{t('Navigation:home-label')}
 					</Nav.Link>
-					<Nav.Link as={NavLink} exact="true" to="/settings">
+					<Nav.Link as={NavLink} to="/settings">
 						{t('Navigation:settings-label')}
 					</Nav.Link>
 					<NavDropdown title={t('Navigation:config-label')}>
-						<NavDropdown.Item as={NavLink} exact="true" to="/pin-mapping">
+						<NavDropdown.Item as={NavLink} to="/pin-mapping">
 							{t('Navigation:pin-mapping-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/peripheral-mapping">
+						<NavDropdown.Item as={NavLink} to="/peripheral-mapping">
 							{t('Navigation:peripheral-mapping-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/keyboard-mapping">
+						<NavDropdown.Item as={NavLink} to="/keyboard-mapping">
 							{t('Navigation:keyboard-mapping-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/profile-settings">
-							{t('Navigation:profile-settings-label')}
-						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/led-config">
+						<NavDropdown.Item as={NavLink} to="/led-config">
 							{t('Navigation:led-config-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/custom-theme">
+						<NavDropdown.Item as={NavLink} to="/custom-theme">
 							{t('Navigation:custom-theme-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/display-config">
+						<NavDropdown.Item as={NavLink} to="/display-config">
 							{t('Navigation:display-config-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/add-ons">
+						<NavDropdown.Item as={NavLink} to="/add-ons">
 							{t('Navigation:add-ons-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/macro">
+						<NavDropdown.Item as={NavLink} to="/macro">
 							{t('Navigation:macro-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} exact="true" to="/backup">
+						<NavDropdown.Item as={NavLink} to="/backup">
 							{t('Navigation:backup-label')}
 						</NavDropdown.Item>
 					</NavDropdown>
