@@ -13,9 +13,7 @@ const toKB = (x) => parseFloat((x / 1024).toFixed(2));
 export default function HomePage() {
 	const [latestVersion, setLatestVersion] = useState('');
 	const [latestDownloadUrl, setLatestDownloadUrl] = useState('');
-	const [currentVersion, setCurrentVersion] = useState(
-		import.meta.env.VITE_CURRENT_VERSION,
-	);
+	const [currentVersion, setCurrentVersion] = useState('');
 	const [boardConfigProperties, setBoardConfigProperties] = useState({});
 	const [memoryReport, setMemoryReport] = useState(null);
 
@@ -85,7 +83,7 @@ export default function HomePage() {
 					<div>{`${boardConfigProperties.label} (${boardConfigProperties.fileName}.uf2)`}</div>
 					<div>{t('HomePage:current-text', { version: currentVersion })}</div>
 					<div>{t('HomePage:latest-text', { version: latestVersion })}</div>
-					{latestVersion && currentVersion !== latestVersion && (
+					{latestVersion && currentVersion?.split("-").length == 1 && currentVersion !== latestVersion && (
 						<div className="mt-3 mb-3">
 							<a
 								target="_blank"
