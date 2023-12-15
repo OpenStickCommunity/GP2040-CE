@@ -21,6 +21,7 @@ using namespace std;
 #include "gamepad/descriptors/EgretDescriptors.h"
 #include "gamepad/descriptors/AstroDescriptors.h"
 #include "gamepad/descriptors/PSClassicDescriptors.h"
+#include "gamepad/descriptors/XboxOriginalDescriptors.h"
 
 #define GAMEPAD_BUTTON_COUNT 14
 
@@ -170,6 +171,9 @@ inline uint16_t GetJoystickMidValue(uint8_t mode) {
             return GAMEPAD_JOYSTICK_MID;
 
         case INPUT_MODE_PSCLASSIC:
+            return GAMEPAD_JOYSTICK_MID;
+
+        case INPUT_MODE_XBOXORIGINAL:
             return GAMEPAD_JOYSTICK_MID;
 
         default:

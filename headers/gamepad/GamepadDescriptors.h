@@ -18,6 +18,7 @@
 #include "descriptors/EgretDescriptors.h"
 #include "descriptors/AstroDescriptors.h"
 #include "descriptors/PSClassicDescriptors.h"
+#include "descriptors/XboxOriginalDescriptors.h"
 
 #include "enums.pb.h"
 
@@ -68,6 +69,10 @@ static const uint8_t *getConfigurationDescriptor(uint16_t *size, InputMode mode)
 			*size = sizeof(psclassic_configuration_descriptor);
 			return psclassic_configuration_descriptor;
 
+		case INPUT_MODE_XBOXORIGINAL:
+			*size = sizeof(xboxoriginal_configuration_descriptor);
+			return xboxoriginal_configuration_descriptor;
+
 		default:
 			*size = sizeof(hid_configuration_descriptor);
 			return hid_configuration_descriptor;
@@ -117,6 +122,10 @@ static const uint8_t *getDeviceDescriptor(uint16_t *size, InputMode mode)
 		case INPUT_MODE_PSCLASSIC:
 			*size = sizeof(psclassic_device_descriptor);
 			return psclassic_device_descriptor;
+
+		case INPUT_MODE_XBOXORIGINAL:
+			*size = sizeof(xboxoriginal_device_descriptor);
+			return xboxoriginal_device_descriptor;
 
 		default:
 			*size = sizeof(hid_device_descriptor);
@@ -295,6 +304,10 @@ static const uint16_t *getStringDescriptor(uint16_t *size, InputMode mode, uint8
 
 			case INPUT_MODE_PSCLASSIC:
 				str = (char *)psclassic_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_XBOXORIGINAL:
+				str = (char *)xboxoriginal_string_descriptors[index];
 				break;
 
 			default:

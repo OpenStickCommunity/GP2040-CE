@@ -23,6 +23,7 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9 },
 	{ labelKey: 'input-mode-options.astro', value: 10 },
 	{ labelKey: 'input-mode-options.psclassic', value: 11 },
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12 },
 ];
 
 const INPUT_BOOT_MODES = [
@@ -38,6 +39,7 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.egret', value: 9 },
 	{ labelKey: 'input-mode-options.astro', value: 10 },
     { labelKey: 'input-mode-options.psclassic', value: 11 },
+    { labelKey: 'input-mode-options.xboxoriginal', value: 12 },
 ];
 
 const DPAD_MODES = [

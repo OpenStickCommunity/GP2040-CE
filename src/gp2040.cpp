@@ -121,6 +121,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_EGRET:
 		case BootAction::SET_INPUT_MODE_ASTRO:
 		case BootAction::SET_INPUT_MODE_PSCLASSIC:
+		case BootAction::SET_INPUT_MODE_XBOXORIGINAL:
 		case BootAction::NONE:
 			{
 				InputMode inputMode = gamepad->getOptions().inputMode;
@@ -146,6 +147,8 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_ASTRO;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_PSCLASSIC) {
 					inputMode = INPUT_MODE_PSCLASSIC;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_XBOXORIGINAL) {
+					inputMode = INPUT_MODE_XBOXORIGINAL;
 				}
 
 				if (inputMode != gamepad->getOptions().inputMode) {
@@ -273,6 +276,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_ASTRO;
                                 case INPUT_MODE_PSCLASSIC: 
                                     return BootAction::SET_INPUT_MODE_PSCLASSIC;
+                                case INPUT_MODE_XBOXORIGINAL: 
+                                    return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
                                 default:
                                     return BootAction::NONE;
                             }

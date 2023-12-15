@@ -15,6 +15,7 @@ export default {
 		egret: 'EGRET II mini',
 		astro: 'ASTROCITY Mini',
 		psclassic: 'Playstation Classic',
+		xboxoriginal: 'Original Xbox',
 	},
     'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {

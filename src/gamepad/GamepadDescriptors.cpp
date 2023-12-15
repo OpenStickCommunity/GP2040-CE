@@ -44,6 +44,10 @@ static uint16_t getConfigurationDescriptor(const uint8_t *buffer, InputMode mode
 			buffer = psclassic_configuration_descriptor;
 			return sizeof(psclassic_configuration_descriptor);
 
+		case INPUT_MODE_XBOXORIGINAL:
+			buffer = xboxoriginal_configuration_descriptor;
+			return sizeof(xboxoriginal_configuration_descriptor);
+
 		default:
 			buffer = hid_configuration_descriptor;
 			return sizeof(hid_configuration_descriptor);
@@ -93,6 +97,10 @@ static uint16_t getDeviceDescriptor(const uint8_t *buffer, InputMode mode)
 		case INPUT_MODE_PSCLASSIC:
 			buffer = psclassic_device_descriptor;
 			return sizeof(psclassic_device_descriptor);
+
+		case INPUT_MODE_XBOXORIGINAL:
+			buffer = xboxoriginal_device_descriptor;
+			return sizeof(xboxoriginal_device_descriptor);
 
 		default:
 			buffer = hid_device_descriptor;
@@ -242,6 +250,11 @@ static uint16_t getStringDescriptor(const uint16_t *buffer, InputMode mode, uint
 		case INPUT_MODE_PSCLASSIC:
 			value = (const char *)psclassic_string_descriptors[index];
 			size = sizeof(psclassic_string_descriptors[index]);
+			break;
+
+		case INPUT_MODE_XBOXORIGINAL:
+			value = (const char *)xboxoriginal_string_descriptors[index];
+			size = sizeof(xboxoriginal_string_descriptors[index]);
 			break;
 
 		default:

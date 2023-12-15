@@ -17,6 +17,7 @@
 #include "hid_driver.h"
 #include "xinput_driver.h"
 #include "ps4_driver.h"
+#include "xid_driver/xid_driver.h"
 
 UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
@@ -60,6 +61,11 @@ bool send_report(void *report, uint16_t report_size)
 {
 	static uint8_t previous_report[CFG_TUD_ENDPOINT0_SIZE] = { };
 
+    uint8_t xIndex = 0;
+    if (input_mode == INPUT_MODE_XBOXORIGINAL) {
+        xIndex = xid_get_index_by_type(0, XID_TYPE_GAMECONTROLLER);
+    }
+
 	bool sent = false;
 
 	if (tud_suspended())
@@ -69,13 +75,15 @@ bool send_report(void *report, uint16_t report_size)
 	{
 		switch (input_mode)
 		{
+			case INPUT_MODE_XBOXORIGINAL:
+				sent = xid_send_report(xIndex, report, report_size);
+				break;
 			case INPUT_MODE_XINPUT:
 				sent = send_xinput_report(report, report_size);
 				break;
 			case INPUT_MODE_KEYBOARD:
 				sent = send_keyboard_report(report);
 				break;
-
 			default:
 				sent = send_hid_report(0, report, report_size);
 				break;
@@ -107,6 +115,9 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 
 			case INPUT_MODE_PS4:
 				return &ps4_driver;
+
+            case INPUT_MODE_XBOXORIGINAL:
+                return xid_get_driver();
 
 			default:
 				return &hid_driver;
@@ -234,4 +245,20 @@ void tud_suspend_cb(bool remote_wakeup_en)
 void tud_resume_cb(void)
 {
 	usb_suspended = false;
+}
+
+// Vendor Controlled XFER occured
+bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
+                                tusb_control_request_t const *request)
+{
+	bool ret = false;
+	switch (input_mode)
+	{
+        case INPUT_MODE_XBOXORIGINAL:
+            ret |= xid_get_driver()->control_xfer_cb(rhport, stage, request);
+            break;
+		default:
+			break;
+	}
+	return ret;
 }
