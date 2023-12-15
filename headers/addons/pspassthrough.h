@@ -9,6 +9,14 @@
 #define PSPASSTHROUGH_ENABLED 0
 #endif
 
+#ifndef PSPASSTHROUGH_PIN_DPLUS
+#define PSPASSTHROUGH_PIN_DPLUS -1
+#endif
+
+#ifndef PSPASSTHROUGH_PIN_5V
+#define PSPASSTHROUGH_PIN_5V -1
+#endif
+
 // KeyboardHost Module Name
 #define PSPassthroughName "PSPassthrough"
 

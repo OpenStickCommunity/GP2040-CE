@@ -9,11 +9,8 @@
 #include "system.h"
 
 #define ENDPOINT_SIZE 64
-#define VENDOR_EPSIZE 64
 
 #define CFG_TUD_XBONE 8
-#define CFG_TUD_VENDOR_TX_BUFSIZE VENDOR_EPSIZE
-#define CFG_TUD_VENDOR_RX_BUFSIZE VENDOR_EPSIZE
 #define CFG_TUD_XINPUT_TX_BUFSIZE 64
 #define CFG_TUD_XINPUT_RX_BUFSIZE 64
 
@@ -32,24 +29,28 @@
 #define DESC_EXTENDED_PROPERTIES_DESCRIPTOR 0x0005
 #define REQ_GET_XGIP_HEADER 0x90
 
-static bool waiting_cb=false;
 static bool waiting_ack=false;
+static uint32_t waiting_ack_timeout=0;
 uint8_t xbone_out_buffer[XBONE_OUT_SIZE] = {};
-uint32_t timer_wait_for_auth = 0;
+uint32_t timer_wait_for_announce = 0;
 uint32_t xbox_one_powered_on = false;
 uint32_t keep_alive_timer = 0;
-uint8_t keep_alive_sequence = 1;
-static bool xbox_one_auth_ready=false;
+
+// Sent report queue every 15 milliseconds
+static uint32_t lastReportQueueSent = 0;
+#define REPORT_QUEUE_INTERVAL 50
+#define REPORT_QUEUE_MAX 16
 
 // Report Queue for big report sizes from dongle
 #include <queue>
 typedef struct {
 	uint8_t report[XBONE_ENDPOINT_SIZE];
 	uint16_t len;
-	uint32_t timestamp;
 } report_queue_t;
 
 static std::queue<report_queue_t> report_queue;
+
+#define XGIP_ACK_WAIT_TIMEOUT 2000
 
 typedef struct {
     uint8_t itf_num;
@@ -71,113 +72,23 @@ static inline uint8_t get_index_by_itfnum(uint8_t itf_num) {
     return 0xFF;
 }
 
-typedef struct {
-	uint8_t idx;
-	uint8_t seq;
-	uint16_t sent;
-} descriptor_handler;
+static XGIPProtocol outgoingXGIP;
+static XGIPProtocol incomingXGIP;
 
-static descriptor_handler descriptor;
-
-static XGIPProtocol keepaliveXGIP;
-static XGIPProtocol authenticationXGIP;
-static XGIPProtocol announceXGIP;
-static XGIPProtocol descriptorXGIP;
-
-static uint8_t keepAlivePacket[] = {0x00, 0x00, 0x00, 0x80};
-
-// Announce with random micros() call
+// Magic-X Announce
 /*
-// Santroller
-const uint8_t announce[] = {
-    0x7e, 0xed, 0x8d, 0xFF, 0xFF, 0xFF, 0x00, 0x00,
-	0x5e, 0x04, 0xea, 0x02, 0x05, 0x00, 0x11, 0x00,
-	0x82, 0x0c, 0x00, 0x00, 0x04, 0x05, 0x01, 0x00,
-	0x01, 0x00, 0x01, 0x00};*/
-
-
-// Magic-X
-const uint8_t announcePacket[] = {
-    0x00, 0x2a, 0x00, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 
+static uint8_t announcePacket[] = {
+    0x00, 0x2a, 0x00, 0xb1, 0x01, 0x57, 0x00, 0x00, 
 	0xdf, 0x33, 0x14, 0x00, 0x01, 0x00, 0x01, 0x00, 
 	0x17, 0x01, 0x02, 0x00, 0x01, 0x00, 0x01, 0x00, 
-	0x01, 0x00, 0x01, 0x00};
+	0x01, 0x00, 0x01, 0x00};*/
 
-/*
-// MagicBoots XBOne
-const uint8_t announcePacket[] = {
+static uint8_t announcePacket[] = {
 	0x19, 0x17, 0x23, 0x2a, 0x28, 0x8e, 0x00, 0x00,
 	0x79, 0x00, 0x94, 0x18, 0x01, 0x00, 0x01, 0x00,
 	0x17, 0x01, 0x02, 0x00, 0x01, 0x00, 0x01, 0x00,
-	0x01, 0x00, 0x01, 0x00,
-};*/
+	0x01, 0x00, 0x01, 0x00};
 
-// Starting Chunk looks like:
-// [CMD: 8 bits] [Flags: 8 bits] [Seq: 8 bits] [Chunks Length: 8 bits] [Total Chunk Size**: 16 bits] [Chunk of Length Data]
-
-// Middle Chunk looks like:
-// [CMD: 8 bits] [Flags: 8 bits] [Seq: 8 bits] [Less than 0x100 received?: 1 bit Len: 7 bits (Chunk Length)] [Packets Received 16 bits, Little-Endian if <0x100, Big-Endian if =>0x100] [Chunk of Length Data]
-
-// End Chunk looks like:
-// [CMD: 8 bits] [Flags: 8 bits] [Seq: 8 bits] [Final Length: 8 bits] [Packets Received 16 bits, Little-Endian if <0x100, Big-Endian if =>0x100] [Final Length Data]
-
-// Total Chunk Size** = Chunks Length + (0xBA or 0x3A) * middle-chunks + Final Length
-// Packets Received Example:   0x3A received, bytes are  [0x00 0x3A]      0x01AE received,  bytes are [0xAE 0x01]
-
-// [Chunk Size] works like this:
-// If chunks received > 0x100
-//    chunk size = length of packet
-// Else reverse size received and:
-//    chunk size = chunk size | 0x80
-
-// We'll come back to this
-/*
-// SuperPDP Descriptor
-const uint8_t xboxOneDescriptor[] = {
-	0x10, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4A, 0x01,
-	0xAF, 0x00, 0x16, 0x00, 0x1F, 0x00, 0x20, 0x00,
-	0x27, 0x00, 0x2D, 0x00, 0x6E, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x01,
-	0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00,
-	0x06, 0x01, 0x02, 0x03, 0x04, 0x06, 0x07, 0x05,
-	0x01, 0x04, 0x05, 0x06, 0x0A, 0x02, 0x1A, 0x00,
-	0x57, 0x69, 0x6E, 0x64, 0x6F, 0x77, 0x73, 0x2E,
-	0x58, 0x62, 0x6F, 0x78, 0x2E, 0x49, 0x6E, 0x70,
-	0x75, 0x74, 0x2E, 0x47, 0x61, 0x6D, 0x65, 0x70,
-	0x61, 0x64, 0x22, 0x00, 0x50, 0x44, 0x50, 0x2E,
-	0x47, 0x61, 0x6D, 0x65, 0x70, 0x61, 0x64, 0x2E,
-	0x52, 0x6F, 0x63, 0x6B, 0x43, 0x61, 0x6E, 0x64,
-	0x79, 0x2E, 0x4D, 0x69, 0x64, 0x6E, 0x69, 0x67,
-	0x68, 0x74, 0x42, 0x6C, 0x75, 0x65, 0x04, 0x56,
-	0xFF, 0x76, 0x97, 0xFD, 0x9B, 0x81, 0x45, 0xAD,
-	0x45, 0xB6, 0x45, 0xBB, 0xA5, 0x26, 0xD6, 0x2C,
-	0x40, 0x2E, 0x08, 0xDF, 0x07, 0xE1, 0x45, 0xA5,
-	0xAB, 0xA3, 0x12, 0x7A, 0xF1, 0x97, 0xB5, 0xE7,
-	0x1F, 0xF3, 0xB8, 0x86, 0x73, 0xE9, 0x40, 0xA9,
-	0xF8, 0x2F, 0x21, 0x26, 0x3A, 0xCF, 0xB7, 0x83,
-	0x93, 0x25, 0x4D, 0xBE, 0x99, 0xC1, 0x40, 0x9A,
-	0xD4, 0x17, 0x08, 0x29, 0x92, 0x39, 0x1F, 0x06,
-	0x17, 0x00, 0x20, 0x0E, 0x00, 0x01, 0x00, 0x10,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x17,
-	0x00, 0x09, 0x3C, 0x00, 0x01, 0x00, 0x08, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x17, 0x00,
-	0x21, 0x3C, 0x00, 0x01, 0x00, 0x18, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x17, 0x00, 0x22,
-	0x3C, 0x00, 0x01, 0x00, 0x18, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x17, 0x00, 0x23, 0x3C,
-	0x00, 0x01, 0x00, 0x18, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x17, 0x00, 0x24, 0x3C, 0x00,
-	0x01, 0x00, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00
-};
-*/
 
 // Magic-X Descriptor
 const uint8_t xboxOneDescriptor[] = {
@@ -208,69 +119,7 @@ const uint8_t xboxOneDescriptor[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00};
 
-/*
-// MagicBootS Descriptor:
-const uint8_t xboxOneDescriptor[] = {
-	0x10, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xba, 0x00,
-	0x7b, 0x00, 0x16, 0x00, 0x1f, 0x00, 0x20, 0x00,
-	0x27, 0x00, 0x2d, 0x00, 0x4a, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x01,
-	0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00,
-	0x06, 0x01, 0x02, 0x03, 0x04, 0x06, 0x07, 0x05,
-	0x01, 0x04, 0x05, 0x06, 0x0a, 0x01, 0x1a, 0x00,
-	0x57, 0x69, 0x6e, 0x64, 0x6f, 0x77, 0x73, 0x2e,
-	0x58, 0x62, 0x6f, 0x78, 0x2e, 0x49, 0x6e, 0x70,
-	0x75, 0x74, 0x2e, 0x47, 0x61, 0x6d, 0x65, 0x70,
-	0x61, 0x64, 0x03, 0x56, 0xff, 0x76, 0x97, 0xfd,
-	0x9b, 0x81, 0x45, 0xad, 0x45, 0xb6, 0x45, 0xbb,
-	0xa5, 0x26, 0xd6, 0x2c, 0x40, 0x2e, 0x08, 0xdf,
-	0x07, 0xe1, 0x45, 0xa5, 0xab, 0xa3, 0x12, 0x7a,
-	0xf1, 0x97, 0xb5, 0xe7, 0x1f, 0xf3, 0xb8, 0x86,
-	0x73, 0xe9, 0x40, 0xa9, 0xf8, 0x2f, 0x21, 0x26,
-	0x3a, 0xcf, 0xb7, 0x02, 0x17, 0x00, 0x20, 0x0e,
-	0x00, 0x01, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x17, 0x00, 0x09, 0x3c, 0x00,
-	0x01, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00
-};
-*/
-
-// Santroller Gamepad Descriptor
-/*
-const uint8_t xboxOneDescriptor[] = {
-    0x10, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xdc, 0x00,
-	0x9d, 0x00, 0x16, 0x00, 0x1b, 0x00, 0x1c, 0x00,
-	0x26, 0x00, 0x2f, 0x00, 0x4c, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x05,
-	0x00, 0x11, 0x00, 0x00, 0x09, 0x01, 0x02, 0x03,
-	0x04, 0x06, 0x07, 0x0c, 0x0d, 0x1e, 0x08, 0x01,
-	0x04, 0x05, 0x06, 0x0a, 0x0c, 0x0d, 0x1e, 0x01,
-	0x1a, 0x00, 0x57, 0x69, 0x6e, 0x64, 0x6f, 0x77,
-	0x73, 0x2e, 0x58, 0x62, 0x6f, 0x78, 0x2e, 0x49,
-	0x6e, 0x70, 0x75, 0x74, 0x2e, 0x47, 0x61, 0x6d,
-	0x65, 0x70, 0x61, 0x64, 0x05, 0x56, 0xff, 0x76,
-	0x97, 0xfd, 0x9b, 0x81, 0x45, 0xad, 0x45, 0xb6,
-	0x45, 0xbb, 0xa5, 0x26, 0xd6, 0x2c, 0x40, 0x2e,
-	0x08, 0xdf, 0x07, 0xe1, 0x45, 0xa5, 0xab, 0xa3,
-	0x12, 0x7a, 0xf1, 0x97, 0xb5, 0xe7, 0x1f, 0xf3,
-	0xb8, 0x86, 0x73, 0xe9, 0x40, 0xa9, 0xf8, 0x2f,
-	0x21, 0x26, 0x3a, 0xcf, 0xb7, 0x6b, 0xe5, 0xf2,
-	0x87, 0xbb, 0xc3, 0xb1, 0x49, 0x82, 0x65, 0xff,
-	0xff, 0xf3, 0x77, 0x99, 0xee, 0x1e, 0x9b, 0xad,
-	0x34, 0xad, 0x36, 0xb5, 0x4f, 0x8a, 0xc7, 0x17,
-	0x23, 0x4c, 0x9f, 0x54, 0x6f, 0x02, 0x17, 0x00,
-	0x20, 0x2c, 0x00, 0x01, 0x00, 0x10, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x17, 0x00, 0x09,
-	0x3c, 0x00, 0x01, 0x00, 0x08, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00};
-*/
-
+// Windows requires a Descriptor Single for Xbox One
 typedef struct {
     uint32_t TotalLength;
     uint16_t Version;
@@ -296,55 +145,40 @@ const OS_COMPATIBLE_ID_DESCRIPTOR_SINGLE DevCompatIDsOne = {
     Reserved3 : {0}
 };
 
-void changeState(XboxOneState newState) {
-	//printf("Changing State from %u to %u\r\n", XboxOneData::getInstance().xboneState, newState);
-	XboxOneData::getInstance().xboneState = newState;
-	switch(newState) {
-		case XboxOneState::send_descriptor:
-			// setup descriptor packet
-			descriptorXGIP.reset(); // reset if anything was in there
-			descriptorXGIP.setAttributes(GIP_DEVICE_DESCRIPTOR, descriptor.seq, 1, true, 0);
-			descriptorXGIP.setData(xboxOneDescriptor, sizeof(xboxOneDescriptor));
-			break;
-		default:
-			break;
+void queue_xbone_report(void *report, uint16_t report_size) {
+	if ( report_queue.size() < REPORT_QUEUE_MAX ) {
+		report_queue_t item;
+		memcpy(item.report, report, report_size);
+		item.len = report_size;
+		report_queue.push(item);
 	}
 }
 
+void set_ack_wait() {
+	waiting_ack = true;
+	waiting_ack_timeout = to_ms_since_boot(get_absolute_time()); // 2 second time-out
+}
+
+void changeState(XboxOneState newState) {
+	XboxOneData::getInstance().xboneState = newState;
+}
+
 static void xbone_reset(uint8_t rhport) {
-	//printf("xboxone_reset\r\n");
 	(void)rhport;
-
-	waiting_cb = false; // waiting on a callback to EP_OUT
-	memset(&descriptor, 0, sizeof(descriptor_handler));
-	changeState(XboxOneState::reset_state);
-
-	timer_wait_for_auth = to_ms_since_boot(get_absolute_time());
+	timer_wait_for_announce = to_ms_since_boot(get_absolute_time());
 	xbox_one_powered_on = false;
-
-	// Setup keepalive XGIP packet (don't clear the data as it will always be the same)
-	keepaliveXGIP.setAttributes(GIP_KEEPALIVE, 0, 1, false, 0);
-	if ( keepaliveXGIP.getDataLength() == 0 )
-		keepaliveXGIP.setData(keepAlivePacket, sizeof(keepAlivePacket));
-
-	// Setup authentication XGIP packet (always chunked)
-	authenticationXGIP.reset();
-
+	while(!report_queue.empty())
+		report_queue.pop();
+	changeState(XboxOneState::reset_state);
 	// close any endpoints that are open
 	tu_memclr(&_xinputd_itf, sizeof(_xinputd_itf));
 }
 
 static void xbone_init(void) {
-	while(!report_queue.empty())
-		report_queue.pop();
-
 	xbone_reset(TUD_OPT_RHPORT);
 }
 
-static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len)
-{
-	//printf("Xbox One Open rhport: %u\r\n", rhport);
-
+static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len) {
 	uint16_t drv_len = 0;
     if (TUSB_CLASS_VENDOR_SPECIFIC == itf_desc->bInterfaceClass) {
         TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == itf_desc->bInterfaceClass, 0);
@@ -386,27 +220,19 @@ static uint16_t xbone_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc
     return drv_len;
 }
 
-static bool xbone_device_control_request(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request)
-{
+static bool xbone_device_control_request(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
     return true;
 }
 
-static bool xbone_control_complete(uint8_t rhport, tusb_control_request_t const *request)
-{
+static bool xbone_control_complete(uint8_t rhport, tusb_control_request_t const *request) {
 	(void)rhport;
 	(void)request;
-
 	return true;
 }
-
-static XGIPProtocol packet;
 
 bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
                      uint32_t xferred_bytes) {
     (void)result;
-
-	//printf("xbone_xfer_cb called:\r\n");
-
     uint8_t itf = 0;
     xinputd_interface_t *p_xinput = _xinputd_itf;
 
@@ -416,81 +242,54 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
     }
 
     if (ep_addr == p_xinput->ep_out) {
-		/*
-	    printf("Xbox One Driver XFER CB (EP_OUT) (%u)", xferred_bytes);
-		for(uint32_t i=0; i < xferred_bytes; i++)
-		{
-			if (i%16 == 0) printf("\r\n  ");
-			printf("%02X ", p_xinput->epout_buf[i]);
-		}
-		printf("\r\n");
-		*/
-
 		// Parse incoming packet and verify its valid
-		packet.parse(p_xinput->epout_buf, xferred_bytes);
-		//if (packet.validate() == false ) {
-		//	printf("[XBONE_XFER_CB] Not a valid XGIP packet\r\n");
-		//	return true;
-		//}
-		if ( packet.getCommand() == GIP_ACK_RESPONSE && packet.validate() ) {
-			waiting_cb = false;
-			waiting_ack = false;
-		} else if ( packet.getCommand() == GIP_DEVICE_DESCRIPTOR && packet.getDataLength() == 0 ) {
-			//printf("[XBONE_XFER_CB] Got Device Descriptor request\r\n");
-			descriptor.seq = packet.getSequence();
-			changeState(XboxOneState::send_descriptor);
-			waiting_cb = false;
-			waiting_ack = false;
-		} else if ( packet.getCommand() == GIP_POWER_MODE_DEVICE_CONFIG ) {
-			//printf("[XBONE_XFER_CB] Got a power-up request!\r\n");
-			//for(uint8_t i = 0; i < xferred_bytes; i++) {
-			//	printf("%02X ", p_xinput->epout_buf[i]);
-			//}
-			//printf("\r\n");
-			xbox_one_powered_on = true;
-			keep_alive_timer = 0; // do a keep-alive right away
-			keep_alive_sequence = 1;
-		} else if ( packet.getCommand() == GIP_CMD_WAKEUP ) {
-			//printf("[XBONE_XFER_CB] Got some kind of rumble/wake-up command? Sending to dongle\r\n");			
-			xbox_one_powered_on = true; // might not be true
-			keep_alive_timer = 0; // do a keep-alive right away
-			keep_alive_sequence = 1;
+		incomingXGIP.parse(p_xinput->epout_buf, xferred_bytes);
 
-			// Send to Xbox Host dongle
-			//send_xbhost_report(p_xinput->epout_buf, (uint16_t)xferred_bytes);
-		} else if ( packet.getCommand() == GIP_CMD_RUMBLE ) {
-			printf("[XBONE_XFER_CB] GOT RUMBLE COMMAND, CHECKING AGAINST KNOWN RUMBLE AUTH\r\n");
-			uint8_t authReady[] = {00,0x0f,00,00,00,00,0xff,00,0xeb};
-			if (packet.getDataLength() == 9 && memcmp(packet.getData(), authReady, sizeof(authReady))==0 ) {
-				printf("[XBONE_XFER_CB] AUTH COMPLETED! READY FOR REPORTS\r\n");
+		// Setup an ack before we change anything about the incoming packet
+		if ( incomingXGIP.ackRequired() == true ) {
+			queue_xbone_report((uint8_t*)incomingXGIP.generateAckPacket(), incomingXGIP.getPacketLength());
+		}
+
+		uint8_t command = incomingXGIP.getCommand();
+		if ( command == GIP_ACK_RESPONSE ) {
+			waiting_ack = false;
+		} else if ( command == GIP_DEVICE_DESCRIPTOR ) {
+			// setup descriptor packet
+			outgoingXGIP.reset(); // reset if anything was in there
+			outgoingXGIP.setAttributes(GIP_DEVICE_DESCRIPTOR, incomingXGIP.getSequence(), 1, 1, 0);
+			outgoingXGIP.setData(xboxOneDescriptor, sizeof(xboxOneDescriptor));
+			changeState(XboxOneState::send_descriptor);
+		} else if ( command == GIP_POWER_MODE_DEVICE_CONFIG ) {
+			xbox_one_powered_on = true;
+		} else if ( command == GIP_CMD_WAKEUP ) {	
+			xbox_one_powered_on = true; // might not be true
+		} else if ( command == GIP_CMD_RUMBLE ) {
+			//static uint8_t authReady[] = {00,0x0f,00,00,00,00,0xff,00,0xeb};
+			//if (incomingXGIP.getDataLength() == 9 && memcmp(incomingXGIP.getData(), authReady, sizeof(authReady))==0 ) {
+			//	//XboxOneData::getInstance().auth_completed = true;
+			//}
+		} else if ( command == GIP_AUTH || command == GIP_FINAL_AUTH) {
+			static uint8_t authReady[] = {0x01, 0x00};
+			if (incomingXGIP.getDataLength() == 2 && memcmp(incomingXGIP.getData(), authReady, sizeof(authReady))==0 ) {
+				//printf("[XBONE_XFER_CB] AUTH SUCCESSFUL!\r\n");
+				//XboxOneData::getInstance().auth_completed = true;
 				XboxOneData::getInstance().auth_completed = true;
 			}
-		} else if ( packet.getCommand() == GIP_AUTH || packet.getCommand() == GIP_FINAL_AUTH) {
-			// Get Auth Attribute: 00 41
-			//printf("[XBONE_XFER_CB] Got Auth command packet length (%u)\r\n", packet.getPacketLength());
-			if ( XboxOneData::getInstance().xboneState == XboxOneState::idle_state ) {
-				uint8_t * buf = packet.getData();
-				uint16_t bufLen = packet.getDataLength();
 
-				if ( packet.getChunked() == false ||
-						(packet.validate() && packet.endOfChunk())) {
-					memcpy(XboxOneData::getInstance().authBuffer, buf, bufLen);
-					XboxOneData::getInstance().authLen = bufLen;
-					XboxOneData::getInstance().authSequence = packet.getSequence();
-					XboxOneData::getInstance().xboneState = XboxOneState::send_auth_console_to_dongle;
-					XboxOneData::getInstance().authType = packet.getCommand();
-				}
-			} else {
-				//printf("[XBONE_XFER_CB] Already sending auth, don't send this packet\r\n");
+			if ( (incomingXGIP.getChunked() == true && incomingXGIP.endOfChunk() == true) ||
+					(incomingXGIP.getChunked() == false )) {
+				uint8_t * buf = incomingXGIP.getData();
+				uint16_t bufLen = incomingXGIP.getDataLength();
+				memcpy(XboxOneData::getInstance().authBuffer, buf, bufLen);
+				XboxOneData::getInstance().authLen = bufLen;
+				XboxOneData::getInstance().authSequence = incomingXGIP.getSequence();
+				XboxOneData::getInstance().xboneState = XboxOneState::send_auth_console_to_dongle;
+				XboxOneData::getInstance().authType = incomingXGIP.getCommand();
+				incomingXGIP.reset();
 			}
+
 		} else  {
 			//printf("[XBONE_XFER_CB] ERROR Unsupported packet\r\n");
-		}
-
-		// So far only Xbox One Auth requires this, but we can do it in any case
-		if ( packet.ackRequired() == true ) {
-			//printf("[XBONE_XFER_CB]: ACK Required, sending back ACK\r\n");
-			queue_xbone_report(packet.generateAckPacket(), packet.getPacketLength());
 		}
 
         TU_ASSERT(usbd_edpt_xfer(rhport, p_xinput->ep_out, p_xinput->epout_buf,
@@ -501,6 +300,7 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
     return true;
 }
 
+// DevCompatIDsOne sends back XGIP10 data when requested by Windows
 bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
                                 tusb_control_request_t const *request) {
 	uint8_t buf[255];
@@ -514,15 +314,6 @@ bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
 		if ( request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_DEVICE | USB_SETUP_TYPE_VENDOR) && request->bRequest == REQ_GET_OS_FEATURE_DESCRIPTOR &&
 			request->wIndex == DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR) {
 			memcpy(buf, &DevCompatIDsOne, len);
-			// DEBUG
-			//printf("XGIP10 Request Sizeof DevCompatIDsOne: %u\r\n", sizeof(DevCompatIDsOne));
-			/*printf("XGIP10 Request: ");
-			for(uint32_t i=0; i < len; i++)
-			{
-				if (i%16 == 0) printf("\r\n  ");
-				printf("%02X ", buf[i]);
-			}
-			printf("\r\n");*/
 		}
 		tud_control_xfer(rhport, request, (void*)buf, len);
 	} else {
@@ -531,11 +322,11 @@ bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
 	return true;
 }
 
+// Send a packet to our Xbox One driver end-point
 bool send_xbone_report(void *report, uint16_t report_size) {
     uint8_t itf = 0;
     xinputd_interface_t *p_xinput = _xinputd_itf;
 	bool ret = false;
-
 	for (;; itf++, p_xinput++) {
         if (itf >= TU_ARRAY_SIZE(_xinputd_itf)) {
 			return false;
@@ -543,73 +334,15 @@ bool send_xbone_report(void *report, uint16_t report_size) {
         if (p_xinput->ep_in)
 			break;
     }
-	bool tud_rdy = tud_ready();
-	bool endpt_busy = usbd_edpt_busy(TUD_OPT_RHPORT, p_xinput->ep_in);
-	if ( tud_rdy &&											// Is the device ready?
-		(p_xinput->ep_in != 0) && (!endpt_busy) // Is the IN endpoint available?
-	)
+	if ( tud_ready() &&											// Is the device ready?
+		(p_xinput->ep_in != 0) && (!usbd_edpt_busy(TUD_OPT_RHPORT, p_xinput->ep_in))) // Is the IN endpoint available?
 	{
 		usbd_edpt_claim(0, p_xinput->ep_in);										// Take control of IN endpoint
 		ret = usbd_edpt_xfer(0, p_xinput->ep_in, (uint8_t *)report, report_size); 	// Send report buffer
 		usbd_edpt_release(0, p_xinput->ep_in);										// Release control of IN endpoint
-		/*printf("[XBONE_DRIVER SUCCESS!] Sent Report:\r\n");
-		for(uint32_t i=0; i < report_size; i++)
-		{
-			if (i%16 == 0) printf("\r\n  ");
-			printf("%02X ", ((uint8_t*)report)[i]);
-		}
-		printf("\r\n");*/
-	} else {
-		/*
-		printf("[XBONE_DRIVER ERROR] Could not send this fast, way too busy\r\n");
-		printf("tud_ready()?: %u  endpoint_busy: %u\r\n", tud_rdy, endpt_busy);
-		printf("Missed Report:\r\n");
-		
-		for(uint32_t i=0; i < report_size; i++)
-		{
-			if (i%16 == 0) printf("\r\n  ");
-			printf("%02X ", ((uint8_t*)report)[i]);
-		}
-		printf("\r\n");
-		*/
 	}
 
 	return ret;
-}
-
-void queue_xbone_report(void *report, uint16_t report_size) {
-	if ( report_queue.size() < 8 ) {
-		report_queue_t item;
-		memcpy(item.report, report, report_size);
-		item.len = report_size;
-		item.timestamp = to_ms_since_boot(get_absolute_time());
-		report_queue.push(item);
-	} else {
-		printf("[QUEUE XBONE REPORT ERROR] Cannot queue more than 8 reports\r\n");
-	}
-}
-
-void receive_xbone_report(void) {
-    uint8_t itf = 0;
-    xinputd_interface_t *p_xinput = _xinputd_itf;
-
-	for (;; itf++, p_xinput++) {
-        if (itf >= TU_ARRAY_SIZE(_xinputd_itf)) {
-			return;
-		}
-        if (p_xinput->ep_out)
-			break;
-    }
-
-	if (
-		tud_ready() &&											// Is the device ready?
-		(p_xinput->ep_out != 0) && (!usbd_edpt_busy(TUD_OPT_RHPORT, p_xinput->ep_out)) // Is the IN endpoint available?
-	)
-	{
-		usbd_edpt_claim(0, p_xinput->ep_out);								// Take control of IN endpoint
-		usbd_edpt_xfer(0, p_xinput->ep_out, (uint8_t *)xbone_out_buffer, XBONE_OUT_SIZE); // Send report buffer
-		usbd_edpt_release(0, p_xinput->ep_out);								// Release control of IN endpoint
-	}
 }
 
 const usbd_class_driver_t xbone_driver =
@@ -624,81 +357,60 @@ const usbd_class_driver_t xbone_driver =
 		.xfer_cb = xbone_xfer_cb,
 		.sof = NULL};
 
-// Keep Alive Packets (MagicBoots is 15 seconds)
-void sendKeepAlive(uint32_t now ) {
-	if ( xbox_one_powered_on == true && (now - keep_alive_timer) > 15000  ) {
-		keepaliveXGIP.incrementSequence();
-		queue_xbone_report(keepaliveXGIP.generatePacket(), keepaliveXGIP.getPacketLength());
-		keep_alive_timer = now;
-	}
-}
-
+// Update our Xbox One driver as things need to happen under-the-hood
 void tick_xbone_usb() {
-	if ( !report_queue.empty() ) {
-		// send the first report off our queue
-		//printf("[Tick_XBOne_USB %u] Sending queued report to Xbox One Driver (%u)\r\n", to_ms_since_boot(get_absolute_time()), report_queue.front().timestamp);
-		
-		if ( send_xbone_report(report_queue.front().report, report_queue.front().len) ) {
-			report_queue.pop();
-			//sleep_ms(1); // delay our report queue
-		} else {
-			//printf("[Tick_XBOne_USB] FAILED: Keeping it on the queue to send again\r\n");
-			sleep_ms(50);
-		}
-		return;
-	}
-
 	uint32_t now = to_ms_since_boot(get_absolute_time());
 
-	// 15 second keep alive
-	//sendKeepAlive(now);
+	if ( !report_queue.empty() ) {	
+		if ( (now - lastReportQueueSent) > REPORT_QUEUE_INTERVAL ) {
+			if ( send_xbone_report(report_queue.front().report, report_queue.front().len) ) {
+				report_queue.pop();
+				lastReportQueueSent = now;
+			} else {
+				sleep_ms(50);
+			}
+		}
+	}
+
+	// Do not add logic until our ACK returns
+	if ( waiting_ack == true ) {
+		if ((now - waiting_ack_timeout) < XGIP_ACK_WAIT_TIMEOUT) {
+			return;
+		} else { // ACK wait time out
+			waiting_ack = false;
+		}
+	}
 
 	XboxOneState state = XboxOneData::getInstance().xboneState;
 	if ( state == XboxOneState::reset_state ) {
-		if ( (now - timer_wait_for_auth) > 500 ) {
-			// Been longer than 5 minutes?
-			//System::reboot(System::BootMode::WEBCONFIG);
-				//------------- Endpoint Descriptor -------------//
-			
-			// Config endpoint
-			//printf("Setting Xbox State as ready to announce!\r\n");
-			changeState(XboxOneState::ready_to_announce);
-		}
-	} else if (state == ready_to_announce && waiting_cb == false ) {
-		//printf("Sending ready to announce!\r\n");
-		memcpy((void*)&announcePacket[3], &now, 3);
-		announceXGIP.setAttributes(GIP_ANNOUNCE, 1, 1, false, 0);
-		announceXGIP.setData(announcePacket, sizeof(announcePacket));
-		queue_xbone_report(announceXGIP.generatePacket(), announceXGIP.getPacketLength());
-		waiting_cb = true;
-		changeState(idle_state);
-	} else if ( state == XboxOneState::send_descriptor && waiting_cb == false && waiting_ack == false) {
-		//printf("[Xbox One Driver] tick_xbox_usb() generating descriptor packet\r\n");
-		queue_xbone_report(descriptorXGIP.generatePacket(), descriptorXGIP.getPacketLength());
-		if ( descriptorXGIP.endOfChunk() == true ) {
+		if ( (now - timer_wait_for_announce) > 500 ) {
+			//memcpy((void*)&announcePacket[3], &now, 3);
+			outgoingXGIP.setAttributes(GIP_ANNOUNCE, 1, 1, 0, 0);
+			outgoingXGIP.setData(announcePacket, sizeof(announcePacket));
+			queue_xbone_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
 			changeState(idle_state);
 		}
-		waiting_cb = true;
+	} else if ( state == XboxOneState::send_descriptor ) {
+		queue_xbone_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
+		if ( outgoingXGIP.endOfChunk() == true ) {
+			changeState(idle_state);
+		}
+		if ( outgoingXGIP.getPacketAck() == 1 ) {
+			set_ack_wait();
+		}
 	} else if ( state == XboxOneState::send_auth_dongle_to_console ) {
-		authenticationXGIP.reset();
-		if ( XboxOneData::getInstance().authLen < GIP_MAX_CHUNK_SIZE) {
-			//printf("[Tick_XBOne_USB] Dongle Auth data < max chunk size, sending as one packet\r\n");
-			authenticationXGIP.setAttributes(XboxOneData::getInstance().authType, XboxOneData::getInstance().authSequence, 1, 0, 1);
-			authenticationXGIP.setData(XboxOneData::getInstance().authBuffer, XboxOneData::getInstance().authLen);
-			queue_xbone_report(authenticationXGIP.generatePacket(), authenticationXGIP.getPacketLength());
-			changeState(idle_state);
-		} else {
-			//printf("[Tick_XBOne_USB] Dongle Auth data > max chunk size, sending as chunk packet\r\n");
-			authenticationXGIP.setAttributes(XboxOneData::getInstance().authType, XboxOneData::getInstance().authSequence, 1, 1, 1);
-			authenticationXGIP.setData(XboxOneData::getInstance().authBuffer, XboxOneData::getInstance().authLen);
-			changeState(wait_auth_dongle_to_console);
-		}
-		
+		bool isChunked = (XboxOneData::getInstance().authLen > GIP_MAX_CHUNK_SIZE);
+		outgoingXGIP.reset();
+		outgoingXGIP.setAttributes(XboxOneData::getInstance().authType, XboxOneData::getInstance().authSequence, 1, isChunked, 1);
+		outgoingXGIP.setData(XboxOneData::getInstance().authBuffer, XboxOneData::getInstance().authLen);
+		changeState(wait_auth_dongle_to_console);
 	} else if ( state == XboxOneState::wait_auth_dongle_to_console ) {
-		//printf("[Tick_XBOne_USB] wait_auth_dongle_to_console sending chunk to Xbox\r\n");
-		queue_xbone_report(authenticationXGIP.generatePacket(), authenticationXGIP.getPacketLength());
-		if ( authenticationXGIP.endOfChunk() == true ) {
+		queue_xbone_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
+		if ( outgoingXGIP.getChunked() == false || outgoingXGIP.endOfChunk() == true ) {
 			changeState(idle_state);
+		}
+		if ( outgoingXGIP.getPacketAck() == 1 ) {
+			set_ack_wait();
 		}
 	}
 }

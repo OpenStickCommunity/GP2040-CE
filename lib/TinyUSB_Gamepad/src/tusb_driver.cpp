@@ -54,9 +54,6 @@ void receive_report(uint8_t *buffer)
 	{
 		receive_xinput_report();
 		memcpy(buffer, xinput_out_buffer, XINPUT_OUT_SIZE);
-	} else if (input_mode == INPUT_MODE_XBONE)
-	{
-		//receive_xbone_report();
 	}
 }
 

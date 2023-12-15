@@ -657,14 +657,8 @@ void Gamepad::tickReportCounter() {
 			last_report_counter = (last_report_counter+1) & 63;
 		break;
 		case INPUT_MODE_XBONE:
-			// Only tick counter if we're holding a button down
-			for(uint8_t i = 0; i < sizeof(xboneIdle); i++) {
-				if ( i % 16 == 0 ) printf("\r\n");
-				printf("%02X ", ((uint8_t*)&xboneReport)[4+i]);
-			}
-			printf("\r\n");
 			if ( memcmp((void*)&((uint8_t*)&xboneReport)[4], xboneIdle, sizeof(xboneIdle)) != 0 ) {
-				printf("[Gamepad]:tickReportCounter:   Button Held!\r\n");
+				//printf("[Gamepad]:tickReportCounter:   Button Held!\r\n");
 				last_report_counter++;
 				if ( last_report_counter == 0 ) {
 					last_report_counter = 1;
@@ -689,7 +683,7 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 
 	if ( (now - keep_alive_timer) > 15000) {
 		// Send Keep-Alive every 15 seconds
-		printf("[GAMEPAD] Sending Keep Alive\r\n");
+		//printf("[GAMEPAD] Sending Keep Alive\r\n");
 		
 		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
 		xboneReport.Header.command = GIP_KEEPALIVE;

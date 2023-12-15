@@ -70,6 +70,7 @@ public:
     uint8_t getCommand();               // Get command of a parsed packet
     uint8_t getSequence();
     uint8_t getChunked();               // Is this packet chunked?
+    uint8_t getPacketAck();             // Did the packet require an ACK?
     uint8_t getPacketLength();          // Get packet length of our last output
     uint8_t * getData();                // Get data from a packet or packet-chunk
     uint16_t getDataLength();          // Get length of a packet or packet-chunk

@@ -43,12 +43,10 @@ private:
 	uint16_t packet_chunk_received;
 
 	bool awaiting_cb;
-	bool ready_to_auth;
+	bool dongle_ready;
 
 	XGIPProtocol incomingXGIP;
 	XGIPProtocol outgoingXGIP;
-	XGIPProtocol requestXGIP;
-	XGIPProtocol authXGIP;
 };
 
 #endif  // _PSPassthrough_H_
