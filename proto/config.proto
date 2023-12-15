@@ -70,6 +70,10 @@ message HotkeyOptions
 	optional HotkeyEntry hotkey10 = 10;
 	optional HotkeyEntry hotkey11 = 11;
 	optional HotkeyEntry hotkey12 = 12;
+	optional HotkeyEntry hotkey13 = 13;
+	optional HotkeyEntry hotkey14 = 14;
+	optional HotkeyEntry hotkey15 = 15;
+	optional HotkeyEntry hotkey16 = 16;
 }
 
 message PeripheralOptions
@@ -187,7 +191,8 @@ message AlternativePinMappings
 
 message ProfileOptions
 {
-	repeated AlternativePinMappings alternativePinMappings = 1 [(nanopb).max_count = 3];
+	repeated AlternativePinMappings deprecatedAlternativePinMappings = 1 [(nanopb).max_count = 3];
+	repeated GpioMappings gpioMappingsSets = 2 [(nanopb).max_count = 3];
 }
 
 message DisplayOptions
@@ -711,6 +716,7 @@ message MigrationHistory
 {
 	optional bool hotkeysMigrated = 1 [default = false];
 	optional bool gpioMappingsMigrated = 2 [default = false];
+	optional bool buttonProfilesMigrated = 3 [default = false];
 }
 
 message Config

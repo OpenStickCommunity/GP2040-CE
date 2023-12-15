@@ -31,6 +31,11 @@ const sidebars = {
 				'installation',
 				'usage',
 				'hotkeys',
+				{
+					type: 'ref',
+					label: 'Web Configurator',
+					id: 'web-configurator/web-configurator',
+				},
 				'rgb-leds',
 				'getting-help-support',
 			],

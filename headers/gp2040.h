@@ -52,6 +52,10 @@ private:
     };
     BootAction getBootAction();
 
+    // GPIO manipulation for setup and profile reinit
+    void initializeStandardGpio();
+    void deinitializeStandardGpio();
+
     // input mask, action
     std::map<uint32_t, int32_t> bootActions;
 };

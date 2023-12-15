@@ -1,59 +1,17 @@
-import axios from 'axios';
 import { create } from 'zustand';
-import { baseUrl } from '../Services/WebApi';
 
-// Hide from select options / Disable select if returned from board
-export const NON_SELECTABLE_BUTTON_ACTIONS = [-5, 0];
-
-// These could theoretically be created from enums.proto
-export const BUTTON_ACTIONS = {
-	NONE: -10,
-	RESERVED: -5,
-	ASSIGNED_TO_ADDON: 0,
-	BUTTON_PRESS_UP: 1,
-	BUTTON_PRESS_DOWN: 2,
-	BUTTON_PRESS_LEFT: 3,
-	BUTTON_PRESS_RIGHT: 4,
-	BUTTON_PRESS_B1: 5,
-	BUTTON_PRESS_B2: 6,
-	BUTTON_PRESS_B3: 7,
-	BUTTON_PRESS_B4: 8,
-	BUTTON_PRESS_L1: 9,
-	BUTTON_PRESS_R1: 10,
-	BUTTON_PRESS_L2: 11,
-	BUTTON_PRESS_R2: 12,
-	BUTTON_PRESS_S1: 13,
-	BUTTON_PRESS_S2: 14,
-	BUTTON_PRESS_A1: 15,
-	BUTTON_PRESS_A2: 16,
-	BUTTON_PRESS_L3: 17,
-	BUTTON_PRESS_R3: 18,
-	BUTTON_PRESS_FN: 19,
-	BUTTON_PRESS_DDI_UP: 20,
-	BUTTON_PRESS_DDI_DOWN: 21,
-	BUTTON_PRESS_DDI_LEFT: 22,
-	BUTTON_PRESS_DDI_RIGHT: 23,
-	SUSTAIN_DP_MODE_DP: 24,
-	SUSTAIN_DP_MODE_LS: 25,
-	SUSTAIN_DP_MODE_RS: 26,
-	SUSTAIN_SOCD_MODE_UP_PRIO: 27,
-	SUSTAIN_SOCD_MODE_NEUTRAL: 28,
-	SUSTAIN_SOCD_MODE_SECOND_WIN: 29,
-	SUSTAIN_SOCD_MODE_FIRST_WIN: 30,
-	SUSTAIN_SOCD_MODE_BYPASS: 31,
-} as const;
-
-type PinActionKeys = keyof typeof BUTTON_ACTIONS;
-type PinActionValues = (typeof BUTTON_ACTIONS)[PinActionKeys];
+import WebApi from '../Services/WebApi';
+import { PinActionValues } from '../Data/Pins';
 
 type State = {
 	pins: { [key: string]: PinActionValues };
+	loadingPins: boolean;
 };
 
 type Actions = {
 	fetchPins: () => void;
 	setPinAction: (pin: string, action: PinActionValues) => void;
-	savePins: () => Promise<{}>;
+	savePins: () => Promise<object>;
 };
 
 const INITIAL_STATE: State = {
@@ -89,15 +47,18 @@ const INITIAL_STATE: State = {
 		pin28: -10,
 		pin29: -10,
 	},
+	loadingPins: false,
 };
 
 const usePinStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchPins: async () => {
-		const { data } = await axios.get(`${baseUrl}/api/getPinMappings`);
+		set({ loadingPins: true });
+		const pins = await WebApi.getPinMappings();
 		set((state) => ({
 			...state,
-			pins: { ...state.pins, ...data }, // Merge saved pins with defaults
+			pins: { ...state.pins, ...pins }, // Merge saved pins with defaults
+			loadingPins: false,
 		}));
 	},
 	setPinAction: (pin, action) =>
@@ -105,7 +66,7 @@ const usePinStore = create<State & Actions>()((set, get) => ({
 			...state,
 			pins: { ...state.pins, [pin]: action },
 		})),
-	savePins: async () => axios.post(`${baseUrl}/api/setPinMappings`, get().pins),
+	savePins: async () => WebApi.setPinMappings(get().pins),
 }));
 
 export default usePinStore;

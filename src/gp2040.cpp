@@ -56,8 +56,9 @@ void GP2040::setup() {
 	}
 
     // Setup Gamepad and Gamepad Storage
-	Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	gamepad->setup();
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    gamepad->setup();
+    this->initializeStandardGpio();
 
     const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
@@ -144,6 +145,38 @@ void GP2040::setup() {
 	}
 }
 
+/**
+ * @brief Initialize standard input button GPIOs that are present in the currently loaded profile.
+ */
+void GP2040::initializeStandardGpio() {
+	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+	{
+		// (NONE=-10, RESERVED=-5, ASSIGNED_TO_ADDON=0, everything else is ours)
+		if (pinMappings[pin] > 0)
+		{
+			gpio_init(pin);             // Initialize pin
+			gpio_set_dir(pin, GPIO_IN); // Set as INPUT
+			gpio_pull_up(pin);          // Set as PULLUP
+		}
+	}
+}
+
+/**
+ * @brief Deinitialize standard input button GPIOs that are present in the currently loaded profile.
+ */
+void GP2040::deinitializeStandardGpio() {
+	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+	{
+		// (NONE=-10, RESERVED=-5, ASSIGNED_TO_ADDON=0, everything else is ours)
+		if (pinMappings[pin] > 0)
+		{
+			gpio_deinit(pin);
+		}
+	}
+}
+
 void GP2040::run() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
@@ -151,6 +184,32 @@ void GP2040::run() {
 	uint8_t * featureData = Storage::getInstance().GetFeatureData();
 	memset(featureData, 0, 32); // X-Input is the only feature data currently supported
 	while (1) { // LOOP
+		// check if we should reinitialize the gamepad
+		if (gamepad->userRequestedReinit) {
+			// deinitialize the ordinary (non-reserved, non-addon) GPIO pins, since
+			// we are moving off of them and onto potentially different pin assignments
+			// we currently don't support ASSIGNED_TO_ADDON pins being reinitialized,
+			// but if they were to be, that'd be the addon's duty, not ours
+			this->deinitializeStandardGpio();
+
+			// now we can load the latest configured profile, which will map the
+			// new set of GPIOs to use...
+			Storage::getInstance().setFunctionalPinMappings();
+
+			// ...and initialize the pins again
+			this->initializeStandardGpio();
+
+			// now we can tell the gamepad that the new mappings are in place
+			// and ready to use, and the pins are ready, so it should reinitialize itself
+			gamepad->reinit();
+			// ...and addons on this core, if they implemented reinit (just things
+			// with simple GPIO pin usage, at time of writing)
+			addons.ReinitializeAddons(ADDON_PROCESS::CORE0_INPUT);
+
+			// and we're done
+			gamepad->userRequestedReinit = false;
+		}
+
 		Storage::getInstance().performEnqueuedSaves();
 		// Config Loop (Web-Config does not require gamepad)
 		if (configMode == true) {

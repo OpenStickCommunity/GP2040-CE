@@ -68,7 +68,7 @@ public:
 	uint8_t * GetFeatureData();
 
 	void setProfile(const uint32_t);		// profile support for multiple mappings
-	void setFunctionalPinMappings(const uint32_t);
+	void setFunctionalPinMappings();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 

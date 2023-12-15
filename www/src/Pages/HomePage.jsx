@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import axios from 'axios';
-import orderBy from 'lodash/orderBy';
 import { useTranslation } from 'react-i18next';
 
 import Section from '../Components/Section';
@@ -26,27 +25,39 @@ export default function HomePage() {
 
 	useEffect(() => {
 		WebApi.getFirmwareVersion(setLoading)
-			.then(({ version, boardConfigLabel, boardConfigFileName, boardConfig }) => {
-				setCurrentVersion(version);
-				setBoardConfigProperties({ label: boardConfigLabel, fileName: boardConfigFileName});
-				axios.get('https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest')
-					.then((response) => {
-						const latestTag = response.data.tag_name;
-						setLatestDownloadUrl(
-							response.data?.assets?.find(({ name }) => {
-								return name?.substring(name.lastIndexOf('_') + 1)
-									?.replace('.uf2', '')
-									?.toLowerCase() === boardConfig.toLowerCase()
-							})?.browser_download_url || `https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`
-						);
-					})
-					.catch(console.error)
-			})
+			.then(
+				({ version, boardConfigLabel, boardConfigFileName, boardConfig }) => {
+					setCurrentVersion(version);
+					setBoardConfigProperties({
+						label: boardConfigLabel,
+						fileName: boardConfigFileName,
+					});
+					axios
+						.get(
+							'https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest',
+						)
+						.then((response) => {
+							const latestTag = response.data.tag_name;
+							setLatestVersion(latestTag);
+							setLatestDownloadUrl(
+								response.data?.assets?.find(({ name }) => {
+									return (
+										name
+											?.substring(name.lastIndexOf('_') + 1)
+											?.replace('.uf2', '')
+											?.toLowerCase() === boardConfig.toLowerCase()
+									);
+								})?.browser_download_url ||
+									`https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`,
+							);
+						})
+						.catch(console.error);
+				},
+			)
 			.catch(console.error);
 
 		WebApi.getMemoryReport(setLoading)
 			.then((response) => {
-				const unit = 1024;
 				const { totalFlash, usedFlash, staticAllocs, totalHeap, usedHeap } =
 					response;
 				setMemoryReport({

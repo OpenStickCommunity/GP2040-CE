@@ -26,6 +26,14 @@ void AddonManager::LoadUSBAddon(USBAddon* addon, ADDON_PROCESS processAt) {
     }
 }
 
+void AddonManager::ReinitializeAddons(ADDON_PROCESS processType) {
+    // Loop through all addons and process any that match our type
+    for (std::vector<AddonBlock*>::iterator it = addons.begin(); it != addons.end(); it++) {
+        if ( (*it)->process == processType )
+            (*it)->ptr->reinit();
+    }
+}
+
 void AddonManager::PreprocessAddons(ADDON_PROCESS processType) {
     // Loop through all addons and process any that match our type
     for (std::vector<AddonBlock*>::iterator it = addons.begin(); it != addons.end(); it++) {
