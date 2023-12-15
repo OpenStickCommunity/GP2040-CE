@@ -1024,6 +1024,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_EGRET: statusBar += "EGRET"; break;
 		case INPUT_MODE_ASTRO: statusBar += "ASTRO"; break;
 		case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
+		case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
 		case INPUT_MODE_PS4:
 			if ( PS4Data::getInstance().ps4ControllerType == PS4ControllerType::PS4_CONTROLLER ) {
 				if (PS4Data::getInstance().authsent == true )
