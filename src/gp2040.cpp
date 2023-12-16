@@ -93,6 +93,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
 	addons.LoadAddon(new InputMacro(), CORE0_INPUT);
 
+
 	const BootAction bootAction = getBootAction();
 
 	switch (bootAction) {
@@ -115,6 +116,13 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_XINPUT:
 		case BootAction::SET_INPUT_MODE_PS4:
 		case BootAction::SET_INPUT_MODE_KEYBOARD:
+		case BootAction::SET_INPUT_MODE_NEOGEO:
+		case BootAction::SET_INPUT_MODE_MDMINI:
+		case BootAction::SET_INPUT_MODE_PCEMINI:
+		case BootAction::SET_INPUT_MODE_EGRET:
+		case BootAction::SET_INPUT_MODE_ASTRO:
+		case BootAction::SET_INPUT_MODE_PSCLASSIC:
+		case BootAction::SET_INPUT_MODE_XBOXORIGINAL:
 		case BootAction::NONE:
 			{
 				InputMode inputMode = gamepad->getOptions().inputMode;
@@ -128,6 +136,20 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_PS4;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_KEYBOARD) {
 					inputMode = INPUT_MODE_KEYBOARD;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_NEOGEO) {
+					inputMode = INPUT_MODE_NEOGEO;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_MDMINI) {
+					inputMode = INPUT_MODE_MDMINI;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_PCEMINI) {
+					inputMode = INPUT_MODE_PCEMINI;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_EGRET) {
+					inputMode = INPUT_MODE_EGRET;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_ASTRO) {
+					inputMode = INPUT_MODE_ASTRO;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_PSCLASSIC) {
+					inputMode = INPUT_MODE_PSCLASSIC;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_XBOXORIGINAL) {
+					inputMode = INPUT_MODE_XBOXORIGINAL;
 				}
 
 				if (inputMode != gamepad->getOptions().inputMode) {
@@ -301,6 +323,20 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_KEYBOARD;
                                 case INPUT_MODE_PS4: 
                                     return BootAction::SET_INPUT_MODE_PS4;
+                                case INPUT_MODE_NEOGEO: 
+                                    return BootAction::SET_INPUT_MODE_NEOGEO;
+                                case INPUT_MODE_MDMINI: 
+                                    return BootAction::SET_INPUT_MODE_MDMINI;
+                                case INPUT_MODE_PCEMINI: 
+                                    return BootAction::SET_INPUT_MODE_PCEMINI;
+                                case INPUT_MODE_EGRET: 
+                                    return BootAction::SET_INPUT_MODE_EGRET;
+                                case INPUT_MODE_ASTRO: 
+                                    return BootAction::SET_INPUT_MODE_ASTRO;
+                                case INPUT_MODE_PSCLASSIC: 
+                                    return BootAction::SET_INPUT_MODE_PSCLASSIC;
+                                case INPUT_MODE_XBOXORIGINAL: 
+                                    return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
                                 default:
                                     return BootAction::NONE;
                             }

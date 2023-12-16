@@ -8,10 +8,16 @@ src/tusb_driver.cpp
 src/usb_descriptors.cpp
 src/xinput_driver.cpp
 src/ps4_driver.cpp
+src/xid_driver/xid_driver.c
+src/xid_driver/xid.c
+src/xid_driver/xid_gamepad.c
+src/xid_driver/xid_remote.c
+src/xid_driver/xid_steelbattalion.c
 ${PROTO_OUTPUT_DIR}/enums.pb.h
 )
 target_include_directories(TinyUSB_Gamepad PUBLIC
 ${CMAKE_CURRENT_SOURCE_DIR}/src
+${CMAKE_CURRENT_SOURCE_DIR}/src/xid_driver
 ${CMAKE_SOURCE_DIR}/headers
 ${CMAKE_SOURCE_DIR}/lib/CRC32/src
 ${CMAKE_SOURCE_DIR}/lib/mbedtls/include
