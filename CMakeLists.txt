@@ -104,6 +104,9 @@ add_compile_options(-Wall
 include(compile_proto.cmake)
 compile_proto()
 
+#pull in tinyUSB
+set(PICO_TINYUSB_PATH "${CMAKE_CURRENT_LIST_DIR}/lib/tinyusb")
+
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
@@ -161,6 +164,7 @@ src/addons/inputhistory.cpp
 src/gamepad/GamepadDebouncer.cpp
 src/gamepad/GamepadDescriptors.cpp
 src/addons/tilt.cpp
+src/addons/xbonepassthrough.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -173,7 +177,9 @@ pico_set_program_version(GP2040-CE "0.7.5")
 target_link_libraries(${PROJECT_NAME}
 pico_stdlib
 pico_bootsel_via_double_reset
+tinyusb_device
 tinyusb_host
+tinyusb_board
 tinyusb_pico_pio_usb
 AnimationStation
 CRC32

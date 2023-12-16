@@ -13,6 +13,9 @@ src/xid_driver/xid.c
 src/xid_driver/xid_gamepad.c
 src/xid_driver/xid_remote.c
 src/xid_driver/xid_steelbattalion.c
+src/xgip_protocol.cpp
+src/xinput_host.cpp
+src/xbone_driver.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.h
 )
 target_include_directories(TinyUSB_Gamepad PUBLIC

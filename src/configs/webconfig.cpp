@@ -1712,8 +1712,9 @@ std::string getAddonOptions()
 
 	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 	writeDoc(doc, "PSPassthroughAddonEnabled", psPassthroughOptions.enabled);
-	writeDoc(doc, "psPassthroughPinDplus", psPassthroughOptions.pinDplus);
-	writeDoc(doc, "psPassthroughPin5V", psPassthroughOptions.pin5V);
+
+	XBOnePassthroughOptions& xbonePassthroughOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
+	writeDoc(doc, "XBOnePassthroughAddonEnabled", xbonePassthroughOptions.enabled);
 
 	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));

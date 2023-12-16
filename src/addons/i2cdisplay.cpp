@@ -1038,6 +1038,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 					statusBar += "PS5   ";
 			}
 			break;
+		case INPUT_MODE_XBONE:    statusBar += "XBONE"; break;
 		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}

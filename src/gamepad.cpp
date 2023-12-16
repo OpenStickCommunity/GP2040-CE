@@ -18,6 +18,9 @@
 // PS5 compatibility
 #include "ps4_driver.h"
 
+// Xbox One compatibility
+#include "xbone_driver.h"
+
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
 	return to_ms_since_boot(get_absolute_time());
@@ -172,6 +175,35 @@ static XboxOriginalReport xboxOriginalReport
     .rightStickY = 0,
 };
 
+static XboxOneGamepad_Data_t xboneReport
+{
+	.sync = 0,
+	.guide = 0,
+	.start = 0,
+	.back = 0,
+	.a = 0,
+	.b = 0,
+	.x = 0,
+	.y = 0,
+	.dpadUp = 0,
+	.dpadDown = 0,
+	.dpadLeft = 0,
+	.dpadRight = 0,
+	.leftShoulder = 0,
+	.rightShoulder = 0,
+	.leftThumbClick = 0,
+	.rightThumbClick = 0,
+	.leftTrigger = 0,
+	.rightTrigger = 0,
+	.leftStickX = GAMEPAD_JOYSTICK_MID,
+	.leftStickY = GAMEPAD_JOYSTICK_MID,
+	.rightStickX = GAMEPAD_JOYSTICK_MID,
+	.rightStickY = GAMEPAD_JOYSTICK_MID,
+	.reserved = {}
+};
+
+static uint16_t xboneReportSize;
+
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
 
@@ -247,6 +279,11 @@ void Gamepad::setup()
 
 	// setup PS5 compatibility
 	PS4Data::getInstance().ps4ControllerType = gamepadOptions.ps4ControllerType;
+
+	// Xbox One Keep-Alive
+	keep_alive_timer = 0;
+	keep_alive_sequence = 0;
+	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
 }
 
 /**
@@ -535,6 +572,9 @@ void * Gamepad::getReport()
 		case INPUT_MODE_PS4:
 			return getPS4Report();
 
+		case INPUT_MODE_XBONE:
+			return getXBOneReport();
+
 		case INPUT_MODE_KEYBOARD:
 			return getKeyboardReport();
 
@@ -577,6 +617,9 @@ uint16_t Gamepad::getReportSize()
 
 		case INPUT_MODE_PS4:
 			return sizeof(PS4Report);
+
+		case INPUT_MODE_XBONE:
+			return xboneReportSize;
 
 		case INPUT_MODE_KEYBOARD:
 			return sizeof(KeyboardReport);
@@ -729,6 +772,109 @@ XInputReport *Gamepad::getXInputReport()
 	return &xinputReport;
 }
 
+uint8_t xboneIdle[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+					   0xff, 0xff, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00,
+					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// Should really be an on success callback
+void Gamepad::tickReportCounter() {
+	switch( (options.inputMode) ) {
+		case INPUT_MODE_PS4:
+			last_report_counter = (last_report_counter+1) & 63;
+		break;
+		case INPUT_MODE_XBONE:
+			if ( memcmp((void*)&((uint8_t*)&xboneReport)[4], xboneIdle, sizeof(xboneIdle)) != 0 ) {
+				//printf("[Gamepad]:tickReportCounter:   Button Held!\r\n");
+				last_report_counter++;
+				if ( last_report_counter == 0 ) {
+					last_report_counter = 1;
+				}
+			}
+		break;
+
+		default:
+		break;
+	};
+}
+
+XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
+{
+	// No input until auth is ready
+	if ( XboxOneData::getInstance().auth_completed == false ) {
+		GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, 0);
+		return &xboneReport;
+	}
+
+	uint32_t now = to_ms_since_boot(get_absolute_time());
+
+	if ( (now - keep_alive_timer) > 15000) {
+		// Send Keep-Alive every 15 seconds
+		//printf("[GAMEPAD] Sending Keep Alive\r\n");
+		
+		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
+		xboneReport.Header.command = GIP_KEEPALIVE;
+		xboneReport.Header.internal = 1;
+		keep_alive_sequence++; // will rollover
+		if ( keep_alive_sequence == 0 )
+			keep_alive_sequence = 1;
+		xboneReport.Header.sequence = keep_alive_sequence;
+		xboneReport.Header.length = 4;
+		uint8_t keepAlive[] = { 0x80, 0x00, 0x00, 0x00 };
+		memcpy(&((uint8_t*)&xboneReport)[4], &keepAlive, sizeof(keepAlive));
+		keep_alive_timer = now;
+		
+		xboneReportSize = sizeof(GipHeader_t) + sizeof(keepAlive);
+
+		return &xboneReport;
+	}
+
+	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
+
+	xboneReport.a = pressedB1();
+	xboneReport.b = pressedB2();
+	xboneReport.x = pressedB3();
+	xboneReport.y = pressedB4();
+	xboneReport.leftShoulder = pressedL1();
+	xboneReport.rightShoulder = pressedR1();
+	xboneReport.leftThumbClick = pressedL3();
+	xboneReport.rightThumbClick = pressedR3();
+	xboneReport.start = pressedS2();
+	xboneReport.back = pressedS1();
+	xboneReport.dpadUp = pressedUp();
+	xboneReport.dpadDown = pressedDown();
+	xboneReport.dpadLeft = pressedLeft();
+	xboneReport.dpadRight = pressedRight();
+
+	xboneReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN + 1;
+	xboneReport.leftStickY = static_cast<int16_t>(state.ly) + INT16_MIN;
+	xboneReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN + 1;
+	xboneReport.rightStickY = static_cast<int16_t>(state.ry) + INT16_MIN;
+
+	if (hasAnalogTriggers)
+	{
+		xboneReport.leftTrigger = pressedL2() ? 0x03FF : state.lt;
+		xboneReport.rightTrigger = pressedR2() ? 0x03FF : state.rt;
+	}
+	else
+	{
+		xboneReport.leftTrigger = pressedL2() ? 0x03FF : 0;
+		xboneReport.rightTrigger = pressedR2() ? 0x03FF : 0;
+	}
+
+	/*
+	for(uint8_t i = 0; i < sizeof(xboneReport); i++) {
+		if ( i % 16 == 0 ) printf("\r\n");
+		printf("%02X ", ((uint8_t*)&xboneReport)[i]);
+	}
+	printf("\r\n");
+	*/
+
+	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
+
+	return &xboneReport;
+}
+
 
 PS4Report *Gamepad::getPS4Report()
 {
@@ -761,7 +907,6 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.button_touchpad = options.switchTpShareForDs4 ? pressedS1() : pressedA2();
 
 	// report counter is 6 bits
-	last_report_counter = (last_report_counter+1) & 63;
 	ps4Report.report_counter = last_report_counter;
 
 	ps4Report.left_stick_x = static_cast<uint8_t>(state.lx >> 8);

@@ -8,6 +8,7 @@ export default {
 		ps3: 'PS3/DirectInput',
 		keyboard: '键盘',
 		ps4: 'PS4',
+		xbone: 'Xbox One',
 	},
 	'ps4-mode-options': {
 		controller: '游戏控制器',

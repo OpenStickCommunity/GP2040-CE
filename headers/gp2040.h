@@ -54,7 +54,8 @@ private:
         SET_INPUT_MODE_EGRET,
         SET_INPUT_MODE_ASTRO,
         SET_INPUT_MODE_PSCLASSIC,
-        SET_INPUT_MODE_XBOXORIGINAL
+        SET_INPUT_MODE_XBOXORIGINAL,
+        SET_INPUT_MODE_XBONE
     };
     BootAction getBootAction();
 

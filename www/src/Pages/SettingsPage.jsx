@@ -17,6 +17,7 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.ps3', value: 2 },
 	{ labelKey: 'input-mode-options.keyboard', value: 3 },
 	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
+  { labelKey: 'input-mode-options.xbone', value: 5 },
 	{ labelKey: 'input-mode-options.mdmini', value: 6 },
 	{ labelKey: 'input-mode-options.neogeo', value: 7 },
 	{ labelKey: 'input-mode-options.pcemini', value: 8 },
@@ -33,13 +34,14 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.ps3', value: 2 },
 	{ labelKey: 'input-mode-options.keyboard', value: 3 },
 	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
+  { labelKey: 'input-mode-options.xbone', value: 5 },
 	{ labelKey: 'input-mode-options.mdmini', value: 6 },
 	{ labelKey: 'input-mode-options.neogeo', value: 7 },
 	{ labelKey: 'input-mode-options.pcemini', value: 8 },
 	{ labelKey: 'input-mode-options.egret', value: 9 },
 	{ labelKey: 'input-mode-options.astro', value: 10 },
-    { labelKey: 'input-mode-options.psclassic', value: 11 },
-    { labelKey: 'input-mode-options.xboxoriginal', value: 12 },
+  { labelKey: 'input-mode-options.psclassic', value: 11 },
+  { labelKey: 'input-mode-options.xboxoriginal', value: 12 },
 ];
 
 const DPAD_MODES = [

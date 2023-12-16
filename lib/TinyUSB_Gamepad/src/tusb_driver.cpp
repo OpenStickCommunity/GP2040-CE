@@ -18,6 +18,7 @@
 #include "xinput_driver.h"
 #include "ps4_driver.h"
 #include "xid_driver/xid_driver.h"
+#include "xbone_driver.h"
 
 UsbMode usb_mode = USB_MODE_HID;
 InputMode input_mode = INPUT_MODE_XINPUT;
@@ -81,6 +82,9 @@ bool send_report(void *report, uint16_t report_size)
 			case INPUT_MODE_XINPUT:
 				sent = send_xinput_report(report, report_size);
 				break;
+			case INPUT_MODE_XBONE:
+				sent = send_xbone_report(report, report_size);
+				break;
 			case INPUT_MODE_KEYBOARD:
 				sent = send_keyboard_report(report);
 				break;
@@ -93,6 +97,16 @@ bool send_report(void *report, uint16_t report_size)
 			memcpy(previous_report, report, report_size);
 	}
 	
+	// Move this?
+	switch (input_mode)
+	{
+		case INPUT_MODE_XBONE:
+			tick_xbone_usb();
+			break;
+		default:
+			break;
+	};
+
 	return sent;
 }
 
@@ -116,8 +130,11 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 			case INPUT_MODE_PS4:
 				return &ps4_driver;
 
-            case INPUT_MODE_XBOXORIGINAL:
-                return xid_get_driver();
+      case INPUT_MODE_XBOXORIGINAL:
+        return xid_get_driver();
+
+			case INPUT_MODE_XBONE:
+				return &xbone_driver;
 
 			default:
 				return &hid_driver;
@@ -211,6 +228,8 @@ void tud_hid_set_report_cb(uint8_t itf, uint8_t report_id, hid_report_type_t rep
 				set_ps4_report(report_id, buffer, bufsize);
 			}
 			break;
+		default:
+			break;
 	}
 
 	// echo back anything we received from host
@@ -254,9 +273,12 @@ bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
 	bool ret = false;
 	switch (input_mode)
 	{
-        case INPUT_MODE_XBOXORIGINAL:
-            ret |= xid_get_driver()->control_xfer_cb(rhport, stage, request);
-            break;
+    case INPUT_MODE_XBOXORIGINAL:
+      ret |= xid_get_driver()->control_xfer_cb(rhport, stage, request);
+      break;
+		case INPUT_MODE_XBONE:
+			ret = xbone_vendor_control_xfer_cb(rhport, stage, request);
+			break;
 		default:
 			break;
 	}

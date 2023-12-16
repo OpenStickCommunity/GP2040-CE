@@ -16,6 +16,7 @@ export default {
 		astro: 'ASTROCITY Mini',
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
+    xbone: 'Xbox One'
 	},
     'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {
