@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Ha Thach (tinyusb.org)
+ * Copyright (c) 2013 OpenStickCommunity (gp2040-ce.info)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * This file is part of the TinyUSB stack.
  */
 
 #include "tusb_option.h"
@@ -193,7 +192,8 @@ void xinputh_close(uint8_t dev_addr) {
 //--------------------------------------------------------------------+
 typedef enum
 {
-    XINPUT_UNKNOWN = 0,
+    UNKNOWN = 0,
+    XBOX360,
     XBOXONE,
 } xinput_type_t;
 
