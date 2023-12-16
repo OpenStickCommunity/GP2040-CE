@@ -12,6 +12,13 @@
 #include "descriptors/XInputDescriptors.h"
 #include "descriptors/KeyboardDescriptors.h"
 #include "descriptors/PS4Descriptors.h"
+#include "descriptors/NeogeoDescriptors.h"
+#include "descriptors/MDMiniDescriptors.h"
+#include "descriptors/PCEngineDescriptors.h"
+#include "descriptors/EgretDescriptors.h"
+#include "descriptors/AstroDescriptors.h"
+#include "descriptors/PSClassicDescriptors.h"
+#include "descriptors/XboxOriginalDescriptors.h"
 #include "descriptors/XBOneDescriptors.h"
 
 #include "enums.pb.h"
@@ -76,6 +83,34 @@ static const uint16_t *getStringDescriptor(uint16_t *size, InputMode mode, uint8
 
 			case INPUT_MODE_PS4:
 				str = (char *)ps4_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_NEOGEO:
+				str = (char *)neogeo_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_MDMINI:
+				str = (char *)mdmini_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_PCEMINI:
+				str = (char *)pcengine_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_EGRET:
+				str = (char *)egret_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_ASTRO:
+				str = (char *)astro_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_PSCLASSIC:
+				str = (char *)psclassic_string_descriptors[index];
+				break;
+
+			case INPUT_MODE_XBOXORIGINAL:
+				str = (char *)xboxoriginal_string_descriptors[index];
 				break;
 
 			default:

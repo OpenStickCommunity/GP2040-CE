@@ -9,7 +9,14 @@ export default {
 		ps3: 'PS3/DirectInput',
 		keyboard: 'Keyboard',
 		ps4: 'PS4',
-		xbone: 'Xbox One'
+		neogeo: 'NEOGEO mini',
+		mdmini: 'Sega Genesis/MegaDrive Mini',
+		pcemini: 'PC Engine/Turbografx 16 Mini',
+		egret: 'EGRET II mini',
+		astro: 'ASTROCITY Mini',
+		psclassic: 'Playstation Classic',
+		xboxoriginal: 'Original Xbox',
+    xbone: 'Xbox One'
 	},
     'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {
@@ -24,7 +31,7 @@ export default {
 	},
 	'socd-cleaning-mode-label': 'SOCD Cleaning Mode',
 	'socd-cleaning-mode-note':
-		'Note: PS4, PS3 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
+		'Note: PS4, PS3, Nintendo Switch, and mini series modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.',
 	'socd-cleaning-mode-options': {
 		'up-priority': 'Up Priority',
 		neutral: 'Neutral',

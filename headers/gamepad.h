@@ -13,6 +13,13 @@
 #include "gamepad/descriptors/XInputDescriptors.h"
 #include "gamepad/descriptors/KeyboardDescriptors.h"
 #include "gamepad/descriptors/PS4Descriptors.h"
+#include "gamepad/descriptors/NeogeoDescriptors.h"
+#include "gamepad/descriptors/MDMiniDescriptors.h"
+#include "gamepad/descriptors/PCEngineDescriptors.h"
+#include "gamepad/descriptors/EgretDescriptors.h"
+#include "gamepad/descriptors/AstroDescriptors.h"
+#include "gamepad/descriptors/PSClassicDescriptors.h"
+#include "gamepad/descriptors/XboxOriginalDescriptors.h"
 #include "gamepad/descriptors/XBOneDescriptors.h"
 
 #include "pico/stdlib.h"
@@ -75,6 +82,13 @@ public:
 	XboxOneGamepad_Data_t *getXBOneReport();
 	KeyboardReport *getKeyboardReport();
 	PS4Report *getPS4Report();
+	NeogeoReport *getNeogeoReport();
+	MDMiniReport *getMDMiniReport();
+	PCEngineReport *getPCEngineReport();
+    EgretReport *getEgretReport();
+    AstroReport *getAstroReport();
+    PSClassicReport *getPSClassicReport();
+    XboxOriginalReport *getXboxOriginalReport();
 
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
@@ -166,6 +180,7 @@ public:
 		 return (options.socdMode == SOCD_MODE_BYPASS &&
 				 (options.inputMode == INPUT_MODE_HID ||
 				  options.inputMode == INPUT_MODE_SWITCH ||
+				  options.inputMode == INPUT_MODE_NEOGEO ||
 				  options.inputMode == INPUT_MODE_PS4)) ?
 				SOCD_MODE_NEUTRAL : options.socdMode;
 	};
