@@ -199,6 +199,8 @@ private:
 
 	uint32_t keep_alive_timer;
 	uint8_t keep_alive_sequence;
+	uint8_t virtual_keycode_sequence;
+	bool xb1_guide_pressed;
 };
 
 #endif

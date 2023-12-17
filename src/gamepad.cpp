@@ -283,6 +283,8 @@ void Gamepad::setup()
 	// Xbox One Keep-Alive
 	keep_alive_timer = 0;
 	keep_alive_sequence = 0;
+	virtual_keycode_sequence = 0;
+	xb1_guide_pressed = false;
 	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
 }
 
@@ -772,8 +774,10 @@ XInputReport *Gamepad::getXInputReport()
 	return &xinputReport;
 }
 
-uint8_t xboneIdle[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-					   0xff, 0xff, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00,
+static uint8_t xb1_guide_on[] = { 0x01, 0x5b };
+static uint8_t xb1_guide_off[] = { 0x00, 0x5b };
+static uint8_t xboneIdle[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
@@ -782,19 +786,22 @@ void Gamepad::sendReportSuccess() {
 	switch( (options.inputMode) ) {
 		case INPUT_MODE_PS4:
 			last_report_counter = (last_report_counter+1) & 63;
-		break;
+			break;
 		case INPUT_MODE_XBONE:
-			if ( memcmp((void*)&((uint8_t*)&xboneReport)[4], xboneIdle, sizeof(xboneIdle)) != 0 ) {
-				//printf("[Gamepad]:tickReportCounter:   Button Held!\r\n");
-				last_report_counter++;
-				if ( last_report_counter == 0 ) {
-					last_report_counter = 1;
-				}
+			if ( xboneReport.Header.command == GIP_KEEPALIVE) {
+				keep_alive_sequence++; // will rollover
+				if ( keep_alive_sequence == 0 )
+					keep_alive_sequence = 1;
+			} else if ( xboneReport.Header.command == GIP_INPUT_REPORT ) {
+				if ( memcmp((void*)&((uint8_t*)&xboneReport)[4], xboneIdle, sizeof(xboneIdle)) != 0 ) {
+					last_report_counter++;
+					if ( last_report_counter == 0 )
+						last_report_counter = 1;
+				} 
 			}
-		break;
-
+			break;
 		default:
-		break;
+			break;
 	};
 }
 
@@ -807,20 +814,14 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 	}
 
 	uint32_t now = to_ms_since_boot(get_absolute_time());
-
+	// Send Keep-Alive every 15 seconds
 	if ( (now - keep_alive_timer) > 15000) {
-		// Send Keep-Alive every 15 seconds
-		//printf("[GAMEPAD] Sending Keep Alive\r\n");
-		
 		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
 		xboneReport.Header.command = GIP_KEEPALIVE;
 		xboneReport.Header.internal = 1;
-		keep_alive_sequence++; // will rollover
-		if ( keep_alive_sequence == 0 )
-			keep_alive_sequence = 1;
 		xboneReport.Header.sequence = keep_alive_sequence;
 		xboneReport.Header.length = 4;
-		uint8_t keepAlive[] = { 0x80, 0x00, 0x00, 0x00 };
+		static uint8_t keepAlive[] = { 0x80, 0x00, 0x00, 0x00 };
 		memcpy(&((uint8_t*)&xboneReport)[4], &keepAlive, sizeof(keepAlive));
 		keep_alive_timer = now;
 		
@@ -829,14 +830,32 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 		return &xboneReport;
 	}
 
-	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
 
-	// If guide was pressed, only return guide and the report size changes
-	if ( pressedA2() ) {
-		xboneReport.guide = pressedA2();
-		xboneReportSize = sizeof(XboxOneInputHeader_Data_t);
+	// Guide button toggles on/off on our virtual keycode sequence
+	if ( (pressedA1() && xb1_guide_pressed == false) ||
+			(!pressedA1() && xb1_guide_pressed == true)) {
+		// guide virtual keycode
+		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
+		xboneReport.Header.command = GIP_VIRTUAL_KEYCODE;
+		xboneReport.Header.internal = 1;
+		virtual_keycode_sequence++; // will rollover
+		if ( virtual_keycode_sequence == 0 )
+			virtual_keycode_sequence = 1;
+		xboneReport.Header.sequence = virtual_keycode_sequence;
+		xboneReport.Header.length = sizeof(xb1_guide_on);
+		if ( pressedA1() ) {
+			memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_on, sizeof(xb1_guide_on));
+			xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_on);
+			xb1_guide_pressed = true;
+		} else if ( !pressedA1() ) {
+			memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_off, sizeof(xb1_guide_off));
+			xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_off);
+			xb1_guide_pressed = false;
+		}
 		return &xboneReport;
 	}
+
+	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
 
 	xboneReport.a = pressedB1();
 	xboneReport.b = pressedB2();
@@ -848,15 +867,17 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 	xboneReport.rightThumbClick = pressedR3();
 	xboneReport.start = pressedS2();
 	xboneReport.back = pressedS1();
+	xboneReport.guide = 0; // always 0
+	xboneReport.sync = 0; 
 	xboneReport.dpadUp = pressedUp();
 	xboneReport.dpadDown = pressedDown();
 	xboneReport.dpadLeft = pressedLeft();
 	xboneReport.dpadRight = pressedRight();
 
 	xboneReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN;
-	xboneReport.leftStickY = static_cast<int16_t>(state.ly) + INT16_MIN;
+	xboneReport.leftStickY = static_cast<int16_t>(~state.ly) + INT16_MIN;
 	xboneReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN;
-	xboneReport.rightStickY = static_cast<int16_t>(state.ry) + INT16_MIN;
+	xboneReport.rightStickY = static_cast<int16_t>(~state.ry) + INT16_MIN;
 
 	if (hasAnalogTriggers)
 	{

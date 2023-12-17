@@ -1,5 +1,6 @@
 #include "GamepadDescriptors.h"
 
+// This is never used
 static uint16_t getConfigurationDescriptor(const uint8_t *buffer, InputMode mode)
 {
 	switch (mode)
@@ -47,6 +48,11 @@ static uint16_t getConfigurationDescriptor(const uint8_t *buffer, InputMode mode
 		case INPUT_MODE_XBOXORIGINAL:
 			buffer = xboxoriginal_configuration_descriptor;
 			return sizeof(xboxoriginal_configuration_descriptor);
+
+		case INPUT_MODE_XBONE:
+			buffer = xbone_configuration_descriptor;
+			return sizeof(xbone_configuration_descriptor);
+
 
 		default:
 			buffer = hid_configuration_descriptor;
