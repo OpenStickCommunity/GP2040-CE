@@ -777,8 +777,8 @@ uint8_t xboneIdle[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 					   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-// Should really be an on success callback
-void Gamepad::tickReportCounter() {
+// On Send report Success
+void Gamepad::sendReportSuccess() {
 	switch( (options.inputMode) ) {
 		case INPUT_MODE_PS4:
 			last_report_counter = (last_report_counter+1) & 63;
@@ -801,7 +801,7 @@ void Gamepad::tickReportCounter() {
 XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 {
 	// No input until auth is ready
-	if ( XboxOneData::getInstance().auth_completed == false ) {
+	if ( XboxOneData::getInstance().getAuthCompleted() == false ) {
 		GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, 0);
 		return &xboneReport;
 	}
@@ -846,9 +846,9 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 	xboneReport.dpadLeft = pressedLeft();
 	xboneReport.dpadRight = pressedRight();
 
-	xboneReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN + 1;
+	xboneReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN;
 	xboneReport.leftStickY = static_cast<int16_t>(state.ly) + INT16_MIN;
-	xboneReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN + 1;
+	xboneReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN;
 	xboneReport.rightStickY = static_cast<int16_t>(state.ry) + INT16_MIN;
 
 	if (hasAnalogTriggers)
@@ -861,14 +861,6 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 		xboneReport.leftTrigger = pressedL2() ? 0x03FF : 0;
 		xboneReport.rightTrigger = pressedR2() ? 0x03FF : 0;
 	}
-
-	/*
-	for(uint8_t i = 0; i < sizeof(xboneReport); i++) {
-		if ( i % 16 == 0 ) printf("\r\n");
-		printf("%02X ", ((uint8_t*)&xboneReport)[i]);
-	}
-	printf("\r\n");
-	*/
 
 	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
 

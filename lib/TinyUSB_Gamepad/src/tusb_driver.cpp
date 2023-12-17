@@ -96,18 +96,20 @@ bool send_report(void *report, uint16_t report_size)
 		if (sent)
 			memcpy(previous_report, report, report_size);
 	}
-	
-	// Move this?
+
+	return sent;
+}
+
+// Some input drivers need their own process/update logic
+void update_input_driver() {
 	switch (input_mode)
 	{
 		case INPUT_MODE_XBONE:
-			tick_xbone_usb();
+			xbone_driver_update();
 			break;
 		default:
 			break;
 	};
-
-	return sent;
 }
 
 /* USB Driver Callback (Required for XInput) */

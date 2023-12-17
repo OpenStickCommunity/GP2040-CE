@@ -264,9 +264,12 @@ void GP2040::run() {
 		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
+		// Update input driver
+		update_input_driver();
+
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
 		if ( send_report(gamepad->getReport(), gamepad->getReportSize()) ) {
-			gamepad->tickReportCounter();
+			gamepad->sendReportSuccess();
 		}
 		
 		// GET USB REPORT (If Endpoint Available)

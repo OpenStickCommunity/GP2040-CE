@@ -28,21 +28,13 @@ public:
 	virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
 	virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {}
 	virtual void report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
-	virtual void report_sent(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
+	virtual void report_sent(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {}
 
 	void queue_host_report(void* report, uint16_t len);
 private:
 	uint8_t xbone_dev_addr;
 	uint8_t xbone_instance;
 
-	uint8_t xbone_ep_in;
-	uint8_t xbone_ep_out;
-
-	// We have to keep track of packet chunks if chunked is set
-	uint16_t descriptor_size;
-	uint16_t packet_chunk_received;
-
-	bool awaiting_cb;
 	bool dongle_ready;
 
 	XGIPProtocol incomingXGIP;
