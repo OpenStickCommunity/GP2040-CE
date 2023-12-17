@@ -5,10 +5,8 @@
 
 #include "xgip_protocol.h"
 
-//#include "ps4_driver.h"
-
 #ifndef XBONEPASSTHROUGH_ENABLED
-#define XBONEPASSTHROUGH_ENABLED 1
+#define XBONEPASSTHROUGH_ENABLED 0
 #endif
 
 // KeyboardHost Module Name

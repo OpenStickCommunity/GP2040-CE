@@ -143,7 +143,7 @@ inline uint16_t GetJoystickMidValue(uint8_t mode) {
         case INPUT_MODE_XINPUT:
             return GAMEPAD_JOYSTICK_MID;
 
-		case INPUT_MODE_XBONE:
+        case INPUT_MODE_XBONE:
             return GAMEPAD_JOYSTICK_MID;
 
         case INPUT_MODE_SWITCH:
