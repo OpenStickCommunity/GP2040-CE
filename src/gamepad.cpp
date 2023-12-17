@@ -831,6 +831,13 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 
 	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
 
+	// If guide was pressed, only return guide and the report size changes
+	if ( pressedA2() ) {
+		xboneReport.guide = pressedA2();
+		xboneReportSize = sizeof(XboxOneInputHeader_Data_t);
+		return &xboneReport;
+	}
+
 	xboneReport.a = pressedB1();
 	xboneReport.b = pressedB2();
 	xboneReport.x = pressedB3();

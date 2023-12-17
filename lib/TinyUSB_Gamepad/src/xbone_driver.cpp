@@ -272,7 +272,7 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
         TU_ASSERT(usbd_edpt_xfer(rhport, p_xbone->ep_out, p_xbone->epout_buf,
                                  sizeof(p_xbone->epout_buf)));
     } else if (ep_addr == p_xbone->ep_in) {
-        //sending = false;
+        // Nothing needed
     }
     return true;
 }

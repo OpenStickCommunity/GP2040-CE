@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include <pico/unique_id.h>
+#include <cstring>
 
 #define XBONE_ENDPOINT_SIZE 64
 
@@ -15,7 +16,7 @@
 
 static const uint8_t xbone_string_language[]    = { 0x09, 0x04 };
 static const uint8_t xbone_string_manufacturer[] = "Open Stick Community";
-static const uint8_t xbone_string_product[]      = "GP2040-CE (Xbox One)"; // "MAYFLASH MagicBoots for Xbox One"
+static const uint8_t xbone_string_product[]      = "GP2040-CE (Xbox One)";
 static const uint8_t xbone_string_version[]      = "1.0";
 
 static const uint8_t *xbone_string_descriptors[] __attribute__((unused)) =
@@ -26,20 +27,17 @@ static const uint8_t *xbone_string_descriptors[] __attribute__((unused)) =
 	xbone_string_version
 };
 
-static uint8_t mayflashSerial[] = "00008E282A231719";
-//static uint8_t uniqueSerial[] = "012345678ABCDEFGH";
+static uint8_t uniqueSerial[] = "012345678ABCDEFGH";
 static const uint8_t xboxSecurityMethod[] = "Xbox Security Method 3, Version 1.00, \xa9 2005 Microsoft Corporation. All rights reserved.";
-static const uint8_t xboxOSDescriptor[] = "MSFT100\x20\x00"; // PDP is MSFT100 0x90 0x00
+static const uint8_t xboxOSDescriptor[] = "MSFT100\x20\x00";
 
 static const uint8_t * xbone_get_string_descriptor(int index) {
-	// Do we ever hit this?
 	if ( index == 3 ) {
 		// Generate a serial number from the pico's unique ID
-		//pico_unique_board_id_t id;
-		//pico_get_unique_board_id(&id);
-		//memcpy(uniqueSerial, (uint8_t*)&id, PICO_UNIQUE_BOARD_ID_SIZE_BYTES);
-		//printf("Xbox Serial to use: %s\r\n", mayflashSerial);
-		return mayflashSerial; // calculate a string descriptor
+		pico_unique_board_id_t id;
+		pico_get_unique_board_id(&id);
+		memcpy(uniqueSerial, (uint8_t*)&id, PICO_UNIQUE_BOARD_ID_SIZE_BYTES);
+        return uniqueSerial;
 	} else if ( index == 4 ) { // security method used
 		return xboxSecurityMethod;
 	} else if ( index == 0xEE ) { // ONLY WINDOWS DOES THIS??
@@ -78,32 +76,6 @@ typedef struct
     uint8_t length;
 } __attribute__((packed)) GipHeader_t;
 
-typedef struct
-{
-    GipHeader_t Header;
-    uint8_t unk1;
-    uint8_t innerCommand;
-    uint8_t innerClient : 4;
-    uint8_t innerNeedsAck : 1;
-    uint8_t innerInternal : 1;
-    uint8_t innerChunkStart : 1;
-    uint8_t innerChunked : 1;
-    uint16_t bytesReceived;
-    uint16_t unk2;
-    uint16_t remainingBuffer;
-} __attribute__((packed)) Gip_Ack_t;
-
-// ACK Header is always {0x01, 0x20, 0x01, 0x09, 0x00};
-#define GIP_ACK_HEADER(packet, seq) \
-    packet->Header.command = 0x01;               \
-    packet->Header.internal = 0x01;              \
-    packet->Header.sequence = seq;               \
-    packet->Header.client = 0;                   \
-    packet->Header.needsAck = 0;                 \
-    packet->Header.chunkStart = 0;               \
-    packet->Header.chunked = 0;                  \
-    packet->Header.length = 0x09;
-
 #define GIP_HEADER(packet, cmd, isInternal, seq) \
     packet->Header.command = cmd;                \
     packet->Header.internal = isInternal;        \
@@ -113,32 +85,6 @@ typedef struct
     packet->Header.chunkStart = 0;               \
     packet->Header.chunked = 0;                  \
     packet->Header.length = sizeof(*packet) - sizeof(GipHeader_t);
-
-typedef struct
-{
-    GipHeader_t Header;
-} __attribute__((packed)) GipDescriptor_t;
-
-typedef struct
-{
-    GipHeader_t Header;
-	uint8_t unk1[3];
-	uint8_t serial[3];
-	uint8_t unk2[22];
-} __attribute__((packed)) GipAnnounce_t;
-
-typedef struct {
-    GipHeader_t Header;
-    uint8_t subCommand;  // Assumed based on the descriptor reporting a larger max length than what this uses
-    uint8_t flags;
-    uint8_t leftTrigger;
-    uint8_t rightTrigger;
-    uint8_t leftMotor;
-    uint8_t rightMotor;
-    uint8_t duration;  // in deciseconds?
-    uint8_t delay;     // in deciseconds?
-    uint8_t repeat;    // in deciseconds?
-} __attribute__((packed)) GipRumble_t;
 
 typedef struct
 {
@@ -205,8 +151,8 @@ static const uint8_t xbone_device_descriptor[] =
 	0xFF,	      // bDeviceSubClass
 	0xFF,	      // bDeviceProtocol
 	0x40,	      // bMaxPacketSize0 64
-	0x6F, 0x0E, // idVendor 0x045E   0x0E6F = SuperPDP  // 0x0079 = MagicBootS
-	0xA4, 0x02, // idProduct 0x02EA  0x02A4 = Gamepad 0x02D1 Xbox One  0x2DD Xbox One v2 0x2EA Xbox One S   0x1894 = MagicBootS
+	0x6F, 0x0E, // idVendor 0x045E = Xbox One  0x0E6F = SuperPDP  0x0079 = MagicBootS
+	0xA4, 0x02, // idProduct 0x02A4 = SuperPDP Gamepad  0x02EA = Xbox One S  0x02D1 = Xbox One  0x2DD = Xbox One v2  0x1894 = MagicBootS
 	0x01, 0x01, // bcdDevice 1.01?
 	0x01,       // iManufacturer (String Index)
 	0x02,       // iProduct (String Index)

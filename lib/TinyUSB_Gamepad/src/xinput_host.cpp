@@ -117,28 +117,8 @@ bool tuh_xinput_send_report(uint8_t dev_addr, uint8_t instance, uint8_t const *r
             ret = false;
         }
         ret = true;
-        /*
-        printf("[XINPUT-HOST SUCCESS!] Sent Report:\r\n");
-		for(uint32_t i=0; i < len; i++)
-		{
-			if (i%16 == 0) printf("\r\n  ");
-			printf("%02X ", ((uint8_t*)report)[i]);
-		}
-		printf("\r\n");*/
+
     } 
-    if ( ret == false ) {
-        /*
-        printf("[XINPUT_HOST] Could not send this fast, way too busy\r\n");
-		printf("     time: %u  dev_addr: %u Stud_ready()?: %u  endpoint_busy: %u\r\n", to_ms_since_boot(get_absolute_time()), dev_addr, tuh_rdy, edpt_busy);
-		printf("Missed Report:\r\n");
-        		for(uint32_t i=0; i < len; i++)
-		{
-			if (i%16 == 0) printf("\r\n  ");
-			printf("%02X ", ((uint8_t*)report)[i]);
-		}
-		printf("\r\n");
-        */
-    }
 
     return ret;
 }
@@ -198,8 +178,6 @@ typedef enum
 } xinput_type_t;
 
 bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const *desc_itf, uint16_t max_len) {
-    //printf("xinputh_open Open rhport: %u\r\n", rhport);
-
     (void)rhport;
     (void)max_len;
     TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == desc_itf->bInterfaceClass || TUSB_CLASS_HID == desc_itf->bInterfaceClass, 0);

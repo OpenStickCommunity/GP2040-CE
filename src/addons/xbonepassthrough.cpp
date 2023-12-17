@@ -9,15 +9,11 @@
 
 #define XBONE_EXTENSION_DEBUG true
 
-// unknown power-on
+// power-on states and rumble-on with everything disabled
 static uint8_t xb1_power_on[] = {0x06, 0x62, 0x45, 0xb8, 0x77, 0x26, 0x2c, 0x55,
                                  0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f};
-
 static uint8_t xb1_power_on_single[] = {0x00};
-
 static uint8_t xb1_rumble_on[] = {0x00, 0x0f, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0xeb};
-
-// Data passed between PS Passthrough and TinyUSB Host callbacks
 
 bool XBOnePassthroughAddon::available() {
     const XBOnePassthroughOptions& xboneOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
@@ -91,9 +87,6 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
     }
 
     switch ( incomingXGIP.getCommand() ) {
-        case GIP_ACK_RESPONSE:
-            // Only do something if we're waiting
-            break;
         case GIP_ANNOUNCE:
             outgoingXGIP.reset();
             outgoingXGIP.setAttributes(GIP_DEVICE_DESCRIPTOR, 1, 1, false, 0);
@@ -101,24 +94,18 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
             break;
         case GIP_DEVICE_DESCRIPTOR:
             if ( incomingXGIP.endOfChunk() == true ) {
-                // Power-on full string
-                outgoingXGIP.reset();
+                outgoingXGIP.reset();  // Power-on full string
                 outgoingXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 2, 1, false, 0);
                 outgoingXGIP.setData(xb1_power_on, sizeof(xb1_power_on));
                 queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
-                
-                // Power-on with 0x00
-                outgoingXGIP.reset();
+                outgoingXGIP.reset();  // Power-on with 0x00
                 outgoingXGIP.setAttributes(GIP_POWER_MODE_DEVICE_CONFIG, 3, 1, false, 0);
                 outgoingXGIP.setData(xb1_power_on_single, sizeof(xb1_power_on_single));
                 queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
-
-                // Rumble Support to enable dongle
-                outgoingXGIP.reset();
+                outgoingXGIP.reset();  // Rumble Support to enable dongle
                 outgoingXGIP.setAttributes(GIP_CMD_RUMBLE, 1, 0, false, 0); // not internal function
                 outgoingXGIP.setData(xb1_rumble_on, sizeof(xb1_rumble_on));
                 queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
-
                 dongle_ready = true;
             }
             break;
@@ -131,6 +118,7 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
                 incomingXGIP.reset();
             }
             break;
+        case GIP_ACK_RESPONSE:
         default:
             break;
     };
