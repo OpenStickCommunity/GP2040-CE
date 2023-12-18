@@ -1,7 +1,8 @@
 import { AppContext } from '../Contexts/AppContext';
 import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { FormCheck, Row, FormLabel } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
@@ -13,6 +14,14 @@ export const psPassthroughScheme = {
 		.number()
 		.required()
 		.label('PS Passthrough Add-On Enabled'),
+	psPassthroughPinDplus: yup
+		.number()
+		.label('PS Passthrough D+ Pin')
+		.validatePinWhenValue('PSPassthroughAddonEnabled'),
+	psPassthroughPin5V: yup
+		.number()
+		.label('PS Passthrough 5V Power Pin')
+		.validatePinWhenValue('PSPassthroughAddonEnabled'),
 };
 
 export const psPassthroughState = {
@@ -45,7 +54,7 @@ const PSPassthrough = ({ values, errors, handleChange, handleCheckbox }) => {
 				}}
 			/>
             :
-            <FormLabel>{t('PeripheralMapping:peripheral-toggle-unavailable',{'name':'USB'})}</FormLabel>
+            <FormLabel><Trans ns="PeripheralMapping" i18nKey="peripheral-toggle-unavailable" values={{'name':'USB'}}><NavLink exact="true" to="/peripheral-mapping">{t('PeripheralMapping:header-text')}</NavLink></Trans></FormLabel>
             }
 		</Section>
 	);
