@@ -33,7 +33,6 @@ void GP2040Aux::setup() {
 
 	// Setup Add-ons
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
-	//xbPT = new XBOnePassthroughAddon(); 
 	addons.LoadUSBAddon(new XBOnePassthroughAddon(), CORE1_LOOP);
 	addons.LoadAddon(inputHistoryAddon, CORE1_LOOP);
 	addons.LoadAddon(i2CDisplayAddon, CORE1_LOOP);

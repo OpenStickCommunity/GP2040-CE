@@ -177,9 +177,7 @@ pico_set_program_version(GP2040-CE "0.7.5")
 target_link_libraries(${PROJECT_NAME}
 pico_stdlib
 pico_bootsel_via_double_reset
-tinyusb_device
 tinyusb_host
-tinyusb_board
 tinyusb_pico_pio_usb
 AnimationStation
 CRC32
