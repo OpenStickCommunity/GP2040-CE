@@ -1167,7 +1167,7 @@ std::string setAddonOptions()
 	docToValue(dualDirectionalOptions.fourWayMode, doc, "dualDirFourWayMode");
 	docToValue(dualDirectionalOptions.enabled, doc, "DualDirectionalInputEnabled");
 
-		TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
+	TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
 	docToPin(tiltOptions.tilt1Pin, doc, "tilt1Pin");
 	docToValue(tiltOptions.factorTilt1LeftX, doc, "factorTilt1LeftX");
 	docToValue(tiltOptions.factorTilt1LeftY, doc, "factorTilt1LeftY");
@@ -1313,6 +1313,10 @@ std::string setAddonOptions()
 		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
 		gpioMappings[oldPsPinDplus+1].action = GpioAction::NONE;
 	docToPin(psPassthroughOptions.pin5V, doc, "psPassthroughPin5V");
+
+
+	XBOnePassthroughOptions& xbonePassthroughOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
+	docToValue(xbonePassthroughOptions.enabled, doc, "XBOnePassthroughAddonEnabled");
 
 	Storage::getInstance().save();
 
