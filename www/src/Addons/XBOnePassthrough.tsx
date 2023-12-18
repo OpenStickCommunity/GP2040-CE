@@ -8,14 +8,14 @@ import * as yup from 'yup';
 import Section from '../Components/Section';
 
 export const xbonePassthroughScheme = {
-	XBonePassthroughAddonEnabled: yup
+	XBOnePassthroughAddonEnabled: yup
 		.number()
 		.required()
 		.label('Xbox One Passthrough Add-On Enabled')
 };
 
 export const xbonePassthroughState = {
-	XBonePassthroughAddonEnabled: -1
+	XBOnePassthroughAddonEnabled: -1
 };
 
 const XBOnePassthrough = ({ values, errors, handleChange, handleCheckbox }) => {
