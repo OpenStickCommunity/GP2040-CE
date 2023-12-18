@@ -87,14 +87,12 @@ void USBHostManager::xinput_report_received_cb(uint8_t dev_addr, uint8_t instanc
 }
 
 void USBHostManager::xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    // Save buffer??
     for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
         (*it)->report_sent(dev_addr, instance, report, len);
     }
 }
 
 // HID: USB Host
-
 static uint8_t _intf_num = 0;
 
 // Required helper class for HID_REQ_CONTROL_GET_REPORT addition
