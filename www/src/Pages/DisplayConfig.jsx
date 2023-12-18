@@ -250,10 +250,14 @@ const isButtonLayoutCustom = (values) =>
 	values.buttonLayout === 12 || values.buttonLayoutRight === 16;
 
 export default function DisplayConfigPage() {
-	const { updateUsedPins, getAvailablePeripherals, getSelectedPeripheral } = useContext(AppContext);
+	const { updateUsedPins, getAvailablePeripherals, getSelectedPeripheral, updatePeripherals } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const { t } = useTranslation('');
+
+    useEffect(() => {
+        updatePeripherals();
+    }, []);
 
 	const onSuccess = async (values) => {
 		const success = await WebApi.setDisplayOptions(values, false).then(() =>

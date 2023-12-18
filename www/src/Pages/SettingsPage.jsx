@@ -274,7 +274,7 @@ const FormContext = ({ setButtonLabels }) => {
 };
 
 export default function SettingsPage() {
-	const { buttonLabels, setButtonLabels, getAvailablePeripherals, getSelectedPeripheral, getAvailableAddons } = useContext(AppContext);
+	const { buttonLabels, setButtonLabels, getAvailablePeripherals, getSelectedPeripheral, getAvailableAddons, updatePeripherals } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 
@@ -360,6 +360,10 @@ export default function SettingsPage() {
 	const currentButtonLabels= getButtonLabels(buttonLabelType, swapTpShareLabels);
 
 	const { t } = useTranslation('');
+
+    useEffect(() => {
+        updatePeripherals();
+    }, []);
 
 	const translatedInputBootModes = translateArray(checkRequiredArray(INPUT_BOOT_MODES));
 	const translatedInputModes = translateArray(checkRequiredArray(INPUT_MODES));

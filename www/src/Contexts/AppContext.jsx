@@ -282,6 +282,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 				setSavedColors,
 				setUsedPins,
                 setAvailablePeripherals,
+                updatePeripherals,
 				updateUsedPins,
 				savedColorScheme,
 				setSavedColorScheme,
