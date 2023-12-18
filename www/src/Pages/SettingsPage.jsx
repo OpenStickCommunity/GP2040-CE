@@ -17,7 +17,7 @@ const INPUT_MODES = [
 	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
-	{ labelKey: 'input-mode-options.ps4', value: PS4Mode, group: 'primary', required: ['usb','ps4auth','ps4mode'] },
+	{ labelKey: 'input-mode-options.ps4', value: PS4Mode, group: 'primary', optional: ['usb','ps4auth','ps4mode'] },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
 	{ labelKey: 'input-mode-options.pcemini', value: 8, group: 'mini' },
