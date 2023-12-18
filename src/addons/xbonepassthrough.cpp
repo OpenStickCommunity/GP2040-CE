@@ -67,10 +67,12 @@ void XBOnePassthroughAddon::process() {
 void XBOnePassthroughAddon::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
     xbone_dev_addr = dev_addr;
     xbone_instance = instance;
+    incomingXGIP.reset();
+    outgoingXGIP.reset();
 }
 
 void XBOnePassthroughAddon::unmount(uint8_t dev_addr) {
-    dongle_ready = false;
+    // Do not reset dongle_ready on unmount (Magic-X will remount but still be ready)
 }
 
 void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {

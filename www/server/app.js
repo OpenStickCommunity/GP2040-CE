@@ -483,7 +483,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		WiiExtensionAddonEnabled: 1,
 		SNESpadAddonEnabled: 1,
 		PSPassthroughAddonEnabled: 1,
-		XBonePassthroughAddonEnabled: 1,
+		XBOnePassthroughAddonEnabled: 1,
 		InputHistoryAddonEnabled: 1,
 		inputHistoryLength: 21,
 		inputHistoryCol: 0,
