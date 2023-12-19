@@ -6,12 +6,11 @@
 #include "addons/i2cdisplay.h"
 #include "GamepadState.h"
 #include "enums.h"
-#include "helper.h"
 #include "storagemanager.h"
 #include "pico/stdlib.h"
 #include "bitmaps.h"
 #include "ps4_driver.h"
-#include "helper.h"
+#include "version.h"
 #include "config.pb.h"
 #include "usb_driver.h"
 

@@ -9,7 +9,7 @@
 
 #include "BoardConfig.h"
 #include "GamepadConfig.h"
-#include "helper.h"
+#include "version.h"
 #include "addons/analog.h"
 #include "addons/board_led.h"
 #include "addons/bootsel_button.h"

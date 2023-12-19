@@ -527,9 +527,9 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 app.get('/api/getFirmwareVersion', (req, res) => {
 	return res.send({
 		boardConfigLabel: 'Pico',
-		boardConfigFileName: `GP2040_${process.env.VITE_CURRENT_VERSION}_Pico`,
+		boardConfigFileName: `GP2040_local-dev-server_Pico`,
 		boardConfig: 'Pico',
-		version: process.env.VITE_CURRENT_VERSION,
+		version: 'local-dev-server',
 	});
 });
 

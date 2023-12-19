@@ -29,6 +29,9 @@ jobs:
     #Global Setup
     - name: Checkout GP2040-CE
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        fetch-tags: true
 
     - name: Setup SDK pipeline
       uses: Fortinbra/RaspberryPiPicoBuild@v1
