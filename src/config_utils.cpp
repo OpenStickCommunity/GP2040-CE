@@ -579,6 +579,10 @@ void gpioMappingsMigrationCore(Config& config)
     DualDirectionalOptions& ddiOptions = config.addonOptions.dualDirectionalOptions;
     SliderOptions& jsSliderOptions = config.addonOptions.sliderOptions;
     SOCDSliderOptions& socdSliderOptions = config.addonOptions.socdSliderOptions;
+    PeripheralOptions& peripheralOptions = config.peripheralOptions;
+    TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
+    KeyboardHostOptions& keyboardHostOptions = config.addonOptions.keyboardHostOptions;
+    PSPassthroughOptions& psPassthroughOptions = config.addonOptions.psPassthroughOptions;
 
     const auto gamepadMaskToGpioAction = [&](Mask_t gpMask) -> GpioAction
     {
@@ -638,6 +642,11 @@ void gpioMappingsMigrationCore(Config& config)
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE,
                                            GpioAction::NONE, GpioAction::NONE, GpioAction::NONE};
+
+    // flag additional pins as being used by an addon not managed here
+    const auto markAddonPinIfUsed = [&](Pin_t gpPin) -> void {
+        if (isValidPin(gpPin)) actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
+    };
 
     const auto fromPBorBC = [&](bool isInProtobuf, Pin_t *protobufEntry, Pin_t boardconfigValue,
             GpioAction action) -> void {
@@ -834,10 +843,166 @@ void gpioMappingsMigrationCore(Config& config)
         }
     }
 
-    // flag additional pins as being used by an addon not managed here
-    const auto markAddonPinIfUsed = [&](Pin_t gpPin) -> void {
-        if (isValidPin(gpPin)) actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
-    };
+    // verify that tilt factors are not set to -1
+    if (tiltOptions.enabled) {
+        if (tiltOptions.factorTilt1LeftX == -1) tiltOptions.factorTilt1LeftX = TILT1_FACTOR_LEFT_X;
+        if (tiltOptions.factorTilt1LeftY == -1) tiltOptions.factorTilt1LeftY = TILT1_FACTOR_LEFT_Y;
+        if (tiltOptions.factorTilt1RightX == -1) tiltOptions.factorTilt1RightX = TILT1_FACTOR_RIGHT_X;
+        if (tiltOptions.factorTilt1RightY == -1) tiltOptions.factorTilt1RightY = TILT1_FACTOR_RIGHT_Y;
+        if (tiltOptions.factorTilt2LeftX == -1) tiltOptions.factorTilt2LeftX = TILT2_FACTOR_LEFT_X;
+        if (tiltOptions.factorTilt2LeftY == -1) tiltOptions.factorTilt2LeftY = TILT2_FACTOR_LEFT_Y;
+        if (tiltOptions.factorTilt2RightX == -1) tiltOptions.factorTilt2RightX = TILT2_FACTOR_RIGHT_X;
+        if (tiltOptions.factorTilt2RightY == -1) tiltOptions.factorTilt2RightY = TILT2_FACTOR_RIGHT_Y;
+    }
+
+    // migrate I2C addons to use peripheral manager
+    if (!peripheralOptions.blockI2C0.enabled && (
+            (config.displayOptions.enabled && (config.displayOptions.i2cBlock == 0)) || 
+            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.i2cBlock == 0)) || 
+            (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.i2cBlock == 0))
+        )
+    ) {
+        peripheralOptions.blockI2C0.enabled = (
+            (config.displayOptions.enabled && (config.displayOptions.i2cBlock == 0)) | 
+            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.i2cBlock == 0)) | 
+            (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.i2cBlock == 0)) | 
+            false
+        );
+        
+        // pin configuration
+        peripheralOptions.blockI2C0.sda = (
+            isValidPin(config.displayOptions.i2cSDAPin) && (config.displayOptions.i2cBlock == 0) ? 
+            config.displayOptions.i2cSDAPin : 
+            (
+                isValidPin(config.addonOptions.analogADS1219Options.i2cSDAPin) && (config.addonOptions.analogADS1219Options.i2cBlock == 0) ? 
+                config.addonOptions.analogADS1219Options.i2cSDAPin : 
+                (
+                    isValidPin(config.addonOptions.wiiOptions.i2cSDAPin) && (config.addonOptions.wiiOptions.i2cBlock == 0) ? 
+                    config.addonOptions.wiiOptions.i2cSDAPin : 
+                    -1
+                )
+            )
+        );
+
+        peripheralOptions.blockI2C0.scl = (
+            isValidPin(config.displayOptions.i2cSCLPin) && (config.displayOptions.i2cBlock == 0) ? 
+            config.displayOptions.i2cSCLPin : 
+            (
+                isValidPin(config.addonOptions.analogADS1219Options.i2cSCLPin) && (config.addonOptions.analogADS1219Options.i2cBlock == 0) ? 
+                config.addonOptions.analogADS1219Options.i2cSCLPin : 
+                (
+                    isValidPin(config.addonOptions.wiiOptions.i2cSCLPin) && (config.addonOptions.wiiOptions.i2cBlock == 0) ? 
+                    config.addonOptions.wiiOptions.i2cSCLPin : 
+                    -1
+                )
+            )
+        );
+
+        // option configuration
+        peripheralOptions.blockI2C0.speed = (
+            isValidPin(config.displayOptions.i2cSpeed) && (config.displayOptions.i2cBlock == 0) ? 
+            config.displayOptions.i2cSpeed : 
+            (
+                isValidPin(config.addonOptions.analogADS1219Options.i2cSpeed) && (config.addonOptions.analogADS1219Options.i2cBlock == 0) ? 
+                config.addonOptions.analogADS1219Options.i2cSpeed : 
+                (
+                    isValidPin(config.addonOptions.wiiOptions.i2cSpeed) && (config.addonOptions.wiiOptions.i2cBlock == 0) ? 
+                    config.addonOptions.wiiOptions.i2cSpeed : 
+                    -1
+                )
+            )
+        );
+    }
+
+    if (!peripheralOptions.blockI2C1.enabled && (
+            (config.displayOptions.enabled && (config.displayOptions.i2cBlock == 1)) || 
+            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.i2cBlock == 1)) || 
+            (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.i2cBlock == 1))
+        )
+    ) {
+        peripheralOptions.blockI2C1.enabled = (
+            (config.displayOptions.enabled && (config.displayOptions.i2cBlock == 1)) | 
+            (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.i2cBlock == 1)) | 
+            (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.i2cBlock == 1)) | 
+            false
+        );
+        
+        // pin configuration
+        peripheralOptions.blockI2C1.sda = (
+            isValidPin(config.displayOptions.i2cSDAPin) && (config.displayOptions.i2cBlock == 1) ? 
+            config.displayOptions.i2cSDAPin : 
+            (
+                isValidPin(config.addonOptions.analogADS1219Options.i2cSDAPin) && (config.addonOptions.analogADS1219Options.i2cBlock == 1) ? 
+                config.addonOptions.analogADS1219Options.i2cSDAPin : 
+                (
+                    isValidPin(config.addonOptions.wiiOptions.i2cSDAPin) && (config.addonOptions.wiiOptions.i2cBlock == 1) ? 
+                    config.addonOptions.wiiOptions.i2cSDAPin : 
+                    -1
+                )
+            )
+        );
+
+        peripheralOptions.blockI2C1.scl = (
+            isValidPin(config.displayOptions.i2cSCLPin) && (config.displayOptions.i2cBlock == 1) ? 
+            config.displayOptions.i2cSCLPin : 
+            (
+                isValidPin(config.addonOptions.analogADS1219Options.i2cSCLPin) && (config.addonOptions.analogADS1219Options.i2cBlock == 1) ? 
+                config.addonOptions.analogADS1219Options.i2cSCLPin : 
+                (
+                    isValidPin(config.addonOptions.wiiOptions.i2cSCLPin) && (config.addonOptions.wiiOptions.i2cBlock == 1) ? 
+                    config.addonOptions.wiiOptions.i2cSCLPin : 
+                    -1
+                )
+            )
+        );
+
+        // option configuration
+        peripheralOptions.blockI2C1.speed = (
+            isValidPin(config.displayOptions.i2cSpeed) && (config.displayOptions.i2cBlock == 1) ? 
+            config.displayOptions.i2cSpeed : 
+            (
+                isValidPin(config.addonOptions.analogADS1219Options.i2cSpeed) && (config.addonOptions.analogADS1219Options.i2cBlock == 1) ? 
+                config.addonOptions.analogADS1219Options.i2cSpeed : 
+                (
+                    isValidPin(config.addonOptions.wiiOptions.i2cSpeed) && (config.addonOptions.wiiOptions.i2cBlock == 1) ? 
+                    config.addonOptions.wiiOptions.i2cSpeed : 
+                    -1
+                )
+            )
+        );
+    }
+
+    // migrate USB addons to use peripheral manager
+    if (!peripheralOptions.blockUSB0.enabled && (keyboardHostOptions.enabled || psPassthroughOptions.enabled)) {
+        peripheralOptions.blockUSB0.enabled = keyboardHostOptions.enabled | psPassthroughOptions.enabled | false;
+
+        if (peripheralOptions.blockUSB0.enabled) {
+            peripheralOptions.blockUSB0.enable5v = (
+                isValidPin(keyboardHostOptions.pin5V) ? 
+                keyboardHostOptions.pin5V : 
+                (
+                    isValidPin(psPassthroughOptions.pin5V) ? 
+                    psPassthroughOptions.pin5V : 
+                    -1
+                )
+            );
+            markAddonPinIfUsed(peripheralOptions.blockUSB0.enable5v);
+
+            peripheralOptions.blockUSB0.dp = (
+                isValidPin(keyboardHostOptions.pinDplus) ? 
+                keyboardHostOptions.pinDplus : 
+                (
+                    isValidPin(psPassthroughOptions.pinDplus) ? 
+                    psPassthroughOptions.pinDplus : 
+                    -1
+                )
+            );
+            markAddonPinIfUsed(peripheralOptions.blockUSB0.dp);
+            if (isValidPin(peripheralOptions.blockUSB0.dp))
+                actions[peripheralOptions.blockUSB0.dp+1] = GpioAction::ASSIGNED_TO_ADDON;
+        }
+    }
+
     markAddonPinIfUsed(config.displayOptions.i2cSCLPin);
     markAddonPinIfUsed(config.displayOptions.i2cSDAPin);
     markAddonPinIfUsed(config.ledOptions.dataPin);
@@ -877,14 +1042,14 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.snesOptions.clockPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
-    markAddonPinIfUsed(config.addonOptions.keyboardHostOptions.pin5V);
-    markAddonPinIfUsed(config.addonOptions.keyboardHostOptions.pinDplus);
-    if (isValidPin(config.addonOptions.keyboardHostOptions.pinDplus))
-        actions[config.addonOptions.keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
-    markAddonPinIfUsed(config.addonOptions.psPassthroughOptions.pin5V);
-    markAddonPinIfUsed(config.addonOptions.psPassthroughOptions.pinDplus);
-    if (isValidPin(config.addonOptions.psPassthroughOptions.pinDplus))
-        actions[config.addonOptions.psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+    //markAddonPinIfUsed(config.addonOptions.keyboardHostOptions.pin5V);
+    //markAddonPinIfUsed(config.addonOptions.keyboardHostOptions.pinDplus);
+    //if (isValidPin(config.addonOptions.keyboardHostOptions.pinDplus))
+    //    actions[config.addonOptions.keyboardHostOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
+    //markAddonPinIfUsed(config.addonOptions.psPassthroughOptions.pin5V);
+    //markAddonPinIfUsed(config.addonOptions.psPassthroughOptions.pinDplus);
+    //if (isValidPin(config.addonOptions.psPassthroughOptions.pinDplus))
+    //    actions[config.addonOptions.psPassthroughOptions.pinDplus+1] = GpioAction::ASSIGNED_TO_ADDON;
     markAddonPinIfUsed(config.addonOptions.macroOptions.pin);
     markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[0].macroTriggerPin);
     markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[1].macroTriggerPin);

@@ -160,11 +160,15 @@ function flattenObject(object) {
 }
 
 export default function AddonsConfigPage() {
-	const { updateUsedPins } = useContext(AppContext);
+	const { updateUsedPins, updatePeripherals } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [storedData, setStoredData] = useState({});
 
 	const { t } = useTranslation();
+
+    useEffect(() => {
+        updatePeripherals();
+    }, []);
 
 	const onSuccess = async (values) => {
 		const flattened = flattenObject(storedData);

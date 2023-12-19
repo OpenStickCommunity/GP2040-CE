@@ -6,41 +6,47 @@ import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 import { Trans, useTranslation } from 'react-i18next';
 
+import './SettingsPage.scss';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
 import { BUTTON_MASKS, getButtonLabels} from '../Data/Buttons';
 
 const PS4Mode = 4;
 const INPUT_MODES = [
-	{ labelKey: 'input-mode-options.xinput', value: 0 },
-	{ labelKey: 'input-mode-options.nintendo-switch', value: 1 },
-	{ labelKey: 'input-mode-options.ps3', value: 2 },
-	{ labelKey: 'input-mode-options.keyboard', value: 3 },
-	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
-	{ labelKey: 'input-mode-options.mdmini', value: 6 },
-	{ labelKey: 'input-mode-options.neogeo', value: 7 },
-	{ labelKey: 'input-mode-options.pcemini', value: 8 },
-	{ labelKey: 'input-mode-options.egret', value: 9 },
-	{ labelKey: 'input-mode-options.astro', value: 10 },
-	{ labelKey: 'input-mode-options.psclassic', value: 11 },
-	{ labelKey: 'input-mode-options.xboxoriginal', value: 12 },
+	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary' },
+	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary' },
+	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
+	{ labelKey: 'input-mode-options.ps4', value: PS4Mode, group: 'primary', optional: ['usb','ps4auth','ps4mode'] },
+	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
+	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
+	{ labelKey: 'input-mode-options.pcemini', value: 8, group: 'mini' },
+	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
+	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
+	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 ];
 
 const INPUT_BOOT_MODES = [
-	{ labelKey: 'input-mode-options.none', value: -1 },
-	{ labelKey: 'input-mode-options.xinput', value: 0 },
-	{ labelKey: 'input-mode-options.nintendo-switch', value: 1 },
-	{ labelKey: 'input-mode-options.ps3', value: 2 },
-	{ labelKey: 'input-mode-options.keyboard', value: 3 },
-	{ labelKey: 'input-mode-options.ps4', value: PS4Mode },
-	{ labelKey: 'input-mode-options.mdmini', value: 6 },
-	{ labelKey: 'input-mode-options.neogeo', value: 7 },
-	{ labelKey: 'input-mode-options.pcemini', value: 8 },
-	{ labelKey: 'input-mode-options.egret', value: 9 },
-	{ labelKey: 'input-mode-options.astro', value: 10 },
-    { labelKey: 'input-mode-options.psclassic', value: 11 },
-    { labelKey: 'input-mode-options.xboxoriginal', value: 12 },
+	{ labelKey: 'input-mode-options.none', value: -1, group: 'primary' },
+	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary' },
+	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary' },
+	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
+	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
+	{ labelKey: 'input-mode-options.ps4', value: PS4Mode, group: 'primary', optional: ['usb','ps4auth','ps4mode'] },
+	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
+	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
+	{ labelKey: 'input-mode-options.pcemini', value: 8, group: 'mini' },
+	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
+	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
+    { labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
+    { labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 ];
+
+const INPUT_MODE_GROUPS = [
+    { labelKey: 'input-mode-group.primary', value: 0, group: 'primary' },
+    { labelKey: 'input-mode-group.mini', value: 1, group: 'mini' },
+]
 
 const DPAD_MODES = [
 	{ labelKey: 'd-pad-mode-options.d-pad', value: 0 },
@@ -268,11 +274,34 @@ const FormContext = ({ setButtonLabels }) => {
 };
 
 export default function SettingsPage() {
-	const { buttonLabels, setButtonLabels } = useContext(AppContext);
+	const { buttonLabels, setButtonLabels, getAvailablePeripherals, getSelectedPeripheral, getAvailableAddons, updatePeripherals } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 
 	const WARNING_CHECK_TEXT = 'GP2040-CE';
+
+    const INPUT_MODE_PERMISSIONS = [
+        { 
+            permission: 'usb', 
+            check: () => (getAvailablePeripherals('usb') !== false), 
+            reason: () => ((getAvailablePeripherals('usb') === false) ? 'USB peripheral not enabled' : '')
+        },
+        { 
+            permission: 'ps4auth', 
+            check: () => (getAvailableAddons().PSPassthroughAddonEnabled === 1), 
+            reason: () => ((getAvailableAddons().PSPassthroughAddonEnabled === 0) ? 'PS Passthrough addon not enabled' : '')
+        },
+        { 
+            permission: 'ps4mode', 
+            check: () => (getAvailableAddons().PS4ModeAddonEnabled === 1), 
+            reason: () => ((getAvailableAddons().PS4ModeAddonEnabled === 0) ? 'PS4 Mode addon not enabled' : '')
+        },
+        {
+            permission: 'xboxone', 
+            check: () => (getAvailableAddons().XBOnePassthroughAddonEnabled === 1),
+            reason: () => ((getAvailableAddons().XBOnePassthroughAddonEnabled === 0) ? 'Xbox Passthrough addon not enabled' : '')
+        },
+    ];    
 
 	const handleWarningClose = async (accepted, values, setFieldValue) => {
 		setWarning({ show: false, acceptText: '' });
@@ -302,8 +331,27 @@ export default function SettingsPage() {
 	};
 
 	const translateArray = (array) => {
-		return array.map(({ labelKey, value }) => {
-			return { label: t(`SettingsPage:${labelKey}`), value };
+		return array.map(({ labelKey, ...values }) => {
+			return { label: t(`SettingsPage:${labelKey}`), ...values };
+		});
+	};
+
+	const checkRequiredArray = (array) => {
+		return array.map(({ required, optional, ...values }) => {
+            let disabledState = false;
+            let disabledReason = '';
+            let permissionOptions = {};
+            if (required) {
+                disabledState = INPUT_MODE_PERMISSIONS.filter(({permission}) => required.includes(permission)).map(perm => perm.check()).reduce((acc, val) => acc | (val === false ? 1 : 0), 0);
+                disabledReason = INPUT_MODE_PERMISSIONS.filter(({permission}) => required.includes(permission)).map(perm => perm.reason()).find((o) => o != '') ?? '';
+
+                permissionOptions = { ...permissionOptions, disabled: disabledState, reason: disabledReason };
+            }
+            if (optional) {
+                // todo: define permissions behavior
+                permissionOptions = { ...permissionOptions };
+            }
+			return { ...permissionOptions, ...values };
 		});
 	};
 
@@ -313,8 +361,13 @@ export default function SettingsPage() {
 
 	const { t } = useTranslation('');
 
-	const translatedInputBootModes = translateArray(INPUT_BOOT_MODES);
-	const translatedInputModes = translateArray(INPUT_MODES);
+    useEffect(() => {
+        updatePeripherals();
+    }, []);
+
+	const translatedInputBootModes = translateArray(checkRequiredArray(INPUT_BOOT_MODES));
+	const translatedInputModes = translateArray(checkRequiredArray(INPUT_MODES));
+	const translatedInputModeGroups = translateArray(INPUT_MODE_GROUPS);
 	const translatedDpadModes = translateArray(DPAD_MODES);
 	const translatedSocdModes = translateArray(SOCD_MODES);
 	const translatedHotkeyActions = translateArray(HOTKEY_ACTIONS);
@@ -338,14 +391,19 @@ export default function SettingsPage() {
 											onChange={handleChange}
 											isInvalid={errors.inputMode}
 										>
-											{translatedInputModes.map((o, i) => (
-												<option
-													key={`button-inputMode-option-${i}`}
-													value={o.value}
-												>
-													{o.label}
-												</option>
-											))}
+                                            {translatedInputModeGroups.map((o, i) => (
+                                                <optgroup label={o.label}>
+                                                {translatedInputModes.filter(({group}) => group == o.group).map((o, i) => (
+                                                    <option
+                                                        key={`button-inputMode-option-${i}`}
+                                                        value={o.value}
+                                                        disabled={o.disabled}
+                                                    >
+                                                        {o.label}{o.disabled && o.reason != '' ? ' (' + o.reason + ')' : ''}
+                                                    </option>
+                                                ))}
+                                                </optgroup>
+                                            ))}
 										</Form.Select>
 										<Form.Control.Feedback type="invalid">
 											{errors.inputMode}
@@ -550,13 +608,18 @@ export default function SettingsPage() {
                                                 onChange={handleChange}
                                                 isInvalid={errors[`inputMode${mode.value}`]}
                                             >
-                                                {translatedInputBootModes.map((o, i) => (
-                                                    <option
-                                                        key={`button-inputMode-${mode.value.toString().toLowerCase()}-option-${i}`}
-                                                        value={o.value}
-                                                    >
-                                                        {o.label}
-                                                    </option>
+                                                {translatedInputModeGroups.map((o, i) => (
+                                                    <optgroup label={o.label}>
+                                                    {translatedInputBootModes.filter(({group}) => group == o.group).map((o, i) => (
+                                                        <option
+                                                            key={`button-inputMode-${mode.value.toString().toLowerCase()}-option-${i}`}
+                                                            value={o.value}
+                                                            disabled={o.disabled}
+                                                        >
+                                                            {o.label}{o.disabled && o.reason != '' ? ' (' + o.reason + ')' : ''}
+                                                        </option>
+                                                    ))}
+                                                    </optgroup>
                                                 ))}
                                             </Form.Select>
                                             <Form.Control.Feedback type="invalid">
