@@ -830,28 +830,36 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 		return &xboneReport;
 	}
 
-
 	// Guide button toggles on/off on our virtual keycode sequence
-	if ( (pressedA1() && xb1_guide_pressed == false) ||
-			(!pressedA1() && xb1_guide_pressed == true)) {
-		// guide virtual keycode
-		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
-		xboneReport.Header.command = GIP_VIRTUAL_KEYCODE;
-		xboneReport.Header.internal = 1;
+	if ( pressedA1() ) {
+		if (xb1_guide_pressed == false ) { // toggle on if we haven't sent before
+			virtual_keycode_sequence++; // will rollover
+			if ( virtual_keycode_sequence == 0 )
+				virtual_keycode_sequence = 1;
+			xb1_guide_pressed = true;
+			memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
+			xboneReport.Header.command = GIP_VIRTUAL_KEYCODE;
+			xboneReport.Header.internal = 1;
+			xboneReport.Header.sequence = virtual_keycode_sequence;
+			xboneReport.Header.length = sizeof(xb1_guide_on);
+			memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_on, sizeof(xb1_guide_on));
+			xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_on);
+			return &xboneReport;
+		} else {
+			return &xboneReport; // do not change the report otherwise and prevent other buttons
+		}
+	} else if ( !pressedA1() && xb1_guide_pressed == true ) { // toggle off
 		virtual_keycode_sequence++; // will rollover
 		if ( virtual_keycode_sequence == 0 )
 			virtual_keycode_sequence = 1;
+		xb1_guide_pressed = false;
+		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
+		xboneReport.Header.command = GIP_VIRTUAL_KEYCODE;
+		xboneReport.Header.internal = 1;
 		xboneReport.Header.sequence = virtual_keycode_sequence;
-		xboneReport.Header.length = sizeof(xb1_guide_on);
-		if ( pressedA1() ) {
-			memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_on, sizeof(xb1_guide_on));
-			xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_on);
-			xb1_guide_pressed = true;
-		} else if ( !pressedA1() ) {
-			memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_off, sizeof(xb1_guide_off));
-			xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_off);
-			xb1_guide_pressed = false;
-		}
+		xboneReport.Header.length = sizeof(xb1_guide_off);
+		memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_off, sizeof(xb1_guide_off));
+		xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_off);
 		return &xboneReport;
 	}
 
