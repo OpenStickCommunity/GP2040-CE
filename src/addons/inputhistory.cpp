@@ -1,9 +1,27 @@
+#include <map>
 #include "addons/inputhistory.h"
 #include "storagemanager.h"
 #include "math.h"
 #include "usb_driver.h"
 #include "helper.h"
 #include "config.pb.h"
+
+const map<uint16_t, uint16_t> displayModeLookup = {
+    {INPUT_MODE_HID, 0},
+    {INPUT_MODE_SWITCH, 1},
+    {INPUT_MODE_XINPUT, 2},
+    {INPUT_MODE_XBONE, 2},
+    {INPUT_MODE_KEYBOARD, 3},
+    {INPUT_MODE_CONFIG, 3}, 
+    {INPUT_MODE_PS4, 4},
+    {INPUT_MODE_PSCLASSIC, 4},
+    {INPUT_MODE_MDMINI, 5},
+    {INPUT_MODE_NEOGEO, 6},
+    {INPUT_MODE_PCEMINI, 7},
+    {INPUT_MODE_EGRET, 8},
+    {INPUT_MODE_ASTRO, 9},
+    {INPUT_MODE_XBOXORIGINAL, 10},
+};
 
 static const std::string displayNames[][INPUT_HISTORY_MAX_INPUTS] = {
 	{		// HID / DINPUT
@@ -41,19 +59,47 @@ static const std::string displayNames[][INPUT_HISTORY_MAX_INPUTS] = {
 			"L1", "R1", "L2", "R2",
 			CHAR_SHARE_P, "OP", "L3", "R3", CHAR_HOME_P, CHAR_TPAD_P
 	},
-	{		// Xbox One
+	{		// GEN/MD Mini
 			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
 			"A", "B", "X", "Y",
-			"LB", "RB", "LT", "RT",
-			CHAR_VIEW_X, CHAR_MENU_X, "LS", "RS", CHAR_HOME_X, "A2"
+			"", "Z", "", "C",
+			"M", "S", "", "", "", ""
 	},
-	{		// Config
+	{		// Neo Geo Mini
 			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
             CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
-			"B1", "B2", "B3", "B4",
-			"L1", "R1", "L2", "R2",
-			"S1", "S2", "L3", "R3", "A1", "A2"
+			"B", "D", "A", "C",
+			"", "", "", "",
+			"SE", "ST", "", "", "", ""
+	},
+	{		// PC Engine/TG16 Mini
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+			"I", "II", "", "",
+			"", "", "", "",
+			"SE", "RUN", "", "", "", ""
+	},
+	{		// Egret II Mini
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+			"A", "B", "C", "D",
+			"", "E", "", "F",
+			"CRD", "ST", "", "", "MN", ""
+	},
+	{		// Astro City Mini
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+			"A", "B", "D", "E",
+			"", "C", "", "F",
+			"CRD", "ST", "", "", "", ""
+	},
+	{		// Original Xbox
+			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
+            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
+			"A", "B", "X", "Y",
+			"BL", "WH", "L", "R",
+			"BK", "ST", "LS", "RS", "", ""
 	}
 };
 
@@ -105,18 +151,7 @@ void InputHistoryAddon::process() {
 		gamepad->pressedA2(),
 	};
 
-	uint8_t mode;
-	switch (gamepad->getOptions().inputMode)
-	{
-		case INPUT_MODE_HID:			mode=0; break;
-		case INPUT_MODE_SWITCH:			mode=1; break;
-		case INPUT_MODE_XINPUT:			mode=2; break;
-		case INPUT_MODE_KEYBOARD:		mode=3; break;
-		case INPUT_MODE_PS4:			mode=4; break;
-		case INPUT_MODE_XBONE:          mode=5; break;
-		case INPUT_MODE_CONFIG:			mode=6; break;
-		default:						mode=0; break;
-	}
+	uint8_t mode = ((displayModeLookup.count(gamepad->getOptions().inputMode) > 0) ? displayModeLookup.at(gamepad->getOptions().inputMode) : 0);
 
 	// Check if any new keys have been pressed
 	if (lastInput != currentInput) {

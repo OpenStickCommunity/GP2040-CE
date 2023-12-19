@@ -398,15 +398,15 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		dualDirCombineMode: 0,
 		dualDirFourWayMode: 0,
 		tilt1Pin: -1,
-		factorTilt1LeftX: -1,
-		factorTilt1LeftY: -1,
-		factorTilt1RightX: -1,
-		factorTilt1RightY: -1,
+		factorTilt1LeftX: 0,
+		factorTilt1LeftY: 0,
+		factorTilt1RightX: 0,
+		factorTilt1RightY: 0,
 		tilt2Pin: -1,
-		factorTilt2LeftX: -1,
-		factorTilt2LeftY: -1,
-		factorTilt2RightX: -1,
-		factorTilt2RightY: -1,
+		factorTilt2LeftX: 0,
+		factorTilt2LeftY: 0,
+		factorTilt2RightX: 0,
+		factorTilt2RightY: 0,
 		tiltLeftAnalogUpPin: -1,
 		tiltLeftAnalogDownPin: -1,
 		tiltLeftAnalogLeftPin: -1,
@@ -526,9 +526,9 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 app.get('/api/getFirmwareVersion', (req, res) => {
 	return res.send({
 		boardConfigLabel: 'Pico',
-		boardConfigFileName: `GP2040_${process.env.VITE_CURRENT_VERSION}_Pico`,
+		boardConfigFileName: `GP2040_local-dev-server_Pico`,
 		boardConfig: 'Pico',
-		version: process.env.VITE_CURRENT_VERSION,
+		version: 'local-dev-server',
 	});
 });
 

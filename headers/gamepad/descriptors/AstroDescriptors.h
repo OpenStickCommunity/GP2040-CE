@@ -21,12 +21,12 @@
 #define ASTRO_HAT_NOTHING   0x08
 
 // Buttons (16 bits)
-#define ASTRO_MASK_A       0x0080
-#define ASTRO_MASK_B       0x0010
-#define ASTRO_MASK_C       0x0100
-#define ASTRO_MASK_D       0x0040
-#define ASTRO_MASK_E       0x0020
-#define ASTRO_MASK_F       0x0200
+#define ASTRO_MASK_A       0x0040
+#define ASTRO_MASK_B       0x0020
+#define ASTRO_MASK_C       0x0200
+#define ASTRO_MASK_D       0x0080
+#define ASTRO_MASK_E       0x0010
+#define ASTRO_MASK_F       0x0100
 #define ASTRO_MASK_CREDIT  0x1000
 #define ASTRO_MASK_START   0x2000
 

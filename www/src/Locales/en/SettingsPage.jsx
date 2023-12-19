@@ -18,6 +18,10 @@ export default {
 		xboxoriginal: 'Original Xbox',
     xbone: 'Xbox One'
 	},
+    'input-mode-group': {
+        primary: 'Primary Input Modes',
+        mini: 'Mini/Classic Console Modes'
+    },
     'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {
 		controller: 'Controller',
