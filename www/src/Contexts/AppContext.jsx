@@ -237,6 +237,11 @@ export const AppContextProvider = ({ children, ...props }) => {
 		fetchData();
     }, []);
 
+    const updateAddons = async () => {
+        const data = await WebApi.getAddonsOptions(setLoading);
+        setAvailableAddons(data);
+    };
+
     const getAvailableAddons = () => {
         return availableAddons;
     };
@@ -273,6 +278,7 @@ export const AppContextProvider = ({ children, ...props }) => {
                 availablePeripherals,
                 getAvailablePeripherals,
                 getAvailableAddons,
+                updateAddons,
                 getSelectedPeripheral,
 				setButtonLabels,
 				setGradientNormalColor1,

@@ -274,7 +274,7 @@ const FormContext = ({ setButtonLabels }) => {
 };
 
 export default function SettingsPage() {
-	const { buttonLabels, setButtonLabels, getAvailablePeripherals, getSelectedPeripheral, getAvailableAddons, updatePeripherals } = useContext(AppContext);
+	const { buttonLabels, setButtonLabels, getAvailablePeripherals, getSelectedPeripheral, getAvailableAddons, updateAddons, updatePeripherals } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 
@@ -362,6 +362,7 @@ export default function SettingsPage() {
 	const { t } = useTranslation('');
 
     useEffect(() => {
+        updateAddons();
         updatePeripherals();
     }, []);
 
