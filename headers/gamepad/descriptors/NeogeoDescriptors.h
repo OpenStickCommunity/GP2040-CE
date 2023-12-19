@@ -25,8 +25,8 @@
 #define NEOGEO_MASK_B       (1U <<  1)
 #define NEOGEO_MASK_C       (1U <<  3)
 #define NEOGEO_MASK_D       (1U <<  4)
-#define NEOGEO_MASK_SELECT  (1U <<  11)
-#define NEOGEO_MASK_START   (1U <<  10)
+#define NEOGEO_MASK_SELECT  (1U <<  10)
+#define NEOGEO_MASK_START   (1U <<  11)
 
 #define NEOGEO_JOYSTICK_MID  0x7f
 
