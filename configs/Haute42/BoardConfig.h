@@ -8,7 +8,7 @@
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "Pico"
+#define BOARD_CONFIG_LABEL "Haute 42"
 
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too. 
