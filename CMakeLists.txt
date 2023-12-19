@@ -15,11 +15,12 @@ endif()
 # set the version for webconfig, etc. based on git
 find_package(Git)
 execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always
-	OUTPUT_VARIABLE RAW_GIT_REPO_VERSION)
-string(REGEX REPLACE "\n" "" GIT_REPO_VERSION ${RAW_GIT_REPO_VERSION})
+	OUTPUT_VARIABLE GIT_REPO_VERSION
+	OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REGEX REPLACE "v" "" CMAKE_GIT_REPO_VERSION ${GIT_REPO_VERSION})
 string(REGEX REPLACE "-g.*" "" CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION})
 string(REGEX REPLACE "-" "." CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION})
+string(REGEX REPLACE "^.......$" "0.0.0" CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION}) # fix if all we have is the git SHA
 configure_file("headers/version.h.in" "headers/version.h")
 message("GIT_REPO_VERSION is ${GIT_REPO_VERSION}")
 message("CMAKE_GIT_REPO_VERSION is ${CMAKE_GIT_REPO_VERSION}")
