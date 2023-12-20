@@ -204,8 +204,10 @@ static XboxOneGamepad_Data_t xboneReport
 
 static uint16_t xboneReportSize;
 
+// Xbox One & PS4/PS5 Timing
 static TouchpadData touchpadData;
 static uint8_t last_report_counter = 0;
+static uint16_t last_axis_counter = 0;
 
 static KeyboardReport keyboardReport
 {
@@ -785,7 +787,8 @@ static uint8_t xboneIdle[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff,
 void Gamepad::sendReportSuccess() {
 	switch( (options.inputMode) ) {
 		case INPUT_MODE_PS4:
-			last_report_counter = (last_report_counter+1) & 63;
+			last_report_counter = (last_report_counter+1) & 0x3F; 	// 6-bit number roll-over
+			last_axis_counter = last_axis_counter++; 				// this can roll over on 16-bit
 			break;
 		case INPUT_MODE_XBONE:
 			if ( xboneReport.Header.command == GIP_KEEPALIVE) {
@@ -952,6 +955,9 @@ PS4Report *Gamepad::getPS4Report()
 		ps4Report.left_trigger = pressedL2() ? 0xFF : 0;
 		ps4Report.right_trigger = pressedR2() ? 0xFF : 0;
 	}
+
+	// axis counter is 16 bits
+	ps4Report.axis_timing = last_axis_counter;
 
 	// set touchpad to nothing
 	touchpadData.p1.unpressed = 1;

@@ -124,7 +124,10 @@ typedef struct __attribute__((packed)) {
   uint32_t left_trigger : 8;
   uint32_t right_trigger : 8;
 
-  uint32_t padding : 24;
+  // 16 bit timing counter
+  uint16_t axis_timing;
+
+  uint32_t padding : 8;
   uint8_t mystery[22];
   TouchpadData touchpad_data;
   uint8_t mystery_2[21];
