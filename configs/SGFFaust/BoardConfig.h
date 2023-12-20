@@ -85,6 +85,9 @@
 
 #define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
 
+// Input Mode additions section.
+#define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
+
 // USB Passthrough settings
 #define PSPASSTHROUGH_ENABLED 1
 #define PSPASSTHROUGH_PIN_DPLUS 12

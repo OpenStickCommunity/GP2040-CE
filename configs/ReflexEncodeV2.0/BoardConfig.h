@@ -17,6 +17,9 @@
 
 #define XBONEPASSTHROUGH_ENABLED 1
 
+// Input Mode additions section.
+#define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
+
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.

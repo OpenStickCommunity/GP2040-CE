@@ -69,6 +69,9 @@
 
 #define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
 
+// Input Mode additions section.
+#define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
+
 // This is the LEDs section.
 // The default `TURBO_LED_PIN` pin is set to `15` ( it is recommended to run through 3V3(OUT) with a resistor)
 // The Turbo LED will flash at a speed consistant with the set speed of the Turbo when a Turbo button is active.
