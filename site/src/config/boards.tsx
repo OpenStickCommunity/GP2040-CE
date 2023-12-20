@@ -5,7 +5,7 @@ const boards = {
 		{
 			name: 'Raspberry Pi Pico',
 			configName: 'Pico',
-			pinout: '/#/wiring?id=raspberry-pi-pico',
+			pinout: '/controller-build/wiring#raspberry-pi-pico',
 			website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
 			image: require('@site/docs/assets/boards/Pico.jpg').default,
 			supported: true,
@@ -20,7 +20,7 @@ const boards = {
 		{
 			name: 'Raspberry Pi Pico W',
 			configName: 'PicoW',
-			pinout: '/#/wiring?id=raspberry-pi-pico',
+			pinout: '/controller-build/wiring#raspberry-pi-pico',
 			website: 'https://www.raspberrypi.com/products/raspberry-pi-pico/',
 			image: require('@site/docs/assets/boards/PicoW.jpg').default,
 			supported: true,
@@ -34,7 +34,7 @@ const boards = {
 		{
 			name: 'Adafruit KB2040',
 			configName: 'KB2040',
-			pinout: '/#/wiring?id=adafruit-kb2040',
+			pinout: '/controller-build/wiring#adafruit-kb2040',
 			website: 'https://learn.adafruit.com/adafruit-kb2040',
 			image: require('@site/docs/assets/boards/KB2040.jpg').default,
 			supported: true,
@@ -48,7 +48,7 @@ const boards = {
 		{
 			name: 'Liatris',
 			configName: 'SparkFunProMicro',
-			pinout: '/#/wiring?id=sparkfun-pro-micro-rp2040',
+			pinout: '/controller-build/wiring#sparkfun-pro-micro---rp2040',
 			website:
 				'https://splitkb.com/products/liatris',
 			image: require('@site/docs/assets/boards/Liatris.jpg').default,
@@ -66,7 +66,7 @@ const boards = {
 		{
 			name: 'SparkFun Pro Micro',
 			configName: 'SparkFunProMicro',
-			pinout: '/#/wiring?id=sparkfun-pro-micro-rp2040',
+			pinout: '/controller-build/wiring#sparkfun-pro-micro---rp2040',
 			website:
 				'https://learn.sparkfun.com/tutorials/pro-micro-rp2040-hookup-guide',
 			image: require('@site/docs/assets/boards/SparkFunProMicro.jpg').default,
@@ -85,7 +85,7 @@ const boards = {
 		{
 			name: 'Waveshare RP2040-Zero',
 			configName: 'WaveshareZero',
-			pinout: '/#/wiring?id=waveshare-rp2040-zero',
+			pinout: '/controller-build/wiring#waveshare-rp2040-zero',
 			website: 'https://www.waveshare.com/wiki/RP2040-Zero',
 			image: require('@site/docs/assets/boards/WaveshareZero.jpg').default,
 			supported: true,
