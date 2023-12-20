@@ -1,6 +1,6 @@
 /*
  * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ * SPDX-FileCopyrightText: Copyright (c) 2023 OpenStickCommunity (gp2040-ce.info)
  */
 
 #pragma once
