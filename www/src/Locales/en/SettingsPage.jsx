@@ -16,6 +16,7 @@ export default {
 		astro: 'ASTROCITY Mini',
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
+    xbone: 'Xbox One'
 	},
     'input-mode-group': {
         primary: 'Primary Input Modes',

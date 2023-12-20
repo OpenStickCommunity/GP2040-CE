@@ -91,3 +91,4 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 * [TheTrain](https://github.com/TheTrainGoes/GP2040-Projects) and [Fortinbra](https://github.com/Fortinbra) for helping keep our community chugging along
 * [PassingLink](https://github.com/passinglink/passinglink) for the technical details and code for PS4 implementation
 * [Youssef Habchi](https://youssef-habchi.com/) for allowing us to purchase a license to use Road Rage font for the project
+* [Santroller](https://github.com/Santroller/Santroller) and [GIMX](https://github.com/matlo/GIMX) for technical examples of Xbox One authentication using pass-through

@@ -29,7 +29,7 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 
 // Invoked when received GET DEVICE DESCRIPTOR
 // Application return pointer to descriptor
-uint8_t const *tud_descriptor_device_cb(void)
+uint8_t const *tud_descriptor_device_cb()
 {
 	switch (get_input_mode())
 	{
@@ -38,6 +38,9 @@ uint8_t const *tud_descriptor_device_cb(void)
 
 		case INPUT_MODE_XINPUT:
 			return xinput_device_descriptor;
+
+		case INPUT_MODE_XBONE:
+			return xbone_device_descriptor;
 
 		case INPUT_MODE_PS4:
 			return ps4_device_descriptor;
@@ -127,6 +130,9 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 		case INPUT_MODE_XINPUT:
 			return xinput_configuration_descriptor;
 
+		case INPUT_MODE_XBONE:
+			return xbone_configuration_descriptor_cb(index);
+
 		case INPUT_MODE_PS4:
 			return ps4_configuration_descriptor;
 
@@ -159,5 +165,15 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 
 		default:
 			return hid_configuration_descriptor;
+	}
+}
+
+uint8_t const* tud_descriptor_device_qualifier_cb(void) {
+	switch (get_input_mode())
+	{
+		case INPUT_MODE_XBONE:
+			return xbone_device_qualifier;
+		default:
+			return nullptr;
 	}
 }

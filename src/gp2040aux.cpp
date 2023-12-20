@@ -14,6 +14,7 @@
 #include "addons/pspassthrough.h"
 #include "addons/neopicoleds.h"
 #include "addons/inputhistory.h"
+#include "addons/xbonepassthrough.h"
 
 #include <iterator>
 
@@ -32,6 +33,7 @@ void GP2040Aux::setup() {
 
 	// Setup Add-ons
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
+	addons.LoadUSBAddon(new XBOnePassthroughAddon(), CORE1_LOOP);
 	addons.LoadAddon(inputHistoryAddon, CORE1_LOOP);
 	addons.LoadAddon(i2CDisplayAddon, CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);

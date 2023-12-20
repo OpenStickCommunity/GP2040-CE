@@ -6,6 +6,11 @@
 
 #include "pio_usb.h"
 
+#include "host/usbh_pvt.h"
+
+// USB Host manager decides on TinyUSB Host driver
+usbh_class_driver_t const* usbh_app_driver_get_cb(uint8_t *driver_count);
+
 // Missing TinyUSB call
 bool tuh_hid_get_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void* report, uint16_t len);
 
@@ -26,6 +31,11 @@ public:
     void hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
     void hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
     void hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len);
+    void xinput_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype);
+    void xinput_umount_cb(uint8_t dev_addr);
+    void xinput_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
+    void xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
+    
 private:
     USBHostManager() : tuh_ready(false), core0Ready(false), core1Ready(false) {
 

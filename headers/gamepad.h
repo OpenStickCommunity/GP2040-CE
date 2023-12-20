@@ -20,6 +20,7 @@
 #include "gamepad/descriptors/AstroDescriptors.h"
 #include "gamepad/descriptors/PSClassicDescriptors.h"
 #include "gamepad/descriptors/XboxOriginalDescriptors.h"
+#include "gamepad/descriptors/XBOneDescriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -72,11 +73,13 @@ public:
 	 */
 	bool hasRightAnalogStick {false};
 
+	void sendReportSuccess();
 	void *getReport();
 	uint16_t getReportSize();
 	HIDReport *getHIDReport();
 	SwitchReport *getSwitchReport();
 	XInputReport *getXInputReport();
+	XboxOneGamepad_Data_t *getXBOneReport();
 	KeyboardReport *getKeyboardReport();
 	PS4Report *getPS4Report();
 	NeogeoReport *getNeogeoReport();
@@ -193,6 +196,11 @@ private:
 	const HotkeyOptions& hotkeyOptions;
 
 	GamepadHotkey lastAction = HOTKEY_NONE;
+
+	uint32_t keep_alive_timer;
+	uint8_t keep_alive_sequence;
+	uint8_t virtual_keycode_sequence;
+	bool xb1_guide_pressed;
 };
 
 #endif

@@ -35,7 +35,7 @@ import Ps4, { ps4Scheme, ps4State } from '../Addons/Ps4';
 import PSPassthrough, {
 	psPassthroughScheme,
 	psPassthroughState,
-} from '../Addons/Passthrough';
+} from '../Addons/PSPassthrough';
 import Wii, { wiiScheme, wiiState } from '../Addons/Wii';
 import SNES, { snesState } from '../Addons/SNES';
 import FocusMode, {
@@ -44,6 +44,10 @@ import FocusMode, {
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import InputHistory, { inputHistoryScheme, inputHistoryState } from '../Addons/InputHistory';
+import XBOnePassthrough, {
+	xbonePassthroughScheme,
+	xbonePassthroughState,
+} from '../Addons/XBOnePassthrough';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -60,6 +64,7 @@ const schema = yup.object().shape({
 	...socdScheme,
 	...ps4Scheme,
 	...psPassthroughScheme,
+	...xbonePassthroughScheme,
 	...wiiScheme,
 	...focusModeScheme,
 	...keyboardScheme,
@@ -81,6 +86,7 @@ const defaultValues = {
 	...socdState,
 	...ps4State,
 	...psPassthroughState,
+	...xbonePassthroughState,
 	...wiiState,
 	...snesState,
 	...focusModeState,
@@ -103,6 +109,7 @@ const ADDONS = [
 	SOCD,
 	Ps4,
 	PSPassthrough,
+	XBOnePassthrough,
 	Wii,
 	SNES,
 	FocusMode,

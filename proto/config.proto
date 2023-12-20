@@ -494,8 +494,13 @@ message PS4Options
 message PSPassthroughOptions
 {
 	optional bool enabled = 1;
-	optional int32 pinDplus = 2;
-	optional int32 pin5V = 3;
+	optional int32 pinDplus = 2 [deprecated = true];
+	optional int32 pin5V = 3 [deprecated = true];
+}
+
+message XBOnePassthroughOptions
+{
+	optional bool enabled = 1;
 }
 
 message WiiOptions
@@ -704,6 +709,7 @@ message AddonOptions
 	optional PSPassthroughOptions psPassthroughOptions = 19;
 	optional MacroOptions macroOptions = 20;
 	optional InputHistoryOptions inputHistoryOptions = 21;
+	optional XBOnePassthroughOptions xbonePassthroughOptions = 22;
 }
 
 message MigrationHistory

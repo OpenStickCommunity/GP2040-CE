@@ -20,4 +20,5 @@ bool get_usb_suspended(void);
 void initialize_driver(InputMode mode);
 void receive_report(uint8_t *buffer);
 bool send_report(void *report, uint16_t report_size);
+void update_input_driver();
 

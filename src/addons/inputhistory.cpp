@@ -10,16 +10,17 @@ const map<uint16_t, uint16_t> displayModeLookup = {
     {INPUT_MODE_HID, 0},
     {INPUT_MODE_SWITCH, 1},
     {INPUT_MODE_XINPUT, 2},
+    {INPUT_MODE_XBONE, 2},
     {INPUT_MODE_KEYBOARD, 3},
+    {INPUT_MODE_CONFIG, 3}, 
     {INPUT_MODE_PS4, 4},
     {INPUT_MODE_PSCLASSIC, 4},
-    {INPUT_MODE_CONFIG, 5},
-    {INPUT_MODE_MDMINI, 6},
-    {INPUT_MODE_NEOGEO, 7},
-    {INPUT_MODE_PCEMINI, 8},
-    {INPUT_MODE_EGRET, 9},
-    {INPUT_MODE_ASTRO, 10},
-    {INPUT_MODE_XBOXORIGINAL, 11},
+    {INPUT_MODE_MDMINI, 5},
+    {INPUT_MODE_NEOGEO, 6},
+    {INPUT_MODE_PCEMINI, 7},
+    {INPUT_MODE_EGRET, 8},
+    {INPUT_MODE_ASTRO, 9},
+    {INPUT_MODE_XBOXORIGINAL, 10},
 };
 
 static const std::string displayNames[][INPUT_HISTORY_MAX_INPUTS] = {
@@ -57,13 +58,6 @@ static const std::string displayNames[][INPUT_HISTORY_MAX_INPUTS] = {
 			CHAR_CROSS, CHAR_CIRCLE, CHAR_SQUARE, CHAR_TRIANGLE,
 			"L1", "R1", "L2", "R2",
 			CHAR_SHARE_P, "OP", "L3", "R3", CHAR_HOME_P, CHAR_TPAD_P
-	},
-	{		// Config
-			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
-            CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
-			"B1", "B2", "B3", "B4",
-			"L1", "R1", "L2", "R2",
-			"S1", "S2", "L3", "R3", "A1", "A2"
 	},
 	{		// GEN/MD Mini
 			CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
@@ -106,7 +100,7 @@ static const std::string displayNames[][INPUT_HISTORY_MAX_INPUTS] = {
 			"A", "B", "X", "Y",
 			"BL", "WH", "L", "R",
 			"BK", "ST", "LS", "RS", "", ""
-	},
+	}
 };
 
 bool InputHistoryAddon::available() {

@@ -51,7 +51,8 @@ void GP2040::setup() {
 	// Reduce CPU if any USB host add-on is enabled
 	const AddonOptions & addonOptions = Storage::getInstance().getAddonOptions();
 	if ( addonOptions.keyboardHostOptions.enabled ||
-			addonOptions.psPassthroughOptions.enabled ){
+			addonOptions.psPassthroughOptions.enabled ||
+			addonOptions.xbonePassthroughOptions.enabled ){
 	    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
 
@@ -115,6 +116,7 @@ void GP2040::setup() {
 		case BootAction::SET_INPUT_MODE_SWITCH:
 		case BootAction::SET_INPUT_MODE_XINPUT:
 		case BootAction::SET_INPUT_MODE_PS4:
+		case BootAction::SET_INPUT_MODE_XBONE:
 		case BootAction::SET_INPUT_MODE_KEYBOARD:
 		case BootAction::SET_INPUT_MODE_NEOGEO:
 		case BootAction::SET_INPUT_MODE_MDMINI:
@@ -134,6 +136,8 @@ void GP2040::setup() {
 					inputMode = INPUT_MODE_XINPUT;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_PS4) {
 					inputMode = INPUT_MODE_PS4;
+				} else if (bootAction == BootAction::SET_INPUT_MODE_XBONE) {
+					inputMode = INPUT_MODE_XBONE;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_KEYBOARD) {
 					inputMode = INPUT_MODE_KEYBOARD;
 				} else if (bootAction == BootAction::SET_INPUT_MODE_NEOGEO) {
@@ -261,8 +265,13 @@ void GP2040::run() {
 		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
+		// Update input driver
+		update_input_driver();
+
 		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
-		send_report(gamepad->getReport(), gamepad->getReportSize());
+		if ( send_report(gamepad->getReport(), gamepad->getReportSize()) ) {
+			gamepad->sendReportSuccess();
+		}
 		
 		// GET USB REPORT (If Endpoint Available)
 		receive_report(featureData);
@@ -337,6 +346,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_PSCLASSIC;
                                 case INPUT_MODE_XBOXORIGINAL: 
                                     return BootAction::SET_INPUT_MODE_XBOXORIGINAL;
+								                case INPUT_MODE_XBONE:
+									                  return BootAction::SET_INPUT_MODE_XBONE;
                                 default:
                                     return BootAction::NONE;
                             }
