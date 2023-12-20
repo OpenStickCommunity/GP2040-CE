@@ -1,17 +1,22 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react';
 import Select from 'react-select';
 import { NavLink } from 'react-router-dom';
 import { Alert, Button, Form, Tab, Tabs } from 'react-bootstrap';
 import { Trans, useTranslation } from 'react-i18next';
 import invert from 'lodash/invert';
-import map from 'lodash/map';
 import omit from 'lodash/omit';
+import zip from 'lodash/zip';
 
 import { AppContext } from '../Contexts/AppContext';
 import Section from '../Components/Section';
 import usePinStore from '../Store/usePinStore';
 
-import './PinMappings.scss';
 import CaptureButton from '../Components/CaptureButton';
 import { getButtonLabels } from '../Data/Buttons';
 import {
@@ -20,6 +25,10 @@ import {
 	PinActionValues,
 } from '../Data/Pins';
 import useProfilesStore from '../Store/useProfilesStore';
+
+type PinCell = [string, PinActionValues];
+type PinRow = [PinCell, PinCell];
+type PinList = [PinRow];
 
 const isNonSelectable = (value) =>
 	NON_SELECTABLE_BUTTON_ACTIONS.includes(value);
@@ -63,6 +72,47 @@ const PinsForm = ({ savePins, pins, setPinAction }: PinsFormTypes) => {
 		}
 	};
 
+	const pinList = useMemo<PinList>(() => {
+		const pinArray = Object.entries(pins);
+		return zip(
+			pinArray.slice(0, pinArray.length / 2),
+			pinArray.slice(pinArray.length / 2, pinArray.length),
+		);
+	}, [pins]);
+
+	const createCell = useCallback(
+		([pin, pinAction]: PinCell) => (
+			<div className="d-flex col py-2">
+				<div className="d-flex align-items-center" style={{ width: '4rem' }}>
+					<label htmlFor={pin}>{pin.toUpperCase()}</label>
+				</div>
+				<Select
+					inputId={pin}
+					className="text-primary flex-grow-1"
+					isClearable
+					isSearchable
+					options={options}
+					value={getOption(pinAction)}
+					isDisabled={isNonSelectable(pinAction)}
+					getOptionLabel={(option) => {
+						const labelKey = option.label.split('BUTTON_PRESS_').pop();
+						// Need to fallback as some button actions are not part of button names
+						return (
+							buttonNames[labelKey] || t(`PinMapping:actions.${option.label}`)
+						);
+					}}
+					onChange={(change) =>
+						setPinAction(
+							pin,
+							change?.value === undefined ? -10 : change.value, // On clear set to -10
+						)
+					}
+				/>
+			</div>
+		),
+		[],
+	);
+
 	return (
 		<Form onSubmit={handleSubmit}>
 			<div className="py-3">
@@ -80,38 +130,11 @@ const PinsForm = ({ savePins, pins, setPinAction }: PinsFormTypes) => {
 					}
 				/>
 			</div>
-			<div className="gx-3 column-container">
-				{map(pins, (pinAction, pin) => (
-					<div key={`pin-${pin}`} className="d-flex py-2">
-						<div
-							className="d-flex align-items-center"
-							style={{ width: '4rem' }}
-						>
-							<label htmlFor={pin}>{pin.toUpperCase()}</label>
-						</div>
-						<Select
-							inputId={pin}
-							className="text-primary flex-grow-1"
-							isClearable
-							isSearchable
-							options={options}
-							value={getOption(pinAction)}
-							isDisabled={isNonSelectable(pinAction)}
-							getOptionLabel={(option) => {
-								const labelKey = option.label.split('BUTTON_PRESS_').pop();
-								// Need to fallback as some button actions are not part of button names
-								return (
-									buttonNames[labelKey] ||
-									t(`PinMapping:actions.${option.label}`)
-								);
-							}}
-							onChange={(change) =>
-								setPinAction(
-									pin,
-									change?.value === undefined ? -10 : change.value, // On clear set to -10
-								)
-							}
-						/>
+			<div className="gx-3">
+				{pinList.map(([cell1, cell2], i) => (
+					<div key={`pin-row-${i}`} className="row">
+						{createCell(cell1)}
+						{createCell(cell2)}
 					</div>
 				))}
 			</div>

@@ -6,7 +6,6 @@ import { AppContext } from '../Contexts/AppContext';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
-import './PinMappings.scss';
 
 export default function KeyboardMappingPage() {
 	const { buttonLabels } = useContext(AppContext);
