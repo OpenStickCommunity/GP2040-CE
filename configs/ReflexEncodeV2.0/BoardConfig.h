@@ -15,6 +15,8 @@
 #define PSPASSTHROUGH_ENABLED 1
 #define PSPASSTHROUGH_PIN_DPLUS 14
 
+#define XBONEPASSTHROUGH_ENABLED 1
+
 // This is the main pin definition section.
 // This will let you specify which GPIO pin each button is assigned too.
 // You can set any of the main pins as `-1` to disable it.
