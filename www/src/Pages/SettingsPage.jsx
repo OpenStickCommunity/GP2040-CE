@@ -168,6 +168,10 @@ const schema = yup.object().shape({
 		.number()
 		.required()
 		.label('Switch Touchpad and Share'),
+	ps4ReportHack: yup
+		.number()
+		.required()
+		.label('PS4 Report Speed Hack'),
 	forcedSetupMode: yup
 		.number()
 		.required()
@@ -246,6 +250,8 @@ const FormContext = ({ setButtonLabels }) => {
 		if (!!values.socdMode) values.socdMode = parseInt(values.socdMode);
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
+		if (!!values.ps4ReportHack)
+			values.ps4ReportHack = parseInt(values.ps4ReportHack);
 		if (!!values.forcedSetupMode)
 			values.forcedSetupMode = parseInt(values.forcedSetupMode);
 		if (!!values.lockHotkeys) values.lockHotkeys = parseInt(values.lockHotkeys);
@@ -413,55 +419,68 @@ export default function SettingsPage() {
 										</Form.Control.Feedback>
 									</div>
 									{values.inputMode === PS4Mode && (
-										<div className="col-sm-3">
-											<Form.Check
-												label={t('SettingsPage:input-mode-extra-label')}
-												type="switch"
-												name="switchTpShareForDs4"
-												isInvalid={false}
-												checked={Boolean(values.switchTpShareForDs4)}
-												onChange={(e) => {
-													setFieldValue(
-														'switchTpShareForDs4',
-														e.target.checked ? 1 : 0,
-													);
-												}}
-											/>
-										</div>
-									)}
-									{values.inputMode === PS4Mode && (
-										<div className="col-sm-3">
-											<Form.Select
-												name="ps4ControllerType"
-												className="form-select-sm"
-												value={values.ps4ControllerType}
-												onChange={handleChange}
-												isInvalid={errors.ps4ControllerType}
-											>
-												{translatedPS4ControllerTypeModes.map((o, i) => (
-													<option
-														key={`button-ps4ControllerType-option-${i}`}
-														value={o.value}
-													>
-														{o.label}
-													</option>
-												))}
-											</Form.Select>
-										</div>
-									)}
-									{values.inputMode === PS4Mode && (
-										<div className="mb-3">
-											<Trans
-												ns="SettingsPage"
-												i18nKey="ps4-compatibility-label"
-											>
-												For <strong>PS5 compatibility</strong>, use "Arcade
-												Stick" and enable PS Passthrough add-on
-												<br />
-												For <strong>PS4 support</strong>, use "Controller" and
-												enable PS4 Mode add-on if you have the necessary files
-											</Trans>
-										</div>
+										<Form className="row mb-3">
+											<div className="col-sm-3">
+												<Form.Check
+													label={t('SettingsPage:input-mode-extra-label')}
+													type="switch"
+													name="switchTpShareForDs4"
+													isInvalid={false}
+													checked={Boolean(values.switchTpShareForDs4)}
+													onChange={(e) => {
+														setFieldValue(
+															'switchTpShareForDs4',
+															e.target.checked ? 1 : 0,
+														);
+													}}
+												/>
+											</div>
+											<div className="col-sm-3">
+												<Form.Check
+													label={t('SettingsPage:ps4-report-hack')}
+													type="switch"
+													name="ps4ReportHack"
+													isInvalid={false}
+													checked={Boolean(values.ps4ReportHack)}
+													onChange={(e) => {
+														setFieldValue(
+															'ps4ReportHack',
+															e.target.checked ? 1 : 0,
+														);
+													}}
+												/>
+											</div>
+											<div className="col-sm-3">
+												<Form.Select
+													name="ps4ControllerType"
+													className="form-select-sm"
+													value={values.ps4ControllerType}
+													onChange={handleChange}
+													isInvalid={errors.ps4ControllerType}
+												>
+													{translatedPS4ControllerTypeModes.map((o, i) => (
+														<option
+															key={`button-ps4ControllerType-option-${i}`}
+															value={o.value}
+														>
+															{o.label}
+														</option>
+													))}
+												</Form.Select>
+											</div>
+											<div className="mb-3">
+												<Trans
+													ns="SettingsPage"
+													i18nKey="ps4-compatibility-label"
+												>
+													For <strong>PS5 compatibility</strong>, use "Arcade
+													Stick" and enable PS Passthrough add-on
+													<br />
+													For <strong>PS4 support</strong>, use "Controller" and
+													enable PS4 Mode add-on if you have the necessary files
+												</Trans>
+											</div>
+										</Form>
 									)}
 								</Form.Group>
 								<Form.Group className="row mb-3">
