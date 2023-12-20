@@ -18,7 +18,7 @@ const SHA256 = (ascii) => {
 	const lengthProperty = 'length';
 	let i; // Used as a counter across the whole file
 	let j; // Used as a counter across the whole file
-	const result = '';
+	var result = '';
 
 	const words = [];
 	const asciiBitLength = ascii[lengthProperty] * 8;
@@ -26,7 +26,7 @@ const SHA256 = (ascii) => {
 	//* caching results is optional - remove/add slash from front of this line to toggle
 	// Initial hash value: first 32 bits of the fractional parts of the square roots of the first 8 primes
 	// (we actually calculate the first 64, but extra values are just ignored)
-	const hash = (SHA256.h = SHA256.h || []);
+	var hash = (SHA256.h = SHA256.h || []);
 	// Round constants: first 32 bits of the fractional parts of the cube roots of the first 64 primes
 	const k = (SHA256.k = SHA256.k || []);
 	let primeCounter = k[lengthProperty];
