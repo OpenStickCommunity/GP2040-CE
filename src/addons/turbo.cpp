@@ -8,6 +8,9 @@
 
 #include <algorithm>
 
+#define TURBO_ENABLED 0
+
+#define TURBO_LED_PIN -1
 #define TURBO_SHOT_MIN 2
 #define TURBO_SHOT_MAX 30
 

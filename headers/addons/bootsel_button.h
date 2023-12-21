@@ -8,6 +8,10 @@
 #define BOOTSEL_BUTTON_ENABLED 0
 #endif
 
+#ifndef BOOTSEL_BUTTON_MASK
+#define BOOTSEL_BUTTON_MASK 0 // 0 means none, get other mask from GamepadState.h
+#endif
+
 // BootselButton Module Name
 #define BootselButtonName "BootselButton"
 

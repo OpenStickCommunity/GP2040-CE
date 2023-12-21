@@ -13,6 +13,26 @@
 #define PIN_REVERSE     -1
 #endif
 
+#ifndef REVERSE_LED_PIN
+#define REVERSE_LED_PIN -1
+#endif
+
+#ifndef REVERSE_UP_DEFUALT
+#define REVERSE_UP_DEFAULT 0
+#endif
+
+#ifndef REVERSE_DOWN_DEFAULT
+#define REVERSE_DOWN_DEFAULT 0
+#endif
+
+#ifndef REVERSE_LEFT_DEFAULT
+#define REVERSE_LEFT_DEFAULT 0
+#endif
+
+#ifndef REVERSE_RIGHT_DEFUALT
+#define REVERSE_RIGHT_DEFAULT 0
+#endif
+
 // Reverse Module Name
 #define ReverseName "Input Reverse"
 
