@@ -1194,8 +1194,6 @@ std::string setAddonOptions()
 	docToPin(focusModeOptions.pin, doc, "focusModePin");
 	docToValue(focusModeOptions.buttonLockMask, doc, "focusModeButtonLockMask");
 	docToValue(focusModeOptions.buttonLockEnabled, doc, "focusModeButtonLockEnabled");
-	docToValue(focusModeOptions.oledLockEnabled, doc, "focusModeOledLockEnabled");
-	docToValue(focusModeOptions.rgbLockEnabled, doc, "focusModeRgbLockEnabled");
 	docToValue(focusModeOptions.macroLockEnabled, doc, "focusModeMacroLockEnabled");
 	docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
@@ -1725,9 +1723,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));
 	writeDoc(doc, "focusModeButtonLockMask", focusModeOptions.buttonLockMask);
 	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
-	writeDoc(doc, "focusModeOledLockEnabled", focusModeOptions.oledLockEnabled);
 	writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
-	writeDoc(doc, "focusModeRgbLockEnabled", focusModeOptions.rgbLockEnabled);
 	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
 
 	return serialize_json(doc);
