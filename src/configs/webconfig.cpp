@@ -106,15 +106,6 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) docToPinLegacy(uint8_t& pin, const DynamicJsonDocument& doc, const char* key)
-{
-	if (doc[key] != nullptr)
-	{
-		pin = doc[key] < 0 ? 0xff : doc[key];
-	}
-}
-
-// Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
 	Pin_t oldPin = pin;
