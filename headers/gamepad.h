@@ -154,6 +154,7 @@ public:
 	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;
+	GamepadState turboState;
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;
