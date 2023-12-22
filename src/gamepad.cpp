@@ -937,8 +937,11 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.button_home     = pressedA1();
 	ps4Report.button_touchpad = options.switchTpShareForDs4 ? pressedS1() : pressedA2();
 
-	// report counter is 6 bits
-	ps4Report.report_counter = last_report_counter;
+	
+	if ( !options.ps4ReportHack ) {
+		ps4Report.report_counter = last_report_counter; 	// report counter is 6 bits
+		ps4Report.axis_timing = last_axis_counter; 			// axis counter is 16 bits
+	}
 
 	ps4Report.left_stick_x = static_cast<uint8_t>(state.lx >> 8);
 	ps4Report.left_stick_y = static_cast<uint8_t>(state.ly >> 8);
@@ -956,8 +959,7 @@ PS4Report *Gamepad::getPS4Report()
 		ps4Report.right_trigger = pressedR2() ? 0xFF : 0;
 	}
 
-	// axis counter is 16 bits
-	ps4Report.axis_timing = last_axis_counter;
+
 
 	// set touchpad to nothing
 	touchpadData.p1.unpressed = 1;

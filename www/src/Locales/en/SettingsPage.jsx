@@ -2,6 +2,7 @@ export default {
 	'settings-header-text': 'Settings',
 	'input-mode-label': 'Input Mode',
 	'input-mode-extra-label': 'Switch Touchpad and Share',
+	'ps4-report-hack': 'PS4 Report Speed Hack',
 	'input-mode-options': {
         none: 'No Mode Selected',
 		xinput: 'XInput',

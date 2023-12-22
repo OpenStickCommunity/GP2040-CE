@@ -21,6 +21,10 @@
 #define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
 #endif
 
+#ifndef DEFAULT_PS4_REPORTHACK
+#define DEFAULT_PS4_REPORTHACK false
+#endif 
+
 /* hotkeys */
 #ifndef HOTKEY_01_AUX_MASK
 #define HOTKEY_01_AUX_MASK 0
