@@ -109,6 +109,12 @@
 #ifndef DEFAULT_SOCD_MODE
     #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
 #endif
+#ifndef DEFAULT_FORCED_SETUP_MODE
+    #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF
+#endif
+#ifndef DEFAULT_LOCK_HOTKEYS
+    #define DEFAULT_LOCK_HOTKEYS false
+#endif
 
 // -----------------------------------------------------
 // Migration leftovers

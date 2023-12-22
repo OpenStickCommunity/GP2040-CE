@@ -62,6 +62,22 @@
 #define DISPLAY_SAVER_TIMEOUT 0
 #endif
 
+#ifndef BUTTON_LAYOUT
+#define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
+#endif
+
+#ifndef BUTTON_LAYOUT_RIGHT
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX
+#endif
+
+#ifndef SPLASH_MODE
+#define SPLASH_MODE SPLASH_MODE_NONE
+#endif
+
+#ifndef SPLASH_CHOICE
+#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
+#endif
+
 #ifndef SPLASH_DURATION
 #define SPLASH_DURATION 7500 // Duration in milliseconds
 #endif

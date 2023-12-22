@@ -9,8 +9,12 @@
 #define BOARD_LED_ENABLED 0
 #endif
 
+#ifndef BOARD_LEDS_PIN
+#define BOARD_LEDS_PIN -1
+#endif
+
 #ifndef BOARD_LED_TYPE 
-#define BOARD_LED_TYPE BOARD_LED_OFF
+#define BOARD_LED_TYPE ON_BOARD_LED_MODE_OFF
 #endif  
 
 // BoardLed Module Name
