@@ -106,15 +106,6 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
-static void __attribute__((noinline)) docToPinLegacy(uint8_t& pin, const DynamicJsonDocument& doc, const char* key)
-{
-	if (doc[key] != nullptr)
-	{
-		pin = doc[key] < 0 ? 0xff : doc[key];
-	}
-}
-
-// Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
 	Pin_t oldPin = pin;
@@ -140,42 +131,42 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 // Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key0, const char* key1)
 {
-    Pin_t oldPin = pin;
+	Pin_t oldPin = pin;
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1))
 	{
 		pin = doc[key0][key1];
-        GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-        if (!isValidPin(pin))
-        {
-            gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-        } else {
+		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+		if (isValidPin(pin))
+		{
+			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+		} else {
 			pin = -1;
 			if (isValidPin(oldPin))
 			{
 				gpioMappings[oldPin].action = GpioAction::NONE;
 			}            
-        }
+		}
 	}
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key0, const char* key1, const char* key2)
 {
-    Pin_t oldPin = pin;
+	Pin_t oldPin = pin;
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1) && doc[key0][key1].containsKey(key2))
 	{
 		pin = doc[key0][key1][key2];
-        GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-        if (!isValidPin(pin))
-        {
-            gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-        } else {
+		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+		if (isValidPin(pin))
+		{
+			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+		} else {
 			pin = -1;
 			if (isValidPin(oldPin))
 			{
 				gpioMappings[oldPin].action = GpioAction::NONE;
 			}
-        }
+		}
 	}
 }
 
@@ -413,20 +404,6 @@ void addUsedPinsArray(DynamicJsonDocument& doc)
 			usedPins.add(pin);
 		}
 	}
-
-	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
-	// addPinIfValid(boardOptions.i2cSDAPin);
-	// addPinIfValid(boardOptions.i2cSCLPin);
-
-	// TODO: Used Pins logic does not work in add-ons, fix this
-	// const AnalogOptions& analogOptions = Storage::getInstance().getAddonOptions().analogOptions;
-	// addPinIfValid(analogOptions.analogAdc1PinX);
-	// addPinIfValid(analogOptions.analogAdc1PinY);
-	// addPinIfValid(analogOptions.analogAdc2PinX);
-	// addPinIfValid(analogOptions.analogAdc2PinY);
-
-	// TODO: Exclude non-button pins from validation for now, fix this when validation reworked
-	// addPinIfValid(addonOptions.buzzerPin);
 }
 
 std::string serialize_json(JsonDocument &doc)
@@ -447,11 +424,8 @@ std::string setDisplayOptions(DisplayOptions& displayOptions)
 {
 	DynamicJsonDocument doc = get_post_data();
 	readDoc(displayOptions.enabled, doc, "enabled");
-	docToPin(displayOptions.i2cSDAPin, doc, "sdaPin");
-	docToPin(displayOptions.i2cSCLPin, doc, "sclPin");
 	readDoc(displayOptions.i2cAddress, doc, "i2cAddress");
 	readDoc(displayOptions.i2cBlock, doc, "i2cBlock");
-	readDoc(displayOptions.i2cSpeed, doc, "i2cSpeed");
 	readDoc(displayOptions.flip, doc, "flipDisplay");
 	readDoc(displayOptions.invert, doc, "invertDisplay");
 	readDoc(displayOptions.buttonLayout, doc, "buttonLayout");
@@ -494,11 +468,8 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
 	writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
-	writeDoc(doc, "sdaPin", cleanPin(displayOptions.i2cSDAPin));
-	writeDoc(doc, "sclPin", cleanPin(displayOptions.i2cSCLPin));
 	writeDoc(doc, "i2cAddress", displayOptions.i2cAddress);
 	writeDoc(doc, "i2cBlock", displayOptions.i2cBlock);
-	writeDoc(doc, "i2cSpeed", displayOptions.i2cSpeed);
 	writeDoc(doc, "flipDisplay", displayOptions.flip ? 1 : 0);
 	writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
 	writeDoc(doc, "buttonLayout", displayOptions.buttonLayout);
@@ -1104,31 +1075,43 @@ std::string setPeripheralOptions()
 	PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
 
 	docToValue(peripheralOptions.blockI2C0.enabled, doc, "peripheral", "i2c0", "enabled");
-	docToValue(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
-	docToValue(peripheralOptions.blockI2C0.scl, doc, "peripheral", "i2c0", "scl");
+	docToPin(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
+	docToPin(peripheralOptions.blockI2C0.scl, doc, "peripheral", "i2c0", "scl");
 	docToValue(peripheralOptions.blockI2C0.speed, doc, "peripheral", "i2c0", "speed");
 
 	docToValue(peripheralOptions.blockI2C1.enabled, doc, "peripheral", "i2c1", "enabled");
-	docToValue(peripheralOptions.blockI2C1.sda, doc, "peripheral", "i2c1", "sda");
-	docToValue(peripheralOptions.blockI2C1.scl, doc, "peripheral", "i2c1", "scl");
+	docToPin(peripheralOptions.blockI2C1.sda, doc, "peripheral", "i2c1", "sda");
+	docToPin(peripheralOptions.blockI2C1.scl, doc, "peripheral", "i2c1", "scl");
 	docToValue(peripheralOptions.blockI2C1.speed, doc, "peripheral", "i2c1", "speed");
 
 	docToValue(peripheralOptions.blockSPI0.enabled, doc,  "peripheral", "spi0", "enabled");
-	docToValue(peripheralOptions.blockSPI0.rx, doc,  "peripheral", "spi0", "rx");
-	docToValue(peripheralOptions.blockSPI0.cs, doc,  "peripheral", "spi0", "cs");
-	docToValue(peripheralOptions.blockSPI0.sck, doc, "peripheral", "spi0", "sck");
-	docToValue(peripheralOptions.blockSPI0.tx, doc,  "peripheral", "spi0", "tx");
+	docToPin(peripheralOptions.blockSPI0.rx, doc,  "peripheral", "spi0", "rx");
+	docToPin(peripheralOptions.blockSPI0.cs, doc,  "peripheral", "spi0", "cs");
+	docToPin(peripheralOptions.blockSPI0.sck, doc, "peripheral", "spi0", "sck");
+	docToPin(peripheralOptions.blockSPI0.tx, doc,  "peripheral", "spi0", "tx");
 
 	docToValue(peripheralOptions.blockSPI1.enabled, doc,  "peripheral", "spi1", "enabled");
-	docToValue(peripheralOptions.blockSPI1.rx, doc,  "peripheral", "spi1", "rx");
-	docToValue(peripheralOptions.blockSPI1.cs, doc,  "peripheral", "spi1", "cs");
-	docToValue(peripheralOptions.blockSPI1.sck, doc, "peripheral", "spi1", "sck");
-	docToValue(peripheralOptions.blockSPI1.tx, doc,  "peripheral", "spi1", "tx");
+	docToPin(peripheralOptions.blockSPI1.rx, doc,  "peripheral", "spi1", "rx");
+	docToPin(peripheralOptions.blockSPI1.cs, doc,  "peripheral", "spi1", "cs");
+	docToPin(peripheralOptions.blockSPI1.sck, doc, "peripheral", "spi1", "sck");
+	docToPin(peripheralOptions.blockSPI1.tx, doc,  "peripheral", "spi1", "tx");
 
 	docToValue(peripheralOptions.blockUSB0.enabled, doc, "peripheral", "usb0", "enabled");
-	docToValue(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
 	docToValue(peripheralOptions.blockUSB0.enable5v, doc, "peripheral", "usb0", "enable5v");
 	docToValue(peripheralOptions.blockUSB0.order, doc, "peripheral", "usb0", "order");
+
+	// need to reserve previous/next pin for dp
+	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+	uint8_t adjacent = peripheralOptions.blockUSB0.order ? -1 : 1;
+
+	Pin_t oldPinDplus = peripheralOptions.blockUSB0.dp;
+	docToPin(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
+	if (isValidPin(peripheralOptions.blockUSB0.dp))
+		// if D+ pin is now set, also set the pin that will be used for D-
+		gpioMappings[peripheralOptions.blockUSB0.dp+adjacent].action = GpioAction::ASSIGNED_TO_ADDON;
+	else if (isValidPin(oldPinDplus))
+		// if D+ pin was set and is no longer, also unset the pin that was used for D-
+		gpioMappings[oldPinDplus+adjacent].action = GpioAction::NONE;
 
 	Storage::getInstance().save();
 
@@ -1202,10 +1185,7 @@ std::string setAddonOptions()
 	docToValue(focusModeOptions.enabled, doc, "FocusModeAddonEnabled");
 
     AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-	docToPin(analogADS1219Options.i2cSDAPin, doc, "i2cAnalog1219SDAPin");
-	docToPin(analogADS1219Options.i2cSCLPin, doc, "i2cAnalog1219SCLPin");
 	docToValue(analogADS1219Options.i2cBlock, doc, "i2cAnalog1219Block");
-	docToValue(analogADS1219Options.i2cSpeed, doc, "i2cAnalog1219Speed");
 	docToValue(analogADS1219Options.i2cAddress, doc, "i2cAnalog1219Address");
 	docToValue(analogADS1219Options.enabled, doc, "I2CAnalog1219InputEnabled");
 
@@ -1256,10 +1236,7 @@ std::string setAddonOptions()
 	docToValue(turboOptions.enabled, doc, "TurboInputEnabled");
 
     WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-	docToPin(wiiOptions.i2cSDAPin, doc, "wiiExtensionSDAPin");
-	docToPin(wiiOptions.i2cSCLPin, doc, "wiiExtensionSCLPin");
 	docToValue(wiiOptions.i2cBlock, doc, "wiiExtensionBlock");
-	docToValue(wiiOptions.i2cSpeed, doc, "wiiExtensionSpeed");
 	docToValue(wiiOptions.enabled, doc, "WiiExtensionAddonEnabled");
 
     PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
@@ -1279,14 +1256,6 @@ std::string setAddonOptions()
 
 	KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	docToValue(keyboardHostOptions.enabled, doc, "KeyboardHostAddonEnabled");
-	Pin_t oldKbPinDplus = keyboardHostOptions.pinDplus;
-	docToPin(keyboardHostOptions.pinDplus, doc, "keyboardHostPinDplus");
-	if (isValidPin(keyboardHostOptions.pinDplus))
-		gpioMappings[keyboardHostOptions.pinDplus+1].action = GpioAction::ASSIGNED_TO_ADDON;
-	else if (isValidPin(oldKbPinDplus))
-		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
-		gpioMappings[oldKbPinDplus+1].action = GpioAction::NONE;
-	docToPin(keyboardHostOptions.pin5V, doc, "keyboardHostPin5V");
 	docToValue(keyboardHostOptions.mapping.keyDpadUp, doc, "keyboardHostMap", "Up");
 	docToValue(keyboardHostOptions.mapping.keyDpadDown, doc, "keyboardHostMap", "Down");
 	docToValue(keyboardHostOptions.mapping.keyDpadLeft, doc, "keyboardHostMap", "Left");
@@ -1308,15 +1277,6 @@ std::string setAddonOptions()
 
 	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
 	docToValue(psPassthroughOptions.enabled, doc, "PSPassthroughAddonEnabled");
-	Pin_t oldPsPinDplus = psPassthroughOptions.pinDplus;
-	docToPin(psPassthroughOptions.pinDplus, doc, "psPassthroughPinDplus");
-	if (isValidPin(psPassthroughOptions.pinDplus))
-		gpioMappings[psPassthroughOptions.pinDplus+1].action = GpioAction::ASSIGNED_TO_ADDON;
-	else if (isValidPin(oldPsPinDplus))
-		// if D+ pin was set, and is no longer, also unset the pin that was used for D-
-		gpioMappings[oldPsPinDplus+1].action = GpioAction::NONE;
-	docToPin(psPassthroughOptions.pin5V, doc, "psPassthroughPin5V");
-
 
 	XBOnePassthroughOptions& xbonePassthroughOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
 	docToValue(xbonePassthroughOptions.enabled, doc, "XBOnePassthroughAddonEnabled");
@@ -1619,10 +1579,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "TiltInputEnabled", tiltOptions.enabled);
 
     const AnalogADS1219Options& analogADS1219Options = Storage::getInstance().getAddonOptions().analogADS1219Options;
-	writeDoc(doc, "i2cAnalog1219SDAPin", cleanPin(analogADS1219Options.i2cSDAPin));
-	writeDoc(doc, "i2cAnalog1219SCLPin", cleanPin(analogADS1219Options.i2cSCLPin));
 	writeDoc(doc, "i2cAnalog1219Block", analogADS1219Options.i2cBlock);
-	writeDoc(doc, "i2cAnalog1219Speed", analogADS1219Options.i2cSpeed);
 	writeDoc(doc, "i2cAnalog1219Address", analogADS1219Options.i2cAddress);
 	writeDoc(doc, "I2CAnalog1219InputEnabled", analogADS1219Options.enabled);
 
@@ -1673,10 +1630,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "TurboInputEnabled", turboOptions.enabled);
 
     const WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-	writeDoc(doc, "wiiExtensionSDAPin", cleanPin(wiiOptions.i2cSDAPin));
-	writeDoc(doc, "wiiExtensionSCLPin", cleanPin(wiiOptions.i2cSCLPin));
 	writeDoc(doc, "wiiExtensionBlock", wiiOptions.i2cBlock);
-	writeDoc(doc, "wiiExtensionSpeed", wiiOptions.i2cSpeed);
 	writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
 
 	const PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
@@ -1696,8 +1650,6 @@ std::string getAddonOptions()
 
 	const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	writeDoc(doc, "KeyboardHostAddonEnabled", keyboardHostOptions.enabled);
-	writeDoc(doc, "keyboardHostPinDplus", keyboardHostOptions.pinDplus);
-	writeDoc(doc, "keyboardHostPin5V", keyboardHostOptions.pin5V);
 	writeDoc(doc, "keyboardHostMap", "Up", keyboardHostOptions.mapping.keyDpadUp);
 	writeDoc(doc, "keyboardHostMap", "Down", keyboardHostOptions.mapping.keyDpadDown);
 	writeDoc(doc, "keyboardHostMap", "Left", keyboardHostOptions.mapping.keyDpadLeft);

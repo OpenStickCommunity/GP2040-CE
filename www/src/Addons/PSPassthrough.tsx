@@ -14,20 +14,10 @@ export const psPassthroughScheme = {
 		.number()
 		.required()
 		.label('PS Passthrough Add-On Enabled'),
-	psPassthroughPinDplus: yup
-		.number()
-		.label('PS Passthrough D+ Pin')
-		.validatePinWhenValue('PSPassthroughAddonEnabled'),
-	psPassthroughPin5V: yup
-		.number()
-		.label('PS Passthrough 5V Power Pin')
-		.validatePinWhenValue('PSPassthroughAddonEnabled'),
 };
 
 export const psPassthroughState = {
 	PSPassthroughAddonEnabled: -1,
-	psPassthroughPinDplus: 0,
-	psPassthroughPin5V: -1,
 };
 
 const PSPassthrough = ({ values, errors, handleChange, handleCheckbox }) => {

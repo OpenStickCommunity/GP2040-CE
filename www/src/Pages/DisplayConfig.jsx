@@ -73,11 +73,8 @@ const DISPLAY_FLIP_MODES = [
 
 const defaultValues = {
 	enabled: false,
-	sdaPin: -1,
-	sclPin: -1,
 	i2cAddress: '0x3C',
 	i2cBlock: 0,
-	i2cSpeed: 400000,
 	flipDisplay: false,
 	invertDisplay: false,
 	buttonLayout: 0,
@@ -119,14 +116,11 @@ const buttonLayoutRightSchema = yup
 const schema = yup.object().shape({
 	enabled: yup.number().label('Enabled?'),
 	i2cAddress: yup.string().required().label('I2C Address'),
-	sdaPin: yup.number().label('SDA Pin').validatePinWhenValue('sdaPin'),
-	sclPin: yup.number().label('SCL Pin').validatePinWhenValue('sclPin'),
 	i2cBlock: yup
 		.number()
 		.required()
 		.oneOf(I2C_BLOCKS.map((o) => o.value))
 		.label('I2C Block'),
-	i2cSpeed: yup.number().required().label('I2C Speed'),
 	flipDisplay: yup
 		.number()
 		.oneOf(DISPLAY_FLIP_MODES.map((o) => o.value))
@@ -287,9 +281,6 @@ export default function DisplayConfigPage() {
 			{({ handleSubmit, handleChange, values, errors }) => {
                 const handlePeripheralChange = (e) => {
                     let device = getSelectedPeripheral('i2c', e.target.value);
-                    values.sdaPin = device.sda;
-                    values.sclPin = device.scl;
-                    values.i2cSpeed = device.speed;
                     handleChange(e);
                 };
                 

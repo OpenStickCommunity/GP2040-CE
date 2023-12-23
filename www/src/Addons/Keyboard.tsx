@@ -16,19 +16,9 @@ export const keyboardScheme = {
 		.number()
 		.required()
 		.label('Keyboard Host Add-On Enabled'),
-	keyboardHostPinDplus: yup
-		.number()
-		.label('Keyboard Host D+ Pin')
-		.validatePinWhenValue('KeyboardHostAddonEnabled'),
-	keyboardHostPin5V: yup
-		.number()
-		.label('Keyboard Host 5V Power Pin')
-		.validatePinWhenValue('KeyboardHostAddonEnabled'),
 };
 
 export const keyboardState = {
-	keyboardHostPinDplus: -1,
-	keyboardHostPin5V: -1,
 	keyboardHostMap: baseButtonMappings,
 	KeyboardHostAddonEnabled: 0,
 };
