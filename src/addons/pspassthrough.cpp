@@ -9,7 +9,8 @@
 
 bool PSPassthroughAddon::available() {
     const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
-	return psOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
+    const GamepadOptions& gamepadOptions = Storage::getInstance().GetGamepad()->getOptions();
+	return psOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0) && (gamepadOptions.inputMode == INPUT_MODE_PS4);
 }
 
 void PSPassthroughAddon::setup() {
