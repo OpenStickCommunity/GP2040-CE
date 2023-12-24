@@ -233,7 +233,6 @@ export default function AddonsConfigPage() {
 							{t('Common:button-save-label')}
 						</Button>
 						{saveMessage ? <span className="alert">{saveMessage}</span> : null}
-						{Object.keys(errors).length > 0 ? <span className="alert">{t('Common:saved-error-message')}: {Object.keys(errors).join(',')}</span> : null}
 					</div>
 					<FormContext setStoredData={setStoredData} />
 				</Form>
