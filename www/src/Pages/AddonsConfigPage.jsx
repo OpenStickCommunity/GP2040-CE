@@ -212,7 +212,8 @@ export default function AddonsConfigPage() {
 			onSubmit={onSuccess}
 			initialValues={defaultValues}
 		>
-			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
+			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => 
+			console.log('errors', errors) || (
 				<Form noValidate onSubmit={handleSubmit}>
 					<h1>{t('AddonsConfig:header-text')}</h1>
 					<p>{t('AddonsConfig:sub-header-text')}</p>
@@ -232,6 +233,7 @@ export default function AddonsConfigPage() {
 							{t('Common:button-save-label')}
 						</Button>
 						{saveMessage ? <span className="alert">{saveMessage}</span> : null}
+						{Object.keys(errors).length > 0 ? <span className="alert">{t('Common:saved-error-message')}: {Object.keys(errors).join(',')}</span> : null}
 					</div>
 					<FormContext setStoredData={setStoredData} />
 				</Form>
