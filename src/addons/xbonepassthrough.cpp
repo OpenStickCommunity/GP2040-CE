@@ -17,7 +17,8 @@ static uint8_t xb1_rumble_on[] = {0x00, 0x0f, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00
 
 bool XBOnePassthroughAddon::available() {
     const XBOnePassthroughOptions& xboneOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
-	return xboneOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
+    const GamepadOptions& gamepadOptions = Storage::getInstance().GetGamepad()->getOptions();
+	return xboneOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0) && (gamepadOptions.inputMode == INPUT_MODE_XBONE);
 }
 
 void XBOnePassthroughAddon::setup() {
