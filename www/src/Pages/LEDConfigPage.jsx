@@ -1,8 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
+
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import orderBy from 'lodash/orderBy';
@@ -353,6 +357,18 @@ export default function LEDConfigPage() {
 		handleSubmit();
 	};
 
+	const availableButtonClicked = () => {
+	    alert('You clicked the third ListGroupItem');
+	};
+
+	const setAvailableButton = () => {
+
+	};
+
+	const assignedButtonClicked = () => {
+	    alert('You clicked the third ListGroupItem');
+	};
+
 	return (
 		<Formik
 			validationSchema={schema}
@@ -474,6 +490,138 @@ export default function LEDConfigPage() {
 									}}
 								/>
 							</div>
+						</Row>
+					</Section>
+					<Section title={t('LedConfig:rgb-order.header-text')}>
+							<p className="card-text">
+								{t('LedConfig:rgb-order.sub-header-text')}
+							</p>
+							<p className="card-text">
+								{t('LedConfig:rgb-order.sub-header1-text')}
+							</p>
+						<Row>
+							<Col>
+								<div className="mb-2">
+									<p className="card-text">
+										Assigned Buttons
+									</p>
+									<ListGroup>
+										{dataSources.map((i) => (
+											<ListGroup.Item action onClick={setAvailableButton}
+											className="d-flex justify-content-between align-items-start"
+											>
+												<div className="ms-2 me-auto">
+													<div className="fw-bold">{i}</div>
+												</div>
+												<Badge bg="primary" pill>
+													Position 1
+												</Badge>
+											</ListGroup.Item>
+										))}
+									</ListGroup>
+								</div>
+								<Row className="justify-content-md-center">
+									<Col className="col-sm-3">
+									<Button 
+										as="input"
+										type="button"
+										value="Move Up"
+									/>
+									</Col>
+									<Col className="col-sm-3">
+									<Button 
+										as="input"
+										type="button"
+										value="Move Down"
+									/>
+									</Col>
+									<Col className="col-sm-3">
+									<Button 
+										as="input"
+										type="button"
+										value="Unassign Button"
+									/>
+									</Col>
+								</Row>
+							</Col>
+							<Col>
+								<div className="mb-2">
+									<p className="card-text">
+										Assigned Buttons
+									</p>
+									<ListGroup>
+										<ListGroup.Item action onClick={setAvailableButton}
+											className="d-flex justify-content-between align-items-start"
+										>
+											<div className="ms-2 me-auto">
+												<div>A1</div>
+											</div>
+											<Badge bg="secondary" pill>
+												Unassigned
+											</Badge>
+										</ListGroup.Item>
+										<ListGroup.Item action onClick={setAvailableButton}
+											className="d-flex justify-content-between align-items-start"
+										>
+											<div className="ms-2 me-auto">
+												<div>A2</div>
+											</div>
+											<Badge bg="secondary" pill>
+												Unassigned
+											</Badge>
+										</ListGroup.Item>
+										<ListGroup.Item action onClick={setAvailableButton}
+											className="d-flex justify-content-between align-items-start"
+										>
+											<div className="ms-2 me-auto">
+												<div className="fw-bold">S1</div>
+											</div>
+											<Badge bg="secondary" pill>
+												Unassigned
+											</Badge>
+										</ListGroup.Item>
+										<ListGroup.Item action onClick={setAvailableButton}
+											className="d-flex justify-content-between align-items-start"
+										>
+											<div className="ms-2 me-auto">
+												<div className="fw-bold">S2</div>
+											</div>
+											<Badge bg="secondary" pill>
+												Unassigned
+											</Badge>
+										</ListGroup.Item>
+										<ListGroup.Item action onClick={setAvailableButton}
+											className="d-flex justify-content-between align-items-start"
+										>
+											<div className="ms-2 me-auto">
+												<div className="fw-bold">B1</div>
+											</div>
+											<Badge bg="secondary" pill>
+												Unassigned
+											</Badge>
+										</ListGroup.Item>
+										<ListGroup.Item action onClick={setAvailableButton}
+											className="d-flex justify-content-between align-items-start"
+										>
+											<div className="ms-2 me-auto">
+												<div className="fw-bold">B2</div>
+											</div>
+											<Badge bg="secondary" pill>
+												Unassigned
+											</Badge>
+										</ListGroup.Item>
+									</ListGroup>
+								</div>
+								<Row className="justify-content-md-center">
+									<Col className="col-sm-3">
+									<Button 
+										as="input"
+										type="button"
+										value="Assign Button"
+									/>
+									</Col>
+								</Row>
+							</Col>
 						</Row>
 					</Section>
 					<Section title={t('LedConfig:player.header-text')}>

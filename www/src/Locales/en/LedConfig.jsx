@@ -27,7 +27,7 @@ export default {
 		'sub-header-text':
 			'Here you can define which buttons have RGB LEDs and in what order they run from the control board. This is required for certain LED animations and static theme support.',
 		'sub-header1-text':
-			'Drag and drop list items to assign and reorder the RGB LEDs.',
+			'Use the action buttons below each list to assign and reorder the RGB LEDs.',
 		'available-header-text': 'Available Buttons',
 		'assigned-header-text': 'Assigned Buttons',
 	},
