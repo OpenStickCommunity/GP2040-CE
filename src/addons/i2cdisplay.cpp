@@ -1057,6 +1057,16 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case DPAD_MODE_LEFT_ANALOG:  statusBar += " L"; break;
 		case DPAD_MODE_RIGHT_ANALOG: statusBar += " R"; break;
 	}
+	switch (gamepad->getOptions().profileNumber)
+	{
+
+		case 2: statusBar += "#2"; break;
+		case 3: statusBar += "#3"; break;
+		case 4: statusBar += "#4"; break;
+		default:
+			statusBar += "#1";
+			break;
+	}
 
 	switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
 	{
