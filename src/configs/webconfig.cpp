@@ -113,9 +113,13 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	{
 		pin = doc[key];
 		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
 		if (isValidPin(pin))
 		{
 			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
 		}
 		else
 		{
@@ -123,6 +127,9 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 			if (isValidPin(oldPin))
 			{
 				gpioMappings[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
 			}
 		}
 	}
@@ -136,14 +143,21 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	{
 		pin = doc[key0][key1];
 		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
 		if (isValidPin(pin))
 		{
 			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
 		} else {
 			pin = -1;
 			if (isValidPin(oldPin))
 			{
 				gpioMappings[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
 			}            
 		}
 	}
@@ -157,14 +171,21 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	{
 		pin = doc[key0][key1][key2];
 		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
 		if (isValidPin(pin))
 		{
 			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
+			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
 		} else {
 			pin = -1;
 			if (isValidPin(oldPin))
 			{
 				gpioMappings[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
+				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
 			}
 		}
 	}
@@ -1102,16 +1123,27 @@ std::string setPeripheralOptions()
 
 	// need to reserve previous/next pin for dp
 	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+	ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
 	uint8_t adjacent = peripheralOptions.blockUSB0.order ? -1 : 1;
 
 	Pin_t oldPinDplus = peripheralOptions.blockUSB0.dp;
 	docToPin(peripheralOptions.blockUSB0.dp, doc, "peripheral", "usb0", "dp");
-	if (isValidPin(peripheralOptions.blockUSB0.dp))
+	if (isValidPin(peripheralOptions.blockUSB0.dp)) {
 		// if D+ pin is now set, also set the pin that will be used for D-
 		gpioMappings[peripheralOptions.blockUSB0.dp+adjacent].action = GpioAction::ASSIGNED_TO_ADDON;
-	else if (isValidPin(oldPinDplus))
+		profiles.gpioMappingsSets[0].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
+			GpioAction::ASSIGNED_TO_ADDON;
+		profiles.gpioMappingsSets[1].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
+			GpioAction::ASSIGNED_TO_ADDON;
+		profiles.gpioMappingsSets[2].pins[peripheralOptions.blockUSB0.dp+adjacent].action =
+			GpioAction::ASSIGNED_TO_ADDON;
+	} else if (isValidPin(oldPinDplus)) {
 		// if D+ pin was set and is no longer, also unset the pin that was used for D-
 		gpioMappings[oldPinDplus+adjacent].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[0].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[1].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[2].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
+	}
 
 	Storage::getInstance().save();
 
