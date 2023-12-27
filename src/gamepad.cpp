@@ -175,6 +175,8 @@ static XboxOriginalReport xboxOriginalReport
     .rightStickY = 0,
 };
 
+#define XBONE_KEEPALIVE_TIMER 15000
+
 static XboxOneGamepad_Data_t xboneReport
 {
 	.sync = 0,
@@ -206,8 +208,6 @@ static uint16_t xboneReportSize;
 
 // Xbox One & PS4/PS5 Timing
 static TouchpadData touchpadData;
-static uint8_t last_report_counter = 0;
-static uint16_t last_axis_counter = 0;
 
 static KeyboardReport keyboardReport
 {
@@ -281,10 +281,12 @@ void Gamepad::setup()
 
 	// setup PS5 compatibility
 	PS4Data::getInstance().ps4ControllerType = gamepadOptions.ps4ControllerType;
+	last_report_counter = 0;
+	last_axis_counter = 0;
 
 	// Xbox One Keep-Alive
-	keep_alive_timer = 0;
-	keep_alive_sequence = 0;
+	keep_alive_timer = to_ms_since_boot(get_absolute_time());
+	keep_alive_sequence = 1;
 	virtual_keycode_sequence = 0;
 	xb1_guide_pressed = false;
 	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
@@ -800,9 +802,8 @@ void Gamepad::sendReportSuccess() {
 				// Successfully sent report, actually increment last report counter!
 				if ( memcmp(&last_report[4], &((uint8_t*)&xboneReport)[4], xboneReportSize-4) != 0) {
 					last_report_counter++;
-					if (last_report_counter == 0) {
+					if (last_report_counter == 0)
 						last_report_counter = 1;
-					}
 					memcpy(last_report, &xboneReport, xboneReportSize);
 				}
 			}
@@ -824,11 +825,9 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 
 	uint32_t now = to_ms_since_boot(get_absolute_time());
 	// Send Keep-Alive every 15 seconds (keep_alive_timer updates if send is successful)
-	if ( (now - keep_alive_timer) > 15000) {
+	if ( (now - keep_alive_timer) > XBONE_KEEPALIVE_TIMER) {
 		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
-		xboneReport.Header.command = GIP_KEEPALIVE;
-		xboneReport.Header.internal = 1;
-		xboneReport.Header.sequence = keep_alive_sequence;
+		GIP_HEADER((&xboneReport), GIP_KEEPALIVE, 1, keep_alive_sequence);
 		xboneReport.Header.length = 4;
 		static uint8_t keepAlive[] = { 0x80, 0x00, 0x00, 0x00 };
 		memcpy(&((uint8_t*)&xboneReport)[4], &keepAlive, sizeof(keepAlive));
@@ -844,17 +843,13 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 			virtual_keycode_sequence++; // will rollover
 			if ( virtual_keycode_sequence == 0 )
 				virtual_keycode_sequence = 1;
-			memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
-			xboneReport.Header.command = GIP_VIRTUAL_KEYCODE;
-			xboneReport.Header.internal = 1;
-			xboneReport.Header.sequence = virtual_keycode_sequence;
+			GIP_HEADER((&xboneReport), GIP_VIRTUAL_KEYCODE, 1, virtual_keycode_sequence);
+			xboneReport.Header.length = sizeof(xb1_guide_on);
 			if ( pressedA1() ) {
 				xb1_guide_pressed = true;
-				xboneReport.Header.length = sizeof(xb1_guide_on);
 				memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_on, sizeof(xb1_guide_on));
 			} else {
 				xb1_guide_pressed = false;
-				xboneReport.Header.length = sizeof(xb1_guide_off);
 				memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_off, sizeof(xb1_guide_off));
 			}
 		}
@@ -862,46 +857,51 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 		return &xboneReport;
 	}
 
-	GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
+	// Only change xbox one input report if we have different inputs!
+	XboxOneGamepad_Data_t newInputReport;
 
-	xboneReport.a = pressedB1();
-	xboneReport.b = pressedB2();
-	xboneReport.x = pressedB3();
-	xboneReport.y = pressedB4();
-	xboneReport.leftShoulder = pressedL1();
-	xboneReport.rightShoulder = pressedR1();
-	xboneReport.leftThumbClick = pressedL3();
-	xboneReport.rightThumbClick = pressedR3();
-	xboneReport.start = pressedS2();
-	xboneReport.back = pressedS1();
-	xboneReport.guide = 0; // always 0
-	xboneReport.sync = 0; 
-	xboneReport.dpadUp = pressedUp();
-	xboneReport.dpadDown = pressedDown();
-	xboneReport.dpadLeft = pressedLeft();
-	xboneReport.dpadRight = pressedRight();
+	// This is due to our tusb_driver.cpp checking memcmp(last_report, report, size)
+	memset(&newInputReport, 0, sizeof(XboxOneGamepad_Data_t));
+	GIP_HEADER((&newInputReport), GIP_INPUT_REPORT, false, last_report_counter);
 
-	xboneReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN;
-	xboneReport.leftStickY = static_cast<int16_t>(~state.ly) + INT16_MIN;
-	xboneReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN;
-	xboneReport.rightStickY = static_cast<int16_t>(~state.ry) + INT16_MIN;
+	newInputReport.a = pressedB1();
+	newInputReport.b = pressedB2();
+	newInputReport.x = pressedB3();
+	newInputReport.y = pressedB4();
+	newInputReport.leftShoulder = pressedL1();
+	newInputReport.rightShoulder = pressedR1();
+	newInputReport.leftThumbClick = pressedL3();
+	newInputReport.rightThumbClick = pressedR3();
+	newInputReport.start = pressedS2();
+	newInputReport.back = pressedS1();
+	newInputReport.guide = 0; // always 0
+	newInputReport.sync = 0; 
+	newInputReport.dpadUp = pressedUp();
+	newInputReport.dpadDown = pressedDown();
+	newInputReport.dpadLeft = pressedLeft();
+	newInputReport.dpadRight = pressedRight();
+
+	newInputReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN;
+	newInputReport.leftStickY = static_cast<int16_t>(~state.ly) + INT16_MIN;
+	newInputReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN;
+	newInputReport.rightStickY = static_cast<int16_t>(~state.ry) + INT16_MIN;
 
 	if (hasAnalogTriggers)
 	{
-		xboneReport.leftTrigger = pressedL2() ? 0x03FF : state.lt;
-		xboneReport.rightTrigger = pressedR2() ? 0x03FF : state.rt;
+		newInputReport.leftTrigger = pressedL2() ? 0x03FF : state.lt;
+		newInputReport.rightTrigger = pressedR2() ? 0x03FF : state.rt;
 	}
 	else
 	{
-		xboneReport.leftTrigger = pressedL2() ? 0x03FF : 0;
-		xboneReport.rightTrigger = pressedR2() ? 0x03FF : 0;
+		newInputReport.leftTrigger = pressedL2() ? 0x03FF : 0;
+		newInputReport.rightTrigger = pressedR2() ? 0x03FF : 0;
 	}
 
-	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
-
 	// We changed inputs since generating our last report, increment last report counter (but don't update until success)
-	if ( memcmp(&last_report[4], &((uint8_t*)&xboneReport)[4], xboneReportSize-4) != 0 ) {
-		xboneReport.Header.sequence = last_report_counter+1;
+	if ( memcmp(&last_report[4], &((uint8_t*)&newInputReport)[4], sizeof(XboxOneGamepad_Data_t)-4) != 0 ) {
+		xboneReportSize = sizeof(XboxOneGamepad_Data_t);
+		memcpy(&xboneReport, &newInputReport, xboneReportSize);
+		xboneReport.Header.sequence = (last_report_counter + 1 == 0) ? 1 : last_report_counter + 1;
 	}
 
 	return &xboneReport;
