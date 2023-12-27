@@ -792,15 +792,19 @@ void Gamepad::sendReportSuccess() {
 			break;
 		case INPUT_MODE_XBONE:
 			if ( xboneReport.Header.command == GIP_KEEPALIVE) {
+				keep_alive_timer = to_ms_since_boot(get_absolute_time());
 				keep_alive_sequence++; // will rollover
 				if ( keep_alive_sequence == 0 )
 					keep_alive_sequence = 1;
 			} else if ( xboneReport.Header.command == GIP_INPUT_REPORT ) {
-				if ( memcmp((void*)&((uint8_t*)&xboneReport)[4], xboneIdle, sizeof(xboneIdle)) != 0 ) {
+				// Successfully sent report, actually increment last report counter!
+				if ( memcmp(&last_report[4], &((uint8_t*)&xboneReport)[4], xboneReportSize-4) != 0) {
 					last_report_counter++;
-					if ( last_report_counter == 0 )
+					if (last_report_counter == 0) {
 						last_report_counter = 1;
-				} 
+					}
+					memcpy(last_report, &xboneReport, xboneReportSize);
+				}
 			}
 			break;
 		default:
@@ -812,12 +816,14 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 {
 	// No input until auth is ready
 	if ( XboxOneData::getInstance().getAuthCompleted() == false ) {
-		GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, 0);
+		GIP_HEADER((&xboneReport), GIP_INPUT_REPORT, false, last_report_counter);
+		memcpy((void*)&((uint8_t*)&xboneReport)[4], xboneIdle, sizeof(xboneIdle));
+		xboneReportSize = sizeof(XboxOneGamepad_Data_t);
 		return &xboneReport;
 	}
 
 	uint32_t now = to_ms_since_boot(get_absolute_time());
-	// Send Keep-Alive every 15 seconds
+	// Send Keep-Alive every 15 seconds (keep_alive_timer updates if send is successful)
 	if ( (now - keep_alive_timer) > 15000) {
 		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
 		xboneReport.Header.command = GIP_KEEPALIVE;
@@ -826,43 +832,33 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 		xboneReport.Header.length = 4;
 		static uint8_t keepAlive[] = { 0x80, 0x00, 0x00, 0x00 };
 		memcpy(&((uint8_t*)&xboneReport)[4], &keepAlive, sizeof(keepAlive));
-		keep_alive_timer = now;
-		
 		xboneReportSize = sizeof(GipHeader_t) + sizeof(keepAlive);
-
 		return &xboneReport;
 	}
-
-	// Guide button toggles on/off on our virtual keycode sequence
-	if ( pressedA1() ) {
-		if (xb1_guide_pressed == false ) { // toggle on if we haven't sent before
+	
+	// Virtual Keycode for Guide Button
+	if ( pressedA1() || xb1_guide_pressed == true ) {
+		// In a change-state
+		if ( (pressedA1() && xb1_guide_pressed == false) ||
+			(!pressedA1() && xb1_guide_pressed == true)) {
 			virtual_keycode_sequence++; // will rollover
 			if ( virtual_keycode_sequence == 0 )
 				virtual_keycode_sequence = 1;
-			xb1_guide_pressed = true;
 			memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
 			xboneReport.Header.command = GIP_VIRTUAL_KEYCODE;
 			xboneReport.Header.internal = 1;
 			xboneReport.Header.sequence = virtual_keycode_sequence;
-			xboneReport.Header.length = sizeof(xb1_guide_on);
-			memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_on, sizeof(xb1_guide_on));
-			xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_on);
-			return &xboneReport;
-		} else {
-			return &xboneReport; // do not change the report otherwise and prevent other buttons
+			if ( pressedA1() ) {
+				xb1_guide_pressed = true;
+				xboneReport.Header.length = sizeof(xb1_guide_on);
+				memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_on, sizeof(xb1_guide_on));
+			} else {
+				xb1_guide_pressed = false;
+				xboneReport.Header.length = sizeof(xb1_guide_off);
+				memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_off, sizeof(xb1_guide_off));
+			}
 		}
-	} else if ( !pressedA1() && xb1_guide_pressed == true ) { // toggle off
-		virtual_keycode_sequence++; // will rollover
-		if ( virtual_keycode_sequence == 0 )
-			virtual_keycode_sequence = 1;
-		xb1_guide_pressed = false;
-		memset(&xboneReport.Header, 0, sizeof(GipHeader_t));
-		xboneReport.Header.command = GIP_VIRTUAL_KEYCODE;
-		xboneReport.Header.internal = 1;
-		xboneReport.Header.sequence = virtual_keycode_sequence;
-		xboneReport.Header.length = sizeof(xb1_guide_off);
-		memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_off, sizeof(xb1_guide_off));
-		xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_off);
+		xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_on);
 		return &xboneReport;
 	}
 
@@ -902,6 +898,11 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 	}
 
 	xboneReportSize = sizeof(XboxOneGamepad_Data_t);
+
+	// We changed inputs since generating our last report, increment last report counter (but don't update until success)
+	if ( memcmp(&last_report[4], &((uint8_t*)&xboneReport)[4], xboneReportSize-4) != 0 ) {
+		xboneReport.Header.sequence = last_report_counter+1;
+	}
 
 	return &xboneReport;
 }

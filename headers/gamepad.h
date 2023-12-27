@@ -90,6 +90,8 @@ public:
     PSClassicReport *getPSClassicReport();
     XboxOriginalReport *getXboxOriginalReport();
 
+	uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
+
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
 	 */
