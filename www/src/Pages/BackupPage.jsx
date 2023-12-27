@@ -230,9 +230,6 @@ export default function BackupPage() {
 
 	return (
 		<>
-			<Section title={t('BackupPage:header-text')}>
-				<i>{t('BackupPage:sub-header-text')}</i>
-			</Section>
 			<Section title={t('BackupPage:save-header-text')}>
 				<Col>
 					<Form.Group className={'row mb-3'}>

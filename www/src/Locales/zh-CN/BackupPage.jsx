@@ -1,6 +1,4 @@
 export default {
-	'header-text': '数据备份和恢复',
-	'sub-header-text': '可以使用不同版本的备份',
 	'saved-success-message': '保存为：{{name}}',
 	'save-header-text': '备份至文件',
 	'save-export-option-label': '导出 {{api}} 选项',
