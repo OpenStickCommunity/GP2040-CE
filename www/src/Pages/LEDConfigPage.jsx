@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 
 import DraggableListGroup from '../Components/DraggableListGroup';
