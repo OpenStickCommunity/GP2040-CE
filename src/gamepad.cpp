@@ -901,7 +901,9 @@ XboxOneGamepad_Data_t *Gamepad::getXBOneReport()
 	if ( memcmp(&last_report[4], &((uint8_t*)&newInputReport)[4], sizeof(XboxOneGamepad_Data_t)-4) != 0 ) {
 		xboneReportSize = sizeof(XboxOneGamepad_Data_t);
 		memcpy(&xboneReport, &newInputReport, xboneReportSize);
-		xboneReport.Header.sequence = (last_report_counter + 1 == 0) ? 1 : last_report_counter + 1;
+		xboneReport.Header.sequence = last_report_counter + 1;
+		if ( xboneReport.Header.sequence == 0 )
+			xboneReport.Header.sequence = 1;
 	}
 
 	return &xboneReport;
