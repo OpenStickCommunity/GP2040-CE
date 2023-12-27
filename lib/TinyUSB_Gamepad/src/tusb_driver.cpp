@@ -132,8 +132,8 @@ const usbd_class_driver_t *usbd_app_driver_get_cb(uint8_t *driver_count)
 			case INPUT_MODE_PS4:
 				return &ps4_driver;
 
-      case INPUT_MODE_XBOXORIGINAL:
-        return xid_get_driver();
+			case INPUT_MODE_XBOXORIGINAL:
+				return xid_get_driver();
 
 			case INPUT_MODE_XBONE:
 				return &xbone_driver;
