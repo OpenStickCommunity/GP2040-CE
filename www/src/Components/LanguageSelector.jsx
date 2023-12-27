@@ -3,7 +3,6 @@ import { Dropdown } from 'react-bootstrap';
 import { AppContext } from '../Contexts/AppContext';
 import { useTranslation } from 'react-i18next';
 import GlobeIcon from '../Icons/Globe';
-import GbFlag from '../Icons/Flags/Gb';
 import UsFlag from '../Icons/Flags/Us';
 import zhCNFlag from '../Icons/Flags/zhCN';
 import ptBRFlag from '../Icons/Flags/ptBR';
@@ -11,7 +10,6 @@ import deDEFlag from '../Icons/Flags/De';
 
 const dropdownOptions = [
 	{ code: 'en', icon: UsFlag },
-	{ code: 'en-GB', icon: GbFlag },
 	{ code: 'pt-BR', icon: ptBRFlag },
 	{ code: 'zh-CN', icon: zhCNFlag },
 	{ code: 'de-DE', icon: deDEFlag },
