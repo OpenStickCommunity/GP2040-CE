@@ -509,7 +509,6 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 		macroPin: -1,
 		macroBoardLedEnabled: 1,
 		InputMacroAddonEnabled: 1,
-		usedPins: Object.values(picoController),
 	});
 });
 
