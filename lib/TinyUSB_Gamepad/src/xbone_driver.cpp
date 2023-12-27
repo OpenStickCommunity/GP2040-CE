@@ -31,7 +31,7 @@
 
 static bool waiting_ack=false;
 static uint32_t waiting_ack_timeout=0;
-static uint8_t xbone_out_buffer[XBONE_OUT_SIZE] = {};
+uint8_t xbone_out_buffer[XBONE_OUT_SIZE] = {};
 static uint32_t timer_wait_for_announce = 0;
 static uint32_t xbox_one_powered_on = false;
 
