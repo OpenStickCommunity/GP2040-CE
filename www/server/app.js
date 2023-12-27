@@ -189,7 +189,7 @@ app.get('/api/getLedOptions', (req, res) => {
 	return res.send({
 		brightnessMaximum: 255,
 		brightnessSteps: 5,
-		dataPin: 15,
+		dataPin: 22,
 		ledFormat: 0,
 		ledLayout: 1,
 		ledsPerButton: 2,
