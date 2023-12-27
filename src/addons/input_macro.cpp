@@ -6,10 +6,10 @@
 
 bool InputMacro::available() {
     // Macro Button initialized by void Gamepad::setup()
-    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
-        switch( pinMappings[pin] ) {
+        switch( pinMappings[pin].action ) {
             case GpioAction::BUTTON_PRESS_MACRO:
             case GpioAction::BUTTON_PRESS_MACRO_1:
             case GpioAction::BUTTON_PRESS_MACRO_2:
@@ -26,12 +26,12 @@ bool InputMacro::available() {
 }
 
 void InputMacro::setup() {
-    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     macroButtonMask = 0;
     memset(macroPinMasks, 0, sizeof(macroPinMasks));
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
-        switch( pinMappings[pin] ) {
+        switch( pinMappings[pin].action ) {
             case GpioAction::BUTTON_PRESS_MACRO:
                 macroButtonMask = 1 << pin;
                 break;
@@ -253,12 +253,12 @@ void InputMacro::preprocess()
 }
 
 void InputMacro::reinit() {
-    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     macroButtonMask = 0;
     memset(macroPinMasks, 0, sizeof(macroPinMasks));
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
-        switch( pinMappings[pin] ) {
+        switch( pinMappings[pin].action ) {
             case GpioAction::BUTTON_PRESS_MACRO:
                 macroButtonMask = 1 << pin;
                 break;

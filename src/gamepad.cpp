@@ -33,7 +33,7 @@ Gamepad::Gamepad() :
 void Gamepad::setup()
 {
 	// Configure pin mapping
-	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+	GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
 
 	mapDpadUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
@@ -57,7 +57,7 @@ void Gamepad::setup()
 
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
 	{
-		switch (pinMappings[pin]) {
+		switch (pinMappings[pin].action) {
 			case GpioAction::BUTTON_PRESS_UP:	mapDpadUp->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_DOWN:	mapDpadDown->pinMask |= 1 << pin; break;
 			case GpioAction::BUTTON_PRESS_LEFT:	mapDpadLeft->pinMask |= 1 << pin; break;
