@@ -225,6 +225,7 @@ enum GpioAction
     BUTTON_PRESS_MACRO_4         = 37;
     BUTTON_PRESS_MACRO_5         = 38;
     BUTTON_PRESS_MACRO_6         = 39;
+    CUSTOM_BUTTON_COMBO          = 40;
 }
 
 enum GpioDirection
