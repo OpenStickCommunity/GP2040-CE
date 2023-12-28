@@ -188,8 +188,12 @@ const boards = {
 			category: 'closed',
 			desc: () => (
 				<p>
-					The SGF Bridget MX stickless controller is based on the open source
-					flatbox design by jfedor.
+					Configuration for the {' '}
+					<a href="https://haute42.com/">
+					   Haute42 Series
+					</a>
+					. The Haute42 products are all compatible with the same configuration file.
+					These products include the Haute42 Pad M Series, T Series, G Series, and mini. 
 				</p>
 			),
 		},
