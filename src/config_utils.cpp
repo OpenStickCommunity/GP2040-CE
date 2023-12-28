@@ -341,6 +341,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin3, PLED3_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledPin4, PLED4_PIN);
     INIT_UNSET_PROPERTY(config.ledOptions, pledColor, static_cast<uint32_t>(PLED_COLOR.r) << 16 | static_cast<uint32_t>(PLED_COLOR.g) << 8 | static_cast<uint32_t>(PLED_COLOR.b)); 
+    // hacky, but previous versions used PLED1_PIN for either PWM GPIO pins or RGB indexes
+    // so we're just going to copy the defined values into both locations and have the migration
+    // to pin mappings sort it out
+    INIT_UNSET_PROPERTY(config.ledOptions, pledIndex1, PLED1_PIN);
+    INIT_UNSET_PROPERTY(config.ledOptions, pledIndex2, PLED2_PIN);
+    INIT_UNSET_PROPERTY(config.ledOptions, pledIndex3, PLED3_PIN);
+    INIT_UNSET_PROPERTY(config.ledOptions, pledIndex4, PLED4_PIN);
 
     // animationOptions
     INIT_UNSET_PROPERTY(config.animationOptions, baseAnimationIndex, LEDS_BASE_ANIMATION_INDEX);
@@ -1015,10 +1022,22 @@ void gpioMappingsMigrationCore(Config& config)
     }
 
     markAddonPinIfUsed(config.ledOptions.dataPin);
-    markAddonPinIfUsed(config.ledOptions.pledPin1);
-    markAddonPinIfUsed(config.ledOptions.pledPin2);
-    markAddonPinIfUsed(config.ledOptions.pledPin3);
-    markAddonPinIfUsed(config.ledOptions.pledPin4);
+    // check if PLED PINs are actually GPIOs or not
+    // pledPin used to be used for RGB indexes, so we should only mark the GPIO
+    // as assigned to addon if in PWM mode
+    if (config.ledOptions.pledType == PLEDType::PLED_TYPE_PWM) {
+        // fields are being used for PWM, so they are GPIOs; reserve them
+        markAddonPinIfUsed(config.ledOptions.pledPin1);
+        markAddonPinIfUsed(config.ledOptions.pledPin2);
+        markAddonPinIfUsed(config.ledOptions.pledPin3);
+        markAddonPinIfUsed(config.ledOptions.pledPin4);
+    } else {
+        // default init copied the values into the new fields, pledIndex1-4, so unset these
+        config.ledOptions.pledPin1 = -1;
+        config.ledOptions.pledPin2 = -1;
+        config.ledOptions.pledPin3 = -1;
+        config.ledOptions.pledPin4 = -1;
+    }
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinX);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc1PinY);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinX);
