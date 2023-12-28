@@ -9,17 +9,17 @@ description: "Add-on to change input mode of the DPad on your controller"
 
 # Joystick Selection Slider
 
-Purpose: This add-on is intended to allow users change the input mode of the primary gamepad directional inputs between D-Pad, Left analog joystick, and Right analog joystick using a three position toggle switch or slide toggle.
+Purpose: This add-on is intended to allow users change the input mode of the primary gamepad directional inputs between D-Pad, Left analog joystick, and Right analog joystick using a two/three position toggle switch or slide toggle.
 
 ![GP2040-CE Configurator - Add-Ons Joystick Slider](../assets/images/gpc-add-ons-joystick-slider.png)
 
 ## Web Configurator Options
 
-- `Slider Pin Mode Default` - The directional input mode that is active when neither `Slider Pin One` nor `Slider Pin Two` are held.
-- `Slider Pin Mode One` - The directional input mode that is active when `Slider Pin One` is held.
-- `Slider Pin One` - The GPIO pin used to activate the `Slider Pin Mode One` while held.
-- `Slider Pin Mode Two` - The directional input mode that is active when `Slider Pin Two` is held.
-- `Slider Pin Two` - The GPIO pin used to activate the `Slider Pin Mode Two` while held.
+- `Slider Pin Mode Default` - The directional input mode that is active when no `D-Pad Mode` pins are held.
+
+The pin(s) are configured [on the core Pin Mapping page](../web-configurator/menu-pages/pin-mapping) by choosing the desired input mode for the selected pin.
+
+![GP2040-CE Configurator - Joystick Mode Pin Selection in the Pin Mapping Page](../assets/images/gpc-add-ons-joystick-slider-pin-example.png)
 
 ### Slider Pin Mode Options
 
@@ -31,12 +31,12 @@ Purpose: This add-on is intended to allow users change the input mode of the pri
 
 ### Requirements
 
-The GPIO pins set in `Slider Pin Mode One` and `Slider Pin Mode Two` will each need to be brought and kept low to remain active to use that mode and when using the default mode, neither pin can be brought low. Therefore, a 3 position toggle switch or slide toggle is necessary for proper use of this add-on.
+The GPIO pins set on the Pin Mappings page will each need to be brought and kept low to remain active to use that mode, and when using the default mode, none of the pins can be brought low. Therefore, a 2 or 3 position toggle switch or slide toggle is necessary for proper use of this add-on.
 
 ### Installation
 
-Installation will depend on whether a toggle switch or slide toggle is used. In general, on one side of the switch, connect the pin to the GPIO pin set in `Slider Pin Mode One`. On the other side of the switch, connect the pin to the GPIO pin set in `Slider Pin Mode Two`. On the center pin, connect it to any GND pin.
+Installation will depend on whether a toggle switch or slide toggle is used. In general, on one side of the switch, connect the selection pin(s) to the GPIO pin(s) set. On the center pin, connect it to any GND pin.
 
 ## Miscellaneous Notes
 
-None.
+Enabling this add-on will disable the use of the DPad [Hotkey Shortcuts](../hotkeys.mdx), resulting in the toggle switch or slide toggle set up with this add-on being the only method to set the DPad mode.
