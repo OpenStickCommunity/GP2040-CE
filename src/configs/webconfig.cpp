@@ -39,7 +39,7 @@ using namespace std;
 
 extern struct fsdata_file file__index_html[];
 
-const static char* spaPaths[] = { "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping" };
+const static char* spaPaths[] = { "/backup", "/display-config", "/led-config", "/pin-mapping", "/keyboard-mapping", "/settings", "/reset-settings", "/add-ons", "/custom-theme", "/macro", "/peripheral-mapping" };
 const static char* excludePaths[] = { "/css", "/images", "/js", "/static" };
 const static uint32_t rebootDelayMs = 500;
 static string http_post_uri;
@@ -158,7 +158,7 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
 				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
 				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
-			}            
+			}
 		}
 	}
 }
@@ -1393,7 +1393,7 @@ std::string setWiiControls()
 {
 	DynamicJsonDocument doc = get_post_data();
 	WiiOptions& wiiOptions = Storage::getInstance().getAddonOptions().wiiOptions;
-    
+
     readDoc(wiiOptions.controllers.nunchuk.buttonC, doc, "nunchuk.buttonC");
     readDoc(wiiOptions.controllers.nunchuk.buttonZ, doc, "nunchuk.buttonZ");
     readDoc(wiiOptions.controllers.nunchuk.stick.x.axisType, doc, "nunchuk.analogStick.x.axisType");
@@ -1754,7 +1754,7 @@ std::string setMacroAddonOptions()
 
 		if (++macrosIndex >= MAX_MACRO_LIMIT) break;
 	}
-	
+
 	macroOptions.macroList_count = MAX_MACRO_LIMIT;
 
 	Storage::getInstance().save();
