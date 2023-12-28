@@ -15,13 +15,13 @@ Purpose: This add-on is intended to allow additional digital buttons to be used 
 
 ## Web Configurator Options
 
-- `Dual Up Pin` - The GPIO pin used for the secondary Up direction.
-- `Dual Down Pin` - The GPIO pin used for the secondary Down direction.
-- `Dual Left Pin` - The GPIO pin used for the secondary Left direction.
-- `Dual Right Pin` - The GPIO pin used for the secondary Right direction.
 - `Dual D-Pad Mode` - Choose if this should act as an additional instance of a D-Pad, Left analog joystick, or Right analog joystick.
 - `Combination Mode` - Choose how these direction inputs should be combined with gamepad directions.
 - `Dual Directional 4-Way Joystick Mode` - Prevents diagonal inputs from being sent when enabled.
+
+The pin(s) are configured [on the core Pin Mapping page](../web-configurator/menu-pages/pin-mapping) by choosing the desired input direction for the selected pin.
+
+![GP2040-CE Configurator - Dual Directional Input Pin Selection in the Pin Mapping Page](../assets/images/gpc-add-ons-dual-directional-pin-example.png)
 
 ### Dual D-Pad Mode Values
 
@@ -40,7 +40,7 @@ Purpose: This add-on is intended to allow additional digital buttons to be used 
 
 ### Requirements
 
-Additional buttons are required for each of the additional directions desired for a minimum of one button and a maximum of 4 buttons.
+Additional buttons are required for each of the additional directions desired.
 
 ### Installation
 
@@ -48,4 +48,4 @@ For each button, connect one side of the button to their respective GPIO pin as 
 
 ## Miscellaneous Notes
 
-"Gamepad direction" refer to the directions that are mapped in `Web Configurator > Configuration > Pin Mapping` whereas "Dual Direction Input directions" refers to the directions set up within this add-on.
+"Gamepad direction" refers to the core directions ("Up"), whereas "Dual Direction Input directions" refers to the directions used by this add-on ("DDI Up").
