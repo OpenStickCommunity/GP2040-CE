@@ -104,34 +104,6 @@ const boards = {
 	],
 	'Community Devices': [
 		{
-			name: 'Alpaca-OwO',
-			configName: 'AlpacaOwO',
-			pinout: null,
-			website: 'https://github.com/Project-Alpaca/Alpaca-OwO/',
-			image: require('@site/docs/assets/boards/AlpacaOwO.jpg').default,
-			category: 'open',
-			desc: () => (
-				<p>
-					Arcade controller I/O platform designed by{' '}
-					<a href="https://github.com/dogtopus">dogtopus</a>.
-				</p>
-			),
-		},
-		{
-			name: 'BatiKING DURAL',
-			configName: 'DURAL',
-			pinout: null,
-			website: 'https://github.com/BatiKING/DURAL_DIY',
-			image: require('@site/docs/assets/boards/DURAL.jpg').default,
-			category: 'legacy',
-			desc: () => (
-				<p>
-					Configuration for the ScrubTier BentoBox v1 and v2 as well as the
-					GGEZStick Keebfighters.
-				</p>
-			),
-		},
-		{
 			name: 'Flatbox Rev 4',
 			configName: 'FlatboxRev4',
 			pinout: null,
@@ -208,6 +180,24 @@ const boards = {
 			),
 		},
 		{
+			name: 'Haute42 Series',
+			configName: 'Haute42',
+			pinout: null,
+			website: 'https://haute42.com/',
+			image: require('@site/docs/assets/boards/Haute42.jpg').default,
+			category: 'closed',
+			desc: () => (
+				<p>
+					Configuration for the {' '}
+					<a href="https://haute42.com/">
+					   Haute42 Series
+					</a>
+					. The Haute42 products are all compatible with the same configuration file.
+					These products include the Haute42 Pad M Series, T Series, G Series, and mini. 
+				</p>
+			),
+		},
+		{
 			name: 'Mavercade Keebfighter',
 			configName: 'MavercadeKeebfighter',
 			pinout: null,
@@ -256,20 +246,6 @@ const boards = {
 					<a href="https://github.com/TheTrainGoes"> 
 						TheTrain
 					</a>.
-				</p>
-			),
-		},
-		{
-			name: 'PicoAnn',
-			configName: 'PicoAnn',
-			pinout: null,
-			website: '',
-			image: require('@site/docs/assets/boards/PicoAnn.jpg').default,
-			category: 'legacy',
-			desc: () => (
-				<p>
-					This configuration is commonly used with Aliexpress boards. It cannot
-					be guaranteed that this configuration will work for all devices.
 				</p>
 			),
 		},
@@ -414,20 +390,30 @@ const boards = {
 			),
 		},
 		{
-			name: 'SGF Flatbox',
-			configName: 'SGFDevices',
+			name: 'SGF Bridget',
+			configName: 'SGFBridget',
 			pinout: null,
-			website: 'https://github.com/sgfdevices/SGFlatbox',
-			image: require('@site/docs/assets/boards/SGFDevices.jpg').default,
+			website: 'https://sgfdevices.com/products/sgf-bridget-mx-stickless-controller',
+			image: require('@site/docs/assets/boards/SGFBridget.jpg').default,
 			category: 'open',
 			desc: () => (
 				<p>
-					Configuration for the{' '}
-					<a href="https://github.com/sgfdevices/SGFlatbox">
-						SGF Flatbox-based controllers
-					</a>
-					, based on the excellent revisions of the Flatbox design by jfedor2
-					powered by an RP2040 MCU.
+					The SGF Bridget MX stickless controller is based on the open-source
+					flatbox rev4 design by jfedor.
+				</p>
+			),
+		},
+		{
+			name: 'SGF Faust',
+			configName: 'SGFFaust',
+			pinout: null,
+			website: 'https://sgfdevices.com/products/sgf-faust-all-button-controller',
+			image: require('@site/docs/assets/boards/SGFFaust.jpg').default,
+			category: 'closed',
+			desc: () => (
+				<p>
+					The SGF Faust stickless controller is an all new design 
+					from SGF Devices running on the open source GP2040-CE firmware.
 				</p>
 			),
 		},
