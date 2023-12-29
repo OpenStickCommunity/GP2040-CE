@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+
+import DraggableListGroup from '../Components/DraggableListGroup';
+
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import orderBy from 'lodash/orderBy';
@@ -475,6 +478,23 @@ export default function LEDConfigPage() {
 								/>
 							</div>
 						</Row>
+					</Section>
+					<Section title={t('LedConfig:rgb-order.header-text')}>
+						<p className="card-text">
+							{t('LedConfig:rgb-order.sub-header-text')}
+						</p>
+						<p className="card-text">
+							{t('LedConfig:rgb-order.sub-header1-text')}
+						</p>
+						<DraggableListGroup
+							groupName="test"
+							titles={[
+								t('LedConfig:rgb-order.available-header-text'),
+								t('LedConfig:rgb-order.assigned-header-text'),
+							]}
+							dataSources={dataSources}
+							onChange={(a) => ledOrderChanged(a, values.ledsPerButton)}
+						/>
 					</Section>
 					<Section title={t('LedConfig:player.header-text')}>
 						<Form.Group as={Col}>

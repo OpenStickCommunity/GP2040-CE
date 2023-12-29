@@ -154,6 +154,7 @@ void TurboInput::process()
     if (bTurboState) {
         if (buttonsPressed && (lastPressed != buttonsPressed)) {
             turboButtonsPressed ^= buttonsPressed; // Toggle Turbo
+                        gamepad->turboState.buttons = turboButtonsPressed; //turboButtonsPressed & TURBO_BUTTON_MASK; //&= TURBO_BUTTON_MASK;
             if ( options.shmupModeEnabled ) {
                 turboButtonsPressed |= alwaysEnabled;  // SHMUP Always-on Buttons Set
             }

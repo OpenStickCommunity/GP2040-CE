@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: [Pico, PicoW, AlpacaOwO, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, FlatboxRev5RGB, FlatboxRev5Southpaw, KB2040, KeyboardConverter, Haute42, Liatris, MavercadeKeebfighter, OpenCore0, OpenCore0WASD, PicoAnn, PicoFightingBoard, RanaTadpole, ReflexCtrlSNES, ReflexEncodeV1.2, ReflexEncodeV2.0, RP2040AdvancedBreakoutBoard, RP2040AdvancedBreakoutBoardUSBPassthrough, RP2040MiniBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress, SGFBridget, SGFFaust  ]
+        GP2040_BOARDCONFIG: [Pico, PicoW, BentoBox, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, FlatboxRev5RGB, FlatboxRev5Southpaw, KB2040, KeyboardConverter, Haute42, Liatris, MavercadeKeebfighter, OpenCore0, OpenCore0WASD, PicoFightingBoard, RanaTadpole, ReflexCtrlSNES, ReflexEncodeV1.2, ReflexEncodeV2.0, RP2040AdvancedBreakoutBoard, RP2040AdvancedBreakoutBoardUSBPassthrough, RP2040MiniBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress, SGFBridget, SGFFaust]
 
     steps:
     #Global Setup
@@ -34,7 +34,7 @@ jobs:
         fetch-tags: true
 
     - name: Setup SDK pipeline
-      uses: Fortinbra/RaspberryPiPicoBuild@v1
+      uses: Fortinbra/RaspberryPiPicoBuild@v2
 
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3.0.2

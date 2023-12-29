@@ -787,10 +787,10 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         config.has_displayOptions = true;
         SET_PROPERTY(displayOptions, enabled, legacyBoardOptions.hasI2CDisplay);
         SET_PROPERTY(displayOptions, i2cBlock, legacyBoardOptions.i2cBlock);
-        SET_PROPERTY(displayOptions, i2cSDAPin, legacyBoardOptions.i2cSDAPin);
-        SET_PROPERTY(displayOptions, i2cSCLPin, legacyBoardOptions.i2cSCLPin);
+        SET_PROPERTY(displayOptions, deprecatedI2cSDAPin, legacyBoardOptions.i2cSDAPin);
+        SET_PROPERTY(displayOptions, deprecatedI2cSCLPin, legacyBoardOptions.i2cSCLPin);
         SET_PROPERTY(displayOptions, i2cAddress, legacyBoardOptions.displayI2CAddress);
-        SET_PROPERTY(displayOptions, i2cSpeed, legacyBoardOptions.i2cSpeed);
+        SET_PROPERTY(displayOptions, deprecatedI2cSpeed, legacyBoardOptions.i2cSpeed);
         if (isValidButtonLayout(legacyBoardOptions.buttonLayout))
         {
             SET_PROPERTY(displayOptions, buttonLayout, static_cast<ButtonLayout>(legacyBoardOptions.buttonLayout));
@@ -985,10 +985,10 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         config.addonOptions.has_analogADS1219Options = true;
         SET_PROPERTY(analogADS1219Options, enabled, legacyAddonOptions.I2CAnalog1219InputEnabled);
         SET_PROPERTY(analogADS1219Options, i2cBlock, legacyAddonOptions.i2cAnalog1219Block);
-        SET_PROPERTY(analogADS1219Options, i2cSDAPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SDAPin));
-        SET_PROPERTY(analogADS1219Options, i2cSCLPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SCLPin));
+        SET_PROPERTY(analogADS1219Options, deprecatedI2cSDAPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SDAPin));
+        SET_PROPERTY(analogADS1219Options, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SCLPin));
         SET_PROPERTY(analogADS1219Options, i2cAddress, legacyAddonOptions.i2cAnalog1219Address);
-        SET_PROPERTY(analogADS1219Options, i2cSpeed, legacyAddonOptions.i2cAnalog1219Speed);
+        SET_PROPERTY(analogADS1219Options, deprecatedI2cSpeed, legacyAddonOptions.i2cAnalog1219Speed);
 
         SliderOptions& sliderOptions = config.addonOptions.sliderOptions;
         config.addonOptions.has_sliderOptions = true;
@@ -1066,9 +1066,9 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         config.addonOptions.has_wiiOptions = true;
         SET_PROPERTY(wiiOptions, enabled, legacyAddonOptions.WiiExtensionAddonEnabled);
         SET_PROPERTY(wiiOptions, i2cBlock, legacyAddonOptions.wiiExtensionBlock);
-        SET_PROPERTY(wiiOptions, i2cSDAPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSDAPin));
-        SET_PROPERTY(wiiOptions, i2cSCLPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSCLPin));
-        SET_PROPERTY(wiiOptions, i2cSpeed, legacyAddonOptions.wiiExtensionSpeed);
+        SET_PROPERTY(wiiOptions, deprecatedI2cSDAPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSDAPin));
+        SET_PROPERTY(wiiOptions, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSCLPin));
+        SET_PROPERTY(wiiOptions, deprecatedI2cSpeed, legacyAddonOptions.wiiExtensionSpeed);
         
         PS4Options& ps4Options = config.addonOptions.ps4Options;
         config.addonOptions.has_ps4Options = true;

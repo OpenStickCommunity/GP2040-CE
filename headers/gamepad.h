@@ -90,6 +90,10 @@ public:
     PSClassicReport *getPSClassicReport();
     XboxOriginalReport *getXboxOriginalReport();
 
+	uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
+	uint8_t last_report_counter = 0;
+	uint16_t last_axis_counter = 0;
+
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
 	 */
@@ -154,6 +158,7 @@ public:
 	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;
+	GamepadState turboState;
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;

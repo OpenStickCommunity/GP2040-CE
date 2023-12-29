@@ -13,22 +13,10 @@ import { I2C_BLOCKS } from '../Data/Peripherals';
 
 export const i2cAnalogScheme = {
 	I2CAnalog1219InputEnabled: yup.number().label('I2C Analog1219 Input Enabled'),
-	i2cAnalog1219SDAPin: yup
-		.number()
-		.label('I2C Analog1219 SDA Pin')
-		.validatePinWhenValue('I2CAnalog1219InputEnabled'),
-	i2cAnalog1219SCLPin: yup
-		.number()
-		.label('I2C Analog1219 SCL Pin')
-		.validatePinWhenValue('I2CAnalog1219InputEnabled'),
 	i2cAnalog1219Block: yup
 		.number()
 		.label('I2C Analog1219 Block')
 		.validateSelectionWhenValue('I2CAnalog1219InputEnabled', I2C_BLOCKS),
-	i2cAnalog1219Speed: yup
-		.number()
-		.label('I2C Analog1219 Speed')
-		.validateNumberWhenValue('I2CAnalog1219InputEnabled'),
 	i2cAnalog1219Address: yup
 		.number()
 		.label('I2C Analog1219 Address')
@@ -37,10 +25,7 @@ export const i2cAnalogScheme = {
 
 export const i2cAnalogState = {
 	I2CAnalog1219InputEnabled: 0,
-	i2cAnalog1219SDAPin: -1,
-	i2cAnalog1219SCLPin: -1,
 	i2cAnalog1219Block: 0,
-	i2cAnalog1219Speed: 400000,
 	i2cAnalog1219Address: 0x40,
 };
 
@@ -51,9 +36,6 @@ const I2CAnalog1219 = ({ values, errors, handleChange, handleCheckbox }) => {
 
 	const handlePeripheralChange = (e) => {
 		let device = getSelectedPeripheral('i2c', e.target.value);
-		values.i2cAnalog1219SDAPin = device.sda;
-		values.i2cAnalog1219SCLPin = device.scl;
-		values.i2cAnalog1219Speed = device.speed;
 		handleChange(e);
 	};
 

@@ -32,9 +32,8 @@
 static bool waiting_ack=false;
 static uint32_t waiting_ack_timeout=0;
 uint8_t xbone_out_buffer[XBONE_OUT_SIZE] = {};
-uint32_t timer_wait_for_announce = 0;
-uint32_t xbox_one_powered_on = false;
-uint32_t keep_alive_timer = 0;
+static uint32_t timer_wait_for_announce = 0;
+static uint32_t xbox_one_powered_on = false;
 
 // Sent report queue every 15 milliseconds
 static uint32_t lastReportQueueSent = 0;

@@ -237,8 +237,6 @@ private:
 	DisplayMode getDisplayMode();
 	DisplayMode prevDisplayMode;
 	uint16_t prevButtonState;
-	bool isFocusModeEnabled;
-	bool focusModePrevState;
 	bool turnOffWhenSuspended;
 	bool isInputHistoryEnabled;
 	InputHistoryAddon* inputHistoryAddon;

@@ -14,6 +14,7 @@
 		"jsencrypt": "^3.3.2",
 		"lodash": "^4.17.21",
 		"react": "^18.2.0",
+		"react-beautiful-dnd": "^13.1.1",
 		"react-bootstrap": "^2.7.4",
 		"react-dom": "^18.2.0",
 		"react-i18next": "^12.3.1",

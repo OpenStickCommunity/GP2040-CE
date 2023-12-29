@@ -19,33 +19,16 @@ export const wiiScheme = {
 		.number()
 		.required()
 		.label('Wii Extensions Enabled'),
-	wiiExtensionSDAPin: yup
-		.number()
-		.required()
-		.label('WiiExtension I2C SDA Pin')
-		.validatePinWhenValue('WiiExtensionAddonEnabled'),
-	wiiExtensionSCLPin: yup
-		.number()
-		.required()
-		.label('WiiExtension I2C SCL Pin')
-		.validatePinWhenValue('WiiExtensionAddonEnabled'),
 	wiiExtensionBlock: yup
 		.number()
 		.required()
 		.label('WiiExtension I2C Block')
 		.validateSelectionWhenValue('WiiExtensionAddonEnabled', I2C_BLOCKS),
-	wiiExtensionSpeed: yup
-		.number()
-		.label('WiiExtension I2C Speed')
-		.validateNumberWhenValue('WiiExtensionAddonEnabled'),
 };
 
 export const wiiState = {
 	WiiExtensionAddonEnabled: 0,
-	wiiExtensionSDAPin: -1,
-	wiiExtensionSCLPin: -1,
 	wiiExtensionBlock: 0,
-	wiiExtensionSpeed: 400000,
 };
 
 const WII_EXTENSION_CONTROLS = [
@@ -154,9 +137,6 @@ const Wii = ({ values, errors, handleChange, handleCheckbox, setFieldValue }) =>
 
     const handlePeripheralChange = (e) => {
         let device = getSelectedPeripheral('i2c', e.target.value);
-        values.wiiExtensionSDAPin = device.sda;
-        values.wiiExtensionSCLPin = device.scl;
-        values.wiiExtensionSpeed = device.speed;
         handleChange(e);
     };
 
