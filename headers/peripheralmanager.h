@@ -26,13 +26,13 @@ public:
     bool isSPIEnabled(uint8_t block);
     bool isUSBEnabled(uint8_t block);
 private:
-    PeripheralI2C* blockI2C0 = nullptr;
-    PeripheralI2C* blockI2C1 = nullptr;
+    PeripheralI2C blockI2C0;
+    PeripheralI2C blockI2C1;
 
-    PeripheralSPI* blockSPI0 = nullptr;
-    PeripheralSPI* blockSPI1 = nullptr;
+    PeripheralSPI blockSPI0;
+    PeripheralSPI blockSPI1;
 
-    PeripheralUSB* blockUSB0 = nullptr;
+    PeripheralUSB blockUSB0;
 };
 
 #endif
