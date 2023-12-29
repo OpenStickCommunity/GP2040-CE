@@ -71,6 +71,54 @@ void DualDirectionalInput::debounce()
     }
 }
 
+
+uint8_t DualDirectionalInput::updateDpadDDI(uint8_t dpad, DpadDirection direction)
+{
+	static bool inList[] = {false, false, false, false, false}; // correspond to DpadDirection: none, up, down, left, right
+	static list<DpadDirection> dpadList;
+
+	if(dpad & getMaskFromDirection(direction))
+	{
+		if(!inList[direction])
+		{
+			dpadList.push_back(direction);
+			inList[direction] = true;
+		}
+	}
+	else
+	{
+		if(inList[direction])
+		{
+			dpadList.remove(direction);
+			inList[direction] = false;
+		}
+	}
+
+	if(dpadList.empty()) {
+		return 0;
+	}
+	else {
+		return getMaskFromDirection(dpadList.back());
+	}
+}
+
+/**
+ * @brief Filter diagonals out of the dpad, making the device work as a 4-way lever.
+ *
+ * The most recent cardinal direction wins.
+ *
+ * @param dpad The GameState.dpad value.
+ * @return uint8_t The new dpad value.
+ */
+uint8_t DualDirectionalInput::filterToFourWayModeDDI(uint8_t dpad)
+{
+	updateDpadDDI(dpad, DIRECTION_UP);
+	updateDpadDDI(dpad, DIRECTION_DOWN);
+	updateDpadDDI(dpad, DIRECTION_LEFT);
+	return updateDpadDDI(dpad, DIRECTION_RIGHT);
+}
+
+
 void DualDirectionalInput::preprocess()
 {
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
@@ -92,7 +140,7 @@ void DualDirectionalInput::preprocess()
 
     // 4-way before SOCD, might have better history without losing any coherent functionality
     if (options.fourWayMode) {
-        dualState = filterToFourWayMode(dualState);
+        dualState = filterToFourWayModeDDI(dualState);
     }
 
     // Combined Mode
