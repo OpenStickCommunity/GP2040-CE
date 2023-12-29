@@ -771,6 +771,10 @@ std::string setLedOptions()
 	docToPin(ledOptions.pledPin2, doc, "pledPin2");
 	docToPin(ledOptions.pledPin3, doc, "pledPin3");
 	docToPin(ledOptions.pledPin4, doc, "pledPin4");
+	readDoc(ledOptions.pledIndex1, doc, "pledIndex1");
+	readDoc(ledOptions.pledIndex2, doc, "pledIndex2");
+	readDoc(ledOptions.pledIndex3, doc, "pledIndex3");
+	readDoc(ledOptions.pledIndex4, doc, "pledIndex4");
 	readDoc(ledOptions.pledColor, doc, "pledColor");
 
 	Storage::getInstance().save();
@@ -823,6 +827,10 @@ std::string getLedOptions()
 	writeDoc(doc, "pledPin2", ledOptions.pledPin2);
 	writeDoc(doc, "pledPin3", ledOptions.pledPin3);
 	writeDoc(doc, "pledPin4", ledOptions.pledPin4);
+	writeDoc(doc, "pledIndex1", ledOptions.pledIndex1);
+	writeDoc(doc, "pledIndex2", ledOptions.pledIndex2);
+	writeDoc(doc, "pledIndex3", ledOptions.pledIndex3);
+	writeDoc(doc, "pledIndex4", ledOptions.pledIndex4);
 	writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
 
 	return serialize_json(doc);
