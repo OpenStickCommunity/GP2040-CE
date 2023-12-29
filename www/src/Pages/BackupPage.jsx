@@ -26,6 +26,11 @@ const API_BINDING = {
 		get: WebApi.getCustomTheme,
 		set: WebApi.setCustomTheme,
 	},
+	macros: {
+		label: 'Macro Mappings',
+		get: WebApi.getMacroAddonOptions,
+		set: WebApi.setMacroAddonOptions,
+	},
 	pins: {
 		label: 'Pin Mappings',
 		get: WebApi.getPinMappings,

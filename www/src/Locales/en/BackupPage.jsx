@@ -10,6 +10,7 @@ export default {
 	'api-gamepad-text': 'Gamepad',
 	'api-led-text': 'LED',
 	'api-ledTheme-text': 'Custom LED Theme',
+	'api-macros-text': 'Macro Mappings',
 	'api-pins-text': 'Pin Mappings',
 	'api-profiles-text': 'Profile Mappings',
 	'api-addons-text': 'Add-Ons',
