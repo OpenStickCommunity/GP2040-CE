@@ -1,3 +1,0 @@
-* `D+` - The GPIO Pin used to carry Data Plus between the USB Host Port and RP2040
-* `D-` - The GPIO Pin used to carry Data Minus between the USB Host Port and RP2040. This cannot be set and will be automatically determined from `D+`.
-* `5V Power (optional)` - The GPIO Pin used to enable 5V power to the host port on the board. This is only applicable to a small number of boards (e.g. Adafruit RP2040 Feather USB Host) and most boards do not require this to be set.
