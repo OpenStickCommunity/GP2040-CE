@@ -1,7 +1,4 @@
 export default {
-	'header-text': 'Data Backup and Restoration',
-	'sub-header-text':
-		'Backups made from different GP2040-CE versions can be used.',
 	'pin-version-warning-text':
 		'Importing pin mappings from files prior to v0.7.6 has no effect.',
 	'saved-success-message': 'Saved as: {{name}}',
