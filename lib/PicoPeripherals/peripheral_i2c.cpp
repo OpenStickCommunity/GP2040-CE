@@ -7,16 +7,16 @@ PeripheralI2C::PeripheralI2C() {
     _SDA = PICO_DEFAULT_I2C_SDA_PIN;
     _SCL = PICO_DEFAULT_I2C_SCL_PIN;
     _Speed = DEFAULT_SPEED;
-    setup();
 #endif
 }
 
-PeripheralI2C::PeripheralI2C(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed) {
+void PeripheralI2C::setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed) {
     if (block < NUM_I2CS) {
         _I2C = _hardwareBlocks[block];
         _SDA = sda;
         _SCL = scl;
         _Speed = speed;
+        configured = true;
         setup();
     } else {
         // currently not supported

@@ -4,15 +4,15 @@ PeripheralUSB::PeripheralUSB() {
     _DP = USB_PERIPHERAL_PIN_DPLUS;
     _Enable5v = USB_PERIPHERAL_PIN_5V;
     _Order = USB_PERIPHERAL_PIN_ORDER;
-    setup();
 }
 
-PeripheralUSB::PeripheralUSB(uint8_t block, int8_t dp, int8_t enable5v, uint8_t order) {
+void PeripheralUSB::setConfig(uint8_t block, int8_t dp, int8_t enable5v, uint8_t order) {
     if (block < NUM_USBS) {
         _USB = _hardwareBlocks[block];
         _DP = dp;
         _Enable5v = enable5v;
         _Order = order;
+        configured = true;
         setup();
     } else {
         // currently not supported

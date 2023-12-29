@@ -8,10 +8,13 @@
 class PeripheralSPI {
 public:
     PeripheralSPI();
-    PeripheralSPI(uint8_t block, uint8_t tx, uint8_t rx, uint8_t sck, uint8_t cs);
     ~PeripheralSPI() {}
 
+    bool configured = false;
+
     spi_inst_t* getController() { return _SPI; }
+
+    void setConfig(uint8_t block, uint8_t tx, uint8_t rx, uint8_t sck, uint8_t cs);
 
 private:
     uint8_t _RX;
