@@ -223,7 +223,9 @@ private:
 	void drawSunga17keyB(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawSunga18keyA(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawSunga18keyAAlt(int startX, int startY, int buttonSize, int buttonPadding);
+	void drawSunga18keyARex(int startX, int startY, int buttonSize, int buttonPadding);
 	void drawSunga18keyB(int startX, int startY, int buttonSize, int buttonPadding);
+	void drawSunga18keyBRex(int startX, int startY, int buttonSize, int buttonPadding);
 	bool pressedUp();
 	bool pressedDown();
 	bool pressedLeft();
