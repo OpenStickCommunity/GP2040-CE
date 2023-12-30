@@ -26,6 +26,11 @@ const API_BINDING = {
 		get: WebApi.getCustomTheme,
 		set: WebApi.setCustomTheme,
 	},
+	macros: {
+		label: 'Macro Mappings',
+		get: WebApi.getMacroAddonOptions,
+		set: WebApi.setMacroAddonOptions,
+	},
 	pins: {
 		label: 'Pin Mappings',
 		get: WebApi.getPinMappings,
@@ -230,9 +235,6 @@ export default function BackupPage() {
 
 	return (
 		<>
-			<Section title={t('BackupPage:header-text')}>
-				<i>{t('BackupPage:sub-header-text')}</i>
-			</Section>
 			<Section title={t('BackupPage:save-header-text')}>
 				<Col>
 					<Form.Group className={'row mb-3'}>

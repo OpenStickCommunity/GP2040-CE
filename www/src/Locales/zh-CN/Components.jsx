@@ -1,6 +1,5 @@
 export default {
 	'language-selector': {
-		'en-GB': 'English UK (英语（英))',
 		en: 'English US (英语)',
 		nl: 'Nederlands (荷兰语)',
 		'pt-BR': 'Português Brasil (巴西葡萄牙语)',

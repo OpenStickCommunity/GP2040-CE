@@ -219,6 +219,10 @@ app.get('/api/getLedOptions', (req, res) => {
 		pledPin2: 13,
 		pledPin3: 14,
 		pledPin4: 15,
+		pledIndex1: 12,
+		pledIndex2: 13,
+		pledIndex3: 14,
+		pledIndex4: 15,
 		pledColor: 65280,
 		turnOffWhenSuspended: 0,
 	});
@@ -505,7 +509,6 @@ app.get('/api/getMacroAddonOptions', (req, res) => {
 		macroPin: -1,
 		macroBoardLedEnabled: 1,
 		InputMacroAddonEnabled: 1,
-		usedPins: Object.values(picoController),
 	});
 });
 

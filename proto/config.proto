@@ -259,6 +259,11 @@ message LEDOptions
 	optional uint32 pledColor = 30;
 
 	optional bool turnOffWhenSuspended = 31;
+
+	optional int32 pledIndex1 = 32;
+	optional int32 pledIndex2 = 33;
+	optional int32 pledIndex3 = 34;
+	optional int32 pledIndex4 = 35;
 };
 
 // This has to be kept in sync with AnimationOptions in AnimationStation.hpp

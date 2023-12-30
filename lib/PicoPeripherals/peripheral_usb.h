@@ -26,11 +26,13 @@
 class PeripheralUSB {
 public:
     PeripheralUSB();
-    PeripheralUSB(uint8_t block, int8_t dp, int8_t enable5v, uint8_t order);
     ~PeripheralUSB() {}
 
+    bool configured = false;
+    
     pio_usb_configuration_t* getController() { return _USB; }
 
+    void setConfig(uint8_t block, int8_t dp, int8_t enable5v, uint8_t order);
 private:
     int8_t _DP;
     uint8_t _Order;

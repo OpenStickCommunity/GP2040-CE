@@ -177,15 +177,15 @@ void NeoPicoLEDAddon::process()
 	if (ledOptions.pledType == PLED_TYPE_RGB) {
 		if (inputMode == INPUT_MODE_XINPUT) { // HACK
 			LEDOptions & ledOptions = Storage::getInstance().getLedOptions();
-			int32_t pledPins[] = { ledOptions.pledPin1, ledOptions.pledPin2, ledOptions.pledPin3, ledOptions.pledPin4 };
+			int32_t pledIndexes[] = { ledOptions.pledIndex1, ledOptions.pledIndex2, ledOptions.pledIndex3, ledOptions.pledIndex4 };
 			for (int i = 0; i < PLED_COUNT; i++) {
-				if (pledPins[i] < 0)
+				if (pledIndexes[i] < 0)
 					continue;
 
 				float level = (static_cast<float>(PLED_MAX_LEVEL - neoPLEDs->getLedLevels()[i]) / static_cast<float>(PLED_MAX_LEVEL));
 				float brightness = as.GetBrightnessX() * level;
 				rgbPLEDValues[i] = ((RGB)ledOptions.pledColor).value(neopico->GetFormat(), brightness);
-				frame[pledPins[i]] = rgbPLEDValues[i];
+				frame[pledIndexes[i]] = rgbPLEDValues[i];
 			}
 		}
 	}
