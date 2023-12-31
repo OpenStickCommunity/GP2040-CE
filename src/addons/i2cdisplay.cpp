@@ -1057,20 +1057,6 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case DPAD_MODE_LEFT_ANALOG:  statusBar += " L"; break;
 		case DPAD_MODE_RIGHT_ANALOG: statusBar += " R"; break;
 	}
-	if (!Storage::getInstance().getAddonOptions().macroOptions.enabled){
-		//hidden if macro is enabled
-		switch (gamepad->getOptions().profileNumber)
-		{
-
-			case 2: statusBar += "#2"; break;
-			case 3: statusBar += "#3"; break;
-			case 4: statusBar += "#4"; break;
-			default:
-				//default profile
-				break;
-		}
-	}
-
 
 	switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
 	{
@@ -1082,6 +1068,30 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 	}
 	if (Storage::getInstance().getAddonOptions().macroOptions.enabled)
 		statusBar += " M";
+
+
+	//hidden if macro is enabled to save place
+	if (gamepad->getOptions().profileNumber > 1 && 
+		!Storage::getInstance().getAddonOptions().macroOptions.enabled)
+	{
+		switch (gamepad->getOptions().profileNumber)
+		{
+
+		case 2:
+			statusBar += "#2";
+			break;
+		case 3:
+			statusBar += "#3";
+			break;
+		case 4:
+			statusBar += "#4";
+			break;
+		default:
+			// default profile
+			break;
+		}
+	}
+
 	drawText(0, 0, statusBar);
 }
 
