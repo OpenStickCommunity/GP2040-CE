@@ -16,8 +16,8 @@ yup.addMethod(yup.string, 'validateColor', function () {
 });
 
 const isEnabledValue = (value) => {
-	v = parseInt(value)
-	return !isNaN(v) && value > 0
+	const v = parseInt(value)
+	return !isNaN(v) && v > 0
 }
 
 yup.addMethod(
@@ -57,7 +57,7 @@ yup.addMethod(
 	'validateRangeWhenValue',
 	function (name, min, max) {
 		return this.when(name, {
-			is: (value) => value>0,
+			is: isEnabledValue,
 			then: () => this.required().min(min).max(max),
 			otherwise: () => yup.mixed().notRequired().strip(),
 		});
@@ -77,7 +77,11 @@ yup.addMethod(
 );
 
 yup.addMethod(yup.NumberSchema, 'validatePinWhenValue', function (name) {
-	return this.checkUsedPins();
+	return this.when(name, {
+		is: isEnabledValue,
+		then: () => this.checkUsedPins(),
+		otherwise: () => yup.mixed().notRequired().strip(),
+	})
 });
 
 yup.addMethod(yup.NumberSchema, 'checkUsedPins', function () {
