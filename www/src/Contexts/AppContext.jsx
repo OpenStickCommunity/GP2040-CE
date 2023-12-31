@@ -16,8 +16,7 @@ yup.addMethod(yup.string, 'validateColor', function () {
 });
 
 const isEnabledValue = (value) => {
-	const v = parseInt(value)
-	return !isNaN(v) && v > 0
+	return Number.isInteger(value) && value > -1;
 }
 
 yup.addMethod(
