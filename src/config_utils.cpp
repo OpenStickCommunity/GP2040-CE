@@ -1820,16 +1820,21 @@ static bool loadConfigInner(Config& config)
     return pb_decode(&inputStream, Config_fields, &config);
 }
 
+static bool loadBoardDefault(Config& config)
+{
+    // TODO --- read from a new area of flash, which is presumed to have been populated
+    // by gp2040ce-binary-tools with a board config
+    return false;
+}
+
 void ConfigUtils::load(Config& config)
 {
-    // First try to load from Protobuf storage, if that fails fall back to legacy storage.
-    const bool loaded = loadConfigInner(config) | fromLegacyStorage(config);
-
-    if (!loaded)
-    {
-        // We could neither deserialize Protobuf config data nor legacy config data.
-        // We are probably dealing with a new device and therefore initialize the config to default values.
-        config = Config Config_init_default;
+    // first try to load from the user config, then from the read-only board config,
+    // and fall back to defaults
+    if (!loadConfigInner(config)) {
+        if (!loadBoardDefault(config)) {
+            config = Config Config_init_default;
+        }
     }
 
     // run migrations
@@ -1859,7 +1864,7 @@ void ConfigUtils::load(Config& config)
     // Migrate old JS slider add-on to core
     migrateJSliderToCore(config);
 
-    // Update boardVersion, in case we migrated from an older version
+    // Update boardVersion
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
     config.boardVersion[sizeof(config.boardVersion) - 1] = '\0';
     config.has_boardVersion = true;
