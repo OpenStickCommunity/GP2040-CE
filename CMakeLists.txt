@@ -208,7 +208,6 @@ src/storagemanager.cpp
 src/system.cpp
 src/usbdriver.cpp
 src/usbhostmanager.cpp
-src/config_legacy.cpp
 src/config_utils.cpp
 src/configs/webconfig.cpp
 src/addons/analog.cpp
