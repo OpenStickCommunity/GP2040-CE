@@ -1,6 +1,6 @@
 # GP2040 Configuration for the Open_Core0
 
-![Open_Core0](assets/Open_Core0.jpg)
+![Open_Core0](assets/Open_Core0.JPG)
 
 Basic pin setup for the Open_Core0.
 
