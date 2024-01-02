@@ -15,16 +15,12 @@ yup.addMethod(yup.string, 'validateColor', function () {
 	);
 });
 
-const isEnabledValue = (value) => {
-	return Number.isInteger(value) && value > -1;
-}
-
 yup.addMethod(
 	yup.NumberSchema,
 	'validateSelectionWhenValue',
 	function (name, choices) {
 		return this.when(name, {
-			is: isEnabledValue,
+			is: 1,
 			then: () => this.required().oneOf(choices.map((o) => o.value)),
 			otherwise: () => yup.mixed().notRequired(),
 		});
@@ -33,7 +29,7 @@ yup.addMethod(
 
 yup.addMethod(yup.NumberSchema, 'validateNumberWhenValue', function (name) {
 	return this.when(name, {
-		is: isEnabledValue,
+		is: 1,
 		then: () => this.required(),
 		otherwise: () => yup.mixed().notRequired().strip(),
 	});
@@ -56,7 +52,7 @@ yup.addMethod(
 	'validateRangeWhenValue',
 	function (name, min, max) {
 		return this.when(name, {
-			is: isEnabledValue,
+			is: 1,
 			then: () => this.required().min(min).max(max),
 			otherwise: () => yup.mixed().notRequired().strip(),
 		});
@@ -77,7 +73,7 @@ yup.addMethod(
 
 yup.addMethod(yup.NumberSchema, 'validatePinWhenValue', function (name) {
 	return this.when(name, {
-		is: isEnabledValue,
+		is: 1,
 		then: () => this.checkUsedPins(),
 		otherwise: () => yup.mixed().notRequired().strip(),
 	})
