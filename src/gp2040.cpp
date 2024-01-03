@@ -48,6 +48,10 @@ GP2040::~GP2040() {
 }
 
 void GP2040::setup() {
+	PeripheralManager::getInstance().initI2C();
+	PeripheralManager::getInstance().initSPI();
+	PeripheralManager::getInstance().initUSB();
+
 	// Reduce CPU if any USB host add-on is enabled
 	const AddonOptions & addonOptions = Storage::getInstance().getAddonOptions();
 	if ( addonOptions.keyboardHostOptions.enabled ||
