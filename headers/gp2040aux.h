@@ -10,6 +10,7 @@
 
 #include "gpaddon.h"
 #include "addonmanager.h"
+#include "peripheralmanager.h"
 
 class GP2040Aux {
 public:

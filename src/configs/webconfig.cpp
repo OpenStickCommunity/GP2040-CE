@@ -491,7 +491,7 @@ std::string getDisplayOptions() // Manually set Document Attributes for the disp
 	writeDoc(doc, "enabled", displayOptions.enabled ? 1 : 0);
 	writeDoc(doc, "i2cAddress", displayOptions.i2cAddress);
 	writeDoc(doc, "i2cBlock", displayOptions.i2cBlock);
-	writeDoc(doc, "flipDisplay", displayOptions.flip ? 1 : 0);
+	writeDoc(doc, "flipDisplay", displayOptions.flip);
 	writeDoc(doc, "invertDisplay", displayOptions.invert ? 1 : 0);
 	writeDoc(doc, "buttonLayout", displayOptions.buttonLayout);
 	writeDoc(doc, "buttonLayoutRight", displayOptions.buttonLayoutRight);

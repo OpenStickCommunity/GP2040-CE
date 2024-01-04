@@ -1,16 +1,21 @@
 #include "peripheralmanager.h"
 #include "storagemanager.h"
 
-PeripheralManager::PeripheralManager() {
+void PeripheralManager::initUSB(){
     const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+    if (peripheralOptions.blockUSB0.enabled) blockUSB0.setConfig(0, peripheralOptions.blockUSB0.dp, peripheralOptions.blockUSB0.enable5v, peripheralOptions.blockUSB0.order);
+}
 
+void PeripheralManager::initI2C(){
+    const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
     if (peripheralOptions.blockI2C0.enabled) blockI2C0.setConfig(0, peripheralOptions.blockI2C0.sda, peripheralOptions.blockI2C0.scl, peripheralOptions.blockI2C0.speed);
-    if (peripheralOptions.blockI2C1.enabled) blockI2C1.setConfig(1, peripheralOptions.blockI2C1.sda, peripheralOptions.blockI2C1.scl, peripheralOptions.blockI2C1.speed);
-    
+    if (peripheralOptions.blockI2C1.enabled) blockI2C1.setConfig(1, peripheralOptions.blockI2C1.sda, peripheralOptions.blockI2C1.scl, peripheralOptions.blockI2C1.speed); 
+}
+
+void PeripheralManager::initSPI(){
+    const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
     if (peripheralOptions.blockSPI0.enabled) blockSPI0.setConfig(0, peripheralOptions.blockSPI0.tx, peripheralOptions.blockSPI0.rx, peripheralOptions.blockSPI0.sck, peripheralOptions.blockSPI0.cs);
     if (peripheralOptions.blockSPI1.enabled) blockSPI1.setConfig(1, peripheralOptions.blockSPI1.tx, peripheralOptions.blockSPI1.rx, peripheralOptions.blockSPI1.sck, peripheralOptions.blockSPI1.cs);
-
-    if (peripheralOptions.blockUSB0.enabled) blockUSB0.setConfig(0, peripheralOptions.blockUSB0.dp, peripheralOptions.blockUSB0.enable5v, peripheralOptions.blockUSB0.order);
 }
 
 PeripheralI2C* PeripheralManager::getI2C(uint8_t block) {

@@ -77,7 +77,7 @@ const schema = yup.object().shape({
 		.min(1)
 		.max(10)
 		.label('Brightness Steps'),
-	dataPin: yup.number().required().validatePinWhenValue('dataPin'),
+	dataPin: yup.number().required().checkUsedPins(),
 	ledFormat: yup
 		.number()
 		.required()

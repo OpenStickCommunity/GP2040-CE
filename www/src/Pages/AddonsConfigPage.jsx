@@ -212,7 +212,8 @@ export default function AddonsConfigPage() {
 			onSubmit={onSuccess}
 			initialValues={defaultValues}
 		>
-			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
+			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => 
+			console.log('errors', errors) || (
 				<Form noValidate onSubmit={handleSubmit}>
 					<h1>{t('AddonsConfig:header-text')}</h1>
 					<p>{t('AddonsConfig:sub-header-text')}</p>
