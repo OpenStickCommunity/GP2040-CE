@@ -14,9 +14,9 @@
 // Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin listed under "Flatbox Rev4 SW#"
 //                          // Flatbox Rev4 SW# | GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define PIN_DPAD_UP     10  // SW18             | UP     | UP     | UP      | UP       | UP     | UP     |
-#define PIN_DPAD_DOWN   12  // SW8              | DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   | 
-#define PIN_DPAD_RIGHT  11  // SW9              | RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  | 
-#define PIN_DPAD_LEFT   13  // SW7              | LEFT   | LEFT   | LEFT    | LEFT     | LEFT   | LEFT   | 
+#define PIN_DPAD_DOWN   12  // SW8              | DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
+#define PIN_DPAD_RIGHT  11  // SW9              | RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  |
+#define PIN_DPAD_LEFT   13  // SW7              | LEFT   | LEFT   | LEFT    | LEFT     | LEFT   | LEFT   |
 #define PIN_BUTTON_B1   9   // SW14             | B1     | A      | B       | Cross    | 2      | K1     |
 #define PIN_BUTTON_B2   7   // SW15             | B2     | B      | A       | Circle   | 3      | K2     |
 #define PIN_BUTTON_R2   5   // SW16             | R2     | RT     | ZR      | R2       | 8      | K3     |
@@ -36,9 +36,9 @@
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP     | UP     | UP      | UP       | UP     | UP     |
-#define KEY_DPAD_DOWN   HID_KEY_ARROW_DOWN    // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   | 
-#define KEY_DPAD_RIGHT  HID_KEY_ARROW_RIGHT   // RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  | 
-#define KEY_DPAD_LEFT   HID_KEY_ARROW_LEFT    // LEFT   | LEFT   | LEFT    | LEFT     | LEFT   | LEFT   | 
+#define KEY_DPAD_DOWN   HID_KEY_ARROW_DOWN    // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
+#define KEY_DPAD_RIGHT  HID_KEY_ARROW_RIGHT   // RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  |
+#define KEY_DPAD_LEFT   HID_KEY_ARROW_LEFT    // LEFT   | LEFT   | LEFT    | LEFT     | LEFT   | LEFT   |
 #define KEY_BUTTON_B1   HID_KEY_SHIFT_LEFT    // B1     | A      | B       | Cross    | 2      | K1     |
 #define KEY_BUTTON_B2   HID_KEY_Z             // B2     | B      | A       | Circle   | 3      | K2     |
 #define KEY_BUTTON_R2   HID_KEY_X             // R2     | RT     | ZR      | R2       | 8      | K3     |
