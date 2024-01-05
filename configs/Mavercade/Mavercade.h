@@ -9,11 +9,11 @@
 //       SHOULD ONLY CONSIST OF PREPROCESSOR DIRECTIVES
 // -----------------------------------------------------
 
-#ifndef _BOARDS_MAVERCADEKEEBFIGHTER_H
-#define _BOARDS_MAVERCADEKEEBFIGHTER_H
+#ifndef _BOARDS_MAVERCADE_H
+#define _BOARDS_MAVERCADE_H
 
 // For board detection
-#define MAVERCADEKEEBFIGHTER
+#define MAVERCADE
 
 // For crappy crystal
 #ifndef PICO_XOSC_STARTUP_DELAY_MULTIPLIER
