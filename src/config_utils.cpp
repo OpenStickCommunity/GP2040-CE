@@ -49,6 +49,8 @@
 
 #include "pico/platform.h"
 
+#define BOARD_CONFIG_EEPROM_ADDRESS_START	EEPROM_ADDRESS_START - EEPROM_SIZE_BYTES
+
 // -----------------------------------------------------
 // Default values
 // -----------------------------------------------------
@@ -1783,12 +1785,12 @@ static const uint32_t FOOTER_MAGIC = 0xd2f1e365;
 
 // Verify that the maximum size of the serialized Config object fits into the allocated flash block
 #if defined(Config_size)
-    static_assert(Config_size + sizeof(ConfigFooter) <= EEPROM_SIZE_BYTES, "Maximum size of Config exceeds the maximum size allocated for FlashPROM");
+    static_assert(Config_size + sizeof(ConfigFooter) <= EEPROM_SIZE_BYTES * 2, "Maximum size of Config exceeds the maximum size allocated for FlashPROM");
 #else
     #error "Maximum size of Config cannot be determined statically, make sure that you do not use any dynamically sized arrays or strings"
 #endif
 
-static bool loadConfigInner(Config& config)
+static bool loadUserConfig(Config& config)
 {
     config = Config Config_init_zero;
 
@@ -1820,19 +1822,44 @@ static bool loadConfigInner(Config& config)
     return pb_decode(&inputStream, Config_fields, &config);
 }
 
-static bool loadBoardDefault(Config& config)
+static bool loadBoardConfig(Config& config)
 {
-    // TODO --- read from a new area of flash, which is presumed to have been populated
-    // by gp2040ce-binary-tools with a board config
-    return false;
+    config = Config Config_init_zero;
+
+    const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(BOARD_CONFIG_EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
+    const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
+
+    // Check for presence of magic value
+    if (footer.magic != FOOTER_MAGIC)
+    {
+        return false;
+    }
+
+        // Check if dataSize exceeds the reserved space
+    if (footer.dataSize + sizeof(ConfigFooter) > EEPROM_SIZE_BYTES)
+    {
+        return false;
+    }
+
+    const uint8_t* dataPtr = flashEnd - sizeof(ConfigFooter) - footer.dataSize;
+
+    // Verify CRC32 hash
+    if (CRC32::calculate(dataPtr, footer.dataSize) != footer.dataCrc)
+    {
+        return false;
+    }
+
+    // We are now sufficiently confident that the data is valid so we run the deserialization
+    pb_istream_t inputStream = pb_istream_from_buffer(dataPtr, footer.dataSize);
+    return pb_decode(&inputStream, Config_fields, &config);
 }
 
 void ConfigUtils::load(Config& config)
 {
     // first try to load from the user config, then from the read-only board config,
     // and fall back to defaults
-    if (!loadConfigInner(config)) {
-        if (!loadBoardDefault(config)) {
+    if (!loadUserConfig(config)) {
+        if (!loadBoardConfig(config)) {
             config = Config Config_init_default;
         }
     }
