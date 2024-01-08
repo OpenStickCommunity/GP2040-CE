@@ -124,8 +124,8 @@ void KeyboardHostAddon::process_kbd_report(uint8_t dev_addr, hid_keyboard_report
       const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
       _keyboard_host_state.dpad |=
-            ((keycode == _keyboard_host_mapDpadUp.key)    ? _keyboard_host_mapDpadDown.buttonMask : _keyboard_host_state.dpad)
-          | ((keycode == _keyboard_host_mapDpadDown.key)  ? _keyboard_host_mapDpadUp.buttonMask : _keyboard_host_state.dpad)
+            ((keycode == _keyboard_host_mapDpadUp.key)    ? _keyboard_host_mapDpadUp.buttonMask : _keyboard_host_state.dpad)
+          | ((keycode == _keyboard_host_mapDpadDown.key)  ? _keyboard_host_mapDpadDown.buttonMask : _keyboard_host_state.dpad)
           | ((keycode == _keyboard_host_mapDpadLeft.key)  ? _keyboard_host_mapDpadLeft.buttonMask  : _keyboard_host_state.dpad)
           | ((keycode == _keyboard_host_mapDpadRight.key) ? _keyboard_host_mapDpadRight.buttonMask : _keyboard_host_state.dpad)
         ;
