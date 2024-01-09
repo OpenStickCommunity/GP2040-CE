@@ -795,6 +795,17 @@ void I2CDisplayAddon::drawFightboard(int startX, int startY, int buttonRadius, i
 {
 	const int buttonMargin = buttonPadding + (buttonRadius * 2);
 
+	// inner circle for turbo enabled
+	if(gamepad->turboState.buttons & GAMEPAD_BUTTON_2) obdPreciseEllipse(&obd, startX + (buttonMargin * 3.625), startY * 1.25, buttonRadius - 3, buttonRadius - 3, 1, false);  //P1 B3
+	if(gamepad->turboState.buttons & GAMEPAD_BUTTON_3) obdPreciseEllipse(&obd, startX + (buttonMargin * 4.625), startY - (buttonMargin / 4), buttonRadius - 3, buttonRadius - 3, 1, false);  //P2 B4
+	if(gamepad->turboState.buttons & GAMEPAD_BUTTON_5) obdPreciseEllipse(&obd, startX + (buttonMargin * 5.625), startY - (buttonMargin / 4), buttonRadius - 3, buttonRadius - 3, 1, false);  //P3 R1
+	if(gamepad->turboState.buttons & GAMEPAD_BUTTON_4) obdPreciseEllipse(&obd, startX + (buttonMargin * 6.625), startY - (buttonMargin / 4), buttonRadius - 3, buttonRadius - 3, 1, false); //P4 L1
+
+	if(gamepad->turboState.buttons & GAMEPAD_BUTTON_0) obdPreciseEllipse(&obd, startX + (buttonMargin * 3.625), startY + buttonMargin * 1.25, buttonRadius - 3, buttonRadius - 3, 1, false);  //K1 B1
+	if(gamepad->turboState.buttons & GAMEPAD_BUTTON_1) obdPreciseEllipse(&obd, startX + (buttonMargin * 4.625), startY + buttonMargin - (buttonMargin / 4), buttonRadius - 3, buttonRadius - 3, 1, false);  //K2 B2
+	if(gamepad->turboState.buttons & GAMEPAD_BUTTON_7) obdPreciseEllipse(&obd, startX + (buttonMargin * 5.625), startY + buttonMargin - (buttonMargin / 4), buttonRadius - 3, buttonRadius - 3, 1, false); //K3 R2
+	if(gamepad->turboState.buttons & GAMEPAD_BUTTON_6) obdPreciseEllipse(&obd, startX + (buttonMargin * 6.625), startY + buttonMargin - (buttonMargin / 4), buttonRadius - 3, buttonRadius - 3, 1, false); //K4 L2
+
 	obdPreciseEllipse(&obd, (startX + buttonMargin * 3.625), startY * 1.25, buttonRadius, buttonRadius, 1, pGamepad->pressedB3());
 	obdPreciseEllipse(&obd, (startX + buttonMargin * 4.625), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, pGamepad->pressedB4());
 	obdPreciseEllipse(&obd, (startX + buttonMargin * 5.625), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, pGamepad->pressedR1());
