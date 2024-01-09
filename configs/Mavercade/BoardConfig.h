@@ -3,34 +3,35 @@
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
-#ifndef PICO_BOARD_CONFIG_H_
-#define PICO_BOARD_CONFIG_H_
+#ifndef MAVERCADE_CONFIG_H_
+#define MAVERCADE_CONFIG_H_
 
 #include "enums.pb.h"
 
-#define BOARD_CONFIG_LABEL "RP2040 Advanced Breakout Board"
+#define BOARD_CONFIG_LABEL "Mavercade"
 
 // Main pin mapping Configuration
-//                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
-#define PIN_DPAD_UP     19  // UP     | UP     | UP      | UP       | UP     | UP     |
-#define PIN_DPAD_DOWN   18  // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
-#define PIN_DPAD_RIGHT  17  // RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  |
-#define PIN_DPAD_LEFT   16  // LEFT   | LEFT   | LEFT    | LEFT     | LEFT   | LEFT   |
-#define PIN_BUTTON_B1   8   // B1     | A      | B       | Cross    | 2      | K1     |
-#define PIN_BUTTON_B2   7   // B2     | B      | A       | Circle   | 3      | K2     |
-#define PIN_BUTTON_R2   6   // R2     | RT     | ZR      | R2       | 8      | K3     |
-#define PIN_BUTTON_L2   5   // L2     | LT     | ZL      | L2       | 7      | K4     |
-#define PIN_BUTTON_B3   12  // B3     | X      | Y       | Square   | 1      | P1     |
-#define PIN_BUTTON_B4   11  // B4     | Y      | X       | Triangle | 4      | P2     |
-#define PIN_BUTTON_R1   10  // R1     | RB     | R       | R1       | 6      | P3     |
-#define PIN_BUTTON_L1   9   // L1     | LB     | L       | L1       | 5      | P4     |
-#define PIN_BUTTON_S1   15  // S1     | Back   | Minus   | Select   | 9      | Coin   |
-#define PIN_BUTTON_S2   13  // S2     | Start  | Plus    | Start    | 10     | Start  |
-#define PIN_BUTTON_L3   21  // L3     | LS     | LS      | L3       | 11     | LS     |
-#define PIN_BUTTON_R3   22  // R3     | RS     | RS      | R3       | 12     | RS     |
-#define PIN_BUTTON_A1   14  // A1     | Guide  | Home    | PS       | 13     | ~      |
-#define PIN_BUTTON_A2   20  // A2     | ~      | Capture | ~        | 14     | ~      |
-#define PIN_BUTTON_FN   -1  // Hotkey Function                                        |
+// Mapping between Flatbox Rev4 switch number (as silkscreened) and GPIO pin listed under "Flatbox Rev4 SW#"
+//                          // Flatbox Rev4 SW# | GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
+#define PIN_DPAD_UP     10  // SW18             | UP     | UP     | UP      | UP       | UP     | UP     |
+#define PIN_DPAD_DOWN   12  // SW8              | DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
+#define PIN_DPAD_RIGHT  11  // SW9              | RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  |
+#define PIN_DPAD_LEFT   13  // SW7              | LEFT   | LEFT   | LEFT    | LEFT     | LEFT   | LEFT   |
+#define PIN_BUTTON_B1   9   // SW14             | B1     | A      | B       | Cross    | 2      | K1     |
+#define PIN_BUTTON_B2   7   // SW15             | B2     | B      | A       | Circle   | 3      | K2     |
+#define PIN_BUTTON_R2   5   // SW16             | R2     | RT     | ZR      | R2       | 8      | K3     |
+#define PIN_BUTTON_L2   3   // SW17             | L2     | LT     | ZL      | L2       | 7      | K4     |
+#define PIN_BUTTON_B3   8   // SW10             | B3     | X      | Y       | Square   | 1      | P1     |
+#define PIN_BUTTON_B4   6   // SW11             | B4     | Y      | X       | Triangle | 4      | P2     |
+#define PIN_BUTTON_R1   4   // SW12             | R1     | RB     | R       | R1       | 6      | P3     |
+#define PIN_BUTTON_L1   2   // SW13             | L1     | LB     | L       | L1       | 5      | P4     |
+#define PIN_BUTTON_S1   15  // SW2              | S1     | Back   | Minus   | Select   | 9      | Coin   |
+#define PIN_BUTTON_S2   14  // SW1              | S2     | Start  | Plus    | Start    | 10     | Start  |
+#define PIN_BUTTON_L3   28  // SW5              | L3     | LS     | LS      | L3       | 11     | LS     |
+#define PIN_BUTTON_R3   29  // SW6              | R3     | RS     | RS      | R3       | 12     | RS     |
+#define PIN_BUTTON_A1   26  // SW3              | A1     | Guide  | Home    | PS       | 13     | ~      |
+#define PIN_BUTTON_A2   27  // SW4              | A2     | ~      | Capture | ~        | 14     | ~      |
+#define PIN_BUTTON_FN   -1  // Hotkey Function                                                           |
 
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -54,14 +55,14 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-#define BOARD_LEDS_PIN 4
+#define BOARD_LEDS_PIN 0
 
 #define LED_BRIGHTNESS_MAXIMUM 50
 
-#define LEDS_DPAD_LEFT   0
-#define LEDS_DPAD_DOWN   1
-#define LEDS_DPAD_RIGHT  2
-#define LEDS_DPAD_UP     3
+#define LEDS_DPAD_UP     0
+#define LEDS_DPAD_LEFT   1
+#define LEDS_DPAD_DOWN   2
+#define LEDS_DPAD_RIGHT  3
 #define LEDS_BUTTON_B3   4
 #define LEDS_BUTTON_B4   5
 #define LEDS_BUTTON_R1   6
@@ -70,9 +71,9 @@
 #define LEDS_BUTTON_B2   9
 #define LEDS_BUTTON_R2   10
 #define LEDS_BUTTON_L2   11
+#define LEDS_BUTTON_A2   12
 
-#define HAS_I2C_DISPLAY 1
-#define I2C_SDA_PIN 0
-#define I2C_SCL_PIN 1
+#define EXTRA_BUTTON_MASK GAMEPAD_MASK_DU 
+#define EXTRA_BUTTON_PIN 1
 
 #endif
