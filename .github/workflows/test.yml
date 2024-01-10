@@ -1,0 +1,71 @@
+name: CMake
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  pull_request_target:
+    branches: ["main"]
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  call-node-workflow:
+    uses: ./.github/workflows/node.js.yml
+  build:
+    needs: call-node-workflow
+    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
+    # You can convert this to a matrix build if you need cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        GP2040_BOARDCONFIG: [Pico]
+
+    steps:
+      #Global Setup
+      - name: Checkout GP2040-CE
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup SDK pipeline
+        uses: Fortinbra/RaspberryPiPicoBuild@v2
+
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: fsData
+          path: ${{github.workspace}}/lib/httpd/
+
+      - name: Get core count
+        id: core_count
+        run: cat /proc/cpuinfo  | grep processor | wc -l
+
+        #End Global Setup
+      - name: Pico Build Configure CMake
+        shell: bash
+        if: ${{ matrix.GP2040_BOARDCONFIG != 'PicoW'}}
+        run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} SKIP_WEBBUILD=TRUE cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Pico Build
+        shell: bash
+        run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Run static analysis
+        # Run the analysis
+        uses: whisperity/codechecker-analysis-action@v1
+        id: codechecker
+        with:
+          logfile: ${{ github.workspace }}/Build/compile_commands.json
+
+      - name: Upload static analysis
+        # Upload the results to the CI.
+        uses: actions/upload-artifact@v2
+        with:
+          name: "CodeChecker Bug Reports"
+          path: ${{ steps.codechecker.outputs.result-html-dir }}
