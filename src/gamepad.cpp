@@ -47,7 +47,7 @@ static HIDReport hidReport
 };
 
 // force a report to be sent every X ms
-#define PS4_KEEPALIVE_TIMER 17
+#define PS4_KEEPALIVE_TIMER 1000
 
 static PS4Report ps4Report
 {
