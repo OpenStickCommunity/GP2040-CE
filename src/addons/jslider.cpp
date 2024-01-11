@@ -65,10 +65,12 @@ void JSliderInput::debounce()
             // Bounce Right Analog
             case DPAD_MODE_RIGHT_ANALOG:
                 dDebState = (DpadMode)(dDebState ^ DPAD_MODE_RIGHT_ANALOG);
+                break;
 
             // Bounce Left Analog
             case DPAD_MODE_LEFT_ANALOG:
                 dDebState = (DpadMode)(dDebState ^ DPAD_MODE_LEFT_ANALOG);
+                break;
         }
         uDebTime = uNowTime;
         dpadState = dDebState;
