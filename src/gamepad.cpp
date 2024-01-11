@@ -974,7 +974,8 @@ PS4Report *Gamepad::getPS4Report()
 	if ( !options.ps4ReportHack ) {
 		uint32_t now = to_ms_since_boot(get_absolute_time());
 		if ((now - keep_alive_timer) > PS4_KEEPALIVE_TIMER) {
-			ps4Report.report_counter = last_report_counter++;	// report counter is 6 bits
+			last_report_counter = (last_report_counter+1) & 0x3F;
+			ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
 			ps4Report.axis_timing = now;		 		// axis counter is 16 bits
 			keep_alive_timer = now;
 		}
