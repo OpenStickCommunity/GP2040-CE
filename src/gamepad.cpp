@@ -21,9 +21,6 @@
 // Xbox One compatibility
 #include "xbone_driver.h"
 
-// number of report cycles before forcing a new report --- approx. 7ms (see usage below)
-#define PS4_REPORT_DELAY_MAGIC		188
-
 // MUST BE DEFINED for mpgs
 uint32_t getMillis() {
 	return to_ms_since_boot(get_absolute_time());
@@ -48,6 +45,9 @@ static HIDReport hidReport
 	.triangle_axis = 0x00, .circle_axis = 0x00, .cross_axis = 0x00, .square_axis = 0x00,
 	.l1_axis = 0x00, .r1_axis = 0x00, .l2_axis = 0x00, .r2_axis = 0x00
 };
+
+// force a report to be sent every X ms
+#define PS4_KEEPALIVE_TIMER 17
 
 static PS4Report ps4Report
 {
@@ -287,7 +287,7 @@ void Gamepad::setup()
 	last_report_counter = 0;
 	last_axis_counter = 0;
 
-	// Xbox One Keep-Alive
+	// Xbox One/PS4 Keep-Alive
 	keep_alive_timer = to_ms_since_boot(get_absolute_time());
 	keep_alive_sequence = 1;
 	virtual_keycode_sequence = 0;
@@ -960,22 +960,24 @@ PS4Report *Gamepad::getPS4Report()
 	touchpadData.p2.unpressed = 1;
 	ps4Report.touchpad_data = touchpadData;
 
-	last_axis_counter++;
 	// some games apparently can miss reports, or they rely on official behavior of getting frequent
 	// updates. we normally only send a report when the value changes; if we increment the counters
 	// every time we generate the report (every GP2040::run loop), we apparently overburden
 	// TinyUSB and introduce roughly 1ms of latency. but we want to loop often and report on every
 	// true update in order to achieve our tight <1ms report timing when we *do* have a different
 	// report to send.
-	// the former "PS4 Hack" disabled the counters so that we only reported on changes, but this
-	// meant we never reported the same data twice, and games that expected it would get stuck
+	// the "PS4 Hack" disables the counters so that we only report on changes, but this
+	// means we never report the same data twice, and games that expected it would get stuck
 	// inputs. the below code is a compromise: keep the tight report timing, but occasionally change
-	// the report counter and axis timing values in order to force a changed report. this fixes
-	// these games with a nominal (at time of writing, 0.08ms average) increase in latency over the
-	// "PS4 Hack" setting
-	if (last_axis_counter % PS4_REPORT_DELAY_MAGIC == 0) {
-		ps4Report.report_counter = last_report_counter++;	 	// report counter is 6 bits
-		ps4Report.axis_timing = last_axis_counter; 			// axis counter is 16 bits
+	// the report counter and axis timing values in order to force a changed report --- this should
+	// eliminate the need for the PS4 Hack, but it's kept here at the moment for A/B testing purposes
+	if ( !options.ps4ReportHack ) {
+		uint32_t now = to_ms_since_boot(get_absolute_time());
+		if ((now - keep_alive_timer) > PS4_KEEPALIVE_TIMER) {
+			ps4Report.report_counter = last_report_counter++;	// report counter is 6 bits
+			ps4Report.axis_timing = now;		 		// axis counter is 16 bits
+			keep_alive_timer = now;
+		}
 	}
 
 	return &ps4Report;
