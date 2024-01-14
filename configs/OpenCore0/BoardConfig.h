@@ -54,7 +54,7 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 #define TURBO_ENABLED 1
-#define GPIO_PIN_27 GpioAction::BUTTON_TURBO
+#define GPIO_PIN_27 GpioAction::BUTTON_PRESS_TURBO
 
 #define JSLIDER_ENABLED 1
 #define GPIO_PIN_25 GpioAction::SUSTAIN_DP_MODE_LS
