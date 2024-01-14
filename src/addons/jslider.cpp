@@ -58,21 +58,14 @@ void JSliderInput::debounce()
     }
 
     uint32_t uNowTime = getMillis();
-
     if ((uNowTime - uDebTime) > JSLIDER_DEBOUNCE_MILLIS) {
-        switch (dpadState ^ dDebState)
-        {
-            // Bounce Right Analog
-            case DPAD_MODE_RIGHT_ANALOG:
-                dDebState = (DpadMode)(dDebState ^ DPAD_MODE_RIGHT_ANALOG);
-
-            // Bounce Left Analog
-            case DPAD_MODE_LEFT_ANALOG:
-                dDebState = (DpadMode)(dDebState ^ DPAD_MODE_LEFT_ANALOG);
-        }
+        if ( (dpadState ^ dDebState) == DPAD_MODE_RIGHT_ANALOG )
+            dDebState = (DpadMode)(dDebState ^ DPAD_MODE_RIGHT_ANALOG); // Bounce Right Analog
+        else if ( (dpadState ^ dDebState) & DPAD_MODE_LEFT_ANALOG )
+            dDebState = (DpadMode)(dDebState ^ DPAD_MODE_LEFT_ANALOG); // Bounce Left Analog
         uDebTime = uNowTime;
-        dpadState = dDebState;
     }
+    dpadState = dDebState;
 }
 
 void JSliderInput::process()
