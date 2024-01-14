@@ -110,7 +110,7 @@ const PinsForm = ({ savePins, pins, setPinAction }: PinsFormTypes) => {
 				/>
 			</div>
 		),
-		[],
+		[buttonNames],
 	);
 
 	return (
