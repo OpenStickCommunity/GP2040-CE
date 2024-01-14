@@ -1,9 +1,10 @@
 export default {
 	'header-text': 'Pin Mapping',
-	'sub-header-text':
-		'Use the form below to reconfigure your button-to-pin mapping.',
+	'sub-header-text': `Here you can configure what pin has what action. If you're unsure what button is connect to what pin, try out the pin viewer.`,
 	'alert-text':
-		"Mapping buttons to pins that aren't connected or available can leave the device in non-functional state. To clear the invalid configuration go to the <1>Reset Settings</1> page.",
+		"Mapping buttons to pins that aren't connected or available can leave the device in non-functional state. To clear the invalid configuration go to the <2>Reset Settings</2> page.",
+	'pin-viewer': 'Pin viewer',
+	'pin-pressed': 'Pressed pin: {{pressedPin}}',
 	'pin-header-label': 'Pin',
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
