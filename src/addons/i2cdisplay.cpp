@@ -1069,7 +1069,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
-	if ( turboOptions.enabled && isValidPin(turboOptions.buttonPin) ) {
+	if ( turboOptions.enabled ) {
 		statusBar += " T";
 		if ( turboOptions.shotCount < 10 ) // padding
 			statusBar += "0";

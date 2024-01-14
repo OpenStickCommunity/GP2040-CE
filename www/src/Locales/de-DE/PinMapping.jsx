@@ -47,5 +47,6 @@ export default {
 		SUSTAIN_SOCD_MODE_SECOND_WIN: 'Letzter Gewinnt SOCD Säuberung',
 		SUSTAIN_SOCD_MODE_FIRST_WIN: 'Erster Gewinnt SOCD Säuberung',
 		SUSTAIN_SOCD_MODE_BYPASS: 'SOCD Säuberung Aus',
+		BUTTON_PRESS_TURBO: 'Turbo',
 	},
 };

@@ -21,11 +21,14 @@ void TurboInput::setup()
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint32_t now = getMillis();
 
-    // Setup TURBO Key GPIO
-    if (  isValidPin(options.buttonPin) ) {
-        gpio_init( options.buttonPin);             // Initialize pin
-        gpio_set_dir( options.buttonPin, GPIO_IN); // Set as INPUT
-        gpio_pull_up( options.buttonPin);          // Set as PULLUP
+    // Turbo Button initialized by void Gamepad::setup()
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        if ( pinMappings[pin] == GpioAction::BUTTON_PRESS_TURBO ) {
+            turboPin = pin;   
+            break;
+        }
     }
 
     // Turbo Dial
@@ -103,7 +106,7 @@ void TurboInput::read(const TurboOptions & options)
     }
 
     // Get TURBO Key State
-    bTurboState = !gpio_get(options.buttonPin);
+    bTurboState = !gpio_get(turboPin);
 }
 
 void TurboInput::debounce()

@@ -1040,7 +1040,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         TurboOptions& turboOptions = config.addonOptions.turboOptions;
         config.addonOptions.has_turboOptions = true;
         SET_PROPERTY(turboOptions, enabled, legacyAddonOptions.TurboInputEnabled);
-        SET_PROPERTY(turboOptions, buttonPin, bytePinToIntPin(legacyAddonOptions.pinButtonTurbo));
+        SET_PROPERTY(turboOptions, deprecatedButtonPin, bytePinToIntPin(legacyAddonOptions.pinButtonTurbo));
         SET_PROPERTY(turboOptions, ledPin, bytePinToIntPin(legacyAddonOptions.pinTurboLED));
         SET_PROPERTY(turboOptions, shotCount, legacyAddonOptions.turboShotCount);
         SET_PROPERTY(turboOptions, shmupDialPin, bytePinToIntPin(legacyAddonOptions.pinShmupDial));
