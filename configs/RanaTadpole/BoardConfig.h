@@ -54,7 +54,6 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-#define EXTRA_BUTTON_MASK GAMEPAD_MASK_L3 
-#define EXTRA_BUTTON_PIN 5
+#define GPIO_PIN_05 GpioAction::BUTTON_PRESS_L3
 
 #endif

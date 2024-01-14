@@ -30,7 +30,6 @@
 #define GPIO_PIN_02 GpioAction::BUTTON_PRESS_R3     // R3     | RS     | RS      | R3       | 12     | RS     |
 #define GPIO_PIN_05 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_04 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
-#define PIN_BUTTON_FN   -1  // Hotkey Function                                        |
 
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -59,14 +58,16 @@
 #define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
 
 #define TURBO_ENABLED 1
-#define PIN_BUTTON_TURBO 27
+#define GPIO_PIN_27 GpioAction::BUTTON_PRESS_TURBO
 
 #define JSLIDER_ENABLED 1
-#define PIN_SLIDER_ONE 26
-#define PIN_SLIDER_TWO 25
+#define GPIO_PIN_26 GpioAction::SUSTAIN_DP_MODE_LS
+#define GPIO_PIN_25 GpioAction::SUSTAIN_DP_MODE_RS
+
 #define SLIDER_SOCD_ENABLED 1
-#define PIN_SLIDER_SOCD_ONE 24
-#define PIN_SLIDER_SOCD_TWO 23
+#define GPIO_PIN_24 GpioAction::SUSTAIN_SOCD_MODE_UP_PRIO
+#define GPIO_PIN_23 GpioAction::SUSTAIN_SOCD_MODE_SECOND_WIN
+#define SLIDER_SOCD_SLOT_DEFAULT SOCD_MODE_NEUTRAL
 
 #define BOARD_LEDS_PIN 8
 #define LED_BRIGHTNESS_MAXIMUM 50
@@ -102,8 +103,7 @@
 #define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_OPENCORE0WASDB
 #define SPLASH_MODE SPLASH_MODE_STATIC
 
-#define EXTRA_BUTTON_MASK GAMEPAD_MASK_DU
-#define EXTRA_BUTTON_PIN 13
+#define GPIO_PIN_13 GpioAction::BUTTON_PRESS_UP
 
 #define FOCUS_MODE_ENABLED 1
 #define FOCUS_MODE_BUTTON_MASK GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2 | GAMEPAD_MASK_A1 | GAMEPAD_MASK_A2 | GAMEPAD_MASK_L3 | GAMEPAD_MASK_R3

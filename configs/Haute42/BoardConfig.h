@@ -30,7 +30,6 @@
 #define GPIO_PIN_19 GpioAction::BUTTON_PRESS_R3     // R3     | RS     | RS      | R3       | 12     | RS     |
 #define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_21 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
-#define PIN_BUTTON_FN   -1  // Hotkey Function                                        |
 
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -92,14 +91,6 @@
 // Additional Button Support
 #define GPIO_PIN_27 GpioAction::BUTTON_PRESS_UP
 #define GPIO_PIN_26 GpioAction::BUTTON_PRESS_L3
-
-//#define DUAL_DIRECTIONAL_ENABLED 0
-//#define PIN_DUAL_DIRECTIONAL_UP 27
-//#define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
-//#define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
-
-//#define EXTRA_BUTTON_MASK GAMEPAD_MASK_L3
-//#define EXTRA_BUTTON_PIN 26
 
 #define USB_PERIPHERAL_ENABLED 1
 #define USB_PERIPHERAL_PIN_DPLUS 23
