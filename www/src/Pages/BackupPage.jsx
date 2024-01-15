@@ -15,6 +15,11 @@ const API_BINDING = {
 		get: WebApi.getDisplayOptions,
 		set: WebApi.setDisplayOptions,
 	},
+	splash: {
+		label: 'Splash Image',
+		get: WebApi.getSplashImage,
+		set: WebApi.setSplashImage,
+	},
 	gamepad: {
 		label: 'Gamepad',
 		get: WebApi.getGamepadOptions,
