@@ -14,4 +14,5 @@ export default {
 	'api-pins-text': 'Pin Mappings',
 	'api-profiles-text': 'Profile Mappings',
 	'api-addons-text': 'Add-Ons',
+	'api-splash-text': 'Splash Image',
 };
