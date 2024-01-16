@@ -67,3 +67,11 @@ jobs:
         name: GP2040-CE - ${{ matrix.GP2040_BOARDCONFIG }}
         path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.uf2
         if-no-files-found: error
+        
+    - name: Upload .elf Artifact
+      if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico'}}
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: elf
+        path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.elf
+        if-no-files-found: error
