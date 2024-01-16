@@ -50,5 +50,6 @@ export default {
 		SUSTAIN_SOCD_MODE_SECOND_WIN: 'Last Win SOCD Cleaning',
 		SUSTAIN_SOCD_MODE_FIRST_WIN: 'First Win SOCD Cleaning',
 		SUSTAIN_SOCD_MODE_BYPASS: 'SOCD Cleaning Off',
+		BUTTON_PRESS_TURBO: 'Turbo',
 	},
 };

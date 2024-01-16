@@ -10,14 +10,6 @@
 #define JSLIDER_ENABLED 0
 #endif
 
-#ifndef PIN_SLIDER_ONE
-#define PIN_SLIDER_ONE    -1
-#endif
-
-#ifndef PIN_SLIDER_TWO
-#define PIN_SLIDER_TWO    -1
-#endif
-
 #ifndef SLIDER_MODE_ONE
 #define SLIDER_MODE_ONE DPAD_MODE_LEFT_ANALOG
 #endif

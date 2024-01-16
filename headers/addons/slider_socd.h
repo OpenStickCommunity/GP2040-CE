@@ -10,14 +10,6 @@
 #define SLIDER_SOCD_ENABLED 0
 #endif
 
-#ifndef PIN_SLIDER_SOCD_ONE
-#define PIN_SLIDER_SOCD_ONE    -1
-#endif
-
-#ifndef PIN_SLIDER_SOCD_TWO
-#define PIN_SLIDER_SOCD_TWO    -1
-#endif
-
 #ifndef SLIDER_SOCD_SLOT_ONE
 #define SLIDER_SOCD_SLOT_ONE SOCD_MODE_UP_PRIORITY
 #endif
