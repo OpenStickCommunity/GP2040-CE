@@ -54,6 +54,7 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 #define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
 
 #define TURBO_ENABLED 1
 #define GPIO_PIN_14 GpioAction::BUTTON_PRESS_TURBO
@@ -76,10 +77,10 @@
 #define LEDS_BUTTON_B2   9
 #define LEDS_BUTTON_R2   10
 #define LEDS_BUTTON_L2   11
-#define LEDS_BUTTON_A2   12
-#define LEDS_BUTTON_L3   13
-#define LEDS_BUTTON_R3   14
-#define LEDS_BUTTON_A1   15
+#define LEDS_BUTTON_L3   12
+#define LEDS_BUTTON_R3   13
+#define LEDS_BUTTON_A1   14
+#define LEDS_BUTTON_A2   15
 
 #define HAS_I2C_DISPLAY 1
 #define I2C_SDA_PIN 0
