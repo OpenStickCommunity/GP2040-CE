@@ -151,6 +151,8 @@ export default function PinMappingPage() {
 	const { fetchProfiles, profiles, saveProfiles, setProfileAction } =
 		useProfilesStore();
 
+	const [pressedPin, setPressedPin] = useState<number | null>(null);
+
 	const { t } = useTranslation('');
 
 	useEffect(() => {
@@ -164,8 +166,7 @@ export default function PinMappingPage() {
 	}, [savePins, saveProfiles]);
 
 	return (
-		<Section title={t('PinMapping:header-text')}>
-			<p>{t('PinMapping:sub-header-text')}</p>
+		<>
 			<div className="alert alert-warning">
 				<Trans ns="PinMapping" i18nKey="alert-text">
 					Mapping buttons to pins that aren&apos;t connected or available can
@@ -177,30 +178,46 @@ export default function PinMappingPage() {
 				<br />
 				{t(`PinMapping:profile-pins-warning`)}
 			</div>
-			<Tabs id="profiles">
-				<Tab eventKey="Base" title="Base(Profile 1)">
-					<PinsForm
-						pins={pins}
-						savePins={saveAll}
-						setPinAction={setPinAction}
+			<Section title={t('PinMapping:header-text')}>
+				<p>{t('PinMapping:sub-header-text')}</p>
+				<div className="mb-3">
+					<CaptureButton
+						buttonLabel={t('PinMapping:pin-viewer')}
+						labels={['']}
+						onChange={(_, pin) => setPressedPin(pin)}
 					/>
-				</Tab>
-				{profiles.map((profilePins, profileIndex) => (
-					<Tab
-						key={`Profile${profileIndex + 2}`}
-						eventKey={`Profile${profileIndex + 2}`}
-						title={`Profile ${profileIndex + 2}`}
-					>
+				</div>
+				{pressedPin !== null && (
+					<div className="alert alert-info">
+						<strong>{t('PinMapping:pin-pressed', { pressedPin })}</strong>
+					</div>
+				)}
+
+				<Tabs id="profiles">
+					<Tab eventKey="Base" title="Base(Profile 1)">
 						<PinsForm
-							pins={profilePins}
+							pins={pins}
 							savePins={saveAll}
-							setPinAction={(pin, action) => {
-								setProfileAction(profileIndex, pin, action);
-							}}
+							setPinAction={setPinAction}
 						/>
 					</Tab>
-				))}
-			</Tabs>
-		</Section>
+					{profiles.map((profilePins, profileIndex) => (
+						<Tab
+							key={`Profile${profileIndex + 2}`}
+							eventKey={`Profile${profileIndex + 2}`}
+							title={`Profile ${profileIndex + 2}`}
+						>
+							<PinsForm
+								pins={profilePins}
+								savePins={saveAll}
+								setPinAction={(pin, action) => {
+									setProfileAction(profileIndex, pin, action);
+								}}
+							/>
+						</Tab>
+					))}
+				</Tabs>
+			</Section>
+		</>
 	);
 }

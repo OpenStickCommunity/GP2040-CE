@@ -46,6 +46,9 @@ static HIDReport hidReport
 	.l1_axis = 0x00, .r1_axis = 0x00, .l2_axis = 0x00, .r2_axis = 0x00
 };
 
+// force a report to be sent every X ms
+#define PS4_KEEPALIVE_TIMER 1000
+
 static PS4Report ps4Report
 {
 	.report_id = 0x01,
@@ -284,7 +287,7 @@ void Gamepad::setup()
 	last_report_counter = 0;
 	last_axis_counter = 0;
 
-	// Xbox One Keep-Alive
+	// Xbox One/PS4 Keep-Alive
 	keep_alive_timer = to_ms_since_boot(get_absolute_time());
 	keep_alive_sequence = 1;
 	virtual_keycode_sequence = 0;
@@ -788,10 +791,6 @@ static uint8_t xboneIdle[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff,
 // On Send report Success
 void Gamepad::sendReportSuccess() {
 	switch( (options.inputMode) ) {
-		case INPUT_MODE_PS4:
-			last_report_counter = (last_report_counter+1) & 0x3F; 	// 6-bit number roll-over
-			last_axis_counter = last_axis_counter++; 				// this can roll over on 16-bit
-			break;
 		case INPUT_MODE_XBONE:
 			if ( xboneReport.Header.command == GIP_KEEPALIVE) {
 				keep_alive_timer = to_ms_since_boot(get_absolute_time());
@@ -940,12 +939,6 @@ PS4Report *Gamepad::getPS4Report()
 	ps4Report.button_home     = pressedA1();
 	ps4Report.button_touchpad = options.switchTpShareForDs4 ? pressedS1() : pressedA2();
 
-	
-	if ( !options.ps4ReportHack ) {
-		ps4Report.report_counter = last_report_counter; 	// report counter is 6 bits
-		ps4Report.axis_timing = last_axis_counter; 			// axis counter is 16 bits
-	}
-
 	ps4Report.left_stick_x = static_cast<uint8_t>(state.lx >> 8);
 	ps4Report.left_stick_y = static_cast<uint8_t>(state.ly >> 8);
 	ps4Report.right_stick_x = static_cast<uint8_t>(state.rx >> 8);
@@ -962,12 +955,31 @@ PS4Report *Gamepad::getPS4Report()
 		ps4Report.right_trigger = pressedR2() ? 0xFF : 0;
 	}
 
-
-
 	// set touchpad to nothing
 	touchpadData.p1.unpressed = 1;
 	touchpadData.p2.unpressed = 1;
 	ps4Report.touchpad_data = touchpadData;
+
+	// some games apparently can miss reports, or they rely on official behavior of getting frequent
+	// updates. we normally only send a report when the value changes; if we increment the counters
+	// every time we generate the report (every GP2040::run loop), we apparently overburden
+	// TinyUSB and introduce roughly 1ms of latency. but we want to loop often and report on every
+	// true update in order to achieve our tight <1ms report timing when we *do* have a different
+	// report to send.
+	// the "PS4 Hack" disables the counters so that we only report on changes, but this
+	// means we never report the same data twice, and games that expected it would get stuck
+	// inputs. the below code is a compromise: keep the tight report timing, but occasionally change
+	// the report counter and axis timing values in order to force a changed report --- this should
+	// eliminate the need for the PS4 Hack, but it's kept here at the moment for A/B testing purposes
+	if ( !options.ps4ReportHack ) {
+		uint32_t now = to_ms_since_boot(get_absolute_time());
+		if ((now - keep_alive_timer) > PS4_KEEPALIVE_TIMER) {
+			last_report_counter = (last_report_counter+1) & 0x3F;
+			ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
+			ps4Report.axis_timing = now;		 		// axis counter is 16 bits
+			keep_alive_timer = now;
+		}
+	}
 
 	return &ps4Report;
 }
