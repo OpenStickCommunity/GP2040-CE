@@ -278,7 +278,7 @@ export default function DisplayConfigPage() {
 			onSubmit={onSuccess}
 			initialValues={defaultValues}
 		>
-			{({ handleSubmit, handleChange, values, errors }) => {
+			{({ handleSubmit, handleChange, values, errors, setFieldValue }) => {
                 const handlePeripheralChange = (e) => {
                     let device = getSelectedPeripheral('i2c', e.target.value);
                     handleChange(e);
@@ -382,6 +382,23 @@ export default function DisplayConfigPage() {
                                             </option>
                                         ))}
                                     </FormSelect>
+                                    <div className="col-sm-3 mb-3">
+                                        <label className="form-label">{t('DisplayConfig:form.power-management-header')}</label>
+                                        <Form.Check
+                                            label={t('DisplayConfig:form.turn-off-when-suspended')}
+                                            type="switch"
+                                            name="turnOffWhenSuspended"
+                                            className="align-middle"
+                                            isInvalid={false}
+                                            checked={Boolean(values.turnOffWhenSuspended)}
+                                            onChange={(e) => {
+                                                setFieldValue(
+                                                    'turnOffWhenSuspended',
+                                                    e.target.checked ? 1 : 0,
+                                                );
+                                            }}
+                                        />
+                                    </div>
                                 </Row>
                                 <h1>{t('DisplayConfig:section.layout-header')}</h1>
                                 <Row className="mb-4">
