@@ -36,6 +36,7 @@ export default {
 		'splash-duration-label': 'Splash Duration (seconds, 0 for Always On)',
 		'display-saver-timeout-label': 'Display Saver Timeout (minutes)',
 		'inverted-label': 'Inverted',
+		'power-management-header': 'Power Management',
 		'turn-off-when-suspended': 'Turn Off When Suspended'
 	},
 };
