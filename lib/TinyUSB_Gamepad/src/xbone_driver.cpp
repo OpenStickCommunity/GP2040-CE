@@ -82,6 +82,8 @@ static XGIPProtocol incomingXGIP;
 
 // Check if Auth is completed (start is 0x01, 0x01, and invalid is 0x01, 0x07)
 const uint8_t authReady[] = {0x01, 0x00};
+const uint8_t powerOn[] = {0x01, 0x00}; 	// Turn on controller
+const uint8_t powerOff[] = {0x01, 0x01}; 	// Turn off controller
 
 // Xbox One Announce
 static uint8_t announcePacket[] = {
@@ -256,7 +258,12 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
 			outgoingXGIP.setData(xboxOneDescriptor, sizeof(xboxOneDescriptor));
 			xboneDriverState = XboxOneDriverState::SEND_DESCRIPTOR;
 		} else if ( command == GIP_POWER_MODE_DEVICE_CONFIG || command == GIP_CMD_WAKEUP || command == GIP_CMD_RUMBLE ) {
-			xbox_one_powered_on = true;
+			if (incomingXGIP.getDataLength() == 2 && memcmp(incomingXGIP.getData(), powerOn, sizeof(powerOn)) == 0 ) {
+				xbox_one_powered_on = true;
+			} else if (incomingXGIP.getDataLength() == 2 && memcmp(incomingXGIP.getData(), powerOff, sizeof(powerOff)) == 0 ) {
+				xbox_one_powered_on = false;
+			}
+			
 		} else if ( command == GIP_AUTH || command == GIP_FINAL_AUTH) {
 			if (incomingXGIP.getDataLength() == 2 && memcmp(incomingXGIP.getData(), authReady, sizeof(authReady))==0 )
 				XboxOneData::getInstance().setAuthCompleted(true);
