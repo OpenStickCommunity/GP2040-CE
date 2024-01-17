@@ -700,6 +700,7 @@ void gpioMappingsMigrationCore(Config& config)
     TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
     KeyboardHostOptions& keyboardHostOptions = config.addonOptions.keyboardHostOptions;
     PSPassthroughOptions& psPassthroughOptions = config.addonOptions.psPassthroughOptions;
+    TurboOptions& turboOptions = config.addonOptions.turboOptions;
 
     const auto gamepadMaskToGpioAction = [&](Mask_t gpMask) -> GpioAction
     {
@@ -801,6 +802,11 @@ void gpioMappingsMigrationCore(Config& config)
     fromProtoBuf(deprecatedPinMappings.has_pinButtonA1,  &deprecatedPinMappings.pinButtonA1,  GpioAction::BUTTON_PRESS_A1);
     fromProtoBuf(deprecatedPinMappings.has_pinButtonA2,  &deprecatedPinMappings.pinButtonA2,  GpioAction::BUTTON_PRESS_A2);
     fromProtoBuf(deprecatedPinMappings.has_pinButtonFn,  &deprecatedPinMappings.pinButtonFn,  GpioAction::BUTTON_PRESS_FN);
+
+    // convert turbo mapping to GPIO mapping config
+    if (turboOptions.enabled && isValidPin(turboOptions.deprecatedButtonPin)) {
+        fromProtoBuf(turboOptions.has_deprecatedButtonPin, &turboOptions.deprecatedButtonPin, GpioAction::BUTTON_PRESS_TURBO);
+    }
 
     // convert extra pin mapping to GPIO mapping config
     if (extraButtonOptions.enabled && isValidPin(extraButtonOptions.pin)) {
@@ -1099,7 +1105,6 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.buzzerOptions.pin);
     markAddonPinIfUsed(config.addonOptions.focusModeOptions.pin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.ledPin);
-    markAddonPinIfUsed(config.addonOptions.turboOptions.deprecatedButtonPin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.shmupDialPin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn1Pin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn2Pin);
