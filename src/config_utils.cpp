@@ -700,6 +700,7 @@ void gpioMappingsMigrationCore(Config& config)
     TiltOptions& tiltOptions = config.addonOptions.tiltOptions;
     KeyboardHostOptions& keyboardHostOptions = config.addonOptions.keyboardHostOptions;
     PSPassthroughOptions& psPassthroughOptions = config.addonOptions.psPassthroughOptions;
+    TurboOptions& turboOptions = config.addonOptions.turboOptions;
 
     const auto gamepadMaskToGpioAction = [&](Mask_t gpMask) -> GpioAction
     {
@@ -1099,7 +1100,6 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.buzzerOptions.pin);
     markAddonPinIfUsed(config.addonOptions.focusModeOptions.pin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.ledPin);
-    markAddonPinIfUsed(config.addonOptions.turboOptions.deprecatedButtonPin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.shmupDialPin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn1Pin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.shmupBtn2Pin);
@@ -1179,6 +1179,19 @@ void gpioMappingsMigrationProfiles(Config& config)
     config.profileOptions.gpioMappingsSets_count = 3;
 
     config.migrations.buttonProfilesMigrated = true;
+}
+
+// Check for additional migrations for features 0.7.6+
+void checkAdditionalMigrations(Config& config) {
+    // Features converted here must set their previous deprecated pin/set value as well (pin = -1)
+    TurboOptions & turboOptions = config.addonOptions.turboOptions;
+
+    // Convert turbo pin mapping to GPIO mapping config
+    if (turboOptions.enabled && isValidPin(turboOptions.deprecatedButtonPin)) {
+        // previous config had a value we haven't migrated yet, it can/should apply in the new config
+        config.gpioMappings.pins[turboOptions.deprecatedButtonPin].action = GpioAction::BUTTON_PRESS_TURBO;
+        turboOptions.deprecatedButtonPin = -1; // set our turbo options to -1 for subsequent calls
+    }
 }
 
 // populate existing configurations' buttonsMask and auxMask to mirror behavior
@@ -1330,6 +1343,9 @@ void ConfigUtils::load(Config& config)
     // Run button profile migrations
     if (!config.migrations.buttonProfilesMigrated)
         gpioMappingsMigrationProfiles(config);
+
+    // Run additional migrations for 0.7.6+ upgrades
+    checkAdditionalMigrations(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
@@ -1902,6 +1918,7 @@ bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
     // we need to run migrations here too, in case the json document changed pins or things derived from pins
     gpioMappingsMigrationCore(config);
     gpioMappingsMigrationProfiles(config);
+    checkAdditionalMigrations(config);
 
     return true;
 }
