@@ -77,9 +77,9 @@
 #define LEDS_BUTTON_B2   9
 #define LEDS_BUTTON_R2   10
 #define LEDS_BUTTON_L2   11
-#define LEDS_BUTTON_L3   12
-#define LEDS_BUTTON_R3   13
-#define LEDS_BUTTON_A1   14
+#define LEDS_BUTTON_A1   12
+#define LEDS_BUTTON_L3   13
+#define LEDS_BUTTON_R3   14
 #define LEDS_BUTTON_A2   15
 
 #define HAS_I2C_DISPLAY 1
