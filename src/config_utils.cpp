@@ -1186,7 +1186,7 @@ void checkAdditionalMigrations(Config& config) {
     // Features converted here must set their previous deprecated pin/set value as well (pin = -1)
     TurboOptions & turboOptions = config.addonOptions.turboOptions;
 
-    // convert extra pin mapping to GPIO mapping config
+    // Convert turbo pin mapping to GPIO mapping config
     if (turboOptions.enabled && isValidPin(turboOptions.deprecatedButtonPin)) {
         // previous config had a value we haven't migrated yet, it can/should apply in the new config
         config.gpioMappings.pins[turboOptions.deprecatedButtonPin].action = GpioAction::BUTTON_PRESS_TURBO;
