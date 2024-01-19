@@ -89,6 +89,7 @@ uint16_t AnimationStation::AdjustIndex(int changeSize) {
 
 void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
   this->lastPressed = pressed;
+  this->baseAnimation->UpdatePixels(pressed);  
   this->buttonAnimation->UpdatePixels(pressed);
 }
 
@@ -96,6 +97,10 @@ void AnimationStation::ClearPressed() {
   if (this->buttonAnimation != nullptr) {
     this->buttonAnimation->ClearPixels();
   }
+  if (this->baseAnimation != nullptr) {
+    this->baseAnimation->ClearPixels();
+  }
+
   this->lastPressed.clear();
 }
 

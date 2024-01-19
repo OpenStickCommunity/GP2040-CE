@@ -14,7 +14,6 @@ public:
 
   static bool HasTheme();
   static void SetCustomTheme(std::map<uint32_t, RGB> customTheme);
-  void UpdatePixels(std::vector<Pixel> pixels);
   void Animate(RGB (&frame)[100]);
   void ParameterUp() { }
   void ParameterDown() { }

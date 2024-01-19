@@ -398,6 +398,7 @@ namespace ConfigLegacy
         uint32_t customThemeR3Pressed;
         uint32_t customThemeA1Pressed;
         uint32_t customThemeA2Pressed;
+        uint32_t customThemeCooldownTimeInMs;        
     };
 
     struct BoardOptions
@@ -936,6 +937,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         SET_PROPERTY(animationOptions, customThemeR3Pressed, legacyAnimationOptions.customThemeR3Pressed);
         SET_PROPERTY(animationOptions, customThemeA1Pressed, legacyAnimationOptions.customThemeA1Pressed);
         SET_PROPERTY(animationOptions, customThemeA2Pressed, legacyAnimationOptions.customThemeA2Pressed);
+        SET_PROPERTY(animationOptions, customThemeCooldownTimeInMs, legacyAnimationOptions.customThemeCooldownTimeInMs);        
     }
 
     const ConfigLegacy::AddonOptions& legacyAddonOptions = *reinterpret_cast<ConfigLegacy::AddonOptions*>(EEPROM_ADDRESS_START + ADDON_STORAGE_INDEX);
