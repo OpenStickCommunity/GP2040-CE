@@ -894,7 +894,6 @@ std::string setCustomTheme()
 	readDoc(pressCooldown, doc, "customThemeCooldownTimeInMs");
 	options.customThemeCooldownTimeInMs = pressCooldown;
 
-	 
 	AnimationStation::SetOptions(options);
 	AnimationStore.save();
 

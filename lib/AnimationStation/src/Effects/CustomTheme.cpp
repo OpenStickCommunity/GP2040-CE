@@ -1,5 +1,9 @@
 #include "CustomTheme.hpp"
 
+#define PRESS_COOLDOWN_INCREMENT   500
+#define PRESS_COOLDOWN_MAX         5000
+#define PRESS_COOLDOWN_MIN         0
+
 std::map<uint32_t, RGB> CustomTheme::theme;
 std::map<uint32_t, int32_t> CustomTheme::times = {};
 std::map<uint32_t, RGB> CustomTheme::hitColor = {};
@@ -20,8 +24,11 @@ void CustomTheme::UpdatePixels(std::vector<Pixel> inpixels) {
 }
 
 void CustomTheme::Animate(RGB (&frame)[100]) {
-
     coolDownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs;
+
+    absolute_time_t currentTime = get_absolute_time();
+    int64_t updateTimeInMs = absolute_time_diff_us(lastUpdateTime, currentTime) / 1000;
+    lastUpdateTime = currentTime;
 
     for (size_t p = 0; p < pixels.size(); p++) {
         if (pixels[p].index != NO_PIXEL.index) {
@@ -30,15 +37,13 @@ void CustomTheme::Animate(RGB (&frame)[100]) {
         }
     }
 
-    updateTimeInms = absolute_time_diff_us(lastUpdateTime, get_absolute_time()) / 1000;
-
     for (size_t r = 0; r != matrix->pixels.size(); r++) {
         for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
             if (matrix->pixels[r][c].index == NO_PIXEL.index)
                 continue;
 
             // Count down the timer
-            times[matrix->pixels[r][c].index] -= updateTimeInms;
+            times[matrix->pixels[r][c].index] -= updateTimeInMs;
             if (times[matrix->pixels[r][c].index] < 0) {
                 times[matrix->pixels[r][c].index] = 0;
             };
@@ -56,8 +61,6 @@ void CustomTheme::Animate(RGB (&frame)[100]) {
             }
         }
     }
-
-    lastUpdateTime = get_absolute_time();
 }
 
 bool CustomTheme::HasTheme() {
@@ -68,10 +71,6 @@ void CustomTheme::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
     CustomTheme::theme = customTheme;
     AnimationStation::effectCount = TOTAL_EFFECTS + 1;
 }
-
-#define PRESS_COOLDOWN_INCREMENT   500
-#define PRESS_COOLDOWN_MAX         5000
-#define PRESS_COOLDOWN_MIN         0
 
 void CustomTheme::ParameterUp() {
     AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;

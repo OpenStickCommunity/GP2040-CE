@@ -28,7 +28,6 @@ protected:
 
   absolute_time_t lastUpdateTime = nil_time;
 
-  uint32_t updateTimeInms = 10;
   uint32_t coolDownTimeInMs = 1000;
 
 };
