@@ -26,8 +26,9 @@ protected:
 
   RGB BlendColor(RGB start, RGB end, uint32_t frame);
 
-  absolute_time_t nextRunTime = nil_time;
-  uint32_t updateTimeInms = 20;
+  absolute_time_t lastUpdateTime = nil_time;
+
+  uint32_t updateTimeInms = 10;
   uint32_t coolDownTimeInMs = 1000;
 
 };

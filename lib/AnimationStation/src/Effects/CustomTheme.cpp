@@ -10,6 +10,7 @@ CustomTheme::CustomTheme(PixelMatrix &matrix) : Animation(matrix) {
             if (matrix.pixels[r][c].index == NO_PIXEL.index)
                 continue;
             times.insert_or_assign(matrix.pixels[r][c].index, 0);
+            hitColor.insert_or_assign(matrix.pixels[r][c].index, defaultColor);            
         }
     }
 }
@@ -24,31 +25,27 @@ void CustomTheme::Animate(RGB (&frame)[100]) {
 
     for (size_t p = 0; p < pixels.size(); p++) {
         if (pixels[p].index != NO_PIXEL.index) {
-            hitColor[pixels[p].index] = frame[pixels[p].positions[0]];
-            times[pixels[p].index] = coolDownTimeInMs;            
+            times[pixels[p].index] = coolDownTimeInMs;               
+            hitColor[pixels[p].index] = frame[pixels[p].positions[0]];       
         }
     }
 
-    if (!time_reached(this->nextRunTime)) {
-        return;
-    }
-
+    updateTimeInms = absolute_time_diff_us(lastUpdateTime, get_absolute_time()) / 1000;
 
     for (size_t r = 0; r != matrix->pixels.size(); r++) {
         for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
             if (matrix->pixels[r][c].index == NO_PIXEL.index)
                 continue;
 
+            // Count down the timer
+            times[matrix->pixels[r][c].index] -= updateTimeInms;
+            if (times[matrix->pixels[r][c].index] < 0) {
+                times[matrix->pixels[r][c].index] = 0;
+            };
+
             auto itr = theme.find(matrix->pixels[r][c].mask);
             if (itr != theme.end()) {
                 for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
-                    
-                    // Count down the timer
-                    times[matrix->pixels[r][c].index]-=updateTimeInms;
-                    if (times[matrix->pixels[r][c].index] < 0) {
-                        times[matrix->pixels[r][c].index] = 0;
-                    };
-
                     // Interpolate from hitColor (color the button was assigned when pressed) back to the theme color
                     frame[matrix->pixels[r][c].positions[p]] = BlendColor(hitColor[matrix->pixels[r][c].index], itr->second, times[matrix->pixels[r][c].index]);
                 }
@@ -60,7 +57,7 @@ void CustomTheme::Animate(RGB (&frame)[100]) {
         }
     }
 
-    this->nextRunTime = make_timeout_time_ms(updateTimeInms);
+    lastUpdateTime = get_absolute_time();
 }
 
 bool CustomTheme::HasTheme() {
@@ -73,28 +70,33 @@ void CustomTheme::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
 }
 
 #define PRESS_COOLDOWN_INCREMENT   500
-#define PRESS_COOLDOWN_MAX         10000
-#define PRESS_COOLDOWN_MIN         10
- 
+#define PRESS_COOLDOWN_MAX         5000
+#define PRESS_COOLDOWN_MIN         0
+
 void CustomTheme::ParameterUp() {
-    if (AnimationStation::options.customThemeCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT < PRESS_COOLDOWN_MAX) {
-        AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
-    } else {
+    AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
+
+    if (AnimationStation::options.customThemeCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
         AnimationStation::options.customThemeCooldownTimeInMs = PRESS_COOLDOWN_MAX;
     }
 }
 
 void CustomTheme::ParameterDown() {
-    if (AnimationStation::options.customThemeCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT > PRESS_COOLDOWN_MIN) {
-        AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
-    } else {
+    AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
+
+    if (AnimationStation::options.customThemeCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
         AnimationStation::options.customThemeCooldownTimeInMs = PRESS_COOLDOWN_MIN;
     }
 }
 
-RGB CustomTheme::BlendColor(RGB start, RGB end, uint32_t frame) {
+RGB CustomTheme::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) {
     RGB result = ColorBlack;
-    float progress = 1.0f - (static_cast<float>(frame) / static_cast<float>(coolDownTimeInMs));
+
+    if (timeRemainingInMs <= 0) {
+        return end;
+    }
+
+    float progress = 1.0f - (static_cast<float>(timeRemainingInMs) / static_cast<float>(coolDownTimeInMs));
     if (progress < 0.0f) progress = 0.0f;
     if (progress > 1.0f) progress = 1.0f;
 
