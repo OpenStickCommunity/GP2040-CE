@@ -397,7 +397,7 @@ namespace ConfigLegacy
         uint32_t customThemeL3Pressed;
         uint32_t customThemeR3Pressed;
         uint32_t customThemeA1Pressed;
-        uint32_t customThemeA2Pressed;    
+        uint32_t customThemeA2Pressed;
     };
 
     struct BoardOptions
