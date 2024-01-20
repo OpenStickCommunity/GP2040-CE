@@ -22,8 +22,8 @@ public:
 		static USBHostManager instance; // Guaranteed to be destroyed. // Instantiated on first use.
 		return instance;
 	}
-    void setDataPin(uint8_t); // start USB host (change CPU, setup PIO PICO usb pin)
-    void start();
+    void start();               // Start USB Host
+    void shutdown();            // Called on system reboot
     void pushAddon(USBAddon *); // If anything needs to update in the gpconfig driver
     void process();
     void hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len);
