@@ -103,6 +103,7 @@ static void updateAnimationOptionsProto(const AnimationOptions& options)
 	optionsProto.customThemeA2Pressed		= options.customThemeA2Pressed;
 	optionsProto.customThemeL3Pressed		= options.customThemeL3Pressed;
 	optionsProto.customThemeR3Pressed		= options.customThemeR3Pressed;
+	optionsProto.customThemeCooldownTimeInMs = options.customThemeCooldownTimeInMs;	
 }
 
 void Storage::performEnqueuedSaves()
@@ -261,6 +262,7 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 	options.customThemeA2Pressed	= optionsProto.customThemeA2Pressed;
 	options.customThemeL3Pressed	= optionsProto.customThemeL3Pressed;
 	options.customThemeR3Pressed	= optionsProto.customThemeR3Pressed;
+	options.customThemeCooldownTimeInMs = optionsProto.customThemeCooldownTimeInMs;		
 
 	return options;
 }
