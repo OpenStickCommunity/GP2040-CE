@@ -1,4 +1,5 @@
 #include "Animation.hpp"
+
 #include "AnimationStation.hpp"
 
 LEDFormat Animation::format;
@@ -6,14 +7,14 @@ std::map<uint32_t, int32_t> Animation::times = {};
 std::map<uint32_t, RGB> Animation::hitColor = {};
 
 Animation::Animation(PixelMatrix &matrix) : matrix(&matrix) {
-      for (size_t r = 0; r != matrix.pixels.size(); r++) {
-        for (size_t c = 0; c != matrix.pixels[r].size(); c++) {
-            if (matrix.pixels[r][c].index == NO_PIXEL.index)
-                continue;
-            times.insert_or_assign(matrix.pixels[r][c].index, 0);
-            hitColor.insert_or_assign(matrix.pixels[r][c].index, defaultColor);            
-        }
+  for (size_t r = 0; r != matrix.pixels.size(); r++) {
+    for (size_t c = 0; c != matrix.pixels[r].size(); c++) {
+      if (matrix.pixels[r][c].index == NO_PIXEL.index)
+        continue;
+      times.insert_or_assign(matrix.pixels[r][c].index, 0);
+      hitColor.insert_or_assign(matrix.pixels[r][c].index, defaultColor);
     }
+  }
 }
 
 void Animation::UpdatePixels(std::vector<Pixel> inpixels) {
@@ -21,28 +22,28 @@ void Animation::UpdatePixels(std::vector<Pixel> inpixels) {
 }
 
 void Animation::UpdateTime() {
-    coolDownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs;
+  coolDownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs;
 
-    absolute_time_t currentTime = get_absolute_time();
-    updateTimeInMs = absolute_time_diff_us(lastUpdateTime, currentTime) / 1000;
-    lastUpdateTime = currentTime;
+  absolute_time_t currentTime = get_absolute_time();
+  updateTimeInMs = absolute_time_diff_us(lastUpdateTime, currentTime) / 1000;
+  lastUpdateTime = currentTime;
 }
 
 void Animation::UpdatePresses(RGB (&frame)[100]) {
-    // Queue up blend on hit
-    for (size_t p = 0; p < pixels.size(); p++) {
-        if (pixels[p].index != NO_PIXEL.index) {
-            times[pixels[p].index] = coolDownTimeInMs;
-            hitColor[pixels[p].index] = frame[pixels[p].positions[0]];
-        }
+  // Queue up blend on hit
+  for (size_t p = 0; p < pixels.size(); p++) {
+    if (pixels[p].index != NO_PIXEL.index) {
+      times[pixels[p].index] = coolDownTimeInMs;
+      hitColor[pixels[p].index] = frame[pixels[p].positions[0]];
     }
+  }
 }
 
 void Animation::DecrementFadeCounter(int32_t index) {
-    times[index] -= updateTimeInMs;
-    if (times[index] < 0) {
-        times[index] = 0;
-    };
+  times[index] -= updateTimeInMs;
+  if (times[index] < 0) {
+    times[index] = 0;
+  };
 }
 
 void Animation::ClearPixels() {
@@ -66,19 +67,19 @@ bool Animation::notInFilter(Pixel pixel) {
 }
 
 RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) {
-    RGB result = ColorBlack;
+  RGB result = ColorBlack;
 
-    if (timeRemainingInMs <= 0) {
-        return end;
-    }
+  if (timeRemainingInMs <= 0) {
+    return end;
+  }
 
-    float progress = 1.0f - (static_cast<float>(timeRemainingInMs) / static_cast<float>(coolDownTimeInMs));
-    if (progress < 0.0f) progress = 0.0f;
-    if (progress > 1.0f) progress = 1.0f;
+  float progress = 1.0f - (static_cast<float>(timeRemainingInMs) / static_cast<float>(coolDownTimeInMs));
+  if (progress < 0.0f) progress = 0.0f;
+  if (progress > 1.0f) progress = 1.0f;
 
-    result.r = static_cast<uint32_t>(static_cast<float>(start.r + (end.r - start.r) * progress));
-    result.g = static_cast<uint32_t>(static_cast<float>(start.g + (end.g - start.g) * progress));
-    result.b = static_cast<uint32_t>(static_cast<float>(start.b + (end.b - start.b) * progress));
+  result.r = static_cast<uint32_t>(static_cast<float>(start.r + (end.r - start.r) * progress));
+  result.g = static_cast<uint32_t>(static_cast<float>(start.g + (end.g - start.g) * progress));
+  result.b = static_cast<uint32_t>(static_cast<float>(start.b + (end.b - start.b) * progress));
 
-    return result;
+  return result;
 }

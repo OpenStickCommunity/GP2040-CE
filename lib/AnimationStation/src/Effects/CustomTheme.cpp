@@ -1,13 +1,12 @@
 #include "CustomTheme.hpp"
 
-#define PRESS_COOLDOWN_INCREMENT   500
-#define PRESS_COOLDOWN_MAX         5000
-#define PRESS_COOLDOWN_MIN         0
+#define PRESS_COOLDOWN_INCREMENT 500
+#define PRESS_COOLDOWN_MAX 5000
+#define PRESS_COOLDOWN_MIN 0
 
 std::map<uint32_t, RGB> CustomTheme::theme;
 
 CustomTheme::CustomTheme(PixelMatrix &matrix) : Animation(matrix) {
-
 }
 
 void CustomTheme::Animate(RGB (&frame)[100]) {
@@ -38,27 +37,26 @@ void CustomTheme::Animate(RGB (&frame)[100]) {
 }
 
 bool CustomTheme::HasTheme() {
-    return CustomTheme::theme.size() > 0;
+  return CustomTheme::theme.size() > 0;
 }
 
 void CustomTheme::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
-    CustomTheme::theme = customTheme;
-    AnimationStation::effectCount = TOTAL_EFFECTS + 1;
+  CustomTheme::theme = customTheme;
+  AnimationStation::effectCount = TOTAL_EFFECTS + 1;
 }
 
 void CustomTheme::ParameterUp() {
-    AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
+  AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
 
-    if (AnimationStation::options.customThemeCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-        AnimationStation::options.customThemeCooldownTimeInMs = PRESS_COOLDOWN_MAX;
-    }
+  if (AnimationStation::options.customThemeCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+    AnimationStation::options.customThemeCooldownTimeInMs = PRESS_COOLDOWN_MAX;
+  }
 }
 
 void CustomTheme::ParameterDown() {
-    AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
+  AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
 
-    if (AnimationStation::options.customThemeCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-        AnimationStation::options.customThemeCooldownTimeInMs = PRESS_COOLDOWN_MIN;
-    }
+  if (AnimationStation::options.customThemeCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+    AnimationStation::options.customThemeCooldownTimeInMs = PRESS_COOLDOWN_MIN;
+  }
 }
-

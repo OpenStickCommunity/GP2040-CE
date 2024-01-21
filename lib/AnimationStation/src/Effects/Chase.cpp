@@ -1,8 +1,8 @@
 #include "Chase.hpp"
 
-#define CHASE_CYCLE_INCREMENT   10
-#define CHASE_CYCLE_MAX         INT16_MAX/2
-#define CHASE_CYCLE_MIN         10
+#define CHASE_CYCLE_INCREMENT 10
+#define CHASE_CYCLE_MAX INT16_MAX / 2
+#define CHASE_CYCLE_MIN 10
 
 Chase::Chase(PixelMatrix &matrix) : Animation(matrix) {
 }
@@ -27,8 +27,7 @@ void Chase::Animate(RGB (&frame)[100]) {
         RGB color = RGB::wheel(this->WheelFrame(pixel.index));
         for (auto &pos : pixel.positions)
           frame[pos] = BlendColor(hitColor[pixel.index], color, times[pixel.index]);
-      }
-      else {
+      } else {
         for (auto &pos : pixel.positions)
           frame[pos] = BlendColor(hitColor[pixel.index], ColorBlack, times[pixel.index]);
       }
@@ -58,10 +57,9 @@ void Chase::Animate(RGB (&frame)[100]) {
   }
 
   // this really shouldn't be nessecary, but something outside the param down might be changing this
-  if ( AnimationStation::options.chaseCycleTime < CHASE_CYCLE_MIN ){
+  if (AnimationStation::options.chaseCycleTime < CHASE_CYCLE_MIN) {
     AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MIN;
-  } 
-  else if (AnimationStation::options.chaseCycleTime > CHASE_CYCLE_MAX) {
+  } else if (AnimationStation::options.chaseCycleTime > CHASE_CYCLE_MAX) {
     AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MAX;
   }
 
@@ -112,7 +110,7 @@ void Chase::ParameterUp() {
 
 void Chase::ParameterDown() {
   AnimationStation::options.chaseCycleTime = AnimationStation::options.chaseCycleTime - CHASE_CYCLE_INCREMENT;
-  if ( AnimationStation::options.chaseCycleTime < CHASE_CYCLE_MIN ){
+  if (AnimationStation::options.chaseCycleTime < CHASE_CYCLE_MIN) {
     AnimationStation::options.chaseCycleTime = CHASE_CYCLE_MIN;
   }
 }

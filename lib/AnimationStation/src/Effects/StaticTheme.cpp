@@ -20,8 +20,8 @@ void StaticTheme::Animate(RGB (&frame)[100]) {
 
         // Count down the timer
         DecrementFadeCounter(matrix->pixels[r][c].index);
-            
-        std::map<uint32_t, RGB> theme = StaticTheme::themes.at(AnimationStation::options.themeIndex);    
+
+        std::map<uint32_t, RGB> theme = StaticTheme::themes.at(AnimationStation::options.themeIndex);
 
         auto itr = theme.find(matrix->pixels[r][c].mask);
         if (itr != theme.end()) {
@@ -48,7 +48,6 @@ void StaticTheme::ParameterUp() {
 }
 
 void StaticTheme::ParameterDown() {
-
   if (AnimationStation::options.themeIndex > 0) {
     AnimationStation::options.themeIndex--;
   } else {
