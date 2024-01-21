@@ -46,17 +46,17 @@ void CustomTheme::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
 }
 
 void CustomTheme::ParameterUp() {
-  AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
+  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
 
-  if (AnimationStation::options.customThemeCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-    AnimationStation::options.customThemeCooldownTimeInMs = PRESS_COOLDOWN_MAX;
+  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MAX;
   }
 }
 
 void CustomTheme::ParameterDown() {
-  AnimationStation::options.customThemeCooldownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
+  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
 
-  if (AnimationStation::options.customThemeCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-    AnimationStation::options.customThemeCooldownTimeInMs = PRESS_COOLDOWN_MIN;
+  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MIN;
   }
 }

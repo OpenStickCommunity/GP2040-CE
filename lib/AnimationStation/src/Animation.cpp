@@ -22,7 +22,7 @@ void Animation::UpdatePixels(std::vector<Pixel> inpixels) {
 }
 
 void Animation::UpdateTime() {
-  coolDownTimeInMs = AnimationStation::options.customThemeCooldownTimeInMs;
+  coolDownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs;
 
   absolute_time_t currentTime = get_absolute_time();
   updateTimeInMs = absolute_time_diff_us(lastUpdateTime, currentTime) / 1000;

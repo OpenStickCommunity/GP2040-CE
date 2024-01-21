@@ -314,7 +314,7 @@ message AnimationOptions_Proto
 	optional uint32 customThemeR3Pressed = 42;
 	optional uint32 customThemeA1Pressed = 43;
 	optional uint32 customThemeA2Pressed = 44;
-	optional uint32 customThemeCooldownTimeInMs = 45;  	
+	optional uint32 buttonPressColorCooldownTimeInMs = 45;  	
 }
 
 message BootselButtonOptions

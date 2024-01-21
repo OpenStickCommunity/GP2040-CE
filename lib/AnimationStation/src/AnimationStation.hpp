@@ -88,7 +88,7 @@ struct __attribute__ ((__packed__)) AnimationOptions
   uint32_t customThemeR3Pressed;
   uint32_t customThemeA1Pressed;
   uint32_t customThemeA2Pressed;
-  uint32_t customThemeCooldownTimeInMs;  
+  uint32_t buttonPressColorCooldownTimeInMs;  
 };
 
 class AnimationStation
