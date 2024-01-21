@@ -12,19 +12,25 @@ void Chase::Animate(RGB (&frame)[100]) {
     return;
   }
 
+  UpdateTime();
+  UpdatePresses(frame);
+
   for (auto &col : matrix->pixels) {
     for (auto &pixel : col) {
       if (pixel.index == NO_PIXEL.index)
         continue;
 
+      // Count down the timer
+      DecrementFadeCounter(pixel.index);
+
       if (this->IsChasePixel(pixel.index)) {
         RGB color = RGB::wheel(this->WheelFrame(pixel.index));
         for (auto &pos : pixel.positions)
-          frame[pos] = color;
+          frame[pos] = BlendColor(hitColor[pixel.index], color, times[pixel.index]);
       }
       else {
         for (auto &pos : pixel.positions)
-          frame[pos] = ColorBlack;
+          frame[pos] = BlendColor(hitColor[pixel.index], ColorBlack, times[pixel.index]);
       }
     }
   }
