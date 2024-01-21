@@ -1,9 +1,5 @@
 #include "CustomTheme.hpp"
 
-#define PRESS_COOLDOWN_INCREMENT 500
-#define PRESS_COOLDOWN_MAX 5000
-#define PRESS_COOLDOWN_MIN 0
-
 std::map<uint32_t, RGB> CustomTheme::theme;
 
 CustomTheme::CustomTheme(PixelMatrix &matrix) : Animation(matrix) {
@@ -46,17 +42,7 @@ void CustomTheme::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
 }
 
 void CustomTheme::ParameterUp() {
-  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
-
-  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MAX;
-  }
 }
 
 void CustomTheme::ParameterDown() {
-  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
-
-  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
-    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MIN;
-  }
 }

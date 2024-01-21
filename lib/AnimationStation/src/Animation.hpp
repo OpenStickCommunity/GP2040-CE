@@ -121,6 +121,9 @@ public:
   virtual void ParameterUp() = 0;
   virtual void ParameterDown() = 0;
 
+  virtual void FadeTimeUp();
+  virtual void FadeTimeDown();
+
   RGB BlendColor(RGB start, RGB end, uint32_t frame);
 
 protected:

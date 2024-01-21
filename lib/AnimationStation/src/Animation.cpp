@@ -2,6 +2,10 @@
 
 #include "AnimationStation.hpp"
 
+#define PRESS_COOLDOWN_INCREMENT 500
+#define PRESS_COOLDOWN_MAX 5000
+#define PRESS_COOLDOWN_MIN 0
+
 LEDFormat Animation::format;
 std::map<uint32_t, int32_t> Animation::times = {};
 std::map<uint32_t, RGB> Animation::hitColor = {};
@@ -82,4 +86,21 @@ RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) {
   result.b = static_cast<uint32_t>(static_cast<float>(start.b + (end.b - start.b) * progress));
 
   return result;
+}
+
+
+void Animation::FadeTimeUp() {
+  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs + PRESS_COOLDOWN_INCREMENT;
+
+  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MAX;
+  }
+}
+
+void Animation::FadeTimeDown() {
+  AnimationStation::options.buttonPressColorCooldownTimeInMs = AnimationStation::options.buttonPressColorCooldownTimeInMs - PRESS_COOLDOWN_INCREMENT;
+
+  if (AnimationStation::options.buttonPressColorCooldownTimeInMs > PRESS_COOLDOWN_MAX) {
+    AnimationStation::options.buttonPressColorCooldownTimeInMs = PRESS_COOLDOWN_MIN;
+  }
 }
