@@ -564,6 +564,16 @@ AnimationHotkey animationHotkeys(Gamepad *gamepad)
 			action = HOTKEY_LEDS_PRESS_PARAMETER_DOWN;
 			gamepad->state.buttons &= ~(GAMEPAD_MASK_L2 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
 		}
+		else if (gamepad->pressedL3())
+		{
+			action = HOTKEY_LEDS_FADETIME_DOWN;
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_L3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}
+		else if (gamepad->pressedR3())
+		{
+			action = HOTKEY_LEDS_FADETIME_UP;
+			gamepad->state.buttons &= ~(GAMEPAD_MASK_R3 | GAMEPAD_MASK_S1 | GAMEPAD_MASK_S2);
+		}        
 	}
 
 	return action;
