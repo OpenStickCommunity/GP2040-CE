@@ -1,8 +1,8 @@
 #include "Chase.hpp"
 
-#define CHASE_CYCLE_INCREMENT   10
-#define CHASE_CYCLE_MAX         INT16_MAX/2
-#define CHASE_CYCLE_MIN         10
+#define CHASE_CYCLE_INCREMENT 10
+#define CHASE_CYCLE_MAX INT16_MAX / 2
+#define CHASE_CYCLE_MIN 10
 
 Chase::Chase(PixelMatrix &matrix) : Animation(matrix) {
 }
