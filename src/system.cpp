@@ -1,5 +1,7 @@
 #include "system.h"
 
+#include "usbhostmanager.h"
+
 #include <hardware/flash.h>
 #include <hardware/sync.h>
 #include <hardware/watchdog.h>
@@ -41,6 +43,9 @@ uint32_t System::getUsedHeap() {
 }
 
 void System::reboot(BootMode bootMode) {
+    // Halt all running USB instances
+    USBHostManager::getInstance().shutdown();
+
     // Make sure that the other core is halted
     // We do not want it to be talking to devices (e.g. OLED display) while we reboot
 	multicore_lockout_start_timeout_us(0xfffffffffffffff);
