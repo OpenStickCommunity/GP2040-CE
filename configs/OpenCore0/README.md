@@ -9,7 +9,7 @@ Layout for the Open_Core0
 
 GPIO mapping for the Open_Core0
 
-![Pin Mapping](assets/Open_Core0_pinout.png)
+![Pin Mapping](assets/Open_Core0_pin_mapping.png)
 
 Addressible RGB LED order for the Open_Core0
 
