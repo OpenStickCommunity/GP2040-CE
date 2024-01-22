@@ -379,7 +379,6 @@ app.get('/api/getProfileOptions', (req, res) => {
 
 app.get('/api/getAddonsOptions', (req, res) => {
 	return res.send({
-		turboPin: -1,
 		turboPinLED: -1,
 		sliderModeZero: 0,
 		turboShotCount: 20,

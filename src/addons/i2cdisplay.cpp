@@ -1,6 +1,6 @@
 /*
  * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ * SPDX-FileCopyrightText: Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
  */
 
 #include "addons/i2cdisplay.h"
@@ -1430,7 +1430,7 @@ void I2CDisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}
 
-	if ( turboOptions.enabled && isValidPin(turboOptions.buttonPin) ) {
+	if ( turboOptions.enabled ) {
 		statusBar += " T";
 		if ( turboOptions.shotCount < 10 ) // padding
 			statusBar += "0";

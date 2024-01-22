@@ -5,8 +5,8 @@ LEDFormat Animation::format;
 Animation::Animation(PixelMatrix &matrix) : matrix(&matrix) {
 }
 
-void Animation::UpdatePixels(std::vector<Pixel> pixels) {
-  this->pixels = pixels;
+void Animation::UpdatePixels(std::vector<Pixel> inpixels) {
+  this->pixels = inpixels;
 }
 
 void Animation::ClearPixels() {

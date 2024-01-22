@@ -12,7 +12,18 @@
 #define TURBO_SHOT_MAX 30
 
 bool TurboInput::available() {
-    return Storage::getInstance().getAddonOptions().turboOptions.enabled;
+    // Turbo Button initialized by void Gamepad::setup()
+    bool hasTurboAssigned = false;
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        if ( pinMappings[pin] == GpioAction::BUTTON_PRESS_TURBO ) {
+            hasTurboAssigned = true;
+            turboPin = pin;
+            break;
+        }
+    }
+    return Storage::getInstance().getAddonOptions().turboOptions.enabled && (hasTurboAssigned == true);
 }
 
 void TurboInput::setup()
@@ -20,13 +31,6 @@ void TurboInput::setup()
     const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint32_t now = getMillis();
-
-    // Setup TURBO Key GPIO
-    if (  isValidPin(options.buttonPin) ) {
-        gpio_init( options.buttonPin);             // Initialize pin
-        gpio_set_dir( options.buttonPin, GPIO_IN); // Set as INPUT
-        gpio_pull_up( options.buttonPin);          // Set as PULLUP
-    }
 
     // Turbo Dial
     uint8_t shotCount = std::clamp<uint8_t>(options.shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
@@ -103,7 +107,7 @@ void TurboInput::read(const TurboOptions & options)
     }
 
     // Get TURBO Key State
-    bTurboState = !gpio_get(options.buttonPin);
+    bTurboState = !gpio_get(turboPin);
 }
 
 void TurboInput::debounce()

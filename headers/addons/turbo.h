@@ -17,11 +17,6 @@
 #define TURBO_BUTTON_MASK (GAMEPAD_MASK_B1 | GAMEPAD_MASK_B2 | GAMEPAD_MASK_B3 | GAMEPAD_MASK_B4 | \
                             GAMEPAD_MASK_L1 | GAMEPAD_MASK_R1 | GAMEPAD_MASK_L2 | GAMEPAD_MASK_R2)
 
-// TURBO BUTTON
-#ifndef PIN_BUTTON_TURBO
-#define PIN_BUTTON_TURBO -1
-#endif
-
 // TURBO LED
 #ifndef TURBO_LED_PIN
 #define TURBO_LED_PIN -1
@@ -102,6 +97,7 @@ private:
     void read(const TurboOptions&);                // Read TURBO Buttons and Dials
     void debounce();            // TURBO Button Debouncer
     void updateTurboShotCount(uint8_t turboShotCount);
+    Pin_t turboPin;             // Pin for Turbo from Gamepad/BoardConfig
     bool bDebState;             // Debounce TURBO Button State
     uint32_t uDebTime;          // Debounce TURBO Button Time
     uint32_t debChargeState;    // Debounce Charge Button State

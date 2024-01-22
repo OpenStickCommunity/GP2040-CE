@@ -105,7 +105,7 @@ inline const std::vector<RGB> colors {
 class Animation {
 public:
   Animation(PixelMatrix &matrix);
-  void UpdatePixels(std::vector<Pixel> pixels);
+  virtual void UpdatePixels(std::vector<Pixel> pixels);
   void ClearPixels();
   virtual ~Animation(){};
 
