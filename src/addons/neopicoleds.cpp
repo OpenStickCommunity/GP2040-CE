@@ -456,6 +456,12 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 
 		case BUTTON_LAYOUT_OPENCORE0WASDA:
 			return generatedLEDStickless(&positions);
+
+		case BUTTON_LAYOUT_STICKLESS_13:
+			return generatedLEDStickless(&positions);	
+			
+		case BUTTON_LAYOUT_STICKLESS_16:
+			return generatedLEDStickless(&positions);			
 	}
 
 	assert(false);
