@@ -485,7 +485,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.animationOptions, customThemeR3Pressed, 0);
     INIT_UNSET_PROPERTY(config.animationOptions, customThemeA1Pressed, 0);
     INIT_UNSET_PROPERTY(config.animationOptions, customThemeA2Pressed, 0);
-    INIT_UNSET_PROPERTY(config.animationOptions, customThemeCooldownTimeInMs, 0);
+    INIT_UNSET_PROPERTY(config.animationOptions, buttonPressColorCooldownTimeInMs, 500);
 
     // addonOptions.bootselButtonOptions
     INIT_UNSET_PROPERTY(config.addonOptions.bootselButtonOptions, enabled, !!BOOTSEL_BUTTON_ENABLED);

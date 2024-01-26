@@ -66,6 +66,14 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) {
     this->buttonAnimation->ParameterDown();
   }
+
+  if (action == HOTKEY_LEDS_FADETIME_UP) {
+    this->baseAnimation->FadeTimeUp();
+  }
+
+  if (action == HOTKEY_LEDS_FADETIME_DOWN) {
+    this->baseAnimation->FadeTimeDown();
+  }  
   
 }
 
