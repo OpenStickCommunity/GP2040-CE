@@ -162,6 +162,7 @@ void I2CDisplayAddon::process() {
 					break;
 				case BUTTON_LAYOUT_STICKLESS_16:
 					drawStickless16A(32, 27, 4, 2);
+					break;
 				case BUTTON_LAYOUT_SUNGA12KEYA:
 					drawSunga12keyA(8, 20, 7, 2);
 					break;
@@ -254,6 +255,7 @@ void I2CDisplayAddon::process() {
 					break;
 				case BUTTON_LAYOUT_STICKLESS_16B:
 					drawSticklessButtons16B(32, 27, 4, 2);
+					break;
 				case BUTTON_LAYOUT_SUNGA12KEYB:
 					drawSunga12keyB(8, 20, 7, 2);
 					break;
@@ -448,6 +450,7 @@ void I2CDisplayAddon::drawButtonLayoutLeft(ButtonLayoutParamsLeft& options)
 				break;
 			case BUTTON_LAYOUT_STICKLESS_16:
 				drawStickless16A(startX, startY, buttonRadius, buttonPadding);
+				break;
 			case BUTTON_LAYOUT_SUNGA12KEYA:
 				drawSunga12keyA(startX, startY, buttonRadius, buttonPadding);
 				break;
@@ -546,6 +549,7 @@ void I2CDisplayAddon::drawButtonLayoutRight(ButtonLayoutParamsRight& options)
 				break;
 			case BUTTON_LAYOUT_STICKLESS_16B:
 				drawSticklessButtons16B(startX, startY, buttonRadius, buttonPadding);
+				break;
 			case BUTTON_LAYOUT_SUNGA12KEYB:
 				drawSunga12keyB(startX, startY, buttonRadius, buttonPadding);
 				break;
