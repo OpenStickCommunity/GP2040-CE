@@ -34,15 +34,17 @@ const BUTTON_LAYOUTS = [
 	{ label: 'Fightboard Mirrored', value: 11 }, // BUTTON_LAYOUT_FIGHTBOARD_MIRRORED
 	{ label: 'Custom', value: 12 }, // BUTTON_LAYOUT_CUSTOM
 	{ label: 'Open_Core0 WASD', value: 13 }, // BUTTON_LAYOUT_OPENCORE0WASDA
-	{ label: 'Sunga 12 Key', value: 14 }, // BUTTON_LAYOUT_SUNGA12KEYA
-	{ label: 'Sunga 13 Key', value: 15 }, // BUTTON_LAYOUT_SUNGA13KEYA
-	{ label: 'Sunga 14 Key LR', value: 16 }, // BUTTON_LAYOUT_SUNGA14KEYLRA
-	{ label: 'Sunga 14 Key UD', value: 17 }, // BUTTON_LAYOUT_SUNGA14KEYUDA
-	{ label: 'Sunga 17 Key', value: 18 }, // BUTTON_LAYOUT_SUNGA17KEYA
-	{ label: 'Sunga 17 Key Alt', value: 19 }, // BUTTON_LAYOUT_SUNGA17KEYAALT
-	{ label: 'Sunga 18 Key Dual Stick', value: 20 }, // BUTTON_LAYOUT_SUNGA18KEYA
-	{ label: 'Sunga 18 Key Dual Stick Alt', value: 21 }, // BUTTON_LAYOUT_SUNGA18KEYAALT
-	{ label: 'Sunga 18 Key Dual Stick Rex', value: 22 }, // BUTTON_LAYOUT_SUNGA18KEYAREX
+	{ label: 'Stickless 13', value: 14 }, // BUTTON_LAYOUT_STICKLESS_13
+    { label: 'Stickless 16', value: 15 }, // BUTTON_LAYOUT_STICKLESS_16
+	{ label: 'Sunga 12 Key', value: 16 }, // BUTTON_LAYOUT_SUNGA12KEYA
+	{ label: 'Sunga 13 Key', value: 17 }, // BUTTON_LAYOUT_SUNGA13KEYA
+	{ label: 'Sunga 14 Key LR', value: 18 }, // BUTTON_LAYOUT_SUNGA14KEYLRA
+	{ label: 'Sunga 14 Key UD', value: 19 }, // BUTTON_LAYOUT_SUNGA14KEYUDA
+	{ label: 'Sunga 17 Key', value: 20 }, // BUTTON_LAYOUT_SUNGA17KEYA
+	{ label: 'Sunga 17 Key Alt', value: 21 }, // BUTTON_LAYOUT_SUNGA17KEYAALT
+	{ label: 'Sunga 18 Key Dual Stick', value: 22 }, // BUTTON_LAYOUT_SUNGA18KEYA
+	{ label: 'Sunga 18 Key Dual Stick Alt', value: 23 }, // BUTTON_LAYOUT_SUNGA18KEYAALT
+	{ label: 'Sunga 18 Key Dual Stick Rex', value: 24 }, // BUTTON_LAYOUT_SUNGA18KEYAREX
 ];
 
 const BUTTON_LAYOUTS_RIGHT = [
@@ -65,13 +67,15 @@ const BUTTON_LAYOUTS_RIGHT = [
 	{ label: 'Custom', value: 16 }, // BUTTON_LAYOUT_CUSTOM
 	{ label: 'Keyboard 8', value: 17 }, // BUTTON_LAYOUT_KEYBOARD8B
 	{ label: 'Open_Core0 WASD', value: 18 }, // BUTTON_LAYOUT_OPENCORE0WASDB
-	{ label: 'Sunga 12 Key', value: 19 }, // BUTTON_LAYOUT_SUNGA12KEYB
-	{ label: 'Sunga 13 Key', value: 20 }, // BUTTON_LAYOUT_SUNGA13KEYB
-	{ label: 'Sunga 14 Key LR', value: 21 }, // BUTTON_LAYOUT_SUNGA14KEYLRB
-	{ label: 'Sunga 14 Key UD', value: 22 }, // BUTTON_LAYOUT_SUNGA14KEYUDB
-	{ label: 'Sunga 17 Key', value: 23 }, // BUTTON_LAYOUT_SUNGA17KEYB
-	{ label: 'Sunga 18 Key Dual Stick', value: 24 }, // BUTTON_LAYOUT_SUNGA18KEYB
-	{ label: 'Sunga 18 Key Dual Stick Rex', value: 25 }, // BUTTON_LAYOUT_SUNGA18KEYBREX
+	{ label: 'Stickless 13', value: 19 }, // BUTTON_LAYOUT_STICKLESS_13B
+    { label: 'Stickless 16', value: 20 }, // BUTTON_LAYOUT_STICKLESS_16B
+	{ label: 'Sunga 12 Key', value: 21 }, // BUTTON_LAYOUT_SUNGA12KEYB
+	{ label: 'Sunga 13 Key', value: 22 }, // BUTTON_LAYOUT_SUNGA13KEYB
+	{ label: 'Sunga 14 Key LR', value: 23 }, // BUTTON_LAYOUT_SUNGA14KEYLRB
+	{ label: 'Sunga 14 Key UD', value: 24 }, // BUTTON_LAYOUT_SUNGA14KEYUDB
+	{ label: 'Sunga 17 Key', value: 25 }, // BUTTON_LAYOUT_SUNGA17KEYB
+	{ label: 'Sunga 18 Key Dual Stick', value: 26 }, // BUTTON_LAYOUT_SUNGA18KEYB
+	{ label: 'Sunga 18 Key Dual Stick Rex', value: 27 }, // BUTTON_LAYOUT_SUNGA18KEYBREX
 ];
 
 const SPLASH_MODES = [
