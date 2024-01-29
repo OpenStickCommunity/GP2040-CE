@@ -11,18 +11,6 @@ using namespace std;
 #include "GamepadEnums.h"
 #include "enums.pb.h"
 
-#include "gamepad/descriptors/HIDDescriptors.h"
-#include "gamepad/descriptors/SwitchDescriptors.h"
-#include "gamepad/descriptors/XInputDescriptors.h"
-#include "gamepad/descriptors/PS4Descriptors.h"
-#include "gamepad/descriptors/NeogeoDescriptors.h"
-#include "gamepad/descriptors/MDMiniDescriptors.h"
-#include "gamepad/descriptors/PCEngineDescriptors.h"
-#include "gamepad/descriptors/EgretDescriptors.h"
-#include "gamepad/descriptors/AstroDescriptors.h"
-#include "gamepad/descriptors/PSClassicDescriptors.h"
-#include "gamepad/descriptors/XboxOriginalDescriptors.h"
-
 #define GAMEPAD_BUTTON_COUNT 14
 
 /*
@@ -135,6 +123,11 @@ struct GamepadState
 	uint8_t lt {0};
 	uint8_t rt {0};
 };
+
+#include "drivers/switch/SwitchDescriptors.h"
+#include "drivers/hid/HIDDescriptors.h"
+#include "drivers/ps4/PS4Descriptors.h"
+#include "drivers/neogeo/NeogeoDescriptors.h"
 
 // Move the values for the 8-bit modes to the MSB of a 16-bit for conversion later
 // Resolves issues where 0x80 is center and 0x7F is not

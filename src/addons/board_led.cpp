@@ -1,6 +1,6 @@
 #include "addons/board_led.h"
-#include "usb_driver.h" // Required to check USB state
-#include "ps4_driver.h"
+#include "drivers/shared/ps4data.h"
+#include "usbdriver.h"
 #include "helper.h"
 #include "config.pb.h"
 

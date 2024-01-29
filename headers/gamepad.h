@@ -8,19 +8,6 @@
 #include "enums.pb.h"
 #include "gamepad/GamepadDebouncer.h"
 #include "gamepad/GamepadState.h"
-#include "gamepad/descriptors/HIDDescriptors.h"
-#include "gamepad/descriptors/SwitchDescriptors.h"
-#include "gamepad/descriptors/XInputDescriptors.h"
-#include "gamepad/descriptors/KeyboardDescriptors.h"
-#include "gamepad/descriptors/PS4Descriptors.h"
-#include "gamepad/descriptors/NeogeoDescriptors.h"
-#include "gamepad/descriptors/MDMiniDescriptors.h"
-#include "gamepad/descriptors/PCEngineDescriptors.h"
-#include "gamepad/descriptors/EgretDescriptors.h"
-#include "gamepad/descriptors/AstroDescriptors.h"
-#include "gamepad/descriptors/PSClassicDescriptors.h"
-#include "gamepad/descriptors/XboxOriginalDescriptors.h"
-#include "gamepad/descriptors/XBOneDescriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -73,27 +60,6 @@ public:
 	 */
 	bool hasRightAnalogStick {false};
 
-	void sendReportSuccess();
-	void *getReport();
-	uint16_t getReportSize();
-	HIDReport *getHIDReport();
-	SwitchReport *getSwitchReport();
-	XInputReport *getXInputReport();
-	XboxOneGamepad_Data_t *getXBOneReport();
-	KeyboardReport *getKeyboardReport();
-	PS4Report *getPS4Report();
-	NeogeoReport *getNeogeoReport();
-	MDMiniReport *getMDMiniReport();
-	PCEngineReport *getPCEngineReport();
-    EgretReport *getEgretReport();
-    AstroReport *getAstroReport();
-    PSClassicReport *getPSClassicReport();
-    XboxOriginalReport *getXboxOriginalReport();
-
-	uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
-	uint8_t last_report_counter = 0;
-	uint16_t last_axis_counter = 0;
-
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
 	 */
@@ -104,7 +70,9 @@ public:
 	/**
 	 * @brief Check for a dpad press. Used by `pressed[Dpad]` helper methods.
 	 */
-	inline bool __attribute__((always_inline)) pressedDpad(const uint8_t mask) { return (state.dpad & mask) == mask; }
+	inline bool __attribute__((always_inline)) pressedDpad(const uint8_t mask) {
+		return (state.dpad & mask) == mask;
+	}
 
 	/**
 	 * @brief Check for an aux button press. Same idea as `pressedButton`.
@@ -181,18 +149,18 @@ public:
 
 	bool userRequestedReinit = false;
 
+	// These are special to SOCD
 	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
-		 return (options.socdMode == SOCD_MODE_BYPASS &&
-				 (options.inputMode == INPUT_MODE_HID ||
-				  options.inputMode == INPUT_MODE_SWITCH ||
-				  options.inputMode == INPUT_MODE_NEOGEO ||
-				  options.inputMode == INPUT_MODE_PS4)) ?
-				SOCD_MODE_NEUTRAL : options.socdMode;
+		return (options.socdMode == SOCD_MODE_BYPASS &&
+				(options.inputMode == INPUT_MODE_HID ||
+				options.inputMode == INPUT_MODE_SWITCH ||
+				options.inputMode == INPUT_MODE_NEOGEO ||
+				options.inputMode == INPUT_MODE_PS4)) ?
+			SOCD_MODE_NEUTRAL : options.socdMode;
 	};
 
 private:
-	void releaseAllKeys(void);
-	void pressKey(uint8_t code);
+
 	uint8_t getModifier(uint8_t code);
 	uint8_t getMultimedia(uint8_t code);
 	void processHotkeyIfNewAction(GamepadHotkey action);

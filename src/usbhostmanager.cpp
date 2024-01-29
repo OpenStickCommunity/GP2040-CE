@@ -8,7 +8,7 @@
 #include "host/usbh.h"
 #include "host/usbh_pvt.h"
 
-#include "xinput_host.h"
+#include "drivers/shared/xinput_host.h"
 
 void USBHostManager::setDataPin(uint8_t inPin) {
     dataPin = inPin;

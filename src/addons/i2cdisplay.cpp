@@ -9,10 +9,11 @@
 #include "storagemanager.h"
 #include "pico/stdlib.h"
 #include "bitmaps.h"
-#include "ps4_driver.h"
+#include "drivers/shared/ps4data.h"
+#include "usbdriver.h"
 #include "version.h"
 #include "config.pb.h"
-#include "usb_driver.h"
+#include "class/hid/hid.h"
 
 bool I2CDisplayAddon::available() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();

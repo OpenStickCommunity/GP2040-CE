@@ -34,7 +34,7 @@ set(CMAKE_CXX_STANDARD 17)
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Pico)
+  set(GP2040_BOARDCONFIG Haute42)
 endif()
 
 if(DEFINED ENV{SKIP_SUBMODULES})
@@ -144,9 +144,11 @@ src/gp2040aux.cpp
 src/gamepad.cpp
 src/addonmanager.cpp
 src/configmanager.cpp
+src/drivermanager.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp
+src/usbdriver.cpp
 src/usbhostmanager.cpp
 src/config_legacy.cpp
 src/config_utils.cpp
@@ -174,9 +176,24 @@ src/addons/input_macro.cpp
 src/addons/snes_input.cpp
 src/addons/inputhistory.cpp
 src/gamepad/GamepadDebouncer.cpp
-src/gamepad/GamepadDescriptors.cpp
 src/addons/tilt.cpp
 src/addons/xbonepassthrough.cpp
+src/drivers/shared/xinput_host.cpp
+src/drivers/shared/xgip_protocol.cpp
+src/drivers/astro/AstroDriver.cpp
+src/drivers/egret/EgretDriver.cpp
+src/drivers/hid/HIDDriver.cpp
+src/drivers/keyboard/KeyboardDriver.cpp
+src/drivers/mdmini/MDMiniDriver.cpp
+src/drivers/neogeo/NeoGeoDriver.cpp
+src/drivers/net/NetDriver.cpp
+src/drivers/pcengine/PCEngineDriver.cpp
+src/drivers/ps4/PS4Driver.cpp
+src/drivers/psclassic/PSClassicDriver.cpp
+src/drivers/switch/SwitchDriver.cpp
+src/drivers/xbone/XBOneInputDriver.cpp
+src/drivers/xboxog/XboxOriginalDriver.cpp
+src/drivers/xinput/XInputDriver.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )

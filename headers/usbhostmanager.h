@@ -6,6 +6,7 @@
 
 #include "pio_usb.h"
 
+#include "host/usbh.h"
 #include "host/usbh_pvt.h"
 
 // USB Host manager decides on TinyUSB Host driver

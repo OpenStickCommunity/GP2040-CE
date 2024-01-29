@@ -2,7 +2,6 @@
 #include "addons/inputhistory.h"
 #include "storagemanager.h"
 #include "math.h"
-#include "usb_driver.h"
 #include "helper.h"
 #include "config.pb.h"
 

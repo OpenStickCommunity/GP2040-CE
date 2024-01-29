@@ -2,6 +2,7 @@
 #include "storagemanager.h"
 #include "usbhostmanager.h"
 #include "peripheralmanager.h"
+#include "class/hid/hid_host.h"
 
 bool KeyboardHostAddon::available() {
     const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;

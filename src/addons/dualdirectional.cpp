@@ -1,5 +1,4 @@
 #include "addons/dualdirectional.h"
-#include "GamepadOptions.h"
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"

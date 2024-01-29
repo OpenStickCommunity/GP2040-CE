@@ -3,7 +3,7 @@
 
 #include "usbaddon.h"
 
-#include "xgip_protocol.h"
+#include "drivers/shared/xgip_protocol.h"
 
 #ifndef XBONEPASSTHROUGH_ENABLED
 #define XBONEPASSTHROUGH_ENABLED 0
