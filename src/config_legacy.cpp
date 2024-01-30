@@ -112,6 +112,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_OPENCORE0WASDA,
         BUTTON_LAYOUT_STICKLESS_13,
         BUTTON_LAYOUT_STICKLESS_16,
+        BUTTON_LAYOUT_STICKLESS_14,
     };
 
     enum ButtonLayoutRight
@@ -137,6 +138,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_OPENCORE0WASDB,
         BUTTON_LAYOUT_STICKLESS_13B,
         BUTTON_LAYOUT_STICKLESS_16B,
+        BUTTON_LAYOUT_STICKLESS_14B,
     };
 
     enum SplashMode
@@ -557,6 +559,7 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
         case BUTTON_LAYOUT_OPENCORE0WASDA:
         case BUTTON_LAYOUT_STICKLESS_13:
         case BUTTON_LAYOUT_STICKLESS_16:
+        case BUTTON_LAYOUT_STICKLESS_14:
             return true;
     }
     return false;
@@ -587,6 +590,7 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_OPENCORE0WASDB:
         case BUTTON_LAYOUT_STICKLESS_13B:
         case BUTTON_LAYOUT_STICKLESS_16B:        
+        case BUTTON_LAYOUT_STICKLESS_14B:
             return true;
     }
     return false;

@@ -214,6 +214,8 @@ private:
 	void drawSticklessButtons13B(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawStickless16A(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawSticklessButtons16B(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawStickless14A(int startX, int startY, int buttonRadius, int buttonPadding);
+	void drawSticklessButtons14B(int startX, int startY, int buttonRadius, int buttonPadding);
 	bool pressedUp();
 	bool pressedDown();
 	bool pressedLeft();
