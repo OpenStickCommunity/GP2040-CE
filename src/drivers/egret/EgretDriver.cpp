@@ -82,7 +82,7 @@ bool EgretDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_con
 
 const uint16_t * EgretDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
 	const char *value = (const char *)egret_string_descriptors[index];
-	return getStringDescriptor(value); // getStringDescriptor returns a static array
+	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * EgretDriver::get_descriptor_device_cb() {

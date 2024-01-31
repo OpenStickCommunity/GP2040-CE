@@ -145,10 +145,9 @@ void XInputDriver::send_report(Gamepad * gamepad) {
 	}
 
 	// compare against previous report
-	if ( memcmp(last_report, &xinputReport, sizeof(XInputReport)) == 0) {
+	if ( memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
 		if ( tud_ready() &&											// Is the device ready?
-			(endpoint_in != 0) && (!usbd_edpt_busy(0, endpoint_in)) // Is the IN endpoint available?
-		)
+			(endpoint_in != 0) && (!usbd_edpt_busy(0, endpoint_in)) ) // Is the IN endpoint available?
 		{
 			usbd_edpt_claim(0, endpoint_in);								// Take control of IN endpoint
 			usbd_edpt_xfer(0, endpoint_in, (uint8_t *)&xinputReport, sizeof(XInputReport)); // Send report buffer
@@ -178,7 +177,7 @@ bool XInputDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
 
 const uint16_t * XInputDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
 	const char *value = (const char *)xinput_string_descriptors[index];
-	return getStringDescriptor(value); // getStringDescriptor returns a static array
+	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * XInputDriver::get_descriptor_device_cb() {

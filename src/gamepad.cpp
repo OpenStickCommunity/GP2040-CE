@@ -121,8 +121,12 @@ void Gamepad::reinit()
 void Gamepad::process()
 {
 	memcpy(&rawState, &state, sizeof(GamepadState));
+
 	// Get the midpoint value for the current mode
-	uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+	if ( DriverManager::getInstance().getDriver() != nullptr ) {
+		joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	}
 
 	// NOTE: Inverted X/Y-axis must run before SOCD and Dpad processing
 	if (options.invertXAxis) {
@@ -191,8 +195,12 @@ void Gamepad::read()
 {
 	// Need to invert since we're using pullups
 	Mask_t values = ~gpio_get_all();
+	
 	// Get the midpoint value for the current mode
-	uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+	if ( DriverManager::getInstance().getDriver() != nullptr ) {
+		joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	}
 
 	state.aux = 0
 		| (values & mapButtonFn->pinMask)   ? mapButtonFn->buttonMask : 0;

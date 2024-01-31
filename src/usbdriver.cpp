@@ -6,11 +6,7 @@
 #ifndef _USBDRIVER_CPP_
 #define _USBDRIVER_CPP_
 
-#include "tusb_config.h"
 #include "tusb.h"
-#include "class/hid/hid.h"
-#include "device/usbd_pvt.h"
-
 #include "drivermanager.h"
 
 static bool usb_mounted;

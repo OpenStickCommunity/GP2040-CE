@@ -96,7 +96,7 @@ bool NeoGeoDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_co
 
 const uint16_t * NeoGeoDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
 	const char *value = (const char *)neogeo_string_descriptors[index];
-	return getStringDescriptor(value); // getStringDescriptor returns a static array
+	return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 
 const uint8_t * NeoGeoDriver::get_descriptor_device_cb() {

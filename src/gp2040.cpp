@@ -212,10 +212,13 @@ void GP2040::run() {
 		// Do any queued saves in StorageManager
 		Storage::getInstance().performEnqueuedSaves();
 		
+		// Read Gamepad
+		gamepad->read();
+
 		// Config Loop (Web-Config does not require gamepad)
 		if (configMode == true) {
+			
 			ConfigManager::getInstance().loop();
-			gamepad->read();
 			rebootHotkeys.process(gamepad, configMode);
 			continue;
 		}
@@ -223,9 +226,6 @@ void GP2040::run() {
 		// Process USB Host on Core0
 		USBHostManager::getInstance().process();
 
-		// Gamepad Features
-		gamepad->read(); 	// gpio pin reads
-		
 		// Debounce if set
 		gamepad->debounce();
 

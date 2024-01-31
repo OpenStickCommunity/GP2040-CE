@@ -232,7 +232,7 @@ void I2CDisplayAddon::process() {
 
 I2CDisplayAddon::DisplayMode I2CDisplayAddon::getDisplayMode() {
 	if (configMode) {
-		gamepad->read();
+		//gamepad->read(); // ??
 		uint16_t buttonState = gamepad->state.buttons;
 		if (prevButtonState && !buttonState) { // has button been pressed (held and released)?
 			switch (prevButtonState) {
