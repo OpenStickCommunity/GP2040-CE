@@ -249,11 +249,6 @@ void GP2040::run() {
 		// Send USB Report (if possible)
 		inputDriver->send_report(gamepad);
 
-		// USB FEATURES : Send/Get USB Features (including Player LEDs on X-Input)
-		//if ( send_report(gamepad->getReport(), gamepad->getReportSize()) ) {
-		//	gamepad->sendReportSuccess();
-		//}
-
 		// GET USB REPORT (If Endpoint Available)
 		inputDriver->receive_report(featureData);
 		

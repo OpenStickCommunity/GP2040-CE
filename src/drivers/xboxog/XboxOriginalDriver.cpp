@@ -1,63 +1,115 @@
 #include "drivers/xboxog/XboxOriginalDriver.h"
+#include "drivers/xboxog/xid/xid.h"
+#include "drivers/shared/driverhelper.h"
 
-static XboxOriginalReport xboxOriginalReport
-{
-    .dButtons = 0,
-    .A = 0,
-    .B = 0,
-    .X = 0,
-    .Y = 0,
-    .BLACK = 0,
-    .WHITE = 0,
-    .L = 0,
-    .R = 0,
-    .leftStickX = 0,
-    .leftStickY = 0,
-    .rightStickX = 0,
-    .rightStickY = 0,
-};
+void XboxOriginalDriver::initialize() {
+    xboxOriginalReport = {
+        .dButtons = 0,
+        .A = 0,
+        .B = 0,
+        .X = 0,
+        .Y = 0,
+        .BLACK = 0,
+        .WHITE = 0,
+        .L = 0,
+        .R = 0,
+        .leftStickX = 0,
+        .leftStickY = 0,
+        .rightStickX = 0,
+        .rightStickY = 0,
+    };
 
+    // Copy XID driver to local class driver
+    memcpy(&class_driver, xid_get_driver(), sizeof(usbd_class_driver_t));
+}
 
-
-XboxOriginalReport *Gamepad::getXboxOriginalReport()
-{
-    // digital buttons
+void XboxOriginalDriver::send_report(Gamepad * gamepad) {
+	// digital buttons
 	xboxOriginalReport.dButtons = 0
-		| (pressedUp()    ? XID_DUP    : 0)
-		| (pressedDown()  ? XID_DDOWN  : 0)
-		| (pressedLeft()  ? XID_DLEFT  : 0)
-		| (pressedRight() ? XID_DRIGHT : 0)
-		| (pressedS2()    ? XID_START  : 0)
-		| (pressedS1()    ? XID_BACK   : 0)
-		| (pressedL3()    ? XID_LS     : 0)
-		| (pressedR3()    ? XID_RS     : 0)
+		| (gamepad->pressedUp()    ? XID_DUP    : 0)
+		| (gamepad->pressedDown()  ? XID_DDOWN  : 0)
+		| (gamepad->pressedLeft()  ? XID_DLEFT  : 0)
+		| (gamepad->pressedRight() ? XID_DRIGHT : 0)
+		| (gamepad->pressedS2()    ? XID_START  : 0)
+		| (gamepad->pressedS1()    ? XID_BACK   : 0)
+		| (gamepad->pressedL3()    ? XID_LS     : 0)
+		| (gamepad->pressedR3()    ? XID_RS     : 0)
 	;
 
     // analog buttons - convert to digital
-    xboxOriginalReport.A     = (pressedB1() ? 0xFF : 0);
-    xboxOriginalReport.B     = (pressedB2() ? 0xFF : 0);
-    xboxOriginalReport.X     = (pressedB3() ? 0xFF : 0);
-    xboxOriginalReport.Y     = (pressedB4() ? 0xFF : 0);
-    xboxOriginalReport.BLACK = (pressedL1() ? 0xFF : 0);
-    xboxOriginalReport.WHITE = (pressedR1() ? 0xFF : 0);
+    xboxOriginalReport.A     = (gamepad->pressedB1() ? 0xFF : 0);
+    xboxOriginalReport.B     = (gamepad->pressedB2() ? 0xFF : 0);
+    xboxOriginalReport.X     = (gamepad->pressedB3() ? 0xFF : 0);
+    xboxOriginalReport.Y     = (gamepad->pressedB4() ? 0xFF : 0);
+    xboxOriginalReport.BLACK = (gamepad->pressedL1() ? 0xFF : 0);
+    xboxOriginalReport.WHITE = (gamepad->pressedR1() ? 0xFF : 0);
 
     // analog triggers
-	if (hasAnalogTriggers)
-	{
-		xboxOriginalReport.L = pressedL2() ? 0xFF : state.lt;
-		xboxOriginalReport.R = pressedR2() ? 0xFF : state.rt;
-	}
-	else
-	{
-		xboxOriginalReport.L = pressedL2() ? 0xFF : 0;
-		xboxOriginalReport.R = pressedR2() ? 0xFF : 0;
+	if (gamepad->hasAnalogTriggers) {
+		xboxOriginalReport.L = gamepad->pressedL2() ? 0xFF : gamepad->state.lt;
+		xboxOriginalReport.R = gamepad->pressedR2() ? 0xFF : gamepad->state.rt;
+	} else {
+		xboxOriginalReport.L = gamepad->pressedL2() ? 0xFF : 0;
+		xboxOriginalReport.R = gamepad->pressedR2() ? 0xFF : 0;
 	}
 
     // analog sticks
-	xboxOriginalReport.leftStickX = static_cast<int16_t>(state.lx) + INT16_MIN;
-	xboxOriginalReport.leftStickY = static_cast<int16_t>(~state.ly) + INT16_MIN;
-	xboxOriginalReport.rightStickX = static_cast<int16_t>(state.rx) + INT16_MIN;
-	xboxOriginalReport.rightStickY = static_cast<int16_t>(~state.ry) + INT16_MIN;
+	xboxOriginalReport.leftStickX = static_cast<int16_t>(gamepad->state.lx) + INT16_MIN;
+	xboxOriginalReport.leftStickY = static_cast<int16_t>(~gamepad->state.ly) + INT16_MIN;
+	xboxOriginalReport.rightStickX = static_cast<int16_t>(gamepad->state.rx) + INT16_MIN;
+	xboxOriginalReport.rightStickY = static_cast<int16_t>(~gamepad->state.ry) + INT16_MIN;
 
-    return &xboxOriginalReport;
+	if (tud_suspended())
+		tud_remote_wakeup();
+
+    uint8_t xIndex = xid_get_index_by_type(0, XID_TYPE_GAMECONTROLLER);
+	if (memcmp(last_report, &xboxOriginalReport, sizeof(XboxOriginalReport)) != 0) {
+        if ( xid_send_report(xIndex, &xboxOriginalReport, sizeof(XboxOriginalReport)) == true ) {
+            memcpy(last_report, &xboxOriginalReport, sizeof(XboxOriginalReport));
+        }
+    }
+}
+
+
+// Nothing for HID
+void XboxOriginalDriver::receive_report(uint8_t *buffer) {}
+
+// tud_hid_get_report_cb
+uint16_t XboxOriginalDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
+	return 0;
+}
+
+// Only PS4 does anything with set report
+void XboxOriginalDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {}
+
+// Only XboxOG and Xbox One use vendor control xfer cb
+bool XboxOriginalDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
+    return class_driver.control_xfer_cb(rhport, stage, request);
+}
+
+const uint16_t * XboxOriginalDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+	const char *value = (const char *)xboxoriginal_string_descriptors[index];
+	return getStringDescriptor(value); // getStringDescriptor returns a static array
+}
+
+const uint8_t * XboxOriginalDriver::get_descriptor_device_cb() {
+    return xboxoriginal_device_descriptor;
+}
+
+const uint8_t * XboxOriginalDriver::get_hid_descriptor_report_cb(uint8_t itf) {
+    return nullptr;
+}
+
+const uint8_t * XboxOriginalDriver::get_descriptor_configuration_cb(uint8_t index) {
+    return xboxoriginal_configuration_descriptor;
+}
+
+const uint8_t * XboxOriginalDriver::get_descriptor_device_qualifier_cb() {
+	return nullptr;
+}
+
+void XboxOriginalDriver::update() {}
+
+uint16_t XboxOriginalDriver::GetJoystickMidValue() {
+	return GAMEPAD_JOYSTICK_MID;
 }

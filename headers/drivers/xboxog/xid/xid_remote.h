@@ -7,7 +7,7 @@ extern "C"
 #endif
 
 #include <stdint.h>
-#include "tusb.h"
+#include <tusb.h>
 
 #define XID_XREMOTE_ROM_CLASS 0x59
 

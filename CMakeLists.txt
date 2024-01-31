@@ -34,7 +34,7 @@ set(CMAKE_CXX_STANDARD 17)
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})
 elseif(NOT DEFINED GP2040_BOARDCONFIG)
-  set(GP2040_BOARDCONFIG Haute42)
+  set(GP2040_BOARDCONFIG Pico)
 endif()
 
 if(DEFINED ENV{SKIP_SUBMODULES})
@@ -142,6 +142,8 @@ src/main.cpp
 src/gp2040.cpp
 src/gp2040aux.cpp
 src/gamepad.cpp
+src/gamepad/GamepadDebouncer.cpp
+src/gamepad/GamepadState.cpp
 src/addonmanager.cpp
 src/configmanager.cpp
 src/drivermanager.cpp
@@ -175,7 +177,6 @@ src/addons/wiiext.cpp
 src/addons/input_macro.cpp
 src/addons/snes_input.cpp
 src/addons/inputhistory.cpp
-src/gamepad/GamepadDebouncer.cpp
 src/addons/tilt.cpp
 src/addons/xbonepassthrough.cpp
 src/drivers/shared/xinput_host.cpp
@@ -191,7 +192,12 @@ src/drivers/pcengine/PCEngineDriver.cpp
 src/drivers/ps4/PS4Driver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
-src/drivers/xbone/XBOneInputDriver.cpp
+src/drivers/xbone/XBOneDriver.cpp
+src/drivers/xboxog/xid/xid_driver.c
+src/drivers/xboxog/xid/xid_gamepad.c
+src/drivers/xboxog/xid/xid_remote.c
+src/drivers/xboxog/xid/xid_steelbattalion.c
+src/drivers/xboxog/xid/xid.c
 src/drivers/xboxog/XboxOriginalDriver.cpp
 src/drivers/xinput/XInputDriver.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
@@ -222,7 +228,6 @@ PicoPeripherals
 WiiExtension
 SNESpad
 pico_mbedtls
-TinyUSB_Gamepad
 nanopb
 )
 
@@ -230,6 +235,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons
 headers/configs
+headers/drivers
 headers/gamepad
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}

@@ -1,4 +1,5 @@
 #include "addons/snes_input.h"
+#include "drivermanager.h"
 #include "storagemanager.h"
 #include "hardware/gpio.h"
 #include "helper.h"
@@ -83,7 +84,7 @@ void SNESpadInput::process() {
     if (nextTimer < getMillis()) {
         snes->poll();
 
-        uint16_t joystickMid = GetJoystickMidValue(Storage::getInstance().getGamepadOptions().inputMode);
+        uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
 
         leftX = joystickMid;
         leftY = joystickMid;

@@ -9,7 +9,7 @@ extern "C"
 #include <stdint.h>
 #include <tusb.h>
 #include <device/usbd_pvt.h>
-#include "xid.h"
+#include "drivers/xboxog/xid/xid.h"
 
 static const tusb_desc_device_t XID_DESC_DEVICE =
 {

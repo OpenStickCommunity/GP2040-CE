@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-#include "xid_driver.h"
+#include "drivers/xboxog/xid/xid_driver.h"
 
 #define XboxOriginalReport USB_XboxGamepad_InReport_t
 

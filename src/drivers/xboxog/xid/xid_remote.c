@@ -1,4 +1,4 @@
-#include "xid_driver.h"
+#include "drivers/xboxog/xid/xid_driver.h"
 
 uint8_t *xremote_get_rom();
 

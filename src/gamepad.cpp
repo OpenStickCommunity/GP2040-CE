@@ -12,6 +12,7 @@
 #include "FlashPROM.h"
 #include "CRC32.h"
 
+#include "drivermanager.h"
 #include "storagemanager.h"
 #include "system.h"
 
@@ -34,7 +35,6 @@ void Gamepad::setup()
 {
 	// Configure pin mapping
 	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
-	const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
 
 	mapDpadUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
@@ -122,7 +122,7 @@ void Gamepad::process()
 {
 	memcpy(&rawState, &state, sizeof(GamepadState));
 	// Get the midpoint value for the current mode
-	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
+	uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
 
 	// NOTE: Inverted X/Y-axis must run before SOCD and Dpad processing
 	if (options.invertXAxis) {
@@ -159,8 +159,8 @@ void Gamepad::process()
 				state.rx = joystickMid;
 				state.ry = joystickMid;
 			}
-			state.lx = dpadToAnalogX(state.dpad, options.inputMode);
-			state.ly = dpadToAnalogY(state.dpad, options.inputMode);
+			state.lx = dpadToAnalogX(state.dpad);
+			state.ly = dpadToAnalogY(state.dpad);
 			state.dpad = 0;
 			break;
 
@@ -169,8 +169,8 @@ void Gamepad::process()
 				state.lx = joystickMid;
 				state.ly = joystickMid;
 			}
-			state.rx = dpadToAnalogX(state.dpad, options.inputMode);
-			state.ry = dpadToAnalogY(state.dpad, options.inputMode);
+			state.rx = dpadToAnalogX(state.dpad);
+			state.ry = dpadToAnalogY(state.dpad);
 			state.dpad = 0;
 			break;
 
@@ -192,7 +192,7 @@ void Gamepad::read()
 	// Need to invert since we're using pullups
 	Mask_t values = ~gpio_get_all();
 	// Get the midpoint value for the current mode
-	uint16_t joystickMid = GetJoystickMidValue(options.inputMode);
+	uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
 
 	state.aux = 0
 		| (values & mapButtonFn->pinMask)   ? mapButtonFn->buttonMask : 0;
@@ -252,7 +252,7 @@ void Gamepad::hotkey()
 		hotkeyOptions.hotkey13, hotkeyOptions.hotkey14, hotkeyOptions.hotkey15, hotkeyOptions.hotkey16
 	};
 
-	for(int32_t i = 0; i < sizeof(hotkeyList); i++) {
+	for(uint32_t i = 0; i < sizeof(hotkeyList); i++) {
 		if (pressedHotkey(hotkeyList[i])) {
 			action = selectHotkey(hotkeyList[i]);
 			break;

@@ -1,11 +1,26 @@
 #include "drivers/keyboard/KeyboardDriver.h"
+#include "storagemanager.h"
+#include "drivers/shared/driverhelper.h"
+#include "drivers/hid/HIDDescriptors.h"
 
-static KeyboardReport keyboardReport
-{
-	.keycode = { 0 },
-	.multimedia = 0
-};
+void KeyboardDriver::initialize() {
+	keyboardReport = {
+		.keycode = { 0 },
+		.multimedia = 0
+	};
 
+	class_driver = {
+	#if CFG_TUSB_DEBUG >= 2
+		.name = "KEYBOARD",
+	#endif
+		.init = hidd_init,
+		.reset = hidd_reset,
+		.open = hidd_open,
+		.control_xfer_cb = hidd_control_xfer_cb,
+		.xfer_cb = hidd_xfer_cb,
+		.sof = NULL
+	};
+}
 
 uint8_t KeyboardDriver::getModifier(uint8_t code) {
 	switch (code) {
@@ -33,4 +48,114 @@ uint8_t KeyboardDriver::getMultimedia(uint8_t code) {
 		case KEYBOARD_MULTIMEDIA_VOLUME_DOWN: return 0x40;
 	}
 	return 0;
+}
+
+
+void KeyboardDriver::send_report(Gamepad * gamepad) {
+	const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
+	releaseAllKeys();
+	if(gamepad->pressedUp())     { pressKey(keyboardMapping.keyDpadUp); }
+	if(gamepad->pressedDown())   { pressKey(keyboardMapping.keyDpadDown); }
+	if(gamepad->pressedLeft())	{ pressKey(keyboardMapping.keyDpadLeft); }
+	if(gamepad->pressedRight()) 	{ pressKey(keyboardMapping.keyDpadRight); }
+	if(gamepad->pressedB1()) 	{ pressKey(keyboardMapping.keyButtonB1); }
+	if(gamepad->pressedB2()) 	{ pressKey(keyboardMapping.keyButtonB2); }
+	if(gamepad->pressedB3()) 	{ pressKey(keyboardMapping.keyButtonB3); }
+	if(gamepad->pressedB4()) 	{ pressKey(keyboardMapping.keyButtonB4); }
+	if(gamepad->pressedL1()) 	{ pressKey(keyboardMapping.keyButtonL1); }
+	if(gamepad->pressedR1()) 	{ pressKey(keyboardMapping.keyButtonR1); }
+	if(gamepad->pressedL2()) 	{ pressKey(keyboardMapping.keyButtonL2); }
+	if(gamepad->pressedR2()) 	{ pressKey(keyboardMapping.keyButtonR2); }
+	if(gamepad->pressedS1()) 	{ pressKey(keyboardMapping.keyButtonS1); }
+	if(gamepad->pressedS2()) 	{ pressKey(keyboardMapping.keyButtonS2); }
+	if(gamepad->pressedL3()) 	{ pressKey(keyboardMapping.keyButtonL3); }
+	if(gamepad->pressedR3()) 	{ pressKey(keyboardMapping.keyButtonR3); }
+	if(gamepad->pressedA1()) 	{ pressKey(keyboardMapping.keyButtonA1); }
+	if(gamepad->pressedA2()) 	{ pressKey(keyboardMapping.keyButtonA2); }
+
+	// Wake up TinyUSB device
+	if (tud_suspended())
+		tud_remote_wakeup();
+
+	void * report = &keyboardReport;
+	uint16_t report_size = sizeof(keyboardReport);
+	if (memcmp(last_report, report, report_size) != 0)
+	{
+		// HID ready + report sent, copy previous report
+		if (tud_hid_ready()) {
+			KeyboardReport *keyboard_report = ((KeyboardReport *)report);
+            void *keyboard_report_payload = keyboard_report->reportId == KEYBOARD_KEY_REPORT_ID ? (void *)keyboard_report->keycode : (void *)&keyboard_report->multimedia;
+            uint16_t keyboard_report_size = keyboard_report->reportId == KEYBOARD_KEY_REPORT_ID ? sizeof(KeyboardReport::keycode) : sizeof(KeyboardReport::multimedia);
+            if ( tud_hid_report(keyboard_report->reportId, keyboard_report_payload, keyboard_report_size) ) {
+				memcpy(last_report, report, report_size);
+			}
+		}
+	}
+}
+
+void KeyboardDriver::pressKey(uint8_t code) {
+	if (code > HID_KEY_GUI_RIGHT) {
+		keyboardReport.reportId = KEYBOARD_MULTIMEDIA_REPORT_ID;
+		keyboardReport.multimedia = getMultimedia(code);
+	}  else {
+		keyboardReport.reportId = KEYBOARD_KEY_REPORT_ID;
+		keyboardReport.keycode[code / 8] |= 1 << (code % 8);
+	}
+}
+
+void KeyboardDriver::releaseAllKeys(void) {
+	for (uint8_t i = 0; i < (sizeof(keyboardReport.keycode) / sizeof(keyboardReport.keycode[0])); i++) {
+		keyboardReport.keycode[i] = 0;
+	}
+	keyboardReport.multimedia = 0;
+}
+
+
+// Nothing for HID
+void KeyboardDriver::receive_report(uint8_t *buffer) {}
+
+// tud_hid_get_report_cb
+uint16_t KeyboardDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
+	if ( report_id == KEYBOARD_KEY_REPORT_ID ) {
+		memcpy(buffer, (void*) keyboardReport.keycode, sizeof(KeyboardReport::keycode));
+		return sizeof(KeyboardReport::keycode);
+	} else {
+		memcpy(buffer, (void*) keyboardReport.multimedia, sizeof(KeyboardReport::multimedia));
+		return sizeof(KeyboardReport::multimedia);
+	}
+}
+
+// Only PS4 does anything with set report
+void KeyboardDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize) {}
+
+// Only XboxOG and Xbox One use vendor control xfer cb
+bool KeyboardDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
+    return false;
+}
+
+const uint16_t * KeyboardDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
+	const char *value = (const char *)keyboard_string_descriptors[index];
+	return getStringDescriptor(value); // getStringDescriptor returns a static array
+}
+
+const uint8_t * KeyboardDriver::get_descriptor_device_cb() {
+    return keyboard_device_descriptor;
+}
+
+const uint8_t * KeyboardDriver::get_hid_descriptor_report_cb(uint8_t itf) {
+    return keyboard_report_descriptor;
+}
+
+const uint8_t * KeyboardDriver::get_descriptor_configuration_cb(uint8_t index) {
+    return keyboard_configuration_descriptor;
+}
+
+const uint8_t * KeyboardDriver::get_descriptor_device_qualifier_cb() {
+	return nullptr;
+}
+
+void KeyboardDriver::update() {}
+
+uint16_t KeyboardDriver::GetJoystickMidValue() {
+	return HID_JOYSTICK_MID << 8;
 }

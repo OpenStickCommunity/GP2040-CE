@@ -9,9 +9,9 @@ extern "C"
 #include <stdint.h>
 #include <tusb.h>
 #include <device/usbd_pvt.h>
-#include "xid_gamepad.h"
-#include "xid_remote.h"
-#include "xid_steelbattalion.h"
+#include "drivers/xboxog/xid/xid_gamepad.h"
+#include "drivers/xboxog/xid/xid_remote.h"
+#include "drivers/xboxog/xid/xid_steelbattalion.h"
 
 #define XID_DUKE 1
 #define XID_STEELBATTALION 0

@@ -1,4 +1,4 @@
-#include "xid.h"
+#include "drivers/xboxog/xid/xid.h"
 
 bool duke_control_xfer(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request, xid_interface_t *p_xid);
 bool steelbattalion_control_xfer(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request, xid_interface_t *p_xid);
