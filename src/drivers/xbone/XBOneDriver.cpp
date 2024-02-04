@@ -503,18 +503,13 @@ void XBOneDriver::update() {
 
 	if ( !report_queue.empty() ) {	
 		if ( (now - lastReportQueueSent) > REPORT_QUEUE_INTERVAL ) {
-			uint32_t xboneReportSize = report_queue.front().len;
-			if ( send_xbone_usb(report_queue.front().report, xboneReportSize) ) {
-				report_queue.pop();
+			report_queue_t & report_front = report_queue.front();
+			uint16_t xboneReportSize = report_front.len;
+			if ( send_xbone_usb(report_front.report, xboneReportSize) ) {
 				lastReportQueueSent = now;
-				// FIX THIS
-				/*
-				if ( memcmp(&last_report[4], &((uint8_t*)&xboneReport)[4], xboneReportSize-4) != 0) {
-					last_report_counter++;
-					if (last_report_counter == 0)
-						last_report_counter = 1;
-					memcpy(last_report, &xboneReport, xboneReportSize);
-				}*/
+				// Set last report queue sent to our report sent by the queue
+				memcpy(last_report, &report_front.report, xboneReportSize);
+				report_queue.pop();
 			} else {
 				sleep_ms(REPORT_QUEUE_INTERVAL);
 			}

@@ -77,17 +77,24 @@ void KeyboardDriver::send_report(Gamepad * gamepad) {
 	if (tud_suspended())
 		tud_remote_wakeup();
 
-	void * report = &keyboardReport;
-	uint16_t report_size = sizeof(keyboardReport);
-	if (memcmp(last_report, report, report_size) != 0)
-	{
-		// HID ready + report sent, copy previous report
+	void *keyboard_report_payload;
+	uint16_t keyboard_report_size;
+	if ( keyboardReport.reportId == KEYBOARD_KEY_REPORT_ID ) {
+		keyboard_report_payload = (void *)keyboardReport.keycode;
+		keyboard_report_size = sizeof(KeyboardReport::keycode);
+		
+	} else {
+		keyboard_report_payload = (void *)&keyboardReport.multimedia;
+		keyboard_report_size = sizeof(KeyboardReport::multimedia);
+	}
+
+	// If we had a keycode but now have a multimedia key OR report is different
+	if (keyboard_report_size != last_report_size || 
+			memcmp(last_report, &keyboardReport, last_report_size) != 0) {
 		if (tud_hid_ready()) {
-			KeyboardReport *keyboard_report = ((KeyboardReport *)report);
-            void *keyboard_report_payload = keyboard_report->reportId == KEYBOARD_KEY_REPORT_ID ? (void *)keyboard_report->keycode : (void *)&keyboard_report->multimedia;
-            uint16_t keyboard_report_size = keyboard_report->reportId == KEYBOARD_KEY_REPORT_ID ? sizeof(KeyboardReport::keycode) : sizeof(KeyboardReport::multimedia);
-            if ( tud_hid_report(keyboard_report->reportId, keyboard_report_payload, keyboard_report_size) ) {
-				memcpy(last_report, report, report_size);
+			if ( tud_hid_report(keyboardReport.reportId, keyboard_report_payload, keyboard_report_size) ) {
+				memcpy(last_report, keyboard_report_payload, keyboard_report_size);
+				last_report_size = keyboard_report_size;
 			}
 		}
 	}
@@ -120,7 +127,7 @@ uint16_t KeyboardDriver::get_report(uint8_t report_id, hid_report_type_t report_
 		memcpy(buffer, (void*) keyboardReport.keycode, sizeof(KeyboardReport::keycode));
 		return sizeof(KeyboardReport::keycode);
 	} else {
-		memcpy(buffer, (void*) keyboardReport.multimedia, sizeof(KeyboardReport::multimedia));
+		memcpy(buffer, (void*) &keyboardReport.multimedia, sizeof(KeyboardReport::multimedia));
 		return sizeof(KeyboardReport::multimedia);
 	}
 }
