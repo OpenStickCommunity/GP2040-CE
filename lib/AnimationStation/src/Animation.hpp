@@ -8,6 +8,7 @@
 #include "pico/stdlib.h"
 #include <vector>
 #include "NeoPico.hpp"
+#include <map>
 
 struct RGB {
   // defaults allows trivial constructor, avoiding compiler complaints and avoiding unnessecary initialization
@@ -113,8 +114,17 @@ public:
 
   bool notInFilter(Pixel pixel);
   virtual void Animate(RGB (&frame)[100]) = 0;
+  void UpdateTime();
+  void UpdatePresses(RGB (&frame)[100]);
+  void DecrementFadeCounter(int32_t index);
+
   virtual void ParameterUp() = 0;
   virtual void ParameterDown() = 0;
+
+  virtual void FadeTimeUp();
+  virtual void FadeTimeDown();
+
+  RGB BlendColor(RGB start, RGB end, uint32_t frame);
 
 protected:
 /* We track both the full matrix as well as individual pixels here to support
@@ -123,6 +133,15 @@ we provide a subset of pixels to use as a filter. */
   PixelMatrix *matrix;
   std::vector<Pixel> pixels;
   bool filtered = false;
+
+  // Color fade 
+  RGB defaultColor = ColorBlack;  
+  static std::map<uint32_t, int32_t> times;
+  static std::map<uint32_t, RGB> hitColor;    
+  absolute_time_t lastUpdateTime = nil_time;
+  uint32_t coolDownTimeInMs = 1000;
+  int64_t updateTimeInMs = 20;
+
 };
 
 #endif

@@ -51,19 +51,19 @@ Visit the [GP2040-CE Usage](https://gp2040-ce.info/usage) page for more details.
 
 ## Performance
 
-Input latency is tested using the methodology outlined at [WydD's inputlag.science website](https://inputlag.science/controller/methodology), using the default 1000 Hz (1 ms) polling rate in the firmware.  You can read more about the setup we use to conduct latency testing [HERE](https://github.com/OpenStickCommunity/Site/blob/main/latency_testing/README.md) if you are interested in testing for yourself or would just like to know more about the devices used to do the testing.
+Input latency is tested using the methodology outlined at [WydD's inputlag.science website](https://inputlag.science/controller/methodology), using the default 1000 Hz (1 ms) polling rate in the firmware. You can read more about the setup we use to conduct latency testing [HERE](https://github.com/OpenStickCommunity/Site/blob/main/latency_testing/README.md) if you are interested in testing for yourself or would just like to know more about the devices used to do the testing.
 
-| Version | Mode                   | Poll Rate | Min     | Max     | Avg     | Stdev   | % on time | %1f skip | %2f skip |
-| ------- | ---------------------- | --------- | ------- | ------- | ------- | ------- | --------- | -------- | -------- |
-| v0.7.6  | Xinput                 | 1 ms      | 0.45 ms | 1.28 ms | 0.76 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       |
-| v0.7.6  | Switch                 | 1 ms      | 0.41 ms | 1.23 ms | 0.72 ms | 0.24 ms | 98.53%    | 1.47%    | 0%       |
-| v0.7.6  | Dinput (PS3)           | 1 ms      | 0.44 ms | 1.27 ms | 0.75 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       | 
-| v0.7.6  | PS4                    | 1 ms      | 1.33 ms | 2.02 ms | 1.72 ms | 0.16 ms | 96.10%    | 3.90%    | 0%       |
-| v0.7.6  | PS4 Hack               | 1 ms      | 0.55 ms | 1.39 ms | 0.86 ms | 0.24 ms | 98.32%    | 1.68%    | 0%       |
+| Version | Mode         | Poll Rate | Min     | Max     | Avg     | Stdev   | % on time | %1f skip | %2f skip |
+| ------- | ------------ | --------- | ------- | ------- | ------- | ------- | --------- | -------- | -------- |
+| v0.7.6  | Xinput       | 1 ms      | 0.45 ms | 1.28 ms | 0.76 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       |
+| v0.7.6  | Switch       | 1 ms      | 0.41 ms | 1.23 ms | 0.72 ms | 0.24 ms | 98.53%    | 1.47%    | 0%       |
+| v0.7.6  | Dinput (PS3) | 1 ms      | 0.44 ms | 1.27 ms | 0.75 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       |
+| v0.7.6  | PS4          | 1 ms      | 1.33 ms | 2.02 ms | 1.72 ms | 0.16 ms | 96.10%    | 3.90%    | 0%       |
+| v0.7.6  | PS4 Hack     | 1 ms      | 0.55 ms | 1.39 ms | 0.86 ms | 0.24 ms | 98.32%    | 1.68%    | 0%       |
 
-Full results can be found in the [GP2040-CE v0.7.6 Firmware Latency Test Results](https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/site/latency_tests/GP2040-CE_Firmware_Latency_Test_Results_v0.7.6.xlsx) .xlsx Sheet.
+Full results can be found in the [GP2040-CE v0.7.6 Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.6.xlsx) .xlsx Sheet.
 
-Previous results from v0.7.5 and earlier can be found in the [GP2040-CE v0.7.5 (and before) Firmware Latency Test Results](https://raw.githubusercontent.com/OpenStickCommunity/GP2040-CE/main/site/latency_tests/GP2040-CE_Firmware_Latency_Test_Results_v0.7.5_and_before.xlsx) .xlsx Sheet.
+Previous results from v0.7.5 and earlier can be found in the [GP2040-CE v0.7.5 (and before) Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.5_and_before.xlsx) .xlsx Sheet.
 
 ## Support
 
