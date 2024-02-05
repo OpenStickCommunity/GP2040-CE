@@ -163,7 +163,7 @@ private:
 
 	uint8_t getModifier(uint8_t code);
 	uint8_t getMultimedia(uint8_t code);
-	void processHotkeyIfNewAction(GamepadHotkey action);
+	void processHotkeyAction(GamepadHotkey action);
 
 	GamepadOptions& options;
 	const HotkeyOptions& hotkeyOptions;

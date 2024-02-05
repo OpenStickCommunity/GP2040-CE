@@ -87,6 +87,8 @@ void Gamepad::setup()
 			}
 		}
 	}
+
+	lastAction = HOTKEY_NONE;
 }
 
 /**
@@ -251,33 +253,36 @@ void Gamepad::hotkey()
 {
 	if (options.lockHotkeys)
 		return;
-
+	
 	GamepadHotkey action = HOTKEY_NONE;
-	static HotkeyEntry hotkeyList[] = {
-		hotkeyOptions.hotkey01, hotkeyOptions.hotkey02, hotkeyOptions.hotkey03, hotkeyOptions.hotkey04,
-		hotkeyOptions.hotkey05, hotkeyOptions.hotkey06, hotkeyOptions.hotkey07, hotkeyOptions.hotkey08,
-		hotkeyOptions.hotkey09, hotkeyOptions.hotkey10, hotkeyOptions.hotkey11, hotkeyOptions.hotkey12,
-		hotkeyOptions.hotkey13, hotkeyOptions.hotkey14, hotkeyOptions.hotkey15, hotkeyOptions.hotkey16
-	};
-
-	for(uint32_t i = 0; i < sizeof(hotkeyList); i++) {
-		if (pressedHotkey(hotkeyList[i])) {
-			action = selectHotkey(hotkeyList[i]);
-			break;
-		}
+	if (pressedHotkey(hotkeyOptions.hotkey01))	    action = selectHotkey(hotkeyOptions.hotkey01);
+	else if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
+	else if (pressedHotkey(hotkeyOptions.hotkey03))	action = selectHotkey(hotkeyOptions.hotkey03);
+	else if (pressedHotkey(hotkeyOptions.hotkey04))	action = selectHotkey(hotkeyOptions.hotkey04);
+	else if (pressedHotkey(hotkeyOptions.hotkey05))	action = selectHotkey(hotkeyOptions.hotkey05);
+	else if (pressedHotkey(hotkeyOptions.hotkey06))	action = selectHotkey(hotkeyOptions.hotkey06);
+	else if (pressedHotkey(hotkeyOptions.hotkey07))	action = selectHotkey(hotkeyOptions.hotkey07);
+	else if (pressedHotkey(hotkeyOptions.hotkey08))	action = selectHotkey(hotkeyOptions.hotkey08);
+	else if (pressedHotkey(hotkeyOptions.hotkey09))	action = selectHotkey(hotkeyOptions.hotkey09);
+	else if (pressedHotkey(hotkeyOptions.hotkey10))	action = selectHotkey(hotkeyOptions.hotkey10);
+	else if (pressedHotkey(hotkeyOptions.hotkey11))	action = selectHotkey(hotkeyOptions.hotkey11);
+	else if (pressedHotkey(hotkeyOptions.hotkey12))	action = selectHotkey(hotkeyOptions.hotkey12);
+	else if (pressedHotkey(hotkeyOptions.hotkey13))	action = selectHotkey(hotkeyOptions.hotkey13);
+	else if (pressedHotkey(hotkeyOptions.hotkey14))	action = selectHotkey(hotkeyOptions.hotkey14);
+	else if (pressedHotkey(hotkeyOptions.hotkey15))	action = selectHotkey(hotkeyOptions.hotkey15);
+	else if (pressedHotkey(hotkeyOptions.hotkey16))	action = selectHotkey(hotkeyOptions.hotkey16);
+	if ( lastAction != action ) {
+		processHotkeyAction(action);
+		lastAction = action;
 	}
-
-	processHotkeyIfNewAction(action);
 }
 
 /**
  * @brief Take a hotkey action if it hasn't already been taken, modifying state/options appropriately.
  */
-void Gamepad::processHotkeyIfNewAction(GamepadHotkey action) {
+void Gamepad::processHotkeyAction(GamepadHotkey action) {
 	bool reqSave = false;
 	switch (action) {
-		case HOTKEY_NONE: 
-			break;
 		case HOTKEY_DPAD_DIGITAL:
 			options.dpadMode = DPAD_MODE_DIGITAL;
 			reqSave = true;
@@ -417,12 +422,12 @@ void Gamepad::processHotkeyIfNewAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
+		default: // Unknown action
+			return;
 	}
 
 	// only save if we did something different (except NONE because NONE doesn't get here)
-	if (action != lastAction && reqSave) {
+	if (reqSave) {
 		save();
 	}
-
-	lastAction = action;
 }
