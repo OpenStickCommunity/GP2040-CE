@@ -8,6 +8,7 @@
 #include "drivers/mdmini/MDMiniDriver.h"
 #include "drivers/neogeo/NeoGeoDriver.h"
 #include "drivers/pcengine/PCEngineDriver.h"
+#include "drivers/psclassic/PSClassicDriver.h"
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/switch/SwitchDriver.h"
 #include "drivers/xbone/XBOneDriver.h"
@@ -36,6 +37,9 @@ void DriverManager::setup(InputMode mode) {
             break;
         case INPUT_MODE_NEOGEO:
             driver = new NeoGeoDriver();
+            break;
+        case INPUT_MODE_PSCLASSIC:
+            driver = new PSClassicDriver();
             break;
         case INPUT_MODE_PCEMINI:
             driver = new PCEngineDriver();
