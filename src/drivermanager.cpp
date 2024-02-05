@@ -6,7 +6,7 @@
 #include "drivers/hid/HIDDriver.h"
 #include "drivers/keyboard/KeyboardDriver.h"
 #include "drivers/mdmini/MDMiniDriver.h"
-#include "drivers/neogeo/NeogeoDriver.h"
+#include "drivers/neogeo/NeoGeoDriver.h"
 #include "drivers/pcengine/PCEngineDriver.h"
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/switch/SwitchDriver.h"
