@@ -421,7 +421,6 @@ void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {
 	uint8_t itf = 0;
     xboned_interface_t *p_xbone = _xboned_itf;
-	bool ret = false;
 	for (;; itf++, p_xbone++) {
         if (itf >= TU_ARRAY_SIZE(_xboned_itf)) {
 			return false;
@@ -433,7 +432,7 @@ bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {
 		(p_xbone->ep_in != 0) && (!usbd_edpt_busy(TUD_OPT_RHPORT, p_xbone->ep_in))) // Is the IN endpoint available?
 	{
 		usbd_edpt_claim(0, p_xbone->ep_in);										// Take control of IN endpoint
-		ret = usbd_edpt_xfer(0, p_xbone->ep_in, (uint8_t *)report, report_size); 	// Send report buffer
+		usbd_edpt_xfer(0, p_xbone->ep_in, (uint8_t *)report, report_size); 	// Send report buffer
 		usbd_edpt_release(0, p_xbone->ep_in);										// Release control of IN endpoint
 
 		// we successfully sent the report

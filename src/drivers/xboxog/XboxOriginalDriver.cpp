@@ -72,7 +72,8 @@ void XboxOriginalDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 
 // tud_hid_get_report_cb
 uint16_t XboxOriginalDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-	return 0;
+    memcpy(buffer, &xboxOriginalReport, sizeof(XboxOriginalReport));
+	return sizeof(XboxOriginalReport);
 }
 
 // Only PS4 does anything with set report
