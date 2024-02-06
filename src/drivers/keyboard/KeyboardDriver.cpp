@@ -51,7 +51,7 @@ uint8_t KeyboardDriver::getMultimedia(uint8_t code) {
 }
 
 
-void KeyboardDriver::send_report(Gamepad * gamepad) {
+void KeyboardDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	const KeyboardMapping& keyboardMapping = Storage::getInstance().getKeyboardMapping();
 	releaseAllKeys();
 	if(gamepad->pressedUp())     { pressKey(keyboardMapping.keyDpadUp); }
@@ -117,10 +117,6 @@ void KeyboardDriver::releaseAllKeys(void) {
 	keyboardReport.multimedia = 0;
 }
 
-
-// Nothing for HID
-void KeyboardDriver::receive_report(uint8_t *buffer) {}
-
 // tud_hid_get_report_cb
 uint16_t KeyboardDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
 	if ( report_id == KEYBOARD_KEY_REPORT_ID ) {
@@ -160,8 +156,6 @@ const uint8_t * KeyboardDriver::get_descriptor_configuration_cb(uint8_t index) {
 const uint8_t * KeyboardDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void KeyboardDriver::update() {}
 
 uint16_t KeyboardDriver::GetJoystickMidValue() {
 	return HID_JOYSTICK_MID << 8;

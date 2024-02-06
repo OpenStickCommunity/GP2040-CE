@@ -23,7 +23,7 @@ void XboxOriginalDriver::initialize() {
     memcpy(&class_driver, xid_get_driver(), sizeof(usbd_class_driver_t));
 }
 
-void XboxOriginalDriver::send_report(Gamepad * gamepad) {
+void XboxOriginalDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	// digital buttons
 	xboxOriginalReport.dButtons = 0
 		| (gamepad->pressedUp()    ? XID_DUP    : 0)
@@ -70,10 +70,6 @@ void XboxOriginalDriver::send_report(Gamepad * gamepad) {
     }
 }
 
-
-// Nothing for HID
-void XboxOriginalDriver::receive_report(uint8_t *buffer) {}
-
 // tud_hid_get_report_cb
 uint16_t XboxOriginalDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
 	return 0;
@@ -107,8 +103,6 @@ const uint8_t * XboxOriginalDriver::get_descriptor_configuration_cb(uint8_t inde
 const uint8_t * XboxOriginalDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void XboxOriginalDriver::update() {}
 
 uint16_t XboxOriginalDriver::GetJoystickMidValue() {
 	return GAMEPAD_JOYSTICK_MID;

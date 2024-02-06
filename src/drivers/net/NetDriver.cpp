@@ -56,11 +56,7 @@ void NetDriver::initialize() {
     };
 }
 
-void NetDriver::send_report(Gamepad * gamepad) {}
-
-
-// Nothing for HID
-void NetDriver::receive_report(uint8_t *buffer) {}
+void NetDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {}
 
 // tud_hid_get_report_cb
 uint16_t NetDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
@@ -243,8 +239,6 @@ const uint8_t * NetDriver::get_descriptor_configuration_cb(uint8_t index) {
 const uint8_t * NetDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void NetDriver::update() {}
 
 uint16_t NetDriver::GetJoystickMidValue() {
 	return GAMEPAD_JOYSTICK_MID;

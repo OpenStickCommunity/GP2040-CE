@@ -56,7 +56,7 @@ void PS4Driver::initialize() {
 	send_nonce_part = 0;
 }
 
-void PS4Driver::send_report(Gamepad * gamepad) {
+void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	const GamepadOptions & options = gamepad->getOptions();
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
@@ -140,9 +140,6 @@ void PS4Driver::send_report(Gamepad * gamepad) {
 		}
 	}
 }
-
-// PS4 does get light data for the light bar
-void PS4Driver::receive_report(uint8_t *buffer) {}
 
 // Controller descriptor (byte[4] = 0x00 for ps4, 0x07 for ps5)
 static constexpr uint8_t output_0x03[] = {
@@ -309,8 +306,6 @@ const uint8_t * PS4Driver::get_descriptor_configuration_cb(uint8_t index) {
 const uint8_t * PS4Driver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void PS4Driver::update() {}
 
 uint16_t PS4Driver::GetJoystickMidValue() {
 	return PS4_JOYSTICK_MID << 8;

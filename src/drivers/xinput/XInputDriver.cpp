@@ -106,7 +106,7 @@ void XInputDriver::initialize() {
 	};
 }
 
-void XInputDriver::send_report(Gamepad * gamepad) {
+void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	xinputReport.buttons1 = 0
 		| (gamepad->pressedUp()    ? XBOX_MASK_UP    : 0)
 		| (gamepad->pressedDown()  ? XBOX_MASK_DOWN  : 0)
@@ -144,7 +144,7 @@ void XInputDriver::send_report(Gamepad * gamepad) {
 		xinputReport.rt = gamepad->pressedR2() ? 0xFF : 0;
 	}
 
-	// compare against previous report
+	// compare against previous report and send new
 	if ( memcmp(last_report, &xinputReport, sizeof(XInputReport)) != 0) {
 		if ( tud_ready() &&											// Is the device ready?
 			(endpoint_in != 0) && (!usbd_edpt_busy(0, endpoint_in)) ) // Is the IN endpoint available?
@@ -155,11 +155,16 @@ void XInputDriver::send_report(Gamepad * gamepad) {
 			memcpy(last_report, &xinputReport, sizeof(XInputReport)); // save if we sent it
 		}
 	}
+
+	// check for player LEDs
+	if (tud_ready() &&
+		(endpoint_out != 0) && (!usbd_edpt_busy(0, endpoint_out)))
+	{
+		usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
+		usbd_edpt_xfer(0, endpoint_out, outBuffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
+		usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
+	}
 }
-
-
-// Nothing for HID
-void XInputDriver::receive_report(uint8_t *buffer) {}
 
 // tud_hid_get_report_cb
 uint16_t XInputDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
@@ -195,8 +200,6 @@ const uint8_t * XInputDriver::get_descriptor_configuration_cb(uint8_t index) {
 const uint8_t * XInputDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void XInputDriver::update() {}
 
 uint16_t XInputDriver::GetJoystickMidValue() {
 	return GAMEPAD_JOYSTICK_MID;

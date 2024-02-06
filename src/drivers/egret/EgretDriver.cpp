@@ -21,7 +21,7 @@ void EgretDriver::initialize() {
 	};
 }
 
-void EgretDriver::send_report(Gamepad * gamepad) {
+void EgretDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        egretReport.lx = EGRET_JOYSTICK_MID; egretReport.ly = EGRET_JOYSTICK_MIN; break;
@@ -34,7 +34,6 @@ void EgretDriver::send_report(Gamepad * gamepad) {
 		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    egretReport.lx = EGRET_JOYSTICK_MIN; egretReport.ly = EGRET_JOYSTICK_MIN; break;
 		default:                                     egretReport.lx = EGRET_JOYSTICK_MID; egretReport.ly = EGRET_JOYSTICK_MID; break;
 	}
-
 
 	egretReport.buttons = 0
 		| (gamepad->pressedB1() ? EGRET_MASK_A       : 0)
@@ -62,9 +61,6 @@ void EgretDriver::send_report(Gamepad * gamepad) {
 		}
 	}
 }
-
-// Nothing for HID
-void EgretDriver::receive_report(uint8_t *buffer) {}
 
 // tud_hid_get_report_cb
 uint16_t EgretDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
@@ -100,8 +96,6 @@ const uint8_t * EgretDriver::get_descriptor_configuration_cb(uint8_t index) {
 const uint8_t * EgretDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void EgretDriver::update() {}
 
 uint16_t EgretDriver::GetJoystickMidValue() {
 	return GAMEPAD_JOYSTICK_MID;

@@ -49,11 +49,8 @@ void HIDDriver::initialize() {
 	};
 }
 
-// HID Driver does not require updates
-void HIDDriver::update() {}
-
 // Generate HID report from gamepad and send to TUSB Device
-void HIDDriver::send_report(Gamepad * gamepad) {
+void HIDDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        hidReport.direction = HID_HAT_UP;        break;
@@ -87,6 +84,16 @@ void HIDDriver::send_report(Gamepad * gamepad) {
 	hidReport.r_x_axis = static_cast<uint8_t>(gamepad->state.rx >> 8);
 	hidReport.r_y_axis = static_cast<uint8_t>(gamepad->state.ry >> 8);
 
+	if (gamepad->hasAnalogTriggers)
+	{
+		hidReport.l2_axis = gamepad->state.lt;
+		hidReport.r2_axis = gamepad->state.rt;
+	} else {
+		hidReport.l2_axis = gamepad->pressedL2() ? 0xFF : 0;
+		hidReport.r2_axis = gamepad->pressedR2() ? 0xFF : 0;
+	}
+
+
 	// Wake up TinyUSB device
 	if (tud_suspended())
 		tud_remote_wakeup();
@@ -100,10 +107,6 @@ void HIDDriver::send_report(Gamepad * gamepad) {
 			memcpy(last_report, report, report_size);
 		}
 	}
-}
-
-// Nothing for HID
-void HIDDriver::receive_report(uint8_t *buffer) {
 }
 
 // tud_hid_get_report_cb

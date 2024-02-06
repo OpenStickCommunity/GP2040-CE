@@ -38,7 +38,7 @@ void NeoGeoDriver::initialize() {
 	};
 }
 
-void NeoGeoDriver::send_report(Gamepad * gamepad) {
+void NeoGeoDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        neogeoReport.hat = NEOGEO_HAT_UP;        break;
@@ -61,7 +61,6 @@ void NeoGeoDriver::send_report(Gamepad * gamepad) {
 		| (gamepad->pressedS2() ? NEOGEO_MASK_START   : 0)
 	;
 
-
 	// Wake up TinyUSB device
 	if (tud_suspended())
 		tud_remote_wakeup();
@@ -76,9 +75,6 @@ void NeoGeoDriver::send_report(Gamepad * gamepad) {
 		}
 	}
 }
-
-// Nothing for HID
-void NeoGeoDriver::receive_report(uint8_t *buffer) {}
 
 // tud_hid_get_report_cb
 uint16_t NeoGeoDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
@@ -114,8 +110,6 @@ const uint8_t * NeoGeoDriver::get_descriptor_configuration_cb(uint8_t index) {
 const uint8_t * NeoGeoDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void NeoGeoDriver::update() {}
 
 uint16_t NeoGeoDriver::GetJoystickMidValue() {
 	return NEOGEO_JOYSTICK_MID << 8;

@@ -301,8 +301,11 @@ void XBOneDriver::initialize() {
 	xb1_guide_pressed = false;
 }
 
-void XBOneDriver::send_report(Gamepad * gamepad) {
+void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	uint16_t xboneReportSize = 0;
+
+	// Perform update
+	this->update();
 
 	// No input until auth is ready
 	if ( XboxOneData::getInstance().getAuthCompleted() == false ) {
@@ -438,9 +441,6 @@ bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {
 	}
 	return false;
 }
-
-// Nothing for HID
-void XBOneDriver::receive_report(uint8_t *buffer) {}
 
 // tud_hid_get_report_cb
 uint16_t XBOneDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {

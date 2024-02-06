@@ -25,7 +25,7 @@ void PCEngineDriver::initialize() {
 	};
 }
 
-void PCEngineDriver::send_report(Gamepad * gamepad) {
+void PCEngineDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        pcengineReport.hat = PCENGINE_HAT_UP;        break;
@@ -61,10 +61,6 @@ void PCEngineDriver::send_report(Gamepad * gamepad) {
 	}
 }
 
-
-// Nothing for HID
-void PCEngineDriver::receive_report(uint8_t *buffer) {}
-
 // tud_hid_get_report_cb
 uint16_t PCEngineDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
     memcpy(buffer, &pcengineReport, sizeof(PCEngineReport));
@@ -99,8 +95,6 @@ const uint8_t * PCEngineDriver::get_descriptor_configuration_cb(uint8_t index) {
 const uint8_t * PCEngineDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void PCEngineDriver::update() {}
 
 uint16_t PCEngineDriver::GetJoystickMidValue() {
 	return GAMEPAD_JOYSTICK_MID;

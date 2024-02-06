@@ -243,14 +243,8 @@ void GP2040::run() {
 		// Copy Processed Gamepad for Core1 (race condition otherwise)
 		memcpy(&processedGamepad->state, &gamepad->state, sizeof(GamepadState));
 
-		// Update input driver
-		inputDriver->update();
-
-		// Send USB Report (if possible)
-		inputDriver->send_report(gamepad);
-
-		// GET USB REPORT (If Endpoint Available)
-		inputDriver->receive_report(featureData);
+		// Process Input Driver
+		inputDriver->process(gamepad, featureData);
 		
 		// Process USB Report Addons
 		addons.ProcessAddons(ADDON_PROCESS::CORE0_USBREPORT);

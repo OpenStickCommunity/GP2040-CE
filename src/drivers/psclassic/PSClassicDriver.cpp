@@ -19,7 +19,7 @@ void PSClassicDriver::initialize() {
 	};
 }
 
-void PSClassicDriver::send_report(Gamepad * gamepad) {
+void PSClassicDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	psClassicReport.buttons = PSCLASSIC_MASK_CENTER;
 
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
@@ -62,9 +62,6 @@ void PSClassicDriver::send_report(Gamepad * gamepad) {
 	}
 }
 
-// Nothing for HID
-void PSClassicDriver::receive_report(uint8_t *buffer) {}
-
 // tud_hid_get_report_cb
 uint16_t PSClassicDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
     memcpy(buffer, &psClassicReport, sizeof(PSClassicReport));
@@ -99,8 +96,6 @@ const uint8_t * PSClassicDriver::get_descriptor_configuration_cb(uint8_t index) 
 const uint8_t * PSClassicDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void PSClassicDriver::update() {}
 
 uint16_t PSClassicDriver::GetJoystickMidValue() {
 	return GAMEPAD_JOYSTICK_MID;

@@ -25,7 +25,7 @@ void SwitchDriver::initialize() {
 	};
 }
 
-void SwitchDriver::send_report(Gamepad * gamepad) {
+void SwitchDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	switch (gamepad->state.dpad & GAMEPAD_MASK_DPAD)
 	{
 		case GAMEPAD_MASK_UP:                        switchReport.hat = SWITCH_HAT_UP;        break;
@@ -75,9 +75,6 @@ void SwitchDriver::send_report(Gamepad * gamepad) {
 	}
 }
 
-// Nothing for HID
-void SwitchDriver::receive_report(uint8_t *buffer) {}
-
 // tud_hid_get_report_cb
 uint16_t SwitchDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
     memcpy(buffer, &switchReport, sizeof(SwitchReport));
@@ -112,8 +109,6 @@ const uint8_t * SwitchDriver::get_descriptor_configuration_cb(uint8_t index) {
 const uint8_t * SwitchDriver::get_descriptor_device_qualifier_cb() {
 	return nullptr;
 }
-
-void SwitchDriver::update() {}
 
 uint16_t SwitchDriver::GetJoystickMidValue() {
 	return SWITCH_JOYSTICK_MID << 8;

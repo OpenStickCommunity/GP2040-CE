@@ -13,9 +13,7 @@
 class XBOneDriver : public GPDriver {
 public:
     virtual void initialize();
-    virtual void update();
-    virtual void send_report(Gamepad * gamepad);
-    virtual void receive_report(uint8_t *buffer);
+    virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
     virtual void set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize);
     virtual bool vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request);
@@ -26,6 +24,7 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
 private:
+    virtual void update();
     bool send_xbone_usb(uint8_t const *buffer, uint16_t bufsize);
     void set_ack_wait();
 	uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
