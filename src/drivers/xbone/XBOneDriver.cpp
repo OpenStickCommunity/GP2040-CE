@@ -299,6 +299,7 @@ void XBOneDriver::initialize() {
     keep_alive_sequence = 1; // sequence starts at 1?
 	virtual_keycode_sequence = 0;
 	xb1_guide_pressed = false;
+	last_report_counter = 0;
 }
 
 void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {

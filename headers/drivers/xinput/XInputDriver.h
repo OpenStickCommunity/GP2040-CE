@@ -23,7 +23,7 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
 private:
-	uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
+    uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XInputReport xinputReport;
 };
 
