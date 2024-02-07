@@ -115,6 +115,13 @@
 #ifndef DEFAULT_LOCK_HOTKEYS
     #define DEFAULT_LOCK_HOTKEYS false
 #endif
+#ifndef DEFAULT_PS4CONTROLLER_TYPE
+    #define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
+#endif
+
+#ifndef DEFAULT_PS4_REPORTHACK
+    #define DEFAULT_PS4_REPORTHACK false
+#endif
 
 #ifndef GPIO_PIN_00
     #define GPIO_PIN_00 GpioAction::NONE

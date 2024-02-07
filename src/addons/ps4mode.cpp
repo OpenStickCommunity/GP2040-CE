@@ -7,7 +7,7 @@
 #include "helper.h"
 #include "config.pb.h"
 
-#include "ps4_driver.h"
+#include "drivers/shared/ps4data.h"
 
 #include "mbedtls/error.h"
 #include "mbedtls/rsa.h"

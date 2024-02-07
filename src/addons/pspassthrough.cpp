@@ -3,6 +3,9 @@
 #include "usbhostmanager.h"
 #include "peripheralmanager.h"
 
+#include "class/hid/hid.h"
+#include "class/hid/hid_host.h"
+
 #include "CRC32.h"
 
 // Data passed between PS Passthrough and TinyUSB Host callbacks

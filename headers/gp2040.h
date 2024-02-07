@@ -12,6 +12,7 @@
 #include "gamepad.h"
 #include "addonmanager.h"
 #include "peripheralmanager.h"
+#include "gpdriver.h"
 
 #include "pico/types.h"
 
@@ -58,6 +59,7 @@ private:
         SET_INPUT_MODE_XBOXORIGINAL
     };
     BootAction getBootAction();
+    void getReinitGamepad(Gamepad * gamepad);
 
     // GPIO manipulation for setup and profile reinit
     void initializeStandardGpio();
