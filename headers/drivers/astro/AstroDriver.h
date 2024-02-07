@@ -27,4 +27,4 @@ private:
     AstroReport astroReport;
 };
 
-#endif // _HID_DRIVER_H_
+#endif // _ASTRO_DRIVER_H_
