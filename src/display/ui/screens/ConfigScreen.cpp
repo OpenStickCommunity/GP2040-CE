@@ -15,7 +15,7 @@ void ConfigScreen::drawScreen() {
 }
 
 int8_t ConfigScreen::update() {
-    uint16_t buttonState = _gamepadState.buttons;
+    uint16_t buttonState = getGamepad()->state.buttons;
 
     if (prevButtonState && !buttonState) {
         switch (prevButtonState) {

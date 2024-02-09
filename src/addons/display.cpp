@@ -1,6 +1,6 @@
 /*
  * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ * SPDX-FileCopyrightText: Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
  */
 
 #include "addons/display.h"
@@ -52,9 +52,6 @@ void DisplayAddon::setup() {
 	gamepad = Storage::getInstance().GetGamepad();
 	pGamepad = Storage::getInstance().GetProcessedGamepad();
 
-	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
-	isFocusModeEnabled = focusModeOptions.enabled && focusModeOptions.oledLockEnabled &&
-		isValidPin(focusModeOptions.pin);
 	displaySaverTimer = options.displaySaverTimeout;
 	displaySaverTimeout = displaySaverTimer;
 	configMode = Storage::getInstance().GetConfigMode();
@@ -84,33 +81,20 @@ bool DisplayAddon::isDisplayPowerOff()
 		if (!displayIsPowerOn) setDisplayPower(1);
 	}
 
-	if (!displaySaverTimeout && !isFocusModeEnabled) return false;
+	if (!displaySaverTimeout) return false;
 
 	float diffTime = getMillis() - prevMillis;
 	displaySaverTimer -= diffTime;
-	if (!!displaySaverTimeout && (gamepad->state.buttons || gamepad->state.dpad) && !focusModePrevState) {
+	if (!!displaySaverTimeout && (gamepad->state.buttons || gamepad->state.dpad)) {
 		displaySaverTimer = displaySaverTimeout;
 		setDisplayPower(1);
 	} else if (!!displaySaverTimeout && displaySaverTimer <= 0) {
 		setDisplayPower(0);
 	}
 
-	if (isFocusModeEnabled) {
-		const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
-		bool isFocusModeActive = !gpio_get(focusModeOptions.pin);
-		if (focusModePrevState != isFocusModeActive) {
-			focusModePrevState = isFocusModeActive;
-			if (isFocusModeActive) {
-				setDisplayPower(0);
-			} else {
-				setDisplayPower(1);
-			}
-		}
-	}
-
 	prevMillis = getMillis();
 
-	return (isFocusModeEnabled && focusModePrevState) || (!!displaySaverTimeout && displaySaverTimer <= 0);
+	return (!!displaySaverTimeout && displaySaverTimer <= 0);
 }
 
 void DisplayAddon::setDisplayPower(uint8_t status)
@@ -127,15 +111,8 @@ void DisplayAddon::process() {
     if (!configMode && isDisplayPowerOff()) return;
 
     gpScreen = loadedScreens.find(currDisplayMode)->second;
-    if (configMode) {
-        gpScreen->setDisplayOptions(Storage::getInstance().getPreviewDisplayOptions());
-    } else {
-        gpScreen->setDisplayOptions(options);
-    }
 
     drawStatusBar(gamepad);
-    gpScreen->setConfigMode(configMode);
-    gpScreen->setGamepadState(gamepad->state);
 
     if(isInputHistoryEnabled && inputHistoryAddon != nullptr) {
         //inputHistoryAddon->drawHistory(gpDisplay);

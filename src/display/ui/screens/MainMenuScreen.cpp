@@ -49,7 +49,7 @@ void MainMenuScreen::setMenu(std::vector<MenuEntry>* menu) {
 }
 
 int8_t MainMenuScreen::update() {
-    uint16_t buttonState = _gamepadState.buttons;
+    uint16_t buttonState = getGamepad()->state.buttons;
 
     if (prevButtonState && !buttonState) {
         switch (prevButtonState) {
