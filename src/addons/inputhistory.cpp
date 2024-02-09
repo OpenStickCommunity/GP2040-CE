@@ -200,8 +200,12 @@ void InputHistoryAddon::process() {
 	}
 }
 
-void InputHistoryAddon::drawHistory(OBDISP *pOBD) {
-	obdWriteString(pOBD, 0, col * 6, row, (char *)historyString.c_str(), FONT_6x8, 0, 0);
+void InputHistoryAddon::drawHistory(GPGFX *gpDisplay) {
+	gpDisplay->drawText(col * 6, row, (char *)historyString.c_str());
+}
+
+std::string InputHistoryAddon::getHistory() {
+	return historyString;
 }
 
 bool InputHistoryAddon::pressedUp()

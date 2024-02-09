@@ -18,7 +18,7 @@
 #include "addons/tilt.h"
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
-#include "addons/i2cdisplay.h"
+#include "addons/display.h"
 #include "addons/jslider.h"
 #include "addons/keyboard_host.h"
 #include "addons/neopicoleds.h"

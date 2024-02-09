@@ -5,6 +5,8 @@
 #include <hardware/i2c.h>
 #include <hardware/platform_defs.h>
 
+//#define DEBUG_PERIPHERALI2C
+
 class PeripheralI2C {
 public:
     PeripheralI2C();
@@ -22,6 +24,7 @@ public:
     int16_t write(uint8_t address, uint8_t *data, uint16_t len, bool isBlock=true);
 
     uint8_t test(uint8_t address);
+    void clear();
 private:
     const uint32_t DEFAULT_SPEED = 100000;
 

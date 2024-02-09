@@ -25,9 +25,15 @@ void PeripheralSPI::setConfig(uint8_t block, uint8_t tx, uint8_t rx, uint8_t sck
 }
 
 void PeripheralSPI::setup() {
-    spi_init(spi_default, 1000 * 1000);
+    spi_init(_SPI, 400 * 1000);
     gpio_set_function(_TX, GPIO_FUNC_SPI);
     gpio_set_function(_RX, GPIO_FUNC_SPI);
     gpio_set_function(_SCK, GPIO_FUNC_SPI);
-    gpio_init(_CS);
+    gpio_set_function(_CS, GPIO_FUNC_SPI);
+}
+
+int16_t PeripheralSPI::write(uint8_t *data, uint16_t len) {
+    int16_t result = spi_write_blocking(_SPI, data, len);
+
+    return result;
 }

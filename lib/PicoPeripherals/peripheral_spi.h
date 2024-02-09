@@ -16,6 +16,7 @@ public:
 
     void setConfig(uint8_t block, uint8_t tx, uint8_t rx, uint8_t sck, uint8_t cs);
 
+    int16_t write(uint8_t *data, uint16_t len);
 private:
     uint8_t _RX;
     uint8_t _TX;

@@ -1,13 +1,13 @@
 #ifndef INPUT_HISTORY_H_
 #define INPUT_HISTORY_H_
 
-#include "OneBitDisplay.h"
-
+#include <map>
 #include <vector>
 #include <string>
-#include "gpaddon.h"
 #include <deque>
 #include <array>
+#include "GPGFX.h"
+#include "gpaddon.h"
 
 #ifndef INPUT_HISTORY_ENABLED
 #define INPUT_HISTORY_ENABLED 0
@@ -63,7 +63,8 @@ public:
 	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return InputHistoryName; }
-	virtual void drawHistory(OBDISP *pOBD);
+	void drawHistory(GPGFX *gpDisplay);
+	std::string getHistory();
 private:
 	uint32_t historyLength;
 	uint32_t col;
