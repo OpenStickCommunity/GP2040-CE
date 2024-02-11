@@ -13,7 +13,7 @@ void GPLever::draw() {
     int leverX = this->x;
     int leverY = this->y;
 
-    if (this->_inputType == 0) {
+    if (this->_inputType == DPAD_MODE_DIGITAL) {
         // dpad
         bool upState    = (this->_upMask > -1 ? getGamepad()->pressedButton((uint16_t)this->_upMask) : getGamepad()->pressedUp());
         bool leftState  = (this->_leftMask > -1 ? getGamepad()->pressedButton((uint16_t)this->_leftMask) : getGamepad()->pressedLeft());
@@ -40,8 +40,8 @@ void GPLever::draw() {
         }
     } else {
         // analog
-        uint16_t analogX = map((this->_inputType == 1 ? getGamepad()->state.lx : getGamepad()->state.rx), 0, 0xFFFF, 0, 100);
-        uint16_t analogY = map((this->_inputType == 1 ? getGamepad()->state.ly : getGamepad()->state.ry), 0, 0xFFFF, 0, 100);
+        uint16_t analogX = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getGamepad()->state.lx : getGamepad()->state.rx), 0, 0xFFFF, 0, 100);
+        uint16_t analogY = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getGamepad()->state.ly : getGamepad()->state.ry), 0, 0xFFFF, 0, 100);
 
         uint16_t minX = std::max(0,(baseX - baseRadius));
         uint16_t maxX = std::min((baseX + baseRadius),128);

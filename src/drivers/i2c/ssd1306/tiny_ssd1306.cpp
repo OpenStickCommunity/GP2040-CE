@@ -132,6 +132,7 @@ void GPGFX_TinySSD1306::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t
 }
 
 void GPGFX_TinySSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled) {
+    //printf("Ellipse %d, %d, %d, %d, %d, %d\n", x, y, radiusX, radiusY, color, filled);
 	long x1 = -radiusX, y1 = 0;
 	long e2 = radiusY, dx = (1 + 2 * x1) * e2 * e2;
 	long dy = x1 * x1, err = dx + dy;
@@ -173,6 +174,7 @@ void GPGFX_TinySSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, ui
 }
 
 void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled) {
+    //printf("Rect %d, %d, %d, %d, %d, %d\n", x, y, width, height, color, filled);
 	drawLine(x, y, x, height, color, filled);
 	drawLine(x, y, width, y, color, filled);
 	drawLine(width, height, x, height, color, filled);
@@ -183,6 +185,64 @@ void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, ui
 			drawLine(x, y+i, width, y+i, color, filled);
 		}
 	}
+}
+
+void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled) {
+    // Calculate the angle increment between each vertex
+    double angleIncrement = 2 * M_PI / sides;
+
+    // Calculate vertices
+    uint16_t xVertices[sides];
+    uint16_t yVertices[sides];
+    for (int i = 0; i < sides; i++) {
+        double angle = i * angleIncrement;
+        xVertices[i] = x + round(radius * cos(angle));
+        yVertices[i] = y + round(radius * sin(angle));
+    }
+
+    // Draw lines between vertices
+    for (int i = 0; i < sides - 1; i++) {
+        drawLine(xVertices[i], yVertices[i], xVertices[i + 1], yVertices[i + 1], color, false);
+    }
+    drawLine(xVertices[sides - 1], yVertices[sides - 1], xVertices[0], yVertices[0], color, false);
+
+    if (filled) {
+        // Find the minimum and maximum y coordinates to scan
+        uint16_t minY = yVertices[0], maxY = yVertices[0];
+        for (int i = 1; i < sides; i++) {
+            if (yVertices[i] < minY) minY = yVertices[i];
+            if (yVertices[i] > maxY) maxY = yVertices[i];
+        }
+
+        // Scan horizontally and draw lines between intersections
+        for (int scanY = minY + 1; scanY < maxY; scanY++) {
+            int intersections = 0;
+            double intersectPoints[sides];
+
+            for (int i = 0; i < sides; i++) {
+                int next = (i + 1) % sides;
+                if ((yVertices[i] < scanY && yVertices[next] >= scanY) || (yVertices[next] < scanY && yVertices[i] >= scanY)) {
+                    intersectPoints[intersections++] = xVertices[i] + (scanY - yVertices[i]) * (xVertices[next] - xVertices[i]) / (yVertices[next] - yVertices[i]);
+                }
+            }
+
+            // Sort the intersection points by x coordinate
+            for (int i = 0; i < intersections - 1; i++) {
+                for (int j = 0; j < intersections - i - 1; j++) {
+                    if (intersectPoints[j] > intersectPoints[j + 1]) {
+                        double temp = intersectPoints[j];
+                        intersectPoints[j] = intersectPoints[j + 1];
+                        intersectPoints[j + 1] = temp;
+                    }
+                }
+            }
+
+            // Draw lines between pairs of intersection points
+            for (int i = 0; i < intersections; i += 2) {
+                drawLine(intersectPoints[i], scanY, intersectPoints[i + 1], scanY, color, false);
+            }
+        }
+    }
 }
 
 void GPGFX_TinySSD1306::drawSprite(uint8_t* image, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority) {

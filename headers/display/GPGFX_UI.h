@@ -10,9 +10,6 @@
 #include "GamepadState.h"
 #include "storagemanager.h"
 
-//extern uint32_t getMillis();
-//extern uint64_t getMicro();
-
 class GPGFX_UI {
     public:
         GPGFX_UI();

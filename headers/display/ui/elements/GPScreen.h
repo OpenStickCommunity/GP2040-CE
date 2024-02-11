@@ -11,7 +11,7 @@ class GPScreen : public GPWidget {
         std::string header = "";
         std::string footer = "";
         virtual int8_t update();
-        uint16_t addElement(GPWidget* element);
+        GPWidget* addElement(GPWidget* element);
     protected:
         virtual void drawScreen() = 0;
 

@@ -63,6 +63,10 @@ void GPGFX::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t heigh
     this->displayDriver->drawRectangle(x, y, width, height, color, filled);
 }
 
+void GPGFX::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled) {
+    this->displayDriver->drawPolygon(x, y, radius, sides, color, filled);
+}
+
 void GPGFX::drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority) {
     this->displayDriver->drawSprite(spriteData, width, height, pitch, x, y, priority);
 }

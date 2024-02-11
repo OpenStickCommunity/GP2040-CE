@@ -203,8 +203,6 @@ private:
 	};
 
 	DisplayMode currDisplayMode;
-	bool isFocusModeEnabled;
-	bool focusModePrevState;
 	bool turnOffWhenSuspended;
 	bool isInputHistoryEnabled;
 	InputHistoryAddon* inputHistoryAddon;

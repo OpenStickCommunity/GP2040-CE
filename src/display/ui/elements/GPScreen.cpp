@@ -16,8 +16,8 @@ int8_t GPScreen::update() {
     return 0;
 }
 
-uint16_t GPScreen::addElement(GPWidget* element) {
+GPWidget* GPScreen::addElement(GPWidget* element) {
     displayList.push_back(element);
     element->setID(displayList.size()-1);
-    return element->getID();
+    return element;
 }
