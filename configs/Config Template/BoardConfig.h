@@ -1,3 +1,7 @@
+//////////////////////////////////////////////
+// This section is still a work in progress //
+//////////////////////////////////////////////
+
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
@@ -18,25 +22,33 @@
 // If this is left blank the device will default to XINPUT
 // You can also boot to web-config as a defult with INPUT_MODE_CONFIG
 
-#define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT
-#define DEFAULT_INPUT_MODE INPUT_MODE_SWITCH
-#define DEFAULT_INPUT_MODE INPUT_MODE_PS4
-#define DEFAULT_INPUT_MODE INPUT_MODE_HID
-#define DEFAULT_INPUT_MODE INPUT_MODE_CONFIG
+#define DEFAULT_INPUT_MODE INPUT_MODE_XINPUT    // XINPUT mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_SWITCH    // Nintendo Switch mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_PS4       // PS4 mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_HID       // DINPUT mode / PS3
+#define DEFUALT_INPUT_MODE INPUT_MODE_KEYBOARD  // HID-Keyboard mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_CONFIG    // Web-config mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_ASTRO     // Astro City Mini mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_EGRET     // Egret Mini mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_MDMINI    // Megadrive Mini mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_NEOGEO    // Neo Geo Mini mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_PCEMINI   // PC Engine Mini mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_PSCLASSIC // PS Classic (Mini) mode
+#define DEFAULT_INPUT_MODE INPUT_MODE_XBONE     // Xbox One X/S / Series X/S mode
 
 // If in INPUT_MODE_PS4 you can also choose between controller and arcade stick mode
 // Controller mode will act as a DS4 which will work nativly on the PS4 and on the PS5 for PS4 titles
 // Arcade stick mode will act as a generic 3rd party device and will nativly on the PS4 and on the PS5 for PS4 titles as well as PS5 titles that support legacy controllers
 
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER  // DS4 controller mode
+#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK // PS4 arcade stick mode
 
 // This will change the default direction input mode
 // If this is left blank the device will default to DIGITAL (Dpad)
 
-#define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL
-#define DEFAULT_DPAD_MODE DPAD_MODE_LEFT_ANALOG
-#define DEFAULT_DPAD_MODE DPAD_MODE_RIGHT_ANALOG
+#define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL      // Dpad mode
+#define DEFAULT_DPAD_MODE DPAD_MODE_LEFT_ANALOG  // Left analog stick mode
+#define DEFAULT_DPAD_MODE DPAD_MODE_RIGHT_ANALOG // Right analog stick mode
 
 // This will change the default SOCD cleaning mode
 // If this is left blank the device will default to neutral prioritiy
@@ -47,11 +59,11 @@
 // SOCD_MODE_BYPASS = U+D=UD, L+R=LR (No cleaning applied)
 // Note: PS4, PS3 and Nintendo Switch modes do not support setting SOCD Cleaning to Off and will default to Neutral SOCD Cleaning mode.
 
-#define DEFAULT_SOCD_MODE SOCD_MODE_UP_PRIORITY
-#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
-#define DEFAULT_SOCD_MODE SOCD_MODE_SECOND_INPUT_PRIORITY
-#define DEFAULT_SOCD_MODE SOCD_MODE_FIRST_INPUT_PRIORITY
-#define DEFAULT_SOCD_MODE SOCD_MODE_BYPASS
+#define DEFAULT_SOCD_MODE SOCD_MODE_UP_PRIORITY           // Up priority SOCD
+#define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL               // Neutral SOCD
+#define DEFAULT_SOCD_MODE SOCD_MODE_SECOND_INPUT_PRIORITY // Second input priority SOCD
+#define DEFAULT_SOCD_MODE SOCD_MODE_FIRST_INPUT_PRIORITY  // Frist input priority SOCD
+#define DEFAULT_SOCD_MODE SOCD_MODE_BYPASS                // No SOCD cleaning applied
 
 // Default forced setup mode will force a lock on a specific setup
 // FORCED_SETUP_MODE_OFF will not lock anything
@@ -59,45 +71,75 @@
 // FORCED_SETUP_MODE_LOCK_WEB_CONFIG will prevent the device from being able to boot into web-config mode
 // FORCED_SETUP_MODE_LOCK_BOTH will prevent the device from being able to change input modes and being able to boot into web-config mode
 
-#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF
-#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_LOCK_MODE_SWITCH
-#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_LOCK_WEB_CONFIG
-#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_LOCK_BOTH
-
-// 4 way joystick slider? Fill this section in
-
-// The profile number selection will specify which profile to load on boot
-// Fill this section in as well
+#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF              // Forced setup mode is not turned on
+#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_LOCK_MODE_SWITCH // Prevents the input mode from being switched
+#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_LOCK_WEB_CONFIG  // Prevents web-config from being accessed
+#define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_LOCK_BOTH        // Prevents botht he input mode and web-config from being accessed
 
 // ---
 // Configuration - Pin Mapping
 // ---
 
 // This is the main pin definition section.
-// This will let you specify which GPIO pin each button is assigned too. 
+// This will let you specify which action is assigned to each GPIO pin.
 // You can set any of the main pins as `-1` to disable it.
 // The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
 
-//                          // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
-#define PIN_DPAD_UP     2   // UP     | UP     | UP      | UP       | UP     | UP     |
-#define PIN_DPAD_DOWN   3   // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   | 
-#define PIN_DPAD_RIGHT  4   // RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  | 
-#define PIN_DPAD_LEFT   5   // LEFT   | LEFT   | LEFT    | LEFT     | LEFT   | LEFT   | 
-#define PIN_BUTTON_B1   6   // B1     | A      | B       | Cross    | 2      | K1     |
-#define PIN_BUTTON_B2   7   // B2     | B      | A       | Circle   | 3      | K2     |
-#define PIN_BUTTON_R2   8   // R2     | RT     | ZR      | R2       | 8      | K3     |
-#define PIN_BUTTON_L2   9   // L2     | LT     | ZL      | L2       | 7      | K4     |
-#define PIN_BUTTON_B3   10  // B3     | X      | Y       | Square   | 1      | P1     |
-#define PIN_BUTTON_B4   11  // B4     | Y      | X       | Triangle | 4      | P2     |
-#define PIN_BUTTON_R1   12  // R1     | RB     | R       | R1       | 6      | P3     |
-#define PIN_BUTTON_L1   13  // L1     | LB     | L       | L1       | 5      | P4     |
-#define PIN_BUTTON_S1   16  // S1     | Back   | Minus   | Select   | 9      | Coin   |
-#define PIN_BUTTON_S2   17  // S2     | Start  | Plus    | Start    | 10     | Start  |
-#define PIN_BUTTON_L3   18  // L3     | LS     | LS      | L3       | 11     | LS     |
-#define PIN_BUTTON_R3   19  // R3     | RS     | RS      | R3       | 12     | RS     |
-#define PIN_BUTTON_A1   20  // A1     | Guide  | Home    | PS       | 13     | ~      |
-#define PIN_BUTTON_A2   21  // A2     | ~      | Capture | ~        | 14     | ~      |
-#define PIN_BUTTON_FN   -1  // Hotkey Function                                        |
+// Main pin mapping Configuration for the Pico
+//                                                  // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
+#define GPIO_PIN_02 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_03 GpioAction::BUTTON_PRESS_DOWN   // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
+#define GPIO_PIN_04 GpioAction::BUTTON_PRESS_RIGHT  // RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  |
+#define GPIO_PIN_05 GpioAction::BUTTON_PRESS_LEFT   // LEFT   | LEFT   | LEFT    | LEFT     | LEFT   | LEFT   |
+#define GPIO_PIN_06 GpioAction::BUTTON_PRESS_B1     // B1     | A      | B       | Cross    | 2      | K1     |
+#define GPIO_PIN_07 GpioAction::BUTTON_PRESS_B2     // B2     | B      | A       | Circle   | 3      | K2     |
+#define GPIO_PIN_08 GpioAction::BUTTON_PRESS_R2     // R2     | RT     | ZR      | R2       | 8      | K3     |
+#define GPIO_PIN_09 GpioAction::BUTTON_PRESS_L2     // L2     | LT     | ZL      | L2       | 7      | K4     |
+#define GPIO_PIN_10 GpioAction::BUTTON_PRESS_B3     // B3     | X      | Y       | Square   | 1      | P1     |
+#define GPIO_PIN_11 GpioAction::BUTTON_PRESS_B4     // B4     | Y      | X       | Triangle | 4      | P2     |
+#define GPIO_PIN_12 GpioAction::BUTTON_PRESS_R1     // R1     | RB     | R       | R1       | 6      | P3     |
+#define GPIO_PIN_13 GpioAction::BUTTON_PRESS_L1     // L1     | LB     | L       | L1       | 5      | P4     |
+#define GPIO_PIN_16 GpioAction::BUTTON_PRESS_S1     // S1     | Back   | Minus   | Select   | 9      | Coin   |
+#define GPIO_PIN_17 GpioAction::BUTTON_PRESS_S2     // S2     | Start  | Plus    | Start    | 10     | Start  |
+#define GPIO_PIN_18 GpioAction::BUTTON_PRESS_L3     // L3     | LS     | LS      | L3       | 11     | LS     |
+#define GPIO_PIN_19 GpioAction::BUTTON_PRESS_R3     // R3     | RS     | RS      | R3       | 12     | RS     |
+#define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
+#define GPIO_PIN_21 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
+
+// List of all GPIO pins that can be mapped in this way
+// A special note about GPIO25, please ensure that if you are mapping it to an input your board is not using it for the onboard LED
+
+//                                                  // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
+#define GPIO_PIN_00 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_01 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_02 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_03 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_04 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_05 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_06 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_07 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_08 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_09 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_10 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_11 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_12 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_13 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_14 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_15 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_16 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_17 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_18 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_19 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_20 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_21 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_22 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_23 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_24 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_25 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_26 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_27 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_28 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
+#define GPIO_PIN_29 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
 
 // ---
 // Configuration - Keyboard Mapping
@@ -107,6 +149,7 @@
 // List of HID keycodes can be located here: https://github.com/hathach/tinyusb/blob/3623ba1884ddff23e9b64766cb6dd032f1425846/src/class/hid/hid.h#L356
 // Even for the modifier keys, HID_KEY entries should be used as the implementation expects those and will convert as necessary.
 
+//                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP     | UP     | UP      | UP       | UP     | UP     |
 #define KEY_DPAD_DOWN   HID_KEY_ARROW_DOWN    // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
@@ -126,7 +169,7 @@
 #define KEY_BUTTON_R3   HID_KEY_MINUS         // R3     | RS     | RS      | R3       | 12     | RS     |
 #define KEY_BUTTON_A1   HID_KEY_9             // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
-#define KEY_BUTTON_FN   HID_KEY_              // Hotkey Function                                        |
+#define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 // ---
 // Configuration - Profile Settings
@@ -197,31 +240,18 @@
 #define PLED_TYPE PLED_TYPE_RGB
 
 // When in PLED_TYPE_PWM mode
-// #define PLED1_PIN = The GPIO for the first Player LED
-// #define PLED2_PIN = The GPIO for the second Player LED
-// #define PLED3_PIN = The GPIO for the third Player LED
-// #define PLED4_PIN = The GPIO for the fourth Player LED
 
-#define PLED1_PIN -1
-#define PLED2_PIN -1
-#define PLED3_PIN -1
-#define PLED4_PIN -1
+#define PLED1_PIN -1 // #define PLED1_PIN = The GPIO for the first Player LED
+#define PLED2_PIN -1 // #define PLED2_PIN = The GPIO for the second Player LED
+#define PLED3_PIN -1 // #define PLED3_PIN = The GPIO for the third Player LED
+#define PLED4_PIN -1 // #define PLED4_PIN = The GPIO for the fourth Player LED
 
 // When in PLED_TYPE_RGB mode
-// #define PLED1_PIN = The position in the RGB line for the first Player LED
-// #define PLED2_PIN = The position in the RGB line for the second Player LED
-// #define PLED3_PIN = The position in the RGB line for the third Player LED
-// #define PLED4_PIN = The position in the RGB line for the fourth Player LED
 
-#define PLED1_PIN -1
-#define PLED2_PIN -1
-#define PLED3_PIN -1
-#define PLED4_PIN -1
-
-
-// Turn off when suspended?
-???
-???
+#define PLED1_PIN -1 // #define PLED1_PIN = The position in the RGB line for the first Player LED
+#define PLED2_PIN -1 // #define PLED2_PIN = The position in the RGB line for the second Player LED
+#define PLED3_PIN -1 // #define PLED3_PIN = The position in the RGB line for the third Player LED
+#define PLED4_PIN -1 // #define PLED4_PIN = The position in the RGB line for the fourth Player LED
 
 // RGB LED button order will dictate what what order the RGB LEDs are connected in. 
 // This must match how you have them wired up off a strip or the order in an embedded design
@@ -298,61 +328,82 @@
 #define ANALOG_ADC_2_VRY -1
 #define ANALOG_ADC_2_MODE DPAD_MODE_RIGHT_ANALOG
 #define ANALOG_ADC_2_INVERT INVERT_NONE
-// This is the I2C Display section (commonly known as the OLED display section).
-// In this section you can specify if a display as been enabled, which pins are assined to it, the block address and speed.
-// The default for `HAS_I2C_DISPLAY` is `1` which enables it.
-// To disable the display you can change `HAS_I2C_DISPLAY` to `-1`.
-// The default `I2C_SDA_PIN` is `0`.
-// The defualt `I2C_SCL_PIN` is `1`.
-// The defualt `I2C_BLOCK` is `12c0`.  
-// If you change the `I2C_SDA_PIN` and `I2C_SCL_PIN` pin mapping, you may need to change the `I2C_BLOCK` as well.
-// The defualt `I2C_SPEED` is `400000`.  
-// This should be more than fast enough for most displays.
-// Some smaller displays (like 0.96" and 1.31") can go up to `800000` or even `1000000`.
-// The default `DISPLAY_FLIP` is `0`.
-// This can be changed to `1` to have the dispaly output flipped.
-// The default `DISPLAY_INVERT` is `0`.
-// This can be changed to `1` to have the color on the display inverted.
-// The default `DISPLAY_SAVER_TIMEOUT` is `0`.
-// This can be changed to a number in minutes which will be the inactivity timeout for the display to turn off.
-// The default `BUTTON_LAYOUT` is `BUTTON_LAYOUT_STICK` which will show an arcade stick on the left hand side of the display.
-// There are seven options for `BUTTON_LAYOUT` currently:
-// 1 - BUTTON_LAYOUT_STICK - This is a basic joystick layout
-// 2 - BUTTON_LAYOUT_STICKLESS - This is a basic stickless (all button) layout
-// 3 - BUTTON_LAYOUT_BUTTONS_ANGLED - This a WASD button layout that is angled
-// 4 - BUTTON_LAYOUT_BUTTONS_BASIC - This a WASD button layout that is straight
-// 5 - BUTTON_LAYOUT_KEYBOARD_ANGLED - This is a WASD keyboard layout that is angled
-// 6 - BUTTON_LAYOUT_KEYBOARDA - This is a WASD keyboard layout that is straight
-// 7 - BUTTON_LAYOUT_DANCEPADA - This is a dance pad layout (must be used with `BUTTON_LAYOUT_DANCEPADB` in `BUTTON_LAYOUT_RIGHT`)
-// The default `BUTTON_LAYOUT_RIGHT` is `BUTTON_LAYOUT_NOIR8` which will show eight buttons on the right hand side of the display.
-// There are eleven options for `BUTTON_LAYOUT_RIGHT` currently:
-// 1 - BUTTON_LAYOUT_ARCADE - This is a standard 8 button arcade layout
-// 2 - BUTTON_LAYOUT_STICKLESSB - This is a basic stickless (all button) layout
-// 3 - BUTTON_LAYOUT_BUTTONS_ANGLEDB - This is a standard 8 button arcade layout that is angled
-// 4 - BUTTON_LAYOUT_VEWLIX - This is the standard 8 button Vewlix layout
-// 5 - BUTTON_LAYOUT_VEWLIX7 - This is the standard 7 button Vewlix layout
-// 6 - BUTTON_LAYOUT_CAPCOM - This is the standard 8 button Capcom layout
-// 7 - BUTTON_LAYOUT_CAPCOM6 - This is the stndard 6 button Capcom layout
-// 8 - BUTTON_LAYOUT_SEGA2P - This is the standard 8 button Sega2P layout
-// 9 - BUTTON_LAYOUT_NOIR8 - This is the standard 8 button Noir layout
-// 10 - BUTTON_LAYOUT_KEYBOARDB - This is a WASD keyboard layout that is straight
-// 11 - BUTTON_LAYOUT_DANCEPADB - This is a dance pad layout (must be used with `BUTTON_LAYOUT_DANCEPADA` in `BUTTON_LAYOUT`)
-// The default `SPLASH_MODE` is `NOSPLASH`.  
-// There are four options for `SPLASH_MODE` currently:
-// 1 - `STATICSPLASH` - This will display the static splash image
-// 2 - `CLOSEIN` - This will display the static splash image as a top and bottom coming together animation
-// 3 - `CLOSEINCUSTOM` - This will display the custom splash image as a top and bottom coming together animation
-// 4 - `NOSPLASH` - This will not display a splash screen on boot
-// Special note - All of the splash screen images can be changed via `include/bitmaps.h`
 
-#define HAS_I2C_DISPLAY 0
-#define I2C_SDA_PIN 0
-#define I2C_SCL_PIN 1
-#define I2C_BLOCK i2c0
-#define I2C_SPEED 400000
-#define DISPLAY_FLIP 0
-#define DISPLAY_INVERT 0
-#define DISPLAY_SAVER_TIMEOUT 0
+
+#define HAS_I2C_DISPLAY 0 // The I2C display is not enabled
+#define HAS_I2C_DISPLAY 1 // The I2C display is enabled
+
+#define I2C_SDA_PIN 0 // Pin used for the SDA line on the I2C display, please ensure you are matching I2C pairs for your board
+#define I2C_SCL_PIN 1 // Pin used for the SLC line on the I2C display, please ensure you are matching I2C pairs for your board
+
+#define I2C_BLOCK i2c0 // I2C0 block used on your board, please ensure you are matching the I2C block for your board
+#define I2C_BLOCK i2c1 // I2C1 block used on your board, please ensure you are matching the I2C block for your board
+
+#define I2C_SPEED 400000 // Speed of the I2C information send, this can be set anywhere from 10000 -> 1000000.  400000 is recommended.
+
+#define DISPLAY_FLIP 0 // The display is not to be flipped
+#define DISPLAY_FLIP 1 // The display is to be flipped
+
+#define DISPLAY_INVERT 0 // The display is not to be inverted
+#define DISPLAY_INVERT 1 // The display is to be inverted
+
+#define DISPLAY_SAVER_TIMEOUT 0 // Amount of time in seconds before the display times out from inactivity and goes blank
+
+#define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
+#define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS
+#define BUTTON_LAYOUT BUTTON_LAYOUT_BUTTONS_ANGLED
+#define BUTTON_LAYOUT BUTTON_LAYOUT_BUTTONS_BASIC
+#define BUTTON_LAYOUT BUTTON_LAYOUT_KEYBOARD_ANGLED
+#define BUTTON_LAYOUT BUTTON_LAYOUT_KEYBOARDA
+#define BUTTON_LAYOUT BUTTON_LAYOUT_DANCEPADA
+#define BUTTON_LAYOUT BUTTON_LAYOUT_TWINSTICKA
+#define BUTTON_LAYOUT BUTTON_LAYOUT_BLANKA
+#define BUTTON_LAYOUT BUTTON_LAYOUT_VLXA
+#define BUTTON_LAYOUT BUTTON_LAYOUT_FIGHTBOARD_STICK
+#define BUTTON_LAYOUT BUTTON_LAYOUT_FIGHTBOARD_MIRRORED
+#define BUTTON_LAYOUT BUTTON_LAYOUT_CUSTOMA
+#define BUTTON_LAYOUT BUTTON_LAYOUT_OPENCORE0WASDA
+
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_ARCADE
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_STICKLESSB
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BUTTONS_ANGLEDB
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX7
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_CAPCOM
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_CAPCOM6
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_SEGA2P
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_NOIR8
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_KEYBOARDB
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_DANCEPADB
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_TWINSTICKB
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_BLANKB
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VLXB
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_FIGHTBOARD
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_CUSTOMB
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_KEYBOARD8B
+#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_OPENCORE0WASDB
+
+// The default `SPLASH_MODE` is `NOSPLASH`.
+
+#define SPLASH_MODE SPLASH_MODE_NONE // This will not display a splash screen on boot
+#define SPLASH_MODE SPLASH_MODE_CLOSEIN // This will display the static splash image as a top and bottom coming together animation
+#define SPLASH_MODE SPLASH_MODE_CLOSEINCUSTOM // This will display the custom splash image as a top and bottom coming together animation
+#define SPLASH_MODE SPLASH_MODE_STATIC // This will display the static splash image
+
+
+#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
+#define SPLASH_CHOICE SPLASH_CHOICE_CUSTOM
+#define SPLASH_CHOICE SPLASH_CHOICE_LEGACY
+
+
+
+#define SPLASH_DURATION 7500 // Duration in milliseconds that the splash screen will stay up for on boot
+
+
+
+
+
 
 // I2C Analog ADS1219 Add-on Options
 #define I2C_ANALOG1219_SDA_PIN -1
@@ -368,11 +419,6 @@
 #define REVERSE_LEFT_DEFAULT 1
 #define REVERSE_RIGHT_DEFAULT 1
 
-#define BUTTON_LAYOUT BUTTON_LAYOUT_STICK
-#define BUTTON_LAYOUT_RIGHT BUTTON_LAYOUT_VEWLIX
-#define SPLASH_MODE SPLASH_MODE_NONE
-#define SPLASH_CHOICE SPLASH_CHOICE_MAIN
-#define SPLASH_DURATION 7500 // Duration in milliseconds
 
 // Board LED Add-on Setting
 // BOARD_LED_OFF  - Turns the on-board LED off
@@ -616,17 +662,6 @@ enum InvertMode
     INVERT_X = 1;
     INVERT_Y = 2;
     INVERT_XY = 3;
-}
-
-enum SOCDMode
-{
-    option (nanopb_enumopt).long_names = false;
-
-    SOCD_MODE_UP_PRIORITY = 0;				// U+D=U, L+R=N
-    SOCD_MODE_NEUTRAL = 1;					// U+D=N, L+R=N
-    SOCD_MODE_SECOND_INPUT_PRIORITY = 2;	// U>D=D, L>R=R (Last Input Priority, aka Last Win)
-    SOCD_MODE_FIRST_INPUT_PRIORITY = 3;		// U>D=U, L>R=L (First Input Priority, aka First Win)
-    SOCD_MODE_BYPASS = 4;					// U+D=UD, L+R=LR (No cleaning applied)
 }
 
 enum GpioAction
