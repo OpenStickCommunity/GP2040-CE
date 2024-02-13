@@ -6,59 +6,117 @@
 
 class ButtonLayoutScreen : public GPScreen {
     public:
+        typedef std::vector<GPButtonLayout> LayoutList;
+        typedef std::function<LayoutList()> LayoutFunction;
+
         ButtonLayoutScreen() {}
         ButtonLayoutScreen(GPGFX* renderer) { setRenderer(renderer); }
         int8_t update();
+
+        // old layout methods
+        LayoutList drawStickless();
+        LayoutList drawWasdBox();
+        LayoutList drawArcadeStick();
+        LayoutList drawUDLR();
+        LayoutList drawMAMEA();
+        LayoutList drawOpenCore0WASDA();
+        LayoutList drawOpenCore0WASDB();
+        LayoutList drawMAMEB();
+        LayoutList drawMAME8B();
+        LayoutList drawKeyboardAngled();
+        LayoutList drawVewlix();
+        LayoutList drawVewlix7();
+        LayoutList drawSega2p();
+        LayoutList drawNoir8();
+        LayoutList drawCapcom();
+        LayoutList drawCapcom6();
+        LayoutList drawSticklessButtons();
+        LayoutList drawWasdButtons();
+        LayoutList drawArcadeButtons();
+        LayoutList drawDancepadA();
+        LayoutList drawDancepadB();
+        LayoutList drawTwinStickA();
+        LayoutList drawTwinStickB();
+        LayoutList drawBlankA();
+        LayoutList drawBlankB();
+        LayoutList drawVLXA();
+        LayoutList drawVLXB();
+        LayoutList drawFightboard();
+        LayoutList drawFightboardMirrored();
+        LayoutList drawFightboardStick();
+        LayoutList drawFightboardStickMirrored();
+        LayoutList drawStickless13A();
+        LayoutList drawSticklessButtons13B();
+        LayoutList drawStickless16A();
+        LayoutList drawSticklessButtons16B();
+        LayoutList drawStickless14A();
+        LayoutList drawSticklessButtons14B();
+        LayoutList drawButtonLayoutLeft();
+        LayoutList drawButtonLayoutRight();
+        LayoutList drawBoardDefinedA();
+        LayoutList drawBoardDefinedB();
     protected:
         void drawScreen();
     private:
         // new layout methods
-        void drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
+        GPLever* drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
         GPButton* drawButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask = -1);
-        void drawElement(GPButtonLayout element);
+        GPWidget* drawElement(GPButtonLayout element);
+        LayoutList adjustByCustomSettings(LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX = 0, uint16_t originY = 0);
 
-        // old layout methods
-        void drawStickless(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding);
-        //Adding my stuff here, remember to sort before PR
-        void drawDiamond(int x, int y, int size, uint8_t color, uint8_t filled);
-        void drawUDLR(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawMAMEA(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawOpenCore0WASDA(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawOpenCore0WASDB(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawMAME8B(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawKeyboardAngled(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawVewlix(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawVewlix7(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawSega2p(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawNoir8(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawCapcom(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawCapcom6(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawSticklessButtons(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawTwinStickA(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawTwinStickB(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawBlankA(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawBlankB(int startX, int startY, int buttonSize, int buttonPadding);
-        void drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawButtonLayoutLeft(ButtonLayoutParamsLeft& options);
-        void drawButtonLayoutRight(ButtonLayoutParamsRight& options);
-        void drawFightboard(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawFightboardMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawFightboardStick(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawFightboardStickMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawStickless13A(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawSticklessButtons13B(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawStickless16A(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawSticklessButtons16B(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawStickless14A(int startX, int startY, int buttonRadius, int buttonPadding);
-        void drawSticklessButtons14B(int startX, int startY, int buttonRadius, int buttonPadding);
+        std::map<uint16_t,LayoutFunction> GPButtonLayouts_LeftLayouts = {
+            // levers
+            // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, DpadMode
+            {BUTTON_LAYOUT_STICK,                     [this]() { return this->drawArcadeStick(); }},
+            {BUTTON_LAYOUT_TWINSTICKA,                [this]() { return this->drawTwinStickA(); }},
+            {BUTTON_LAYOUT_VLXA,                      [this]() { return this->drawVLXA(); }},
+            {BUTTON_LAYOUT_FIGHTBOARD_STICK,          [this]() { return this->drawFightboardStick(); }},
+
+            // buttons
+            // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, Gamepad button mask, shape
+            {BUTTON_LAYOUT_STICKLESS,                 [this]() { return this->drawStickless(); }},
+            {BUTTON_LAYOUT_BUTTONS_ANGLED,            [this]() { return this->drawUDLR(); }},
+            {BUTTON_LAYOUT_BUTTONS_BASIC,             [this]() { return this->drawMAMEA(); }},
+            {BUTTON_LAYOUT_KEYBOARD_ANGLED,           [this]() { return this->drawKeyboardAngled(); }},
+            {BUTTON_LAYOUT_KEYBOARDA,                 [this]() { return this->drawWasdBox(); }},
+            {BUTTON_LAYOUT_DANCEPADA,                 [this]() { return this->drawDancepadA(); }},
+            {BUTTON_LAYOUT_BLANKA,                    [this]() { return this->drawBlankA(); }},
+            {BUTTON_LAYOUT_FIGHTBOARD_MIRRORED,       [this]() { return this->drawFightboardMirrored(); }},
+            {BUTTON_LAYOUT_CUSTOMA,                   [this]() { return this->drawButtonLayoutLeft(); }},
+            {BUTTON_LAYOUT_OPENCORE0WASDA,            [this]() { return this->drawOpenCore0WASDA(); }},
+            {BUTTON_LAYOUT_STICKLESS_13,              [this]() { return this->drawStickless13A(); }},
+            {BUTTON_LAYOUT_STICKLESS_16,              [this]() { return this->drawStickless16A(); }},
+            {BUTTON_LAYOUT_STICKLESS_14,              [this]() { return this->drawStickless14A(); }},
+            {BUTTON_LAYOUT_BOARD_DEFINED_A,           [this]() { return this->drawBoardDefinedA(); }},
+        };
+
+        std::map<uint16_t,LayoutFunction> GPButtonLayouts_RightLayouts = {
+            {BUTTON_LAYOUT_ARCADE,                    [this]() { return this->drawArcadeButtons(); }},
+            {BUTTON_LAYOUT_STICKLESSB,                [this]() { return this->drawSticklessButtons(); }},
+            {BUTTON_LAYOUT_BUTTONS_ANGLEDB,           [this]() { return this->drawMAMEB(); }},
+            {BUTTON_LAYOUT_VEWLIX,                    [this]() { return this->drawVewlix(); }},
+            {BUTTON_LAYOUT_VEWLIX7,                   [this]() { return this->drawVewlix7(); }},
+            {BUTTON_LAYOUT_CAPCOM,                    [this]() { return this->drawCapcom(); }},
+            {BUTTON_LAYOUT_CAPCOM6,                   [this]() { return this->drawCapcom6(); }},
+            {BUTTON_LAYOUT_SEGA2P,                    [this]() { return this->drawSega2p(); }},
+            {BUTTON_LAYOUT_NOIR8,                     [this]() { return this->drawNoir8(); }},
+            {BUTTON_LAYOUT_KEYBOARDB,                 [this]() { return this->drawMAMEB(); }},
+            {BUTTON_LAYOUT_DANCEPADB,                 [this]() { return this->drawDancepadB(); }},
+            {BUTTON_LAYOUT_TWINSTICKB,                [this]() { return this->drawTwinStickB(); }},
+            {BUTTON_LAYOUT_BLANKB,                    [this]() { return this->drawBlankB(); }},
+            {BUTTON_LAYOUT_VLXB,                      [this]() { return this->drawVLXB(); }},
+            {BUTTON_LAYOUT_FIGHTBOARD,                [this]() { return this->drawFightboard(); }},
+            {BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED, [this]() { return this->drawFightboardStickMirrored(); }},
+            {BUTTON_LAYOUT_CUSTOMB,                   [this]() { return this->drawButtonLayoutRight(); }},
+            {BUTTON_LAYOUT_KEYBOARD8B,                [this]() { return this->drawMAME8B(); }},
+            {BUTTON_LAYOUT_OPENCORE0WASDB,            [this]() { return this->drawOpenCore0WASDB(); }},
+            {BUTTON_LAYOUT_STICKLESS_13B,             [this]() { return this->drawSticklessButtons13B(); }},
+            {BUTTON_LAYOUT_STICKLESS_16B,             [this]() { return this->drawSticklessButtons16B(); }},
+            {BUTTON_LAYOUT_STICKLESS_14B,             [this]() { return this->drawSticklessButtons14B(); }},
+            {BUTTON_LAYOUT_BOARD_DEFINED_B,           [this]() { return this->drawBoardDefinedB(); }},
+        };
+
+
         bool isInputHistoryEnabled = false;
         bool hasInitialized = false;
 

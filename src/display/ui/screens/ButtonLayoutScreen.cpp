@@ -1,872 +1,506 @@
 #include "ButtonLayoutScreen.h"
-#include "GPGFX_UI_layouts.h"
 
 void ButtonLayoutScreen::drawScreen() {
-/*
-    switch (getDisplayOptions().buttonLayout) {
-            case BUTTON_LAYOUT_STICK:
-                drawArcadeStick(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-                break;
-            case BUTTON_LAYOUT_STICKLESS:
-                drawStickless(8, 20, 8, 2);
-                break;
-            case BUTTON_LAYOUT_BUTTONS_ANGLED:
-                drawWasdBox(8, (isInputHistoryEnabled ? 22 : 28), 7, 3);
-                break;
-            case BUTTON_LAYOUT_BUTTONS_BASIC:
-                drawUDLR(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-                break;
-            case BUTTON_LAYOUT_KEYBOARD_ANGLED:
-                drawKeyboardAngled(18, (isInputHistoryEnabled ? 24 : 28), 5, 2);
-                break;
-            case BUTTON_LAYOUT_KEYBOARDA:
-                drawMAMEA(8, (isInputHistoryEnabled ? 22 : 28), 10, 1);
-                break;
-            case BUTTON_LAYOUT_OPENCORE0WASDA:
-                drawOpenCore0WASDA(16, (isInputHistoryEnabled ? 22 : 28), 10, 1);
-                break;
-            case BUTTON_LAYOUT_DANCEPADA:
-                drawDancepadA(39, (isInputHistoryEnabled ? 10 : 12), (isInputHistoryEnabled ? 13 : 15), 2);
-                break;
-            case BUTTON_LAYOUT_TWINSTICKA:
-                drawTwinStickA(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-                break;
-            case BUTTON_LAYOUT_BLANKA:
-                drawBlankA(0, 0, 0, 0);
-                break;
-            case BUTTON_LAYOUT_VLXA:
-                drawVLXA(7, (isInputHistoryEnabled ? 22 : 28), 7, 2);
-                break;
-            case BUTTON_LAYOUT_CUSTOMA:
-                drawButtonLayoutLeft(buttonLayoutCustomOptions.paramsLeft);
-                break;
-            case BUTTON_LAYOUT_FIGHTBOARD_STICK:
-                drawArcadeStick(18, 22, 8, 2);
-                break;
-            case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
-                drawFightboardMirrored(0, 22, 7, 2);
-                break;
-            case BUTTON_LAYOUT_STICKLESS_13:
-                drawStickless13A(18, 27, 6, 2);
-                break;
-            case BUTTON_LAYOUT_STICKLESS_16:
-                drawStickless16A(32, 27, 4, 2);
-                break;
-            case BUTTON_LAYOUT_STICKLESS_14:
-                drawStickless14A(26, 20, (isInputHistoryEnabled ? 6 : 7), 2);
-                break;
-    }
-
-    switch (getDisplayOptions().buttonLayoutRight) {
-        case BUTTON_LAYOUT_ARCADE:
-            drawArcadeButtons(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-            break;
-        case BUTTON_LAYOUT_STICKLESSB:
-            drawSticklessButtons(8, 20, 8, 2);
-            break;
-        case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
-            drawWasdButtons(8, (isInputHistoryEnabled ? 22 : 28), 7, 3);
-            break;
-        case BUTTON_LAYOUT_VEWLIX:
-            drawVewlix(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-            break;
-        case BUTTON_LAYOUT_VEWLIX7:
-            drawVewlix7(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-            break;
-        case BUTTON_LAYOUT_CAPCOM:
-            drawCapcom(6, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-            break;
-        case BUTTON_LAYOUT_CAPCOM6:
-            drawCapcom6(16, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-            break;
-        case BUTTON_LAYOUT_SEGA2P:
-            drawSega2p(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-            break;
-        case BUTTON_LAYOUT_NOIR8:
-            drawNoir8(8, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-            break;
-        case BUTTON_LAYOUT_KEYBOARDB:
-            drawMAMEB(68, (isInputHistoryEnabled ? 22 : 28), 10, 1);
-            break;
-        case BUTTON_LAYOUT_KEYBOARD8B:
-            drawMAME8B(68, (isInputHistoryEnabled ? 22 : 28), 10, 1);
-            break;
-        case BUTTON_LAYOUT_OPENCORE0WASDB:
-            drawOpenCore0WASDB(68, (isInputHistoryEnabled ? 22 : 28), 10, 1);
-            break;
-        case BUTTON_LAYOUT_DANCEPADB:
-            drawDancepadB(39, (isInputHistoryEnabled ? 10 : 12), (isInputHistoryEnabled ? 13 : 15), 2);
-            break;
-        case BUTTON_LAYOUT_TWINSTICKB:
-            drawTwinStickB(100, (isInputHistoryEnabled ? 22 : 28), 8, 2);
-            break;
-        case BUTTON_LAYOUT_BLANKB:
-            drawSticklessButtons(0, 0, 0, 0);
-            break;
-        case BUTTON_LAYOUT_VLXB:
-            drawVLXB(6, (isInputHistoryEnabled ? 22 : 28), 7, 2);
-            break;
-        case BUTTON_LAYOUT_CUSTOMB:
-            drawButtonLayoutRight(buttonLayoutCustomOptions.paramsRight);
-            break;
-        case BUTTON_LAYOUT_FIGHTBOARD:
-            drawFightboard(8, 22, 7, 3);
-            break;
-        case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
-            drawArcadeStick(90, 22, 8, 2);
-            break;
-        case BUTTON_LAYOUT_STICKLESS_13B:
-            drawSticklessButtons13B(18, 27, 6, 2);
-            break;
-        case BUTTON_LAYOUT_STICKLESS_16B:
-            drawSticklessButtons16B(32, 27, 4, 2);
-            break;
-        case BUTTON_LAYOUT_STICKLESS_14B:
-            drawSticklessButtons14B(26, 20, (isInputHistoryEnabled ? 6 : 7), 2);
-            break;
-    }
-*/
-
     getRenderer()->drawText(0, 0, header);
     getRenderer()->drawText(0, 57, footer);
 }
 
-void ButtonLayoutScreen::drawButtonLayoutLeft(ButtonLayoutParamsLeft& options)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawButtonLayoutLeft()
 {
-	int32_t& startX    = options.common.startX;
-	int32_t& startY    = options.common.startY;
-	int32_t& buttonRadius  = options.common.buttonRadius;
-	int32_t& buttonPadding = options.common.buttonPadding;
-
-	switch (options.layout)
-		{
-			case BUTTON_LAYOUT_STICK:
-				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_STICKLESS:
-				drawStickless(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_BUTTONS_ANGLED:
-				drawWasdBox(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_BUTTONS_BASIC:
-				drawUDLR(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_KEYBOARD_ANGLED:
-				drawKeyboardAngled(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_KEYBOARDA:
-				drawMAMEA(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_OPENCORE0WASDA:
-				drawOpenCore0WASDA(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_DANCEPADA:
-				drawDancepadA(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_TWINSTICKA:
-				drawTwinStickA(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_BLANKA:
-				drawBlankA(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_VLXA:
-				drawVLXA(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_FIGHTBOARD_STICK:
-				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
-				drawFightboardMirrored(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_STICKLESS_13:
-				drawStickless13A(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_STICKLESS_16:
-				drawStickless16A(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_STICKLESS_14:
-				drawStickless14A(startX, startY, buttonRadius, buttonPadding);
-				break;
-		}
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
+    ButtonLayoutParamsLeft leftOptions = buttonLayoutCustomOptions.paramsLeft;
+    return adjustByCustomSettings(GPButtonLayouts_LeftLayouts.at(leftOptions.layout)(), leftOptions.common);
 }
 
-void ButtonLayoutScreen::drawButtonLayoutRight(ButtonLayoutParamsRight& options)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawButtonLayoutRight()
 {
-	int32_t& startX        = options.common.startX;
-	int32_t& startY        = options.common.startY;
-	int32_t& buttonRadius  = options.common.buttonRadius;
-	int32_t& buttonPadding = options.common.buttonPadding;
-
-	switch (options.layout)
-		{
-			case BUTTON_LAYOUT_ARCADE:
-				drawArcadeButtons(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_STICKLESSB:
-				drawSticklessButtons(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
-				drawWasdButtons(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_VEWLIX:
-				drawVewlix(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_VEWLIX7:
-				drawVewlix7(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_CAPCOM:
-				drawCapcom(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_CAPCOM6:
-				drawCapcom6(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_SEGA2P:
-				drawSega2p(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_NOIR8:
-				drawNoir8(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_KEYBOARDB:
-				drawMAMEB(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_KEYBOARD8B:
-				drawMAME8B(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_OPENCORE0WASDB:
-				drawOpenCore0WASDB(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_DANCEPADB:
-				drawDancepadB(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_TWINSTICKB:
-				drawTwinStickB(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_BLANKB:
-				drawSticklessButtons(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_VLXB:
-				drawVLXB(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_FIGHTBOARD:
-				drawFightboard(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
-				drawArcadeStick(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_STICKLESS_13B:
-				drawSticklessButtons13B(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_STICKLESS_16B:
-				drawSticklessButtons16B(startX, startY, buttonRadius, buttonPadding);
-				break;
-			case BUTTON_LAYOUT_STICKLESS_14B:
-				drawSticklessButtons14B(startX, startY, buttonRadius, buttonPadding);
-				break;
-		}
+    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
+    ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
+    ButtonLayoutParamsRight rightOptions = buttonLayoutCustomOptions.paramsRight;
+    return adjustByCustomSettings(GPButtonLayouts_RightLayouts.at(rightOptions.layout)(), rightOptions.common, 64);
 }
 
-void ButtonLayoutScreen::drawDiamond(int x, int y, int size, uint8_t color, uint8_t filled)
-{
-	if (filled) {
-		int i;
-		for (i = 0; i < size; i++) {
-			getRenderer()->drawLine(x - i, y - size + i, x + i, y - size + i, color, 0);
-			getRenderer()->drawLine(x - i, y + size - i, x + i, y + size - i, color, 0);
-		}
-		getRenderer()->drawLine(x - size, y, x + size, y, color, 0); // Fill in the middle
-	}
-	getRenderer()->drawLine(x - size, y, x, y - size, color, 0);
-	getRenderer()->drawLine(x, y - size, x + size, y, color, 0);
-	getRenderer()->drawLine(x + size, y, x, y + size, color, 0);
-	getRenderer()->drawLine(x, y + size, x - size, y, color, 0);
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::adjustByCustomSettings(ButtonLayoutScreen::LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX, uint16_t originY) {
+    if (layout.size() > 0) {
+        int32_t startX = layout[0].parameters[0];
+        int32_t startY = layout[0].parameters[1];
+        int32_t customX = common.startX;
+        int32_t customY = common.startY;
+        int32_t offsetX = customX-startX;
+        int32_t offsetY = customY-startY;
+        for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
+            if (layout[elementCtr].elementType == GP_ELEMENT_BUTTON) {
+                layout[elementCtr].parameters[0] += originX+(offsetX+common.buttonPadding);
+                layout[elementCtr].parameters[1] += originY+(offsetY+common.buttonPadding);
+            } else {
+                layout[elementCtr].parameters[0] += originX+offsetX;
+                layout[elementCtr].parameters[1] += originY+offsetY;
+            }
+
+            if (((GPButton_Shape)layout[elementCtr].parameters[7] == GP_BUTTON_ELLIPSE) || ((GPButton_Shape)layout[elementCtr].parameters[7] == GP_BUTTON_POLYGON)) {
+                // radius
+                layout[elementCtr].parameters[2] = common.buttonRadius;
+                layout[elementCtr].parameters[3] = common.buttonRadius;
+            }
+        }
+    }
+    return layout;
 }
 
-void ButtonLayoutScreen::drawStickless(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	getRenderer()->drawEllipse(startX, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawEllipse(startX + buttonMargin, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedDown());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 1.875), startY + (buttonMargin / 2), buttonRadius, buttonRadius, 1, getGamepad()->pressedRight());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.25), startY + buttonMargin * 1.875, buttonRadius, buttonRadius, 1, getGamepad()->pressedUp());
+	return {
+        {GP_ELEMENT_DIR_BUTTON, {8,  20, 8, 8, 1, 0, GAMEPAD_MASK_LEFT,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {26, 20, 8, 8, 1, 0, GAMEPAD_MASK_DOWN,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {41, 29, 8, 8, 1, 0, GAMEPAD_MASK_RIGHT,   GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {48, 53, 8, 8, 1, 0, GAMEPAD_MASK_UP,      GP_BUTTON_ELLIPSE}}
+    };
 }
 
-void ButtonLayoutScreen::drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawWasdBox()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// WASD
-	getRenderer()->drawEllipse(startX, startY + buttonMargin * 0.5, buttonRadius, buttonRadius, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawEllipse(startX + buttonMargin, startY + buttonMargin * 0.875, buttonRadius, buttonRadius, 1, getGamepad()->pressedDown());
-	getRenderer()->drawEllipse(startX + buttonMargin * 1.5, startY - buttonMargin * 0.125, buttonRadius, buttonRadius, 1, getGamepad()->pressedUp());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, getGamepad()->pressedRight());
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {8,  39, 18, 49, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {19, 39, 29, 49, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {19, 28, 29, 38, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {30, 39, 40, 49, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_SQUARE}}
+    };
 }
 
-void ButtonLayoutScreen::drawUDLR(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawUDLR()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// UDLR
-	getRenderer()->drawEllipse(startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedUp());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, getGamepad()->pressedDown());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 1.625), startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, getGamepad()->pressedRight());
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {8,  36, 7, 7, 1, 0, GAMEPAD_MASK_LEFT,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {25, 42, 7, 7, 1, 0, GAMEPAD_MASK_DOWN,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {33, 25, 7, 7, 1, 0, GAMEPAD_MASK_UP,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {42, 49, 7, 7, 1, 0, GAMEPAD_MASK_RIGHT,   GP_BUTTON_ELLIPSE}}
+    };
 }
 
-void ButtonLayoutScreen::drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawArcadeStick()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// Stick
-	getRenderer()->drawEllipse(startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-
-	if (getGamepad()->pressedUp()) {
-		if (getGamepad()->pressedLeft()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
-		} else if (getGamepad()->pressedRight()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
-		} else {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 2), startY, buttonRadius, buttonRadius, 1, 1);
-		}
-	} else if (getGamepad()->pressedDown()) {
-		if (getGamepad()->pressedLeft()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 5), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
-		} else if (getGamepad()->pressedRight()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
-		} else {
-			getRenderer()->drawEllipse(startX + buttonMargin / 2, startY + buttonMargin, buttonRadius, buttonRadius, 1, 1);
-		}
-	} else if (getGamepad()->pressedLeft()) {
-		getRenderer()->drawEllipse(startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	} else if (getGamepad()->pressedRight()) {
-		getRenderer()->drawEllipse(startX + buttonMargin, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	} else {
-		getRenderer()->drawEllipse(startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	}
+    return {{GP_ELEMENT_LEVER, {17, 37, 10, 10, 1, 0, 0}}};
 }
 
-void ButtonLayoutScreen::drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVLXA()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-    
-	// Stick
-	getRenderer()->drawEllipse(startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-    
-	if (getGamepad()->pressedUp()) {
-		if (getGamepad()->pressedLeft()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
-		} else if (getGamepad()->pressedRight()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
-		} else {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 2), startY, buttonRadius, buttonRadius, 1, 1);
-		}
-	} else if (getGamepad()->pressedDown()) {
-		if (getGamepad()->pressedLeft()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 5), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
-		} else if (getGamepad()->pressedRight()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
-		} else {
-			getRenderer()->drawEllipse(startX + buttonMargin / 2, startY + buttonMargin, buttonRadius, buttonRadius, 1, 1);
-		}
-	} else if (getGamepad()->pressedLeft()) {
-		getRenderer()->drawEllipse(startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	} else if (getGamepad()->pressedRight()) {
-		getRenderer()->drawEllipse(startX + buttonMargin, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	} else {
-		getRenderer()->drawEllipse(startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	}
+    return {{GP_ELEMENT_LEVER, {15, 36,  8,  8, 1, 0, 0}}};
 }
 
-void ButtonLayoutScreen::drawFightboardMirrored(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardMirrored()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-    const int leftMargin = startX + buttonPadding + buttonRadius;
-
-	getRenderer()->drawEllipse(leftMargin, startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-	getRenderer()->drawEllipse(leftMargin + buttonMargin, startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(leftMargin + (buttonMargin*2), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(leftMargin + (buttonMargin*3), startY * 1.25, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-
-	getRenderer()->drawEllipse(leftMargin, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
-	getRenderer()->drawEllipse(leftMargin + buttonMargin, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(leftMargin + (buttonMargin*2), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(leftMargin + (buttonMargin*3), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-
-    // Extra buttons
-    getRenderer()->drawEllipse(startX + buttonMargin * 0.5, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedL3());
-    getRenderer()->drawEllipse(startX + buttonMargin * 1.0625, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedS1());
-    getRenderer()->drawEllipse(startX + buttonMargin * 1.625, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedA1());
-    getRenderer()->drawEllipse(startX + buttonMargin * 2.125+0.0625, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedS2());
-    getRenderer()->drawEllipse(startX + buttonMargin * 2.75, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedR3());
+    return {
+        {GP_ELEMENT_BUTTON,     {9,  18, 7, 7, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {25, 18, 7, 7, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {41, 18, 7, 7, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {57, 27, 7, 7, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {9,  34, 7, 7, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {25, 34, 7, 7, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {41, 34, 7, 7, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {57, 42, 7, 7, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {8,  46, 3, 3, 1, 0, GAMEPAD_MASK_L3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {17, 46, 3, 3, 1, 0, GAMEPAD_MASK_S1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {26, 46, 3, 3, 1, 0, GAMEPAD_MASK_A1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {34, 46, 3, 3, 1, 0, GAMEPAD_MASK_S2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {44, 46, 3, 3, 1, 0, GAMEPAD_MASK_R3,      GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawTwinStickA(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardStick()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// Stick
-	getRenderer()->drawEllipse(startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-
-	if (getGamepad()->pressedUp()) {
-		if (getGamepad()->pressedLeft()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
-		} else if (getGamepad()->pressedRight()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
-		} else {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 2), startY, buttonRadius, buttonRadius, 1, 1);
-		}
-	} else if (getGamepad()->pressedDown()) {
-		if (getGamepad()->pressedLeft()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 5), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
-		} else if (getGamepad()->pressedRight()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
-		} else {
-			getRenderer()->drawEllipse(startX + buttonMargin / 2, startY + buttonMargin, buttonRadius, buttonRadius, 1, 1);
-		}
-	} else if (getGamepad()->pressedLeft()) {
-		getRenderer()->drawEllipse(startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	} else if (getGamepad()->pressedRight()) {
-		getRenderer()->drawEllipse(startX + buttonMargin, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	} else {
-		getRenderer()->drawEllipse(startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	}
+    return {{GP_ELEMENT_LEVER, {27, 31, 10, 10, 1, 0, 0}}};
 }
 
-void ButtonLayoutScreen::drawTwinStickB(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardStickMirrored()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// Stick
-	getRenderer()->drawEllipse(startX + (buttonMargin / 2), startY + (buttonMargin / 2), buttonRadius * 1.25, buttonRadius * 1.25, 1, 0);
-
-	if (getGamepad()->pressedB4()) {
-		if (getGamepad()->pressedB3()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 5), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
-		} else if (getGamepad()->pressedB2()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + (buttonMargin / 5), buttonRadius, buttonRadius, 1, 1);
-		} else {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 2), startY, buttonRadius, buttonRadius, 1, 1);
-		}
-	} else if (getGamepad()->pressedB1()) {
-		if (getGamepad()->pressedB3()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin / 5), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
-		} else if (getGamepad()->pressedB2()) {
-			getRenderer()->drawEllipse(startX + (buttonMargin * 0.875), startY + (buttonMargin * 0.875), buttonRadius, buttonRadius, 1, 1);
-		} else {
-			getRenderer()->drawEllipse(startX + buttonMargin / 2, startY + buttonMargin, buttonRadius, buttonRadius, 1, 1);
-		}
-	} else if (getGamepad()->pressedB3()) {
-		getRenderer()->drawEllipse(startX, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	} else if (getGamepad()->pressedB2()) {
-		getRenderer()->drawEllipse(startX + buttonMargin, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	} else {
-		getRenderer()->drawEllipse(startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, buttonRadius, 1, 1);
-	}
+    return {
+        {GP_ELEMENT_LEVER,      {99, 31, 10, 10, 1, 0, 0}}
+    };
 }
 
-void ButtonLayoutScreen::drawMAMEA(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTwinStickA()
 {
-	const int buttonMargin = buttonPadding + buttonSize;
-
-	// MAME
-	getRenderer()->drawRectangle(startX, startY + buttonMargin, startX + buttonSize, startY + buttonSize + buttonMargin, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY + buttonMargin, startX + buttonSize + buttonMargin, startY + buttonSize + buttonMargin, 1, getGamepad()->pressedDown());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, getGamepad()->pressedUp());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, getGamepad()->pressedRight());
+    return {{GP_ELEMENT_LEVER, {17, 37, 10, 10, 1, 0, 0}}};
 }
 
-void ButtonLayoutScreen::drawOpenCore0WASDA(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTwinStickB()
 {
-	const int buttonMargin = buttonPadding + buttonSize;
-
-	// Open_Core0 WASD
-	getRenderer()->drawRectangle(startX, startY + buttonMargin, startX + buttonSize, startY + buttonSize + buttonMargin, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY + buttonMargin, startX + buttonSize + buttonMargin, startY + buttonSize + buttonMargin, 1, getGamepad()->pressedDown());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, getGamepad()->pressedUp());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, getGamepad()->pressedRight());
-
-	// Aux buttons
-    getRenderer()->drawEllipse(startX - 15 + buttonMargin * 0.5, startY - 25 + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedS2());
-    getRenderer()->drawEllipse(startX - 15 + buttonMargin * 1.25, startY - 25 + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedS1());
-    getRenderer()->drawEllipse(startX - 15 + buttonMargin * 2, startY -25 + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedA1());
-    getRenderer()->drawEllipse(startX - 15 + buttonMargin * 2.75, startY -25 + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedA2());
-    getRenderer()->drawEllipse(startX - 15 + buttonMargin * 3.5, startY -25 + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedL3());
-	getRenderer()->drawEllipse(startX - 15 + buttonMargin * 4.25, startY -25 + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedR3());
+    return {
+        {GP_ELEMENT_LEVER,      {109, 37, 10, 10, 1, 0}}
+    };
 }
 
-void ButtonLayoutScreen::drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAMEA()
 {
-	const int buttonMargin = buttonPadding + buttonSize;
-
-	// 6-button MAME Style
-	getRenderer()->drawRectangle(startX, startY, startX + buttonSize, startY + buttonSize, 1, getGamepad()->pressedB3());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, getGamepad()->pressedB4());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY, startX + buttonSize + buttonMargin * 2, startY + buttonSize, 1, getGamepad()->pressedR1());
-
-	getRenderer()->drawRectangle(startX, startY + buttonMargin, startX + buttonSize, startY + buttonMargin + buttonSize, 1, getGamepad()->pressedB1());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY + buttonMargin, startX + buttonSize + buttonMargin, startY + buttonMargin + buttonSize, 1, getGamepad()->pressedB2());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonMargin + buttonSize, 1, getGamepad()->pressedR2());
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {8,  37, 7, 7, 1, 0, GAMEPAD_MASK_LEFT,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {23, 24, 7, 7, 1, 0, GAMEPAD_MASK_UP,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {23, 50, 7, 7, 1, 0, GAMEPAD_MASK_DOWN,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {37, 37, 7, 7, 1, 0, GAMEPAD_MASK_RIGHT,   GP_BUTTON_ELLIPSE}}
+    };
 }
 
-void ButtonLayoutScreen::drawMAME8B(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawOpenCore0WASDA()
 {
-	const int buttonMargin = buttonPadding + buttonSize;
-
-	// 8-button MAME Style
-	getRenderer()->drawRectangle(startX, startY, startX + buttonSize, startY + buttonSize, 1, getGamepad()->pressedB3());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY - (buttonMargin / 3), startX + buttonSize + buttonMargin, startY - (buttonMargin / 3) + buttonSize, 1, getGamepad()->pressedB4());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY - (buttonMargin / 3), startX + buttonSize + buttonMargin * 2, startY - (buttonMargin / 3)+ buttonSize, 1, getGamepad()->pressedR1());
-	getRenderer()->drawRectangle(startX + buttonMargin * 3, startY, startX + buttonSize + buttonMargin * 3, startY + buttonSize, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawRectangle(startX, startY + buttonMargin, startX + buttonSize, startY + buttonMargin + buttonSize, 1, getGamepad()->pressedB1());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY - (buttonMargin / 3) + buttonMargin, startX + buttonSize + buttonMargin, startY - (buttonMargin / 3) + buttonMargin + buttonSize, 1, getGamepad()->pressedB2());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY - (buttonMargin / 3) + buttonMargin, startX + buttonSize + buttonMargin * 2, startY - (buttonMargin / 3) + buttonMargin + buttonSize, 1, getGamepad()->pressedR2());
-	getRenderer()->drawRectangle(startX + buttonMargin * 3, startY + buttonMargin, startX + buttonSize + buttonMargin * 3, startY + buttonMargin + buttonSize, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {16, 39, 26, 49, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {27, 39, 37, 49, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {27, 28, 37, 38, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {38, 39, 48, 49, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {6,  19,  3,  3, 1, 0, GAMEPAD_MASK_S1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {14, 19,  3,  3, 1, 0, GAMEPAD_MASK_S1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {23, 19,  3,  3, 1, 0, GAMEPAD_MASK_A1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {31, 19,  3,  3, 1, 0, GAMEPAD_MASK_A2,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {39, 19,  3,  3, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {47, 19,  3,  3, 1, 0, GAMEPAD_MASK_R3,    GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawOpenCore0WASDB(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAMEB()
 {
-	const int buttonMargin = buttonPadding + buttonSize;
-
-	// 8-button Open_Core0 WASD
-	getRenderer()->drawRectangle(startX, startY, startX + buttonSize, startY + buttonSize, 1, getGamepad()->pressedB3());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY - (buttonMargin / 3), startX + buttonSize + buttonMargin, startY - (buttonMargin / 3) + buttonSize, 1, getGamepad()->pressedB4());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY - (buttonMargin / 3), startX + buttonSize + buttonMargin * 2, startY - (buttonMargin / 3)+ buttonSize, 1, getGamepad()->pressedR1());
-	getRenderer()->drawRectangle(startX + buttonMargin * 3, startY, startX + buttonSize + buttonMargin * 3, startY + buttonSize, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawRectangle(startX, startY + buttonMargin, startX + buttonSize, startY + buttonMargin + buttonSize, 1, getGamepad()->pressedB1());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY - (buttonMargin / 3) + buttonMargin, startX + buttonSize + buttonMargin, startY - (buttonMargin / 3) + buttonMargin + buttonSize, 1, getGamepad()->pressedB2());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY - (buttonMargin / 3) + buttonMargin, startX + buttonSize + buttonMargin * 2, startY - (buttonMargin / 3) + buttonMargin + buttonSize, 1, getGamepad()->pressedR2());
-	getRenderer()->drawRectangle(startX + buttonMargin * 3, startY + buttonMargin, startX + buttonSize + buttonMargin * 3, startY + buttonMargin + buttonSize, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {68, 28, 78, 38, 1, 0, GAMEPAD_MASK_B3,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {79, 28, 89, 38, 1, 0, GAMEPAD_MASK_B4,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {90, 28, 100, 38, 1, 0, GAMEPAD_MASK_R1,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {68, 39, 78, 49, 1, 0, GAMEPAD_MASK_B1,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {79, 39, 89, 49, 1, 0, GAMEPAD_MASK_B2,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {90, 39, 100, 49, 1, 0, GAMEPAD_MASK_R2,   GP_BUTTON_SQUARE}},
+    };
 }
 
-void ButtonLayoutScreen::drawKeyboardAngled(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAME8B()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// MixBox
-	drawDiamond(startX, startY, buttonRadius, 1, getGamepad()->pressedLeft());
-	drawDiamond(startX + buttonMargin / 2, startY + buttonMargin / 2, buttonRadius, 1, getGamepad()->pressedDown());
-	drawDiamond(startX + buttonMargin, startY, buttonRadius, 1, getGamepad()->pressedUp());
-	drawDiamond(startX + buttonMargin, startY + buttonMargin, buttonRadius, 1, getGamepad()->pressedRight());
+    return {
+        {GP_ELEMENT_BUTTON,     {68, 28, 78, 38, 1, 0, GAMEPAD_MASK_B3,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {79, 25, 89, 35, 1, 0, GAMEPAD_MASK_B4,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {90, 25, 100, 35, 1, 0, GAMEPAD_MASK_R1,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {101,28, 111, 38, 1, 0, GAMEPAD_MASK_L1,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {68, 39, 78, 49, 1, 0, GAMEPAD_MASK_B1,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {79, 36, 89, 46, 1, 0, GAMEPAD_MASK_B2,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {90, 36, 100, 46, 1, 0, GAMEPAD_MASK_R2,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {101,39, 111, 49, 1, 0, GAMEPAD_MASK_L2,  GP_BUTTON_SQUARE}},
+    };
 }
 
-void ButtonLayoutScreen::drawVewlix(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawOpenCore0WASDB()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button Vewlix
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75) - (buttonMargin / 3), startY + buttonMargin + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {68, 28, 78, 38, 1, 0, GAMEPAD_MASK_B3,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {79, 25, 89, 35, 1, 0, GAMEPAD_MASK_B4,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {90, 25, 100, 35, 1, 0, GAMEPAD_MASK_R1,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {101,28, 111, 38, 1, 0, GAMEPAD_MASK_L1,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {68, 39, 78, 49, 1, 0, GAMEPAD_MASK_B1,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {79, 36, 89, 46, 1, 0, GAMEPAD_MASK_B2,   GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {90, 36, 100, 46, 1, 0, GAMEPAD_MASK_R2,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {101,39, 111, 49, 1, 0, GAMEPAD_MASK_L2,  GP_BUTTON_SQUARE}},
+    };
 }
 
-void ButtonLayoutScreen::drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawKeyboardAngled()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-    
-	// 9-button Hori VLX
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-    
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75) - (buttonMargin / 3), startY + buttonMargin + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
-    
-	getRenderer()->drawEllipse(startX + (buttonMargin * 7.4) - (buttonMargin / 3.5), startY + buttonMargin - (buttonMargin / 1.5), buttonRadius *.8, buttonRadius * .8, 1, getGamepad()->pressedS2());
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {8,  37, 7, 7, 1, 0, GAMEPAD_MASK_LEFT,    GP_BUTTON_DIAMOND}},
+        {GP_ELEMENT_DIR_BUTTON, {23, 24, 7, 7, 1, 0, GAMEPAD_MASK_UP,      GP_BUTTON_DIAMOND}},
+        {GP_ELEMENT_DIR_BUTTON, {23, 50, 7, 7, 1, 0, GAMEPAD_MASK_DOWN,    GP_BUTTON_DIAMOND}},
+        {GP_ELEMENT_DIR_BUTTON, {37, 37, 7, 7, 1, 0, GAMEPAD_MASK_RIGHT,   GP_BUTTON_DIAMOND}}
+    };
 }
 
-void ButtonLayoutScreen::drawFightboard(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVewlix()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	getRenderer()->drawEllipse((startX + buttonMargin * 3.625), startY * 1.25, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse((startX + buttonMargin * 4.625), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse((startX + buttonMargin * 5.625), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse((startX + buttonMargin * 6.625), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse((startX + buttonMargin * 3.625), startY + buttonMargin * 1.25, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse((startX + buttonMargin * 4.625), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse((startX + buttonMargin * 5.625), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse((startX + buttonMargin * 6.625), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
-
-    // Extra buttons
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.5, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedL3());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.0625, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedS1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.625, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedA1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 6.125+0.0625, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedS2());
-	getRenderer()->drawEllipse(startX + buttonMargin * 6.75, startY + (buttonMargin * 1.5), 3, 3, 1, getGamepad()->pressedR3());
+    return {
+        {GP_ELEMENT_BUTTON,     {57, 31, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {75, 24, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 24, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {111,24, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {51, 49, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {69, 42, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {87, 42, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {105,42, 8, 8, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawVewlix7(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVLXB()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button Vewlix
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75) - (buttonMargin / 3), startY + buttonMargin + (buttonMargin * 0.2), buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	//getRenderer()->drawEllipse(startX + (buttonMargin * 5.75) - (buttonMargin / 3), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, gamepad->getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {50, 31, 7, 7, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {66, 24, 7, 7, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {82, 24, 7, 7, 1, 0, GAMEPAD_MASK_R1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {98, 24, 7, 7, 1, 0, GAMEPAD_MASK_L1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {45, 47, 7, 7, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {61, 40, 7, 7, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {77, 40, 7, 7, 1, 0, GAMEPAD_MASK_R2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 40, 7, 7, 1, 0, GAMEPAD_MASK_L2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {119,33, 5, 5, 1, 0, GAMEPAD_MASK_S2,     GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawSega2p(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboard()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button Sega2P
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + (buttonMargin / 3), buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + buttonMargin + (buttonMargin / 3), buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {69, 27, 7, 7, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {86, 18, 7, 7, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {103,18, 7, 7, 1, 0, GAMEPAD_MASK_R1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {120,18, 7, 7, 1, 0, GAMEPAD_MASK_L1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {69, 43, 7, 7, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {86, 35, 7, 7, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {103,35, 7, 7, 1, 0, GAMEPAD_MASK_R2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {120,35, 7, 7, 1, 0, GAMEPAD_MASK_L2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {84, 47, 3, 3, 1, 0, GAMEPAD_MASK_L3,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {94, 47, 3, 3, 1, 0, GAMEPAD_MASK_S1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {103,47, 3, 3, 1, 0, GAMEPAD_MASK_A1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {112,47, 3, 3, 1, 0, GAMEPAD_MASK_S2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {122,47, 3, 3, 1, 0, GAMEPAD_MASK_R3,     GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawNoir8(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVewlix7()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button Noir8
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + (buttonMargin / 3.5), buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + buttonMargin + (buttonMargin / 3.5), buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {57, 31, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {75, 24, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 24, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {111,24, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {51, 49, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {69, 42, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {87, 42, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawCapcom(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSega2p()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button Capcom
-	getRenderer()->drawEllipse(startX + buttonMargin * 3.25, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.25, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.25, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 6.25, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + buttonMargin * 3.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + buttonMargin * 6.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {57, 34, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {75, 24, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 24, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {111,28, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {57, 52, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {75, 42, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 42, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {111,46, 8, 8, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawCapcom6(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawNoir8()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 6-button Capcom
-	getRenderer()->drawEllipse(startX + buttonMargin * 3.25, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.25, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.25, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-
-	getRenderer()->drawEllipse(startX + buttonMargin * 3.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
+    return {
+        {GP_ELEMENT_BUTTON,     {57, 33, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {75, 24, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 24, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {111,28, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {57, 51, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {75, 42, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 42, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {111,46, 8, 8, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawSticklessButtons(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawCapcom()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {64, 28, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {82, 28, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {100,28, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {118,28, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {64, 46, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {82, 46, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {100,46, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {118,46, 8, 8, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawCapcom6()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button
-	getRenderer()->drawEllipse(startX + buttonMargin * 3.625, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.625, startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.625, startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 6.625, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + buttonMargin * 3.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.25, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.25, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + buttonMargin * 6.25, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {74, 28, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {92, 28, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {110,28, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {74, 46, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {92, 46, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {110,46, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button
-	getRenderer()->drawEllipse(startX + buttonMargin * 3.125, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.125, startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.125, startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 6.125, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + buttonMargin * 2.875, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + buttonMargin * 3.875, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + buttonMargin * 4.875, startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + buttonMargin * 5.875, startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {57, 20,  8,  8, 1, 0, GAMEPAD_MASK_B3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {75, 16,  8,  8, 1, 0, GAMEPAD_MASK_B4,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 16,  8,  8, 1, 0, GAMEPAD_MASK_R1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {111,20,  8,  8, 1, 0, GAMEPAD_MASK_L1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {57, 38,  8,  8, 1, 0, GAMEPAD_MASK_B1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {75, 34,  8,  8, 1, 0, GAMEPAD_MASK_B2,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 34,  8,  8, 1, 0, GAMEPAD_MASK_R2,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {111,38,  8,  8, 1, 0, GAMEPAD_MASK_L2,    GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawStickless13A(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawWasdButtons()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 1.5), startY - (buttonMargin / 1.25), buttonRadius, buttonRadius, 1, getGamepad()->pressedUp());
-	getRenderer()->drawEllipse(startX, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawEllipse(startX + buttonMargin, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedDown());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 1.875), startY + (buttonMargin / 2), buttonRadius, buttonRadius, 1, getGamepad()->pressedRight());
-	getRenderer()->drawEllipse(startX + (buttonMargin * (isInputHistoryEnabled ? 1.875 : 2.25)), startY + buttonMargin * (isInputHistoryEnabled ? 1.5 : 1.875), buttonRadius, buttonRadius, 1, getGamepad()->pressedUp());
-
-	// Aux buttons
-    getRenderer()->drawEllipse(startX + 40 + buttonMargin * 0.5, startY - 35 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedL3());
-    getRenderer()->drawEllipse(startX + 40 + buttonMargin * 1, startY - 35 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedR3());
-    getRenderer()->drawEllipse(startX + 40 + buttonMargin * 1.5, startY -35 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedA2());
-    getRenderer()->drawEllipse(startX + 40 + buttonMargin * 2, startY -35 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedA1());
-    getRenderer()->drawEllipse(startX + 40 + buttonMargin * 2.5, startY -35 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedS1());
-	getRenderer()->drawEllipse(startX + 40 + buttonMargin * 3, startY -35 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedS2());
+    return {
+        {GP_ELEMENT_BUTTON,     {69, 28, 7, 7, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {86, 24, 7, 7, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {103,24, 7, 7, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {120,28, 7, 7, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {63, 45, 7, 7, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {80, 41, 7, 7, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {97, 41, 7, 7, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {114,45, 7, 7, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawSticklessButtons13B(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawArcadeButtons()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {64, 28,  8,  8, 1, 0, GAMEPAD_MASK_B3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {82, 24,  8,  8, 1, 0, GAMEPAD_MASK_B4,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {100,24,  8,  8, 1, 0, GAMEPAD_MASK_R1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {118,28,  8,  8, 1, 0, GAMEPAD_MASK_L1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {59, 46,  8,  8, 1, 0, GAMEPAD_MASK_B1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {77, 42,  8,  8, 1, 0, GAMEPAD_MASK_B2,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {95, 42,  8,  8, 1, 0, GAMEPAD_MASK_R2,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {113,46,  8,  8, 1, 0, GAMEPAD_MASK_L2,    GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawStickless16A(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless13A()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 1.5), startY - (buttonMargin / 1.25), buttonRadius, buttonRadius, 1, getGamepad()->pressedUp());
-	getRenderer()->drawEllipse(startX, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawEllipse(startX + buttonMargin, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedDown());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 1.875), startY + (buttonMargin / 2), buttonRadius, buttonRadius, 1, getGamepad()->pressedRight());
-	getRenderer()->drawEllipse(startX + (buttonMargin * (isInputHistoryEnabled ? 1.85 : 2)), startY + buttonMargin * (isInputHistoryEnabled ? 1.85 : 2), buttonRadius, buttonRadius, 1, getGamepad()->pressedUp());
-
-	// Aux buttons
-	getRenderer()->drawEllipse(startX + 32, startY - 10, buttonRadius, buttonRadius, 1, getGamepad()->pressedL3());
-    getRenderer()->drawEllipse(startX + (buttonMargin * (isInputHistoryEnabled ? 0.50 : 1)), startY + buttonMargin * (isInputHistoryEnabled ? 1.75 : 1.875), buttonRadius, buttonRadius, 1, getGamepad()->pressedL3());
-    getRenderer()->drawEllipse(startX + 34, startY + 18, buttonRadius, buttonRadius, 1, getGamepad()->pressedR3());
-    getRenderer()->drawEllipse(startX + 30 + buttonMargin * 1.5, startY -27 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedA2());
-    getRenderer()->drawEllipse(startX + 30 + buttonMargin * 2, startY -27 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedA1());
-    getRenderer()->drawEllipse(startX + 30 + buttonMargin * 2.5, startY -27 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedS1());
-	getRenderer()->drawEllipse(startX + 30 + buttonMargin * 3, startY -27 + (buttonMargin * 1.5), 2, 2, 1, getGamepad()->pressedS2());
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {39, 15,  6,  6, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {18, 27,  6,  6, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {32, 27,  6,  6, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {44, 34,  6,  6, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {49, 53,  6,  6, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {65, 13,  2,  2, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {72, 13,  2,  2, 1, 0, GAMEPAD_MASK_R3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {79, 13,  2,  2, 1, 0, GAMEPAD_MASK_A2,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {86, 13,  2,  2, 1, 0, GAMEPAD_MASK_A1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {93, 13,  2,  2, 1, 0, GAMEPAD_MASK_S1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {100, 13, 2,  2, 1, 0, GAMEPAD_MASK_S2,    GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawSticklessButtons16B(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons13B()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {56, 27, 6, 6, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {70, 24, 6, 6, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {84, 24, 6, 6, 1, 0, GAMEPAD_MASK_R1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {98, 27, 6, 6, 1, 0, GAMEPAD_MASK_L1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {56, 41, 6, 6, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {70, 38, 6, 6, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {84, 38, 6, 6, 1, 0, GAMEPAD_MASK_R2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {98, 41, 6, 6, 1, 0, GAMEPAD_MASK_L2,     GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawStickless14A(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless16A()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	getRenderer()->drawEllipse(startX, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawEllipse(startX + buttonMargin, startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedDown());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 1.875), startY + (buttonMargin / 2), buttonRadius, buttonRadius, 1, getGamepad()->pressedRight());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.25), startY + buttonMargin * 1.875, buttonRadius, buttonRadius, 1, getGamepad()->pressedUp());
-
-	// Aux buttons
-	getRenderer()->drawEllipse(startX - buttonMargin, startY + 2, buttonRadius, buttonRadius, 1, getGamepad()->pressedL3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75) - 2, startY + buttonMargin * 1.875, buttonRadius, buttonRadius, 1, getGamepad()->pressedR3());
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {47, 19,  4,  4, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {32, 27,  4,  4, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {42, 27,  4,  4, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {50, 32,  4,  4, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {52, 47,  4,  4, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {64, 17,  4,  4, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {42, 45,  4,  4, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {66, 45,  4,  4, 1, 0, GAMEPAD_MASK_R3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {77, 15,  2,  2, 1, 0, GAMEPAD_MASK_A2,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {82, 15,  2,  2, 1, 0, GAMEPAD_MASK_A1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {87, 15,  2,  2, 1, 0, GAMEPAD_MASK_S1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {92, 15,  2,  2, 1, 0, GAMEPAD_MASK_S2,    GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawSticklessButtons14B(int startX, int startY, int buttonRadius, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons16B()
 {
-	const int buttonMargin = buttonPadding + (buttonRadius * 2);
-
-	// 8-button
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedB3());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB4());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY, buttonRadius, buttonRadius, 1, getGamepad()->pressedL1());
-
-	getRenderer()->drawEllipse(startX + (buttonMargin * 2.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedB1());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 3.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedB2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 4.75), startY + buttonMargin - (buttonMargin / 4), buttonRadius, buttonRadius, 1, getGamepad()->pressedR2());
-	getRenderer()->drawEllipse(startX + (buttonMargin * 5.75), startY + buttonMargin, buttonRadius, buttonRadius, 1, getGamepad()->pressedL2());
+    return {
+        {GP_ELEMENT_BUTTON,     {59, 27, 4, 4, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {69, 25, 4, 4, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {79, 25, 4, 4, 1, 0, GAMEPAD_MASK_R1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {89, 27, 4, 4, 1, 0, GAMEPAD_MASK_L1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {59, 37, 4, 4, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {69, 35, 4, 4, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {79, 35, 4, 4, 1, 0, GAMEPAD_MASK_R2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {89, 37, 4, 4, 1, 0, GAMEPAD_MASK_L2,     GP_BUTTON_ELLIPSE}},
+    };
 }
 
-// I pulled this out of my PR, brought it back because of recent talks re: SOCD and rhythm games
-// Enjoy!
-
-void ButtonLayoutScreen::drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless14A()
 {
-	const int buttonMargin = buttonPadding + buttonSize;
-
-	getRenderer()->drawRectangle(startX, startY + buttonMargin, startX + buttonSize, startY + buttonSize + buttonMargin, 1, getGamepad()->pressedLeft());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY + buttonMargin * 2, startX + buttonSize + buttonMargin, startY + buttonSize + buttonMargin * 2, 1, getGamepad()->pressedDown());
-	getRenderer()->drawRectangle(startX + buttonMargin, startY, startX + buttonSize + buttonMargin, startY + buttonSize, 1, getGamepad()->pressedUp());
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY + buttonMargin, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin, 1, getGamepad()->pressedRight());
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {26, 20,  7,  7, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {42, 20,  7,  7, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {56, 28,  7,  7, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_DIR_BUTTON, {62, 50,  7,  7, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {10, 22,  7,  7, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {84, 50,  7,  7, 1, 0, GAMEPAD_MASK_R3,    GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons14B()
 {
-	const int buttonMargin = buttonPadding + buttonSize;
-
-	getRenderer()->drawRectangle(startX, startY, startX + buttonSize, startY + buttonSize, 1, getGamepad()->pressedB2()); // Up/Left
-	getRenderer()->drawRectangle(startX, startY + buttonMargin * 2, startX + buttonSize, startY + buttonSize + buttonMargin * 2, 1, getGamepad()->pressedB4()); // Down/Left
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY, startX + buttonSize + buttonMargin * 2, startY + buttonSize, 1, getGamepad()->pressedB1()); // Up/Right
-	getRenderer()->drawRectangle(startX + buttonMargin * 2, startY + buttonMargin * 2, startX + buttonSize + buttonMargin * 2, startY + buttonSize + buttonMargin * 2, 1, getGamepad()->pressedB3()); // Down/Right
+    return {
+        {GP_ELEMENT_BUTTON,     {70, 20, 7, 7, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {86, 16, 7, 7, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {102, 16, 7, 7, 1, 0, GAMEPAD_MASK_R1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {118, 20, 7, 7, 1, 0, GAMEPAD_MASK_L1,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {70, 36, 7, 7, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {86, 32, 7, 7, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {102, 32, 7, 7, 1, 0, GAMEPAD_MASK_R2,    GP_BUTTON_ELLIPSE}},
+        {GP_ELEMENT_BUTTON,     {118, 36, 7, 7, 1, 0, GAMEPAD_MASK_L2,    GP_BUTTON_ELLIPSE}},
+    };
 }
 
-void ButtonLayoutScreen::drawBlankA(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadA()
 {
+    return {
+        {GP_ELEMENT_DIR_BUTTON, {39, 29, 54, 44, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {56, 46, 71, 61, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {56, 12, 71, 27, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_DIR_BUTTON, {73, 29, 88, 44, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_SQUARE}}
+    };
 }
 
-void ButtonLayoutScreen::drawBlankB(int startX, int startY, int buttonSize, int buttonPadding)
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadB()
 {
+    return {
+        {GP_ELEMENT_BUTTON,     {39, 12, 54, 27, 1, 0, GAMEPAD_MASK_B2,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {39, 46, 54, 61, 1, 0, GAMEPAD_MASK_B4,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {73, 12, 88, 27, 1, 0, GAMEPAD_MASK_B1,    GP_BUTTON_SQUARE}},
+        {GP_ELEMENT_BUTTON,     {73, 46, 88, 61, 1, 0, GAMEPAD_MASK_B3,    GP_BUTTON_SQUARE}},
+    };
 }
 
-void ButtonLayoutScreen::drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBlankA()
+{
+    return {};
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBlankB()
+{
+    return {};
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBoardDefinedA() {
+#ifdef DEFAULT_BOARD_LAYOUT_A
+    return DEFAULT_BOARD_LAYOUT_A;
+#else
+    return drawBlankA();
+#endif
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBoardDefinedB() {
+#ifdef DEFAULT_BOARD_LAYOUT_B
+    return DEFAULT_BOARD_LAYOUT_B;
+#else
+    return drawBlankA();
+#endif
+}
+
+
+GPLever* ButtonLayoutScreen::drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
     GPLever* lever = new GPLever();
     lever->setRenderer(getRenderer());
     
@@ -875,7 +509,7 @@ void ButtonLayoutScreen::drawLever(uint16_t startX, uint16_t startY, uint16_t si
     lever->setRadius(sizeX);
     lever->setInputType(inputType);
 
-    addElement(lever);
+    return (GPLever*)addElement(lever);
 }
 
 GPButton* ButtonLayoutScreen::drawButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask) {
@@ -891,35 +525,19 @@ GPButton* ButtonLayoutScreen::drawButton(uint16_t startX, uint16_t startY, uint1
     return (GPButton*)addElement(button);
 }
 
-void ButtonLayoutScreen::drawElement(GPButtonLayout element) {
+GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
     if (element.elementType == GP_ELEMENT_LEVER) {
-        drawLever(element.parameters[0], element.parameters[1], element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5], element.parameters[6]);
+        return drawLever(element.parameters[0], element.parameters[1], element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5], element.parameters[6]);
     } else if (element.elementType == GP_ELEMENT_BUTTON) {
-        drawButton(element.parameters[0], element.parameters[1], element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5], element.parameters[6])
+        return drawButton(element.parameters[0], element.parameters[1], element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5], element.parameters[6])
             ->setInputDirection(false)
-            ->setShape(element.parameters[7])
-            ;
+            ->setShape((GPButton_Shape)element.parameters[7]);
     } else if (element.elementType == GP_ELEMENT_DIR_BUTTON) {
-        drawButton(element.parameters[0], element.parameters[1], element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5], element.parameters[6])
+        return drawButton(element.parameters[0], element.parameters[1], element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5], element.parameters[6])
             ->setInputDirection(true)
-            ->setShape(element.parameters[7])
-            ;
-    } else if ((element.elementType == GP_ELEMENT_LEFT_LAYOUT) || (element.elementType == GP_ELEMENT_RIGHT_LAYOUT)) {
-        const DisplayOptions& options = getDisplayOptions();
-        ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
-        uint16_t elementCtr = 0;
-        if (element.elementType == GP_ELEMENT_LEFT_LAYOUT) {
-            std::vector<GPButtonLayout> currLayoutLeft = GPButtonLayouts_AllLayouts.at(buttonLayoutCustomOptions.paramsLeft.layout);
-            for (elementCtr = 0; elementCtr < currLayoutLeft.size(); elementCtr++) {
-                drawElement(currLayoutLeft[elementCtr]);
-            }
-        } else if (element.elementType == GP_ELEMENT_RIGHT_LAYOUT) {
-            std::vector<GPButtonLayout> currLayoutRight = GPButtonLayouts_AllLayouts.at(_ButtonLayout_ARRAYSIZE+buttonLayoutCustomOptions.paramsRight.layout);
-            for (elementCtr = 0; elementCtr < currLayoutRight.size(); elementCtr++) {
-                drawElement(currLayoutRight[elementCtr]);
-            }
-        }
+            ->setShape((GPButton_Shape)element.parameters[7]);
     }
+    return NULL;
 }
 
 int8_t ButtonLayoutScreen::update() {
@@ -928,12 +546,11 @@ int8_t ButtonLayoutScreen::update() {
 
     if (!hasInitialized) {
         // load layout
-        //uint16_t layoutLeft = getDisplayOptions().buttonLayout;
         uint16_t elementCtr = 0;
-        uint16_t layoutLeft = 12;
-        uint16_t layoutRight = _ButtonLayout_ARRAYSIZE+16;
-        std::vector<GPButtonLayout> currLayoutLeft = GPButtonLayouts_AllLayouts.at(layoutLeft);
-        std::vector<GPButtonLayout> currLayoutRight = GPButtonLayouts_AllLayouts.at(layoutRight);
+        uint16_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
+        uint16_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
+        LayoutList currLayoutLeft = GPButtonLayouts_LeftLayouts.at(layoutLeft)();
+        LayoutList currLayoutRight = GPButtonLayouts_RightLayouts.at(layoutRight)();
         for (elementCtr = 0; elementCtr < currLayoutLeft.size(); elementCtr++) {
             drawElement(currLayoutLeft[elementCtr]);
         }

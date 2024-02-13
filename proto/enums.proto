@@ -23,6 +23,7 @@ enum ButtonLayout
     BUTTON_LAYOUT_STICKLESS_13 = 14;
     BUTTON_LAYOUT_STICKLESS_16 = 15;
     BUTTON_LAYOUT_STICKLESS_14 = 16;
+    BUTTON_LAYOUT_BOARD_DEFINED_A = 17;
 }
 
 enum ButtonLayoutRight
@@ -51,6 +52,7 @@ enum ButtonLayoutRight
     BUTTON_LAYOUT_STICKLESS_13B = 19;
     BUTTON_LAYOUT_STICKLESS_16B = 20;
     BUTTON_LAYOUT_STICKLESS_14B = 21;
+    BUTTON_LAYOUT_BOARD_DEFINED_B = 22;
 }
 
 enum SplashMode
@@ -270,4 +272,27 @@ enum MacroType
     ON_PRESS = 1;
     ON_HOLD_REPEAT = 2;
     ON_TOGGLE = 3;
+};
+
+enum GPElement
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GP_ELEMENT_WIDGET = 0;
+    GP_ELEMENT_SCREEN = 1;
+    GP_ELEMENT_BUTTON = 2;
+    GP_ELEMENT_DIR_BUTTON = 3;
+    GP_ELEMENT_LEVER = 4;
+    GP_ELEMENT_LABEL = 5;
+    GP_ELEMENT_SPRITE = 6;
+};
+
+enum GPButton_Shape
+{
+    option (nanopb_enumopt).long_names = false;
+    
+    GP_BUTTON_ELLIPSE = 0;
+    GP_BUTTON_SQUARE = 1;
+    GP_BUTTON_DIAMOND = 2;
+    GP_BUTTON_POLYGON = 3;
 };

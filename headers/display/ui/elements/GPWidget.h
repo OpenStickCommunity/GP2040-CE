@@ -18,6 +18,9 @@ class GPWidget : public GPGFX_UI {
 
         void setID(uint16_t id) { this->_ID = id; }
         uint16_t getID() { return this->_ID; }
+        
+        void setPriority(uint16_t priority) { this->_priority = priority; }
+        uint16_t getPriority() { return this->_priority; }
     protected:
         uint16_t x = 0;
         uint16_t y = 0;
@@ -25,6 +28,7 @@ class GPWidget : public GPGFX_UI {
         uint16_t strokeColor = 0;
         uint16_t fillColor = 0;
         uint16_t _ID;
+        uint16_t _priority = 0;
 };
 
 #endif
