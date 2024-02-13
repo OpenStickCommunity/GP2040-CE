@@ -24,7 +24,7 @@ void DisplayAddon::setup() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
 	PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 
-	stdio_init_all();
+	//stdio_init_all();
 
 	gpDisplay = new GPGFX();
 
