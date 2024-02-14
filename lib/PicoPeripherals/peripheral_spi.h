@@ -5,6 +5,47 @@
 #include <hardware/spi.h>
 #include <hardware/platform_defs.h>
 
+
+#ifndef SPI0_ENABLED
+#define SPI0_ENABLED 0
+#endif
+
+#ifndef SPI0_RX
+#define SPI0_RX -1
+#endif
+
+#ifndef SPI0_CS
+#define SPI0_CS -1
+#endif
+
+#ifndef SPI0_SCK
+#define SPI0_SCK -1
+#endif
+
+#ifndef SPI0_TX
+#define SPI0_TX -1
+#endif
+
+#ifndef SPI1_ENABLED
+#define SPI1_ENABLED 0
+#endif
+
+#ifndef SPI1_RX
+#define SPI1_RX -1
+#endif
+
+#ifndef SPI1_CS
+#define SPI1_CS -1
+#endif
+
+#ifndef SPI1_SCK
+#define SPI1_SCK -1
+#endif
+
+#ifndef SPI1_TX
+#define SPI1_TX -1
+#endif
+
 class PeripheralSPI {
 public:
     PeripheralSPI();

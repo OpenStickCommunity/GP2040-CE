@@ -7,6 +7,38 @@
 
 //#define DEBUG_PERIPHERALI2C
 
+#ifndef I2C0_ENABLED
+#define I2C0_ENABLED 0
+#endif
+
+#ifndef I2C0_SDA
+#define I2C0_SDA -1
+#endif
+
+#ifndef I2C0_SCL
+#define I2C0_SCL -1
+#endif
+
+#ifndef I2C0_SPEED
+#define I2C0_SPEED 100000
+#endif
+
+#ifndef I2C1_ENABLED
+#define I2C1_ENABLED 0
+#endif
+
+#ifndef I2C1_SDA
+#define I2C1_SDA -1
+#endif
+
+#ifndef I2C1_SCL
+#define I2C1_SCL -1
+#endif
+
+#ifndef I2C1_SPEED
+#define I2C1_SPEED 100000
+#endif
+
 class PeripheralI2C {
 public:
     PeripheralI2C();

@@ -9,12 +9,12 @@
 #include <map>
 #include <string>
 #include <hardware/i2c.h>
+#include "BoardConfig.h"
 #include "GPGFX.h"
 #include "GPGFX_UI.h"
 #include "GPGFX_UI_types.h"
 #include "GPGFX_UI_screens.h"
 #include "GPGFX_UI_widgets.h"
-#include "BoardConfig.h"
 #include "gpaddon.h"
 #include "gamepad.h"
 #include "storagemanager.h"
@@ -39,8 +39,8 @@
 #define I2C_SCL_PIN -1
 #endif
 
-#ifndef I2C_BLOCK
-#define I2C_BLOCK i2c0
+#ifndef DISPLAY_I2C_BLOCK
+#define DISPLAY_I2C_BLOCK i2c0
 #endif
 
 #ifndef I2C_SPEED
