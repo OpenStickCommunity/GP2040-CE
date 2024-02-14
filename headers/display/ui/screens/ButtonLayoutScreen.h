@@ -6,6 +6,7 @@
 #include <string>
 #include <deque>
 #include <array>
+#include <functional>
 #include "GPGFX_UI_widgets.h"
 #include "GPGFX_UI_layouts.h"
 
