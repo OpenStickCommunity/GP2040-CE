@@ -21,7 +21,6 @@
 #include "peripheralmanager.h"
 #include "peripheral_i2c.h"
 #include "peripheral_spi.h"
-#include "addons/inputhistory.h"
 
 #ifndef HAS_I2C_DISPLAY
 #define HAS_I2C_DISPLAY -1
@@ -89,6 +88,22 @@
 
 #ifndef DISPLAY_TURN_OFF_WHEN_SUSPENDED
 #define DISPLAY_TURN_OFF_WHEN_SUSPENDED 0
+#endif
+
+#ifndef INPUT_HISTORY_ENABLED
+#define INPUT_HISTORY_ENABLED 0
+#endif
+
+#ifndef INPUT_HISTORY_LENGTH
+#define INPUT_HISTORY_LENGTH 21
+#endif
+
+#ifndef INPUT_HISTORY_COL
+#define INPUT_HISTORY_COL 0
+#endif
+
+#ifndef INPUT_HISTORY_ROW
+#define INPUT_HISTORY_ROW 7
 #endif
 
 #ifndef DEFAULT_SPLASH
@@ -171,10 +186,8 @@ public:
 	virtual void preprocess() {}
 	virtual void process();
 	virtual std::string name() { return DisplayName; }
-	virtual void attachInputHistoryAddon(InputHistoryAddon*);
 private:
 	void drawStatusBar(Gamepad*);
-	void drawText(int startX, int startY, std::string text);
 	void initMenu(char**);
 	bool pressedUp();
 	bool pressedDown();
@@ -204,8 +217,6 @@ private:
 
 	DisplayMode currDisplayMode;
 	bool turnOffWhenSuspended;
-	bool isInputHistoryEnabled;
-	InputHistoryAddon* inputHistoryAddon;
 };
 
 #endif

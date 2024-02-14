@@ -24,7 +24,7 @@ void DisplayAddon::setup() {
 	const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
 	PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 
-	//stdio_init_all();
+	stdio_init_all();
 
 	gpDisplay = new GPGFX();
 
@@ -56,9 +56,6 @@ void DisplayAddon::setup() {
 	displaySaverTimeout = displaySaverTimer;
 	configMode = Storage::getInstance().GetConfigMode();
 	turnOffWhenSuspended = options.turnOffWhenSuspended;
-
-	const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
-	isInputHistoryEnabled = inputHistoryOptions.enabled;
 
     // set current display mode
     if (!configMode) {
@@ -112,11 +109,6 @@ void DisplayAddon::process() {
 
     drawStatusBar(gamepad);
 
-    if(isInputHistoryEnabled && inputHistoryAddon != nullptr) {
-        //inputHistoryAddon->drawHistory(gpDisplay);
-        gpScreen->footer = inputHistoryAddon->getHistory().c_str();
-    }
-
     int8_t screenReturn = gpScreen->update();
 
     gpScreen->draw();
@@ -141,10 +133,6 @@ void DisplayAddon::process() {
 const DisplayOptions& DisplayAddon::getDisplayOptions() {
 	bool configMode = Storage::getInstance().GetConfigMode();
 	return configMode ? Storage::getInstance().getPreviewDisplayOptions() : Storage::getInstance().getDisplayOptions();
-}
-
-void DisplayAddon::drawText(int x, int y, std::string text) {
-	gpDisplay->drawText(x, y, text);
 }
 
 void DisplayAddon::drawStatusBar(Gamepad * gamepad)
@@ -211,8 +199,4 @@ void DisplayAddon::drawStatusBar(Gamepad * gamepad)
 		statusBar += " M";
 
 	gpScreen->header = statusBar;
-}
-
-void DisplayAddon::attachInputHistoryAddon(InputHistoryAddon* pInputHistoryAddon) {
-	inputHistoryAddon = pInputHistoryAddon;
 }

@@ -211,7 +211,6 @@ src/addons/slider_socd.cpp
 src/addons/wiiext.cpp
 src/addons/input_macro.cpp
 src/addons/snes_input.cpp
-src/addons/inputhistory.cpp
 src/addons/tilt.cpp
 src/addons/xbonepassthrough.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
