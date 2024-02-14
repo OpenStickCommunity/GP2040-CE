@@ -574,7 +574,7 @@ int8_t ButtonLayoutScreen::update() {
     }
 
     // main logic loop
-    processInputHistory();
+    if (isInputHistoryEnabled) processInputHistory();
 
     // check for exit/screen change
     if (!configMode) {
