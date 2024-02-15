@@ -18,7 +18,7 @@ using namespace std;
 	Gamepad button mapping table:
 
 	+--------+--------+---------+----------+----------+--------+
-	| GP2040 | XInput | Switch  | PS3      | DInput   | Arcade |
+	| GP2040 | XInput | Switch  | PS3      | USB HID  | Arcade |
 	+--------+--------+---------+----------|----------+--------+
 	| B1     | A      | B       | Cross    | 2        | K1     |
 	| B2     | B      | A       | Circle   | 3        | K2     |

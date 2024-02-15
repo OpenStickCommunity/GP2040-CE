@@ -138,7 +138,7 @@ export const BUTTONS = {
 		Fn: 'Function',
 	},
 	dinput: {
-		label: 'DirectInput',
+		label: 'USB HID',
 		value: 'dinput',
 		Up: 'Up',
 		Down: 'Down',
