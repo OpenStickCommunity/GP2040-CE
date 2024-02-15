@@ -28,6 +28,7 @@
 #include "addons/pspassthrough.h"
 #include "addons/reverse.h"
 #include "addons/slider_socd.h"
+#include "addons/spi_analog_ads1256.h"
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
@@ -570,7 +571,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, i2cAddress, I2C_ANALOG1219_ADDRESS);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, deprecatedI2cSpeed, I2C_ANALOG1219_SPEED);
 
-    // addonOptions.dualDirectionalOptions
+    // addonOptions.analogADS1256Options
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, enabled, !!SPI_ANALOG1256_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, spiBlock, (SPI_ANALOG1256_BLOCK == spi0) ? 0 : 1)
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, csPin, SPI_ANALOG1256_CS_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, drdyPin, SPI_ANALOG1256_DRDY_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, resetPin, SPI_ANALOG1256_RESET_PIN);
+
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, deprecatedUpPin, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, deprecatedDownPin, (Pin_t)-1)
