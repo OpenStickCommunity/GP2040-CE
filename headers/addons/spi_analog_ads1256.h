@@ -49,8 +49,13 @@ public:
 	virtual void process();     // Analog Process
     virtual std::string name() { return SPIAnalog1256Name; }
 private:
+    uint8_t convert24to8bit(uint32_t value, float maxValue);
+    uint16_t convert24to16bit(uint32_t value, float maxValue);
+
     ADS1256 * ads;
-    uint16_t values[8]; // Cache for latest read values
+    uint32_t values[ADS1256_CHANNEL_COUNT]; // Cache for latest read values
+    bool enableTriggers;
+    uint8_t readChannelCount; // Number of channels to read from the ADC
 };
 
 #endif  // SPI_ANALOG_ADS1256_H_

@@ -154,4 +154,5 @@ export default {
 	'analog1256-cs-pin': 'Chip Select (CS) Pin',
 	'analog1256-drdy-pin': 'Data Ready (DRDY) Pin',
 	'analog1256-reset-pin': 'Reset Pin',
+	'analog1256-enable-triggers': 'Enable Triggers',
 };

@@ -476,11 +476,12 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		inputHistoryLength: 21,
 		inputHistoryCol: 0,
 		inputHistoryRow: 7,
-		analog1256Enabled: 1,
+		Analog1256Enabled: 1,
 		analog1256Block: 0,
 		analog1256CsPin: -1,
 		analog1256DrdyPin: -1,
 		analog1256ResetPin: -1,
+		analog1256EnableTriggers: false,
 		usedPins: Object.values(picoController),
 	});
 });

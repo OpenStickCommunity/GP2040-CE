@@ -1329,6 +1329,7 @@ std::string setAddonOptions()
 	docToValue(ads1256Options.csPin, doc, "analog1256CsPin");
 	docToValue(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
 	docToValue(ads1256Options.resetPin, doc, "analog1256ResetPin");
+	docToValue(ads1256Options.enableTriggers, doc, "analog1256EnableTriggers");
 
 	Storage::getInstance().save();
 
@@ -1729,6 +1730,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "analog1256CsPin", ads1256Options.csPin);
 	writeDoc(doc, "analog1256DrdyPin", ads1256Options.drdyPin);
 	writeDoc(doc, "analog1256ResetPin", ads1256Options.resetPin);
+	writeDoc(doc, "analog1256EnableTriggers", ads1256Options.enableTriggers);
 
 	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
 	writeDoc(doc, "focusModePin", cleanPin(focusModeOptions.pin));

@@ -18,6 +18,7 @@
 #define ADS1256_MAX_3V 3.25f
 #define ADS1256_MAX_5V 5.0f
 #define ADS1256_VREF_VOLTAGE 2.5f
+#define ADS1256_CHANNEL_COUNT 8
 
 #ifndef ADS1256_DEBUG
 #define ADS1256_DEBUG false

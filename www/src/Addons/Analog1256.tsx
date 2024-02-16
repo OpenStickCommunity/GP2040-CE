@@ -39,6 +39,7 @@ export const analog1256State = {
 	analog1256CsPin: -1,
 	analog1256DrdyPin: -1,
 	analog1256ResetPin: -1,
+	analog1256EnableTriggers: false,
 };
 
 const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -112,6 +113,17 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 						isInvalid={errors.analog1256ResetPin}
 						onChange={handleChange}
 						maxLength={2}
+					/>
+				</Row>
+				<Row>
+					<FormCheck
+						label={t('AddonsConfig:analog1256-enable-triggers')}
+						type="switch"
+						id="analog1256EnableTriggers"
+						className="col-sm-3 ms-2"
+						value={values.analog1256ResetPin}
+						isInvalid={false}
+						onChange={handleChange}
 					/>
 				</Row>
 			</div>
