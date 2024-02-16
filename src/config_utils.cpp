@@ -577,6 +577,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, csPin, SPI_ANALOG1256_CS_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, drdyPin, SPI_ANALOG1256_DRDY_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, resetPin, SPI_ANALOG1256_RESET_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, enableTriggers, false);
 
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, deprecatedUpPin, (Pin_t)-1);
