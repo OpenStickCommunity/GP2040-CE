@@ -1,15 +1,16 @@
 import { AppContext } from '../Contexts/AppContext';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { FormCheck, Row, FormLabel } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
-import FormSelect from '../Components/FormSelect';
-
 import FormControl from '../Components/FormControl';
+import FormSelect from '../Components/FormSelect';
+import boards from '../Data/Boards.json';
 import { SPI_BLOCKS } from '../Data/Peripherals';
+import WebApi from '../Services/WebApi';
 
 export const analog1256Scheme = {
 	Analog1256Enabled: yup
@@ -21,8 +22,7 @@ export const analog1256Scheme = {
 		.validateSelectionWhenValue('Analog1256Enabled', SPI_BLOCKS),
 	analog1256CsPin: yup
 		.number()
-		.label('Analog1256 CS Pin')
-		.validatePinWhenValue('Analog1256Enabled'),
+		.label('Analog1256 CS Pin'),
 	analog1256DrdyPin: yup
 		.number()
 		.label('Analog1256 DRDY Pin')
@@ -43,7 +43,8 @@ export const analog1256State = {
 };
 
 const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
-	const { getAvailablePeripherals, getSelectedPeripheral } = useContext(AppContext);
+	const { getAvailablePeripherals, getSelectedPeripheral, setLoading, usedPins } = useContext(AppContext);
+	const [csPins, setCsPins] = useState([]);
 
 	const { t } = useTranslation();
 
@@ -51,6 +52,30 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 		let device = getSelectedPeripheral('spi', e.target.value);
 		handleChange(e);
 	};
+
+	const getAvailableCsPins = async (spiBlock: number) => {
+		const csPins = [];
+
+		const peripheralOptions = await WebApi.getPeripheralOptions(setLoading);
+		if (peripheralOptions.peripheral[`spi${spiBlock}`] && peripheralOptions.peripheral[`spi${spiBlock}`].cs > -1)
+			csPins.push({ pin: peripheralOptions.peripheral[`spi${spiBlock}`].cs, hwcs: true });
+
+		const availablePins = [...Array(boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1).keys()]
+			.filter(p => (usedPins || []).indexOf(p) === -1) // Filter out used pins
+
+		csPins.push(...availablePins.map(pin => ({ pin, hwcs: false })));
+
+		return csPins;
+	};
+
+	useEffect(() => {
+		async function fetchData() {
+            const csPins = await getAvailableCsPins(values.analog1256Block);
+			setCsPins(csPins);
+		}
+
+		fetchData();
+	}, [usedPins]);
 
 	return (
 		<Section title={t('AddonsConfig:analog1256-header-text')}>
@@ -81,17 +106,20 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 					) : (
 						''
 					)}
-					<FormControl
+					<FormSelect
 						label={t('AddonsConfig:analog1256-cs-pin')}
 						name="analog1256CsPin"
-						className="form-control-sm"
+						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
 						value={values.analog1256CsPin}
 						error={errors.analog1256CsPin}
 						isInvalid={errors.analog1256CsPin}
 						onChange={handleChange}
-						maxLength={2}
-					/>
+					>
+						{csPins.map((p, i) => (
+							<option key={`cs-pin-select-${i}`} value={p.pin}>{p.pin}{p.hwcs ? ' (HW)' : ''}</option>
+						))}
+					</FormSelect>
 					<FormControl
 						label={t('AddonsConfig:analog1256-drdy-pin')}
 						name="analog1256DrdyPin"
