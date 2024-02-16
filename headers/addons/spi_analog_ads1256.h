@@ -35,7 +35,7 @@
 #endif
 
 #ifndef SPI_ANALOG1256_SPEED
-#define SPI_ANALOG1256_SPEED 1000000
+#define SPI_ANALOG1256_SPEED 5000000
 #endif
 
 // Analog Module Name

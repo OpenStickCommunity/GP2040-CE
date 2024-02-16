@@ -13,8 +13,8 @@ void SPIAnalog1256Input::setup() {
     PeripheralSPI* spi = PeripheralManager::getInstance().getSPI(options.spiBlock);
 
     // Init our ADS1256 library
-    ads = new ADS1256(spi, options.drdyPin, options.resetPin, -1, options.csPin, (float)ADS1256_VREF_VOLTAGE);
-    ads->init();
+    ads = new ADS1256(spi, options.drdyPin, options.resetPin, options.csPin, (float)ADS1256_VREF_VOLTAGE);
+    ads->init(ADS1256_DRATE_30000SPS, ADS1256_PGA_1, true);
 }
 
 void SPIAnalog1256Input::process() {

@@ -141,10 +141,10 @@
 class ADS1256 {
 public:
     // Constructor
-    ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, const int SYNC_pin, const int CS_pin, float VREF);
+    ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, const int CS_pin, float VREF);
 
     // Initializing function
-    void init();
+    void init(uint8_t drate, uint8_t pga, bool useBuf);
 
     // Read a register
     uint8_t readRegister(uint8_t registerAddress);
@@ -199,7 +199,6 @@ private:
     float _VREF; // Value of the reference voltage
     // Pins
     int _DRDY_pin;  // Pin assigned for DRDY
-    int _SYNC_pin;  // Pin assigned for SYNC
     int _CS_pin;    // Pin assigned for CS
     int _RESET_pin; // Pin assigned for RESET (optional)
 

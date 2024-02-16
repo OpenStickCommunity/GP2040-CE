@@ -14,8 +14,8 @@ void PeripheralManager::initI2C(){
 
 void PeripheralManager::initSPI(){
     const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
-    if (peripheralOptions.blockSPI0.enabled) blockSPI0.setConfig(0, peripheralOptions.blockSPI0.tx, peripheralOptions.blockSPI0.rx, peripheralOptions.blockSPI0.sck);
-    if (peripheralOptions.blockSPI1.enabled) blockSPI1.setConfig(1, peripheralOptions.blockSPI1.tx, peripheralOptions.blockSPI1.rx, peripheralOptions.blockSPI1.sck);
+    if (peripheralOptions.blockSPI0.enabled) blockSPI0.setConfig(0, peripheralOptions.blockSPI0.tx, peripheralOptions.blockSPI0.rx, peripheralOptions.blockSPI0.sck, peripheralOptions.blockSPI0.cs);
+    if (peripheralOptions.blockSPI1.enabled) blockSPI1.setConfig(1, peripheralOptions.blockSPI1.tx, peripheralOptions.blockSPI1.rx, peripheralOptions.blockSPI1.sck, peripheralOptions.blockSPI1.cs);
 }
 
 PeripheralI2C* PeripheralManager::getI2C(uint8_t block) {

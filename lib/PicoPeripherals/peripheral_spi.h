@@ -32,7 +32,7 @@ public:
     spi_inst_t* getController() { return _SPI; }
 
     // Set the configuration for this SPI peripheral instance
-    void setConfig(uint8_t block, uint8_t tx, uint8_t rx, uint8_t sck);
+    void setConfig(uint8_t block, uint8_t tx, uint8_t rx, uint8_t sck, uint8_t cs);
 
     // Disable SPI instance and all associated system resources (such as DMA channels) associated with that instance
     void deactivate();

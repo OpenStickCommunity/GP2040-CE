@@ -149,4 +149,9 @@ export default {
 	'input-history-col-label': 'Column',
 	'input-history-row-label': 'Row',
 	'xbonepassthrough-header-text': 'Xbox One Passthrough',
+	'analog1256-header-text': 'Analog ADS1256 (SPI)',
+	'analog1256-block-label': 'SPI Block',
+	'analog1256-cs-pin': 'Chip Select (CS) Pin',
+	'analog1256-drdy-pin': 'Data Ready (DRDY) Pin',
+	'analog1256-reset-pin': 'Reset Pin',
 };

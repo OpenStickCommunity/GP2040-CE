@@ -36,7 +36,7 @@ void ADS1256::waitForDRDY() {
 }
 
 // Constructor
-ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, const int SYNC_pin, const int CS_pin, float VREF) {
+ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, const int CS_pin, float VREF) {
     _SPI = spi;
 
     _DRDY_pin = DRDY_pin;
@@ -49,12 +49,6 @@ ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, co
         gpio_set_dir(_RESET_pin, GPIO_OUT);
     }
 
-    if (SYNC_pin > 0) {
-        _SYNC_pin = SYNC_pin;
-        gpio_init(_SYNC_pin);
-        gpio_set_dir(_SYNC_pin, GPIO_OUT);
-    }
-
     _CS_pin = CS_pin;
     gpio_init(_CS_pin);
     gpio_set_dir(_CS_pin, GPIO_OUT);
@@ -64,7 +58,7 @@ ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, co
 }
 
 // Initialization
-void ADS1256::init() {
+void ADS1256::init(uint8_t drate, uint8_t pga, bool useBuf) {
     // Chip select LOW
     _SPI->select(_CS_pin);
 
@@ -76,27 +70,15 @@ void ADS1256::init() {
         sleep_ms(1000);
     }
 
-    // Sync pin is also treated if it is defined
-    if (_SYNC_pin != 0) {
-        gpio_pull_up(_SYNC_pin);
-    }
-
-    sleep_ms(200);
-
     _SPI->beginTransaction(_SPISpeed, _SPIBitOrder, _SPIMode);
     _SPI->select(_CS_pin);
 
-    // setByteOrder(_SPIBitOrder ? 0 : 1);
-    setBuffer(1);
+    setBuffer(useBuf);
     setAutoCal(1);
-    setMUX(ADS1256_DIFF_0_1);
-    setPGA(ADS1256_PGA_1);
-    setDRATE(ADS1256_DRATE_1000SPS);
-    sleep_ms(200);
+    setPGA(pga);
+    setDRATE(drate);
 
     _SPI->transfer(ADS1256_CMD_SELFCAL); // Offset and self-gain calibration
-    sleep_ms(200);
-
     _SPI->deselect();
     _SPI->endTransaction();
 
