@@ -76,8 +76,8 @@ private:
     bool _UseDMA;
     int _dmaRxChannel;
     int _dmaTxChannel;
-    uint8_t _dmaRxBuf[DMA_BUFFER_SIZE];
-    uint8_t _dmaTxBuf[DMA_BUFFER_SIZE];
+    uint8_t *_dmaRxBuf;
+    uint8_t *_dmaTxBuf;
 
     spi_inst_t* _hardwareBlocks[NUM_SPIS] = {spi0,spi1};
 

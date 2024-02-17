@@ -43,6 +43,7 @@ void PeripheralSPI::setup() {
     if (_UseDMA) {
         // DMA configuration - 2 channels (TX/RX)
         _dmaRxChannel = dma_claim_unused_channel(true);
+        _dmaRxBuf = new uint8_t[DMA_BUFFER_SIZE]();
         dma_channel_config rxConfig = dma_channel_get_default_config(_dmaRxChannel);
         channel_config_set_transfer_data_size(&rxConfig, DMA_SIZE_8);
         channel_config_set_dreq(&rxConfig, spi_get_dreq(_SPI, false));
@@ -57,6 +58,7 @@ void PeripheralSPI::setup() {
         );
 
         _dmaTxChannel = dma_claim_unused_channel(true);
+        _dmaTxBuf = new uint8_t[DMA_BUFFER_SIZE]();
         dma_channel_config txConfig = dma_channel_get_default_config(_dmaTxChannel);
         channel_config_set_transfer_data_size(&txConfig, DMA_SIZE_8);
         channel_config_set_dreq(&txConfig, spi_get_dreq(_SPI, true));
@@ -78,6 +80,8 @@ void PeripheralSPI::deactivate() {
     if (_UseDMA) {
         dma_channel_unclaim(_dmaRxChannel);
         dma_channel_unclaim(_dmaTxChannel);
+        _dmaRxBuf = nullptr;
+        _dmaTxBuf = nullptr;
     }
 }
 
