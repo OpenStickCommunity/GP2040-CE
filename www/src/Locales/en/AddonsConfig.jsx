@@ -153,6 +153,6 @@ export default {
 	'analog1256-block-label': 'SPI Block',
 	'analog1256-cs-pin': 'Chip Select (CS) Pin',
 	'analog1256-drdy-pin': 'Data Ready (DRDY) Pin',
-	'analog1256-reset-pin': 'Reset Pin',
+	'analog1256-analog-max': 'Analog Max',
 	'analog1256-enable-triggers': 'Enable Triggers',
 };

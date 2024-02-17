@@ -27,10 +27,6 @@ export const analog1256Scheme = {
 		.number()
 		.label('Analog1256 DRDY Pin')
 		.validatePinWhenValue('Analog1256Enabled'),
-	analog1256ResetPin: yup
-		.number()
-		.label('Analog1256 Reset Pin')
-		.validatePinWhenValue('Analog1256Enabled'),
 };
 
 export const analog1256State = {
@@ -38,7 +34,7 @@ export const analog1256State = {
 	analog1256Block: 0,
 	analog1256CsPin: -1,
 	analog1256DrdyPin: -1,
-	analog1256ResetPin: -1,
+	analog1256AnalogMax: 3.3,
 	analog1256EnableTriggers: false,
 };
 
@@ -70,7 +66,7 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 
 	useEffect(() => {
 		async function fetchData() {
-            const csPins = await getAvailableCsPins(values.analog1256Block);
+			const csPins = await getAvailableCsPins(values.analog1256Block);
 			setCsPins(csPins);
 		}
 
@@ -131,17 +127,19 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 						onChange={handleChange}
 						maxLength={2}
 					/>
-					<FormControl
-						label={t('AddonsConfig:analog1256-reset-pin')}
-						name="analog1256ResetPin"
-						className="form-control-sm"
+					<FormSelect
+						label={t('AddonsConfig:analog1256-analog-max')}
+						name="nalog1256AnalogMax"
+						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
-						value={values.analog1256ResetPin}
-						error={errors.analog1256ResetPin}
-						isInvalid={errors.analog1256ResetPin}
+						value={values.nalog1256AnalogMax}
+						error={errors.nalog1256AnalogMax}
+						isInvalid={errors.nalog1256AnalogMax}
 						onChange={handleChange}
-						maxLength={2}
-					/>
+					>
+						<option value="3.3">{'3.3v'}</option>
+						<option value="5.0">{'5v'}</option>
+					</FormSelect>
 				</Row>
 				<Row>
 					<FormCheck
@@ -149,9 +147,12 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 						type="switch"
 						id="analog1256EnableTriggers"
 						className="col-sm-3 ms-2"
-						value={values.analog1256ResetPin}
 						isInvalid={false}
-						onChange={handleChange}
+						checked={Boolean(values.analog1256EnableTriggers)}
+						onChange={(e) => {
+							handleCheckbox('analog1256EnableTriggers', values);
+							handleChange(e);
+						}}
 					/>
 				</Row>
 			</div>

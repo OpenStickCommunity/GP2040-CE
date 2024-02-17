@@ -15,7 +15,7 @@
 
 #include "peripheral_spi.h"
 
-#define ADS1256_MAX_3V 3.25f
+#define ADS1256_MAX_3V 3.3f
 #define ADS1256_MAX_5V 5.0f
 #define ADS1256_VREF_VOLTAGE 2.5f
 #define ADS1256_CHANNEL_COUNT 8
@@ -142,7 +142,7 @@
 class ADS1256 {
 public:
     // Constructor
-    ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, const int CS_pin, float VREF);
+    ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, const int SYNC_pin, const int CS_pin, float VREF);
 
     // Initializing function
     void init(uint8_t drate, uint8_t pga, bool useBuf);
@@ -202,9 +202,10 @@ private:
     int _DRDY_pin;  // Pin assigned for DRDY
     int _CS_pin;    // Pin assigned for CS
     int _RESET_pin; // Pin assigned for RESET (optional)
+    int _SYNC_pin;  // Pin assigned for SYNC/PDWN
 
     // SPI format
-    int _SPISpeed = ADS1256_SPI_SPEED_HZ; // 1MHz
+    int _SPISpeed = ADS1256_SPI_SPEED_HZ;
     SPIMode _SPIMode = ADS1256_SPI_MODE;
     spi_order_t _SPIBitOrder = ADS1256_SPI_BIT_ORDER;
 

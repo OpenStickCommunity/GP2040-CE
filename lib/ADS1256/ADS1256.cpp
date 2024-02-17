@@ -36,17 +36,23 @@ void ADS1256::waitForDRDY() {
 }
 
 // Constructor
-ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, const int CS_pin, float VREF) {
+ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, const int SYNC_pin, const int CS_pin, float VREF) {
     _SPI = spi;
 
     _DRDY_pin = DRDY_pin;
     gpio_init(_DRDY_pin);
     gpio_set_dir(_DRDY_pin, GPIO_IN);
 
-    if (RESET_pin > 0) {
+    if (RESET_pin > -1) {
         _RESET_pin = RESET_pin;
         gpio_init(_RESET_pin);
         gpio_set_dir(_RESET_pin, GPIO_OUT);
+    }
+
+    if (SYNC_pin > -1) {
+        _SYNC_pin = SYNC_pin;
+        gpio_init(_SYNC_pin);
+        gpio_set_dir(_SYNC_pin, GPIO_OUT);
     }
 
     _CS_pin = CS_pin;
@@ -59,15 +65,16 @@ ADS1256::ADS1256(PeripheralSPI *spi, const int DRDY_pin, const int RESET_pin, co
 
 // Initialization
 void ADS1256::init(uint8_t drate, uint8_t pga, bool useBuf) {
-    // Chip select LOW
-    _SPI->select(_CS_pin);
-
     // We do a manual chip reset on the ADS1256 - Datasheet Page 27/ RESET
-    if (_RESET_pin != 0) {
+    if (_RESET_pin > -1) {
         gpio_pull_down(_RESET_pin);
         sleep_ms(200);
         gpio_pull_up(_RESET_pin);
         sleep_ms(1000);
+    }
+
+    if (_SYNC_pin > -1) {
+        gpio_pull_up(_SYNC_pin);
     }
 
     _SPI->beginTransaction(_SPISpeed, _SPIBitOrder, _SPIMode);
@@ -392,7 +399,7 @@ float ADS1256::convertToVoltage(int32_t rawData) {
         //"mirroring" around zero
     }
 
-    float voltage = ((2 * _VREF) / 8388607) * rawData / (pow(2, _PGA)); // 8388608 = 2^{23} - 1
+    float voltage = ((2 * _VREF) / 8388607) * rawData / (pow(2, _PGA)); // 8388607 = 2^{23} - 1
     // REF: p23, Table 16.
 
     return (voltage);

@@ -425,7 +425,7 @@ message AnalogADS1256Options
 	optional int32 spiBlock = 2;
 	optional int32 csPin = 3;
 	optional int32 drdyPin = 4;
-	optional int32 resetPin = 5;
+	optional float avdd = 5;
 	optional bool enableTriggers = 6;
 }
 

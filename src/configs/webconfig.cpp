@@ -1328,7 +1328,7 @@ std::string setAddonOptions()
 	docToValue(ads1256Options.spiBlock, doc, "analog1256Block");
 	docToValue(ads1256Options.csPin, doc, "analog1256CsPin");
 	docToValue(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
-	docToValue(ads1256Options.resetPin, doc, "analog1256ResetPin");
+	docToValue(ads1256Options.avdd, doc, "analog1256AnalogMax");
 	docToValue(ads1256Options.enableTriggers, doc, "analog1256EnableTriggers");
 
 	Storage::getInstance().save();
@@ -1729,7 +1729,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "analog1256Block", ads1256Options.spiBlock);
 	writeDoc(doc, "analog1256CsPin", ads1256Options.csPin);
 	writeDoc(doc, "analog1256DrdyPin", ads1256Options.drdyPin);
-	writeDoc(doc, "analog1256ResetPin", ads1256Options.resetPin);
+	writeDoc(doc, "analog1256AnalogMax", ads1256Options.avdd);
 	writeDoc(doc, "analog1256EnableTriggers", ads1256Options.enableTriggers);
 
 	const FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;

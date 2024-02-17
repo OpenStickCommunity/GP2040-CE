@@ -480,7 +480,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		analog1256Block: 0,
 		analog1256CsPin: -1,
 		analog1256DrdyPin: -1,
-		analog1256ResetPin: -1,
+		analog1256AnalogMax: 3.3,
 		analog1256EnableTriggers: false,
 		usedPins: Object.values(picoController),
 	});

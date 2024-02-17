@@ -21,15 +21,6 @@
 #define SPI_ANALOG1256_DRDY_PIN -1
 #endif
 
-// Not required
-#ifndef SPI_ANALOG1256_RESET_PIN
-#define SPI_ANALOG1256_RESET_PIN -1
-#endif
-
-#ifndef SPI_ANALOG1256_SYNC_PIN
-#define SPI_ANALOG1256_SYNC_PIN -1
-#endif
-
 #ifndef SPI_ANALOG1256_BLOCK
 #define SPI_ANALOG1256_BLOCK spi0
 #endif
@@ -49,13 +40,14 @@ public:
 	virtual void process();     // Analog Process
     virtual std::string name() { return SPIAnalog1256Name; }
 private:
-    uint8_t convert24to8bit(uint32_t value, float maxValue);
-    uint16_t convert24to16bit(uint32_t value, float maxValue);
+    uint8_t convert24to8bit(float voltage);
+    uint16_t convert24to16bit(float voltage);
 
     ADS1256 * ads;
-    uint32_t values[ADS1256_CHANNEL_COUNT]; // Cache for latest read values
+    float values[ADS1256_CHANNEL_COUNT]; // Cache for latest read values
     bool enableTriggers;
     uint8_t readChannelCount; // Number of channels to read from the ADC
+    float analogMax = ADS1256_MAX_3V;
 };
 
 #endif  // SPI_ANALOG_ADS1256_H_
