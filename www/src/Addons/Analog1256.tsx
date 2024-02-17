@@ -129,12 +129,12 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 					/>
 					<FormSelect
 						label={t('AddonsConfig:analog1256-analog-max')}
-						name="nalog1256AnalogMax"
+						name="analog1256AnalogMax"
 						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
-						value={values.nalog1256AnalogMax}
-						error={errors.nalog1256AnalogMax}
-						isInvalid={errors.nalog1256AnalogMax}
+						value={values.analog1256AnalogMax}
+						error={errors.analog1256AnalogMax}
+						isInvalid={errors.analog1256AnalogMax}
 						onChange={handleChange}
 					>
 						<option value="3.3">{'3.3v'}</option>
