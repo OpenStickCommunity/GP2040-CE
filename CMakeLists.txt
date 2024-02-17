@@ -200,6 +200,7 @@ src/addons/snes_input.cpp
 src/addons/inputhistory.cpp
 src/addons/tilt.cpp
 src/addons/xbonepassthrough.cpp
+src/addons/spi_analog_ads1256.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -218,6 +219,7 @@ AnimationStation
 CRC32
 FlashPROM
 ADS1219
+ADS1256
 PlayerLEDs
 NeoPico
 OneBitDisplay

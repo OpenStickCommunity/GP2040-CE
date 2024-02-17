@@ -276,11 +276,11 @@ app.get('/api/getPeripheralOptions', (req, res) => {
 				speed: 400000,
 			},
 			spi0: {
-				enabled: 0,
-				rx: -1,
-				cs: -1,
-				sck: -1,
-				tx: -1,
+				enabled: 1,
+				rx: 16,
+				cs: 17,
+				sck: 18,
+				tx: 19,
 			},
 			spi1: {
 				enabled: 0,
@@ -476,6 +476,12 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		inputHistoryLength: 21,
 		inputHistoryCol: 0,
 		inputHistoryRow: 7,
+		Analog1256Enabled: 1,
+		analog1256Block: 0,
+		analog1256CsPin: -1,
+		analog1256DrdyPin: -1,
+		analog1256AnalogMax: 3.3,
+		analog1256EnableTriggers: false,
 		usedPins: Object.values(picoController),
 	});
 });
