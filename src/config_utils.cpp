@@ -28,6 +28,7 @@
 #include "addons/pspassthrough.h"
 #include "addons/reverse.h"
 #include "addons/slider_socd.h"
+#include "addons/spi_analog_ads1256.h"
 #include "addons/turbo.h"
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
@@ -570,7 +571,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, i2cAddress, I2C_ANALOG1219_ADDRESS);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, deprecatedI2cSpeed, I2C_ANALOG1219_SPEED);
 
-    // addonOptions.dualDirectionalOptions
+    // addonOptions.analogADS1256Options
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, enabled, !!SPI_ANALOG1256_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, spiBlock, (SPI_ANALOG1256_BLOCK == spi0) ? 0 : 1)
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, csPin, SPI_ANALOG1256_CS_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, drdyPin, SPI_ANALOG1256_DRDY_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, avdd, ADS1256_MAX_3V);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1256Options, enableTriggers, false);
+
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, enabled, !!DUAL_DIRECTIONAL_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, deprecatedUpPin, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, deprecatedDownPin, (Pin_t)-1)
@@ -1480,6 +1488,18 @@ static void writeIndentation(std::string& str, int level)
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
+static void __attribute__((noinline)) appendAsString(std::string& str, double value)
+{
+    str.append(std::to_string(value));
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
+static void __attribute__((noinline)) appendAsString(std::string& str, float value)
+{
+    str.append(std::to_string(value));
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) appendAsString(std::string& str, int32_t value)
 {
     str.append(std::to_string(value));
@@ -1493,6 +1513,8 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 
 #define TO_JSON_ENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname));
 #define TO_JSON_UENUM(fieldname, submessageType) appendAsString(str, static_cast<uint32_t>(s.fieldname));
+#define TO_JSON_DOUBLE(fieldname, submessageType) appendAsString(str, static_cast<double>(s.fieldname));
+#define TO_JSON_FLOAT(fieldname, submessageType) appendAsString(str, static_cast<float>(s.fieldname));
 #define TO_JSON_INT32(fieldname, submessageType) appendAsString(str, s.fieldname);
 #define TO_JSON_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname);
 #define TO_JSON_BOOL(fieldname, submessageType) str.append((s.fieldname) ? "true" : "false");
@@ -1502,6 +1524,8 @@ static void __attribute__((noinline)) appendAsString(std::string& str, uint32_t 
 
 #define TO_JSON_REPEATED_ENUM(fieldname, submessageType) appendAsString(str, static_cast<int32_t>(s.fieldname[i]));
 #define TO_JSON_REPEATED_UENUM(fieldname, submessageType) appendAsString(str, static_cast<uint32_t>(s.fieldname[i]));
+#define TO_JSON_REPEATED_DOUBLE(fieldname, submessageType) appendAsString(str, static_cast<double>(s.fieldname[i]));
+#define TO_JSON_REPEATED_FLOAT(fieldname, submessageType) appendAsString(str, static_cast<float>(s.fieldname[i]));
 #define TO_JSON_REPEATED_INT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
 #define TO_JSON_REPEATED_UINT32(fieldname, submessageType) appendAsString(str, s.fieldname[i]);
 #define TO_JSON_REPEATED_BOOL(fieldname, submessageType) str.append((s.fieldname[i]) ? "true" : "false");
@@ -1639,6 +1663,50 @@ std::string ConfigUtils::toJSON(const Config& config)
             return false; \
         } \
     }
+
+static bool fromJsonDouble(JsonObjectConst jsonObject, const char* fieldname, double& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<double>())
+        {
+            value = jsonVariant.as<double>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+#define FROM_JSON_DOUBLE(fieldname, submessageType) if (!fromJsonDouble(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
+
+static bool fromJsonFloat(JsonObjectConst jsonObject, const char* fieldname, float& value, bool& flag)
+{
+    if (jsonObject.containsKey(fieldname))
+    {
+        JsonVariantConst jsonVariant = jsonObject[fieldname];
+        if (jsonVariant.is<float>())
+        {
+            value = jsonVariant.as<float>();
+            flag = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+#define FROM_JSON_FLOAT(fieldname, submessageType) if (!fromJsonFloat(jsonObject, #fieldname, configStruct.fieldname, configStruct.PREPROCESSOR_JOIN(has_, fieldname))) { return false; }
 
 static bool fromJsonInt32(JsonObjectConst jsonObject, const char* fieldname, int32_t& value, bool& flag)
 {
