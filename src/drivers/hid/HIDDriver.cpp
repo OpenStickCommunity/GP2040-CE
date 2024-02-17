@@ -93,6 +93,16 @@ void HIDDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		hidReport.r2_axis = gamepad->pressedR2() ? 0xFF : 0;
 	}
 
+	hidReport.triangle_axis =	gamepad->pressedB4() ? 0xFF : 0;
+	hidReport.circle_axis =		gamepad->pressedB2() ? 0xFF : 0;
+	hidReport.cross_axis =		gamepad->pressedB1() ? 0xFF : 0;
+	hidReport.square_axis =		gamepad->pressedB3() ? 0xFF : 0;
+	hidReport.l1_axis =		gamepad->pressedL1() ? 0xFF : 0;
+	hidReport.r1_axis =		gamepad->pressedR1() ? 0xFF : 0;
+	hidReport.right_axis =		gamepad->state.dpad & GAMEPAD_MASK_RIGHT ? 0xFF : 0;
+	hidReport.left_axis =		gamepad->state.dpad & GAMEPAD_MASK_LEFT ? 0xFF : 0;
+	hidReport.up_axis =		gamepad->state.dpad & GAMEPAD_MASK_UP ? 0xFF : 0;
+	hidReport.down_axis =		gamepad->state.dpad & GAMEPAD_MASK_DOWN ? 0xFF : 0;
 
 	// Wake up TinyUSB device
 	if (tud_suspended())
