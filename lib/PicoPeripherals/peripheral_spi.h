@@ -47,7 +47,7 @@ public:
     uint16_t transfer16(uint16_t tx);
 
     // Activate CS pin for this SPI peripheral instance
-    void select(uint8_t cs);
+    void select(int8_t cs = -1);
 
     // Deactivate currently active CS pin for this SPI peripheral instance
     void deselect();
@@ -64,7 +64,8 @@ private:
     uint8_t _RX; // MISO/POCI gpio pin
     uint8_t _TX; // MOSI/PICO gpio pin
     uint8_t _SCK;
-    int _CS; // The active CS pin, negative value indicates no selected pin
+    int _CS; // The HW CS pin
+    int _CSActive; // The active CS pin, negative value indicates no selected pin
 
     spi_inst_t *_SPI; // The RP2040 SPI instance
     uint32_t _Speed;

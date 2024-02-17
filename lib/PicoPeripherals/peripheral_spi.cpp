@@ -110,15 +110,15 @@ uint16_t PeripheralSPI::transfer16(uint16_t tx) {
     return rx;
 }
 
-void PeripheralSPI::select(uint8_t cs) {
-    _CS = cs;
-    gpio_pull_down(_CS);
+void PeripheralSPI::select(int8_t cs) {
+    _CSActive = cs > -1 ? cs : _CS;
+    gpio_pull_down(_CSActive);
 }
 
 void PeripheralSPI::deselect() {
-    if (_CS > -1) {
-        gpio_pull_up(_CS);
-        _CS = -1;
+    if (_CSActive > -1) {
+        gpio_pull_up(_CSActive);
+        _CSActive = -1;
     }
 }
 
