@@ -102,8 +102,7 @@ typedef struct __attribute((packed, aligned(1)))
 	uint8_t r_x_axis;
 	uint8_t r_y_axis;
 
-	// Gonna assume these are button analog values for the d-pad.
-	// NOTE: NOT EVEN SURE THIS IS RIGHT, OR IN THE CORRECT ORDER
+	// button analog values for the d-pad.
 	uint8_t right_axis;
 	uint8_t left_axis;
 	uint8_t up_axis;
