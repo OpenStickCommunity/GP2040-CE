@@ -58,7 +58,7 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 | v0.7.7  | Xinput       | 1 ms      | 0.45 ms | 1.28 ms | 0.76 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       |
 | v0.7.7  | Switch       | 1 ms      | 0.41 ms | 1.22 ms | 0.72 ms | 0.24 ms | 98.54%    | 1.46%    | 0%       |
 | v0.7.7  | Dinput (PS3) | 1 ms      | 0.44 ms | 1.27 ms | 0.75 ms | 0.24 ms | 98.49%    | 1.51%    | 0%       |
-| v0.7.7  | PS4          | 1 ms      | 0.55 ms | 2.17 ms | 0.86 ms | 0.24 ms | 96.30%    | 1.70%    | 0%       |
+| v0.7.7  | PS4          | 1 ms      | 0.55 ms | 2.17 ms | 0.86 ms | 0.24 ms | 98.30%    | 1.70%    | 0%       |
 | v0.7.7  | PS4 Hack     | 1 ms      | 0.55 ms | 1.38 ms | 0.86 ms | 0.24 ms | 98.32%    | 1.68%    | 0%       |
 
 Full results can be found in the [GP2040-CE v0.7.7 Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.7.xlsx) .xlsx Sheet.
