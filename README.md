@@ -63,7 +63,7 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 
 Full results can be found in the [GP2040-CE v0.7.7 Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.7.xlsx) .xlsx Sheet.
 
-Results from v0.7.6 can be found [HERE](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.7.xlsx).  Previous results from v0.7.5 and earlier can be found in the [GP2040-CE v0.7.5 (and before) Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.5_and_before.xlsx) .xlsx Sheet.
+Results from v0.7.6 can be found [HERE](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.6.xlsx).  Previous results from v0.7.5 and earlier can be found in the [GP2040-CE v0.7.5 (and before) Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.5_and_before.xlsx) .xlsx Sheet.
 
 ## Support
 
