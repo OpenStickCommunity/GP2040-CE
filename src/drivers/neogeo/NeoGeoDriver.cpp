@@ -59,6 +59,11 @@ void NeoGeoDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		| (gamepad->pressedB2() ? NEOGEO_MASK_D       : 0)
 		| (gamepad->pressedS1() ? NEOGEO_MASK_SELECT  : 0)
 		| (gamepad->pressedS2() ? NEOGEO_MASK_START   : 0)
+		| (gamepad->pressedA1() ? NEOGEO_MASK_OPTIONS : 0)
+		| (gamepad->pressedL1() ? NEOGEO_MASK_L1      : 0)
+		| (gamepad->pressedL2() ? NEOGEO_MASK_L2      : 0)
+		| (gamepad->pressedR1() ? NEOGEO_MASK_R1      : 0)
+		| (gamepad->pressedR2() ? NEOGEO_MASK_R2      : 0)
 	;
 
 	// Wake up TinyUSB device
