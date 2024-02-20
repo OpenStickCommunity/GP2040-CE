@@ -1,4 +1,5 @@
 #include "ButtonLayoutScreen.h"
+#include "buttonlayouts.h"
 
 void ButtonLayoutScreen::drawScreen() {
     getRenderer()->drawText(0, 0, header);
@@ -50,427 +51,177 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::adjustByCustomSettings(Button
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless()
 {
-	return {
-        {GP_ELEMENT_DIR_BUTTON, {8,  20, 8, 8, 1, 0, GAMEPAD_MASK_LEFT,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {26, 20, 8, 8, 1, 0, GAMEPAD_MASK_DOWN,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {41, 29, 8, 8, 1, 0, GAMEPAD_MASK_RIGHT,   GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {48, 53, 8, 8, 1, 0, GAMEPAD_MASK_UP,      GP_BUTTON_ELLIPSE}}
-    };
+	return BUTTON_GROUP_STICKLESS;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawWasdBox()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {8,  39, 18, 49, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {19, 39, 29, 49, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {19, 28, 29, 38, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {30, 39, 40, 49, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_SQUARE}}
-    };
+    return BUTTON_GROUP_WASD_BOX;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawUDLR()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {8,  36, 7, 7, 1, 0, GAMEPAD_MASK_LEFT,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {25, 42, 7, 7, 1, 0, GAMEPAD_MASK_DOWN,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {33, 25, 7, 7, 1, 0, GAMEPAD_MASK_UP,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {42, 49, 7, 7, 1, 0, GAMEPAD_MASK_RIGHT,   GP_BUTTON_ELLIPSE}}
-    };
+    return BUTTON_GROUP_UDLR;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawArcadeStick()
 {
-    return {{GP_ELEMENT_LEVER,  {17, 37, 10, 10, 1, 0, 0}}};
+    return BUTTON_GROUP_ARCADE_STICK;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVLXA()
 {
-    return {{GP_ELEMENT_LEVER,  {15, 36,  8,  8, 1, 0, 0}}};
+    return BUTTON_GROUP_VLXA;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardMirrored()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {9,  18, 7, 7, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {25, 18, 7, 7, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {41, 18, 7, 7, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {57, 27, 7, 7, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {9,  34, 7, 7, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {25, 34, 7, 7, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {41, 34, 7, 7, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {57, 42, 7, 7, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {8,  46, 3, 3, 1, 0, GAMEPAD_MASK_L3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {17, 46, 3, 3, 1, 0, GAMEPAD_MASK_S1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {26, 46, 3, 3, 1, 0, GAMEPAD_MASK_A1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {34, 46, 3, 3, 1, 0, GAMEPAD_MASK_S2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {44, 46, 3, 3, 1, 0, GAMEPAD_MASK_R3,      GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_FIGHTBOARD_MIRRORED;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardStick()
 {
-    return {{GP_ELEMENT_LEVER,  {27, 31, 10, 10, 1, 0, 0}}};
+    return BUTTON_GROUP_FIGHTBOARD_STICK;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardStickMirrored()
 {
-    return {
-        {GP_ELEMENT_LEVER,      {99, 31, 10, 10, 1, 0, 0}}
-    };
+    return BUTTON_GROUP_FIGHTBOARD_STICK_MIRRORED;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTwinStickA()
 {
-    return {{GP_ELEMENT_LEVER,  {17, 37, 10, 10, 1, 0, 0}}};
+    return BUTTON_GROUP_TWINSTICK_A;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTwinStickB()
 {
-    return {
-        {GP_ELEMENT_LEVER,      {109, 37, 10, 10, 1, 0}}
-    };
+    return BUTTON_GROUP_TWINSTICK_B;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAMEA()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {8,  37, 7, 7, 1, 0, GAMEPAD_MASK_LEFT,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {23, 24, 7, 7, 1, 0, GAMEPAD_MASK_UP,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {23, 50, 7, 7, 1, 0, GAMEPAD_MASK_DOWN,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {37, 37, 7, 7, 1, 0, GAMEPAD_MASK_RIGHT,   GP_BUTTON_ELLIPSE}}
-    };
+    return BUTTON_GROUP_MAME_A;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawOpenCore0WASDA()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {16, 39, 26, 49, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {27, 39, 37, 49, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {27, 28, 37, 38, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {38, 39, 48, 49, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {6,  19,  3,  3, 1, 0, GAMEPAD_MASK_S1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {14, 19,  3,  3, 1, 0, GAMEPAD_MASK_S1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {23, 19,  3,  3, 1, 0, GAMEPAD_MASK_A1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {31, 19,  3,  3, 1, 0, GAMEPAD_MASK_A2,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {39, 19,  3,  3, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {47, 19,  3,  3, 1, 0, GAMEPAD_MASK_R3,    GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_OPEN_CORE_WASD_A;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAMEB()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {68, 28, 78, 38, 1, 0, GAMEPAD_MASK_B3,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 28, 89, 38, 1, 0, GAMEPAD_MASK_B4,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {90, 28, 100, 38, 1, 0, GAMEPAD_MASK_R1,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {68, 39, 78, 49, 1, 0, GAMEPAD_MASK_B1,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 39, 89, 49, 1, 0, GAMEPAD_MASK_B2,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {90, 39, 100, 49, 1, 0, GAMEPAD_MASK_R2,   GP_BUTTON_SQUARE}},
-    };
+    return BUTTON_GROUP_MAME_B;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAME8B()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {68, 28, 78, 38, 1, 0, GAMEPAD_MASK_B3,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 25, 89, 35, 1, 0, GAMEPAD_MASK_B4,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {90, 25, 100, 35, 1, 0, GAMEPAD_MASK_R1,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {101,28, 111, 38, 1, 0, GAMEPAD_MASK_L1,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {68, 39, 78, 49, 1, 0, GAMEPAD_MASK_B1,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 36, 89, 46, 1, 0, GAMEPAD_MASK_B2,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {90, 36, 100, 46, 1, 0, GAMEPAD_MASK_R2,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {101,39, 111, 49, 1, 0, GAMEPAD_MASK_L2,  GP_BUTTON_SQUARE}},
-    };
+    return BUTTON_GROUP_MAME_8B;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawOpenCore0WASDB()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {68, 28, 78, 38, 1, 0, GAMEPAD_MASK_B3,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 25, 89, 35, 1, 0, GAMEPAD_MASK_B4,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {90, 25, 100, 35, 1, 0, GAMEPAD_MASK_R1,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {101,28, 111, 38, 1, 0, GAMEPAD_MASK_L1,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {68, 39, 78, 49, 1, 0, GAMEPAD_MASK_B1,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 36, 89, 46, 1, 0, GAMEPAD_MASK_B2,   GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {90, 36, 100, 46, 1, 0, GAMEPAD_MASK_R2,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {101,39, 111, 49, 1, 0, GAMEPAD_MASK_L2,  GP_BUTTON_SQUARE}},
-    };
+    return BUTTON_GROUP_OPEN_CORE_WASD_B;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawKeyboardAngled()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {8,  37, 7, 7, 1, 0, GAMEPAD_MASK_LEFT,    GP_BUTTON_DIAMOND}},
-        {GP_ELEMENT_DIR_BUTTON, {23, 24, 7, 7, 1, 0, GAMEPAD_MASK_UP,      GP_BUTTON_DIAMOND}},
-        {GP_ELEMENT_DIR_BUTTON, {23, 50, 7, 7, 1, 0, GAMEPAD_MASK_DOWN,    GP_BUTTON_DIAMOND}},
-        {GP_ELEMENT_DIR_BUTTON, {37, 37, 7, 7, 1, 0, GAMEPAD_MASK_RIGHT,   GP_BUTTON_DIAMOND}}
-    };
+    return BUTTON_GROUP_KEYBOARD_ANGLED;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVewlix()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {57, 31, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {75, 24, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 24, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {111,24, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {51, 49, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {69, 42, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {87, 42, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {105,42, 8, 8, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_VEWLIX;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVLXB()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {50, 31, 7, 7, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {66, 24, 7, 7, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {82, 24, 7, 7, 1, 0, GAMEPAD_MASK_R1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {98, 24, 7, 7, 1, 0, GAMEPAD_MASK_L1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {45, 47, 7, 7, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {61, 40, 7, 7, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {77, 40, 7, 7, 1, 0, GAMEPAD_MASK_R2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 40, 7, 7, 1, 0, GAMEPAD_MASK_L2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {119,33, 5, 5, 1, 0, GAMEPAD_MASK_S2,     GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_VLXB;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboard()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {69, 27, 7, 7, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {86, 18, 7, 7, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {103,18, 7, 7, 1, 0, GAMEPAD_MASK_R1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {120,18, 7, 7, 1, 0, GAMEPAD_MASK_L1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {69, 43, 7, 7, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {86, 35, 7, 7, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {103,35, 7, 7, 1, 0, GAMEPAD_MASK_R2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {120,35, 7, 7, 1, 0, GAMEPAD_MASK_L2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {84, 47, 3, 3, 1, 0, GAMEPAD_MASK_L3,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {94, 47, 3, 3, 1, 0, GAMEPAD_MASK_S1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {103,47, 3, 3, 1, 0, GAMEPAD_MASK_A1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {112,47, 3, 3, 1, 0, GAMEPAD_MASK_S2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {122,47, 3, 3, 1, 0, GAMEPAD_MASK_R3,     GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_FIGHTBOARD;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVewlix7()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {57, 31, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {75, 24, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 24, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {111,24, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {51, 49, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {69, 42, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {87, 42, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_VEWLIX7;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSega2p()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {57, 34, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {75, 24, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 24, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {111,28, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {57, 52, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {75, 42, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 42, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {111,46, 8, 8, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_SEGA_2P;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawNoir8()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {57, 33, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {75, 24, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 24, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {111,28, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {57, 51, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {75, 42, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 42, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {111,46, 8, 8, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_NOIR8;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawCapcom()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {64, 28, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {82, 28, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {100,28, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {118,28, 8, 8, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {64, 46, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {82, 46, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {100,46, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {118,46, 8, 8, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_CAPCOM;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawCapcom6()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {74, 28, 8, 8, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {92, 28, 8, 8, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {110,28, 8, 8, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {74, 46, 8, 8, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {92, 46, 8, 8, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {110,46, 8, 8, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_CAPCOM6;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {57, 20,  8,  8, 1, 0, GAMEPAD_MASK_B3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {75, 16,  8,  8, 1, 0, GAMEPAD_MASK_B4,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 16,  8,  8, 1, 0, GAMEPAD_MASK_R1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {111,20,  8,  8, 1, 0, GAMEPAD_MASK_L1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {57, 38,  8,  8, 1, 0, GAMEPAD_MASK_B1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {75, 34,  8,  8, 1, 0, GAMEPAD_MASK_B2,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 34,  8,  8, 1, 0, GAMEPAD_MASK_R2,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {111,38,  8,  8, 1, 0, GAMEPAD_MASK_L2,    GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_STICKLESS_BUTTONS;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawWasdButtons()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {69, 28, 7, 7, 1, 0, GAMEPAD_MASK_B3,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {86, 24, 7, 7, 1, 0, GAMEPAD_MASK_B4,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {103,24, 7, 7, 1, 0, GAMEPAD_MASK_R1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {120,28, 7, 7, 1, 0, GAMEPAD_MASK_L1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {63, 45, 7, 7, 1, 0, GAMEPAD_MASK_B1,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {80, 41, 7, 7, 1, 0, GAMEPAD_MASK_B2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {97, 41, 7, 7, 1, 0, GAMEPAD_MASK_R2,      GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {114,45, 7, 7, 1, 0, GAMEPAD_MASK_L2,      GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_WASD_BUTTONS;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawArcadeButtons()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {64, 28,  8,  8, 1, 0, GAMEPAD_MASK_B3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {82, 24,  8,  8, 1, 0, GAMEPAD_MASK_B4,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {100,24,  8,  8, 1, 0, GAMEPAD_MASK_R1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {118,28,  8,  8, 1, 0, GAMEPAD_MASK_L1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {59, 46,  8,  8, 1, 0, GAMEPAD_MASK_B1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {77, 42,  8,  8, 1, 0, GAMEPAD_MASK_B2,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {95, 42,  8,  8, 1, 0, GAMEPAD_MASK_R2,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {113,46,  8,  8, 1, 0, GAMEPAD_MASK_L2,    GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_ARCADE_BUTTONS;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless13A()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {39, 15,  6,  6, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {18, 27,  6,  6, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {32, 27,  6,  6, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {44, 34,  6,  6, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {49, 53,  6,  6, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {65, 13,  2,  2, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {72, 13,  2,  2, 1, 0, GAMEPAD_MASK_R3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 13,  2,  2, 1, 0, GAMEPAD_MASK_A2,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {86, 13,  2,  2, 1, 0, GAMEPAD_MASK_A1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {93, 13,  2,  2, 1, 0, GAMEPAD_MASK_S1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {100, 13, 2,  2, 1, 0, GAMEPAD_MASK_S2,    GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_STICKLESS13A;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons13B()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {56, 27, 6, 6, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {70, 24, 6, 6, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {84, 24, 6, 6, 1, 0, GAMEPAD_MASK_R1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {98, 27, 6, 6, 1, 0, GAMEPAD_MASK_L1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {56, 41, 6, 6, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {70, 38, 6, 6, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {84, 38, 6, 6, 1, 0, GAMEPAD_MASK_R2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {98, 41, 6, 6, 1, 0, GAMEPAD_MASK_L2,     GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_STICKLESS_BUTTONS13B;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless16A()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {47, 19,  4,  4, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {32, 27,  4,  4, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {42, 27,  4,  4, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {50, 32,  4,  4, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {52, 47,  4,  4, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {64, 17,  4,  4, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {42, 45,  4,  4, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {66, 45,  4,  4, 1, 0, GAMEPAD_MASK_R3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {77, 15,  2,  2, 1, 0, GAMEPAD_MASK_A2,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {82, 15,  2,  2, 1, 0, GAMEPAD_MASK_A1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {87, 15,  2,  2, 1, 0, GAMEPAD_MASK_S1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {92, 15,  2,  2, 1, 0, GAMEPAD_MASK_S2,    GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_STICKLESS16A;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons16B()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {59, 27, 4, 4, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {69, 25, 4, 4, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 25, 4, 4, 1, 0, GAMEPAD_MASK_R1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {89, 27, 4, 4, 1, 0, GAMEPAD_MASK_L1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {59, 37, 4, 4, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {69, 35, 4, 4, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {79, 35, 4, 4, 1, 0, GAMEPAD_MASK_R2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {89, 37, 4, 4, 1, 0, GAMEPAD_MASK_L2,     GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_STICKLESS_BUTTONS16B;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless14A()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {26, 20,  7,  7, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {42, 20,  7,  7, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {56, 28,  7,  7, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_DIR_BUTTON, {62, 50,  7,  7, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {10, 22,  7,  7, 1, 0, GAMEPAD_MASK_L3,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {84, 50,  7,  7, 1, 0, GAMEPAD_MASK_R3,    GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_STICKLESS14A;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons14B()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {70, 20, 7, 7, 1, 0, GAMEPAD_MASK_B3,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {86, 16, 7, 7, 1, 0, GAMEPAD_MASK_B4,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {102, 16, 7, 7, 1, 0, GAMEPAD_MASK_R1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {118, 20, 7, 7, 1, 0, GAMEPAD_MASK_L1,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {70, 36, 7, 7, 1, 0, GAMEPAD_MASK_B1,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {86, 32, 7, 7, 1, 0, GAMEPAD_MASK_B2,     GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {102, 32, 7, 7, 1, 0, GAMEPAD_MASK_R2,    GP_BUTTON_ELLIPSE}},
-        {GP_ELEMENT_BTN_BUTTON, {118, 36, 7, 7, 1, 0, GAMEPAD_MASK_L2,    GP_BUTTON_ELLIPSE}},
-    };
+    return BUTTON_GROUP_STICKLESS_BUTTONS14B;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadA()
 {
-    return {
-        {GP_ELEMENT_DIR_BUTTON, {39, 29, 54, 44, 1, 0, GAMEPAD_MASK_LEFT,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {56, 46, 71, 61, 1, 0, GAMEPAD_MASK_DOWN,  GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {56, 12, 71, 27, 1, 0, GAMEPAD_MASK_UP,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_DIR_BUTTON, {73, 29, 88, 44, 1, 0, GAMEPAD_MASK_RIGHT, GP_BUTTON_SQUARE}}
-    };
+    return BUTTON_GROUP_DANCEPAD_A;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadB()
 {
-    return {
-        {GP_ELEMENT_BTN_BUTTON, {39, 12, 54, 27, 1, 0, GAMEPAD_MASK_B2,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {39, 46, 54, 61, 1, 0, GAMEPAD_MASK_B4,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {73, 12, 88, 27, 1, 0, GAMEPAD_MASK_B1,    GP_BUTTON_SQUARE}},
-        {GP_ELEMENT_BTN_BUTTON, {73, 46, 88, 61, 1, 0, GAMEPAD_MASK_B3,    GP_BUTTON_SQUARE}},
-    };
+    return BUTTON_GROUP_DANCEPAD_B;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBlankA()
@@ -526,7 +277,6 @@ GPButton* ButtonLayoutScreen::drawButton(uint16_t startX, uint16_t startY, uint1
 }
 
 GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
-    uint16_t xOffset = 0;
     uint16_t yOffset = 0;
 
     if (isInputHistoryEnabled) {
