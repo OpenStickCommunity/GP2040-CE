@@ -9,6 +9,10 @@ Gamepad* GPGFX_UI::getGamepad() {
     return Storage::getInstance().GetGamepad();
 }
 
+Gamepad* GPGFX_UI::getProcessedGamepad() { 
+    return Storage::getInstance().GetProcessedGamepad();
+}
+
 DisplayOptions GPGFX_UI::getDisplayOptions() {
     if (_configMode) {
         return Storage::getInstance().getPreviewDisplayOptions();
