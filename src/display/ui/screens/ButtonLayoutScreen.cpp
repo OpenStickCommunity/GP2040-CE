@@ -2,7 +2,8 @@
 #include "buttonlayouts.h"
 
 void ButtonLayoutScreen::drawScreen() {
-    getRenderer()->drawText(0, 0, header);
+    getRenderer()->drawRectangle(0, 0, 128, 7, displayProfileBanner, displayProfileBanner);
+    getRenderer()->drawText(0, 0, header, displayProfileBanner);
     getRenderer()->drawText(0, 7, footer);
 }
 
@@ -323,10 +324,14 @@ int8_t ButtonLayoutScreen::update() {
         for (elementCtr = 0; elementCtr < currLayoutRight.size(); elementCtr++) {
             drawElement(currLayoutRight[elementCtr]);
         }
+
+        profileDelayStart = getMillis();
+
         hasInitialized = true;
     }
 
     // main logic loop
+    showProfileBanner();
     if (isInputHistoryEnabled) processInputHistory();
 
     // check for exit/screen change
@@ -430,6 +435,19 @@ void ButtonLayoutScreen::processInputHistory() {
 	}
 
     footer = historyString;
+}
+
+void ButtonLayoutScreen::showProfileBanner() {
+    int profileDelayCheck = getMillis();
+
+    if (((profileDelayCheck - profileDelayStart) / 1000) >= profileDelay) {
+        // stop displaying
+        displayProfileBanner = false;
+    } else {
+        // display
+        header = "     Profile #" + std::to_string(getGamepad()->getOptions().profileNumber);
+        displayProfileBanner = true;
+    }
 }
 
 bool ButtonLayoutScreen::pressedUp()

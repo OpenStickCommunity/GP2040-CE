@@ -16,7 +16,7 @@ class GPGFX_DisplayBase {
 
         virtual void drawPixel(uint8_t x, uint8_t y, uint32_t color) {}
 
-        virtual void drawText(uint8_t x, uint8_t y, std::string text) {}
+        virtual void drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert = 0) {}
 
         virtual void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t filled) {}
 

@@ -15,7 +15,7 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
 
         void drawPixel(uint8_t x, uint8_t y, uint32_t color);
 
-        void drawText(uint8_t x, uint8_t y, std::string text);
+        void drawText(uint8_t x, uint8_t y, std::string text, uint8_t invert = 0);
 
         void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t filled);
 
