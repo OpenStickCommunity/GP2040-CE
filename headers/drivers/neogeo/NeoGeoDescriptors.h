@@ -23,11 +23,15 @@
 // Button report (16 bits)
 #define NEOGEO_MASK_A       (1U <<  0)
 #define NEOGEO_MASK_B       (1U <<  1)
+#define NEOGEO_MASK_R1      (1U <<  2)
 #define NEOGEO_MASK_C       (1U <<  3)
 #define NEOGEO_MASK_D       (1U <<  4)
+#define NEOGEO_MASK_R2      (1U <<  5)
+#define NEOGEO_MASK_L1      (1U <<  6)
+#define NEOGEO_MASK_L2      (1U <<  7)
+#define NEOGEO_MASK_OPTIONS (1U <<  9)
 #define NEOGEO_MASK_SELECT  (1U <<  10)
 #define NEOGEO_MASK_START   (1U <<  11)
-
 #define NEOGEO_JOYSTICK_MID  0x7f
 
 typedef struct __attribute((packed, aligned(1)))
