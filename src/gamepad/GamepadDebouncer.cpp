@@ -27,7 +27,7 @@ void GamepadDebouncer::debounce(GamepadState *state)
 		state->buttons = debounceButtons(debounceState.buttons, changedButtons);
 		debounceState.buttons = state->buttons;
 	}*/
-	const uint8_t debounceMS = 5;
+	const uint32_t debounceMS = Storage::getInstance().getGamepadOptions().debounceDelay;;
 	uint32_t now = getMillis();
 
 	for (int i = 0; i < 4; i++)
