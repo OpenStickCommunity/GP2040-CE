@@ -77,7 +77,7 @@ void TiltInput::setup() {
 
 void TiltInput::debounce()
 {
-	GamepadDebouncer gamepadDebouncer;
+	static GamepadDebouncer tiltDebouncer;
 
 	// Return if the states haven't changed
 	if ((dDebLeftState == tiltLeftState) && (dDebRightState == tiltRightState))
@@ -87,13 +87,13 @@ void TiltInput::debounce()
 
 	// Debounce the tilt left state
 	if (dDebLeftState != tiltLeftState) {
-		tiltLeftState = gamepadDebouncer.debounceDpad(dDebLeftState, tiltLeftState, now);
+		tiltLeftState = tiltDebouncer.debounceDpad(dDebLeftState, tiltLeftState, now);
 		dDebLeftState = tiltLeftState;
 	}
 
 	// Debounce the tilt right state
 	if (dDebRightState != tiltRightState) {
-		tiltRightState = gamepadDebouncer.debounceDpad(dDebRightState, tiltRightState, now);
+		tiltRightState = tiltDebouncer.debounceDpad(dDebRightState, tiltRightState, now);
 		dDebRightState = tiltRightState;
 	}
 }

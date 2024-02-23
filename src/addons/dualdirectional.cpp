@@ -60,11 +60,11 @@ void DualDirectionalInput::reinit()
 
 void DualDirectionalInput::debounce()
 {
-    GamepadDebouncer gamepadDebouncer;
+    static GamepadDebouncer ddiDebouncer;
 
     if (dDebState != dualState) {
         uint32_t now = getMillis();
-        dualState = gamepadDebouncer.debounceDpad(dDebState, dualState, now);
+        dualState = ddiDebouncer.debounceDpad(dDebState, dualState, now);
         dDebState = dualState;
     }
 }
