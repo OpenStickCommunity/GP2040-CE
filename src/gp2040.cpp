@@ -222,6 +222,12 @@ void GP2040::debounceGpioGetAll() {
 	if (gamepad->debouncedGpio == (raw_gpio & buttonGpios)) return;
 
 	uint32_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
+	// abort if no delay is configured
+	if (debounceDelay == 0) {
+		gamepad->debouncedGpio = raw_gpio;
+		return;
+	}
+
 	uint32_t now = getMillis();
 	// check each button use case GPIO for state
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {

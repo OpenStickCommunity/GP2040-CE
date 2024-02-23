@@ -144,7 +144,7 @@ public:
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping *mapButtonFn;
 
-	// gamepad specific proxy of debounced buttons
+	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
 	Mask_t debouncedGpio;
 
 	bool userRequestedReinit = false;
