@@ -1,7 +1,6 @@
 #include "addons/slider_socd.h"
 
 #include "enums.pb.h"
-#include "gp2040.h"
 #include "storagemanager.h"
 #include "types.h"
 
@@ -32,7 +31,7 @@ void SliderSOCDInput::setup()
 
 SOCDMode SliderSOCDInput::read() {
     const SOCDSliderOptions& options = Storage::getInstance().getAddonOptions().socdSliderOptions;
-    Mask_t values = GP2040::debouncedGpio;
+    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
     if (values & upPrioModeMask)                return SOCDMode::SOCD_MODE_UP_PRIORITY;
     else if (values & neutralModeMask)          return SOCDMode::SOCD_MODE_NEUTRAL;
     else if (values & secondInputModeMask)      return SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY;

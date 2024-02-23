@@ -217,8 +217,9 @@ void GP2040::deinitializeStandardGpio() {
  */
 void GP2040::debounceGpioGetAll() {
 	Mask_t raw_gpio = ~gpio_get_all();
+	Gamepad* gamepad = Storage::getInstance().GetGamepad();
 	// return if state isn't different than the actual
-	if (debouncedGpio == (raw_gpio & buttonGpios)) return;
+	if (gamepad->debouncedGpio == (raw_gpio & buttonGpios)) return;
 
 	uint32_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
 	uint32_t now = getMillis();
@@ -227,14 +228,14 @@ void GP2040::debounceGpioGetAll() {
 		Mask_t pin_mask = 1 << pin;
 		if (buttonGpios & pin_mask) {
 			// if pin is newly active, set the debounced pin active immediately
-			if ((raw_gpio & pin_mask) && !(debouncedGpio & pin_mask)) {
-				debouncedGpio |= pin_mask;
+			if ((raw_gpio & pin_mask) && !(gamepad->debouncedGpio & pin_mask)) {
+				gamepad->debouncedGpio |= pin_mask;
 				gpioDebounceTime[pin] = now;
 			}
 			// if pin is newly released, wait for the debounce timer before deactivating
-			else if (!(raw_gpio & pin_mask) && (debouncedGpio & pin_mask) && \
+			else if (!(raw_gpio & pin_mask) && (gamepad->debouncedGpio & pin_mask) && \
 					((now - gpioDebounceTime[pin]) > debounceDelay)) {
-				debouncedGpio &= ~pin_mask;
+				gamepad->debouncedGpio &= ~pin_mask;
 				gpioDebounceTime[pin] = now;
 			}
 		}

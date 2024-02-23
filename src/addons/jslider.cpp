@@ -1,6 +1,5 @@
 #include "addons/jslider.h"
 
-#include "gp2040.h"
 #include "storagemanager.h"
 #include "types.h"
 
@@ -31,7 +30,7 @@ void JSliderInput::setup()
 
 DpadMode JSliderInput::read() {
     const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
-    Mask_t values = GP2040::debouncedGpio;
+    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
     if (values & dpModeMask)            return DpadMode::DPAD_MODE_DIGITAL;
     else if (values & lsModeMask)       return DpadMode::DPAD_MODE_LEFT_ANALOG;
     else if (values & rsModeMask)       return DpadMode::DPAD_MODE_RIGHT_ANALOG;

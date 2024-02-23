@@ -21,9 +21,6 @@ public:
     ~GP2040();
     void setup();           // setup core0
     void run();             // loop core0
-
-    // GPIO debouncer
-    inline static Mask_t debouncedGpio;
 private:
     Gamepad snapshot;
     AddonManager addons;

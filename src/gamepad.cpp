@@ -5,7 +5,6 @@
 
 // GP2040 Libraries
 #include "gamepad.h"
-#include "gp2040.h"
 #include "enums.pb.h"
 #include "storagemanager.h"
 #include "types.h"
@@ -190,7 +189,7 @@ void Gamepad::process()
 void Gamepad::read()
 {
 	// Need to invert since we're using pullups
-	Mask_t values = GP2040::debouncedGpio;
+	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 	
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;

@@ -1,5 +1,4 @@
 #include "addons/dualdirectional.h"
-#include "gp2040.h"
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
@@ -110,7 +109,7 @@ void DualDirectionalInput::preprocess()
 {
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    Mask_t values = GP2040::debouncedGpio;
+    Mask_t values = gamepad->debouncedGpio;
 
     dualState = 0
             | ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)

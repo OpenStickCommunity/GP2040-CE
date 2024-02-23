@@ -144,6 +144,9 @@ public:
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping *mapButtonFn;
 
+	// gamepad specific proxy of debounced buttons
+	Mask_t debouncedGpio;
+
 	bool userRequestedReinit = false;
 
 	// These are special to SOCD
