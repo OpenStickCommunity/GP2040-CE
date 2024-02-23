@@ -16,14 +16,14 @@ void GamepadDebouncer::debounce(GamepadState *state) {
 
 	// Debounce the Dpad
 	if (debounceState.dpad != state->dpad) {
-		debounceState.dpad = debounceDpad(debounceState.dpad, state->dpad, now);
-		state->dpad = debounceState.dpad;
+		state->dpad = debounceDpad(debounceState.dpad, state->dpad, now);
+		debounceState.dpad = state->dpad;
 	}
 
 	// Debounce the buttons
 	if (debounceState.buttons != state->buttons) {
-		debounceState.buttons = debounceButtons(debounceState.buttons, state->buttons, now);
-		state->buttons = debounceState.buttons;
+		state->buttons = debounceButtons(debounceState.buttons, state->buttons, now);
+		debounceState.buttons = state->buttons;
 	}
 }
 
