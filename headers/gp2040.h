@@ -21,9 +21,16 @@ public:
     ~GP2040();
     void setup();           // setup core0
     void run();             // loop core0
+
+    // GPIO debouncer
+    inline static Mask_t debouncedGpio;
 private:
     Gamepad snapshot;
     AddonManager addons;
+    // GPIO debouncer
+    void debounceGpioGetAll();
+    Mask_t buttonGpios;
+    uint32_t gpioDebounceTime[NUM_BANK0_GPIOS];
 
     struct RebootHotkeys {
         RebootHotkeys();

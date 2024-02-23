@@ -1,4 +1,5 @@
 #include "addons/reverse.h"
+#include "gp2040.h"
 #include "storagemanager.h"
 #include "GamepadEnums.h"
 #include "helper.h"
@@ -61,7 +62,7 @@ void ReverseInput::process()
     // Update Reverse State
     update();
 
-    uint32_t values = ~gpio_get_all();
+    uint32_t values = GP2040::debouncedGpio;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
     gamepad->state.dpad = 0

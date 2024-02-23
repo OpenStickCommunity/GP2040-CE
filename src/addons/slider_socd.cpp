@@ -1,6 +1,7 @@
 #include "addons/slider_socd.h"
 
 #include "enums.pb.h"
+#include "gp2040.h"
 #include "storagemanager.h"
 #include "types.h"
 
@@ -33,7 +34,7 @@ void SliderSOCDInput::setup()
 
 SOCDMode SliderSOCDInput::read() {
     const SOCDSliderOptions& options = Storage::getInstance().getAddonOptions().socdSliderOptions;
-    Mask_t values = ~gpio_get_all();
+    Mask_t values = GP2040::debouncedGpio;
     if (values & upPrioModeMask)                return SOCDMode::SOCD_MODE_UP_PRIORITY;
     else if (values & neutralModeMask)          return SOCDMode::SOCD_MODE_NEUTRAL;
     else if (values & secondInputModeMask)      return SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY;
@@ -55,32 +56,10 @@ void SliderSOCDInput::reinit()
     this->setup();
 }
 
-void SliderSOCDInput::debounce()
-{
-    uint32_t uNowTime = getMillis();
-    if ((dDebState != socdState) && ((uNowTime - uDebTime) > SLIDERSOCD_DEBOUNCE_MILLIS)) {
-        if ( (socdState ^ dDebState) == SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY )
-            dDebState = (SOCDMode)(dDebState ^ SOCDMode::SOCD_MODE_SECOND_INPUT_PRIORITY); // Bounce Second Priority
-        else if ( (socdState ^ dDebState) & SOCDMode::SOCD_MODE_UP_PRIORITY )
-            dDebState = (SOCDMode)(dDebState ^ SOCDMode::SOCD_MODE_UP_PRIORITY); // Bounce Up Priority
-        else if ( (socdState ^ dDebState) & SOCDMode::SOCD_MODE_NEUTRAL )
-            dDebState = (SOCDMode)(dDebState ^ SOCDMode::SOCD_MODE_NEUTRAL);
-        else if ( (socdState ^ dDebState) & SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY )
-            dDebState = (SOCDMode)(dDebState ^ SOCDMode::SOCD_MODE_FIRST_INPUT_PRIORITY);
-        else if ( (socdState ^ dDebState) & SOCDMode::SOCD_MODE_BYPASS )
-            dDebState = (SOCDMode)(dDebState ^ SOCDMode::SOCD_MODE_BYPASS);
-        uDebTime = uNowTime;
-    }
-    socdState = dDebState;
-}
-
 void SliderSOCDInput::process()
 {
     // Get Slider State
     socdState = read();
-#if SLIDERSOCD_DEBOUNCE_MILLIS > 0
-    debounce();
-#endif
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     if ( gamepad->getOptions().socdMode != socdState) {
