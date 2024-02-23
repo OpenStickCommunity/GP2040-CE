@@ -233,15 +233,10 @@ void GP2040::debounceGpioGetAll() {
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
 		Mask_t pin_mask = 1 << pin;
 		if (buttonGpios & pin_mask) {
-			// if pin is newly active, set the debounced pin active immediately
-			if ((raw_gpio & pin_mask) && !(gamepad->debouncedGpio & pin_mask)) {
-				gamepad->debouncedGpio |= pin_mask;
-				gpioDebounceTime[pin] = now;
-			}
-			// if pin is newly released, wait for the debounce timer before deactivating
-			else if (!(raw_gpio & pin_mask) && (gamepad->debouncedGpio & pin_mask) && \
-					((now - gpioDebounceTime[pin]) > debounceDelay)) {
-				gamepad->debouncedGpio &= ~pin_mask;
+			// Allow debouncer to change state if button state changed and debounce delay threshold met
+			if ((gamepad->debouncedGpio & pin_mask) != \
+					(raw_gpio & pin_mask) && ((now - gpioDebounceTime[pin]) > debounceDelay)) {
+				gamepad->debouncedGpio ^= pin_mask;
 				gpioDebounceTime[pin] = now;
 			}
 		}
