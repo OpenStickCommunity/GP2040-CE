@@ -6,76 +6,51 @@
 #include "gamepad/GamepadDebouncer.h"
 #include "storagemanager.h"
 
-void GamepadDebouncer::debounce(GamepadState *state)
-{
+void GamepadDebouncer::debounce(GamepadState *state) {
 	// Return if dpad and button states haven't changed
-	if ((debounceState.dpad == state->dpad) && (debounceState.buttons == state->buttons)) {
+	if ((debounceState.dpad == state->dpad) && (debounceState.buttons == state->buttons)){
 		return;
 	}
 
+	uint32_t now = getMillis();
+
 	// Debounce the Dpad
 	if (debounceState.dpad != state->dpad) {
-		uint32_t changedDpad = debounceState.dpad ^ state->dpad;
-
-		state->dpad = debounceDpad(debounceState.dpad, changedDpad);
-		debounceState.dpad = state->dpad;
+		debounceState.dpad = debounceDpad(debounceState.dpad, state->dpad, now);
+		state->dpad = debounceState.dpad;
 	}
 
 	// Debounce the buttons
 	if (debounceState.buttons != state->buttons) {
-		uint32_t changedButtons = debounceState.buttons ^ state->buttons;
-		
-		state->buttons = debounceButtons(debounceState.buttons, changedButtons);
-		debounceState.buttons = state->buttons;
+		debounceState.buttons = debounceButtons(debounceState.buttons, state->buttons, now);
+		state->buttons = debounceState.buttons;
 	}
 }
 
-uint8_t GamepadDebouncer::debounceDpad(uint8_t dpadState, uint32_t changedDpad)
-{
-	uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
+uint8_t GamepadDebouncer::debounceDpad(uint8_t oldDpad, uint8_t newDpad, uint32_t now) {
+	static uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
 
-	uint32_t now = getMillis();
-
-	for (int i = 0; i < 4; i++)
-	{
-		// If Dpad is a press, don't wait
-		if ((changedDpad & dpadMasks[i]) && !(dpadState & dpadMasks[i]))
-		{
-			dpadState ^= dpadMasks[i];
-			dpadTime[i] = now;
-		}
-		// If Dpad is a release, wait for the debounce timer
-		else if ((changedDpad & dpadMasks[i]) && ((now - dpadTime[i]) > debounceDelay))
-		{
-			dpadState ^= dpadMasks[i];
+	for (int i = 0; i < 4; i++) {
+		// Allow debouncer to change state if dpad state changed and debounce delay threshold met
+		if ((oldDpad & dpadMasks[i]) != (newDpad & dpadMasks[i]) && (now - dpadTime[i]) > debounceDelay) {
+			newDpad ^= dpadMasks[i];
 			dpadTime[i] = now;
 		}
 	}
 
-	return dpadState;
+	return newDpad;
 }
 
-uint16_t GamepadDebouncer::debounceButtons(uint16_t buttonState, uint32_t changedButtons)
-{
-	uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
-	
-	uint32_t now = getMillis();
-	
-	for (int i = 0; i < GAMEPAD_BUTTON_COUNT; i++)
-	{
-		// If button is a press, don't wait
-		if ((changedButtons & buttonMasks[i]) && !(buttonState & buttonMasks[i]))
-		{
-			buttonState ^= buttonMasks[i];
-			buttonTime[i] = now;
-		}
-		// If button is a release, wait for the debounce timer
-		else if ((changedButtons & buttonMasks[i]) && ((now - buttonTime[i]) > debounceDelay))
-		{
-			buttonState ^= buttonMasks[i];
+uint16_t GamepadDebouncer::debounceButtons(uint16_t oldButtons, uint16_t newButtons, uint32_t now) {
+	static uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
+
+	for (int i = 0; i < GAMEPAD_BUTTON_COUNT; i++) {
+		// Allow debouncer to change state if button state changed and debounce delay threshold met
+		if ((oldButtons & buttonMasks[i]) != (newButtons & buttonMasks[i]) && ((now - buttonTime[i]) >= debounceDelay)) {
+			newButtons ^= buttonMasks[i];
 			buttonTime[i] = now;
 		}
 	}
 
-	return buttonState;
+	return newButtons;
 }

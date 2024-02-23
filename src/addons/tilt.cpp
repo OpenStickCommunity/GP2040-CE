@@ -80,24 +80,22 @@ void TiltInput::debounce()
 	GamepadDebouncer gamepadDebouncer;
 
 	// Return if the states haven't changed
-    if ((dDebLeftState == tiltLeftState) && (dDebRightState == tiltRightState))
-        return;
+	if ((dDebLeftState == tiltLeftState) && (dDebRightState == tiltRightState))
+		return;
+
+	uint32_t now = getMillis();
 
 	// Debounce the tilt left state
-    if (dDebLeftState != tiltLeftState) {
-        uint32_t changedDpad = dDebLeftState ^ tiltLeftState;
-
-        tiltLeftState = gamepadDebouncer.debounceDpad(dDebLeftState, changedDpad);
+	if (dDebLeftState != tiltLeftState) {
+		tiltLeftState = gamepadDebouncer.debounceDpad(dDebLeftState, tiltLeftState, now);
 		dDebLeftState = tiltLeftState;
-    }
-	
+	}
+
 	// Debounce the tilt right state
 	if (dDebRightState != tiltRightState) {
-        uint32_t changedDpad = dDebRightState ^ tiltRightState;
-
-        tiltRightState = gamepadDebouncer.debounceDpad(dDebRightState, changedDpad);
+		tiltRightState = gamepadDebouncer.debounceDpad(dDebRightState, tiltRightState, now);
 		dDebRightState = tiltRightState;
-    }
+	}
 }
 
 void TiltInput::preprocess()
