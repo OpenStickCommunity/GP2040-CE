@@ -61,9 +61,9 @@ void DualDirectionalInput::reinit()
 void DualDirectionalInput::debounce()
 {
     GamepadDebouncer gamepadDebouncer;
-		uint32_t now = getMillis();
 
     if (dDebState != dualState) {
+        uint32_t now = getMillis();
         dualState = gamepadDebouncer.debounceDpad(dDebState, dualState, now);
         dDebState = dualState;
     }
@@ -308,7 +308,7 @@ uint8_t DualDirectionalInput::SOCDCombine(SOCDMode mode, uint8_t gamepadState) {
     return outState;
 }
 
-void DualDirectionalInput::SOCDDualClean(SOCDMode socdMode) { 
+void DualDirectionalInput::SOCDDualClean(SOCDMode socdMode) {
     if (socdMode == SOCD_MODE_BYPASS) {
         return;
     }
