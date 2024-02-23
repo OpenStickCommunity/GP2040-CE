@@ -105,6 +105,7 @@ private:
 	uint8_t dDebRightState;          // Debounce State (stored)
 	uint8_t tiltLeftState;          // Tilt State
 	uint8_t tiltRightState;          // Tilt Right Analog State
+	GamepadDebouncer tiltDebouncer;
 	DpadDirection lastGPUD; // Gamepad Last Up-Down
 	DpadDirection lastGPLR; // Gamepad Last Left-Right
 	DpadDirection leftLastTiltUD; // Tilt Last Up-Down

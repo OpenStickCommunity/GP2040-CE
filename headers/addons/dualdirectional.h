@@ -49,6 +49,7 @@ private:
     const SOCDMode getSOCDMode(const GamepadOptions&);
     uint8_t dDebState;          // Debounce State (stored)
     uint8_t dualState;          // Dual Directional State
+    GamepadDebouncer ddiDebouncer;
     DpadDirection lastGPUD; // Gamepad Last Up-Down
 	DpadDirection lastGPLR; // Gamepad Last Left-Right
     DpadDirection lastDualUD; // Dual Last Up-Down

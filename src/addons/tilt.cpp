@@ -77,8 +77,6 @@ void TiltInput::setup() {
 
 void TiltInput::debounce()
 {
-	static GamepadDebouncer tiltDebouncer;
-
 	// Return if the states haven't changed
 	if ((dDebLeftState == tiltLeftState) && (dDebRightState == tiltRightState))
 		return;
@@ -276,7 +274,7 @@ void TiltInput::SOCDTiltClean(SOCDMode socdMode) {
 		rightLastTiltUD = DIRECTION_NONE;
 		break;
 	}
-    
+
 	switch (tiltRightState & (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT)) {
 	case (GAMEPAD_MASK_LEFT | GAMEPAD_MASK_RIGHT):
 		if (socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL) {
