@@ -7,8 +7,6 @@
 
 #include "GamepadEnums.h"
 
-#define SLIDERSOCD_DEBOUNCE_MILLIS 5
-
 #define SOCD_MODE_MASK (SOCD_MODE_UP_PRIORITY & SOCD_MODE_SECOND_INPUT_PRIORITY & SOCD_MODE_FIRST_INPUT_PRIORITY & SOCD_MODE_NEUTRAL)
 
 bool SliderSOCDInput::available() {
@@ -59,7 +57,7 @@ void SliderSOCDInput::reinit()
 void SliderSOCDInput::process()
 {
     // Get Slider State
-    socdState = read();
+    SOCDMode socdState = read();
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     if ( gamepad->getOptions().socdMode != socdState) {

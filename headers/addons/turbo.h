@@ -95,7 +95,6 @@ public:
     virtual std::string name() { return TurboName; }
 private:
     void read(const TurboOptions&);                // Read TURBO Buttons and Dials
-    void debounce();            // TURBO Button Debouncer
     void updateTurboShotCount(uint8_t turboShotCount);
     Pin_t turboPin;             // Pin for Turbo from Gamepad/BoardConfig
     bool bDebState;             // Debounce TURBO Button State

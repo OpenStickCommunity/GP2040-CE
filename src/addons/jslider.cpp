@@ -8,8 +8,6 @@
 #include "helper.h"
 #include "config.pb.h"
 
-#define JSLIDER_DEBOUNCE_MILLIS 5
-
 #define DPAD_MODE_MASK (DPAD_MODE_LEFT_ANALOG & DPAD_MODE_RIGHT_ANALOG & DPAD_MODE_DIGITAL)
 
 bool JSliderInput::available() {
@@ -54,7 +52,7 @@ void JSliderInput::reinit()
 void JSliderInput::process()
 {
     // Get Slider State
-    dpadState = read();
+    DpadMode dpadState = read();
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     if ( gamepad->getOptions().dpadMode != dpadState) {

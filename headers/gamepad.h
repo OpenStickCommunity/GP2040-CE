@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "enums.pb.h"
-#include "gamepad/GamepadDebouncer.h"
 #include "gamepad/GamepadState.h"
 
 #include "pico/stdlib.h"
@@ -41,7 +40,6 @@ public:
 	void process();
 	void read();
 	void save();
-	void debounce();
 	
 	void hotkey();
 
@@ -123,7 +121,6 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;
 	GamepadState turboState;

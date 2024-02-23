@@ -62,7 +62,7 @@ void ReverseInput::process()
     // Update Reverse State
     update();
 
-    uint32_t values = GP2040::debouncedGpio;
+    Mask_t values = GP2040::debouncedGpio;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
     gamepad->state.dpad = 0

@@ -4,7 +4,6 @@
 #include "helper.h"
 #include "config.pb.h"
 #include "types.h"
-#include "gamepad/GamepadDebouncer.h"
 
 bool DualDirectionalInput::available() {
     return Storage::getInstance().getAddonOptions().dualDirectionalOptions.enabled;
