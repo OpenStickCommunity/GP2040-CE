@@ -9,7 +9,6 @@
 
 class PeripheralManager {
 public:
-    PeripheralManager(){}
 	PeripheralManager(PeripheralManager const&) = delete;
 	void operator=(PeripheralManager const&)  = delete;
 	static PeripheralManager& getInstance() // Thread-safe storage ensures cross-thread talk
@@ -30,6 +29,8 @@ public:
     bool isSPIEnabled(uint8_t block);
     bool isUSBEnabled(uint8_t block);
 private:
+    PeripheralManager(){}
+
     PeripheralI2C blockI2C0;
     PeripheralI2C blockI2C1;
 
