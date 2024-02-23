@@ -255,6 +255,8 @@ void GP2040::run() {
 		// Do any queued saves in StorageManager
 		Storage::getInstance().performEnqueuedSaves();
 		
+		// Debounce
+		debounceGpioGetAll();
 		// Read Gamepad
 		gamepad->read();
 
@@ -268,9 +270,6 @@ void GP2040::run() {
 
 		// Process USB Host on Core0
 		USBHostManager::getInstance().process();
-
-		// Debounce if set
-		debounceGpioGetAll();
 
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
@@ -335,6 +334,7 @@ GP2040::BootAction GP2040::getBootAction() {
 				Gamepad * gamepad = Storage::getInstance().GetGamepad();
 				Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 				
+				debounceGpioGetAll();
 				gamepad->read();
 
 				// Pre-Process add-ons for MPGS
