@@ -10,14 +10,13 @@
 #include <vector>
 #include "AnimationStation.hpp"
 #include "helper.h"
+#include <map>
 
 #include "config.pb.h"
 
-using namespace std;
-
 void addStaticThemes(const LEDOptions& options, const AnimationOptions& animationOptions)
 {
-	map<uint32_t, RGB> themeStaticRainbow({
+	std::map<uint32_t, RGB> themeStaticRainbow({
 		{ GAMEPAD_MASK_DL, ColorRed },
 		{ GAMEPAD_MASK_DD, ColorOrange },
 		{ GAMEPAD_MASK_DR, ColorYellow },
@@ -32,7 +31,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorMagenta },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeA({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeA({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -44,7 +43,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R2, ColorOrange },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeB({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeB({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -56,7 +55,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R2, ColorOrange },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeC({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeC({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -68,7 +67,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R2, ColorRed },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeD({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeD({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -80,7 +79,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R1, ColorOrange },
 	});
 
-	const map<uint32_t, RGB> themeGuiltyGearTypeE({
+	const std::map<uint32_t, RGB> themeGuiltyGearTypeE({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -92,7 +91,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R1, ColorOrange },
 	});
 
-	const map<uint32_t, RGB> themeNeoGeo({
+	const std::map<uint32_t, RGB> themeNeoGeo({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -103,7 +102,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L1, ColorBlue },
 	});
 
-	const map<uint32_t, RGB> themeNeoGeoCurved({
+	const std::map<uint32_t, RGB> themeNeoGeoCurved({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -114,7 +113,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R1, ColorBlue },
 	});
 
-	const map<uint32_t, RGB> themeNeoGeoModern({
+	const std::map<uint32_t, RGB> themeNeoGeoModern({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -125,7 +124,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_B2, ColorBlue },
 	});
 
-	const map<uint32_t, RGB> themeSixButtonFighter({
+	const std::map<uint32_t, RGB> themeSixButtonFighter({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -138,7 +137,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R2, ColorRed },
 	});
 
-	const map<uint32_t, RGB> themeSixButtonFighterPlus({
+	const std::map<uint32_t, RGB> themeSixButtonFighterPlus({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -153,7 +152,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorGreen },
 	});
 
-	const map<uint32_t, RGB> themeStreetFighter2({
+	const std::map<uint32_t, RGB> themeStreetFighter2({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -168,7 +167,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorBlack },
 	});
 
-	const map<uint32_t, RGB> themeTekken({
+	const std::map<uint32_t, RGB> themeTekken({
 		{ GAMEPAD_MASK_DL, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DR, ColorWhite },
@@ -180,7 +179,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_R1, ColorRed },
 	});
 
-	const map<uint32_t, RGB> themePlayStation({
+	const std::map<uint32_t, RGB> themePlayStation({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -195,7 +194,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorBlack },
 	});
 
-	const map<uint32_t, RGB> themePlayStationAll({
+	const std::map<uint32_t, RGB> themePlayStationAll({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -210,7 +209,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorWhite },
 	});
 
-	const map<uint32_t, RGB> themeSuperFamicom({
+	const std::map<uint32_t, RGB> themeSuperFamicom({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -225,7 +224,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorBlack },
 	});
 
-	const map<uint32_t, RGB> themeSuperFamicomAll({
+	const std::map<uint32_t, RGB> themeSuperFamicomAll({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -240,7 +239,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorWhite },
 	});
 
-	const map<uint32_t, RGB> themeXbox({
+	const std::map<uint32_t, RGB> themeXbox({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -255,7 +254,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorBlack },
 	});
 
-	const map<uint32_t, RGB> themeXboxAll({
+	const std::map<uint32_t, RGB> themeXboxAll({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
@@ -270,7 +269,7 @@ void addStaticThemes(const LEDOptions& options, const AnimationOptions& animatio
 		{ GAMEPAD_MASK_L2, ColorWhite },
 	});
 
-	const map<uint32_t, RGB> themeFightboard({
+	const std::map<uint32_t, RGB> themeFightboard({
 		{ GAMEPAD_MASK_DU, ColorWhite },
 		{ GAMEPAD_MASK_DD, ColorWhite },
 		{ GAMEPAD_MASK_DL, ColorWhite },
