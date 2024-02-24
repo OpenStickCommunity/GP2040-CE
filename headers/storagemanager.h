@@ -42,7 +42,7 @@ public:
 	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
 	LEDOptions& getLedOptions() { return config.ledOptions; }
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
-	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
+	AnimationOptions_Proto& getAnimationOptionsProto() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
 	GpioAction* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
@@ -71,6 +71,9 @@ public:
 	void setFunctionalPinMappings();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
+
+	void saveAnimation();
+    AnimationOptions getAnimationOptions();
 
 private:
 	Storage();

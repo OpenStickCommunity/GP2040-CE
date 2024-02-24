@@ -4,7 +4,6 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
-#include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
 #include "types.h"
@@ -895,7 +894,7 @@ std::string setCustomTheme()
 	options.buttonPressColorCooldownTimeInMs = pressCooldown;
 
 	AnimationStation::SetOptions(options);
-	AnimationStorage::getInstance().save();
+	Storage::getInstance().saveAnimation();
 
 	return serialize_json(doc);
 }

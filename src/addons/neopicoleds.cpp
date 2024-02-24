@@ -4,7 +4,6 @@
  */
 
 #include "AnimationStation.hpp"
-#include "AnimationStorage.hpp"
 #include "NeoPico.hpp"
 #include "Pixel.hpp"
 #include "PlayerLEDs.h"
@@ -210,7 +209,7 @@ void NeoPicoLEDAddon::process()
 
 	neopico->SetFrame(frame);
 	neopico->Show();
-	AnimationStorage::getInstance().save();
+	Storage::getInstance().saveAnimation();
 
 	this->nextRunTime = make_timeout_time_ms(NeoPicoLEDAddon::intervalMS);
 }
@@ -511,7 +510,7 @@ void NeoPicoLEDAddon::configureLEDs()
 
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	as.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
-	AnimationOptions animationOptions = AnimationStorage::getInstance().getAnimationOptions();
+	AnimationOptions animationOptions = Storage::getInstance().getAnimationOptions();
 	addStaticThemes(ledOptions, animationOptions);
 	as.SetOptions(animationOptions);
 	as.SetMatrix(matrix);

@@ -6,7 +6,6 @@
 #include "storagemanager.h"
 
 #include "BoardConfig.h"
-#include "AnimationStorage.hpp"
 #include "Effects/StaticColor.hpp"
 #include "FlashPROM.h"
 #include "config.pb.h"
@@ -57,7 +56,7 @@ bool Storage::save()
 
 static void updateAnimationOptionsProto(const AnimationOptions& options)
 {
-	AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
+	AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptionsProto();
 
 	optionsProto.baseAnimationIndex			= options.baseAnimationIndex;
 	optionsProto.brightness					= options.brightness;
@@ -212,10 +211,10 @@ uint8_t * Storage::GetFeatureData()
 }
 
 /* Animation stuffs */
-AnimationOptions AnimationStorage::getAnimationOptions()
+AnimationOptions Storage::getAnimationOptions()
 {
 	AnimationOptions options;
-	const AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptions();
+	const AnimationOptions_Proto& optionsProto = Storage::getInstance().getAnimationOptionsProto();
 
 	options.checksum				= 0;
 	options.baseAnimationIndex		= std::min<uint32_t>(optionsProto.baseAnimationIndex, 255);
@@ -267,7 +266,7 @@ AnimationOptions AnimationStorage::getAnimationOptions()
 	return options;
 }
 
-void AnimationStorage::save()
+void Storage::saveAnimation()
 {
 	Storage::getInstance().enqueueAnimationOptionsSave(AnimationStation::options);
 }
