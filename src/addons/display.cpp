@@ -26,6 +26,11 @@ void DisplayAddon::setup() {
 
 	//stdio_init_all();
 
+    loadedScreens.insert({CONFIG_INSTRUCTION, {new ConfigScreen()}});
+    loadedScreens.insert({SPLASH, {new SplashScreen()}});
+    loadedScreens.insert({MAIN_MENU, {new MainMenuScreen()}});
+    loadedScreens.insert({BUTTONS, {new ButtonLayoutScreen()}});
+
 	gpDisplay = new GPGFX();
 
 	GPGFX_DisplayTypeOptions gpOptions;

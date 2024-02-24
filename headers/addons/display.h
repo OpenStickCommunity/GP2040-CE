@@ -208,12 +208,7 @@ private:
 	GPGFX* gpDisplay;
 	GPScreen* gpScreen;
 
-	std::map<DisplayMode, GPScreen*> loadedScreens = {
-		{CONFIG_INSTRUCTION, {new ConfigScreen()}},
-		{SPLASH, {new SplashScreen()}},
-		{MAIN_MENU, {new MainMenuScreen()}},
-		{BUTTONS, {new ButtonLayoutScreen()}}
-	};
+	std::map<DisplayMode, GPScreen*> loadedScreens;
 
 	DisplayMode currDisplayMode;
 	bool turnOffWhenSuspended;
