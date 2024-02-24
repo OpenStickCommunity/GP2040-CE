@@ -895,7 +895,7 @@ std::string setCustomTheme()
 	options.buttonPressColorCooldownTimeInMs = pressCooldown;
 
 	AnimationStation::SetOptions(options);
-	AnimationStore.save();
+	AnimationStorage::getInstance().save();
 
 	return serialize_json(doc);
 }

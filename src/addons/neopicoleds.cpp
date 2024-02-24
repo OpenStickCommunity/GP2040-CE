@@ -210,7 +210,7 @@ void NeoPicoLEDAddon::process()
 
 	neopico->SetFrame(frame);
 	neopico->Show();
-	AnimationStore.save();
+	AnimationStorage::getInstance().save();
 
 	this->nextRunTime = make_timeout_time_ms(NeoPicoLEDAddon::intervalMS);
 }
@@ -538,7 +538,7 @@ void NeoPicoLEDAddon::configureLEDs()
 
 	Animation::format = static_cast<LEDFormat>(ledOptions.ledFormat);
 	as.ConfigureBrightness(ledOptions.brightnessMaximum, ledOptions.brightnessSteps);
-	AnimationOptions animationOptions = AnimationStore.getAnimationOptions();
+	AnimationOptions animationOptions = AnimationStorage::getInstance().getAnimationOptions();
 	addStaticThemes(ledOptions, animationOptions);
 	as.SetOptions(animationOptions);
 	as.SetMatrix(matrix);

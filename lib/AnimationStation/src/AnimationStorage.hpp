@@ -6,10 +6,19 @@
 class AnimationStorage
 {
   public:
+    AnimationStorage(const AnimationStorage&) = delete;
+    AnimationStorage& operator=(const AnimationStorage&) = delete;
+
+    static AnimationStorage& getInstance() {
+      static AnimationStorage animationStore;
+      return animationStore;
+    }
+
     void save();
     AnimationOptions getAnimationOptions();
+  private:
+    AnimationStorage() = default;
+    ~AnimationStorage() = default;
 };
-
-static AnimationStorage AnimationStore;
 
 #endif
