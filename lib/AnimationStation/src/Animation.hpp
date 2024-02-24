@@ -143,7 +143,7 @@ we provide a subset of pixels to use as a filter. */
 
   // Color fade 
   RGB defaultColor = ColorBlack;  
-  static std::map<uint32_t, LedRGBState> ledRGBStates;
+  std::map<uint32_t, LedRGBState> ledRGBStates;
   absolute_time_t lastUpdateTime = nil_time;
   uint32_t coolDownTimeInMs = 1000;
   int64_t updateTimeInMs = 20;

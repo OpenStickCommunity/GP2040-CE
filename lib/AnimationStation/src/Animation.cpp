@@ -9,7 +9,6 @@
 #define PRESS_COOLDOWN_MIN 0
 
 LEDFormat Animation::format;
-std::map<uint32_t, LedRGBState> Animation::ledRGBStates;
 
 Animation::Animation(PixelMatrix &inMatrix) : matrix(&inMatrix) {
   for (auto &pixel_row : matrix->pixels) {
