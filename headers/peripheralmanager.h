@@ -29,7 +29,7 @@ public:
     bool isSPIEnabled(uint8_t block);
     bool isUSBEnabled(uint8_t block);
 private:
-	PeripheralManager() = default;
+    PeripheralManager() = default;
     ~PeripheralManager() = default;
 
     PeripheralI2C blockI2C0;
