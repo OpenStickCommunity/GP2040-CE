@@ -32,6 +32,6 @@ bool CustomThemePressed::HasTheme() {
   return CustomThemePressed::theme.size() > 0;
 }
 
-void CustomThemePressed::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
+void CustomThemePressed::SetCustomTheme(const std::map<uint32_t, RGB>& customTheme) {
   CustomThemePressed::theme = customTheme;
 }
