@@ -11,7 +11,6 @@
 // GP2040 Classes
 #include "gamepad.h"
 #include "addonmanager.h"
-#include "peripheralmanager.h"
 #include "gpdriver.h"
 
 #include "pico/types.h"
@@ -25,7 +24,6 @@ public:
 private:
     Gamepad snapshot;
     AddonManager addons;
-    PeripheralManager peripherals;
 
     struct RebootHotkeys {
         RebootHotkeys();

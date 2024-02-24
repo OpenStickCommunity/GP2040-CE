@@ -6,6 +6,7 @@
 
 #include "build_info.h"
 #include "configmanager.h" // Global Managers
+#include "peripheralmanager.h"
 #include "storagemanager.h"
 #include "addonmanager.h"
 #include "usbhostmanager.h"
