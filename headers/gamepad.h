@@ -40,8 +40,9 @@ public:
 	void process();
 	void read();
 	void save();
-	
+
 	void hotkey();
+	void clearState();
 
 	/**
 	 * @brief Flag to indicate analog trigger support.
