@@ -3,9 +3,9 @@
 StaticColor::StaticColor(PixelMatrix &inMatrix) : Animation(inMatrix) {
 }
 
-StaticColor::StaticColor(PixelMatrix& inMatrix, const std::vector<Pixel>& inpixels) : Animation(inMatrix) {
+StaticColor::StaticColor(PixelMatrix& inMatrix, const std::vector<Pixel>& inPixels) : Animation(inMatrix) {
   this->filtered = true;
-  pixels = inpixels;
+  pixels = inPixels;
 }
 
 void StaticColor::Animate(RGB (&frame)[100]) {

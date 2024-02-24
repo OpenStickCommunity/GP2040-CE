@@ -11,7 +11,7 @@ public:
   ~CustomTheme() {  };
 
   static bool HasTheme();
-  static void SetCustomTheme(std::map<uint32_t, RGB> customTheme);
+  static void SetCustomTheme(const std::map<uint32_t, RGB>& customTheme);
   void Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();

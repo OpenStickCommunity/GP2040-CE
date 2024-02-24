@@ -17,7 +17,7 @@ public:
   void ParameterUp();
   void ParameterDown();
 
-protected:
+private:
   int currentFrame = 0;
   bool reverse = false;
   absolute_time_t nextRunTime = nil_time;

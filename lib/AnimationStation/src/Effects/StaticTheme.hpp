@@ -13,14 +13,13 @@
 class StaticTheme : public Animation {
 public:
   StaticTheme(PixelMatrix &inMatrix);
-  ~StaticTheme() {};
 
   static void AddTheme(const std::map<uint32_t, RGB>& theme) { themes.push_back(theme); }
   static void ClearThemes() { themes.clear(); }
   void Animate(RGB (&frame)[100]);
   void ParameterUp();
   void ParameterDown();
-protected:
+private:
   RGB defaultColor = ColorBlack;
   static std::vector<std::map<uint32_t, RGB>> themes;
 };

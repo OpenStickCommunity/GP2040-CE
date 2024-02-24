@@ -10,15 +10,13 @@
 class StaticColor : public Animation {
 public:
   StaticColor(PixelMatrix &inMatrix);
-  StaticColor(PixelMatrix &inMatrix, const std::vector<Pixel>& pixels);
-  ~StaticColor() { };
+  StaticColor(PixelMatrix &inMatrix, const std::vector<Pixel>& inPixels);
 
   void Animate(RGB (&frame)[100]);
   void SaveIndexOptions(uint8_t colorIndex);
   uint8_t GetColor();
   void ParameterUp();
   void ParameterDown();
-protected:
 };
 
 #endif

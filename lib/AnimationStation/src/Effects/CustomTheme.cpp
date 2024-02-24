@@ -40,7 +40,7 @@ bool CustomTheme::HasTheme() {
   return CustomTheme::theme.size() > 0;
 }
 
-void CustomTheme::SetCustomTheme(std::map<uint32_t, RGB> customTheme) {
+void CustomTheme::SetCustomTheme(const std::map<uint32_t, RGB>& customTheme) {
   CustomTheme::theme = customTheme;
   AnimationStation::effectCount = TOTAL_EFFECTS + 1;
 }
