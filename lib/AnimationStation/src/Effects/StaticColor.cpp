@@ -12,20 +12,21 @@ void StaticColor::Animate(RGB (&frame)[100]) {
   UpdateTime();
   UpdatePresses(frame);
 
-  for (size_t r = 0; r != matrix->pixels.size(); r++) {
-    for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
-      if (matrix->pixels[r][c].index == NO_PIXEL.index || this->notInFilter(matrix->pixels[r][c]))
+  for (auto &pixel_row : matrix->pixels) {
+    for (auto &pixel : pixel_row) {
+      if (pixel.index == NO_PIXEL.index || this->notInFilter(pixel))
         continue;
 
       // Count down the timer
-      DecrementFadeCounter(matrix->pixels[r][c].index);
+      DecrementFadeCounter(pixel.index);
 
-      for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+      for (auto &position : pixel.positions) {
         // Interpolate from hitColor (color the button was assigned when pressed) back to the theme color
         if (!this->filtered) {
-          frame[matrix->pixels[r][c].positions[p]] = BlendColor(hitColor[matrix->pixels[r][c].index], colors[this->GetColor()], times[matrix->pixels[r][c].index]);
+          auto& ledRGBState = GetLedRGBStateAtIndex(pixel.index);
+          frame[position] = BlendColor(ledRGBState.HitColor, colors[this->GetColor()], ledRGBState.Time);
         } else {
-          frame[matrix->pixels[r][c].positions[p]] = colors[this->GetColor()];
+          frame[position] = colors[this->GetColor()];
         }
       }
     }

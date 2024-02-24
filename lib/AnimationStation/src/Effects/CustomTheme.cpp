@@ -9,23 +9,27 @@ void CustomTheme::Animate(RGB (&frame)[100]) {
   UpdateTime();
   UpdatePresses(frame);
 
-  for (size_t r = 0; r != matrix->pixels.size(); r++) {
-    for (size_t c = 0; c != matrix->pixels[r].size(); c++) {
-      if (matrix->pixels[r][c].index == NO_PIXEL.index)
+  for (auto &pixel_row : matrix->pixels) {
+    for (auto &pixel : pixel_row) {
+      if (pixel.index == NO_PIXEL.index) {
         continue;
+      }
 
       // Count down the timer
-      DecrementFadeCounter(matrix->pixels[r][c].index);
+      DecrementFadeCounter(pixel.index);
 
-      auto itr = theme.find(matrix->pixels[r][c].mask);
+      auto itr = theme.find(pixel.mask);
       if (itr != theme.end()) {
-        for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
+        auto& ledRGBState = GetLedRGBStateAtIndex(pixel.index);
+
+        for (auto& position : pixel.positions) {
           // Interpolate from hitColor (color the button was assigned when pressed) back to the theme color
-          frame[matrix->pixels[r][c].positions[p]] = BlendColor(hitColor[matrix->pixels[r][c].index], itr->second, times[matrix->pixels[r][c].index]);
+          frame[position] = BlendColor(ledRGBState.HitColor, itr->second, ledRGBState.Time);
         }
-      } else {
-        for (size_t p = 0; p != matrix->pixels[r][c].positions.size(); p++) {
-          frame[matrix->pixels[r][c].positions[p]] = defaultColor;
+      }
+      else {
+        for (auto& position : pixel.positions) {
+          frame[position] = defaultColor;
         }
       }
     }

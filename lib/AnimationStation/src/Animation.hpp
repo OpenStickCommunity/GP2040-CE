@@ -103,6 +103,11 @@ inline const std::vector<RGB> colors {
     ColorLimeGreen, ColorGreen,  ColorSeafoam, ColorAqua,   ColorSkyBlue,
     ColorBlue,      ColorPurple, ColorPink,    ColorMagenta };
 
+struct LedRGBState {
+    RGB HitColor;
+    int32_t Time;
+};
+
 class Animation {
 public:
   Animation(PixelMatrix &matrix);
@@ -112,7 +117,7 @@ public:
 
   static LEDFormat format;
 
-  bool notInFilter(Pixel pixel);
+  bool notInFilter(const Pixel& pixel);
   virtual void Animate(RGB (&frame)[100]) = 0;
   void UpdateTime();
   void UpdatePresses(RGB (&frame)[100]);
@@ -123,6 +128,8 @@ public:
 
   virtual void FadeTimeUp();
   virtual void FadeTimeDown();
+
+  virtual const LedRGBState& GetLedRGBStateAtIndex(uint32_t index);
 
   RGB BlendColor(RGB start, RGB end, uint32_t frame);
 
@@ -136,8 +143,7 @@ we provide a subset of pixels to use as a filter. */
 
   // Color fade 
   RGB defaultColor = ColorBlack;  
-  static std::map<uint32_t, int32_t> times;
-  static std::map<uint32_t, RGB> hitColor;    
+  static std::map<uint32_t, LedRGBState> ledRGBStates;
   absolute_time_t lastUpdateTime = nil_time;
   uint32_t coolDownTimeInMs = 1000;
   int64_t updateTimeInMs = 20;

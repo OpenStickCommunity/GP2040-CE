@@ -23,13 +23,15 @@ void Chase::Animate(RGB (&frame)[100]) {
       // Count down the timer
       DecrementFadeCounter(pixel.index);
 
+      auto& ledRGBState = GetLedRGBStateAtIndex(pixel.index);
+
       if (this->IsChasePixel(pixel.index)) {
         RGB color = RGB::wheel(this->WheelFrame(pixel.index));
         for (auto &pos : pixel.positions)
-          frame[pos] = BlendColor(hitColor[pixel.index], color, times[pixel.index]);
+          frame[pos] = BlendColor(ledRGBState.HitColor, color, ledRGBState.Time);
       } else {
         for (auto &pos : pixel.positions)
-          frame[pos] = BlendColor(hitColor[pixel.index], ColorBlack, times[pixel.index]);
+          frame[pos] = BlendColor(ledRGBState.HitColor, ColorBlack, ledRGBState.Time);
       }
     }
   }

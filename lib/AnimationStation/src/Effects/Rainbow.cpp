@@ -20,8 +20,10 @@ void Rainbow::Animate(RGB (&frame)[100]) {
       DecrementFadeCounter(pixel.index);
 
       RGB color = RGB::wheel(this->currentFrame);
-      for (auto &pos : pixel.positions)
-        frame[pos] = BlendColor(hitColor[pixel.index], color, times[pixel.index]);
+      for (auto &pos : pixel.positions) {
+        auto& ledRGBState = GetLedRGBStateAtIndex(pixel.index);
+        frame[pos] = BlendColor(ledRGBState.HitColor, color, ledRGBState.Time);
+      }
     }
   }
 
