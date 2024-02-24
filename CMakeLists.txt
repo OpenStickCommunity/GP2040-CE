@@ -167,8 +167,8 @@ src/drivers/xboxog/xid/xid_steelbattalion.c
 src/drivers/xboxog/xid/xid.c
 src/drivers/xboxog/XboxOriginalDriver.cpp
 src/drivers/xinput/XInputDriver.cpp
-src/drivers/i2c/ssd1306/obd_ssd1306.cpp
-src/drivers/i2c/ssd1306/tiny_ssd1306.cpp
+src/interfaces/i2c/ssd1306/obd_ssd1306.cpp
+src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
 src/display/ui/elements/GPWidget.cpp
 src/display/ui/elements/GPButton.cpp
 src/display/ui/elements/GPLever.cpp
@@ -252,8 +252,8 @@ headers
 headers/addons
 headers/configs
 headers/drivers
-headers/drivers/i2c
-headers/drivers/i2c/ssd1306
+headers/interfaces/i2c
+headers/interfaces/i2c/ssd1306
 headers/gamepad
 headers/display
 headers/display/fonts

@@ -2,7 +2,7 @@
 #define _GPGFX_CORE_H_
 
 #include "GPGFX_types.h"
-#include "drivers/i2c/displaybase.h"
+#include "displaybase.h"
 
 #include "fonts/GP_Font_Basic.h"
 #include "fonts/GP_Font_Big.h"
