@@ -1,6 +1,6 @@
 #include "Rainbow.hpp"
 
-Rainbow::Rainbow(PixelMatrix &matrix) : Animation(matrix) {
+Rainbow::Rainbow(PixelMatrix &inMatrix) : Animation(inMatrix) {
 }
 
 void Rainbow::Animate(RGB (&frame)[100]) {

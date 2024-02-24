@@ -110,8 +110,8 @@ struct LedRGBState {
 
 class Animation {
 public:
-  Animation(PixelMatrix &matrix);
-  virtual void UpdatePixels(std::vector<Pixel> pixels);
+  Animation(PixelMatrix &inMatrix);
+  virtual void UpdatePixels(const std::vector<Pixel>& pixels);
   void ClearPixels();
   virtual ~Animation(){};
 
@@ -131,7 +131,7 @@ public:
 
   virtual const LedRGBState& GetLedRGBStateAtIndex(uint32_t index);
 
-  RGB BlendColor(RGB start, RGB end, uint32_t frame);
+  RGB BlendColor(const RGB& start, const RGB& end, uint32_t frame);
 
 protected:
 /* We track both the full matrix as well as individual pixels here to support

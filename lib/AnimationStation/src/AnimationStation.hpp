@@ -104,12 +104,12 @@ public:
   void ChangeAnimation(int changeSize);
   void ApplyBrightness(uint32_t *frameValue);
   uint16_t AdjustIndex(int changeSize);
-  void HandlePressed(std::vector<Pixel> pressed);
+  void HandlePressed(const std::vector<Pixel>& pressed);
   void ClearPressed();
 
   uint8_t GetMode();
   void SetMode(uint8_t mode);
-  void SetMatrix(PixelMatrix matrix);
+  void SetMatrix(const PixelMatrix& matrix);
   static void ConfigureBrightness(uint8_t max, uint8_t steps);
   static float GetBrightnessX();
   static uint8_t GetBrightness();

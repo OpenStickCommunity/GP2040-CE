@@ -2,7 +2,7 @@
 
 std::map<uint32_t, RGB> CustomTheme::theme;
 
-CustomTheme::CustomTheme(PixelMatrix &matrix) : Animation(matrix) {
+CustomTheme::CustomTheme(PixelMatrix &inMatrix) : Animation(inMatrix) {
 }
 
 void CustomTheme::Animate(RGB (&frame)[100]) {

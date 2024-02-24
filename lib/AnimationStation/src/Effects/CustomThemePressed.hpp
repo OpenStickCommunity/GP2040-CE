@@ -8,9 +8,8 @@
 
 class CustomThemePressed : public Animation {
 public:
-  CustomThemePressed(PixelMatrix &matrix);
-  CustomThemePressed(PixelMatrix &matrix, std::vector<Pixel> &pixels);
-  ~CustomThemePressed() { pixels = nullptr; };
+  CustomThemePressed(PixelMatrix &inMatrix);
+  CustomThemePressed(PixelMatrix &inMatrix, const std::vector<Pixel>& inPixels);
 
   static bool HasTheme();
   static void SetCustomTheme(std::map<uint32_t, RGB> customTheme);
@@ -18,7 +17,6 @@ public:
   void ParameterUp() { }
   void ParameterDown() { }
 protected:
-  std::vector<Pixel> *pixels;
   RGB defaultColor = ColorBlack;
   static std::map<uint32_t, RGB> theme;
 };

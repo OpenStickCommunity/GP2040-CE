@@ -2,7 +2,7 @@
 
 std::vector<std::map<uint32_t, RGB>> StaticTheme::themes = {};
 
-StaticTheme::StaticTheme(PixelMatrix &matrix) : Animation(matrix) {
+StaticTheme::StaticTheme(PixelMatrix &inMatrix) : Animation(inMatrix) {
   if (AnimationStation::options.themeIndex >= StaticTheme::themes.size()) {
     AnimationStation::options.themeIndex = 0;
   }

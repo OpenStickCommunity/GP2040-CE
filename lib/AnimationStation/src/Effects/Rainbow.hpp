@@ -10,7 +10,7 @@
 
 class Rainbow : public Animation {
 public:
-  Rainbow(PixelMatrix &matrix);
+  Rainbow(PixelMatrix &inMatrix);
   ~Rainbow() {};
 
   void Animate(RGB (&frame)[100]);

@@ -7,7 +7,7 @@
 
 class CustomTheme : public Animation {
 public:
-  CustomTheme(PixelMatrix &matrix);
+  CustomTheme(PixelMatrix &inMatrix);
   ~CustomTheme() {  };
 
   static bool HasTheme();

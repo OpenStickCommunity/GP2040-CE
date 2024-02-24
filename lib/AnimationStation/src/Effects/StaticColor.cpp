@@ -1,9 +1,9 @@
 #include "StaticColor.hpp"
 
-StaticColor::StaticColor(PixelMatrix &matrix) : Animation(matrix) {
+StaticColor::StaticColor(PixelMatrix &inMatrix) : Animation(inMatrix) {
 }
 
-StaticColor::StaticColor(PixelMatrix &matrix, std::vector<Pixel> &inpixels) : Animation(matrix) {
+StaticColor::StaticColor(PixelMatrix& inMatrix, const std::vector<Pixel>& inpixels) : Animation(inMatrix) {
   this->filtered = true;
   pixels = inpixels;
 }

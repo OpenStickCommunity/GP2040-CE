@@ -2,12 +2,13 @@
 
 std::map<uint32_t, RGB> CustomThemePressed::theme;
 
-CustomThemePressed::CustomThemePressed(PixelMatrix &matrix) : Animation(matrix) {
+CustomThemePressed::CustomThemePressed(PixelMatrix &inMatrix) : Animation(inMatrix) {
   this->filtered = true;
 }
 
-CustomThemePressed::CustomThemePressed(PixelMatrix &matrix, std::vector<Pixel> &pixels) : Animation(matrix), pixels(&pixels) {
+CustomThemePressed::CustomThemePressed(PixelMatrix &inMatrix, const std::vector<Pixel> &inPixels) : Animation(inMatrix) {
   this->filtered = true;
+  this->pixels = inPixels;
 }
 
 void CustomThemePressed::Animate(RGB (&frame)[100]) {

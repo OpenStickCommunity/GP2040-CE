@@ -12,7 +12,7 @@
 
 class StaticTheme : public Animation {
 public:
-  StaticTheme(PixelMatrix &matrix);
+  StaticTheme(PixelMatrix &inMatrix);
   ~StaticTheme() {};
 
   static void AddTheme(const std::map<uint32_t, RGB>& theme) { themes.push_back(theme); }

@@ -11,8 +11,8 @@
 LEDFormat Animation::format;
 std::map<uint32_t, LedRGBState> Animation::ledRGBStates;
 
-Animation::Animation(PixelMatrix &matrix) : matrix(&matrix) {
-  for (auto &pixel_row : matrix.pixels) {
+Animation::Animation(PixelMatrix &inMatrix) : matrix(&inMatrix) {
+  for (auto &pixel_row : matrix->pixels) {
     for (auto &pixel: pixel_row) {
       if (pixel.index != NO_PIXEL.index) {
         ledRGBStates.insert_or_assign(pixel.index, LedRGBState{defaultColor, 0});
@@ -68,7 +68,7 @@ bool Animation::notInFilter(const Pixel& pixel) {
   });
 }
 
-RGB Animation::BlendColor(RGB start, RGB end, uint32_t timeRemainingInMs) {
+RGB Animation::BlendColor(const RGB& start, const RGB& end, uint32_t timeRemainingInMs) {
   RGB result = ColorBlack;
 
   if (timeRemainingInMs <= 0) {

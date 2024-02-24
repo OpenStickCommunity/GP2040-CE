@@ -95,7 +95,7 @@ uint16_t AnimationStation::AdjustIndex(int changeSize) {
   return (uint16_t)newIndex;
 }
 
-void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
+void AnimationStation::HandlePressed(const std::vector<Pixel>& pressed) {
   this->lastPressed = pressed;
   this->baseAnimation->UpdatePixels(pressed);  
   this->buttonAnimation->UpdatePixels(pressed);
@@ -172,7 +172,7 @@ void AnimationStation::SetMode(uint8_t mode) {
   }
 }
 
-void AnimationStation::SetMatrix(PixelMatrix matrix) {
+void AnimationStation::SetMatrix(const PixelMatrix& matrix) {
   this->matrix = matrix;
 }
 

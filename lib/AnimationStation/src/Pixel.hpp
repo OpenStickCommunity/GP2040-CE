@@ -30,12 +30,14 @@ struct PixelMatrix {
 
   inline int getLedCount() {
     int count = 0;
-    for (auto &col : pixels)
-      for (auto &pixel : col)
+    for (auto &col : pixels) {
+      for (auto &pixel : col) {
         if (pixel.index == NO_PIXEL.index)
           continue;
         else
           count += pixel.positions.size();
+      }
+    }
 
     return count;
   }
