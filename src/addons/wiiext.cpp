@@ -8,7 +8,12 @@
 bool WiiExtensionInput::available() {
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
-    return (!displayOptions.enabled && options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
+    bool result = (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
+    if (result && (displayOptions.enabled && (displayOptions.i2cBlock == options.i2cBlock))) {
+        // display check
+        result = false;
+    }
+    return result;
 }
 
 void WiiExtensionInput::setup() {

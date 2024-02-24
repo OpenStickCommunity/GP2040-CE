@@ -1,25 +1,29 @@
 /*
  * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
+ * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
  */
 
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
+#include <map>
 #include <string>
 #include <hardware/i2c.h>
-#include "OneBitDisplay.h"
 #include "BoardConfig.h"
+#include "GPGFX.h"
+#include "GPGFX_UI.h"
+#include "GPGFX_UI_types.h"
+#include "GPGFX_UI_screens.h"
+#include "GPGFX_UI_widgets.h"
 #include "gpaddon.h"
 #include "gamepad.h"
 #include "storagemanager.h"
 #include "peripheralmanager.h"
 #include "peripheral_i2c.h"
 #include "peripheral_spi.h"
-#include "addons/inputhistory.h"
 
 #ifndef HAS_I2C_DISPLAY
-#define HAS_I2C_DISPLAY 0
+#define HAS_I2C_DISPLAY -1
 #endif
 
 #ifndef DISPLAY_I2C_ADDR
@@ -34,8 +38,8 @@
 #define I2C_SCL_PIN -1
 #endif
 
-#ifndef I2C_BLOCK
-#define I2C_BLOCK i2c0
+#ifndef DISPLAY_I2C_BLOCK
+#define DISPLAY_I2C_BLOCK i2c0
 #endif
 
 #ifndef I2C_SPEED
@@ -43,7 +47,7 @@
 #endif
 
 #ifndef DISPLAY_SIZE
-#define DISPLAY_SIZE OLED_128x64
+#define DISPLAY_SIZE GPGFX_DisplaySize::SIZE_128x64
 #endif
 
 #ifndef DISPLAY_FLIP
@@ -84,6 +88,22 @@
 
 #ifndef DISPLAY_TURN_OFF_WHEN_SUSPENDED
 #define DISPLAY_TURN_OFF_WHEN_SUSPENDED 0
+#endif
+
+#ifndef INPUT_HISTORY_ENABLED
+#define INPUT_HISTORY_ENABLED 0
+#endif
+
+#ifndef INPUT_HISTORY_LENGTH
+#define INPUT_HISTORY_LENGTH 21
+#endif
+
+#ifndef INPUT_HISTORY_COL
+#define INPUT_HISTORY_COL 0
+#endif
+
+#ifndef INPUT_HISTORY_ROW
+#define INPUT_HISTORY_ROW 7
 #endif
 
 #ifndef DEFAULT_SPLASH
@@ -155,67 +175,20 @@
 #endif
 
 // i2c Display Module
-#define I2CDisplayName "I2CDisplay"
+#define DisplayName "Display"
 
 // i2C OLED Display
-class I2CDisplayAddon : public GPAddon
+class DisplayAddon : public GPAddon
 {
 public:
 	virtual bool available();
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
-	virtual std::string name() { return I2CDisplayName; }
-	virtual void attachInputHistoryAddon(InputHistoryAddon*);
+	virtual std::string name() { return DisplayName; }
 private:
-	int initDisplay(int typeOverride);
-	bool isSH1106(int detectedDisplay);
-	void clearScreen(int render); // DisplayModule
-	void drawStickless(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawWasdBox(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawArcadeStick(int startX, int startY, int buttonRadius, int buttonPadding);
 	void drawStatusBar(Gamepad*);
-	void drawText(int startX, int startY, std::string text);
 	void initMenu(char**);
-	//Adding my stuff here, remember to sort before PR
-	void drawDiamond(int cx, int cy, int size, uint8_t colour, uint8_t filled);
-	void drawUDLR(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawMAMEA(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawOpenCore0WASDA(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawOpenCore0WASDB(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawMAMEB(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawMAME8B(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawKeyboardAngled(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawVewlix(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawVewlix7(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawSega2p(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawNoir8(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawCapcom(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawCapcom6(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawSticklessButtons(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawWasdButtons(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawArcadeButtons(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawSplashScreen(int splashMode, uint8_t* splashChoice, int splashSpeed);
-	void drawDancepadA(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawDancepadB(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawTwinStickA(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawTwinStickB(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawBlankA(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawBlankB(int startX, int startY, int buttonSize, int buttonPadding);
-	void drawVLXA(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawVLXB(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawButtonLayoutLeft(ButtonLayoutParamsLeft& options);
-	void drawButtonLayoutRight(ButtonLayoutParamsRight& options);
-	void drawFightboard(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawFightboardMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawFightboardStick(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawFightboardStickMirrored(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawStickless13A(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawSticklessButtons13B(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawStickless16A(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawSticklessButtons16B(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawStickless14A(int startX, int startY, int buttonRadius, int buttonPadding);
-	void drawSticklessButtons14B(int startX, int startY, int buttonRadius, int buttonPadding);
 	bool pressedUp();
 	bool pressedDown();
 	bool pressedLeft();
@@ -227,25 +200,23 @@ private:
 	int32_t displaySaverTimer;
 	uint8_t displayIsPowerOn = 1;
 	uint32_t prevMillis;
-	uint8_t ucBackBuffer[1024];
-	OBDISP obd;
 	std::string statusBar;
 	Gamepad* gamepad;
 	Gamepad* pGamepad;
 	bool configMode;
 
-	enum DisplayMode {
-		CONFIG_INSTRUCTION,
-		BUTTONS,
-		SPLASH
+	GPGFX* gpDisplay;
+	GPScreen* gpScreen;
+
+	std::map<DisplayMode, GPScreen*> loadedScreens = {
+		{CONFIG_INSTRUCTION, {new ConfigScreen()}},
+		{SPLASH, {new SplashScreen()}},
+		{MAIN_MENU, {new MainMenuScreen()}},
+		{BUTTONS, {new ButtonLayoutScreen()}}
 	};
 
-	DisplayMode getDisplayMode();
-	DisplayMode prevDisplayMode;
-	uint16_t prevButtonState;
+	DisplayMode currDisplayMode;
 	bool turnOffWhenSuspended;
-	bool isInputHistoryEnabled;
-	InputHistoryAddon* inputHistoryAddon;
 };
 
 #endif
