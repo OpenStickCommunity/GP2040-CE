@@ -51,6 +51,10 @@ void GPGFX::drawText(uint16_t x, uint16_t y, std::string text, uint8_t invert) {
     this->displayDriver->drawText(x, y, text, invert);
 }
 
+void GPGFX::drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled, double startAngle, double endAngle, uint8_t closed) {
+    this->displayDriver->drawArc(x, y, radiusX, radiusY, color, filled, startAngle, endAngle, closed);
+}
+
 void GPGFX::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled) {
     this->displayDriver->drawEllipse(x, y, radiusX, radiusY, color, filled);
 }
@@ -63,8 +67,8 @@ void GPGFX::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t heigh
     this->displayDriver->drawRectangle(x, y, width, height, color, filled);
 }
 
-void GPGFX::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled) {
-    this->displayDriver->drawPolygon(x, y, radius, sides, color, filled);
+void GPGFX::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled, double rotation) {
+    this->displayDriver->drawPolygon(x, y, radius, sides, color, filled, rotation);
 }
 
 void GPGFX::drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority) {

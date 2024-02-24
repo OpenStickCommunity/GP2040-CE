@@ -6,7 +6,7 @@
 #include "config.pb.h"
 #include "enums.pb.h"
 
-#define GPELEMENT_PARAM_COUNT 8
+#define GPELEMENT_PARAM_COUNT 12
 
 typedef struct {
     GPElement elementType;

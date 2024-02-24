@@ -174,6 +174,7 @@ src/display/ui/elements/GPButton.cpp
 src/display/ui/elements/GPLever.cpp
 src/display/ui/elements/GPLabel.cpp
 src/display/ui/elements/GPScreen.cpp
+src/display/ui/elements/GPShape.cpp
 src/display/ui/elements/GPSprite.cpp
 src/display/ui/screens/ButtonLayoutScreen.cpp
 src/display/ui/screens/ConfigScreen.cpp

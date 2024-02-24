@@ -14,14 +14,20 @@ class GPButton : public GPWidget {
         GPButton* setInputMask(int16_t inputMask) { this->_inputMask = inputMask; return this; }
         GPButton* setInputDirection(bool inputDirection) { this->_inputDirection = inputDirection; return this; }
         GPButton* setInputType(GPElement inputType) { this->_inputType = inputType; return this; }
-        GPButton* setShape(GPButton_Shape shape) { this->_shape = shape; return this; }
+        GPButton* setAngle(double angle) { this->_angle = angle; return this; }
+        GPButton* setAngleEnd(double angleEnd) { this->_angleEnd = angleEnd; return this; }
+        GPButton* setClosed(bool closed) { this->_closed = closed; return this; }
+        GPButton* setShape(GPShape_Type shape) { this->_shape = shape; return this; }
     private:
         uint16_t _sizeX = 0;
         uint16_t _sizeY = 0;
+        double _angle = 0;
+        double _angleEnd = 0;
+        bool _closed = false;
         int16_t _inputMask = -1;
         bool _inputDirection = false;
         GPElement _inputType = GP_ELEMENT_BTN_BUTTON;
-        GPButton_Shape _shape = GP_BUTTON_ELLIPSE;
+        GPShape_Type _shape = GP_SHAPE_ELLIPSE;
 };
 
 #endif

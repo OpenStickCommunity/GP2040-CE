@@ -40,7 +40,7 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::adjustByCustomSettings(Button
                 layout[elementCtr].parameters[1] += originY+offsetY;
             }
 
-            if (((GPButton_Shape)layout[elementCtr].parameters[7] == GP_BUTTON_ELLIPSE) || ((GPButton_Shape)layout[elementCtr].parameters[7] == GP_BUTTON_POLYGON)) {
+            if (((GPShape_Type)layout[elementCtr].parameters[7] == GP_SHAPE_ELLIPSE) || ((GPShape_Type)layout[elementCtr].parameters[7] == GP_SHAPE_POLYGON)) {
                 // radius
                 layout[elementCtr].parameters[2] = common.buttonRadius;
                 layout[elementCtr].parameters[3] = common.buttonRadius;
@@ -225,6 +225,101 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadB()
     return BUTTON_GROUP_DANCEPAD_B;
 }
 
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadDDRLeft()
+{
+    return BUTTON_GROUP_DANCEPAD_DDR_LEFT;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadDDRSolo()
+{
+    return BUTTON_GROUP_DANCEPAD_DDR_SOLO;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadPIULeft()
+{
+    return BUTTON_GROUP_DANCEPAD_PIU_LEFT;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawPopnA()
+{
+    return BUTTON_GROUP_POPN_A;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTaikoA()
+{
+    return BUTTON_GROUP_TAIKO_A;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBMTurntableA()
+{
+    return BUTTON_GROUP_BM_TURNTABLE_A;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBM5KeyA()
+{
+    return BUTTON_GROUP_BM_5KEY_A;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBM7KeyA()
+{
+    return BUTTON_GROUP_BM_7KEY_A;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawGitadoraFretA()
+{
+    return BUTTON_GROUP_GITADORA_FRET_A;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawGitadoraStrumA()
+{
+    return BUTTON_GROUP_GITADORA_STRUM_A;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadDDRRight()
+{
+    return BUTTON_GROUP_DANCEPAD_DDR_RIGHT;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadPIURight()
+{
+    return BUTTON_GROUP_DANCEPAD_PIU_RIGHT;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawPopnB()
+{
+    return BUTTON_GROUP_POPN_B;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTaikoB()
+{
+    return BUTTON_GROUP_TAIKO_B;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBMTurntableB()
+{
+    return BUTTON_GROUP_BM_TURNTABLE_B;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBM5KeyB()
+{
+    return BUTTON_GROUP_BM_5KEY_B;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBM7KeyB()
+{
+    return BUTTON_GROUP_BM_7KEY_B;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawGitadoraFretB()
+{
+    return BUTTON_GROUP_GITADORA_FRET_B;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawGitadoraStrumB()
+{
+    return BUTTON_GROUP_GITADORA_STRUM_B;
+}
+
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBlankA()
 {
     return {};
@@ -251,13 +346,13 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBoardDefinedB() {
 #endif
 }
 
-
 GPLever* ButtonLayoutScreen::drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
     GPLever* lever = new GPLever();
     lever->setRenderer(getRenderer());
     
     lever->setPosition(startX, startY);
     lever->setStrokeColor(strokeColor);
+    lever->setFillColor(fillColor);
     lever->setRadius(sizeX);
     lever->setInputType(inputType);
 
@@ -270,11 +365,36 @@ GPButton* ButtonLayoutScreen::drawButton(uint16_t startX, uint16_t startY, uint1
 
     button->setPosition(startX, startY);
     button->setStrokeColor(strokeColor);
+    button->setFillColor(fillColor);
     button->setSizeX(sizeX);
     button->setSizeY(sizeY);
     button->setInputMask(inputMask);
 
     return (GPButton*)addElement(button);
+}
+
+GPShape* ButtonLayoutScreen::drawShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor) {
+    GPShape* shape = new GPShape();
+    shape->setRenderer(getRenderer());
+
+    shape->setPosition(startX, startY);
+    shape->setStrokeColor(strokeColor);
+    shape->setFillColor(fillColor);
+    shape->setSizeX(sizeX);
+    shape->setSizeY(sizeY);
+
+    return (GPShape*)addElement(shape);
+}
+
+GPSprite* ButtonLayoutScreen::drawSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY) {
+    GPSprite* sprite = new GPSprite();
+    sprite->setRenderer(getRenderer());
+
+    sprite->setPosition(startX, startY);
+    sprite->setSizeX(sizeX);
+    sprite->setSizeY(sizeY);
+
+    return (GPSprite*)addElement(sprite);
 }
 
 GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
@@ -292,11 +412,23 @@ GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
         // set type of button
         button->setInputType(element.elementType);
         button->setInputDirection(false);
-        button->setShape((GPButton_Shape)element.parameters[7]);
+        button->setShape((GPShape_Type)element.parameters[7]);
+        button->setAngle(element.parameters[8]);
+        button->setAngleEnd(element.parameters[9]);
+        button->setClosed(element.parameters[10]);
 
         if (element.elementType == GP_ELEMENT_DIR_BUTTON) button->setInputDirection(true);
 
         return (GPWidget*)button;
+    } else if (element.elementType == GP_ELEMENT_SPRITE) {
+        return drawSprite(element.parameters[0], element.parameters[1]-yOffset, element.parameters[2], element.parameters[3]);
+    } else if (element.elementType == GP_ELEMENT_SHAPE) {
+        GPShape* shape = drawShape(element.parameters[0], element.parameters[1]-yOffset, element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5]);
+        shape->setShape((GPShape_Type)element.parameters[7]);
+        shape->setAngle(element.parameters[8]);
+        shape->setAngleEnd(element.parameters[9]);
+        shape->setClosed(element.parameters[10]);
+        return shape;
     }
     return NULL;
 }

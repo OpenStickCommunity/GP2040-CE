@@ -89,12 +89,33 @@ class ButtonLayoutScreen : public GPScreen {
         LayoutList drawButtonLayoutRight();
         LayoutList drawBoardDefinedA();
         LayoutList drawBoardDefinedB();
+        LayoutList drawDancepadDDRLeft();
+        LayoutList drawDancepadDDRSolo();
+        LayoutList drawDancepadPIULeft();
+        LayoutList drawPopnA();
+        LayoutList drawTaikoA();
+        LayoutList drawBMTurntableA();
+        LayoutList drawBM5KeyA();
+        LayoutList drawBM7KeyA();
+        LayoutList drawGitadoraFretA();
+        LayoutList drawGitadoraStrumA();
+        LayoutList drawDancepadDDRRight();
+        LayoutList drawDancepadPIURight();
+        LayoutList drawPopnB();
+        LayoutList drawTaikoB();
+        LayoutList drawBMTurntableB();
+        LayoutList drawBM5KeyB();
+        LayoutList drawBM7KeyB();
+        LayoutList drawGitadoraFretB();
+        LayoutList drawGitadoraStrumB();
     protected:
         void drawScreen();
     private:
         // new layout methods
         GPLever* drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
         GPButton* drawButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask = -1);
+        GPSprite* drawSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY);
+        GPShape* drawShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor);
         GPWidget* drawElement(GPButtonLayout element);
         LayoutList adjustByCustomSettings(LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX = 0, uint16_t originY = 0);
 
@@ -121,6 +142,19 @@ class ButtonLayoutScreen : public GPScreen {
             {BUTTON_LAYOUT_STICKLESS_13,              [this]() { return this->drawStickless13A(); }},
             {BUTTON_LAYOUT_STICKLESS_16,              [this]() { return this->drawStickless16A(); }},
             {BUTTON_LAYOUT_STICKLESS_14,              [this]() { return this->drawStickless14A(); }},
+            {BUTTON_LAYOUT_DANCEPADA,                 [this]() { return this->drawDancepadA(); }},
+
+            {BUTTON_LAYOUT_DANCEPAD_DDR_LEFT,         [this]() { return this->drawDancepadDDRLeft(); }},
+            {BUTTON_LAYOUT_DANCEPAD_DDR_SOLO,         [this]() { return this->drawDancepadDDRSolo(); }},
+            {BUTTON_LAYOUT_DANCEPAD_PIU_LEFT,         [this]() { return this->drawDancepadPIULeft(); }},
+            {BUTTON_LAYOUT_POPN_A,                    [this]() { return this->drawPopnA(); }},
+            {BUTTON_LAYOUT_TAIKO_A,                   [this]() { return this->drawTaikoA(); }},
+            {BUTTON_LAYOUT_BM_TURNTABLE_A,            [this]() { return this->drawBMTurntableA(); }},
+            {BUTTON_LAYOUT_BM_5KEY_A,                 [this]() { return this->drawBM5KeyA(); }},
+            {BUTTON_LAYOUT_BM_7KEY_A,                 [this]() { return this->drawBM7KeyA(); }},
+            {BUTTON_LAYOUT_GITADORA_FRET_A,           [this]() { return this->drawGitadoraFretA(); }},
+            {BUTTON_LAYOUT_GITADORA_STRUM_A,          [this]() { return this->drawGitadoraStrumA(); }},
+
             {BUTTON_LAYOUT_BOARD_DEFINED_A,           [this]() { return this->drawBoardDefinedA(); }},
         };
 
@@ -135,7 +169,6 @@ class ButtonLayoutScreen : public GPScreen {
             {BUTTON_LAYOUT_SEGA2P,                    [this]() { return this->drawSega2p(); }},
             {BUTTON_LAYOUT_NOIR8,                     [this]() { return this->drawNoir8(); }},
             {BUTTON_LAYOUT_KEYBOARDB,                 [this]() { return this->drawMAMEB(); }},
-            {BUTTON_LAYOUT_DANCEPADB,                 [this]() { return this->drawDancepadB(); }},
             {BUTTON_LAYOUT_TWINSTICKB,                [this]() { return this->drawTwinStickB(); }},
             {BUTTON_LAYOUT_BLANKB,                    [this]() { return this->drawBlankB(); }},
             {BUTTON_LAYOUT_VLXB,                      [this]() { return this->drawVLXB(); }},
@@ -147,6 +180,18 @@ class ButtonLayoutScreen : public GPScreen {
             {BUTTON_LAYOUT_STICKLESS_13B,             [this]() { return this->drawSticklessButtons13B(); }},
             {BUTTON_LAYOUT_STICKLESS_16B,             [this]() { return this->drawSticklessButtons16B(); }},
             {BUTTON_LAYOUT_STICKLESS_14B,             [this]() { return this->drawSticklessButtons14B(); }},
+            {BUTTON_LAYOUT_DANCEPADB,                 [this]() { return this->drawDancepadB(); }},
+
+            {BUTTON_LAYOUT_DANCEPAD_DDR_RIGHT,        [this]() { return this->drawDancepadDDRRight(); }},
+            {BUTTON_LAYOUT_DANCEPAD_PIU_RIGHT,        [this]() { return this->drawDancepadPIURight(); }},
+            {BUTTON_LAYOUT_POPN_B,                    [this]() { return this->drawPopnB(); }},
+            {BUTTON_LAYOUT_TAIKO_B,                   [this]() { return this->drawTaikoB(); }},
+            {BUTTON_LAYOUT_BM_TURNTABLE_B,            [this]() { return this->drawBMTurntableB(); }},
+            {BUTTON_LAYOUT_BM_5KEY_B,                 [this]() { return this->drawBM5KeyB(); }},
+            {BUTTON_LAYOUT_BM_7KEY_B,                 [this]() { return this->drawBM7KeyB(); }},
+            {BUTTON_LAYOUT_GITADORA_FRET_B,           [this]() { return this->drawGitadoraFretB(); }},
+            {BUTTON_LAYOUT_GITADORA_STRUM_B,          [this]() { return this->drawGitadoraStrumB(); }},
+
             {BUTTON_LAYOUT_BOARD_DEFINED_B,           [this]() { return this->drawBoardDefinedB(); }},
         };
 

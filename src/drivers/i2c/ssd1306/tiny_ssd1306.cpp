@@ -75,10 +75,12 @@ void GPGFX_TinySSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
 		row=((y/8)*128)+x;
 		bitIndex=y % 8;
 
-        if (color > 0) {
+        if (color == 1) {
 		    frameBuffer[row] |= (color<<bitIndex);
-        } else {
+        } else if (color == 0) {
             frameBuffer[row] &= ~(1<<bitIndex);
+        } else {
+            frameBuffer[row] ^= (1 << bitIndex);
         }
 	}
 }
@@ -132,6 +134,47 @@ void GPGFX_TinySSD1306::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t
         if (errDouble < dx) {
             err += dx;
             y1 += stepY;
+        }
+    }
+}
+
+void GPGFX_TinySSD1306::drawArc(uint16_t x, uint16_t y, uint32_t radiusX, uint32_t radiusY, uint32_t color, uint8_t filled, double startAngle, double endAngle, uint8_t closed) {
+    // Convert degrees to radians
+    startAngle = startAngle * M_PI / 180.0;
+    endAngle = endAngle * M_PI / 180.0;
+
+    // Angle step based on the resolution you want
+    double angleStep = 0.01; // Adjust as needed for smoother arcs
+
+    for (double angle = startAngle; angle < endAngle; angle += angleStep) {
+        int xPos = x + static_cast<int>(radiusX * cos(angle));
+        int yPos = y + static_cast<int>(radiusY * sin(angle));
+        drawPixel(xPos, yPos, color);
+    }
+
+    // Draw the last point
+    int xPos = x + static_cast<int>(radiusX * cos(endAngle));
+    int yPos = y + static_cast<int>(radiusY * sin(endAngle));
+    drawPixel(xPos, yPos, color);
+
+    if (closed) {
+        drawLine(x, y, (x + static_cast<int>(radiusX * cos(startAngle))), (y + static_cast<int>(radiusY * sin(startAngle))), color, filled);
+        drawLine(x, y, (x + static_cast<int>(radiusX * cos(endAngle))), (y + static_cast<int>(radiusY * sin(endAngle))), color, filled);
+    }
+
+    // If filled is true, fill the arc
+    if (filled) {
+        // Draw lines to fill the arc
+        for (double angle = startAngle; angle <= endAngle; angle += angleStep) {
+            int xPosStart = x;
+            int yPosStart = y;
+            int xPosEnd = x + static_cast<int>(radiusX * cos(angle));
+            int yPosEnd = y + static_cast<int>(radiusY * sin(angle));
+            // Draw line from center to arc point
+            // You may replace this with your actual line drawing function
+            //drawPixel(xPosStart, yPosStart, color);
+            //drawPixel(xPosEnd, yPosEnd, color);
+            drawLine(xPosStart, yPosStart, xPosEnd, yPosEnd, color, filled);
         }
     }
 }
@@ -192,7 +235,7 @@ void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, ui
 	}
 }
 
-void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled) {
+void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides, uint32_t color, uint8_t filled, double rotation) {
     // Calculate the angle increment between each vertex
     double angleIncrement = 2 * M_PI / sides;
 
@@ -200,7 +243,7 @@ void GPGFX_TinySSD1306::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uin
     uint16_t xVertices[sides];
     uint16_t yVertices[sides];
     for (int i = 0; i < sides; i++) {
-        double angle = i * angleIncrement;
+        double angle = i * angleIncrement + rotation;
         xVertices[i] = x + round(radius * cos(angle));
         yVertices[i] = y + round(radius * sin(angle));
     }
