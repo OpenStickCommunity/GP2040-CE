@@ -11,7 +11,7 @@ class PeripheralManager {
 public:
 	PeripheralManager(PeripheralManager const&) = delete;
 	PeripheralManager& operator=(PeripheralManager const&)  = delete;
-	static PeripheralManager& getInstance() // Thread-safe storage ensures cross-thread talk
+	static PeripheralManager& getInstance()
 	{
 		static PeripheralManager instance;
 		return instance;
