@@ -86,8 +86,9 @@ const BUTTON_LAYOUTS_RIGHT = [
 ];
 
 const SPLASH_MODES = [
-	{ label: 'Enabled', value: 0 }, // STATICSPLASH
-	//	{ label: 'Close In', value: 1 },		 // CLOSEIN
+	{ label: 'Enabled (Custom Splash Screen)', value: 0 },  // STATICSPLASH
+	{ label: 'Logo Close In', value: 1 }, // CLOSEIN
+	{ label: 'Logo Close In Custom', value: 2 }, // CLOSEINCUSTOM
 	{ label: 'Disabled', value: 3 }, // NOSPLASH
 ];
 
