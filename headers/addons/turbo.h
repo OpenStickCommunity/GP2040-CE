@@ -107,7 +107,6 @@ private:
     uint16_t turboButtonsPressed;    // Turbo Buttons Enabled
     uint16_t alwaysEnabled;     // Turbo SHMUP Always Enabled
     uint32_t uIntervalUS;       // Turbo Interval in microseconds
-    const uint32_t uOffset = 15; // Extra time to compensate for loop runtime variance
     uint32_t chargeState;       // Turbo Charge Button States
     bool bTurboFlicker;         // Turbo Enable Buttons Toggle OFF Flag ??
     uint64_t nextTimer;         // Turbo Timer

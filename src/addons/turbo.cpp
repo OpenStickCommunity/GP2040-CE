@@ -7,11 +7,12 @@
 #include "config.pb.h"
 
 #include <algorithm>
+#include <cmath>
 
 #define TURBO_SHOT_MIN 2
 #define TURBO_SHOT_MAX 30
-
-static const uint8_t turboDialIncrements = 0xFFF / (TURBO_SHOT_MAX - TURBO_SHOT_MIN); // 12-bit ADC
+#define TURBO_DIAL_INCREMENTS (0xFFF / (TURBO_SHOT_MAX - TURBO_SHOT_MIN)) // 12-bit ADC
+#define TURBO_LOOP_OFFSET 50 // Extra time to compensate for loop runtime variance, turbo lags a bit otherwise
 
 bool TurboInput::available() {
     // Turbo Button initialized by void Gamepad::setup()
@@ -41,7 +42,7 @@ void TurboInput::setup()
         adcShmupDial = 26 - options.shmupDialPin;
         adc_select_input(adcShmupDial);
         dialValue = adc_read(); // setup initial Dial + Turbo Speed
-        shotCount = (dialValue / turboDialIncrements) + TURBO_SHOT_MIN;
+        shotCount = (dialValue / TURBO_DIAL_INCREMENTS) + TURBO_SHOT_MIN;
     } else {
         dialValue = 0;
     }
@@ -154,7 +155,7 @@ void TurboInput::process()
     if (hasShmupDial && nextAdcRead < now) {
         adc_select_input(adcShmupDial);
         dialValue = adc_read();
-        uint8_t shotCount = (dialValue / turboDialIncrements) + TURBO_SHOT_MIN;
+        uint8_t shotCount = (dialValue / TURBO_DIAL_INCREMENTS) + TURBO_SHOT_MIN;
         if (shotCount != options.shotCount) {
             updateInterval(shotCount);
         }
@@ -164,12 +165,12 @@ void TurboInput::process()
     // Reset Turbo flicker on a new button press
     if ((lastButtons & turboButtonsPressed) == 0 && (gamepad->state.buttons & turboButtonsPressed) != 0) {
         bTurboFlicker = false; // reset flicker state to ON
-        nextTimer = now + uIntervalUS - uOffset; // interval to flicker-off button
+        nextTimer = now + uIntervalUS - TURBO_LOOP_OFFSET; // interval to flicker-off button
     }
     // Check if we've reached the next timer right before applying turbo state
     else if (turboButtonsPressed && nextTimer < now) {
         bTurboFlicker ^= true;
-        nextTimer = now + uIntervalUS - uOffset;
+        nextTimer = now + uIntervalUS - TURBO_LOOP_OFFSET;
     }
 
     // Set TURBO LED
@@ -205,7 +206,7 @@ void TurboInput::process()
 
 void TurboInput::updateInterval(uint8_t shotCount)
 {
-    uIntervalUS = (uint32_t)(1000000.0 / (shotCount * 2));
+    uIntervalUS = (uint32_t)std::floor(1000000.0 / (shotCount * 2));
 }
 
 void TurboInput::updateTurboShotCount(uint8_t shotCount)
