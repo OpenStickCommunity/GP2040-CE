@@ -1,9 +1,7 @@
-/*
- * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
- */
+#include "drivers/ps4/PS4AuthKeys.h"
 
-#include "addons/ps4mode.h"
+#include "storagemanager.h"
+
 #include "helper.h"
 #include "config.pb.h"
 
@@ -20,10 +18,34 @@
 
 #define DELETE_CONFIG_MPI(name) delete bytes ## name;
 
-bool PS4ModeAddon::available() {
+void PS4AuthKeys::initialize() {
+    if ( available() ) {
+        const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
+        ready = false;
+
+        NEW_CONFIG_MPI(N, options.rsaN.bytes, options.rsaN.size)
+        NEW_CONFIG_MPI(E, options.rsaE.bytes, options.rsaE.size)
+        NEW_CONFIG_MPI(P, options.rsaP.bytes, options.rsaP.size)
+        NEW_CONFIG_MPI(Q, options.rsaQ.bytes, options.rsaQ.size)
+
+        mbedtls_rsa_init(&rsa_context, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
+
+        if (mbedtls_rsa_import(&rsa_context, &N, &P, &Q, nullptr, &E) == 0 &&
+                mbedtls_rsa_complete(&rsa_context) == 0) {
+            ready = true;
+        }
+
+        DELETE_CONFIG_MPI(N)
+        DELETE_CONFIG_MPI(E)
+        DELETE_CONFIG_MPI(P)
+        DELETE_CONFIG_MPI(Q)
+    }
+}
+
+bool PS4AuthKeys::available() {
+  // Move options over to their own ps4 data structure or gamepad?
   const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
-	return options.enabled
-		&& options.serial.size == sizeof(options.serial.bytes)
+	return options.serial.size == sizeof(options.serial.bytes)
 		&& options.signature.size == sizeof(options.signature.bytes)
 		&& options.rsaN.size == sizeof(options.rsaN.bytes)
 		&& options.rsaE.size == sizeof(options.rsaE.bytes)
@@ -31,30 +53,8 @@ bool PS4ModeAddon::available() {
 		&& options.rsaQ.size == sizeof(options.rsaQ.bytes);
 }
 
-void PS4ModeAddon::setup() {
-	const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
-	ready = false;
-
-	NEW_CONFIG_MPI(N, options.rsaN.bytes, options.rsaN.size)
-	NEW_CONFIG_MPI(E, options.rsaE.bytes, options.rsaE.size)
-	NEW_CONFIG_MPI(P, options.rsaP.bytes, options.rsaP.size)
-	NEW_CONFIG_MPI(Q, options.rsaQ.bytes, options.rsaQ.size)
-
-	mbedtls_rsa_init(&rsa_context, MBEDTLS_RSA_PKCS_V21, MBEDTLS_MD_SHA256);
-
-	if (mbedtls_rsa_import(&rsa_context, &N, &P, &Q, nullptr, &E) == 0 &&
-			mbedtls_rsa_complete(&rsa_context) == 0) {
-		ready = true;
-	}
-
-	DELETE_CONFIG_MPI(N)
-	DELETE_CONFIG_MPI(E)
-	DELETE_CONFIG_MPI(P)
-	DELETE_CONFIG_MPI(Q)
-}
-
-void PS4ModeAddon::process() {
-	if (!ready) {
+void PS4AuthKeys::process() {
+    if (!ready) {
 		return;
 	}
 

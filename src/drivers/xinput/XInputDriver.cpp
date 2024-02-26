@@ -106,6 +106,10 @@ void XInputDriver::initialize() {
 	};
 }
 
+void XInputDriver::initializeAux() {
+
+}
+
 void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	xinputReport.buttons1 = 0
 		| (gamepad->pressedUp()    ? XBOX_MASK_UP    : 0)
@@ -164,6 +168,9 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		usbd_edpt_xfer(0, endpoint_out, outBuffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
 		usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
 	}
+}
+
+void XInputDriver::processAux() {
 }
 
 // tud_hid_get_report_cb

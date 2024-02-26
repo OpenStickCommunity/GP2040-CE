@@ -1,30 +1,26 @@
-#include "addons/pspassthrough.h"
-#include "storagemanager.h"
-#include "usbhostmanager.h"
-#include "peripheralmanager.h"
-
+#include "host/usbh.h"
 #include "class/hid/hid.h"
 #include "class/hid/hid_host.h"
-
+#include "drivers/ps4/PS4AuthUSB.h"
 #include "CRC32.h"
+#include "peripheralmanager.h"
+#include "usbhostmanager.h"
 
-// Data passed between PS Passthrough and TinyUSB Host callbacks
-
-bool PSPassthroughAddon::available() {
-    const PSPassthroughOptions& psOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
-    const GamepadOptions& gamepadOptions = Storage::getInstance().GetGamepad()->getOptions();
-	return psOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0) && (gamepadOptions.inputMode == INPUT_MODE_PS4);
+void PS4AuthUSB::initialize() {
+	if ( available() ) {
+		nonce_page = 0; // no nonce yet
+		send_nonce_part = 0; // which part of the nonce are we getting from send?
+		awaiting_cb = false; // did we receive the sign state yet
+		passthrough_state = PS4State::no_nonce;
+	}
 }
 
-void PSPassthroughAddon::setup() {
-    nonce_page = 0; // no nonce yet
-    send_nonce_part = 0; // which part of the nonce are we getting from send?
-    awaiting_cb = false; // did we receive the sign state yet
-    passthrough_state = PS4State::no_nonce;
+bool PS4AuthUSB::available() {
+	return (PeripheralManager::getInstance().isUSBEnabled(0));
 }
 
-void PSPassthroughAddon::process() {
-    if (awaiting_cb)
+void PS4AuthUSB::process() {
+	if (awaiting_cb)
         return;
 
     switch ( passthrough_state ) {
@@ -100,7 +96,7 @@ void PSPassthroughAddon::process() {
     };
 }
 
-void PSPassthroughAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
+void PS4AuthUSB::mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
     ps_dev_addr = dev_addr;
     ps_instance = instance;
 
@@ -113,14 +109,14 @@ void PSPassthroughAddon::mount(uint8_t dev_addr, uint8_t instance, uint8_t const
     tuh_hid_get_report(ps_dev_addr, ps_instance, PS4AuthReport::PS4_DEFINITION, HID_REPORT_TYPE_FEATURE, buf, len);
 }
 
-void PSPassthroughAddon::unmount(uint8_t dev_addr) {
+void PS4AuthUSB::unmount(uint8_t dev_addr) {
     nonce_page = 0; // no nonce yet
     send_nonce_part = 0; // which part of the nonce are we getting from send?
     awaiting_cb = false; // did we receive the sign state yet
     passthrough_state = PS4State::no_nonce;
 }
 
-void PSPassthroughAddon::set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+void PS4AuthUSB::set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     switch(report_id) {
         case PS4AuthReport::PS4_SET_AUTH_PAYLOAD:
             if (nonce_page == 5) {
@@ -134,7 +130,7 @@ void PSPassthroughAddon::set_report_complete(uint8_t dev_addr, uint8_t instance,
     awaiting_cb = false;
 }
 
-void PSPassthroughAddon::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
+void PS4AuthUSB::get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     switch(report_id) {
         case PS4AuthReport::PS4_DEFINITION:
             break;

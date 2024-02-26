@@ -332,10 +332,16 @@ export default function SettingsPage() {
 		if ( Object.keys(values).length == 0 ) {
 			return;
 		}
-		switch ( INPUT_MODES[values.inputMode].labelKey ) {
+		const inputMode = INPUT_MODES.find((o) => o.value == values.inputMode);
+		switch ( inputMode.labelKey ) {
 			case 'input-mode-options.ps4':
 				return (
 				<Form className="row mb-3">
+					<Row className="mb-3">
+						<Col sm={10}>
+							Playstation 4 mode allows GP2040-CE to run on the Playstation 4 console as authenticated or unauthenticated.
+						</Col>
+					</Row>
 					<Row className="mb-3">
 						<Col sm={10}>
 							<Form.Check
@@ -378,66 +384,149 @@ export default function SettingsPage() {
 						</Col>
 					</Row>
 					{values.ps4AuthenticationType === 0 && (
-						<p>Note: PS4 will timeout after 8 minutes without a valid authentication type on a real PS4.</p>
+						<p>WARNING: PS4 will timeout after 8 minutes without a valid authentication type on a real PS4.</p>
 					)}
-					{values.ps4AuthenticationType === 1 && (
-					<Row className="mb-3">
-					<Row className="mb-3">
-						<Col sm={3} className="mb-3">
-							<Form.Label>
-								{t('AddonsConfig:ps4-mode-private-key-label')}:
-							</Form.Label>
-							<br/>
-							<input
-								type="file"
-								id="ps4key-input"
-								onChange={handleChange}
-								multiple={false}
-								accept="*/*"
-							/>
-						</Col>
-						<Col sm={3} className="mb-3">
-							<Form.Label>
-								{t('AddonsConfig:ps4-mode-serial-number-label')}:
-							</Form.Label>
-							<br/>
-							<input
-								type="file"
-								id="ps4serial-input"
-								accept="*/*"
-								multiple={false}
-								onChange={handleChange}
-							/>
-						</Col>
-						<Col sm={3} className="mb-3">
-							<Form.Label>
-								{t('AddonsConfig:ps4-mode-signature-label')}:
-							</Form.Label>
-							<br/>
-							<input
-								type="file"
-								id="ps4signature-input"
-								accept="*/*"
-								multiple={false}
-								onChange={handleChange}
-							/>
-						</Col>
-					</Row>
-					</Row>
-					)}
+					{values.ps4AuthenticationType === 1 && (<Row className="mb-3">
+						<Row className="mb-3">
+							<Col sm={3} className="mb-3">
+								<Form.Label>
+									{t('AddonsConfig:ps4-mode-private-key-label')}:
+								</Form.Label>
+								<br/>
+								<input
+									type="file"
+									id="ps4key-input"
+									onChange={handleChange}
+									multiple={false}
+									accept="*/*"
+								/>
+							</Col>
+							<Col sm={3} className="mb-3">
+								<Form.Label>
+									{t('AddonsConfig:ps4-mode-serial-number-label')}:
+								</Form.Label>
+								<br/>
+								<input
+									type="file"
+									id="ps4serial-input"
+									accept="*/*"
+									multiple={false}
+									onChange={handleChange}
+								/>
+							</Col>
+							<Col sm={3} className="mb-3">
+								<Form.Label>
+									{t('AddonsConfig:ps4-mode-signature-label')}:
+								</Form.Label>
+								<br/>
+								<input
+									type="file"
+									id="ps4signature-input"
+									accept="*/*"
+									multiple={false}
+									onChange={handleChange}
+								/>
+							</Col>
+						</Row>
+					</Row>)}
 				</Form>
 				);
 			case 'input-mode-options.ps5':
 				return (
-				<Form>PS5!</Form>
+				<Form className="row mb-3">
+					<Row className="mb-3">
+						<Col sm={10}>
+							Playstation 5 mode allows GP2040-CE to run on the Playstation 5 console as a compatible Playstation 4 arcade stick.
+						</Col>
+					</Row>
+					<Row className="mb-3">
+						<Col sm={10}>
+							<Form.Check
+								label={t('SettingsPage:input-mode-extra-label')}
+								type="switch"
+								name="switchTpShareForDs4"
+								isInvalid={false}
+								checked={Boolean(values.switchTpShareForDs4)}
+								onChange={(e) => {
+									setFieldValue(
+										'switchTpShareForDs4',
+										e.target.checked ? 1 : 0,
+									);
+								}}
+							/>
+						</Col>
+					</Row>
+					<Row className="mb-3">
+						<Col sm={3}>
+							<Form.Label>
+								Authentication Settings
+							</Form.Label>
+							<Form.Select
+								label={t('SettingsPage:input-mode-extra-label')}
+								name="ps5AuthenticationType"
+								className="form-select-sm"
+								value={values.ps5AuthenticationType}
+								onChange={handleChange}
+								isInvalid={errors.ps5AuthenticationType}
+							>
+								{translatedInputModeAuthentications.map((o, i) => (
+									<option
+										key={`button-ps5AuthenticationType-option-${i}`}
+										value={o.value}
+									>
+										{o.label}
+									</option>
+								))}
+							</Form.Select>
+						</Col>
+					</Row>
+					{values.ps5AuthenticationType === 0 && (
+						<p>WARNING: PS5 will timeout after 8 minutes without a valid authentication type on a real PS4.</p>
+					)}
+				</Form>
 				);
 			case 'input-mode-options.xinput':
 				return (
-				<Form>XInput!</Form>
-				);
+				<Form className="row mb-3">
+					<Row className="mb-3">
+						<Col sm={6}>
+							X-Input mode emulates the Xbox 360 controller system and can run unauthenticated on the PC. Running on a standard Xbox 360 system will require a USB dongle.
+						</Col>
+					</Row>
+					<Row className="mb-3">
+						<Col sm={3}>
+							<Form.Label>
+								Authentication Settings
+							</Form.Label>
+							<Form.Select
+								label={t('SettingsPage:input-mode-extra-label')}
+								name="xinputAuthenticationType"
+								className="form-select-sm"
+								value={values.xinputAuthenticationType}
+								onChange={handleChange}
+								isInvalid={errors.xinputAuthenticationType}
+							>
+								{translatedInputModeAuthentications.map((o, i) => (
+									<option
+										key={`button-xinputAuthenticationType-option-${i}`}
+										value={o.value}
+									>
+										{o.label}
+									</option>
+								))}
+							</Form.Select>
+						</Col>
+					</Row>
+				</Form>);
 			case 'input-mode-options.xbone':
 				return (
-				<Form>Xbox One!</Form>
+				<Form className="row mb-3">
+					<Row className="mb-3">
+						<Col sm={6}>
+							WARNING: Xbox One mode requires a USB dongle to properly authenticate to both the Xbox One and PC.
+						</Col>
+					</Row>
+				</Form>
 				);
 			case 'input-mode-options.keyboard':
 				return (

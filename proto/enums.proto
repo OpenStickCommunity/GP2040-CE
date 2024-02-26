@@ -106,6 +106,16 @@ enum InputMode
     INPUT_MODE_CONFIG = 255;
 }
 
+enum InputModeAuthType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    INPUT_MODE_AUTH_TYPE_NONE = 0;
+    INPUT_MODE_AUTH_TYPE_KEYS = 1;
+    INPUT_MODE_AUTH_TYPE_USB = 2;
+    INPUT_MODE_AUTH_TYPE_I2C = 3;
+}
+
 enum DpadMode
 {
     option (nanopb_enumopt).long_names = false;

@@ -17,6 +17,8 @@ public:
     PS4Driver(uint32_t type): ps4ControllerType(type) {}
     virtual void initialize();
     virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
+    virtual void initializeAux();
+    virtual void processAux();
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
     virtual void set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize);
     virtual bool vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request);
@@ -26,6 +28,7 @@ public:
     virtual const uint8_t * get_descriptor_configuration_cb(uint8_t index);
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
+    virtual USBListener * get_usb_auth_listener();
 private:
     // Lots of things here
     void save_nonce(uint8_t nonce_id, uint8_t nonce_page, uint8_t * buffer, uint16_t buflen);

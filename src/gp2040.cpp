@@ -55,12 +55,9 @@ void GP2040::setup() {
 	PeripheralManager::getInstance().initSPI();
 	PeripheralManager::getInstance().initUSB();
 
-	// Reduce CPU if any USB host add-on is enabled
-	const AddonOptions & addonOptions = Storage::getInstance().getAddonOptions();
-	if ( addonOptions.keyboardHostOptions.enabled ||
-			addonOptions.psPassthroughOptions.enabled ||
-			addonOptions.xbonePassthroughOptions.enabled ){
-	    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+	// Reduce CPU if USB host is enabled
+	if ( PeripheralManager::getInstance().isUSBEnabled(0) ) {
+		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
 
     // Setup Gamepad and Gamepad Storage
@@ -108,7 +105,6 @@ void GP2040::setup() {
 		case BootAction::ENTER_WEBCONFIG_MODE:
 			// Move this to the Net driver initialize
 			Storage::getInstance().SetConfigMode(true);
-			//initialize_driver(INPUT_MODE_CONFIG);
 			DriverManager::getInstance().setup(INPUT_MODE_CONFIG);
 			ConfigManager::getInstance().setup(CONFIG_TYPE_WEB);
 			return;

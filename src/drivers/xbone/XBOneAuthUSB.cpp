@@ -1,30 +1,21 @@
-#include "addons/xbonepassthrough.h"
-#include "storagemanager.h"
-#include "usbhostmanager.h"
+#include "host/usbh.h"
+#include "class/hid/hid.h"
+#include "class/hid/hid_host.h"
+#include "drivers/xbone/XBOneAuthUSB.h"
+#include "CRC32.h"
 #include "peripheralmanager.h"
+#include "usbhostmanager.h"
 
 #include "drivers/xbone/XBOneDescriptors.h"
 #include "drivers/shared/xgip_protocol.h"
 #include "drivers/shared/xinput_host.h"
 #include "drivers/shared/xbonedata.h"
 
-#define XBONE_EXTENSION_DEBUG true
-
 // power-on states and rumble-on with everything disabled
 static uint8_t xb1_power_on[] = {0x06, 0x62, 0x45, 0xb8, 0x77, 0x26, 0x2c, 0x55,
                                  0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f};
 static uint8_t xb1_power_on_single[] = {0x00};
 static uint8_t xb1_rumble_on[] = {0x00, 0x0f, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0xeb};
-
-bool XBOnePassthroughAddon::available() {
-    const XBOnePassthroughOptions& xboneOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
-    const GamepadOptions& gamepadOptions = Storage::getInstance().GetGamepad()->getOptions();
-	return xboneOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0) && (gamepadOptions.inputMode == INPUT_MODE_XBONE);
-}
-
-void XBOnePassthroughAddon::setup() {
-    dongle_ready = false;
-}
 
 // Report Queue for big report sizes from dongle
 #include <queue>
@@ -37,7 +28,17 @@ static std::queue<report_queue_t> report_queue;
 static uint32_t lastReportQueueSent = 0;
 #define REPORT_QUEUE_INTERVAL 15
 
-void XBOnePassthroughAddon::process() {
+void XBOneAuthUSB::initialize() {
+	if ( available() ) {
+		dongle_ready = false;
+	}
+}
+
+bool XBOneAuthUSB::available() {
+	return (PeripheralManager::getInstance().isUSBEnabled(0));
+}
+
+void XBOneAuthUSB::process() {
     // Do not begin processing console auth unless we have the dongle ready
     if ( dongle_ready == true ) {
         if ( XboxOneData::getInstance().getState() == XboxOneState::send_auth_console_to_dongle ) {
@@ -66,18 +67,18 @@ void XBOnePassthroughAddon::process() {
 	}
 }
 
-void XBOnePassthroughAddon::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
+void XBOneAuthUSB::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
     xbone_dev_addr = dev_addr;
     xbone_instance = instance;
     incomingXGIP.reset();
     outgoingXGIP.reset();
 }
 
-void XBOnePassthroughAddon::unmount(uint8_t dev_addr) {
+void XBOneAuthUSB::unmount(uint8_t dev_addr) {
     // Do not reset dongle_ready on unmount (Magic-X will remount but still be ready)
 }
 
-void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
+void XBOneAuthUSB::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
     incomingXGIP.parse(report, len);
     if ( incomingXGIP.validate() == false ) {
         sleep_ms(50); // First packet is invalid, drop and wait for dongle to boot
@@ -128,7 +129,7 @@ void XBOnePassthroughAddon::report_received(uint8_t dev_addr, uint8_t instance, 
     };
 }
 
-void XBOnePassthroughAddon::queue_host_report(void* report, uint16_t len) {
+void XBOneAuthUSB::queue_host_report(void* report, uint16_t len) {
     report_queue_t new_queue;
     memcpy(new_queue.report, report, len);
     new_queue.len = len;

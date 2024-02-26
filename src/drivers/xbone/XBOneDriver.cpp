@@ -302,6 +302,11 @@ void XBOneDriver::initialize() {
 	last_report_counter = 0;
 }
 
+
+void XBOneDriver::initializeAux() {
+}
+
+
 void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	uint16_t xboneReportSize = 0;
 
@@ -417,6 +422,10 @@ void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 			}
 		}
 	}
+}
+
+void XBOneDriver::processAux() {
+	
 }
 
 bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {

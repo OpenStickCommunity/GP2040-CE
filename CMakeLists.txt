@@ -156,9 +156,12 @@ src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp
 src/drivers/pcengine/PCEngineDriver.cpp
+src/drivers/ps4/PS4AuthKeys.cpp
+src/drivers/ps4/PS4AuthUSB.cpp
 src/drivers/ps4/PS4Driver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
+src/drivers/xbone/XBOneAuthUSB.cpp
 src/drivers/xbone/XBOneDriver.cpp
 src/drivers/xboxog/xid/xid_driver.c
 src/drivers/xboxog/xid/xid_gamepad.c
@@ -189,8 +192,6 @@ src/addons/i2cdisplay.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
-src/addons/ps4mode.cpp
-src/addons/pspassthrough.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
@@ -199,7 +200,6 @@ src/addons/input_macro.cpp
 src/addons/snes_input.cpp
 src/addons/inputhistory.cpp
 src/addons/tilt.cpp
-src/addons/xbonepassthrough.cpp
 src/addons/spi_analog_ads1256.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c

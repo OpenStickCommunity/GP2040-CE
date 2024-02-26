@@ -20,7 +20,7 @@ void AddonManager::LoadUSBAddon(USBAddon* addon, ADDON_PROCESS processAt) {
         block->ptr = addon;
         block->process = processAt;
         addons.push_back(block);
-        USBHostManager::getInstance().pushAddon(addon);
+        USBHostManager::getInstance().pushListener((USBListener*)addon);
 	} else {
         delete addon; // Don't use the memory if we don't have to
     }

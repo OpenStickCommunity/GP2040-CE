@@ -13,6 +13,8 @@
 #include "drivers/ps4/PS4AuthKeys.h"
 #include "drivers/ps4/PS4AuthUSB.h"
 
+#include "enums.pb.h"
+
 // force a report to be sent every X ms
 #define PS4_KEEPALIVE_TIMER 1000
 
@@ -52,31 +54,35 @@ void PS4Driver::initialize() {
 
 	// setup PS4/PS5 compatibility
 	PS4Data::getInstance().ps4ControllerType = ps4ControllerType;
-	authDriver = nullptr;
 
-	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-	if ( ps4ControllerType == PS4ControllerType::PS4_CONTROLLER ) {
-		// Setup PS4 Auth system
-		if ( gamepadOptions.ps4AuthType == InputAuthType::INPUT_MODE_AUTH_TYPE_KEYS ) {
-			authDriver = PS4AuthKeys();
-		} else if ( gamepadOptions.ps4AuthType == InputAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
-			authDriver = PS4AuthUSB();
-		}
-	} else if ( ps4ControllerType == PS4ControllerType::PS4_ARCADESTICK ) {
-		// Setup PS5 Auth System
-		if ( gamepadOptions.ps5AuthType == InputAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
-			authDriver = PS4AuthUSB();
-		}
-	}
-	if ( authDriver != nullptr ) {
-		authDriver->initialize();
-	}
 
 	last_report_counter = 0;
 	last_axis_counter = 0;
     cur_nonce_id = 1;
 	keep_alive_timer = to_ms_since_boot(get_absolute_time());
 	send_nonce_part = 0;
+}
+
+void PS4Driver::initializeAux() {
+	authDriver = nullptr;
+	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+	if ( ps4ControllerType == PS4ControllerType::PS4_CONTROLLER ) {
+		// Setup PS4 Auth system
+		if ( gamepadOptions.ps4AuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_KEYS ) {
+			authDriver = new PS4AuthKeys();
+		} else if ( gamepadOptions.ps4AuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
+			authDriver = new PS4AuthUSB();
+		}
+	} else if ( ps4ControllerType == PS4ControllerType::PS4_ARCADESTICK ) {
+		// Setup PS5 Auth System
+		if ( gamepadOptions.ps5AuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
+			authDriver = new PS4AuthUSB();
+		}
+	}
+	// If authentication driver is set AND auth driver can load (usb enabled, i2c enabled, keys loaded, etc.)
+	if ( authDriver != nullptr && authDriver->available() ) {
+		authDriver->initialize();
+	}
 }
 
 void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
@@ -163,6 +169,22 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		}
 	}
 }
+
+// Called by Core1, PS4 key signing will lock the CPU
+void PS4Driver::processAux() {
+	// If authentication driver is set AND auth driver can load (usb enabled, i2c enabled, keys loaded, etc.)
+	if ( authDriver != nullptr && authDriver->available() ) {
+		authDriver->process();
+	}
+}
+
+USBListener * PS4Driver::get_usb_auth_listener() {
+	if ( authDriver != nullptr && authDriver->getAuthType() == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
+		return (USBListener*)authDriver;
+	}
+	return nullptr;
+}
+
 
 // Controller descriptor (byte[4] = 0x00 for ps4, 0x07 for ps5)
 static constexpr uint8_t output_0x03[] = {
