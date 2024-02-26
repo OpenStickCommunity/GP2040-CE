@@ -4,13 +4,11 @@
 
 #include "drivermanager.h"
 #include "storagemanager.h"
-#include "peripheralmanager.h"
 #include "usbhostmanager.h"
 
 #include "addons/board_led.h"  // Add-Ons
 #include "addons/buzzerspeaker.h"
-#include "addons/i2cdisplay.h"
-#include "addons/inputhistory.h"
+#include "addons/display.h"
 #include "addons/pleds.h"
 #include "addons/neopicoleds.h"
 
@@ -29,15 +27,9 @@ void GP2040Aux::setup() {
 	PeripheralManager::getInstance().initSPI();
 	PeripheralManager::getInstance().initUSB();
 
-	InputHistoryAddon* inputHistoryAddon = new InputHistoryAddon();
-	I2CDisplayAddon* i2CDisplayAddon = new I2CDisplayAddon();
-
-	if(inputHistoryAddon->available() && i2CDisplayAddon->available())
-		i2CDisplayAddon->attachInputHistoryAddon(inputHistoryAddon);
-
 	// Setup Add-ons
 	addons.LoadAddon(inputHistoryAddon, CORE1_LOOP);
-	addons.LoadAddon(i2CDisplayAddon, CORE1_LOOP);
+	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);

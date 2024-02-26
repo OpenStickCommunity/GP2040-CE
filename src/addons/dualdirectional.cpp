@@ -3,7 +3,6 @@
 #include "helper.h"
 #include "config.pb.h"
 #include "types.h"
-#include "gamepad/GamepadDebouncer.h"
 
 bool DualDirectionalInput::available() {
     return Storage::getInstance().getAddonOptions().dualDirectionalOptions.enabled;
@@ -58,18 +57,6 @@ void DualDirectionalInput::reinit()
     this->setup();
 }
 
-void DualDirectionalInput::debounce()
-{
-    GamepadDebouncer gamepadDebouncer;
-
-    if (dDebState != dualState) {	    
-        uint32_t changedDpad = dDebState ^ dualState;
-	
-        dualState = gamepadDebouncer.debounceDpad(dDebState, changedDpad);
-        dDebState = dualState;
-    }
-}
-
 
 uint8_t DualDirectionalInput::updateDpadDDI(uint8_t dpad, DpadDirection direction)
 {
@@ -122,16 +109,13 @@ void DualDirectionalInput::preprocess()
 {
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    Mask_t values = ~gpio_get_all();
+    Mask_t values = gamepad->debouncedGpio;
 
     dualState = 0
             | ((values & mapDpadUp->pinMask)    ? mapDpadUp->buttonMask : 0)
             | ((values & mapDpadDown->pinMask)  ? mapDpadDown->buttonMask : 0)
             | ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask : 0)
             | ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0);
-
-    // Debounce our directional pins
-    debounce();
 
     // Convert gamepad from process() output to uint8 value
     uint8_t gamepadState = gamepad->state.dpad;

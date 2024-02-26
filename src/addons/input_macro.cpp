@@ -37,7 +37,7 @@ void InputMacro::preprocess()
     FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
     if (focusModeOptions.enabled && focusModeOptions.macroLockEnabled) return;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
-	uint32_t allPins = ~gpio_get_all();
+    Mask_t allPins = gamepad->debouncedGpio;
     macroInputPressed = false;
     uint64_t currentMicros = getMicro();
 

@@ -73,9 +73,10 @@
 #define LEDS_DPAD_UP     11
 
 #define HAS_I2C_DISPLAY 1
-#define I2C_SDA_PIN 26
-#define I2C_SCL_PIN 27
-#define I2C_BLOCK i2c1
+#define I2C1_ENABLED 1
+#define I2C1_SDA 26
+#define I2C1_SCL 27
+#define DISPLAY_I2C_BLOCK i2c1
 #define I2C_SPEED 800000
 
 #define BUTTON_LAYOUT BUTTON_LAYOUT_STICKLESS

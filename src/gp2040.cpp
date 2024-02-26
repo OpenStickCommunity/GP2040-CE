@@ -6,8 +6,10 @@
 
 #include "build_info.h"
 #include "configmanager.h" // Global Managers
+#include "peripheralmanager.h"
 #include "storagemanager.h"
 #include "addonmanager.h"
+#include "types.h"
 #include "usbhostmanager.h"
 
 // Inputs for Core0
@@ -173,6 +175,7 @@ void GP2040::setup() {
  */
 void GP2040::initializeStandardGpio() {
 	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+	buttonGpios = 0;
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
 	{
 		// (NONE=-10, RESERVED=-5, ASSIGNED_TO_ADDON=0, everything else is ours)
@@ -181,6 +184,7 @@ void GP2040::initializeStandardGpio() {
 			gpio_init(pin);             // Initialize pin
 			gpio_set_dir(pin, GPIO_IN); // Set as INPUT
 			gpio_pull_up(pin);          // Set as PULLUP
+			buttonGpios |= 1 << pin;    // mark this pin as mattering for GPIO debouncing
 		}
 	}
 }
@@ -200,6 +204,44 @@ void GP2040::deinitializeStandardGpio() {
 	}
 }
 
+/**
+ * @brief Populate a debounced version of gpio_get_all suitable for use for buttons.
+ *
+ * For GPIO that are assigned to buttons (based on GpioMappings, see GP2040::initializeStandardGpio),
+ * we can centralize their debouncing here and provide access to it to button users.
+ *
+ * For ease of use this provides the mask bitwise NOTed so that callers don't have to. To avoid misuse
+ * and to simplify this method, non-button GPIO IS NOT PRESENT in this result. Use gpio_get_all directly
+ * instead, if you don't want debounced data.
+ */
+void GP2040::debounceGpioGetAll() {
+	Mask_t raw_gpio = ~gpio_get_all();
+	Gamepad* gamepad = Storage::getInstance().GetGamepad();
+	// return if state isn't different than the actual
+	if (gamepad->debouncedGpio == (raw_gpio & buttonGpios)) return;
+
+	uint32_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
+	// abort if no delay is configured
+	if (debounceDelay == 0) {
+		gamepad->debouncedGpio = raw_gpio;
+		return;
+	}
+
+	uint32_t now = getMillis();
+	// check each button use case GPIO for state
+	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
+		Mask_t pin_mask = 1 << pin;
+		if (buttonGpios & pin_mask) {
+			// Allow debouncer to change state if button state changed and debounce delay threshold met
+			if ((gamepad->debouncedGpio & pin_mask) != \
+					(raw_gpio & pin_mask) && ((now - gpioDebounceTime[pin]) > debounceDelay)) {
+				gamepad->debouncedGpio ^= pin_mask;
+				gpioDebounceTime[pin] = now;
+			}
+		}
+	}
+}
+
 void GP2040::run() {
 	GPDriver * inputDriver = DriverManager::getInstance().getDriver();
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
@@ -213,6 +255,8 @@ void GP2040::run() {
 		// Do any queued saves in StorageManager
 		Storage::getInstance().performEnqueuedSaves();
 		
+		// Debounce
+		debounceGpioGetAll();
 		// Read Gamepad
 		gamepad->read();
 
@@ -226,9 +270,6 @@ void GP2040::run() {
 
 		// Process USB Host on Core0
 		USBHostManager::getInstance().process();
-
-		// Debounce if set
-		gamepad->debounce();
 
 		// Pre-Process add-ons for MPGS
 		addons.PreprocessAddons(ADDON_PROCESS::CORE0_INPUT);
@@ -293,6 +334,7 @@ GP2040::BootAction GP2040::getBootAction() {
 				Gamepad * gamepad = Storage::getInstance().GetGamepad();
 				Gamepad * processedGamepad = Storage::getInstance().GetProcessedGamepad();
 				
+				debounceGpioGetAll();
 				gamepad->read();
 
 				// Pre-Process add-ons for MPGS

@@ -56,7 +56,7 @@ void BuzzerSpeakerAddon::processBuzzer() {
 	uint16_t currentTonePosition = floor((currentTimeSong * currentSong->song.size()) / totalTimeSong);
 	Tone currentTone = currentSong->song[currentTonePosition];
 
-	if (currentTonePosition > currentSong->song.size()) {
+	if (currentTonePosition >= currentSong->song.size()) {
 		stop();
 		return;
 	}
