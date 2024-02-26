@@ -188,7 +188,6 @@ void Gamepad::process()
 
 void Gamepad::read()
 {
-	// Need to invert since we're using pullups
 	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 	
 	// Get the midpoint value for the current mode
