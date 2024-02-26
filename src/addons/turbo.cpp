@@ -96,7 +96,7 @@ void TurboInput::setup()
     lastDpad = 0;
     bTurboFlicker = false;
     updateInterval(shotCount);
-    nextTimer = getMillis();
+    nextTimer = getMicro();
 }
 
 void TurboInput::process()
@@ -147,17 +147,18 @@ void TurboInput::process()
         }
     }
 
-    // Use the dial to modify our turbo shot speed (don't save on dial modify)
-    if (hasShmupDial) {
-        adc_select_input(adcShmupDial);
-        uint16_t rawValue = adc_read();
-        if ( rawValue != dialValue ) {
-            updateTurboShotCount((rawValue / turboDialIncrements) + TURBO_SHOT_MIN);
-        }
-        dialValue = rawValue;
-    }
-
     uint64_t now = getMicro();
+
+    // Use the dial to modify our turbo shot speed (don't save on dial modify)
+    if (hasShmupDial && nextAdcRead < now) {
+        adc_select_input(adcShmupDial);
+        dialValue = adc_read();
+        uint8_t shotCount = (dialValue / turboDialIncrements) + TURBO_SHOT_MIN;
+        if (shotCount != options.shotCount) {
+            updateTurboShotCount(shotCount);
+        }
+        nextAdcRead = now + 100000; // Sample every 100ms
+    }
 
     // Reset Turbo flicker on a new button press
     if ((lastButtons & turboButtonsPressed) == 0 && (gamepad->state.buttons & turboButtonsPressed) != 0) {
@@ -170,12 +171,16 @@ void TurboInput::process()
         nextTimer = now + uIntervalUS - uOffset;
     }
 
-    // Set TURBO LED if a button is going or turbo is too fast
+    // Set TURBO LED
+    // OFF: No turbo buttons enabled
+    // ON: 1 or more turbo buttons enabled
+    // BLINK: OFF on turbo shot, ON on turbo flicker
     if (hasLedPin) {
-        if ((gamepad->state.buttons & turboButtonsPressed) && !bTurboFlicker) {
-            gpio_put(options.ledPin, 0);
-        } else {
+        if (!turboButtonsPressed) {
             gpio_put(options.ledPin, 1);
+        }
+        else {
+            gpio_put(options.ledPin, (gamepad->state.buttons & turboButtonsPressed) && !bTurboFlicker);
         }
     }
 
@@ -205,7 +210,10 @@ void TurboInput::updateInterval(uint8_t shotCount)
 void TurboInput::updateTurboShotCount(uint8_t shotCount)
 {
     TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
-    options.shotCount = std::clamp<uint8_t>(shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
-    Storage::getInstance().save();
+    shotCount = std::clamp<uint8_t>(shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
+    if (shotCount != options.shotCount) {
+        options.shotCount = shotCount;
+        Storage::getInstance().save();
+    }
     updateInterval(shotCount);
 }

@@ -112,6 +112,7 @@ private:
     bool bTurboFlicker;         // Turbo Enable Buttons Toggle OFF Flag ??
     uint64_t nextTimer;         // Turbo Timer
     uint8_t adcShmupDial;       // Turbo ADC Dial Input
+    uint64_t nextAdcRead;       // ADC read timer
     bool hasShmupDial;          // Flag for shmup dial presence
     uint16_t dialValue;         // Turbo Dial Value (Raw)
     uint16_t incrementValue;    // Turbo Dial Increment Value
