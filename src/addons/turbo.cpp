@@ -11,6 +11,8 @@
 #define TURBO_SHOT_MIN 2
 #define TURBO_SHOT_MAX 30
 
+static const uint8_t turboDialIncrements = 0xFFF / (TURBO_SHOT_MAX - TURBO_SHOT_MIN); // 12-bit ADC
+
 bool TurboInput::available() {
     // Turbo Button initialized by void Gamepad::setup()
     bool hasTurboAssigned = false;
@@ -90,7 +92,6 @@ void TurboInput::setup()
     for(uint8_t i = 0; i < 4; i++) {
         debChargeTime[i] = now;
     }
-    turboDialIncrements = 0xFFF / (TURBO_SHOT_MAX - TURBO_SHOT_MIN); // 12-bit ADC
     incrementValue = 0;
     lastPressed = 0;
     lastDpad = 0;
@@ -155,7 +156,7 @@ void TurboInput::process()
         dialValue = adc_read();
         uint8_t shotCount = (dialValue / turboDialIncrements) + TURBO_SHOT_MIN;
         if (shotCount != options.shotCount) {
-            updateTurboShotCount(shotCount);
+            updateInterval(shotCount);
         }
         nextAdcRead = now + 100000; // Sample every 100ms
     }
@@ -169,9 +170,6 @@ void TurboInput::process()
     else if (turboButtonsPressed && nextTimer < now) {
         bTurboFlicker ^= true;
         nextTimer = now + uIntervalUS - uOffset;
-    }
-    else {
-        bTurboFlicker = false;
     }
 
     // Set TURBO LED
