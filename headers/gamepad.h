@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "enums.pb.h"
-#include "gamepad/GamepadDebouncer.h"
 #include "gamepad/GamepadState.h"
 
 #include "pico/stdlib.h"
@@ -41,7 +40,6 @@ public:
 	void process();
 	void read();
 	void save();
-	void debounce();
 	
 	void hotkey();
 
@@ -123,7 +121,6 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;
 	GamepadState turboState;
@@ -146,6 +143,9 @@ public:
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping *mapButtonFn;
+
+	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
+	Mask_t debouncedGpio;
 
 	bool userRequestedReinit = false;
 
