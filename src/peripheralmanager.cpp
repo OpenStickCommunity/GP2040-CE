@@ -9,7 +9,7 @@ void PeripheralManager::initUSB(){
 void PeripheralManager::initI2C(){
     const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
     if (peripheralOptions.blockI2C0.enabled) blockI2C0.setConfig(0, peripheralOptions.blockI2C0.sda, peripheralOptions.blockI2C0.scl, peripheralOptions.blockI2C0.speed);
-    if (peripheralOptions.blockI2C1.enabled) blockI2C1.setConfig(1, peripheralOptions.blockI2C1.sda, peripheralOptions.blockI2C1.scl, peripheralOptions.blockI2C1.speed);
+    if (peripheralOptions.blockI2C1.enabled) blockI2C1.setConfig(1, peripheralOptions.blockI2C1.sda, peripheralOptions.blockI2C1.scl, peripheralOptions.blockI2C1.speed); 
 }
 
 void PeripheralManager::initSPI(){
