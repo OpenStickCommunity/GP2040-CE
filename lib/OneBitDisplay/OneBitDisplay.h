@@ -398,6 +398,8 @@ int obdMenuDelta(SIMPLEMENU *sm, int iDelta);
 //
 int obdMenuRun(SIMPLEMENU *sm);
 
+void obdSetFonts(const uint8_t *smallFont, const uint8_t *font, const uint8_t *bigFont);
+
 #if defined(_LINUX_) && defined(__cplusplus)
 }
 #endif // _LINUX_

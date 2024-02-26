@@ -21,7 +21,7 @@
 #include "addons/buzzerspeaker.h"
 #include "addons/dualdirectional.h"
 #include "addons/i2canalog1219.h"
-#include "addons/i2cdisplay.h"
+#include "addons/display.h"
 #include "addons/jslider.h"
 #include "addons/neopicoleds.h"
 #include "addons/playernum.h"
