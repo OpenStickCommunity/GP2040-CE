@@ -166,9 +166,12 @@ void TurboInput::process()
         nextTimer = now + uIntervalUS - uOffset; // interval to flicker-off button
     }
     // Check if we've reached the next timer right before applying turbo state
-    else if (nextTimer < now) {
+    else if (turboButtonsPressed && nextTimer < now) {
         bTurboFlicker ^= true;
         nextTimer = now + uIntervalUS - uOffset;
+    }
+    else {
+        bTurboFlicker = false;
     }
 
     // Set TURBO LED
