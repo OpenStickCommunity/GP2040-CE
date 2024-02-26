@@ -18,7 +18,7 @@
 #include "addons/tilt.h"
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
-#include "addons/i2cdisplay.h"
+#include "addons/display.h"
 #include "addons/jslider.h"
 #include "addons/keyboard_host.h"
 #include "addons/neopicoleds.h"
@@ -346,9 +346,9 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // displayOptions
     INIT_UNSET_PROPERTY(config.displayOptions, enabled, !!HAS_I2C_DISPLAY);
-    INIT_UNSET_PROPERTY(config.displayOptions, i2cBlock, (I2C_BLOCK == i2c0) ? 0 : 1);
-    INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cSDAPin, I2C_SDA_PIN);
-    INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cSCLPin, I2C_SCL_PIN);
+    INIT_UNSET_PROPERTY(config.displayOptions, i2cBlock, (DISPLAY_I2C_BLOCK == i2c0) ? 0 : 1);
+    INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cSDAPin, -1);
+    INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cSCLPin, -1);
     INIT_UNSET_PROPERTY(config.displayOptions, i2cAddress, DISPLAY_I2C_ADDR);
     INIT_UNSET_PROPERTY(config.displayOptions, deprecatedI2cSpeed, I2C_SPEED);
     INIT_UNSET_PROPERTY(config.displayOptions, buttonLayout, BUTTON_LAYOUT);
@@ -381,25 +381,25 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // peripheralOptions
     PeripheralOptions& peripheralOptions = config.peripheralOptions;
-    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, enabled, (!!HAS_I2C_DISPLAY) && (I2C_BLOCK == i2c0));
-    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, sda, (I2C_BLOCK == i2c0) ? I2C_SDA_PIN : -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, scl, (I2C_BLOCK == i2c0) ? I2C_SCL_PIN : -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, speed, I2C_SPEED);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, enabled, (!!HAS_I2C_DISPLAY) && (I2C_BLOCK == i2c1));
-    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, sda, (I2C_BLOCK == i2c1) ? I2C_SDA_PIN : -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, scl, (I2C_BLOCK == i2c1) ? I2C_SCL_PIN : -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, speed, I2C_SPEED);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, enabled, (!!I2C0_ENABLED));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, sda, (!!I2C0_ENABLED) ? I2C0_PIN_SDA : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, scl, (!!I2C0_ENABLED) ? I2C0_PIN_SCL : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C0, speed, I2C0_SPEED);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, enabled, (!!I2C1_ENABLED));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, sda, (!!I2C1_ENABLED) ? I2C1_PIN_SDA : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, scl, (!!I2C1_ENABLED) ? I2C1_PIN_SCL : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockI2C1, speed, I2C1_SPEED);
 
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, enabled, false);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, rx, -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, cs, -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, sck, -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, tx, -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, enabled, false);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, rx, -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, cs, -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, sck, -1);
-    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, tx, -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, enabled, (!!SPI0_ENABLED));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, rx, (!!SPI0_ENABLED) ?  SPI0_PIN_RX : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, cs, (!!SPI0_ENABLED) ?  SPI0_PIN_CS : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, sck, (!!SPI0_ENABLED) ? SPI0_PIN_SCK : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI0, tx, (!!SPI0_ENABLED) ?  SPI0_PIN_TX : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, enabled, (!!SPI1_ENABLED));
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, rx, (!!SPI1_ENABLED) ?  SPI1_PIN_RX : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, cs, (!!SPI1_ENABLED) ?  SPI1_PIN_CS : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, sck, (!!SPI1_ENABLED) ? SPI1_PIN_SCK : -1);
+    INIT_UNSET_PROPERTY(peripheralOptions.blockSPI1, tx, (!!SPI1_ENABLED) ?  SPI1_PIN_TX : -1);
 
     INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, enabled, (PSPASSTHROUGH_ENABLED ? PSPASSTHROUGH_ENABLED : USB_PERIPHERAL_ENABLED));
     INIT_UNSET_PROPERTY(peripheralOptions.blockUSB0, dp, (PSPASSTHROUGH_PIN_DPLUS != -1 ? PSPASSTHROUGH_PIN_DPLUS : USB_PERIPHERAL_PIN_DPLUS));
@@ -566,8 +566,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // addonOptions.analogADS1219Options
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, enabled, !!I2C_ANALOG1219_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, i2cBlock, (I2C_ANALOG1219_BLOCK == i2c0) ? 0 : 1)
-    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, deprecatedI2cSDAPin, I2C_ANALOG1219_SDA_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, deprecatedI2cSCLPin, I2C_ANALOG1219_SCL_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, deprecatedI2cSDAPin, -1);
+    INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, deprecatedI2cSCLPin, -1);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, i2cAddress, I2C_ANALOG1219_ADDRESS);
     INIT_UNSET_PROPERTY(config.addonOptions.analogADS1219Options, deprecatedI2cSpeed, I2C_ANALOG1219_SPEED);
 
@@ -642,8 +642,8 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // addonOptions.wiiOptions
     INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, enabled, WII_EXTENSION_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, i2cBlock, (WII_EXTENSION_I2C_BLOCK == i2c0) ? 0 : 1);
-    INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, deprecatedI2cSDAPin, WII_EXTENSION_I2C_SDA_PIN);
-    INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, deprecatedI2cSCLPin, WII_EXTENSION_I2C_SCL_PIN);
+    INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, deprecatedI2cSDAPin, -1);
+    INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, deprecatedI2cSCLPin, -1);
     INIT_UNSET_PROPERTY(config.addonOptions.wiiOptions, deprecatedI2cSpeed, WII_EXTENSION_I2C_SPEED);
 
     // addonOptions.snesOptions
@@ -951,7 +951,7 @@ void gpioMappingsMigrationCore(Config& config)
             (config.displayOptions.enabled && (config.displayOptions.i2cBlock == 0)) | 
             (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.i2cBlock == 0)) | 
             (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.i2cBlock == 0)) | 
-            false
+            (!!I2C0_ENABLED)
         );
         
         // pin configuration
@@ -964,7 +964,7 @@ void gpioMappingsMigrationCore(Config& config)
                 (
                     isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSDAPin) && (config.addonOptions.wiiOptions.i2cBlock == 0) ? 
                     config.addonOptions.wiiOptions.deprecatedI2cSDAPin : 
-                    -1
+                    I2C0_PIN_SDA
                 )
             )
         );
@@ -979,7 +979,7 @@ void gpioMappingsMigrationCore(Config& config)
                 (
                     isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSCLPin) && (config.addonOptions.wiiOptions.i2cBlock == 0) ? 
                     config.addonOptions.wiiOptions.deprecatedI2cSCLPin : 
-                    -1
+                    I2C0_PIN_SCL
                 )
             )
         );
@@ -995,7 +995,7 @@ void gpioMappingsMigrationCore(Config& config)
                 (
                     isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSpeed) && (config.addonOptions.wiiOptions.i2cBlock == 0) ? 
                     config.addonOptions.wiiOptions.deprecatedI2cSpeed : 
-                    -1
+                    I2C0_SPEED
                 )
             )
         );
@@ -1011,7 +1011,7 @@ void gpioMappingsMigrationCore(Config& config)
             (config.displayOptions.enabled && (config.displayOptions.i2cBlock == 1)) | 
             (config.addonOptions.analogADS1219Options.enabled && (config.addonOptions.analogADS1219Options.i2cBlock == 1)) | 
             (config.addonOptions.wiiOptions.enabled && (config.addonOptions.wiiOptions.i2cBlock == 1)) | 
-            false
+            (!!I2C1_ENABLED)
         );
         
         // pin configuration
@@ -1024,7 +1024,7 @@ void gpioMappingsMigrationCore(Config& config)
                 (
                     isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSDAPin) && (config.addonOptions.wiiOptions.i2cBlock == 1) ? 
                     config.addonOptions.wiiOptions.deprecatedI2cSDAPin : 
-                    -1
+                    I2C1_PIN_SDA
                 )
             )
         );
@@ -1039,7 +1039,7 @@ void gpioMappingsMigrationCore(Config& config)
                 (
                     isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSCLPin) && (config.addonOptions.wiiOptions.i2cBlock == 1) ? 
                     config.addonOptions.wiiOptions.deprecatedI2cSCLPin : 
-                    -1
+                    I2C1_PIN_SCL
                 )
             )
         );
@@ -1055,7 +1055,7 @@ void gpioMappingsMigrationCore(Config& config)
                 (
                     isValidPin(config.addonOptions.wiiOptions.deprecatedI2cSpeed) && (config.addonOptions.wiiOptions.i2cBlock == 1) ? 
                     config.addonOptions.wiiOptions.deprecatedI2cSpeed : 
-                    -1
+                    I2C1_SPEED
                 )
             )
         );
