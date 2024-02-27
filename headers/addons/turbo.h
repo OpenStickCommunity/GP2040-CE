@@ -10,7 +10,7 @@
 #endif
 
 #ifndef DEFAULT_SHOT_PER_SEC
-#define DEFAULT_SHOT_PER_SEC 15
+#define DEFAULT_SHOT_PER_SEC 10
 #endif  // DEFAULT_SHOT_PER_SEC
 
 // TURBO Button Mask
