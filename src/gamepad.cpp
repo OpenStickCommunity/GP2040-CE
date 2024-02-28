@@ -264,6 +264,18 @@ void Gamepad::hotkey()
 	}
 }
 
+void Gamepad::clearState() {
+	state.dpad = 0;
+	state.buttons = 0;
+	state.aux = 0;
+	state.lx = GAMEPAD_JOYSTICK_MID;
+	state.ly = GAMEPAD_JOYSTICK_MID;
+	state.rx = GAMEPAD_JOYSTICK_MID;
+	state.ry = GAMEPAD_JOYSTICK_MID;
+	state.lt = 0;
+	state.rt = 0;
+}
+
 /**
  * @brief Take a hotkey action if it hasn't already been taken, modifying state/options appropriately.
  */

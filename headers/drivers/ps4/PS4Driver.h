@@ -38,7 +38,7 @@ private:
     uint8_t cur_nonce_id;
     PS4Report ps4Report;
     TouchpadData touchpadData;
-    uint32_t keep_alive_timer;
+    uint32_t last_report_timer;
     uint8_t send_nonce_part;
     uint32_t ps4ControllerType;
     GPAuthDriver * authDriver;
