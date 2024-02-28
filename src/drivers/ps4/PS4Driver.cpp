@@ -14,7 +14,7 @@
 #include "drivers/ps4/PS4AuthUSB.h"
 
 // force a report to be sent every X ms
-#define PS4_KEEPALIVE_TIMER 1000
+#define PS4_KEEPALIVE_TIMER 250
 
 void PS4Driver::initialize() {
 	//touchpadData = {
@@ -75,7 +75,7 @@ void PS4Driver::initialize() {
 	last_report_counter = 0;
 	last_axis_counter = 0;
     cur_nonce_id = 1;
-	keep_alive_timer = to_ms_since_boot(get_absolute_time());
+	last_report_timer = to_ms_since_boot(get_absolute_time());
 	send_nonce_part = 0;
 }
 
@@ -128,31 +128,11 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	touchpadData.p2.unpressed = 1;
 	ps4Report.touchpad_data = touchpadData;
 
-	// some games apparently can miss reports, or they rely on official behavior of getting frequent
-	// updates. we normally only send a report when the value changes; if we increment the counters
-	// every time we generate the report (every GP2040::run loop), we apparently overburden
-	// TinyUSB and introduce roughly 1ms of latency. but we want to loop often and report on every
-	// true update in order to achieve our tight <1ms report timing when we *do* have a different
-	// report to send.
-	// the "PS4 Hack" disables the counters so that we only report on changes, but this
-	// means we never report the same data twice, and games that expected it would get stuck
-	// inputs. the below code is a compromise: keep the tight report timing, but occasionally change
-	// the report counter and axis timing values in order to force a changed report --- this should
-	// eliminate the need for the PS4 Hack, but it's kept here at the moment for A/B testing purposes
-	if ( !options.ps4ReportHack ) {
-		uint32_t now = to_ms_since_boot(get_absolute_time());
-		if ((now - keep_alive_timer) > PS4_KEEPALIVE_TIMER) {
-			last_report_counter = (last_report_counter+1) & 0x3F;
-			ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
-			ps4Report.axis_timing = now;		 		// axis counter is 16 bits
-			keep_alive_timer = now;
-		}
-	}
-
 	// Wake up TinyUSB device
 	if (tud_suspended())
 		tud_remote_wakeup();
 
+	uint32_t now = to_ms_since_boot(get_absolute_time());
 	void * report = &ps4Report;
 	uint16_t report_size = sizeof(ps4Report);
 	if (memcmp(last_report, report, report_size) != 0)
@@ -160,6 +140,28 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		// HID ready + report sent, copy previous report
 		if (tud_hid_ready() && tud_hid_report(0, report, report_size) == true ) {
 			memcpy(last_report, report, report_size);
+		}
+		// keep track of our last successful report, for keepalive purposes
+		last_report_timer = now;
+	} else {
+		// some games apparently can miss reports, or they rely on official behavior of getting frequent
+		// updates. we normally only send a report when the value changes; if we increment the counters
+		// every time we generate the report (every GP2040::run loop), we apparently overburden
+		// TinyUSB and introduce roughly 1ms of latency. but we want to loop often and report on every
+		// true update in order to achieve our tight <1ms report timing when we *do* have a different
+		// report to send.
+		// the "PS4 Hack" disables the counters so that we only report on changes, but this
+		// means we never report the same data twice, and games that expected it would get stuck
+		// inputs. the below code is a compromise: keep the tight report timing, but occasionally change
+		// the report counter and axis timing values in order to force a changed report --- this should
+		// eliminate the need for the PS4 Hack, but it's kept here at the moment for A/B testing purposes
+		if ( !options.ps4ReportHack ) {
+			if ((now - last_report_timer) > PS4_KEEPALIVE_TIMER) {
+				last_report_counter = (last_report_counter+1) & 0x3F;
+				ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
+				ps4Report.axis_timing = now;		 		// axis counter is 16 bits
+				// the *next* process() will be a forced report (or real user input)
+			}
 		}
 	}
 }
