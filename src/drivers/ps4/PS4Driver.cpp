@@ -9,7 +9,11 @@
 #include <random>
 #include "class/hid/hid.h"
 
-// ensure a report is sent every X ms
+// PS4/PS5 Auth Systems
+#include "drivers/ps4/PS4AuthKeys.h"
+#include "drivers/ps4/PS4AuthUSB.h"
+
+// force a report to be sent every X ms
 #define PS4_KEEPALIVE_TIMER 250
 
 void PS4Driver::initialize() {
@@ -46,9 +50,28 @@ void PS4Driver::initialize() {
 		.sof = NULL
 	};
 
-	// setup PS5 compatibility
-	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
-	PS4Data::getInstance().ps4ControllerType = gamepadOptions.ps4ControllerType;
+	// setup PS4/PS5 compatibility
+	PS4Data::getInstance().ps4ControllerType = ps4ControllerType;
+	authDriver = nullptr;
+
+	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+	if ( ps4ControllerType == PS4ControllerType::PS4_CONTROLLER ) {
+		// Setup PS4 Auth system
+		if ( gamepadOptions.ps4AuthType == InputAuthType::INPUT_MODE_AUTH_TYPE_KEYS ) {
+			authDriver = PS4AuthKeys();
+		} else if ( gamepadOptions.ps4AuthType == InputAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
+			authDriver = PS4AuthUSB();
+		}
+	} else if ( ps4ControllerType == PS4ControllerType::PS4_ARCADESTICK ) {
+		// Setup PS5 Auth System
+		if ( gamepadOptions.ps5AuthType == InputAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
+			authDriver = PS4AuthUSB();
+		}
+	}
+	if ( authDriver != nullptr ) {
+		authDriver->initialize();
+	}
+
 	last_report_counter = 0;
 	last_axis_counter = 0;
     cur_nonce_id = 1;

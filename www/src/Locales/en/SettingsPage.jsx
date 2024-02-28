@@ -1,6 +1,8 @@
 export default {
-	'settings-header-text': 'Settings',
+	'settings-header-text': 'Input Mode Settings',
+	'gamepad-settings-header-text': 'Gamepad Settings',
 	'input-mode-label': 'Input Mode',
+	'current-input-mode-label': 'Current Input Mode',
 	'input-mode-extra-label': 'Switch Touchpad and Share',
 	'ps4-report-hack': 'PS4 Report Speed Hack',
 	'input-mode-options': {
@@ -10,6 +12,7 @@ export default {
 		ps3: 'PS3/DirectInput',
 		keyboard: 'Keyboard',
 		ps4: 'PS4',
+		ps5: 'PS5',
 		neogeo: 'NEOGEO mini',
 		mdmini: 'Sega Genesis/MegaDrive Mini',
 		pcemini: 'PC Engine/Turbografx 16 Mini',
@@ -27,6 +30,12 @@ export default {
 	'ps4-mode-options': {
 		controller: 'Controller',
 		arcadestick: 'Arcade Stick',
+	},
+	'input-mode-authentication': {
+		none: 'None',
+		key: 'Uploaded Key Files',
+		usb: 'Host USB',
+		i2c: 'Attached I2C',
 	},
 	'd-pad-mode-label': 'D-Pad Mode',
 	'd-pad-mode-options': {

@@ -9,8 +9,12 @@
 #include "gpdriver.h"
 #include "drivers/ps4/PS4Descriptors.h"
 
+// Authentication
+#include "drivers/shared/gpauthdriver.h"
+
 class PS4Driver : public GPDriver {
 public:
+    PS4Driver(uint32_t type): ps4ControllerType(type) {}
     virtual void initialize();
     virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
@@ -33,6 +37,8 @@ private:
     TouchpadData touchpadData;
     uint32_t last_report_timer;
     uint8_t send_nonce_part;
+    uint32_t ps4ControllerType;
+    GPAuthDriver * authDriver;
 };
 
 #endif // _PS4_DRIVER_H_

@@ -45,7 +45,10 @@ void DriverManager::setup(InputMode mode) {
             driver = new PCEngineDriver();
             break;
         case INPUT_MODE_PS4:
-            driver = new PS4Driver();
+            driver = new PS4Driver(PS4_CONTROLLER);
+            break;
+        case INPUT_MODE_PS5:
+            driver = new PS4Driver(PS4_ARCADESTICK);
             break;
         case INPUT_MODE_SWITCH:
             driver = new SwitchDriver();
