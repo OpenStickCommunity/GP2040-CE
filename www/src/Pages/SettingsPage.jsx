@@ -9,16 +9,17 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import './SettingsPage.scss';
 import Section from '../Components/Section';
-import WebApi from '../Services/WebApi';
+import WebApi, { baseButtonMappings } from '../Services/WebApi';
+
 import { BUTTON_MASKS, getButtonLabels} from '../Data/Buttons';
 
 const INPUT_MODES = [
-	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary' },
+	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary', authentication: ['none', 'usb'] },
 	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
-	{ labelKey: 'input-mode-options.ps4', value: 4, group: 'primary', optional: ['usb'] },
-	{ labelKey: 'input-mode-options.ps5', value: 13, group: 'primary', optional: ['usb'] },
+	{ labelKey: 'input-mode-options.ps4', value: 4, group: 'primary', optional: ['usb'], authentication: ['none', 'key', 'usb'] },
+	{ labelKey: 'input-mode-options.ps5', value: 13, group: 'primary', optional: ['usb'], authentication: ['none', 'usb'] },
 	{ labelKey: 'input-mode-options.xbone', value: 5, group: 'primary', required: ['usb'] },
 	{ labelKey: 'input-mode-options.mdmini', value: 6, group: 'mini' },
 	{ labelKey: 'input-mode-options.neogeo', value: 7, group: 'mini' },
@@ -177,10 +178,6 @@ const schema = yup.object().shape({
 		.number()
 		.required()
 		.label('Switch Touchpad and Share'),
-	ps4ReportHack: yup
-		.number()
-		.required()
-		.label('PS4 Report Speed Hack'),
 	forcedSetupMode: yup
 		.number()
 		.required()
@@ -245,6 +242,7 @@ const schema = yup.object().shape({
 const FormContext = ({ setButtonLabels }) => {
 	const { values, setValues } = useFormikContext();
 	const { setLoading } = useContext(AppContext);
+	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -254,9 +252,10 @@ const FormContext = ({ setButtonLabels }) => {
 				swapTpShareLabels:
 					options.switchTpShareForDs4 === 1 && options.inputMode === 4,
 			});
+			setKeyMappings(await WebApi.getKeyMappings(setLoading));
 		}
 		fetchData();
-	}, [setValues]);
+	}, [setKeyMappings, setValues]);
 
 	useEffect(() => {
 		if (!!values.dpadMode) values.dpadMode = parseInt(values.dpadMode);
@@ -264,8 +263,6 @@ const FormContext = ({ setButtonLabels }) => {
 		if (!!values.socdMode) values.socdMode = parseInt(values.socdMode);
 		if (!!values.switchTpShareForDs4)
 			values.switchTpShareForDs4 = parseInt(values.switchTpShareForDs4);
-		if (!!values.ps4ReportHack)
-			values.ps4ReportHack = parseInt(values.ps4ReportHack);
 		if (!!values.forcedSetupMode)
 			values.forcedSetupMode = parseInt(values.forcedSetupMode);
 		if (!!values.lockHotkeys) values.lockHotkeys = parseInt(values.lockHotkeys);
@@ -276,6 +273,10 @@ const FormContext = ({ setButtonLabels }) => {
 			values.ps4ControllerType = parseInt(values.ps4ControllerType);
 		if (!!values.ps4AuthenticationType)
 			values.ps4AuthenticationType = parseInt(values.ps4AuthenticationType);
+		if (!!values.ps5AuthenticationType)
+			values.ps5AuthenticationType = parseInt(values.ps5AuthenticationType);
+		if (!!values.xinputAuthenticationType)
+			values.xinputAuthenticationType = parseInt(values.xinputAuthenticationType);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -301,6 +302,8 @@ export default function SettingsPage() {
 	const { buttonLabels, setButtonLabels, getAvailablePeripherals, getSelectedPeripheral, getAvailableAddons, updateAddons, updatePeripherals } = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
+	const [validated, setValidated] = useState(false);
+	const [keyMappings, setKeyMappings] = useState(baseButtonMappings);
 
 	const WARNING_CHECK_TEXT = 'GP2040-CE';
 
@@ -309,37 +312,118 @@ export default function SettingsPage() {
             permission: 'usb', 
             check: () => (getAvailablePeripherals('usb') !== false), 
             reason: () => ((getAvailablePeripherals('usb') === false) ? 'USB peripheral not enabled' : '')
-        },
-        { 
-            permission: 'ps4auth', 
-            check: () => (getAvailableAddons().PSPassthroughAddonEnabled === 1), 
-            reason: () => ((getAvailableAddons().PSPassthroughAddonEnabled === 0) ? 'PS Passthrough addon not enabled' : '')
-        },
-        { 
-            permission: 'ps4mode', 
-            check: () => (getAvailableAddons().PS4ModeAddonEnabled === 1), 
-            reason: () => ((getAvailableAddons().PS4ModeAddonEnabled === 0) ? 'PS4 Mode addon not enabled' : '')
-        },
-        {
-            permission: 'xboxone', 
-            check: () => (getAvailableAddons().XBOnePassthroughAddonEnabled === 1),
-            reason: () => ((getAvailableAddons().XBOnePassthroughAddonEnabled === 0) ? 'Xbox Passthrough addon not enabled' : '')
-        },
+        }
     ];    
 
-	const inputModeSpecifics = (values, errors, setFieldValue, handleChange, translatedInputModeAuthentications) => {
+	const handleKeyChange = (value, button) => {
+		const newMappings = { ...keyMappings };
+		newMappings[button].key = value;
+		const mappings = validateMappings(newMappings, t);
+		setKeyMappings(mappings);
+		setValidated(true);
+	};
+
+	const handleKeySubmit = async (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		let mappings = { ...keyMappings };
+		mappings = validateMappings(mappings, t);
+		setKeyMappings(mappings);
+		setValidated(true);
+
+		if (Object.keys(mappings).filter((p) => !!mappings[p].error).length) {
+			setSaveMessage(t('Common:errors.validation-error'));
+			return;
+		}
+
+		const success = await WebApi.setKeyMappings(mappings);
+		setSaveMessage(
+			success
+				? t('Common:saved-success-message')
+				: t('Common:saved-error-message'),
+		);
+	};
+
+	const generateAuthSelection = (inputMode, label, name, value, error, handleChange) => {
+		return (
+			<Row className="mb-3"><Col sm={3}>
+				<Form.Label>
+					Authentication Settings
+				</Form.Label>
+				<Form.Select
+					label={label}
+					name={name}
+					className="form-select-sm"
+					value={value}
+					onChange={handleChange}
+					isInvalid={error}
+				>
+					{inputMode.authentication.map(authType => (
+						AUTHENTICATION_TYPES.filter(mode => mode.labelKey === 'input-mode-authentication.' + authType).map(o => (
+						<option
+							key={`button-${name}-option-${o.value}`}
+							value={o.value}
+						>
+							{translatedInputModeAuthentications.find(t => o.value === t.value).label}
+						</option>
+						))
+					))}
+				</Form.Select>
+			</Col></Row>
+		);
+	};
+
+	const inputModeSpecifics = (values, errors, setFieldValue, handleChange) => {
 		// Value hasn't been filled out yet
 		if ( Object.keys(values).length == 0 ) {
 			return;
 		}
+
+
 		const inputMode = INPUT_MODES.find((o) => o.value == values.inputMode);
 		switch ( inputMode.labelKey ) {
+			case 'input-mode-options.xinput':
+				return (
+				<Form className="row mb-3">
+					<Row className="mb-3"><Col sm={10}>
+						X-Input mode emulates the Xbox 360 controller system to run on a PC.
+					</Col></Row>
+					<Row className="mb-3"><Col sm={10}>
+						<span class="text-success">INFO:</span> Running on a real Xbox 360 system requires a USB host connection.
+					</Col></Row>
+					
+
+					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'xinputAuthenticationType', values.xinputAuthenticationType, errors.xinputAuthenticationType, handleChange)}
+					{values.xinputAuthenticationType === 2 && (
+						<Row className="mb-3">
+							<Col sm={10}>Please ensure USB Peripheral is enabled and an Xbox 360 compatible USB device is plugged in.</Col>
+						</Row>
+					)}
+				</Form>);
+			case 'input-mode-options.keyboard':
+					return (
+					<Form noValidate validated={validated} onSubmit={handleKeySubmit}>
+						<Row className="mb-3"><Col sm={6}>
+							<div class="fs-3 fw-bold">{t('SettingsPage:keyboard-mapping-header-text')}</div>
+						</Col></Row>
+						<Row className="mb-3"><Col sm={6}>
+							<div>{t('SettingsPage:keyboard-mapping-sub-header-text')}</div>
+						</Col></Row>
+						<KeyboardMapper
+							buttonLabels={buttonLabels}
+							handleKeyChange={handleKeyChange}
+							validated={validated}
+							getKeyMappingForButton={getKeyMappingForButton}
+						/>
+					</Form>
+					);
 			case 'input-mode-options.ps4':
 				return (
 				<Form className="row mb-3">
 					<Row className="mb-3">
 						<Col sm={10}>
-							Playstation 4 mode allows GP2040-CE to run on the Playstation 4 console as authenticated or unauthenticated.
+							PS4 mode allows GP2040-CE to run as an authenticated PS4 controller.
 						</Col>
 					</Row>
 					<Row className="mb-3">
@@ -359,32 +443,13 @@ export default function SettingsPage() {
 							/>
 						</Col>
 					</Row>
-					<Row className="mb-3">
-						<Col sm={3}>
-							<Form.Label>
-								Authentication Settings
-							</Form.Label>
-							<Form.Select
-								label={t('SettingsPage:input-mode-extra-label')}
-								name="ps4AuthenticationType"
-								className="form-select-sm"
-								value={values.ps4AuthenticationType}
-								onChange={handleChange}
-								isInvalid={errors.ps4AuthenticationType}
-							>
-								{translatedInputModeAuthentications.map((o, i) => (
-									<option
-										key={`button-ps4AuthenticationType-option-${i}`}
-										value={o.value}
-									>
-										{o.label}
-									</option>
-								))}
-							</Form.Select>
-						</Col>
-					</Row>
+					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'ps4AuthenticationType', values.ps4AuthenticationType, errors.ps4AuthenticationType, handleChange)}
 					{values.ps4AuthenticationType === 0 && (
-						<p>WARNING: PS4 will timeout after 8 minutes without a valid authentication type on a real PS4.</p>
+						<Row className="mb-3">
+							<Col sm={10}>
+							<span class="text-warning">🔒 WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.
+							</Col>
+						</Row>
 					)}
 					{values.ps4AuthenticationType === 1 && (<Row className="mb-3">
 						<Row className="mb-3">
@@ -429,6 +494,11 @@ export default function SettingsPage() {
 							</Col>
 						</Row>
 					</Row>)}
+					{values.ps4AuthenticationType === 2 && (
+						<Row className="mb-3"><Col sm={10}>
+							<span class="text-info">INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.
+						</Col></Row>
+					)}
 				</Form>
 				);
 			case 'input-mode-options.ps5':
@@ -436,7 +506,7 @@ export default function SettingsPage() {
 				<Form className="row mb-3">
 					<Row className="mb-3">
 						<Col sm={10}>
-							Playstation 5 mode allows GP2040-CE to run on the Playstation 5 console as a compatible Playstation 4 arcade stick.
+							PS5 mode allows GP2040-CE to run as an authenticated PS5 compatible arcade stick.
 						</Col>
 					</Row>
 					<Row className="mb-3">
@@ -456,90 +526,33 @@ export default function SettingsPage() {
 							/>
 						</Col>
 					</Row>
-					<Row className="mb-3">
-						<Col sm={3}>
-							<Form.Label>
-								Authentication Settings
-							</Form.Label>
-							<Form.Select
-								label={t('SettingsPage:input-mode-extra-label')}
-								name="ps5AuthenticationType"
-								className="form-select-sm"
-								value={values.ps5AuthenticationType}
-								onChange={handleChange}
-								isInvalid={errors.ps5AuthenticationType}
-							>
-								{translatedInputModeAuthentications.map((o, i) => (
-									<option
-										key={`button-ps5AuthenticationType-option-${i}`}
-										value={o.value}
-									>
-										{o.label}
-									</option>
-								))}
-							</Form.Select>
-						</Col>
-					</Row>
+					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'ps5AuthenticationType', values.ps5AuthenticationType, errors.ps5AuthenticationType, handleChange)}
 					{values.ps5AuthenticationType === 0 && (
-						<p>WARNING: PS5 will timeout after 8 minutes without a valid authentication type on a real PS4.</p>
+						<Row className="mb-3"><Col sm={10}>
+							<span class="text-warning">🔒 WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.
+						</Col></Row>
+					)}
+					{values.ps5AuthenticationType === 2 && (
+						<Row className="mb-3"><Col sm={10}>
+							<span class="text-info">INFO:</span> Please ensure USB Peripheral is enabled and a PS5 compatible USB device is plugged in.
+						</Col></Row>
 					)}
 				</Form>
 				);
-			case 'input-mode-options.xinput':
-				return (
-				<Form className="row mb-3">
-					<Row className="mb-3">
-						<Col sm={6}>
-							X-Input mode emulates the Xbox 360 controller system and can run unauthenticated on the PC. Running on a standard Xbox 360 system will require a USB dongle.
-						</Col>
-					</Row>
-					<Row className="mb-3">
-						<Col sm={3}>
-							<Form.Label>
-								Authentication Settings
-							</Form.Label>
-							<Form.Select
-								label={t('SettingsPage:input-mode-extra-label')}
-								name="xinputAuthenticationType"
-								className="form-select-sm"
-								value={values.xinputAuthenticationType}
-								onChange={handleChange}
-								isInvalid={errors.xinputAuthenticationType}
-							>
-								{translatedInputModeAuthentications.map((o, i) => (
-									<option
-										key={`button-xinputAuthenticationType-option-${i}`}
-										value={o.value}
-									>
-										{o.label}
-									</option>
-								))}
-							</Form.Select>
-						</Col>
-					</Row>
-				</Form>);
 			case 'input-mode-options.xbone':
 				return (
 				<Form className="row mb-3">
-					<Row className="mb-3">
-						<Col sm={6}>
-							WARNING: Xbox One mode requires a USB dongle to properly authenticate to both the Xbox One and PC.
-						</Col>
-					</Row>
-				</Form>
-				);
-			case 'input-mode-options.keyboard':
-				return (
-				<Form>
-					Keyboard Mapping here
+					<Row className="mb-3"><Col sm={10}>
+						<span class="text-success">INFO:</span> Xbox One requires a USB host connection and USB dongle to properly authenticate in Xbox One mode.
+					</Col></Row>
 				</Form>
 				);
 			default:
 				return (
 				<Form>
-					<p>No Input Mode Settings for Selected Mode Type</p>
+					<p>There are no input mode settings for {t('SettingsPage:'+inputMode.labelKey)}.</p>
 				</Form>
-				)
+				);
 		};
 	};
 
@@ -598,6 +611,8 @@ export default function SettingsPage() {
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
 	const currentButtonLabels= getButtonLabels(buttonLabelType, swapTpShareLabels);
+
+	const getKeyMappingForButton = (button) => keyMappings[button];
 
 	const { t } = useTranslation('');
 
@@ -814,7 +829,7 @@ export default function SettingsPage() {
 									<Tab.Pane eventKey="inputmode">
 									<Section title={t('SettingsPage:settings-header-text')}>
 										<Form.Group className="row mb-3">
-											<Form.Label>{t('SettingsPage:input-mode-label')}</Form.Label>
+											<Form.Label>{t('SettingsPage:current-input-mode-label')}</Form.Label>
 												<Col sm={3}>
 													<Form.Select
 														name="inputMode"

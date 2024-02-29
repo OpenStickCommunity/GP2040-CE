@@ -156,18 +156,11 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		// TinyUSB and introduce roughly 1ms of latency. but we want to loop often and report on every
 		// true update in order to achieve our tight <1ms report timing when we *do* have a different
 		// report to send.
-		// the "PS4 Hack" disables the counters so that we only report on changes, but this
-		// means we never report the same data twice, and games that expected it would get stuck
-		// inputs. the below code is a compromise: keep the tight report timing, but occasionally change
-		// the report counter and axis timing values in order to force a changed report --- this should
-		// eliminate the need for the PS4 Hack, but it's kept here at the moment for A/B testing purposes
-		if ( !options.ps4ReportHack ) {
-			if ((now - last_report_timer) > PS4_KEEPALIVE_TIMER) {
-				last_report_counter = (last_report_counter+1) & 0x3F;
-				ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
-				ps4Report.axis_timing = now;		 		// axis counter is 16 bits
-				// the *next* process() will be a forced report (or real user input)
-			}
+		if ((now - last_report_timer) > PS4_KEEPALIVE_TIMER) {
+			last_report_counter = (last_report_counter+1) & 0x3F;
+			ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
+			ps4Report.axis_timing = now;		 		// axis counter is 16 bits
+			// the *next* process() will be a forced report (or real user input)
 		}
 	}
 }

@@ -24,7 +24,7 @@ message GamepadOptions
     optional int32 inputModeL2 = 17;
     optional int32 inputModeR1 = 18;
     optional int32 inputModeR2 = 19;
-	optional bool ps4ReportHack = 20;
+	optional bool ps4ReportHack = 20 [deprecated = true];
 	optional InputModeAuthType ps4AuthType = 21;
 	optional InputModeAuthType ps5AuthType = 22;
 	optional InputModeAuthType xinputAuthType = 23;

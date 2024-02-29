@@ -100,7 +100,6 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		inputModeL2: -1,
 		inputModeR1: -1,
 		inputModeR2: 3,
-		ps4ReportHack: 0,
 		ps4AuthenticationType: 0,
 		ps5AuthenticationType: 0,
 		xinputAuthenticationType: 0,

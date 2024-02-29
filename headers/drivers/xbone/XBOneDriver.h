@@ -9,6 +9,7 @@
 #include "gpdriver.h"
 #include "drivers/xbone/XBOneDescriptors.h"
 #include "drivers/shared/xgip_protocol.h"
+#include "drivers/shared/gpauthdriver.h"
 
 class XBOneDriver : public GPDriver {
 public:
@@ -37,6 +38,7 @@ private:
     uint8_t keep_alive_sequence;
     uint8_t virtual_keycode_sequence;
     bool xb1_guide_pressed;
+    GPAuthDriver * authDriver;
 };
 
 #endif // _XBONE_DRIVER_H_

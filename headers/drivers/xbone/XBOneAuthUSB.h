@@ -1,5 +1,5 @@
 #ifndef _XBONEAUTHUSB_H_
-#define _XBONE4AUTHUSB_H_
+#define _XBONEAUTHUSB_H_
 
 #include "drivers/shared/gpauthdriver.h"
 #include "drivers/shared/xgip_protocol.h"
@@ -22,6 +22,7 @@ private:
 	uint8_t xbone_dev_addr;
 	uint8_t xbone_instance;
 	bool dongle_ready;
+	bool mounted;
 	XGIPProtocol incomingXGIP;
 	XGIPProtocol outgoingXGIP;
 };

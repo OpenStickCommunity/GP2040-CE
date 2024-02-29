@@ -28,7 +28,6 @@ void GP2040Aux::setup() {
 	PeripheralManager::getInstance().initUSB();
 
 	// Setup Add-ons
-	addons.LoadAddon(inputHistoryAddon, CORE1_LOOP);
 	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);

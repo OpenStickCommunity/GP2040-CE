@@ -167,16 +167,6 @@ void xinputh_close(uint8_t dev_addr) {
     tu_memclr(hid_dev, sizeof(xinputh_device_t));
 }
 
-//--------------------------------------------------------------------+
-// Enumeration
-//--------------------------------------------------------------------+
-typedef enum
-{
-    UNKNOWN = 0,
-    XBOX360,
-    XBOXONE,
-} xinput_type_t;
-
 bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const *desc_itf, uint16_t max_len) {
     (void)rhport;
     (void)max_len;
@@ -191,7 +181,35 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
     }
     TU_VERIFY(p_xinput, 0);
     uint8_t const *p_desc = (uint8_t const *)desc_itf;
-    if (desc_itf->bInterfaceSubClass == 0x47 &&
+    // add instance for Xbox 360 dongle
+    if (desc_itf->bInterfaceSubClass == 0x5D &&
+        (desc_itf->bInterfaceProtocol == 0x01 ||
+         desc_itf->bInterfaceProtocol == 0x03 ||
+         desc_itf->bInterfaceProtocol == 0x02)) {
+        uint8_t endpoints = desc_itf->bNumEndpoints;
+        while (endpoints--) {
+            p_desc = tu_desc_next(p_desc);
+            tusb_desc_endpoint_t const *desc_ep =
+                (tusb_desc_endpoint_t const *)p_desc;
+            TU_ASSERT(TUSB_DESC_ENDPOINT == desc_ep->bDescriptorType);
+            if (desc_ep->bEndpointAddress & 0x80) {
+                p_xinput->ep_in = desc_ep->bEndpointAddress;
+                TU_ASSERT(tuh_edpt_open(dev_addr, desc_ep));
+            } else {
+                p_xinput->ep_out = desc_ep->bEndpointAddress;
+                TU_ASSERT(tuh_edpt_open(dev_addr, desc_ep));
+            }
+        }
+        p_xinput->itf_num = desc_itf->bInterfaceNumber;
+        p_xinput->type = XBOX360;
+        if (desc_itf->bInterfaceProtocol == 0x01) {
+            //p_xinput->subtype = x_desc->subtype;
+            usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
+        }
+        _xinputh_dev->inst_count++;
+        return true; 
+    // Xbox One instance == 0x47 0xD0
+    } else if (desc_itf->bInterfaceSubClass == 0x47 &&
                desc_itf->bInterfaceProtocol == 0xD0 && desc_itf->bNumEndpoints) {
         uint8_t endpoints = desc_itf->bNumEndpoints;
         while (endpoints--) {

@@ -1,26 +1,17 @@
 #include "host/usbh.h"
 #include "class/hid/hid.h"
 #include "class/hid/hid_host.h"
-#include "drivers/xbone/XBOneAuthUSB.h"
-#include "CRC32.h"
+#include "drivers/xinput/XInputAuthUSB.h"
 #include "peripheralmanager.h"
 #include "usbhostmanager.h"
 
-#include "drivers/xbone/XBOneDescriptors.h"
-#include "drivers/shared/xgip_protocol.h"
+#include "drivers/xinput/XInputDescriptors.h"
 #include "drivers/shared/xinput_host.h"
-#include "drivers/shared/xbonedata.h"
-
-// power-on states and rumble-on with everything disabled
-static uint8_t xb1_power_on[] = {0x06, 0x62, 0x45, 0xb8, 0x77, 0x26, 0x2c, 0x55,
-                                 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f};
-static uint8_t xb1_power_on_single[] = {0x00};
-static uint8_t xb1_rumble_on[] = {0x00, 0x0f, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0xeb};
 
 // Report Queue for big report sizes from dongle
 #include <queue>
 typedef struct {
-	uint8_t report[XBONE_ENDPOINT_SIZE];
+	uint8_t report[XINPUT_ENDPOINT_SIZE];
 	uint16_t len;
 } report_queue_t;
 
@@ -28,19 +19,19 @@ static std::queue<report_queue_t> report_queue;
 static uint32_t lastReportQueueSent = 0;
 #define REPORT_QUEUE_INTERVAL 15
 
-void XBOneAuthUSB::initialize() {
+void XInputAuthUSB::initialize() {
     dongle_ready = false;
     mounted = false;
 }
 
-bool XBOneAuthUSB::available() {
+bool XInputAuthUSB::available() {
 	return (PeripheralManager::getInstance().isUSBEnabled(0));
 }
 
-void XBOneAuthUSB::process() {
+void XInputAuthUSB::process() {
     if ( mounted == false ) // do nothing if we have not mounted an xbox one dongle
         return;
-
+/*
     // Do not begin processing console auth unless we have the dongle ready
     if ( dongle_ready == true ) {
         if ( XboxOneData::getInstance().getState() == XboxOneState::send_auth_console_to_dongle ) {
@@ -67,27 +58,26 @@ void XBOneAuthUSB::process() {
             sleep_ms(REPORT_QUEUE_INTERVAL);
         }
 	}
+*/
 }
 
-void XBOneAuthUSB::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
-    if ( controllerType == xinput_type_t::XBOXONE) {
-        xbone_dev_addr = dev_addr;
-        xbone_instance = instance;
-        incomingXGIP.reset();
-        outgoingXGIP.reset();
+void XInputAuthUSB::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
+    if ( controllerType == xinput_type_t::XBOX360) {
+        xinput_dev_addr = dev_addr;
+        xinput_instance = instance;
         mounted = true;
     }
 }
 
-void XBOneAuthUSB::unmount(uint8_t dev_addr) {
+void XInputAuthUSB::unmount(uint8_t dev_addr) {
     // Do not reset dongle_ready on unmount (Magic-X will remount but still be ready)
     mounted = false;
 }
 
-void XBOneAuthUSB::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
+void XInputAuthUSB::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
     if ( mounted == false )
         return;
-
+    /*
     incomingXGIP.parse(report, len);
     if ( incomingXGIP.validate() == false ) {
         sleep_ms(50); // First packet is invalid, drop and wait for dongle to boot
@@ -136,9 +126,10 @@ void XBOneAuthUSB::report_received(uint8_t dev_addr, uint8_t instance, uint8_t c
         default:
             break;
     };
+    */
 }
 
-void XBOneAuthUSB::queue_host_report(void* report, uint16_t len) {
+void XInputAuthUSB::queue_host_report(void* report, uint16_t len) {
     report_queue_t new_queue;
     memcpy(new_queue.report, report, len);
     new_queue.len = len;

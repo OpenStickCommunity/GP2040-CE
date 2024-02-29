@@ -2,6 +2,9 @@
 #include "drivers/shared/driverhelper.h"
 #include "drivers/shared/xbonedata.h"
 
+#include "drivers/xbone/XBOneAuthUSB.h"
+#include "peripheralmanager.h"
+
 #define XBONE_KEEPALIVE_TIMER 15000
 
 #define USB_SETUP_DEVICE_TO_HOST 0x80
@@ -304,6 +307,13 @@ void XBOneDriver::initialize() {
 
 
 void XBOneDriver::initializeAux() {
+	authDriver = new XBOneAuthUSB();
+	if ( authDriver->available() ) {
+		authDriver->initialize();
+	} else {
+		delete authDriver;
+		authDriver = nullptr;
+	}
 }
 
 
@@ -425,7 +435,9 @@ void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 }
 
 void XBOneDriver::processAux() {
-	
+	if ( authDriver != nullptr && authDriver->available() ) {
+		authDriver->process();
+	}
 }
 
 bool XBOneDriver::send_xbone_usb(uint8_t const *report, uint16_t report_size) {

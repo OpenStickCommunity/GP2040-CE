@@ -168,6 +168,7 @@ src/drivers/xboxog/xid/xid_remote.c
 src/drivers/xboxog/xid/xid_steelbattalion.c
 src/drivers/xboxog/xid/xid.c
 src/drivers/xboxog/XboxOriginalDriver.cpp
+src/drivers/xinput/XInputAuthUSB.cpp
 src/drivers/xinput/XInputDriver.cpp
 src/interfaces/i2c/ssd1306/obd_ssd1306.cpp
 src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
