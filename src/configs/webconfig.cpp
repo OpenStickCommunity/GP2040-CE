@@ -1062,8 +1062,8 @@ std::string setPinMappingsV2()
 		// setting a pin shouldn't change a new existing addon/reserved pin
 		if (gpioMappings[pin].action != GpioAction::RESERVED &&
 				gpioMappings[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
-				(GpioAction)doc[pinName] != GpioAction::RESERVED &&
-				(GpioAction)doc[pinName] != GpioAction::ASSIGNED_TO_ADDON) {
+				(GpioAction)doc[pinName]["action"] != GpioAction::RESERVED &&
+				(GpioAction)doc[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
 			gpioMappings[pin].action = (GpioAction)doc[pinName]["action"];
 			gpioMappings[pin].customButtonMask = (GpioAction)doc[pinName]["customButtonMask"];
 			gpioMappings[pin].customDpadMask = (GpioAction)doc[pinName]["customDpadMask"];
