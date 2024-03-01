@@ -3,9 +3,10 @@
 #include "usbhostmanager.h"
 #include "peripheralmanager.h"
 
-#include "xbone_driver.h"
-#include "xgip_protocol.h"
-#include "xinput_host.h"
+#include "drivers/xbone/XBOneDescriptors.h"
+#include "drivers/shared/xgip_protocol.h"
+#include "drivers/shared/xinput_host.h"
+#include "drivers/shared/xbonedata.h"
 
 #define XBONE_EXTENSION_DEBUG true
 

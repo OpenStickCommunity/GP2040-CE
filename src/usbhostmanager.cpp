@@ -8,7 +8,7 @@
 #include "host/usbh.h"
 #include "host/usbh_pvt.h"
 
-#include "xinput_host.h"
+#include "drivers/shared/xinput_host.h"
 
 void USBHostManager::start() {
     // This will happen after Gamepad has initialized

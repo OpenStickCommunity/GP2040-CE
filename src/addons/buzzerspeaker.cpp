@@ -2,8 +2,8 @@
 #include "addons/buzzerspeaker.h"
 #include "songs.h"
 #include "storagemanager.h"
+#include "usbdriver.h"
 #include "math.h"
-#include "usb_driver.h"
 #include "helper.h"
 #include "config.pb.h"
 
@@ -56,7 +56,7 @@ void BuzzerSpeakerAddon::processBuzzer() {
 	uint16_t currentTonePosition = floor((currentTimeSong * currentSong->song.size()) / totalTimeSong);
 	Tone currentTone = currentSong->song[currentTonePosition];
 
-	if (currentTonePosition > currentSong->song.size()) {
+	if (currentTonePosition >= currentSong->song.size()) {
 		stop();
 		return;
 	}

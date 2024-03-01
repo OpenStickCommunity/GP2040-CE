@@ -22,18 +22,21 @@ PeripheralI2C* PeripheralManager::getI2C(uint8_t block) {
     if (block < NUM_I2CS) {
         return ((block == 0) ? &blockI2C0 : &blockI2C1);
     }
+    return nullptr;
 }
 
 PeripheralSPI* PeripheralManager::getSPI(uint8_t block) {
     if (block < NUM_SPIS) {
         return ((block == 0) ? &blockSPI0 : &blockSPI1);
     }
+    return nullptr;
 }
 
 PeripheralUSB* PeripheralManager::getUSB(uint8_t block) {
     if (block < NUM_USBS) {
         return ((block == 0) ? &blockUSB0 : &blockUSB0);
     }
+    return nullptr;
 }
 
 bool PeripheralManager::isI2CEnabled(uint8_t block) {

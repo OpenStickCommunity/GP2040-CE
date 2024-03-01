@@ -7,9 +7,12 @@
 #include "config.pb.h"
 
 #include <algorithm>
+#include <cmath>
 
 #define TURBO_SHOT_MIN 2
 #define TURBO_SHOT_MAX 30
+#define TURBO_DIAL_INCREMENTS (0xFFF / (TURBO_SHOT_MAX - TURBO_SHOT_MIN)) // 12-bit ADC
+#define TURBO_LOOP_OFFSET 50 // Extra time to compensate for loop runtime variance, turbo lags a bit otherwise
 
 bool TurboInput::available() {
     // Turbo Button initialized by void Gamepad::setup()
@@ -29,23 +32,24 @@ bool TurboInput::available() {
 void TurboInput::setup()
 {
     const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
-    Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint32_t now = getMillis();
 
     // Turbo Dial
     uint8_t shotCount = std::clamp<uint8_t>(options.shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
-    if ( isValidPin(options.shmupDialPin) ) {
+    if (isValidPin(options.shmupDialPin)) {
+        hasShmupDial = true;
         adc_gpio_init(options.shmupDialPin);
         adcShmupDial = 26 - options.shmupDialPin;
         adc_select_input(adcShmupDial);
         dialValue = adc_read(); // setup initial Dial + Turbo Speed
-        shotCount = (dialValue / turboDialIncrements) + TURBO_SHOT_MIN;
+        shotCount = (dialValue / TURBO_DIAL_INCREMENTS) + TURBO_SHOT_MIN;
     } else {
         dialValue = 0;
     }
 
     // Setup Turbo LED if available
-    if ( isValidPin(options.ledPin) ) {
+    if (isValidPin(options.ledPin)) {
+        hasLedPin = true;
         gpio_init(options.ledPin);
         gpio_set_dir(options.ledPin, GPIO_OUT);
         gpio_put(options.ledPin, 1);
@@ -62,6 +66,7 @@ void TurboInput::setup()
                 gpio_init(shmupBtnPin[i]);
                 gpio_set_dir(shmupBtnPin[i], GPIO_IN);
                 gpio_pull_up(shmupBtnPin[i]);
+                shmupBtnPinMask[i] = 1 << shmupBtnPin[i];
             }
         }
         shmupBtnMask[0] = options.shmupBtnMask1; // Charge Buttons Assignment
@@ -77,6 +82,10 @@ void TurboInput::setup()
         turboButtonsPressed = 0;
     }
 
+    if (isValidPin(turboPin)) {
+        turboPinMask = 1 << turboPin;
+    }
+
     lastButtons = 0;
     bDebState = false;
     uDebTime = now;
@@ -84,63 +93,12 @@ void TurboInput::setup()
     for(uint8_t i = 0; i < 4; i++) {
         debChargeTime[i] = now;
     }
-    turboDialIncrements = 0xFFF / (TURBO_SHOT_MAX - TURBO_SHOT_MIN); // 12-bit ADC
     incrementValue = 0;
     lastPressed = 0;
     lastDpad = 0;
-    uIntervalMS = (uint32_t)(1000.0 / shotCount);
-    bTurboState = false;
     bTurboFlicker = false;
-    nextTimer = getMillis();
-}
-
-void TurboInput::read(const TurboOptions & options)
-{
-    // Get Charge Buttons
-    if ( options.shmupModeEnabled ) {
-        chargeState = 0;
-        for (uint8_t i = 0; i < 4; i++) {
-            if ( shmupBtnPin[i] != (uint8_t)-1 ) { // if pin, get the GPIO
-                chargeState |= (!gpio_get(shmupBtnPin[i]) ? shmupBtnMask[i] : 0);
-            }
-        }
-    }
-
-    // Get TURBO Key State
-    bTurboState = !gpio_get(turboPin);
-}
-
-void TurboInput::debounce()
-{
-    uint16_t debounceDelay = Storage::getInstance().getGamepadOptions().debounceDelay;
-
-    // Return if the states haven't changed
-    if ((bDebState == bTurboState) && (debChargeState == chargeState))
-        return;
-
-    uint32_t uNowTime = getMillis();
-
-    // Debounce turbo button
-    if ((bDebState != bTurboState) && ((uNowTime - uDebTime) > debounceDelay)) {
-        bDebState ^= true;
-        uDebTime = uNowTime;
-        bTurboState = bDebState;
-    }
-
-    // Debounce charge states
-    if (debChargeState != chargeState) {
-        uint32_t changedCharge = debChargeState ^ chargeState;
-
-        for (uint8_t i = 0; i < 4; i++)
-        {
-            if ((changedCharge & shmupBtnMask[i]) && (uNowTime - debChargeTime[i]) > debounceDelay)
-            {
-                debChargeState ^= shmupBtnMask[i];
-                debChargeTime[i] = uNowTime;
-            }
-        }
-        chargeState = debChargeState;
-    }
+    updateInterval(shotCount);
+    nextTimer = getMicro();
 }
 
 void TurboInput::process()
@@ -148,68 +106,91 @@ void TurboInput::process()
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
     uint16_t buttonsPressed = gamepad->state.buttons & TURBO_BUTTON_MASK;
-    uint16_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
+    uint8_t dpadPressed = gamepad->state.dpad & GAMEPAD_MASK_DPAD;
 
-    // Get Turbo Button States
-    read(options);
-    debounce();
-
-    // Set TURBO Enable Buttons
-    if (bTurboState) {
+    // Check for TURBO pin enabled
+    if (gamepad->debouncedGpio & turboPinMask) {
         if (buttonsPressed && (lastPressed != buttonsPressed)) {
             turboButtonsPressed ^= buttonsPressed; // Toggle Turbo
-                        gamepad->turboState.buttons = turboButtonsPressed; //turboButtonsPressed & TURBO_BUTTON_MASK; //&= TURBO_BUTTON_MASK;
-            if ( options.shmupModeEnabled ) {
+            gamepad->turboState.buttons = turboButtonsPressed; //turboButtonsPressed & TURBO_BUTTON_MASK; //&= TURBO_BUTTON_MASK;
+            if (options.shmupModeEnabled) {
                 turboButtonsPressed |= alwaysEnabled;  // SHMUP Always-on Buttons Set
             }
-            // Turn off button once turbo is toggled
-            gamepad->state.buttons &= ~(TURBO_BUTTON_MASK);
         }
+
         if (dpadPressed & GAMEPAD_MASK_DOWN && (lastDpad != dpadPressed)) {
-            if ( options.shotCount > TURBO_SHOT_MIN ) { // can't go lower than 2-shots per second
+            if (options.shotCount > TURBO_SHOT_MIN) { // can't go lower than 2-shots per second
                 updateTurboShotCount(options.shotCount - 1);
             }
-        } else if ( dpadPressed & GAMEPAD_MASK_UP && (lastDpad != dpadPressed)) {
-            if ( options.shotCount < TURBO_SHOT_MAX ) { // can't go higher than 60-shots per second
+        }
+        else if (dpadPressed & GAMEPAD_MASK_UP && (lastDpad != dpadPressed)) {
+            if (options.shotCount < TURBO_SHOT_MAX) { // can't go higher than 30-shots per second
                 updateTurboShotCount(options.shotCount + 1);
             }
         }
         lastPressed = buttonsPressed; // save last pressed
         lastDpad = dpadPressed;
+
+        // Clear gamepad outputs since we're in turbo adjustment mode
+        gamepad->clearState();
         return; // Holding TURBO cancels turbo functionality
     } else {
         lastPressed = 0; // disable last pressed
         lastDpad = 0; // disable last dpad
     }
 
-    // Use the dial to modify our turbo shot speed (don't save on dial modify)
-    if ( isValidPin(options.shmupDialPin) ) {
-        adc_select_input(adcShmupDial);
-        uint16_t rawValue = adc_read();
-        if ( rawValue != dialValue ) {
-            updateTurboShotCount((rawValue / turboDialIncrements) + TURBO_SHOT_MIN);
+    // Get Charge Buttons
+    if (options.shmupModeEnabled) {
+        chargeState = 0;
+        for (uint8_t i = 0; i < 4; i++) {
+            if (shmupBtnPinMask[i] > 0) { // if pin, get the GPIO
+                chargeState |= (!(gamepad->debouncedGpio & shmupBtnPinMask[i]) ? shmupBtnMask[i] : 0);
+            }
         }
-        dialValue = rawValue;
+    }
+
+    uint64_t now = getMicro();
+
+    // Use the dial to modify our turbo shot speed (don't save on dial modify)
+    if (hasShmupDial && nextAdcRead < now) {
+        adc_select_input(adcShmupDial);
+        dialValue = adc_read();
+        uint8_t shotCount = (dialValue / TURBO_DIAL_INCREMENTS) + TURBO_SHOT_MIN;
+        if (shotCount != options.shotCount) {
+            updateInterval(shotCount);
+        }
+        nextAdcRead = now + 100000; // Sample every 100ms
     }
 
     // Reset Turbo flicker on a new button press
-    if((lastButtons & turboButtonsPressed) == 0 && (gamepad->state.buttons & turboButtonsPressed) != 0){
+    if ((lastButtons & turboButtonsPressed) == 0 && (gamepad->state.buttons & turboButtonsPressed) != 0) {
         bTurboFlicker = false; // reset flicker state to ON
-        nextTimer = getMillis() + uIntervalMS; // interval to flicker-off button
+        nextTimer = now + uIntervalUS - TURBO_LOOP_OFFSET; // interval to flicker-off button
     }
-    lastButtons = gamepad->state.buttons;
+    // Check if we've reached the next timer right before applying turbo state
+    else if (turboButtonsPressed && nextTimer < now) {
+        bTurboFlicker ^= true;
+        nextTimer = now + uIntervalUS - TURBO_LOOP_OFFSET;
+    }
 
-    // Set TURBO LED if a button is going or turbo is too fast
-    if ( isValidPin(options.ledPin) ) {
-        if ((gamepad->state.buttons & turboButtonsPressed) && !bTurboFlicker) {
-            gpio_put(options.ledPin, 0);
-        } else {
+    // Set TURBO LED
+    // OFF: No turbo buttons enabled
+    // ON: 1 or more turbo buttons enabled
+    // BLINK: OFF on turbo shot, ON on turbo flicker
+    if (hasLedPin) {
+        if (!turboButtonsPressed) {
             gpio_put(options.ledPin, 1);
+        }
+        else {
+            gpio_put(options.ledPin, (gamepad->state.buttons & turboButtonsPressed) && !bTurboFlicker);
         }
     }
 
+    // Button updates
+    lastButtons = gamepad->state.buttons;
+
     // set charge buttons (mix mode)
-    if ( options.shmupModeEnabled ) {
+    if (options.shmupModeEnabled) {
         gamepad->state.buttons |= chargeState;  // Inject Mask into button states
     }
 
@@ -221,19 +202,20 @@ void TurboInput::process()
             gamepad->state.buttons &= ~(turboButtonsPressed);
         }
     }
+}
 
-    if (getMillis() < nextTimer) {
-        return; // don't flip if we haven't reached the next timer
-    }
-
-    bTurboFlicker ^= true; // Button ON/OFF State Reverse
-    nextTimer = getMillis() + uIntervalMS; // interval to flicker-off button
+void TurboInput::updateInterval(uint8_t shotCount)
+{
+    uIntervalUS = (uint32_t)std::floor(1000000.0 / (shotCount * 2));
 }
 
 void TurboInput::updateTurboShotCount(uint8_t shotCount)
 {
     TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
-    options.shotCount = std::clamp<uint8_t>(shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
-    Storage::getInstance().save();
-    uIntervalMS = (uint32_t)(1000.0 / options.shotCount);
+    shotCount = std::clamp<uint8_t>(shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
+    if (shotCount != options.shotCount) {
+        options.shotCount = shotCount;
+        Storage::getInstance().save();
+    }
+    updateInterval(shotCount);
 }

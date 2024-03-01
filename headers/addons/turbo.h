@@ -10,7 +10,7 @@
 #endif
 
 #ifndef DEFAULT_SHOT_PER_SEC
-#define DEFAULT_SHOT_PER_SEC 15
+#define DEFAULT_SHOT_PER_SEC 10
 #endif  // DEFAULT_SHOT_PER_SEC
 
 // TURBO Button Mask
@@ -94,29 +94,31 @@ public:
 	virtual void process();     // TURBO Setting of buttons (Enable/Disable)
     virtual std::string name() { return TurboName; }
 private:
-    void read(const TurboOptions&);                // Read TURBO Buttons and Dials
-    void debounce();            // TURBO Button Debouncer
+    void updateInterval(uint8_t shotCount);
     void updateTurboShotCount(uint8_t turboShotCount);
     Pin_t turboPin;             // Pin for Turbo from Gamepad/BoardConfig
+    Mask_t turboPinMask;        // Pin mask for Turbo pin
     bool bDebState;             // Debounce TURBO Button State
     uint32_t uDebTime;          // Debounce TURBO Button Time
     uint32_t debChargeState;    // Debounce Charge Button State
     uint32_t debChargeTime[4];  // Debounce Charge Button Time
     uint16_t lastPressed;       // Last buttons pressed (for Turbo Enable)
-    uint16_t lastDpad;          // Last d-pad pressed (for Turbo Change)
+    uint8_t lastDpad;           // Last d-pad pressed (for Turbo Change)
     uint16_t turboButtonsPressed;    // Turbo Buttons Enabled
     uint16_t alwaysEnabled;     // Turbo SHMUP Always Enabled
-    uint32_t uIntervalMS;       // Turbo Interval
-    bool bTurboState;           // Turbo Buttons State
+    uint32_t uIntervalUS;       // Turbo Interval in microseconds
     uint32_t chargeState;       // Turbo Charge Button States
     bool bTurboFlicker;         // Turbo Enable Buttons Toggle OFF Flag ??
-    uint32_t nextTimer;         // Turbo Timer
+    uint64_t nextTimer;         // Turbo Timer
     uint8_t adcShmupDial;       // Turbo ADC Dial Input
+    uint64_t nextAdcRead;       // ADC read timer
+    bool hasShmupDial;          // Flag for shmup dial presence
     uint16_t dialValue;         // Turbo Dial Value (Raw)
     uint16_t incrementValue;    // Turbo Dial Increment Value
-    uint8_t turboDialIncrements;    // Turbo Increments based on max/min
     uint8_t shmupBtnPin[4];     // Turbo SHMUP Non-Turbo Pins
+    uint16_t shmupBtnPinMask[4];// Cache for shmup button pin masks
     uint16_t shmupBtnMask[4];   // Turbo SHMUP Non-Turbo Button Masks
     uint16_t lastButtons;       // Last buttons (for Turbo Reset on Release)
+    bool hasLedPin;             // Flag for LED pin presence
 };
 #endif  // TURBO_H_
