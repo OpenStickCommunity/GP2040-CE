@@ -121,6 +121,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_SUNGA17KEYAALT,
         BUTTON_LAYOUT_SUNGA18KEYA,
         BUTTON_LAYOUT_SUNGA18KEYAALT,
+        BUTTON_LAYOUT_SUNGA18KEYADUALUP,
         BUTTON_LAYOUT_SUNGA18KEYAREX,
     };
 
@@ -153,6 +154,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_SUNGA14KEYLRB,
         BUTTON_LAYOUT_SUNGA14KEYUDB,
         BUTTON_LAYOUT_SUNGA17KEYB,
+        BUTTON_LAYOUT_SUNGA17KEYBREX,
         BUTTON_LAYOUT_SUNGA18KEYB,
         BUTTON_LAYOUT_SUNGA18KEYBREX,
     };
@@ -586,6 +588,7 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
         case BUTTON_LAYOUT_SUNGA17KEYAALT:
         case BUTTON_LAYOUT_SUNGA18KEYA:
         case BUTTON_LAYOUT_SUNGA18KEYAALT:
+        case BUTTON_LAYOUT_SUNGA18KEYADUALUP:
         case BUTTON_LAYOUT_SUNGA18KEYAREX:
             return true;
     }
@@ -623,6 +626,7 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_SUNGA14KEYLRB:
         case BUTTON_LAYOUT_SUNGA14KEYUDB:
         case BUTTON_LAYOUT_SUNGA17KEYB:
+        case BUTTON_LAYOUT_SUNGA17KEYBREX:
         case BUTTON_LAYOUT_SUNGA18KEYB:
         case BUTTON_LAYOUT_SUNGA18KEYBREX:
             return true;

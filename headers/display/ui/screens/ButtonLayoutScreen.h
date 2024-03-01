@@ -119,8 +119,10 @@ class ButtonLayoutScreen : public GPScreen {
         LayoutList drawSunga17keyA();
         LayoutList drawSunga17keyAAlt();
         LayoutList drawSunga17keyB();
+        LayoutList drawSunga17keyBRex();
         LayoutList drawSunga18keyA();
         LayoutList drawSunga18keyAAlt();
+        LayoutList drawSunga18keyADualUp();
         LayoutList drawSunga18keyARex();
         LayoutList drawSunga18keyB();
         LayoutList drawSunga18keyBRex();
@@ -181,6 +183,7 @@ class ButtonLayoutScreen : public GPScreen {
             {BUTTON_LAYOUT_SUNGA17KEYAALT,            [this]() { return this->drawSunga17keyAAlt(); }},
             {BUTTON_LAYOUT_SUNGA18KEYA,               [this]() { return this->drawSunga18keyA(); }},
             {BUTTON_LAYOUT_SUNGA18KEYAALT,            [this]() { return this->drawSunga18keyAAlt(); }},
+            {BUTTON_LAYOUT_SUNGA18KEYADUALUP,         [this]() { return this->drawSunga18keyADualUp(); }},
             {BUTTON_LAYOUT_SUNGA18KEYAREX,            [this]() { return this->drawSunga18keyARex(); }},
         };
 
@@ -225,6 +228,7 @@ class ButtonLayoutScreen : public GPScreen {
             {BUTTON_LAYOUT_SUNGA14KEYLRB,             [this]() { return this->drawSunga14keyLRB(); }},
             {BUTTON_LAYOUT_SUNGA14KEYUDB,             [this]() { return this->drawSunga14keyUDB(); }},
             {BUTTON_LAYOUT_SUNGA17KEYB,               [this]() { return this->drawSunga17keyB(); }},
+            {BUTTON_LAYOUT_SUNGA17KEYBREX,            [this]() { return this->drawSunga17keyBRex(); }},
             {BUTTON_LAYOUT_SUNGA18KEYB,               [this]() { return this->drawSunga18keyB(); }},
             {BUTTON_LAYOUT_SUNGA18KEYBREX,            [this]() { return this->drawSunga18keyBRex(); }},
         };

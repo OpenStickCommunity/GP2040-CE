@@ -315,6 +315,11 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyAAlt()
     return BUTTON_LAYOUT_SUNGA18KEYAALT;
 }
 
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyADualUp()
+{
+    return BUTTON_LAYOUT_SUNGA18KEYADUALUP;
+}
+
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyARex()
 {
     return BUTTON_LAYOUT_SUNGA18KEYAREX;
@@ -388,6 +393,11 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga14keyUDB()
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga17keyB()
 {
     return BUTTON_LAYOUT_SUNGA17KEYB;
+}
+
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga17keyBRex()
+{
+    return BUTTON_LAYOUT_SUNGA17KEYBREX;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyB()
