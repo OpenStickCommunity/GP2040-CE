@@ -5,6 +5,40 @@
 #include <hardware/i2c.h>
 #include <hardware/platform_defs.h>
 
+//#define DEBUG_PERIPHERALI2C
+
+#ifndef I2C0_ENABLED
+#define I2C0_ENABLED 0
+#endif
+
+#ifndef I2C0_PIN_SDA
+#define I2C0_PIN_SDA -1
+#endif
+
+#ifndef I2C0_PIN_SCL
+#define I2C0_PIN_SCL -1
+#endif
+
+#ifndef I2C0_SPEED
+#define I2C0_SPEED 400000
+#endif
+
+#ifndef I2C1_ENABLED
+#define I2C1_ENABLED 0
+#endif
+
+#ifndef I2C1_PIN_SDA
+#define I2C1_PIN_SDA -1
+#endif
+
+#ifndef I2C1_PIN_SCL
+#define I2C1_PIN_SCL -1
+#endif
+
+#ifndef I2C1_SPEED
+#define I2C1_SPEED 400000
+#endif
+
 class PeripheralI2C {
 public:
     PeripheralI2C();
@@ -22,8 +56,9 @@ public:
     int16_t write(uint8_t address, uint8_t *data, uint16_t len, bool isBlock=true);
 
     uint8_t test(uint8_t address);
+    void clear();
 private:
-    const uint32_t DEFAULT_SPEED = 100000;
+    const uint32_t DEFAULT_SPEED = 400000;
 
     uint8_t _SDA;
     uint8_t _SCL;

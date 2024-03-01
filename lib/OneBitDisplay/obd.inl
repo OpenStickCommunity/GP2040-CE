@@ -2,7 +2,9 @@
 // obd.inl
 // Drawing code for OneBitDisplay library
 //
-#include "fonts.h"
+const uint8_t *ucSmallFont;
+const uint8_t *ucFont;
+const uint8_t *ucBigFont;
 
 void obdSetDCMode(OBDISP *pOBD, int iMode);
 void InvertBytes(uint8_t *pData, uint8_t bLen);
@@ -2083,3 +2085,9 @@ int obdCopy(OBDISP *pOBD, int iFlags, uint8_t *pDestination)
 	}
 	return 0;
 } /* obdCopy() */
+
+void obdSetFonts(const uint8_t *smallFont, const uint8_t *font, const uint8_t *bigFont) {
+	ucSmallFont = smallFont;
+	ucFont = font;
+	ucBigFont = bigFont;
+}

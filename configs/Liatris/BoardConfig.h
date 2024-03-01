@@ -66,8 +66,10 @@
 #define LEDS_BUTTON_L2 11
 
 #define HAS_I2C_DISPLAY 1
-#define I2C_SDA_PIN 12
-#define I2C_SCL_PIN 13
+#define I2C0_ENABLED 1
+#define I2C0_SDA 12
+#define I2C0_SCL 13
+#define DISPLAY_I2C_BLOCK i2c0
 
 #define BUZZER_ENABLED 1
 #define BUZZER_PIN 9

@@ -3,6 +3,7 @@
 
 #include "usbaddon.h"
 #include "gamepad.h"
+#include "class/hid/hid.h"
 
 #ifndef KEYBOARD_HOST_ENABLED
 #define KEYBOARD_HOST_ENABLED 0

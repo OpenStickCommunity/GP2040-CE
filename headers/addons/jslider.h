@@ -35,10 +35,6 @@ public:
     virtual std::string name() { return JSliderName; }
 private:
     DpadMode read();
-    void debounce();
-    DpadMode dpadState;           // Saved locally for debounce
-    DpadMode dDebState;          // Debounce JSlider State
-    uint32_t uDebTime;          // Debounce JSlider Time
 
     Mask_t dpModeMask = 0;
     Mask_t lsModeMask = 0;

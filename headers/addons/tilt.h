@@ -96,13 +96,10 @@ public:
 	virtual void preprocess();  // Tilt Pre-Process (Cheat)
 	virtual std::string name() { return TiltName; }
 private:
-	void debounce();
 	void SOCDTiltClean(SOCDMode);
 	uint8_t SOCDCombine(SOCDMode, uint8_t);
 	uint8_t SOCDGamepadClean(uint8_t);
 	void OverrideGamepad(Gamepad*, uint8_t, uint8_t);
-	uint8_t dDebLeftState;          // Debounce State (stored)
-	uint8_t dDebRightState;          // Debounce State (stored)
 	uint8_t tiltLeftState;          // Tilt State
 	uint8_t tiltRightState;          // Tilt Right Analog State
 	DpadDirection lastGPUD; // Gamepad Last Up-Down

@@ -36,15 +36,27 @@ const BUTTON_LAYOUTS = [
 	{ label: 'Open_Core0 WASD', value: 13 }, // BUTTON_LAYOUT_OPENCORE0WASDA
 	{ label: 'Stickless 13', value: 14 }, // BUTTON_LAYOUT_STICKLESS_13
     { label: 'Stickless 16', value: 15 }, // BUTTON_LAYOUT_STICKLESS_16
-	{ label: 'Sunga 12 Key', value: 16 }, // BUTTON_LAYOUT_SUNGA12KEYA
-	{ label: 'Sunga 13 Key', value: 17 }, // BUTTON_LAYOUT_SUNGA13KEYA
-	{ label: 'Sunga 14 Key LR', value: 18 }, // BUTTON_LAYOUT_SUNGA14KEYLRA
-	{ label: 'Sunga 14 Key UD', value: 19 }, // BUTTON_LAYOUT_SUNGA14KEYUDA
-	{ label: 'Sunga 17 Key', value: 20 }, // BUTTON_LAYOUT_SUNGA17KEYA
-	{ label: 'Sunga 17 Key Alt', value: 21 }, // BUTTON_LAYOUT_SUNGA17KEYAALT
-	{ label: 'Sunga 18 Key Dual Stick', value: 22 }, // BUTTON_LAYOUT_SUNGA18KEYA
-	{ label: 'Sunga 18 Key Dual Stick Alt', value: 23 }, // BUTTON_LAYOUT_SUNGA18KEYAALT
-	{ label: 'Sunga 18 Key Dual Stick Rex', value: 24 }, // BUTTON_LAYOUT_SUNGA18KEYAREX
+    { label: 'Stickless 14', value: 16 }, // BUTTON_LAYOUT_STICKLESS_14
+    { label: 'DDR Dancepad Left', value: 17 }, // BUTTON_LAYOUT_DANCEPAD_DDR_LEFT
+    { label: 'DDR Dancepad Solo', value: 18 }, // BUTTON_LAYOUT_DANCEPAD_DDR_SOLO
+    { label: 'PIU Dancepad Left', value: 19 }, // BUTTON_LAYOUT_DANCEPAD_PIU_LEFT
+    { label: 'Popn Left', value: 20 }, // BUTTON_LAYOUT_POPN_A
+    { label: 'Taiko', value: 21 }, // BUTTON_LAYOUT_TAIKO_A
+    { label: 'Beatmania Turntable Left', value: 22 }, // BUTTON_LAYOUT_BM_TURNTABLE_A
+    { label: 'Beatmania 5 Key Left', value: 23 }, // BUTTON_LAYOUT_BM_5KEY_A
+    { label: 'Beatmania 7 Key Left', value: 24 }, // BUTTON_LAYOUT_BM_7KEY_A
+    { label: 'Gitadora Fret', value: 25 }, // BUTTON_LAYOUT_GITADORA_FRET_A
+    { label: 'Gitadora Strum', value: 26 }, // BUTTON_LAYOUT_GITADORA_STRUM_A
+    { label: 'Board Defined', value: 27 }, // BUTTON_LAYOUT_BOARD_DEFINED_A
+	{ label: 'Sunga 12 Key', value: 28 }, // BUTTON_LAYOUT_SUNGA12KEYA
+	{ label: 'Sunga 13 Key', value: 29 }, // BUTTON_LAYOUT_SUNGA13KEYA
+	{ label: 'Sunga 14 Key LR', value: 30 }, // BUTTON_LAYOUT_SUNGA14KEYLRA
+	{ label: 'Sunga 14 Key UD', value: 31 }, // BUTTON_LAYOUT_SUNGA14KEYUDA
+	{ label: 'Sunga 17 Key', value: 32 }, // BUTTON_LAYOUT_SUNGA17KEYA
+	{ label: 'Sunga 17 Key Alt', value: 33 }, // BUTTON_LAYOUT_SUNGA17KEYAALT
+	{ label: 'Sunga 18 Key Dual Stick', value: 34 }, // BUTTON_LAYOUT_SUNGA18KEYA
+	{ label: 'Sunga 18 Key Dual Stick Alt', value: 35 }, // BUTTON_LAYOUT_SUNGA18KEYAALT
+	{ label: 'Sunga 18 Key Dual Stick Rex', value: 36 }, // BUTTON_LAYOUT_SUNGA18KEYAREX
 ];
 
 const BUTTON_LAYOUTS_RIGHT = [
@@ -69,18 +81,30 @@ const BUTTON_LAYOUTS_RIGHT = [
 	{ label: 'Open_Core0 WASD', value: 18 }, // BUTTON_LAYOUT_OPENCORE0WASDB
 	{ label: 'Stickless 13', value: 19 }, // BUTTON_LAYOUT_STICKLESS_13B
     { label: 'Stickless 16', value: 20 }, // BUTTON_LAYOUT_STICKLESS_16B
-	{ label: 'Sunga 12 Key', value: 21 }, // BUTTON_LAYOUT_SUNGA12KEYB
-	{ label: 'Sunga 13 Key', value: 22 }, // BUTTON_LAYOUT_SUNGA13KEYB
-	{ label: 'Sunga 14 Key LR', value: 23 }, // BUTTON_LAYOUT_SUNGA14KEYLRB
-	{ label: 'Sunga 14 Key UD', value: 24 }, // BUTTON_LAYOUT_SUNGA14KEYUDB
-	{ label: 'Sunga 17 Key', value: 25 }, // BUTTON_LAYOUT_SUNGA17KEYB
-	{ label: 'Sunga 18 Key Dual Stick', value: 26 }, // BUTTON_LAYOUT_SUNGA18KEYB
-	{ label: 'Sunga 18 Key Dual Stick Rex', value: 27 }, // BUTTON_LAYOUT_SUNGA18KEYBREX
+    { label: 'Stickless 14', value: 21 }, // BUTTON_LAYOUT_STICKLESS_14B
+    { label: 'DDR Dancepad Right', value: 22}, // BUTTON_LAYOUT_DANCEPAD_DDR_RIGHT
+    { label: 'PIU Dancepad Right', value: 23}, // BUTTON_LAYOUT_DANCEPAD_PIU_RIGHT
+    { label: 'Popn Right', value: 24}, // BUTTON_LAYOUT_POPN_B
+    { label: 'Taiko', value: 25}, // BUTTON_LAYOUT_TAIKO_B
+    { label: 'Beatmania Turntable Right', value: 26}, // BUTTON_LAYOUT_BM_TURNTABLE_B
+    { label: 'Beatmania 5 Key Right', value: 27}, // BUTTON_LAYOUT_BM_5KEY_B
+    { label: 'Beatmania 7 Key Right', value: 28}, // BUTTON_LAYOUT_BM_7KEY_B
+    { label: 'Gitadora Fret', value: 29}, // BUTTON_LAYOUT_GITADORA_FRET_B
+    { label: 'Gitadora Strum', value: 30}, // BUTTON_LAYOUT_GITADORA_STRUM_B
+    { label: 'Board Defined', value: 31 }, // BUTTON_LAYOUT_BOARD_DEFINED_B
+	{ label: 'Sunga 12 Key', value: 32 }, // BUTTON_LAYOUT_SUNGA12KEYB
+	{ label: 'Sunga 13 Key', value: 33 }, // BUTTON_LAYOUT_SUNGA13KEYB
+	{ label: 'Sunga 14 Key LR', value: 34 }, // BUTTON_LAYOUT_SUNGA14KEYLRB
+	{ label: 'Sunga 14 Key UD', value: 35 }, // BUTTON_LAYOUT_SUNGA14KEYUDB
+	{ label: 'Sunga 17 Key', value: 36 }, // BUTTON_LAYOUT_SUNGA17KEYB
+	{ label: 'Sunga 18 Key Dual Stick', value: 37 }, // BUTTON_LAYOUT_SUNGA18KEYB
+	{ label: 'Sunga 18 Key Dual Stick Rex', value: 38 }, // BUTTON_LAYOUT_SUNGA18KEYBREX
 ];
 
 const SPLASH_MODES = [
-	{ label: 'Enabled', value: 0 }, // STATICSPLASH
-	//	{ label: 'Close In', value: 1 },		 // CLOSEIN
+	{ label: 'Enabled (Custom Splash Screen)', value: 0 },  // STATICSPLASH
+	{ label: 'Logo Close In', value: 1 }, // CLOSEIN
+	{ label: 'Logo Close In Custom', value: 2 }, // CLOSEINCUSTOM
 	{ label: 'Disabled', value: 3 }, // NOSPLASH
 ];
 

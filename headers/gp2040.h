@@ -11,7 +11,7 @@
 // GP2040 Classes
 #include "gamepad.h"
 #include "addonmanager.h"
-#include "peripheralmanager.h"
+#include "gpdriver.h"
 
 #include "pico/types.h"
 
@@ -24,7 +24,10 @@ public:
 private:
     Gamepad snapshot;
     AddonManager addons;
-    PeripheralManager peripherals;
+    // GPIO debouncer
+    void debounceGpioGetAll();
+    Mask_t buttonGpios;
+    uint32_t gpioDebounceTime[NUM_BANK0_GPIOS];
 
     struct RebootHotkeys {
         RebootHotkeys();
@@ -58,6 +61,7 @@ private:
         SET_INPUT_MODE_XBOXORIGINAL
     };
     BootAction getBootAction();
+    void getReinitGamepad(Gamepad * gamepad);
 
     // GPIO manipulation for setup and profile reinit
     void initializeStandardGpio();

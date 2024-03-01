@@ -1,8 +1,8 @@
 #include "addons/tilt.h"
+#include "drivermanager.h"
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
-#include "gamepad/GamepadDebouncer.h"
 
 bool TiltInput::available() {
     const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
@@ -54,8 +54,6 @@ void TiltInput::setup() {
 		}
 	}
 
-	dDebLeftState = 0;
-	dDebRightState = 0;
 	tiltLeftState = 0;
 	tiltRightState = 0;
 
@@ -72,31 +70,6 @@ void TiltInput::setup() {
 	for (int i = 0; i < 4; i++) {
 		dpadTime[i] = now;
 	}
-}
-
-void TiltInput::debounce()
-{
-	GamepadDebouncer gamepadDebouncer;
-
-	// Return if the states haven't changed
-    if ((dDebLeftState == tiltLeftState) && (dDebRightState == tiltRightState))
-        return;
-
-	// Debounce the tilt left state
-    if (dDebLeftState != tiltLeftState) {
-        uint32_t changedDpad = dDebLeftState ^ tiltLeftState;
-
-        tiltLeftState = gamepadDebouncer.debounceDpad(dDebLeftState, changedDpad);
-		dDebLeftState = tiltLeftState;
-    }
-	
-	// Debounce the tilt right state
-	if (dDebRightState != tiltRightState) {
-        uint32_t changedDpad = dDebRightState ^ tiltRightState;
-
-        tiltRightState = gamepadDebouncer.debounceDpad(dDebRightState, changedDpad);
-		dDebRightState = tiltRightState;
-    }
 }
 
 void TiltInput::preprocess()
@@ -132,9 +105,6 @@ void TiltInput::preprocess()
 		tiltRightState |= (!gpio_get(pinTiltRightAnalogRight) ? gamepad->mapDpadRight->buttonMask : 0);
 	}
 
-	// Debounce our directional pins
-	debounce();
-
 	// Convert gamepad from process() output to uint8 value
 	uint8_t gamepadState = gamepad->state.dpad;
 
@@ -158,20 +128,20 @@ void TiltInput::process()
 //Since this is an auxiliary function for appeals and such,
 //pressing Tilt1 and Tilt2 at the same time will cause the light analog stick to correspond to each of the DPad methods.
 void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) {
-	  bool pinTilt1Pressed = (pinTilt1 != (uint8_t)-1) ? !gpio_get(pinTilt1) : false;
-	  bool pinTilt2Pressed = (pinTilt2 != (uint8_t)-1) ? !gpio_get(pinTilt2) : false;
+	bool pinTilt1Pressed = (pinTilt1 != (uint8_t)-1) ? !gpio_get(pinTilt1) : false;
+	bool pinTilt2Pressed = (pinTilt2 != (uint8_t)-1) ? !gpio_get(pinTilt2) : false;
 
-	  // Scales input from 0-100% of maximum input
-	  double scaledTilt1FactorLeftX  = 1.0 - (tilt1FactorLeftX  / 100.0);
-	  double scaledTilt1FactorLeftY  = 1.0 - (tilt1FactorLeftY  / 100.0);
-	  double scaledTilt1FactorRightX = 1.0 - (tilt1FactorRightX / 100.0);
-	  double scaledTilt1FactorRightY = 1.0 - (tilt1FactorRightY / 100.0);
-	  double scaledTilt2FactorLeftX  = 1.0 - (tilt2FactorLeftX  / 100.0);
-	  double scaledTilt2FactorLeftY  = 1.0 - (tilt2FactorLeftY  / 100.0);
-	  double scaledTilt2FactorRightX = 1.0 - (tilt2FactorRightX / 100.0);
-	  double scaledTilt2FactorRightY = 1.0 - (tilt2FactorRightY / 100.0);
+	// Scales input from 0-100% of maximum input
+	double scaledTilt1FactorLeftX  = 1.0 - (tilt1FactorLeftX  / 100.0);
+	double scaledTilt1FactorLeftY  = 1.0 - (tilt1FactorLeftY  / 100.0);
+	double scaledTilt1FactorRightX = 1.0 - (tilt1FactorRightX / 100.0);
+	double scaledTilt1FactorRightY = 1.0 - (tilt1FactorRightY / 100.0);
+	double scaledTilt2FactorLeftX  = 1.0 - (tilt2FactorLeftX  / 100.0);
+	double scaledTilt2FactorLeftY  = 1.0 - (tilt2FactorLeftY  / 100.0);
+	double scaledTilt2FactorRightX = 1.0 - (tilt2FactorRightX / 100.0);
+	double scaledTilt2FactorRightY = 1.0 - (tilt2FactorRightY / 100.0);
 
-	  uint8_t input_mode = gamepad->getOptions().inputMode;
+	uint16_t midValue = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
 
     if (pinTilt1Pressed && pinTilt2Pressed) {
         // inputs act as dpad
@@ -179,23 +149,23 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
     } else {
         // analog input mode
         if (pinTilt1Pressed) {
-            gamepad->state.lx = dpadToAnalogX(dpad1, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogX(dpad1, input_mode)) * scaledTilt1FactorLeftX;
-            gamepad->state.ly = dpadToAnalogY(dpad1, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogY(dpad1, input_mode)) * scaledTilt1FactorLeftY;
+            gamepad->state.lx = dpadToAnalogX(dpad1) + (midValue - dpadToAnalogX(dpad1)) * scaledTilt1FactorLeftX;
+            gamepad->state.ly = dpadToAnalogY(dpad1) + (midValue - dpadToAnalogY(dpad1)) * scaledTilt1FactorLeftY;
 
-            gamepad->state.rx = dpadToAnalogX(dpad2, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogX(dpad2, input_mode)) * scaledTilt1FactorRightX;
-            gamepad->state.ry = dpadToAnalogY(dpad2, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogY(dpad2, input_mode)) * scaledTilt1FactorRightY;
+            gamepad->state.rx = dpadToAnalogX(dpad2) + (midValue - dpadToAnalogX(dpad2)) * scaledTilt1FactorRightX;
+            gamepad->state.ry = dpadToAnalogY(dpad2) + (midValue - dpadToAnalogY(dpad2)) * scaledTilt1FactorRightY;
         } else if (pinTilt2Pressed) {
-            gamepad->state.lx = dpadToAnalogX(dpad1, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogX(dpad1, input_mode)) * scaledTilt2FactorLeftX;
-            gamepad->state.ly = dpadToAnalogY(dpad1, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogY(dpad1, input_mode)) * scaledTilt2FactorLeftY;
+            gamepad->state.lx = dpadToAnalogX(dpad1) + (midValue - dpadToAnalogX(dpad1)) * scaledTilt2FactorLeftX;
+            gamepad->state.ly = dpadToAnalogY(dpad1) + (midValue - dpadToAnalogY(dpad1)) * scaledTilt2FactorLeftY;
 
-            gamepad->state.rx = dpadToAnalogX(dpad2, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogX(dpad2, input_mode)) * scaledTilt2FactorRightX;
-            gamepad->state.ry = dpadToAnalogY(dpad2, input_mode) + (GetJoystickMidValue(input_mode) - dpadToAnalogY(dpad2, input_mode)) * scaledTilt2FactorRightY;
+            gamepad->state.rx = dpadToAnalogX(dpad2) + (midValue - dpadToAnalogX(dpad2)) * scaledTilt2FactorRightX;
+            gamepad->state.ry = dpadToAnalogY(dpad2) + (midValue - dpadToAnalogY(dpad2)) * scaledTilt2FactorRightY;
         } else {
-            gamepad->state.lx = dpadToAnalogX(dpad1, input_mode);
-            gamepad->state.ly = dpadToAnalogY(dpad1, input_mode);
+            gamepad->state.lx = dpadToAnalogX(dpad1);
+            gamepad->state.ly = dpadToAnalogY(dpad1);
 
-            gamepad->state.rx = dpadToAnalogX(dpad2, input_mode);
-            gamepad->state.ry = dpadToAnalogY(dpad2, input_mode);
+            gamepad->state.rx = dpadToAnalogX(dpad2);
+            gamepad->state.ry = dpadToAnalogY(dpad2);
         }
     }
 }

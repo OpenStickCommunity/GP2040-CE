@@ -418,6 +418,17 @@ message AnalogADS1219Options
 	optional int32 deprecatedI2cSpeed = 6 [deprecated = true];
 }
 
+message AnalogADS1256Options
+{
+	optional bool enabled = 1;
+
+	optional int32 spiBlock = 2;
+	optional int32 csPin = 3;
+	optional int32 drdyPin = 4;
+	optional float avdd = 5;
+	optional bool enableTriggers = 6;
+}
+
 message DualDirectionalOptions
 {
 	optional bool enabled = 1;
@@ -717,6 +728,7 @@ message AddonOptions
 	optional MacroOptions macroOptions = 20;
 	optional InputHistoryOptions inputHistoryOptions = 21;
 	optional XBOnePassthroughOptions xbonePassthroughOptions = 22;
+	optional AnalogADS1256Options analogADS1256Options = 23;
 }
 
 message MigrationHistory

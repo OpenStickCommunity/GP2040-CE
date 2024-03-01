@@ -2,8 +2,7 @@
 #define _PSPassthrough_H
 
 #include "usbaddon.h"
-
-#include "ps4_driver.h"
+#include "drivers/shared/ps4data.h"
 
 #ifndef PSPASSTHROUGH_ENABLED
 #define PSPASSTHROUGH_ENABLED 0

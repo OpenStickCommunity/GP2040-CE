@@ -38,7 +38,6 @@ public:
     virtual void preprocess();  // Dual Directional Pre-Process (Cheat)
     virtual std::string name() { return DualDirectionalName; }
 private:
-    void debounce();
     uint8_t gpadToBinary(DpadMode, GamepadState);
     uint8_t updateDpadDDI(uint8_t dpad, DpadDirection direction);
     uint8_t filterToFourWayModeDDI(uint8_t dpad);

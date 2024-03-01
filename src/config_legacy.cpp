@@ -112,6 +112,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_OPENCORE0WASDA,
         BUTTON_LAYOUT_STICKLESS_13,
         BUTTON_LAYOUT_STICKLESS_16,
+        BUTTON_LAYOUT_STICKLESS_14,
         BUTTON_LAYOUT_SUNGA12KEYA,
         BUTTON_LAYOUT_SUNGA13KEYA,
         BUTTON_LAYOUT_SUNGA14KEYLRA,
@@ -146,6 +147,7 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_OPENCORE0WASDB,
         BUTTON_LAYOUT_STICKLESS_13B,
         BUTTON_LAYOUT_STICKLESS_16B,
+        BUTTON_LAYOUT_STICKLESS_14B,
         BUTTON_LAYOUT_SUNGA12KEYB,
         BUTTON_LAYOUT_SUNGA13KEYB,
         BUTTON_LAYOUT_SUNGA14KEYLRB,
@@ -501,6 +503,8 @@ static bool isValidInputMode(ConfigLegacy::InputMode inputMode)
         case INPUT_MODE_KEYBOARD:
         case INPUT_MODE_PS4:
             return true;
+        default:
+            break;
     }
     return false;
 }
@@ -573,6 +577,7 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
         case BUTTON_LAYOUT_OPENCORE0WASDA:
         case BUTTON_LAYOUT_STICKLESS_13:
         case BUTTON_LAYOUT_STICKLESS_16:
+        case BUTTON_LAYOUT_STICKLESS_14:
         case BUTTON_LAYOUT_SUNGA12KEYA:
         case BUTTON_LAYOUT_SUNGA13KEYA:
         case BUTTON_LAYOUT_SUNGA14KEYLRA:
@@ -611,7 +616,8 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_KEYBOARD8B:
         case BUTTON_LAYOUT_OPENCORE0WASDB:
         case BUTTON_LAYOUT_STICKLESS_13B:
-        case BUTTON_LAYOUT_STICKLESS_16B:
+        case BUTTON_LAYOUT_STICKLESS_16B:        
+        case BUTTON_LAYOUT_STICKLESS_14B:
         case BUTTON_LAYOUT_SUNGA12KEYB:
         case BUTTON_LAYOUT_SUNGA13KEYB:
         case BUTTON_LAYOUT_SUNGA14KEYLRB:

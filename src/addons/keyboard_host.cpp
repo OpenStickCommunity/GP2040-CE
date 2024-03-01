@@ -1,10 +1,12 @@
 #include "addons/keyboard_host.h"
 #include "storagemanager.h"
+#include "drivermanager.h"
 #include "usbhostmanager.h"
 #include "peripheralmanager.h"
+#include "class/hid/hid_host.h"
 
 bool KeyboardHostAddon::available() {
-    const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
+  const KeyboardHostOptions& keyboardHostOptions = Storage::getInstance().getAddonOptions().keyboardHostOptions;
 	return keyboardHostOptions.enabled && PeripheralManager::getInstance().isUSBEnabled(0);
 }
 
@@ -105,7 +107,7 @@ uint8_t KeyboardHostAddon::getKeycodeFromModifier(uint8_t modifier) {
 // convert hid keycode to ascii and print via usb device CDC (ignore non-printable)
 void KeyboardHostAddon::process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
 {
-  uint16_t joystickMid = GetJoystickMidValue(Storage::getInstance().getGamepadOptions().inputMode);
+  uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
 
   _keyboard_host_state.dpad = 0;
   _keyboard_host_state.buttons = 0;
@@ -121,8 +123,6 @@ void KeyboardHostAddon::process_kbd_report(uint8_t dev_addr, hid_keyboard_report
     uint8_t keycode = (i < 6) ? report->keycode[i] : getKeycodeFromModifier(report->modifier);
     if ( keycode )
     {
-      const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
-
       _keyboard_host_state.dpad |=
             ((keycode == _keyboard_host_mapDpadUp.key)    ? _keyboard_host_mapDpadUp.buttonMask : _keyboard_host_state.dpad)
           | ((keycode == _keyboard_host_mapDpadDown.key)  ? _keyboard_host_mapDpadDown.buttonMask : _keyboard_host_state.dpad)
