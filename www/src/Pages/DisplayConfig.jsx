@@ -56,8 +56,8 @@ const BUTTON_LAYOUTS = [
 	{ label: 'Sunga 17 Key Alt', value: 33 }, // BUTTON_LAYOUT_SUNGA17KEYAALT
 	{ label: 'Sunga 18 Key Dual Stick', value: 34 }, // BUTTON_LAYOUT_SUNGA18KEYA
 	{ label: 'Sunga 18 Key Dual Stick Alt', value: 35 }, // BUTTON_LAYOUT_SUNGA18KEYAALT
-	{ label: 'Sunga 18 Key Dual Stick Dual Up', value: 36 }, // BUTTON_LAYOUT_SUNGA18KEYADUALREX
-	{ label: 'Sunga 18 Key Dual Stick Rex', value: 37 }, // BUTTON_LAYOUT_SUNGA18KEYAREX
+	{ label: 'Sunga 18 Key Dual Stick Dual Up', value: 36 }, // BUTTON_LAYOUT_SUNGA18KEYADUALPREF
+	{ label: 'Sunga 18 Key Dual Stick Pref', value: 37 }, // BUTTON_LAYOUT_SUNGA18KEYAPREF
 ];
 
 const BUTTON_LAYOUTS_RIGHT = [
@@ -98,9 +98,9 @@ const BUTTON_LAYOUTS_RIGHT = [
 	{ label: 'Sunga 14 Key LR', value: 34 }, // BUTTON_LAYOUT_SUNGA14KEYLRB
 	{ label: 'Sunga 14 Key UD', value: 35 }, // BUTTON_LAYOUT_SUNGA14KEYUDB
 	{ label: 'Sunga 17 Key', value: 36 }, // BUTTON_LAYOUT_SUNGA17KEYB
-	{ label: 'Sunga 17 Key Rex', value: 37 }, // BUTTON_LAYOUT_SUNGA17KEYBREX
+	{ label: 'Sunga 17 Key Pref', value: 37 }, // BUTTON_LAYOUT_SUNGA17KEYBPREF
 	{ label: 'Sunga 18 Key Dual Stick', value: 38 }, // BUTTON_LAYOUT_SUNGA18KEYB
-	{ label: 'Sunga 18 Key Dual Stick Rex', value: 39 }, // BUTTON_LAYOUT_SUNGA18KEYBREX
+	{ label: 'Sunga 18 Key Dual Stick Pref', value: 39 }, // BUTTON_LAYOUT_SUNGA18KEYBPREF
 ];
 
 const SPLASH_MODES = [

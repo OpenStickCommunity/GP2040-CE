@@ -320,9 +320,9 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyADualUp()
     return BUTTON_LAYOUT_SUNGA18KEYADUALUP;
 }
 
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyARex()
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyAPref()
 {
-    return BUTTON_LAYOUT_SUNGA18KEYAREX;
+    return BUTTON_LAYOUT_SUNGA18KEYAPREF;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadDDRRight()
@@ -395,9 +395,9 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga17keyB()
     return BUTTON_LAYOUT_SUNGA17KEYB;
 }
 
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga17keyBRex()
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga17keyBPref()
 {
-    return BUTTON_LAYOUT_SUNGA17KEYBREX;
+    return BUTTON_LAYOUT_SUNGA17KEYBPREF;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyB()
@@ -405,9 +405,9 @@ ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyB()
     return BUTTON_LAYOUT_SUNGA18KEYB;
 }
 
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyBRex()
+ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSunga18keyBPref()
 {
-    return BUTTON_LAYOUT_SUNGA18KEYBREX;
+    return BUTTON_LAYOUT_SUNGA18KEYBPREF;
 }
 
 ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBlankA()

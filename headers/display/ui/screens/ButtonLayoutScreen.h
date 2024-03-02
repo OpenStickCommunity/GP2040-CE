@@ -119,13 +119,13 @@ class ButtonLayoutScreen : public GPScreen {
         LayoutList drawSunga17keyA();
         LayoutList drawSunga17keyAAlt();
         LayoutList drawSunga17keyB();
-        LayoutList drawSunga17keyBRex();
+        LayoutList drawSunga17keyBPref();
         LayoutList drawSunga18keyA();
         LayoutList drawSunga18keyAAlt();
         LayoutList drawSunga18keyADualUp();
-        LayoutList drawSunga18keyARex();
+        LayoutList drawSunga18keyAPref();
         LayoutList drawSunga18keyB();
-        LayoutList drawSunga18keyBRex();
+        LayoutList drawSunga18keyBPref();
     protected:
         void drawScreen();
     private:
@@ -184,7 +184,7 @@ class ButtonLayoutScreen : public GPScreen {
             {BUTTON_LAYOUT_SUNGA18KEYA,               [this]() { return this->drawSunga18keyA(); }},
             {BUTTON_LAYOUT_SUNGA18KEYAALT,            [this]() { return this->drawSunga18keyAAlt(); }},
             {BUTTON_LAYOUT_SUNGA18KEYADUALUP,         [this]() { return this->drawSunga18keyADualUp(); }},
-            {BUTTON_LAYOUT_SUNGA18KEYAREX,            [this]() { return this->drawSunga18keyARex(); }},
+            {BUTTON_LAYOUT_SUNGA18KEYAPREF,            [this]() { return this->drawSunga18keyAPref(); }},
         };
 
         std::map<uint16_t,LayoutFunction> GPButtonLayouts_RightLayouts = {
@@ -228,9 +228,9 @@ class ButtonLayoutScreen : public GPScreen {
             {BUTTON_LAYOUT_SUNGA14KEYLRB,             [this]() { return this->drawSunga14keyLRB(); }},
             {BUTTON_LAYOUT_SUNGA14KEYUDB,             [this]() { return this->drawSunga14keyUDB(); }},
             {BUTTON_LAYOUT_SUNGA17KEYB,               [this]() { return this->drawSunga17keyB(); }},
-            {BUTTON_LAYOUT_SUNGA17KEYBREX,            [this]() { return this->drawSunga17keyBRex(); }},
+            {BUTTON_LAYOUT_SUNGA17KEYBPREF,            [this]() { return this->drawSunga17keyBPref(); }},
             {BUTTON_LAYOUT_SUNGA18KEYB,               [this]() { return this->drawSunga18keyB(); }},
-            {BUTTON_LAYOUT_SUNGA18KEYBREX,            [this]() { return this->drawSunga18keyBRex(); }},
+            {BUTTON_LAYOUT_SUNGA18KEYBPREF,            [this]() { return this->drawSunga18keyBPref(); }},
         };
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
