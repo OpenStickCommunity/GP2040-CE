@@ -17,8 +17,6 @@ void RotaryEncoderInput::setup()
     const RotaryOptions& options = Storage::getInstance().getAddonOptions().rotaryOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
-    stdio_init_all();
-
     encoderMap[0].enabled = options.encoderOne.enabled;
     if (encoderMap[0].enabled) {
         encoderMap[0].pinA = options.encoderOne.pinA;
