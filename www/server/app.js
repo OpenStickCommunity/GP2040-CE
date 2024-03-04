@@ -482,6 +482,17 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		analog1256DrdyPin: -1,
 		analog1256AnalogMax: 3.3,
 		analog1256EnableTriggers: false,
+        encoderOneEnabled: 0,
+        encoderOnePinA: -1,
+        encoderOnePinB: -1,
+        encoderOneMode: 0,
+        encoderOnePPR: 24,
+        encoderTwoEnabled: 0,
+        encoderTwoPinA: -1,
+        encoderTwoPinB: -1,
+        encoderTwoMode: 0,
+        encoderTwoPPR: 24,
+        RotaryAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});
 });

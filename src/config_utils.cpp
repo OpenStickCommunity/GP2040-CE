@@ -34,6 +34,7 @@
 #include "addons/snes_input.h"
 #include "addons/input_macro.h"
 #include "addons/xbonepassthrough.h"
+#include "addons/rotaryencoder.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -651,6 +652,19 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, clockPin, SNES_PAD_CLOCK_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, latchPin, SNES_PAD_LATCH_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
+
+    // addonOptions.rotaryOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions, enabled, !!ROTARY_ENCODER_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, enabled, !!ENCODER_ONE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinA, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinB, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, mode, ENCODER_MODE_NONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pulsesPerRevolution, ENCODER_ONE_PPR);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, enabled, !!ENCODER_TWO_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinA, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinB, (Pin_t)-1);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, mode, ENCODER_MODE_NONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pulsesPerRevolution, ENCODER_TWO_PPR);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);

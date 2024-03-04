@@ -1323,13 +1323,18 @@ std::string setAddonOptions()
 	XBOnePassthroughOptions& xbonePassthroughOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
 	docToValue(xbonePassthroughOptions.enabled, doc, "XBOnePassthroughAddonEnabled");
 
-	AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
-	docToValue(ads1256Options.enabled, doc, "Analog1256Enabled");
-	docToValue(ads1256Options.spiBlock, doc, "analog1256Block");
-	docToValue(ads1256Options.csPin, doc, "analog1256CsPin");
-	docToValue(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
-	docToValue(ads1256Options.avdd, doc, "analog1256AnalogMax");
-	docToValue(ads1256Options.enableTriggers, doc, "analog1256EnableTriggers");
+	RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
+	docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
+    docToValue(rotaryOptions.encoderOne.enabled, doc, "encoderOneEnabled");
+    docToValue(rotaryOptions.encoderOne.pinA, doc, "encoderOnePinA");
+    docToValue(rotaryOptions.encoderOne.pinB, doc, "encoderOnePinB");
+    docToValue(rotaryOptions.encoderOne.mode, doc, "encoderOneMode");
+    docToValue(rotaryOptions.encoderOne.pulsesPerRevolution, doc, "encoderOnePPR");
+    docToValue(rotaryOptions.encoderTwo.enabled, doc, "encoderTwoEnabled");
+    docToValue(rotaryOptions.encoderTwo.pinA, doc, "encoderTwoPinA");
+    docToValue(rotaryOptions.encoderTwo.pinB, doc, "encoderTwoPinB");
+    docToValue(rotaryOptions.encoderTwo.mode, doc, "encoderTwoMode");
+    docToValue(rotaryOptions.encoderTwo.pulsesPerRevolution, doc, "encoderTwoPPR");
 
 	Storage::getInstance().save();
 
@@ -1738,6 +1743,19 @@ std::string getAddonOptions()
 	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
 	writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
 	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
+
+	RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
+	writeDoc(doc, "RotaryAddonEnabled", rotaryOptions.enabled);
+    writeDoc(doc, "encoderOneEnabled", rotaryOptions.encoderOne.enabled);
+    writeDoc(doc, "encoderOnePinA", rotaryOptions.encoderOne.pinA);
+    writeDoc(doc, "encoderOnePinB", rotaryOptions.encoderOne.pinB);
+    writeDoc(doc, "encoderOneMode", rotaryOptions.encoderOne.mode);
+    writeDoc(doc, "encoderOnePPR", rotaryOptions.encoderOne.pulsesPerRevolution);
+    writeDoc(doc, "encoderTwoEnabled", rotaryOptions.encoderTwo.enabled);
+    writeDoc(doc, "encoderTwoPinA", rotaryOptions.encoderTwo.pinA);
+    writeDoc(doc, "encoderTwoPinB", rotaryOptions.encoderTwo.pinB);
+    writeDoc(doc, "encoderTwoMode", rotaryOptions.encoderTwo.mode);
+    writeDoc(doc, "encoderTwoPPR", rotaryOptions.encoderTwo.pulsesPerRevolution);
 
 	return serialize_json(doc);
 }
