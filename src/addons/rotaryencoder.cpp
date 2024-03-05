@@ -23,6 +23,7 @@ void RotaryEncoderInput::setup()
         encoderMap[0].pinB = options.encoderOne.pinB;
         encoderMap[0].mode = options.encoderOne.mode;
         encoderMap[0].pulsesPerRevolution = options.encoderOne.pulsesPerRevolution;
+        encoderMap[0].resetAfter = options.encoderOne.resetAfter;
     }
 
     encoderMap[1].enabled = options.encoderTwo.enabled;
@@ -31,11 +32,12 @@ void RotaryEncoderInput::setup()
         encoderMap[1].pinB = options.encoderTwo.pinB;
         encoderMap[1].mode = options.encoderTwo.mode;
         encoderMap[1].pulsesPerRevolution = options.encoderTwo.pulsesPerRevolution;
+        encoderMap[1].resetAfter = options.encoderTwo.resetAfter;
     }
 
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
         encoderValues[i] = 0;
-    
+   
         if (encoderMap[i].enabled) {
             gpio_init(encoderMap[i].pinA);             // Initialize pin
             gpio_set_dir(encoderMap[i].pinA, GPIO_IN); // Set as INPUT
@@ -92,6 +94,8 @@ void RotaryEncoderInput::process()
 
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
         if (encoderMap[i].enabled && (encoderMap[i].mode != ENCODER_MODE_NONE)) {
+            uint32_t lastChange = now - encoderState[i].changeTime;
+
             if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_X) {
                 gamepad->state.lx = mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_Y) {
@@ -112,6 +116,14 @@ void RotaryEncoderInput::process()
                 int8_t axis = mapEncoderValueDPad(encoderValues[i], encoderMap[i].pulsesPerRevolution);
                 dpadUp = (axis == -1);
                 dpadDown = (axis == 1);
+            }
+
+            if ((encoderValues[i] - prevValues[i]) != 0) {
+                encoderState[i].changeTime = now;
+            }
+
+            if ((encoderMap[i].resetAfter > 0) && (lastChange >= encoderMap[i].resetAfter)) {
+                encoderValues[i] = 0;
             }
         }
 

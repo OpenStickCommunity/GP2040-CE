@@ -48,6 +48,7 @@ public:
         RotaryEncoderPinMode mode = ENCODER_MODE_NONE;
         int32_t minRange = -1;
         int32_t maxRange = -1;
+        uint32_t resetAfter = 0;
     } EncoderPinMap;
 
     typedef struct {
@@ -56,6 +57,7 @@ public:
         bool prevA = false;
         bool prevB = false;
         uint32_t updateTime = 0;
+        uint32_t changeTime = 0;
         uint8_t delay = 5;
     } EncoderPinState;
 private:

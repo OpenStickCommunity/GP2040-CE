@@ -487,11 +487,13 @@ app.get('/api/getAddonsOptions', (req, res) => {
         encoderOnePinB: -1,
         encoderOneMode: 0,
         encoderOnePPR: 24,
+        encoderOneResetAfter: 0,
         encoderTwoEnabled: 0,
         encoderTwoPinA: -1,
         encoderTwoPinB: -1,
         encoderTwoMode: 0,
         encoderTwoPPR: 24,
+        encoderTwoResetAfter: 0,
         RotaryAddonEnabled: 1,
 		usedPins: Object.values(picoController),
 	});

@@ -711,6 +711,7 @@ message RotaryPinOptions
     optional int32 pinB = 3;
     optional RotaryEncoderPinMode mode = 4;
     optional uint32 pulsesPerRevolution = 5;
+    optional uint32 resetAfter = 6;
 }
 
 message RotaryOptions

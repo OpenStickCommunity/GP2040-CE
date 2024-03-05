@@ -1330,11 +1330,13 @@ std::string setAddonOptions()
     docToValue(rotaryOptions.encoderOne.pinB, doc, "encoderOnePinB");
     docToValue(rotaryOptions.encoderOne.mode, doc, "encoderOneMode");
     docToValue(rotaryOptions.encoderOne.pulsesPerRevolution, doc, "encoderOnePPR");
+    docToValue(rotaryOptions.encoderOne.resetAfter, doc, "encoderOneResetAfter");
     docToValue(rotaryOptions.encoderTwo.enabled, doc, "encoderTwoEnabled");
     docToValue(rotaryOptions.encoderTwo.pinA, doc, "encoderTwoPinA");
     docToValue(rotaryOptions.encoderTwo.pinB, doc, "encoderTwoPinB");
     docToValue(rotaryOptions.encoderTwo.mode, doc, "encoderTwoMode");
     docToValue(rotaryOptions.encoderTwo.pulsesPerRevolution, doc, "encoderTwoPPR");
+    docToValue(rotaryOptions.encoderTwo.resetAfter, doc, "encoderTwoResetAfter");
 
 	Storage::getInstance().save();
 
@@ -1751,11 +1753,13 @@ std::string getAddonOptions()
     writeDoc(doc, "encoderOnePinB", rotaryOptions.encoderOne.pinB);
     writeDoc(doc, "encoderOneMode", rotaryOptions.encoderOne.mode);
     writeDoc(doc, "encoderOnePPR", rotaryOptions.encoderOne.pulsesPerRevolution);
+    writeDoc(doc, "encoderOneResetAfter", rotaryOptions.encoderOne.resetAfter);
     writeDoc(doc, "encoderTwoEnabled", rotaryOptions.encoderTwo.enabled);
     writeDoc(doc, "encoderTwoPinA", rotaryOptions.encoderTwo.pinA);
     writeDoc(doc, "encoderTwoPinB", rotaryOptions.encoderTwo.pinB);
     writeDoc(doc, "encoderTwoMode", rotaryOptions.encoderTwo.mode);
     writeDoc(doc, "encoderTwoPPR", rotaryOptions.encoderTwo.pulsesPerRevolution);
+    writeDoc(doc, "encoderTwoResetAfter", rotaryOptions.encoderTwo.resetAfter);
 
 	return serialize_json(doc);
 }

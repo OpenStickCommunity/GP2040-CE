@@ -46,6 +46,10 @@ export const rotaryScheme = {
 		.number()
 		.label('Encoder One PPR')
         .required(),
+    encoderOneResetAfter: yup
+		.number()
+		.label('Encoder One Reset After')
+        .required(),
     encoderTwoEnabled: yup
         .boolean()
         .required()
@@ -68,6 +72,10 @@ export const rotaryScheme = {
 		.number()
 		.label('Encoder Two PPR')
         .required(),
+    encoderTwoResetAfter: yup
+		.number()
+		.label('Encoder Two Reset After')
+        .required(),
 };
 
 export const rotaryState = {
@@ -76,11 +84,13 @@ export const rotaryState = {
     encoderOnePinB: -1,
     encoderOneMode: 0,
     encoderOnePPR: 24,
+    encoderOneResetAfter: 0,
     encoderTwoEnabled: 0,
     encoderTwoPinA: -1,
     encoderTwoPinB: -1,
     encoderTwoMode: 0,
     encoderTwoPPR: 24,
+    encoderTwoResetAfter: 0,
     RotaryAddonEnabled: 0,
 };
 
@@ -146,6 +156,19 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 onChange={handleChange}
                                 min={24}
                                 max={600}
+                            />
+                            <FormControl
+                                type="number"
+                                label={t('Rotary:encoder-reset-after-label')}
+                                name="encoderOneResetAfter"
+                                className="form-control-sm"
+                                groupClassName="mb-3"
+                                value={values.encoderOneResetAfter}
+                                error={errors.encoderOneResetAfter}
+                                isInvalid={errors.encoderOneResetAfter}
+                                onChange={handleChange}
+                                min={0}
+                                max={500}
                             />
                             <FormSelect
                                 label={t('Rotary:encoder-mode-label')}
@@ -221,6 +244,19 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 onChange={handleChange}
                                 min={24}
                                 max={600}
+                            />
+                            <FormControl
+                                type="number"
+                                label={t('Rotary:encoder-reset-after-label')}
+                                name="encoderTwoResetAfter"
+                                className="form-control-sm"
+                                groupClassName="mb-3"
+                                value={values.encoderTwoResetAfter}
+                                error={errors.encoderTwoResetAfter}
+                                isInvalid={errors.encoderTwoResetAfter}
+                                onChange={handleChange}
+                                min={0}
+                                max={500}
                             />
                             <FormSelect
                                 label={t('Rotary:encoder-mode-label')}

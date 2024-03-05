@@ -660,11 +660,13 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinB, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, mode, ENCODER_MODE_NONE);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pulsesPerRevolution, ENCODER_ONE_PPR);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, resetAfter, 0);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, enabled, !!ENCODER_TWO_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinA, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinB, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, mode, ENCODER_MODE_NONE);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pulsesPerRevolution, ENCODER_TWO_PPR);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, resetAfter, 0);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);
