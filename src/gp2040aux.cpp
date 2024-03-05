@@ -9,7 +9,7 @@
 #include "addons/board_led.h"
 #include "addons/buzzerspeaker.h"
 #include "addons/display.h" // Add-Ons
-#include "addons/i2c_gpstate.h"
+#include "addons/i2c_gpstate_controller.h"
 #include "addons/pleds.h"
 #include "addons/ps4mode.h"
 #include "addons/pspassthrough.h"
@@ -32,7 +32,7 @@ void GP2040Aux::setup() {
 	// Setup Add-ons
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
 	addons.LoadUSBAddon(new XBOnePassthroughAddon(), CORE1_LOOP);
-	addons.LoadAddon(new I2CGPStateAddon(), CORE1_LOOP);
+	addons.LoadAddon(new I2CGPStateControllerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);

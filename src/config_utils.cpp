@@ -18,7 +18,8 @@
 #include "addons/tilt.h"
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
-#include "addons/i2c_gpstate.h"
+#include "addons/i2c_gpstate_controller.h"
+#include "addons/i2c_gpstate_peripheral.h"
 #include "addons/display.h"
 #include "addons/jslider.h"
 #include "addons/keyboard_host.h"
@@ -589,10 +590,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, fourWayMode, false);
 
-    // addonOptions.analogADS1219Options
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateOptions, enabled, !!I2C_GPSTATE_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateOptions, i2cBlock, I2C_GPSTATE_BLOCK)
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateOptions, i2cAddress, I2C_GPSTATE_ADDRESS);
+    // addonOptions.i2cGPStateControllerOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, enabled, !!I2C_GPSTATE_CONTROLLER_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, i2cBlock, I2C_GPSTATE_CONTROLLER_BLOCK)
+    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, i2cAddress, I2C_SLAVE_ID);
+
+    // addonOptions.i2cGPStatePeripheralOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, enabled, !!I2C_GPSTATE_PERIPHERAL_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, i2cBlock, I2C_GPSTATE_PERIPHERAL_BLOCK)
+    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, i2cAddress, I2C_SLAVE_ID);
 
 	// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);

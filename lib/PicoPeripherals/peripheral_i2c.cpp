@@ -10,13 +10,14 @@ PeripheralI2C::PeripheralI2C() {
 #endif
 }
 
-void PeripheralI2C::setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed) {
+void PeripheralI2C::setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed, void (*slaveHandler)(i2c_inst_t *, i2c_slave_event_t)) {
     if (block < NUM_I2CS) {
         _I2C = _hardwareBlocks[block];
         _SDA = sda;
         _SCL = scl;
         _Speed = speed;
         configured = true;
+        PeripheralI2C::slaveHandler = slaveHandler;
         setup();
     } else {
         // currently not supported
@@ -27,12 +28,17 @@ void PeripheralI2C::setup() {
     if ((_SDA + 2 * i2c_hw_index(_I2C))%4 != 0) return;
     if ((_SCL + 3 + 2 * i2c_hw_index(_I2C))%4 != 0) return;
 
-    i2c_init(_I2C, _Speed);
+    PeripheralI2C::isSlave = isSlave;
+
     gpio_set_function(_SDA, GPIO_FUNC_I2C);
     gpio_set_function(_SCL, GPIO_FUNC_I2C);
-
     gpio_pull_up(_SDA);
     gpio_pull_up(_SCL);
+    i2c_init(_I2C, _Speed);
+
+    if (slaveHandler != nullptr) {
+        i2c_slave_init(i2c1, I2C_SLAVE_ID, slaveHandler);
+    }
 
     // reset the bus before using it
     clear();
@@ -47,7 +53,7 @@ int16_t PeripheralI2C::read(uint8_t address, uint8_t *data, uint16_t len, bool i
     }
     printf("\nResult: %d\n", result);
     printf("-----\n");
-#endif    
+#endif
     return result;
 }
 
