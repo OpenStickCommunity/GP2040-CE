@@ -7,6 +7,7 @@
 
 #include "enums.pb.h"
 #include "gamepad/GamepadState.h"
+#include "gpstate.h"
 
 #include "pico/stdlib.h"
 
@@ -95,6 +96,13 @@ public:
 		state.buttons &= ~(hotkey.buttonsMask);
 		state.dpad &= ~(hotkey.dpadMask);
 		return static_cast<GamepadHotkey>(hotkey.action);
+	}
+
+	inline GPState __attribute__((always_inline)) toGpState() {
+		return {
+			.gamepadState = state,
+			.gpioState = debouncedGpio,
+		};
 	}
 
 	inline bool __attribute__((always_inline)) pressedUp()    { return pressedDpad(GAMEPAD_MASK_UP); }

@@ -198,6 +198,7 @@ src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/keyboard_host.cpp
 src/addons/i2canalog1219.cpp
+src/addons/i2c_gpstate.cpp
 src/addons/jslider.cpp
 src/addons/display.cpp
 src/addons/neopicoleds.cpp
