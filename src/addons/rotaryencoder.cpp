@@ -97,25 +97,25 @@ void RotaryEncoderInput::process()
             uint32_t lastChange = now - encoderState[i].changeTime;
 
             if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_X) {
-                gamepad->state.lx = mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.lx = -mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_Y) {
-                gamepad->state.ly = mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.ly = -mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_X) {
-                gamepad->state.rx = mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.rx = -mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_Y) {
-                gamepad->state.ry = mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.ry = -mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_TRIGGER) {
                 gamepad->state.lt = mapEncoderValueTrigger(encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_TRIGGER) {
                 gamepad->state.rt = mapEncoderValueTrigger(encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_DPAD_X) {
                 int8_t axis = mapEncoderValueDPad(encoderValues[i], encoderMap[i].pulsesPerRevolution);
-                dpadLeft = (axis == -1);
-                dpadRight = (axis == 1);
+                dpadLeft = (axis == 1);
+                dpadRight = (axis == -1);
             } else if (encoderMap[i].mode == ENCODER_MODE_DPAD_Y) {
                 int8_t axis = mapEncoderValueDPad(encoderValues[i], encoderMap[i].pulsesPerRevolution);
-                dpadUp = (axis == -1);
-                dpadDown = (axis == 1);
+                dpadUp = (axis == 1);
+                dpadDown = (axis == -1);
             }
 
             if ((encoderValues[i] - prevValues[i]) != 0) {

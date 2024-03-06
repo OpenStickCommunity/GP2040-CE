@@ -18,12 +18,36 @@
 #define ENCODER_ONE_PPR 24
 #endif
 
+#ifndef ENCODER_ONE_PIN_A
+#define ENCODER_ONE_PIN_A -1
+#endif
+
+#ifndef ENCODER_ONE_PIN_B
+#define ENCODER_ONE_PIN_B -1
+#endif
+
+#ifndef ENCODER_ONE_MODE
+#define ENCODER_ONE_MODE ENCODER_MODE_NONE
+#endif
+
 #ifndef ENCODER_TWO_ENABLED
 #define ENCODER_TWO_ENABLED 0
 #endif
 
 #ifndef ENCODER_TWO_PPR
 #define ENCODER_TWO_PPR 24
+#endif
+
+#ifndef ENCODER_TWO_PIN_A
+#define ENCODER_TWO_PIN_A -1
+#endif
+
+#ifndef ENCODER_TWO_PIN_B
+#define ENCODER_TWO_PIN_B -1
+#endif
+
+#ifndef ENCODER_TWO_MODE
+#define ENCODER_TWO_MODE ENCODER_MODE_NONE
 #endif
 
 #define MAX_ENCODERS 2
@@ -67,13 +91,6 @@ private:
     EncoderPinMap encoderMap[MAX_ENCODERS] = {
         {false, -1, -1, 24, ENCODER_MODE_NONE, -1, -1},
         {false, -1, -1, 24, ENCODER_MODE_NONE, -1, -1},
-
-//        {true, 8, 7, 24, ENCODER_MODE_LEFT_ANALOG_X, GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX},
-//        {true, 6, 5, 24, ENCODER_MODE_LEFT_ANALOG_Y, GAMEPAD_JOYSTICK_MIN, GAMEPAD_JOYSTICK_MAX},
-//        {true, 8, 7, 24, ENCODER_MODE_LEFT_TRIGGER, GAMEPAD_TRIGGER_MIN, GAMEPAD_TRIGGER_MAX},
-//        {true, 6, 5, 24, ENCODER_MODE_RIGHT_TRIGGER, GAMEPAD_TRIGGER_MIN, GAMEPAD_TRIGGER_MAX},
-//        {true, 8, 7, 24, ENCODER_MODE_DPAD_X, -1, -1},
-//        {true, 6, 5, 24, ENCODER_MODE_DPAD_Y, -1, -1},
     };
 
     int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);

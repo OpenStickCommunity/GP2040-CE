@@ -656,15 +656,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // addonOptions.rotaryOptions
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions, enabled, !!ROTARY_ENCODER_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, enabled, !!ENCODER_ONE_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinA, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinB, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, mode, ENCODER_MODE_NONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinA, (Pin_t)ENCODER_ONE_PIN_A);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinB, (Pin_t)ENCODER_ONE_PIN_B);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, mode, ENCODER_ONE_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pulsesPerRevolution, ENCODER_ONE_PPR);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, resetAfter, 0);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, enabled, !!ENCODER_TWO_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinA, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinB, (Pin_t)-1);
-    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, mode, ENCODER_MODE_NONE);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinA, (Pin_t)ENCODER_TWO_PIN_A);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinB, (Pin_t)ENCODER_TWO_PIN_B);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, mode, ENCODER_TWO_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pulsesPerRevolution, ENCODER_TWO_PPR);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, resetAfter, 0);
 
