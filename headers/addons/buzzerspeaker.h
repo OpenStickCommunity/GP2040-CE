@@ -148,6 +148,7 @@ private:
 	uint32_t startedSongMils;
 	Song *currentSong;
 	bool introPlayed;
+    bool isSpeakerOn = false;
 };
 
 #endif

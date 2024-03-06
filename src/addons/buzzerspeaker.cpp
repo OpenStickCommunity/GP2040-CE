@@ -21,10 +21,11 @@ void BuzzerSpeakerAddon::setup() {
 
     // enable pin is optional so not required to toggle addon
     if (isValidPin(options.pin)) {
+        isSpeakerOn = true;
         buzzerEnablePin = options.enablePin;
         gpio_init(buzzerEnablePin);
         gpio_set_dir(buzzerEnablePin, GPIO_OUT);
-        gpio_put(buzzerEnablePin, 1);
+        gpio_put(buzzerEnablePin, isSpeakerOn);
     }
 
 	buzzerVolume = options.volume;
