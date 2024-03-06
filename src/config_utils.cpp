@@ -593,12 +593,12 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // addonOptions.i2cGPStateControllerOptions
     INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, enabled, !!I2C_GPSTATE_CONTROLLER_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, i2cBlock, I2C_GPSTATE_CONTROLLER_BLOCK)
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, i2cAddress, I2C_SLAVE_ID);
+    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, i2cAddress, I2C_DEFAULT_SLAVE_ADDR);
 
     // addonOptions.i2cGPStatePeripheralOptions
     INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, enabled, !!I2C_GPSTATE_PERIPHERAL_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, i2cBlock, I2C_GPSTATE_PERIPHERAL_BLOCK)
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, i2cAddress, I2C_SLAVE_ID);
+    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, i2cAddress, I2C_DEFAULT_SLAVE_ADDR);
 
 	// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);

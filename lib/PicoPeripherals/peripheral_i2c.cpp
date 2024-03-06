@@ -10,35 +10,37 @@ PeripheralI2C::PeripheralI2C() {
 #endif
 }
 
-void PeripheralI2C::setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed, void (*slaveHandler)(i2c_inst_t *, i2c_slave_event_t)) {
+void PeripheralI2C::setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed) {
     if (block < NUM_I2CS) {
         _I2C = _hardwareBlocks[block];
         _SDA = sda;
         _SCL = scl;
         _Speed = speed;
         configured = true;
-        PeripheralI2C::slaveHandler = slaveHandler;
         setup();
     } else {
         // currently not supported
     }
 }
 
+void PeripheralI2C::setSlave(i2c_slave_handler_t handler, uint8_t addr) {
+    // Only allow slave to be configured once
+    if (PeripheralI2C::handler != nullptr || handler == nullptr)
+        return;
+
+    PeripheralI2C::handler = handler;
+    i2c_slave_init(_I2C, addr ? addr : I2C_DEFAULT_SLAVE_ADDR, PeripheralI2C::handler);
+}
+
 void PeripheralI2C::setup() {
     if ((_SDA + 2 * i2c_hw_index(_I2C))%4 != 0) return;
     if ((_SCL + 3 + 2 * i2c_hw_index(_I2C))%4 != 0) return;
-
-    PeripheralI2C::isSlave = isSlave;
 
     gpio_set_function(_SDA, GPIO_FUNC_I2C);
     gpio_set_function(_SCL, GPIO_FUNC_I2C);
     gpio_pull_up(_SDA);
     gpio_pull_up(_SCL);
     i2c_init(_I2C, _Speed);
-
-    if (slaveHandler != nullptr) {
-        i2c_slave_init(i2c1, I2C_SLAVE_ID, slaveHandler);
-    }
 
     // reset the bus before using it
     clear();
