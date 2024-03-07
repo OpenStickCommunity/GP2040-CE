@@ -25,10 +25,6 @@ public:
 	virtual void process();
 	virtual std::string name() { return GPCommsSPIPeripheralName; }
 private:
-	static void handleGamepadStatus(GPComms_Status *gpStatus);
-	static void handleGamepadState(GPComms_State *gpState);
-	static void handleGamepadMessage(GPComms_Message *gpMessage);
-
 	PeripheralSPI *spi;
 };
 

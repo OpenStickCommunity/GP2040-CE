@@ -14,14 +14,14 @@ void GPCommsI2CControllerAddon::setup() {
 
 void GPCommsI2CControllerAddon::process() {
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	sendGamepadState(gamepad);
+	sendState(gamepad);
 }
 
 /************************
  * I2C send functions
  ************************/
 
-void GPCommsI2CControllerAddon::sendGamepadStatus(Gamepad *gamepad) {
+void GPCommsI2CControllerAddon::sendStatus(Gamepad *gamepad) {
 	GamepadOptions options = gamepad->getOptions();
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
@@ -39,7 +39,7 @@ void GPCommsI2CControllerAddon::sendGamepadStatus(Gamepad *gamepad) {
 	memset(buf, 0, GPCOMMS_I2C_BUFFER_SIZE);
 }
 
-void GPCommsI2CControllerAddon::sendGamepadState(Gamepad *gamepad) {
+void GPCommsI2CControllerAddon::sendState(Gamepad *gamepad) {
 	GPComms_State gpState = {
 		.gamepadState = gamepad->state,
 		.gpioState = gamepad->debouncedGpio,
@@ -51,7 +51,7 @@ void GPCommsI2CControllerAddon::sendGamepadState(Gamepad *gamepad) {
 	memset(buf, 0, GPCOMMS_I2C_BUFFER_SIZE);
 }
 
-void GPCommsI2CControllerAddon::sendGamepadMessage(Gamepad *gamepad, char *text, uint16_t length) {
+void GPCommsI2CControllerAddon::sendMessage(char *text, uint16_t length) {
 	GPComms_Message gpMessage = {
 		.length = length,
 		.message = text,

@@ -42,4 +42,18 @@ struct GPComms_Message {
 	char *message;
 };
 
+class GPComms {
+public:
+	static GamepadState *getGamepadState() { return &gamepadState; }
+	static Mask_t getGpioState() { return gpioState; }
+	static void handleBuffer(uint8_t *buf, int size);
+	static void updateGamepad();
+private:
+	static void handleStatus(GPComms_Status *gpStatus);
+	static void handleState(GPComms_State *gpState);
+	static void handleMessage(GPComms_Message *gpMessage);
+	static GamepadState gamepadState;
+	static Mask_t gpioState;
+};
+
 #endif

@@ -7,11 +7,11 @@
 #include "gpcomms.h"
 
 #ifndef GPCOMMS_I2C_PERIPHERAL_ENABLED
-#define GPCOMMS_I2C_PERIPHERAL_ENABLED 1
+#define GPCOMMS_I2C_PERIPHERAL_ENABLED 0
 #endif
 
 #ifndef GPCOMMS_I2C_PERIPHERAL_BLOCK
-#define GPCOMMS_I2C_PERIPHERAL_BLOCK 1
+#define GPCOMMS_I2C_PERIPHERAL_BLOCK 0
 #endif
 
 // BootselButton Module Name
@@ -26,9 +26,6 @@ public:
 	virtual std::string name() { return GPCommsI2CPeripheralName; }
 private:
 	static void handler(i2c_inst_t *i2c, i2c_slave_event_t event);
-	static void handleGamepadStatus(GPComms_Status *gpStatus);
-	static void handleGamepadState(GPComms_State *gpState);
-	static void handleGamepadMessage(GPComms_Message *gpMessage);
 
 	PeripheralI2C *i2c;
 	uint8_t addr;

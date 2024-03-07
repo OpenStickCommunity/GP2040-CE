@@ -16,14 +16,14 @@ void GPCommsSPIControllerAddon::process() {
 	while (!spi->isWriteable())
 		tight_loop_contents();
 
-	sendGamepadState(gamepad);
+	sendState(gamepad);
 }
 
 /************************
  * SPI send functions
  ************************/
 
-void GPCommsSPIControllerAddon::sendGamepadStatus(Gamepad *gamepad) {
+void GPCommsSPIControllerAddon::sendStatus(Gamepad *gamepad) {
 	GamepadOptions options = gamepad->getOptions();
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
@@ -41,7 +41,7 @@ void GPCommsSPIControllerAddon::sendGamepadStatus(Gamepad *gamepad) {
 	memset(buf, 0, GPCOMMS_BUFFER_SIZE);
 }
 
-void GPCommsSPIControllerAddon::sendGamepadState(Gamepad *gamepad) {
+void GPCommsSPIControllerAddon::sendState(Gamepad *gamepad) {
 	GPComms_State gpState = {
 		.gamepadState = gamepad->state,
 		.gpioState = gamepad->debouncedGpio,
@@ -53,7 +53,7 @@ void GPCommsSPIControllerAddon::sendGamepadState(Gamepad *gamepad) {
 	memset(buf, 0, GPCOMMS_BUFFER_SIZE);
 }
 
-void GPCommsSPIControllerAddon::sendGamepadMessage(Gamepad *gamepad, char *text, uint16_t length) {
+void GPCommsSPIControllerAddon::sendMessage(char *text, uint16_t length) {
 	GPComms_Message gpMessage = {
 		.length = length,
 		.message = text,

@@ -26,9 +26,9 @@ public:
 	virtual void process();
 	virtual std::string name() { return GPCommsI2CControllerName; }
 private:
-	void sendGamepadStatus(Gamepad *gamepad);
-	void sendGamepadState(Gamepad *gamepad);
-	void sendGamepadMessage(Gamepad *gamepad, char *text, uint16_t length);
+	void sendStatus(Gamepad *gamepad);
+	void sendState(Gamepad *gamepad);
+	void sendMessage(char *text, uint16_t length);
 
 	PeripheralI2C *i2c;
 	uint8_t addr;
