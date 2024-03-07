@@ -16,7 +16,6 @@
 
 #define GPCOMMS_I2C_BUFFER_SIZE 100
 
-// BootselButton Module Name
 #define GPCommsI2CControllerName "GPCommsI2CController"
 
 class GPCommsI2CControllerAddon : public GPAddon {

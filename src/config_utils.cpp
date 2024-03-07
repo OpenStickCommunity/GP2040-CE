@@ -36,6 +36,8 @@
 #include "addons/xbonepassthrough.h"
 #include "comms/gpcomms_i2c_controller.h"
 #include "comms/gpcomms_i2c_peripheral.h"
+#include "comms/gpcomms_spi_controller.h"
+#include "comms/gpcomms_spi_peripheral.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -599,6 +601,14 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CPeripheralOptions, enabled, !!GPCOMMS_I2C_PERIPHERAL_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CPeripheralOptions, i2cBlock, GPCOMMS_I2C_PERIPHERAL_BLOCK)
     INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CPeripheralOptions, i2cAddress, I2C_DEFAULT_SLAVE_ADDR);
+
+    // addonOptions.gpCommsSPIControllerOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsSPIControllerOptions, enabled, !!GPCOMMS_SPI_CONTROLLER_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsSPIControllerOptions, spiBlock, GPCOMMS_SPI_CONTROLLER_BLOCK)
+
+    // addonOptions.gpCommsSPIPeripheralOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsSPIPeripheralOptions, enabled, !!GPCOMMS_SPI_PERIPHERAL_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsSPIPeripheralOptions, spiBlock, GPCOMMS_SPI_PERIPHERAL_BLOCK)
 
 	// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);

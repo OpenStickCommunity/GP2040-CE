@@ -76,6 +76,17 @@ void PeripheralSPI::setup() {
     }
 }
 
+void PeripheralSPI::setSlave(bool isSlave) {
+    if (!_isSlave && isSlave) {
+        _isSlave = true;
+        spi_set_slave(_SPI, true);
+    }
+    else if (_isSlave && !isSlave) {
+        _isSlave = false;
+        spi_set_slave(_SPI, false);
+    }
+}
+
 void PeripheralSPI::deactivate() {
     if (_UseDMA) {
         dma_channel_unclaim(_dmaRxChannel);
@@ -83,6 +94,34 @@ void PeripheralSPI::deactivate() {
         _dmaRxBuf = nullptr;
         _dmaTxBuf = nullptr;
     }
+}
+
+bool PeripheralSPI::isBusy() {
+    return spi_is_busy(_SPI);
+}
+
+bool PeripheralSPI::isReadable() {
+    return spi_is_readable(_SPI);
+}
+
+bool PeripheralSPI::isWriteable() {
+    return spi_is_writable(_SPI);
+}
+
+int PeripheralSPI::read(uint8_t *buf, size_t len) {
+    return spi_read_blocking(_SPI, 0xFF, buf, len);
+}
+
+int PeripheralSPI::read16(uint16_t *buf, size_t len) {
+    return spi_read16_blocking(_SPI, 0xFF, buf, len);
+}
+
+int PeripheralSPI::write(uint8_t *buf, size_t len) {
+    return spi_write_blocking(_SPI, buf, len);
+}
+
+int PeripheralSPI::write16(uint16_t *buf, size_t len) {
+    return spi_write16_blocking(_SPI, buf, len);
 }
 
 void PeripheralSPI::transfer(const uint8_t *tx, uint8_t *rx, size_t count) {

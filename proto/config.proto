@@ -459,6 +459,20 @@ message GPCommsI2CPeripheralOptions
 	optional int32 i2cAddress = 3;
 }
 
+message GPCommsSPIControllerOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 spiBlock = 2;
+}
+
+message GPCommsSPIPeripheralOptions
+{
+	optional bool enabled = 1;
+
+	optional int32 spiBlock = 2;
+}
+
 message TiltOptions
 {
 	optional bool enabled = 1;
@@ -747,6 +761,8 @@ message AddonOptions
 	optional AnalogADS1256Options analogADS1256Options = 23;
 	optional GPCommsI2CControllerOptions gpCommsI2CControllerOptions = 24;
 	optional GPCommsI2CPeripheralOptions gpCommsI2CPeripheralOptions = 25;
+	optional GPCommsSPIControllerOptions gpCommsSPIControllerOptions = 26;
+	optional GPCommsSPIPeripheralOptions gpCommsSPIPeripheralOptions = 27;
 }
 
 message MigrationHistory

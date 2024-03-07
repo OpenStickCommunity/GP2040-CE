@@ -74,8 +74,21 @@ public:
     // Set the configuration for this SPI peripheral instance
     void setConfig(uint8_t block, uint8_t tx, uint8_t rx, uint8_t sck, uint8_t cs);
 
+    // Set this SPI instance as a slave device
+		void setSlave(bool isSlave);
+
     // Disable SPI instance and all associated system resources (such as DMA channels) associated with that instance
     void deactivate();
+
+    bool isBusy();
+
+    bool isReadable();
+
+    bool isWriteable();
+    int read(uint8_t *buf, size_t len);
+    int read16(uint16_t *buf, size_t len);
+    int write(uint8_t *buf, size_t len);
+    int write16(uint16_t *buf, size_t len);
 
     // Conditionally transfers and/or receives data of the provided length
     void transfer(const uint8_t *tx, uint8_t *rx, size_t count);
@@ -113,6 +126,7 @@ private:
     spi_order_t _BitOrder;
     spi_cpol_t _Cpol;
     spi_cpha_t _Cpha;
+    bool _isSlave;
 
     bool _UseDMA;
     int _dmaRxChannel;

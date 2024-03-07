@@ -4,6 +4,10 @@
 #include "enums.pb.h"
 #include "gamepad/GamepadState.h"
 
+#ifndef GPCOMMS_BUFFER_SIZE
+#define GPCOMMS_BUFFER_SIZE 100
+#endif
+
 typedef enum {
 	GPCMD_UNKNOWN = 0x00,
 	GPCMD_STATUS  = 0x01,
@@ -11,6 +15,12 @@ typedef enum {
 	GPCMD_MESSAGE = 0x03,
 	GPCMD_ACK     = 0xFF,
 } GPComms_Command;
+
+template <typename T>
+struct GPComms_Payload {
+	uint8_t command;
+	T data;
+};
 
 struct GPComms_Status {
 	InputMode inputMode;

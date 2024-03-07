@@ -25,9 +25,10 @@ public:
 	virtual void process();
 	virtual std::string name() { return GPCommsI2CPeripheralName; }
 private:
-	static void handleGamepadStatus(GPComms_Status gpStatus);
-	static void handleGamepadState(GPComms_State gpState);
-	static void handleGamepadMessage(GPComms_Message gpMessage);
+	static void handler(i2c_inst_t *i2c, i2c_slave_event_t event);
+	static void handleGamepadStatus(GPComms_Status *gpStatus);
+	static void handleGamepadState(GPComms_State *gpState);
+	static void handleGamepadMessage(GPComms_Message *gpMessage);
 
 	PeripheralI2C *i2c;
 	uint8_t addr;
