@@ -1,6 +1,6 @@
 ---
-name: Firmware Bug Report
-about: Report an issue with the GP2040-CE firmware.
+name: Hardware Bug Report
+about: Report an issue with supported hardware running GP2040-CE.
 title: ''
 labels: ['bug']
 assignees: ''
@@ -11,10 +11,8 @@ assignees: ''
 > is asked, in order to make addressing the issue easier for everyone. Thank you!
 >
 > Be sure to:
-> * Check the documentation [HERE](https://gp2040-ce.info/) to answer many questions on firmware capabilities and usage.
+> * Check the documentation [HERE](https://gp2040-ce.info/) to answer many questions on hardware requirements and usage.
 > * Make sure that your issue has not already been filed [HERE](https://github.com/OpenStickCommunity/GP2040-CE/issues).
-> * Confirm your issue exists on the latest version of the firmware, found
-  [HERE](https://github.com/OpenStickCommunity/GP2040-CE/releases).
 
 ### Expected Behavior
 
@@ -23,21 +21,18 @@ assignees: ''
 ### Current Behavior
 
 > What is the current behaviour? If this is something that worked in the past, be sure to include the conditions in
-> which it did (prior version of the firmware, a different GP2040-CE device where it works, etc.).
+> which it did.
 
 ### Context
 
 > Please provide all relevant information about your setup. This is important in case the issue is not reproducible
 > except under certain conditions. Important elements include:
 >
-> * Firmware version
 > * Name of device
 > * Link to where you purchased the device
->
-> If your issue is with the web configurator, also include:
->
-> * Operating System
-> * Browser
+> * Firmware version
+> * Available schematics, designs, etc., especially for custom hardware
+> * Similar hardware (e.g. if it has the same GPIO-to-button assignments as a Pico)
 
 ### Steps to Reproduce
 
@@ -49,4 +44,4 @@ assignees: ''
 
 ### Screenshots & Files
 
-> Please include any relevant screenshots, photos/recordings, or files here.
+> Please include any relevant screenshots or files here, including photos of the front and back of the board.
