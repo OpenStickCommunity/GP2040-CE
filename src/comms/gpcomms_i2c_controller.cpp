@@ -1,19 +1,18 @@
-#include "i2c_gpstate_controller.h"
+#include "comms/gpcomms_i2c_controller.h"
 #include "storagemanager.h"
-#include "i2c_gpcommand.h"
 
-bool I2CGPStateControllerAddon::available() {
-	const I2CGPStateControllerOptions& options = Storage::getInstance().getAddonOptions().i2cGPStateControllerOptions;
+bool GPCommsI2CControllerAddon::available() {
+	const GPCommsI2CControllerOptions& options = Storage::getInstance().getAddonOptions().gpCommsI2CControllerOptions;
 	return (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
 }
 
-void I2CGPStateControllerAddon::setup() {
-	const I2CGPStateControllerOptions& options = Storage::getInstance().getAddonOptions().i2cGPStateControllerOptions;
+void GPCommsI2CControllerAddon::setup() {
+	const GPCommsI2CControllerOptions& options = Storage::getInstance().getAddonOptions().gpCommsI2CControllerOptions;
 	i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 	addr = options.i2cAddress > 0 ? options.i2cAddress : I2C_DEFAULT_SLAVE_ADDR;
 }
 
-void I2CGPStateControllerAddon::process() {
+void GPCommsI2CControllerAddon::process() {
 	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 	sendGamepadState(gamepad);
 }
@@ -22,11 +21,11 @@ void I2CGPStateControllerAddon::process() {
  * I2C send functions
  ************************/
 
-void I2CGPStateControllerAddon::sendGamepadStatus(Gamepad *gamepad) {
+void GPCommsI2CControllerAddon::sendGamepadStatus(Gamepad *gamepad) {
 	GamepadOptions options = gamepad->getOptions();
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
-	I2C_GPStatus gpStatus = {
+	GPComms_Status gpStatus = {
 		.inputMode = options.inputMode,
 		.turboRate = static_cast<int8_t>(addonOptions.turboOptions.shotCount),
 		.macroEnabled = addonOptions.macroOptions.enabled,
@@ -35,25 +34,25 @@ void I2CGPStateControllerAddon::sendGamepadStatus(Gamepad *gamepad) {
 	};
 
 	buf[0] = GPCMD_STATUS;
-	memcpy(&buf[1], &gpStatus, sizeof(I2C_GPStatus));
-	i2c->write(addr, buf, sizeof(I2C_GPStatus) + 1, false);
-	memset(buf, 0, I2C_GPSTATE_BUFFER_SIZE);
+	memcpy(&buf[1], &gpStatus, sizeof(GPComms_Status));
+	i2c->write(addr, buf, sizeof(GPComms_Status) + 1, false);
+	memset(buf, 0, GPCOMMS_I2C_BUFFER_SIZE);
 }
 
-void I2CGPStateControllerAddon::sendGamepadState(Gamepad *gamepad) {
-	I2C_GPState gpState = {
+void GPCommsI2CControllerAddon::sendGamepadState(Gamepad *gamepad) {
+	GPComms_State gpState = {
 		.gamepadState = gamepad->state,
 		.gpioState = gamepad->debouncedGpio,
 	};
 
 	buf[0] = GPCMD_STATE;
-	memcpy(&buf[1], &gpState, sizeof(I2C_GPState));
-	i2c->write(addr, buf, sizeof(I2C_GPState) + 1, false);
-	memset(buf, 0, I2C_GPSTATE_BUFFER_SIZE);
+	memcpy(&buf[1], &gpState, sizeof(GPComms_State));
+	i2c->write(addr, buf, sizeof(GPComms_State) + 1, false);
+	memset(buf, 0, GPCOMMS_I2C_BUFFER_SIZE);
 }
 
-void I2CGPStateControllerAddon::sendGamepadMessage(Gamepad *gamepad, char *text, uint16_t length) {
-	I2C_GPMessage gpMessage = {
+void GPCommsI2CControllerAddon::sendGamepadMessage(Gamepad *gamepad, char *text, uint16_t length) {
+	GPComms_Message gpMessage = {
 		.length = length,
 		.message = text,
 	};
@@ -62,5 +61,5 @@ void I2CGPStateControllerAddon::sendGamepadMessage(Gamepad *gamepad, char *text,
 	memcpy(&buf[1], &gpMessage.length, 2);
 	memcpy(&buf[3], text, length);
 	i2c->write(addr, buf, gpMessage.length + length + 1, false);
-	memset(buf, 0, I2C_GPSTATE_BUFFER_SIZE);
+	memset(buf, 0, GPCOMMS_I2C_BUFFER_SIZE);
 }

@@ -443,7 +443,7 @@ message DualDirectionalOptions
 	optional bool fourWayMode = 8;
 }
 
-message I2CGPStateControllerOptions
+message GPCommsI2CControllerOptions
 {
 	optional bool enabled = 1;
 
@@ -451,7 +451,7 @@ message I2CGPStateControllerOptions
 	optional int32 i2cAddress = 3;
 }
 
-message I2CGPStatePeripheralOptions
+message GPCommsI2CPeripheralOptions
 {
 	optional bool enabled = 1;
 
@@ -745,8 +745,8 @@ message AddonOptions
 	optional InputHistoryOptions inputHistoryOptions = 21;
 	optional XBOnePassthroughOptions xbonePassthroughOptions = 22;
 	optional AnalogADS1256Options analogADS1256Options = 23;
-	optional I2CGPStateControllerOptions i2cGPStateControllerOptions = 24;
-	optional I2CGPStatePeripheralOptions i2cGPStatePeripheralOptions = 25;
+	optional GPCommsI2CControllerOptions gpCommsI2CControllerOptions = 24;
+	optional GPCommsI2CPeripheralOptions gpCommsI2CPeripheralOptions = 25;
 }
 
 message MigrationHistory

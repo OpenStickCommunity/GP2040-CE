@@ -1,23 +1,21 @@
-#include "i2c_gpstate_peripheral.h"
-#include "i2c_gpcommand.h"
+#include "comms/gpcomms_i2c_peripheral.h"
 #include "storagemanager.h"
 #include <pico/i2c_slave.h>
 
-static uint8_t buf[256] = {0};
 static uint64_t micros = 0;
 
-bool I2CGPStatePeripheralAddon::available() {
-	const I2CGPStatePeripheralOptions& options = Storage::getInstance().getAddonOptions().i2cGPStatePeripheralOptions;
+bool GPCommsI2CPeripheralAddon::available() {
+	const GPCommsI2CPeripheralOptions& options = Storage::getInstance().getAddonOptions().gpCommsI2CPeripheralOptions;
 	return (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
 }
 
-void I2CGPStatePeripheralAddon::setup() {
-	const I2CGPStatePeripheralOptions& options = Storage::getInstance().getAddonOptions().i2cGPStatePeripheralOptions;
+void GPCommsI2CPeripheralAddon::setup() {
+	const GPCommsI2CPeripheralOptions& options = Storage::getInstance().getAddonOptions().gpCommsI2CPeripheralOptions;
 	i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
-	addr = options.i2cAddress > 0 ? options.i2cAddress : I2C_SLAVE_ID;
+	addr = options.i2cAddress > 0 ? options.i2cAddress : I2C_DEFAULT_SLAVE_ADDR;
 }
 
-void I2CGPStatePeripheralAddon::process() {
+void GPCommsI2CPeripheralAddon::process() {
 	// Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 
 	// GPState gpState = {
@@ -33,6 +31,7 @@ void I2CGPStatePeripheralAddon::process() {
  ************************/
 
 static void handler(i2c_inst_t *i2c, i2c_slave_event_t event) {
+	static uint8_t buf[256] = {0};
 	static int32_t receivedIndex = 0;
 
 	switch (event) {
@@ -46,7 +45,7 @@ static void handler(i2c_inst_t *i2c, i2c_slave_event_t event) {
 			{
 				uint64_t diff = to_us_since_boot(get_absolute_time()) - micros;
 				printf("MICROS: %llu, BYTES: %i, DATA: %X\n", diff, receivedIndex, *buf);
-				I2C_GPCommand cmd = (I2C_GPCommand)buf[0];
+				GPComms_Command cmd = (GPComms_Command)buf[0];
 				switch (cmd) {
 					case GPCMD_STATUS:
 						break;
@@ -69,14 +68,14 @@ static void handler(i2c_inst_t *i2c, i2c_slave_event_t event) {
 	}
 }
 
-void I2CGPStatePeripheralAddon::handleGamepadStatus(I2C_GPStatus gpStatus) {
+void GPCommsI2CPeripheralAddon::handleGamepadStatus(GPComms_Status gpStatus) {
 
 }
 
-void I2CGPStatePeripheralAddon::handleGamepadState(I2C_GPState gpState) {
+void GPCommsI2CPeripheralAddon::handleGamepadState(GPComms_State gpState) {
 
 }
 
-void I2CGPStatePeripheralAddon::handleGamepadMessage(I2C_GPMessage gpMessage) {
+void GPCommsI2CPeripheralAddon::handleGamepadMessage(GPComms_Message gpMessage) {
 
 }

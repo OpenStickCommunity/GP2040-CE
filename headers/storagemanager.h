@@ -13,7 +13,7 @@
 #include "enums.h"
 #include "helper.h"
 #include "gamepad.h"
-#include "i2c_gpcommand.h"
+#include "comms/gpcomms.h"
 
 #include "config.pb.h"
 #include <atomic>
@@ -73,7 +73,7 @@ public:
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
-	inline I2C_GPState __attribute__((always_inline)) getI2CGPState() {
+	inline GPComms_State __attribute__((always_inline)) getGPCommsState() {
 		return {
 			.gamepadState = gamepad->state,
 			.gpioState = gamepad->debouncedGpio,

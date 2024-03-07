@@ -1,5 +1,5 @@
-#ifndef I2C_GPCOMMAND_H_
-#define I2C_GPCOMMAND_H_
+#ifndef GPCOMMS_H_
+#define GPCOMMS_H_
 
 #include "enums.pb.h"
 #include "gamepad/GamepadState.h"
@@ -10,9 +10,9 @@ typedef enum {
 	GPCMD_STATE   = 0x02,
 	GPCMD_MESSAGE = 0x03,
 	GPCMD_ACK     = 0xFF,
-} I2C_GPCommand;
+} GPComms_Command;
 
-struct I2C_GPStatus {
+struct GPComms_Status {
 	InputMode inputMode;
 	int8_t turboRate; // Negative value indicate off
 
@@ -22,12 +22,12 @@ struct I2C_GPStatus {
 	// 2 bits left
 };
 
-struct I2C_GPState {
+struct GPComms_State {
 	GamepadState gamepadState;
 	Mask_t gpioState;
 };
 
-struct I2C_GPMessage {
+struct GPComms_Message {
 	uint16_t length = 0;
 	char *message;
 };

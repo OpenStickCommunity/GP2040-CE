@@ -198,7 +198,6 @@ src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/keyboard_host.cpp
 src/addons/i2canalog1219.cpp
-src/addons/i2c_gpstate_controller.cpp
 src/addons/jslider.cpp
 src/addons/display.cpp
 src/addons/neopicoleds.cpp
@@ -215,6 +214,8 @@ src/addons/snes_input.cpp
 src/addons/tilt.cpp
 src/addons/xbonepassthrough.cpp
 src/addons/spi_analog_ads1256.cpp
+src/comms/gpcomms_i2c_controller.cpp
+src/comms/gpcomms_i2c_peripheral.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )

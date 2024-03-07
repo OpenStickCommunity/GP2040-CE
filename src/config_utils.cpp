@@ -18,8 +18,6 @@
 #include "addons/tilt.h"
 #include "addons/focus_mode.h"
 #include "addons/i2canalog1219.h"
-#include "addons/i2c_gpstate_controller.h"
-#include "addons/i2c_gpstate_peripheral.h"
 #include "addons/display.h"
 #include "addons/jslider.h"
 #include "addons/keyboard_host.h"
@@ -36,6 +34,8 @@
 #include "addons/snes_input.h"
 #include "addons/input_macro.h"
 #include "addons/xbonepassthrough.h"
+#include "comms/gpcomms_i2c_controller.h"
+#include "comms/gpcomms_i2c_peripheral.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -103,7 +103,7 @@
 #ifndef DEFAULT_INPUT_MODE_R1
     #define DEFAULT_INPUT_MODE_R1 -1
 #endif
-#ifndef DEFAULT_INPUT_MODE_R2
+#ifndef DEFAULT_INPUT_MODE_R2I
     #define DEFAULT_INPUT_MODE_R2 INPUT_MODE_KEYBOARD
 #endif
 #ifndef DEFAULT_DPAD_MODE
@@ -590,15 +590,15 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, fourWayMode, false);
 
-    // addonOptions.i2cGPStateControllerOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, enabled, !!I2C_GPSTATE_CONTROLLER_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, i2cBlock, I2C_GPSTATE_CONTROLLER_BLOCK)
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStateControllerOptions, i2cAddress, I2C_DEFAULT_SLAVE_ADDR);
+    // addonOptions.gpCommsI2CControllerOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CControllerOptions, enabled, !!GPCOMMS_I2C_CONTROLLER_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CControllerOptions, i2cBlock, GPCOMMS_I2C_CONTROLLER_BLOCK)
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CControllerOptions, i2cAddress, I2C_DEFAULT_SLAVE_ADDR);
 
-    // addonOptions.i2cGPStatePeripheralOptions
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, enabled, !!I2C_GPSTATE_PERIPHERAL_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, i2cBlock, I2C_GPSTATE_PERIPHERAL_BLOCK)
-    INIT_UNSET_PROPERTY(config.addonOptions.i2cGPStatePeripheralOptions, i2cAddress, I2C_DEFAULT_SLAVE_ADDR);
+    // addonOptions.gpCommsI2CPeripheralOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CPeripheralOptions, enabled, !!GPCOMMS_I2C_PERIPHERAL_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CPeripheralOptions, i2cBlock, GPCOMMS_I2C_PERIPHERAL_BLOCK)
+    INIT_UNSET_PROPERTY(config.addonOptions.gpCommsI2CPeripheralOptions, i2cAddress, I2C_DEFAULT_SLAVE_ADDR);
 
 	// addonOptions.tiltOptions
     INIT_UNSET_PROPERTY(config.addonOptions.tiltOptions, enabled, !!TILT_ENABLED);
