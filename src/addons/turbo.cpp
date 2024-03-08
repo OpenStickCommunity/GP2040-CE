@@ -178,11 +178,14 @@ void TurboInput::process()
     // ON: 1 or more turbo buttons enabled
     // BLINK: OFF on turbo shot, ON on turbo flicker
     if (hasLedPin) {
-        if (!turboButtonsPressed) {
-            gpio_put(options.ledPin, 1);
+        if (turboButtonsPressed == 0) {
+            gpio_put(options.ledPin, 0);
+        }
+        else if ((gamepad->state.buttons & turboButtonsPressed) && bTurboFlicker) {
+            gpio_put(options.ledPin, !gpio_get(options.ledPin));
         }
         else {
-            gpio_put(options.ledPin, (gamepad->state.buttons & turboButtonsPressed) && !bTurboFlicker);
+            gpio_put(options.ledPin, 1);
         }
     }
 
