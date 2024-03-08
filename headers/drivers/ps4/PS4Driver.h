@@ -12,6 +12,33 @@
 // Authentication
 #include "drivers/shared/gpauthdriver.h"
 
+typedef enum {
+	no_nonce = 0,
+	receiving_nonce = 1,
+	nonce_ready = 2,
+	signed_nonce_ready = 3,
+	sending_nonce = 4,
+    waiting_reset = 5
+} PS4State;
+
+typedef enum
+{
+	PS4_DEFINITION           = 0x03,    // PS4 Controller Definition
+	PS4_SET_AUTH_PAYLOAD     = 0xF0,    // Set Auth Payload
+	PS4_GET_SIGNATURE_NONCE  = 0xF1,    // Get Signature Nonce
+	PS4_GET_SIGNING_STATE    = 0xF2,    // Get Signing State
+	PS4_RESET_AUTH           = 0xF3     // Unknown (PS4 Report 0xF3)
+} PS4AuthReport;
+
+// PS4 Auth buffer must be used by callbacks, core0, and core1
+// Send back in 56 byte chunks:
+//    256 byte - nonce signature
+//    16 byte  - ps4 serial
+//    256 byte - RSA N
+//    256 byte - RSA E
+//    256 byte - ps4 signature
+//    24 byte  - zero padding
+
 class PS4Driver : public GPDriver {
 public:
     PS4Driver(uint32_t type): ps4ControllerType(type) {}
@@ -29,6 +56,8 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener();
+
+    bool getAuthSent() { return authsent;}
 private:
     // Lots of things here
     void save_nonce(uint8_t nonce_id, uint8_t nonce_page, uint8_t * buffer, uint16_t buflen);
@@ -42,6 +71,11 @@ private:
     uint8_t send_nonce_part;
     uint32_t ps4ControllerType;
     GPAuthDriver * authDriver;
+
+	PS4State ps4State;
+	bool authsent;
+	uint8_t nonce_buffer[256];
+	uint8_t nonce_id; // used in pass-through mode
 };
 
 #endif // _PS4_DRIVER_H_

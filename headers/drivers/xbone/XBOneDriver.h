@@ -26,7 +26,7 @@ public:
     virtual const uint8_t * get_descriptor_configuration_cb(uint8_t index);
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
-    virtual USBListener * get_usb_auth_listener() { return nullptr; }
+    virtual USBListener * get_usb_auth_listener();
 private:
     virtual void update();
     bool send_xbone_usb(uint8_t const *buffer, uint16_t bufsize);

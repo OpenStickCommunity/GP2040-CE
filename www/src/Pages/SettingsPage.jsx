@@ -186,7 +186,7 @@ const schema = yup.object().shape({
 	lockHotkeys: yup.number().required().label('Lock Hotkeys'),
 	fourWayMode: yup.number().required().label('4-Way Joystick Mode'),
 	profileNumber: yup.number().required().label('Profile Number'),
-	ps4AuthenticationType: yup
+	ps4AuthType: yup
 		.number()
 		.required()
 		.oneOf(AUTHENTICATION_TYPES.map((o) => o.value))
@@ -271,12 +271,12 @@ const FormContext = ({ setButtonLabels }) => {
 			values.profileNumber = parseInt(values.profileNumber);
 		if (!!values.ps4ControllerType)
 			values.ps4ControllerType = parseInt(values.ps4ControllerType);
-		if (!!values.ps4AuthenticationType)
-			values.ps4AuthenticationType = parseInt(values.ps4AuthenticationType);
-		if (!!values.ps5AuthenticationType)
-			values.ps5AuthenticationType = parseInt(values.ps5AuthenticationType);
-		if (!!values.xinputAuthenticationType)
-			values.xinputAuthenticationType = parseInt(values.xinputAuthenticationType);
+		if (!!values.ps4AuthType)
+			values.ps4AuthType = parseInt(values.ps4AuthType);
+		if (!!values.ps5AuthType)
+			values.ps5AuthType = parseInt(values.ps5AuthType);
+		if (!!values.xinputAuthType)
+			values.xinputAuthType = parseInt(values.xinputAuthType);
 
 		setButtonLabels({
 			swapTpShareLabels:
@@ -394,8 +394,8 @@ export default function SettingsPage() {
 					</Col></Row>
 					
 
-					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'xinputAuthenticationType', values.xinputAuthenticationType, errors.xinputAuthenticationType, handleChange)}
-					{values.xinputAuthenticationType === 2 && (
+					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'xinputAuthType', values.xinputAuthType, errors.xinputAuthType, handleChange)}
+					{values.xinputAuthType === 2 && (
 						<Row className="mb-3">
 							<Col sm={10}>Please ensure USB Peripheral is enabled and an Xbox 360 compatible USB device is plugged in.</Col>
 						</Row>
@@ -443,15 +443,15 @@ export default function SettingsPage() {
 							/>
 						</Col>
 					</Row>
-					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'ps4AuthenticationType', values.ps4AuthenticationType, errors.ps4AuthenticationType, handleChange)}
-					{values.ps4AuthenticationType === 0 && (
+					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'ps4AuthType', values.ps4AuthType, errors.ps4AuthType, handleChange)}
+					{values.ps4AuthType === 0 && (
 						<Row className="mb-3">
 							<Col sm={10}>
 							<span class="text-warning">🔒 WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.
 							</Col>
 						</Row>
 					)}
-					{values.ps4AuthenticationType === 1 && (<Row className="mb-3">
+					{values.ps4AuthType === 1 && (<Row className="mb-3">
 						<Row className="mb-3">
 							<Col sm={3} className="mb-3">
 								<Form.Label>
@@ -494,7 +494,7 @@ export default function SettingsPage() {
 							</Col>
 						</Row>
 					</Row>)}
-					{values.ps4AuthenticationType === 2 && (
+					{values.ps4AuthType === 2 && (
 						<Row className="mb-3"><Col sm={10}>
 							<span class="text-info">INFO:</span> Please ensure USB Peripheral is enabled and a PS4 compatible USB device is plugged in.
 						</Col></Row>
@@ -526,13 +526,13 @@ export default function SettingsPage() {
 							/>
 						</Col>
 					</Row>
-					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'ps5AuthenticationType', values.ps5AuthenticationType, errors.ps5AuthenticationType, handleChange)}
-					{values.ps5AuthenticationType === 0 && (
+					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'ps5AuthType', values.ps5AuthType, errors.ps5AuthType, handleChange)}
+					{values.ps5AuthType === 0 && (
 						<Row className="mb-3"><Col sm={10}>
 							<span class="text-warning">🔒 WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.
 						</Col></Row>
 					)}
-					{values.ps5AuthenticationType === 2 && (
+					{values.ps5AuthType === 2 && (
 						<Row className="mb-3"><Col sm={10}>
 							<span class="text-info">INFO:</span> Please ensure USB Peripheral is enabled and a PS5 compatible USB device is plugged in.
 						</Col></Row>

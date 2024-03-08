@@ -2,6 +2,7 @@
 #define _GPAddon_H_
 
 #include "gamepad.h"
+#include "usblistener.h"
 
 #include <string>
 
@@ -21,6 +22,12 @@ public:
 	 * its pin masks, as is needed for DDI and sliders.
 	 */
 	virtual void reinit() { }
+
+	// For add-ons that require a USB-host listener, get listener
+	virtual USBListener * getListener() { return listener; }
+
+protected:
+	USBListener * listener;
 };
 
 #endif

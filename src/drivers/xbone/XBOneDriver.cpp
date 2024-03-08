@@ -310,12 +310,15 @@ void XBOneDriver::initializeAux() {
 	authDriver = new XBOneAuthUSB();
 	if ( authDriver->available() ) {
 		authDriver->initialize();
-	} else {
-		delete authDriver;
-		authDriver = nullptr;
 	}
 }
 
+USBListener * XBOneDriver::get_usb_auth_listener() {
+	if ( authDriver->available() ) {
+		return authDriver->getListener();
+	}
+	return nullptr;
+}
 
 void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	uint16_t xboneReportSize = 0;
@@ -436,7 +439,7 @@ void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 
 void XBOneDriver::processAux() {
 	if ( authDriver != nullptr && authDriver->available() ) {
-		authDriver->process();
+		((XBOneAuthUSB*)authDriver)->process();
 	}
 }
 

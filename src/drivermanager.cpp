@@ -71,11 +71,6 @@ void DriverManager::setup(InputMode mode) {
     // Initialize our chosen driver
     driver->initialize();
 
-    // Check if we have a USB listener
-    if (driver->get_usb_auth_listener() != nullptr) {
-        USBHostManager::getInstance().pushListener(driver->get_usb_auth_listener());
-    }
-
     // Start the TinyUSB Device functionality
     tud_init(TUD_OPT_RHPORT);
 }

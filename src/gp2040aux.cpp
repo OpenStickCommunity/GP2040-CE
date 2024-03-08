@@ -38,6 +38,12 @@ void GP2040Aux::setup() {
 	inputDriver = DriverManager::getInstance().getDriver();
 	if ( inputDriver != nullptr ) {
 		inputDriver->initializeAux();
+		
+		// Check if we have a USB listener
+		USBListener * listener = inputDriver->get_usb_auth_listener();
+		if (listener != nullptr) {
+			USBHostManager::getInstance().pushListener(listener);
+		}
 	}
 
 	// Initialize our USB manager

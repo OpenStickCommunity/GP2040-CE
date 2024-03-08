@@ -6,6 +6,7 @@
 class USBListener
 {
 public:
+	virtual void setup() = 0;
 	virtual void mount(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) = 0;
 	virtual void xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) = 0;
 	virtual void unmount(uint8_t dev_addr) = 0;

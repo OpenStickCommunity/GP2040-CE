@@ -240,7 +240,7 @@ class ButtonLayoutScreen : public GPScreen {
         bool pressedUpRight();
         bool pressedDownLeft();
         bool pressedDownRight();
-
+/*
         const std::vector<std::vector<std::string>> displayNames {
             {		// HID / DINPUT
                     CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
@@ -320,6 +320,7 @@ class ButtonLayoutScreen : public GPScreen {
                     "BK", "ST", "LS", "RS", "", ""
             }
         };
+        */
 };
 
 #endif

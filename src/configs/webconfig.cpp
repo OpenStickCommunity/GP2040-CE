@@ -644,6 +644,9 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.inputModeL2, doc, "inputModeL2");
     readDoc(gamepadOptions.inputModeR1, doc, "inputModeR1");
     readDoc(gamepadOptions.inputModeR2, doc, "inputModeR2");
+	readDoc(gamepadOptions.ps4AuthType, doc, "ps4AuthType");
+	readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
+	readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
 
 	HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
 	save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
@@ -693,6 +696,9 @@ std::string getGamepadOptions()
     writeDoc(doc, "inputModeL2", gamepadOptions.inputModeL2);
     writeDoc(doc, "inputModeR1", gamepadOptions.inputModeR1);
     writeDoc(doc, "inputModeR2", gamepadOptions.inputModeR2);
+	writeDoc(doc, "ps4AuthType", gamepadOptions.ps4AuthType);
+	writeDoc(doc, "ps5AuthType", gamepadOptions.ps5AuthType);
+	writeDoc(doc, "xinputAuthType", gamepadOptions.xinputAuthType);
 
 	writeDoc(doc, "fnButtonPin", -1);
 	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;

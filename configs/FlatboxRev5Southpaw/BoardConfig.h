@@ -7,6 +7,7 @@
 #define FLATBOX_REV5_CONFIG_H_
 
 #include "enums.pb.h"
+#include "class/hid/hid.h"
 
 #define BOARD_CONFIG_LABEL "Flatbox Rev. 5 Southpaw"
 

@@ -155,12 +155,13 @@ src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp
 src/drivers/pcengine/PCEngineDriver.cpp
-src/drivers/ps4/PS4AuthKeys.cpp
-src/drivers/ps4/PS4AuthUSB.cpp
+src/drivers/ps4/PS4Auth.cpp
+src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
 src/drivers/xbone/XBOneAuthUSB.cpp
+src/drivers/xbone/XBOneAuthUSBListener.cpp
 src/drivers/xbone/XBOneDriver.cpp
 src/drivers/xboxog/xid/xid_driver.c
 src/drivers/xboxog/xid/xid_gamepad.c
@@ -201,6 +202,7 @@ src/addons/focus_mode.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/keyboard_host.cpp
+src/addons/keyboard_host_listener.cpp
 src/addons/i2canalog1219.cpp
 src/addons/jslider.cpp
 src/addons/display.cpp
