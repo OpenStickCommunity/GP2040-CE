@@ -3,12 +3,12 @@
 #include <pico/i2c_slave.h>
 
 bool GPCommsI2CReceiverAddon::available() {
-	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
+	const GPCommsOptions &options = Storage::getInstance().getAddonOptions().gpCommsOptions;
 	return (options.mode == GP_COMMS_MODE_I2C_RECEIVER && PeripheralManager::getInstance().isI2CEnabled(options.hwBlock));
 }
 
 void GPCommsI2CReceiverAddon::setup() {
-	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
+	const GPCommsOptions &options = Storage::getInstance().getAddonOptions().gpCommsOptions;
 	addr = I2C_DEFAULT_SLAVE_ADDR;
 	i2c = PeripheralManager::getInstance().getI2C(options.hwBlock);
 	i2c->setSlave(handler, addr);

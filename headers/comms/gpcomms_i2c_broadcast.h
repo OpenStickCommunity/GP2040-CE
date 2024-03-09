@@ -6,8 +6,6 @@
 #include "peripheralmanager.h"
 #include "gpcomms.h"
 
-#define GPCOMMS_I2C_BUFFER_SIZE 100
-
 #define GPCommsI2CBroadcastName "GPCommsI2CBroadcast"
 
 class GPCommsI2CBroadcastAddon : public GPAddon {
@@ -24,7 +22,7 @@ private:
 
 	PeripheralI2C *i2c;
 	uint8_t addr;
-	uint8_t buf[GPCOMMS_I2C_BUFFER_SIZE] = {0};
+	uint8_t buf[GPCOMMS_BUFFER_SIZE] = {0};
 };
 
 #endif

@@ -2,12 +2,12 @@
 #include "storagemanager.h"
 
 bool GPCommsSPIReceiverAddon::available() {
-	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
+	const GPCommsOptions &options = Storage::getInstance().getAddonOptions().gpCommsOptions;
 	return (options.mode == GP_COMMS_MODE_SPI_RECEIVER && PeripheralManager::getInstance().isSPIEnabled(options.hwBlock));
 }
 
 void GPCommsSPIReceiverAddon::setup() {
-	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
+	const GPCommsOptions &options = Storage::getInstance().getAddonOptions().gpCommsOptions;
 	spi = PeripheralManager::getInstance().getSPI(options.hwBlock);
 	spi->setSlave(true);
 }

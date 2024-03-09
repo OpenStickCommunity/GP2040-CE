@@ -3,6 +3,7 @@
 
 #include "enums.pb.h"
 #include "types.h"
+#include "gamepad.h"
 #include "gamepad/GamepadState.h"
 
 #ifndef GPCOMMS_DEFAULT_MODE
@@ -17,12 +18,6 @@
 #define GPCOMMS_BUFFER_SIZE 100
 #endif
 
-template <typename T>
-struct GPComms_Payload {
-	uint8_t command;
-	T data;
-};
-
 struct GPComms_Status {
 	InputMode inputMode;
 	int8_t turboRate; // Negative value indicate off
@@ -35,7 +30,7 @@ struct GPComms_Status {
 
 struct GPComms_State {
 	GamepadState gamepadState;
-	Mask_t gpioState;
+	Mask_t gpioState = 0;
 };
 
 struct GPComms_Message {
@@ -50,6 +45,9 @@ public:
 	static GamepadState *getGamepadState() { return &gamepadState; }
 	static Mask_t getGpioState() { return gpioState; }
 	static void handleBuffer(uint8_t *buf, int size);
+	static uint8_t fillBufferStatus(uint8_t *buf, Gamepad *gamepad, const AddonOptions &addonOptions);
+	static uint8_t fillBufferState(uint8_t *buf, Gamepad *gamepad);
+	static uint8_t fillBufferMessage(uint8_t *buf, char *text, uint16_t textLength);
 private:
 	static void handleStatus(uint8_t *payload);
 	static void handleState(uint8_t *payload);
