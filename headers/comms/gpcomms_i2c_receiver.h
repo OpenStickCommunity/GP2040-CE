@@ -6,16 +6,7 @@
 #include "peripheralmanager.h"
 #include "gpcomms.h"
 
-#ifndef GPCOMMS_I2C_RECEIVER_ENABLED
-#define GPCOMMS_I2C_RECEIVER_ENABLED 0
-#endif
-
-#ifndef GPCOMMS_I2C_RECEIVER_BLOCK
-#define GPCOMMS_I2C_RECEIVER_BLOCK 0
-#endif
-
-// BootselButton Module Name
-#define GPCommsI2CPeripheralName "GPCommsI2CPeripheral"
+#define GPCommsI2CReceiverName "GPCommsI2CReceiver"
 
 class GPCommsI2CReceiverAddon : public GPAddon {
 public:
@@ -23,7 +14,7 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process() {}
-	virtual std::string name() { return GPCommsI2CPeripheralName; }
+	virtual std::string name() { return GPCommsI2CReceiverName; }
 private:
 	static void handler(i2c_inst_t *i2c, i2c_slave_event_t event);
 

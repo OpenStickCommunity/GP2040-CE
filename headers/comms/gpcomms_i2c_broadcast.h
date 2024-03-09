@@ -6,17 +6,9 @@
 #include "peripheralmanager.h"
 #include "gpcomms.h"
 
-#ifndef GPCOMMS_I2C_BROADCAST_ENABLED
-#define GPCOMMS_I2C_BROADCAST_ENABLED 1
-#endif
-
-#ifndef GPCOMMS_I2C_BROADCAST_BLOCK
-#define GPCOMMS_I2C_BROADCAST_BLOCK 1
-#endif
-
 #define GPCOMMS_I2C_BUFFER_SIZE 100
 
-#define GPCommsI2CControllerName "GPCommsI2CController"
+#define GPCommsI2CBroadcastName "GPCommsI2CBroadcast"
 
 class GPCommsI2CBroadcastAddon : public GPAddon {
 public:
@@ -24,7 +16,7 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
-	virtual std::string name() { return GPCommsI2CControllerName; }
+	virtual std::string name() { return GPCommsI2CBroadcastName; }
 private:
 	void sendStatus(Gamepad *gamepad);
 	void sendState(Gamepad *gamepad);

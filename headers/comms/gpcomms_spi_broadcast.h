@@ -6,15 +6,7 @@
 #include "peripheralmanager.h"
 #include "gpcomms.h"
 
-#ifndef GPCOMMS_SPI_BROADCAST_ENABLED
-#define GPCOMMS_SPI_BROADCAST_ENABLED 0
-#endif
-
-#ifndef GPCOMMS_SPI_BROADCAST_BLOCK
-#define GPCOMMS_SPI_BROADCAST_BLOCK 0
-#endif
-
-#define GPCommsSPIControllerName "GPCommsSPIController"
+#define GPCommsSPIBroadcastName "GPCommsSPIBroadcast"
 
 class GPCommsSPIBroadcastAddon : public GPAddon {
 public:
@@ -22,7 +14,7 @@ public:
 	virtual void setup();
 	virtual void preprocess() {}
 	virtual void process();
-	virtual std::string name() { return GPCommsSPIControllerName; }
+	virtual std::string name() { return GPCommsSPIBroadcastName; }
 private:
 	void sendStatus(Gamepad *gamepad);
 	void sendState(Gamepad *gamepad);
