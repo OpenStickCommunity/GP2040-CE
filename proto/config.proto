@@ -108,6 +108,12 @@ message PeripheralOptions
     optional USBOptions blockUSB0 = 5;
 }
 
+message GPCommsOptions
+{
+	optional GPComms_Mode mode = 1;
+	optional int32 hwBlock = 2;
+}
+
 message ForcedSetupOptions
 {
 	optional ForcedSetupMode mode = 1;
