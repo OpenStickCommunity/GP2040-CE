@@ -20,7 +20,7 @@ void GPCommsI2CPeripheralAddon::process() {
 
 void GPCommsI2CPeripheralAddon::handler(i2c_inst_t *i2c, i2c_slave_event_t event) {
 	static uint8_t buf[GPCOMMS_BUFFER_SIZE] = {0};
-	static int32_t receivedIndex = 0;
+	static uint8_t receivedIndex = 0;
 
 	switch (event) {
 		case I2C_SLAVE_RECEIVE:

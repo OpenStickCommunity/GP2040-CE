@@ -14,7 +14,6 @@
 #include "addons/pspassthrough.h"
 #include "addons/neopicoleds.h"
 #include "addons/xbonepassthrough.h"
-#include "comms/gpcomms_i2c_controller.h"
 
 #include <iterator>
 
@@ -32,7 +31,6 @@ void GP2040Aux::setup() {
 	// Setup Add-ons
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
 	addons.LoadUSBAddon(new XBOnePassthroughAddon(), CORE1_LOOP);
-	addons.LoadAddon(new GPCommsI2CControllerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);

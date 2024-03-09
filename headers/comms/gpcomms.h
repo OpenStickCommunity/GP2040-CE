@@ -2,6 +2,7 @@
 #define GPCOMMS_H_
 
 #include "enums.pb.h"
+#include "types.h"
 #include "gamepad/GamepadState.h"
 
 #ifndef GPCOMMS_BUFFER_SIZE

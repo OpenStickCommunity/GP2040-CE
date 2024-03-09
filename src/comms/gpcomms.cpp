@@ -1,29 +1,30 @@
 #include "comms/gpcomms.h"
+#include "gamepad.h"
+#include "storagemanager.h"
 
-static Mask_t GPComms::gpioState = 0;
+GamepadState GPComms::gamepadState;
+Mask_t GPComms::gpioState = 0;
 
 void GPComms::updateGamepad() {
-	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	memcpy(&gamepad->state, GPComms::getGamepadState(), sizeof(GamepadState));
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
+	gamepad->state = *GPComms::getGamepadState();
 }
 
 void GPComms::handleBuffer(uint8_t *buf, int size) {
-	// Grab command byte and shift buffer values
 	uint8_t command = buf[0];
-	for (int i = 0; i < size - 1; i++)
-		buf[i] = buf[i + 1];
+	uint8_t *payload = &buf[1];
 
 	switch (command) {
 		case GPCMD_STATUS:
-			GPComms::handleStatus(reinterpret_cast<GPComms_Status *>(buf));
+			GPComms::handleStatus(reinterpret_cast<GPComms_Status *>(payload));
 			break;
 
 		case GPCMD_STATE:
-			GPComms::handleState(reinterpret_cast<GPComms_State *>(buf));
+			GPComms::handleState(reinterpret_cast<GPComms_State *>(payload));
 			break;
 
 		case GPCMD_MESSAGE:
-			GPComms::handleMessage(reinterpret_cast<GPComms_Message *>(buf));
+			GPComms::handleMessage(reinterpret_cast<GPComms_Message *>(payload));
 			break;
 
 		case GPCMD_ACK:

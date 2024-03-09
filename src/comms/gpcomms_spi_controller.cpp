@@ -12,11 +12,10 @@ void GPCommsSPIControllerAddon::setup() {
 }
 
 void GPCommsSPIControllerAddon::process() {
-	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
-	while (!spi->isWriteable())
-		tight_loop_contents();
-
-	sendState(gamepad);
+	if (spi->isWriteable()) {
+		Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+		sendState(gamepad);
+	}
 }
 
 /************************

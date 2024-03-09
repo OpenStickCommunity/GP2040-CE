@@ -214,6 +214,7 @@ src/addons/snes_input.cpp
 src/addons/tilt.cpp
 src/addons/xbonepassthrough.cpp
 src/addons/spi_analog_ads1256.cpp
+src/comms/gpcomms.cpp
 src/comms/gpcomms_i2c_controller.cpp
 src/comms/gpcomms_i2c_peripheral.cpp
 src/comms/gpcomms_spi_controller.cpp
