@@ -35,7 +35,7 @@ void Gamepad::setup()
 	// Configure pin mapping
 	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
 	AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
-	if (addonOptions.gpCommsOptions.mode != GP_COMMS_MODE_OFF)
+	if (addonOptions.gpCommsOptions.mode == GP_COMMS_MODE_I2C_RECEIVER || addonOptions.gpCommsOptions.mode == GP_COMMS_MODE_SPI_RECEIVER)
 	{
 		inputSource = GAMEPAD_INPUT_SOURCE_GPCOMMS;
 	}

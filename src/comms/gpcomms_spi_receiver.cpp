@@ -3,7 +3,7 @@
 
 bool GPCommsSPIReceiverAddon::available() {
 	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
-	return (options.mode == GP_COMMS_MODE_SPI_RECEIVE && PeripheralManager::getInstance().isSPIEnabled(options.hwBlock));
+	return (options.mode == GP_COMMS_MODE_SPI_RECEIVER && PeripheralManager::getInstance().isSPIEnabled(options.hwBlock));
 }
 
 void GPCommsSPIReceiverAddon::setup() {

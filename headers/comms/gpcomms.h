@@ -17,14 +17,6 @@
 #define GPCOMMS_BUFFER_SIZE 100
 #endif
 
-typedef enum {
-	GPCMD_UNKNOWN = 0x00,
-	GPCMD_STATE   = 0x01,
-	GPCMD_STATUS  = 0x02,
-	GPCMD_MESSAGE = 0x03,
-	GPCMD_ACK     = 0xFF,
-} GPComms_Command;
-
 template <typename T>
 struct GPComms_Payload {
 	uint8_t command;

@@ -325,7 +325,19 @@ enum GPComms_Mode
 
     GP_COMMS_MODE_OFF = 0;
     GP_COMMS_MODE_I2C_BROADCAST = 1;
-    GP_COMMS_MODE_I2C_RECEIVE = 2;
+    GP_COMMS_MODE_I2C_RECEIVER = 2;
     GP_COMMS_MODE_SPI_BROADCAST = 3;
-    GP_COMMS_MODE_SPI_RECEIVE = 4;
+    GP_COMMS_MODE_SPI_RECEIVER = 4;
+};
+
+enum GPComms_Command
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GPCMD_UNKNOWN = 0x00;
+    GPCMD_STATE   = 0x01;
+    GPCMD_STATUS  = 0x02;
+    GPCMD_MESSAGE = 0x03;
+
+    GPCMD_ACK     = 0xFF;
 };
