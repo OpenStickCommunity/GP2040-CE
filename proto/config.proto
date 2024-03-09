@@ -443,34 +443,10 @@ message DualDirectionalOptions
 	optional bool fourWayMode = 8;
 }
 
-message GPCommsI2CControllerOptions
+message GPCommsOptions
 {
-	optional bool enabled = 1;
-
-	optional int32 i2cBlock = 2;
-	optional int32 i2cAddress = 3;
-}
-
-message GPCommsI2CPeripheralOptions
-{
-	optional bool enabled = 1;
-
-	optional int32 i2cBlock = 2;
-	optional int32 i2cAddress = 3;
-}
-
-message GPCommsSPIControllerOptions
-{
-	optional bool enabled = 1;
-
-	optional int32 spiBlock = 2;
-}
-
-message GPCommsSPIPeripheralOptions
-{
-	optional bool enabled = 1;
-
-	optional int32 spiBlock = 2;
+	optional GPComms_Mode mode = 1;
+	optional int32 hwBlock = 2;
 }
 
 message TiltOptions
@@ -759,10 +735,7 @@ message AddonOptions
 	optional InputHistoryOptions inputHistoryOptions = 21;
 	optional XBOnePassthroughOptions xbonePassthroughOptions = 22;
 	optional AnalogADS1256Options analogADS1256Options = 23;
-	optional GPCommsI2CControllerOptions gpCommsI2CControllerOptions = 24;
-	optional GPCommsI2CPeripheralOptions gpCommsI2CPeripheralOptions = 25;
-	optional GPCommsSPIControllerOptions gpCommsSPIControllerOptions = 26;
-	optional GPCommsSPIPeripheralOptions gpCommsSPIPeripheralOptions = 27;
+	optional GPCommsOptions gpCommsOptions = 24;
 }
 
 message MigrationHistory

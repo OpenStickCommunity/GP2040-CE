@@ -1,17 +1,17 @@
-#include "comms/gpcomms_spi_controller.h"
+#include "comms/gpcomms_spi_broadcast.h"
 #include "storagemanager.h"
 
-bool GPCommsSPIControllerAddon::available() {
-	const GPCommsSPIControllerOptions& options = Storage::getInstance().getAddonOptions().gpCommsSPIControllerOptions;
-	return (options.enabled && PeripheralManager::getInstance().isSPIEnabled(options.spiBlock));
+bool GPCommsSPIBroadcastAddon::available() {
+	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
+	return (options.mode == GP_COMMS_MODE_SPI_BROADCAST && PeripheralManager::getInstance().isSPIEnabled(options.hwBlock));
 }
 
-void GPCommsSPIControllerAddon::setup() {
-	const GPCommsSPIControllerOptions& options = Storage::getInstance().getAddonOptions().gpCommsSPIControllerOptions;
-	spi = PeripheralManager::getInstance().getSPI(options.spiBlock);
+void GPCommsSPIBroadcastAddon::setup() {
+	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
+	spi = PeripheralManager::getInstance().getSPI(options.hwBlock);
 }
 
-void GPCommsSPIControllerAddon::process() {
+void GPCommsSPIBroadcastAddon::process() {
 	if (spi->isWriteable()) {
 		Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
 		sendState(gamepad);
@@ -22,7 +22,7 @@ void GPCommsSPIControllerAddon::process() {
  * SPI send functions
  ************************/
 
-void GPCommsSPIControllerAddon::sendStatus(Gamepad *gamepad) {
+void GPCommsSPIBroadcastAddon::sendStatus(Gamepad *gamepad) {
 	GamepadOptions options = gamepad->getOptions();
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
@@ -40,7 +40,7 @@ void GPCommsSPIControllerAddon::sendStatus(Gamepad *gamepad) {
 	memset(buf, 0, GPCOMMS_BUFFER_SIZE);
 }
 
-void GPCommsSPIControllerAddon::sendState(Gamepad *gamepad) {
+void GPCommsSPIBroadcastAddon::sendState(Gamepad *gamepad) {
 	GPComms_State gpState = {
 		.gamepadState = gamepad->state,
 		.gpioState = gamepad->debouncedGpio,
@@ -52,7 +52,7 @@ void GPCommsSPIControllerAddon::sendState(Gamepad *gamepad) {
 	memset(buf, 0, GPCOMMS_BUFFER_SIZE);
 }
 
-void GPCommsSPIControllerAddon::sendMessage(char *text, uint16_t length) {
+void GPCommsSPIBroadcastAddon::sendMessage(char *text, uint16_t length) {
 	GPComms_Message gpMessage = {
 		.length = length,
 		.message = text,

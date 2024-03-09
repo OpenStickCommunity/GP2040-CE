@@ -215,10 +215,10 @@ src/addons/tilt.cpp
 src/addons/xbonepassthrough.cpp
 src/addons/spi_analog_ads1256.cpp
 src/comms/gpcomms.cpp
-src/comms/gpcomms_i2c_controller.cpp
-src/comms/gpcomms_i2c_peripheral.cpp
-src/comms/gpcomms_spi_controller.cpp
-src/comms/gpcomms_spi_peripheral.cpp
+src/comms/gpcomms_i2c_broadcast.cpp
+src/comms/gpcomms_i2c_receiver.cpp
+src/comms/gpcomms_spi_broadcast.cpp
+src/comms/gpcomms_spi_receiver.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )

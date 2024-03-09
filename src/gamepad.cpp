@@ -35,10 +35,12 @@ void Gamepad::setup()
 	// Configure pin mapping
 	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
 	AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
-	if (addonOptions.gpCommsI2CPeripheralOptions.enabled) {
+	if (addonOptions.gpCommsOptions.mode != GP_COMMS_MODE_OFF)
+	{
 		inputSource = GAMEPAD_INPUT_SOURCE_GPCOMMS;
 	}
-	else {
+	else
+	{
 		inputSource = GAMEPAD_INPUT_SOURCE_GPIO;
 	}
 
@@ -257,7 +259,7 @@ void Gamepad::hotkey()
 {
 	if (options.lockHotkeys)
 		return;
-	
+
 	GamepadHotkey action = HOTKEY_NONE;
 	if (pressedHotkey(hotkeyOptions.hotkey01))	    action = selectHotkey(hotkeyOptions.hotkey01);
 	else if (pressedHotkey(hotkeyOptions.hotkey02))	action = selectHotkey(hotkeyOptions.hotkey02);
@@ -384,7 +386,7 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			break;
 		case HOTKEY_TOUCHPAD_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A2;
-			break;				
+			break;
 		case HOTKEY_INVERT_X_AXIS:
 			if (action != lastAction) {
 				options.invertXAxis = !options.invertXAxis;

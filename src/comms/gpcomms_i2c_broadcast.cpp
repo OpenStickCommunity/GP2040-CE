@@ -1,18 +1,18 @@
-#include "comms/gpcomms_i2c_controller.h"
+#include "comms/gpcomms_i2c_broadcast.h"
 #include "storagemanager.h"
 
-bool GPCommsI2CControllerAddon::available() {
-	const GPCommsI2CControllerOptions& options = Storage::getInstance().getAddonOptions().gpCommsI2CControllerOptions;
-	return (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
+bool GPCommsI2CBroadcastAddon::available() {
+	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
+	return (options.mode == GP_COMMS_MODE_I2C_BROADCAST && PeripheralManager::getInstance().isI2CEnabled(options.hwBlock));
 }
 
-void GPCommsI2CControllerAddon::setup() {
-	const GPCommsI2CControllerOptions& options = Storage::getInstance().getAddonOptions().gpCommsI2CControllerOptions;
-	i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
-	addr = options.i2cAddress > 0 ? options.i2cAddress : I2C_DEFAULT_SLAVE_ADDR;
+void GPCommsI2CBroadcastAddon::setup() {
+	const GPCommsOptions& options = Storage::getInstance().getAddonOptions().gpCommsOptions;
+	i2c = PeripheralManager::getInstance().getI2C(options.hwBlock);
+	addr = I2C_DEFAULT_SLAVE_ADDR;
 }
 
-void GPCommsI2CControllerAddon::process() {
+void GPCommsI2CBroadcastAddon::process() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	sendState(gamepad);
 }
@@ -21,7 +21,7 @@ void GPCommsI2CControllerAddon::process() {
  * I2C send functions
  ************************/
 
-void GPCommsI2CControllerAddon::sendStatus(Gamepad *gamepad) {
+void GPCommsI2CBroadcastAddon::sendStatus(Gamepad *gamepad) {
 	GamepadOptions options = gamepad->getOptions();
 	AddonOptions addonOptions = Storage::getInstance().getAddonOptions();
 
@@ -39,7 +39,7 @@ void GPCommsI2CControllerAddon::sendStatus(Gamepad *gamepad) {
 	memset(buf, 0, GPCOMMS_I2C_BUFFER_SIZE);
 }
 
-void GPCommsI2CControllerAddon::sendState(Gamepad *gamepad) {
+void GPCommsI2CBroadcastAddon::sendState(Gamepad *gamepad) {
 	GPComms_State gpState = {
 		.gamepadState = gamepad->state,
 		.gpioState = gamepad->debouncedGpio,
@@ -51,7 +51,7 @@ void GPCommsI2CControllerAddon::sendState(Gamepad *gamepad) {
 	memset(buf, 0, GPCOMMS_I2C_BUFFER_SIZE);
 }
 
-void GPCommsI2CControllerAddon::sendMessage(char *text, uint16_t length) {
+void GPCommsI2CBroadcastAddon::sendMessage(char *text, uint16_t length) {
 	GPComms_Message gpMessage = {
 		.length = length,
 		.message = text,

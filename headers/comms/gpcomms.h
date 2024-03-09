@@ -5,6 +5,14 @@
 #include "types.h"
 #include "gamepad/GamepadState.h"
 
+#ifndef GPCOMMS_DEFAULT_MODE
+#define GPCOMMS_DEFAULT_MODE GP_COMMS_MODE_OFF
+#endif
+
+#ifndef GPCOMMS_DEFAULT_HWBLOCK
+#define GPCOMMS_DEFAULT_HWBLOCK -1
+#endif
+
 #ifndef GPCOMMS_BUFFER_SIZE
 #define GPCOMMS_BUFFER_SIZE 100
 #endif

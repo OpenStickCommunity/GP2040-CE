@@ -1,23 +1,23 @@
-#ifndef GPCOMMS_I2C_PERIPHERAL_H_
-#define GPCOMMS_I2C_PERIPHERAL_H_
+#ifndef GPCOMMS_I2C_RECEIVER_H_
+#define GPCOMMS_I2C_RECEIVER_H_
 
 #include "gpaddon.h"
 #include "gamepad.h"
 #include "peripheralmanager.h"
 #include "gpcomms.h"
 
-#ifndef GPCOMMS_I2C_PERIPHERAL_ENABLED
-#define GPCOMMS_I2C_PERIPHERAL_ENABLED 0
+#ifndef GPCOMMS_I2C_RECEIVER_ENABLED
+#define GPCOMMS_I2C_RECEIVER_ENABLED 0
 #endif
 
-#ifndef GPCOMMS_I2C_PERIPHERAL_BLOCK
-#define GPCOMMS_I2C_PERIPHERAL_BLOCK 0
+#ifndef GPCOMMS_I2C_RECEIVER_BLOCK
+#define GPCOMMS_I2C_RECEIVER_BLOCK 0
 #endif
 
 // BootselButton Module Name
 #define GPCommsI2CPeripheralName "GPCommsI2CPeripheral"
 
-class GPCommsI2CPeripheralAddon : public GPAddon {
+class GPCommsI2CReceiverAddon : public GPAddon {
 public:
 	virtual bool available();
 	virtual void setup();

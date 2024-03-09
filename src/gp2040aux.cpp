@@ -14,7 +14,7 @@
 #include "addons/pspassthrough.h"
 #include "addons/neopicoleds.h"
 #include "addons/xbonepassthrough.h"
-#include "comms/gpcomms_i2c_peripheral.h"
+#include "comms/gpcomms_i2c_receiver.h"
 
 #include <iterator>
 
@@ -30,7 +30,7 @@ void GP2040Aux::setup() {
 	PeripheralManager::getInstance().initUSB();
 
 	// Setup Add-ons
-	addons.LoadAddon(new GPCommsI2CPeripheralAddon(), CORE1_LOOP);
+	addons.LoadAddon(new GPCommsI2CReceiverAddon(), CORE1_LOOP);
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
 	addons.LoadUSBAddon(new XBOnePassthroughAddon(), CORE1_LOOP);
 	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
