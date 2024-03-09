@@ -72,13 +72,6 @@ public:
 	void setFunctionalPinMappings();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
-
-	inline GPComms_State __attribute__((always_inline)) getGPCommsState() {
-		return {
-			.gamepadState = gamepad->state,
-			.gpioState = gamepad->debouncedGpio,
-		};
-	}
 private:
 	Storage();
 	bool CONFIG_MODE = false; 			// Config mode (boot)

@@ -319,6 +319,14 @@ enum GPShape_Type
     GP_SHAPE_ARC = 4;
 };
 
+enum GamepadInputSource
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GAMEPAD_INPUT_SOURCE_GPIO = 0;
+    GAMEPAD_INPUT_SOURCE_GPCOMMS = 1;
+};
+
 enum GPComms_Mode
 {
     option (nanopb_enumopt).long_names = false;

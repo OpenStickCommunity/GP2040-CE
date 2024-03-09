@@ -18,12 +18,6 @@ extern uint64_t getMicro();
 
 #define GAMEPAD_FEATURE_REPORT_SIZE 32
 
-typedef enum
-{
-	GAMEPAD_INPUT_SOURCE_GPIO,
-	GAMEPAD_INPUT_SOURCE_GPCOMMS,
-} GamepadInputSource;
-
 struct GamepadButtonMapping
 {
 	GamepadButtonMapping(Mask_t bm) :

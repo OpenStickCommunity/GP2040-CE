@@ -57,6 +57,10 @@ typedef enum {
 #define SPI1_PIN_TX -1
 #endif
 
+#ifndef SPI_DEFAULT_SPEED
+#define SPI_DEFAULT_SPEED 1000000 // 1MHz
+#endif
+
 class PeripheralSPI {
 public:
     PeripheralSPI();
@@ -112,8 +116,6 @@ public:
     void endTransaction();
 
 private:
-    const uint32_t SPI_DEFAULT_SPEED = 1000000; // 1Mhz
-
     uint8_t _RX; // MISO/POCI gpio pin
     uint8_t _TX; // MOSI/PICO gpio pin
     uint8_t _SCK;
@@ -126,7 +128,7 @@ private:
     spi_order_t _BitOrder;
     spi_cpol_t _Cpol;
     spi_cpha_t _Cpha;
-    bool _isSlave;
+    bool _isSlave = false;
 
     bool _UseDMA;
     int _dmaRxChannel;

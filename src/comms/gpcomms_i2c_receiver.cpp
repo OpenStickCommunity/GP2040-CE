@@ -26,7 +26,6 @@ void GPCommsI2CReceiverAddon::handler(i2c_inst_t *i2c, i2c_slave_event_t event) 
 
 		case I2C_SLAVE_FINISH:
 			GPComms::handleBuffer(buf, receivedIndex);
-			memcpy(buf, 0, receivedIndex);
 			receivedIndex = 0;
 			break;
 
