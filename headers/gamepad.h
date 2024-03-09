@@ -18,6 +18,12 @@ extern uint64_t getMicro();
 
 #define GAMEPAD_FEATURE_REPORT_SIZE 32
 
+typedef enum
+{
+	GAMEPAD_INPUT_SOURCE_GPIO,
+	GAMEPAD_INPUT_SOURCE_GPCOMMS,
+} GamepadInputSource;
+
 struct GamepadButtonMapping
 {
 	GamepadButtonMapping(Mask_t bm) :
@@ -170,6 +176,7 @@ private:
 	GamepadOptions& options;
 	const HotkeyOptions& hotkeyOptions;
 
+	GamepadInputSource inputSource = GAMEPAD_INPUT_SOURCE_GPIO;
 	GamepadHotkey lastAction = HOTKEY_NONE;
 
 	uint32_t keep_alive_timer;

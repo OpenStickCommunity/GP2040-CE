@@ -5,9 +5,10 @@
 GamepadState GPComms::gamepadState;
 Mask_t GPComms::gpioState = 0;
 
-void GPComms::updateGamepad() {
+void GPComms::readGamepad() {
 	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	gamepad->state = *GPComms::getGamepadState();
+	gamepad->debouncedGpio = GPComms::getGpioState();
 }
 
 void GPComms::handleBuffer(uint8_t *buf, int size) {
@@ -15,16 +16,16 @@ void GPComms::handleBuffer(uint8_t *buf, int size) {
 	uint8_t *payload = &buf[1];
 
 	switch (command) {
-		case GPCMD_STATUS:
-			GPComms::handleStatus(reinterpret_cast<GPComms_Status *>(payload));
+		case GPCMD_STATE:
+			GPComms::handleState(payload);
 			break;
 
-		case GPCMD_STATE:
-			GPComms::handleState(reinterpret_cast<GPComms_State *>(payload));
+		case GPCMD_STATUS:
+			GPComms::handleStatus(payload);
 			break;
 
 		case GPCMD_MESSAGE:
-			GPComms::handleMessage(reinterpret_cast<GPComms_Message *>(payload));
+			GPComms::handleMessage(payload);
 			break;
 
 		case GPCMD_ACK:
@@ -36,15 +37,17 @@ void GPComms::handleBuffer(uint8_t *buf, int size) {
 	}
 }
 
-void GPComms::handleStatus(GPComms_Status *gpStatus) {
+void GPComms::handleStatus(uint8_t *payload) {
 	(void)0;
 }
 
-void GPComms::handleState(GPComms_State *gpState) {
-	gamepadState = gpState->gamepadState;
-	gpioState = gpState->gpioState;
+void GPComms::handleState(uint8_t *payload) {
+	static GPComms_State gpState;
+	memcpy(&gpState, payload, sizeof(GPComms_State));
+	gamepadState = gpState.gamepadState;
+	gpioState = gpState.gpioState;
 }
 
-void GPComms::handleMessage(GPComms_Message *gpMessage) {
+void GPComms::handleMessage(uint8_t *payload) {
 	(void)0;
 }

@@ -14,6 +14,7 @@
 #include "addons/pspassthrough.h"
 #include "addons/neopicoleds.h"
 #include "addons/xbonepassthrough.h"
+#include "comms/gpcomms_i2c_peripheral.h"
 
 #include <iterator>
 
@@ -29,6 +30,7 @@ void GP2040Aux::setup() {
 	PeripheralManager::getInstance().initUSB();
 
 	// Setup Add-ons
+	addons.LoadAddon(new GPCommsI2CPeripheralAddon(), CORE1_LOOP);
 	addons.LoadUSBAddon(new PSPassthroughAddon(), CORE1_LOOP);
 	addons.LoadUSBAddon(new XBOnePassthroughAddon(), CORE1_LOOP);
 	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
@@ -37,6 +39,7 @@ void GP2040Aux::setup() {
 	addons.LoadAddon(new BoardLedAddon(), CORE1_LOOP);
 	addons.LoadAddon(new BuzzerSpeakerAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PS4ModeAddon(), CORE1_LOOP);
+
 
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();

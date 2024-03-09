@@ -24,5 +24,5 @@ void GPCommsSPIPeripheralAddon::process() {
 		memset(buf, 0, size);
 	}
 
-	GPComms::updateGamepad();
+	GPComms::readGamepad();
 }

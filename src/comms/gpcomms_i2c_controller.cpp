@@ -13,7 +13,7 @@ void GPCommsI2CControllerAddon::setup() {
 }
 
 void GPCommsI2CControllerAddon::process() {
-	Gamepad * gamepad = Storage::getInstance().GetProcessedGamepad();
+	Gamepad * gamepad = Storage::getInstance().GetGamepad();
 	sendState(gamepad);
 }
 

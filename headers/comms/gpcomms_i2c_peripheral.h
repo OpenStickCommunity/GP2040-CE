@@ -22,7 +22,7 @@ public:
 	virtual bool available();
 	virtual void setup();
 	virtual void preprocess() {}
-	virtual void process();
+	virtual void process() {}
 	virtual std::string name() { return GPCommsI2CPeripheralName; }
 private:
 	static void handler(i2c_inst_t *i2c, i2c_slave_event_t event);

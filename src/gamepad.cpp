@@ -34,6 +34,13 @@ void Gamepad::setup()
 {
 	// Configure pin mapping
 	GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+	AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
+	if (addonOptions.gpCommsI2CPeripheralOptions.enabled) {
+		inputSource = GAMEPAD_INPUT_SOURCE_GPCOMMS;
+	}
+	else {
+		inputSource = GAMEPAD_INPUT_SOURCE_GPIO;
+	}
 
 	mapDpadUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(GAMEPAD_MASK_DOWN);
@@ -115,6 +122,11 @@ void Gamepad::reinit()
 
 void Gamepad::process()
 {
+	if (inputSource == GAMEPAD_INPUT_SOURCE_GPCOMMS) {
+		// Inputs from GPComms will are assumed to have already been Gamepad::process()'ed
+		return;
+	}
+
 	memcpy(&rawState, &state, sizeof(GamepadState));
 
 	// Get the midpoint value for the current mode
@@ -188,8 +200,13 @@ void Gamepad::process()
 
 void Gamepad::read()
 {
+	if (inputSource == GAMEPAD_INPUT_SOURCE_GPCOMMS) {
+		state = *GPComms::getGamepadState();
+		return;
+	}
+
 	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
-	
+
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
 	if ( DriverManager::getInstance().getDriver() != nullptr ) {

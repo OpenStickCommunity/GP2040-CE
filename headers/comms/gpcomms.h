@@ -11,8 +11,8 @@
 
 typedef enum {
 	GPCMD_UNKNOWN = 0x00,
-	GPCMD_STATUS  = 0x01,
-	GPCMD_STATE   = 0x02,
+	GPCMD_STATE   = 0x01,
+	GPCMD_STATUS  = 0x02,
 	GPCMD_MESSAGE = 0x03,
 	GPCMD_ACK     = 0xFF,
 } GPComms_Command;
@@ -45,14 +45,15 @@ struct GPComms_Message {
 
 class GPComms {
 public:
+	static void readGamepad();
+	static void processGamepad() { }
 	static GamepadState *getGamepadState() { return &gamepadState; }
 	static Mask_t getGpioState() { return gpioState; }
 	static void handleBuffer(uint8_t *buf, int size);
-	static void updateGamepad();
 private:
-	static void handleStatus(GPComms_Status *gpStatus);
-	static void handleState(GPComms_State *gpState);
-	static void handleMessage(GPComms_Message *gpMessage);
+	static void handleStatus(uint8_t *payload);
+	static void handleState(uint8_t *payload);
+	static void handleMessage(uint8_t *payload);
 	static GamepadState gamepadState;
 	static Mask_t gpioState;
 };
