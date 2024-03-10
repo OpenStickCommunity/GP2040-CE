@@ -51,6 +51,8 @@
 #endif
 
 #define MAX_ENCODERS 2
+#define ENCODER_RADIUS 1440 // 4 phases * 360
+#define ENCODER_PRECISION 16
 
 // RotaryEncoderName Module Name
 #define RotaryEncoderName "Rotary"
@@ -73,6 +75,7 @@ public:
         int32_t minRange = -1;
         int32_t maxRange = -1;
         uint32_t resetAfter = 0;
+        bool allowWrapAround = false;
     } EncoderPinMap;
 
     typedef struct {
@@ -82,7 +85,7 @@ public:
         bool prevB = false;
         uint32_t updateTime = 0;
         uint32_t changeTime = 0;
-        uint8_t delay = 5;
+        uint8_t delay = 1;
     } EncoderPinState;
 private:
     EncoderPinState encoderState[MAX_ENCODERS];
@@ -95,9 +98,9 @@ private:
 
     int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
     int32_t bounds(int32_t x, int32_t out_min, int32_t out_max);
-    uint16_t mapEncoderValueStick(int32_t encoderValue, uint16_t ppr);
-    uint16_t mapEncoderValueTrigger(int32_t encoderValue, uint16_t ppr);
-    int8_t mapEncoderValueDPad(int32_t encoderValue, uint16_t ppr);
+    uint16_t mapEncoderValueStick(int8_t index, int32_t encoderValue, uint16_t ppr);
+    uint16_t mapEncoderValueTrigger(int8_t index, int32_t encoderValue, uint16_t ppr);
+    int8_t mapEncoderValueDPad(int8_t index, int32_t encoderValue, uint16_t ppr);
 
     bool dpadUp = false;
     bool dpadDown = false;

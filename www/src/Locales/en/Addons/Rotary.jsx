@@ -6,6 +6,7 @@ export default {
     'encoder-pin-b-label': 'Pin B',
     'encoder-ppr-label': 'Pulses/Revolution (PPR)',
     'encoder-reset-after-label': 'Reset After (ms)',
+    'encoder-allow-wrap-around': 'Allow Wrap-Around',
     'encoder-mode-label': 'Control Mode',
     'encoder-mode-none': 'None',
     'encoder-mode-left-analog-x': 'Left Analog X',

@@ -50,6 +50,10 @@ export const rotaryScheme = {
 		.number()
 		.label('Encoder One Reset After')
         .required(),
+    encoderOneAllowWrapAround: yup
+        .boolean()
+        .required()
+		.label('Encoder One Allow Wrap Around'),
     encoderTwoEnabled: yup
         .boolean()
         .required()
@@ -76,6 +80,10 @@ export const rotaryScheme = {
 		.number()
 		.label('Encoder Two Reset After')
         .required(),
+    encoderTwoAllowWrapAround: yup
+        .boolean()
+        .required()
+		.label('Encoder Two Allow Wrap Around'),
 };
 
 export const rotaryState = {
@@ -85,12 +93,14 @@ export const rotaryState = {
     encoderOneMode: 0,
     encoderOnePPR: 24,
     encoderOneResetAfter: 0,
+    encoderOneAllowWrapAround: 0,
     encoderTwoEnabled: 0,
     encoderTwoPinA: -1,
     encoderTwoPinB: -1,
     encoderTwoMode: 0,
     encoderTwoPPR: 24,
     encoderTwoResetAfter: 0,
+    encoderTwoAllowWrapAround: 0,
     RotaryAddonEnabled: 0,
 };
 
@@ -189,6 +199,18 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                     </option>
                                 ))}
                             </FormSelect>
+                            <FormCheck
+                            label={t('Rotary:encoder-allow-wrap-around')}
+                            type="switch"
+                            id="encoderOneAllowWrapAround"
+                            isInvalid={false}
+                            checked={Boolean(values.encoderOneAllowWrapAround)}
+                            value={Boolean(values.encoderOneAllowWrapAround)}
+                            onChange={(e) => {
+                                handleCheckbox('encoderOneAllowWrapAround', values);
+                                handleChange(e);
+                            }}
+                            />
                         </div>
                     </div>
                     <div className="col-3">
@@ -277,6 +299,18 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                     </option>
                                 ))}
                             </FormSelect>
+                            <FormCheck
+                            label={t('Rotary:encoder-allow-wrap-around')}
+                            type="switch"
+                            id="encoderTwoAllowWrapAround"
+                            isInvalid={false}
+                            checked={Boolean(values.encoderTwoAllowWrapAround)}
+                            value={Boolean(values.encoderTwoAllowWrapAround)}
+                            onChange={(e) => {
+                                handleCheckbox('encoderTwoAllowWrapAround', values);
+                                handleChange(e);
+                            }}
+                            />
                         </div>
                     </div>
                 </Row>

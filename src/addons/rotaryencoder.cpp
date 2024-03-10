@@ -24,6 +24,7 @@ void RotaryEncoderInput::setup()
         encoderMap[0].mode = options.encoderOne.mode;
         encoderMap[0].pulsesPerRevolution = options.encoderOne.pulsesPerRevolution;
         encoderMap[0].resetAfter = options.encoderOne.resetAfter;
+        encoderMap[0].allowWrapAround = options.encoderOne.allowWrapAround;
     }
 
     encoderMap[1].enabled = options.encoderTwo.enabled;
@@ -33,6 +34,7 @@ void RotaryEncoderInput::setup()
         encoderMap[1].mode = options.encoderTwo.mode;
         encoderMap[1].pulsesPerRevolution = options.encoderTwo.pulsesPerRevolution;
         encoderMap[1].resetAfter = options.encoderTwo.resetAfter;
+        encoderMap[1].allowWrapAround = options.encoderTwo.allowWrapAround;
     }
 
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
@@ -73,12 +75,14 @@ void RotaryEncoderInput::process()
                 bool pinAValue = gpio_get(encoderMap[i].pinA);
                 bool pinBValue = gpio_get(encoderMap[i].pinB);
 
+                uint32_t encoderIncrement = (ENCODER_RADIUS / (encoderMap[i].pulsesPerRevolution / ENCODER_PRECISION));
+
                 if (encoderState[i].pinA != pinAValue || encoderState[i].pinB != pinBValue) {
                     if ((encoderState[i].pinA == encoderState[i].prevA) && (encoderState[i].pinB == encoderState[i].prevB)) {
                         if ((encoderState[i].pinA && !encoderState[i].pinB && pinBValue) || (!encoderState[i].pinA && encoderState[i].pinB && !pinBValue)) {
-                            encoderValues[i]+=(360 / (encoderMap[i].pulsesPerRevolution / 4));
+                            encoderValues[i]+=encoderIncrement;
                         } else if ((!encoderState[i].pinA && encoderState[i].pinB && pinBValue) || (encoderState[i].pinA && !encoderState[i].pinB && !pinBValue)) {
-                            encoderValues[i]-=(360 / (encoderMap[i].pulsesPerRevolution / 4));
+                            encoderValues[i]-=encoderIncrement;
                         }
                     }
                 }
@@ -97,23 +101,23 @@ void RotaryEncoderInput::process()
             uint32_t lastChange = now - encoderState[i].changeTime;
 
             if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_X) {
-                gamepad->state.lx = -mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.lx = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_Y) {
-                gamepad->state.ly = -mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.ly = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_X) {
-                gamepad->state.rx = -mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.rx = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_Y) {
-                gamepad->state.ry = -mapEncoderValueStick(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.ry = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_TRIGGER) {
-                gamepad->state.lt = mapEncoderValueTrigger(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.lt = mapEncoderValueTrigger(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_TRIGGER) {
-                gamepad->state.rt = mapEncoderValueTrigger(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.rt = mapEncoderValueTrigger(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_DPAD_X) {
-                int8_t axis = mapEncoderValueDPad(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                int8_t axis = mapEncoderValueDPad(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
                 dpadLeft = (axis == 1);
                 dpadRight = (axis == -1);
             } else if (encoderMap[i].mode == ENCODER_MODE_DPAD_Y) {
-                int8_t axis = mapEncoderValueDPad(encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                int8_t axis = mapEncoderValueDPad(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
                 dpadUp = (axis == 1);
                 dpadDown = (axis == -1);
             }
@@ -137,37 +141,45 @@ void RotaryEncoderInput::process()
     if (dpadRight) gamepad->state.dpad |= GAMEPAD_MASK_RIGHT;
 }
 
-uint16_t RotaryEncoderInput::mapEncoderValueStick(int32_t encoderValue, uint16_t ppr) {
+uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = 360 * (int32_t)(ppr / 4);
+    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / ENCODER_PRECISION);
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = -totalPositions / 2;
     int32_t maxValue = totalPositions / 2;
 
-    int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[0].minRange, encoderMap[0].maxRange);
-    int32_t constrainedValue = bounds(mappedValue, encoderMap[0].minRange, encoderMap[0].maxRange);
+    if (encoderMap[index].allowWrapAround) {
+        return encoderValue;
+    } else {
+        int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[index].minRange, encoderMap[index].maxRange);
+        int32_t constrainedValue = bounds(mappedValue, encoderMap[index].minRange, encoderMap[index].maxRange-1);
 
-    return constrainedValue;
+        return constrainedValue;
+    }
 }
 
-uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int32_t encoderValue, uint16_t ppr) {
+uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = 360 * (int32_t)(ppr / 4);
+    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / ENCODER_PRECISION);
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = 0;
     int32_t maxValue = totalPositions;
 
-    int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[0].minRange, encoderMap[0].maxRange);
-    int32_t constrainedValue = bounds(mappedValue, encoderMap[0].minRange, encoderMap[0].maxRange);
+    if (encoderMap[index].allowWrapAround) {
+        return encoderValue;
+    } else {
+        int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[index].minRange, encoderMap[index].maxRange);
+        int32_t constrainedValue = bounds(mappedValue, encoderMap[index].minRange, encoderMap[index].maxRange-1);
 
-    return constrainedValue;
+        return constrainedValue;
+    }
 }
 
-int8_t RotaryEncoderInput::mapEncoderValueDPad(int32_t encoderValue, uint16_t ppr) {
+int8_t RotaryEncoderInput::mapEncoderValueDPad(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = 360 * (int32_t)(ppr / 4);
+    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / ENCODER_PRECISION);
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = -totalPositions / 2;
