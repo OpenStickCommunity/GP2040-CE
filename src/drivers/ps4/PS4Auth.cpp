@@ -21,6 +21,12 @@
 
 #define DELETE_CONFIG_MPI(name) delete bytes ## name;
 
+static inline int rng(void*p_rng, unsigned char* p, size_t len) {
+	(void) p_rng;
+	p[0] = rand();
+	return 0;
+}
+
 void PS4Auth::initialize() {
 	if ( !available() ) {
 		return;
@@ -45,6 +51,9 @@ void PS4Auth::initialize() {
         DELETE_CONFIG_MPI(Q)
 		ps4_keys_signature_ready = false;
 		listener = nullptr;
+
+		// Generate some random for RNG
+		srand(getMillis());
 	} else if (authType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
         PS4AuthUSBListener * newListener = new PS4AuthUSBListener();
 		newListener->setup();
@@ -77,30 +86,22 @@ void PS4Auth::process(PS4State pState, uint8_t pNonceId, uint8_t * pNonceBuffer)
 		}
 
 		// Check to see if the PS4 Authentication needs work
-		if ( pState == PS4State::nonce_ready ) {
+		if ( pState == PS4State::nonce_ready && ps4_keys_signature_ready == false ) {
 			const PS4Options& options = Storage::getInstance().getAddonOptions().ps4Options;
 			int rss_error = 0;
-			// Generate some random for RNG
-			srand(getMillis());
-			auto rng = [](void*p_rng, unsigned char* p, size_t len) {
-				(void) p_rng;
-				p[0] = rand();
-				return 0;
-			};
 
 			uint8_t hashed_nonce[32];
-			uint8_t * nonce_buffer = pNonceBuffer;
 
 			// Sign the nonce now that we got it!
 			//
-			if ( mbedtls_sha256_ret(nonce_buffer, 256, hashed_nonce, 0) < 0 ) {
+			if ( mbedtls_sha256_ret(pNonceBuffer, 256, hashed_nonce, 0) < 0 ) {
 				return;
 			}
 
 			rss_error = mbedtls_rsa_rsassa_pss_sign(&rsa_context, rng, nullptr,
 					MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA256,
 					32, hashed_nonce,
-					&ps4_auth_buffer[0]);
+					ps4_auth_buffer);
 
 			if ( rss_error < 0 ) {
 				return;

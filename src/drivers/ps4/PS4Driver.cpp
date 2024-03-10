@@ -66,8 +66,7 @@ void PS4Driver::initializeAux() {
 	authDriver = nullptr;
 	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
 	if ( ps4ControllerType == PS4ControllerType::PS4_CONTROLLER ) {
-		//authDriver = new PS4Auth(gamepadOptions.ps4AuthType);
-		authDriver = new PS4Auth(InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB);
+		authDriver = new PS4Auth(gamepadOptions.ps4AuthType);
 	} else if ( ps4ControllerType == PS4ControllerType::PS4_ARCADESTICK ) {
 		// Setup PS5 Auth System
 		authDriver = new PS4Auth(gamepadOptions.ps5AuthType);
@@ -229,9 +228,6 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 				ps4State = PS4State::no_nonce;
 				authsent = true;
 				send_nonce_part = 0;
-				if ( authDriver != nullptr ) {
-					((PS4Auth*)authDriver)->resetAuth(); // reset the auth driver if it exists
-				}
 			}
 			return 63;
 		// Are we ready to sign?
@@ -250,6 +246,9 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 			}
 			memcpy(buffer, output_0xf3, reqlen);
 			ps4State = PS4State::no_nonce;
+			if ( authDriver != nullptr ) {
+				((PS4Auth*)authDriver)->resetAuth(); // reset the auth driver if it exists
+			}
 			return reqlen;
 		default:
 			break;
