@@ -59,6 +59,23 @@ typedef struct
 } xinputh_device_t;
 static xinputh_device_t _xinputh_dev[CFG_TUH_DEVICE_MAX];
 
+#define XINPUT_DESC_TYPE_RESERVED 0x21
+
+typedef struct {
+    uint8_t bLength; // Length of this descriptor.
+    uint8_t bDescriptorType; // CONFIGURATION descriptor type (USB_DESCRIPTOR_CONFIGURATION).
+    uint8_t flags;
+    uint8_t reserved;
+    uint8_t subtype;
+    uint8_t reserved2;
+    uint8_t bEndpointAddressIn;
+    uint8_t bMaxDataSizeIn;
+    uint8_t reserved3[5];
+    uint8_t bEndpointAddressOut;
+    uint8_t bMaxDataSizeOut;
+    uint8_t reserved4[2];
+} __attribute__((packed)) XBOX_ID_DESCRIPTOR;
+
 //------------- Internal prototypes -------------//
 
 // Get HID device & interface
@@ -186,6 +203,14 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
         (desc_itf->bInterfaceProtocol == 0x01 ||
          desc_itf->bInterfaceProtocol == 0x03 ||
          desc_itf->bInterfaceProtocol == 0x02)) {
+
+        //-------------- Xinput Descriptor --------------//
+        p_desc = tu_desc_next(p_desc);
+        XBOX_ID_DESCRIPTOR *x_desc =
+            (XBOX_ID_DESCRIPTOR *)p_desc;
+
+        TU_ASSERT(XINPUT_DESC_TYPE_RESERVED == x_desc->bDescriptorType, 0);
+        //drv_len += x_desc->bLength;
         uint8_t endpoints = desc_itf->bNumEndpoints;
         while (endpoints--) {
             p_desc = tu_desc_next(p_desc);
@@ -203,11 +228,11 @@ bool xinputh_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const 
         p_xinput->itf_num = desc_itf->bInterfaceNumber;
         p_xinput->type = XBOX360;
         if (desc_itf->bInterfaceProtocol == 0x01) {
-            //p_xinput->subtype = x_desc->subtype;
+            p_xinput->subtype = x_desc->subtype;
             usbh_edpt_xfer(dev_addr, p_xinput->ep_in, p_xinput->epin_buf, p_xinput->epin_size);
         }
         _xinputh_dev->inst_count++;
-        return true; 
+        return true;
     // Xbox One instance == 0x47 0xD0
     } else if (desc_itf->bInterfaceSubClass == 0x47 &&
                desc_itf->bInterfaceProtocol == 0xD0 && desc_itf->bNumEndpoints) {

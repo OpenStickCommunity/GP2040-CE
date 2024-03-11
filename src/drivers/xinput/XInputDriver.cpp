@@ -4,7 +4,9 @@
  */
 
 #include "drivers/xinput/XInputDriver.h"
+#include "drivers/xinput/XInputAuth.h"
 #include "drivers/shared/driverhelper.h"
+#include "storagemanager.h"
 
 #define XINPUT_OUT_SIZE 32
 
@@ -104,10 +106,26 @@ void XInputDriver::initialize() {
 		.xfer_cb = xinput_xfer_callback,
 		.sof = NULL
 	};
+
+	authDriver = nullptr;
 }
 
 void XInputDriver::initializeAux() {
+	authDriver = nullptr;
+	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+	if ( gamepadOptions.xinputAuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )  {
+		authDriver = new XInputAuth();
+		if ( authDriver->available() ) {
+			authDriver->initialize();
+		}
+	}
+}
 
+USBListener * XInputDriver::get_usb_auth_listener() {
+	if ( authDriver != nullptr && authDriver->available() ) {
+		return authDriver->getListener();
+	}
+	return nullptr;
 }
 
 void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
@@ -171,6 +189,9 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 }
 
 void XInputDriver::processAux() {
+	if ( authDriver != nullptr && authDriver->available() ) {
+		((XInputAuth*)authDriver)->process();
+	}
 }
 
 // tud_hid_get_report_cb

@@ -7,6 +7,8 @@
 #define _XINPUT_DRIVER_H_
 
 #include "gpdriver.h"
+#include "usblistener.h"
+#include "drivers/shared/gpauthdriver.h"
 #include "drivers/xinput/XInputDescriptors.h"
 
 class XInputDriver : public GPDriver {
@@ -24,10 +26,11 @@ public:
     virtual const uint8_t * get_descriptor_configuration_cb(uint8_t index);
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
-    virtual USBListener * get_usb_auth_listener() { return nullptr; }
+    virtual USBListener * get_usb_auth_listener();
 private:
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };
     XInputReport xinputReport;
+    GPAuthDriver * authDriver;
 };
 
 #endif
