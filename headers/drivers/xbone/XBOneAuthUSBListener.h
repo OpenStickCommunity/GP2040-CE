@@ -4,6 +4,8 @@
 #include "drivers/shared/xgip_protocol.h"
 #include "usblistener.h"
 
+#include "drivers/xbone/XBOneAuth.h"
+
 class XBOneAuthUSBListener : public USBListener {
 public:
     virtual void setup();
@@ -15,6 +17,7 @@ public:
 	virtual void set_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len){}
 	virtual void get_report_complete(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len){}
 	void process();
+	void setAuthData(XboxOneAuthData *);
 private:
     void queue_host_report(void* report, uint16_t len);
 	void process_report_queue();
@@ -24,6 +27,7 @@ private:
 	bool mounted;
 	XGIPProtocol incomingXGIP;
 	XGIPProtocol outgoingXGIP;
+	XboxOneAuthData * xboxOneAuthData;
 };
 
 #endif // _XBONEAUTHUSBLISTENER_H_

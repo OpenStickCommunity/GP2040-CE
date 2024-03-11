@@ -10,6 +10,7 @@
 #include "pico/stdlib.h"
 #include "bitmaps.h"
 #include "drivers/ps4/PS4Driver.h"
+#include "drivers/xbone/XBOneDriver.h"
 #include "drivermanager.h"
 #include "usbdriver.h"
 #include "version.h"
@@ -174,7 +175,13 @@ void DisplayAddon::drawStatusBar(Gamepad * gamepad)
 			else
 				statusBar += "   ";
 			break;
-		case INPUT_MODE_XBONE:    statusBar += "XBONE"; break;
+		case INPUT_MODE_XBONE:
+			statusBar += "XBON";
+			if(((XBOneDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+				statusBar += "E";
+			else
+				statusBar += "*";
+			break;
 		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}

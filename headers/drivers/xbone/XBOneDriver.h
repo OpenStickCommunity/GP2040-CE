@@ -27,6 +27,7 @@ public:
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
     virtual USBListener * get_usb_auth_listener();
+    bool getAuthSent();
 private:
     virtual void update();
     bool send_xbone_usb(uint8_t const *buffer, uint16_t bufsize);

@@ -9,7 +9,6 @@
 #include "drivers/xbone/XBOneDescriptors.h"
 #include "drivers/shared/xgip_protocol.h"
 #include "drivers/shared/xinput_host.h"
-#include "drivers/shared/xbonedata.h"
 
 // power-on states and rumble-on with everything disabled
 static uint8_t xb1_power_on[] = {0x06, 0x62, 0x45, 0xb8, 0x77, 0x26, 0x2c, 0x55,
@@ -31,25 +30,30 @@ static uint32_t lastReportQueueSent = 0;
 void XBOneAuthUSBListener::setup() {
     dongle_ready = false;
     mounted = false;
+    xboxOneAuthData = nullptr;
+}
+
+void XBOneAuthUSBListener::setAuthData(XboxOneAuthData * authData ) {
+    xboxOneAuthData = authData;
 }
 
 void XBOneAuthUSBListener::process() {
-    if ( mounted == false ) // do nothing if we have not mounted an xbox one dongle
+    if ( mounted == false || xboxOneAuthData == nullptr) // do nothing if we have not mounted an xbox one dongle
         return;
 
     // Do not begin processing console auth unless we have the dongle ready
     if ( dongle_ready == true ) {
-        if ( XboxOneData::getInstance().getState() == XboxOneState::send_auth_console_to_dongle ) {
-            uint8_t isChunked = ( XboxOneData::getInstance().getAuthLen() > GIP_MAX_CHUNK_SIZE );
-            uint8_t needsAck = (XboxOneData::getInstance().getAuthLen() > 2);
+        if ( xboxOneAuthData->xboneState == XboxOneState::send_auth_console_to_dongle ) {
+            uint8_t isChunked = ( xboxOneAuthData->authLen > GIP_MAX_CHUNK_SIZE );
+            uint8_t needsAck = (xboxOneAuthData->authLen > 2);
             outgoingXGIP.reset();
-            outgoingXGIP.setAttributes(XboxOneData::getInstance().getAuthType(), XboxOneData::getInstance().getSequence(), 1, isChunked, needsAck);
-            outgoingXGIP.setData(XboxOneData::getInstance().getAuthBuffer(), XboxOneData::getInstance().getAuthLen());
-            XboxOneData::getInstance().setState(XboxOneState::wait_auth_console_to_dongle);
-        } else if ( XboxOneData::getInstance().getState() == XboxOneState::wait_auth_console_to_dongle) {
+            outgoingXGIP.setAttributes(xboxOneAuthData->authType, xboxOneAuthData->authSequence, 1, isChunked, needsAck);
+            outgoingXGIP.setData(xboxOneAuthData->authBuffer, xboxOneAuthData->authLen);
+            xboxOneAuthData->xboneState = XboxOneState::wait_auth_console_to_dongle;
+        } else if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_console_to_dongle) {
             queue_host_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
             if ( outgoingXGIP.getChunked() == false || outgoingXGIP.endOfChunk() == true ) {
-                XboxOneData::getInstance().setState(XboxOneState::auth_idle_state);
+                xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
             }
         }
     }
@@ -73,7 +77,7 @@ void XBOneAuthUSBListener::unmount(uint8_t dev_addr) {
 }
 
 void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    if ( mounted == false )
+    if ( mounted == false || xboxOneAuthData == nullptr)
         return;
 
     incomingXGIP.parse(report, len);
@@ -115,8 +119,11 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
         case GIP_FINAL_AUTH:
            if ( incomingXGIP.getChunked() == false || 
                     (incomingXGIP.getChunked() == true && incomingXGIP.endOfChunk() == true )) {
-                XboxOneData::getInstance().setAuthData(incomingXGIP.getData(), incomingXGIP.getDataLength(), incomingXGIP.getSequence(),
-                                                        incomingXGIP.getCommand(), XboxOneState::send_auth_dongle_to_console);
+                memcpy(xboxOneAuthData->authBuffer, incomingXGIP.getData(), incomingXGIP.getDataLength());
+				xboxOneAuthData->authLen = incomingXGIP.getDataLength();
+				xboxOneAuthData->authType = incomingXGIP.getCommand();
+				xboxOneAuthData->authSequence = incomingXGIP.getSequence();
+				xboxOneAuthData->xboneState = XboxOneState::send_auth_dongle_to_console;
                 incomingXGIP.reset();
             }
             break;

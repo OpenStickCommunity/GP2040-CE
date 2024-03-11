@@ -160,7 +160,7 @@ src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
-src/drivers/xbone/XBOneAuthUSB.cpp
+src/drivers/xbone/XBOneAuth.cpp
 src/drivers/xbone/XBOneAuthUSBListener.cpp
 src/drivers/xbone/XBOneDriver.cpp
 src/drivers/xboxog/xid/xid_driver.c
