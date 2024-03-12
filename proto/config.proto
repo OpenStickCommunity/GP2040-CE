@@ -713,6 +713,7 @@ message RotaryPinOptions
     optional uint32 pulsesPerRevolution = 5;
     optional uint32 resetAfter = 6;
     optional bool allowWrapAround = 7;
+    optional float multiplier = 8;
 }
 
 message RotaryOptions

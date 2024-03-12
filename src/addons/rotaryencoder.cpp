@@ -25,6 +25,7 @@ void RotaryEncoderInput::setup()
         encoderMap[0].pulsesPerRevolution = options.encoderOne.pulsesPerRevolution;
         encoderMap[0].resetAfter = options.encoderOne.resetAfter;
         encoderMap[0].allowWrapAround = options.encoderOne.allowWrapAround;
+        encoderMap[0].multiplier = options.encoderOne.multiplier;
     }
 
     encoderMap[1].enabled = options.encoderTwo.enabled;
@@ -35,6 +36,7 @@ void RotaryEncoderInput::setup()
         encoderMap[1].pulsesPerRevolution = options.encoderTwo.pulsesPerRevolution;
         encoderMap[1].resetAfter = options.encoderTwo.resetAfter;
         encoderMap[1].allowWrapAround = options.encoderTwo.allowWrapAround;
+        encoderMap[1].multiplier = options.encoderTwo.multiplier;
     }
 
     for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
@@ -75,7 +77,7 @@ void RotaryEncoderInput::process()
                 bool pinAValue = gpio_get(encoderMap[i].pinA);
                 bool pinBValue = gpio_get(encoderMap[i].pinB);
 
-                uint32_t encoderIncrement = (ENCODER_RADIUS / (encoderMap[i].pulsesPerRevolution / ENCODER_PRECISION));
+                uint32_t encoderIncrement = (ENCODER_RADIUS / (encoderMap[i].pulsesPerRevolution / (ENCODER_PRECISION * encoderMap[i].multiplier)));
 
                 if (encoderState[i].pinA != pinAValue || encoderState[i].pinB != pinBValue) {
                     if ((encoderState[i].pinA == encoderState[i].prevA) && (encoderState[i].pinB == encoderState[i].prevB)) {
@@ -143,7 +145,7 @@ void RotaryEncoderInput::process()
 
 uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / ENCODER_PRECISION);
+    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = -totalPositions / 2;
@@ -161,7 +163,7 @@ uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderV
 
 uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / ENCODER_PRECISION);
+    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = 0;
@@ -179,7 +181,7 @@ uint16_t RotaryEncoderInput::mapEncoderValueTrigger(int8_t index, int32_t encode
 
 int8_t RotaryEncoderInput::mapEncoderValueDPad(int8_t index, int32_t encoderValue, uint16_t ppr) {
     // Calculate total number of positions based on PPR
-    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / ENCODER_PRECISION);
+    int32_t totalPositions = ENCODER_RADIUS * (int32_t)(ppr / (ENCODER_PRECISION * encoderMap[index].multiplier));
 
     // Calculate range of encoder values corresponding to mapped range
     int32_t minValue = -totalPositions / 2;

@@ -662,6 +662,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pulsesPerRevolution, ENCODER_ONE_PPR);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, resetAfter, 0);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, allowWrapAround, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, multiplier, ENCODER_ONE_MULTIPLIER);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, enabled, !!ENCODER_TWO_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinA, (Pin_t)ENCODER_TWO_PIN_A);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinB, (Pin_t)ENCODER_TWO_PIN_B);
@@ -669,6 +670,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pulsesPerRevolution, ENCODER_TWO_PPR);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, resetAfter, 0);
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, allowWrapAround, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, multiplier, ENCODER_TWO_MULTIPLIER);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);

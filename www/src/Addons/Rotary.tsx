@@ -19,6 +19,19 @@ const ENCODER_MODES = [
     { label: 'encoder-mode-dpad-y', value: 8 },
 ];
 
+const ENCODER_MULTIPLES = [
+    { value: 0.25 },
+    { value: 0.50 },
+    { value: 0.75 },
+    { value: 1, default: true },
+    { value: 2 },
+    { value: 4 },
+    { value: 8 },
+    { value: 16 },
+    { value: 32 },
+    { value: 64 },
+];
+
 export const rotaryScheme = {
 	RotaryAddonEnabled: yup
 		.number()
@@ -54,6 +67,10 @@ export const rotaryScheme = {
         .boolean()
         .required()
 		.label('Encoder One Allow Wrap Around'),
+    encoderOneMultiplier: yup
+		.number()
+		.label('Encoder One Multiplier')
+        .required(),
     encoderTwoEnabled: yup
         .boolean()
         .required()
@@ -84,6 +101,10 @@ export const rotaryScheme = {
         .boolean()
         .required()
 		.label('Encoder Two Allow Wrap Around'),
+    encoderTwoMultiplier: yup
+		.number()
+		.label('Encoder Two Multiplier')
+        .required(),
 };
 
 export const rotaryState = {
@@ -94,6 +115,7 @@ export const rotaryState = {
     encoderOnePPR: 24,
     encoderOneResetAfter: 0,
     encoderOneAllowWrapAround: 0,
+    encoderOneMultiplier: 0,
     encoderTwoEnabled: 0,
     encoderTwoPinA: -1,
     encoderTwoPinB: -1,
@@ -101,6 +123,7 @@ export const rotaryState = {
     encoderTwoPPR: 24,
     encoderTwoResetAfter: 0,
     encoderTwoAllowWrapAround: 0,
+    encoderTwoMultiplier: 0,
     RotaryAddonEnabled: 0,
 };
 
@@ -167,6 +190,26 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 min={24}
                                 max={600}
                             />
+                            <FormSelect
+                                label={t('Rotary:encoder-multiplier-label')}
+                                name="encoderOneMultiplier"
+                                className="form-select-sm"
+                                groupClassName="mb-3"
+                                value={values.encoderOneMultiplier}
+                                error={errors.encoderOneMultiplier}
+                                isInvalid={errors.encoderOneMultiplier}
+                                onChange={handleChange}
+                            >
+                                {ENCODER_MULTIPLES.map((o, i) => (
+                                    <option
+                                        key={`encoderOneMultiplier-option-${i}`}
+                                        value={o.value}
+                                        selected={o.default}
+                                    >
+                                        {`${o.value}x`}
+                                    </option>
+                                ))}
+                            </FormSelect>
                             <FormControl
                                 type="number"
                                 label={t('Rotary:encoder-reset-after-label')}
@@ -200,7 +243,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 ))}
                             </FormSelect>
                             <FormCheck
-                            label={t('Rotary:encoder-allow-wrap-around')}
+                            label={t('Rotary:encoder-allow-wrap-around-label')}
                             type="switch"
                             id="encoderOneAllowWrapAround"
                             isInvalid={false}
@@ -267,6 +310,25 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 min={24}
                                 max={600}
                             />
+                            <FormSelect
+                                label={t('Rotary:encoder-multiplier-label')}
+                                name="encoderTwoMultiplier"
+                                className="form-select-sm"
+                                groupClassName="mb-3"
+                                value={values.encoderTwoMultiplier}
+                                error={errors.encoderTwoMultiplier}
+                                isInvalid={errors.encoderTwoMultiplier}
+                                onChange={handleChange}
+                            >
+                                {ENCODER_MULTIPLES.map((o, i) => (
+                                    <option
+                                        key={`encoderTwoMultiplier-option-${i}`}
+                                        value={o.value}
+                                    >
+                                        {`${o.value}x`}
+                                    </option>
+                                ))}
+                            </FormSelect>
                             <FormControl
                                 type="number"
                                 label={t('Rotary:encoder-reset-after-label')}
@@ -300,7 +362,7 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 ))}
                             </FormSelect>
                             <FormCheck
-                            label={t('Rotary:encoder-allow-wrap-around')}
+                            label={t('Rotary:encoder-allow-wrap-around-label')}
                             type="switch"
                             id="encoderTwoAllowWrapAround"
                             isInvalid={false}

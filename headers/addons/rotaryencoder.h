@@ -30,6 +30,14 @@
 #define ENCODER_ONE_MODE ENCODER_MODE_NONE
 #endif
 
+#ifndef ENCODER_ONE_WRAP
+#define ENCODER_ONE_WRAP 0
+#endif
+
+#ifndef ENCODER_ONE_MULTIPLIER
+#define ENCODER_ONE_MULTIPLIER 1
+#endif
+
 #ifndef ENCODER_TWO_ENABLED
 #define ENCODER_TWO_ENABLED 0
 #endif
@@ -48,6 +56,14 @@
 
 #ifndef ENCODER_TWO_MODE
 #define ENCODER_TWO_MODE ENCODER_MODE_NONE
+#endif
+
+#ifndef ENCODER_TWO_WRAP
+#define ENCODER_TWO_WRAP 0
+#endif
+
+#ifndef ENCODER_TWO_MULTIPLIER
+#define ENCODER_TWO_MULTIPLIER 1
 #endif
 
 #define MAX_ENCODERS 2
@@ -76,6 +92,7 @@ public:
         int32_t maxRange = -1;
         uint32_t resetAfter = 0;
         bool allowWrapAround = false;
+        double multiplier = 0;
     } EncoderPinMap;
 
     typedef struct {
