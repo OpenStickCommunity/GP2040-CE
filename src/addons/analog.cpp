@@ -63,7 +63,7 @@ void AnalogInput::process()
     float adc_1_y = ANALOG_CENTER;
     float adc_2_x = ANALOG_CENTER;
     float adc_2_y = ANALOG_CENTER;
-    float adc_deadzone = analogOptions.analog_deadzone / 200.0f;
+    float adc_deadzone = analogOptions.analog_deadzone / 100.0f;
     float x_magnitude_1 = 0.0f;
     float y_magnitude_1 = 0.0f;
     float x_magnitude_2 = 0.0f;
@@ -104,30 +104,30 @@ void AnalogInput::process()
     }
 
     // Pow input angle
-    float tmppow = fabs((float) analogOptions.pow_tilt) / 10.0f;
+    double tmppow = fabs((double) analogOptions.pow_tilt) / 10.0;
     if (adc_1_x < ANALOG_CENTER){
-        adc_1_x = pow(fabs(adc_1_x - ANALOG_CENTER) * (2.0f / ANALOG_MAX) , tmppow) * 0.5f * ANALOG_MAX * -1.0f + ANALOG_CENTER;
+        adc_1_x = pow(fabs(adc_1_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX * -1.0f + ANALOG_CENTER;
     }
     else{
-        adc_1_x = pow(fabs(adc_1_x - ANALOG_CENTER) * (2.0f / ANALOG_MAX) , tmppow) * 0.5f * ANALOG_MAX + ANALOG_CENTER;
+        adc_1_x = pow(fabs(adc_1_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX + ANALOG_CENTER;
     }
     if (adc_1_y < ANALOG_CENTER){
-        adc_1_y = pow(fabs(adc_1_y - ANALOG_CENTER) * (2.0f / ANALOG_MAX) , tmppow) * 0.5f * ANALOG_MAX * -1.0f + ANALOG_CENTER;
+        adc_1_y = pow(fabs(adc_1_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX * -1.0f + ANALOG_CENTER;
     }
     else{
-        adc_1_y = pow(fabs(adc_1_y - ANALOG_CENTER) * (2.0f / ANALOG_MAX) , tmppow) * 0.5f * ANALOG_MAX + ANALOG_CENTER;
+        adc_1_y = pow(fabs(adc_1_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX + ANALOG_CENTER;
     }
     if (adc_2_x < ANALOG_CENTER){
-        adc_2_x = pow(fabs(adc_2_x - ANALOG_CENTER) * (2.0f / ANALOG_MAX) , tmppow) * 0.5f * ANALOG_MAX * -1.0f + ANALOG_CENTER;
+        adc_2_x = pow(fabs(adc_2_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX * -1.0f + ANALOG_CENTER;
     }
     else{
-        adc_2_x = pow(fabs(adc_2_x - ANALOG_CENTER) * (2.0f / ANALOG_MAX) , tmppow) * 0.5f * ANALOG_MAX + ANALOG_CENTER;
+        adc_2_x = pow(fabs(adc_2_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX + ANALOG_CENTER;
     }
     if (adc_2_y < ANALOG_CENTER){
-        adc_2_y = pow(fabs(adc_2_y - ANALOG_CENTER) * (2.0f / ANALOG_MAX) , tmppow) * 0.5f * ANALOG_MAX * -1.0f + ANALOG_CENTER;
+        adc_2_y = pow(fabs(adc_2_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX * -1.0f + ANALOG_CENTER;
     }
     else{
-        adc_2_y = pow(fabs(adc_2_y - ANALOG_CENTER) * (2.0f / ANALOG_MAX) , tmppow) * 0.5f * ANALOG_MAX + ANALOG_CENTER;
+        adc_2_y = pow(fabs(adc_2_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX + ANALOG_CENTER;
     }
 
     // Calculations for radialDeadzone() and adjustCircularity()
