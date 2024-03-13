@@ -120,7 +120,7 @@ const SHA256 = (ascii) => {
 };
 
 const INPUT_MODES = [
-	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary', authentication: ['none', 'usb'] },
+	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary'}, //, authentication: ['none', 'usb'] }, AUTH WIP
 	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },

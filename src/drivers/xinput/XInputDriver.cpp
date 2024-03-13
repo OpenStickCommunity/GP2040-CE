@@ -70,25 +70,19 @@ static bool xinput_device_control_request(uint8_t rhport, uint8_t stage, tusb_co
 	(void)rhport;
 	(void)stage;
 	(void)request;
-
+/*
 	// if authentication is present
 	if ( authDriverPresent &&
 		request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_INTERFACE | USB_SETUP_TYPE_VENDOR)) {
 		switch(request->bRequest) {
 			case 0x81:
 				uint8_t serial[0x0B];
-            	//read_serial(serial, sizeof(serial));
-         		//xsm3_set_serial(serial);
-            	//xsm3_initialise_state();
-            	//xsm3_set_identification_data(xsm3_id_data_ms_controller);
-            	//memcpy(requestBuffer, xsm3_id_data_ms_controller, sizeof(xsm3_id_data_ms_controller));
-            	return sizeof(xsm3_id_data_ms_controller);
+            	return sizeof(id_data_ms_controller);
 			case 0x82:
-				xsm3_do_challenge_init((uint8_t *)requestBuffer);
 				return 0;
 			case 0x83:
-				memcpy(requestBuffer, xsm3_challenge_response, sizeof(xsm3_challenge_response));
-            	return sizeof(xsm3_challenge_response);
+				memcpy(requestBuffer, challenge_response, sizeof(challenge_response));
+            	return sizeof(challenge_response);
 			case 0x84:
 				break;
 			case 0x86:
@@ -101,7 +95,7 @@ static bool xinput_device_control_request(uint8_t rhport, uint8_t stage, tusb_co
 				break;
 		};
 	}
-
+*/
 	return true;
 }
 
@@ -157,6 +151,8 @@ void XInputDriver::initialize() {
 
 void XInputDriver::initializeAux() {
 	authDriver = nullptr;
+	// AUTH DRIVER NON-FUNCTIONAL FOR NOW
+	/*
 	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
 	if ( gamepadOptions.xinputAuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )  {
 		authDriver = new XInputAuth();
@@ -165,6 +161,7 @@ void XInputDriver::initializeAux() {
 			authDriverPresent = true; // for callbacks
 		}
 	}
+	*/
 }
 
 USBListener * XInputDriver::get_usb_auth_listener() {
