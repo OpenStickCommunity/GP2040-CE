@@ -57,6 +57,10 @@
 #define AUTO_CALIBRATE_ENABLED 0
 #endif
 
+#ifndef DEFAULT_POW_TILT
+#define DEFAULT_POW_TILT 10
+#endif
+
 // Analog Module Name
 #define AnalogName "Analog"
 

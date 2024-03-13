@@ -132,6 +132,33 @@ void AnalogInput::process()
             adjustCircularity(adc_2_x, adc_2_y, adc_deadzone, x_magnitude_2, y_magnitude_2, magnitude);
     }
 
+    // Pow input angle
+    float tmppow = ((float) analogOptions.pow_tilt) / 10.0f;
+    if (adc_1_x < ANALOG_MAX * 0.5f){
+        adc_1_x = (fabs(pow(adc_1_x * (2.0f / ANALOG_MAX) - 1.0f , tmppow)) * -1.0f + 1.0f) * 0.5f * ANALOG_MAX;
+    }
+    else{
+        adc_1_x = (fabs(pow(adc_1_x * (2.0f / ANALOG_MAX) - 1.0f , tmppow)) + 1.0f) * 0.5f * ANALOG_MAX;
+    }
+    if (adc_1_y < ANALOG_MAX * 0.5f){
+        adc_1_y = (fabs(pow(adc_1_y * (2.0f / ANALOG_MAX) - 1.0f , tmppow)) * -1.0f + 1.0f) * 0.5f * ANALOG_MAX;
+    }
+    else{
+        adc_1_y = (fabs(pow(adc_1_y * (2.0f / ANALOG_MAX) - 1.0f , tmppow)) + 1.0f) * 0.5f * ANALOG_MAX;
+    }
+    if (adc_2_x < ANALOG_MAX * 0.5f){
+        adc_2_x = (fabs(pow(adc_2_x * (2.0f / ANALOG_MAX) - 1.0f , tmppow)) * -1.0f + 1.0f) * 0.5f * ANALOG_MAX;
+    }
+    else{
+        adc_2_x = (fabs(pow(adc_2_x * (2.0f / ANALOG_MAX) - 1.0f , tmppow)) + 1.0f) * 0.5f * ANALOG_MAX;
+    }
+    if (adc_2_y < ANALOG_MAX * 0.5f){
+        adc_2_y = (fabs(pow(adc_2_y * (2.0f / ANALOG_MAX) - 1.0f , tmppow)) * -1.0f + 1.0f) * 0.5f * ANALOG_MAX;
+    }
+    else{
+        adc_2_y = (fabs(pow(adc_2_y * (2.0f / ANALOG_MAX) - 1.0f , tmppow)) + 1.0f) * 0.5f * ANALOG_MAX;
+    }
+
     // Convert to 16-bit value
     if ( analogOptions.analogAdc1Mode == DpadMode::DPAD_MODE_LEFT_ANALOG) {
         gamepad->state.lx = (uint16_t)(65535.0f*adc_1_x);

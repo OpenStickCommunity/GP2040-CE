@@ -22,6 +22,48 @@ const INVERT_MODES = [
 	{ label: 'X/Y Axis', value: 3 },
 ];
 
+const POW_TILT_MODES = [
+	{ label: '0.1', value: 1 },
+	{ label: '0.2', value: 2 },
+	{ label: '0.3', value: 3 },
+	{ label: '0.4', value: 4 },
+	{ label: '0.5', value: 5 },
+	{ label: '0.6', value: 6 },
+	{ label: '0.7', value: 7 },
+	{ label: '0.8', value: 8 },
+	{ label: '0.9', value: 9 },
+	{ label: '1.0', value: 10 },
+	{ label: '1.1', value: 11 },
+	{ label: '1.2', value: 12 },
+	{ label: '1.3', value: 13 },
+	{ label: '1.4', value: 14 },
+	{ label: '1.5', value: 15 },
+	{ label: '1.6', value: 16 },
+	{ label: '1.7', value: 17 },
+	{ label: '1.8', value: 18 },
+	{ label: '1.9', value: 19 },
+	{ label: '2.0', value: 20 },
+	{ label: '2.2', value: 22 },
+	{ label: '2.4', value: 24 },
+	{ label: '2.6', value: 26 },
+	{ label: '2.8', value: 28 },
+	{ label: '3.0', value: 30 },
+	{ label: '3.2', value: 32 },
+	{ label: '3.4', value: 34 },
+	{ label: '3.6', value: 36 },
+	{ label: '3.8', value: 38 },
+	{ label: '4.0', value: 40 },
+	{ label: '4.5', value: 45 },
+	{ label: '5.0', value: 50 },
+	{ label: '5.5', value: 55 },
+	{ label: '6.0', value: 60 },
+	{ label: '7.0', value: 70 },
+	{ label: '8.0', value: 80 },
+	{ label: '9.0', value: 90 },
+	{ label: '10.0', value: 100 },
+];
+
+
 export const analogScheme = {
 	AnalogInputEnabled: yup.number().required().label('Analog Input Enabled'),
 	analogAdc1PinX: yup
@@ -57,14 +99,18 @@ export const analogScheme = {
 		.label('Analog Stick 2 Invert')
 		.validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
 
-	forced_circularity: yup
-		.number()
-		.label('Force Circularity')
-		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone: yup
 		.number()
 		.label('Deadzone Size (%)')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
+	pow_tilt: yup
+		.number()
+		.label('Pow Tilt')
+		.validateSelectionWhenValue('AnalogInputEnabled', POW_TILT_MODES),
+	forced_circularity: yup
+		.number()
+		.label('Force Circularity')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	auto_calibrate: yup
 		.number()
 		.label('Auto Calibration')
@@ -84,6 +130,7 @@ export const analogState = {
 	forced_circularity: 0,
 	analog_deadzone: 5,
 	auto_calibrate: 0,
+	pow_tilt: 10,
 };
 
 const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -237,6 +284,22 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={0}
 						max={100}
 					/>
+					<FormSelect
+						label={t('AddonsConfig:analog-pow-tilt')}
+						name="pow_tilt"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.pow_tilt}
+						error={errors.pow_tilt}
+						isInvalid={errors.pow_tilt}
+						onChange={handleChange}
+					>
+						{POW_TILT_MODES.map((o, i) => (
+							<option key={`button-powtilt-option-${i}`} value={o.value}>
+								{o.label}
+							</option>
+						))}
+					</FormSelect>
 					<FormCheck
 						label={t('AddonsConfig:analog-force-circularity')}
 						type="switch"
