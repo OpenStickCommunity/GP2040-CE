@@ -1071,6 +1071,7 @@ std::string getPeripheralOptions()
 {
 	DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
 	const PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+	const AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 
 	writeDoc(doc, "peripheral", "i2c0", "enabled", peripheralOptions.blockI2C0.enabled);
 	writeDoc(doc, "peripheral", "i2c0", "sda",     peripheralOptions.blockI2C0.sda);
@@ -1099,6 +1100,9 @@ std::string getPeripheralOptions()
 	writeDoc(doc, "peripheral", "usb0", "enable5v",peripheralOptions.blockUSB0.enable5v);
 	writeDoc(doc, "peripheral", "usb0", "order",   peripheralOptions.blockUSB0.order);
 
+	writeDoc(doc, "peripheral", "gpcomms", "mode", addonOptions.gpCommsOptions.mode);
+	writeDoc(doc, "peripheral", "gpcomms", "block",addonOptions.gpCommsOptions.hwBlock);
+
 	return serialize_json(doc);
 }
 
@@ -1107,6 +1111,7 @@ std::string setPeripheralOptions()
 	DynamicJsonDocument doc = get_post_data();
 
 	PeripheralOptions& peripheralOptions = Storage::getInstance().getPeripheralOptions();
+	AddonOptions& addonOptions = Storage::getInstance().getAddonOptions();
 
 	docToValue(peripheralOptions.blockI2C0.enabled, doc, "peripheral", "i2c0", "enabled");
 	docToPin(peripheralOptions.blockI2C0.sda, doc, "peripheral", "i2c0", "sda");
@@ -1157,6 +1162,9 @@ std::string setPeripheralOptions()
 		profiles.gpioMappingsSets[1].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
 		profiles.gpioMappingsSets[2].pins[oldPinDplus+adjacent].action = GpioAction::NONE;
 	}
+
+	docToValue(addonOptions.gpCommsOptions.mode, doc, "peripheral", "gpcomms", "mode");
+	docToValue(addonOptions.gpCommsOptions.hwBlock, doc, "peripheral", "gpcomms", "block");
 
 	Storage::getInstance().save();
 

@@ -8,7 +8,7 @@ import ContextualHelpOverlay from '../Components/ContextualHelpOverlay';
 
 import Section from '../Components/Section';
 import WebApi, { basePeripheralMapping } from '../Services/WebApi';
-import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
+import { PERIPHERAL_DEVICES, GPCOMMS_MODES } from '../Data/Peripherals';
 import boards from '../Data/Boards.json';
 
 let peripheralFieldsSchema = {peripheral: yup.object().shape(Object.assign({}, ...PERIPHERAL_DEVICES.map((device) => {
@@ -22,6 +22,10 @@ let peripheralFieldsSchema = {peripheral: yup.object().shape(Object.assign({}, .
             ))
         };
     }));
+    deviceProps.gpcomms = yup.object().shape({
+        mode: yup.number().label('Mode'),
+        block: yup.number().label('Block'),
+    });
     return deviceProps;
 })))};
 
@@ -58,6 +62,25 @@ export default function PeripheralMappingPage() {
         return ((pinList && pinList.length > 0) ? pinList : allPins);
     };
 
+    const getCommsBlockOptions = (values) => {
+        const mode = (values.peripheral.gpcomms || {}).mode;
+        let commsOptions = [{ label: 'Unassigned', value: -1 }];
+        if (mode == 1 || mode == 2) { // I2C
+            if (values.peripheral.i2c0.enabled)
+                commsOptions.push({ label: 'I2C0', value: 0 });
+            if (values.peripheral.i2c1.enabled)
+                commsOptions.push({ label: 'I2C1', value: 1 });
+        }
+        else if (mode == 3 || mode == 4) { // SPI
+            if (values.peripheral.spi0.enabled)
+                commsOptions.push({ label: 'SPI0', value: 0 });
+            if (values.peripheral.spi1.enabled)
+                commsOptions.push({ label: 'SPI1', value: 1 });
+        }
+
+        return commsOptions;
+    };
+
 	const onSuccess = async (values) => {
         const cleanValues = schema.cast(values);
         console.dir(cleanValues);
@@ -78,7 +101,7 @@ export default function PeripheralMappingPage() {
                 {peripheral.pinTable && peripheral.blocks.map((block,i) => {
                     let colCount = Math.max.apply(null, Object.keys(block.pins).map((pin) => block.pins[pin].length));
                     return (
-                    <Table className="caption-top" striped="columns" responsive bordered hover variant="dark" size="sm">
+                    <Table key={`details-${peripheral.value}-${peripheral.label}-table`} className="caption-top" striped="columns" responsive bordered hover variant="dark" size="sm">
                         <caption>{block.label.toUpperCase()}</caption>
                         <tbody>
                             <tr>
@@ -98,6 +121,14 @@ export default function PeripheralMappingPage() {
                     </Table>
                     );
                 })}
+            </div>
+        );
+    };
+
+    const generateGPCommsDetails = (description) => {
+        return (
+            <div key={`details-gpcomms`}>
+                <div key={`details-gpcomms-header`} className="mb-3">{description}</div>
             </div>
         );
     };
@@ -194,6 +225,55 @@ export default function PeripheralMappingPage() {
                                         ))}
                                     </Form.Group>
                                 ))}
+                                <Form.Group className="row mb-3">
+                                    <Form.Label>
+                                        {t(`PeripheralMapping:gpcomms-label`)}
+                                        <ContextualHelpOverlay title={t(`PeripheralMapping:gpcomms-label`)} body={generateGPCommsDetails(t(`PeripheralMapping:gpcomms-description`))}></ContextualHelpOverlay>
+                                    </Form.Label>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-auto">
+                                            <Form.Label>{t(`PeripheralMapping:gpcomms-mode-label`)}</Form.Label>
+                                            <FormSelect
+                                                id="gpcomms.mode"
+                                                name="gpcomms.mode"
+                                                className="form-select-sm sm-1"
+                                                disabled={false}
+                                                error={getIn(errors,'peripheral.gpcomms.mode')}
+                                                value={values.peripheral.gpcomms.mode}
+                                                onChange={(e) => {
+                                                    setFieldValue('peripheral.gpcomms.mode', e.target.value);
+                                                    if (e.target.value === 0) // Reset block if disabled
+                                                        setFieldValue('peripheral.gpcomms.block', -1);
+                                                }}
+                                            >
+                                                {GPCOMMS_MODES.map((mode, i) =>
+                                                    <option key={`gpcomms-mode-${i}`} value={mode.value}>{mode.label}</option>
+                                                )}
+                                            </FormSelect>
+                                        </div>
+                                        <div className="col-sm-auto">
+                                            <Form.Label>{t(`PeripheralMapping:gpcomms-block-label`)}</Form.Label>
+                                            <FormSelect
+                                                id="gpcomms.block"
+                                                name="gpcomms.block"
+                                                className="form-select-sm sm-1"
+                                                disabled={values.peripheral.gpcomms.mode == 0}
+                                                error={getIn(errors,'peripheral.gpcomms.block')}
+                                                value={values.peripheral.gpcomms.block}
+                                                onChange={(e) => {
+                                                    setFieldValue('peripheral.gpcomms.block', e.target.value);
+                                                }}
+                                            >
+                                                {getCommsBlockOptions(values).map((block, i) =>
+                                                    <option key={`gpcomms-block-${i}`} value={block.value}>{block.label}</option>
+                                                )}
+                                            </FormSelect>
+                                            <Form.Control.Feedback type="invalid">
+                                                {getIn(errors,'peripheral.gpcomms.block')}
+                                            </Form.Control.Feedback>
+                                        </div>
+                                    </div>
+                                </Form.Group>
                             </Section>
 							<Button type="submit">{t('Common:button-save-label')}</Button>
 							{saveMessage ? (

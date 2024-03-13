@@ -295,6 +295,10 @@ app.get('/api/getPeripheralOptions', (req, res) => {
 				enable5v: -1,
 				order: 0,
 			},
+			gpcomms: {
+				mode: 1,
+				block: 0,
+			},
 		},
 	});
 });
