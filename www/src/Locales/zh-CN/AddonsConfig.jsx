@@ -22,6 +22,7 @@ export default {
 	'analog-adc-2-invert-label': '模拟摇杆2 反转',
 	'analog-force-circularity': '强制循环',
 	'analog-deadzone-size': '死区范围（%）',
+	'analog-pow-tilt': 'Pow Tilt',
 	'analog-auto-calibrate': '自动校准',
 	'turbo-header-text': 'Turbo 连发',
 	'turbo-button-pin-label': 'Turbo 引脚',
