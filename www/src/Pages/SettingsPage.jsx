@@ -622,24 +622,6 @@ export default function SettingsPage() {
 
 		const inputMode = INPUT_MODES.find((o) => o.value == values.inputMode);
 		switch ( inputMode.labelKey ) {
-			case 'input-mode-options.xinput':
-				return (
-				<Form className="row mb-3">
-					<Row className="mb-3"><Col sm={10}>
-						X-Input mode emulates the Xbox 360 controller system to run on a PC.
-					</Col></Row>
-					<Row className="mb-3"><Col sm={10}>
-						<span class="text-success">INFO:</span> Running on a real Xbox 360 system requires a USB host connection.
-					</Col></Row>
-					
-
-					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'xinputAuthType', values.xinputAuthType, errors.xinputAuthType, handleChange)}
-					{values.xinputAuthType === 2 && (
-						<Row className="mb-3">
-							<Col sm={10}>Please ensure USB Peripheral is enabled and an Xbox 360 compatible USB device is plugged in.</Col>
-						</Row>
-					)}
-				</Form>);
 			case 'input-mode-options.keyboard':
 					return (
 					<Form noValidate validated={validated} onSubmit={handleKeySubmit}>
@@ -686,7 +668,7 @@ export default function SettingsPage() {
 					{values.ps4AuthType === 0 && (
 						<Row className="mb-3">
 							<Col sm={10}>
-							<span class="text-warning">🔒 WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.
+							<span class="text-warning">⏳ WARNING ⏳:</span> PS4 will timeout after 8 minutes without authentication.
 							</Col>
 						</Row>
 					)}
@@ -787,7 +769,7 @@ export default function SettingsPage() {
 					{generateAuthSelection(inputMode, t('SettingsPage:input-mode-extra-label'), 'ps5AuthType', values.ps5AuthType, errors.ps5AuthType, handleChange)}
 					{values.ps5AuthType === 0 && (
 						<Row className="mb-3"><Col sm={10}>
-							<span class="text-warning">🔒 WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.
+							<span class="text-warning">⏳ WARNING ⏳:</span> PS5 will timeout after 8 minutes without authentication.
 						</Col></Row>
 					)}
 					{values.ps5AuthType === 2 && (
