@@ -9,9 +9,9 @@ bool GPCommsI2CReceiverAddon::available() {
 
 void GPCommsI2CReceiverAddon::setup() {
 	const GPCommsOptions &options = Storage::getInstance().getAddonOptions().gpCommsOptions;
-	addr = I2C_DEFAULT_SLAVE_ADDR;
+	addr = I2C_DEFAULT_PERIPHERAL_ADDR;
 	i2c = PeripheralManager::getInstance().getI2C(options.hwBlock);
-	i2c->setSlave(handler, addr);
+	i2c->setAsPeripheral(handler, addr);
 }
 
 void GPCommsI2CReceiverAddon::handler(i2c_inst_t *i2c, i2c_slave_event_t event) {

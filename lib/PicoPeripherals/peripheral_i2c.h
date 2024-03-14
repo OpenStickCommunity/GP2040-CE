@@ -8,8 +8,8 @@
 
 //#define DEBUG_PERIPHERALI2C
 
-#ifndef I2C_DEFAULT_SLAVE_ADDR
-#define I2C_DEFAULT_SLAVE_ADDR 0xCE
+#ifndef I2C_DEFAULT_PERIPHERAL_ADDR
+#define I2C_DEFAULT_PERIPHERAL_ADDR 0xCE
 #endif
 
 #ifndef I2C0_ENABLED
@@ -52,10 +52,10 @@ public:
     bool configured = false;
 
     i2c_inst_t* getController() { return _I2C; }
-    bool isSlave() { return handler != nullptr; }
+    bool isPeripheral() { return handler != nullptr; }
 
     void setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed);
-    void setSlave(i2c_slave_handler_t handler, uint8_t addr = I2C_DEFAULT_SLAVE_ADDR);
+    void setAsPeripheral(i2c_slave_handler_t handler, uint8_t addr = I2C_DEFAULT_PERIPHERAL_ADDR);
 
     int16_t read(uint8_t address, uint8_t *data, uint16_t len, bool isBlock=false);
     int16_t readRegister(uint8_t address, uint8_t reg, uint8_t *data, uint16_t len);

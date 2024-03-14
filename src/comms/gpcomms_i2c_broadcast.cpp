@@ -9,7 +9,7 @@ bool GPCommsI2CBroadcastAddon::available() {
 void GPCommsI2CBroadcastAddon::setup() {
 	const GPCommsOptions &options = Storage::getInstance().getAddonOptions().gpCommsOptions;
 	i2c = PeripheralManager::getInstance().getI2C(options.hwBlock);
-	addr = I2C_DEFAULT_SLAVE_ADDR;
+	addr = I2C_DEFAULT_PERIPHERAL_ADDR;
 }
 
 void GPCommsI2CBroadcastAddon::process() {

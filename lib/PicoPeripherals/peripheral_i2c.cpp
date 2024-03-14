@@ -23,13 +23,13 @@ void PeripheralI2C::setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t 
     }
 }
 
-void PeripheralI2C::setSlave(i2c_slave_handler_t handler, uint8_t addr) {
-    // Only allow slave to be configured once
+void PeripheralI2C::setAsPeripheral(i2c_slave_handler_t handler, uint8_t addr) {
+    // Only allow peripheral handler to be configured once
     if (PeripheralI2C::handler != nullptr || handler == nullptr)
         return;
 
     PeripheralI2C::handler = handler;
-    i2c_slave_init(_I2C, addr ? addr : I2C_DEFAULT_SLAVE_ADDR, PeripheralI2C::handler);
+    i2c_slave_init(_I2C, addr ? addr : I2C_DEFAULT_PERIPHERAL_ADDR, PeripheralI2C::handler);
 }
 
 void PeripheralI2C::setup() {

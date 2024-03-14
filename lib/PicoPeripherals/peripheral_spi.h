@@ -78,8 +78,8 @@ public:
     // Set the configuration for this SPI peripheral instance
     void setConfig(uint8_t block, uint8_t tx, uint8_t rx, uint8_t sck, uint8_t cs);
 
-    // Set this SPI instance as a slave device
-		void setSlave(bool isSlave);
+    // Set this SPI instance as a peripheral device
+    void setAsPeripheral(bool isPeripheral);
 
     // Disable SPI instance and all associated system resources (such as DMA channels) associated with that instance
     void deactivate();
@@ -128,7 +128,7 @@ private:
     spi_order_t _BitOrder;
     spi_cpol_t _Cpol;
     spi_cpha_t _Cpha;
-    bool _isSlave = false;
+    bool _isPeripheral = false;
 
     bool _UseDMA;
     int _dmaRxChannel;

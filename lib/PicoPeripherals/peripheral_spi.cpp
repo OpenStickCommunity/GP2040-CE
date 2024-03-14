@@ -76,13 +76,13 @@ void PeripheralSPI::setup() {
     }
 }
 
-void PeripheralSPI::setSlave(bool isSlave) {
-    if (!_isSlave && isSlave) {
-        _isSlave = true;
+void PeripheralSPI::setAsPeripheral(bool isPeripheral) {
+    if (!_isPeripheral && isPeripheral) {
+        _isPeripheral = true;
         spi_set_slave(_SPI, true);
     }
-    else if (_isSlave && !isSlave) {
-        _isSlave = false;
+    else if (_isPeripheral && !isPeripheral) {
+        _isPeripheral = false;
         spi_set_slave(_SPI, false);
     }
 }
