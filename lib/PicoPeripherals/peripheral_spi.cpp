@@ -40,6 +40,9 @@ void PeripheralSPI::setup() {
     gpio_set_function(_RX, GPIO_FUNC_SPI);
     gpio_pull_up(_RX);
 
+    if (_CS > -1)
+        gpio_set_function(_CS, GPIO_FUNC_SPI);
+
     if (_UseDMA) {
         // DMA configuration - 2 channels (TX/RX)
         _dmaRxChannel = dma_claim_unused_channel(true);
@@ -166,7 +169,7 @@ void PeripheralSPI::beginTransaction(uint32_t speedMHz, spi_order_t bitOrder, SP
     bool hasFormatChange = bitOrder != _BitOrder || spiMode != _SpiMode;
 
     if (hasInitChange || hasFormatChange) {
-        uint32_t flags = save_and_disable_interrupts();
+        // uint32_t flags = save_and_disable_interrupts();
 
         if (hasInitChange) {
             // if (initialized) {
@@ -186,7 +189,7 @@ void PeripheralSPI::beginTransaction(uint32_t speedMHz, spi_order_t bitOrder, SP
             spi_set_format(_SPI, 8, _Cpol, _Cpha, _BitOrder);
         }
 
-        restore_interrupts(flags);
+        // restore_interrupts(flags);
     }
 
 }

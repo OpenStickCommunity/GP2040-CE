@@ -9,20 +9,20 @@ bool GPCommsSPIReceiverAddon::available() {
 void GPCommsSPIReceiverAddon::setup() {
 	const GPCommsOptions &options = Storage::getInstance().getAddonOptions().gpCommsOptions;
 	spi = PeripheralManager::getInstance().getSPI(options.hwBlock);
-	spi->setSlave(true);
+	spi->setAsPeripheral(true);
+	spi->beginTransaction(SPI_DEFAULT_SPEED, SPI_MSB_FIRST, SPI_MODE0);
+	spi->endTransaction();
 }
 
 void GPCommsSPIReceiverAddon::process() {
 	static uint8_t buf[GPCOMMS_BUFFER_SIZE];
 
-	while (!spi->isReadable())
-		tight_loop_contents();
-
-	int size = spi->read(buf, GPCOMMS_BUFFER_SIZE);
-	if (size > 0) {
-		GPComms::handleBuffer(buf, size);
-		memset(buf, 0, size);
+	if (spi->isReadable()) {
+		spi->beginTransaction(SPI_DEFAULT_SPEED, SPI_MSB_FIRST, SPI_MODE0);
+		int size = spi->read(buf, GPCOMMS_BUFFER_SIZE);
+		spi->endTransaction();
+		if (size > 0) {
+			GPComms::handleBuffer(buf, size);
+		}
 	}
-
-	GPComms::readGamepad();
 }
