@@ -141,7 +141,10 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	double scaledTilt2FactorRightX = 1.0 - (tilt2FactorRightX / 100.0);
 	double scaledTilt2FactorRightY = 1.0 - (tilt2FactorRightY / 100.0);
 
-	uint16_t midValue = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	uint16_t midValue = GAMEPAD_JOYSTICK_MID;
+	if ( DriverManager::getInstance().getDriver() != nullptr ) {
+		midValue = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	}
 
     if (pinTilt1Pressed && pinTilt2Pressed) {
         // inputs act as dpad
