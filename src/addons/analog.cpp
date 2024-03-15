@@ -105,29 +105,25 @@ void AnalogInput::process()
 
     // Pow input angle
     double tmppow = fabs((double) analogOptions.pow_tilt) / 10.0;
-    if (adc_1_x < ANALOG_CENTER){
-        adc_1_x = pow(fabs(adc_1_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX * -1.0f + ANALOG_CENTER;
+
+    double tmp_x_dist = (adc_1_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX);
+    double tmp_y_dist = (adc_1_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX);
+    double tmp_dist = sqrt((tmp_x_dist * tmp_x_dist) + (tmp_y_dist * tmp_y_dist));
+    double tmp_dist_pow = pow(tmp_dist , tmppow);
+
+    if (tmp_dist > 0.0){
+        adc_1_x = tmp_x_dist * (tmp_dist_pow / tmp_dist) / (2.0 / ANALOG_MAX) + ANALOG_CENTER;
+        adc_1_y = tmp_y_dist * (tmp_dist_pow / tmp_dist) / (2.0 / ANALOG_MAX) + ANALOG_CENTER;
     }
-    else{
-        adc_1_x = pow(fabs(adc_1_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX + ANALOG_CENTER;
-    }
-    if (adc_1_y < ANALOG_CENTER){
-        adc_1_y = pow(fabs(adc_1_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX * -1.0f + ANALOG_CENTER;
-    }
-    else{
-        adc_1_y = pow(fabs(adc_1_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX + ANALOG_CENTER;
-    }
-    if (adc_2_x < ANALOG_CENTER){
-        adc_2_x = pow(fabs(adc_2_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX * -1.0f + ANALOG_CENTER;
-    }
-    else{
-        adc_2_x = pow(fabs(adc_2_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX + ANALOG_CENTER;
-    }
-    if (adc_2_y < ANALOG_CENTER){
-        adc_2_y = pow(fabs(adc_2_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX * -1.0f + ANALOG_CENTER;
-    }
-    else{
-        adc_2_y = pow(fabs(adc_2_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX) , tmppow) * 0.5 * ANALOG_MAX + ANALOG_CENTER;
+
+    tmp_x_dist = (adc_2_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX);
+    tmp_y_dist = (adc_2_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX);
+    tmp_dist = sqrt((tmp_x_dist * tmp_x_dist) + (tmp_y_dist * tmp_y_dist));
+    tmp_dist_pow = pow(tmp_dist , tmppow);
+
+    if (tmp_dist > 0.0){
+        adc_2_x = tmp_x_dist * (tmp_dist_pow / tmp_dist) / (2.0 / ANALOG_MAX) + ANALOG_CENTER;
+        adc_2_y = tmp_y_dist * (tmp_dist_pow / tmp_dist) / (2.0 / ANALOG_MAX) + ANALOG_CENTER;
     }
 
     // Calculations for radialDeadzone() and adjustCircularity()
