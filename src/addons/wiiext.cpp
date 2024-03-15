@@ -345,9 +345,9 @@ void WiiExtensionInput::updateAnalogState() {
     gamepad->hasAnalogTriggers = isAnalogTriggers;
 
     uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
-	if ( DriverManager::getInstance().getDriver() != nullptr ) {
-		joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
-	}
+    if ( DriverManager::getInstance().getDriver() != nullptr ) {
+        joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+    }
 
     uint16_t axisType;
     uint16_t analogInput;
