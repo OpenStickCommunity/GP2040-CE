@@ -423,7 +423,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		analogAdc2Invert: 0,
 		forced_circularity: 0,
 		analog_deadzone: 5,
-		pow_tilt: 10,
+		pow_angle: 10,
 		auto_calibrate: 0,
 		bootselButtonMap: 0,
 		buzzerPin: -1,

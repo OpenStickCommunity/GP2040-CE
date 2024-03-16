@@ -63,7 +63,7 @@ void AnalogInput::process()
     float adc_1_y = ANALOG_CENTER;
     float adc_2_x = ANALOG_CENTER;
     float adc_2_y = ANALOG_CENTER;
-    float adc_deadzone = analogOptions.analog_deadzone / 100.0f;
+    float adc_deadzone = analogOptions.analog_deadzone / 200.0f;
     float x_magnitude_1 = 0.0f;
     float y_magnitude_1 = 0.0f;
     float x_magnitude_2 = 0.0f;
@@ -104,7 +104,7 @@ void AnalogInput::process()
     }
 
     // Pow input angle
-    double tmppow = fabs((double) analogOptions.pow_tilt) / 10.0;
+    double tmppow = fabs((double) analogOptions.pow_angle) / 10.0;
 
     double tmp_x_dist = (adc_1_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX);
     double tmp_y_dist = (adc_1_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX);

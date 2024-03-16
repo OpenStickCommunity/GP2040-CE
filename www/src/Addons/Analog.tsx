@@ -22,7 +22,7 @@ const INVERT_MODES = [
 	{ label: 'X/Y Axis', value: 3 },
 ];
 
-const POW_TILT_MODES = [
+const POW_ANGLE_MODES = [
 	{ label: '0.1', value: 1 },
 	{ label: '0.2', value: 2 },
 	{ label: '0.3', value: 3 },
@@ -103,10 +103,10 @@ export const analogScheme = {
 		.number()
 		.label('Deadzone Size (%)')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
-	pow_tilt: yup
+	pow_angle: yup
 		.number()
 		.label('Pow Tilt')
-		.validateSelectionWhenValue('AnalogInputEnabled', POW_TILT_MODES),
+		.validateSelectionWhenValue('AnalogInputEnabled', POW_ANGLE_MODES),
 	forced_circularity: yup
 		.number()
 		.label('Force Circularity')
@@ -130,7 +130,7 @@ export const analogState = {
 	forced_circularity: 0,
 	analog_deadzone: 5,
 	auto_calibrate: 0,
-	pow_tilt: 10,
+	pow_angle: 10,
 };
 
 const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -285,16 +285,16 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						max={100}
 					/>
 					<FormSelect
-						label={t('AddonsConfig:analog-pow-tilt')}
-						name="pow_tilt"
+						label={t('AddonsConfig:analog-pow-angle')}
+						name="pow_angle"
 						className="form-select-sm"
 						groupClassName="col-sm-3 mb-3"
-						value={values.pow_tilt}
-						error={errors.pow_tilt}
-						isInvalid={errors.pow_tilt}
+						value={values.pow_angle}
+						error={errors.pow_angle}
+						isInvalid={errors.pow_angle}
 						onChange={handleChange}
 					>
-						{POW_TILT_MODES.map((o, i) => (
+						{POW_ANGLE_MODES.map((o, i) => (
 							<option key={`button-powtilt-option-${i}`} value={o.value}>
 								{o.label}
 							</option>

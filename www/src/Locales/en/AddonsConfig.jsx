@@ -23,7 +23,7 @@ export default {
 	'analog-adc-2-invert-label': 'Analog Stick 2 Invert',
 	'analog-force-circularity': 'Force Circularity',
 	'analog-deadzone-size': 'Deadzone Size (%)',
-	'analog-pow-tilt': 'Pow Tilt',
+	'analog-pow-angle': 'Pow Angle',
 	'analog-auto-calibrate': 'Auto Calibration',
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Turbo Pin',
