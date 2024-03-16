@@ -13,7 +13,10 @@ uint16_t dpadToAnalogX(uint8_t dpad)
 			return GAMEPAD_JOYSTICK_MAX;
 
 		default:
-			return DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+			if ( DriverManager::getInstance().getDriver() != nullptr )
+				return DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+			else
+				return GAMEPAD_JOYSTICK_MID;
 	}
 }
 
@@ -29,7 +32,10 @@ uint16_t dpadToAnalogY(uint8_t dpad)
 			return GAMEPAD_JOYSTICK_MAX;
 
 		default:
-			return DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+			if ( DriverManager::getInstance().getDriver() != nullptr )
+				return DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+			else
+				return GAMEPAD_JOYSTICK_MID;
 	}
 }
 
