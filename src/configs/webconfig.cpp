@@ -1190,6 +1190,7 @@ std::string setAddonOptions()
 	BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
 	docToPin(buzzerOptions.pin, doc, "buzzerPin");
 	docToValue(buzzerOptions.volume, doc, "buzzerVolume");
+	docToValue(buzzerOptions.enablePin, doc, "buzzerEnablePin");
 	docToValue(buzzerOptions.enabled, doc, "BuzzerSpeakerAddonEnabled");
 
 	DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
@@ -1598,6 +1599,7 @@ std::string getAddonOptions()
     const BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
 	writeDoc(doc, "buzzerPin", cleanPin(buzzerOptions.pin));
 	writeDoc(doc, "buzzerVolume", buzzerOptions.volume);
+	writeDoc(doc, "buzzerEnablePin", buzzerOptions.enablePin);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", buzzerOptions.enabled);
 
 	const DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;

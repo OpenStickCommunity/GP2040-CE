@@ -13,6 +13,10 @@
 #define BUZZER_PIN -1
 #endif
 
+#ifndef BUZZER_ENABLE_PIN
+#define BUZZER_ENABLE_PIN -1
+#endif
+
 #ifndef BUZZER_VOLUME
 #define BUZZER_VOLUME 100
 #endif
@@ -137,12 +141,14 @@ private:
 	void stop();
 	uint32_t pwmSetFreqDuty(uint slice, uint channel, uint32_t frequency, float duty);
 	uint8_t buzzerPin;
+	uint8_t buzzerEnablePin;
 	uint8_t buzzerPinSlice;
 	uint8_t buzzerPinChannel;
 	uint8_t buzzerVolume;
 	uint32_t startedSongMils;
 	Song *currentSong;
 	bool introPlayed;
+    bool isSpeakerOn = false;
 };
 
 #endif
