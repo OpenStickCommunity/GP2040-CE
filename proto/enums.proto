@@ -287,6 +287,16 @@ enum ForcedSetupMode
 	FORCED_SETUP_MODE_LOCK_BOTH = 3;
 };
 
+enum DualDirectionalCombinationMode
+{
+	option (nanopb_enumopt).long_names = false;
+
+	MIXED_MODE = 0;
+	GAMEPAD_MODE = 1;
+	DUAL_MODE = 2;
+	NONE_MODE = 3;
+}
+
 enum PS4ControllerType
 {
     option (nanopb_enumopt).long_names = false;

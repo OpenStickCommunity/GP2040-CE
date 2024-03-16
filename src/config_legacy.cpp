@@ -987,7 +987,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         {
             SET_PROPERTY(dualDirectionalOptions, dpadMode, static_cast<DpadMode>(legacyAddonOptions.dualDirDpadMode));
         }
-        SET_PROPERTY(dualDirectionalOptions, combineMode, legacyAddonOptions.dualDirCombineMode);
+        SET_PROPERTY(dualDirectionalOptions, combineMode,
+                static_cast<DualDirectionalCombinationMode>(legacyAddonOptions.dualDirCombineMode));
 
         ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
         config.addonOptions.has_deprecatedExtraButtonOptions = true;

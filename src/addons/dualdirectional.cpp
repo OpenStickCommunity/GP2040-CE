@@ -10,7 +10,6 @@ bool DualDirectionalInput::available() {
 
 void DualDirectionalInput::setup() {
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
-    combineMode = options.combineMode;
     dpadMode = options.dpadMode;
 
     mapDpadUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
@@ -127,7 +126,7 @@ void DualDirectionalInput::preprocess()
     }
 
     // Combined Mode
-    if ( combineMode == DUAL_COMBINE_MODE_MIXED ) {
+    if ( options.combineMode == DualDirectionalCombinationMode::MIXED_MODE ) {
         SOCDDualClean(socdMode); // Clean up Dual SOCD based on the mode
 
         // Second Input (Last Input Priority) needs to happen before we MPG clean
@@ -137,18 +136,18 @@ void DualDirectionalInput::preprocess()
         }
     }
     // None Mode (no combination, no overwrite)
-    else if ( combineMode == DUAL_COMBINE_MODE_NONE ) {
+    else if ( options.combineMode == DualDirectionalCombinationMode::NONE_MODE ) {
         // just SOCD clean the dual inputs based on the desired mode
         SOCDDualClean(socdMode);
     }
     // Gamepad Overwrite Mode
-    else if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
+    else if ( options.combineMode == DualDirectionalCombinationMode::GAMEPAD_MODE ) {
         if ( gamepadState != 0 && (gamepadState != dualState)) {
             dualState = gamepadState;
         }
     }
     // Dual Overwrite Mode
-    else if ( combineMode == DUAL_COMBINE_MODE_DUAL ) {
+    else if ( options.combineMode == DualDirectionalCombinationMode::DUAL_MODE ) {
         if ( dualState != 0 && gamepadState != dualState) {
             gamepadState = dualState;
         }
@@ -165,7 +164,7 @@ void DualDirectionalInput::process()
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
 
     // If we're in mixed mode
-    if (combineMode == DUAL_COMBINE_MODE_MIXED) {
+    if (options.combineMode == DualDirectionalCombinationMode::MIXED_MODE) {
         uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
         // Up-Win or Neutral Modify AFTER SOCD(gamepad), Last-Win Modifies BEFORE SOCD(gamepad)
         if ( socdMode == SOCD_MODE_UP_PRIORITY ||
@@ -182,11 +181,11 @@ void DualDirectionalInput::process()
             OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut | gamepad->state.dpad);
         }
     } else { // We are not mixed mode, don't change dual output
-        if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
+        if ( options.combineMode == DualDirectionalCombinationMode::GAMEPAD_MODE ) {
             // Set Dual Directional Output
             OverrideGamepad(gamepad, dpadMode, dualOut);
         }
-        else if (combineMode == DUAL_COMBINE_MODE_NONE) {
+        else if (options.combineMode == DualDirectionalCombinationMode::NONE_MODE) {
             // Set the configured directional mode to the value of the dual output
             // if configured dual mode is the same mode as the gamepad mode, they
             // need to be SOCD cleaned first

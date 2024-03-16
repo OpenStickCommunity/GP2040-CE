@@ -5,25 +5,12 @@
 
 #include "GamepadEnums.h"
 
-// The available combinational methods
-enum DualDirectionalCombinationMode
-{
-    DUAL_COMBINE_MODE_MIXED = 0,
-	DUAL_COMBINE_MODE_GAMEPAD,
-    DUAL_COMBINE_MODE_DUAL,
-    DUAL_COMBINE_MODE_NONE
-};
-
 #ifndef DUAL_DIRECTIONAL_ENABLED
 #define DUAL_DIRECTIONAL_ENABLED 0
 #endif
 
 #ifndef DUAL_DIRECTIONAL_STICK_MODE
 #define DUAL_DIRECTIONAL_STICK_MODE DPAD_MODE_DIGITAL
-#endif
-
-#ifndef DUAL_DIRECTIONAL_COMBINE_MODE
-#define DUAL_DIRECTIONAL_COMBINE_MODE DUAL_COMBINE_MODE_MIXED
 #endif
 
 // Dual Directional Module Name
@@ -53,7 +40,6 @@ private:
     DpadDirection lastDualUD; // Dual Last Up-Down
     DpadDirection lastDualLR; // Gamepad Last Left-Right
     uint32_t dpadTime[4];
-    uint8_t combineMode;
     DpadMode dpadMode;
     GamepadButtonMapping *mapDpadUp;
     GamepadButtonMapping *mapDpadDown;
