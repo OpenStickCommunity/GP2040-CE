@@ -105,7 +105,7 @@ export const analogScheme = {
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
 	pow_angle: yup
 		.number()
-		.label('Pow Tilt')
+		.label('Pow Angle')
 		.validateSelectionWhenValue('AnalogInputEnabled', POW_ANGLE_MODES),
 	forced_circularity: yup
 		.number()

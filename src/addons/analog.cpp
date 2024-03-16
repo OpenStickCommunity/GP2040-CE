@@ -111,7 +111,7 @@ void AnalogInput::process()
     double tmp_dist = sqrt((tmp_x_dist * tmp_x_dist) + (tmp_y_dist * tmp_y_dist));
     double tmp_dist_pow = pow(tmp_dist , tmppow);
 
-    if (tmp_dist > 0.0){
+    if (tmp_dist > adc_deadzone){
         adc_1_x = tmp_x_dist * (tmp_dist_pow / tmp_dist) / (2.0 / ANALOG_MAX) + ANALOG_CENTER;
         adc_1_y = tmp_y_dist * (tmp_dist_pow / tmp_dist) / (2.0 / ANALOG_MAX) + ANALOG_CENTER;
     }
@@ -121,7 +121,7 @@ void AnalogInput::process()
     tmp_dist = sqrt((tmp_x_dist * tmp_x_dist) + (tmp_y_dist * tmp_y_dist));
     tmp_dist_pow = pow(tmp_dist , tmppow);
 
-    if (tmp_dist > 0.0){
+    if (tmp_dist > adc_deadzone){
         adc_2_x = tmp_x_dist * (tmp_dist_pow / tmp_dist) / (2.0 / ANALOG_MAX) + ANALOG_CENTER;
         adc_2_y = tmp_y_dist * (tmp_dist_pow / tmp_dist) / (2.0 / ANALOG_MAX) + ANALOG_CENTER;
     }
