@@ -46,8 +46,8 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
 		CommandOps::CHARGE_PUMP,
 		0x14,
 
-		(_options.orientation == 1 ? CommandOps::SEGMENT_REMAP_0 : CommandOps::SEGMENT_REMAP_127),
-		(_options.orientation == 1 ? CommandOps::COM_SCAN_NORMAL : CommandOps::COM_SCAN_REVERSE),
+		((_options.orientation == 2) || (_options.orientation == 3) ? CommandOps::SEGMENT_REMAP_0 : CommandOps::SEGMENT_REMAP_127),
+		((_options.orientation == 1) || (_options.orientation == 3) ? CommandOps::COM_SCAN_NORMAL : CommandOps::COM_SCAN_REVERSE),
 
 		CommandOps::FULL_DISPLAY_ON_RESUME,
 		CommandOps::DISPLAY_ON
