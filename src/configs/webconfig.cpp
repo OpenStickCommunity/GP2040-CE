@@ -106,32 +106,42 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
+static void __attribute__((noinline)) cleanAddonGpioMappings(Pin_t& addonPin, Pin_t oldAddonPin)
+{
+	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+	ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
+
+	// if the new addon pin value is valid, mark it assigned in GpioMappings
+	if (isValidPin(addonPin))
+	{
+		gpioMappings[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+		profiles.gpioMappingsSets[0].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+		profiles.gpioMappingsSets[1].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+		profiles.gpioMappingsSets[2].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+	} else {
+		// -1 is our de facto value for "not assigned" in addons
+		addonPin = -1;
+	}
+
+	// either way now, the addon's pin config is set to its real value, if the
+	// old value is a real pin (and different), we should unset it
+	if (isValidPin(oldAddonPin) && oldAddonPin != addonPin)
+	{
+		gpioMappings[oldAddonPin].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[0].pins[oldAddonPin].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[1].pins[oldAddonPin].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[2].pins[oldAddonPin].action = GpioAction::NONE;
+	}
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
 	Pin_t oldPin = pin;
 	if (doc.containsKey(key))
 	{
 		pin = doc[key];
-		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-		if (isValidPin(pin))
-		{
-			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-		}
-		else
-		{
-			pin = -1;
-			if (isValidPin(oldPin))
-			{
-				gpioMappings[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
-			}
-		}
+		cleanAddonGpioMappings(pin, oldPin);
 	}
 }
 
@@ -142,24 +152,7 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1))
 	{
 		pin = doc[key0][key1];
-		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-		if (isValidPin(pin))
-		{
-			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-		} else {
-			pin = -1;
-			if (isValidPin(oldPin))
-			{
-				gpioMappings[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
-			}
-		}
+		cleanAddonGpioMappings(pin, oldPin);
 	}
 }
 
@@ -170,24 +163,7 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1) && doc[key0][key1].containsKey(key2))
 	{
 		pin = doc[key0][key1][key2];
-		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-		if (isValidPin(pin))
-		{
-			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-		} else {
-			pin = -1;
-			if (isValidPin(oldPin))
-			{
-				gpioMappings[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
-			}
-		}
+		cleanAddonGpioMappings(pin, oldPin);
 	}
 }
 
@@ -1190,6 +1166,7 @@ std::string setAddonOptions()
 	BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
 	docToPin(buzzerOptions.pin, doc, "buzzerPin");
 	docToValue(buzzerOptions.volume, doc, "buzzerVolume");
+	docToValue(buzzerOptions.enablePin, doc, "buzzerEnablePin");
 	docToValue(buzzerOptions.enabled, doc, "BuzzerSpeakerAddonEnabled");
 
 	DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
@@ -1598,6 +1575,7 @@ std::string getAddonOptions()
     const BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
 	writeDoc(doc, "buzzerPin", cleanPin(buzzerOptions.pin));
 	writeDoc(doc, "buzzerVolume", buzzerOptions.volume);
+	writeDoc(doc, "buzzerEnablePin", buzzerOptions.enablePin);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", buzzerOptions.enabled);
 
 	const DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
