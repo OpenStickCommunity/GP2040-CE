@@ -430,6 +430,7 @@ app.get('/api/getAddonsOptions', (req, res) => {
 		auto_calibrate: 0,
 		bootselButtonMap: 0,
 		buzzerPin: -1,
+		buzzerEnablePin: -1,
 		buzzerVolume: 100,
 		focusModePin: -1,
 		focusModeButtonLockMask: 0,

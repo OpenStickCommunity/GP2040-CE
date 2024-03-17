@@ -483,6 +483,7 @@ message BuzzerOptions
 	
 	optional int32 pin = 2;
 	optional uint32 volume = 3;
+    optional int32 enablePin = 4;
 }
 
 message ExtraButtonOptions

@@ -619,6 +619,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, pin, BUZZER_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
+    INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enablePin, BUZZER_ENABLE_PIN);
 
     // addonOptions.inputHistoryOptions
     INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, enabled, !!INPUT_HISTORY_ENABLED);
@@ -1119,6 +1120,7 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinX);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinY);
     markAddonPinIfUsed(config.addonOptions.buzzerOptions.pin);
+    markAddonPinIfUsed(config.addonOptions.buzzerOptions.enablePin);
     markAddonPinIfUsed(config.addonOptions.focusModeOptions.pin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.ledPin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.shmupDialPin);
