@@ -57,8 +57,8 @@
 #define AUTO_CALIBRATE_ENABLED 0
 #endif
 
-#ifndef DEFAULT_POW_ANGLE
-#define DEFAULT_POW_ANGLE 10
+#ifndef DEFAULT_ANALOG_SENSITIVITY
+#define DEFAULT_ANALOG_SENSITIVITY 10
 #endif
 
 // Analog Module Name

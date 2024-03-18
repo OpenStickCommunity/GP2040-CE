@@ -1182,7 +1182,7 @@ std::string setAddonOptions()
 	docToValue(analogOptions.analog_deadzone, doc, "analog_deadzone");
 	docToValue(analogOptions.auto_calibrate, doc, "auto_calibrate");
 	docToValue(analogOptions.enabled, doc, "AnalogInputEnabled");
-	docToValue(analogOptions.pow_angle, doc, "pow_angle");
+	docToValue(analogOptions.analog_sensitivity, doc, "analog_sensitivity");
 
     BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
 	docToValue(bootselButtonOptions.buttonMap, doc, "bootselButtonMap");
@@ -1591,7 +1591,7 @@ std::string getAddonOptions()
 	writeDoc(doc, "analog_deadzone", analogOptions.analog_deadzone);
 	writeDoc(doc, "auto_calibrate", analogOptions.auto_calibrate);
 	writeDoc(doc, "AnalogInputEnabled", analogOptions.enabled);
-	writeDoc(doc, "pow_angle", analogOptions.pow_angle);
+	writeDoc(doc, "analog_sensitivity", analogOptions.analog_sensitivity);
 
     const BootselButtonOptions& bootselButtonOptions = Storage::getInstance().getAddonOptions().bootselButtonOptions;
 	writeDoc(doc, "bootselButtonMap", bootselButtonOptions.buttonMap);

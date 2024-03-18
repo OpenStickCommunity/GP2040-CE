@@ -104,7 +104,7 @@ void AnalogInput::process()
     }
 
     // Pow input angle
-    double tmppow = fabs((double) analogOptions.pow_angle) / 10.0;
+    double tmppow = fabs((double) analogOptions.analog_sensitivity) / 10.0;
 
     double tmp_x_dist = (adc_1_x - ANALOG_CENTER) * (2.0 / ANALOG_MAX);
     double tmp_y_dist = (adc_1_y - ANALOG_CENTER) * (2.0 / ANALOG_MAX);
