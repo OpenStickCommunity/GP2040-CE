@@ -7,345 +7,6 @@ void ButtonLayoutScreen::drawScreen() {
     getRenderer()->drawText(0, 7, footer);
 }
 
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawButtonLayoutLeft()
-{
-    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
-    ButtonLayoutParamsLeft leftOptions = buttonLayoutCustomOptions.paramsLeft;
-    return adjustByCustomSettings(GPButtonLayouts_LeftLayouts.at(leftOptions.layout)(), leftOptions.common);
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawButtonLayoutRight()
-{
-    const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
-    ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
-    ButtonLayoutParamsRight rightOptions = buttonLayoutCustomOptions.paramsRight;
-    return adjustByCustomSettings(GPButtonLayouts_RightLayouts.at(rightOptions.layout)(), rightOptions.common, 64);
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::adjustByCustomSettings(ButtonLayoutScreen::LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX, uint16_t originY) {
-    if (layout.size() > 0) {
-        int32_t startX = layout[0].parameters[0];
-        int32_t startY = layout[0].parameters[1];
-        int32_t customX = common.startX;
-        int32_t customY = common.startY;
-        int32_t offsetX = customX-startX;
-        int32_t offsetY = customY-startY;
-        for (uint16_t elementCtr = 0; elementCtr < layout.size(); elementCtr++) {
-            if (layout[elementCtr].elementType == GP_ELEMENT_BTN_BUTTON) {
-                layout[elementCtr].parameters[0] += originX+(offsetX+common.buttonPadding);
-                layout[elementCtr].parameters[1] += originY+(offsetY+common.buttonPadding);
-            } else {
-                layout[elementCtr].parameters[0] += originX+offsetX;
-                layout[elementCtr].parameters[1] += originY+offsetY;
-            }
-
-            if (((GPShape_Type)layout[elementCtr].parameters[7] == GP_SHAPE_ELLIPSE) || ((GPShape_Type)layout[elementCtr].parameters[7] == GP_SHAPE_POLYGON)) {
-                // radius
-                layout[elementCtr].parameters[2] = common.buttonRadius;
-                layout[elementCtr].parameters[3] = common.buttonRadius;
-            }
-        }
-    }
-    return layout;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless()
-{
-	return BUTTON_GROUP_STICKLESS;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawWasdBox()
-{
-    return BUTTON_GROUP_WASD_BOX;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawUDLR()
-{
-    return BUTTON_GROUP_UDLR;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawArcadeStick()
-{
-    return BUTTON_GROUP_ARCADE_STICK;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVLXA()
-{
-    return BUTTON_GROUP_VLXA;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardMirrored()
-{
-    return BUTTON_GROUP_FIGHTBOARD_MIRRORED;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardStick()
-{
-    return BUTTON_GROUP_FIGHTBOARD_STICK;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboardStickMirrored()
-{
-    return BUTTON_GROUP_FIGHTBOARD_STICK_MIRRORED;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTwinStickA()
-{
-    return BUTTON_GROUP_TWINSTICK_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTwinStickB()
-{
-    return BUTTON_GROUP_TWINSTICK_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAMEA()
-{
-    return BUTTON_GROUP_MAME_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawOpenCore0WASDA()
-{
-    return BUTTON_GROUP_OPEN_CORE_WASD_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAMEB()
-{
-    return BUTTON_GROUP_MAME_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawMAME8B()
-{
-    return BUTTON_GROUP_MAME_8B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawOpenCore0WASDB()
-{
-    return BUTTON_GROUP_OPEN_CORE_WASD_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawKeyboardAngled()
-{
-    return BUTTON_GROUP_KEYBOARD_ANGLED;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVewlix()
-{
-    return BUTTON_GROUP_VEWLIX;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVLXB()
-{
-    return BUTTON_GROUP_VLXB;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawFightboard()
-{
-    return BUTTON_GROUP_FIGHTBOARD;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawVewlix7()
-{
-    return BUTTON_GROUP_VEWLIX7;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSega2p()
-{
-    return BUTTON_GROUP_SEGA_2P;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawNoir8()
-{
-    return BUTTON_GROUP_NOIR8;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawCapcom()
-{
-    return BUTTON_GROUP_CAPCOM;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawCapcom6()
-{
-    return BUTTON_GROUP_CAPCOM6;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons()
-{
-    return BUTTON_GROUP_STICKLESS_BUTTONS;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawWasdButtons()
-{
-    return BUTTON_GROUP_WASD_BUTTONS;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawArcadeButtons()
-{
-    return BUTTON_GROUP_ARCADE_BUTTONS;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless13A()
-{
-    return BUTTON_GROUP_STICKLESS13A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons13B()
-{
-    return BUTTON_GROUP_STICKLESS_BUTTONS13B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless16A()
-{
-    return BUTTON_GROUP_STICKLESS16A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons16B()
-{
-    return BUTTON_GROUP_STICKLESS_BUTTONS16B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawStickless14A()
-{
-    return BUTTON_GROUP_STICKLESS14A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawSticklessButtons14B()
-{
-    return BUTTON_GROUP_STICKLESS_BUTTONS14B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadA()
-{
-    return BUTTON_GROUP_DANCEPAD_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadB()
-{
-    return BUTTON_GROUP_DANCEPAD_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadDDRLeft()
-{
-    return BUTTON_GROUP_DANCEPAD_DDR_LEFT;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadDDRSolo()
-{
-    return BUTTON_GROUP_DANCEPAD_DDR_SOLO;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadPIULeft()
-{
-    return BUTTON_GROUP_DANCEPAD_PIU_LEFT;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawPopnA()
-{
-    return BUTTON_GROUP_POPN_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTaikoA()
-{
-    return BUTTON_GROUP_TAIKO_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBMTurntableA()
-{
-    return BUTTON_GROUP_BM_TURNTABLE_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBM5KeyA()
-{
-    return BUTTON_GROUP_BM_5KEY_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBM7KeyA()
-{
-    return BUTTON_GROUP_BM_7KEY_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawGitadoraFretA()
-{
-    return BUTTON_GROUP_GITADORA_FRET_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawGitadoraStrumA()
-{
-    return BUTTON_GROUP_GITADORA_STRUM_A;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadDDRRight()
-{
-    return BUTTON_GROUP_DANCEPAD_DDR_RIGHT;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawDancepadPIURight()
-{
-    return BUTTON_GROUP_DANCEPAD_PIU_RIGHT;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawPopnB()
-{
-    return BUTTON_GROUP_POPN_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawTaikoB()
-{
-    return BUTTON_GROUP_TAIKO_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBMTurntableB()
-{
-    return BUTTON_GROUP_BM_TURNTABLE_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBM5KeyB()
-{
-    return BUTTON_GROUP_BM_5KEY_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBM7KeyB()
-{
-    return BUTTON_GROUP_BM_7KEY_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawGitadoraFretB()
-{
-    return BUTTON_GROUP_GITADORA_FRET_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawGitadoraStrumB()
-{
-    return BUTTON_GROUP_GITADORA_STRUM_B;
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBlankA()
-{
-    return {};
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBlankB()
-{
-    return {};
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBoardDefinedA() {
-#ifdef DEFAULT_BOARD_LAYOUT_A
-    return DEFAULT_BOARD_LAYOUT_A;
-#else
-    return drawBlankA();
-#endif
-}
-
-ButtonLayoutScreen::LayoutList ButtonLayoutScreen::drawBoardDefinedB() {
-#ifdef DEFAULT_BOARD_LAYOUT_B
-    return DEFAULT_BOARD_LAYOUT_B;
-#else
-    return drawBlankA();
-#endif
-}
-
 GPLever* ButtonLayoutScreen::drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
     GPLever* lever = new GPLever();
     lever->setRenderer(getRenderer());
@@ -405,29 +66,29 @@ GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
     }
 
     if (element.elementType == GP_ELEMENT_LEVER) {
-        return drawLever(element.parameters[0], element.parameters[1]-yOffset, element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5], element.parameters[6]);
+        return drawLever(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
     } else if ((element.elementType == GP_ELEMENT_BTN_BUTTON) || (element.elementType == GP_ELEMENT_DIR_BUTTON) || (element.elementType == GP_ELEMENT_PIN_BUTTON)) {
-        GPButton* button = drawButton(element.parameters[0], element.parameters[1]-yOffset, element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5], element.parameters[6]);
+        GPButton* button = drawButton(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
 
         // set type of button
         button->setInputType(element.elementType);
         button->setInputDirection(false);
-        button->setShape((GPShape_Type)element.parameters[7]);
-        button->setAngle(element.parameters[8]);
-        button->setAngleEnd(element.parameters[9]);
-        button->setClosed(element.parameters[10]);
+        button->setShape((GPShape_Type)element.parameters.shape);
+        button->setAngle(element.parameters.angleStart);
+        button->setAngleEnd(element.parameters.angleEnd);
+        button->setClosed(element.parameters.closed);
 
         if (element.elementType == GP_ELEMENT_DIR_BUTTON) button->setInputDirection(true);
 
         return (GPWidget*)button;
     } else if (element.elementType == GP_ELEMENT_SPRITE) {
-        return drawSprite(element.parameters[0], element.parameters[1]-yOffset, element.parameters[2], element.parameters[3]);
+        return drawSprite(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2);
     } else if (element.elementType == GP_ELEMENT_SHAPE) {
-        GPShape* shape = drawShape(element.parameters[0], element.parameters[1]-yOffset, element.parameters[2], element.parameters[3], element.parameters[4], element.parameters[5]);
-        shape->setShape((GPShape_Type)element.parameters[7]);
-        shape->setAngle(element.parameters[8]);
-        shape->setAngleEnd(element.parameters[9]);
-        shape->setClosed(element.parameters[10]);
+        GPShape* shape = drawShape(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill);
+        shape->setShape((GPShape_Type)element.parameters.shape);
+        shape->setAngle(element.parameters.angleStart);
+        shape->setAngleEnd(element.parameters.angleEnd);
+        shape->setClosed(element.parameters.closed);
         return shape;
     }
     return NULL;
@@ -446,10 +107,8 @@ int8_t ButtonLayoutScreen::update() {
 
         // load layout
         uint16_t elementCtr = 0;
-        uint16_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
-        uint16_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
-        LayoutList currLayoutLeft = GPButtonLayouts_LeftLayouts.at(layoutLeft)();
-        LayoutList currLayoutRight = GPButtonLayouts_RightLayouts.at(layoutRight)();
+        LayoutManager::LayoutList currLayoutLeft = LayoutManager::getInstance().getLayoutA();
+        LayoutManager::LayoutList currLayoutRight = LayoutManager::getInstance().getLayoutB();
         for (elementCtr = 0; elementCtr < currLayoutLeft.size(); elementCtr++) {
             drawElement(currLayoutLeft[elementCtr]);
         }

@@ -182,6 +182,7 @@ src/display/ui/screens/SplashScreen.cpp
 src/display/GPGFX.cpp
 src/display/GPGFX_UI.cpp
 src/drivermanager.cpp
+src/layoutmanager.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp

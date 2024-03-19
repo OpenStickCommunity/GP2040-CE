@@ -4,6 +4,7 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
+#include "layoutmanager.h"
 #include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
@@ -810,6 +811,93 @@ std::string getLedOptions()
 	writeDoc(doc, "pledColor", ((RGB)ledOptions.pledColor).value(LED_FORMAT_RGB));
 
 	return serialize_json(doc);
+}
+
+std::string getButtonLayoutDefs()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    uint16_t layoutCtr = 0;
+
+    for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
+        writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
+    }
+    
+    for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
+        writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
+    }
+
+    return serialize_json(doc);
+}
+
+std::string getButtonLayouts()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+    const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    uint16_t elementCtr = 0;
+    
+    LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
+    LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
+
+    writeDoc(doc, "ledLayout", "id", ledOptions.ledLayout);
+	writeDoc(doc, "ledLayout", "indexUp", ledOptions.indexUp);
+	writeDoc(doc, "ledLayout", "indexDown", ledOptions.indexDown);
+	writeDoc(doc, "ledLayout", "indexLeft", ledOptions.indexLeft);
+	writeDoc(doc, "ledLayout", "indexRight", ledOptions.indexRight);
+	writeDoc(doc, "ledLayout", "indexB1", ledOptions.indexB1);
+	writeDoc(doc, "ledLayout", "indexB2", ledOptions.indexB2);
+	writeDoc(doc, "ledLayout", "indexB3", ledOptions.indexB3);
+	writeDoc(doc, "ledLayout", "indexB4", ledOptions.indexB4);
+	writeDoc(doc, "ledLayout", "indexL1", ledOptions.indexL1);
+	writeDoc(doc, "ledLayout", "indexR1", ledOptions.indexR1);
+	writeDoc(doc, "ledLayout", "indexL2", ledOptions.indexL2);
+	writeDoc(doc, "ledLayout", "indexR2", ledOptions.indexR2);
+	writeDoc(doc, "ledLayout", "indexS1", ledOptions.indexS1);
+	writeDoc(doc, "ledLayout", "indexS2", ledOptions.indexS2);
+	writeDoc(doc, "ledLayout", "indexL3", ledOptions.indexL3);
+	writeDoc(doc, "ledLayout", "indexR3", ledOptions.indexR3);
+	writeDoc(doc, "ledLayout", "indexA1", ledOptions.indexA1);
+	writeDoc(doc, "ledLayout", "indexA2", ledOptions.indexA2);
+
+    writeDoc(doc, "displayLayouts", "buttonLayoutId", displayOptions.buttonLayout);
+    for (elementCtr = 0; elementCtr < layoutA.size(); elementCtr++) {
+        DynamicJsonDocument ele(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+        writeDoc(ele, "elementType", layoutA[elementCtr].elementType);
+        writeDoc(ele, "parameters", "x1", layoutA[elementCtr].parameters.x1);
+        writeDoc(ele, "parameters", "y1", layoutA[elementCtr].parameters.y1);
+        writeDoc(ele, "parameters", "x2", layoutA[elementCtr].parameters.x2);
+        writeDoc(ele, "parameters", "y2", layoutA[elementCtr].parameters.y2);
+        writeDoc(ele, "parameters", "stroke", layoutA[elementCtr].parameters.stroke);
+        writeDoc(ele, "parameters", "fill", layoutA[elementCtr].parameters.fill);
+        writeDoc(ele, "parameters", "value", layoutA[elementCtr].parameters.value);
+        writeDoc(ele, "parameters", "shape", layoutA[elementCtr].parameters.shape);
+        writeDoc(ele, "parameters", "angleStart", layoutA[elementCtr].parameters.angleStart);
+        writeDoc(ele, "parameters", "angleEnd", layoutA[elementCtr].parameters.angleEnd);
+        writeDoc(ele, "parameters", "closed", layoutA[elementCtr].parameters.closed);
+        writeDoc(doc, "displayLayouts", "buttonLayout", std::to_string(elementCtr), ele);
+    }
+
+    writeDoc(doc, "displayLayouts", "buttonLayoutRightId", displayOptions.buttonLayoutRight);
+    for (elementCtr = 0; elementCtr < layoutB.size(); elementCtr++) {
+        DynamicJsonDocument ele(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+        writeDoc(ele, "elementType", layoutB[elementCtr].elementType);
+        writeDoc(ele, "parameters", "x1", layoutB[elementCtr].parameters.x1);
+        writeDoc(ele, "parameters", "y1", layoutB[elementCtr].parameters.y1);
+        writeDoc(ele, "parameters", "x2", layoutB[elementCtr].parameters.x2);
+        writeDoc(ele, "parameters", "y2", layoutB[elementCtr].parameters.y2);
+        writeDoc(ele, "parameters", "stroke", layoutB[elementCtr].parameters.stroke);
+        writeDoc(ele, "parameters", "fill", layoutB[elementCtr].parameters.fill);
+        writeDoc(ele, "parameters", "value", layoutB[elementCtr].parameters.value);
+        writeDoc(ele, "parameters", "shape", layoutB[elementCtr].parameters.shape);
+        writeDoc(ele, "parameters", "angleStart", layoutB[elementCtr].parameters.angleStart);
+        writeDoc(ele, "parameters", "angleEnd", layoutB[elementCtr].parameters.angleEnd);
+        writeDoc(ele, "parameters", "closed", layoutB[elementCtr].parameters.closed);
+        writeDoc(doc, "displayLayouts", "buttonLayoutRight", std::to_string(elementCtr), ele);
+    }
+    
+    return serialize_json(doc);
 }
 
 std::string setCustomTheme()
@@ -1989,6 +2077,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/reboot", reboot },
 	{ "/api/getDisplayOptions", getDisplayOptions },
 	{ "/api/getGamepadOptions", getGamepadOptions },
+	{ "/api/getButtonLayoutDefs", getButtonLayoutDefs },
+	{ "/api/getButtonLayouts", getButtonLayouts },
 	{ "/api/getLedOptions", getLedOptions },
 	{ "/api/getPinMappings", getPinMappings },
 	{ "/api/getProfileOptions", getProfileOptions },
