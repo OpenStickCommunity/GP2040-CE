@@ -318,3 +318,18 @@ enum GPShape_Type
     GP_SHAPE_POLYGON = 3;
     GP_SHAPE_ARC = 4;
 };
+
+enum RotaryEncoderPinMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    ENCODER_MODE_NONE = 0;
+    ENCODER_MODE_LEFT_ANALOG_X = 1;
+    ENCODER_MODE_LEFT_ANALOG_Y = 2;
+    ENCODER_MODE_RIGHT_ANALOG_X = 3;
+    ENCODER_MODE_RIGHT_ANALOG_Y = 4;
+    ENCODER_MODE_LEFT_TRIGGER = 5;
+    ENCODER_MODE_RIGHT_TRIGGER = 6;
+    ENCODER_MODE_DPAD_X = 7;
+    ENCODER_MODE_DPAD_Y = 8;
+};
