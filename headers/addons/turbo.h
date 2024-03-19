@@ -104,7 +104,7 @@ private:
     uint32_t debChargeTime[4];  // Debounce Charge Button Time
     uint16_t lastPressed;       // Last buttons pressed (for Turbo Enable)
     uint8_t lastDpad;           // Last d-pad pressed (for Turbo Change)
-    uint16_t turboButtonsPressed;    // Turbo Buttons Enabled
+    uint16_t turboButtonsMask;  // Turbo Buttons Enabled
     uint16_t alwaysEnabled;     // Turbo SHMUP Always Enabled
     uint32_t uIntervalUS;       // Turbo Interval in microseconds
     uint32_t chargeState;       // Turbo Charge Button States
