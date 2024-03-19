@@ -29,7 +29,6 @@ void DualDirectionalInput::setup() {
         }
     }
 
-    dDebState = 0;
     dualState = 0;
 
     lastGPUD = DIRECTION_NONE;
@@ -37,11 +36,6 @@ void DualDirectionalInput::setup() {
 
     lastDualUD = DIRECTION_NONE;
     lastDualLR = DIRECTION_NONE;
-
-    uint32_t now = getMillis();
-    for(int i = 0; i < 4; i++) {
-        dpadTime[i] = now;
-    }
 }
 
 /**
