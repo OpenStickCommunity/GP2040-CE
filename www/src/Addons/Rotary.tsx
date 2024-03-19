@@ -32,6 +32,12 @@ const ENCODER_MULTIPLES = [
     { value: 64 },
 ];
 
+const ENCODER_MIN_PPR = 10;
+const ENCODER_MAX_PPR = 800;
+
+const ENCODER_MIN_MULTIPLE = 0.10;
+const ENCODER_MAX_MULTIPLE = 200;
+
 export const rotaryScheme = {
 	RotaryAddonEnabled: yup
 		.number()
@@ -187,10 +193,11 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 error={errors.encoderOnePPR}
                                 isInvalid={errors.encoderOnePPR}
                                 onChange={handleChange}
-                                min={24}
-                                max={600}
+                                min={ENCODER_MIN_PPR}
+                                max={ENCODER_MAX_PPR}
                             />
-                            <FormSelect
+                            <FormControl
+                                type="number"
                                 label={t('Rotary:encoder-multiplier-label')}
                                 name="encoderOneMultiplier"
                                 className="form-select-sm"
@@ -199,17 +206,9 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 error={errors.encoderOneMultiplier}
                                 isInvalid={errors.encoderOneMultiplier}
                                 onChange={handleChange}
-                            >
-                                {ENCODER_MULTIPLES.map((o, i) => (
-                                    <option
-                                        key={`encoderOneMultiplier-option-${i}`}
-                                        value={o.value}
-                                        selected={o.default}
-                                    >
-                                        {`${o.value}x`}
-                                    </option>
-                                ))}
-                            </FormSelect>
+                                min={ENCODER_MIN_MULTIPLE}
+                                max={ENCODER_MAX_MULTIPLE}
+                            />
                             <FormControl
                                 type="number"
                                 label={t('Rotary:encoder-reset-after-label')}
@@ -307,10 +306,11 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 error={errors.encoderTwoPPR}
                                 isInvalid={errors.encoderTwoPPR}
                                 onChange={handleChange}
-                                min={24}
-                                max={600}
+                                min={ENCODER_MIN_PPR}
+                                max={ENCODER_MAX_PPR}
                             />
-                            <FormSelect
+                            <FormControl
+                                type="number"
                                 label={t('Rotary:encoder-multiplier-label')}
                                 name="encoderTwoMultiplier"
                                 className="form-select-sm"
@@ -319,16 +319,9 @@ const Rotary = ({ values, errors, handleChange, handleCheckbox }) => {
                                 error={errors.encoderTwoMultiplier}
                                 isInvalid={errors.encoderTwoMultiplier}
                                 onChange={handleChange}
-                            >
-                                {ENCODER_MULTIPLES.map((o, i) => (
-                                    <option
-                                        key={`encoderTwoMultiplier-option-${i}`}
-                                        value={o.value}
-                                    >
-                                        {`${o.value}x`}
-                                    </option>
-                                ))}
-                            </FormSelect>
+                                min={ENCODER_MIN_MULTIPLE}
+                                max={ENCODER_MAX_MULTIPLE}
+                            />
                             <FormControl
                                 type="number"
                                 label={t('Rotary:encoder-reset-after-label')}
