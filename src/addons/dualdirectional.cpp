@@ -32,7 +32,7 @@ void DualDirectionalInput::setup() {
     dualState = 0;
 
     lastGPUD = DIRECTION_NONE;
-	lastGPLR = DIRECTION_NONE;
+    lastGPLR = DIRECTION_NONE;
 
     lastDualUD = DIRECTION_NONE;
     lastDualLR = DIRECTION_NONE;
@@ -296,13 +296,13 @@ void DualDirectionalInput::SOCDDualClean(SOCDMode socdMode) {
         case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
             if ( socdMode == SOCD_MODE_UP_PRIORITY ) {
                 dualState ^= GAMEPAD_MASK_DOWN; // Remove Down
-				lastDualUD = DIRECTION_UP; // We're in UP mode
+                lastDualUD = DIRECTION_UP; // We're in UP mode
             } else if ( socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastDualUD != DIRECTION_NONE ) {
                 dualState ^= (lastDualUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
             } else if ( socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastDualUD != DIRECTION_NONE ) {
                 dualState ^= (lastDualUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
             } else {
-				dualState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
+                dualState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
                 lastDualUD = DIRECTION_NONE;
             }
             break;

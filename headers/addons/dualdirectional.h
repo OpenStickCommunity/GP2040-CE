@@ -19,8 +19,8 @@
 class DualDirectionalInput : public GPAddon {
 public:
     virtual bool available();
-	virtual void setup();       // Dual Directional Setup
-	virtual void process();     // Dual Directional Process
+    virtual void setup();       // Dual Directional Setup
+    virtual void process();     // Dual Directional Process
     virtual void reinit();
     virtual void preprocess();  // Dual Directional Pre-Process (Cheat)
     virtual std::string name() { return DualDirectionalName; }
@@ -35,7 +35,7 @@ private:
     const SOCDMode getSOCDMode(const GamepadOptions&);
     uint8_t dualState;          // Dual Directional State
     DpadDirection lastGPUD; // Gamepad Last Up-Down
-	DpadDirection lastGPLR; // Gamepad Last Left-Right
+    DpadDirection lastGPLR; // Gamepad Last Left-Right
     DpadDirection lastDualUD; // Dual Last Up-Down
     DpadDirection lastDualLR; // Gamepad Last Left-Right
     DpadMode dpadMode;
