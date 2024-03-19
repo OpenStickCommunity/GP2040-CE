@@ -38,6 +38,7 @@
 #define CHAR_SHARE_P  "\x93"
 
 #define INPUT_HISTORY_MAX_INPUTS 22
+#define INPUT_HISTORY_MAX_MODES 11
 
 class ButtonLayoutScreen : public GPScreen {
     public:
@@ -100,7 +101,7 @@ class ButtonLayoutScreen : public GPScreen {
         bool pressedDownLeft();
         bool pressedDownRight();
 
-        const std::vector<std::vector<std::string>> displayNames {
+        const std::string displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] = {
             {		// HID / DINPUT
                     CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
                     CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
