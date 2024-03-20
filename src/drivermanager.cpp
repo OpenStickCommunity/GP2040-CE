@@ -15,6 +15,8 @@
 #include "drivers/xboxog/XboxOriginalDriver.h"
 #include "drivers/xinput/XInputDriver.h"
 
+#include "usbhostmanager.h"
+
 void DriverManager::setup(InputMode mode) {
     switch (mode) {
         case INPUT_MODE_CONFIG:
@@ -45,7 +47,10 @@ void DriverManager::setup(InputMode mode) {
             driver = new PCEngineDriver();
             break;
         case INPUT_MODE_PS4:
-            driver = new PS4Driver();
+            driver = new PS4Driver(PS4_CONTROLLER);
+            break;
+        case INPUT_MODE_PS5:
+            driver = new PS4Driver(PS4_ARCADESTICK);
             break;
         case INPUT_MODE_SWITCH:
             driver = new SwitchDriver();

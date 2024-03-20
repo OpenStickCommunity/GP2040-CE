@@ -24,7 +24,10 @@ message GamepadOptions
     optional int32 inputModeL2 = 17;
     optional int32 inputModeR1 = 18;
     optional int32 inputModeR2 = 19;
-	optional bool ps4ReportHack = 20;
+	optional bool ps4ReportHack = 20 [deprecated = true];
+	optional InputModeAuthType ps4AuthType = 21;
+	optional InputModeAuthType ps5AuthType = 22;
+	optional InputModeAuthType xinputAuthType = 23;
 }
 
 message KeyboardMapping
@@ -512,14 +515,14 @@ message PS4Options
 
 message PSPassthroughOptions
 {
-	optional bool enabled = 1;
+	optional bool enabled = 1  [deprecated = true];
 	optional int32 deprecatedPinDplus = 2 [deprecated = true];
 	optional int32 deprecatedPin5V = 3 [deprecated = true];
 }
 
 message XBOnePassthroughOptions
 {
-	optional bool enabled = 1;
+	optional bool enabled = 1  [deprecated = true];
 }
 
 message WiiOptions
@@ -744,10 +747,10 @@ message AddonOptions
 	optional FocusModeOptions focusModeOptions = 16;
 	optional KeyboardHostOptions keyboardHostOptions = 17;
 	optional TiltOptions tiltOptions = 18;
-	optional PSPassthroughOptions psPassthroughOptions = 19;
+	optional PSPassthroughOptions psPassthroughOptions = 19 [deprecated = true];
 	optional MacroOptions macroOptions = 20;
 	optional InputHistoryOptions inputHistoryOptions = 21;
-	optional XBOnePassthroughOptions xbonePassthroughOptions = 22;
+	optional XBOnePassthroughOptions xbonePassthroughOptions = 22 [deprecated = true];
 	optional AnalogADS1256Options analogADS1256Options = 23;
 	optional RotaryOptions rotaryOptions = 24;
 }

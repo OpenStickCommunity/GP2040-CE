@@ -2,7 +2,6 @@
 #define _ADDONMANAGER_H_
 
 #include "gpaddon.h"
-#include "usbaddon.h"
 
 #include <vector>
 #include <pico/mutex.h>
@@ -23,8 +22,8 @@ class AddonManager {
 public:
     AddonManager() {}
     ~AddonManager() {}
-    void LoadAddon(GPAddon*, ADDON_PROCESS);
-    void LoadUSBAddon(USBAddon*, ADDON_PROCESS);
+    bool LoadAddon(GPAddon*, ADDON_PROCESS);
+    bool LoadUSBAddon(GPAddon*, ADDON_PROCESS);
     void ReinitializeAddons(ADDON_PROCESS);
     void PreprocessAddons(ADDON_PROCESS);
     void ProcessAddons(ADDON_PROCESS);

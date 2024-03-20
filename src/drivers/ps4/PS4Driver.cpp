@@ -1,5 +1,4 @@
 #include "drivers/ps4/PS4Driver.h"
-#include "drivers/shared/ps4data.h"
 #include "drivers/shared/driverhelper.h"
 #include "storagemanager.h"
 #include "CRC32.h"
@@ -9,7 +8,12 @@
 #include <random>
 #include "class/hid/hid.h"
 
-// ensure a report is sent every X ms
+// PS4/PS5 Auth Systems
+#include "drivers/ps4/PS4Auth.h"
+
+#include "enums.pb.h"
+
+// force a report to be sent every X ms
 #define PS4_KEEPALIVE_TIMER 250
 
 void PS4Driver::initialize() {
@@ -46,14 +50,31 @@ void PS4Driver::initialize() {
 		.sof = NULL
 	};
 
-	// setup PS5 compatibility
-	GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
-	PS4Data::getInstance().ps4ControllerType = gamepadOptions.ps4ControllerType;
 	last_report_counter = 0;
 	last_axis_counter = 0;
     cur_nonce_id = 1;
 	last_report_timer = to_ms_since_boot(get_absolute_time());
 	send_nonce_part = 0;
+
+	// for PS4 encryption
+	ps4State = PS4State::no_nonce;
+	authsent = false;
+	memset(nonce_buffer, 0, 256);
+}
+
+void PS4Driver::initializeAux() {
+	authDriver = nullptr;
+	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+	if ( ps4ControllerType == PS4ControllerType::PS4_CONTROLLER ) {
+		authDriver = new PS4Auth(gamepadOptions.ps4AuthType);
+	} else if ( ps4ControllerType == PS4ControllerType::PS4_ARCADESTICK ) {
+		// Setup PS5 Auth System
+		authDriver = new PS4Auth(gamepadOptions.ps5AuthType);
+	}
+	// If authentication driver is set AND auth driver can load (usb enabled, i2c enabled, keys loaded, etc.)
+	if ( authDriver != nullptr && authDriver->available() ) {
+		authDriver->initialize();
+	}
 }
 
 void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
@@ -127,21 +148,30 @@ void PS4Driver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		// TinyUSB and introduce roughly 1ms of latency. but we want to loop often and report on every
 		// true update in order to achieve our tight <1ms report timing when we *do* have a different
 		// report to send.
-		// the "PS4 Hack" disables the counters so that we only report on changes, but this
-		// means we never report the same data twice, and games that expected it would get stuck
-		// inputs. the below code is a compromise: keep the tight report timing, but occasionally change
-		// the report counter and axis timing values in order to force a changed report --- this should
-		// eliminate the need for the PS4 Hack, but it's kept here at the moment for A/B testing purposes
-		if ( !options.ps4ReportHack ) {
-			if ((now - last_report_timer) > PS4_KEEPALIVE_TIMER) {
-				last_report_counter = (last_report_counter+1) & 0x3F;
-				ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
-				ps4Report.axis_timing = now;		 		// axis counter is 16 bits
-				// the *next* process() will be a forced report (or real user input)
-			}
+		if ((now - last_report_timer) > PS4_KEEPALIVE_TIMER) {
+			last_report_counter = (last_report_counter+1) & 0x3F;
+			ps4Report.report_counter = last_report_counter;		// report counter is 6 bits
+			ps4Report.axis_timing = now;		 		// axis counter is 16 bits
+			// the *next* process() will be a forced report (or real user input)
 		}
 	}
 }
+
+// Called by Core1, PS4 key signing will lock the CPU
+void PS4Driver::processAux() {
+	// If authentication driver is set AND auth driver can load (usb enabled, i2c enabled, keys loaded, etc.)
+	if ( authDriver != nullptr && authDriver->available() ) {
+		((PS4Auth*)authDriver)->process(ps4State, nonce_id, nonce_buffer);
+	}
+}
+
+USBListener * PS4Driver::get_usb_auth_listener() {
+	if ( authDriver != nullptr && authDriver->getAuthType() == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB ) {
+		return authDriver->getListener();;
+	}
+	return nullptr;
+}
+
 
 // Controller descriptor (byte[4] = 0x00 for ps4, 0x07 for ps5)
 static constexpr uint8_t output_0x03[] = {
@@ -164,6 +194,9 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 		return sizeof(ps4Report);
 	}
 
+	PS4Auth * ps4AuthDriver = (PS4Auth*)authDriver;
+	uint8_t * ps4_auth_buffer = ps4AuthDriver->getAuthBuffer();
+	bool ps4_auth_buffer_ready = ps4AuthDriver->getAuthReady();
     uint8_t data[64] = {};
 	uint32_t crc32;
 	//ps4_out_buffer[0] = report_id;
@@ -174,7 +207,7 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 				return -1;
 			}
 			memcpy(buffer, output_0x03, reqlen);
-			buffer[4] = (uint8_t)PS4Data::getInstance().ps4ControllerType; // Change controller type in definition
+			buffer[4] = (uint8_t)ps4ControllerType; // Change controller type in definition
 			return reqlen;
 		// Use our private RSA key to sign the nonce and return chunks
 		case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
@@ -185,15 +218,15 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 			data[3] = 0;
 
 			// 56 byte chunks
-			memcpy(&data[4], &PS4Data::getInstance().ps4_auth_buffer[send_nonce_part*56], 56);
+			memcpy(&data[4], &ps4_auth_buffer[send_nonce_part*56], 56);
 
 			// calculate the CRC32 of the buffer and write it back
 			crc32 = CRC32::calculate(data, 60);
 			memcpy(&data[60], &crc32, sizeof(uint32_t));
 			memcpy(buffer, &data[1], 63); // move data over to buffer
 			if ( (++send_nonce_part) == 19 ) {
-				PS4Data::getInstance().ps4State = PS4State::no_nonce;
-				PS4Data::getInstance().authsent = true;
+				ps4State = PS4State::no_nonce;
+				authsent = true;
 				send_nonce_part = 0;
 			}
 			return 63;
@@ -201,7 +234,7 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 		case PS4AuthReport::PS4_GET_SIGNING_STATE:
       		data[0] = 0xF2;
 			data[1] = cur_nonce_id;
-			data[2] = PS4Data::getInstance().ps4State == PS4State::signed_nonce_ready ? 0 : 16; // 0 means auth is ready, 16 means we're still signing
+			data[2] = ps4_auth_buffer_ready == true ? 0 : 16; // 0 means auth is ready, 16 means we're still signing
 			memset(&data[3], 0, 9);
 			crc32 = CRC32::calculate(data, 12);
 			memcpy(&data[12], &crc32, sizeof(uint32_t));
@@ -212,7 +245,10 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 				return -1;
 			}
 			memcpy(buffer, output_0xf3, reqlen);
-			PS4Data::getInstance().ps4State = PS4State::no_nonce;
+			ps4State = PS4State::no_nonce;
+			if ( authDriver != nullptr ) {
+				((PS4Auth*)authDriver)->resetAuth(); // reset the auth driver if it exists
+			}
 			return reqlen;
 		default:
 			break;
@@ -256,7 +292,7 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
 		if ( nonce_page == 4 ) {
 			// Copy/append data from buffer[4:64-28] into our nonce
 			noncelen = 32; // from 4 to 64 - 24 - 4
-			PS4Data::getInstance().nonce_id = nonce_id; // for pass-through only
+			nonce_id = nonce_id; // for pass-through only
 		} else {
 			// Copy/append data from buffer[4:64-4] into our nonce
 			noncelen = 56;
@@ -270,16 +306,16 @@ void PS4Driver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
 
 void PS4Driver::save_nonce(uint8_t nonce_id, uint8_t nonce_page, uint8_t * buffer, uint16_t buflen) {
 	if ( nonce_page != 0 && nonce_id != cur_nonce_id ) {
-		PS4Data::getInstance().ps4State = PS4State::no_nonce;
+		ps4State = PS4State::no_nonce;
 		return; // setting nonce with mismatched id
 	}
 
-	memcpy(&PS4Data::getInstance().nonce_buffer[nonce_page*56], buffer, buflen);
+	memcpy(&nonce_buffer[nonce_page*56], buffer, buflen);
 	if ( nonce_page == 4 ) {
-		PS4Data::getInstance().ps4State = PS4State::nonce_ready;
+		ps4State = PS4State::nonce_ready;
 	} else if ( nonce_page == 0 ) {
 		cur_nonce_id = nonce_id;
-		PS4Data::getInstance().ps4State = PS4State::receiving_nonce;
+		ps4State = PS4State::receiving_nonce;
 	}
 }
 

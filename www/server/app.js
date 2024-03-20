@@ -100,7 +100,9 @@ app.get('/api/getGamepadOptions', (req, res) => {
 		inputModeL2: -1,
 		inputModeR1: -1,
 		inputModeR2: 3,
-		ps4ReportHack: 0,
+		ps4AuthType: 0,
+		ps5AuthType: 0,
+		xinputAuthType: 0,
 		hotkey01: {
 			auxMask: 32768,
 			buttonsMask: 66304,
