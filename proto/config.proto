@@ -480,6 +480,7 @@ message BuzzerOptions
 	
 	optional int32 pin = 2;
 	optional uint32 volume = 3;
+    optional int32 enablePin = 4;
 }
 
 message ExtraButtonOptions
@@ -707,6 +708,25 @@ message InputHistoryOptions
 	optional uint32 row = 4;
 }
 
+message RotaryPinOptions
+{
+    optional bool enabled = 1;
+    optional int32 pinA = 2;
+    optional int32 pinB = 3;
+    optional RotaryEncoderPinMode mode = 4;
+    optional uint32 pulsesPerRevolution = 5;
+    optional uint32 resetAfter = 6;
+    optional bool allowWrapAround = 7;
+    optional float multiplier = 8;
+}
+
+message RotaryOptions
+{
+    optional bool enabled = 1;
+    optional RotaryPinOptions encoderOne = 2;
+    optional RotaryPinOptions encoderTwo = 3;
+}
+
 message AddonOptions
 {
 	optional BootselButtonOptions bootselButtonOptions = 1;
@@ -732,6 +752,7 @@ message AddonOptions
 	optional InputHistoryOptions inputHistoryOptions = 21;
 	optional XBOnePassthroughOptions xbonePassthroughOptions = 22 [deprecated = true];
 	optional AnalogADS1256Options analogADS1256Options = 23;
+	optional RotaryOptions rotaryOptions = 24;
 }
 
 message MigrationHistory

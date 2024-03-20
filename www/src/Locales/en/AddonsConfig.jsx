@@ -96,6 +96,7 @@ export default {
 	'tilt-socd-mode-label': 'Tilt SOCD Mode',
 	'buzzer-speaker-header-text': 'Buzzer Speaker',
 	'buzzer-speaker-pin-label': 'Buzzer Pin',
+	'buzzer-speaker-enable-pin-label': 'Buzzer Enable Pin',
 	'buzzer-speaker-volume-label': 'Buzzer Volume',
 	'extra-button-header-text': 'Extra Button Configuration',
 	'extra-button-pin-label': 'Extra Button Pin',

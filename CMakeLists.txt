@@ -188,6 +188,7 @@ src/display/ui/screens/SplashScreen.cpp
 src/display/GPGFX.cpp
 src/display/GPGFX_UI.cpp
 src/drivermanager.cpp
+src/layoutmanager.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp
@@ -210,6 +211,7 @@ src/addons/display.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
+src/addons/rotaryencoder.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp

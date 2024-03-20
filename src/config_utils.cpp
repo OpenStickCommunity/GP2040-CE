@@ -31,6 +31,7 @@
 #include "addons/wiiext.h"
 #include "addons/snes_input.h"
 #include "addons/input_macro.h"
+#include "addons/rotaryencoder.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -625,6 +626,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enabled, !!BUZZER_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, pin, BUZZER_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, volume, BUZZER_VOLUME);
+    INIT_UNSET_PROPERTY(config.addonOptions.buzzerOptions, enablePin, BUZZER_ENABLE_PIN);
 
     // addonOptions.inputHistoryOptions
     INIT_UNSET_PROPERTY(config.addonOptions.inputHistoryOptions, enabled, !!INPUT_HISTORY_ENABLED);
@@ -661,6 +663,25 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, clockPin, SNES_PAD_CLOCK_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, latchPin, SNES_PAD_LATCH_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
+
+    // addonOptions.rotaryOptions
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions, enabled, !!ROTARY_ENCODER_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, enabled, !!ENCODER_ONE_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinA, (Pin_t)ENCODER_ONE_PIN_A);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pinB, (Pin_t)ENCODER_ONE_PIN_B);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, mode, ENCODER_ONE_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, pulsesPerRevolution, ENCODER_ONE_PPR);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, resetAfter, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, allowWrapAround, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderOne, multiplier, ENCODER_ONE_MULTIPLIER);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, enabled, !!ENCODER_TWO_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinA, (Pin_t)ENCODER_TWO_PIN_A);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pinB, (Pin_t)ENCODER_TWO_PIN_B);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, mode, ENCODER_TWO_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, pulsesPerRevolution, ENCODER_TWO_PPR);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, resetAfter, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, allowWrapAround, 0);
+    INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions.encoderTwo, multiplier, ENCODER_TWO_MULTIPLIER);
 
     // keyboardMapping
     INIT_UNSET_PROPERTY(config.addonOptions.keyboardHostOptions, enabled, KEYBOARD_HOST_ENABLED);
@@ -1118,6 +1139,7 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinX);
     markAddonPinIfUsed(config.addonOptions.analogOptions.analogAdc2PinY);
     markAddonPinIfUsed(config.addonOptions.buzzerOptions.pin);
+    markAddonPinIfUsed(config.addonOptions.buzzerOptions.enablePin);
     markAddonPinIfUsed(config.addonOptions.focusModeOptions.pin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.ledPin);
     markAddonPinIfUsed(config.addonOptions.turboOptions.shmupDialPin);

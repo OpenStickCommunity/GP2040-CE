@@ -24,7 +24,10 @@ void BoardLedAddon::setup() {
 void BoardLedAddon::process() {
     bool state = 0;
     Gamepad * processedGamepad;
-    uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+    uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+    if ( DriverManager::getInstance().getDriver() != nullptr ) {
+        joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+    }
     switch (onBoardLedMode) {
         case OnBoardLedMode::ON_BOARD_LED_MODE_INPUT_TEST: // Blinks on input
             processedGamepad = Storage::getInstance().GetProcessedGamepad();

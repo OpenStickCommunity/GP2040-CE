@@ -4,6 +4,7 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
+#include "layoutmanager.h"
 #include "AnimationStorage.hpp"
 #include "system.h"
 #include "config_utils.h"
@@ -106,32 +107,42 @@ static void __attribute__((noinline)) docToValue(T& value, const DynamicJsonDocu
 }
 
 // Don't inline this function, we do not want to consume stack space in the calling function
+static void __attribute__((noinline)) cleanAddonGpioMappings(Pin_t& addonPin, Pin_t oldAddonPin)
+{
+	GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
+	ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
+
+	// if the new addon pin value is valid, mark it assigned in GpioMappings
+	if (isValidPin(addonPin))
+	{
+		gpioMappings[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+		profiles.gpioMappingsSets[0].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+		profiles.gpioMappingsSets[1].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+		profiles.gpioMappingsSets[2].pins[addonPin].action = GpioAction::ASSIGNED_TO_ADDON;
+	} else {
+		// -1 is our de facto value for "not assigned" in addons
+		addonPin = -1;
+	}
+
+	// either way now, the addon's pin config is set to its real value, if the
+	// old value is a real pin (and different), we should unset it
+	if (isValidPin(oldAddonPin) && oldAddonPin != addonPin)
+	{
+		gpioMappings[oldAddonPin].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[0].pins[oldAddonPin].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[1].pins[oldAddonPin].action = GpioAction::NONE;
+		profiles.gpioMappingsSets[2].pins[oldAddonPin].action = GpioAction::NONE;
+	}
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
 static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocument& doc, const char* key)
 {
 	Pin_t oldPin = pin;
 	if (doc.containsKey(key))
 	{
 		pin = doc[key];
-		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-		if (isValidPin(pin))
-		{
-			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-		}
-		else
-		{
-			pin = -1;
-			if (isValidPin(oldPin))
-			{
-				gpioMappings[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
-			}
-		}
+		cleanAddonGpioMappings(pin, oldPin);
 	}
 }
 
@@ -142,24 +153,7 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1))
 	{
 		pin = doc[key0][key1];
-		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-		if (isValidPin(pin))
-		{
-			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-		} else {
-			pin = -1;
-			if (isValidPin(oldPin))
-			{
-				gpioMappings[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
-			}
-		}
+		cleanAddonGpioMappings(pin, oldPin);
 	}
 }
 
@@ -170,24 +164,7 @@ static void __attribute__((noinline)) docToPin(Pin_t& pin, const DynamicJsonDocu
 	if (doc.containsKey(key0) && doc[key0].containsKey(key1) && doc[key0][key1].containsKey(key2))
 	{
 		pin = doc[key0][key1][key2];
-		GpioMappingInfo* gpioMappings = Storage::getInstance().getGpioMappings().pins;
-		ProfileOptions& profiles = Storage::getInstance().getProfileOptions();
-		if (isValidPin(pin))
-		{
-			gpioMappings[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[0].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[1].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-			profiles.gpioMappingsSets[2].pins[pin].action = GpioAction::ASSIGNED_TO_ADDON;
-		} else {
-			pin = -1;
-			if (isValidPin(oldPin))
-			{
-				gpioMappings[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[0].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[1].pins[oldPin].action = GpioAction::NONE;
-				profiles.gpioMappingsSets[2].pins[oldPin].action = GpioAction::NONE;
-			}
-		}
+		cleanAddonGpioMappings(pin, oldPin);
 	}
 }
 
@@ -840,6 +817,93 @@ std::string getLedOptions()
 	return serialize_json(doc);
 }
 
+std::string getButtonLayoutDefs()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    uint16_t layoutCtr = 0;
+
+    for (layoutCtr = _ButtonLayout_MIN; layoutCtr < _ButtonLayout_ARRAYSIZE; layoutCtr++) {
+        writeDoc(doc, "buttonLayout", LayoutManager::getInstance().getButtonLayoutName((ButtonLayout)layoutCtr), layoutCtr);
+    }
+    
+    for (layoutCtr = _ButtonLayoutRight_MIN; layoutCtr < _ButtonLayoutRight_ARRAYSIZE; layoutCtr++) {
+        writeDoc(doc, "buttonLayoutRight", LayoutManager::getInstance().getButtonLayoutRightName((ButtonLayoutRight)layoutCtr), layoutCtr);
+    }
+
+    return serialize_json(doc);
+}
+
+std::string getButtonLayouts()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    const LEDOptions& ledOptions = Storage::getInstance().getLedOptions();
+    const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
+    uint16_t elementCtr = 0;
+    
+    LayoutManager::LayoutList layoutA = LayoutManager::getInstance().getLayoutA();
+    LayoutManager::LayoutList layoutB = LayoutManager::getInstance().getLayoutB();
+
+    writeDoc(doc, "ledLayout", "id", ledOptions.ledLayout);
+	writeDoc(doc, "ledLayout", "indexUp", ledOptions.indexUp);
+	writeDoc(doc, "ledLayout", "indexDown", ledOptions.indexDown);
+	writeDoc(doc, "ledLayout", "indexLeft", ledOptions.indexLeft);
+	writeDoc(doc, "ledLayout", "indexRight", ledOptions.indexRight);
+	writeDoc(doc, "ledLayout", "indexB1", ledOptions.indexB1);
+	writeDoc(doc, "ledLayout", "indexB2", ledOptions.indexB2);
+	writeDoc(doc, "ledLayout", "indexB3", ledOptions.indexB3);
+	writeDoc(doc, "ledLayout", "indexB4", ledOptions.indexB4);
+	writeDoc(doc, "ledLayout", "indexL1", ledOptions.indexL1);
+	writeDoc(doc, "ledLayout", "indexR1", ledOptions.indexR1);
+	writeDoc(doc, "ledLayout", "indexL2", ledOptions.indexL2);
+	writeDoc(doc, "ledLayout", "indexR2", ledOptions.indexR2);
+	writeDoc(doc, "ledLayout", "indexS1", ledOptions.indexS1);
+	writeDoc(doc, "ledLayout", "indexS2", ledOptions.indexS2);
+	writeDoc(doc, "ledLayout", "indexL3", ledOptions.indexL3);
+	writeDoc(doc, "ledLayout", "indexR3", ledOptions.indexR3);
+	writeDoc(doc, "ledLayout", "indexA1", ledOptions.indexA1);
+	writeDoc(doc, "ledLayout", "indexA2", ledOptions.indexA2);
+
+    writeDoc(doc, "displayLayouts", "buttonLayoutId", displayOptions.buttonLayout);
+    for (elementCtr = 0; elementCtr < layoutA.size(); elementCtr++) {
+        DynamicJsonDocument ele(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+        writeDoc(ele, "elementType", layoutA[elementCtr].elementType);
+        writeDoc(ele, "parameters", "x1", layoutA[elementCtr].parameters.x1);
+        writeDoc(ele, "parameters", "y1", layoutA[elementCtr].parameters.y1);
+        writeDoc(ele, "parameters", "x2", layoutA[elementCtr].parameters.x2);
+        writeDoc(ele, "parameters", "y2", layoutA[elementCtr].parameters.y2);
+        writeDoc(ele, "parameters", "stroke", layoutA[elementCtr].parameters.stroke);
+        writeDoc(ele, "parameters", "fill", layoutA[elementCtr].parameters.fill);
+        writeDoc(ele, "parameters", "value", layoutA[elementCtr].parameters.value);
+        writeDoc(ele, "parameters", "shape", layoutA[elementCtr].parameters.shape);
+        writeDoc(ele, "parameters", "angleStart", layoutA[elementCtr].parameters.angleStart);
+        writeDoc(ele, "parameters", "angleEnd", layoutA[elementCtr].parameters.angleEnd);
+        writeDoc(ele, "parameters", "closed", layoutA[elementCtr].parameters.closed);
+        writeDoc(doc, "displayLayouts", "buttonLayout", std::to_string(elementCtr), ele);
+    }
+
+    writeDoc(doc, "displayLayouts", "buttonLayoutRightId", displayOptions.buttonLayoutRight);
+    for (elementCtr = 0; elementCtr < layoutB.size(); elementCtr++) {
+        DynamicJsonDocument ele(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+
+        writeDoc(ele, "elementType", layoutB[elementCtr].elementType);
+        writeDoc(ele, "parameters", "x1", layoutB[elementCtr].parameters.x1);
+        writeDoc(ele, "parameters", "y1", layoutB[elementCtr].parameters.y1);
+        writeDoc(ele, "parameters", "x2", layoutB[elementCtr].parameters.x2);
+        writeDoc(ele, "parameters", "y2", layoutB[elementCtr].parameters.y2);
+        writeDoc(ele, "parameters", "stroke", layoutB[elementCtr].parameters.stroke);
+        writeDoc(ele, "parameters", "fill", layoutB[elementCtr].parameters.fill);
+        writeDoc(ele, "parameters", "value", layoutB[elementCtr].parameters.value);
+        writeDoc(ele, "parameters", "shape", layoutB[elementCtr].parameters.shape);
+        writeDoc(ele, "parameters", "angleStart", layoutB[elementCtr].parameters.angleStart);
+        writeDoc(ele, "parameters", "angleEnd", layoutB[elementCtr].parameters.angleEnd);
+        writeDoc(ele, "parameters", "closed", layoutB[elementCtr].parameters.closed);
+        writeDoc(doc, "displayLayouts", "buttonLayoutRight", std::to_string(elementCtr), ele);
+    }
+    
+    return serialize_json(doc);
+}
+
 std::string setCustomTheme()
 {
 	DynamicJsonDocument doc = get_post_data();
@@ -1194,6 +1258,7 @@ std::string setAddonOptions()
 	BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
 	docToPin(buzzerOptions.pin, doc, "buzzerPin");
 	docToValue(buzzerOptions.volume, doc, "buzzerVolume");
+	docToValue(buzzerOptions.enablePin, doc, "buzzerEnablePin");
 	docToValue(buzzerOptions.enabled, doc, "BuzzerSpeakerAddonEnabled");
 
 	DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
@@ -1327,13 +1392,24 @@ std::string setAddonOptions()
 	XBOnePassthroughOptions& xbonePassthroughOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
 	docToValue(xbonePassthroughOptions.enabled, doc, "XBOnePassthroughAddonEnabled");
 
-	AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
-	docToValue(ads1256Options.enabled, doc, "Analog1256Enabled");
-	docToValue(ads1256Options.spiBlock, doc, "analog1256Block");
-	docToValue(ads1256Options.csPin, doc, "analog1256CsPin");
-	docToValue(ads1256Options.drdyPin, doc, "analog1256DrdyPin");
-	docToValue(ads1256Options.avdd, doc, "analog1256AnalogMax");
-	docToValue(ads1256Options.enableTriggers, doc, "analog1256EnableTriggers");
+	RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
+	docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
+    docToValue(rotaryOptions.encoderOne.enabled, doc, "encoderOneEnabled");
+    docToValue(rotaryOptions.encoderOne.pinA, doc, "encoderOnePinA");
+    docToValue(rotaryOptions.encoderOne.pinB, doc, "encoderOnePinB");
+    docToValue(rotaryOptions.encoderOne.mode, doc, "encoderOneMode");
+    docToValue(rotaryOptions.encoderOne.pulsesPerRevolution, doc, "encoderOnePPR");
+    docToValue(rotaryOptions.encoderOne.resetAfter, doc, "encoderOneResetAfter");
+    docToValue(rotaryOptions.encoderOne.allowWrapAround, doc, "encoderOneAllowWrapAround");
+    docToValue(rotaryOptions.encoderOne.multiplier, doc, "encoderOneMultiplier");
+    docToValue(rotaryOptions.encoderTwo.enabled, doc, "encoderTwoEnabled");
+    docToValue(rotaryOptions.encoderTwo.pinA, doc, "encoderTwoPinA");
+    docToValue(rotaryOptions.encoderTwo.pinB, doc, "encoderTwoPinB");
+    docToValue(rotaryOptions.encoderTwo.mode, doc, "encoderTwoMode");
+    docToValue(rotaryOptions.encoderTwo.pulsesPerRevolution, doc, "encoderTwoPPR");
+    docToValue(rotaryOptions.encoderTwo.resetAfter, doc, "encoderTwoResetAfter");
+    docToValue(rotaryOptions.encoderTwo.allowWrapAround, doc, "encoderTwoAllowWrapAround");
+    docToValue(rotaryOptions.encoderTwo.multiplier, doc, "encoderTwoMultiplier");
 
 	Storage::getInstance().save();
 
@@ -1602,6 +1678,7 @@ std::string getAddonOptions()
     const BuzzerOptions& buzzerOptions = Storage::getInstance().getAddonOptions().buzzerOptions;
 	writeDoc(doc, "buzzerPin", cleanPin(buzzerOptions.pin));
 	writeDoc(doc, "buzzerVolume", buzzerOptions.volume);
+	writeDoc(doc, "buzzerEnablePin", buzzerOptions.enablePin);
 	writeDoc(doc, "BuzzerSpeakerAddonEnabled", buzzerOptions.enabled);
 
 	const DualDirectionalOptions& dualDirectionalOptions = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
@@ -1742,6 +1819,25 @@ std::string getAddonOptions()
 	writeDoc(doc, "focusModeButtonLockEnabled", focusModeOptions.buttonLockEnabled);
 	writeDoc(doc, "focusModeMacroLockEnabled", focusModeOptions.macroLockEnabled);
 	writeDoc(doc, "FocusModeAddonEnabled", focusModeOptions.enabled);
+
+	RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
+	writeDoc(doc, "RotaryAddonEnabled", rotaryOptions.enabled);
+    writeDoc(doc, "encoderOneEnabled", rotaryOptions.encoderOne.enabled);
+    writeDoc(doc, "encoderOnePinA", rotaryOptions.encoderOne.pinA);
+    writeDoc(doc, "encoderOnePinB", rotaryOptions.encoderOne.pinB);
+    writeDoc(doc, "encoderOneMode", rotaryOptions.encoderOne.mode);
+    writeDoc(doc, "encoderOnePPR", rotaryOptions.encoderOne.pulsesPerRevolution);
+    writeDoc(doc, "encoderOneResetAfter", rotaryOptions.encoderOne.resetAfter);
+    writeDoc(doc, "encoderOneAllowWrapAround", rotaryOptions.encoderOne.allowWrapAround);
+    writeDoc(doc, "encoderOneMultiplier", rotaryOptions.encoderOne.multiplier);
+    writeDoc(doc, "encoderTwoEnabled", rotaryOptions.encoderTwo.enabled);
+    writeDoc(doc, "encoderTwoPinA", rotaryOptions.encoderTwo.pinA);
+    writeDoc(doc, "encoderTwoPinB", rotaryOptions.encoderTwo.pinB);
+    writeDoc(doc, "encoderTwoMode", rotaryOptions.encoderTwo.mode);
+    writeDoc(doc, "encoderTwoPPR", rotaryOptions.encoderTwo.pulsesPerRevolution);
+    writeDoc(doc, "encoderTwoResetAfter", rotaryOptions.encoderTwo.resetAfter);
+    writeDoc(doc, "encoderTwoAllowWrapAround", rotaryOptions.encoderTwo.allowWrapAround);
+    writeDoc(doc, "encoderTwoMultiplier", rotaryOptions.encoderTwo.multiplier);
 
 	return serialize_json(doc);
 }
@@ -2015,6 +2111,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
 	{ "/api/reboot", reboot },
 	{ "/api/getDisplayOptions", getDisplayOptions },
 	{ "/api/getGamepadOptions", getGamepadOptions },
+	{ "/api/getButtonLayoutDefs", getButtonLayoutDefs },
+	{ "/api/getButtonLayouts", getButtonLayouts },
 	{ "/api/getLedOptions", getLedOptions },
 	{ "/api/getPinMappings", getPinMappings },
 	{ "/api/getProfileOptions", getProfileOptions },

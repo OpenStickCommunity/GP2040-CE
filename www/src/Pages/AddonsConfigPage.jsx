@@ -49,6 +49,7 @@ import XBOnePassthrough, {
 	xbonePassthroughScheme,
 	xbonePassthroughState,
 } from '../Addons/XBOnePassthrough';
+import Rotary, { rotaryScheme, rotaryState } from '../Addons/Rotary';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -71,6 +72,7 @@ const schema = yup.object().shape({
 	...focusModeScheme,
 	...keyboardScheme,
 	...inputHistoryScheme,
+	...rotaryScheme,
 });
 
 const defaultValues = {
@@ -95,6 +97,7 @@ const defaultValues = {
 	...focusModeState,
 	...keyboardState,
 	...inputHistoryState,
+	...rotaryState,
 };
 
 const ADDONS = [
@@ -118,7 +121,8 @@ const ADDONS = [
 	SNES,
 	FocusMode,
 	Keyboard,
-	InputHistory
+	InputHistory,
+    Rotary
 ];
 
 const FormContext = ({ setStoredData }) => {
