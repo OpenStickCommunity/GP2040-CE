@@ -611,7 +611,6 @@ std::string setGamepadOptions()
 	readDoc(gamepadOptions.lockHotkeys, doc, "lockHotkeys");
 	readDoc(gamepadOptions.fourWayMode, doc, "fourWayMode");
 	readDoc(gamepadOptions.profileNumber, doc, "profileNumber");
-	readDoc(gamepadOptions.ps4ControllerType, doc, "ps4ControllerType");
 	readDoc(gamepadOptions.debounceDelay, doc, "debounceDelay");
     readDoc(gamepadOptions.inputModeB1, doc, "inputModeB1");
     readDoc(gamepadOptions.inputModeB2, doc, "inputModeB2");
@@ -663,7 +662,6 @@ std::string getGamepadOptions()
 	writeDoc(doc, "lockHotkeys", gamepadOptions.lockHotkeys ? 1 : 0);
 	writeDoc(doc, "fourWayMode", gamepadOptions.fourWayMode ? 1 : 0);
 	writeDoc(doc, "profileNumber", gamepadOptions.profileNumber);
-	writeDoc(doc, "ps4ControllerType", gamepadOptions.ps4ControllerType);
 	writeDoc(doc, "debounceDelay", gamepadOptions.debounceDelay);
     writeDoc(doc, "inputModeB1", gamepadOptions.inputModeB1);
     writeDoc(doc, "inputModeB2", gamepadOptions.inputModeB2);
@@ -1350,9 +1348,6 @@ std::string setAddonOptions()
 	docToValue(wiiOptions.i2cBlock, doc, "wiiExtensionBlock");
 	docToValue(wiiOptions.enabled, doc, "WiiExtensionAddonEnabled");
 
-    PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
-	docToValue(ps4Options.enabled, doc, "PS4ModeAddonEnabled");
-
 	SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
 	docToValue(snesOptions.enabled, doc, "SNESpadAddonEnabled");
 	docToPin(snesOptions.clockPin, doc, "snesPadClockPin");
@@ -1385,12 +1380,6 @@ std::string setAddonOptions()
 	docToValue(keyboardHostOptions.mapping.keyButtonR3, doc, "keyboardHostMap", "R3");
 	docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
 	docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
-
-	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
-	docToValue(psPassthroughOptions.enabled, doc, "PSPassthroughAddonEnabled");
-
-	XBOnePassthroughOptions& xbonePassthroughOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
-	docToValue(xbonePassthroughOptions.enabled, doc, "XBOnePassthroughAddonEnabled");
 
 	RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
 	docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
@@ -1763,9 +1752,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "wiiExtensionBlock", wiiOptions.i2cBlock);
 	writeDoc(doc, "WiiExtensionAddonEnabled", wiiOptions.enabled);
 
-	const PS4Options& ps4Options = Storage::getInstance().getAddonOptions().ps4Options;
-	writeDoc(doc, "PS4ModeAddonEnabled", ps4Options.enabled);
-
 	const SNESOptions& snesOptions = Storage::getInstance().getAddonOptions().snesOptions;
 	writeDoc(doc, "snesPadClockPin", cleanPin(snesOptions.clockPin));
 	writeDoc(doc, "snesPadLatchPin", cleanPin(snesOptions.latchPin));
@@ -1798,12 +1784,6 @@ std::string getAddonOptions()
 	writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
 	writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
 	writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
-
-	PSPassthroughOptions& psPassthroughOptions = Storage::getInstance().getAddonOptions().psPassthroughOptions;
-	writeDoc(doc, "PSPassthroughAddonEnabled", psPassthroughOptions.enabled);
-
-	XBOnePassthroughOptions& xbonePassthroughOptions = Storage::getInstance().getAddonOptions().xbonePassthroughOptions;
-	writeDoc(doc, "XBOnePassthroughAddonEnabled", xbonePassthroughOptions.enabled);
 
 	AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
 	writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);

@@ -1234,6 +1234,40 @@ void checkAdditionalMigrations(Config& config) {
         config.gpioMappings.pins[turboOptions.deprecatedButtonPin].action = GpioAction::BUTTON_PRESS_TURBO;
         turboOptions.deprecatedButtonPin = -1; // set our turbo options to -1 for subsequent calls
     }
+
+    // Auth migrations
+    GamepadOptions & gamepadOptions = config.gamepadOptions;
+    PS4Options & ps4Options = config.addonOptions.ps4Options;
+    PSPassthroughOptions & psPassthroughOptions = config.addonOptions.psPassthroughOptions;
+    XBOnePassthroughOptions & xbonePassthroughOptions = config.addonOptions.xbonePassthroughOptions;
+
+    if ( ps4Options.enabled == true ) { // PS4-Mode "on", assume keys are loaded, do not change modes
+        gamepadOptions.ps4AuthType = InputModeAuthType::INPUT_MODE_AUTH_TYPE_KEYS;
+        ps4Options.enabled = false; // disable PS4-Mode add-on permanently
+    }
+    
+    if ( psPassthroughOptions.enabled == true ) { // PS5 add-on "on", USB pass through, update ps4->ps5 boot
+        gamepadOptions.ps5AuthType = InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB;
+        // If current mode is PS4, update to PS5
+        if ( gamepadOptions.inputMode == INPUT_MODE_PS4 ) {
+            gamepadOptions.inputMode = INPUT_MODE_PS5;
+        }
+        // Also update our boot mode from PS4 to PS5 if set
+        int32_t * bootModes[8] = { &config.gamepadOptions.inputModeB1, &config.gamepadOptions.inputModeB2,
+            &config.gamepadOptions.inputModeB3, &config.gamepadOptions.inputModeB4,
+            &config.gamepadOptions.inputModeL1, &config.gamepadOptions.inputModeL2,
+            &config.gamepadOptions.inputModeR1, &config.gamepadOptions.inputModeR2};
+        for(int32_t i = 0; i < 8; i++ ) {
+            if ( *bootModes[i] == INPUT_MODE_PS4 ) {
+                *bootModes[i] = INPUT_MODE_PS5; // modify ps4 -> ps5
+            }
+        }
+        psPassthroughOptions.enabled = false; // disable PS-Passthrough add-on permanently
+    }
+
+    if ( xbonePassthroughOptions.enabled == true ) { // Xbox One add-on "on", USB pass through is assumed
+        xbonePassthroughOptions.enabled = false; // disable and go on our way
+    }
 }
 
 // populate existing configurations' buttonsMask and auxMask to mirror behavior

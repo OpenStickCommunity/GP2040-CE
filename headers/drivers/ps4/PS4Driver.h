@@ -41,7 +41,7 @@ typedef enum
 
 class PS4Driver : public GPDriver {
 public:
-    PS4Driver(uint32_t type): ps4ControllerType(type) {}
+    PS4Driver(uint32_t type): controllerType(type) {}
     virtual void initialize();
     virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
     virtual void initializeAux();
@@ -69,7 +69,7 @@ private:
     TouchpadData touchpadData;
     uint32_t last_report_timer;
     uint8_t send_nonce_part;
-    uint32_t ps4ControllerType;
+    uint32_t controllerType;
     GPAuthDriver * authDriver;
 
 	PS4State ps4State;

@@ -297,11 +297,16 @@ const schema = yup.object().shape({
 		.required()
 		.oneOf(AUTHENTICATION_TYPES.map((o) => o.value))
 		.label('PS4 Authentication Type'),
-	ps4ControllerType: yup
+	ps5AuthType: yup
 		.number()
 		.required()
-		.oneOf(PS4_MODES.map((o) => o.value))
-		.label('PS4 Controller Type'),
+		.oneOf(AUTHENTICATION_TYPES.map((o) => o.value))
+		.label('PS5 Authentication Type'),
+	xinputAuthType: yup
+		.number()
+		.required()
+		.oneOf(AUTHENTICATION_TYPES.map((o) => o.value))
+		.label('X-Input Authentication Type'),
 	debounceDelay: yup.number().required().label('Debounce Delay'),
 	inputModeB1: yup
 		.number()
@@ -375,8 +380,6 @@ const FormContext = ({ setButtonLabels }) => {
 		if (!!values.fourWayMode) values.fourWayMode = parseInt(values.fourWayMode);
 		if (!!values.profileNumber)
 			values.profileNumber = parseInt(values.profileNumber);
-		if (!!values.ps4ControllerType)
-			values.ps4ControllerType = parseInt(values.ps4ControllerType);
 		if (!!values.ps4AuthType)
 			values.ps4AuthType = parseInt(values.ps4AuthType);
 		if (!!values.ps5AuthType)
@@ -674,6 +677,13 @@ export default function SettingsPage() {
 					)}
 					{values.ps4AuthType === 1 && (<Row className="mb-3">
 						<Row className="mb-3">
+							<Col sm={5}>
+								<Form.Label class="badge bg-primary fs-2">{t('AddonsConfig:ps4-mode-sub-header')}</Form.Label>
+								<br/>
+								<Form.Label class="fw-bolder">{t('AddonsConfig:ps4-mode-sub-header-text')}</Form.Label>
+							</Col>
+						</Row>
+						<Row className="mb-3">
 							<Col sm={3}>
 								<Form.Label>
 									{t('AddonsConfig:ps4-mode-private-key-label')}:
@@ -868,6 +878,7 @@ export default function SettingsPage() {
 	const translatedSocdModes = translateArray(SOCD_MODES);
 	const translatedHotkeyActions = translateArray(HOTKEY_ACTIONS);
 	const translatedForcedSetupModes = translateArray(FORCED_SETUP_MODES);
+	// Not currently used but we might add the option at a later date (wheel type, etc.)
 	const translatedPS4ControllerTypeModes = translateArray(PS4_MODES);
 	const translatedInputModeAuthentications = translateArray(AUTHENTICATION_TYPES);
 

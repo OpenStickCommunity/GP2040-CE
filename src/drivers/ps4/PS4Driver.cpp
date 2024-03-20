@@ -65,9 +65,9 @@ void PS4Driver::initialize() {
 void PS4Driver::initializeAux() {
 	authDriver = nullptr;
 	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
-	if ( ps4ControllerType == PS4ControllerType::PS4_CONTROLLER ) {
+	if ( controllerType == PS4ControllerType::PS4_CONTROLLER ) {
 		authDriver = new PS4Auth(gamepadOptions.ps4AuthType);
-	} else if ( ps4ControllerType == PS4ControllerType::PS4_ARCADESTICK ) {
+	} else if ( controllerType == PS4ControllerType::PS4_ARCADESTICK ) {
 		// Setup PS5 Auth System
 		authDriver = new PS4Auth(gamepadOptions.ps5AuthType);
 	}
@@ -207,7 +207,7 @@ uint16_t PS4Driver::get_report(uint8_t report_id, hid_report_type_t report_type,
 				return -1;
 			}
 			memcpy(buffer, output_0x03, reqlen);
-			buffer[4] = (uint8_t)ps4ControllerType; // Change controller type in definition
+			buffer[4] = (uint8_t)controllerType; // Change controller type in definition
 			return reqlen;
 		// Use our private RSA key to sign the nonce and return chunks
 		case PS4AuthReport::PS4_GET_SIGNATURE_NONCE:
