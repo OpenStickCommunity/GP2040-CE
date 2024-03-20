@@ -180,7 +180,6 @@ class ButtonLayoutScreen : public GPScreen {
                     "BK", "ST", "LS", "RS", "", ""
             }
         };
-        */
 };
 
 #endif

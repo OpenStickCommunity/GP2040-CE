@@ -101,7 +101,10 @@ uint8_t KeyboardHostListener::getKeycodeFromModifier(uint8_t modifier) {
 // convert hid keycode to ascii and print via usb device CDC (ignore non-printable)
 void KeyboardHostListener::process_kbd_report(uint8_t dev_addr, hid_keyboard_report_t const *report)
 {
-  uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+  uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+  if ( DriverManager::getInstance().getDriver() != nullptr ) {
+    joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+  }
 
   _keyboard_host_state.dpad = 0;
   _keyboard_host_state.buttons = 0;
