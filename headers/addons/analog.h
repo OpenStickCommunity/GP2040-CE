@@ -81,6 +81,7 @@ private:
 	static uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
 	void radialDeadzone(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude);
 	void adjustCircularity(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude);
+	void stickSensitivity(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude, float sensitivity, bool activex, bool activey);
 };
 
 #endif  // _Analog_H_
