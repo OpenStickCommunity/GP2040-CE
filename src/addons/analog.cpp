@@ -115,7 +115,7 @@ void AnalogInput::process()
 
             stickSensitivity(adc_1_x, adc_1_y, adc_deadzone, x_magnitude_1, y_magnitude_1, magnitude, pow_value , isValidPin(analogOptions.analogAdc1PinX), isValidPin(analogOptions.analogAdc1PinY));
 
-            //ADC values have changed and need to be recalculated for Deadzone
+            //ADC values has been changed, so the magnitude values needs to be recalculated
         }
 
         x_magnitude_1 = adc_1_x - ANALOG_CENTER;
@@ -130,13 +130,13 @@ void AnalogInput::process()
     if (adc_2_x != ANALOG_CENTER && adc_2_y != ANALOG_CENTER) {
         // Pow analog input angle 2 (split to use the value of magnitude)
         if (analogOptions.analog_sensitivity != 10){
-            x_magnitude_1 = adc_1_x - ANALOG_CENTER;
-            y_magnitude_1 = adc_1_y - ANALOG_CENTER;
-            magnitude = sqrt((x_magnitude_1 * x_magnitude_1) + (y_magnitude_1 * y_magnitude_1));
+            x_magnitude_2 = adc_2_x - ANALOG_CENTER;
+            y_magnitude_2 = adc_2_y - ANALOG_CENTER;
+            magnitude = sqrt((x_magnitude_2 * x_magnitude_2) + (y_magnitude_2 * y_magnitude_2));
 
             stickSensitivity(adc_2_x, adc_2_y, adc_deadzone, x_magnitude_2, y_magnitude_2, magnitude, pow_value , isValidPin(analogOptions.analogAdc2PinX), isValidPin(analogOptions.analogAdc2PinY));
 
-            //ADC values have changed and need to be recalculated for Deadzone
+            //ADC values has been changed, so the magnitude values needs to be recalculated
         }
 
         x_magnitude_2 = adc_2_x - ANALOG_CENTER;
