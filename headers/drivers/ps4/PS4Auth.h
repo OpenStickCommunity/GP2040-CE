@@ -16,9 +16,9 @@ public:
     bool getAuthReady();
     void resetAuth();
 private:
-	struct mbedtls_rsa_context rsa_context;
-	bool valid_rsa;
-    
+    struct mbedtls_rsa_context rsa_context;
+    bool valid_rsa;
+
     // buffer = 256 + 16 + 256 + 256 + 256 + 24
     // == 1064 bytes (almost 1 kb)
     uint8_t ps4_auth_buffer[1064];

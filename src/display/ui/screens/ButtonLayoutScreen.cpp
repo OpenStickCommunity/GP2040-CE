@@ -183,7 +183,7 @@ void ButtonLayoutScreen::processInputHistory() {
 		// Iterate through array
 		for (uint8_t x=0; x<INPUT_HISTORY_MAX_INPUTS; x++) {
 			// Add any pressed keys to deque
-			//if (currentInput[x] && (displayNames[mode][x] != "")) pressed.push_back(displayNames[mode][x]);
+			if (currentInput[x] && (displayNames[mode][x] != "")) pressed.push_back(displayNames[mode][x]);
 		}
 		// Update the last keypress array
 		lastInput = currentInput;

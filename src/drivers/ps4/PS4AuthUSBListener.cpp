@@ -18,7 +18,7 @@ void PS4AuthUSBListener::setup() {
 }
 
 void PS4AuthUSBListener::process(PS4State pState, uint8_t pNonceId, uint8_t * pNonceBuffer) {
-	if ( awaiting_cb == true)
+    if ( awaiting_cb == true)
         return;
 
     uint8_t noncelen;

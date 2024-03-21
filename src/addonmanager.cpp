@@ -4,12 +4,12 @@
 bool AddonManager::LoadAddon(GPAddon* addon, ADDON_PROCESS processAt) {
     if (addon->available()) {
         AddonBlock * block = new AddonBlock;
-		addon->setup();
+        addon->setup();
         block->ptr = addon;
         block->process = processAt;
         addons.push_back(block);
         return true;
-	} else {
+    } else {
         delete addon; // Don't use the memory if we don't have to   
     }
 

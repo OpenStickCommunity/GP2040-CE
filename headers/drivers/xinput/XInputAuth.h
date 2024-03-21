@@ -5,17 +5,17 @@
 
 typedef enum {
     auth_idle_state = 0,
-	send_auth_console_to_dongle = 1,
-	send_auth_dongle_to_console = 2,
-	wait_auth_console_to_dongle = 3,
-	wait_auth_dongle_to_console = 4,
+    send_auth_console_to_dongle = 1,
+    send_auth_dongle_to_console = 2,
+    wait_auth_console_to_dongle = 3,
+    wait_auth_dongle_to_console = 4,
 } XInputAuthState;
 
 typedef struct {
-	XInputAuthState xboneState;
+    XInputAuthState xboneState;
 
-	// Console-to-Host e.g. Xbox 360 to MagicBoots
-	bool authCompleted;
+    // Console-to-Host e.g. Xbox 360 to MagicBoots
+    bool authCompleted;
 } XInputAuthData;
 
 class XInputAuth : public GPAuthDriver {
