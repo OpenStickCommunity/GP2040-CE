@@ -7,6 +7,7 @@
 #define PICO_BOARD_CONFIG_H_
 
 #include "enums.pb.h"
+#include "class/hid/hid.h"
 
 #define BOARD_CONFIG_LABEL "Open_Core0 WASD"
 
@@ -53,9 +54,13 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
+
+#define USB_PERIPHERAL_ENABLED 1
+#define USB_PERIPHERAL_PIN_DPLUS 28
 
 #define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
+#define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
+#define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
 
 #define TURBO_ENABLED 1
 #define GPIO_PIN_27 GpioAction::BUTTON_PRESS_TURBO
@@ -112,9 +117,5 @@
 #define FOCUS_MODE_PIN 22
 #define FOCUS_MODE_BUTTON_LOCK_ENABLED 1
 
-#define PSPASSTHROUGH_ENABLED 1
-#define PSPASSTHROUGH_PIN_DPLUS 28
-
-#define XBONEPASSTHROUGH_ENABLED 1
 
 #endif

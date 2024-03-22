@@ -7,6 +7,7 @@
 #define PICO_BOARD_CONFIG_H_
 
 #include "enums.pb.h"
+#include "class/hid/hid.h"
 
 #define BOARD_CONFIG_LABEL "Haute 42"
 
@@ -53,8 +54,13 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
+#define USB_PERIPHERAL_ENABLED 1
+#define USB_PERIPHERAL_PIN_DPLUS 23
+#define USB_PERIPHERAL_PIN_ORDER 0
+
 #define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
+#define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
+#define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
 
 #define TURBO_ENABLED 1
 #define GPIO_PIN_14 GpioAction::BUTTON_PRESS_TURBO
@@ -95,15 +101,8 @@
 #define GPIO_PIN_27 GpioAction::BUTTON_PRESS_UP
 #define GPIO_PIN_26 GpioAction::BUTTON_PRESS_L3
 
-#define USB_PERIPHERAL_ENABLED 1
-#define USB_PERIPHERAL_PIN_DPLUS 23
-#define USB_PERIPHERAL_PIN_ORDER 0
-
+// Keyboard Host enabled by default
 #define KEYBOARD_HOST_ENABLED 1
-#define KEYBOARD_HOST_PIN_DPLUS 23
-
-#define PSPASSTHROUGH_ENABLED 1
-#define XBONEPASSTHROUGH_ENABLED 1
 
 #define BOARD_LED_ENABLED 1
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_MODE_INDICATOR

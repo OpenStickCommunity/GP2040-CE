@@ -9,11 +9,14 @@
 #include "gpdriver.h"
 #include "drivers/xbone/XBOneDescriptors.h"
 #include "drivers/shared/xgip_protocol.h"
+#include "drivers/shared/gpauthdriver.h"
 
 class XBOneDriver : public GPDriver {
 public:
     virtual void initialize();
     virtual void process(Gamepad * gamepad, uint8_t * outBuffer);
+    virtual void initializeAux();
+    virtual void processAux();
     virtual uint16_t get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen);
     virtual void set_report(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer, uint16_t bufsize);
     virtual bool vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request);
@@ -23,6 +26,8 @@ public:
     virtual const uint8_t * get_descriptor_configuration_cb(uint8_t index);
     virtual const uint8_t * get_descriptor_device_qualifier_cb();
     virtual uint16_t GetJoystickMidValue();
+    virtual USBListener * get_usb_auth_listener();
+    bool getAuthSent();
 private:
     virtual void update();
     bool send_xbone_usb(uint8_t const *buffer, uint16_t bufsize);
@@ -34,6 +39,7 @@ private:
     uint8_t keep_alive_sequence;
     uint8_t virtual_keycode_sequence;
     bool xb1_guide_pressed;
+    GPAuthDriver * authDriver;
 };
 
 #endif // _XBONE_DRIVER_H_

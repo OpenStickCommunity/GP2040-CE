@@ -155,9 +155,13 @@ src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp
 src/drivers/pcengine/PCEngineDriver.cpp
+src/drivers/ps4/PS4Auth.cpp
+src/drivers/ps4/PS4AuthUSBListener.cpp
 src/drivers/ps4/PS4Driver.cpp
 src/drivers/psclassic/PSClassicDriver.cpp
 src/drivers/switch/SwitchDriver.cpp
+src/drivers/xbone/XBOneAuth.cpp
+src/drivers/xbone/XBOneAuthUSBListener.cpp
 src/drivers/xbone/XBOneDriver.cpp
 src/drivers/xboxog/xid/xid_driver.c
 src/drivers/xboxog/xid/xid_gamepad.c
@@ -165,6 +169,8 @@ src/drivers/xboxog/xid/xid_remote.c
 src/drivers/xboxog/xid/xid_steelbattalion.c
 src/drivers/xboxog/xid/xid.c
 src/drivers/xboxog/XboxOriginalDriver.cpp
+src/drivers/xinput/XInputAuth.cpp
+src/drivers/xinput/XInputAuthUSBListener.cpp
 src/drivers/xinput/XInputDriver.cpp
 src/interfaces/i2c/ssd1306/obd_ssd1306.cpp
 src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
@@ -198,14 +204,13 @@ src/addons/focus_mode.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/keyboard_host.cpp
+src/addons/keyboard_host_listener.cpp
 src/addons/i2canalog1219.cpp
 src/addons/jslider.cpp
 src/addons/display.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
-src/addons/ps4mode.cpp
-src/addons/pspassthrough.cpp
 src/addons/rotaryencoder.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
@@ -214,7 +219,6 @@ src/addons/wiiext.cpp
 src/addons/input_macro.cpp
 src/addons/snes_input.cpp
 src/addons/tilt.cpp
-src/addons/xbonepassthrough.cpp
 src/addons/spi_analog_ads1256.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c

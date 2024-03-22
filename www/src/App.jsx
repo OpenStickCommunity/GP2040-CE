@@ -8,7 +8,6 @@ import Navigation from './Components/Navigation';
 import HomePage from './Pages/HomePage';
 import PinMappingPage from './Pages/PinMapping';
 import PeripheralMappingPage from './Pages/PeripheralMappingPage';
-import KeyboardMappingPage from './Pages/KeyboardMapping';
 import ResetSettingsPage from './Pages/ResetSettingsPage';
 import SettingsPage from './Pages/SettingsPage';
 import DisplayConfigPage from './Pages/DisplayConfig';
@@ -35,7 +34,6 @@ const App = () => {
 							path="/peripheral-mapping"
 							element={<PeripheralMappingPage />}
 						/>
-						<Route path="/keyboard-mapping" element={<KeyboardMappingPage />} />
 						<Route path="/reset-settings" element={<ResetSettingsPage />} />
 						<Route path="/led-config" element={<LEDConfigPage />} />
 						<Route path="/custom-theme" element={<CustomThemePage />} />
