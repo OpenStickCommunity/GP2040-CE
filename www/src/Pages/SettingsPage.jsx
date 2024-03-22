@@ -889,15 +889,15 @@ export default function SettingsPage() {
 					<div>
 						<Form noValidate onSubmit={handleSubmit}>
 							<Tab.Container id="left-tabs-example"
-							defaultActiveKey="gamepad">
+							defaultActiveKey="inputmode">
 								<Row>
 								<Col sm={2}>
 									<Nav variant="pills" className="flex-column">
 										<Nav.Item>
-											<Nav.Link eventKey="gamepad">Gamepad Settings</Nav.Link>
+											<Nav.Link eventKey="inputmode">Input Mode Settings</Nav.Link>
 										</Nav.Item>
 										<Nav.Item>
-											<Nav.Link eventKey="inputmode">Input Mode Settings</Nav.Link>
+											<Nav.Link eventKey="gamepad">Gamepad Settings</Nav.Link>
 										</Nav.Item>
 										<Nav.Item>
 											<Nav.Link eventKey="bootmode">Boot Input Modes</Nav.Link>
@@ -909,37 +909,46 @@ export default function SettingsPage() {
 								</Col>
 								<Col sm={10}>
 								<Tab.Content>
+									<Tab.Pane eventKey="inputmode">
+									<Section title={t('SettingsPage:settings-header-text')}>
+										<Form.Group className="row mb-3">
+											<Form.Label>{t('SettingsPage:current-input-mode-label')}</Form.Label>
+												<Col sm={3}>
+													<Form.Select
+														name="inputMode"
+														className="form-select-sm"
+														value={values.inputMode}
+														onChange={handleChange}
+														isInvalid={errors.inputMode}
+													>
+														{translatedInputModeGroups.map((o, i) => (
+															<optgroup label={o.label}>
+															{translatedInputModes.filter(({group}) => group == o.group).map((o, i) => (
+																<option
+																	key={`button-inputMode-option-${i}`}
+																	value={o.value}
+																	disabled={o.disabled}
+																>
+																	{o.label}{o.disabled && o.reason != '' ? ' (' + o.reason + ')' : ''}
+																</option>
+															))}
+															</optgroup>
+														))}
+													</Form.Select>
+													<Form.Control.Feedback type="invalid">
+														{errors.inputMode}
+													</Form.Control.Feedback>
+												</Col>
+										</Form.Group>
+										{inputModeSpecifics(values, errors, setFieldValue, handleChange, translatedInputModeAuthentications)}
+										<Button type="submit">{t('Common:button-save-label')}</Button>
+										{saveMessage ? (
+											<span className="alert">{saveMessage}</span>
+										) : null}
+									</Section>
+									</Tab.Pane>
 									<Tab.Pane eventKey="gamepad">
 									<Section title={t('SettingsPage:gamepad-settings-header-text')}>
-										<Form.Group className="row mb-3">
-										<Form.Label>{t('SettingsPage:current-input-mode-label')}</Form.Label>
-											<Col sm={3}>
-												<Form.Select
-													name="inputMode"
-													className="form-select-sm"
-													value={values.inputMode}
-													onChange={handleChange}
-													isInvalid={errors.inputMode}
-												>
-													{translatedInputModeGroups.map((o, i) => (
-														<optgroup label={o.label}>
-														{translatedInputModes.filter(({group}) => group == o.group).map((o, i) => (
-															<option
-																key={`button-inputMode-option-${i}`}
-																value={o.value}
-																disabled={o.disabled}
-															>
-																{o.label}{o.disabled && o.reason != '' ? ' (' + o.reason + ')' : ''}
-															</option>
-														))}
-														</optgroup>
-													))}
-												</Form.Select>
-												<Form.Control.Feedback type="invalid">
-													{errors.inputMode}
-												</Form.Control.Feedback>
-											</Col>
-										</Form.Group>
 										<Form.Group className="row mb-3">
 											<Form.Label>{t('SettingsPage:d-pad-mode-label')}</Form.Label>
 											<Col sm={3}>
@@ -1071,44 +1080,6 @@ export default function SettingsPage() {
 												/>
 											</Col>
 										</Form.Group>
-										<Button type="submit">{t('Common:button-save-label')}</Button>
-										{saveMessage ? (
-											<span className="alert">{saveMessage}</span>
-										) : null}
-									</Section>
-									</Tab.Pane>
-									<Tab.Pane eventKey="inputmode">
-									<Section title={t('SettingsPage:settings-header-text')}>
-										<Form.Group className="row mb-3">
-											<Form.Label>{t('SettingsPage:current-input-mode-label')}</Form.Label>
-												<Col sm={3}>
-													<Form.Select
-														name="inputMode"
-														className="form-select-sm"
-														value={values.inputMode}
-														onChange={handleChange}
-														isInvalid={errors.inputMode}
-													>
-														{translatedInputModeGroups.map((o, i) => (
-															<optgroup label={o.label}>
-															{translatedInputModes.filter(({group}) => group == o.group).map((o, i) => (
-																<option
-																	key={`button-inputMode-option-${i}`}
-																	value={o.value}
-																	disabled={o.disabled}
-																>
-																	{o.label}{o.disabled && o.reason != '' ? ' (' + o.reason + ')' : ''}
-																</option>
-															))}
-															</optgroup>
-														))}
-													</Form.Select>
-													<Form.Control.Feedback type="invalid">
-														{errors.inputMode}
-													</Form.Control.Feedback>
-												</Col>
-										</Form.Group>
-										{inputModeSpecifics(values, errors, setFieldValue, handleChange, translatedInputModeAuthentications)}
 										<Button type="submit">{t('Common:button-save-label')}</Button>
 										{saveMessage ? (
 											<span className="alert">{saveMessage}</span>
