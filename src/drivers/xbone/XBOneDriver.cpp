@@ -113,8 +113,8 @@ typedef struct {
 
 CFG_TUSB_MEM_SECTION static xboned_interface_t _xboned_itf[CFG_TUD_XBONE];
 
-static XGIPProtocol outgoingXGIP;
-static XGIPProtocol incomingXGIP;
+static XGIPProtocol * outgoingXGIP = nullptr;
+static XGIPProtocol * incomingXGIP = nullptr;
 static XboxOneAuthData * xboxOneAuthData = nullptr;
 
 // Windows requires a Descriptor Single for Xbox One
@@ -213,7 +213,8 @@ static void queue_xbone_report(void *report, uint16_t report_size) {
 bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
                      uint32_t xferred_bytes) {
     // Do nothing if we couldn't setup our auth listener
-    if ( xboxOneAuthData == nullptr) {
+    if ( xboxOneAuthData == nullptr || incomingXGIP == nullptr ||
+            outgoingXGIP == nullptr) {
         return true;
     }
     
@@ -228,35 +229,35 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
 
     if (ep_addr == p_xbone->ep_out) {
         // Parse incoming packet and verify its valid
-        incomingXGIP.parse(p_xbone->epout_buf, xferred_bytes);
+        incomingXGIP->parse(p_xbone->epout_buf, xferred_bytes);
 
         // Setup an ack before we change anything about the incoming packet
-        if ( incomingXGIP.ackRequired() == true ) {
-            queue_xbone_report((uint8_t*)incomingXGIP.generateAckPacket(), incomingXGIP.getPacketLength());
+        if ( incomingXGIP->ackRequired() == true ) {
+            queue_xbone_report((uint8_t*)incomingXGIP->generateAckPacket(), incomingXGIP->getPacketLength());
         }
 
-        uint8_t command = incomingXGIP.getCommand();
+        uint8_t command = incomingXGIP->getCommand();
         if ( command == GIP_ACK_RESPONSE ) {
             waiting_ack = false;
         } else if ( command == GIP_DEVICE_DESCRIPTOR ) {
             // setup descriptor packet
-            outgoingXGIP.reset(); // reset if anything was in there
-            outgoingXGIP.setAttributes(GIP_DEVICE_DESCRIPTOR, incomingXGIP.getSequence(), 1, 1, 0);
-            outgoingXGIP.setData(xboxOneDescriptor, sizeof(xboxOneDescriptor));
+            outgoingXGIP->reset(); // reset if anything was in there
+            outgoingXGIP->setAttributes(GIP_DEVICE_DESCRIPTOR, incomingXGIP->getSequence(), 1, 1, 0);
+            outgoingXGIP->setData(xboxOneDescriptor, sizeof(xboxOneDescriptor));
             xboneDriverState = XboxOneDriverState::SEND_DESCRIPTOR;
         } else if ( command == GIP_POWER_MODE_DEVICE_CONFIG || command == GIP_CMD_WAKEUP || command == GIP_CMD_RUMBLE ) {
             xbox_one_powered_on = true;
         } else if ( command == GIP_AUTH || command == GIP_FINAL_AUTH) {
-            if (incomingXGIP.getDataLength() == 2 && memcmp(incomingXGIP.getData(), authReady, sizeof(authReady))==0 )
+            if (incomingXGIP->getDataLength() == 2 && memcmp(incomingXGIP->getData(), authReady, sizeof(authReady))==0 )
                 xboxOneAuthData->authCompleted = true;
-            if ( (incomingXGIP.getChunked() == true && incomingXGIP.endOfChunk() == true) ||
-                    (incomingXGIP.getChunked() == false )) {
-                memcpy(xboxOneAuthData->authBuffer, incomingXGIP.getData(), incomingXGIP.getDataLength());
-                xboxOneAuthData->authLen = incomingXGIP.getDataLength();
-                xboxOneAuthData->authType = incomingXGIP.getCommand();
-                xboxOneAuthData->authSequence = incomingXGIP.getSequence();
+            if ( (incomingXGIP->getChunked() == true && incomingXGIP->endOfChunk() == true) ||
+                    (incomingXGIP->getChunked() == false )) {
+                memcpy(xboxOneAuthData->authBuffer, incomingXGIP->getData(), incomingXGIP->getDataLength());
+                xboxOneAuthData->authLen = incomingXGIP->getDataLength();
+                xboxOneAuthData->authType = incomingXGIP->getCommand();
+                xboxOneAuthData->authSequence = incomingXGIP->getSequence();
                 xboxOneAuthData->xboneState = XboxOneState::send_auth_console_to_dongle;
-                incomingXGIP.reset();
+                incomingXGIP->reset();
             }
         }
 
@@ -311,6 +312,10 @@ void XBOneDriver::initialize() {
     virtual_keycode_sequence = 0;
     xb1_guide_pressed = false;
     last_report_counter = 0;
+
+
+    incomingXGIP = new XGIPProtocol();
+    outgoingXGIP = new XGIPProtocol();
 
     xboxOneAuthData = nullptr;
 }
@@ -579,34 +584,34 @@ void XBOneDriver::update() {
             // Xbox One announce must wait around 0.5s before sending
             if ( now - timer_wait_for_announce > 500 ) {
                 memcpy((void*)&announcePacket[3], &now, 3);
-                outgoingXGIP.setAttributes(GIP_ANNOUNCE, 1, 1, 0, 0);
-                outgoingXGIP.setData(announcePacket, sizeof(announcePacket));
-                queue_xbone_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
+                outgoingXGIP->setAttributes(GIP_ANNOUNCE, 1, 1, 0, 0);
+                outgoingXGIP->setData(announcePacket, sizeof(announcePacket));
+                queue_xbone_report(outgoingXGIP->generatePacket(), outgoingXGIP->getPacketLength());
                 xboneDriverState = WAIT_DESCRIPTOR_REQUEST;
             }
             break;
         case SEND_DESCRIPTOR:
-            queue_xbone_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
-            if ( outgoingXGIP.endOfChunk() == true ) {
+            queue_xbone_report(outgoingXGIP->generatePacket(), outgoingXGIP->getPacketLength());
+            if ( outgoingXGIP->endOfChunk() == true ) {
                 xboneDriverState = SETUP_AUTH;
             }
-            if ( outgoingXGIP.getPacketAck() == 1 ) { // ACK can happen at different chunks
+            if ( outgoingXGIP->getPacketAck() == 1 ) { // ACK can happen at different chunks
                 set_ack_wait();
             }
             break;
         case SETUP_AUTH:
             if ( xboxOneAuthData->xboneState == XboxOneState::send_auth_dongle_to_console ) {
                 bool isChunked = (xboxOneAuthData->authLen > GIP_MAX_CHUNK_SIZE);
-                outgoingXGIP.reset();
-                outgoingXGIP.setAttributes(xboxOneAuthData->authType, xboxOneAuthData->authSequence, 1, isChunked, 1);
-                outgoingXGIP.setData(xboxOneAuthData->authBuffer, xboxOneAuthData->authLen);
+                outgoingXGIP->reset();
+                outgoingXGIP->setAttributes(xboxOneAuthData->authType, xboxOneAuthData->authSequence, 1, isChunked, 1);
+                outgoingXGIP->setData(xboxOneAuthData->authBuffer, xboxOneAuthData->authLen);
                 xboxOneAuthData->xboneState = wait_auth_dongle_to_console;
             } else if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_dongle_to_console ) {
-                queue_xbone_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
-                if ( outgoingXGIP.getChunked() == false || outgoingXGIP.endOfChunk() == true ) {
+                queue_xbone_report(outgoingXGIP->generatePacket(), outgoingXGIP->getPacketLength());
+                if ( outgoingXGIP->getChunked() == false || outgoingXGIP->endOfChunk() == true ) {
                     xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
                 }
-                if ( outgoingXGIP.getPacketAck() == 1 ) { // ACK can happen at different chunks
+                if ( outgoingXGIP->getPacketAck() == 1 ) { // ACK can happen at different chunks
                     set_ack_wait();
                 }
             }
