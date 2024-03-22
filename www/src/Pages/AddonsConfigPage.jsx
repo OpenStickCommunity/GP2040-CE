@@ -32,11 +32,6 @@ import Reverse, { reverseScheme, reverseState } from '../Addons/Reverse';
 import SOCD, { socdScheme, socdState } from '../Addons/SOCD';
 import Tilt, { tiltScheme, tiltState } from '../Addons/Tilt';
 import Turbo, { turboScheme, turboState } from '../Addons/Turbo';
-import Ps4, { ps4Scheme, ps4State } from '../Addons/Ps4';
-import PSPassthrough, {
-	psPassthroughScheme,
-	psPassthroughState,
-} from '../Addons/PSPassthrough';
 import Wii, { wiiScheme, wiiState } from '../Addons/Wii';
 import SNES, { snesState } from '../Addons/SNES';
 import FocusMode, {
@@ -45,10 +40,6 @@ import FocusMode, {
 } from '../Addons/FocusMode';
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import InputHistory, { inputHistoryScheme, inputHistoryState } from '../Addons/InputHistory';
-import XBOnePassthrough, {
-	xbonePassthroughScheme,
-	xbonePassthroughState,
-} from '../Addons/XBOnePassthrough';
 import Rotary, { rotaryScheme, rotaryState } from '../Addons/Rotary';
 
 const schema = yup.object().shape({
@@ -65,9 +56,6 @@ const schema = yup.object().shape({
 	...buzzerScheme,
 	...playerNumberScheme,
 	...socdScheme,
-	...ps4Scheme,
-	...psPassthroughScheme,
-	...xbonePassthroughScheme,
 	...wiiScheme,
 	...focusModeScheme,
 	...keyboardScheme,
@@ -89,9 +77,6 @@ const defaultValues = {
 	...buzzerState,
 	...playerNumberState,
 	...socdState,
-	...ps4State,
-	...psPassthroughState,
-	...xbonePassthroughState,
 	...wiiState,
 	...snesState,
 	...focusModeState,
@@ -114,9 +99,6 @@ const ADDONS = [
 	Buzzer,
 	PlayerNumber,
 	SOCD,
-	Ps4,
-	PSPassthrough,
-	XBOnePassthrough,
 	Wii,
 	SNES,
 	FocusMode,

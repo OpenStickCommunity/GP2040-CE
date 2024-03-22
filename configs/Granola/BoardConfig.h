@@ -7,6 +7,7 @@
 #define PICO_BOARD_CONFIG_H_
 
 #include "enums.pb.h"
+#include "class/hid/hid.h"
 
 #define BOARD_CONFIG_LABEL "Granola Arcade"
 
@@ -63,13 +64,11 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 #define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
+#define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
+#define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
 
 #define USB_PERIPHERAL_ENABLED 1
 #define USB_PERIPHERAL_PIN_DPLUS 28
 #define USB_PERIPHERAL_PIN_ORDER 0
-
-#define PSPASSTHROUGH_ENABLED 1
-#define XBONEPASSTHROUGH_ENABLED 1
 
 #endif
