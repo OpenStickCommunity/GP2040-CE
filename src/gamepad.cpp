@@ -258,10 +258,11 @@ void Gamepad::hotkey()
 	else if (pressedHotkey(hotkeyOptions.hotkey14))	action = selectHotkey(hotkeyOptions.hotkey14);
 	else if (pressedHotkey(hotkeyOptions.hotkey15))	action = selectHotkey(hotkeyOptions.hotkey15);
 	else if (pressedHotkey(hotkeyOptions.hotkey16))	action = selectHotkey(hotkeyOptions.hotkey16);
-	if ( lastAction != action ) {
+	if ( action != HOTKEY_NONE ) {
+		// processHotkeyAction checks lastAction to determine if the action is repeatable or not
 		processHotkeyAction(action);
-		lastAction = action;
 	}
+	lastAction = action;
 }
 
 void Gamepad::clearState() {
@@ -425,7 +426,7 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			return;
 	}
 
-	// only save if we did something different (except NONE because NONE doesn't get here)
+	// only save if requested
 	if (reqSave) {
 		save();
 	}
