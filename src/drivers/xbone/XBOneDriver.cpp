@@ -210,6 +210,28 @@ static void queue_xbone_report(void *report, uint16_t report_size) {
     report_queue.push(item);
 }
 
+// DevCompatIDsOne sends back XGIP10 data when requested by Windows
+bool xbone_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage,
+                                tusb_control_request_t const *request) {
+	uint8_t buf[255];
+
+  	// nothing to with DATA & ACK stage
+  	if (stage != CONTROL_STAGE_SETUP)
+		return true;
+
+	if (request->bmRequestType_bit.direction == TUSB_DIR_IN) { // This is where we should be
+		uint16_t len = request->wLength;
+		if ( request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_DEVICE | USB_SETUP_TYPE_VENDOR) && request->bRequest == REQ_GET_OS_FEATURE_DESCRIPTOR &&
+			request->wIndex == DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR) {
+			memcpy(buf, &DevCompatIDsOne, len);
+		}
+		tud_control_xfer(rhport, request, (void*)buf, len);
+	} else {
+		tud_control_xfer(rhport, request, (void*)buf, request->wLength);
+	}
+	return true;
+}
+
 bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
                      uint32_t xferred_bytes) {
     // Do nothing if we couldn't setup our auth listener
@@ -302,7 +324,7 @@ void XBOneDriver::initialize() {
         .init = xbone_init,
         .reset = xbone_reset,
         .open = xbone_open,
-        .control_xfer_cb = tud_vendor_control_xfer_cb,
+        .control_xfer_cb = xbone_vendor_control_xfer_cb,
         .xfer_cb = xbone_xfer_cb,
         .sof = NULL
     };
@@ -527,7 +549,7 @@ bool XBOneDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_con
 }
 
 const uint16_t * XBOneDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
-    const char *value = (const char *)xbone_string_descriptors[index];
+    const char *value = (const char *)xbone_get_string_descriptor(index);
     return getStringDescriptor(value, index); // getStringDescriptor returns a static array
 }
 

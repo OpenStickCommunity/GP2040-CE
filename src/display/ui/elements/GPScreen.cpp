@@ -6,8 +6,8 @@ void GPScreen::draw() {
     // draw the display list
     if ( displayList.size() > 0 ) {
         std::sort(displayList.begin(), displayList.end(), [](GPWidget* a, GPWidget* b){ return a->getPriority() > b->getPriority(); });
-        for (uint16_t i=0; i<displayList.size(); i++) {
-            displayList.at(i)->draw();
+        for(std::vector<GPWidget*>::iterator it = displayList.begin(); it != displayList.end(); it++) {
+            (*it)->draw();
         }
     }
     drawScreen();
