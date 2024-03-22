@@ -80,7 +80,7 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
-        uint8_t profileDelay = 5;
+        uint8_t profileDelay = 2;
         int profileDelayStart = 0;
         bool displayProfileBanner = true;
 
