@@ -400,25 +400,33 @@ void XBOneDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
     }
     
     // Virtual Keycode for Guide Button
-    if ( gamepad->pressedA1() || xb1_guide_pressed == true ) {
-        // In a change-state
-        if ( (gamepad->pressedA1() && xb1_guide_pressed == false) ||
-            (!gamepad->pressedA1() && xb1_guide_pressed == true)) {
-            virtual_keycode_sequence++; // will rollover
-            if ( virtual_keycode_sequence == 0 )
-                virtual_keycode_sequence = 1;
-            GIP_HEADER((&xboneReport), GIP_VIRTUAL_KEYCODE, 1, virtual_keycode_sequence);
+    bool virtual_keycode_change = false;
+    if ( (xb1_guide_pressed == true && !gamepad->pressedA1())||
+        (xb1_guide_pressed == false && gamepad->pressedA1()) ) {
+        virtual_keycode_change = true;
+    }
+
+    // Virtual Keycode Triggered (Pressed or Released)
+    if ( virtual_keycode_change == true ) {
+        uint8_t new_sequence = virtual_keycode_sequence;
+        new_sequence++; // will rollover
+        if ( new_sequence == 0 )
+            new_sequence = 1;
+        GIP_HEADER((&xboneReport), GIP_VIRTUAL_KEYCODE, 1, new_sequence);
+        if ( xb1_guide_pressed == false ) {
             xboneReport.Header.length = sizeof(xb1_guide_on);
-            if ( gamepad->pressedA1() ) {
-                xb1_guide_pressed = true;
-                memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_on, sizeof(xb1_guide_on));
-            } else {
-                xb1_guide_pressed = false;
-                memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_off, sizeof(xb1_guide_off));
-            }
+            memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_on, sizeof(xb1_guide_on));
+            xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_on);
+        } else {
+            xboneReport.Header.length = sizeof(xb1_guide_off);
+            memcpy(&((uint8_t*)&xboneReport)[4], &xb1_guide_off, sizeof(xb1_guide_off));
+            xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_off);
         }
-        xboneReportSize = sizeof(GipHeader_t) + sizeof(xb1_guide_on);
-        send_xbone_usb((uint8_t*)&xboneReport, xboneReportSize);
+        if ( send_xbone_usb((uint8_t*)&xboneReport, xboneReportSize) == true ) {
+            // On success, update our guide pressed state and virtual key code state
+            virtual_keycode_sequence = new_sequence;
+            xb1_guide_pressed = !xb1_guide_pressed;
+        }
         return;
     }
 
