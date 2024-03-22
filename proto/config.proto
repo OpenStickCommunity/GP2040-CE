@@ -759,7 +759,7 @@ message AddonOptions
     optional XBOnePassthroughOptions xbonePassthroughOptions = 22 [deprecated = true];
     optional AnalogADS1256Options analogADS1256Options = 23;
     optional RotaryOptions rotaryOptions = 24;
-    optional GPCommsOptions gpCommsOptions = 24;
+    optional GPCommsOptions gpCommsOptions = 25;
 }
 
 message MigrationHistory
