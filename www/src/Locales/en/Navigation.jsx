@@ -8,7 +8,6 @@ export default {
 	'docs-label': 'Documentation',
 	'github-label': 'GitHub',
 	'home-label': 'Home',
-	'keyboard-mapping-label': 'Keyboard Mapping',
 	'led-config-label': 'LED Configuration',
 	'links-label': 'Links',
 	'macro-label': 'Macro',

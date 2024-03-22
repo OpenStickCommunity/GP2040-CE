@@ -89,7 +89,7 @@ public:
 	}
 
 	/**
-	 * @brief Remote hotkey bits from the state bitmask and provide pressed action.
+	 * @brief Remove hotkey bits from the state bitmask and provide pressed action.
 	 */
 	inline GamepadHotkey __attribute__((always_inline)) selectHotkey(const HotkeyEntry hotkey) {
 		state.buttons &= ~(hotkey.buttonsMask);

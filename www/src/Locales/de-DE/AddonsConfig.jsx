@@ -137,12 +137,6 @@ export default {
 	'keyboard-host-d-plus-label': 'D+',
 	'keyboard-host-d-minus-label': 'D-',
 	'keyboard-host-five-v-label': '5V-Stromversorgung (optional)',
-	'pspassthrough-header-text': 'PS Durchleitung',
-	'pspassthrough-sub-header-text':
-		'Nachfolgend sind die Daten, +, - und 5V (optional) Pins einzustellen. Nur der + und der 5V-Pin können konfiguriert werden.',
-	'pspassthrough-d-plus-label': 'D+',
-	'pspassthrough-d-minus-label': 'D-',
-	'pspassthrough-five-v-label': '5V-Stromversorgung (optional)',
 	'pin-config-moved-to-core-text': 'Hinweis: Die Pins für dieses Add-On werden jetzt auf der Seite für die Pin-Zuordnung konfiguriert',
 	'input-history-header-text': 'Eingabeverlauf',
 	'input-history-length-label': 'Verlaufslänge (Zeichen)',

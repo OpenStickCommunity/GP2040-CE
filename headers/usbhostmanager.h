@@ -1,7 +1,7 @@
 #ifndef _USBHOSTMANAGER_H_
 #define _USBHOSTMANAGER_H_
 
-#include "usbaddon.h"
+#include "usblistener.h"
 #include <vector>
 
 #include "pio_usb.h"
@@ -25,7 +25,7 @@ public:
 	}
     void start();               // Start USB Host
     void shutdown();            // Called on system reboot
-    void pushAddon(USBAddon *); // If anything needs to update in the gpconfig driver
+    void pushListener(USBListener *); // If anything needs to update in the gpconfig driver
     void process();
     void hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len);
     void hid_umount_cb(uint8_t daddr, uint8_t instance);
@@ -38,10 +38,8 @@ public:
     void xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
     
 private:
-    USBHostManager() : tuh_ready(false), core0Ready(false), core1Ready(false) {
-
-    }
-    std::vector<USBAddon*> addons;
+    USBHostManager() : tuh_ready(false), core0Ready(false), core1Ready(false) {}
+    std::vector<USBListener*> listeners;
     usb_device_t *usb_device;
     uint8_t dataPin;
     bool tuh_ready;
