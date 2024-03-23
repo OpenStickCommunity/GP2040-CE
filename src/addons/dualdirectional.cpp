@@ -110,8 +110,6 @@ void DualDirectionalInput::preprocess()
             | ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask : 0)
             | ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0);
 
-    // Convert gamepad from process() output to uint8 value
-    uint8_t gamepadState = gamepad->state.dpad;
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
 
     // 4-way before SOCD, might have better history without losing any coherent functionality
@@ -121,18 +119,6 @@ void DualDirectionalInput::preprocess()
 
     // SOCD clean the dual inputs based on the mode in the gamepad config
     SOCDDualClean(socdMode);
-
-    // mixed mode will combine the core and DDI results into the core output
-    // this also makes "Gamepad" and "DDI" combination modes, now deprecated, work the same as Mixed
-    if ( options.combineMode == DualDirectionalCombinationMode::MIXED_MODE ) {
-        // Second Input (Last Input Priority) needs to happen before we MPG clean
-        if ( socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY ||
-             socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY ) {
-            gamepadState = SOCDGamepadClean(gamepadState, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) | dualState;
-        }
-    }
-
-    gamepad->state.dpad = gamepadState;
 }
 
 void DualDirectionalInput::process()
@@ -141,33 +127,26 @@ void DualDirectionalInput::process()
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint8_t dualOut = dualState;
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
+    uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
 
     // mixed, or the deprecated override, modes
     if (options.combineMode != DualDirectionalCombinationMode::NONE_MODE) {
-        uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
         // Up-Win or Neutral Modify AFTER SOCD(gamepad), Last-Win Modifies BEFORE SOCD(gamepad)
-        if ( socdMode == SOCD_MODE_UP_PRIORITY ||
-                socdMode == SOCD_MODE_NEUTRAL ) {
-
+        if ( socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL ) {
             // Up-Win or Neutral: SOCD(gamepad) *already done* | SOCD(dual) *done in preprocess()*
             dualOut = SOCDCombine(socdMode, gamepadDpad);
-
-            // Modify Gamepad if we're in mixed Up-Win or Neutral and dual != gamepad
-            if ( dualOut != gamepadDpad ) {
-                OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
-            }
+        } else if ( socdMode != SOCD_MODE_BYPASS ) {
+            dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
         } else if (socdMode == SOCD_MODE_BYPASS) {
-            OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut | gamepad->state.dpad);
+            dualOut |= gamepadDpad;
         }
+        OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
     } else {
-        // none combination mode
-        // Set the configured directional mode to the value of the dual output
-        // if configured dual mode is the same mode as the gamepad mode, they
-        // need to be SOCD cleaned first
-        // this also avoids accidentally masking gamepad inputs with the lack of dual inputs
+        // none combination mode: set the configured directional mode to the value of the dual output
+        // however, if configured dual mode is the same mode as the gamepad mode, they
+        // need to be SOCD cleaned together first
         if (gamepad->getOptions().dpadMode == options.dpadMode) {
-            uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
-            if ( socdMode == SOCD_MODE_NEUTRAL ) {
+            if ( socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL ) {
                 dualOut = SOCDCombine(socdMode, gamepadDpad);
             } else if ( socdMode != SOCD_MODE_BYPASS ) {
                 dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
