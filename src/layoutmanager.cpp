@@ -311,52 +311,52 @@ LayoutManager::LayoutList LayoutManager::drawGitadoraStrumA()
 
 LayoutManager::LayoutList LayoutManager::drawSunga12keyA()
 {
-    return BUTTON_LAYOUT_SUNGA12KEYA;
+    return BUTTON_GROUP_SUNGA12KEYA;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga13keyA()
 {
-    return BUTTON_LAYOUT_SUNGA13KEYA;
+    return BUTTON_GROUP_SUNGA13KEYA;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga14keyLRA()
 {
-    return BUTTON_LAYOUT_SUNGA14KEYLRA;
+    return BUTTON_GROUP_SUNGA14KEYLRA;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga14keyUDA()
 {
-    return BUTTON_LAYOUT_SUNGA14KEYUDA;
+    return BUTTON_GROUP_SUNGA14KEYUDA;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga17keyA()
 {
-    return BUTTON_LAYOUT_SUNGA17KEYA;
+    return BUTTON_GROUP_SUNGA17KEYA;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga17keyAAlt()
 {
-    return BUTTON_LAYOUT_SUNGA17KEYAALT;
+    return BUTTON_GROUP_SUNGA17KEYAALT;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga18keyA()
 {
-    return BUTTON_LAYOUT_SUNGA18KEYA;
+    return BUTTON_GROUP_SUNGA18KEYA;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga18keyAAlt()
 {
-    return BUTTON_LAYOUT_SUNGA18KEYAALT;
+    return BUTTON_GROUP_SUNGA18KEYAALT;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga18keyADualUp()
 {
-    return BUTTON_LAYOUT_SUNGA18KEYADUALUP;
+    return BUTTON_GROUP_SUNGA18KEYADUALUP;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga18keyAPref()
 {
-    return BUTTON_LAYOUT_SUNGA18KEYAPREF;
+    return BUTTON_GROUP_SUNGA18KEYAPREF;
 }
 
 LayoutManager::LayoutList LayoutManager::drawDancepadDDRRight()
@@ -406,42 +406,42 @@ LayoutManager::LayoutList LayoutManager::drawGitadoraStrumB()
 
 LayoutManager::LayoutList LayoutManager::drawSunga12keyB()
 {
-    return BUTTON_LAYOUT_SUNGA12KEYB;
+    return BUTTON_GROUP_SUNGA12KEYB;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga13keyB()
 {
-    return BUTTON_LAYOUT_SUNGA13KEYB;
+    return BUTTON_GROUP_SUNGA13KEYB;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga14keyLRB()
 {
-    return BUTTON_LAYOUT_SUNGA14KEYLRB;
+    return BUTTON_GROUP_SUNGA14KEYLRB;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga14keyUDB()
 {
-    return BUTTON_LAYOUT_SUNGA14KEYUDB;
+    return BUTTON_GROUP_SUNGA14KEYUDB;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga17keyB()
 {
-    return BUTTON_LAYOUT_SUNGA17KEYB;
+    return BUTTON_GROUP_SUNGA17KEYB;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga17keyBPref()
 {
-    return BUTTON_LAYOUT_SUNGA17KEYBPREF;
+    return BUTTON_GROUP_SUNGA17KEYBPREF;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga18keyB()
 {
-    return BUTTON_LAYOUT_SUNGA18KEYB;
+    return BUTTON_GROUP_SUNGA18KEYB;
 }
 
 LayoutManager::LayoutList LayoutManager::drawSunga18keyBPref()
 {
-    return BUTTON_LAYOUT_SUNGA18KEYBPREF;
+    return BUTTON_GROUP_SUNGA18KEYBPREF;
 }
 
 LayoutManager::LayoutList LayoutManager::drawBlankA()
