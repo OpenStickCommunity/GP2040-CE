@@ -129,11 +129,10 @@ void DualDirectionalInput::process()
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
     uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
 
-    // in mixed, or the deprecated override, modes, we need to combine/re-clean the gamepad and DDI
-    // outputs to create a coherent behavior
+    // in mixed mode, we need to combine/re-clean the gamepad and DDI outputs to create a coherent behavior
     // reminder that combination mode none with the DDI output set to the same thing as the gamepad
     // output is, in practice, the same behavior as mixed mode, so it also is addressed here
-    if (options.combineMode != DualDirectionalCombinationMode::NONE_MODE ||
+    if (options.combineMode == DualDirectionalCombinationMode::MIXED_MODE ||
             (options.combineMode == DualDirectionalCombinationMode::NONE_MODE &&
              gamepad->getOptions().dpadMode == options.dpadMode)) {
         if ( socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL ) {
@@ -147,6 +146,12 @@ void DualDirectionalInput::process()
             dualOut |= gamepadDpad;
         }
         OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
+    } else if (options.combineMode != DualDirectionalCombinationMode::NONE_MODE) {
+        // this is either of the override modes, which we will treat the same way --- they replace
+        // the gamepad entirely, as is, there's a DDI value
+	if (dualOut != 0) {
+            OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
+        }
     } else {
         // the DDI and gamepad outputs don't need to be mixed, so just apply DDI output to the gamepad
         OverrideGamepad(gamepad, options.dpadMode, dualOut);

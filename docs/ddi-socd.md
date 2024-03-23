@@ -3,10 +3,10 @@
 Documenting results for future reference. Below examples are holding the buttons sequentially, unless otherwise noted by
 "xx", which means the button is released.
 
+## Basic SOCD Example
+
 I only documented Left/Right tests here, because Up/Down either follows the same behavior (Neutral/First/Last) on the
 other axis, or it has its own far more explicit Up priority that isn't worth distinguishing in this doc.
-
-## Basic SOCD Example
 
 | # | Input           | Up Priority/Neutral | First Input Wins | Last Input Wins |
 | - | --------------- | ------------------- | ---------------- | --------------- |
@@ -20,6 +20,9 @@ other axis, or it has its own far more explicit Up priority that isn't worth dis
 
 All Combination Mode Mixed examples apply equally to Combination Mode None when the DDI output is the same LS/DP/RS
 option as the core gamepad's.
+
+I only documented Left/Right tests here, because Up/Down either follows the same behavior (Neutral/First/Last) on the
+other axis, or it has its own far more explicit Up priority that isn't worth distinguishing in this doc.
 
 | # | Input           | Up Priority/Neutral | First Input Wins | Last Input Wins |
 | - | --------------- | ------------------- | ---------------- | --------------- |
@@ -56,3 +59,18 @@ option as the core gamepad's.
 | 4 | xx Core Left    | Neutral             | Left             | Right           |
 | 5 | Core Left       | Left                | Left             | Left            |
 | 6 | Core Right      | Neutral             | Left             | Right           |
+
+## Combination Mode DDI Override
+
+This replaces whatever the gamepad has for output with a non-zero DDI output. SOCD history is maintained. Cross-axis
+behavior is interesting here, allowing some down-to-left/right tricks.
+
+| # | Input           | Up Priority/Neutral | First Input Wins | Last Input Wins |
+| - | --------------- | ------------------- | ---------------- | --------------- |
+| 1 | Core Left       | Left                | Left             | Left            |
+| 2 | Core Right      | Neutral             | Left             | Right           |
+| 3 | DDI Down        | Down                | Down             | Down            |
+| 4 | DDI Up          | Neutral             | Down             | Up              |
+| 5 | xx DDI Up       | Down                | Down             | Down            |
+| 6 | xx DDI Down     | Neutral             | Left             | Right           |
+| 7 | xx Core Right   | Left                | Left             | Left            |
