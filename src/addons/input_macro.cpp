@@ -165,6 +165,7 @@ void InputMacro::preprocess()
     }
     
     if (!isMacroTriggerHeld && (!isMacroRunning || macro.interruptible)) {
+        reset();
         return;
     }
 
