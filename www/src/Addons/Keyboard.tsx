@@ -53,7 +53,7 @@ const Keyboard = ({
 				hidden={!(values.KeyboardHostAddonEnabled && getAvailablePeripherals('usb'))}
 			>
 				<Row className="mb-3">
-					<p>{t('KeyboardMapping:sub-header-text')}</p>
+					<p>{t('AddonsConfig:keyboard-host-sub-header-text')}</p>
 					<KeyboardMapper
 						buttonLabels={buttonLabels}
 						handleKeyChange={handleKeyChange(values, setFieldValue)}

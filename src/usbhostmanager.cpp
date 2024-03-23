@@ -12,28 +12,24 @@
 
 void USBHostManager::start() {
     // This will happen after Gamepad has initialized
-    if ( !addons.empty() ) {
-        if (PeripheralManager::getInstance().isUSBEnabled(0)) {
-            pio_usb_configuration_t* pio_cfg = PeripheralManager::getInstance().getUSB(0)->getController();
-            tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, pio_cfg);
-            tuh_init(BOARD_TUH_RHPORT);
-            sleep_us(10); // ensure we are ready
-            tuh_ready = true;
-        }
+    if (PeripheralManager::getInstance().isUSBEnabled(0)) {
+        pio_usb_configuration_t* pio_cfg = PeripheralManager::getInstance().getUSB(0)->getController();
+        tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, pio_cfg);
+        tuh_init(BOARD_TUH_RHPORT);
+        sleep_us(10); // ensure we are ready
+        tuh_ready = true;
     }
 }
 
 // Shut down the USB bus if we are running USB right now
 void USBHostManager::shutdown() {
-    if ( !addons.empty() ) {
-        if (PeripheralManager::getInstance().isUSBEnabled(0)) {
-            tuh_rhport_reset_bus(BOARD_TUH_RHPORT, false);
-        }
+    if (PeripheralManager::getInstance().isUSBEnabled(0)) {
+        tuh_rhport_reset_bus(BOARD_TUH_RHPORT, false);
     }
 }
 
-void USBHostManager::pushAddon(USBAddon * usbAddon) { // If anything needs to update in the gpconfig driver
-    addons.push_back(usbAddon);
+void USBHostManager::pushListener(USBListener * usbListener) { // If anything needs to update in the gpconfig driver
+    listeners.push_back(usbListener);
 }
 
 // Host manager should call tuh_task as fast as possible
@@ -44,55 +40,64 @@ void USBHostManager::process() {
 }
 
 void USBHostManager::hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->mount(dev_addr, instance, desc_report, desc_len);
     }
 }
 
 void USBHostManager::hid_umount_cb(uint8_t dev_addr, uint8_t instance) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->unmount(dev_addr);
     }
 }
 
 void USBHostManager::hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->report_received(dev_addr, instance, report, len);
     }
 }
 
 void USBHostManager::hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->set_report_complete(dev_addr, instance, report_id, report_type, len);
     }
 }
 
 void USBHostManager::hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->get_report_complete(dev_addr, instance, report_id, report_type, len);
     }
 }
 
 void USBHostManager::xinput_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->xmount(dev_addr, instance, controllerType, subtype);
     }
 }
 
 void USBHostManager::xinput_umount_cb(uint8_t dev_addr) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->unmount(dev_addr);
     }
 }
 
 void USBHostManager::xinput_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->report_received(dev_addr, instance, report, len);
     }
 }
 
 void USBHostManager::xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->report_sent(dev_addr, instance, report, len);
     }
 }

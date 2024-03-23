@@ -9,7 +9,9 @@
 #include "storagemanager.h"
 #include "pico/stdlib.h"
 #include "bitmaps.h"
-#include "drivers/shared/ps4data.h"
+#include "drivers/ps4/PS4Driver.h"
+#include "drivers/xbone/XBOneDriver.h"
+#include "drivermanager.h"
 #include "usbdriver.h"
 #include "version.h"
 #include "config.pb.h"
@@ -160,19 +162,26 @@ void DisplayAddon::drawStatusBar(Gamepad * gamepad)
 		case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
 		case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
 		case INPUT_MODE_PS4:
-			if ( PS4Data::getInstance().ps4ControllerType == PS4ControllerType::PS4_CONTROLLER ) {
-				if (PS4Data::getInstance().authsent == true )
-					statusBar += "PS4:AS";
-				else
-					statusBar += "PS4   ";
-			} else if ( PS4Data::getInstance().ps4ControllerType == PS4ControllerType::PS4_ARCADESTICK ) {
-				if (PS4Data::getInstance().authsent == true )
-					statusBar += "PS5:AS";
-				else
-					statusBar += "PS5   ";
-			}
+			statusBar += "PS4";
+			if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+				statusBar += ":AS";
+			else
+				statusBar += "   ";
 			break;
-		case INPUT_MODE_XBONE:    statusBar += "XBONE"; break;
+		case INPUT_MODE_PS5:
+			statusBar += "PS5";
+			if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+				statusBar += ":AS";
+			else
+				statusBar += "   ";
+			break;
+		case INPUT_MODE_XBONE:
+			statusBar += "XBON";
+			if(((XBOneDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+				statusBar += "E";
+			else
+				statusBar += "*";
+			break;
 		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
 		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
 	}

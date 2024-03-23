@@ -132,12 +132,6 @@ export default {
 	'keyboard-host-d-plus-label': 'D+',
 	'keyboard-host-d-minus-label': 'D-',
 	'keyboard-host-five-v-label': '5V Power（可选）',
-	'pspassthrough-header-text': 'PS 直通验证',
-	'pspassthrough-sub-header-text':
-		'以下设置数据 +, - 和 5V（可选）引脚. 仅数据 + 和 5V 引脚可配置。',
-	'pspassthrough-d-plus-label': 'D+',
-	'pspassthrough-d-minus-label': 'D-',
-	'pspassthrough-five-v-label': '5V 电源（可选）',
 	'input-history-header-text': '输入历史',
 	'input-history-length-label': '历史长度（字符）',
 	'input-history-col-label': '列',

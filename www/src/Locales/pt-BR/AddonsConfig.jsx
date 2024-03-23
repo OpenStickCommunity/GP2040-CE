@@ -148,12 +148,6 @@ export default {
 	'keyboard-host-d-plus-label': 'D+',
 	'keyboard-host-d-minus-label': 'D-',
 	'keyboard-host-five-v-label': 'Alimentação 5V (opcional)',
-	'pspassthrough-header-text': 'PS Passthrough',
-	'pspassthrough-sub-header-text':
-		'A seguir, configure os pinos de dados +, - e 5V (opcional). Apenas os pinos + e 5V podem ser configurados.',
-	'pspassthrough-d-plus-label': 'D+',
-	'pspassthrough-d-minus-label': 'D-',
-	'pspassthrough-five-v-label': 'Alimentação 5V (opcional)',
 	'input-history-header-text': 'Histórico de Entrada',
 	'input-history-length-label': 'Comprimento do histórico (caracteres)',
 	'input-history-col-label': 'Coluna',

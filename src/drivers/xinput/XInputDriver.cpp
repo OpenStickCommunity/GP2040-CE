@@ -4,7 +4,23 @@
  */
 
 #include "drivers/xinput/XInputDriver.h"
+#include "drivers/xinput/XInputAuth.h"
 #include "drivers/shared/driverhelper.h"
+#include "storagemanager.h"
+
+#define USB_SETUP_DEVICE_TO_HOST 0x80
+#define USB_SETUP_HOST_TO_DEVICE 0x00
+#define USB_SETUP_TYPE_VENDOR    0x40
+#define USB_SETUP_TYPE_CLASS     0x20
+#define USB_SETUP_TYPE_STANDARD  0x00
+#define USB_SETUP_RECIPIENT_INTERFACE   0x01
+#define USB_SETUP_RECIPIENT_DEVICE      0x00
+#define USB_SETUP_RECIPIENT_ENDPOINT    0x02
+#define USB_SETUP_RECIPIENT_OTHER       0x03
+
+#define REQ_GET_OS_FEATURE_DESCRIPTOR 0x20
+#define DESC_EXTENDED_COMPATIBLE_ID_DESCRIPTOR 0x0004
+#define DESC_EXTENDED_PROPERTIES_DESCRIPTOR 0x0005
 
 #define XINPUT_OUT_SIZE 32
 
@@ -12,12 +28,12 @@ uint8_t endpoint_in = 0;
 uint8_t endpoint_out = 0;
 uint8_t xinput_out_buffer[XINPUT_OUT_SIZE] = {};
 
-static void xinput_init(void)
-{
+static bool authDriverPresent = false;
+
+static void xinput_init(void) {
 }
 
-static void xinput_reset(uint8_t rhport)
-{
+static void xinput_reset(uint8_t rhport) {
 	(void)rhport;
 }
 
@@ -54,7 +70,32 @@ static bool xinput_device_control_request(uint8_t rhport, uint8_t stage, tusb_co
 	(void)rhport;
 	(void)stage;
 	(void)request;
-
+/*
+	// if authentication is present
+	if ( authDriverPresent &&
+		request->bmRequestType == (USB_SETUP_DEVICE_TO_HOST | USB_SETUP_RECIPIENT_INTERFACE | USB_SETUP_TYPE_VENDOR)) {
+		switch(request->bRequest) {
+			case 0x81:
+				uint8_t serial[0x0B];
+            	return sizeof(id_data_ms_controller);
+			case 0x82:
+				return 0;
+			case 0x83:
+				memcpy(requestBuffer, challenge_response, sizeof(challenge_response));
+            	return sizeof(challenge_response);
+			case 0x84:
+				break;
+			case 0x86:
+				short state = 2;  // 1 = in-progress, 2 = complete
+				memcpy(&request->wValue, &state, sizeof(state));
+				return sizeof(state);
+			case 0x87:
+				break;
+			default:
+				break;
+		};
+	}
+*/
 	return true;
 }
 
@@ -104,6 +145,30 @@ void XInputDriver::initialize() {
 		.xfer_cb = xinput_xfer_callback,
 		.sof = NULL
 	};
+
+	authDriver = nullptr;
+}
+
+void XInputDriver::initializeAux() {
+	authDriver = nullptr;
+	// AUTH DRIVER NON-FUNCTIONAL FOR NOW
+	/*
+	GamepadOptions & gamepadOptions = Storage::getInstance().getGamepadOptions();
+	if ( gamepadOptions.xinputAuthType == InputModeAuthType::INPUT_MODE_AUTH_TYPE_USB )  {
+		authDriver = new XInputAuth();
+		if ( authDriver->available() ) {
+			authDriver->initialize();
+			authDriverPresent = true; // for callbacks
+		}
+	}
+	*/
+}
+
+USBListener * XInputDriver::get_usb_auth_listener() {
+	if ( authDriver != nullptr && authDriver->available() ) {
+		return authDriver->getListener();
+	}
+	return nullptr;
 }
 
 void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
@@ -163,6 +228,12 @@ void XInputDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		usbd_edpt_claim(0, endpoint_out);									 // Take control of OUT endpoint
 		usbd_edpt_xfer(0, endpoint_out, outBuffer, XINPUT_OUT_SIZE); 		 // Retrieve report buffer
 		usbd_edpt_release(0, endpoint_out);									 // Release control of OUT endpoint
+	}
+}
+
+void XInputDriver::processAux() {
+	if ( authDriver != nullptr && authDriver->available() ) {
+		((XInputAuth*)authDriver)->process();
 	}
 }
 
