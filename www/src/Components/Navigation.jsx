@@ -79,9 +79,6 @@ const Navigation = () => {
 						<NavDropdown.Item as={NavLink} to="/peripheral-mapping">
 							{t('Navigation:peripheral-mapping-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="/keyboard-mapping">
-							{t('Navigation:keyboard-mapping-label')}
-						</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} to="/led-config">
 							{t('Navigation:led-config-label')}
 						</NavDropdown.Item>

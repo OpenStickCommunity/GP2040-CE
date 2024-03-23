@@ -141,7 +141,18 @@ enum InputMode
     INPUT_MODE_ASTRO = 10;
     INPUT_MODE_PSCLASSIC = 11;
     INPUT_MODE_XBOXORIGINAL = 12;
+    INPUT_MODE_PS5 = 13;
     INPUT_MODE_CONFIG = 255;
+}
+
+enum InputModeAuthType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    INPUT_MODE_AUTH_TYPE_NONE = 0;
+    INPUT_MODE_AUTH_TYPE_KEYS = 1;
+    INPUT_MODE_AUTH_TYPE_USB = 2;
+    INPUT_MODE_AUTH_TYPE_I2C = 3;
 }
 
 enum DpadMode
@@ -335,4 +346,19 @@ enum GPShape_Type
     GP_SHAPE_DIAMOND = 2;
     GP_SHAPE_POLYGON = 3;
     GP_SHAPE_ARC = 4;
+};
+
+enum RotaryEncoderPinMode
+{
+    option (nanopb_enumopt).long_names = false;
+
+    ENCODER_MODE_NONE = 0;
+    ENCODER_MODE_LEFT_ANALOG_X = 1;
+    ENCODER_MODE_LEFT_ANALOG_Y = 2;
+    ENCODER_MODE_RIGHT_ANALOG_X = 3;
+    ENCODER_MODE_RIGHT_ANALOG_Y = 4;
+    ENCODER_MODE_LEFT_TRIGGER = 5;
+    ENCODER_MODE_RIGHT_TRIGGER = 6;
+    ENCODER_MODE_DPAD_X = 7;
+    ENCODER_MODE_DPAD_Y = 8;
 };
