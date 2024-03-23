@@ -1,7 +1,6 @@
 #include "addons/input_macro.h"
 #include "storagemanager.h"
 #include "GamepadState.h"
-
 #include "hardware/gpio.h"
 
 bool InputMacro::available() {
@@ -45,27 +44,36 @@ void InputMacro::preprocess()
         int newMacroPosition = -1;
         for (int i = 0; i < inputMacroOptions.macroList_count; i++) {
             Macro& macro = inputMacroOptions.macroList[i];
-            if (!macro.enabled) continue;
+            if (!macro.enabled) {
+                continue;
+            }
 
             if (macro.useMacroTriggerButton) {
-                if (macro.macroTriggerButton == 0) continue;
+                if (macro.macroTriggerButton == 0) {
+                    continue;
+                }
                 if ((allPins & 1 << inputMacroOptions.pin) &&
                     ((gamepad->state.buttons & macro.macroTriggerButton) ||
                     (gamepad->state.dpad & (macro.macroTriggerButton >> 16)))) {
                     macroInputPressed = true;
-                    newMacroPosition = i; break;
+                    newMacroPosition = i; 
+                    break;
                 }
             } else {
-                if (!isValidPin(macro.macroTriggerPin)) continue;
+                if (!isValidPin(macro.macroTriggerPin)) {
+                    continue;
+                }
                 if ((allPins & 1 << macro.macroTriggerPin)) {
                     macroInputPressed = true;
-                    newMacroPosition = i; break;
+                    newMacroPosition = i; 
+                    break;
                 }
             }
         } 
 
-        if (macroPosition == -1 && newMacroPosition == -1)
+        if (macroPosition == -1 && newMacroPosition == -1){
             return;
+        }
 
         if (macroPosition != -1 && newMacroPosition != -1) {
             if (newMacroPosition != macroPosition ||
@@ -144,7 +152,7 @@ void InputMacro::preprocess()
                 break;
         }
     }
-
+    
     prevMacroInputPressed = macroInputPressed;
 
     MacroInput& macroInput = macro.macroInputs[macroInputPosition];
@@ -156,11 +164,7 @@ void InputMacro::preprocess()
         macroStartTime = currentMicros;
     }
     
-    if (!isMacroRunning)
-        return;
-    
-    if ((!isMacroTriggerHeld && macro.interruptible)) {
-        reset();
+    if (!isMacroTriggerHeld && (!isMacroRunning || macro.interruptible)) {
         return;
     }
 
@@ -197,19 +201,21 @@ void InputMacro::preprocess()
         if (boardLedEnabled) {
             gpio_put(BOARD_LED_PIN, (gamepad->state.dpad || gamepad->state.buttons) ? 1 : 0);
         }
-    } else {
+    }
+    else {
         if (boardLedEnabled) {
             gpio_put(BOARD_LED_PIN, 0);
         }
     }
-
+    
     if ((currentMicros - macroStartTime) >= macroInputHoldTime) {
-        macroStartTime = currentMicros; macroInputPosition++;
+        macroStartTime = currentMicros; 
+        macroInputPosition++;
         MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
         uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
         macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
     }
-    
+
     if (isMacroRunning && macroInputPosition >= (macro.macroInputs_count)) {
         macroInputPosition = 0;
         bool isMacroTypeLoopable = macro.macroType == ON_TOGGLE || macro.macroType == ON_HOLD_REPEAT;
