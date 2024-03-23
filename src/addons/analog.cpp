@@ -103,27 +103,6 @@ void AnalogInput::process()
         }
     }
 
-    // Pow analog input angle
-    if (analogOptions.analog_sensitivity != 100){
-        if (isValidPin(analogOptions.analogAdc1PinX) || isValidPin(analogOptions.analogAdc1PinY)){
-            x_magnitude_1 = adc_1_x - ANALOG_CENTER;
-            y_magnitude_1 = adc_1_y - ANALOG_CENTER;
-            magnitude = sqrt((x_magnitude_1 * x_magnitude_1) + (y_magnitude_1 * y_magnitude_1));
-
-            stickSensitivity(adc_1_x, adc_1_y, adc_deadzone, x_magnitude_1, y_magnitude_1, magnitude, analogOptions.analog_sensitivity / 100.0f , isValidPin(analogOptions.analogAdc1PinX), isValidPin(analogOptions.analogAdc1PinY));
-        }
-
-        if (isValidPin(analogOptions.analogAdc2PinX) || isValidPin(analogOptions.analogAdc2PinY)){
-            x_magnitude_2 = adc_2_x - ANALOG_CENTER;
-            y_magnitude_2 = adc_2_y - ANALOG_CENTER;
-            magnitude = sqrt((x_magnitude_2 * x_magnitude_2) + (y_magnitude_2 * y_magnitude_2));
-
-            stickSensitivity(adc_2_x, adc_2_y, adc_deadzone, x_magnitude_2, y_magnitude_2, magnitude, analogOptions.analog_sensitivity / 100.0f , isValidPin(analogOptions.analogAdc2PinX), isValidPin(analogOptions.analogAdc2PinY));
-        }
-
-        //ADC values have been changed, so magnitude values need to be recalculated
-    }
-
     // Calculations for radialDeadzone() and adjustCircularity()
     // Apply scaled radial deadzones
     if (adc_1_x != ANALOG_CENTER && adc_1_y != ANALOG_CENTER) {
@@ -134,6 +113,11 @@ void AnalogInput::process()
         if (adc_deadzone) {
             radialDeadzone(adc_1_x, adc_1_y, adc_deadzone, x_magnitude_1, y_magnitude_1, magnitude);
         }
+
+        // Pow analog input angle 1 (split to use magnitude values)
+        if (analogOptions.analog_sensitivity != 100){
+            stickSensitivity(adc_1_x, adc_1_y, adc_deadzone, x_magnitude_1, y_magnitude_1, magnitude, analogOptions.analog_sensitivity / 100.0f , isValidPin(analogOptions.analogAdc1PinX), isValidPin(analogOptions.analogAdc1PinY));
+        }
     }
 
     if (adc_2_x != ANALOG_CENTER && adc_2_y != ANALOG_CENTER) {
@@ -143,6 +127,11 @@ void AnalogInput::process()
 
         if (adc_deadzone) {
             radialDeadzone(adc_2_x, adc_2_y, adc_deadzone, x_magnitude_2, y_magnitude_2, magnitude);
+        }
+
+        // Pow analog input angle 2 (split to use magnitude values)
+        if (analogOptions.analog_sensitivity != 100){
+            stickSensitivity(adc_2_x, adc_2_y, adc_deadzone, x_magnitude_2, y_magnitude_2, magnitude, analogOptions.analog_sensitivity / 100.0f , isValidPin(analogOptions.analogAdc2PinX), isValidPin(analogOptions.analogAdc2PinY));
         }
     }
 
@@ -225,17 +214,19 @@ void AnalogInput::adjustCircularity(float& x, float& y, float deadzone, float x_
 }
 
 void AnalogInput::stickSensitivity(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude, float pow_value, bool active_x, bool active_y){
-    if (magnitude > 0.0f){
-        float tmp_magnitude = magnitude * 2.0f;
-        float magnitude_pow = pow(tmp_magnitude , pow_value);
+    if (active_x || active_y){
+        if (magnitude > 0.0f){
+            float tmp_magnitude = magnitude * 2.0f;
+            float magnitude_pow = pow(tmp_magnitude , pow_value);
 
-        if (active_x){
-            x = x_magnitude * (magnitude_pow / tmp_magnitude) + ANALOG_CENTER;
-            x = std::fmin(x, ANALOG_MAX);
-        }
-        if (active_y){
-            y = y_magnitude * (magnitude_pow / tmp_magnitude) + ANALOG_CENTER;
-            y = std::fmin(y, ANALOG_MAX);
+            if (active_x){
+                x = x_magnitude * (magnitude_pow / tmp_magnitude) + ANALOG_CENTER;
+                x = std::fmin(x, ANALOG_MAX);
+            }
+            if (active_y){
+                y = y_magnitude * (magnitude_pow / tmp_magnitude) + ANALOG_CENTER;
+                y = std::fmin(y, ANALOG_MAX);
+            }
         }
     }
 }
