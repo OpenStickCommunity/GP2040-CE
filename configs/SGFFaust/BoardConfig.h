@@ -7,6 +7,7 @@
 #define SGF_FAUST_CONFIG_H_
 
 #include "enums.pb.h"
+#include "class/hid/hid.h"
 
 #define BOARD_CONFIG_LABEL "SGF Faust"
 
@@ -54,14 +55,12 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
+#define USB_PERIPHERAL_ENABLED 1
+#define USB_PERIPHERAL_PIN_DPLUS 12
 
 #define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
-
-#define PSPASSTHROUGH_ENABLED 1
-#define PSPASSTHROUGH_PIN_DPLUS 12
-
-#define XBONEPASSTHROUGH_ENABLED 1
+#define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
+#define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
 
 #define BOARD_LEDS_PIN 7
 #define LED_BRIGHTNESS_MAXIMUM 255

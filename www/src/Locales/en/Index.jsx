@@ -6,7 +6,6 @@ import ResetSettings from './ResetSettings';
 import Components from './Components';
 import PinMapping from './PinMapping';
 import PeripheralMapping from './PeripheralMapping';
-import KeyboardMapping from './KeyboardMapping';
 import LedConfig from './LedConfig';
 import CustomTheme from './CustomTheme';
 import BackupPage from './BackupPage';
@@ -14,6 +13,7 @@ import DisplayConfig from './DisplayConfig';
 import AddonsConfig from './AddonsConfig';
 import CaptureButton from './CaptureButton';
 import WiiAddon from './Addons/WiiAddon';
+import Rotary from './Addons/Rotary';
 import InputMacroAddon from './InputMacroAddon';
 
 export default {
@@ -25,7 +25,6 @@ export default {
 	Components,
 	PinMapping,
 	PeripheralMapping,
-	KeyboardMapping,
 	LedConfig,
 	CustomTheme,
 	BackupPage,
@@ -33,5 +32,6 @@ export default {
 	AddonsConfig,
 	CaptureButton,
 	WiiAddon,
+    Rotary,
 	InputMacroAddon,
 };

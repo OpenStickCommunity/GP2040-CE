@@ -5,7 +5,6 @@ import SettingsPage from './SettingsPage';
 import ResetSettings from './ResetSettings';
 import Components from './Components';
 import PinMapping from './PinMapping';
-import KeyboardMapping from './KeyboardMapping';
 import LedConfig from './LedConfig';
 import CustomTheme from './CustomTheme';
 import BackupPage from './BackupPage';
@@ -20,7 +19,6 @@ export default {
 	ResetSettings,
 	Components,
 	PinMapping,
-	KeyboardMapping,
 	LedConfig,
 	CustomTheme,
 	BackupPage,

@@ -29,6 +29,7 @@
 #include "addons/wiiext.h"
 #include "addons/input_macro.h"
 #include "addons/snes_input.h"
+#include "addons/rotaryencoder.h"
 
 // Pico includes
 #include "pico/bootrom.h"
@@ -57,12 +58,9 @@ void GP2040::setup() {
 	PeripheralManager::getInstance().initSPI();
 	PeripheralManager::getInstance().initUSB();
 
-	// Reduce CPU if any USB host add-on is enabled
-	const AddonOptions & addonOptions = Storage::getInstance().getAddonOptions();
-	if ( addonOptions.keyboardHostOptions.enabled ||
-			addonOptions.psPassthroughOptions.enabled ||
-			addonOptions.xbonePassthroughOptions.enabled ){
-	    set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
+	// Reduce CPU if USB host is enabled
+	if ( PeripheralManager::getInstance().isUSBEnabled(0) ) {
+		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
 
     // Setup Gamepad and Gamepad Storage
@@ -100,6 +98,7 @@ void GP2040::setup() {
 	addons.LoadAddon(new PlayerNumAddon(), CORE0_USBREPORT);
 	addons.LoadAddon(new SliderSOCDInput(), CORE0_INPUT);
 	addons.LoadAddon(new TiltInput(), CORE0_INPUT);
+	addons.LoadAddon(new RotaryEncoderInput(), CORE0_INPUT);
 
 	// Input override addons
 	addons.LoadAddon(new ReverseInput(), CORE0_INPUT);
@@ -112,7 +111,6 @@ void GP2040::setup() {
 		case BootAction::ENTER_WEBCONFIG_MODE:
 			// Move this to the Net driver initialize
 			Storage::getInstance().SetConfigMode(true);
-			//initialize_driver(INPUT_MODE_CONFIG);
 			DriverManager::getInstance().setup(INPUT_MODE_CONFIG);
 			ConfigManager::getInstance().setup(CONFIG_TYPE_WEB);
 			return;
@@ -151,6 +149,9 @@ void GP2040::setup() {
 			break;
 		case BootAction::SET_INPUT_MODE_PS4: // PS4 / PS5 Driver
 			inputMode = INPUT_MODE_PS4;
+			break;
+		case BootAction::SET_INPUT_MODE_PS5: // PS4 / PS5 Driver
+			inputMode = INPUT_MODE_PS5;
 			break;
 		case BootAction::SET_INPUT_MODE_XBONE: // Xbox One Driver
 			inputMode = INPUT_MODE_XBONE;
@@ -376,6 +377,8 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_KEYBOARD;
                                 case INPUT_MODE_PS4: 
                                     return BootAction::SET_INPUT_MODE_PS4;
+                                case INPUT_MODE_PS5: 
+                                    return BootAction::SET_INPUT_MODE_PS5;
                                 case INPUT_MODE_NEOGEO: 
                                     return BootAction::SET_INPUT_MODE_NEOGEO;
                                 case INPUT_MODE_MDMINI: 
