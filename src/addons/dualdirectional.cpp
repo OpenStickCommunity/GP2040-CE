@@ -129,31 +129,26 @@ void DualDirectionalInput::process()
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
     uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
 
-    // mixed, or the deprecated override, modes
-    if (options.combineMode != DualDirectionalCombinationMode::NONE_MODE) {
-        // Up-Win or Neutral Modify AFTER SOCD(gamepad), Last-Win Modifies BEFORE SOCD(gamepad)
+    // in mixed, or the deprecated override, modes, we need to combine/re-clean the gamepad and DDI
+    // outputs to create a coherent behavior
+    // reminder that combination mode none with the DDI output set to the same thing as the gamepad
+    // output is, in practice, the same behavior as mixed mode, so it also is addressed here
+    if (options.combineMode != DualDirectionalCombinationMode::NONE_MODE ||
+            (options.combineMode == DualDirectionalCombinationMode::NONE_MODE &&
+             gamepad->getOptions().dpadMode == options.dpadMode)) {
         if ( socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL ) {
-            // Up-Win or Neutral: SOCD(gamepad) *already done* | SOCD(dual) *done in preprocess()*
+            // neutral/up priority are pretty simple, they just need to be re-neutralized
             dualOut = SOCDCombine(socdMode, gamepadDpad);
         } else if ( socdMode != SOCD_MODE_BYPASS ) {
+            // if not the above, what's left is first/last input wins, which need a complicated re-clean
             dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
-        } else if (socdMode == SOCD_MODE_BYPASS) {
+        } else {
+            // this is bypass mode, just OR them together
             dualOut |= gamepadDpad;
         }
         OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
     } else {
-        // none combination mode: set the configured directional mode to the value of the dual output
-        // however, if configured dual mode is the same mode as the gamepad mode, they
-        // need to be SOCD cleaned together first
-        if (gamepad->getOptions().dpadMode == options.dpadMode) {
-            if ( socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL ) {
-                dualOut = SOCDCombine(socdMode, gamepadDpad);
-            } else if ( socdMode != SOCD_MODE_BYPASS ) {
-                dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
-            } else {
-                dualOut |= gamepadDpad;
-            }
-        }
+        // the DDI and gamepad outputs don't need to be mixed, so just apply DDI output to the gamepad
         OverrideGamepad(gamepad, options.dpadMode, dualOut);
     }
 }
