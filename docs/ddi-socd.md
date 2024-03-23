@@ -65,12 +65,12 @@ other axis, or it has its own far more explicit Up priority that isn't worth dis
 This replaces whatever the gamepad has for output with a non-zero DDI output. SOCD history is maintained. Cross-axis
 behavior is interesting here, allowing some down-to-left/right tricks.
 
-| # | Input           | Up Priority/Neutral | First Input Wins | Last Input Wins |
-| - | --------------- | ------------------- | ---------------- | --------------- |
-| 1 | Core Left       | Left                | Left             | Left            |
-| 2 | Core Right      | Neutral             | Left             | Right           |
-| 3 | DDI Down        | Down                | Down             | Down            |
-| 4 | DDI Up          | Neutral             | Down             | Up              |
-| 5 | xx DDI Up       | Down                | Down             | Down            |
-| 6 | xx DDI Down     | Neutral             | Left             | Right           |
-| 7 | xx Core Right   | Left                | Left             | Left            |
+| # | Input           | Neutral | Up Prio   | First Input Wins | Last Input Wins |
+| - | --------------- | ------- | --------- | ---------------- | --------------- |
+| 1 | Core Left       | Left    | Left      | Left             | Left            |
+| 2 | Core Right      | Neutral | Neutral   | Left             | Right           |
+| 3 | DDI Down        | Down    | Down      | Down             | Down            |
+| 4 | DDI Up          | Neutral | Up        | Down             | Up              |
+| 5 | xx DDI Up       | Down    | Down      | Down             | Down            |
+| 6 | xx DDI Down     | Neutral | Neutral   | Left             | Right           |
+| 7 | xx Core Right   | Left    | Left      | Left             | Left            |
