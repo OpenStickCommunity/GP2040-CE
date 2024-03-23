@@ -58,7 +58,7 @@
 #endif
 
 #ifndef DEFAULT_ANALOG_SENSITIVITY
-#define DEFAULT_ANALOG_SENSITIVITY 10
+#define DEFAULT_ANALOG_SENSITIVITY 100
 #endif
 
 // Analog Module Name
