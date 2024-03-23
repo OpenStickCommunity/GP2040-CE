@@ -7,6 +7,7 @@
 #define PICO_BOARD_CONFIG_H_
 
 #include "enums.pb.h"
+#include "class/hid/hid.h"
 
 #define BOARD_CONFIG_LABEL "Fightboard V3"
 
@@ -74,8 +75,8 @@
 
 #define HAS_I2C_DISPLAY 1
 #define I2C1_ENABLED 1
-#define I2C1_SDA 14
-#define I2C1_SCL 15
+#define I2C1_PIN_SDA 14
+#define I2C1_PIN_SCL 15
 #define DISPLAY_I2C_BLOCK i2c1
 
 #define BUTTON_LAYOUT BUTTON_LAYOUT_FIGHTBOARD_STICK

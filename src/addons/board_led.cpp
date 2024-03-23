@@ -1,9 +1,9 @@
 #include "addons/board_led.h"
-#include "drivers/shared/ps4data.h"
+#include "drivermanager.h"
+#include "drivers/ps4/PS4Driver.h"
 #include "usbdriver.h"
 #include "helper.h"
 #include "config.pb.h"
-#include "drivermanager.h"
 
 bool BoardLedAddon::available() {
     const OnBoardLedOptions& options = Storage::getInstance().getAddonOptions().onBoardLedOptions;
@@ -70,7 +70,10 @@ void BoardLedAddon::process() {
             }
             break;
         case OnBoardLedMode::ON_BOARD_LED_MODE_PS_AUTH:
-            state = PS4Data::getInstance().authsent == true;
+            if(processedGamepad->getOptions().inputMode == INPUT_MODE_PS4 ||
+                processedGamepad->getOptions().inputMode == INPUT_MODE_PS5) {
+                state = ((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true;
+            }
             if (prevState != state) {
                 gpio_put(BOARD_LED_PIN, state ? 1 : 0);
             }
