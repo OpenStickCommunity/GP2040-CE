@@ -149,8 +149,8 @@ void DualDirectionalInput::process()
     } else if (options.combineMode != DualDirectionalCombinationMode::NONE_MODE) {
         // this is either of the override modes, which we will treat the same way --- they replace
         // the gamepad entirely in certain conditions: DDI Override if it has any data,
-	// Gamepad Override if gamepad doesn't have any data
-	if ((options.combineMode == DualDirectionalCombinationMode::DUAL_MODE && dualOut != 0) ||
+        // Gamepad Override if gamepad doesn't have any data
+        if ((options.combineMode == DualDirectionalCombinationMode::DUAL_MODE && dualOut != 0) ||
                 (options.combineMode == DualDirectionalCombinationMode::GAMEPAD_MODE && gamepadDpad == 0)) {
             OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
         }
