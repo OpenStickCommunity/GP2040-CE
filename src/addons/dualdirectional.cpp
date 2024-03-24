@@ -136,20 +136,22 @@ void DualDirectionalInput::process()
             (options.combineMode == DualDirectionalCombinationMode::NONE_MODE &&
              gamepad->getOptions().dpadMode == options.dpadMode)) {
         if ( socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL ) {
-            // neutral/up priority are pretty simple, they just need to be re-neutralized
+            // neutral/up priority SOCD cleaning are pretty simple, they just need to be re-neutralized
             dualOut = SOCDCombine(socdMode, gamepadDpad);
         } else if ( socdMode != SOCD_MODE_BYPASS ) {
-            // if not the above, what's left is first/last input wins, which need a complicated re-clean
+            // else if not bypass, what's left is first/last input wins SOCD, which need a complicated re-clean
             dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
         } else {
-            // this is bypass mode, just OR them together
+            // this is bypass SOCD, just OR them together
             dualOut |= gamepadDpad;
         }
         OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
     } else if (options.combineMode != DualDirectionalCombinationMode::NONE_MODE) {
         // this is either of the override modes, which we will treat the same way --- they replace
-        // the gamepad entirely, as is, there's a DDI value
-	if (dualOut != 0) {
+        // the gamepad entirely in certain conditions: DDI Override if it has any data,
+	// Gamepad Override if gamepad doesn't have any data
+	if ((options.combineMode == DualDirectionalCombinationMode::DUAL_MODE && dualOut != 0) ||
+                (options.combineMode == DualDirectionalCombinationMode::GAMEPAD_MODE && gamepadDpad == 0)) {
             OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
         }
     } else {

@@ -24,6 +24,10 @@ option as the core gamepad's.
 I only documented Left/Right tests here, because Up/Down either follows the same behavior (Neutral/First/Last) on the
 other axis, or it has its own far more explicit Up priority that isn't worth distinguishing in this doc.
 
+This mode seems to be useful for having two sets of inputs contribute to any one of LS/DP/RS at the same time, but is
+distinguished from two sets of core gamepad mappings by the fact that this allows for two layers of SOCD cleaning to be
+applied, essentially `SOCD( SOCD(gamepad) | SOCD(DDI) )` which can allow for some interesting inputs.
+
 | # | Input           | Up Priority/Neutral | First Input Wins | Last Input Wins |
 | - | --------------- | ------------------- | ---------------- | --------------- |
 | 1 | Core Left       | Left                | Left             | Left            |
@@ -60,10 +64,49 @@ other axis, or it has its own far more explicit Up priority that isn't worth dis
 | 5 | Core Left       | Left                | Left             | Left            |
 | 6 | Core Right      | Neutral             | Left             | Right           |
 
+## Combination Mode Gamepad Override
+
+This ignores the DDI output when the core gamepad has any output. SOCD history is maintained. Cross-axis
+behavior is interesting here, allowing some down-to-left/right tricks.
+
+This makes Tekken Shadow Step easy, apparently.
+
+| # | Input           | Neutral   | Up Prio   | First Input Wins | Last Input Wins |
+| - | --------------- | --------- | --------- | ---------------- | --------------- |
+| 1 | DDI Down        | Down      | Down      | Down             | Down            |
+| 2 | Core Left       | Left      | Left      | Left             | Left            |
+| 3 | Core Down       | Down Left | Down Left | Down Left        | Down Left       |
+| 4 | xx DDI Down     | Down Left | Down Left | Down Left        | Down Left       |
+| 5 | xx Core Down    | Left      | Left      | Left             | Left            |
+| 6 | xx Core Left    | Neutral   | Neutral   | Neutral          | Neutral         |
+| 7 | DDI Down        | Down      | Down      | Down             | Down            |
+| 8 | DDI Left        | Down Left | Down Left | Down Left        | Down Left       |
+| 9 | Core Up         | Up        | Up        | Up               | Up              |
+
+| # | Input           | Neutral | Up Prio   | First Input Wins | Last Input Wins |
+| - | --------------- | ------- | --------- | ---------------- | --------------- |
+| 1 | Core Left       | Left    | Left      | Left             | Left            |
+| 2 | DDI Down        | Left    | Left      | Left             | Left            |
+| 3 | DDI Up          | Left    | Left      | Left             | Left            |
+| 4 | xx DDI Up       | Left    | Left      | Left             | Left            |
+| 5 | xx DDI Down     | Left    | Left      | Left             | Left            |
+| 6 | Core Right      | Neutral | Neutral   | Left             | Right           |
+
+| # | Input           | Neutral | Up Prio   | First Input Wins | Last Input Wins |
+| - | --------------- | ------- | --------- | ---------------- | --------------- |
+| 1 | DDI Left        | Left    | Left      | Left             | Left            |
+| 2 | DDI Right       | Neutral | Neutral   | Left             | Right           |
+| 3 | Core Down       | Down    | Down      | Down             | Down            |
+| 4 | Core Up         | Neutral | Up        | Down             | Up              |
+| 5 | xx Core Up      | Down    | Down      | Down             | Down            |
+| 6 | xx Core Down    | Neutral | Neutral   | Left             | Right           |
+| 7 | xx DDI Right    | Left    | Left      | Left             | Left            |
+
 ## Combination Mode DDI Override
 
 This replaces whatever the gamepad has for output with a non-zero DDI output. SOCD history is maintained. Cross-axis
-behavior is interesting here, allowing some down-to-left/right tricks.
+behavior is interesting here, allowing some down-to-left/right tricks. (It's the same idea as Gamepad Override, just
+swapping which method overrides which.)
 
 | # | Input           | Neutral | Up Prio   | First Input Wins | Last Input Wins |
 | - | --------------- | ------- | --------- | ---------------- | --------------- |

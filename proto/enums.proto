@@ -292,7 +292,7 @@ enum DualDirectionalCombinationMode
 	option (nanopb_enumopt).long_names = false;
 
 	MIXED_MODE = 0;
-	DEPRECATED_GAMEPAD_MODE = 1;
+	GAMEPAD_MODE = 1;
 	DUAL_MODE = 2;
 	NONE_MODE = 3;
 }
