@@ -119,11 +119,15 @@ void TurboInput::process()
     // Check for TURBO pin enabled
     if (gamepad->debouncedGpio & turboPinMask) {
         if (buttonsPressed && (lastPressed != buttonsPressed)) {
-            turboButtonsMask ^= buttonsPressed; // Toggle Turbo
+            // Only toggle state for buttons changed that are pressed
+            turboButtonsMask ^= (lastPressed ^ buttonsPressed) & ~lastPressed; // Toggle Turbo
             gamepad->turboState.buttons = turboButtonsMask; //turboButtonsMask & TURBO_BUTTON_MASK; //&= TURBO_BUTTON_MASK;
             if (options.shmupModeEnabled) {
                 turboButtonsMask |= alwaysEnabled;  // SHMUP Always-on Buttons Set
             }
+
+            // Reset Turbo flicker on a new button press
+            bTurboFlicker = false;
         }
 
         if (dpadPressed & GAMEPAD_MASK_DOWN && (lastDpad != dpadPressed)) {
@@ -138,10 +142,6 @@ void TurboInput::process()
         }
         lastPressed = buttonsPressed; // save last pressed
         lastDpad = dpadPressed;
-
-        // Clear gamepad outputs since we're in turbo adjustment mode
-        gamepad->clearState();
-        return; // Holding TURBO cancels turbo functionality
     } else {
         lastPressed = 0; // disable last pressed
         lastDpad = 0; // disable last dpad
@@ -170,13 +170,8 @@ void TurboInput::process()
         nextAdcRead = now + 100000; // Sample every 100ms
     }
 
-    // Reset Turbo flicker on a new button press
-    if ((lastButtons & turboButtonsMask) == 0 && (gamepad->state.buttons & turboButtonsMask) != 0) {
-        bTurboFlicker = false; // reset flicker state to ON
-        nextTimer = now + uIntervalUS - TURBO_LOOP_OFFSET; // interval to flicker-off button
-    }
     // Check if we've reached the next timer right before applying turbo state
-    else if (turboButtonsMask && nextTimer < now) {
+    if (nextTimer < now) {
         bTurboFlicker ^= true;
         nextTimer = now + uIntervalUS - TURBO_LOOP_OFFSET;
     }
