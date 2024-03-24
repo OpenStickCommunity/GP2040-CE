@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "enums.pb.h"
-#include "gamepad/GamepadDebouncer.h"
 #include "gamepad/GamepadState.h"
 
 #include "pico/stdlib.h"
@@ -41,9 +40,9 @@ public:
 	void process();
 	void read();
 	void save();
-	void debounce();
-	
+
 	void hotkey();
+	void clearState();
 
 	/**
 	 * @brief Flag to indicate analog trigger support.
@@ -90,7 +89,7 @@ public:
 	}
 
 	/**
-	 * @brief Remote hotkey bits from the state bitmask and provide pressed action.
+	 * @brief Remove hotkey bits from the state bitmask and provide pressed action.
 	 */
 	inline GamepadHotkey __attribute__((always_inline)) selectHotkey(const HotkeyEntry hotkey) {
 		state.buttons &= ~(hotkey.buttonsMask);
@@ -123,7 +122,6 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;
 	GamepadState turboState;
@@ -146,6 +144,10 @@ public:
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
 	GamepadButtonMapping *mapButtonFn;
+
+	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
+	// see GP2040::debounceGpioGetAll for details
+	Mask_t debouncedGpio;
 
 	bool userRequestedReinit = false;
 

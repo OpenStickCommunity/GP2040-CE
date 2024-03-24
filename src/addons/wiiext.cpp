@@ -8,7 +8,12 @@
 bool WiiExtensionInput::available() {
     const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     const WiiOptions& options = Storage::getInstance().getAddonOptions().wiiOptions;
-    return (!displayOptions.enabled && options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
+    bool result = (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock));
+    if (result && (displayOptions.enabled && (displayOptions.i2cBlock == options.i2cBlock))) {
+        // display check
+        result = false;
+    }
+    return result;
 }
 
 void WiiExtensionInput::setup() {
@@ -97,7 +102,10 @@ uint16_t WiiExtensionInput::bounds(uint16_t x, uint16_t out_min, uint16_t out_ma
 
 void WiiExtensionInput::update() {
     if (wii->extensionType != WII_EXTENSION_NONE) {
-        uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+        uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+        if ( DriverManager::getInstance().getDriver() != nullptr ) {
+            joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+        }
         currentConfig = &extensionConfigs[wii->extensionType];
 
         //for (const auto& [extensionButton, value] : currentConfig->buttonMap) {
@@ -336,7 +344,10 @@ void WiiExtensionInput::updateAnalogState() {
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     gamepad->hasAnalogTriggers = isAnalogTriggers;
 
-    uint16_t joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+    uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+    if ( DriverManager::getInstance().getDriver() != nullptr ) {
+        joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+    }
 
     uint16_t axisType;
     uint16_t analogInput;

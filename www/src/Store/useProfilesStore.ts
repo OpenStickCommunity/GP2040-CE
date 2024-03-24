@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { create } from 'zustand';
-import WebApi, { baseUrl } from '../Services/WebApi';
+import WebApi from '../Services/WebApi';
 import { PinActionValues } from '../Data/Pins';
 
 type ProfileType = { [key: string]: PinActionValues };
@@ -17,6 +16,7 @@ type Actions = {
 		action: PinActionValues,
 	) => void;
 	saveProfiles: () => Promise<object>;
+	setProfile: (profileIndex: number, pins: ProfileType) => void;
 };
 
 const defaultProfilePins: ProfileType = {
@@ -71,9 +71,15 @@ const useProfilesStore = create<State & Actions>()((set, get) => ({
 	setProfileAction: (profileIndex, pin, action) =>
 		set((state) => ({
 			...state,
-			// Update selected profile state
 			profiles: state.profiles.map((profile, index) =>
 				index === profileIndex ? { ...profile, [pin]: action } : profile,
+			),
+		})),
+	setProfile: (profileIndex, pins) =>
+		set((state) => ({
+			...state,
+			profiles: state.profiles.map((profile, index) =>
+				index === profileIndex ? { ...profile, ...pins } : profile,
 			),
 		})),
 	saveProfiles: async () => WebApi.setProfileOptions(get().profiles),

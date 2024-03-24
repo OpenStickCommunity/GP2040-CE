@@ -8,6 +8,7 @@ export default {
 	'pin-header-label': 'Pin',
 	'profile-pins-warning':
 		'Try to avoid changing the buttons and/or directions used for the switch profile hotkeys. Otherwise, it will be difficult to understand what profile is being selected!',
+	'profile-copy-base': 'Copy base profile',
 	errors: {
 		conflict: 'Pin {{pin}} is already assigned to {{conflictedMappings}}',
 		required: '{{button}} is required',

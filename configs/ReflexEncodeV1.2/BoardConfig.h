@@ -7,6 +7,7 @@
 #define PICO_BOARD_CONFIG_H_
 
 #include "enums.pb.h"
+#include "class/hid/hid.h"
 
 #define BOARD_CONFIG_LABEL "Reflex Encode v1.2"
 
@@ -62,8 +63,10 @@
 #define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
 
 #define HAS_I2C_DISPLAY 1
-#define I2C_SDA_PIN 0
-#define I2C_SCL_PIN 1
+#define I2C0_ENABLED 1
+#define I2C0_PIN_SDA 0
+#define I2C0_PIN_SCL 1
+#define DISPLAY_I2C_BLOCK i2c0
 #define SPLASH_MODE SPLASH_MODE_STATIC
 
 #define DEFAULT_SPLASH \

@@ -7,6 +7,7 @@
 #define PICO_BOARD_CONFIG_H_
 
 #include "enums.pb.h"
+#include "class/hid/hid.h"
 
 #define BOARD_CONFIG_LABEL "Reflex Encode v2.0"
 
@@ -54,14 +55,13 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_ARCADESTICK
-#define DEFAULT_INPUT_MODE INPUT_MODE_PS4
-#define PSPASSTHROUGH_ENABLED 1
-#define PSPASSTHROUGH_PIN_DPLUS 14
+#define USB_PERIPHERAL_ENABLED 1
+#define USB_PERIPHERAL_PIN_DPLUS 14
 
-#define XBONEPASSTHROUGH_ENABLED 1
-
+#define DEFAULT_INPUT_MODE INPUT_MODE_PS5
 #define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
+#define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
+#define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
 
 #define TURBO_ENABLED 1
 #define GPIO_PIN_29 GpioAction::BUTTON_PRESS_TURBO
@@ -70,8 +70,10 @@
 #define BOARD_LED_TYPE ON_BOARD_LED_MODE_PS_AUTH
 
 #define HAS_I2C_DISPLAY 1
-#define I2C_SDA_PIN 0
-#define I2C_SCL_PIN 1
+#define I2C0_ENABLED 1
+#define I2C0_PIN_SDA 0
+#define I2C0_PIN_SCL 1
+#define DISPLAY_I2C_BLOCK i2c0
 #define SPLASH_MODE SPLASH_MODE_STATIC
 
 #define DEFAULT_SPLASH \

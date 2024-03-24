@@ -61,8 +61,8 @@ void ReverseInput::process()
     // Update Reverse State
     update();
 
-    uint32_t values = ~gpio_get_all();
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    Mask_t values = gamepad->debouncedGpio;
 
     gamepad->state.dpad = 0
         | input(values & mapDpadUp->pinMask,    mapDpadUp->buttonMask,      mapDpadDown->buttonMask,    actionUp,       invertYAxis)

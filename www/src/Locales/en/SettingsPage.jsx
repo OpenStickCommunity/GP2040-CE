@@ -1,6 +1,8 @@
 export default {
-	'settings-header-text': 'Settings',
+	'settings-header-text': 'Input Mode Settings',
+	'gamepad-settings-header-text': 'Gamepad Settings',
 	'input-mode-label': 'Input Mode',
+	'current-input-mode-label': 'Current Input Mode',
 	'input-mode-extra-label': 'Switch Touchpad and Share',
 	'ps4-report-hack': 'PS4 Report Speed Hack',
 	'input-mode-options': {
@@ -10,6 +12,7 @@ export default {
 		ps3: 'PS3/DirectInput',
 		keyboard: 'Keyboard',
 		ps4: 'PS4',
+		ps5: 'PS5',
 		neogeo: 'NEOGEO mini',
 		mdmini: 'Sega Genesis/MegaDrive Mini',
 		pcemini: 'PC Engine/Turbografx 16 Mini',
@@ -27,6 +30,12 @@ export default {
 	'ps4-mode-options': {
 		controller: 'Controller',
 		arcadestick: 'Arcade Stick',
+	},
+	'input-mode-authentication': {
+		none: 'None',
+		key: 'Uploaded Key Files',
+		usb: 'Host USB',
+		i2c: 'Attached I2C',
 	},
 	'd-pad-mode-label': 'D-Pad Mode',
 	'd-pad-mode-options': {
@@ -102,4 +111,7 @@ export default {
 		'If you reboot to Controller mode after saving, you will no longer have access to the web-config. Please type "<strong>{{warningCheckText}}</strong>" below to unlock the Save button if you fully acknowledge this and intend it. Clicking on Dismiss will revert this setting which then is to be saved.',
 	'4-way-joystick-mode-label': '4-Way Joystick Mode',
 	'lock-hotkeys-label': 'Lock Hotkeys',
+	'keyboard-mapping-header-text': 'Keyboard Mapping',
+	'keyboard-mapping-sub-header-text':
+		'Use the form below to reconfigure your button-to-key mapping.',
 };

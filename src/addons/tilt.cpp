@@ -3,7 +3,6 @@
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
-#include "gamepad/GamepadDebouncer.h"
 
 bool TiltInput::available() {
     const TiltOptions& options = Storage::getInstance().getAddonOptions().tiltOptions;
@@ -55,8 +54,6 @@ void TiltInput::setup() {
 		}
 	}
 
-	dDebLeftState = 0;
-	dDebRightState = 0;
 	tiltLeftState = 0;
 	tiltRightState = 0;
 
@@ -73,31 +70,6 @@ void TiltInput::setup() {
 	for (int i = 0; i < 4; i++) {
 		dpadTime[i] = now;
 	}
-}
-
-void TiltInput::debounce()
-{
-	GamepadDebouncer gamepadDebouncer;
-
-	// Return if the states haven't changed
-    if ((dDebLeftState == tiltLeftState) && (dDebRightState == tiltRightState))
-        return;
-
-	// Debounce the tilt left state
-    if (dDebLeftState != tiltLeftState) {
-        uint32_t changedDpad = dDebLeftState ^ tiltLeftState;
-
-        tiltLeftState = gamepadDebouncer.debounceDpad(dDebLeftState, changedDpad);
-		dDebLeftState = tiltLeftState;
-    }
-	
-	// Debounce the tilt right state
-	if (dDebRightState != tiltRightState) {
-        uint32_t changedDpad = dDebRightState ^ tiltRightState;
-
-        tiltRightState = gamepadDebouncer.debounceDpad(dDebRightState, changedDpad);
-		dDebRightState = tiltRightState;
-    }
 }
 
 void TiltInput::preprocess()
@@ -132,9 +104,6 @@ void TiltInput::preprocess()
 	if (pinTiltRightAnalogRight != (uint8_t)-1) {
 		tiltRightState |= (!gpio_get(pinTiltRightAnalogRight) ? gamepad->mapDpadRight->buttonMask : 0);
 	}
-
-	// Debounce our directional pins
-	debounce();
 
 	// Convert gamepad from process() output to uint8 value
 	uint8_t gamepadState = gamepad->state.dpad;
@@ -172,7 +141,10 @@ void TiltInput::OverrideGamepad(Gamepad* gamepad, uint8_t dpad1, uint8_t dpad2) 
 	double scaledTilt2FactorRightX = 1.0 - (tilt2FactorRightX / 100.0);
 	double scaledTilt2FactorRightY = 1.0 - (tilt2FactorRightY / 100.0);
 
-	uint16_t midValue = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	uint16_t midValue = GAMEPAD_JOYSTICK_MID;
+	if ( DriverManager::getInstance().getDriver() != nullptr ) {
+		midValue = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+	}
 
     if (pinTilt1Pressed && pinTilt2Pressed) {
         // inputs act as dpad

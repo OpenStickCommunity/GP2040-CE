@@ -28,13 +28,14 @@
 
 // Default Constructor
 XGIPProtocol::XGIPProtocol() {
+    data = nullptr;
     reset();
 }
 
 // Default Destructor
 XGIPProtocol::~XGIPProtocol() {
     if ( data != nullptr ) {
-        delete data;
+        delete [] data;
     }
 }
 

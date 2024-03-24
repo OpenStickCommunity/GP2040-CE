@@ -26,8 +26,7 @@ uint64_t getMicro() {
 }
 
 Gamepad::Gamepad() :
-	debouncer()
-	, options(Storage::getInstance().getGamepadOptions())
+	options(Storage::getInstance().getGamepadOptions())
 	, hotkeyOptions(Storage::getInstance().getHotkeyOptions())
 {}
 
@@ -58,33 +57,27 @@ void Gamepad::setup()
 
 	for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
 	{
-		if (pinMappings[pin] > 0)
-		{
-			gpio_init(pin);             // Initialize pin
-			gpio_set_dir(pin, GPIO_IN); // Set as INPUT
-			gpio_pull_up(pin);          // Set as PULLUP
-			switch (pinMappings[pin]) {
-				case GpioAction::BUTTON_PRESS_UP:	mapDpadUp->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_DOWN:	mapDpadDown->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_LEFT:	mapDpadLeft->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_RIGHT:	mapDpadRight->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_B1:	mapButtonB1->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_B2:	mapButtonB2->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_B3:	mapButtonB3->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_B4:	mapButtonB4->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_L1:	mapButtonL1->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_R1:	mapButtonR1->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_L2:	mapButtonL2->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_R2:	mapButtonR2->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_S1:	mapButtonS1->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_S2:	mapButtonS2->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_L3:	mapButtonL3->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_R3:	mapButtonR3->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_A1:	mapButtonA1->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_A2:	mapButtonA2->pinMask |= 1 << pin; break;
-				case GpioAction::BUTTON_PRESS_FN:	mapButtonFn->pinMask |= 1 << pin; break;
-				default:				break;
-			}
+		switch (pinMappings[pin]) {
+			case GpioAction::BUTTON_PRESS_UP:	mapDpadUp->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_DOWN:	mapDpadDown->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_LEFT:	mapDpadLeft->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_RIGHT:	mapDpadRight->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_B1:	mapButtonB1->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_B2:	mapButtonB2->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_B3:	mapButtonB3->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_B4:	mapButtonB4->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_L1:	mapButtonL1->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_R1:	mapButtonR1->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_L2:	mapButtonL2->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_R2:	mapButtonR2->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_S1:	mapButtonS1->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_S2:	mapButtonS2->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_L3:	mapButtonL3->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_R3:	mapButtonR3->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_A1:	mapButtonA1->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_A2:	mapButtonA2->pinMask |= 1 << pin; break;
+			case GpioAction::BUTTON_PRESS_FN:	mapButtonFn->pinMask |= 1 << pin; break;
+			default:				break;
 		}
 	}
 
@@ -195,8 +188,7 @@ void Gamepad::process()
 
 void Gamepad::read()
 {
-	// Need to invert since we're using pullups
-	Mask_t values = ~gpio_get_all();
+	Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
 	
 	// Get the midpoint value for the current mode
 	uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
@@ -239,11 +231,6 @@ void Gamepad::read()
 	state.rt = 0;
 }
 
-void Gamepad::debounce() {
-	if (Storage::getInstance().getGamepadOptions().debounceDelay > 0)
-		debouncer.debounce(&state);
-}
-
 void Gamepad::save()
 {
 	Storage::getInstance().save();
@@ -271,10 +258,23 @@ void Gamepad::hotkey()
 	else if (pressedHotkey(hotkeyOptions.hotkey14))	action = selectHotkey(hotkeyOptions.hotkey14);
 	else if (pressedHotkey(hotkeyOptions.hotkey15))	action = selectHotkey(hotkeyOptions.hotkey15);
 	else if (pressedHotkey(hotkeyOptions.hotkey16))	action = selectHotkey(hotkeyOptions.hotkey16);
-	if ( lastAction != action ) {
+	if ( action != HOTKEY_NONE ) {
+		// processHotkeyAction checks lastAction to determine if the action is repeatable or not
 		processHotkeyAction(action);
-		lastAction = action;
 	}
+	lastAction = action;
+}
+
+void Gamepad::clearState() {
+	state.dpad = 0;
+	state.buttons = 0;
+	state.aux = 0;
+	state.lx = GAMEPAD_JOYSTICK_MID;
+	state.ly = GAMEPAD_JOYSTICK_MID;
+	state.rx = GAMEPAD_JOYSTICK_MID;
+	state.ry = GAMEPAD_JOYSTICK_MID;
+	state.lt = 0;
+	state.rt = 0;
 }
 
 /**
@@ -284,16 +284,22 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 	bool reqSave = false;
 	switch (action) {
 		case HOTKEY_DPAD_DIGITAL:
-			options.dpadMode = DPAD_MODE_DIGITAL;
-			reqSave = true;
+			if (action != lastAction) {
+				options.dpadMode = DPAD_MODE_DIGITAL;
+				reqSave = true;
+			}
 			break;
 		case HOTKEY_DPAD_LEFT_ANALOG:
-			options.dpadMode = DPAD_MODE_LEFT_ANALOG;
-			reqSave = true;
+			if (action != lastAction) {
+				options.dpadMode = DPAD_MODE_LEFT_ANALOG;
+				reqSave = true;
+			}
 			break;
 		case HOTKEY_DPAD_RIGHT_ANALOG:
-			options.dpadMode = DPAD_MODE_RIGHT_ANALOG;
-			reqSave = true;
+			if (action != lastAction) {
+				options.dpadMode = DPAD_MODE_RIGHT_ANALOG;
+				reqSave = true;
+			}
 			break;
 		case HOTKEY_HOME_BUTTON:
 			state.buttons |= GAMEPAD_MASK_A1;
@@ -341,24 +347,34 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			state.buttons |= GAMEPAD_MASK_A2;
 			break;
 		case HOTKEY_SOCD_UP_PRIORITY:
-			options.socdMode = SOCD_MODE_UP_PRIORITY;
-			reqSave = true;
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_UP_PRIORITY;
+				reqSave = true;
+			}
 			break;
 		case HOTKEY_SOCD_NEUTRAL:
-			options.socdMode = SOCD_MODE_NEUTRAL;
-			reqSave = true;
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_NEUTRAL;
+				reqSave = true;
+			}
 			break;
 		case HOTKEY_SOCD_LAST_INPUT:
-			options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY;
-			reqSave = true;
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_SECOND_INPUT_PRIORITY;
+				reqSave = true;
+			}
 			break;
 		case HOTKEY_SOCD_FIRST_INPUT:
-			options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;
-			reqSave = true;
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_FIRST_INPUT_PRIORITY;
+				reqSave = true;
+			}
 			break;
 		case HOTKEY_SOCD_BYPASS:
-			options.socdMode = SOCD_MODE_BYPASS;
-			reqSave = true;
+			if (action != lastAction) {
+				options.socdMode = SOCD_MODE_BYPASS;
+				reqSave = true;
+			}
 			break;
 		case HOTKEY_REBOOT_DEFAULT:
 			System::reboot(System::BootMode::DEFAULT);
@@ -426,7 +442,7 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 			return;
 	}
 
-	// only save if we did something different (except NONE because NONE doesn't get here)
+	// only save if requested
 	if (reqSave) {
 		save();
 	}
