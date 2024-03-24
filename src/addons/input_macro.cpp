@@ -52,9 +52,9 @@ void InputMacro::preprocess()
                 if ((allPins & 1 << inputMacroOptions.pin) &&
                     ((gamepad->state.buttons & macro.macroTriggerButton) ||
                     (gamepad->state.dpad & (macro.macroTriggerButton >> 16)))) {
-                    macroInputPressed = true;
-                    newMacroPosition = i; break;
-                }
+                        macroInputPressed = true;
+                        newMacroPosition = i; break;
+                    }
             } else {
                 if (!isValidPin(macro.macroTriggerPin)) continue;
                 if ((allPins & 1 << macro.macroTriggerPin)) {
@@ -156,6 +156,9 @@ void InputMacro::preprocess()
         macroStartTime = currentMicros;
     }
     
+    if (!isMacroRunning && !isMacroTriggerHeld && macroPosition != -1)
+        macroPosition = -1;
+
     if (!isMacroRunning)
         return;
     
