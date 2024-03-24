@@ -30,7 +30,8 @@ assignees: ''
 > Please provide all relevant information about your setup. This is important in case the issue is not reproducible
 > except under certain conditions. Important elements include:
 >
-> * Firmware version
+> * Firmware version (please get the full version listed in webconfig, if at all possible)
+> * Board config name (also from webconfig, please)
 > * Name of device
 > * Link to where you purchased the device
 >

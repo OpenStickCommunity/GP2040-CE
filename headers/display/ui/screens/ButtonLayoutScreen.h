@@ -87,6 +87,9 @@ class ButtonLayoutScreen : public GPScreen {
         bool hasInitialized = false;
 
         uint16_t prevButtonState = 0;
+        uint8_t prevLayoutLeft = 0;
+        uint8_t prevLayoutRight = 0;
+        uint8_t prevProfileNumber = 0;
 
         void showProfileBanner();
 

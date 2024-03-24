@@ -26,6 +26,10 @@
 #define ENCODER_ONE_PIN_B -1
 #endif
 
+#ifndef ENCODER_ONE_RESET
+#define ENCODER_ONE_RESET 0
+#endif
+
 #ifndef ENCODER_ONE_MODE
 #define ENCODER_ONE_MODE ENCODER_MODE_NONE
 #endif
@@ -52,6 +56,10 @@
 
 #ifndef ENCODER_TWO_PIN_B
 #define ENCODER_TWO_PIN_B -1
+#endif
+
+#ifndef ENCODER_TWO_RESET
+#define ENCODER_TWO_RESET 0
 #endif
 
 #ifndef ENCODER_TWO_MODE
