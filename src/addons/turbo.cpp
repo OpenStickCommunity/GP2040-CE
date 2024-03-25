@@ -110,6 +110,7 @@ void TurboInput::setup()
  */
 void TurboInput::reinit()
 {
+    turboPinMask = 0;
     GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
