@@ -89,14 +89,14 @@
 class TurboInput : public GPAddon {
 public:
     virtual bool available();
-	virtual void setup();       // TURBO Button Setup
+    virtual void setup();       // TURBO Button Setup
+    virtual void reinit();
     virtual void preprocess() {}
-	virtual void process();     // TURBO Setting of buttons (Enable/Disable)
+    virtual void process();     // TURBO Setting of buttons (Enable/Disable)
     virtual std::string name() { return TurboName; }
 private:
     void updateInterval(uint8_t shotCount);
     void updateTurboShotCount(uint8_t turboShotCount);
-    Pin_t turboPin;             // Pin for Turbo from Gamepad/BoardConfig
     Mask_t turboPinMask;        // Pin mask for Turbo pin
     bool bDebState;             // Debounce TURBO Button State
     uint32_t uDebTime;          // Debounce TURBO Button Time

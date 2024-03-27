@@ -30,7 +30,7 @@ bool TurboInput::available() {
     {
         if ( pinMappings[pin] == GpioAction::BUTTON_PRESS_TURBO ) {
             hasTurboAssigned = true;
-            turboPin = pin;
+            turboPinMask = 1 << pin;
             break;
         }
     }
@@ -90,10 +90,6 @@ void TurboInput::setup()
         turboButtonsMask = 0;
     }
 
-    if (isValidPin(turboPin)) {
-        turboPinMask = 1 << turboPin;
-    }
-
     lastButtons = 0;
     bDebState = false;
     uDebTime = now;
@@ -107,6 +103,22 @@ void TurboInput::setup()
     bTurboFlicker = false;
     updateInterval(shotCount);
     nextTimer = getMicro();
+}
+
+/**
+ * @brief Reset the turbo pin mask.
+ */
+void TurboInput::reinit()
+{
+    turboPinMask = 0;
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        if ( pinMappings[pin] == GpioAction::BUTTON_PRESS_TURBO ) {
+            turboPinMask = 1 << pin;
+            break;
+        }
+    }
 }
 
 void TurboInput::process()
