@@ -40,20 +40,21 @@ public:
 	virtual void preprocess();
     virtual std::string name() { return InputMacroName; }
 private:
-	uint32_t checkMacroPress();
+	void checkMacroPress();
+	void checkMacroAction();
 	void runCurrentMacro();
+	void reset();
 
-	int activeMacroIdx = -1;
-	int lastMacroIdx = -1;
 	bool isMacroRunning = false;
 	bool isMacroTriggerHeld = false;
+	int macroPosition = -1;
 
-	uint32_t macroPin = 0;
-	uint32_t macroPinMask = 0;
+	uint32_t macroButtonMask = 0;
+	uint32_t macroPinMasks[6] = {};
 
 	uint64_t macroStartTime = 0;
-	uint64_t macroTriggerDebounceStartTime = 0;
 
+	int pressedMacro = -1;
 	int macroInputPosition = 0;
 	bool macroInputPressed = false;
 	uint32_t macroInputHoldTime = INPUT_HOLD_US;
@@ -61,7 +62,6 @@ private:
 	bool boardLedEnabled = false;
 
 	MacroOptions inputMacroOptions;
-	void reset();
 };
 
 #endif  // _InputMacro_H_

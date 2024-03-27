@@ -314,7 +314,6 @@ const MacroComponent = (props) => {
 		id: key,
 		translation: t,
 		index,
-		isMacroPinMapped,
 		buttonLabelType,
 		setFieldValue,
 	} = props;
@@ -639,12 +638,10 @@ export default function MacrosPage() {
 														id={`macroList[${i}]`}
 														value={values.macroList?.at(i)}
 														errors={errors?.macroList?.at(i)}
-														disabled={!values.InputMacroAddonEnabled}
 														translation={t}
 														buttonLabelType={buttonLabelType}
 														handleChange={handleChange}
 														index={i}
-														isMacroPinMapped={values.macroPin != -1}
 														setFieldValue={setFieldValue}
 														buttonNames={buttonNames}
 													/>

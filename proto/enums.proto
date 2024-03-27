@@ -209,12 +209,12 @@ enum GpioAction
     SUSTAIN_SOCD_MODE_BYPASS     = 31;
     BUTTON_PRESS_TURBO           = 32;
     BUTTON_PRESS_MACRO           = 33;
-    BUTTON_PRESS_MACRO_01        = 34;
-    BUTTON_PRESS_MACRO_02        = 35;
-    BUTTON_PRESS_MACRO_03        = 36;
-    BUTTON_PRESS_MACRO_04        = 37;
-    BUTTON_PRESS_MACRO_05        = 38;
-    BUTTON_PRESS_MACRO_06        = 39;
+    BUTTON_PRESS_MACRO_1         = 34;
+    BUTTON_PRESS_MACRO_2         = 35;
+    BUTTON_PRESS_MACRO_3         = 36;
+    BUTTON_PRESS_MACRO_4         = 37;
+    BUTTON_PRESS_MACRO_5         = 38;
+    BUTTON_PRESS_MACRO_6         = 39;
 }
 
 enum GamepadHotkey
