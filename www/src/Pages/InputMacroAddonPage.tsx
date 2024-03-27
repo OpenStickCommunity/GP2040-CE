@@ -46,15 +46,16 @@ const schema = yup.object().shape({
 		}),
 	),
 	macroBoardLedEnabled: yup.number(),
-	InputMacroAddonEnabled: yup.number(),
 });
 
 const MACRO_INPUTS_MAX = 30;
 
+const MACRO_LIMIT = 6;
+
 const defaultMacroInput = { buttonMask: 0, duration: 16666, waitDuration: 0 };
 
 const defaultValues = {
-	macroList: Array(BUTTON_MASKS.length).fill({
+	macroList: Array(MACRO_LIMIT).fill({
 		macroType: 1,
 		macroLabel: '',
 		enabled: 1,
@@ -66,7 +67,6 @@ const defaultValues = {
 		macroInputs: [defaultMacroInput],
 	}),
 	macroBoardLedEnabled: 1,
-	InputMacroAddonEnabled: 1,
 };
 
 const EMPTY_INPUT = null;
