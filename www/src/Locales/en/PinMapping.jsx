@@ -52,5 +52,12 @@ export default {
 		SUSTAIN_SOCD_MODE_FIRST_WIN: 'First Win SOCD Cleaning',
 		SUSTAIN_SOCD_MODE_BYPASS: 'SOCD Cleaning Off',
 		BUTTON_PRESS_TURBO: 'Turbo',
+		BUTTON_PRESS_MACRO: 'Macro Button',
+		BUTTON_PRESS_MACRO_01: 'Macro 1 Pin',
+		BUTTON_PRESS_MACRO_02: 'Macro 2 Pin',
+		BUTTON_PRESS_MACRO_03: 'Macro 3 Pin',
+		BUTTON_PRESS_MACRO_04: 'Macro 4 Pin',
+		BUTTON_PRESS_MACRO_05: 'Macro 5 Pin',
+		BUTTON_PRESS_MACRO_06: 'Macro 6 Pin',
 	},
 };

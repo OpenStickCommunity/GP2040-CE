@@ -10,7 +10,7 @@ export default {
 	'home-label': 'Home',
 	'led-config-label': 'LED Configuration',
 	'links-label': 'Links',
-	'macro-label': 'Macro',
+	'macro-label': 'Macros Configuration',
 	'pin-mapping-label': 'Pin Mapping',
 	'peripheral-mapping-label': 'Peripheral Mapping',
 	'profile-settings-label': 'Profile Settings',

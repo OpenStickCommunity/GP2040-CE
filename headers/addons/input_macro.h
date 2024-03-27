@@ -40,9 +40,16 @@ public:
 	virtual void preprocess();
     virtual std::string name() { return InputMacroName; }
 private:
-	int macroPosition = -1;
+	uint32_t checkMacroPress();
+	void runCurrentMacro();
+
+	int activeMacroIdx = -1;
+	int lastMacroIdx = -1;
 	bool isMacroRunning = false;
 	bool isMacroTriggerHeld = false;
+
+	uint32_t macroPin = 0;
+	uint32_t macroPinMask = 0;
 
 	uint64_t macroStartTime = 0;
 	uint64_t macroTriggerDebounceStartTime = 0;
