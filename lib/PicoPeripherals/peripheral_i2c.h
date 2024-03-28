@@ -4,8 +4,13 @@
 #include <hardware/gpio.h>
 #include <hardware/i2c.h>
 #include <hardware/platform_defs.h>
+#include <pico/i2c_slave.h>
 
 //#define DEBUG_PERIPHERALI2C
+
+#ifndef I2C_DEFAULT_PERIPHERAL_ADDR
+#define I2C_DEFAULT_PERIPHERAL_ADDR 0xCE
+#endif
 
 #ifndef I2C0_ENABLED
 #define I2C0_ENABLED 0
@@ -47,8 +52,10 @@ public:
     bool configured = false;
 
     i2c_inst_t* getController() { return _I2C; }
+    bool isPeripheral() { return handler != nullptr; }
 
     void setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t speed);
+    void setAsPeripheral(i2c_slave_handler_t handler, uint8_t addr = I2C_DEFAULT_PERIPHERAL_ADDR);
 
     int16_t read(uint8_t address, uint8_t *data, uint16_t len, bool isBlock=false);
     int16_t readRegister(uint8_t address, uint8_t reg, uint8_t *data, uint16_t len);
@@ -59,11 +66,12 @@ public:
     void clear();
 private:
     const uint32_t DEFAULT_SPEED = 400000;
-
     uint8_t _SDA;
     uint8_t _SCL;
     i2c_inst_t *_I2C;
     int32_t _Speed;
+
+    i2c_slave_handler_t handler = nullptr;
 
     i2c_inst_t* _hardwareBlocks[NUM_I2CS] = {i2c0,i2c1};
 

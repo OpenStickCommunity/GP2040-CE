@@ -23,16 +23,24 @@ void PeripheralI2C::setConfig(uint8_t block, uint8_t sda, uint8_t scl, uint32_t 
     }
 }
 
+void PeripheralI2C::setAsPeripheral(i2c_slave_handler_t handler, uint8_t addr) {
+    // Only allow peripheral handler to be configured once
+    if (PeripheralI2C::handler != nullptr || handler == nullptr)
+        return;
+
+    PeripheralI2C::handler = handler;
+    i2c_slave_init(_I2C, addr ? addr : I2C_DEFAULT_PERIPHERAL_ADDR, PeripheralI2C::handler);
+}
+
 void PeripheralI2C::setup() {
     if ((_SDA + 2 * i2c_hw_index(_I2C))%4 != 0) return;
     if ((_SCL + 3 + 2 * i2c_hw_index(_I2C))%4 != 0) return;
 
-    i2c_init(_I2C, _Speed);
     gpio_set_function(_SDA, GPIO_FUNC_I2C);
     gpio_set_function(_SCL, GPIO_FUNC_I2C);
-
     gpio_pull_up(_SDA);
     gpio_pull_up(_SCL);
+    i2c_init(_I2C, _Speed);
 
     // reset the bus before using it
     clear();
@@ -47,7 +55,7 @@ int16_t PeripheralI2C::read(uint8_t address, uint8_t *data, uint16_t len, bool i
     }
     printf("\nResult: %d\n", result);
     printf("-----\n");
-#endif    
+#endif
     return result;
 }
 

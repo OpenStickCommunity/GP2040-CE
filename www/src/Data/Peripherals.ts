@@ -12,14 +12,22 @@ export const USB_BLOCKS = [
 	{ label: 'usb0', value: 0, pins: { dp: [], enable5v: [] } }
 ];
 
+export const GPCOMMS_MODES = [
+	{ label: 'Off', value: 0 },
+	{ label: 'I2C Broadcast', value: 1 },
+	{ label: 'I2C Receiver', value: 2 },
+	{ label: 'SPI Broadcast', value: 3 },
+	{ label: 'SPI Receiver', value: 4 },
+];
+
 export const PERIPHERAL_DEVICES = [
-    { 
-        label: 'i2c', 
-        value: 0, 
+    {
+        label: 'i2c',
+        value: 0,
         blocks: I2C_BLOCKS,
         pinTable: true,
         options: {
-            speed: [ 
+            speed: [
                 { label: 'Normal', value: 100000 },
                 { label: 'Fast', value: 400000, isDefault: true },
                 { label: 'Fast Plus', value: 1000000 },
@@ -27,15 +35,15 @@ export const PERIPHERAL_DEVICES = [
         }
     },
     {
-        label: 'spi', 
-        value: 1, 
+        label: 'spi',
+        value: 1,
         blocks: SPI_BLOCKS,
         pinTable: true,
         options: {}
     },
     {
-        label: 'usb', 
-        value: 2, 
+        label: 'usb',
+        value: 2,
         blocks: USB_BLOCKS,
         pinTable: false,
         options: {

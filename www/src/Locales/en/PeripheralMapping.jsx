@@ -28,4 +28,8 @@ export default {
     'option-order-label': 'Pin Order',
     'option-order-choice-0-label': 'D+/D-',
     'option-order-choice-1-label': 'D-/D+',
+    'gpcomms-label': 'Device Interconnect',
+    'gpcomms-description': 'Device Interconnect allows multiple GP2040-CE devices to communicate with each other over standard protocols like I2C and SPI. This allows one device, the Broadcaster, to send information like raw and processed inputs, gamepad status, and other information to one or more other GP2040-CE devices. Enabling this option will automatically configure some settings for the specified I2C or SPI block, making then unavailable for editing while this option is enabled.',
+    'gpcomms-mode-label': 'Mode',
+    'gpcomms-block-label': 'Block',
 };

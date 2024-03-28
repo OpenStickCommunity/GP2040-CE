@@ -40,6 +40,9 @@ void PeripheralSPI::setup() {
     gpio_set_function(_RX, GPIO_FUNC_SPI);
     gpio_pull_up(_RX);
 
+    if (_CS > -1)
+        gpio_set_function(_CS, GPIO_FUNC_SPI);
+
     if (_UseDMA) {
         // DMA configuration - 2 channels (TX/RX)
         _dmaRxChannel = dma_claim_unused_channel(true);
@@ -76,6 +79,17 @@ void PeripheralSPI::setup() {
     }
 }
 
+void PeripheralSPI::setAsPeripheral(bool isPeripheral) {
+    if (!_isPeripheral && isPeripheral) {
+        _isPeripheral = true;
+        spi_set_slave(_SPI, true);
+    }
+    else if (_isPeripheral && !isPeripheral) {
+        _isPeripheral = false;
+        spi_set_slave(_SPI, false);
+    }
+}
+
 void PeripheralSPI::deactivate() {
     if (_UseDMA) {
         dma_channel_unclaim(_dmaRxChannel);
@@ -83,6 +97,34 @@ void PeripheralSPI::deactivate() {
         _dmaRxBuf = nullptr;
         _dmaTxBuf = nullptr;
     }
+}
+
+bool PeripheralSPI::isBusy() {
+    return spi_is_busy(_SPI);
+}
+
+bool PeripheralSPI::isReadable() {
+    return spi_is_readable(_SPI);
+}
+
+bool PeripheralSPI::isWriteable() {
+    return spi_is_writable(_SPI);
+}
+
+int PeripheralSPI::read(uint8_t *buf, size_t len) {
+    return spi_read_blocking(_SPI, 0xFF, buf, len);
+}
+
+int PeripheralSPI::read16(uint16_t *buf, size_t len) {
+    return spi_read16_blocking(_SPI, 0xFF, buf, len);
+}
+
+int PeripheralSPI::write(uint8_t *buf, size_t len) {
+    return spi_write_blocking(_SPI, buf, len);
+}
+
+int PeripheralSPI::write16(uint16_t *buf, size_t len) {
+    return spi_write16_blocking(_SPI, buf, len);
 }
 
 void PeripheralSPI::transfer(const uint8_t *tx, uint8_t *rx, size_t count) {
@@ -127,7 +169,7 @@ void PeripheralSPI::beginTransaction(uint32_t speedMHz, spi_order_t bitOrder, SP
     bool hasFormatChange = bitOrder != _BitOrder || spiMode != _SpiMode;
 
     if (hasInitChange || hasFormatChange) {
-        uint32_t flags = save_and_disable_interrupts();
+        // uint32_t flags = save_and_disable_interrupts();
 
         if (hasInitChange) {
             // if (initialized) {
@@ -147,7 +189,7 @@ void PeripheralSPI::beginTransaction(uint32_t speedMHz, spi_order_t bitOrder, SP
             spi_set_format(_SPI, 8, _Cpol, _Cpha, _BitOrder);
         }
 
-        restore_interrupts(flags);
+        // restore_interrupts(flags);
     }
 
 }

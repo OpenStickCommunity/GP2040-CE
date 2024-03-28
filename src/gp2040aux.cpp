@@ -11,6 +11,7 @@
 #include "addons/display.h"
 #include "addons/pleds.h"
 #include "addons/neopicoleds.h"
+#include "comms/gpcomms_i2c_receiver.h"
 
 #include <iterator>
 
@@ -28,6 +29,7 @@ void GP2040Aux::setup() {
 	PeripheralManager::getInstance().initUSB();
 
 	// Setup Add-ons
+	addons.LoadAddon(new GPCommsI2CReceiverAddon(), CORE1_LOOP);
 	addons.LoadAddon(new DisplayAddon(), CORE1_LOOP);
 	addons.LoadAddon(new NeoPicoLEDAddon(), CORE1_LOOP);
 	addons.LoadAddon(new PlayerLEDAddon(), CORE1_LOOP);
@@ -38,13 +40,14 @@ void GP2040Aux::setup() {
 	inputDriver = DriverManager::getInstance().getDriver();
 	if ( inputDriver != nullptr ) {
 		inputDriver->initializeAux();
-		
+
 		// Check if we have a USB listener
 		USBListener * listener = inputDriver->get_usb_auth_listener();
 		if (listener != nullptr) {
 			USBHostManager::getInstance().pushListener(listener);
 		}
 	}
+
 
 	// Initialize our USB manager
 	USBHostManager::getInstance().start();
@@ -53,7 +56,7 @@ void GP2040Aux::setup() {
 void GP2040Aux::run() {
 	while (1) {
 		addons.ProcessAddons(CORE1_LOOP);
-		
+
 		// Run auxiliary functions for input driver on Core1
 		if ( inputDriver != nullptr ) {
 			inputDriver->processAux();

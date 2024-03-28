@@ -13,6 +13,7 @@
 #include "enums.h"
 #include "helper.h"
 #include "gamepad.h"
+#include "comms/gpcomms.h"
 
 #include "config.pb.h"
 #include <atomic>
@@ -71,7 +72,6 @@ public:
 	void setFunctionalPinMappings();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
-
 private:
 	Storage();
 	bool CONFIG_MODE = false; 			// Config mode (boot)

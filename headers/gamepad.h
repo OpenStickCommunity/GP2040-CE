@@ -170,6 +170,7 @@ private:
 	GamepadOptions& options;
 	const HotkeyOptions& hotkeyOptions;
 
+	GamepadInputSource inputSource = GAMEPAD_INPUT_SOURCE_GPIO;
 	GamepadHotkey lastAction = HOTKEY_NONE;
 
 	uint32_t keep_alive_timer;
