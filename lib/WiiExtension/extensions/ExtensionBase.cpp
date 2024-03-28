@@ -95,8 +95,8 @@ void ExtensionBase::postProcess() {
                 outVal = bounds(outVal, 0, (_analogPrecision[i].destination-1));
             }
 
-            if (outVal < 5) outVal = 0;
-            if (outVal > (_analogPrecision[i].destination-1)) outVal = (_analogPrecision[i].destination-5);
+            if (outVal < 0) outVal = 0;
+            if (outVal > (_analogPrecision[i].destination-1)) outVal = (_analogPrecision[i].destination-1);
 #if WII_EXTENSION_DEBUG==true
             if (i == WiiAnalogs::WII_ANALOG_LEFT_X) {
                 //printf("cur:%5d min=%5d:%5d max=%5d:%5d cen=%5d:%5d out:%5d off:%5d\n", analogState[i], _analogCalibration[i].minimum, minVal, _analogCalibration[i].maximum, maxVal, _analogCalibration[i].center, cenVal, outVal, centerOffset);
