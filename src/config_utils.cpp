@@ -713,10 +713,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
 
-    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, !!INPUT_MACRO_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, pin, INPUT_MACRO_PIN);
+    // Macro options (always on)
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, true);
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, macroBoardLedEnabled, INPUT_MACRO_BOARD_LED_ENABLED);
-    config.addonOptions.macroOptions.macroList_count = 6;
+    config.addonOptions.macroOptions.macroList_count = MAX_MACRO_LIMIT;
 }
 
 
@@ -1162,13 +1162,6 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.snesOptions.clockPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.pin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[0].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[1].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[2].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[3].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[4].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[5].macroTriggerPin);
 
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         config.gpioMappings.pins[pin].action = actions[pin];
