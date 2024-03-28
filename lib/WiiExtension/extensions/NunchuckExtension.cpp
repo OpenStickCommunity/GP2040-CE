@@ -46,19 +46,19 @@ bool NunchuckExtension::calibrate(uint8_t *calibrationData) {
     }
 
 #if WII_EXTENSION_DEBUG==true
-    printf("Calibration:\n");
-    printf("X0G: %d\n", ((calibrationData[0] << 2) | ((calibrationData[3] >> 2) & 0x03)));
-    printf("Y0G: %d\n", ((calibrationData[1] << 2) | ((calibrationData[3] >> 4) & 0x03)));
-    printf("Z0G: %d\n", ((calibrationData[2] << 2) | ((calibrationData[3] >> 6) & 0x03)));
-    printf("X1G: %d\n", ((calibrationData[4] << 2) | ((calibrationData[7] >> 2) & 0x03)));
-    printf("Y1G: %d\n", ((calibrationData[5] << 2) | ((calibrationData[7] >> 4) & 0x03)));
-    printf("YZG: %d\n", ((calibrationData[6] << 2) | ((calibrationData[7] >> 6) & 0x03)));
-    printf("X Min: %d\n", calibrationData[8]);
-    printf("X Max: %d\n", calibrationData[9]);
-    printf("X Center: %d\n", calibrationData[10]);
-    printf("Y Min: %d\n", calibrationData[11]);
-    printf("Y Max: %d\n", calibrationData[12]);
-    printf("Y Center: %d\n", calibrationData[13]);
+    //printf("Calibration:\n");
+    //printf("X0G: %d\n", ((calibrationData[0] << 2) | ((calibrationData[3] >> 2) & 0x03)));
+    //printf("Y0G: %d\n", ((calibrationData[1] << 2) | ((calibrationData[3] >> 4) & 0x03)));
+    //printf("Z0G: %d\n", ((calibrationData[2] << 2) | ((calibrationData[3] >> 6) & 0x03)));
+    //printf("X1G: %d\n", ((calibrationData[4] << 2) | ((calibrationData[7] >> 2) & 0x03)));
+    //printf("Y1G: %d\n", ((calibrationData[5] << 2) | ((calibrationData[7] >> 4) & 0x03)));
+    //printf("YZG: %d\n", ((calibrationData[6] << 2) | ((calibrationData[7] >> 6) & 0x03)));
+    //printf("X Min: %d\n", calibrationData[8]);
+    //printf("X Max: %d\n", calibrationData[9]);
+    //printf("X Center: %d\n", calibrationData[10]);
+    //printf("Y Min: %d\n", calibrationData[11]);
+    //printf("Y Max: %d\n", calibrationData[12]);
+    //printf("Y Center: %d\n", calibrationData[13]);
 #endif
 #endif
     return false;
