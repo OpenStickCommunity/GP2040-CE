@@ -5,7 +5,7 @@ export default {
 	'input-macro-macro-interruptible': 'Interruptible (User Input Cancels the Macro)',
 	'input-macro-macro-show-frames': 'Show Frames (1 Frame = 16.666 ms)',
 	'input-macro-macro-uses-buttons': 'Use Macro Button + Gamepad Button to Trigger',
-	'input-macro-macro-button-pin-plus': 'Button Assignment',
+	'input-macro-macro-button-pin-plus': 'Button Assignment:',
 	'input-macro-header-text': 'Macros Overview',
 	'input-macro-1-header-text': 'Macro 1 Settings',
 	'input-macro-2-header-text': 'Macro 2 Settings',

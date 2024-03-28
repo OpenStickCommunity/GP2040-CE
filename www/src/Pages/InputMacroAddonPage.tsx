@@ -123,6 +123,7 @@ const ButtonMasksComponent = (props) => {
 		isInvalid,
 		className,
 		buttonLabelType,
+		buttonMasks
 	} = props;
 	return (
 		<div key={key} className={className}>
@@ -136,7 +137,7 @@ const ButtonMasksComponent = (props) => {
 				isInvalid={isInvalid}
 				onChange={onChange}
 			>
-				{BUTTON_MASKS.map((o, i2) => (
+				{buttonMasks.map((o, i2) => (
 					<option key={`${key}.mask[${i2}]`} value={o.value}>
 						{(buttonLabelType && BUTTONS[buttonLabelType][o.label]) || o.label}
 					</option>
@@ -213,6 +214,7 @@ const MacroInputComponent = (props) => {
 								isInvalid={errors?.buttonMask}
 								translation={t}
 								buttonLabelType={buttonLabelType}
+								buttonMasks={BUTTON_MASKS}
 							/>
 						</Col>) : (
 							<></>
@@ -233,6 +235,7 @@ const MacroInputComponent = (props) => {
 							isInvalid={errors?.buttonMask}
 							translation={t}
 							buttonLabelType={buttonLabelType}
+							buttonMasks={BUTTON_MASKS}
 						/>
 					</Col>
 				</Row>
@@ -316,6 +319,7 @@ const MacroComponent = (props) => {
 		index,
 		buttonLabelType,
 		setFieldValue,
+		macroList,
 	} = props;
 
 	const filteredMacroInputs = macroInputs.filter((i) => i !== EMPTY_INPUT);
@@ -433,10 +437,9 @@ const MacroComponent = (props) => {
 						</Col>
 						<Col sm={"auto"}>
 							<ButtonMasksComponent
-								
 								className="col-sm-auto"
 								value={macroTriggerButton}
-								onChange={(e) => {
+								onChange={(e) => {	
 									setFieldValue(
 										`${key}.macroTriggerButton`,
 										parseInt(e.target.value),
@@ -444,6 +447,11 @@ const MacroComponent = (props) => {
 								}}
 								buttonLabelType={buttonLabelType}
 								translation={t}
+								buttonMasks={BUTTON_MASKS.filter((b, i) =>
+									macroList.find((m, macroIdx) =>
+										index != macroIdx && m.useMacroTriggerButton && (m.macroTriggerButton === b.value)
+									) === undefined
+								)}
 							/>
 						</Col>
 					</Row>
@@ -644,6 +652,7 @@ export default function MacrosPage() {
 														index={i}
 														setFieldValue={setFieldValue}
 														buttonNames={buttonNames}
+														macroList={values.macroList}
 													/>
 													<hr className="mt-3" />
 													<Button type="submit">{t('Common:button-save-label')}</Button>
