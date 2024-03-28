@@ -168,6 +168,8 @@ message PinMappings
 message GpioMappingInfo
 {
     optional GpioAction action = 1;
+    optional uint32 customDpadMask = 2;
+    optional uint32 customButtonMask = 3;
 }
 
 message GpioMappings

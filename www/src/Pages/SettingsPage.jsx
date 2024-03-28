@@ -12,8 +12,7 @@ import isNil from 'lodash/isNil';
 import './SettingsPage.scss';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
-
-import { BUTTON_MASKS, getButtonLabels} from '../Data/Buttons';
+import { BUTTON_MASKS_OPTIONS, getButtonLabels } from '../Data/Buttons';
 
 
 const SHA256 = (ascii) => {
@@ -139,7 +138,11 @@ const INPUT_MODES = [
 const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.none', value: -1, group: 'primary' },
 	{ labelKey: 'input-mode-options.xinput', value: 0, group: 'primary' },
-	{ labelKey: 'input-mode-options.nintendo-switch', value: 1, group: 'primary' },
+	{
+		labelKey: 'input-mode-options.nintendo-switch',
+		value: 1,
+		group: 'primary',
+	},
 	{ labelKey: 'input-mode-options.ps3', value: 2, group: 'primary' },
 	{ labelKey: 'input-mode-options.keyboard', value: 3, group: 'primary' },
 	{ labelKey: 'input-mode-options.ps4', value: 4, group: 'primary', optional: ['usb'] },
@@ -150,14 +153,14 @@ const INPUT_BOOT_MODES = [
 	{ labelKey: 'input-mode-options.pcemini', value: 8, group: 'mini' },
 	{ labelKey: 'input-mode-options.egret', value: 9, group: 'mini' },
 	{ labelKey: 'input-mode-options.astro', value: 10, group: 'mini' },
-    { labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
-    { labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
+	{ labelKey: 'input-mode-options.psclassic', value: 11, group: 'mini' },
+	{ labelKey: 'input-mode-options.xboxoriginal', value: 12, group: 'primary' },
 ];
 
 const INPUT_MODE_GROUPS = [
-    { labelKey: 'input-mode-group.primary', value: 0, group: 'primary' },
-    { labelKey: 'input-mode-group.mini', value: 1, group: 'mini' },
-]
+	{ labelKey: 'input-mode-group.primary', value: 0, group: 'primary' },
+	{ labelKey: 'input-mode-group.mini', value: 1, group: 'mini' },
+];
 
 const DPAD_MODES = [
 	{ labelKey: 'd-pad-mode-options.d-pad', value: 0 },
@@ -212,7 +215,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.b1-button', value: 23 },
 	{ labelKey: 'hotkey-actions.b2-button', value: 24 },
 	{ labelKey: 'hotkey-actions.b3-button', value: 24 },
-	{ labelKey: 'hotkey-actions.b4-button', value: 26 }, 
+	{ labelKey: 'hotkey-actions.b4-button', value: 26 },
 	{ labelKey: 'hotkey-actions.l1-button', value: 27 },
 	{ labelKey: 'hotkey-actions.r1-button', value: 28 },
 	{ labelKey: 'hotkey-actions.l2-button', value: 29 },
@@ -231,14 +234,14 @@ const FORCED_SETUP_MODES = [
 ];
 
 const INPUT_MODES_BINDS = [
-    { value: 'B1' },
-    { value: 'B2' },
-    { value: 'B3' },
-    { value: 'B4' },
-    { value: 'L1' },
-    { value: 'L2' },
-    { value: 'R1' },
-    { value: 'R2' },
+	{ value: 'B1' },
+	{ value: 'B2' },
+	{ value: 'B3' },
+	{ value: 'B4' },
+	{ value: 'L1' },
+	{ value: 'L2' },
+	{ value: 'R1' },
+	{ value: 'R2' },
 ];
 
 const hotkeySchema = {
@@ -408,7 +411,15 @@ const FormContext = ({ setButtonLabels }) => {
 };
 
 export default function SettingsPage() {
-	const { buttonLabels, setButtonLabels, getAvailablePeripherals, getSelectedPeripheral, getAvailableAddons, updateAddons, updatePeripherals } = useContext(AppContext);
+	const {
+		buttonLabels,
+		setButtonLabels,
+		getAvailablePeripherals,
+		getSelectedPeripheral,
+		getAvailableAddons,
+		updateAddons,
+		updatePeripherals,
+	} = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [warning, setWarning] = useState({ show: false, acceptText: '' });
 	const [validated, setValidated] = useState(false);
@@ -841,37 +852,55 @@ export default function SettingsPage() {
 
 	const checkRequiredArray = (array) => {
 		return array.map(({ required, optional, ...values }) => {
-            let disabledState = false;
-            let disabledReason = '';
-            let permissionOptions = {};
-            if (required) {
-                disabledState = INPUT_MODE_PERMISSIONS.filter(({permission}) => required.includes(permission)).map(perm => perm.check()).reduce((acc, val) => acc | (val === false ? 1 : 0), 0);
-                disabledReason = INPUT_MODE_PERMISSIONS.filter(({permission}) => required.includes(permission)).map(perm => perm.reason()).find((o) => o != '') ?? '';
+			let disabledState = false;
+			let disabledReason = '';
+			let permissionOptions = {};
+			if (required) {
+				disabledState = INPUT_MODE_PERMISSIONS.filter(({ permission }) =>
+					required.includes(permission),
+				)
+					.map((perm) => perm.check())
+					.reduce((acc, val) => acc | (val === false ? 1 : 0), 0);
+				disabledReason =
+					INPUT_MODE_PERMISSIONS.filter(({ permission }) =>
+						required.includes(permission),
+					)
+						.map((perm) => perm.reason())
+						.find((o) => o != '') ?? '';
 
-                permissionOptions = { ...permissionOptions, disabled: disabledState, reason: disabledReason };
-            }
-            if (optional) {
-                // todo: define permissions behavior
-                permissionOptions = { ...permissionOptions };
-            }
+				permissionOptions = {
+					...permissionOptions,
+					disabled: disabledState,
+					reason: disabledReason,
+				};
+			}
+			if (optional) {
+				// todo: define permissions behavior
+				permissionOptions = { ...permissionOptions };
+			}
 			return { ...permissionOptions, ...values };
 		});
 	};
 
 	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
 
-	const currentButtonLabels= getButtonLabels(buttonLabelType, swapTpShareLabels);
+	const currentButtonLabels = getButtonLabels(
+		buttonLabelType,
+		swapTpShareLabels,
+	);
 
 	const getKeyMappingForButton = (button) => keyMappings[button];
 
 	const { t } = useTranslation('');
 
-    useEffect(() => {
-        updateAddons();
-        updatePeripherals();
-    }, []);
+	useEffect(() => {
+		updateAddons();
+		updatePeripherals();
+	}, []);
 
-	const translatedInputBootModes = translateArray(checkRequiredArray(INPUT_BOOT_MODES));
+	const translatedInputBootModes = translateArray(
+		checkRequiredArray(INPUT_BOOT_MODES),
+	);
 	const translatedInputModes = translateArray(checkRequiredArray(INPUT_MODES));
 	const translatedInputModeGroups = translateArray(INPUT_MODE_GROUPS);
 	const translatedDpadModes = translateArray(DPAD_MODES);
@@ -1172,7 +1201,7 @@ export default function SettingsPage() {
 														</Form.Control.Feedback>
 													</Col>
 													<Col sm="auto">+</Col>
-													{BUTTON_MASKS.map((mask) =>
+													{BUTTON_MASKS_OPTIONS.map((mask) =>
 														values[o] && values[o]?.buttonsMask & mask.value ? (
 															[
 																<Col sm="auto">
@@ -1195,7 +1224,7 @@ export default function SettingsPage() {
 																			);
 																		}}
 																	>
-																		{BUTTON_MASKS.map((o, i2) => (
+																		{BUTTON_MASKS_OPTIONS.map((o, i2) => (
 																			<option
 																				key={`hotkey-${i}-button${i2}`}
 																				value={o.value}
@@ -1225,7 +1254,7 @@ export default function SettingsPage() {
 																);
 															}}
 														>
-															{BUTTON_MASKS.map((o, i2) => (
+															{BUTTON_MASKS_OPTIONS.map((o, i2) => (
 																<option
 																	key={`hotkey-${i}-buttonZero-${i2}`}
 																	value={o.value}

@@ -1,5 +1,5 @@
 // Hide from select options / Disable select if returned from board
-export const NON_SELECTABLE_BUTTON_ACTIONS = [-5, 0];
+export const NON_SELECTABLE_BUTTON_ACTIONS = [-5, 0, 32, 33];
 
 // These could theoretically be created from enums.proto
 export const BUTTON_ACTIONS = {
@@ -38,6 +38,7 @@ export const BUTTON_ACTIONS = {
 	SUSTAIN_SOCD_MODE_FIRST_WIN: 30,
 	SUSTAIN_SOCD_MODE_BYPASS: 31,
 	BUTTON_PRESS_TURBO: 32,
+	CUSTOM_BUTTON_COMBO: 33,
 } as const;
 
 type PinActionKeys = keyof typeof BUTTON_ACTIONS;

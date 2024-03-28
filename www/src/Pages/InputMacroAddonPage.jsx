@@ -10,7 +10,11 @@ import Section from '../Components/Section';
 import CaptureButton from '../Components/CaptureButton';
 import FormControl from '../Components/FormControl';
 import WebApi from '../Services/WebApi';
-import { getButtonLabels, BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
+import {
+	getButtonLabels,
+	BUTTONS,
+	BUTTON_MASKS_OPTIONS,
+} from '../Data/Buttons';
 
 const MACRO_TYPES = [
 	{ label: 'InputMacroAddon:input-macro-type.press', value: 1 },
@@ -49,7 +53,7 @@ const MACRO_INPUTS_MAX = 30;
 const defaultMacroInput = { buttonMask: 0, duration: 16666, waitDuration: 0 };
 
 const defaultValues = {
-	macroList: Array(BUTTON_MASKS.length).fill({
+	macroList: Array(BUTTON_MASKS_OPTIONS.length).fill({
 		macroType: 1,
 		macroLabel: '',
 		enabled: 1,
@@ -127,7 +131,7 @@ const ButtonMasksComponent = (props) => {
 				isInvalid={isInvalid}
 				onChange={onChange}
 			>
-				{BUTTON_MASKS.map((o, i2) => (
+				{BUTTON_MASKS_OPTIONS.map((o, i2) => (
 					<option key={`${key}.mask[${i2}]`} value={o.value}>
 						{(buttonLabelType && BUTTONS[buttonLabelType][o.label]) || o.label}
 					</option>
@@ -179,7 +183,7 @@ const MacroInputComponent = (props) => {
 				)}
 			</span>
 			<div key={`${key}.buttons`} className="col-sm-10 row mb-2">
-				{BUTTON_MASKS.map((mask, i1) =>
+				{BUTTON_MASKS_OPTIONS.map((mask, i1) =>
 					buttonMask & mask.value ? (
 						<ButtonMasksComponent
 							key={`${key}.buttonMask[${i1}]`}

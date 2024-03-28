@@ -5,7 +5,7 @@ import * as yup from 'yup';
 
 import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
-import { BUTTON_MASKS } from '../Data/Buttons';
+import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 
 export const bootselScheme = {
 	BootselButtonAddonEnabled: yup
@@ -15,7 +15,10 @@ export const bootselScheme = {
 	bootselButtonMap: yup
 		.number()
 		.label('BOOTSEL Button Map')
-		.validateSelectionWhenValue('BootselButtonAddonEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue(
+			'BootselButtonAddonEnabled',
+			BUTTON_MASKS_OPTIONS,
+		),
 };
 
 export const bootselState = {
@@ -42,7 +45,7 @@ const Bootsel = ({ values, errors, handleChange, handleCheckbox }) => {
 					isInvalid={errors.bootselButtonMap}
 					onChange={handleChange}
 				>
-					{BUTTON_MASKS.map((o, i) => (
+					{BUTTON_MASKS_OPTIONS.map((o, i) => (
 						<option key={`bootselButtonMap-option-${i}`} value={o.value}>
 							{o.label}
 						</option>

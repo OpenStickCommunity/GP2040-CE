@@ -76,6 +76,9 @@ const Navigation = () => {
 						<NavDropdown.Item as={NavLink} to="/pin-mapping">
 							{t('Navigation:pin-mapping-label')}
 						</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} to="/multi-mapping">
+							{t('Navigation:multi-mapping-label')}
+						</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} to="/peripheral-mapping">
 							{t('Navigation:peripheral-mapping-label')}
 						</NavDropdown.Item>

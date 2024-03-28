@@ -16,10 +16,10 @@ bool JSliderInput::available() {
 
 void JSliderInput::setup()
 {
-    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    GpioMappingInfo* pinMappings = Storage::getInstance().getProfilePinMappings();
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
-        switch (pinMappings[pin]) {
+        switch (pinMappings[pin].action) {
             case SUSTAIN_DP_MODE_DP:    dpModeMask |= 1 << pin; break;
             case SUSTAIN_DP_MODE_LS:    lsModeMask |= 1 << pin; break;
             case SUSTAIN_DP_MODE_RS:    rsModeMask |= 1 << pin; break;

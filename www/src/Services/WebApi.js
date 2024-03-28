@@ -367,6 +367,18 @@ async function setCustomTheme(customThemeOptions) {
 			return false;
 		});
 }
+async function getPinMappingsV2() {
+	try {
+		const { data } = await axios.get(`${baseUrl}/api/getPinMappingsV2`);
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function setPinMappingsV2(mappings) {
+	return axios.post(`${baseUrl}/api/setPinMappingsV2`, mappings);
+}
 
 async function getPinMappings() {
 	try {
@@ -642,7 +654,7 @@ function sanitizeRequest(request) {
 	return newRequest;
 }
 
-const WebApi = {
+export default {
 	resetSettings,
 	getDisplayOptions,
 	setDisplayOptions,
@@ -675,6 +687,6 @@ const WebApi = {
 	getHeldPins,
 	abortGetHeldPins,
 	reboot,
+	getPinMappingsV2,
+	setPinMappingsV2,
 };
-
-export default WebApi;

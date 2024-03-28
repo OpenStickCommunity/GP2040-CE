@@ -208,9 +208,14 @@ export const KEYBOARD_LAYOUT = [
 	['R1', 'R2'],
 	['L1', 'L2'],
 ];
+export const DPAD_MASKS = [
+	{ label: 'Up', value: 1 << 0 },
+	{ label: 'Down', value: 1 << 1 },
+	{ label: 'Left', value: 1 << 2 },
+	{ label: 'Right', value: 1 << 3 },
+];
 
 export const BUTTON_MASKS = [
-	{ label: 'None', value: 0 },
 	{ label: 'B1', value: 1 << 0 },
 	{ label: 'B2', value: 1 << 1 },
 	{ label: 'B3', value: 1 << 2 },
@@ -225,6 +230,11 @@ export const BUTTON_MASKS = [
 	{ label: 'R3', value: 1 << 11 },
 	{ label: 'A1', value: 1 << 12 },
 	{ label: 'A2', value: 1 << 13 },
+];
+
+export const BUTTON_MASKS_OPTIONS = [
+	{ label: 'None', value: 0 },
+	...BUTTON_MASKS,
 	{ label: 'Up', value: 1 << 16 },
 	{ label: 'Down', value: 1 << 17 },
 	{ label: 'Left', value: 1 << 18 },
@@ -234,7 +244,7 @@ export const BUTTON_MASKS = [
 export const ANALOG_PINS = [26, 27, 28, 29];
 
 // deep copy and swp
-export const getButtonLabels = (labelType, swapTpShareLabels = false)=> {
+export const getButtonLabels = (labelType, swapTpShareLabels = false) => {
 	const buttons = BUTTONS[labelType];
 
 	if (labelType == 'ps4' && swapTpShareLabels) {
@@ -242,10 +252,10 @@ export const getButtonLabels = (labelType, swapTpShareLabels = false)=> {
 		const buttonLabelA2 = buttons['A2'];
 		return {
 			...buttons,
-			"S1": buttonLabelA2,
-			"A2": buttonLabelS1,
-		}
+			S1: buttonLabelA2,
+			A2: buttonLabelS1,
+		};
 	} else {
-		return buttons
+		return buttons;
 	}
-}
+};

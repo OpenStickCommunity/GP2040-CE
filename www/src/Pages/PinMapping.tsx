@@ -25,12 +25,13 @@ import {
 	PinActionValues,
 } from '../Data/Pins';
 import useProfilesStore from '../Store/useProfilesStore';
+import useMultiPinStore from '../Store/useMultiPinStore';
 
 type PinCell = [string, PinActionValues];
 type PinRow = [PinCell, PinCell];
 type PinList = [PinRow];
 
-const isNonSelectable = (value) =>
+const isNonSelectable = (value: PinActionValues) =>
 	NON_SELECTABLE_BUTTON_ACTIONS.includes(value);
 
 const options = Object.entries(BUTTON_ACTIONS)
@@ -99,7 +100,8 @@ const PinsForm = ({ savePins, pins, setPinAction, onCopy }: PinsFormTypes) => {
 						const labelKey = option.label.split('BUTTON_PRESS_').pop();
 						// Need to fallback as some button actions are not part of button names
 						return (
-							buttonNames[labelKey] || t(`PinMapping:actions.${option.label}`)
+							(labelKey && buttonNames[labelKey]) ||
+							t(`PinMapping:actions.${option.label}`)
 						);
 					}}
 					onChange={(change) =>
@@ -158,13 +160,9 @@ const PinsForm = ({ savePins, pins, setPinAction, onCopy }: PinsFormTypes) => {
 
 export default function PinMappingPage() {
 	const { fetchPins, pins, savePins, setPinAction } = usePinStore();
-	const {
-		fetchProfiles,
-		profiles,
-		saveProfiles,
-		setProfileAction,
-		setProfile,
-	} = useProfilesStore();
+	const { fetchPins: fetchMultiPins } = useMultiPinStore();
+	const { fetchProfiles, profiles, saveProfiles, setProfileAction, setProfile } =
+		useProfilesStore();
 
 	const [pressedPin, setPressedPin] = useState<number | null>(null);
 
@@ -178,7 +176,8 @@ export default function PinMappingPage() {
 	const saveAll = useCallback(() => {
 		savePins();
 		saveProfiles();
-	}, [savePins, saveProfiles]);
+		fetchMultiPins();
+	}, [savePins, saveProfiles, fetchMultiPins]);
 
 	return (
 		<>

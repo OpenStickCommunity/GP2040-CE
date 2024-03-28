@@ -208,6 +208,7 @@ enum GpioAction
     SUSTAIN_SOCD_MODE_FIRST_WIN  = 30;
     SUSTAIN_SOCD_MODE_BYPASS     = 31;
     BUTTON_PRESS_TURBO           = 32;
+    CUSTOM_BUTTON_COMBO          = 33;
 }
 
 enum GamepadHotkey

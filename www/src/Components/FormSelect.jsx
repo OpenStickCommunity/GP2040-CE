@@ -1,7 +1,12 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
-const FormSelect = ({ label, error, groupClassName, ...props }) => {
+const FormSelect = ({
+	label = null,
+	error = null,
+	groupClassName = '',
+	...props
+}) => {
 	return (
 		<Form.Group className={groupClassName}>
 			{label && <Form.Label>{label}</Form.Label>}
