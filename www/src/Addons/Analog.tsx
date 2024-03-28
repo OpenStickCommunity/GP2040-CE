@@ -22,6 +22,39 @@ const INVERT_MODES = [
 	{ label: 'X/Y Axis', value: 3 },
 ];
 
+const ANALOG_SENSITIVITY_MODES = [
+	{ label: '0.25', value: 25 },
+	{ label: '0.3', value: 30 },
+	{ label: '0.4', value: 40 },
+	{ label: '0.5', value: 50 },
+	{ label: '0.6', value: 60 },
+	{ label: '0.7', value: 70 },
+	{ label: '0.8', value: 80 },
+	{ label: '0.9', value: 90 },
+	{ label: '1.0', value: 100 },
+	{ label: '1.1', value: 110 },
+	{ label: '1.2', value: 120 },
+	{ label: '1.3', value: 130 },
+	{ label: '1.4', value: 140 },
+	{ label: '1.5', value: 150 },
+	{ label: '1.6', value: 160 },
+	{ label: '1.7', value: 170 },
+	{ label: '1.8', value: 180 },
+	{ label: '1.9', value: 190 },
+	{ label: '2.0', value: 200 },
+	{ label: '2.2', value: 220 },
+	{ label: '2.4', value: 240 },
+	{ label: '2.6', value: 260 },
+	{ label: '2.8', value: 280 },
+	{ label: '3.0', value: 300 },
+	{ label: '3.2', value: 320 },
+	{ label: '3.4', value: 340 },
+	{ label: '3.6', value: 360 },
+	{ label: '3.8', value: 380 },
+	{ label: '4.0', value: 400 },
+];
+
+
 export const analogScheme = {
 	AnalogInputEnabled: yup.number().required().label('Analog Input Enabled'),
 	analogAdc1PinX: yup
@@ -57,14 +90,18 @@ export const analogScheme = {
 		.label('Analog Stick 2 Invert')
 		.validateSelectionWhenValue('AnalogInputEnabled', INVERT_MODES),
 
-	forced_circularity: yup
-		.number()
-		.label('Force Circularity')
-		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	analog_deadzone: yup
 		.number()
 		.label('Deadzone Size (%)')
 		.validateRangeWhenValue('AnalogInputEnabled', 0, 100),
+	analog_sensitivity: yup
+		.number()
+		.label('ANALOG SENSITIVITY')
+		.validateSelectionWhenValue('AnalogInputEnabled', ANALOG_SENSITIVITY_MODES),
+	forced_circularity: yup
+		.number()
+		.label('Force Circularity')
+		.validateRangeWhenValue('AnalogInputEnabled', 0, 1),
 	auto_calibrate: yup
 		.number()
 		.label('Auto Calibration')
@@ -84,6 +121,7 @@ export const analogState = {
 	forced_circularity: 0,
 	analog_deadzone: 5,
 	auto_calibrate: 0,
+	analog_sensitivity: 100,
 };
 
 const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
@@ -237,6 +275,22 @@ const Analog = ({ values, errors, handleChange, handleCheckbox }) => {
 						min={0}
 						max={100}
 					/>
+					<FormSelect
+						label={t('AddonsConfig:analog-sensitivity')}
+						name="analog_sensitivity"
+						className="form-select-sm"
+						groupClassName="col-sm-3 mb-3"
+						value={values.analog_sensitivity}
+						error={errors.analog_sensitivity}
+						isInvalid={errors.analog_sensitivity}
+						onChange={handleChange}
+					>
+						{ANALOG_SENSITIVITY_MODES.map((o, i) => (
+							<option key={`button-powtilt-option-${i}`} value={o.value}>
+								{o.label}
+							</option>
+						))}
+					</FormSelect>
 					<FormCheck
 						label={t('AddonsConfig:analog-force-circularity')}
 						type="switch"
