@@ -29,6 +29,8 @@ bool InputMacro::available() {
 
 void InputMacro::setup() {
     GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    macroButtonMask = 0;
+    memset(macroPinMasks, 0, sizeof(macroPinMasks));
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
     {
         switch( pinMappings[pin] ) {
