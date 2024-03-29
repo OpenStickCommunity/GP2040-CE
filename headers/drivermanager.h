@@ -16,9 +16,11 @@ public:
 	}
 	GPDriver * getDriver() { return driver; }
 	void setup(InputMode);
+	InputMode getInputMode(){ return inputMode; }
 private:
     DriverManager() {}
     GPDriver * driver;
+	InputMode inputMode;
 };
 
 #endif

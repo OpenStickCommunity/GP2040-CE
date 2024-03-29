@@ -1,64 +1,190 @@
 #include "ButtonLayoutScreen.h"
 #include "buttonlayouts.h"
+#include "drivermanager.h"
+#include "drivers/ps4/PS4Driver.h"
+#include "drivers/xbone/XBOneDriver.h"
+
+void ButtonLayoutScreen::init() {
+    const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
+    isInputHistoryEnabled = inputHistoryOptions.enabled;
+    inputHistoryX = inputHistoryOptions.row;
+    inputHistoryY = inputHistoryOptions.col;
+    inputHistoryLength = inputHistoryOptions.length;
+    profileDelayStart = getMillis();
+	gamepad = Storage::getInstance().GetGamepad();
+	inputMode = DriverManager::getInstance().getInputMode();
+
+	// load layout (drawElement pushes element to the display list)
+    uint16_t elementCtr = 0;
+    LayoutManager::LayoutList currLayoutLeft = LayoutManager::getInstance().getLayoutA();
+    LayoutManager::LayoutList currLayoutRight = LayoutManager::getInstance().getLayoutB();
+    for (elementCtr = 0; elementCtr < currLayoutLeft.size(); elementCtr++) {
+        pushElement(currLayoutLeft[elementCtr]);
+    }
+    for (elementCtr = 0; elementCtr < currLayoutRight.size(); elementCtr++) {
+        pushElement(currLayoutRight[elementCtr]);
+    }
+
+	// start with profile mode displayed
+	profileModeDisplay = true;
+}
+
+int8_t ButtonLayoutScreen::update() {
+    // main logic loop
+	generateHeader();
+    if (isInputHistoryEnabled)
+		processInputHistory();
+
+    // check for exit/screen change
+    if (getConfigMode()) {
+        uint16_t buttonState = getGamepad()->state.buttons;
+        if (prevButtonState && !buttonState) {
+            if (prevButtonState == GAMEPAD_MASK_B1) {
+                prevButtonState = 0;
+                return -1;
+            }
+        }
+        prevButtonState = buttonState;
+    }
+
+	return DisplayMode::BUTTONS;
+}
+
+void ButtonLayoutScreen::generateHeader() {
+	// Limit to 21 chars with 6x8 font for now
+	statusBar.clear();
+
+	// Display Profile # banner
+	if ( profileModeDisplay ) {
+		if (((getMillis() - profileDelayStart) / 1000) < profileDelay) {
+			statusBar = "     Profile #";
+			statusBar +=  getGamepad()->getOptions().profileNumber;
+        	return;
+		} else {
+			profileModeDisplay = false;
+		}
+	}
+
+	// Display standard header
+	switch (inputMode)
+	{
+		case INPUT_MODE_HID:    statusBar += "DINPUT"; break;
+		case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
+		case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
+		case INPUT_MODE_MDMINI: statusBar += "GEN/MD"; break;
+		case INPUT_MODE_NEOGEO: statusBar += "NGMINI"; break;
+		case INPUT_MODE_PCEMINI: statusBar += "PCE/TG"; break;
+		case INPUT_MODE_EGRET: statusBar += "EGRET"; break;
+		case INPUT_MODE_ASTRO: statusBar += "ASTRO"; break;
+		case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
+		case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
+		case INPUT_MODE_PS4:
+			statusBar += "PS4";
+			if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+				statusBar += ":AS";
+			else
+				statusBar += "   ";
+			break;
+		case INPUT_MODE_PS5:
+			statusBar += "PS5";
+			if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+				statusBar += ":AS";
+			else
+				statusBar += "   ";
+			break;
+		case INPUT_MODE_XBONE:
+			statusBar += "XBON";
+			if(((XBOneDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
+				statusBar += "E";
+			else
+				statusBar += "*";
+			break;
+		case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
+		case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
+	}
+
+	const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
+	if ( turboOptions.enabled ) {
+		statusBar += " T";
+		if ( turboOptions.shotCount < 10 ) // padding
+			statusBar += "0";
+		statusBar += std::to_string(turboOptions.shotCount);
+	} else {
+		statusBar += "    "; // no turbo, don't show Txx setting
+	}
+
+	const GamepadOptions & options = gamepad->getOptions();
+
+	switch (gamepad->getOptions().dpadMode)
+	{
+		case DPAD_MODE_DIGITAL:      statusBar += " D"; break;
+		case DPAD_MODE_LEFT_ANALOG:  statusBar += " L"; break;
+		case DPAD_MODE_RIGHT_ANALOG: statusBar += " R"; break;
+	}
+
+	switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
+	{
+		case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
+		case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
+		case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
+		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
+		case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
+	}
+	if (Storage::getInstance().getAddonOptions().macroOptions.enabled)
+		statusBar += " M";
+}
 
 void ButtonLayoutScreen::drawScreen() {
-    getRenderer()->drawRectangle(0, 0, 128, 7, displayProfileBanner, displayProfileBanner);
-    getRenderer()->drawText(0, 0, header, displayProfileBanner);
+    if (profileModeDisplay) {
+        getRenderer()->drawRectangle(0, 0, 128, 7, true, true);
+    	getRenderer()->drawText(0, 0, statusBar, true);
+    } else {
+		getRenderer()->drawText(0, 0, statusBar);
+	}
     getRenderer()->drawText(0, 7, footer);
 }
 
-GPLever* ButtonLayoutScreen::drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
+GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
     GPLever* lever = new GPLever();
     lever->setRenderer(getRenderer());
-    
     lever->setPosition(startX, startY);
     lever->setStrokeColor(strokeColor);
     lever->setFillColor(fillColor);
     lever->setRadius(sizeX);
     lever->setInputType(inputType);
-
     return (GPLever*)addElement(lever);
 }
 
-GPButton* ButtonLayoutScreen::drawButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask) {
+GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask) {
     GPButton* button = new GPButton();
     button->setRenderer(getRenderer());
-
     button->setPosition(startX, startY);
     button->setStrokeColor(strokeColor);
     button->setFillColor(fillColor);
-    button->setSizeX(sizeX);
-    button->setSizeY(sizeY);
+    button->setSize(sizeX, sizeY);
     button->setInputMask(inputMask);
-
     return (GPButton*)addElement(button);
 }
 
-GPShape* ButtonLayoutScreen::drawShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor) {
+GPShape* ButtonLayoutScreen::addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor) {
     GPShape* shape = new GPShape();
     shape->setRenderer(getRenderer());
-
     shape->setPosition(startX, startY);
     shape->setStrokeColor(strokeColor);
     shape->setFillColor(fillColor);
-    shape->setSizeX(sizeX);
-    shape->setSizeY(sizeY);
-
+    shape->setSize(sizeX, sizeY);
     return (GPShape*)addElement(shape);
 }
 
-GPSprite* ButtonLayoutScreen::drawSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY) {
+GPSprite* ButtonLayoutScreen::addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY) {
     GPSprite* sprite = new GPSprite();
     sprite->setRenderer(getRenderer());
-
     sprite->setPosition(startX, startY);
-    sprite->setSizeX(sizeX);
-    sprite->setSizeY(sizeY);
-
+    sprite->setSize(sizeX, sizeY);
     return (GPSprite*)addElement(sprite);
 }
 
-GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
+GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
     uint16_t yOffset = 0;
 
     if (isInputHistoryEnabled) {
@@ -66,9 +192,9 @@ GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
     }
 
     if (element.elementType == GP_ELEMENT_LEVER) {
-        return drawLever(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
+        return addLever(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
     } else if ((element.elementType == GP_ELEMENT_BTN_BUTTON) || (element.elementType == GP_ELEMENT_DIR_BUTTON) || (element.elementType == GP_ELEMENT_PIN_BUTTON)) {
-        GPButton* button = drawButton(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
+        GPButton* button = addButton(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
 
         // set type of button
         button->setInputType(element.elementType);
@@ -82,9 +208,9 @@ GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
 
         return (GPWidget*)button;
     } else if (element.elementType == GP_ELEMENT_SPRITE) {
-        return drawSprite(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2);
+        return addSprite(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2);
     } else if (element.elementType == GP_ELEMENT_SHAPE) {
-        GPShape* shape = drawShape(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill);
+        GPShape* shape = addShape(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill);
         shape->setShape((GPShape_Type)element.parameters.shape);
         shape->setAngle(element.parameters.angleStart);
         shape->setAngleEnd(element.parameters.angleEnd);
@@ -92,56 +218,6 @@ GPWidget* ButtonLayoutScreen::drawElement(GPButtonLayout element) {
         return shape;
     }
     return NULL;
-}
-
-int8_t ButtonLayoutScreen::update() {
-    GPWidget::update();
-    bool configMode = getConfigMode();
-
-    if (!hasInitialized) {
-        const InputHistoryOptions& inputHistoryOptions = Storage::getInstance().getAddonOptions().inputHistoryOptions;
-        isInputHistoryEnabled = inputHistoryOptions.enabled;
-        inputHistoryX = inputHistoryOptions.row;
-        inputHistoryY = inputHistoryOptions.col;
-        inputHistoryLength = inputHistoryOptions.length;
-
-        // load layout
-        uint16_t elementCtr = 0;
-        LayoutManager::LayoutList currLayoutLeft = LayoutManager::getInstance().getLayoutA();
-        LayoutManager::LayoutList currLayoutRight = LayoutManager::getInstance().getLayoutB();
-        for (elementCtr = 0; elementCtr < currLayoutLeft.size(); elementCtr++) {
-            drawElement(currLayoutLeft[elementCtr]);
-        }
-        for (elementCtr = 0; elementCtr < currLayoutRight.size(); elementCtr++) {
-            drawElement(currLayoutRight[elementCtr]);
-        }
-
-        profileDelayStart = getMillis();
-
-        hasInitialized = true;
-    }
-
-    // main logic loop
-    showProfileBanner();
-    if (isInputHistoryEnabled) processInputHistory();
-
-    // check for exit/screen change
-    if (!configMode) {
-        return DisplayMode::BUTTONS;
-    } else {
-        uint16_t buttonState = getGamepad()->state.buttons;
-
-        if (prevButtonState && !buttonState) {
-            if (prevButtonState == GAMEPAD_MASK_B1) {
-                prevButtonState = 0;
-                return -1;
-            }
-        }
-
-        prevButtonState = buttonState;
-  
-        return DisplayMode::BUTTONS;
-    }
 }
 
 void ButtonLayoutScreen::processInputHistory() {
@@ -226,19 +302,6 @@ void ButtonLayoutScreen::processInputHistory() {
 	}
 
     footer = historyString;
-}
-
-void ButtonLayoutScreen::showProfileBanner() {
-    int profileDelayCheck = getMillis();
-
-    if (((profileDelayCheck - profileDelayStart) / 1000) >= profileDelay) {
-        // stop displaying
-        displayProfileBanner = false;
-    } else {
-        // display
-        header = "     Profile #" + std::to_string(getGamepad()->getOptions().profileNumber);
-        displayProfileBanner = true;
-    }
 }
 
 bool ButtonLayoutScreen::pressedUp()
