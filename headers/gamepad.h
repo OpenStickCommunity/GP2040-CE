@@ -167,7 +167,7 @@ private:
 	uint8_t getMultimedia(uint8_t code);
 	void processHotkeyAction(GamepadHotkey action);
 
-	const GamepadOptions & options;
+	GamepadOptions & options;
 	const HotkeyOptions & hotkeyOptions;
 
 	GamepadHotkey lastAction = HOTKEY_NONE;
