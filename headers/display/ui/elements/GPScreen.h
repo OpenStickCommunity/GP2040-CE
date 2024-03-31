@@ -9,9 +9,7 @@
 class GPScreen : public GPWidget {
     public:
         void draw();
-        std::string header = "";
-        std::string footer = "";
-        virtual int8_t update();
+        virtual int8_t update() = 0;
         void clear();
 
         template<typename _GPWidget, typename... _GPArgs>
@@ -22,9 +20,10 @@ class GPScreen : public GPWidget {
             displayList.emplace_back(std::move(new_element));
             return static_cast<_GPWidget*>(raw_ptr);
         }
+        virtual void init() = 0;
     protected:
         virtual void drawScreen() = 0;
-
+        GPWidget* addElement(GPWidget* element);
     private:
         std::vector<std::unique_ptr<GPWidget>> displayList;
 };

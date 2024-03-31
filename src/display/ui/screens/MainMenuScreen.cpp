@@ -2,6 +2,9 @@
 
 extern uint32_t getMillis();
 
+void MainMenuScreen::init() {
+}
+
 void MainMenuScreen::drawScreen() {
     getRenderer()->drawText(1, 1, "GPGFX_UI Test Menu");
 

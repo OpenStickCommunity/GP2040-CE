@@ -695,9 +695,9 @@ message Macro
 message MacroOptions
 {
     optional bool enabled = 1;
-    optional int32 pin = 2;
-    optional bool macroBoardLedEnabled = 4;
+    optional int32 pin = 2 [deprecated = true];
     repeated Macro macroList = 3 [(nanopb).max_count = 6];
+    optional bool macroBoardLedEnabled = 4;
 }
 
 message InputHistoryOptions
