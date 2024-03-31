@@ -66,13 +66,13 @@ int8_t ButtonLayoutScreen::update() {
         if (prevButtonState && !buttonState) {
             if (prevButtonState == GAMEPAD_MASK_B1) {
                 prevButtonState = 0;
-                return -1;
+                return DisplayMode::CONFIG_INSTRUCTION;
             }
         }
         prevButtonState = buttonState;
     }
 
-	return DisplayMode::BUTTONS;
+	return -1;
 }
 
 void ButtonLayoutScreen::generateHeader() {
