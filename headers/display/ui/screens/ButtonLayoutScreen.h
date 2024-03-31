@@ -74,7 +74,7 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_XBOXORIGINAL, 10},
         };
 
-	Gamepad* gamepad;
+        Gamepad* gamepad;
         InputMode inputMode;
         std::string statusBar;
         std::string footer;
