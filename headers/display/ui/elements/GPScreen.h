@@ -23,7 +23,6 @@ class GPScreen : public GPWidget {
         virtual void init() = 0;
     protected:
         virtual void drawScreen() = 0;
-        GPWidget* addElement(GPWidget* element);
     private:
         std::vector<std::unique_ptr<GPWidget>> displayList;
 };

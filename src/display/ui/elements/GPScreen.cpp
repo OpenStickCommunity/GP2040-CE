@@ -20,9 +20,3 @@ void GPScreen::clear() {
         displayList.shrink_to_fit();
     }
 }
-
-GPWidget* GPScreen::addElement(GPWidget* element) {
-    displayList.push_back(element);
-    element->setID(displayList.size()-1);
-    return element;
-}
