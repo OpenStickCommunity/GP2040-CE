@@ -44,24 +44,18 @@ private:
 	void checkMacroAction();
 	void runCurrentMacro();
 	void reset();
-
-	bool isMacroRunning = false;
-	bool isMacroTriggerHeld = false;
-	int macroPosition = -1;
-
-	uint32_t macroButtonMask = 0;
-	uint32_t macroPinMasks[6] = {};
-
-	uint64_t macroStartTime = 0;
-
-	int pressedMacro = -1;
-	int macroInputPosition = 0;
-	bool macroInputPressed = false;
-	uint32_t macroInputHoldTime = INPUT_HOLD_US;
-	bool prevMacroInputPressed = false;
-	bool boardLedEnabled = false;
-
-	MacroOptions inputMacroOptions;
+	bool isMacroRunning;
+	bool isMacroTriggerHeld;
+	int macroPosition;
+	uint32_t macroButtonMask;
+	uint32_t macroPinMasks[6];
+	uint64_t macroStartTime;
+	int pressedMacro;
+	int macroInputPosition;
+	uint32_t macroInputHoldTime;
+	bool prevMacroInputPressed;
+	bool boardLedEnabled;
+	MacroOptions * inputMacroOptions;
 };
 
 #endif  // _InputMacro_H_

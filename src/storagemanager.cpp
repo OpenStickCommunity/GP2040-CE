@@ -21,13 +21,10 @@
 
 #include "helper.h"
 
-Storage::Storage()
-{
+void Storage::init() {
 	EEPROM.start();
 	critical_section_init(&animationOptionsCs);
 	ConfigUtils::load(config);
-
-	setFunctionalPinMappings();
 }
 
 bool Storage::save()

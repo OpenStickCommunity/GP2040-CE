@@ -44,16 +44,18 @@ class ButtonLayoutScreen : public GPScreen {
     public:
         ButtonLayoutScreen() {}
         ButtonLayoutScreen(GPGFX* renderer) { setRenderer(renderer); }
-        int8_t update();
+        virtual int8_t update();
+        virtual void init();
     protected:
-        void drawScreen();
+        virtual void drawScreen();
     private:
         // new layout methods
-        GPLever* drawLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
-        GPButton* drawButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask = -1);
-        GPSprite* drawSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY);
-        GPShape* drawShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor);
-        GPWidget* drawElement(GPButtonLayout element);
+        GPLever* addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType);
+        GPButton* addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask = -1);
+        GPSprite* addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY);
+        GPShape* addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor);
+        GPWidget* pushElement(GPButtonLayout element);
+        void generateHeader();
 
         const std::map<uint16_t, uint16_t> displayModeLookup = {
             {INPUT_MODE_HID, 0},
@@ -72,6 +74,11 @@ class ButtonLayoutScreen : public GPScreen {
             {INPUT_MODE_XBOXORIGINAL, 10},
         };
 
+        Gamepad* gamepad;
+        InputMode inputMode;
+        std::string statusBar;
+        std::string footer;
+
         bool isInputHistoryEnabled = false;
         uint16_t inputHistoryX = 0;
         uint16_t inputHistoryY = 0;
@@ -80,15 +87,10 @@ class ButtonLayoutScreen : public GPScreen {
         std::deque<std::string> inputHistory;
         std::array<bool, INPUT_HISTORY_MAX_INPUTS> lastInput;
 
+        bool profileModeDisplay;
         uint8_t profileDelay = 2;
         int profileDelayStart = 0;
-        bool displayProfileBanner = true;
-
-        bool hasInitialized = false;
-
         uint16_t prevButtonState = 0;
-
-        void showProfileBanner();
 
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();
@@ -101,7 +103,7 @@ class ButtonLayoutScreen : public GPScreen {
         bool pressedDownLeft();
         bool pressedDownRight();
 
-        const std::string displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] = {
+        const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] = {
             {		// HID / DINPUT
                     CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
                     CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
