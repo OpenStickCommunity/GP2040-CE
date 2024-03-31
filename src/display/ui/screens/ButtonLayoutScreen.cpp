@@ -83,7 +83,7 @@ void ButtonLayoutScreen::generateHeader() {
 	if ( profileModeDisplay ) {
 		if (((getMillis() - profileDelayStart) / 1000) < profileDelay) {
 			statusBar = "     Profile #";
-			statusBar +=  getGamepad()->getOptions().profileNumber;
+			statusBar +=  std::to_string(getGamepad()->getOptions().profileNumber);
         	return;
 		} else {
 			profileModeDisplay = false;
