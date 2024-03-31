@@ -46,17 +46,6 @@ void DisplayAddon::setup() {
     gpDisplay = new GPGFX();
     gpDisplay->init(gpOptions);
 
-    // Setup Loaded Screens
-    loadedScreens.insert({CONFIG_INSTRUCTION, {new ConfigScreen()}});
-    loadedScreens.insert({SPLASH, {new SplashScreen()}});
-    loadedScreens.insert({MAIN_MENU, {new MainMenuScreen()}});
-    loadedScreens.insert({BUTTONS, {new ButtonLayoutScreen()}});
-    for (map<DisplayMode, GPScreen*>::iterator screenIterator = loadedScreens.begin();
-            screenIterator != loadedScreens.end(); screenIterator++) {
-        screenIterator->second->setRenderer(gpDisplay);
-        screenIterator->second->init();
-    }
-
     gamepad = Storage::getInstance().GetGamepad();
 
     displaySaverTimer = options.displaySaverTimeout;
@@ -75,7 +64,38 @@ void DisplayAddon::setup() {
         currDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
     }
 
-    gpScreen = loadedScreens.find(currDisplayMode)->second;
+    gpScreen = nullptr;
+    updateDisplayScreen();
+}
+
+bool DisplayAddon::updateDisplayScreen() {
+    if ( gpScreen != nullptr )
+        delete gpScreen;
+
+    switch(currDisplayMode) {
+        case CONFIG_INSTRUCTION:
+            gpScreen = new ConfigScreen(gpDisplay);
+            break;
+        case SPLASH:
+            gpScreen = new SplashScreen(gpDisplay);
+            break;
+        case MAIN_MENU:
+            gpScreen = new MainMenuScreen(gpDisplay);
+            break;
+        case BUTTONS:
+            gpScreen = new ButtonLayoutScreen(gpDisplay);
+            break;
+        default:
+            gpScreen = nullptr;
+            break;
+    };
+
+    if (gpScreen != nullptr) {
+        gpScreen->init();
+        return true;
+    }
+
+    return false;
 }
 
 bool DisplayAddon::isDisplayPowerOff()
@@ -121,21 +141,13 @@ void DisplayAddon::process() {
     int8_t screenReturn = gpScreen->update();
     gpScreen->draw();
 
+    // -1 = we do not change state
     if (screenReturn >= 0) {
-        // 
+        // Screen wants to change to something else
         if (screenReturn != currDisplayMode) {
-            
             currDisplayMode = (DisplayMode)screenReturn;
-            gpScreen = loadedScreens.find(currDisplayMode)->second;
+            updateDisplayScreen();
         }
-    } else {
-        // screen exited
-        if (!configMode) {
-            currDisplayMode = DisplayMode::BUTTONS;
-        } else {
-            currDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
-        }
-        gpScreen = loadedScreens.find(currDisplayMode)->second;
     }
 }
 

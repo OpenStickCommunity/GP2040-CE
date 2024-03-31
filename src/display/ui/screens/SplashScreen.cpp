@@ -3,6 +3,9 @@
 #include "pico/stdlib.h"
 
 void SplashScreen::init() {
+    getRenderer()->clearScreen();
+    splashStartTime = getMillis();
+    configMode = Storage::getInstance().GetConfigMode();
 }
 
 void SplashScreen::drawScreen() {
@@ -33,26 +36,22 @@ void SplashScreen::drawScreen() {
 }
 
 int8_t SplashScreen::update() {
+    uint32_t elapsedDuration = getMillis() - splashStartTime;
     uint32_t splashDuration = getDisplayOptions().splashDuration;
-    bool configMode = getConfigMode();
     if (!configMode) {
         // still running
-        if (splashDuration == 0 || getMillis() < splashDuration) {
-            return DisplayMode::SPLASH;
+        if (splashDuration != 0 && (elapsedDuration >= splashDuration)) {
+            return DisplayMode::BUTTONS;
         }
-        return -1;
     } else {
         uint16_t buttonState = getGamepad()->state.buttons;
-
         if (prevButtonState && !buttonState) {
             if (prevButtonState == GAMEPAD_MASK_B2) {
                 prevButtonState = 0;
-                return -1;
+                return DisplayMode::CONFIG_INSTRUCTION;
             }
         }
-
         prevButtonState = buttonState;
-  
-        return DisplayMode::SPLASH;
     }
+    return -1; // -1 means no change in screen state
 }

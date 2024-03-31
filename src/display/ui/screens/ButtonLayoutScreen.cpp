@@ -50,6 +50,8 @@ void ButtonLayoutScreen::init() {
                 break;
         }
     }
+
+    getRenderer()->clearScreen();
 }
 
 int8_t ButtonLayoutScreen::update() {
@@ -59,7 +61,7 @@ int8_t ButtonLayoutScreen::update() {
 		processInputHistory();
 
     // check for exit/screen change
-    if (getConfigMode()) {
+    if (Storage::getInstance().GetConfigMode()) {
         uint16_t buttonState = getGamepad()->state.buttons;
         if (prevButtonState && !buttonState) {
             if (prevButtonState == GAMEPAD_MASK_B1) {
@@ -168,44 +170,45 @@ void ButtonLayoutScreen::drawScreen() {
 }
 
 GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
-    GPLever* lever = addElement<GPLever>();
+    GPLever* lever = new GPLever();
     lever->setRenderer(getRenderer());
     lever->setPosition(startX, startY);
     lever->setStrokeColor(strokeColor);
     lever->setFillColor(fillColor);
     lever->setRadius(sizeX);
     lever->setInputType(inputType);
-    return lever;
+    return (GPLever*)addElement(lever);
 }
 
 GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask) {
-    GPButton* button = addElement<GPButton>();
+    GPButton* button = new GPButton();
     button->setRenderer(getRenderer());
     button->setPosition(startX, startY);
     button->setStrokeColor(strokeColor);
     button->setFillColor(fillColor);
     button->setSize(sizeX, sizeY);
     button->setInputMask(inputMask);
-    return button;
+    return (GPButton*)addElement(button);
 }
 
 GPShape* ButtonLayoutScreen::addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor) {
-    GPShape* shape = addElement<GPShape>();
+    GPShape* shape = new GPShape();
     shape->setRenderer(getRenderer());
     shape->setPosition(startX, startY);
     shape->setStrokeColor(strokeColor);
     shape->setFillColor(fillColor);
     shape->setSize(sizeX,sizeY);
+    addElement(shape);
 
     return shape;
 }
 
 GPSprite* ButtonLayoutScreen::addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY) {
-    GPSprite* sprite = addElement<GPSprite>();
+    GPSprite* sprite = new GPSprite();
     sprite->setRenderer(getRenderer());
     sprite->setPosition(startX, startY);
     sprite->setSize(sizeX,sizeY);
-    return sprite;
+    return (GPSprite*)addElement(sprite);
 }
 
 GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {

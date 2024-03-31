@@ -4,6 +4,7 @@
 void ConfigScreen::init() {
     version = "GP2040-CE : ";
     version += GP2040VERSION;
+    getRenderer()->clearScreen();
 }
 
 int8_t ConfigScreen::update() {
@@ -24,7 +25,7 @@ int8_t ConfigScreen::update() {
         }
     }
     prevButtonState = buttonState;
-    return DisplayMode::CONFIG_INSTRUCTION;
+    return -1;
 }
 
 void ConfigScreen::drawScreen() {
