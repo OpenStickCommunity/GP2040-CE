@@ -27,6 +27,29 @@ void ButtonLayoutScreen::init() {
 
 	// start with profile mode displayed
 	profileModeDisplay = true;
+
+    // we cannot look at macro options enabled, pull the pins
+    
+    // macro display now uses our pin functions, so we need to check if pins are enabled...
+    macroEnabled = false;
+    // Macro Button initialized by void Gamepad::setup()
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        switch( pinMappings[pin] ) {
+            case GpioAction::BUTTON_PRESS_MACRO:
+            case GpioAction::BUTTON_PRESS_MACRO_1:
+            case GpioAction::BUTTON_PRESS_MACRO_2:
+            case GpioAction::BUTTON_PRESS_MACRO_3:
+            case GpioAction::BUTTON_PRESS_MACRO_4:
+            case GpioAction::BUTTON_PRESS_MACRO_5:
+            case GpioAction::BUTTON_PRESS_MACRO_6:
+                macroEnabled = true;
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 int8_t ButtonLayoutScreen::update() {
@@ -130,7 +153,7 @@ void ButtonLayoutScreen::generateHeader() {
 		case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
 		case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
 	}
-	if (Storage::getInstance().getAddonOptions().macroOptions.enabled)
+	if (macroEnabled)
 		statusBar += " M";
 }
 

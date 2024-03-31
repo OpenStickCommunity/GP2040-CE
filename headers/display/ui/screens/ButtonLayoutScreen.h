@@ -95,6 +95,8 @@ class ButtonLayoutScreen : public GPScreen {
         uint8_t prevLayoutRight = 0;
         uint8_t prevProfileNumber = 0;
 
+        bool macroEnabled;
+
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();
         bool pressedUp();
