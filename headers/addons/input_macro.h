@@ -38,6 +38,7 @@ public:
 	virtual void setup();       // Analog Setup
 	virtual void process() {};     // Analog Process
 	virtual void preprocess();
+    virtual void reinit();
     virtual std::string name() { return InputMacroName; }
 private:
 	void checkMacroPress();

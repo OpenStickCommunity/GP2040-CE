@@ -1882,7 +1882,6 @@ std::string getMacroAddonOptions()
         macro["showFrames"] = macroOptions.macroList[i].showFrames ? 1 : 0;
         macro["macroType"] = macroOptions.macroList[i].macroType;
         macro["useMacroTriggerButton"] = macroOptions.macroList[i].useMacroTriggerButton ? 1 : 0;
-        macro["macroTriggerPin"] = macroOptions.macroList[i].macroTriggerPin;
         macro["macroTriggerButton"] = macroOptions.macroList[i].macroTriggerButton;
         macro["macroLabel"] = macroOptions.macroList[i].macroLabel;
 

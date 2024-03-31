@@ -247,3 +247,37 @@ void InputMacro::preprocess()
     checkMacroAction();
     runCurrentMacro();
 }
+
+void InputMacro::reinit() {
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    macroButtonMask = 0;
+    memset(macroPinMasks, 0, sizeof(macroPinMasks));
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        switch( pinMappings[pin] ) {
+            case GpioAction::BUTTON_PRESS_MACRO:
+                macroButtonMask = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_1:
+                macroPinMasks[0] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_2:
+                macroPinMasks[1] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_3:
+                macroPinMasks[2] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_4:
+                macroPinMasks[3] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_5:
+                macroPinMasks[4] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_6:
+                macroPinMasks[5] = 1 << pin;
+                break;
+            default:
+                break;
+        }
+    }
+}

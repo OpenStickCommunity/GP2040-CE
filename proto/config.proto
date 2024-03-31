@@ -685,7 +685,7 @@ message Macro
     repeated MacroInput macroInputs = 3 [(nanopb).max_count = 30];
     optional bool enabled = 4;
     optional bool useMacroTriggerButton = 5;
-    optional int32 macroTriggerPin = 6 [default = -1];
+    optional int32 deprecatedMacroTriggerPin = 6 [deprecated = true];
     optional uint32 macroTriggerButton = 7;
     optional bool exclusive = 8 [default = true];
     optional bool interruptible = 9 [default = true];
@@ -695,7 +695,7 @@ message Macro
 message MacroOptions
 {
     optional bool enabled = 1;
-    optional int32 pin = 2 [deprecated = true];
+    optional int32 deprecatedPin = 2 [deprecated = true];
     repeated Macro macroList = 3 [(nanopb).max_count = 6];
     optional bool macroBoardLedEnabled = 4;
 }
