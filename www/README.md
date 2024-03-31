@@ -49,7 +49,7 @@ Precompiled binaries of `makefsdata` for Windows, Linux and macOS are included i
 
 ## Bundle size
 
-After adding any type of dependency please check the production bundle size either by running `npm run build` or a more detailed breakdown `npx vite-bundle-visualizer`
+After adding any type of dependency please check the production bundle size either by running `npm run build` or a more detailed breakdown `npm run analyze`
 
 ## References
 
