@@ -14,7 +14,7 @@
 #include "enums.pb.h"
 
 // force a report to be sent every X ms
-#define PS4_KEEPALIVE_TIMER 250
+#define PS4_KEEPALIVE_TIMER 5
 
 void PS4Driver::initialize() {
     //touchpadData = {

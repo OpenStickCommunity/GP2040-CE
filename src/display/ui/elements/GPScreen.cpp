@@ -5,11 +5,8 @@ void GPScreen::draw() {
 
     // draw the display list
     if ( displayList.size() > 0 ) {
-        std::sort(displayList.begin(), displayList.end(), [](GPWidget* a, GPWidget* b) {
-            return a->getPriority() > b->getPriority();
-        });
-        for(std::vector<GPWidget*>::iterator it = displayList.begin(); it != displayList.end(); it++) {
-            // Gamepad value actions are read in the component draw functions
+        std::sort(displayList.begin(), displayList.end(), [](std::unique_ptr<GPWidget>& a, std::unique_ptr<GPWidget>& b){ return a->getPriority() > b->getPriority(); });
+        for(std::vector<std::unique_ptr<GPWidget>>::iterator it = displayList.begin(); it != displayList.end(); ++it) {
             (*it)->draw();
         }
     }
@@ -17,8 +14,9 @@ void GPScreen::draw() {
     getRenderer()->render();
 }
 
-GPWidget* GPScreen::addElement(GPWidget* element) {
-    displayList.push_back(element);
-    element->setID(displayList.size()-1);
-    return element;
+void GPScreen::clear() {
+    if (displayList.size() > 0) {
+        displayList.clear();
+        displayList.shrink_to_fit();
+    }
 }

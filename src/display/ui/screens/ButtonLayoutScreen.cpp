@@ -145,43 +145,44 @@ void ButtonLayoutScreen::drawScreen() {
 }
 
 GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
-    GPLever* lever = new GPLever();
+    GPLever* lever = addElement<GPLever>();
     lever->setRenderer(getRenderer());
     lever->setPosition(startX, startY);
     lever->setStrokeColor(strokeColor);
     lever->setFillColor(fillColor);
     lever->setRadius(sizeX);
     lever->setInputType(inputType);
-    return (GPLever*)addElement(lever);
+    return lever;
 }
 
 GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask) {
-    GPButton* button = new GPButton();
+    GPButton* button = addElement<GPButton>();
     button->setRenderer(getRenderer());
     button->setPosition(startX, startY);
     button->setStrokeColor(strokeColor);
     button->setFillColor(fillColor);
     button->setSize(sizeX, sizeY);
     button->setInputMask(inputMask);
-    return (GPButton*)addElement(button);
+    return button;
 }
 
 GPShape* ButtonLayoutScreen::addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor) {
-    GPShape* shape = new GPShape();
+    GPShape* shape = addElement<GPShape>();
     shape->setRenderer(getRenderer());
     shape->setPosition(startX, startY);
     shape->setStrokeColor(strokeColor);
     shape->setFillColor(fillColor);
-    shape->setSize(sizeX, sizeY);
-    return (GPShape*)addElement(shape);
+    shape->setSize(sizeX,sizeY);
+
+    return shape;
 }
 
 GPSprite* ButtonLayoutScreen::addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY) {
-    GPSprite* sprite = new GPSprite();
+    GPSprite* sprite = addElement<GPSprite>();
     sprite->setRenderer(getRenderer());
     sprite->setPosition(startX, startY);
-    sprite->setSize(sizeX, sizeY);
-    return (GPSprite*)addElement(sprite);
+    sprite->setSize(sizeX,sizeY);
+    return sprite;
 }
 
 GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
@@ -307,96 +308,96 @@ void ButtonLayoutScreen::processInputHistory() {
 
 bool ButtonLayoutScreen::pressedUp()
 {
-	switch (getGamepad()->getOptions().dpadMode)
-	{
-		case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_UP);
-		case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN;
-		case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN;
-	}
+    switch (getGamepad()->getOptions().dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_UP);
+        case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN;
+        case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN;
+    }
 
-	return false;
+    return false;
 }
 
 bool ButtonLayoutScreen::pressedDown()
 {
-	switch (getGamepad()->getOptions().dpadMode)
-	{
-		case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_DOWN);
-		case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX;
-		case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.ry == GAMEPAD_JOYSTICK_MAX;
-	}
+    switch (getGamepad()->getOptions().dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_DOWN);
+        case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX;
+        case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.ry == GAMEPAD_JOYSTICK_MAX;
+    }
 
-	return false;
+    return false;
 }
 
 bool ButtonLayoutScreen::pressedLeft()
 {
-	switch (getGamepad()->getOptions().dpadMode)
-	{
-		case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_LEFT);
-		case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN;
-		case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN;
-	}
+    switch (getGamepad()->getOptions().dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_LEFT);
+        case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN;
+        case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN;
+    }
 
-	return false;
+    return false;
 }
 
 bool ButtonLayoutScreen::pressedRight()
 {
-	switch (getGamepad()->getOptions().dpadMode)
-	{
-		case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_RIGHT);
-		case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX;
-		case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.rx == GAMEPAD_JOYSTICK_MAX;
-	}
+    switch (getGamepad()->getOptions().dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == GAMEPAD_MASK_RIGHT);
+        case DPAD_MODE_LEFT_ANALOG:  return getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX;
+        case DPAD_MODE_RIGHT_ANALOG: return getGamepad()->state.rx == GAMEPAD_JOYSTICK_MAX;
+    }
 
-	return false;
+    return false;
 }
 
 bool ButtonLayoutScreen::pressedUpLeft()
 {
-	switch (getGamepad()->getOptions().dpadMode)
-	{
-		case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT));
-		case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
-		case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN);
-	}
+    switch (getGamepad()->getOptions().dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT));
+        case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
+        case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.rx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ry == GAMEPAD_JOYSTICK_MIN);
+    }
 
-	return false;
+    return false;
 }
 
 bool ButtonLayoutScreen::pressedUpRight()
 {
-	switch (getGamepad()->getOptions().dpadMode)
-	{
-		case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT));
-		case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
-		case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
-	}
+    switch (getGamepad()->getOptions().dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_UP | GAMEPAD_MASK_RIGHT));
+        case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
+        case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MIN);
+    }
 
-	return false;
+    return false;
 }
 
 bool ButtonLayoutScreen::pressedDownLeft()
 {
-	switch (getGamepad()->getOptions().dpadMode)
-	{
-		case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT));
-		case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
-		case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
-	}
+    switch (getGamepad()->getOptions().dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_LEFT));
+        case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+        case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MIN) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+    }
 
-	return false;
+    return false;
 }
 
 bool ButtonLayoutScreen::pressedDownRight()
 {
-	switch (getGamepad()->getOptions().dpadMode)
-	{
-		case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT));
-		case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
-		case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
-	}
+    switch (getGamepad()->getOptions().dpadMode)
+    {
+        case DPAD_MODE_DIGITAL:      return ((getGamepad()->state.dpad & GAMEPAD_MASK_DPAD) == (GAMEPAD_MASK_DOWN | GAMEPAD_MASK_RIGHT));
+        case DPAD_MODE_LEFT_ANALOG:  return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+        case DPAD_MODE_RIGHT_ANALOG: return (getGamepad()->state.lx == GAMEPAD_JOYSTICK_MAX) && (getGamepad()->state.ly == GAMEPAD_JOYSTICK_MAX);
+    }
 
-	return false;
+    return false;
 }
