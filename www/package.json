@@ -24,6 +24,7 @@
 		"zustand": "^4.4.1"
 	},
 	"scripts": {
+		"analyze": "npx vite-bundle-visualizer",
 		"build": "vite build && npm run makefsdata",
 		"dev-server": "nodemon -r dotenv/config ./server/app.js",
 		"dev": "concurrently --kill-others \"npm run dev-server\" \"npm start\"",
