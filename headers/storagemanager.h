@@ -47,6 +47,7 @@ public:
 	GpioAction* getProfilePinMappings() { return functionalPinMappings; }
 	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 
+	void init();
 	bool save();
 
 	// Perform saves that were enqueued from core1
@@ -73,7 +74,7 @@ public:
 	void ResetSettings(); 				// EEPROM Reset Feature
 
 private:
-	Storage();
+	Storage() {}
 	bool CONFIG_MODE = false; 			// Config mode (boot)
 	Gamepad * gamepad = nullptr;    		// Gamepad data
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data

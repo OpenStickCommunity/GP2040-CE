@@ -202,7 +202,6 @@ private:
 	uint32_t prevMillis;
 	std::string statusBar;
 	Gamepad* gamepad;
-	Gamepad* pGamepad;
 	bool configMode;
 
 	GPGFX* gpDisplay;

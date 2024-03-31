@@ -14,10 +14,6 @@ void GPScreen::draw() {
     getRenderer()->render();
 }
 
-int8_t GPScreen::update() { 
-    return 0;
-}
-
 void GPScreen::clear() {
     if (displayList.size() > 0) {
         displayList.clear();
