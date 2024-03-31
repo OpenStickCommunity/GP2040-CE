@@ -103,7 +103,7 @@ class ButtonLayoutScreen : public GPScreen {
         bool pressedDownLeft();
         bool pressedDownRight();
 
-        const std::string displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] = {
+        const char * displayNames[INPUT_HISTORY_MAX_MODES][INPUT_HISTORY_MAX_INPUTS] = {
             {		// HID / DINPUT
                     CHAR_UP, CHAR_DOWN, CHAR_LEFT, CHAR_RIGHT,
                     CHAR_UL, CHAR_UR, CHAR_DL, CHAR_DR,
