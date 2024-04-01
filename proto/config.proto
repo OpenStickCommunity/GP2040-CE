@@ -442,7 +442,7 @@ message DualDirectionalOptions
     optional int32 deprecatedRightPin = 5 [deprecated = true];
     
     optional DpadMode dpadMode = 6;
-    optional uint32 combineMode = 7;
+    optional DualDirectionalCombinationMode combineMode = 7;
     optional bool fourWayMode = 8;
 }
 
