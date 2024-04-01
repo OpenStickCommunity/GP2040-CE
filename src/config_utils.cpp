@@ -804,7 +804,8 @@ void gpioMappingsMigrationCore(Config& config)
 
     // flag additional pins as being used by an addon not managed here
     const auto markAddonPinIfUsed = [&](Pin_t gpPin) -> void {
-        if (isValidPin(gpPin)) actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
+        if (isValidPin(gpPin))
+            actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
     };
 
     // From Protobuf or Board Config
@@ -1460,6 +1461,8 @@ void ConfigUtils::load(Config& config)
     migrateTurboPinToGpio(config);
     // Migrate PS4/PS5/XBone authentication methods to new organization
     migrateAuthenticationMethods(config);
+    // Macro pins to gpio
+    migrateMacroPinsToGpio(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
