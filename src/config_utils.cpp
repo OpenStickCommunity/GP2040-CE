@@ -1223,18 +1223,23 @@ void gpioMappingsMigrationProfiles(Config& config)
     config.migrations.buttonProfilesMigrated = true;
 }
 
-// Check for additional migrations for features 0.7.6+
-void checkAdditionalMigrations(Config& config) {
+void migrateTurboPinToGpio(Config& config) {
     // Features converted here must set their previous deprecated pin/set value as well (pin = -1)
     TurboOptions & turboOptions = config.addonOptions.turboOptions;
 
     // Convert turbo pin mapping to GPIO mapping config
     if (turboOptions.enabled && isValidPin(turboOptions.deprecatedButtonPin)) {
+        Pin_t pin = turboOptions.deprecatedButtonPin;
         // previous config had a value we haven't migrated yet, it can/should apply in the new config
-        config.gpioMappings.pins[turboOptions.deprecatedButtonPin].action = GpioAction::BUTTON_PRESS_TURBO;
+        config.gpioMappings.pins[pin].action = GpioAction::BUTTON_PRESS_TURBO;
+        for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+            config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = GpioAction::BUTTON_PRESS_TURBO;
+        }
         turboOptions.deprecatedButtonPin = -1; // set our turbo options to -1 for subsequent calls
     }
+}
 
+void migrateAuthenticationMethods(Config& config) {
     // Auth migrations
     GamepadOptions & gamepadOptions = config.gamepadOptions;
     PS4Options & ps4Options = config.addonOptions.ps4Options;
@@ -1420,8 +1425,11 @@ void ConfigUtils::load(Config& config)
     if (!config.migrations.buttonProfilesMigrated)
         gpioMappingsMigrationProfiles(config);
 
-    // Run additional migrations for 0.7.6+ upgrades
-    checkAdditionalMigrations(config);
+    // following migrations are simple enough to not need a protobuf boolean to track
+    // Migrate turbo into GpioMappings
+    migrateTurboPinToGpio(config);
+    // Migrate PS4/PS5/XBone authentication methods to new organization
+    migrateAuthenticationMethods(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
@@ -2054,7 +2062,8 @@ bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
     // we need to run migrations here too, in case the json document changed pins or things derived from pins
     gpioMappingsMigrationCore(config);
     gpioMappingsMigrationProfiles(config);
-    checkAdditionalMigrations(config);
+    migrateTurboPinToGpio(config);
+    migrateAuthenticationMethods(config);
 
     return true;
 }
