@@ -1827,9 +1827,6 @@ std::string setMacroAddonOptions()
     DynamicJsonDocument doc = get_post_data();
 
     MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
-
-    docToValue(macroOptions.enabled, doc, "InputMacroAddonEnabled");
-    docToPin(macroOptions.pin, doc, "macroPin");
     docToValue(macroOptions.macroBoardLedEnabled, doc, "macroBoardLedEnabled");
 
     JsonObject options = doc.as<JsonObject>();
@@ -1842,7 +1839,6 @@ std::string setMacroAddonOptions()
         macroOptions.macroList[macrosIndex].macroLabel[macroLabelSize - 1] = '\0';
         macroOptions.macroList[macrosIndex].macroType = macro["macroType"].as<MacroType>();
         macroOptions.macroList[macrosIndex].useMacroTriggerButton = macro["useMacroTriggerButton"].as<bool>();
-        macroOptions.macroList[macrosIndex].macroTriggerPin = macro["macroTriggerPin"].as<int>();
         macroOptions.macroList[macrosIndex].macroTriggerButton = macro["macroTriggerButton"].as<uint32_t>();
         macroOptions.macroList[macrosIndex].enabled = macro["enabled"] == true;
         macroOptions.macroList[macrosIndex].exclusive = macro["exclusive"] == true;
@@ -1859,7 +1855,8 @@ std::string setMacroAddonOptions()
         }
         macroOptions.macroList[macrosIndex].macroInputs_count = macroInputsIndex;
 
-        if (++macrosIndex >= MAX_MACRO_LIMIT) break;
+        if (++macrosIndex >= MAX_MACRO_LIMIT)
+            break;
     }
 
     macroOptions.macroList_count = MAX_MACRO_LIMIT;
@@ -1875,11 +1872,9 @@ std::string getMacroAddonOptions()
     MacroOptions& macroOptions = Storage::getInstance().getAddonOptions().macroOptions;
     JsonArray macroList = doc.createNestedArray("macroList");
 
-    writeDoc(doc, "macroPin", macroOptions.pin);
     writeDoc(doc, "macroBoardLedEnabled", macroOptions.macroBoardLedEnabled);
-    writeDoc(doc, "InputMacroAddonEnabled", macroOptions.enabled);
 
-    for (int i = 0; i < macroOptions.macroList_count; i++) {
+    for (int i = 0; i < MAX_MACRO_LIMIT; i++) {
         JsonObject macro = macroList.createNestedObject();
         macro["enabled"] = macroOptions.macroList[i].enabled ? 1 : 0;
         macro["exclusive"] = macroOptions.macroList[i].exclusive ? 1 : 0;
@@ -1887,7 +1882,6 @@ std::string getMacroAddonOptions()
         macro["showFrames"] = macroOptions.macroList[i].showFrames ? 1 : 0;
         macro["macroType"] = macroOptions.macroList[i].macroType;
         macro["useMacroTriggerButton"] = macroOptions.macroList[i].useMacroTriggerButton ? 1 : 0;
-        macro["macroTriggerPin"] = macroOptions.macroList[i].macroTriggerPin;
         macro["macroTriggerButton"] = macroOptions.macroList[i].macroTriggerButton;
         macro["macroLabel"] = macroOptions.macroList[i].macroLabel;
 
