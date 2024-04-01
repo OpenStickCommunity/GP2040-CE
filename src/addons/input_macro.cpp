@@ -67,6 +67,7 @@ void InputMacro::setup() {
         boardLedEnabled = false;
     }
     boardLedEnabled = false;
+    prevMacroInputPressed = false;
     reset();
 }
 
@@ -79,7 +80,6 @@ void InputMacro::reset() {
     macroInputPosition = 0;
     isMacroTriggerHeld = false;
     macroInputHoldTime = INPUT_HOLD_US;
-    prevMacroInputPressed = false;
     if (boardLedEnabled) {
         gpio_put(BOARD_LED_PIN, 0);
     }
