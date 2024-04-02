@@ -43,9 +43,13 @@ Use JPG and PNG files for images, SVG file support requires modification to the 
 
 If you just want to rebuild the React app in production mode for some reason, you can run `npm run build` from the `www` folder.
 
-The `makedatafs.js` script is used to build the React application and regenerate the embedded data in `lib/httpd/fsdata.c`. The `makefsdata` tool that performs the conversion doesn't set the correct `#include` lines for our use. This script will fix this issue.
+The `makefsdata.js` script is used to build the React application and regenerate the embedded data in `lib/httpd/fsdata.c`. The `makefsdata` tool that performs the conversion doesn't set the correct `#include` lines for our use. This script will fix this issue.
 
-Precompiled binaries of `makedatafs` for Windows, Linux and macOS are included in the `tools` folder.
+Precompiled binaries of `makefsdata` for Windows, Linux and macOS are included in the `tools` folder.
+
+## Bundle size
+
+After adding any type of dependency please check the production bundle size either by running `npm run build` or a more detailed breakdown `npm run analyze`
 
 ## References
 

@@ -597,7 +597,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, deprecatedLeftPin, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, deprecatedRightPin, (Pin_t)-1);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, dpadMode, static_cast<DpadMode>(DUAL_DIRECTIONAL_STICK_MODE));
-    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DUAL_DIRECTIONAL_COMBINE_MODE);
+    INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, combineMode, DualDirectionalCombinationMode::MIXED_MODE);
     INIT_UNSET_PROPERTY(config.addonOptions.dualDirectionalOptions, fourWayMode, false);
 
 	// addonOptions.tiltOptions
@@ -713,10 +713,10 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, buttonLockEnabled, !!FOCUS_MODE_BUTTON_LOCK_ENABLED);
     INIT_UNSET_PROPERTY(config.addonOptions.focusModeOptions, macroLockEnabled, !!FOCUS_MODE_MACRO_LOCK_ENABLED);
 
-    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, !!INPUT_MACRO_ENABLED);
-    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, pin, INPUT_MACRO_PIN);
+    // Macro options (always on)
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, true);
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, macroBoardLedEnabled, INPUT_MACRO_BOARD_LED_ENABLED);
-    config.addonOptions.macroOptions.macroList_count = 6;
+    config.addonOptions.macroOptions.macroList_count = MAX_MACRO_LIMIT;
 }
 
 
@@ -804,7 +804,8 @@ void gpioMappingsMigrationCore(Config& config)
 
     // flag additional pins as being used by an addon not managed here
     const auto markAddonPinIfUsed = [&](Pin_t gpPin) -> void {
-        if (isValidPin(gpPin)) actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
+        if (isValidPin(gpPin))
+            actions[gpPin] = GpioAction::ASSIGNED_TO_ADDON;
     };
 
     // From Protobuf or Board Config
@@ -1162,13 +1163,6 @@ void gpioMappingsMigrationCore(Config& config)
     markAddonPinIfUsed(config.addonOptions.snesOptions.clockPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.latchPin);
     markAddonPinIfUsed(config.addonOptions.snesOptions.dataPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.pin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[0].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[1].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[2].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[3].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[4].macroTriggerPin);
-    markAddonPinIfUsed(config.addonOptions.macroOptions.macroList[5].macroTriggerPin);
 
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         config.gpioMappings.pins[pin].action = actions[pin];
@@ -1273,6 +1267,43 @@ void migrateAuthenticationMethods(Config& config) {
     if ( xbonePassthroughOptions.enabled == true ) { // Xbox One add-on "on", USB pass through is assumed
         xbonePassthroughOptions.enabled = false; // disable and go on our way
     }
+}
+
+void migrateMacroPinsToGpio(Config& config) {
+    
+    // Convert Macro pin mapping to GPIO mapping configs
+    MacroOptions & macroOptions = config.addonOptions.macroOptions;
+    if (macroOptions.enabled && (isValidPin(macroOptions.deprecatedPin) ||
+        isValidPin(macroOptions.macroList[0].deprecatedMacroTriggerPin) ||
+        isValidPin(macroOptions.macroList[1].deprecatedMacroTriggerPin) ||
+        isValidPin(macroOptions.macroList[2].deprecatedMacroTriggerPin) ||
+        isValidPin(macroOptions.macroList[3].deprecatedMacroTriggerPin) ||
+        isValidPin(macroOptions.macroList[4].deprecatedMacroTriggerPin) ||
+        isValidPin(macroOptions.macroList[5].deprecatedMacroTriggerPin)) ) {
+        // previous config had a value we haven't migrated yet, it can/should apply in the new config
+        if ( isValidPin(macroOptions.deprecatedPin) ) {
+            Pin_t pin = macroOptions.deprecatedPin;
+            config.gpioMappings.pins[pin].action = GpioAction::BUTTON_PRESS_MACRO;
+            for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+                config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = GpioAction::BUTTON_PRESS_MACRO;
+            }
+            macroOptions.deprecatedPin = -1; // set our turbo options to -1 for subsequent calls
+        }
+        const static GpioAction actionList[6] = { GpioAction::BUTTON_PRESS_MACRO_1, GpioAction::BUTTON_PRESS_MACRO_2,
+                                                  GpioAction::BUTTON_PRESS_MACRO_3, GpioAction::BUTTON_PRESS_MACRO_4,
+                                                  GpioAction::BUTTON_PRESS_MACRO_5, GpioAction::BUTTON_PRESS_MACRO_6 };
+        for(int i = 0; i < 6; i++ ) {
+            if ( isValidPin(macroOptions.macroList[i].deprecatedMacroTriggerPin) ) {
+                Pin_t pin = macroOptions.macroList[i].deprecatedMacroTriggerPin;
+                config.gpioMappings.pins[pin].action = actionList[i];
+                for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+                    config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = actionList[i];
+                }
+                macroOptions.macroList[i].deprecatedMacroTriggerPin = -1; // set our turbo options to -1 for subsequent calls
+            }
+        }
+    }
+
 }
 
 // populate existing configurations' buttonsMask and auxMask to mirror behavior
@@ -1430,6 +1461,8 @@ void ConfigUtils::load(Config& config)
     migrateTurboPinToGpio(config);
     // Migrate PS4/PS5/XBone authentication methods to new organization
     migrateAuthenticationMethods(config);
+    // Macro pins to gpio
+    migrateMacroPinsToGpio(config);
 
     // Update boardVersion, in case we migrated from an older version
     strncpy(config.boardVersion, GP2040VERSION, sizeof(config.boardVersion));
@@ -2064,6 +2097,7 @@ bool ConfigUtils::fromJSON(Config& config, const char* data, size_t dataLen)
     gpioMappingsMigrationProfiles(config);
     migrateTurboPinToGpio(config);
     migrateAuthenticationMethods(config);
+    migrateMacroPinsToGpio(config);
 
     return true;
 }

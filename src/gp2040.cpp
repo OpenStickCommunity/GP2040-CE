@@ -45,15 +45,9 @@
 static const uint32_t REBOOT_HOTKEY_ACTIVATION_TIME_MS = 50;
 static const uint32_t REBOOT_HOTKEY_HOLD_TIME_MS = 4000;
 
-GP2040::GP2040() {
-	Storage::getInstance().SetGamepad(new Gamepad());
-	Storage::getInstance().SetProcessedGamepad(new Gamepad());
-}
-
-GP2040::~GP2040() {
-}
-
 void GP2040::setup() {
+	Storage::getInstance().init();
+
 	PeripheralManager::getInstance().initI2C();
 	PeripheralManager::getInstance().initSPI();
 	PeripheralManager::getInstance().initUSB();
@@ -63,9 +57,19 @@ void GP2040::setup() {
 		set_sys_clock_khz(120000, true); // Set Clock to 120MHz to avoid potential USB timing issues
 	}
 
-    // Setup Gamepad and Gamepad Storage
-    Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    gamepad->setup();
+	Gamepad * gamepad = new Gamepad();
+	Gamepad * processedGamepad = new Gamepad();
+	Storage::getInstance().SetGamepad(gamepad);
+	Storage::getInstance().SetProcessedGamepad(processedGamepad);
+
+	// Set pin mappings for all GPIO functions
+	Storage::getInstance().setFunctionalPinMappings();
+
+	// Setup Gamepad
+	gamepad->setup();
+	
+	// now we can load the latest configured profile, which will map the
+	// new set of GPIOs to use...
     this->initializeStandardGpio();
 
     const GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();

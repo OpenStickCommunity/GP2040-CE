@@ -20,7 +20,7 @@
 void DriverManager::setup(InputMode mode) {
     switch (mode) {
         case INPUT_MODE_CONFIG:
-            driver = new NetDriver(); 
+            driver = new NetDriver();
             break;
         case INPUT_MODE_ASTRO:
             driver = new AstroDriver();
@@ -67,9 +67,10 @@ void DriverManager::setup(InputMode mode) {
         default:
             return;
     }
-    
+
     // Initialize our chosen driver
     driver->initialize();
+    inputMode = mode;
 
     // Start the TinyUSB Device functionality
     tud_init(TUD_OPT_RHPORT);

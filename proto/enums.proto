@@ -226,6 +226,13 @@ enum GpioAction
     SUSTAIN_SOCD_MODE_FIRST_WIN  = 30;
     SUSTAIN_SOCD_MODE_BYPASS     = 31;
     BUTTON_PRESS_TURBO           = 32;
+    BUTTON_PRESS_MACRO           = 33;
+    BUTTON_PRESS_MACRO_1         = 34;
+    BUTTON_PRESS_MACRO_2         = 35;
+    BUTTON_PRESS_MACRO_3         = 36;
+    BUTTON_PRESS_MACRO_4         = 37;
+    BUTTON_PRESS_MACRO_5         = 38;
+    BUTTON_PRESS_MACRO_6         = 39;
 }
 
 enum GamepadHotkey
@@ -304,6 +311,16 @@ enum ForcedSetupMode
 	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
 	FORCED_SETUP_MODE_LOCK_BOTH = 3;
 };
+
+enum DualDirectionalCombinationMode
+{
+	option (nanopb_enumopt).long_names = false;
+
+	MIXED_MODE = 0;
+	GAMEPAD_MODE = 1;
+	DUAL_MODE = 2;
+	NONE_MODE = 3;
+}
 
 enum PS4ControllerType
 {
