@@ -28,6 +28,8 @@ void ButtonLayoutScreen::init() {
 	// start with profile mode displayed
 	profileModeDisplay = true;
     prevProfileNumber = -1;
+    prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
+    prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
 
     // we cannot look at macro options enabled, pull the pins
     
@@ -71,8 +73,6 @@ int8_t ButtonLayoutScreen::update() {
             shutdown();
             init();
         }
-        prevLayoutLeft = layoutLeft;
-        prevLayoutRight = layoutRight;
     }
 
     // main logic loop
