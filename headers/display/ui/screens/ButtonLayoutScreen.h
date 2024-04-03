@@ -127,6 +127,7 @@ class ButtonLayoutScreen : public GPScreen {
         ButtonLayoutScreen(GPGFX* renderer) { setRenderer(renderer); }
         virtual int8_t update();
         virtual void init();
+        virtual void shutdown();
     protected:
         virtual void drawScreen();
     private:

@@ -12,18 +12,22 @@ class GPScreen : public GPWidget {
         virtual int8_t update() = 0;
         void clear();
         virtual void init() = 0;
+        virtual void shutdown() = 0;
     protected:
         virtual void drawScreen() = 0;
-        template<typename _GPWidget, typename... _GPArgs>
-        _GPWidget* addElement(_GPArgs&&... args) {
-            using GPW = std::unique_ptr<_GPWidget>;
-            GPW new_element = std::make_unique<_GPWidget>(std::forward<_GPArgs>(args)...);
-            GPWidget* raw_ptr = new_element.get();
-            displayList.emplace_back(std::move(new_element));
-            return static_cast<_GPWidget*>(raw_ptr);
+        GPWidget * addElement(GPWidget* element) {
+            displayList.push_back(element);
+            element->setID(displayList.size()-1);
+            return element;
+        }
+        void clearElements() {
+            for(std::vector<GPWidget*>::iterator it = displayList.begin(); it != displayList.end(); ++it) {
+                delete (*it);
+            }
+            displayList.clear();
         }
     private:
-        std::vector<std::unique_ptr<GPWidget>> displayList;
+        std::vector<GPWidget*> displayList;
 };
 
 #endif
