@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <cstring>
-#include <memory>
 #include "GPWidget.h"
 
 class GPScreen : public GPWidget {
