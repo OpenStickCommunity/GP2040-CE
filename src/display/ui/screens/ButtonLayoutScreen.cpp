@@ -27,6 +27,7 @@ void ButtonLayoutScreen::init() {
 
 	// start with profile mode displayed
 	profileModeDisplay = true;
+    prevProfileNumber = -1;
 
     // we cannot look at macro options enabled, pull the pins
     
@@ -59,6 +60,28 @@ void ButtonLayoutScreen::shutdown() {
 }
 
 int8_t ButtonLayoutScreen::update() {
+    bool configMode = Storage::getInstance().GetConfigMode();
+    uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
+    
+    // Check if we've updated button layouts while in config mode
+    if (configMode) {
+        uint8_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
+        uint8_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
+        if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight)) {
+            shutdown();
+            init();
+        }
+        prevLayoutLeft = layoutLeft;
+        prevLayoutRight = layoutRight;
+    }
+
+    // main logic loop
+    if (prevProfileNumber != profileNumber) {
+        profileDelayStart = getMillis();
+        prevProfileNumber = profileNumber;
+        profileModeDisplay = true;
+    }
+
     // main logic loop
 	generateHeader();
     if (isInputHistoryEnabled)
