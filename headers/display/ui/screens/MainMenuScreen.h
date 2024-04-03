@@ -11,6 +11,7 @@ class MainMenuScreen : public GPScreen {
         void setMenu(std::vector<MenuEntry>* menu);
         virtual int8_t update();
         virtual void init();
+        virtual void shutdown();
     protected:
         virtual void drawScreen();
     private:

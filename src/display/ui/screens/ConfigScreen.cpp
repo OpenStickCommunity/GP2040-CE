@@ -7,6 +7,10 @@ void ConfigScreen::init() {
     getRenderer()->clearScreen();
 }
 
+void ConfigScreen::shutdown() {
+    clearElements();
+}
+
 int8_t ConfigScreen::update() {
     uint16_t buttonState = getGamepad()->state.buttons;
     if (prevButtonState && !buttonState) {

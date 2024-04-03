@@ -27,6 +27,9 @@ void ButtonLayoutScreen::init() {
 
 	// start with profile mode displayed
 	profileModeDisplay = true;
+    prevProfileNumber = -1;
+    prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
+    prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
 
     // we cannot look at macro options enabled, pull the pins
     
@@ -54,7 +57,31 @@ void ButtonLayoutScreen::init() {
     getRenderer()->clearScreen();
 }
 
+void ButtonLayoutScreen::shutdown() {
+    clearElements();
+}
+
 int8_t ButtonLayoutScreen::update() {
+    bool configMode = Storage::getInstance().GetConfigMode();
+    uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
+    
+    // Check if we've updated button layouts while in config mode
+    if (configMode) {
+        uint8_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
+        uint8_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
+        if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight)) {
+            shutdown();
+            init();
+        }
+    }
+
+    // main logic loop
+    if (prevProfileNumber != profileNumber) {
+        profileDelayStart = getMillis();
+        prevProfileNumber = profileNumber;
+        profileModeDisplay = true;
+    }
+
     // main logic loop
 	generateHeader();
     if (isInputHistoryEnabled)
@@ -198,9 +225,7 @@ GPShape* ButtonLayoutScreen::addShape(uint16_t startX, uint16_t startY, uint16_t
     shape->setStrokeColor(strokeColor);
     shape->setFillColor(fillColor);
     shape->setSize(sizeX,sizeY);
-    addElement(shape);
-
-    return shape;
+    return (GPShape*)addElement(shape);
 }
 
 GPSprite* ButtonLayoutScreen::addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY) {

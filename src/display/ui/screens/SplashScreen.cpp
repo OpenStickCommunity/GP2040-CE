@@ -8,6 +8,10 @@ void SplashScreen::init() {
     configMode = Storage::getInstance().GetConfigMode();
 }
 
+void SplashScreen::shutdown() {
+    clearElements();
+}
+
 void SplashScreen::drawScreen() {
 	if (getDisplayOptions().splashMode == static_cast<SplashMode>(SPLASH_MODE_NONE)) {
 		getRenderer()->drawText(0, 4, " Splash NOT enabled.");

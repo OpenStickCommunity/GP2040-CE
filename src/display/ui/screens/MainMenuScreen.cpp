@@ -6,6 +6,10 @@ void MainMenuScreen::init() {
     getRenderer()->clearScreen();
 }
 
+void MainMenuScreen::shutdown() {
+    clearElements();
+}
+
 void MainMenuScreen::drawScreen() {
     getRenderer()->drawText(1, 1, "GPGFX_UI Test Menu");
 
