@@ -170,45 +170,43 @@ void ButtonLayoutScreen::drawScreen() {
 }
 
 GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, uint16_t inputType) {
-    GPLever* lever = new GPLever();
+    GPLever* lever = addElement<GPLever>();
     lever->setRenderer(getRenderer());
     lever->setPosition(startX, startY);
     lever->setStrokeColor(strokeColor);
     lever->setFillColor(fillColor);
     lever->setRadius(sizeX);
     lever->setInputType(inputType);
-    return (GPLever*)addElement(lever);
+    return lever;
 }
 
 GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor, int16_t inputMask) {
-    GPButton* button = new GPButton();
+    GPButton* button = addElement<GPButton>();
     button->setRenderer(getRenderer());
     button->setPosition(startX, startY);
     button->setStrokeColor(strokeColor);
     button->setFillColor(fillColor);
     button->setSize(sizeX, sizeY);
     button->setInputMask(inputMask);
-    return (GPButton*)addElement(button);
+    return button;
 }
 
 GPShape* ButtonLayoutScreen::addShape(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY, uint16_t strokeColor, uint16_t fillColor) {
-    GPShape* shape = new GPShape();
+    GPShape* shape = addElement<GPShape>();
     shape->setRenderer(getRenderer());
     shape->setPosition(startX, startY);
     shape->setStrokeColor(strokeColor);
     shape->setFillColor(fillColor);
     shape->setSize(sizeX,sizeY);
-    addElement(shape);
-
     return shape;
 }
 
 GPSprite* ButtonLayoutScreen::addSprite(uint16_t startX, uint16_t startY, uint16_t sizeX, uint16_t sizeY) {
-    GPSprite* sprite = new GPSprite();
+    GPSprite* sprite = addElement<GPSprite>();
     sprite->setRenderer(getRenderer());
     sprite->setPosition(startX, startY);
     sprite->setSize(sizeX,sizeY);
-    return (GPSprite*)addElement(sprite);
+    return sprite;
 }
 
 GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
