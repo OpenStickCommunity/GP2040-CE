@@ -207,6 +207,7 @@ private:
 	GPGFX* gpDisplay;
 	GPScreen* gpScreen;
 	DisplayMode currDisplayMode;
+    DisplayMode prevDisplayMode;
 	bool turnOffWhenSuspended;
 };
 
