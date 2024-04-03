@@ -167,16 +167,11 @@ private:
 	uint8_t getMultimedia(uint8_t code);
 	void processHotkeyAction(GamepadHotkey action);
 
-	GamepadOptions& options;
-	const HotkeyOptions& hotkeyOptions;
+	GamepadOptions & options;
+	const HotkeyOptions & hotkeyOptions;
 
 	GamepadInputSource inputSource = GAMEPAD_INPUT_SOURCE_GPIO;
 	GamepadHotkey lastAction = HOTKEY_NONE;
-
-	uint32_t keep_alive_timer;
-	uint8_t keep_alive_sequence;
-	uint8_t virtual_keycode_sequence;
-	bool xb1_guide_pressed;
 };
 
 #endif

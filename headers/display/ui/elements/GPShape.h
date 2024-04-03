@@ -7,8 +7,7 @@
 class GPShape : public GPWidget {
     public:
         void draw();
-        GPShape* setSizeX(uint16_t sizeX) { this->_sizeX = sizeX; return this; }
-        GPShape* setSizeY(uint16_t sizeY) { this->_sizeY = sizeY; return this; }
+        GPShape* setSize(uint16_t sizeX, uint16_t sizeY) { this->_sizeX = sizeX; this->_sizeY = sizeY; return this; }
         GPShape* setAngle(double angle) { this->_angle = angle; return this; }
         GPShape* setAngleEnd(double angleEnd) { this->_angleEnd = angleEnd; return this; }
         GPShape* setClosed(bool closed) { this->_closed = closed; return this; }

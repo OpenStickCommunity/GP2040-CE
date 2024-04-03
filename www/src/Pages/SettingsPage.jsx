@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Contexts/AppContext';
-import { Button, Form, Modal, Nav, Row, Col, Tab, Tabs } from 'react-bootstrap';
+import { Button, Form, Modal, Nav, Row, Col, Tab } from 'react-bootstrap';
 import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import { Formik, useFormikContext } from 'formik';
 import { NavLink } from 'react-router-dom';
@@ -888,8 +888,7 @@ export default function SettingsPage() {
 				console.log('errors', errors) || (
 					<div>
 						<Form noValidate onSubmit={handleSubmit}>
-							<Tab.Container id="left-tabs-example"
-							defaultActiveKey="inputmode">
+							<Tab.Container defaultActiveKey="inputmode">
 								<Row>
 								<Col sm={2}>
 									<Nav variant="pills" className="flex-column">

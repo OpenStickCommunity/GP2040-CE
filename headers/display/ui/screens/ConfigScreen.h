@@ -7,15 +7,15 @@ class ConfigScreen : public GPScreen {
     public:
         ConfigScreen() {}
         ConfigScreen(GPGFX* renderer) { setRenderer(renderer); }
-
-        int8_t update();
+        virtual int8_t update();
+        virtual void init();
         uint8_t getDisplayMode() { return prevDisplayMode; }
     protected:
-        void drawScreen();
-
+        virtual void drawScreen();
         uint16_t prevButtonState = 0;
         int8_t prevDisplayMode = 0;
         int8_t currDisplayMode = 0;
+        std::string version;
 };
 
 #endif

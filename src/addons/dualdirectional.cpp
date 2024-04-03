@@ -10,7 +10,6 @@ bool DualDirectionalInput::available() {
 
 void DualDirectionalInput::setup() {
     const DualDirectionalOptions& options = Storage::getInstance().getAddonOptions().dualDirectionalOptions;
-    combineMode = options.combineMode;
     dpadMode = options.dpadMode;
 
     mapDpadUp    = new GamepadButtonMapping(GAMEPAD_MASK_UP);
@@ -30,19 +29,13 @@ void DualDirectionalInput::setup() {
         }
     }
 
-    dDebState = 0;
     dualState = 0;
 
     lastGPUD = DIRECTION_NONE;
-	lastGPLR = DIRECTION_NONE;
+    lastGPLR = DIRECTION_NONE;
 
     lastDualUD = DIRECTION_NONE;
     lastDualLR = DIRECTION_NONE;
-
-    uint32_t now = getMillis();
-    for(int i = 0; i < 4; i++) {
-        dpadTime[i] = now;
-    }
 }
 
 /**
@@ -117,8 +110,6 @@ void DualDirectionalInput::preprocess()
             | ((values & mapDpadLeft->pinMask)  ? mapDpadLeft->buttonMask : 0)
             | ((values & mapDpadRight->pinMask) ? mapDpadRight->buttonMask : 0);
 
-    // Convert gamepad from process() output to uint8 value
-    uint8_t gamepadState = gamepad->state.dpad;
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
 
     // 4-way before SOCD, might have better history without losing any coherent functionality
@@ -126,35 +117,8 @@ void DualDirectionalInput::preprocess()
         dualState = filterToFourWayModeDDI(dualState);
     }
 
-    // Combined Mode
-    if ( combineMode == DUAL_COMBINE_MODE_MIXED ) {
-        SOCDDualClean(socdMode); // Clean up Dual SOCD based on the mode
-
-        // Second Input (Last Input Priority) needs to happen before we MPG clean
-        if ( socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY ||
-             socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY ) {
-            gamepadState = SOCDGamepadClean(gamepadState, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY) | dualState;
-        }
-    }
-    // None Mode (no combination, no overwrite)
-    else if ( combineMode == DUAL_COMBINE_MODE_NONE ) {
-        // just SOCD clean the dual inputs based on the desired mode
-        SOCDDualClean(socdMode);
-    }
-    // Gamepad Overwrite Mode
-    else if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
-        if ( gamepadState != 0 && (gamepadState != dualState)) {
-            dualState = gamepadState;
-        }
-    }
-    // Dual Overwrite Mode
-    else if ( combineMode == DUAL_COMBINE_MODE_DUAL ) {
-        if ( dualState != 0 && gamepadState != dualState) {
-            gamepadState = dualState;
-        }
-    }
-
-    gamepad->state.dpad = gamepadState;
+    // SOCD clean the dual inputs based on the mode in the gamepad config
+    SOCDDualClean(socdMode);
 }
 
 void DualDirectionalInput::process()
@@ -163,46 +127,36 @@ void DualDirectionalInput::process()
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     uint8_t dualOut = dualState;
     const SOCDMode socdMode = getSOCDMode(gamepad->getOptions());
+    uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
 
-    // If we're in mixed mode
-    if (combineMode == DUAL_COMBINE_MODE_MIXED) {
-        uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
-        // Up-Win or Neutral Modify AFTER SOCD(gamepad), Last-Win Modifies BEFORE SOCD(gamepad)
-        if ( socdMode == SOCD_MODE_UP_PRIORITY ||
-                socdMode == SOCD_MODE_NEUTRAL ) {
-
-            // Up-Win or Neutral: SOCD(gamepad) *already done* | SOCD(dual) *done in preprocess()*
+    // in mixed mode, we need to combine/re-clean the gamepad and DDI outputs to create a coherent behavior
+    // reminder that combination mode none with the DDI output set to the same thing as the gamepad
+    // output is, in practice, the same behavior as mixed mode, so it also is addressed here
+    if (options.combineMode == DualDirectionalCombinationMode::MIXED_MODE ||
+            (options.combineMode == DualDirectionalCombinationMode::NONE_MODE &&
+             gamepad->getOptions().dpadMode == options.dpadMode)) {
+        if ( socdMode == SOCD_MODE_UP_PRIORITY || socdMode == SOCD_MODE_NEUTRAL ) {
+            // neutral/up priority SOCD cleaning are pretty simple, they just need to be re-neutralized
             dualOut = SOCDCombine(socdMode, gamepadDpad);
-
-            // Modify Gamepad if we're in mixed Up-Win or Neutral and dual != gamepad
-            if ( dualOut != gamepadDpad ) {
-                OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
-            }
-        } else if (socdMode == SOCD_MODE_BYPASS) {
-            OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut | gamepad->state.dpad);
+        } else if ( socdMode != SOCD_MODE_BYPASS ) {
+            // else if not bypass, what's left is first/last input wins SOCD, which need a complicated re-clean
+            dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
+        } else {
+            // this is bypass SOCD, just OR them together
+            dualOut |= gamepadDpad;
         }
-    } else { // We are not mixed mode, don't change dual output
-        if ( combineMode == DUAL_COMBINE_MODE_GAMEPAD ) {
-            // Set Dual Directional Output
-            OverrideGamepad(gamepad, dpadMode, dualOut);
+        OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
+    } else if (options.combineMode != DualDirectionalCombinationMode::NONE_MODE) {
+        // this is either of the override modes, which we will treat the same way --- they replace
+        // the gamepad entirely in certain conditions: DDI Override if it has any data,
+        // Gamepad Override if gamepad doesn't have any data
+        if ((options.combineMode == DualDirectionalCombinationMode::DUAL_MODE && dualOut != 0) ||
+                (options.combineMode == DualDirectionalCombinationMode::GAMEPAD_MODE && gamepadDpad == 0)) {
+            OverrideGamepad(gamepad, gamepad->getOptions().dpadMode, dualOut);
         }
-        else if (combineMode == DUAL_COMBINE_MODE_NONE) {
-            // Set the configured directional mode to the value of the dual output
-            // if configured dual mode is the same mode as the gamepad mode, they
-            // need to be SOCD cleaned first
-            // this also avoids accidentally masking gamepad inputs with the lack of dual inputs
-            if (gamepad->getOptions().dpadMode == options.dpadMode) {
-                uint8_t gamepadDpad = gpadToBinary(gamepad->getOptions().dpadMode, gamepad->state);
-                if ( socdMode == SOCD_MODE_NEUTRAL ) {
-                    dualOut = SOCDCombine(socdMode, gamepadDpad);
-                } else if ( socdMode != SOCD_MODE_BYPASS ) {
-                    dualOut = SOCDGamepadClean(dualOut | gamepadDpad, socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY);
-                } else {
-                    dualOut |= gamepadDpad;
-                }
-            }
-            OverrideGamepad(gamepad, options.dpadMode, dualOut);
-        }
+    } else {
+        // the DDI and gamepad outputs don't need to be mixed, so just apply DDI output to the gamepad
+        OverrideGamepad(gamepad, options.dpadMode, dualOut);
     }
 }
 
@@ -303,13 +257,13 @@ void DualDirectionalInput::SOCDDualClean(SOCDMode socdMode) {
         case (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN): // If last state was Up or Down, exclude it from our gamepad
             if ( socdMode == SOCD_MODE_UP_PRIORITY ) {
                 dualState ^= GAMEPAD_MASK_DOWN; // Remove Down
-				lastDualUD = DIRECTION_UP; // We're in UP mode
+                lastDualUD = DIRECTION_UP; // We're in UP mode
             } else if ( socdMode == SOCD_MODE_SECOND_INPUT_PRIORITY && lastDualUD != DIRECTION_NONE ) {
                 dualState ^= (lastDualUD == DIRECTION_UP) ? GAMEPAD_MASK_UP : GAMEPAD_MASK_DOWN;
             } else if ( socdMode == SOCD_MODE_FIRST_INPUT_PRIORITY && lastDualUD != DIRECTION_NONE ) {
                 dualState ^= (lastDualUD == DIRECTION_UP) ? GAMEPAD_MASK_DOWN : GAMEPAD_MASK_UP;
             } else {
-				dualState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
+                dualState ^= (GAMEPAD_MASK_UP | GAMEPAD_MASK_DOWN); // Remove UP and Down in Neutral
                 lastDualUD = DIRECTION_NONE;
             }
             break;
