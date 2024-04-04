@@ -1523,8 +1523,8 @@ std::string setWiiControls()
     readDoc(wiiOptions.controllers.guitar.buttonPedal, doc, "guitar.buttonPedal");
     readDoc(wiiOptions.controllers.guitar.buttonMinus, doc, "guitar.buttonMinus");
     readDoc(wiiOptions.controllers.guitar.buttonPlus, doc, "guitar.buttonPlus");
-    readDoc(wiiOptions.controllers.guitar.strumUp, doc, "guitar.strumUp");
-    readDoc(wiiOptions.controllers.guitar.strumDown, doc, "guitar.strumDown");
+    readDoc(wiiOptions.controllers.guitar.strumUp, doc, "guitar.buttonStrumUp");
+    readDoc(wiiOptions.controllers.guitar.strumDown, doc, "guitar.buttonStrumDown");
     readDoc(wiiOptions.controllers.guitar.stick.x.axisType, doc, "guitar.analogStick.x.axisType");
     readDoc(wiiOptions.controllers.guitar.stick.y.axisType, doc, "guitar.analogStick.y.axisType");
     readDoc(wiiOptions.controllers.guitar.whammyBar.axisType, doc, "guitar.analogWhammyBar.axisType");
@@ -1606,8 +1606,8 @@ std::string getWiiControls()
     writeDoc(doc, "guitar.buttonPedal", wiiOptions.controllers.guitar.buttonPedal);
     writeDoc(doc, "guitar.buttonMinus", wiiOptions.controllers.guitar.buttonMinus);
     writeDoc(doc, "guitar.buttonPlus", wiiOptions.controllers.guitar.buttonPlus);
-    writeDoc(doc, "guitar.strumUp", wiiOptions.controllers.guitar.strumUp);
-    writeDoc(doc, "guitar.strumDown", wiiOptions.controllers.guitar.strumDown);
+    writeDoc(doc, "guitar.buttonStrumUp", wiiOptions.controllers.guitar.strumUp);
+    writeDoc(doc, "guitar.buttonStrumDown", wiiOptions.controllers.guitar.strumDown);
     writeDoc(doc, "guitar.analogStick.x.axisType", wiiOptions.controllers.guitar.stick.x.axisType);
     writeDoc(doc, "guitar.analogStick.y.axisType", wiiOptions.controllers.guitar.stick.y.axisType);
     writeDoc(doc, "guitar.analogWhammyBar.axisType", wiiOptions.controllers.guitar.whammyBar.axisType);

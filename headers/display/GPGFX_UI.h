@@ -6,6 +6,7 @@
 
 #include "GPGFX_core.h"
 #include "GPGFX.h"
+#include "GPGFX_UI_types.h"
 #include "config.pb.h"
 #include "GamepadState.h"
 #include "storagemanager.h"
