@@ -3,21 +3,12 @@ import { AppContext } from '../Contexts/AppContext';
 import { Badge, Button, Col, Form, Nav, OverlayTrigger, Row, Tab, Table, Tooltip } from 'react-bootstrap';
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import omit from 'lodash/omit';
-import zip from 'lodash/zip';
 
 import Section from '../Components/Section';
-import CaptureButton from '../Components/CaptureButton';
-import FormControl from '../Components/FormControl';
 import WebApi from '../Services/WebApi';
 import { getButtonLabels, BUTTONS, BUTTON_MASKS } from '../Data/Buttons';
-
-import usePinStore from '../Store/usePinStore';
-
-type PinCell = [string, PinActionValues];
-type PinRow = [PinCell, PinCell];
-type PinList = [PinRow];
 
 const MACRO_TYPES = [
 	{ label: 'InputMacroAddon:input-macro-type.press', value: 1 },
@@ -52,13 +43,17 @@ const MACRO_INPUTS_MAX = 30;
 
 const MACRO_LIMIT = 6;
 
-const defaultMacroInput = { buttonMask: 0, duration: 16666, waitDuration: 0 };
+const defaultMacroInput = {
+    buttonMask: 0,
+    duration: 16666,
+    waitDuration: 0
+};
 
 const defaultValues = {
 	macroList: Array(MACRO_LIMIT).fill({
 		macroType: 1,
 		macroLabel: '',
-		enabled: 1,
+		enabled: 0,
 		exclusive: 1,
 		interruptible: 1,
 		showFrames: 1,
@@ -66,7 +61,7 @@ const defaultValues = {
 		macroTriggerButton: 0,
 		macroInputs: [defaultMacroInput],
 	}),
-	macroBoardLedEnabled: 1,
+	macroBoardLedEnabled: 0,
 };
 
 const EMPTY_INPUT = null;
@@ -163,8 +158,8 @@ const MacroInputComponent = (props) => {
 	return (
 		<Row key={key} className="py-2 flex-nowrap">
 			<Col style={{
-				'min-width': '150px',
-				'max-width': '150px',
+				'minWidth': '150px',
+				'maxWidth': '150px',
 			}}>
 				<Row className="d-flex justify-content-center">
 					<Col sm={6} className="px-0">
@@ -241,12 +236,12 @@ const MacroInputComponent = (props) => {
 				</Row>
 			</Col>
 			<Col style={{
-				'min-width': '125px',
-				'max-width': '125px',
+				'minWidth': '125px',
+				'maxWidth': '125px',
 			}} className="d-flex justify-content-center text-nowrap"> release and wait </Col>
 			<Col style={{
-				'min-width': '150px',
-				'max-width': '150px',
+				'minWidth': '150px',
+				'maxWidth': '150px',
 			}}>
 				<Row className="d-flex justify-content-center">
 					<Col sm={6} className="px-0">
@@ -555,11 +550,11 @@ export default function MacrosPage() {
 									<Row>
 									<Col sm={2}>
 										<Nav variant="pills" className="flex-column text-nowrap">
-											<Nav.Item>
+											<Nav.Item key="pills-header">
 												<Nav.Link eventKey="settings">{t('InputMacroAddon:input-macro-header-text')}</Nav.Link>
 											</Nav.Item>
 											{values.macroList.map((macro, i) => (
-												<Nav.Item>
+												<Nav.Item key={`pills-item-${i}`}>
 													<Nav.Link eventKey={`macro-${i}`}>
 														{macro.macroLabel.length == 0 ? `Macro ${i+1}` :
 															macro.macroLabel.length > 24 ?
