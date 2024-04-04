@@ -11,8 +11,14 @@ void ButtonLayoutScreen::init() {
     inputHistoryY = inputHistoryOptions.col;
     inputHistoryLength = inputHistoryOptions.length;
     profileDelayStart = getMillis();
-	gamepad = Storage::getInstance().GetGamepad();
-	inputMode = DriverManager::getInstance().getInputMode();
+    gamepad = Storage::getInstance().GetGamepad();
+    inputMode = DriverManager::getInstance().getInputMode();
+    
+    footer = "";
+    historyString = "";
+    inputHistory.clear();
+
+    setViewport((isInputHistoryEnabled ? 8 : 0), 0, (isInputHistoryEnabled ? 56 : getRenderer()->getDriver()->getMetrics()->height), getRenderer()->getDriver()->getMetrics()->width);
 
 	// load layout (drawElement pushes element to the display list)
     uint16_t elementCtr = 0;
@@ -69,7 +75,8 @@ int8_t ButtonLayoutScreen::update() {
     if (configMode) {
         uint8_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
         uint8_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
-        if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight)) {
+        bool inputHistoryEnabled = Storage::getInstance().getAddonOptions().inputHistoryOptions.enabled;
+        if ((prevLayoutLeft != layoutLeft) || (prevLayoutRight != layoutRight) || (isInputHistoryEnabled != inputHistoryEnabled)) {
             shutdown();
             init();
         }
@@ -204,6 +211,7 @@ GPLever* ButtonLayoutScreen::addLever(uint16_t startX, uint16_t startY, uint16_t
     lever->setFillColor(fillColor);
     lever->setRadius(sizeX);
     lever->setInputType(inputType);
+    lever->setViewport(this->getViewport());
     return (GPLever*)addElement(lever);
 }
 
@@ -215,6 +223,7 @@ GPButton* ButtonLayoutScreen::addButton(uint16_t startX, uint16_t startY, uint16
     button->setFillColor(fillColor);
     button->setSize(sizeX, sizeY);
     button->setInputMask(inputMask);
+    button->setViewport(this->getViewport());
     return (GPButton*)addElement(button);
 }
 
@@ -225,6 +234,7 @@ GPShape* ButtonLayoutScreen::addShape(uint16_t startX, uint16_t startY, uint16_t
     shape->setStrokeColor(strokeColor);
     shape->setFillColor(fillColor);
     shape->setSize(sizeX,sizeY);
+    shape->setViewport(this->getViewport());
     return (GPShape*)addElement(shape);
 }
 
@@ -233,20 +243,15 @@ GPSprite* ButtonLayoutScreen::addSprite(uint16_t startX, uint16_t startY, uint16
     sprite->setRenderer(getRenderer());
     sprite->setPosition(startX, startY);
     sprite->setSize(sizeX,sizeY);
+    sprite->setViewport(this->getViewport());
     return (GPSprite*)addElement(sprite);
 }
 
 GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
-    uint16_t yOffset = 0;
-
-    if (isInputHistoryEnabled) {
-        yOffset = 5;
-    }
-
     if (element.elementType == GP_ELEMENT_LEVER) {
-        return addLever(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
+        return addLever(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
     } else if ((element.elementType == GP_ELEMENT_BTN_BUTTON) || (element.elementType == GP_ELEMENT_DIR_BUTTON) || (element.elementType == GP_ELEMENT_PIN_BUTTON)) {
-        GPButton* button = addButton(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
+        GPButton* button = addButton(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill, element.parameters.value);
 
         // set type of button
         button->setInputType(element.elementType);
@@ -260,9 +265,9 @@ GPWidget* ButtonLayoutScreen::pushElement(GPButtonLayout element) {
 
         return (GPWidget*)button;
     } else if (element.elementType == GP_ELEMENT_SPRITE) {
-        return addSprite(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2);
+        return addSprite(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2);
     } else if (element.elementType == GP_ELEMENT_SHAPE) {
-        GPShape* shape = addShape(element.parameters.x1, element.parameters.y1-yOffset, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill);
+        GPShape* shape = addShape(element.parameters.x1, element.parameters.y1, element.parameters.x2, element.parameters.y2, element.parameters.stroke, element.parameters.fill);
         shape->setShape((GPShape_Type)element.parameters.shape);
         shape->setAngle(element.parameters.angleStart);
         shape->setAngleEnd(element.parameters.angleEnd);
