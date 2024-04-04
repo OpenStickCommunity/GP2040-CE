@@ -26,7 +26,7 @@ class GPWidget : public GPGFX_UI {
         void setViewport(GPViewport viewport) { this->_viewport = viewport; }
         GPViewport getViewport() { return this->_viewport; }
 
-        double getScaleX() { return ((double)(this->getViewport().right - this->getViewport().left) / (double)getRenderer()->getDriver()->getMetrics()->width); }
+        double getScaleX() { return ((double)(this->getViewport().right - this->getViewport().left) / (double)(getRenderer()->getDriver()->getMetrics()->width)); }
         double getScaleY() { return ((double)(this->getViewport().bottom - this->getViewport().top) / (double)(getRenderer()->getDriver()->getMetrics()->height)); }
     protected:
         uint16_t x = 0;
