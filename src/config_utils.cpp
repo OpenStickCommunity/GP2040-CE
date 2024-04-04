@@ -716,7 +716,20 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     // Macro options (always on)
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, enabled, true);
     INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, macroBoardLedEnabled, INPUT_MACRO_BOARD_LED_ENABLED);
-    config.addonOptions.macroOptions.macroList_count = MAX_MACRO_LIMIT;
+    INIT_UNSET_PROPERTY(config.addonOptions.macroOptions, deprecatedPin, -1);
+
+    // Set all macros
+    for(int i = 0; i < MAX_MACRO_LIMIT; i++) {
+        INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], enabled, 0);
+        INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], exclusive, 1);
+        INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], interruptible, 1);
+        INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], showFrames, 1);
+        INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], macroType, MacroType::ON_PRESS);
+        INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], useMacroTriggerButton, 0);
+        INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], macroTriggerButton, 0);
+        INIT_UNSET_PROPERTY_STR(config.addonOptions.macroOptions.macroList[i], macroLabel, "");
+        INIT_UNSET_PROPERTY(config.addonOptions.macroOptions.macroList[i], deprecatedMacroTriggerPin, -1);
+    }
 }
 
 
@@ -1282,18 +1295,21 @@ void migrateMacroPinsToGpio(Config& config) {
         macroOptions.has_deprecatedPin = false;
     }
     
-    const static GpioAction actionList[6] = { GpioAction::BUTTON_PRESS_MACRO_1, GpioAction::BUTTON_PRESS_MACRO_2,
-                                                  GpioAction::BUTTON_PRESS_MACRO_3, GpioAction::BUTTON_PRESS_MACRO_4,
-                                                  GpioAction::BUTTON_PRESS_MACRO_5, GpioAction::BUTTON_PRESS_MACRO_6 };
-    for(int i = 0; i < 6; i++ ) {
-        if ( macroOptions.macroList[i].has_deprecatedMacroTriggerPin && isValidPin(macroOptions.macroList[i].deprecatedMacroTriggerPin) ) {
-            Pin_t pin = macroOptions.macroList[i].deprecatedMacroTriggerPin;
-            config.gpioMappings.pins[pin].action = actionList[i];
-            for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
-                config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = actionList[i];
+    if ( macroOptions.macroList_count == MAX_MACRO_LIMIT ) {
+        const static GpioAction actionList[6] = { GpioAction::BUTTON_PRESS_MACRO_1, GpioAction::BUTTON_PRESS_MACRO_2,
+                                                    GpioAction::BUTTON_PRESS_MACRO_3, GpioAction::BUTTON_PRESS_MACRO_4,
+                                                    GpioAction::BUTTON_PRESS_MACRO_5, GpioAction::BUTTON_PRESS_MACRO_6 };
+        for(int i = 0; i < MAX_MACRO_LIMIT; i++ ) {
+            if ( macroOptions.macroList[i].has_deprecatedMacroTriggerPin &&
+                    isValidPin(macroOptions.macroList[i].deprecatedMacroTriggerPin) ) {
+                Pin_t pin = macroOptions.macroList[i].deprecatedMacroTriggerPin;
+                config.gpioMappings.pins[pin].action = actionList[i];
+                for (uint8_t profileNum = 0; profileNum <= 2; profileNum++) {
+                    config.profileOptions.gpioMappingsSets[profileNum].pins[pin].action = actionList[i];
+                }
+                macroOptions.macroList[i].deprecatedMacroTriggerPin = -1; // set our turbo options to -1 for subsequent calls
+                macroOptions.macroList[i].has_deprecatedMacroTriggerPin = false;
             }
-            macroOptions.macroList[i].deprecatedMacroTriggerPin = -1; // set our turbo options to -1 for subsequent calls
-            macroOptions.macroList[i].has_deprecatedMacroTriggerPin = false;
         }
     }
 }
