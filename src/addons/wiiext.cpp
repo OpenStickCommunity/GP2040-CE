@@ -163,7 +163,7 @@ void WiiExtensionInput::update() {
             buttonA = wii->getController()->buttons[GuitarButtons::GUITAR_RED];
             buttonX = wii->getController()->buttons[GuitarButtons::GUITAR_YELLOW];
             buttonY = wii->getController()->buttons[GuitarButtons::GUITAR_BLUE];
-            buttonL = wii->getController()->buttons[GuitarButtons::GUITAR_ORANGE];
+            buttonZL = wii->getController()->buttons[GuitarButtons::GUITAR_ORANGE];
 
             // whammy currently maps to Joy2X in addition to the raw whammy value
             whammyBar = wii->getController()->analogState[WiiAnalogs::WII_ANALOG_RIGHT_X];

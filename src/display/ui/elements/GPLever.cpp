@@ -5,13 +5,37 @@ void GPLever::draw() {
     // radius defines the base of the lever
     // the lever indicator itself will be sized slightly smaller than the base
 
-    int baseRadius = (int)this->_radius * 1.00;
     int baseX = this->x;
     int baseY = this->y;
 
-    int leverRadius = (int)this->_radius * 0.75;
     int leverX = this->x;
     int leverY = this->y;
+
+    // scale to viewport
+    double scaleX = this->getScaleX();
+    double scaleY = this->getScaleY();
+
+    // set scale on X & Y to be proportionate if either is 0
+    if ((scaleX > 0.0f) & ((scaleY == 0.0f) || (scaleY == 1.0f))) {
+        scaleY = scaleX;
+    } else if (((scaleX == 0.0f) || (scaleX == 1.0f)) & (scaleY > 0.0f)) {
+        scaleX = scaleY;
+    }
+
+    uint16_t offsetX = ((getRenderer()->getDriver()->getMetrics()->width - (uint16_t)((double)getRenderer()->getDriver()->getMetrics()->width * scaleX)) / 2);
+
+    if (scaleX > 0.0f) {
+        baseX = ((this->x) * scaleX + this->getViewport().left) + offsetX;
+        leverX = ((this->x) * scaleX + this->getViewport().left) + offsetX;
+    }
+
+    if (scaleY > 0.0f) {
+        baseY = ((this->y) * scaleY + this->getViewport().top);
+        leverY = ((this->y) * scaleY + this->getViewport().top);
+    }
+
+    int baseRadius = (int)(((double)this->_radius * 1.00) * scaleX);
+    int leverRadius = (int)(((double)this->_radius * 0.75) * scaleY);
 
     if (this->_inputType == DPAD_MODE_DIGITAL) {
         // dpad
