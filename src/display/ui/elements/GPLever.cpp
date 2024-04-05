@@ -22,9 +22,11 @@ void GPLever::draw() {
         scaleX = scaleY;
     }
 
+    uint16_t offsetX = ((getRenderer()->getDriver()->getMetrics()->width - (uint16_t)((double)getRenderer()->getDriver()->getMetrics()->width * scaleX)) / 2);
+
     if (scaleX > 0.0f) {
-        baseX = ((this->x) * scaleX + this->getViewport().left);
-        leverX = ((this->x) * scaleX + this->getViewport().left);
+        baseX = ((this->x) * scaleX + this->getViewport().left) + offsetX;
+        leverX = ((this->x) * scaleX + this->getViewport().left) + offsetX;
     }
 
     if (scaleY > 0.0f) {

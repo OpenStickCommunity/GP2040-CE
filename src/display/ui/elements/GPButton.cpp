@@ -18,8 +18,11 @@ void GPButton::draw() {
         scaleX = scaleY;
     }
 
+    uint16_t offsetX = ((getRenderer()->getDriver()->getMetrics()->width - (uint16_t)((double)(this->getViewport().right - this->getViewport().left) * scaleX)) / 2);
+    uint16_t offsetY = ((getRenderer()->getDriver()->getMetrics()->height - (uint16_t)((double)(this->getViewport().bottom - this->getViewport().top) * scaleY)) / 2);
+
     if (scaleX > 0.0f) {
-        baseX = ((this->x) * scaleX + this->getViewport().left);
+        baseX = ((this->x) * scaleX + this->getViewport().left) + offsetX;
     }
 
     if (scaleY > 0.0f) {
@@ -125,7 +128,7 @@ void GPButton::draw() {
         uint16_t turboX = baseX + (width - turboW) / 2;
         uint16_t turboY = baseY + (height - turboH) / 2;
 
-        getRenderer()->drawRectangle(baseX, baseY, sizeX, sizeY, this->strokeColor, state);
+        getRenderer()->drawRectangle(baseX, baseY, sizeX+offsetX, sizeY, this->strokeColor, state);
         if (this->_inputType == GP_ELEMENT_BTN_BUTTON && (getGamepad()->turboState.buttons & this->_inputMask)) {
             getRenderer()->drawRectangle(turboX, turboY, turboX+turboW, turboY+turboH, 1, 0);
         }
