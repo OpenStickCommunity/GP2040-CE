@@ -15,8 +15,11 @@ void GPShape::draw() {
         scaleX = scaleY;
     }
 
+    uint16_t offsetX = ((getRenderer()->getDriver()->getMetrics()->width - (uint16_t)((double)(this->getViewport().right - this->getViewport().left) * scaleX)) / 2);
+    uint16_t offsetY = ((getRenderer()->getDriver()->getMetrics()->height - (uint16_t)((double)(this->getViewport().bottom - this->getViewport().top) * scaleY)) / 2);
+
     if (scaleX > 0.0f) {
-        baseX = (this->x) * scaleX + this->getViewport().left;
+        baseX = ((this->x) * scaleX + this->getViewport().left) + offsetX;
     }
 
     if (scaleY > 0.0f) {
@@ -35,7 +38,7 @@ void GPShape::draw() {
         uint16_t width = this->_sizeX - baseX;
         uint16_t height = this->_sizeY - baseY;
 
-        getRenderer()->drawRectangle(baseX, baseY, sizeX, sizeY, this->strokeColor, this->fillColor);
+        getRenderer()->drawRectangle(baseX, baseY, sizeX+offsetX, sizeY, this->strokeColor, this->fillColor);
     } else if (this->_shape == GP_SHAPE_DIAMOND) {
         uint16_t size = (this->_sizeX) * scaleX + this->getViewport().left;
         getRenderer()->drawLine(baseX - size, baseY, baseX, baseY - size, this->strokeColor, 0);
