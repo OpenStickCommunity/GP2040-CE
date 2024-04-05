@@ -162,7 +162,7 @@ export const BUTTONS = {
 	},
 };
 
-export const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2', 'Fn'];
+export const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2'];
 export const MAIN_BUTTONS = [
 	'Up',
 	'Down',
