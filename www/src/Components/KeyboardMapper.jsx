@@ -28,7 +28,7 @@ const KeyboardMapper = ({
 			</thead>
 			<tbody>
 				{Object.keys(BUTTONS[buttonLabelType])
-					?.filter((p) => p !== 'label' && p !== 'value')
+					?.filter((btn) => !['label', 'value', 'Fn'].includes(btn))
 					.map((button, i) => {
 						let label = BUTTONS[buttonLabelType][button];
 						if (
