@@ -1052,7 +1052,10 @@ export default function SettingsPage() {
 																isInvalid={errors.inputMode}
 															>
 																{translatedInputModeGroups.map((o, i) => (
-																	<optgroup label={o.label}>
+																	<optgroup
+																		label={o.label}
+																		key={`optgroup-inputMode-${i}`}
+																	>
 																		{translatedInputModes
 																			.filter(({ group }) => group == o.group)
 																			.map((o, i) => (
@@ -1244,8 +1247,11 @@ export default function SettingsPage() {
 													title={t('SettingsPage:boot-input-mode-label')}
 												>
 													<Row sm={3}>
-														{INPUT_MODES_BINDS.map((mode) => (
-															<Form.Group className="mb-3 col-sm-6">
+														{INPUT_MODES_BINDS.map((mode, index) => (
+															<Form.Group
+																className="mb-3 col-sm-6"
+																key={`input-mode-${index}`}
+															>
 																<Form.Label>
 																	{mode.value in currentButtonLabels
 																		? currentButtonLabels[mode.value]
@@ -1260,7 +1266,10 @@ export default function SettingsPage() {
 																		isInvalid={errors[`inputMode${mode.value}`]}
 																	>
 																		{translatedInputModeGroups.map((o, i) => (
-																			<optgroup label={o.label}>
+																			<optgroup
+																				label={o.label}
+																				key={`optgroup-${o.label}-${i}`}
+																			>
 																				{translatedInputBootModes
 																					.filter(
 																						({ group }) => group == o.group,
@@ -1354,12 +1363,11 @@ export default function SettingsPage() {
 																{BUTTON_MASKS.map((mask) =>
 																	values[o] &&
 																	values[o]?.buttonsMask & mask.value ? (
-																		[
+																		<>
 																			<Col sm="auto">
 																				<Form.Select
 																					name={`${o}.buttonsMask`}
 																					className="form-select-sm sm-1"
-																					groupClassName="mb-3"
 																					value={
 																						values[o] &&
 																						values[o]?.buttonsMask & mask.value
@@ -1390,9 +1398,9 @@ export default function SettingsPage() {
 																						</option>
 																					))}
 																				</Form.Select>
-																			</Col>,
-																			<Col sm="auto">+</Col>,
-																		]
+																			</Col>
+																			,<Col sm="auto">+</Col>,
+																		</>
 																	) : (
 																		<></>
 																	),
