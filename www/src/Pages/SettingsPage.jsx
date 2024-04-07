@@ -1317,9 +1317,7 @@ export default function SettingsPage() {
 														>
 															The <strong>Fn</strong> slider provides a mappable
 															Function button in the{' '}
-															<NavLink exact="true" to="/pin-mapping">
-																Pin Mapping
-															</NavLink>{' '}
+															<NavLink to="/pin-mapping">Pin Mapping</NavLink>{' '}
 															page. By selecting the Fn slider option, the
 															Function button must be held along with the
 															selected hotkey settings.
