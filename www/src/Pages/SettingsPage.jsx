@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, Modal, Nav, Row, Col, Tab } from 'react-bootstrap';
-import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import { Formik, useFormikContext } from 'formik';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
@@ -9,11 +7,13 @@ import { Trans, useTranslation } from 'react-i18next';
 import JSEncrypt from 'jsencrypt';
 import isNil from 'lodash/isNil';
 
-import './SettingsPage.scss';
+import { AppContext } from '../Contexts/AppContext';
+import KeyboardMapper, { validateMappings } from '../Components/KeyboardMapper';
 import Section from '../Components/Section';
 import WebApi, { baseButtonMappings } from '../Services/WebApi';
-
 import { BUTTON_MASKS, getButtonLabels } from '../Data/Buttons';
+
+import './SettingsPage.scss';
 
 const SHA256 = (ascii) => {
 	function rightRotate(value, amount) {
@@ -622,9 +622,8 @@ export default function SettingsPage() {
 		return (
 			<Row className="mb-3">
 				<Col sm={3}>
-					<Form.Label>Authentication Settings</Form.Label>
+					<Form.Label>{label}</Form.Label>
 					<Form.Select
-						label={label}
 						name={name}
 						className="form-select-sm"
 						value={value}
@@ -713,7 +712,7 @@ export default function SettingsPage() {
 						</Row>
 						{generateAuthSelection(
 							inputMode,
-							t('SettingsPage:input-mode-extra-label'),
+							t('SettingsPage:auth-settings-label'),
 							'ps4AuthType',
 							values.ps4AuthType,
 							errors.ps4AuthType,
@@ -810,11 +809,11 @@ export default function SettingsPage() {
 								</Col>
 							</Row>
 						)}
-					</Form>
+					</div>
 				);
 			case 'input-mode-options.ps5':
 				return (
-					<Form className="row mb-3">
+					<div className="row mb-3">
 						<Row className="mb-3">
 							<Col sm={10}>
 								PS5 mode allows GP2040-CE to run as an authenticated PS5
@@ -840,7 +839,7 @@ export default function SettingsPage() {
 						</Row>
 						{generateAuthSelection(
 							inputMode,
-							t('SettingsPage:input-mode-extra-label'),
+							t('SettingsPage:auth-settings-label'),
 							'ps5AuthType',
 							values.ps5AuthType,
 							errors.ps5AuthType,
@@ -863,28 +862,28 @@ export default function SettingsPage() {
 								</Col>
 							</Row>
 						)}
-					</Form>
+					</div>
 				);
 			case 'input-mode-options.xbone':
 				return (
-					<Form className="row mb-3">
+					<div className="row mb-3">
 						<Row className="mb-3">
 							<Col sm={10}>
-								<span class="text-success">INFO:</span> Xbox One requires a USB
-								host connection and USB dongle to properly authenticate in Xbox
-								One mode.
+								<span className="text-success">INFO:</span> Xbox One requires a
+								USB host connection and USB dongle to properly authenticate in
+								Xbox One mode.
 							</Col>
 						</Row>
-					</Form>
+					</div>
 				);
 			default:
 				return (
-					<Form>
+					<div>
 						<p>
 							There are no input mode settings for{' '}
 							{t('SettingsPage:' + inputMode.labelKey)}.
 						</p>
-					</Form>
+					</div>
 				);
 		}
 	};
@@ -1389,7 +1388,7 @@ export default function SettingsPage() {
 																					))}
 																				</Form.Select>
 																			</Col>
-																			,<Col sm="auto">+</Col>,
+																			<Col sm="auto">+</Col>
 																		</>
 																	) : (
 																		<></>
