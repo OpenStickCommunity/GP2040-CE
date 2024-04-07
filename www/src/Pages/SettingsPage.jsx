@@ -690,7 +690,7 @@ export default function SettingsPage() {
 					<Form noValidate validated={validated} onSubmit={handleKeySubmit}>
 						<Row className="mb-3">
 							<Col sm={6}>
-								<div class="fs-3 fw-bold">
+								<div className="fs-3 fw-bold">
 									{t('SettingsPage:keyboard-mapping-header-text')}
 								</div>
 							</Col>
@@ -710,7 +710,7 @@ export default function SettingsPage() {
 				);
 			case 'input-mode-options.ps4':
 				return (
-					<Form className="row mb-3">
+					<div className="row mb-3">
 						<Row className="mb-3">
 							<Col sm={10}>
 								PS4 mode allows GP2040-CE to run as an authenticated PS4
@@ -745,7 +745,7 @@ export default function SettingsPage() {
 						{values.ps4AuthType === 0 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span class="text-warning">⏳ WARNING ⏳:</span> PS4 will
+									<span className="text-warning">⏳ WARNING ⏳:</span> PS4 will
 									timeout after 8 minutes without authentication.
 								</Col>
 							</Row>
@@ -754,11 +754,11 @@ export default function SettingsPage() {
 							<Row className="mb-3">
 								<Row className="mb-3">
 									<Col sm={5}>
-										<Form.Label class="badge bg-primary fs-2">
+										<Form.Label className="badge bg-primary fs-2">
 											{t('AddonsConfig:ps4-mode-sub-header')}
 										</Form.Label>
 										<br />
-										<Form.Label class="fw-bolder">
+										<Form.Label className="fw-bolder">
 											{t('AddonsConfig:ps4-mode-sub-header-text')}
 										</Form.Label>
 									</Col>
@@ -827,7 +827,7 @@ export default function SettingsPage() {
 						{values.ps4AuthType === 2 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span class="text-info">INFO:</span> Please ensure USB
+									<span className="text-info">INFO:</span> Please ensure USB
 									Peripheral is enabled and a PS4 compatible USB device is
 									plugged in.
 								</Col>
@@ -872,7 +872,7 @@ export default function SettingsPage() {
 						{values.ps5AuthType === 0 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span class="text-warning">⏳ WARNING ⏳:</span> PS5 will
+									<span className="text-warning">⏳ WARNING ⏳:</span> PS5 will
 									timeout after 8 minutes without authentication.
 								</Col>
 							</Row>
@@ -880,7 +880,7 @@ export default function SettingsPage() {
 						{values.ps5AuthType === 2 && (
 							<Row className="mb-3">
 								<Col sm={10}>
-									<span class="text-info">INFO:</span> Please ensure USB
+									<span className="text-info">INFO:</span> Please ensure USB
 									Peripheral is enabled and a PS5 compatible USB device is
 									plugged in.
 								</Col>
@@ -1222,7 +1222,6 @@ export default function SettingsPage() {
 																type="number"
 																name="debounceDelay"
 																className="form-control-sm"
-																groupClassName="col-sm-3 mb-3"
 																value={values.debounceDelay}
 																error={errors.debounceDelay}
 																isInvalid={errors.debounceDelay}
@@ -1402,7 +1401,6 @@ export default function SettingsPage() {
 																	<Form.Select
 																		name={`${o}.buttonsMask`}
 																		className="form-select-sm sm-1"
-																		groupClassName="mb-3"
 																		value={0}
 																		onChange={(e) => {
 																			setFieldValue(
