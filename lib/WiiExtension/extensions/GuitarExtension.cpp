@@ -69,10 +69,10 @@ void GuitarExtension::init(uint8_t dataType) {
     _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center           = WII_GUITAR_GATE_CENTER;
     _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum          = WII_GUITAR_GATE_CENTER+WII_GUITAR_GATE_SIZE;
     
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum         = 243;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center          = 246;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum         = 249;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].useOffset       = false;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum         = 131;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center          = 169;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum         = 207;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].useOffset       = true;
 
     _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum         = 0;
     _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center          = WII_GUITAR_GATE_CENTER;
@@ -101,8 +101,8 @@ void GuitarExtension::process(uint8_t *inputData) {
             
             _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum         = 15;
             _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center          = 19;
-            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum         = 26;
-            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].useOffset       = false;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum         = 20;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].useOffset       = true;
 
             _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum         = 0;
             _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center          = WII_GUITAR_GATE_CENTER;
