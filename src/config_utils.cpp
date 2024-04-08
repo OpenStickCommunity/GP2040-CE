@@ -1790,12 +1790,9 @@ static const uint32_t FOOTER_MAGIC = 0xd2f1e365;
     #error "Maximum size of Config cannot be determined statically, make sure that you do not use any dynamically sized arrays or strings"
 #endif
 
-/**
- * @brief load user config, with no defaults in order to overlay on top of the board config
- */
-static bool loadUserConfig(Config& config)
+static bool loadConfig(Config& config, uint32_t start)
 {
-    const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
+    const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(start) + EEPROM_SIZE_BYTES;
     const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
 
     // Check for presence of magic value
@@ -1826,41 +1823,25 @@ static bool loadUserConfig(Config& config)
 }
 
 /**
- * @brief - load board config, with nanopb loading the defaults
+ * @brief load user config (user settings and overrides)
+ */
+static bool loadUserConfig(Config& config)
+{
+    return loadConfig(config, EEPROM_ADDRESS_START);
+}
+
+/**
+ * @brief - load board config (customizations specific to a board/device model)
  */
 static bool loadBoardConfig(Config& config)
 {
-    const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(BOARD_CONFIG_EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
-    const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
-
-    // Check for presence of magic value
-    if (footer.magic != FOOTER_MAGIC)
-    {
-        return false;
-    }
-
-        // Check if dataSize exceeds the reserved space
-    if (footer.dataSize + sizeof(ConfigFooter) > EEPROM_SIZE_BYTES)
-    {
-        return false;
-    }
-
-    const uint8_t* dataPtr = flashEnd - sizeof(ConfigFooter) - footer.dataSize;
-
-    // Verify CRC32 hash
-    if (CRC32::calculate(dataPtr, footer.dataSize) != footer.dataCrc)
-    {
-        return false;
-    }
-
-    // We are now sufficiently confident that the data is valid so we run the deserialization
-    pb_istream_t inputStream = pb_istream_from_buffer(dataPtr, footer.dataSize);
-    // reminder: this initializes the structure with defaults
-    return pb_decode(&inputStream, Config_fields, &config);
+    return loadConfig(config, BOARD_CONFIG_EEPROM_ADDRESS_START);
 }
 
 void ConfigUtils::load(Config& config)
 {
+    // load the config with defaults, and then overlay board and user configs on top
+    config = Config Config_init_default;
     loadBoardConfig(config);
     loadUserConfig(config);
 
