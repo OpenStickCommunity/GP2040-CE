@@ -1790,10 +1790,11 @@ static const uint32_t FOOTER_MAGIC = 0xd2f1e365;
     #error "Maximum size of Config cannot be determined statically, make sure that you do not use any dynamically sized arrays or strings"
 #endif
 
+/**
+ * @brief load user config, with no defaults in order to overlay on top of the board config
+ */
 static bool loadUserConfig(Config& config)
 {
-    config = Config Config_init_zero;
-
     const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
     const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
 
@@ -1819,13 +1820,16 @@ static bool loadUserConfig(Config& config)
 
     // We are now sufficiently confident that the data is valid so we run the deserialization
     pb_istream_t inputStream = pb_istream_from_buffer(dataPtr, footer.dataSize);
-    return pb_decode(&inputStream, Config_fields, &config);
+    // PB_DECODE_NOINIT: "Do not initialize structure before decoding. This can be used to combine
+    // multiple messages, or if you have already initialized the message structure yourself."
+    return pb_decode_ex(&inputStream, Config_fields, &config, PB_DECODE_NOINIT);
 }
 
+/**
+ * @brief - load board config, with nanopb loading the defaults
+ */
 static bool loadBoardConfig(Config& config)
 {
-    config = Config Config_init_zero;
-
     const uint8_t* flashEnd = reinterpret_cast<const uint8_t*>(BOARD_CONFIG_EEPROM_ADDRESS_START) + EEPROM_SIZE_BYTES;
     const ConfigFooter& footer = *reinterpret_cast<const ConfigFooter*>(flashEnd - sizeof(ConfigFooter));
 
@@ -1851,18 +1855,14 @@ static bool loadBoardConfig(Config& config)
 
     // We are now sufficiently confident that the data is valid so we run the deserialization
     pb_istream_t inputStream = pb_istream_from_buffer(dataPtr, footer.dataSize);
+    // reminder: this initializes the structure with defaults
     return pb_decode(&inputStream, Config_fields, &config);
 }
 
 void ConfigUtils::load(Config& config)
 {
-    // first try to load from the user config, then from the read-only board config,
-    // and fall back to defaults
-    if (!loadUserConfig(config)) {
-        if (!loadBoardConfig(config)) {
-            config = Config Config_init_default;
-        }
-    }
+    loadBoardConfig(config);
+    loadUserConfig(config);
 
     // run migrations
     if (!config.migrations.hotkeysMigrated)
