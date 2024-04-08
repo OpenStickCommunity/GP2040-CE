@@ -32,6 +32,13 @@
 #define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_21 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
 
+// Setting GPIO pins to assigned by add-on
+//
+#define GPIO_PIN_00 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_01 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_23 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_28 GpioAction::ASSIGNED_TO_ADDON
+
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP     | UP     | UP      | UP       | UP     | UP     |
@@ -55,6 +62,7 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 #define USB_PERIPHERAL_ENABLED 1
+
 #define USB_PERIPHERAL_PIN_DPLUS 23
 #define USB_PERIPHERAL_PIN_ORDER 0
 

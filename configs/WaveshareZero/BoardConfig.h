@@ -54,6 +54,4 @@
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
-#define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
-
 #endif
