@@ -38,6 +38,7 @@
 #define GPIO_PIN_01 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_04 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_23 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_24 GpioAction::ASSIGNED_TO_ADDON
 
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
