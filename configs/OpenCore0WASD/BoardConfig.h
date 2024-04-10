@@ -36,6 +36,7 @@
 //
 #define GPIO_PIN_00 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_01 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_08 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_22 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_28 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_29 GpioAction::ASSIGNED_TO_ADDON

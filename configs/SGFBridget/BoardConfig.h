@@ -77,4 +77,6 @@
 #define LEDS_BUTTON_B1   10
 #define LEDS_DPAD_UP     11
 
+#define HAS_I2C_DISPLAY 0 //This needs to be defined or the LEDs will not work
+
 #endif
