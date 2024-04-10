@@ -9,6 +9,7 @@ class ConfigScreen : public GPScreen {
         ConfigScreen(GPGFX* renderer) { setRenderer(renderer); }
         virtual int8_t update();
         virtual void init();
+        virtual void shutdown();
         uint8_t getDisplayMode() { return prevDisplayMode; }
     protected:
         virtual void drawScreen();

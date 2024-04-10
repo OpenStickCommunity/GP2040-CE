@@ -86,10 +86,6 @@ void InputMacro::reset() {
 }
 
 void InputMacro::checkMacroPress() {
-    // Macro is not interruptible
-    if ( macroPosition != -1 && inputMacroOptions->macroList[macroPosition].interruptible == false )
-        return;
-
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     Mask_t allPins = gamepad->debouncedGpio;
 
@@ -127,23 +123,21 @@ void InputMacro::checkMacroAction() {
 
     // Check to see if we should change the current macro (or turn off based on input)
     if ( inputMacroOptions->macroList[macroPosition].macroType == ON_PRESS ) {
-        // START Macro: On Press
+        // START Macro: On Press or On Hold Repeat
         if (!isMacroRunning ) {
             isMacroTriggerHeld = newPress;
         }
     } else if ( inputMacroOptions->macroList[macroPosition].macroType == ON_HOLD_REPEAT ) {
-        // Hold macro
         isMacroTriggerHeld = macroInputPressed;
     } else if ( inputMacroOptions->macroList[macroPosition].macroType == ON_TOGGLE ) {
-        if (!isMacroRunning ) { // START Macro: Toggle on new press
+        //isMacroTriggerHeld = macroInputPressed;
+        if (!isMacroRunning ) {
             isMacroTriggerHeld = newPress;
-        } else {
+        } else if (isMacroRunning && newPress) {
             // STOP Macro: Toggle on new press
-            if ( newPress ) {
-                reset(); // Stop Macro: Toggle
-                prevMacroInputPressed = macroInputPressed;
-                return;
-            }
+            reset(); // Stop Macro: Toggle
+            prevMacroInputPressed = macroInputPressed;
+            return;
         }
     }
 
@@ -168,8 +162,9 @@ void InputMacro::runCurrentMacro() {
 
     Macro& macro = inputMacroOptions->macroList[macroPosition];
 
-    // Stop Macro: Hold-Repeat
-    if ((!isMacroTriggerHeld && macro.interruptible)) {
+    // Stop Macro if released (ON PRESS & ON HOLD REPEAT)
+    if (inputMacroOptions->macroList[macroPosition].macroType != ON_TOGGLE &&
+            !isMacroTriggerHeld && macro.interruptible) {
         reset();
         return;
     }
@@ -227,11 +222,15 @@ void InputMacro::runCurrentMacro() {
             if ( macro.macroType == ON_PRESS ) {
                 reset(); // On press = no more macro
             } else {
-                macroInputPosition = 0; // On Hold-Repeat or On Toggle = start macro again
-                macroStartTime = currentMicros;
-                MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
-                uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
-                macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
+                if ( macro.macroType == ON_HOLD_REPEAT) {
+                    reset(); // On repeat, reset but keep the button held
+                } else {
+                    macroInputPosition = 0; // On Hold-Repeat or On Toggle = start macro again
+                    macroStartTime = currentMicros;
+                    MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
+                    uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
+                    macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
+                }
             }
         }
     }

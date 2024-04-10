@@ -63,15 +63,31 @@ void DisplayAddon::setup() {
     } else {
         currDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
     }
-
     gpScreen = nullptr;
     updateDisplayScreen();
 }
 
 bool DisplayAddon::updateDisplayScreen() {
-    if ( gpScreen != nullptr )
-        delete gpScreen;
-
+    if ( gpScreen != nullptr ) {
+        gpScreen->shutdown();
+        switch(prevDisplayMode) {
+            case CONFIG_INSTRUCTION:
+                delete (ConfigScreen*)gpScreen;
+                break;
+            case SPLASH:
+                delete (SplashScreen*)gpScreen;
+                break;
+            case MAIN_MENU:
+                delete (SplashScreen*)gpScreen;
+                break;
+            case BUTTONS:
+                delete (ButtonLayoutScreen*)gpScreen;
+                break;
+            default:
+                break;
+        }
+        gpScreen = nullptr;
+    }
     switch(currDisplayMode) {
         case CONFIG_INSTRUCTION:
             gpScreen = new ConfigScreen(gpDisplay);
@@ -92,6 +108,7 @@ bool DisplayAddon::updateDisplayScreen() {
 
     if (gpScreen != nullptr) {
         gpScreen->init();
+        prevDisplayMode = currDisplayMode;
         return true;
     }
 

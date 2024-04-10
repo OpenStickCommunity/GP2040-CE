@@ -10,6 +10,7 @@ class SplashScreen : public GPScreen {
         SplashScreen(GPGFX* renderer) { setRenderer(renderer); }
         virtual int8_t update();
         virtual void init();
+        virtual void shutdown();
     protected:
         virtual void drawScreen();
         uint16_t prevButtonState = 0;
