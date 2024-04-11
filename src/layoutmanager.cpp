@@ -122,7 +122,7 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
         case BUTTON_LAYOUT_STICKLESSB:
             return this->drawSticklessButtons();
         case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
-            return this->drawMAMEB();
+            return this->drawWasdButtons();
         case BUTTON_LAYOUT_VEWLIX:
             return this->drawVewlix();
         case BUTTON_LAYOUT_VEWLIX7:
