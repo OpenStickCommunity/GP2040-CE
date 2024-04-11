@@ -1,4 +1,4 @@
-# GP2040 Configuration for the Haute42 series of devices
+# GP2040 Configuration for the Haute42 COSMOX series of devices
 
 ![Haute42 Logo](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/Haute42/assets/Haute42_logo.png)
 
