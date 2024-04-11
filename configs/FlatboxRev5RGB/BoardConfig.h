@@ -36,11 +36,6 @@
 // Setting GPIO pins to assigned by add-on
 //
 #define GPIO_PIN_00 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_11 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_24 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_25 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_26 GpioAction::ASSIGNED_TO_ADDON
-#define GPIO_PIN_27 GpioAction::ASSIGNED_TO_ADDON
 
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -68,6 +63,7 @@
 
 #define LED_BRIGHTNESS_MAXIMUM 50
 #define LED_BRIGHTNESS_STEPS 5
+#define LEDS_BASE_ANIMATION_INDEX 1
 #define LEDS_PER_PIXEL 2
 
 #define LEDS_DPAD_LEFT   0

@@ -37,6 +37,7 @@
 //
 #define GPIO_PIN_07 GpioAction::ASSIGNED_TO_ADDON
 #define GPIO_PIN_12 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_13 GpioAction::ASSIGNED_TO_ADDON
 
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -84,5 +85,7 @@
 #define LEDS_BUTTON_B2   9
 #define LEDS_BUTTON_B1   10
 #define LEDS_DPAD_UP     11
+
+#define HAS_I2C_DISPLAY 0 //This needs to be defined or the LEDs will not work
 
 #endif
