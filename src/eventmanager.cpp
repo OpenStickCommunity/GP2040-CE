@@ -3,6 +3,7 @@
 #include "enums.pb.h"
 
 void EventManager::registerEventHandler(std::string eventName, EventFunction handler) {
+    //printf("EventManager::registerEventHandler %s\n", eventName.c_str());
     typename std::vector<EventEntry>::iterator it = std::find_if(eventList.begin(), eventList.end(), [&eventName](const EventEntry& entry) { return entry.first == eventName; });
 
     if (it != eventList.end()) {
@@ -16,6 +17,7 @@ void EventManager::registerEventHandler(std::string eventName, EventFunction han
 
 void EventManager::triggerEvent(GPEvent* event) {
     std::string eventName = event->name();
+    //printf("EventManager::triggerEvent %s\n", eventName.c_str());
     for (typename std::vector<EventEntry>::const_iterator it = eventList.begin(); it != eventList.end(); ++it) {
         if (it->first == eventName) {
             // Call all event handlers for the specified event

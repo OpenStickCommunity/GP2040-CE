@@ -85,10 +85,8 @@ void RotaryEncoderInput::process()
                     if ((encoderState[i].pinA == encoderState[i].prevA) && (encoderState[i].pinB == encoderState[i].prevB)) {
                         if ((encoderState[i].pinA && !encoderState[i].pinB && pinBValue) || (!encoderState[i].pinA && encoderState[i].pinB && !pinBValue)) {
                             encoderValues[i]+=encoderIncrement;
-                            EventManager::getInstance().triggerEvent(new GPEncoderEvent(i, 1));
                         } else if ((!encoderState[i].pinA && encoderState[i].pinB && pinBValue) || (encoderState[i].pinA && !encoderState[i].pinB && !pinBValue)) {
                             encoderValues[i]-=encoderIncrement;
-                            EventManager::getInstance().triggerEvent(new GPEncoderEvent(i, -1));
                         }
                     }
                 }
@@ -130,6 +128,12 @@ void RotaryEncoderInput::process()
 
             if ((encoderValues[i] - prevValues[i]) != 0) {
                 encoderState[i].changeTime = now;
+
+                if ((encoderValues[i] - prevValues[i]) > 0) {
+                    EventManager::getInstance().triggerEvent(new GPEncoderEvent(i, 1));
+                } else if ((encoderValues[i] - prevValues[i]) < 0) {
+                    EventManager::getInstance().triggerEvent(new GPEncoderEvent(i, -1));
+                }
             }
 
             if ((encoderMap[i].resetAfter > 0) && (lastChange >= encoderMap[i].resetAfter)) {

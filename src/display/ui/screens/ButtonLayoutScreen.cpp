@@ -13,6 +13,9 @@ void ButtonLayoutScreen::init() {
     profileDelayStart = getMillis();
     gamepad = Storage::getInstance().GetGamepad();
     inputMode = DriverManager::getInstance().getInputMode();
+
+    // handle turbo rate changes
+    EventManager::getInstance().registerEventHandler("turboChange", GPEVENT_CALLBACK(this->handleTurboChange(event);));
     
     footer = "";
     historyString = "";
@@ -456,4 +459,10 @@ bool ButtonLayoutScreen::pressedDownRight()
     }
 
     return false;
+}
+
+void ButtonLayoutScreen::handleTurboChange(GPEvent* e) {
+    GPTurboChangeEvent* event = (GPTurboChangeEvent*)e;
+
+    //printf("handleTurboChange: Prev: %d, Curr: %d\n", event->previousValue, event->currentValue);
 }

@@ -128,6 +128,8 @@ class ButtonLayoutScreen : public GPScreen {
         virtual int8_t update();
         virtual void init();
         virtual void shutdown();
+
+        void handleTurboChange(GPEvent* e);
     protected:
         virtual void drawScreen();
     private:

@@ -13,6 +13,7 @@
 
 #include "gpevent.h"
 #include "gpencoderevent.h"
+#include "gpturboevent.h"
 
 #define EVENTMGR EventManager::getInstance()
 

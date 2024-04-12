@@ -2,6 +2,8 @@
 
 #include "hardware/adc.h"
 
+#include "eventmanager.h"
+#include "GPTurboEvent.h"
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
@@ -106,6 +108,7 @@ void TurboInput::setup()
     bTurboFlicker = false;
     updateInterval(shotCount);
     nextTimer = getMicro();
+    encoderValue = shotCount;
 }
 
 /**
@@ -122,6 +125,7 @@ void TurboInput::reinit()
             break;
         }
     }
+    EventManager::getInstance().triggerEvent(new GPTurboReinitEvent());
 }
 
 void TurboInput::process()
@@ -244,11 +248,15 @@ void TurboInput::updateTurboShotCount(uint8_t shotCount)
 
 void TurboInput::handleEncoder(GPEvent* e) {
     GPEncoderEvent* event = (GPEncoderEvent*)e;
-    //printf("Event handled: GPEncoderEvent - ID: %d, Direction: %d\n", event->encoder, event->direction);
+    //printf("handleEncoder: Encoder: %d, Dir: %d\n", event->encoder, event->direction);
+    uint8_t previousValue = encoderValue;
 
-    if ((event->direction < 0) && (dialValue > TURBO_SHOT_MIN)) {
-
-    } else if ((event->direction < 0) && (dialValue < TURBO_SHOT_MAX)) {
-
+    if ((event->direction < 0) && (encoderValue > TURBO_SHOT_MIN)) {
+        encoderValue--;
+        updateTurboShotCount(encoderValue);
+    } else if ((event->direction > 0) && (encoderValue < TURBO_SHOT_MAX)) {
+        encoderValue++;
+        updateTurboShotCount(encoderValue);
     }
+    EventManager::getInstance().triggerEvent(new GPTurboChangeEvent(previousValue, encoderValue));
 }
