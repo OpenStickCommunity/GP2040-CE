@@ -42,6 +42,9 @@ void TurboInput::setup()
     const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
     uint32_t now = getMillis();
 
+    // handle event for encoder dial if available
+    EventManager::getInstance().registerEventHandler("encoder", GPEVENT_CALLBACK(this->handleEncoder(event);));
+
     // Turbo Dial
     uint8_t shotCount = std::clamp<uint8_t>(options.shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
     if (isValidPin(options.shmupDialPin)) {
@@ -237,4 +240,15 @@ void TurboInput::updateTurboShotCount(uint8_t shotCount)
         Storage::getInstance().save();
     }
     updateInterval(shotCount);
+}
+
+void TurboInput::handleEncoder(GPEvent* e) {
+    GPEncoderEvent* event = (GPEncoderEvent*)e;
+    //printf("Event handled: GPEncoderEvent - ID: %d, Direction: %d\n", event->encoder, event->direction);
+
+    if ((event->direction < 0) && (dialValue > TURBO_SHOT_MIN)) {
+
+    } else if ((event->direction < 0) && (dialValue < TURBO_SHOT_MAX)) {
+
+    }
 }

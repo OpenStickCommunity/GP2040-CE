@@ -1,6 +1,8 @@
 #include "addons/rotaryencoder.h"
 
+#include "eventmanager.h"
 #include "storagemanager.h"
+#include "GPEncoderEvent.h"
 #include "types.h"
 
 #include "GamepadEnums.h"
@@ -83,8 +85,10 @@ void RotaryEncoderInput::process()
                     if ((encoderState[i].pinA == encoderState[i].prevA) && (encoderState[i].pinB == encoderState[i].prevB)) {
                         if ((encoderState[i].pinA && !encoderState[i].pinB && pinBValue) || (!encoderState[i].pinA && encoderState[i].pinB && !pinBValue)) {
                             encoderValues[i]+=encoderIncrement;
+                            EventManager::getInstance().triggerEvent(new GPEncoderEvent(i, 1));
                         } else if ((!encoderState[i].pinA && encoderState[i].pinB && pinBValue) || (encoderState[i].pinA && !encoderState[i].pinB && !pinBValue)) {
                             encoderValues[i]-=encoderIncrement;
+                            EventManager::getInstance().triggerEvent(new GPEncoderEvent(i, -1));
                         }
                     }
                 }
