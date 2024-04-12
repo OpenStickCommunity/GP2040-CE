@@ -1,28 +1,52 @@
 export default {
-	'settings-header-text': '系统设置',
+	'auth-settings-label': '身份认证设置',
+	'settings-header-text': '输入模式设置',
+	'gamepad-settings-header-text': '游戏手柄设置',
 	'input-mode-label': '输入模式',
-	'input-mode-extra-label': '切换触摸板和Share键',
+	'current-input-mode-label': '当前输入模式',
+	'input-mode-extra-label': '切换触摸板和共享',
+	'ps4-report-hack': 'PS4 回馈速度破解',
 	'input-mode-options': {
+		none: '未选择模式',
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		ps3: 'PS3/DirectInput',
 		keyboard: '键盘',
 		ps4: 'PS4',
+		ps5: 'PS5',
+		neogeo: 'NEOGEO 迷你',
+		mdmini: 'Sega Genesis/MegaDrive 迷你',
+		pcemini: 'PC Engine/Turbografx 16 迷你',
+		egret: 'EGRET II 迷你',
+		astro: 'ASTROCITY 迷你',
+		psclassic: 'Playstation 经典',
+		xboxoriginal: '初代 Xbox',
 		xbone: 'Xbox One',
 	},
+	'input-mode-group': {
+		primary: '主要输入模式',
+		mini: '迷你/经典控制台模式',
+	},
+	'boot-input-mode-label': '引导输入模式',
 	'ps4-mode-options': {
 		controller: '游戏控制器',
 		arcadestick: '街机摇杆',
 	},
-	'd-pad-mode-label': '方向模式',
+	'input-mode-authentication': {
+		none: '无',
+		key: '上传的按键文件',
+		usb: 'USB 主机',
+		i2c: '附加 I2C',
+	},
+	'd-pad-mode-label': 'D-Pad 模式',
 	'd-pad-mode-options': {
 		'd-pad': '十字键',
 		'left-analog': '左摇杆',
 		'right-analog': '右摇杆',
 	},
-	'socd-cleaning-mode-label': 'SOCD覆盖模式',
+	'socd-cleaning-mode-label': 'SOCD 覆盖模式',
 	'socd-cleaning-mode-note':
-		'注意：PS4, PS3 and Nintendo Switch输入模式不支持设置SOCD覆盖模式为关闭，默认设置为回中模式。',
+		'注意：PS4, PS3 和 Nintendo Switch 输入模式不支持设置 SOCD 覆盖模式为关闭，默认设置为回中模式。',
 	'socd-cleaning-mode-options': {
 		'up-priority': '上优先',
 		neutral: '回中',
@@ -31,12 +55,14 @@ export default {
 		off: '关闭',
 	},
 	'profile-number-label': '档案编号',
+	'debounce-delay-label': '防反弹延迟（毫秒）',
 	'ps4-compatibility-label':
-		'对于 <strong>兼容PS5</strong>, 请使用“街机摇杆”模式并启用PS直通验证附加功能<br/>对于 <strong>支持PS4</strong>, 如果你已经上传了必要文件，请使用“游戏控制器”模式并启用PS4模式附加功能。',
+		'对于 <strong>兼容PS5</strong>, 请使用“街机摇杆”模式并启用 PS 直通验证附加功能<br/>对于 <strong>支持PS4</strong>, 如果你已经上传了必要文件，请使用“游戏控制器”模式并启用PS4模式附加功能。',
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
-		"<1>Fn</1> 组合映射在<4 exact='true' to='/pin-mapping'>引脚映射</4>页面提供了一个可映射的Function按键。 要选择 <1>Fn</1> 组合映射选项，请同时按住 Function 按键和其他快捷键。<5 />此外, 可从下拉列表中选择 <1>None</1> 以取消分配按钮",
+		"<1>Fn</1> 组合映射在<4 exact='true' to='/pin-mapping'>引脚映射</4>页面提供了一个可映射的 Function 按键。 要选择 <1>Fn</1> 组合映射选项，请同时按住 Function 按键和其他快捷键。<5 />此外, 可从下拉列表中选择 <1>无</1> 以取消分配按钮",
 	'hotkey-settings-warning': 'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
+		'Function 未映射时，Fn 模块将被禁用。',
 	'hotkey-actions': {
 		'no-action': '无',
 		'dpad-digital': '十字键模式',
@@ -87,5 +113,6 @@ export default {
 	'4-way-joystick-mode-label': '4向摇杆模式',
 	'lock-hotkeys-label': '锁定快捷键',
 	'keyboard-mapping-header-text': '键盘映射',
-	'keyboard-mapping-sub-header-text': '使用下方的表格重新配置按键映射',
+	'keyboard-mapping-sub-header-text':
+		'使用下表重新配置按钮到按键的映射。',
 };

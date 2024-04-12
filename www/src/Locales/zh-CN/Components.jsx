@@ -3,11 +3,11 @@ export default {
 		en: 'English US (英语)',
 		nl: 'Nederlands (荷兰语)',
 		'pt-BR': 'Português Brasil (巴西葡萄牙语)',
-		'zh-CN': '简体中文',
+		'zh-CN': 'Simplified Chinese (简体中文)',
 		'de-DE': 'Deutsch (德语)',
 	},
 	'color-scheme': {
-		dark: '黑暗',
+		dark: '暗黑',
 		light: '明亮',
 		auto: '自动',
 	},
