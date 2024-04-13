@@ -225,6 +225,98 @@
     #define GPIO_PIN_29 GpioAction::NONE
 #endif
 
+// Active High
+#ifndef GPIO_PIN_00_INVERT
+    #define GPIO_PIN_00_INVERT false
+#endif
+#ifndef GPIO_PIN_01_INVERT
+    #define GPIO_PIN_01_INVERT false
+#endif
+#ifndef GPIO_PIN_02_INVERT
+    #define GPIO_PIN_02_INVERT false
+#endif
+#ifndef GPIO_PIN_03_INVERT
+    #define GPIO_PIN_03_INVERT false
+#endif
+#ifndef GPIO_PIN_04_INVERT
+    #define GPIO_PIN_04_INVERT false
+#endif
+#ifndef GPIO_PIN_05_INVERT
+    #define GPIO_PIN_05_INVERT false
+#endif
+#ifndef GPIO_PIN_06_INVERT
+    #define GPIO_PIN_06_INVERT false
+#endif
+#ifndef GPIO_PIN_07_INVERT
+    #define GPIO_PIN_07_INVERT false
+#endif
+#ifndef GPIO_PIN_08_INVERT
+    #define GPIO_PIN_08_INVERT false
+#endif
+#ifndef GPIO_PIN_09_INVERT
+    #define GPIO_PIN_09_INVERT false
+#endif
+#ifndef GPIO_PIN_10_INVERT
+    #define GPIO_PIN_10_INVERT false
+#endif
+#ifndef GPIO_PIN_11_INVERT
+    #define GPIO_PIN_11_INVERT false
+#endif
+#ifndef GPIO_PIN_12_INVERT
+    #define GPIO_PIN_12_INVERT false
+#endif
+#ifndef GPIO_PIN_13_INVERT
+    #define GPIO_PIN_13_INVERT false
+#endif
+#ifndef GPIO_PIN_14_INVERT
+    #define GPIO_PIN_14_INVERT false
+#endif
+#ifndef GPIO_PIN_15_INVERT
+    #define GPIO_PIN_15_INVERT false
+#endif
+#ifndef GPIO_PIN_16_INVERT
+    #define GPIO_PIN_16_INVERT false
+#endif
+#ifndef GPIO_PIN_17_INVERT
+    #define GPIO_PIN_17_INVERT false
+#endif
+#ifndef GPIO_PIN_18_INVERT
+    #define GPIO_PIN_18_INVERT false
+#endif
+#ifndef GPIO_PIN_19_INVERT
+    #define GPIO_PIN_19_INVERT false
+#endif
+#ifndef GPIO_PIN_20_INVERT
+    #define GPIO_PIN_20_INVERT false
+#endif
+#ifndef GPIO_PIN_21_INVERT
+    #define GPIO_PIN_21_INVERT false
+#endif
+#ifndef GPIO_PIN_22_INVERT
+    #define GPIO_PIN_22_INVERT false
+#endif
+#ifndef GPIO_PIN_23_INVERT
+    #define GPIO_PIN_23_INVERT false
+#endif
+#ifndef GPIO_PIN_24_INVERT
+    #define GPIO_PIN_24_INVERT false
+#endif
+#ifndef GPIO_PIN_25_INVERT
+    #define GPIO_PIN_25_INVERT false
+#endif
+#ifndef GPIO_PIN_26_INVERT
+    #define GPIO_PIN_26_INVERT false
+#endif
+#ifndef GPIO_PIN_27_INVERT
+    #define GPIO_PIN_27_INVERT false
+#endif
+#ifndef GPIO_PIN_28_INVERT
+    #define GPIO_PIN_28_INVERT false
+#endif
+#ifndef GPIO_PIN_29_INVERT
+    #define GPIO_PIN_29_INVERT false
+#endif
+
 // -----------------------------------------------------
 // Migration leftovers
 // -----------------------------------------------------
@@ -973,6 +1065,18 @@ void gpioMappingsMigrationCore(Config& config)
                                                GPIO_PIN_21, GPIO_PIN_22, GPIO_PIN_23,
                                                GPIO_PIN_24, GPIO_PIN_25, GPIO_PIN_26,
                                                GPIO_PIN_27, GPIO_PIN_28, GPIO_PIN_29};
+                                               
+    // Assign all potential board config pins
+    bool boardConfigInvert[NUM_BANK0_GPIOS] = {GPIO_PIN_00_INVERT, GPIO_PIN_01_INVERT, GPIO_PIN_02_INVERT,
+                                                    GPIO_PIN_03_INVERT, GPIO_PIN_04_INVERT, GPIO_PIN_05_INVERT,
+                                                    GPIO_PIN_06_INVERT, GPIO_PIN_07_INVERT, GPIO_PIN_08_INVERT,
+                                                    GPIO_PIN_09_INVERT, GPIO_PIN_10_INVERT, GPIO_PIN_11_INVERT,
+                                                    GPIO_PIN_12_INVERT, GPIO_PIN_13_INVERT, GPIO_PIN_14_INVERT,
+                                                    GPIO_PIN_15_INVERT, GPIO_PIN_16_INVERT, GPIO_PIN_17_INVERT,
+                                                    GPIO_PIN_18_INVERT, GPIO_PIN_19_INVERT, GPIO_PIN_20_INVERT,
+                                                    GPIO_PIN_21_INVERT, GPIO_PIN_22_INVERT, GPIO_PIN_23_INVERT,
+                                                    GPIO_PIN_24_INVERT, GPIO_PIN_25_INVERT, GPIO_PIN_26_INVERT,
+                                                    GPIO_PIN_27_INVERT, GPIO_PIN_28_INVERT, GPIO_PIN_29_INVERT};
     
     // If we didn't import from protobuf, import from boardconfig
     for(unsigned int i = 0; i < NUM_BANK0_GPIOS; i++) {
@@ -1179,6 +1283,7 @@ void gpioMappingsMigrationCore(Config& config)
 
     for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++) {
         config.gpioMappings.pins[pin].action = actions[pin];
+		config.gpioMappings.pins[pin].invert = boardConfigInvert[pin];
     }
     // reminder that this must be set or else nanopb won't retain anything
     config.gpioMappings.pins_count = NUM_BANK0_GPIOS;

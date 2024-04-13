@@ -66,6 +66,9 @@ void GP2040::setup() {
 	// Set pin mappings for all GPIO functions
 	Storage::getInstance().setFunctionalPinMappings();
 
+	// Setup Gpio Interface
+	gpio_interface_setup();
+
 	// Setup Gamepad
 	gamepad->setup();
 	

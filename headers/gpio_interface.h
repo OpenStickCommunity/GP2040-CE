@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+extern uint32_t xor_mask;
+void gpio_interface_setup();
 uint32_t gpio_interface_get_all();
 
 #endif // GPIO_INTERFACE_H

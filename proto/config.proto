@@ -168,6 +168,7 @@ message PinMappings
 message GpioMappingInfo
 {
     optional GpioAction action = 1;
+    optional bool invert = 2;
 }
 
 message GpioMappings
