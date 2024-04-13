@@ -45,7 +45,7 @@ void TurboInput::setup()
     uint32_t now = getMillis();
 
     // handle event for encoder dial if available
-    EventManager::getInstance().registerEventHandler("encoder", GPEVENT_CALLBACK(this->handleEncoder(event);));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_ENCODER_CHANGE, GPEVENT_CALLBACK(this->handleEncoder(event);));
 
     // Turbo Dial
     uint8_t shotCount = std::clamp<uint8_t>(options.shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
@@ -247,16 +247,16 @@ void TurboInput::updateTurboShotCount(uint8_t shotCount)
 }
 
 void TurboInput::handleEncoder(GPEvent* e) {
-    GPEncoderEvent* event = (GPEncoderEvent*)e;
-    //printf("handleEncoder: Encoder: %d, Dir: %d\n", event->encoder, event->direction);
-    uint8_t previousValue = encoderValue;
-
-    if ((event->direction < 0) && (encoderValue > TURBO_SHOT_MIN)) {
-        encoderValue--;
-        updateTurboShotCount(encoderValue);
-    } else if ((event->direction > 0) && (encoderValue < TURBO_SHOT_MAX)) {
-        encoderValue++;
-        updateTurboShotCount(encoderValue);
-    }
-    EventManager::getInstance().triggerEvent(new GPTurboChangeEvent(previousValue, encoderValue));
+//    GPEncoderChangeEvent* event = (GPEncoderChangeEvent*)e;
+//    //printf("handleEncoder: Encoder: %d, Dir: %d\n", event->encoder, event->direction);
+//    uint8_t previousValue = encoderValue;
+//
+//    if ((event->direction < 0) && (encoderValue > TURBO_SHOT_MIN)) {
+//        encoderValue--;
+//        updateTurboShotCount(encoderValue);
+//    } else if ((event->direction > 0) && (encoderValue < TURBO_SHOT_MAX)) {
+//        encoderValue++;
+//        updateTurboShotCount(encoderValue);
+//    }
+//    EventManager::getInstance().triggerEvent(new GPTurboChangeEvent(previousValue, encoderValue));
 }

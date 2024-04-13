@@ -1,16 +1,14 @@
 #ifndef _GPTURBOEVENT_H_
 #define _GPTURBOEVENT_H_
 
-#include <string>
-
 class GPTurboEvent : public GPEvent {
     public:
         GPTurboEvent() {}
         ~GPTurboEvent() {}
 
-        std::string name() { return this->_name; }
+        GPEventType eventType() { return this->_eventType; }
     private:
-        std::string _name = "turbo";
+        GPEventType _eventType = GP_EVENT_TURBO;
 };
 
 class GPTurboReinitEvent : public GPTurboEvent {
@@ -18,9 +16,9 @@ class GPTurboReinitEvent : public GPTurboEvent {
         GPTurboReinitEvent() {}
         ~GPTurboReinitEvent() {}
 
-        std::string name() { return this->_name; }
+        GPEventType eventType() { return this->_eventType; }
     private:
-        std::string _name = "turboReinit";
+        GPEventType _eventType = GP_EVENT_TURBO_REINIT;
 };
 
 class GPTurboChangeEvent : public GPTurboEvent {
@@ -32,12 +30,12 @@ class GPTurboChangeEvent : public GPTurboEvent {
         }
         ~GPTurboChangeEvent() {}
 
-        std::string name() { return this->_name; }
+        GPEventType eventType() { return this->_eventType; }
 
         uint8_t previousValue;
         uint8_t currentValue;
     private:
-        std::string _name = "turboChange";
+        GPEventType _eventType = GP_EVENT_TURBO_CHANGE;
 };
 
 #endif

@@ -14,13 +14,14 @@
 #include "gpevent.h"
 #include "gpencoderevent.h"
 #include "gpturboevent.h"
+#include "gpprofileevent.h"
 
 #define EVENTMGR EventManager::getInstance()
 
 class EventManager {
     public:
         typedef std::function<void(GPEvent* event)> EventFunction;
-        typedef std::pair<std::string, std::vector<EventFunction>> EventEntry;
+        typedef std::pair<GPEventType, std::vector<EventFunction>> EventEntry;
 
         EventManager(EventManager const&) = delete;
         void operator=(EventManager const&)  = delete;
@@ -30,12 +31,12 @@ class EventManager {
             return instance;
         }
 
-        void registerEventHandler(std::string eventName, EventFunction handler);
+        void registerEventHandler(GPEventType eventType, EventFunction handler);
         void triggerEvent(GPEvent* event);
     private:
         EventManager(){}
 
-        std::vector<std::pair<std::string, std::vector<EventFunction>>> eventList;
+        std::vector<std::pair<GPEventType, std::vector<EventFunction>>> eventList;
 };
 
 #endif

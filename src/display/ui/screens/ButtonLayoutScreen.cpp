@@ -15,7 +15,8 @@ void ButtonLayoutScreen::init() {
     inputMode = DriverManager::getInstance().getInputMode();
 
     // handle turbo rate changes
-    EventManager::getInstance().registerEventHandler("turboChange", GPEVENT_CALLBACK(this->handleTurboChange(event);));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_TURBO_CHANGE, GPEVENT_CALLBACK(this->handleTurboChange(event);));
+    EventManager::getInstance().registerEventHandler(GP_EVENT_PROFILE_CHANGE, GPEVENT_CALLBACK(this->handleProfileChange(event);));
     
     footer = "";
     historyString = "";
@@ -37,6 +38,7 @@ void ButtonLayoutScreen::init() {
 	// start with profile mode displayed
 	profileModeDisplay = true;
     prevProfileNumber = -1;
+    //profileNumber = gamepad->getOptions().profileNumber;
     prevLayoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
     prevLayoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
 
@@ -72,7 +74,6 @@ void ButtonLayoutScreen::shutdown() {
 
 int8_t ButtonLayoutScreen::update() {
     bool configMode = Storage::getInstance().GetConfigMode();
-    uint8_t profileNumber = getGamepad()->getOptions().profileNumber;
     
     // Check if we've updated button layouts while in config mode
     if (configMode) {
@@ -463,6 +464,11 @@ bool ButtonLayoutScreen::pressedDownRight()
 
 void ButtonLayoutScreen::handleTurboChange(GPEvent* e) {
     GPTurboChangeEvent* event = (GPTurboChangeEvent*)e;
+}
 
-    //printf("handleTurboChange: Prev: %d, Curr: %d\n", event->previousValue, event->currentValue);
+void ButtonLayoutScreen::handleProfileChange(GPEvent* e) {
+    GPProfileChangeEvent* event = (GPProfileChangeEvent*)e;
+
+    profileNumber = event->currentValue;
+    prevProfileNumber = event->previousValue;
 }

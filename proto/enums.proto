@@ -361,3 +361,15 @@ enum RotaryEncoderPinMode
     ENCODER_MODE_DPAD_X = 7;
     ENCODER_MODE_DPAD_Y = 8;
 };
+
+enum GPEventType
+{
+    option (nanopb_enumopt).long_names = false;
+
+    GP_EVENT_BASE = 0;
+    GP_EVENT_ENCODER_CHANGE = 1;
+    GP_EVENT_TURBO = 2;
+    GP_EVENT_TURBO_REINIT = 3;
+    GP_EVENT_TURBO_CHANGE = 4;
+    GP_EVENT_PROFILE_CHANGE = 5;
+};

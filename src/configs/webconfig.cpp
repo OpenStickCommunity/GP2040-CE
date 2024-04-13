@@ -4,6 +4,7 @@
 
 #include "storagemanager.h"
 #include "configmanager.h"
+#include "eventmanager.h"
 #include "layoutmanager.h"
 #include "AnimationStorage.hpp"
 #include "system.h"
@@ -604,6 +605,9 @@ std::string setGamepadOptions()
     DynamicJsonDocument doc = get_post_data();
 
     GamepadOptions& gamepadOptions = Storage::getInstance().getGamepadOptions();
+
+    uint8_t prevProfileNumber = gamepadOptions.profileNumber;
+
     readDoc(gamepadOptions.dpadMode, doc, "dpadMode");
     readDoc(gamepadOptions.inputMode, doc, "inputMode");
     readDoc(gamepadOptions.socdMode, doc, "socdMode");
@@ -641,6 +645,8 @@ std::string setGamepadOptions()
     save_hotkey(&hotkeyOptions.hotkey14, doc, "hotkey14");
     save_hotkey(&hotkeyOptions.hotkey15, doc, "hotkey15");
     save_hotkey(&hotkeyOptions.hotkey16, doc, "hotkey16");
+
+    EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(prevProfileNumber, gamepadOptions.profileNumber));
 
     ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
     readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");

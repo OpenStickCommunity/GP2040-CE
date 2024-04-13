@@ -15,6 +15,8 @@
 #include "CRC32.h"
 #include "types.h"
 
+#include "eventmanager.h"
+
 #include "config_utils.h"
 
 #include "bitmaps.h"
@@ -116,7 +118,11 @@ void Storage::ResetSettings()
 
 void Storage::setProfile(const uint32_t profileNum)
 {
+    uint32_t prevProfileNumber = this->config.gamepadOptions.profileNumber;
+
 	this->config.gamepadOptions.profileNumber = (profileNum < 1 || profileNum > 4) ? 1 : profileNum;
+
+    EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(prevProfileNumber, this->config.gamepadOptions.profileNumber));
 }
 
 void Storage::setFunctionalPinMappings()
@@ -248,3 +254,4 @@ void AnimationStorage::save()
 {
 	Storage::getInstance().enqueueAnimationOptionsSave(AnimationStation::options);
 }
+
