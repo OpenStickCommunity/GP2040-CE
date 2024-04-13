@@ -32,6 +32,12 @@
 #define GPIO_PIN_00 GpioAction::BUTTON_PRESS_A1     // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define GPIO_PIN_01 GpioAction::BUTTON_PRESS_A2     // A2     | ~      | Capture | ~        | 14     | ~      |
 
+// Setting GPIO pins to assigned by add-on
+//
+#define GPIO_PIN_06 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_07 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_17 GpioAction::ASSIGNED_TO_ADDON
+
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define KEY_DPAD_UP     HID_KEY_ARROW_UP      // UP     | UP     | UP      | UP       | UP     | UP     |
@@ -55,8 +61,8 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
 
 #define JSLIDER_ENABLED 1
-#define PIN_SLIDER_ONE  6
-#define PIN_SLIDER_TWO  7
+#define GPIO_PIN_06 GpioAction::SUSTAIN_DP_MODE_LS
+#define GPIO_PIN_07 GpioAction::SUSTAIN_DP_MODE_RS
 
 #define BOARD_LEDS_PIN 17
 

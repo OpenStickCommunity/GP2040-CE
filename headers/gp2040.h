@@ -17,8 +17,8 @@
 
 class GP2040 {
 public:
-	GP2040();
-    ~GP2040();
+	GP2040() {}
+    ~GP2040() {}
     void setup();           // setup core0
     void run();             // loop core0
 private:

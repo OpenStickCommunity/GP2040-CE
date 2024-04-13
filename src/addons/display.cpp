@@ -9,8 +9,7 @@
 #include "storagemanager.h"
 #include "pico/stdlib.h"
 #include "bitmaps.h"
-#include "drivers/ps4/PS4Driver.h"
-#include "drivers/xbone/XBOneDriver.h"
+
 #include "drivermanager.h"
 #include "usbdriver.h"
 #include "version.h"
@@ -23,18 +22,12 @@ bool DisplayAddon::available() {
 }
 
 void DisplayAddon::setup() {
+    //stdio_init_all();
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 
-    loadedScreens.insert({CONFIG_INSTRUCTION, {new ConfigScreen()}});
-    loadedScreens.insert({SPLASH, {new SplashScreen()}});
-    loadedScreens.insert({MAIN_MENU, {new MainMenuScreen()}});
-    loadedScreens.insert({BUTTONS, {new ButtonLayoutScreen()}});
-
-    gpDisplay = new GPGFX();
-
+    // Setup GPGFX Options
     GPGFX_DisplayTypeOptions gpOptions;
-
     if (PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock)) {
         gpOptions.displayType = GPGFX_DisplayType::TYPE_SSD1306;
         gpOptions.i2c = i2c;
@@ -45,17 +38,15 @@ void DisplayAddon::setup() {
         gpOptions.font.fontData = GP_Font_Standard;
         gpOptions.font.width = 6;
         gpOptions.font.height = 8;
+    } else {
+        return; // Do not run our display
     }
 
+    // Setup GPGFX
+    gpDisplay = new GPGFX();
     gpDisplay->init(gpOptions);
 
-    map<DisplayMode, GPScreen*>::iterator screenIterator;
-    for (screenIterator = loadedScreens.begin(); screenIterator != loadedScreens.end(); screenIterator++) {
-        screenIterator->second->setRenderer(gpDisplay);
-    }
-
     gamepad = Storage::getInstance().GetGamepad();
-    pGamepad = Storage::getInstance().GetProcessedGamepad();
 
     displaySaverTimer = options.displaySaverTimeout;
     displaySaverTimeout = displaySaverTimer;
@@ -72,6 +63,56 @@ void DisplayAddon::setup() {
     } else {
         currDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
     }
+    gpScreen = nullptr;
+    updateDisplayScreen();
+}
+
+bool DisplayAddon::updateDisplayScreen() {
+    if ( gpScreen != nullptr ) {
+        gpScreen->shutdown();
+        switch(prevDisplayMode) {
+            case CONFIG_INSTRUCTION:
+                delete (ConfigScreen*)gpScreen;
+                break;
+            case SPLASH:
+                delete (SplashScreen*)gpScreen;
+                break;
+            case MAIN_MENU:
+                delete (SplashScreen*)gpScreen;
+                break;
+            case BUTTONS:
+                delete (ButtonLayoutScreen*)gpScreen;
+                break;
+            default:
+                break;
+        }
+        gpScreen = nullptr;
+    }
+    switch(currDisplayMode) {
+        case CONFIG_INSTRUCTION:
+            gpScreen = new ConfigScreen(gpDisplay);
+            break;
+        case SPLASH:
+            gpScreen = new SplashScreen(gpDisplay);
+            break;
+        case MAIN_MENU:
+            gpScreen = new MainMenuScreen(gpDisplay);
+            break;
+        case BUTTONS:
+            gpScreen = new ButtonLayoutScreen(gpDisplay);
+            break;
+        default:
+            gpScreen = nullptr;
+            break;
+    };
+
+    if (gpScreen != nullptr) {
+        gpScreen->init();
+        prevDisplayMode = currDisplayMode;
+        return true;
+    }
+
+    return false;
 }
 
 bool DisplayAddon::isDisplayPowerOff()
@@ -108,29 +149,21 @@ void DisplayAddon::setDisplayPower(uint8_t status)
 }
 
 void DisplayAddon::process() {
-    if (!configMode && isDisplayPowerOff()) return;
-
-    gpScreen = loadedScreens.find(currDisplayMode)->second;
-
-    drawStatusBar(gamepad);
+    // If GPDisplay is not loaded or we're in standard mode with display power off enabled
+    if (gpDisplay->getDriver() == nullptr ||
+        (!configMode && isDisplayPowerOff())) {
+        return;
+    }
 
     int8_t screenReturn = gpScreen->update();
-
     gpScreen->draw();
 
+    // -1 = we do not change state
     if (screenReturn >= 0) {
+        // Screen wants to change to something else
         if (screenReturn != currDisplayMode) {
-            // screen changes
             currDisplayMode = (DisplayMode)screenReturn;
-        } else {
-            // no change
-        }
-    } else {
-        // screen exited
-        if (!configMode) {
-            currDisplayMode = DisplayMode::BUTTONS;
-        } else {
-            currDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
+            updateDisplayScreen();
         }
     }
 }
@@ -140,75 +173,3 @@ const DisplayOptions& DisplayAddon::getDisplayOptions() {
     return configMode ? Storage::getInstance().getPreviewDisplayOptions() : Storage::getInstance().getDisplayOptions();
 }
 
-void DisplayAddon::drawStatusBar(Gamepad * gamepad)
-{
-    const TurboOptions& turboOptions = Storage::getInstance().getAddonOptions().turboOptions;
-
-    // Limit to 21 chars with 6x8 font for now
-    statusBar.clear();
-
-    switch (gamepad->getOptions().inputMode)
-    {
-        case INPUT_MODE_HID:    statusBar += "DINPUT"; break;
-        case INPUT_MODE_SWITCH: statusBar += "SWITCH"; break;
-        case INPUT_MODE_XINPUT: statusBar += "XINPUT"; break;
-        case INPUT_MODE_MDMINI: statusBar += "GEN/MD"; break;
-        case INPUT_MODE_NEOGEO: statusBar += "NGMINI"; break;
-        case INPUT_MODE_PCEMINI: statusBar += "PCE/TG"; break;
-        case INPUT_MODE_EGRET: statusBar += "EGRET"; break;
-        case INPUT_MODE_ASTRO: statusBar += "ASTRO"; break;
-        case INPUT_MODE_PSCLASSIC: statusBar += "PSC"; break;
-        case INPUT_MODE_XBOXORIGINAL: statusBar += "OGXBOX"; break;
-        case INPUT_MODE_PS4:
-            statusBar += "PS4";
-            if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                statusBar += ":AS";
-            else
-                statusBar += "   ";
-            break;
-        case INPUT_MODE_PS5:
-            statusBar += "PS5";
-            if(((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                statusBar += ":AS";
-            else
-                statusBar += "   ";
-            break;
-        case INPUT_MODE_XBONE:
-            statusBar += "XBON";
-            if(((XBOneDriver*)DriverManager::getInstance().getDriver())->getAuthSent() == true )
-                statusBar += "E";
-            else
-                statusBar += "*";
-            break;
-        case INPUT_MODE_KEYBOARD: statusBar += "HID-KB"; break;
-        case INPUT_MODE_CONFIG: statusBar += "CONFIG"; break;
-    }
-
-    if ( turboOptions.enabled ) {
-        statusBar += " T";
-        if ( turboOptions.shotCount < 10 ) // padding
-            statusBar += "0";
-        statusBar += std::to_string(turboOptions.shotCount);
-    } else {
-        statusBar += "    "; // no turbo, don't show Txx setting
-    }
-    switch (gamepad->getOptions().dpadMode)
-    {
-        case DPAD_MODE_DIGITAL:      statusBar += " D"; break;
-        case DPAD_MODE_LEFT_ANALOG:  statusBar += " L"; break;
-        case DPAD_MODE_RIGHT_ANALOG: statusBar += " R"; break;
-    }
-
-    switch (Gamepad::resolveSOCDMode(gamepad->getOptions()))
-    {
-        case SOCD_MODE_NEUTRAL:               statusBar += " SOCD-N"; break;
-        case SOCD_MODE_UP_PRIORITY:           statusBar += " SOCD-U"; break;
-        case SOCD_MODE_SECOND_INPUT_PRIORITY: statusBar += " SOCD-L"; break;
-        case SOCD_MODE_FIRST_INPUT_PRIORITY:  statusBar += " SOCD-F"; break;
-        case SOCD_MODE_BYPASS:                statusBar += " SOCD-X"; break;
-    }
-    if (Storage::getInstance().getAddonOptions().macroOptions.enabled)
-        statusBar += " M";
-
-    gpScreen->header = statusBar;
-}

@@ -2,6 +2,14 @@
 
 extern uint32_t getMillis();
 
+void MainMenuScreen::init() {
+    getRenderer()->clearScreen();
+}
+
+void MainMenuScreen::shutdown() {
+    clearElements();
+}
+
 void MainMenuScreen::drawScreen() {
     getRenderer()->drawText(1, 1, "GPGFX_UI Test Menu");
 
@@ -78,7 +86,7 @@ int8_t MainMenuScreen::update() {
 
     prevButtonState = buttonState;
 
-    return DisplayMode::MAIN_MENU;
+    return -1;
 }
 
 /*

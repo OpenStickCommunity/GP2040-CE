@@ -5,12 +5,12 @@
 
 LayoutManager::LayoutList LayoutManager::getLayoutA() {
     uint16_t layoutLeft = Storage::getInstance().getDisplayOptions().buttonLayout;
-    return GPButtonLayouts_LeftLayouts.at(layoutLeft)();
+    return getLeftLayout(layoutLeft);
 }
 
 LayoutManager::LayoutList LayoutManager::getLayoutB() {
     uint16_t layoutRight = Storage::getInstance().getDisplayOptions().buttonLayoutRight;
-    return GPButtonLayouts_RightLayouts.at(layoutRight)();
+    return getRightLayout(layoutRight);
 }
 
 std::string LayoutManager::getLayoutAName() {
@@ -41,12 +41,159 @@ std::string LayoutManager::getButtonLayoutRightName(ButtonLayoutRight layout) {
     #undef ENUM_CASE
 }
 
+LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
+    // buttons
+    // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, Gamepad button mask, shape
+    switch(index) {
+         // levers
+        // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, DpadMode
+        case BUTTON_LAYOUT_STICK:
+            return drawArcadeStick();
+        case BUTTON_LAYOUT_TWINSTICKA:
+            return drawTwinStickA();
+        case BUTTON_LAYOUT_VLXA:
+            return drawVLXA();
+        case BUTTON_LAYOUT_FIGHTBOARD_STICK:
+            return drawFightboardStick();
+        // buttons
+        // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, Gamepad button mask, shape
+        case BUTTON_LAYOUT_STICKLESS:
+            return drawStickless();
+        case BUTTON_LAYOUT_BUTTONS_ANGLED:
+            return drawUDLR();
+        case BUTTON_LAYOUT_BUTTONS_BASIC:
+            return drawMAMEA();
+        case BUTTON_LAYOUT_KEYBOARD_ANGLED:
+            return drawKeyboardAngled();
+        case BUTTON_LAYOUT_KEYBOARDA:
+            return drawWasdBox();
+        case BUTTON_LAYOUT_DANCEPADA:
+            return drawDancepadA();
+        case BUTTON_LAYOUT_BLANKA:
+            return drawBlankA();
+        case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
+            return drawFightboardMirrored();
+        case BUTTON_LAYOUT_CUSTOMA:
+            return drawButtonLayoutLeft();
+        case BUTTON_LAYOUT_OPENCORE0WASDA:
+            return drawOpenCore0WASDA();
+        case BUTTON_LAYOUT_STICKLESS_13:
+            return drawStickless13A();
+        case BUTTON_LAYOUT_STICKLESS_16:
+            return drawStickless16A();
+        case BUTTON_LAYOUT_STICKLESS_14:
+            return drawStickless14A();
+        case BUTTON_LAYOUT_DANCEPAD_DDR_LEFT:
+            return drawDancepadDDRLeft();
+        case BUTTON_LAYOUT_DANCEPAD_DDR_SOLO:
+            return drawDancepadDDRSolo();
+        case BUTTON_LAYOUT_DANCEPAD_PIU_LEFT:
+            return drawDancepadPIULeft();
+        case BUTTON_LAYOUT_POPN_A:
+            return drawPopnA();
+        case BUTTON_LAYOUT_TAIKO_A:
+            return drawTaikoA();
+        case BUTTON_LAYOUT_BM_TURNTABLE_A:
+            return drawBMTurntableA();
+        case BUTTON_LAYOUT_BM_5KEY_A:
+            return drawBM5KeyA();
+        case BUTTON_LAYOUT_BM_7KEY_A:
+            return drawBM7KeyA();
+        case BUTTON_LAYOUT_GITADORA_FRET_A:
+            return drawGitadoraFretA();
+        case BUTTON_LAYOUT_GITADORA_STRUM_A:
+            return drawGitadoraStrumA();
+        case BUTTON_LAYOUT_BOARD_DEFINED_A:
+            return drawBoardDefinedA();
+        default:
+            break;
+    }
+
+    return {};
+}
+
+
+LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
+    // buttons
+    // parameters: x, y, radiusX/width, radiusY/height, stroke, fill, Gamepad button mask, shape
+    switch(index) {
+         case BUTTON_LAYOUT_ARCADE:
+            return this->drawArcadeButtons();
+        case BUTTON_LAYOUT_STICKLESSB:
+            return this->drawSticklessButtons();
+        case BUTTON_LAYOUT_BUTTONS_ANGLEDB:
+            return this->drawWasdButtons();
+        case BUTTON_LAYOUT_VEWLIX:
+            return this->drawVewlix();
+        case BUTTON_LAYOUT_VEWLIX7:
+            return this->drawVewlix7();
+        case BUTTON_LAYOUT_CAPCOM:
+            return this->drawCapcom();
+        case BUTTON_LAYOUT_CAPCOM6:
+            return this->drawCapcom6();
+        case BUTTON_LAYOUT_SEGA2P:
+            return this->drawSega2p();
+        case BUTTON_LAYOUT_NOIR8:
+            return this->drawNoir8();
+        case BUTTON_LAYOUT_KEYBOARDB:
+            return this->drawMAMEB();
+        case BUTTON_LAYOUT_TWINSTICKB:
+            return this->drawTwinStickB();
+        case BUTTON_LAYOUT_BLANKB:
+            return this->drawBlankB();
+        case BUTTON_LAYOUT_VLXB:
+            return this->drawVLXB();
+        case BUTTON_LAYOUT_FIGHTBOARD:
+            return this->drawFightboard();
+        case BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED:
+            return this->drawFightboardStickMirrored();
+        case BUTTON_LAYOUT_CUSTOMB:
+            return this->drawButtonLayoutRight();
+        case BUTTON_LAYOUT_KEYBOARD8B:
+            return this->drawMAME8B();
+        case BUTTON_LAYOUT_OPENCORE0WASDB:
+            return this->drawOpenCore0WASDB();
+        case BUTTON_LAYOUT_STICKLESS_13B:
+            return this->drawSticklessButtons13B();
+        case BUTTON_LAYOUT_STICKLESS_16B:
+            return this->drawSticklessButtons16B();
+        case BUTTON_LAYOUT_STICKLESS_14B:
+            return this->drawSticklessButtons14B();
+        case BUTTON_LAYOUT_DANCEPADB:
+            return this->drawDancepadB();
+        case BUTTON_LAYOUT_DANCEPAD_DDR_RIGHT:
+            return this->drawDancepadDDRRight();
+        case BUTTON_LAYOUT_DANCEPAD_PIU_RIGHT:
+            return this->drawDancepadPIURight();
+        case BUTTON_LAYOUT_POPN_B:
+            return this->drawPopnB();
+        case BUTTON_LAYOUT_TAIKO_B:
+            return this->drawTaikoB();
+        case BUTTON_LAYOUT_BM_TURNTABLE_B:
+            return this->drawBMTurntableB();
+        case BUTTON_LAYOUT_BM_5KEY_B:
+            return this->drawBM5KeyB();
+        case BUTTON_LAYOUT_BM_7KEY_B:
+            return this->drawBM7KeyB();
+        case BUTTON_LAYOUT_GITADORA_FRET_B:
+            return this->drawGitadoraFretB();
+        case BUTTON_LAYOUT_GITADORA_STRUM_B:
+            return this->drawGitadoraStrumB();
+        case BUTTON_LAYOUT_BOARD_DEFINED_B:
+            return this->drawBoardDefinedB();
+        default:
+            break;
+    }
+
+    return {};
+}
+
 LayoutManager::LayoutList LayoutManager::drawButtonLayoutLeft()
 {
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
     ButtonLayoutParamsLeft leftOptions = buttonLayoutCustomOptions.paramsLeft;
-    return adjustByCustomSettings(GPButtonLayouts_LeftLayouts.at(leftOptions.layout)(), leftOptions.common);
+    return adjustByCustomSettings(getLeftLayout(leftOptions.layout), leftOptions.common);
 }
 
 LayoutManager::LayoutList LayoutManager::drawButtonLayoutRight()
@@ -54,7 +201,7 @@ LayoutManager::LayoutList LayoutManager::drawButtonLayoutRight()
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     ButtonLayoutCustomOptions buttonLayoutCustomOptions = options.buttonLayoutCustomOptions;
     ButtonLayoutParamsRight rightOptions = buttonLayoutCustomOptions.paramsRight;
-    return adjustByCustomSettings(GPButtonLayouts_RightLayouts.at(rightOptions.layout)(), rightOptions.common, 64);
+    return adjustByCustomSettings(getRightLayout(rightOptions.layout), rightOptions.common, 64);
 }
 
 LayoutManager::LayoutList LayoutManager::adjustByCustomSettings(LayoutManager::LayoutList layout, ButtonLayoutParamsCommon common, uint16_t originX, uint16_t originY) {

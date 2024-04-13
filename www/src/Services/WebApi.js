@@ -438,11 +438,13 @@ async function getAddonsOptions(setLoading) {
 		const data = response.data;
 		setLoading(false);
 
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(data.keyboardHostMap))
-			mappings[prop].key = parseInt(data.keyboardHostMap[prop]);
-		data.keyboardHostMap = mappings;
-		return data;
+		// Merge saved keyMappings with defaults
+		const keyboardHostMap = Object.entries(data.keyboardHostMap).reduce(
+			(acc, [key, value]) => ({ ...acc, [key]: { ...acc[key], key: value } }),
+			baseButtonMappings,
+		);
+
+		return { ...data, keyboardHostMap };
 	} catch (error) {
 		setLoading(false);
 		console.error(error);

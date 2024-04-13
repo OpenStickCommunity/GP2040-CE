@@ -5,179 +5,193 @@
 #include "hardware/gpio.h"
 
 bool InputMacro::available() {
-    return Storage::getInstance().getAddonOptions().macroOptions.enabled;
+    // Macro Button initialized by void Gamepad::setup()
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        switch( pinMappings[pin] ) {
+            case GpioAction::BUTTON_PRESS_MACRO:
+            case GpioAction::BUTTON_PRESS_MACRO_1:
+            case GpioAction::BUTTON_PRESS_MACRO_2:
+            case GpioAction::BUTTON_PRESS_MACRO_3:
+            case GpioAction::BUTTON_PRESS_MACRO_4:
+            case GpioAction::BUTTON_PRESS_MACRO_5:
+            case GpioAction::BUTTON_PRESS_MACRO_6:
+                return true;
+            default:
+                break;
+        }
+    }
+    return false;
 }
 
 void InputMacro::setup() {
-    inputMacroOptions = Storage::getInstance().getAddonOptions().macroOptions;
-
-	gpio_init(inputMacroOptions.pin);             // Initialize pin
-	gpio_set_dir(inputMacroOptions.pin, GPIO_IN); // Set as INPUT
-	gpio_pull_up(inputMacroOptions.pin);          // Set as PULLUP
-
-    if (inputMacroOptions.macroBoardLedEnabled && isValidPin(BOARD_LED_PIN)) {
-        gpio_init(BOARD_LED_PIN);
-        gpio_set_dir(BOARD_LED_PIN, GPIO_OUT);
-        boardLedEnabled = true;
-    }
-
-    for (int i = 0; i < inputMacroOptions.macroList_count; i++) {
-        Macro& macro = inputMacroOptions.macroList[i];
-        if (!macro.enabled) continue;
-        if (!macro.useMacroTriggerButton && !isValidPin(macro.macroTriggerPin)) continue;
-
-        gpio_init(macro.macroTriggerPin);             // Initialize pin
-        gpio_set_dir(macro.macroTriggerPin, GPIO_IN); // Set as INPUT
-        gpio_pull_up(macro.macroTriggerPin);          // Set as PULLUP
-    }
-}
-
-void InputMacro::preprocess()
-{
-    FocusModeOptions& focusModeOptions = Storage::getInstance().getAddonOptions().focusModeOptions;
-    if (focusModeOptions.enabled && focusModeOptions.macroLockEnabled) return;
-    Gamepad * gamepad = Storage::getInstance().GetGamepad();
-    Mask_t allPins = gamepad->debouncedGpio;
-    macroInputPressed = false;
-    uint64_t currentMicros = getMicro();
-
-    if (macroPosition == -1 || inputMacroOptions.macroList[macroPosition].interruptible) {
-        int newMacroPosition = -1;
-        for (int i = 0; i < inputMacroOptions.macroList_count; i++) {
-            Macro& macro = inputMacroOptions.macroList[i];
-            if (!macro.enabled) continue;
-
-            if (macro.useMacroTriggerButton) {
-                if (macro.macroTriggerButton == 0) continue;
-                if ((allPins & 1 << inputMacroOptions.pin) &&
-                    ((gamepad->state.buttons & macro.macroTriggerButton) ||
-                    (gamepad->state.dpad & (macro.macroTriggerButton >> 16)))) {
-                    macroInputPressed = true;
-                    newMacroPosition = i; break;
-                }
-            } else {
-                if (!isValidPin(macro.macroTriggerPin)) continue;
-                if ((allPins & 1 << macro.macroTriggerPin)) {
-                    macroInputPressed = true;
-                    newMacroPosition = i; break;
-                }
-            }
-        } 
-
-        if (macroPosition == -1 && newMacroPosition == -1)
-            return;
-
-        if (macroPosition != -1 && newMacroPosition != -1) {
-            if (newMacroPosition != macroPosition ||
-                (newMacroPosition == macroPosition &&
-                 inputMacroOptions.macroList[newMacroPosition].macroType == ON_PRESS &&
-                 isMacroRunning && (macroTriggerDebounceStartTime != 0 || (!prevMacroInputPressed && macroInputPressed)))) {
-                    if (macroTriggerDebounceStartTime == 0) {
-                        macroTriggerDebounceStartTime = currentMicros;
-                    }
-
-                    if (macroTriggerDebounceStartTime != 0) {
-                        if (((currentMicros - macroTriggerDebounceStartTime) > 500)) {
-                            macroTriggerDebounceStartTime = 0;
-                            if (macroInputPressed) {
-                                reset();
-                                return;
-                            }
-                        }
-                    }
-            }
-        }
-
-        if (newMacroPosition != -1 && !isMacroRunning) {
-            macroPosition = newMacroPosition;
-            macroStartTime = 0;
-        }
-    }
-
-    Macro& macro = inputMacroOptions.macroList[macroPosition];
-
-    if (macro.useMacroTriggerButton) {
-        macroInputPressed = (allPins & 1 << inputMacroOptions.pin) &&
-                            ((gamepad->state.buttons & macro.macroTriggerButton) ||
-                             (gamepad->state.dpad & (macro.macroTriggerButton >> 16)));
-    } else {
-        macroInputPressed = (allPins & 1 << macro.macroTriggerPin);
-    }
-
-    if (!isMacroRunning && macroInputPressed && macroTriggerDebounceStartTime == 0) {
-        macroTriggerDebounceStartTime = currentMicros;
-        return;
-    }
-
-    if (macroTriggerDebounceStartTime != 0) {
-        if (((currentMicros - macroTriggerDebounceStartTime) > 500)) {
-            macroTriggerDebounceStartTime = 0;
-        } else {
-            return;
-        }
-    }
-
-    if (!isMacroRunning) {
-        switch (macro.macroType) {
-            case ON_TOGGLE:
-                isMacroTriggerHeld = prevMacroInputPressed && !macroInputPressed;
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    macroButtonMask = 0;
+    memset(macroPinMasks, 0, sizeof(macroPinMasks));
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        switch( pinMappings[pin] ) {
+            case GpioAction::BUTTON_PRESS_MACRO:
+                macroButtonMask = 1 << pin;
                 break;
-            case ON_PRESS:
-                isMacroTriggerHeld = !prevMacroInputPressed && macroInputPressed;
+            case GpioAction::BUTTON_PRESS_MACRO_1:
+                macroPinMasks[0] = 1 << pin;
                 break;
-            case ON_HOLD_REPEAT:
-                isMacroTriggerHeld = macroInputPressed;
+            case GpioAction::BUTTON_PRESS_MACRO_2:
+                macroPinMasks[1] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_3:
+                macroPinMasks[2] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_4:
+                macroPinMasks[3] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_5:
+                macroPinMasks[4] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_6:
+                macroPinMasks[5] = 1 << pin;
                 break;
             default:
                 break;
         }
+    }
+
+    inputMacroOptions = &Storage::getInstance().getAddonOptions().macroOptions;
+    if (inputMacroOptions->macroBoardLedEnabled && isValidPin(BOARD_LED_PIN)) {
+        gpio_init(BOARD_LED_PIN);
+        gpio_set_dir(BOARD_LED_PIN, GPIO_OUT);
+        boardLedEnabled = true;
     } else {
-        switch (macro.macroType) {
-            case ON_PRESS:
-                break; // no-op
-            case ON_TOGGLE:
-                if (prevMacroInputPressed && !macroInputPressed)
-                    isMacroTriggerHeld = false;
+        boardLedEnabled = false;
+    }
+    boardLedEnabled = false;
+    prevMacroInputPressed = false;
+    reset();
+}
+
+
+void InputMacro::reset() {
+    macroPosition = -1;
+    pressedMacro = -1;
+    isMacroRunning = false;
+    macroStartTime = 0;
+    macroInputPosition = 0;
+    isMacroTriggerHeld = false;
+    macroInputHoldTime = INPUT_HOLD_US;
+    if (boardLedEnabled) {
+        gpio_put(BOARD_LED_PIN, 0);
+    }
+}
+
+void InputMacro::checkMacroPress() {
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    Mask_t allPins = gamepad->debouncedGpio;
+
+    // Go through our macro list
+    pressedMacro = -1;
+    for(int i = 0; i < MAX_MACRO_LIMIT; i++) {
+        if ( inputMacroOptions->macroList[i].enabled == false ) // Skip disabled macros
+            continue;
+        Macro * macro = &inputMacroOptions->macroList[i];
+        if ( macro->useMacroTriggerButton ) {
+            // Use Gamepad Button for Macro Trigger
+            if ((allPins & macroButtonMask) &&
+                ((gamepad->state.buttons & macro->macroTriggerButton) ||
+                    (gamepad->state.dpad & (macro->macroTriggerButton >> 16))) ) {
+                pressedMacro = i;
                 break;
-            case ON_HOLD_REPEAT:
-                isMacroTriggerHeld = macroInputPressed;
-                break;
+            }
+        } else if ( allPins & macroPinMasks[i] ) {
+            // Use Pin Manager for Macro Trigger
+            pressedMacro = i;
+            break;
+        }
+    }
+}
+
+void InputMacro::checkMacroAction() {
+    bool macroInputPressed = (pressedMacro != -1); // Was any macro input pressed?
+
+    // Is our pressed macro button different from our current macro AND no macro is running?
+    if ( pressedMacro != macroPosition && !isMacroRunning ) {
+        macroPosition = pressedMacro; // move our position to that macro
+    }
+
+    bool newPress = macroInputPressed && (prevMacroInputPressed ^ macroInputPressed);
+
+    // Check to see if we should change the current macro (or turn off based on input)
+    if ( inputMacroOptions->macroList[macroPosition].macroType == ON_PRESS ) {
+        // START Macro: On Press or On Hold Repeat
+        if (!isMacroRunning ) {
+            isMacroTriggerHeld = newPress;
+        }
+    } else if ( inputMacroOptions->macroList[macroPosition].macroType == ON_HOLD_REPEAT ) {
+        isMacroTriggerHeld = macroInputPressed;
+    } else if ( inputMacroOptions->macroList[macroPosition].macroType == ON_TOGGLE ) {
+        //isMacroTriggerHeld = macroInputPressed;
+        if (!isMacroRunning ) {
+            isMacroTriggerHeld = newPress;
+        } else if (isMacroRunning && newPress) {
+            // STOP Macro: Toggle on new press
+            reset(); // Stop Macro: Toggle
+            prevMacroInputPressed = macroInputPressed;
+            return;
         }
     }
 
     prevMacroInputPressed = macroInputPressed;
-
-    MacroInput& macroInput = macro.macroInputs[macroInputPosition];
-    uint32_t macroInputDuration = macroInput.duration + macroInput.waitDuration;
-    macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
-
     if (!isMacroRunning && isMacroTriggerHeld) {
+        // New Macro to run
+        macroPosition = pressedMacro; // Set current macro
+        Macro& macro = inputMacroOptions->macroList[macroPosition];
+        MacroInput& macroInput = macro.macroInputs[macroInputPosition];
+        uint32_t macroInputDuration = macroInput.duration + macroInput.waitDuration;
+        macroInputHoldTime = macroInputDuration <= 0 ? INPUT_HOLD_US : macroInputDuration;
         isMacroRunning = true;
-        macroStartTime = currentMicros;
+        macroStartTime = getMicro(); // current time
     }
-    
-    if (!isMacroRunning)
+}
+
+void InputMacro::runCurrentMacro() {
+    // Do nothing if macro is not currently running
+    if (!isMacroRunning ||
+            macroPosition == -1)
         return;
-    
-    if ((!isMacroTriggerHeld && macro.interruptible)) {
+
+    Macro& macro = inputMacroOptions->macroList[macroPosition];
+
+    // Stop Macro if released (ON PRESS & ON HOLD REPEAT)
+    if (inputMacroOptions->macroList[macroPosition].macroType == ON_HOLD_REPEAT &&
+            !isMacroTriggerHeld && macro.interruptible) {
         reset();
         return;
     }
 
+    MacroInput& macroInput = macro.macroInputs[macroInputPosition];
+    Gamepad * gamepad = Storage::getInstance().GetGamepad();
+    uint64_t currentMicros = getMicro();
+
     if (!macro.interruptible && macro.exclusive) {
+        // Prevent any other inputs from modifying our input (Exclusive)
         gamepad->state.dpad = 0;
         gamepad->state.buttons = 0;
     } else {
         if (macro.useMacroTriggerButton) {
+            // Remove the trigger button from the input state
             gamepad->state.dpad &= ~(macro.macroTriggerButton >> 16);
             gamepad->state.buttons &= ~macro.macroTriggerButton;
         }
-        if (macro.interruptible && (gamepad->state.buttons != 0 || gamepad->state.dpad != 0)) {
+        if (macro.interruptible &&
+            (gamepad->state.buttons != 0 || gamepad->state.dpad != 0)) {
+            // Macro is interruptible and a user pressed something
             reset();
             return;
         }
     }
 
+    // Check if we should still hold this macro input based on duration
     if ((currentMicros - macroStartTime) <= macroInput.duration) {
         uint32_t buttonMask = macroInput.buttonMask;
         if (buttonMask & GAMEPAD_MASK_DU) {
@@ -194,36 +208,78 @@ void InputMacro::preprocess()
         }
         gamepad->state.buttons |= buttonMask;
 
+        // Macro LED is on if we're currently running and inputs are doing something (wait-timers turn it off)
         if (boardLedEnabled) {
             gpio_put(BOARD_LED_PIN, (gamepad->state.dpad || gamepad->state.buttons) ? 1 : 0);
         }
-    } else {
-        if (boardLedEnabled) {
-            gpio_put(BOARD_LED_PIN, 0);
-        }
     }
 
+    // Have we elapsed the input hold time?
     if ((currentMicros - macroStartTime) >= macroInputHoldTime) {
-        macroStartTime = currentMicros; macroInputPosition++;
-        MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
-        uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
-        macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
-    }
-    
-    if (isMacroRunning && macroInputPosition >= (macro.macroInputs_count)) {
-        macroInputPosition = 0;
-        bool isMacroTypeLoopable = macro.macroType == ON_TOGGLE || macro.macroType == ON_HOLD_REPEAT;
-        isMacroTriggerHeld = isMacroTriggerHeld && isMacroTypeLoopable;
-        isMacroRunning = isMacroTriggerHeld;
-        macroPosition = (isMacroTypeLoopable && isMacroTriggerHeld) ? macroPosition : -1;
         macroStartTime = currentMicros;
+        macroInputPosition++;
+        if (macroInputPosition >= (macro.macroInputs_count)) {
+            if ( macro.macroType == ON_PRESS ) {
+                reset(); // On press = no more macro
+            } else {
+                if ( macro.macroType == ON_HOLD_REPEAT) {
+                    reset(); // On repeat, reset but keep the button held
+                } else {
+                    macroInputPosition = 0; // On Hold-Repeat or On Toggle = start macro again
+                    MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
+                    uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
+                    macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
+                }
+            }
+        } else {
+            MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
+            uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
+            macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
+        }
     }
 }
 
-void InputMacro::reset() {
-    macroPosition = -1;
-    isMacroRunning = false;
-    macroStartTime = 0;
-    prevMacroInputPressed = false;
-    macroInputPosition = 0;
+void InputMacro::preprocess()
+{
+    FocusModeOptions * focusModeOptions = &Storage::getInstance().getAddonOptions().focusModeOptions;
+    if (focusModeOptions->enabled && focusModeOptions->macroLockEnabled)
+        return;
+
+    checkMacroPress();
+    checkMacroAction();
+    runCurrentMacro();
+}
+
+void InputMacro::reinit() {
+    GpioAction* pinMappings = Storage::getInstance().getProfilePinMappings();
+    macroButtonMask = 0;
+    memset(macroPinMasks, 0, sizeof(macroPinMasks));
+    for (Pin_t pin = 0; pin < (Pin_t)NUM_BANK0_GPIOS; pin++)
+    {
+        switch( pinMappings[pin] ) {
+            case GpioAction::BUTTON_PRESS_MACRO:
+                macroButtonMask = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_1:
+                macroPinMasks[0] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_2:
+                macroPinMasks[1] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_3:
+                macroPinMasks[2] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_4:
+                macroPinMasks[3] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_5:
+                macroPinMasks[4] = 1 << pin;
+                break;
+            case GpioAction::BUTTON_PRESS_MACRO_6:
+                macroPinMasks[5] = 1 << pin;
+                break;
+            default:
+                break;
+        }
+    }
 }

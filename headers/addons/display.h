@@ -187,6 +187,7 @@ public:
 	virtual void process();
 	virtual std::string name() { return DisplayName; }
 private:
+    bool updateDisplayScreen();
 	void drawStatusBar(Gamepad*);
 	void initMenu(char**);
 	bool pressedUp();
@@ -202,15 +203,11 @@ private:
 	uint32_t prevMillis;
 	std::string statusBar;
 	Gamepad* gamepad;
-	Gamepad* pGamepad;
 	bool configMode;
-
 	GPGFX* gpDisplay;
 	GPScreen* gpScreen;
-
-	std::map<DisplayMode, GPScreen*> loadedScreens;
-
 	DisplayMode currDisplayMode;
+    DisplayMode prevDisplayMode;
 	bool turnOffWhenSuspended;
 };
 

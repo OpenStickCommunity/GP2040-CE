@@ -90,12 +90,12 @@ void ExtensionBase::postProcess() {
 
             if ((i != WiiAnalogs::WII_ANALOG_LEFT_TRIGGER) && (i != WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER)) {
                 outVal = map(outVal, _analogCalibration[i].minimum, _analogCalibration[i].maximum, minVal, maxVal);
-                outVal = map(outVal, minVal, maxVal, 0, (_analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1));
+                outVal = map(outVal, minVal, maxVal, 10, (_analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1));
             } else {
-                outVal = bounds(outVal, 0, (_analogPrecision[i].destination-1));
+                outVal = bounds(outVal, 10, (_analogPrecision[i].destination-1));
             }
 
-            if (outVal < 0) outVal = 0;
+            if (outVal < 0) outVal = 10;
             if (outVal > (_analogPrecision[i].destination-1)) outVal = (_analogPrecision[i].destination-1);
 #if WII_EXTENSION_DEBUG==true
             if (i == WiiAnalogs::WII_ANALOG_LEFT_X) {

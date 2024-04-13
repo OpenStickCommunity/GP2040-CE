@@ -1,4 +1,5 @@
 export default {
+	'auth-settings-label': 'Authentication Settings',
 	'settings-header-text': 'Input Mode Settings',
 	'gamepad-settings-header-text': 'Gamepad Settings',
 	'input-mode-label': 'Input Mode',
@@ -6,7 +7,7 @@ export default {
 	'input-mode-extra-label': 'Switch Touchpad and Share',
 	'ps4-report-hack': 'PS4 Report Speed Hack',
 	'input-mode-options': {
-        none: 'No Mode Selected',
+		none: 'No Mode Selected',
 		xinput: 'XInput',
 		'nintendo-switch': 'Nintendo Switch',
 		ps3: 'PS3/DirectInput',
@@ -20,13 +21,13 @@ export default {
 		astro: 'ASTROCITY Mini',
 		psclassic: 'Playstation Classic',
 		xboxoriginal: 'Original Xbox',
-    xbone: 'Xbox One'
+		xbone: 'Xbox One',
 	},
-    'input-mode-group': {
-        primary: 'Primary Input Modes',
-        mini: 'Mini/Classic Console Modes'
-    },
-    'boot-input-mode-label': 'Boot Input Modes',
+	'input-mode-group': {
+		primary: 'Primary Input Modes',
+		mini: 'Mini/Classic Console Modes',
+	},
+	'boot-input-mode-label': 'Boot Input Modes',
 	'ps4-mode-options': {
 		controller: 'Controller',
 		arcadestick: 'Arcade Stick',

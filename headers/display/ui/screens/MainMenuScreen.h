@@ -9,14 +9,15 @@ class MainMenuScreen : public GPScreen {
         MainMenuScreen() {}
         MainMenuScreen(GPGFX* renderer) { setRenderer(renderer); }
         void setMenu(std::vector<MenuEntry>* menu);
-        int8_t update();
+        virtual int8_t update();
+        virtual void init();
+        virtual void shutdown();
     protected:
-        void drawScreen();
+        virtual void drawScreen();
     private:
         uint8_t menuIndex = 0;
         bool isPressed = false;
         uint32_t checkDebounce;
-
         std::vector<MenuEntry>* currentMenu;
         uint16_t prevButtonState = 0;
 };

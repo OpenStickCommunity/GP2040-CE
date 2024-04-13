@@ -163,7 +163,7 @@ void WiiExtensionInput::update() {
             buttonA = wii->getController()->buttons[GuitarButtons::GUITAR_RED];
             buttonX = wii->getController()->buttons[GuitarButtons::GUITAR_YELLOW];
             buttonY = wii->getController()->buttons[GuitarButtons::GUITAR_BLUE];
-            buttonL = wii->getController()->buttons[GuitarButtons::GUITAR_ORANGE];
+            buttonZL = wii->getController()->buttons[GuitarButtons::GUITAR_ORANGE];
 
             // whammy currently maps to Joy2X in addition to the raw whammy value
             whammyBar = wii->getController()->analogState[WiiAnalogs::WII_ANALOG_RIGHT_X];
@@ -176,6 +176,8 @@ void WiiExtensionInput::update() {
 
             triggerLeft = 0;
             triggerRight = 0;
+
+            isAnalogTriggers = true;
         } else if (wii->extensionType == WII_EXTENSION_TAIKO) {
             buttonL = wii->getController()->buttons[TaikoButtons::TATA_KAT_LEFT];
             buttonR = wii->getController()->buttons[TaikoButtons::TATA_KAT_RIGHT];
@@ -200,6 +202,8 @@ void WiiExtensionInput::update() {
 
             triggerLeft = 0;
             triggerRight = 0;
+
+            isAnalogTriggers = true;
         } else if (wii->extensionType == WII_EXTENSION_TURNTABLE) {
             buttonSelect = wii->getController()->buttons[WiiButtons::WII_BUTTON_MINUS];
             buttonStart = wii->getController()->buttons[WiiButtons::WII_BUTTON_PLUS];
@@ -427,11 +431,11 @@ void WiiExtensionInput::updateAnalogState() {
                     break;
                 case WII_ANALOG_TYPE_LEFT_TRIGGER:
                     axisToChange = WII_ANALOG_TYPE_LEFT_TRIGGER;
-                    adjustedValue = bounds(analogValue,minValue,maxValue);
+                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_TRIGGER_MIN,GAMEPAD_TRIGGER_MAX);
                     break;
                 case WII_ANALOG_TYPE_RIGHT_TRIGGER:
                     axisToChange = WII_ANALOG_TYPE_RIGHT_TRIGGER;
-                    adjustedValue = bounds(analogValue,minValue,maxValue);
+                    adjustedValue = map(analogValue,minValue,maxValue,GAMEPAD_TRIGGER_MIN,GAMEPAD_TRIGGER_MAX);
                     break;
                 // advanced types
                 case WII_ANALOG_TYPE_LEFT_STICK_X_PLUS:
