@@ -6,8 +6,8 @@ import "enums.proto";
 message GamepadOptions
 {
     optional InputMode inputMode = 1;
-    optional DpadMode dpadMode = 2;
-    optional SOCDMode socdMode = 3;
+    optional DpadMode dpadMode = 2 [default = DPAD_MODE_DIGITAL];
+    optional SOCDMode socdMode = 3 [default = SOCD_MODE_NEUTRAL];
     optional bool invertXAxis = 4;
     optional bool invertYAxis = 5;
     optional bool switchTpShareForDs4 = 6;
