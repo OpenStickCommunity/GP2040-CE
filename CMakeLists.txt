@@ -145,6 +145,7 @@ src/gamepad.cpp
 src/gamepad/GamepadState.cpp
 src/addonmanager.cpp
 src/configmanager.cpp
+src/gpio_interface.cpp
 src/drivers/shared/xinput_host.cpp
 src/drivers/shared/xgip_protocol.cpp
 src/drivers/astro/AstroDriver.cpp

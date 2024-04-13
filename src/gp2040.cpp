@@ -11,6 +11,7 @@
 #include "addonmanager.h"
 #include "types.h"
 #include "usbhostmanager.h"
+#include "gpio_interface.h"
 
 // Inputs for Core0
 #include "addons/analog.h"
@@ -213,17 +214,17 @@ void GP2040::deinitializeStandardGpio() {
 }
 
 /**
- * @brief Populate a debounced version of gpio_get_all suitable for use for buttons.
+ * @brief Populate a debounced version of gpio_interface_get_all suitable for use for buttons.
  *
  * For GPIO that are assigned to buttons (based on GpioMappings, see GP2040::initializeStandardGpio),
  * we can centralize their debouncing here and provide access to it to button users.
  *
  * For ease of use this provides the mask bitwise NOTed so that callers don't have to. To avoid misuse
- * and to simplify this method, non-button GPIO IS NOT PRESENT in this result. Use gpio_get_all directly
+ * and to simplify this method, non-button GPIO IS NOT PRESENT in this result. Use gpio_interface_get_all directly
  * instead, if you don't want debounced data.
  */
 void GP2040::debounceGpioGetAll() {
-	Mask_t raw_gpio = ~gpio_get_all();
+	Mask_t raw_gpio = ~gpio_interface_get_all();
 	Gamepad* gamepad = Storage::getInstance().GetGamepad();
 	// return if state isn't different than the actual
 	if (gamepad->debouncedGpio == (raw_gpio & buttonGpios)) return;
