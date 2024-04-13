@@ -108,12 +108,6 @@
 #ifndef DEFAULT_INPUT_MODE_R2
     #define DEFAULT_INPUT_MODE_R2 INPUT_MODE_KEYBOARD
 #endif
-#ifndef DEFAULT_DPAD_MODE
-    #define DEFAULT_DPAD_MODE DPAD_MODE_DIGITAL
-#endif
-#ifndef DEFAULT_SOCD_MODE
-    #define DEFAULT_SOCD_MODE SOCD_MODE_NEUTRAL
-#endif
 #ifndef DEFAULT_FORCED_SETUP_MODE
     #define DEFAULT_FORCED_SETUP_MODE FORCED_SETUP_MODE_OFF
 #endif
@@ -293,8 +287,6 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
 
     // gamepadOptions
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputMode, DEFAULT_INPUT_MODE);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, dpadMode, DEFAULT_DPAD_MODE);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, socdMode, DEFAULT_SOCD_MODE);
     INIT_UNSET_PROPERTY(config.gamepadOptions, invertXAxis, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, switchTpShareForDs4, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, lockHotkeys, DEFAULT_LOCK_HOTKEYS);
