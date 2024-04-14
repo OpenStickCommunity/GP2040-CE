@@ -11,11 +11,11 @@
 #include "config.pb.h"
 #include "enums.pb.h"
 
-#include "gpevent.h"
-#include "gpencoderevent.h"
-#include "gpturboevent.h"
-#include "gpprofileevent.h"
-#include "gprestartevent.h"
+#include "GPEvent.h"
+#include "GPEncoderEvent.h"
+#include "GPTurboEvent.h"
+#include "GPProfileEvent.h"
+#include "GPRestartEvent.h"
 
 #define EVENTMGR EventManager::getInstance()
 
