@@ -247,16 +247,14 @@ void TurboInput::updateTurboShotCount(uint8_t shotCount)
 }
 
 void TurboInput::handleEncoder(GPEvent* e) {
-//    GPEncoderChangeEvent* event = (GPEncoderChangeEvent*)e;
-//    //printf("handleEncoder: Encoder: %d, Dir: %d\n", event->encoder, event->direction);
-//    uint8_t previousValue = encoderValue;
-//
-//    if ((event->direction < 0) && (encoderValue > TURBO_SHOT_MIN)) {
-//        encoderValue--;
-//        updateTurboShotCount(encoderValue);
-//    } else if ((event->direction > 0) && (encoderValue < TURBO_SHOT_MAX)) {
-//        encoderValue++;
-//        updateTurboShotCount(encoderValue);
-//    }
-//    EventManager::getInstance().triggerEvent(new GPTurboChangeEvent(previousValue, encoderValue));
+    GPEncoderChangeEvent* event = (GPEncoderChangeEvent*)e;
+    uint8_t previousValue = encoderValue;
+
+    if ((event->direction < 0) && (encoderValue > TURBO_SHOT_MIN)) {
+        encoderValue--;
+        updateTurboShotCount(encoderValue);
+    } else if ((event->direction > 0) && (encoderValue < TURBO_SHOT_MAX)) {
+        encoderValue++;
+        updateTurboShotCount(encoderValue);
+    }
 }

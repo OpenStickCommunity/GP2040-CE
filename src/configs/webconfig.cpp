@@ -628,6 +628,8 @@ std::string setGamepadOptions()
     readDoc(gamepadOptions.ps5AuthType, doc, "ps5AuthType");
     readDoc(gamepadOptions.xinputAuthType, doc, "xinputAuthType");
 
+    EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(prevProfileNumber, gamepadOptions.profileNumber));
+
     HotkeyOptions& hotkeyOptions = Storage::getInstance().getHotkeyOptions();
     save_hotkey(&hotkeyOptions.hotkey01, doc, "hotkey01");
     save_hotkey(&hotkeyOptions.hotkey02, doc, "hotkey02");
@@ -645,8 +647,6 @@ std::string setGamepadOptions()
     save_hotkey(&hotkeyOptions.hotkey14, doc, "hotkey14");
     save_hotkey(&hotkeyOptions.hotkey15, doc, "hotkey15");
     save_hotkey(&hotkeyOptions.hotkey16, doc, "hotkey16");
-
-    EventManager::getInstance().triggerEvent(new GPProfileChangeEvent(prevProfileNumber, gamepadOptions.profileNumber));
 
     ForcedSetupOptions& forcedSetupOptions = Storage::getInstance().getForcedSetupOptions();
     readDoc(forcedSetupOptions.mode, doc, "forcedSetupMode");

@@ -130,9 +130,9 @@ void RotaryEncoderInput::process()
                 encoderState[i].changeTime = now;
 
                 if ((encoderValues[i] - prevValues[i]) > 0) {
-                    EventManager::getInstance().triggerEvent(new GPEncoderChangeEvent(i, 1));
+                    //EventManager::getInstance().triggerEvent(new GPEncoderChangeEvent(i, 1));
                 } else if ((encoderValues[i] - prevValues[i]) < 0) {
-                    EventManager::getInstance().triggerEvent(new GPEncoderChangeEvent(i, -1));
+                    //EventManager::getInstance().triggerEvent(new GPEncoderChangeEvent(i, -1));
                 }
             }
 
