@@ -13,6 +13,7 @@ function (compile_proto)
 		DEPENDS ${CMAKE_SOURCE_DIR}/lib/nanopb/extra/requirements.txt
 		COMMAND ${Python3_EXECUTABLE} -m venv ${VENV}
 		COMMAND ${VENV_BIN_DIR}/pip --disable-pip-version-check install -r ${CMAKE_SOURCE_DIR}/lib/nanopb/extra/requirements.txt
+		COMMAND ${VENV_BIN_DIR}/pip --disable-pip-version-check install gp2040ce-binary-tools
 		COMMAND ${VENV_BIN_DIR}/pip freeze > ${VENV_FILE}
 		OUTPUT ${VENV_FILE}
 		COMMENT "Setting up Python Virtual Environment"
