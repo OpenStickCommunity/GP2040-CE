@@ -2066,6 +2066,7 @@ std::string reboot()
         default:
             rebootMode = System::BootMode::DEFAULT;
     }
+    EventManager::getInstance().triggerEvent(new GPRestartEvent(rebootMode));
     return serialize_json(doc);
 }
 

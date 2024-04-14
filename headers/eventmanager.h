@@ -15,6 +15,7 @@
 #include "gpencoderevent.h"
 #include "gpturboevent.h"
 #include "gpprofileevent.h"
+#include "gprestartevent.h"
 
 #define EVENTMGR EventManager::getInstance()
 

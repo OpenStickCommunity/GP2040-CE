@@ -65,6 +65,8 @@ void DisplayAddon::setup() {
     }
     gpScreen = nullptr;
     updateDisplayScreen();
+
+    EventManager::getInstance().registerEventHandler(GP_EVENT_RESTART, GPEVENT_CALLBACK(this->handleSystemRestart(event);));
 }
 
 bool DisplayAddon::updateDisplayScreen() {
@@ -83,6 +85,9 @@ bool DisplayAddon::updateDisplayScreen() {
             case BUTTONS:
                 delete (ButtonLayoutScreen*)gpScreen;
                 break;
+            case RESTART:
+                delete (RestartScreen*)gpScreen;
+                break;
             default:
                 break;
         }
@@ -100,6 +105,10 @@ bool DisplayAddon::updateDisplayScreen() {
             break;
         case BUTTONS:
             gpScreen = new ButtonLayoutScreen(gpDisplay);
+            break;
+        case RESTART:
+            gpScreen = new RestartScreen(gpDisplay);
+            ((RestartScreen*)gpScreen)->setBootMode(bootMode);
             break;
         default:
             gpScreen = nullptr;
@@ -173,3 +182,9 @@ const DisplayOptions& DisplayAddon::getDisplayOptions() {
     return configMode ? Storage::getInstance().getPreviewDisplayOptions() : Storage::getInstance().getDisplayOptions();
 }
 
+void DisplayAddon::handleSystemRestart(GPEvent* e) {
+    printf("System Restart\n");
+    currDisplayMode = DisplayMode::RESTART;
+    bootMode = (uint32_t)((GPRestartEvent*)e)->bootMode;
+    updateDisplayScreen();
+}
