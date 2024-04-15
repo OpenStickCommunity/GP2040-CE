@@ -17,13 +17,10 @@ function (patch_board_config)
 			-P ./lib/nanopb/generator/proto
 			./build/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.bin
 			--json-board-config-filename ./configs/${GP2040_BOARDCONFIG}/board-config.json
+			--backup
 			--new-filename ./build/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.uf2
-		COMMAND ${VENV_BIN_DIR}/concatenate
-			-P ./proto
-			-P ./lib/nanopb/generator/proto
-			./build/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.bin
-			--json-board-config-filename ./configs/${GP2040_BOARDCONFIG}/board-config.json
-			--new-filename ./build/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.bin
+		COMMAND ${VENV_BIN_DIR}/summarize-gp2040ce
+			--filename ./build/${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG}.uf2
 		COMMENT "Patching binary with board config"
 	)
 endfunction()
