@@ -12,6 +12,7 @@
 #include "enums.pb.h"
 
 #include "GPEvent.h"
+#include "GPGamepadEvent.h"
 #include "GPEncoderEvent.h"
 #include "GPTurboEvent.h"
 #include "GPProfileEvent.h"
