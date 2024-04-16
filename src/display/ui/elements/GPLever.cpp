@@ -39,10 +39,10 @@ void GPLever::draw() {
 
     if (this->_inputType == DPAD_MODE_DIGITAL) {
         // dpad
-        bool upState    = (this->_upMask > -1 ? getGamepad()->pressedButton((uint16_t)this->_upMask) : getGamepad()->pressedUp());
-        bool leftState  = (this->_leftMask > -1 ? getGamepad()->pressedButton((uint16_t)this->_leftMask) : getGamepad()->pressedLeft());
-        bool downState  = (this->_downMask > -1 ? getGamepad()->pressedButton((uint16_t)this->_downMask) : getGamepad()->pressedDown());
-        bool rightState = (this->_rightMask > -1 ? getGamepad()->pressedButton((uint16_t)this->_rightMask) : getGamepad()->pressedRight());
+        bool upState    = (this->_upMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_upMask) : getProcessedGamepad()->pressedUp());
+        bool leftState  = (this->_leftMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_leftMask) : getProcessedGamepad()->pressedLeft());
+        bool downState  = (this->_downMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_downMask) : getProcessedGamepad()->pressedDown());
+        bool rightState = (this->_rightMask > -1 ? getProcessedGamepad()->pressedButton((uint16_t)this->_rightMask) : getProcessedGamepad()->pressedRight());
         if (upState) {
             leverY -= leverRadius;
             if (leftState) {
@@ -64,8 +64,8 @@ void GPLever::draw() {
         }
     } else {
         // analog
-        uint16_t analogX = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getGamepad()->state.lx : getGamepad()->state.rx), 0, 0xFFFF, 0, 100);
-        uint16_t analogY = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getGamepad()->state.ly : getGamepad()->state.ry), 0, 0xFFFF, 0, 100);
+        uint16_t analogX = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getProcessedGamepad()->state.lx : getProcessedGamepad()->state.rx), 0, 0xFFFF, 0, 100);
+        uint16_t analogY = map((this->_inputType == DPAD_MODE_LEFT_ANALOG ? getProcessedGamepad()->state.ly : getProcessedGamepad()->state.ry), 0, 0xFFFF, 0, 100);
 
         uint16_t minX = std::max(0,(baseX - baseRadius));
         uint16_t maxX = std::min((baseX + baseRadius),128);
