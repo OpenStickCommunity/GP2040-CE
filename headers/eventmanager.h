@@ -17,6 +17,7 @@
 #include "GPTurboEvent.h"
 #include "GPProfileEvent.h"
 #include "GPRestartEvent.h"
+#include "GPUSBHostEvent.h"
 
 #define EVENTMGR EventManager::getInstance()
 
