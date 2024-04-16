@@ -478,13 +478,14 @@ void ButtonLayoutScreen::handleProfileChange(GPEvent* e) {
 }
 
 void ButtonLayoutScreen::handleUSB(GPEvent* e) {
+    GPUSBHostEvent* event = (GPUSBHostEvent*)e;
     bannerDelayStart = getMillis();
     prevProfileNumber = profileNumber;
 
     if (e->eventType() == GP_EVENT_USBHOST_MOUNT) {
-        bannerMessage = "     USB Mounted";
+        bannerMessage = "    USB Connected";
     } else if (e->eventType() == GP_EVENT_USBHOST_UNMOUNT) {
-        bannerMessage = "   USB Unmounted";
+        bannerMessage = "  USB Disconnnected";
     }
     bannerDisplay = true;
 }

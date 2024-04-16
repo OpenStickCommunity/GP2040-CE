@@ -138,11 +138,21 @@ uint16_t count_interface_total_len(tusb_desc_interface_t const* desc_itf, uint8_
 }
 
 void tuh_mount_cb(uint8_t dev_addr) {
-    EventManager::getInstance().triggerEvent(new GPUSBHostMountEvent(dev_addr));
+    uint16_t vid, pid;
+    if (!tuh_vid_pid_get(dev_addr, &vid, &pid)) {
+        vid = 0xFFFF;
+        pid = 0xFFFF;
+    }
+    EventManager::getInstance().triggerEvent(new GPUSBHostMountEvent(dev_addr, vid, pid));
 }
 
 void tuh_umount_cb(uint8_t dev_addr) {
-    EventManager::getInstance().triggerEvent(new GPUSBHostUnmountEvent(dev_addr));
+    uint16_t vid, pid;
+    if (!tuh_vid_pid_get(dev_addr, &vid, &pid)) {
+        vid = 0xFFFF;
+        pid = 0xFFFF;
+    }
+    EventManager::getInstance().triggerEvent(new GPUSBHostUnmountEvent(dev_addr, vid, pid));
 }
 
 void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len)

@@ -4,19 +4,23 @@
 class GPUSBHostEvent : public GPEvent {
     public:
         GPUSBHostEvent() {}
-        GPUSBHostEvent(uint8_t devAddr) {
+        GPUSBHostEvent(uint8_t devAddr, uint16_t vid, uint16_t pid) {
             this->deviceAddress = devAddr;
+            this->vendorID = vid;
+            this->productID = pid;
         }
         ~GPUSBHostEvent() {}
 
-        uint8_t deviceAddress;
+        uint8_t deviceAddress = 0;
+        uint16_t vendorID = 0;
+        uint16_t productID = 0;
     private:
 };
 
 class GPUSBHostMountEvent : public GPUSBHostEvent {
     public:
         GPUSBHostMountEvent() {}
-        GPUSBHostMountEvent(uint8_t devAddr) : GPUSBHostEvent(devAddr) {}
+        GPUSBHostMountEvent(uint8_t devAddr, uint16_t vid, uint16_t pid) : GPUSBHostEvent(devAddr, vid, pid) {}
         ~GPUSBHostMountEvent() {}
 
         GPEventType eventType() { return this->_eventType; }
@@ -27,7 +31,7 @@ class GPUSBHostMountEvent : public GPUSBHostEvent {
 class GPUSBHostUnmountEvent : public GPUSBHostEvent {
     public:
         GPUSBHostUnmountEvent() {}
-        GPUSBHostUnmountEvent(uint8_t devAddr) : GPUSBHostEvent(devAddr) {}
+        GPUSBHostUnmountEvent(uint8_t devAddr, uint16_t vid, uint16_t pid) : GPUSBHostEvent(devAddr, vid, pid) {}
         ~GPUSBHostUnmountEvent() {}
 
         GPEventType eventType() { return this->_eventType; }
