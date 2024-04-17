@@ -68,6 +68,7 @@ void DisplayAddon::setup() {
 }
 
 bool DisplayAddon::updateDisplayScreen() {
+#if DISPLAY_DEBUG_MODE == 0
     if ( gpScreen != nullptr ) {
         gpScreen->shutdown();
         switch(prevDisplayMode) {
@@ -111,6 +112,9 @@ bool DisplayAddon::updateDisplayScreen() {
         prevDisplayMode = currDisplayMode;
         return true;
     }
+#elif DISPLAY_DEBUG_MODE == 1
+    gpDisplay->drawDebug();
+#endif
 
     return false;
 }

@@ -10,6 +10,8 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     _options.inverted = options.inverted;
     _options.font = options.font;
 
+    _options.i2c->readRegister(_options.address, 0x00, &this->screenType, 1);
+
 	uint8_t commands[] = {
 		0x00,
 		CommandOps::DISPLAY_OFF,
@@ -72,6 +74,10 @@ void GPGFX_TinySSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
 
 	if ((x<MAX_SCREEN_WIDTH) and (y<MAX_SCREEN_HEIGHT))
 	{
+        //if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
+        //    x+=2;
+        //}
+
 		row=((y/8)*128)+x;
 		bitIndex=y % 8;
 
@@ -335,6 +341,10 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
 	} else {
 		framePage = 0;
 	}
+}
+
+void GPGFX_TinySSD1306::drawDebug() {
+    this->drawText(1, 0, "Screen Type: " + std::to_string(this->screenType));
 }
 
 void GPGFX_TinySSD1306::sendCommand(uint8_t command){ 

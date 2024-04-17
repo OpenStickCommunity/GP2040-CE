@@ -22,8 +22,8 @@ GPGFX::GPGFX() {
 void GPGFX::init(GPGFX_DisplayTypeOptions options) {
     switch (options.displayType) {
         case GPGFX_DisplayType::TYPE_SSD1306:
-            //this->displayDriver = new GPGFX_OBD_SSD1306();
-            this->displayDriver = new GPGFX_TinySSD1306();
+            this->displayDriver = new GPGFX_OBD_SSD1306();
+            //this->displayDriver = new GPGFX_TinySSD1306();
             break;
         default:
             options.displayType = GPGFX_DisplayType::TYPE_NONE;
@@ -73,4 +73,8 @@ void GPGFX::drawPolygon(uint16_t x, uint16_t y, uint16_t radius, uint16_t sides,
 
 void GPGFX::drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority) {
     this->displayDriver->drawSprite(spriteData, width, height, pitch, x, y, priority);
+}
+
+void GPGFX::drawDebug() {
+    this->displayDriver->drawDebug();
 }

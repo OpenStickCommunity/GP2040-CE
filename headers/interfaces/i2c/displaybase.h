@@ -32,6 +32,8 @@ class GPGFX_DisplayBase {
 
         virtual void drawBuffer(uint8_t *pBuffer) {}
 
+        virtual void drawDebug();
+
         void setMetrics(GPGFX_DisplayMetrics* metrics) { this->_metrics = metrics; }
         GPGFX_DisplayMetrics* getMetrics() { return this->_metrics; }
     protected:

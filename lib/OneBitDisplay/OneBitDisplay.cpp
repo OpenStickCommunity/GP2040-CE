@@ -506,6 +506,7 @@ int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int b
 	uint8_t u = 0;
 	pOBD->i2c->readRegister(pOBD->oled_addr, 0x00, &u, 1); // read the status register
 	u &= 0x0f;                                                   // mask off power on/off bit
+    pOBD->registerValue = u;
 	if ((u == 0x7 || u == 0xf) && pOBD->type == OLED_128x128)    // SH1107
 	{                                                            // A single SSD1306 display returned 7, so only act on it if the
 		// user specified that they're working with a 128x128 display

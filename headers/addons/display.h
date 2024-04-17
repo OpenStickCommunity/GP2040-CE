@@ -46,6 +46,10 @@
 #define I2C_SPEED 800000
 #endif
 
+#ifndef DISPLAY_DEBUG_MODE
+#define DISPLAY_DEBUG_MODE 1
+#endif
+
 #ifndef DISPLAY_SIZE
 #define DISPLAY_SIZE GPGFX_DisplaySize::SIZE_128x64
 #endif
