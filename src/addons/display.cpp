@@ -53,6 +53,7 @@ void DisplayAddon::setup() {
     configMode = Storage::getInstance().GetConfigMode();
     turnOffWhenSuspended = options.turnOffWhenSuspended;
 
+#if DISPLAY_DEBUG_MODE == 0
     // set current display mode
     if (!configMode) {
         if (Storage::getInstance().getDisplayOptions().splashMode != static_cast<SplashMode>(SPLASH_MODE_NONE)) {
@@ -64,6 +65,7 @@ void DisplayAddon::setup() {
         currDisplayMode = DisplayMode::CONFIG_INSTRUCTION;
     }
     gpScreen = nullptr;
+#endif
     updateDisplayScreen();
 }
 
@@ -116,7 +118,7 @@ bool DisplayAddon::updateDisplayScreen() {
     gpDisplay->drawDebug();
 #endif
 
-    return false;
+    return true;
 }
 
 bool DisplayAddon::isDisplayPowerOff()
@@ -153,6 +155,7 @@ void DisplayAddon::setDisplayPower(uint8_t status)
 }
 
 void DisplayAddon::process() {
+#if DISPLAY_DEBUG_MODE == 0
     // If GPDisplay is not loaded or we're in standard mode with display power off enabled
     if (gpDisplay->getDriver() == nullptr ||
         (!configMode && isDisplayPowerOff())) {
@@ -170,6 +173,9 @@ void DisplayAddon::process() {
             updateDisplayScreen();
         }
     }
+#else
+    updateDisplayScreen();
+#endif
 }
 
 const DisplayOptions& DisplayAddon::getDisplayOptions() {
