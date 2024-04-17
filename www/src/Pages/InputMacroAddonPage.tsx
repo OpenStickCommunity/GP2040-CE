@@ -98,13 +98,10 @@ const FormContext = () => {
 		}
 		fetchData();
 	}, [setValues]);
-/*
+
 	useEffect(() => {
-		async function setData() {
-			await setValues(filterMacroInputs(values));
-		}
-		setData();
-	}, [values, setValues]);*/
+		setValues(filterMacroInputs(values));
+	}, [values, setValues]);
 
 	return null;
 };
@@ -126,7 +123,6 @@ const ButtonMasksComponent = (props) => {
 				size="sm"
 				name={`${key}.buttonMask`}
 				className="form-control col-sm-auto"
-				groupClassName="col-sm-1"
 				value={value}
 				error={error}
 				isInvalid={isInvalid}
@@ -190,13 +186,11 @@ const MacroInputComponent = (props) => {
 					</Col>
 				</Row>
 			</Col>
-			<Col sm={"auto"} key={`${key}.buttons`}>
+			<Col sm={"auto"}>
 				<Row className="d-flex justify-content-center">
-					{BUTTON_MASKS.map((mask, i1) =>
-						buttonMask & mask.value ? (
-						<Col sm={"auto"} className="px-1">
+					{BUTTON_MASKS.filter(mask => buttonMask & mask.value).map((mask, i1) =>
+						<Col key={`${key}.buttonMask[${i1}]`} sm={"auto"} className="px-1">
 							<ButtonMasksComponent
-								key={`${key}.buttonMask[${i1}]`}
 								id={`${key}.buttonMask[${i1}]`}
 								value={buttonMask & mask.value}
 								onChange={(e) => {
@@ -211,15 +205,10 @@ const MacroInputComponent = (props) => {
 								buttonLabelType={buttonLabelType}
 								buttonMasks={BUTTON_MASKS}
 							/>
-						</Col>) : (
-							<></>
-						),
+						</Col>
 					)}
-					<Col sm={"auto"} className="px-1"
-						key={`${key}.buttonMask[placeholder]`}
-					>
+					<Col sm={"auto"} className="px-1">
 						<ButtonMasksComponent
-							key={`${key}.buttonMaskPlaceholder`}
 							id={`${key}.buttonMaskPlaceholder`}
 							className="col-sm-auto"
 							value={0}
@@ -361,7 +350,6 @@ const MacroComponent = (props) => {
 					<Form.Select
 						name={`${key}.macroType`}
 						className="form-select-sm sm-1"
-						groupClassName="mb-3"
 						value={macroType}
 						onChange={(e) => {
 							setFieldValue(`${key}.macroType`, parseInt(e.target.value));
@@ -585,7 +573,7 @@ export default function MacrosPage() {
 												</thead>
 												<tbody>
 											{values.macroList.map((macro, i) => (
-												<tr>
+												<tr key={`macro-list-item-${i}`}>
 													<td>{i+1}</td>
 													<td>{macro.macroLabel.length==0 && <em>None</em>}{macro.macroLabel.length>0 && macro.macroLabel.slice(0,32)}{macro.macroLabel.length>32 && "..."}</td>
 													<td>{t(MACRO_TYPES.find((m) => m.value === macro.macroType).label)}</td>
@@ -634,7 +622,7 @@ export default function MacrosPage() {
 										</Section>
 										</Tab.Pane>
 										{values.macroList.map((macro, i) => (
-											<Tab.Pane eventKey={`macro-${i}`}>
+											<Tab.Pane key={`macro-list-tab-pane-${i}`} eventKey={`macro-${i}`}>
 											<Section title={`Macro ${i+1}`}>
 												<MacroComponent
 														key={`macroList[${i}]`}
