@@ -163,7 +163,7 @@ void InputMacro::runCurrentMacro() {
     Macro& macro = inputMacroOptions->macroList[macroPosition];
 
     // Stop Macro if released (ON PRESS & ON HOLD REPEAT)
-    if (inputMacroOptions->macroList[macroPosition].macroType != ON_TOGGLE &&
+    if (inputMacroOptions->macroList[macroPosition].macroType == ON_HOLD_REPEAT &&
             !isMacroTriggerHeld && macro.interruptible) {
         reset();
         return;
@@ -226,12 +226,15 @@ void InputMacro::runCurrentMacro() {
                     reset(); // On repeat, reset but keep the button held
                 } else {
                     macroInputPosition = 0; // On Hold-Repeat or On Toggle = start macro again
-                    macroStartTime = currentMicros;
                     MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
                     uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
                     macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
                 }
             }
+        } else {
+            MacroInput& newMacroInput = macro.macroInputs[macroInputPosition];
+            uint32_t newMacroInputDuration = newMacroInput.duration + newMacroInput.waitDuration;
+            macroInputHoldTime = newMacroInputDuration <= 0 ? INPUT_HOLD_US : newMacroInputDuration;
         }
     }
 }
