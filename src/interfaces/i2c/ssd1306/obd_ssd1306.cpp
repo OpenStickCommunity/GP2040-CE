@@ -23,11 +23,10 @@ void GPGFX_OBD_SSD1306::init(GPGFX_DisplayTypeOptions options) {
 	obdSetFonts(GP_Font_Standard, GP_Font_Basic, GP_Font_Big);
 
 	const int detectedDisplay = initDisplay(0);
-    this->detectedDisplayValue = detectedDisplay;
 	if (isSH1106(detectedDisplay)) {
 		// The display is actually a SH1106 that was misdetected as a SSD1306 by OneBitDisplay.
 		// Reinitialize as SH1106.
-		this->detectedDisplayValue = initDisplay(OLED_132x64);
+		initDisplay(OLED_132x64);
 	}
 
 	obdSetContrast(&obd, 0xFF);
@@ -140,10 +139,3 @@ bool GPGFX_OBD_SSD1306::isSH1106(int detectedDisplay) {
 void GPGFX_OBD_SSD1306::clearScreen(int render) {
 	obdFill(&obd, 0, render);
 }
-
-void GPGFX_OBD_SSD1306::drawDebug() {
-    this->drawText(1, 0, "Screen Type: " + std::to_string(obd.type));
-    this->drawText(1, 1, "Screen Reg: " + std::to_string(obd.registerValue));
-    this->drawText(1, 2, "Detected Disp: " + std::to_string(this->detectedDisplayValue));
-}
-

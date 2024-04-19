@@ -32,7 +32,6 @@ class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
     private:
         OBDISP obd;
         GPGFX_DisplayTypeOptions _options;
-        uint16_t detectedDisplayValue;
 
 	    int initDisplay(int typeOverride);
         bool isSH1106(int detectedDisplay);

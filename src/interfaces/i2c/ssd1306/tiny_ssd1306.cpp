@@ -11,6 +11,7 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     _options.font = options.font;
 
     _options.i2c->readRegister(_options.address, 0x00, &this->screenType, 1);
+    this->screenType &= 0x0F;
 
 	uint8_t commands[] = {
 		0x00,
@@ -74,11 +75,11 @@ void GPGFX_TinySSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
 
 	if ((x<MAX_SCREEN_WIDTH) and (y<MAX_SCREEN_HEIGHT))
 	{
-        //if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
-        //    x+=2;
-        //}
+        if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
+            x+=2;
+        }
 
-		row=((y/8)*128)+x;
+		row=((y/8)*MAX_SCREEN_WIDTH)+x;
 		bitIndex=y % 8;
 
         if (color == 1) {
@@ -323,18 +324,37 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
 
 	int result = -1;
 	
-	sendCommand(CommandOps::PAGE_ADDRESS);
-	sendCommand(0x00);
-	sendCommand(0x07);
-	sendCommand(CommandOps::COLUMN_ADDRESS);
-	sendCommand(0x00);
-	sendCommand(0x7F);
-	if (pBuffer == NULL) {
-		memcpy(&buffer[1],frameBuffer,bufferSize);
-	} else {
-		memcpy(&buffer[1],pBuffer,bufferSize);
-	}
-	result = _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+    if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
+        uint16_t x = 0;
+        uint16_t y = 0;
+        for (y = 0; y < (MAX_SCREEN_HEIGHT/8); y++) {
+            sendCommand(0xB0 + y);
+            sendCommand(x & 0x0F);
+            sendCommand(0x10 | (x >> 4));
+        
+            if (pBuffer == NULL) {
+                memcpy(&buffer[1],&frameBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
+            } else {
+                memcpy(&buffer[1],&pBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
+            }
+        
+            result = _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
+        }
+    } else {
+        sendCommand(CommandOps::PAGE_ADDRESS);
+        sendCommand(0x00);
+        sendCommand(0x07);
+        sendCommand(CommandOps::COLUMN_ADDRESS);
+        sendCommand(0x00);
+        sendCommand(0x7F);
+
+        if (pBuffer == NULL) {
+            memcpy(&buffer[1],frameBuffer,bufferSize);
+        } else {
+            memcpy(&buffer[1],pBuffer,bufferSize);
+        }
+        result = _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+    }
 
 	if (framePage < MAX_SCREEN_HEIGHT/8) {
 		framePage++;
