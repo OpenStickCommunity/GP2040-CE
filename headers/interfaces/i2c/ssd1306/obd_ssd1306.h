@@ -27,8 +27,6 @@ class GPGFX_OBD_SSD1306 : public GPGFX_DisplayBase {
         void drawSprite(uint8_t* spriteData, uint16_t width, uint16_t height, uint16_t pitch, uint16_t x, uint16_t y, uint8_t priority);
 
         void drawBuffer(uint8_t *pBuffer);
-
-        void drawDebug();
     private:
         OBDISP obd;
         GPGFX_DisplayTypeOptions _options;

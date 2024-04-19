@@ -13,6 +13,10 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     _options.i2c->readRegister(_options.address, 0x00, &this->screenType, 1);
     this->screenType &= 0x0F;
 
+    if (isSH1106(this->screenType)) {
+        this->screenType = SCREEN_132x64;
+    }
+
 	uint8_t commands[] = {
 		0x00,
 		CommandOps::DISPLAY_OFF,
@@ -60,6 +64,45 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
 
     clear();
     drawBuffer(NULL);
+}
+
+bool GPGFX_TinySSD1306::isSH1106(int detectedDisplay) {
+
+    this->setPower(false);
+
+    const uint8_t RANDOM_DATA[] = { 0xbf, 0x88, 0x13, 0x41, 0x00 };
+    uint8_t buffer[4];
+    uint8_t i = 0;
+    for (; i < sizeof(RANDOM_DATA); ++i) {
+        buffer[0] = 0x80; // one command
+        buffer[1] = 0xE0; // read-modify-write
+        buffer[2] = 0xC0; // one data
+        if (_options.i2c->write(_options.address, buffer, 3, false) == 0) {
+            break;
+        }
+
+        // Read two bytes back, the first byte is a dummy read and the second byte is the byte was actually want.
+        if (_options.i2c->read(_options.address, buffer, 2, false) == 0) {
+            break;
+        }
+
+        // Check whether the byte we read is the byte we previously wrote.
+        if (i > 0 && buffer[1] != RANDOM_DATA[i - 1]) {
+            break;
+        }
+
+        // Write the current byte, we will attempt to read it in the next loop iteration.
+        buffer[0] = 0xc0; // one data
+        buffer[1] = RANDOM_DATA[i]; // data byte
+        buffer[2] = 0x80; // one command
+        buffer[3] = 0xEE; // end read-modify-write
+        if (_options.i2c->write(_options.address, buffer, 4, false) == 0) {
+            break;
+        }
+    }
+
+    this->setPower(true);
+    return i == sizeof(RANDOM_DATA);
 }
 
 void GPGFX_TinySSD1306::setPower(bool isPowered) {
@@ -361,10 +404,6 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
 	} else {
 		framePage = 0;
 	}
-}
-
-void GPGFX_TinySSD1306::drawDebug() {
-    this->drawText(1, 0, "Screen Type: " + std::to_string(this->screenType));
 }
 
 void GPGFX_TinySSD1306::sendCommand(uint8_t command){ 

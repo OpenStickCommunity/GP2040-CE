@@ -31,7 +31,7 @@ class GPGFX_TinySSD1306 : public GPGFX_DisplayBase {
 
         void drawBuffer(uint8_t *pBuffer);
 
-        void drawDebug();
+        bool isSH1106(int detectedDisplay);
     private:
         typedef enum {
             SET_LOW_COLUMN = 0x00,
