@@ -5,6 +5,7 @@ export default {
 	'list-text':
 		"<1>Click a button to bring up the normal and pressed color selection.</1> <1>Click on the controller background to dismiss the color selection.</1> <1>Right-click a button to preview the button's pressed color.</1>",
 	'led-layout-label': 'Preview Layout',
+	'color-picker-location': 'Color Picker Location',
 	'has-custom-theme-label': 'Enable',
 	'modal-title': 'Confirm Clear Custom Theme',
 	'modal-body':

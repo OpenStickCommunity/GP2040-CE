@@ -163,8 +163,62 @@ export const BUTTONS = {
 };
 
 export const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2'];
+export const AUX_BUTTONS_HAUTE42_13 = ['S1', 'S2', 'L3', 'R3', 'A2'];
+export const AUX_BUTTONS_HAUTE42_16 = ['S1', 'S2'];
+export const AUX_BUTTONS_DUELPAD_16 = ['S1', 'S2'];
 export const MAIN_BUTTONS = [
 	'Up',
+	'Down',
+	'Left',
+	'Right',
+	'B1',
+	'B2',
+	'B3',
+	'B4',
+	'L1',
+	'R1',
+	'L2',
+	'R2',
+];
+export const MAIN_BUTTONS_HAUTE42_13 = [
+	'Up',
+	'A1',
+	'Down',
+	'Left',
+	'Right',
+	'B1',
+	'B2',
+	'B3',
+	'B4',
+	'L1',
+	'R1',
+	'L2',
+	'R2',
+];
+export const MAIN_BUTTONS_HAUTE42_16 = [
+	'Up',
+	'A1',
+	'A2',
+	'L3',
+	'R3',
+	'Down',
+	'Left',
+	'Right',
+	'B1',
+	'B2',
+	'B3',
+	'B4',
+	'L1',
+	'R1',
+	'L2',
+	'R2',
+];
+export const MAIN_BUTTONS_DUELPAD_16 = [
+	'Up',
+	'A1',
+	'A2',
+	'L3',
+	'R3',
 	'Down',
 	'Left',
 	'Right',
@@ -193,6 +247,42 @@ export const STICKLESS_LAYOUT = [
 	['Down', null, null],
 	['Right', null, null],
 	[null, 'Up', null],
+	['B3', 'B1', null],
+	['B4', 'B2', null],
+	['R1', 'R2', null],
+	['L1', 'L2', null],
+];
+
+export const STICKLESS_HAUTE42_13_LAYOUT = [
+	[null, 'A1', null],
+	['Left', null, null],
+	['Down', null, null],
+	['Right', null, null],
+	[null, 'Up', null],
+	['B3', 'B1', null],
+	['B4', 'B2', null],
+	['R1', 'R2', null],
+	['L1', 'L2', null],
+];
+
+export const STICKLESS_HAUTE42_16_LAYOUT = [
+	[null, 'A1', 'A2'],
+	['Left', null, null],
+	['Down', null, null],
+	['Right', null, null],
+	['L3', 'Up', null],
+	['B3', 'B1', null],
+	['B4', 'B2', null],
+	['R1', 'R2', null],
+	['L1', 'L2', null],
+];
+
+export const STICKLESS_DUELPAD_16_LAYOUT = [
+	[null, 'A1', 'A2'],
+	['Left', null, null],
+	['Down', null, null],
+	['Right', null, null],
+	['L3', 'Up', null],
 	['B3', 'B1', null],
 	['B4', 'B2', null],
 	['R1', 'R2', null],

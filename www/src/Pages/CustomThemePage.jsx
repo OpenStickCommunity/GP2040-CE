@@ -21,10 +21,19 @@ import WebApi from '../Services/WebApi';
 import {
 	BUTTONS,
 	MAIN_BUTTONS,
+	MAIN_BUTTONS_HAUTE42_13,
+	MAIN_BUTTONS_HAUTE42_16,
+	MAIN_BUTTONS_DUELPAD_16,
 	AUX_BUTTONS,
+	AUX_BUTTONS_HAUTE42_13,
+	AUX_BUTTONS_HAUTE42_16,
+	AUX_BUTTONS_DUELPAD_16,
 	KEYBOARD_LAYOUT,
 	STICK_LAYOUT,
 	STICKLESS_LAYOUT,
+	STICKLESS_HAUTE42_13_LAYOUT,
+	STICKLESS_HAUTE42_16_LAYOUT,
+	STICKLESS_DUELPAD_16_LAYOUT,
 } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 
@@ -48,6 +57,43 @@ const BUTTON_LAYOUTS = [
 		value: 2,
 		stickLayout: 'keyboard',
 		matrix: KEYBOARD_LAYOUT,
+	},
+	{
+		label: 'HAUTE42 13',
+		value: 3,
+		stickLayout: 'stickless-haute42-13',
+		matrix: STICKLESS_HAUTE42_13_LAYOUT,
+	},
+	{
+		label: 'HAUTE42 16',
+		value: 4,
+		stickLayout: 'stickless-haute42-16',
+		matrix: STICKLESS_HAUTE42_16_LAYOUT,
+	},
+	{
+		label: 'DUELPAD 16',
+		value: 5,
+		stickLayout: 'stickless-duelpad-16',
+		matrix: STICKLESS_DUELPAD_16_LAYOUT,
+	},
+];
+
+const COLOR_PICKER_POSITIONS = [
+	{
+		label: 'Top',
+		value: "top",
+	},
+	{
+		label: 'Bottom',
+		value: "bottom",
+	},
+	{
+		label: 'Left',
+		value: "left",
+	},
+	{
+		label: 'Right',
+		value: "right",
 	},
 ];
 
@@ -129,6 +175,7 @@ const CustomThemePage = () => {
 	} = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [ledLayout, setLedLayout] = useState(0);
+	const [colorPickerLocation, setColorPickerLocation] = useState("bottom");
 	const [pickerType, setPickerType] = useState(null);
 	const [selectedButton, setSelectedButton] = useState('');
 	const [selectedColor, setSelectedColor] = useState('#000000');
@@ -281,6 +328,35 @@ const CustomThemePage = () => {
 		}
 	};
 
+	function getButtonArray() {
+		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
+			case 'stickless-haute42-13':
+				return AUX_BUTTONS_HAUTE42_13;
+			case 'stickless-haute42-16':
+				return AUX_BUTTONS_HAUTE42_16;
+			case 'stickless-duelpad-16':
+				return AUX_BUTTONS_DUELPAD_16;
+			default:
+				return AUX_BUTTONS;
+		}
+	}
+
+	function getMainButtons() {
+		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
+			case 'stickless-haute42-13':
+				return MAIN_BUTTONS_HAUTE42_13;
+			case 'stickless-haute42-16':
+				return MAIN_BUTTONS_HAUTE42_16;
+			case 'stickless-duelpad-16':
+				return MAIN_BUTTONS_DUELPAD_16;
+			default:
+				return MAIN_BUTTONS;
+		}
+	}
+	
+	const buttonArray = getButtonArray();
+	const mainButtons = getMainButtons();
+
 	const submit = async () => {
 		const leds = { ...customTheme };
 		specialButtons.forEach((b) => delete leds[b]);
@@ -361,19 +437,34 @@ const CustomThemePage = () => {
 											</Trans>
 										</ul>
 									</div>
-									<FormSelect
-										label={t('CustomTheme:led-layout-label')}
-										name="ledLayout"
-										value={ledLayout}
-										onChange={(e) => setLedLayout(e.target.value)}
-										style={{ width: 150 }}
-									>
-										{BUTTON_LAYOUTS.map((o, i) => (
-											<option key={`ledLayout-option-${i}`} value={o.value}>
-												{o.label}
-											</option>
-										))}
-									</FormSelect>
+									<div>
+										<FormSelect
+											label={t('CustomTheme:led-layout-label')}
+											name="ledLayout"
+											value={ledLayout}
+											onChange={(e) => setLedLayout(e.target.value)}
+											style={{ width: 150 }}
+										>
+											{BUTTON_LAYOUTS.map((o, i) => (
+												<option key={`ledLayout-option-${i}`} value={o.value}>
+													{o.label}
+												</option>
+											))}
+										</FormSelect>
+										<FormSelect
+											label={t('CustomTheme:color-picker-location')}
+											name="ledColorPickerLocation"
+											value={colorPickerLocation}
+											onChange={(e) => setColorPickerLocation(e.target.value)}
+											style={{ width: 150 }}
+										>
+											{COLOR_PICKER_POSITIONS.map((o, i) => (
+												<option key={`colorPickerLocation-option-${i}`} value={o.value}>
+													{o.label}
+												</option>
+											))}
+										</FormSelect>
+									</div>
 								</div>
 								<div className="d-flex led-preview-container">
 									<div
@@ -381,7 +472,7 @@ const CustomThemePage = () => {
 										onContextMenu={(e) => e.preventDefault()}
 									>
 										<div className="container-aux">
-											{AUX_BUTTONS.map((buttonName) => (
+											{buttonArray.map((buttonName) => (
 												<LEDButton
 													key={`led-button-${buttonName}`}
 													className={`${buttonName} ${
@@ -396,7 +487,7 @@ const CustomThemePage = () => {
 											))}
 										</div>
 										<div className="container-main">
-											{MAIN_BUTTONS.map((buttonName) => (
+											{mainButtons.map((buttonName) => (
 												<LEDButton
 													key={`led-button-${buttonName}`}
 													className={`${buttonName} ${
@@ -437,7 +528,7 @@ const CustomThemePage = () => {
 						show={pickerVisible}
 						target={ledOverlayTarget}
 						placement={
-							specialButtons.indexOf(selectedButton) > -1 ? 'top' : 'bottom'
+							specialButtons.indexOf(selectedButton) > -1 ? 'top' : colorPickerLocation
 						}
 						container={this}
 						containerPadding={20}
