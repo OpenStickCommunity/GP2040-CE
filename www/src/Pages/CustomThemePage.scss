@@ -52,7 +52,7 @@
  * canvas drawing and animation library instead.
  *****************************************************************************************/
 
-$preview-height: 450px;
+$preview-height: 425px;
 $preview-width: calc($preview-height * 2);
 $preview-padding: calc($preview-height / 20);
 $button-size-multiplier: 3;
@@ -394,8 +394,9 @@ $button-keycap: 19px;
 .led-preview-stickless-haute42-13 {
 	.A1 {
 		@include arcade-button($button-24mm, true);
-		left: calc(50% - #{$button-24mm * 3.5});
-		top: calc(0% - #{$button-24mm * 2.5});
+		// left: calc(50% - #{$button-24mm * 3.5});
+		left: calc(50% - #{$button-24mm * 2.5}); // moves a little to the right so when the window is to narrow you can still see the A2 button
+		top: calc(0% - #{$button-24mm * 2.15});
 	}
 	.Up {
 		@include arcade-button($button-24mm, true);
@@ -465,7 +466,7 @@ $button-keycap: 19px;
 	.A1 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% - #{$button-24mm * 3.5});
-		top: calc(0% - #{$button-24mm * 2.5});
+		top: calc(0% - #{$button-24mm * 2.15});
 	}
 	.Up {
 		@include arcade-button($button-24mm, true);
@@ -532,17 +533,17 @@ $button-keycap: 19px;
 	.R3 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% + #{$button-24mm * 3.5});
-		top: calc(37% + #{$button-24mm * 1.5});
+		top: calc(37% + #{$button-24mm * 2});
 	}
 	.L3 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% - #{$button-24mm * 3.5});
-		top: calc(50% + #{$button-24mm * 1.5});
+		top: calc(50% + #{$button-24mm * 0.75});
 	}
 	.A2 {
 		@include arcade-button($button-24mm, true);
 		left: calc(59% - #{$button-24mm});
-		top: calc(0% - #{$button-24mm * 2.5});
+		top: calc(0% - #{$button-24mm * 2.15});
 	}
 }
 
@@ -550,7 +551,7 @@ $button-keycap: 19px;
 	.A1 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% - #{$button-24mm * 3.5});
-		top: calc(0% - #{$button-24mm * 2.5});
+		top: calc(0% - #{$button-24mm * 2.15});
 	}
 	.Up {
 		@include arcade-button($button-24mm, true);
@@ -616,8 +617,8 @@ $button-keycap: 19px;
 	}
 	.R3 {
 		@include arcade-button($button-24mm, true);
-		left: calc(50% + #{$button-24mm * 2.5});
-		top: calc(37% + #{$button-24mm * 2});
+		left: calc(50% + #{$button-24mm * 3});
+		top: calc(37% + #{$button-24mm * 2.25});
 	}
 	.L3 {
 		@include arcade-button($button-24mm, true);
@@ -627,7 +628,7 @@ $button-keycap: 19px;
 	.A2 {
 		@include arcade-button($button-24mm, true);
 		left: calc(59% - #{$button-24mm});
-		top: calc(0% - #{$button-24mm * 2.5});
+		top: calc(0% - #{$button-24mm * 2.15});
 	}
 }
 
