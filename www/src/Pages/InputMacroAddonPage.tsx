@@ -64,25 +64,7 @@ const defaultValues = {
 	macroBoardLedEnabled: 0,
 };
 
-const EMPTY_INPUT = null;
-
 const ONE_FRAME_US = 16666;
-
-const filterMacroInputs = (values) => {
-	let updated = false;
-	const newValues = {
-		...values,
-		macroList: values.macroList.map((a) => {
-			a.macroInputs = a.macroInputs.filter((i) => {
-				const keep = i !== EMPTY_INPUT;
-				updated = updated && !keep;
-				return keep;
-			});
-			return a;
-		}),
-	};
-	return updated ? newValues : values;
-};
 
 const FormContext = () => {
 	const { values, setValues } = useFormikContext();
@@ -98,10 +80,6 @@ const FormContext = () => {
 		}
 		fetchData();
 	}, [setValues]);
-
-	useEffect(() => {
-		setValues(filterMacroInputs(values));
-	}, [values, setValues]);
 
 	return null;
 };
@@ -148,6 +126,7 @@ const MacroInputComponent = (props) => {
 		errors,
 		id: key,
 		translation: t,
+		deleteMacroInput,
 		setFieldValue,
 	} = props;
 
@@ -269,9 +248,7 @@ const MacroInputComponent = (props) => {
 							<Button
 								variant="transparent"
 								size="sm"
-								onDoubleClick={(e) => {
-									setFieldValue(key, EMPTY_INPUT);
-								}}
+								onDoubleClick={deleteMacroInput}
 							>
 								💥
 							</Button>
@@ -302,11 +279,11 @@ const MacroComponent = (props) => {
 		translation: t,
 		index,
 		buttonLabelType,
+		deleteMacroInput,
 		setFieldValue,
 		macroList,
 	} = props;
 
-	const filteredMacroInputs = macroInputs.filter((i) => i !== EMPTY_INPUT);
 	return (
 		<div key={key}>
 			<Row>
@@ -457,15 +434,16 @@ const MacroComponent = (props) => {
 				</Col>
 			</Row>
 			<Row>
-				{filteredMacroInputs.map((input, a) => (
+				{macroInputs.map((macroInput, a) => (
 					<MacroInputComponent
 						key={`${key}.macroInputs[${a}]`}
 						id={`${key}.macroInputs[${a}]`}
-						value={filteredMacroInputs?.at(a)}
-						errors={errors?.filteredMacroInputs?.at(a)}
+						value={macroInput}
+						errors={errors?.macroInputs?.at(a)}
 						showFrames={showFrames}
 						translation={t}
 						buttonLabelType={buttonLabelType}
+						deleteMacroInput={() => deleteMacroInput(a)}
 						handleChange={handleChange}
 						setFieldValue={setFieldValue}
 					/>
@@ -480,7 +458,7 @@ const MacroComponent = (props) => {
 						size="sm"
 						onClick={() => {
 							setFieldValue(
-								`${key}.macroInputs[${filteredMacroInputs.length}]`,
+								`${key}.macroInputs[${macroInputs.length}]`,
 								{ ...defaultMacroInput },
 							);
 						}}
@@ -501,9 +479,7 @@ export default function MacrosPage() {
 	const [saveMessage, setSaveMessage] = useState('');
 
 	const saveSettings = async (values) => {
-		const success = await WebApi.setMacroAddonOptions(
-			filterMacroInputs(values),
-		);
+		const success = await WebApi.setMacroAddonOptions(values);
 		setSaveMessage(
 			success
 				? t('Common:saved-success-message')
@@ -530,7 +506,7 @@ export default function MacrosPage() {
 			onSubmit={onSuccess}
 			initialValues={defaultValues}
 		>
-			{({ handleSubmit, handleChange, values, errors, setFieldValue }) =>
+			{({ handleSubmit, handleChange, values, errors, setFieldValue, setValues }) =>
 				(
 					<div>
 						<Form noValidate onSubmit={handleSubmit}>
@@ -634,6 +610,10 @@ export default function MacrosPage() {
 														handleChange={handleChange}
 														index={i}
 														setFieldValue={setFieldValue}
+														deleteMacroInput={(i) => {
+															macro.macroInputs.splice(i, 1);
+															setValues(values);
+														}}
 														buttonNames={buttonNames}
 														macroList={values.macroList}
 													/>
