@@ -1493,6 +1493,9 @@ std::string setAddonOptions()
     docToValue(keyboardHostOptions.mapping.keyButtonA1, doc, "keyboardHostMap", "A1");
     docToValue(keyboardHostOptions.mapping.keyButtonA2, doc, "keyboardHostMap", "A2");
 
+    ControllerHostOptions& controllerHostOptions = Storage::getInstance().getAddonOptions().controllerHostOptions;
+    docToValue(controllerHostOptions.enabled, doc, "ControllerHostAddonEnabled");
+
     RotaryOptions& rotaryOptions = Storage::getInstance().getAddonOptions().rotaryOptions;
     docToValue(rotaryOptions.enabled, doc, "RotaryAddonEnabled");
     docToValue(rotaryOptions.encoderOne.enabled, doc, "encoderOneEnabled");
@@ -1906,6 +1909,9 @@ std::string getAddonOptions()
     writeDoc(doc, "keyboardHostMap", "R3", keyboardHostOptions.mapping.keyButtonR3);
     writeDoc(doc, "keyboardHostMap", "A1", keyboardHostOptions.mapping.keyButtonA1);
     writeDoc(doc, "keyboardHostMap", "A2", keyboardHostOptions.mapping.keyButtonA2);
+
+    const ControllerHostOptions& controllerHostOptions = Storage::getInstance().getAddonOptions().controllerHostOptions;
+    writeDoc(doc, "ControllerHostAddonEnabled", controllerHostOptions.enabled);
 
     AnalogADS1256Options& ads1256Options = Storage::getInstance().getAddonOptions().analogADS1256Options;
     writeDoc(doc, "Analog1256Enabled", ads1256Options.enabled);
