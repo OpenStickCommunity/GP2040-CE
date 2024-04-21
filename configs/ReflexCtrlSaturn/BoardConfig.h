@@ -19,15 +19,6 @@
 #define USB_PERIPHERAL_PIN_DPLUS 14
 #define USB_PERIPHERAL_PIN_ORDER 0
 
-// This is the main pin definition section.
-// This will let you specify which GPIO pin each button is assigned too.
-// You can set any of the main pins as `-1` to disable it.
-// The Turbo pin and LS + RS slider pins can also be set to `-1` to disable that functionality.
-// Please note that only when `PIN_BUTTON_TURBO` is set to `-1` will the `T##` be removed from a connected display.
-// Please note that only when `PIN_SLIDER_ONE` and  `PIN_SLIDER_TWO` are set to `-1` will the button combo shortcut for DP/LS/RS work.
-// The buttons are listed in GP2040 configuration, beside each the listed order is *GP2040 / Xinput / Switch / PS3 / Directinput / Arcade*
-
-
 // Main pin mapping Configuration
 //                                                  // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define GPIO_PIN_02 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
@@ -42,12 +33,7 @@
 #define GPIO_PIN_11 GpioAction::BUTTON_PRESS_B4     // B4     | Y      | X       | Triangle | 4      | P2     |
 #define GPIO_PIN_08 GpioAction::BUTTON_PRESS_R1     // R1     | RB     | R       | R1       | 6      | P3     |
 #define GPIO_PIN_12 GpioAction::BUTTON_PRESS_L1     // L1     | LB     | L       | L1       | 5      | P4     |
-//#define GPIO_PIN_16 GpioAction::BUTTON_PRESS_S1   // S1     | Back   | Minus   | Select   | 9      | Coin   |
 #define GPIO_PIN_17 GpioAction::BUTTON_PRESS_S2     // S2     | Start  | Plus    | Start    | 10     | Start  |
-//#define GPIO_PIN_12 GpioAction::BUTTON_PRESS_L3   // L3     | LS     | LS      | L3       | 11     | LS     |
-//#define GPIO_PIN_13 GpioAction::BUTTON_PRESS_R3   // R3     | RS     | RS      | R3       | 12     | RS     |
-//#define GPIO_PIN_20 GpioAction::BUTTON_PRESS_A1   // A1     | Guide  | Home    | PS       | 13     | ~      |
-//#define GPIO_PIN_21 GpioAction::BUTTON_PRESS_A2   // A2     | ~      | Capture | ~        | 14     | ~      |
 
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
