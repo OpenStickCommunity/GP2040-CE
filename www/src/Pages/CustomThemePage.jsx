@@ -21,19 +21,19 @@ import WebApi from '../Services/WebApi';
 import {
 	BUTTONS,
 	MAIN_BUTTONS,
-	MAIN_BUTTONS_HAUTE42_13,
-	MAIN_BUTTONS_HAUTE42_16,
-	MAIN_BUTTONS_DUELPAD_16,
+	MAIN_BUTTONS_STICKLESS_13_A,
+	MAIN_BUTTONS_STICKLESS_16_A,
+	MAIN_BUTTONS_STICKLESS_16_B,
 	AUX_BUTTONS,
-	AUX_BUTTONS_HAUTE42_13,
-	AUX_BUTTONS_HAUTE42_16,
-	AUX_BUTTONS_DUELPAD_16,
+	AUX_BUTTONS_STICKLESS_13_A,
+	AUX_BUTTONS_STICKLESS_16_A,
+	AUX_BUTTONS_STICKLESS_16_B,
 	KEYBOARD_LAYOUT,
 	STICK_LAYOUT,
 	STICKLESS_LAYOUT,
-	STICKLESS_HAUTE42_13_LAYOUT,
-	STICKLESS_HAUTE42_16_LAYOUT,
-	STICKLESS_DUELPAD_16_LAYOUT,
+	STICKLESS_13_A_LAYOUT,
+	STICKLESS_16_A_LAYOUT,
+	STICKLESS_16_B_LAYOUT,
 } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 
@@ -59,22 +59,22 @@ const BUTTON_LAYOUTS = [
 		matrix: KEYBOARD_LAYOUT,
 	},
 	{
-		label: 'HAUTE42 13',
+		label: 'Stickless 13 A',
 		value: 3,
-		stickLayout: 'stickless-haute42-13',
-		matrix: STICKLESS_HAUTE42_13_LAYOUT,
+		stickLayout: 'stickless-13-a',
+		matrix: STICKLESS_13_A_LAYOUT,
 	},
 	{
-		label: 'HAUTE42 16',
+		label: 'Stickless 16 A',
 		value: 4,
-		stickLayout: 'stickless-haute42-16',
-		matrix: STICKLESS_HAUTE42_16_LAYOUT,
+		stickLayout: 'stickless-16-a',
+		matrix: STICKLESS_16_A_LAYOUT,
 	},
 	{
-		label: 'DUELPAD 16',
+		label: 'Stickless 16 B',
 		value: 5,
-		stickLayout: 'stickless-duelpad-16',
-		matrix: STICKLESS_DUELPAD_16_LAYOUT,
+		stickLayout: 'stickless-16-b',
+		matrix: STICKLESS_16_B_LAYOUT,
 	},
 ];
 
@@ -330,12 +330,12 @@ const CustomThemePage = () => {
 
 	function getButtonArray() {
 		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
-			case 'stickless-haute42-13':
-				return AUX_BUTTONS_HAUTE42_13;
-			case 'stickless-haute42-16':
-				return AUX_BUTTONS_HAUTE42_16;
-			case 'stickless-duelpad-16':
-				return AUX_BUTTONS_DUELPAD_16;
+			case 'stickless-13-a':
+				return AUX_BUTTONS_STICKLESS_13_A;
+			case 'stickless-16-a':
+				return AUX_BUTTONS_STICKLESS_16_A;
+			case 'stickless-16-b':
+				return AUX_BUTTONS_STICKLESS_16_B;
 			default:
 				return AUX_BUTTONS;
 		}
@@ -343,12 +343,12 @@ const CustomThemePage = () => {
 
 	function getMainButtons() {
 		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
-			case 'stickless-haute42-13':
-				return MAIN_BUTTONS_HAUTE42_13;
-			case 'stickless-haute42-16':
-				return MAIN_BUTTONS_HAUTE42_16;
-			case 'stickless-duelpad-16':
-				return MAIN_BUTTONS_DUELPAD_16;
+			case 'stickless-13-a':
+				return MAIN_BUTTONS_STICKLESS_13_A;
+			case 'stickless-16-a':
+				return MAIN_BUTTONS_STICKLESS_16_A;
+			case 'stickless-16-b':
+				return MAIN_BUTTONS_STICKLESS_16_B;
 			default:
 				return MAIN_BUTTONS;
 		}

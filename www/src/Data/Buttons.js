@@ -163,9 +163,9 @@ export const BUTTONS = {
 };
 
 export const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2'];
-export const AUX_BUTTONS_HAUTE42_13 = ['S1', 'S2', 'L3', 'R3', 'A2'];
-export const AUX_BUTTONS_HAUTE42_16 = ['S1', 'S2'];
-export const AUX_BUTTONS_DUELPAD_16 = ['S1', 'S2'];
+export const AUX_BUTTONS_STICKLESS_13_A = ['S1', 'S2', 'L3', 'R3', 'A2'];
+export const AUX_BUTTONS_STICKLESS_16_A = ['S1', 'S2'];
+export const AUX_BUTTONS_STICKLESS_16_B = ['S1', 'S2'];
 export const MAIN_BUTTONS = [
 	'Up',
 	'Down',
@@ -180,7 +180,7 @@ export const MAIN_BUTTONS = [
 	'L2',
 	'R2',
 ];
-export const MAIN_BUTTONS_HAUTE42_13 = [
+export const MAIN_BUTTONS_STICKLESS_13_A = [
 	'Up',
 	'A1',
 	'Down',
@@ -195,7 +195,7 @@ export const MAIN_BUTTONS_HAUTE42_13 = [
 	'L2',
 	'R2',
 ];
-export const MAIN_BUTTONS_HAUTE42_16 = [
+export const MAIN_BUTTONS_STICKLESS_16_A = [
 	'Up',
 	'A1',
 	'A2',
@@ -213,7 +213,7 @@ export const MAIN_BUTTONS_HAUTE42_16 = [
 	'L2',
 	'R2',
 ];
-export const MAIN_BUTTONS_DUELPAD_16 = [
+export const MAIN_BUTTONS_STICKLESS_16_B = [
 	'Up',
 	'A1',
 	'A2',
@@ -253,7 +253,7 @@ export const STICKLESS_LAYOUT = [
 	['L1', 'L2', null],
 ];
 
-export const STICKLESS_HAUTE42_13_LAYOUT = [
+export const STICKLESS_13_A_LAYOUT = [
 	[null, 'A1', null],
 	['Left', null, null],
 	['Down', null, null],
@@ -265,7 +265,7 @@ export const STICKLESS_HAUTE42_13_LAYOUT = [
 	['L1', 'L2', null],
 ];
 
-export const STICKLESS_HAUTE42_16_LAYOUT = [
+export const STICKLESS_16_A_LAYOUT = [
 	[null, 'A1', 'A2'],
 	['Left', null, null],
 	['Down', null, null],
@@ -277,7 +277,7 @@ export const STICKLESS_HAUTE42_16_LAYOUT = [
 	['L1', 'L2', null],
 ];
 
-export const STICKLESS_DUELPAD_16_LAYOUT = [
+export const STICKLESS_16_B_LAYOUT = [
 	[null, 'A1', 'A2'],
 	['Left', null, null],
 	['Down', null, null],

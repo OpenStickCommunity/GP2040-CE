@@ -391,7 +391,7 @@ $button-keycap: 19px;
 	}
 }
 
-.led-preview-stickless-haute42-13 {
+.led-preview-stickless-13-a {
 	.A1 {
 		@include arcade-button($button-24mm, true);
 		// left: calc(50% - #{$button-24mm * 3.5});
@@ -462,7 +462,7 @@ $button-keycap: 19px;
 	}
 }
 
-.led-preview-stickless-haute42-16 {
+.led-preview-stickless-16-a {
 	.A1 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% - #{$button-24mm * 3.5});
@@ -547,7 +547,7 @@ $button-keycap: 19px;
 	}
 }
 
-.led-preview-stickless-duelpad-16 {
+.led-preview-stickless-16-b {
 	.A1 {
 		@include arcade-button($button-24mm, true);
 		left: calc(50% - #{$button-24mm * 3.5});
