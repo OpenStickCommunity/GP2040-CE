@@ -328,7 +328,7 @@ const CustomThemePage = () => {
 		}
 	};
 
-	function getButtonArray() {
+	function getAuxButtons() {
 		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
 			case 'stickless-13-a':
 				return AUX_BUTTONS_STICKLESS_13_A;
@@ -354,7 +354,7 @@ const CustomThemePage = () => {
 		}
 	}
 	
-	const buttonArray = getButtonArray();
+	const auxButtons = getAuxButtons();
 	const mainButtons = getMainButtons();
 
 	const submit = async () => {
@@ -472,7 +472,7 @@ const CustomThemePage = () => {
 										onContextMenu={(e) => e.preventDefault()}
 									>
 										<div className="container-aux">
-											{buttonArray.map((buttonName) => (
+											{auxButtons.map((buttonName) => (
 												<LEDButton
 													key={`led-button-${buttonName}`}
 													className={`${buttonName} ${
