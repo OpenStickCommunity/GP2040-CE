@@ -53,28 +53,28 @@ const BUTTON_LAYOUTS = [
 		matrix: STICKLESS_LAYOUT,
 	},
 	{
-		label: 'WASD',
-		value: 2,
-		stickLayout: 'keyboard',
-		matrix: KEYBOARD_LAYOUT,
-	},
-	{
 		label: 'Stickless 13 A',
-		value: 3,
+		value: 2,
 		stickLayout: 'stickless-13-a',
 		matrix: STICKLESS_13_A_LAYOUT,
 	},
 	{
 		label: 'Stickless 16 A',
-		value: 4,
+		value: 3,
 		stickLayout: 'stickless-16-a',
 		matrix: STICKLESS_16_A_LAYOUT,
 	},
 	{
 		label: 'Stickless 16 B',
-		value: 5,
+		value: 4,
 		stickLayout: 'stickless-16-b',
 		matrix: STICKLESS_16_B_LAYOUT,
+	},
+	{
+		label: 'WASD',
+		value: 5,
+		stickLayout: 'keyboard',
+		matrix: KEYBOARD_LAYOUT,
 	},
 ];
 
