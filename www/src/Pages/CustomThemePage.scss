@@ -462,6 +462,81 @@ $button-keycap: 19px;
 	}
 }
 
+.led-preview-stickless-14-a {
+	.Up {
+		@include arcade-button($button-24mm, true);
+		left: 50%;
+		right: 50%;
+		top: calc(50% + #{$button-24mm * 1.5});
+	}
+	.Left {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% - #{$button-24mm * 7.75});
+		top: $button-24mm;
+	}
+	.Down {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% - #{$button-24mm * 4.5});
+		top: $button-24mm;
+	}
+	.Right {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% - #{$button-24mm * 1.5});
+		top: $button-24mm * 2.5;
+	}
+
+	.B3 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 1.5});
+		top: $button-24mm;
+	}
+	.B4 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 4.75});
+		top: 0;
+	}
+	.R1 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 8});
+		top: 0;
+	}
+	.L1 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 11.25});
+		top: 0;
+	}
+	.B1 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 1.25});
+		top: $button-24mm * 4.25;
+	}
+	.B2 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 4.5});
+		top: $button-24mm * 3.25;
+	}
+	.R2 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 7.75});
+		top: $button-24mm * 3.25;
+	}
+	.L2 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 11});
+		top: $button-24mm * 3.25;
+	}
+	.R3 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% + #{$button-24mm * 3.5});
+		top: calc(37% + #{$button-24mm * 3});
+	}
+	.L3 {
+		@include arcade-button($button-24mm, true);
+		left: calc(50% - #{$button-24mm * 11});
+		top: $button-24mm * 2;
+	}
+}
+
 .led-preview-stickless-16-a {
 	.A1 {
 		@include arcade-button($button-24mm, true);

@@ -22,16 +22,19 @@ import {
 	BUTTONS,
 	MAIN_BUTTONS,
 	MAIN_BUTTONS_STICKLESS_13_A,
+	MAIN_BUTTONS_STICKLESS_14_A,
 	MAIN_BUTTONS_STICKLESS_16_A,
 	MAIN_BUTTONS_STICKLESS_16_B,
 	AUX_BUTTONS,
 	AUX_BUTTONS_STICKLESS_13_A,
+	AUX_BUTTONS_STICKLESS_14_A,
 	AUX_BUTTONS_STICKLESS_16_A,
 	AUX_BUTTONS_STICKLESS_16_B,
 	KEYBOARD_LAYOUT,
 	STICK_LAYOUT,
 	STICKLESS_LAYOUT,
 	STICKLESS_13_A_LAYOUT,
+	STICKLESS_14_A_LAYOUT,
 	STICKLESS_16_A_LAYOUT,
 	STICKLESS_16_B_LAYOUT,
 } from '../Data/Buttons';
@@ -59,20 +62,26 @@ const BUTTON_LAYOUTS = [
 		matrix: STICKLESS_13_A_LAYOUT,
 	},
 	{
-		label: 'Stickless 16 A',
+		label: 'Stickless 14 A',
 		value: 3,
+		stickLayout: 'stickless-14-a',
+		matrix: STICKLESS_14_A_LAYOUT,
+	},
+	{
+		label: 'Stickless 16 A',
+		value: 4,
 		stickLayout: 'stickless-16-a',
 		matrix: STICKLESS_16_A_LAYOUT,
 	},
 	{
 		label: 'Stickless 16 B',
-		value: 4,
+		value: 5,
 		stickLayout: 'stickless-16-b',
 		matrix: STICKLESS_16_B_LAYOUT,
 	},
 	{
 		label: 'WASD',
-		value: 5,
+		value: 6,
 		stickLayout: 'keyboard',
 		matrix: KEYBOARD_LAYOUT,
 	},
@@ -332,6 +341,8 @@ const CustomThemePage = () => {
 		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
 			case 'stickless-13-a':
 				return AUX_BUTTONS_STICKLESS_13_A;
+			case 'stickless-14-a':
+				return AUX_BUTTONS_STICKLESS_14_A;
 			case 'stickless-16-a':
 				return AUX_BUTTONS_STICKLESS_16_A;
 			case 'stickless-16-b':
@@ -345,6 +356,8 @@ const CustomThemePage = () => {
 		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
 			case 'stickless-13-a':
 				return MAIN_BUTTONS_STICKLESS_13_A;
+			case 'stickless-14-a':
+				return MAIN_BUTTONS_STICKLESS_14_A;
 			case 'stickless-16-a':
 				return MAIN_BUTTONS_STICKLESS_16_A;
 			case 'stickless-16-b':
