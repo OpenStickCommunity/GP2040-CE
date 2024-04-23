@@ -18,74 +18,10 @@ import { AppContext } from '../Contexts/AppContext';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
-import {
-	BUTTONS,
-	MAIN_BUTTONS,
-	MAIN_BUTTONS_STICKLESS_13,
-	MAIN_BUTTONS_STICKLESS_14,
-	MAIN_BUTTONS_STICKLESS_16,
-	MAIN_BUTTONS_STICKLESS_16_A,
-	AUX_BUTTONS,
-	AUX_BUTTONS_STICKLESS_13,
-	AUX_BUTTONS_STICKLESS_14,
-	AUX_BUTTONS_STICKLESS_16,
-	AUX_BUTTONS_STICKLESS_16_A,
-	KEYBOARD_LAYOUT,
-	STICK_LAYOUT,
-	STICKLESS_LAYOUT,
-	STICKLESS_13_LAYOUT,
-	STICKLESS_14_LAYOUT,
-	STICKLESS_16_LAYOUT,
-	STICKLESS_16_A_LAYOUT,
-} from '../Data/Buttons';
+import { BUTTONS, BUTTON_LAYOUTS } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 
 import './CustomThemePage.scss';
-
-const BUTTON_LAYOUTS = [
-	{
-		label: 'Stick',
-		value: 0,
-		stickLayout: 'standard',
-		matrix: STICK_LAYOUT,
-	},
-	{
-		label: 'Stickless',
-		value: 1,
-		stickLayout: 'stickless',
-		matrix: STICKLESS_LAYOUT,
-	},
-	{
-		label: 'Stickless 13',
-		value: 2,
-		stickLayout: 'stickless-13',
-		matrix: STICKLESS_13_LAYOUT,
-	},
-	{
-		label: 'Stickless 14',
-		value: 3,
-		stickLayout: 'stickless-14',
-		matrix: STICKLESS_14_LAYOUT,
-	},
-	{
-		label: 'Stickless 16',
-		value: 4,
-		stickLayout: 'stickless-16',
-		matrix: STICKLESS_16_LAYOUT,
-	},
-	{
-		label: 'Stickless 16 A',
-		value: 5,
-		stickLayout: 'stickless-16-a',
-		matrix: STICKLESS_16_A_LAYOUT,
-	},
-	{
-		label: 'WASD',
-		value: 6,
-		stickLayout: 'keyboard',
-		matrix: KEYBOARD_LAYOUT,
-	},
-];
 
 const COLOR_PICKER_POSITIONS = [
 	{
@@ -337,39 +273,6 @@ const CustomThemePage = () => {
 		}
 	};
 
-	function getAuxButtons() {
-		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
-			case 'stickless-13':
-				return AUX_BUTTONS_STICKLESS_13;
-			case 'stickless-14':
-				return AUX_BUTTONS_STICKLESS_14;
-			case 'stickless-16':
-				return AUX_BUTTONS_STICKLESS_16;
-			case 'stickless-16-a':
-				return AUX_BUTTONS_STICKLESS_16_A;
-			default:
-				return AUX_BUTTONS;
-		}
-	}
-
-	function getMainButtons() {
-		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
-			case 'stickless-13':
-				return MAIN_BUTTONS_STICKLESS_13;
-			case 'stickless-14':
-				return MAIN_BUTTONS_STICKLESS_14;
-			case 'stickless-16':
-				return MAIN_BUTTONS_STICKLESS_16;
-			case 'stickless-16-a':
-				return MAIN_BUTTONS_STICKLESS_16_A;
-			default:
-				return MAIN_BUTTONS;
-		}
-	}
-	
-	const auxButtons = getAuxButtons();
-	const mainButtons = getMainButtons();
-
 	const submit = async () => {
 		const leds = { ...customTheme };
 		specialButtons.forEach((b) => delete leds[b]);
@@ -485,7 +388,7 @@ const CustomThemePage = () => {
 										onContextMenu={(e) => e.preventDefault()}
 									>
 										<div className="container-aux">
-											{auxButtons.map((buttonName) => (
+											{BUTTON_LAYOUTS[ledLayout]?.auxButtons.map((buttonName) => (
 												<LEDButton
 													key={`led-button-${buttonName}`}
 													className={`${buttonName} ${
@@ -500,7 +403,7 @@ const CustomThemePage = () => {
 											))}
 										</div>
 										<div className="container-main">
-											{mainButtons.map((buttonName) => (
+											{BUTTON_LAYOUTS[ledLayout]?.mainButtons.map((buttonName) => (
 												<LEDButton
 													key={`led-button-${buttonName}`}
 													className={`${buttonName} ${
