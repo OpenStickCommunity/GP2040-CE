@@ -283,38 +283,35 @@ export const STICKLESS_13_A_LAYOUT = [
 ];
 
 export const STICKLESS_14_A_LAYOUT = [
-	['L3', 'Left', null],
+	['L3', null, null],
+	['Left', null, null],
 	['Down', null, null],
 	['Right', null, null],
-	[null, 'Up', 'R3'],
-	['B3', 'B1', null],
-	['B4', 'B2', null],
+	['B3', 'B1', 'Up'],
+	['B4', 'B2', 'R3'],
 	['R1', 'R2', null],
 	['L1', 'L2', null],
 ];
 
 export const STICKLESS_16_A_LAYOUT = [
-	[null, 'A1', 'A2'],
-	['Left', null, null],
-	['Down', null, null],
-	['Right', null, null],
-	['L3', 'Up', 'R3'],
-	['B3', 'B1', null],
-	['B4', 'B2', null],
-	['R1', 'R2', null],
-	['L1', 'L2', null],
+	[null, 'Left', null, null],
+	['A1', 'Down', null, null],
+	[null, 'Right', null, 'L3'],
+	['A2', 'B3', 'B1', 'Up'],
+	[null, 'B4', 'B2', 'R3'],
+	[null, 'R1', 'R2', null],
+	[null, 'L1', 'L2', null],
 ];
 
 export const STICKLESS_16_B_LAYOUT = [
-	[null, 'A1', 'A2'],
-	['Left', null, null],
-	['Down', null, null],
-	['Right', null, null],
-	['L3', 'Up', 'R3'],
-	['B3', 'B1', null],
-	['B4', 'B2', null],
-	['R1', 'R2', null],
-	['L1', 'L2', null],
+	['L3', null, null, null],
+	[null, 'Left', null, null],
+	['A1', 'Down', null, null],
+	[null, 'Right', null, null],
+	['A2', 'B3', 'B1', 'Up'],
+	[null, 'B4', 'B2', 'R3'],
+	[null, 'R1', 'R2', null],
+	[null, 'L1', 'L2', null],
 ];
 
 export const KEYBOARD_LAYOUT = [
