@@ -163,10 +163,10 @@ export const BUTTONS = {
 };
 
 export const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2'];
-export const AUX_BUTTONS_STICKLESS_13_A = ['S1', 'S2', 'L3', 'R3', 'A2'];
-export const AUX_BUTTONS_STICKLESS_14_A = ['S1', 'S2', 'A1', 'A2'];
+export const AUX_BUTTONS_STICKLESS_13 = ['S1', 'S2', 'L3', 'R3', 'A2'];
+export const AUX_BUTTONS_STICKLESS_14 = ['S1', 'S2', 'A1', 'A2'];
+export const AUX_BUTTONS_STICKLESS_16 = ['S1', 'S2'];
 export const AUX_BUTTONS_STICKLESS_16_A = ['S1', 'S2'];
-export const AUX_BUTTONS_STICKLESS_16_B = ['S1', 'S2'];
 export const MAIN_BUTTONS = [
 	'Up',
 	'Down',
@@ -181,7 +181,7 @@ export const MAIN_BUTTONS = [
 	'L2',
 	'R2',
 ];
-export const MAIN_BUTTONS_STICKLESS_13_A = [
+export const MAIN_BUTTONS_STICKLESS_13 = [
 	'Up',
 	'A1',
 	'Down',
@@ -196,7 +196,7 @@ export const MAIN_BUTTONS_STICKLESS_13_A = [
 	'L2',
 	'R2',
 ];
-export const MAIN_BUTTONS_STICKLESS_14_A = [
+export const MAIN_BUTTONS_STICKLESS_14 = [
 	'Up',
 	'Down',
 	'Left',
@@ -212,7 +212,7 @@ export const MAIN_BUTTONS_STICKLESS_14_A = [
 	'L3',
 	'R3',
 ];
-export const MAIN_BUTTONS_STICKLESS_16_A = [
+export const MAIN_BUTTONS_STICKLESS_16 = [
 	'Up',
 	'A1',
 	'Down',
@@ -230,7 +230,7 @@ export const MAIN_BUTTONS_STICKLESS_16_A = [
 	'L3',
 	'A2',
 ];
-export const MAIN_BUTTONS_STICKLESS_16_B = [
+export const MAIN_BUTTONS_STICKLESS_16_A = [
 	'Up',
 	'A1',
 	'Down',
@@ -270,7 +270,7 @@ export const STICKLESS_LAYOUT = [
 	['L1', 'L2', null],
 ];
 
-export const STICKLESS_13_A_LAYOUT = [
+export const STICKLESS_13_LAYOUT = [
 	[null, 'A1', null],
 	['Left', null, null],
 	['Down', null, null],
@@ -282,7 +282,7 @@ export const STICKLESS_13_A_LAYOUT = [
 	['L1', 'L2', null],
 ];
 
-export const STICKLESS_14_A_LAYOUT = [
+export const STICKLESS_14_LAYOUT = [
 	['L3', null, null],
 	['Left', null, null],
 	['Down', null, null],
@@ -293,7 +293,7 @@ export const STICKLESS_14_A_LAYOUT = [
 	['L1', 'L2', null],
 ];
 
-export const STICKLESS_16_A_LAYOUT = [
+export const STICKLESS_16_LAYOUT = [
 	[null, 'Left', null, null],
 	['A1', 'Down', null, null],
 	[null, 'Right', null, 'L3'],
@@ -303,7 +303,7 @@ export const STICKLESS_16_A_LAYOUT = [
 	[null, 'L1', 'L2', null],
 ];
 
-export const STICKLESS_16_B_LAYOUT = [
+export const STICKLESS_16_A_LAYOUT = [
 	['L3', null, null, null],
 	[null, 'Left', null, null],
 	['A1', 'Down', null, null],

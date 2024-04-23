@@ -21,22 +21,22 @@ import WebApi from '../Services/WebApi';
 import {
 	BUTTONS,
 	MAIN_BUTTONS,
-	MAIN_BUTTONS_STICKLESS_13_A,
-	MAIN_BUTTONS_STICKLESS_14_A,
+	MAIN_BUTTONS_STICKLESS_13,
+	MAIN_BUTTONS_STICKLESS_14,
+	MAIN_BUTTONS_STICKLESS_16,
 	MAIN_BUTTONS_STICKLESS_16_A,
-	MAIN_BUTTONS_STICKLESS_16_B,
 	AUX_BUTTONS,
-	AUX_BUTTONS_STICKLESS_13_A,
-	AUX_BUTTONS_STICKLESS_14_A,
+	AUX_BUTTONS_STICKLESS_13,
+	AUX_BUTTONS_STICKLESS_14,
+	AUX_BUTTONS_STICKLESS_16,
 	AUX_BUTTONS_STICKLESS_16_A,
-	AUX_BUTTONS_STICKLESS_16_B,
 	KEYBOARD_LAYOUT,
 	STICK_LAYOUT,
 	STICKLESS_LAYOUT,
-	STICKLESS_13_A_LAYOUT,
-	STICKLESS_14_A_LAYOUT,
+	STICKLESS_13_LAYOUT,
+	STICKLESS_14_LAYOUT,
+	STICKLESS_16_LAYOUT,
 	STICKLESS_16_A_LAYOUT,
-	STICKLESS_16_B_LAYOUT,
 } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 
@@ -56,28 +56,28 @@ const BUTTON_LAYOUTS = [
 		matrix: STICKLESS_LAYOUT,
 	},
 	{
-		label: 'Stickless 13 A',
+		label: 'Stickless 13',
 		value: 2,
-		stickLayout: 'stickless-13-a',
-		matrix: STICKLESS_13_A_LAYOUT,
+		stickLayout: 'stickless-13',
+		matrix: STICKLESS_13_LAYOUT,
 	},
 	{
-		label: 'Stickless 14 A',
+		label: 'Stickless 14',
 		value: 3,
-		stickLayout: 'stickless-14-a',
-		matrix: STICKLESS_14_A_LAYOUT,
+		stickLayout: 'stickless-14',
+		matrix: STICKLESS_14_LAYOUT,
+	},
+	{
+		label: 'Stickless 16',
+		value: 4,
+		stickLayout: 'stickless-16',
+		matrix: STICKLESS_16_LAYOUT,
 	},
 	{
 		label: 'Stickless 16 A',
-		value: 4,
+		value: 5,
 		stickLayout: 'stickless-16-a',
 		matrix: STICKLESS_16_A_LAYOUT,
-	},
-	{
-		label: 'Stickless 16 B',
-		value: 5,
-		stickLayout: 'stickless-16-b',
-		matrix: STICKLESS_16_B_LAYOUT,
 	},
 	{
 		label: 'WASD',
@@ -339,14 +339,14 @@ const CustomThemePage = () => {
 
 	function getAuxButtons() {
 		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
-			case 'stickless-13-a':
-				return AUX_BUTTONS_STICKLESS_13_A;
-			case 'stickless-14-a':
-				return AUX_BUTTONS_STICKLESS_14_A;
+			case 'stickless-13':
+				return AUX_BUTTONS_STICKLESS_13;
+			case 'stickless-14':
+				return AUX_BUTTONS_STICKLESS_14;
+			case 'stickless-16':
+				return AUX_BUTTONS_STICKLESS_16;
 			case 'stickless-16-a':
 				return AUX_BUTTONS_STICKLESS_16_A;
-			case 'stickless-16-b':
-				return AUX_BUTTONS_STICKLESS_16_B;
 			default:
 				return AUX_BUTTONS;
 		}
@@ -354,14 +354,14 @@ const CustomThemePage = () => {
 
 	function getMainButtons() {
 		switch (BUTTON_LAYOUTS[ledLayout]?.stickLayout) {
-			case 'stickless-13-a':
-				return MAIN_BUTTONS_STICKLESS_13_A;
-			case 'stickless-14-a':
-				return MAIN_BUTTONS_STICKLESS_14_A;
+			case 'stickless-13':
+				return MAIN_BUTTONS_STICKLESS_13;
+			case 'stickless-14':
+				return MAIN_BUTTONS_STICKLESS_14;
+			case 'stickless-16':
+				return MAIN_BUTTONS_STICKLESS_16;
 			case 'stickless-16-a':
 				return MAIN_BUTTONS_STICKLESS_16_A;
-			case 'stickless-16-b':
-				return MAIN_BUTTONS_STICKLESS_16_B;
 			default:
 				return MAIN_BUTTONS;
 		}
