@@ -107,6 +107,7 @@ bool GPGFX_TinySSD1306::isSH1106(int detectedDisplay) {
 
 void GPGFX_TinySSD1306::setPower(bool isPowered) {
 	_isPowered = isPowered;
+	sendCommand(_isPowered ? CommandOps::DISPLAY_ON : CommandOps::DISPLAY_OFF);
 }
 
 void GPGFX_TinySSD1306::clear() {
