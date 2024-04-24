@@ -22,7 +22,6 @@ bool DisplayAddon::available() {
 }
 
 void DisplayAddon::setup() {
-    //stdio_init_all();
     const DisplayOptions& options = Storage::getInstance().getDisplayOptions();
     PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
 

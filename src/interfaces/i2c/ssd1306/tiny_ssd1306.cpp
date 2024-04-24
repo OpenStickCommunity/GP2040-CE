@@ -122,6 +122,8 @@ void GPGFX_TinySSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
             x+=2;
         }
 
+        if (x>=MAX_SCREEN_WIDTH) return;
+
 		row=((y/8)*MAX_SCREEN_WIDTH)+x;
 		bitIndex=y % 8;
 
