@@ -9,6 +9,7 @@
 #include "drivers/neogeo/NeoGeoDriver.h"
 #include "drivers/pcengine/PCEngineDriver.h"
 #include "drivers/psclassic/PSClassicDriver.h"
+#include "drivers/ps3/PS3Driver.h"
 #include "drivers/ps4/PS4Driver.h"
 #include "drivers/switch/SwitchDriver.h"
 #include "drivers/xbone/XBOneDriver.h"
@@ -28,9 +29,6 @@ void DriverManager::setup(InputMode mode) {
         case INPUT_MODE_EGRET:
             driver = new EgretDriver();
             break;
-        case INPUT_MODE_HID:
-            driver = new HIDDriver();
-            break;
         case INPUT_MODE_KEYBOARD:
             driver = new KeyboardDriver();
             break;
@@ -45,6 +43,9 @@ void DriverManager::setup(InputMode mode) {
             break;
         case INPUT_MODE_PCEMINI:
             driver = new PCEngineDriver();
+            break;
+        case INPUT_MODE_PS3:
+            driver = new PS3Driver();
             break;
         case INPUT_MODE_PS4:
             driver = new PS4Driver(PS4_CONTROLLER);

@@ -123,9 +123,6 @@ void GP2040::setup() {
 		case BootAction::ENTER_USB_MODE:
 			reset_usb_boot(0, 0);
 			return;
-		case BootAction::SET_INPUT_MODE_HID: // HID drivers
-			inputMode = INPUT_MODE_HID;
-			break;
 		case BootAction::SET_INPUT_MODE_SWITCH:
 			inputMode = INPUT_MODE_SWITCH;
 			break;
@@ -152,6 +149,9 @@ void GP2040::setup() {
 			break;
 		case BootAction::SET_INPUT_MODE_XINPUT: // X-Input Driver
 			inputMode = INPUT_MODE_XINPUT;
+			break;
+		case BootAction::SET_INPUT_MODE_PS3: // PS3 (HID with quirks) driver
+			inputMode = INPUT_MODE_PS3;
 			break;
 		case BootAction::SET_INPUT_MODE_PS4: // PS4 / PS5 Driver
 			inputMode = INPUT_MODE_PS4;
@@ -377,10 +377,10 @@ GP2040::BootAction GP2040::getBootAction() {
                                     return BootAction::SET_INPUT_MODE_XINPUT;
                                 case INPUT_MODE_SWITCH: 
                                     return BootAction::SET_INPUT_MODE_SWITCH;
-                                case INPUT_MODE_HID: 
-                                    return BootAction::SET_INPUT_MODE_HID;
                                 case INPUT_MODE_KEYBOARD: 
                                     return BootAction::SET_INPUT_MODE_KEYBOARD;
+                                case INPUT_MODE_PS3:
+                                    return BootAction::SET_INPUT_MODE_PS3;
                                 case INPUT_MODE_PS4: 
                                     return BootAction::SET_INPUT_MODE_PS4;
                                 case INPUT_MODE_PS5: 
