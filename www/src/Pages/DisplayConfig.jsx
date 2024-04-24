@@ -48,6 +48,8 @@ const BUTTON_LAYOUTS = [
     { label: 'Gitadora Fret', value: 25 }, // BUTTON_LAYOUT_GITADORA_FRET_A
     { label: 'Gitadora Strum', value: 26 }, // BUTTON_LAYOUT_GITADORA_STRUM_A
     { label: 'Board Defined', value: 27 }, // BUTTON_LAYOUT_BOARD_DEFINED_A
+    { label: 'Guitar/Band Hero Fret', value: 28 }, // BUTTON_LAYOUT_BANDHERO_FRET_A
+    { label: 'Guitar/Band Hero Strum', value: 29 }, // BUTTON_LAYOUT_BANDHERO_STRUM_A
 ];
 
 const BUTTON_LAYOUTS_RIGHT = [
@@ -83,6 +85,8 @@ const BUTTON_LAYOUTS_RIGHT = [
     { label: 'Gitadora Fret', value: 29}, // BUTTON_LAYOUT_GITADORA_FRET_B
     { label: 'Gitadora Strum', value: 30}, // BUTTON_LAYOUT_GITADORA_STRUM_B
     { label: 'Board Defined', value: 31 }, // BUTTON_LAYOUT_BOARD_DEFINED_B
+    { label: 'Guitar/Band Hero Fret', value: 32 }, // BUTTON_LAYOUT_BANDHERO_FRET_B
+    { label: 'Guitar/Band Hero Strum', value: 33 }, // BUTTON_LAYOUT_BANDHERO_STRUM_B
 ];
 
 const SPLASH_MODES = [

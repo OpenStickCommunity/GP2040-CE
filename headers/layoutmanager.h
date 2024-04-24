@@ -109,6 +109,8 @@ class LayoutManager {
         LayoutList drawBM7KeyA();
         LayoutList drawGitadoraFretA();
         LayoutList drawGitadoraStrumA();
+        LayoutList drawBandHeroFretA();
+        LayoutList drawBandHeroStrumA();
         LayoutList drawDancepadDDRRight();
         LayoutList drawDancepadPIURight();
         LayoutList drawPopnB();
@@ -118,6 +120,8 @@ class LayoutManager {
         LayoutList drawBM7KeyB();
         LayoutList drawGitadoraFretB();
         LayoutList drawGitadoraStrumB();
+        LayoutList drawBandHeroFretB();
+        LayoutList drawBandHeroStrumB();
     private:
         LayoutManager(){}
 

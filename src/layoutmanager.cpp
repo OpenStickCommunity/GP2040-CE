@@ -105,6 +105,10 @@ LayoutManager::LayoutList LayoutManager::getLeftLayout(uint16_t index) {
             return drawGitadoraStrumA();
         case BUTTON_LAYOUT_BOARD_DEFINED_A:
             return drawBoardDefinedA();
+        case BUTTON_LAYOUT_BANDHERO_FRET_A:
+            return drawBandHeroFretA();
+        case BUTTON_LAYOUT_BANDHERO_STRUM_A:
+            return drawBandHeroStrumA();
         default:
             break;
     }
@@ -181,6 +185,10 @@ LayoutManager::LayoutList LayoutManager::getRightLayout(uint16_t index) {
             return this->drawGitadoraStrumB();
         case BUTTON_LAYOUT_BOARD_DEFINED_B:
             return this->drawBoardDefinedB();
+        case BUTTON_LAYOUT_BANDHERO_FRET_B:
+            return drawBandHeroFretB();
+        case BUTTON_LAYOUT_BANDHERO_STRUM_B:
+            return drawBandHeroStrumB();
         default:
             break;
     }
@@ -456,6 +464,16 @@ LayoutManager::LayoutList LayoutManager::drawGitadoraStrumA()
     return BUTTON_GROUP_GITADORA_STRUM_A;
 }
 
+LayoutManager::LayoutList LayoutManager::drawBandHeroFretA()
+{
+    return BUTTON_GROUP_BANDHERO_FRET_A;
+}
+
+LayoutManager::LayoutList LayoutManager::drawBandHeroStrumA()
+{
+    return BUTTON_GROUP_BANDHERO_STRUM_A;
+}
+
 LayoutManager::LayoutList LayoutManager::drawDancepadDDRRight()
 {
     return BUTTON_GROUP_DANCEPAD_DDR_RIGHT;
@@ -499,6 +517,16 @@ LayoutManager::LayoutList LayoutManager::drawGitadoraFretB()
 LayoutManager::LayoutList LayoutManager::drawGitadoraStrumB()
 {
     return BUTTON_GROUP_GITADORA_STRUM_B;
+}
+
+LayoutManager::LayoutList LayoutManager::drawBandHeroFretB()
+{
+    return BUTTON_GROUP_BANDHERO_FRET_B;
+}
+
+LayoutManager::LayoutList LayoutManager::drawBandHeroStrumB()
+{
+    return BUTTON_GROUP_BANDHERO_STRUM_B;
 }
 
 LayoutManager::LayoutList LayoutManager::drawBlankA()
