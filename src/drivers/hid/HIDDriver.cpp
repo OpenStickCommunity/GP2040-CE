@@ -14,10 +14,7 @@ static bool hid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_requ
 
 void HIDDriver::initialize() {
 	hidReport = {
-		.button_01 = 0, .button_02 = 0, .button_03 = 0, .button_04 = 0,
-		.button_05 = 0, .button_06 = 0, .button_07 = 0, .button_08 = 0,
-		.button_09 = 0, .button_10 = 0, .button_11 = 0, .button_12 = 0,
-		.button_13 = 0, .button_14 = 0, .button_15 = 0, .button_16 = 0,
+		.buttons = 0,
 		.direction = HID_HAT_NOTHING,
 	};
 
@@ -53,20 +50,39 @@ void HIDDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 	// expectations, e.g. both PS3/4/5 modes and Switch modes map to HID as
 	// B3 B4  ==  1 4
 	// B1 B2  ==  2 3
-	hidReport.button_01    = gamepad->pressedB3();
-	hidReport.button_02    = gamepad->pressedB1();
-	hidReport.button_03    = gamepad->pressedB2();
-	hidReport.button_04    = gamepad->pressedB4();
-	hidReport.button_05    = gamepad->pressedL1();
-	hidReport.button_06    = gamepad->pressedR1();
-	hidReport.button_07    = gamepad->pressedL2();
-	hidReport.button_08    = gamepad->pressedR2();
-	hidReport.button_09    = gamepad->pressedS1();
-	hidReport.button_10    = gamepad->pressedS2();
-	hidReport.button_11    = gamepad->pressedL3();
-	hidReport.button_12    = gamepad->pressedR3();
-	hidReport.button_13    = gamepad->pressedA1();
-	hidReport.button_14    = gamepad->pressedA2();
+	hidReport.buttons = 0
+		| (gamepad->pressedB1()    ? GAMEPAD_MASK_B2     : 0)
+		| (gamepad->pressedB2()    ? GAMEPAD_MASK_B3     : 0)
+		| (gamepad->pressedB3()    ? GAMEPAD_MASK_B1     : 0)
+		| (gamepad->pressedB4()    ? GAMEPAD_MASK_B4     : 0)
+		| (gamepad->pressedL1()    ? GAMEPAD_MASK_L1     : 0)
+		| (gamepad->pressedR1()    ? GAMEPAD_MASK_R1     : 0)
+		| (gamepad->pressedL2()    ? GAMEPAD_MASK_L2     : 0)
+		| (gamepad->pressedR2()    ? GAMEPAD_MASK_R2     : 0)
+		| (gamepad->pressedS1()    ? GAMEPAD_MASK_S1     : 0)
+		| (gamepad->pressedS2()    ? GAMEPAD_MASK_S2     : 0)
+		| (gamepad->pressedL3()    ? GAMEPAD_MASK_L3     : 0)
+		| (gamepad->pressedR3()    ? GAMEPAD_MASK_R3     : 0)
+		| (gamepad->pressedA1()    ? GAMEPAD_MASK_A1     : 0)
+		| (gamepad->pressedA2()    ? GAMEPAD_MASK_A2     : 0)
+		// buttons 15 and 16 are reserved for future expansion
+		| (gamepad->pressedUp()    ? GAMEPAD_MASK_DU     : 0)
+		| (gamepad->pressedDown()  ? GAMEPAD_MASK_DD     : 0)
+		| (gamepad->pressedLeft()  ? GAMEPAD_MASK_DL     : 0)
+		| (gamepad->pressedRight() ? GAMEPAD_MASK_DR     : 0)
+		| (gamepad->pressedE1()    ? GAMEPAD_MASK_E1     : 0)
+		| (gamepad->pressedE2()    ? GAMEPAD_MASK_E2     : 0)
+		| (gamepad->pressedE3()    ? GAMEPAD_MASK_E3     : 0)
+		| (gamepad->pressedE4()    ? GAMEPAD_MASK_E4     : 0)
+		| (gamepad->pressedE5()    ? GAMEPAD_MASK_E5     : 0)
+		| (gamepad->pressedE6()    ? GAMEPAD_MASK_E6     : 0)
+		| (gamepad->pressedE7()    ? GAMEPAD_MASK_E7     : 0)
+		| (gamepad->pressedE8()    ? GAMEPAD_MASK_E8     : 0)
+		| (gamepad->pressedE9()    ? GAMEPAD_MASK_E9     : 0)
+		| (gamepad->pressedE10()   ? GAMEPAD_MASK_E10    : 0)
+		| (gamepad->pressedE11()   ? GAMEPAD_MASK_E11    : 0)
+		| (gamepad->pressedE12()   ? GAMEPAD_MASK_E12    : 0)
+	;
 
 	// Wake up TinyUSB device
 	if (tud_suspended())

@@ -40,22 +40,6 @@
 #define HID_HAT_UPLEFT    0x07
 #define HID_HAT_NOTHING   0x08
 
-// Button report (16 bits)
-#define HID_MASK_SQUARE   (1U <<  0)
-#define HID_MASK_CROSS    (1U <<  1)
-#define HID_MASK_CIRCLE   (1U <<  2)
-#define HID_MASK_TRIANGLE (1U <<  3)
-#define HID_MASK_L1       (1U <<  4)
-#define HID_MASK_R1       (1U <<  5)
-#define HID_MASK_L2       (1U <<  6)
-#define HID_MASK_R2       (1U <<  7)
-#define HID_MASK_SELECT   (1U <<  8)
-#define HID_MASK_START    (1U <<  9)
-#define HID_MASK_L3       (1U << 10)
-#define HID_MASK_R3       (1U << 11)
-#define HID_MASK_PS       (1U << 12)
-#define HID_MASK_TP       (1U << 13)
-
 // HID analog sticks only report 8 bits
 #define HID_JOYSTICK_MIN 0x00
 #define HID_JOYSTICK_MID 0x80
@@ -64,22 +48,7 @@
 typedef struct __attribute((packed, aligned(1)))
 {
 	// digital buttons, 0 = off, 1 = on
-	uint8_t button_01 : 1;
-	uint8_t button_02 : 1;
-	uint8_t button_03 : 1;
-	uint8_t button_04 : 1;
-	uint8_t button_05 : 1;
-	uint8_t button_06 : 1;
-	uint8_t button_07 : 1;
-	uint8_t button_08 : 1;
-	uint8_t button_09 : 1;
-	uint8_t button_10 : 1;
-	uint8_t button_11 : 1;
-	uint8_t button_12 : 1;
-	uint8_t button_13 : 1;
-	uint8_t button_14 : 1;
-	uint8_t button_15 : 1;
-	uint8_t button_16 : 1;
+	uint32_t buttons;
 
 	// digital direction, use the dir_* constants(enum) as a hat
 	// 8 = center, 0 = up, 1 = up/right, 2 = right, 3 = right/down
@@ -126,13 +95,13 @@ static const uint8_t hid_report_descriptor[] =
 	0x05, 0x01,        // USAGE_PAGE (Generic Desktop)
 	0x09, 0x05,        // USAGE (Gamepad)
 	0xa1, 0x01,        // COLLECTION (Application)
-	// 16 buttons
+	// 32 buttons
 	0x05, 0x09,        //   USAGE_PAGE (Button)
 	0x19, 0x01,        //   USAGE_MINIMUM (Button 1)
-	0x29, 0x10,        //   USAGE_MAXIMUM (Button 16)
+	0x29, 0x20,        //   USAGE_MAXIMUM (Button 32)
 	0x15, 0x00,        //   LOGICAL_MINIMUM (0)
 	0x25, 0x01,        //   LOGICAL_MAXIMUM (1)
-	0x95, 0x10,        //   REPORT_COUNT (16)
+	0x95, 0x20,        //   REPORT_COUNT (32)
 	0x75, 0x01,        //   REPORT_SIZE (1)
 	0x81, 0x02,        //   INPUT (Data,Var,Abs)
 	// hat (dpad)
