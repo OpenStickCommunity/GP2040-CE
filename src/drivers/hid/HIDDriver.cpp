@@ -7,33 +7,18 @@
 #include "drivers/hid/HIDDescriptors.h"
 #include "drivers/shared/driverhelper.h"
 
-// Magic byte sequence to enable PS button on PS3
-static const uint8_t ps3_magic_init_bytes[8] = {0x21, 0x26, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00};
-
 static bool hid_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request)
 {
-	if ( request->bmRequestType == 0xA1 &&
-		request->bRequest == HID_REQ_CONTROL_GET_REPORT &&
-		request->wValue == 0x0300 ) {
-		return tud_control_xfer(rhport, request, (void *) ps3_magic_init_bytes, sizeof(ps3_magic_init_bytes));
-	} else {
-		return hidd_control_xfer_cb(rhport, stage, request);
-	}
+	return hidd_control_xfer_cb(rhport, stage, request);
 }
 
 void HIDDriver::initialize() {
 	hidReport = {
-		.square_btn = 0, .cross_btn = 0, .circle_btn = 0, .triangle_btn = 0,
-		.l1_btn = 0, .r1_btn = 0, .l2_btn = 0, .r2_btn = 0,
-		.select_btn = 0, .start_btn = 0, .l3_btn = 0, .r3_btn = 0, .ps_btn = 0, .tp_btn = 0,
-		.direction = 0x08,
-		.l_x_axis = HID_JOYSTICK_MID,
-		.l_y_axis = HID_JOYSTICK_MID,
-		.r_x_axis = HID_JOYSTICK_MID,
-		.r_y_axis = HID_JOYSTICK_MID,
-		.right_axis = 0x00, .left_axis = 0x00, .up_axis = 0x00, .down_axis = 0x00,
-		.triangle_axis = 0x00, .circle_axis = 0x00, .cross_axis = 0x00, .square_axis = 0x00,
-		.l1_axis = 0x00, .r1_axis = 0x00, .l2_axis = 0x00, .r2_axis = 0x00
+		.button_01 = 0, .button_02 = 0, .button_03 = 0, .button_04 = 0,
+		.button_05 = 0, .button_06 = 0, .button_07 = 0, .button_08 = 0,
+		.button_09 = 0, .button_10 = 0, .button_11 = 0, .button_12 = 0,
+		.button_13 = 0, .button_14 = 0, .button_15 = 0, .button_16 = 0,
+		.direction = HID_HAT_NOTHING,
 	};
 
 	class_driver = {
@@ -64,45 +49,24 @@ void HIDDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		default:                                     hidReport.direction = HID_HAT_NOTHING;   break;
 	}
 
-	hidReport.cross_btn    = gamepad->pressedB1();
-	hidReport.circle_btn   = gamepad->pressedB2();
-	hidReport.square_btn   = gamepad->pressedB3();
-	hidReport.triangle_btn = gamepad->pressedB4();
-	hidReport.l1_btn       = gamepad->pressedL1();
-	hidReport.r1_btn       = gamepad->pressedR1();
-	hidReport.l2_btn       = gamepad->pressedL2();
-	hidReport.r2_btn       = gamepad->pressedR2();
-	hidReport.select_btn   = gamepad->pressedS1();
-	hidReport.start_btn    = gamepad->pressedS2();
-	hidReport.l3_btn       = gamepad->pressedL3();
-	hidReport.r3_btn       = gamepad->pressedR3();
-	hidReport.ps_btn       = gamepad->pressedA1();
-	hidReport.tp_btn       = gamepad->pressedA2();
-
-	hidReport.l_x_axis = static_cast<uint8_t>(gamepad->state.lx >> 8);
-	hidReport.l_y_axis = static_cast<uint8_t>(gamepad->state.ly >> 8);
-	hidReport.r_x_axis = static_cast<uint8_t>(gamepad->state.rx >> 8);
-	hidReport.r_y_axis = static_cast<uint8_t>(gamepad->state.ry >> 8);
-
-	if (gamepad->hasAnalogTriggers)
-	{
-		hidReport.l2_axis = gamepad->state.lt;
-		hidReport.r2_axis = gamepad->state.rt;
-	} else {
-		hidReport.l2_axis = gamepad->pressedL2() ? 0xFF : 0;
-		hidReport.r2_axis = gamepad->pressedR2() ? 0xFF : 0;
-	}
-
-	hidReport.triangle_axis =	gamepad->pressedB4() ? 0xFF : 0;
-	hidReport.circle_axis =		gamepad->pressedB2() ? 0xFF : 0;
-	hidReport.cross_axis =		gamepad->pressedB1() ? 0xFF : 0;
-	hidReport.square_axis =		gamepad->pressedB3() ? 0xFF : 0;
-	hidReport.l1_axis =		gamepad->pressedL1() ? 0xFF : 0;
-	hidReport.r1_axis =		gamepad->pressedR1() ? 0xFF : 0;
-	hidReport.right_axis =		gamepad->state.dpad & GAMEPAD_MASK_RIGHT ? 0xFF : 0;
-	hidReport.left_axis =		gamepad->state.dpad & GAMEPAD_MASK_LEFT ? 0xFF : 0;
-	hidReport.up_axis =		gamepad->state.dpad & GAMEPAD_MASK_UP ? 0xFF : 0;
-	hidReport.down_axis =		gamepad->state.dpad & GAMEPAD_MASK_DOWN ? 0xFF : 0;
+	// these first three buttons are in this unintuitive order to be compatible with
+	// expectations, e.g. both PS3/4/5 modes and Switch modes map to HID as
+	// B3 B4  ==  1 4
+	// B1 B2  ==  2 3
+	hidReport.button_01    = gamepad->pressedB3();
+	hidReport.button_02    = gamepad->pressedB1();
+	hidReport.button_03    = gamepad->pressedB2();
+	hidReport.button_04    = gamepad->pressedB4();
+	hidReport.button_05    = gamepad->pressedL1();
+	hidReport.button_06    = gamepad->pressedR1();
+	hidReport.button_07    = gamepad->pressedL2();
+	hidReport.button_08    = gamepad->pressedR2();
+	hidReport.button_09    = gamepad->pressedS1();
+	hidReport.button_10    = gamepad->pressedS2();
+	hidReport.button_11    = gamepad->pressedL3();
+	hidReport.button_12    = gamepad->pressedR3();
+	hidReport.button_13    = gamepad->pressedA1();
+	hidReport.button_14    = gamepad->pressedA2();
 
 	// Wake up TinyUSB device
 	if (tud_suspended())
@@ -121,7 +85,7 @@ void HIDDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 
 // tud_hid_get_report_cb
 uint16_t HIDDriver::get_report(uint8_t report_id, hid_report_type_t report_type, uint8_t *buffer, uint16_t reqlen) {
-    memcpy(buffer, &hidReport, sizeof(HIDReport));
+	memcpy(buffer, &hidReport, sizeof(HIDReport));
 	return sizeof(HIDReport);
 }
 
@@ -130,7 +94,7 @@ void HIDDriver::set_report(uint8_t report_id, hid_report_type_t report_type, uin
 
 // Only XboxOG and Xbox One use vendor control xfer cb
 bool HIDDriver::vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request) {
-    return false;
+	return false;
 }
 
 const uint16_t * HIDDriver::get_descriptor_string_cb(uint8_t index, uint16_t langid) {
@@ -139,15 +103,15 @@ const uint16_t * HIDDriver::get_descriptor_string_cb(uint8_t index, uint16_t lan
 }
 
 const uint8_t * HIDDriver::get_descriptor_device_cb() {
-    return hid_device_descriptor;
+	return hid_device_descriptor;
 }
 
 const uint8_t * HIDDriver::get_hid_descriptor_report_cb(uint8_t itf) {
-    return hid_report_descriptor;
+	return hid_report_descriptor;
 }
 
 const uint8_t * HIDDriver::get_descriptor_configuration_cb(uint8_t index) {
-    return hid_configuration_descriptor;
+	return hid_configuration_descriptor;
 }
 
 const uint8_t * HIDDriver::get_descriptor_device_qualifier_cb() {

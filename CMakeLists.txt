@@ -150,6 +150,7 @@ src/drivers/shared/xgip_protocol.cpp
 src/drivers/astro/AstroDriver.cpp
 src/drivers/egret/EgretDriver.cpp
 src/drivers/keyboard/KeyboardDriver.cpp
+src/drivers/hid/HIDDriver.cpp
 src/drivers/mdmini/MDMiniDriver.cpp
 src/drivers/neogeo/NeoGeoDriver.cpp
 src/drivers/net/NetDriver.cpp

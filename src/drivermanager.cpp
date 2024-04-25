@@ -32,6 +32,9 @@ void DriverManager::setup(InputMode mode) {
         case INPUT_MODE_KEYBOARD:
             driver = new KeyboardDriver();
             break;
+        case INPUT_MODE_GENERIC:
+            driver = new HIDDriver();
+            break;
         case INPUT_MODE_MDMINI:
             driver = new MDMiniDriver();
             break;
