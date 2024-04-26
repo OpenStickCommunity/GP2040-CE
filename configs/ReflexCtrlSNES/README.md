@@ -1,14 +1,9 @@
 # GP2040-CE Configuration for the Reflex CTRL SNES Board by MiSTer Addons
 
+![Reflex CTRL SNES](https://github.com/misteraddons/Reflex-CTRL/raw/main/Images/snes.png)
 
-![Reflex Board](assets/ReflexCTRLSNES.jpeg)
+Open source replacement PCB for Nintendo SNES-001 controllers
 
-Reflex Board
-Open source PCB for SNES Controller replacement PCBs
+Purchase: https://misteraddons.com/products/Reflex-CTRL
 
 GitHub: https://github.com/misteraddons/Reflex-CTRL
-Purchase from: 
-
-MiSTer Addons: https://misteraddons.com/
-
-
