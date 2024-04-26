@@ -48,6 +48,7 @@ const BUTTON_LAYOUTS = [
     { label: 'Gitadora Fret', value: 25 }, // BUTTON_LAYOUT_GITADORA_FRET_A
     { label: 'Gitadora Strum', value: 26 }, // BUTTON_LAYOUT_GITADORA_STRUM_A
     { label: 'Board Defined', value: 27 }, // BUTTON_LAYOUT_BOARD_DEFINED_A
+    { label: 'Stickless 16 A', value: 28 }, // BUTTON_LAYOUT_STICKLESS_16_A
 ];
 
 const BUTTON_LAYOUTS_RIGHT = [
@@ -83,6 +84,7 @@ const BUTTON_LAYOUTS_RIGHT = [
     { label: 'Gitadora Fret', value: 29}, // BUTTON_LAYOUT_GITADORA_FRET_B
     { label: 'Gitadora Strum', value: 30}, // BUTTON_LAYOUT_GITADORA_STRUM_B
     { label: 'Board Defined', value: 31 }, // BUTTON_LAYOUT_BOARD_DEFINED_B
+    { label: 'Stickless 16 A', value: 32 }, // BUTTON_LAYOUT_STICKLESS_16B_A
 ];
 
 const SPLASH_MODES = [
@@ -105,9 +107,9 @@ const defaultValues = {
 	i2cBlock: 0,
 	flipDisplay: false,
 	invertDisplay: false,
-	buttonLayout: 0,
+    buttonLayout: 0,
 	buttonLayoutRight: 3,
-	splashDuration: 0,
+    splashDuration: 0,
 	splashMode: 3,
 	splashImage: Array(16 * 64).fill(0), // 128 columns represented by bytes so 16 and 64 rows
 	invertSplash: false,
@@ -130,15 +132,18 @@ const defaultValues = {
 	displaySaverTimeout: 0,
 };
 
+const sortedButtonLayouts = BUTTON_LAYOUTS.sort((a, b) => a.label.localeCompare(b.label));
 const buttonLayoutSchema = yup
 	.number()
 	.required()
-	.oneOf(BUTTON_LAYOUTS.map((o) => o.value))
+	.oneOf(sortedButtonLayouts.map((o) => o.value))
 	.label('Button Layout Left');
+
+const sortedButtonLayoutsRight = BUTTON_LAYOUTS_RIGHT.sort((a, b) => a.label.localeCompare(b.label));
 const buttonLayoutRightSchema = yup
 	.number()
 	.required()
-	.oneOf(BUTTON_LAYOUTS_RIGHT.map((o) => o.value))
+	.oneOf(sortedButtonLayoutsRight.map((o) => o.value))
 	.label('Button Layout Right');
 
 const schema = yup.object().shape({
