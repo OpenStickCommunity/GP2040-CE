@@ -176,11 +176,14 @@ class ButtonLayoutScreen : public GPScreen {
         uint8_t prevLayoutLeft = 0;
         uint8_t prevLayoutRight = 0;
         uint8_t prevProfileNumber = 0;
+        ButtonLayoutParamsLeft prevLeftOptions;
+        ButtonLayoutParamsRight prevRightOptions;
 
         bool macroEnabled;
 
         uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
         void processInputHistory();
+        bool compareCustomLayouts();
         bool pressedUp();
         bool pressedDown();
         bool pressedLeft();
