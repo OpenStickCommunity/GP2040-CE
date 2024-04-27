@@ -370,7 +370,7 @@ async function setCustomTheme(customThemeOptions) {
 
 async function getButtonLayouts(setLoading) {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getButtonLayouts`);
+		const response = await Http.get(`${baseUrl}/api/getButtonLayouts`);
 
 		return response.data;
 	} catch (error) {
@@ -380,7 +380,7 @@ async function getButtonLayouts(setLoading) {
 
 async function getButtonLayoutDefs(setLoading) {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getButtonLayoutDefs`);
+		const response = await Http.get(`${baseUrl}/api/getButtonLayoutDefs`);
 
 		return response.data;
 	} catch (error) {
