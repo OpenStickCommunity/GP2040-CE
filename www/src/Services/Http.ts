@@ -3,15 +3,15 @@
 
 class Http {
 	async get(url: string, headers: object = {}) {
-		const response = await fetch(url, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				...headers,
-			},
-		});
-
 		try {
+			const response = await fetch(url, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					...headers,
+				},
+			});
+
 			const json = await response.json();
 			return Promise.resolve({ data: json });
 		}
@@ -21,16 +21,16 @@ class Http {
 	}
 
 	async post(url: string, body: unknown, headers: object = {}) {
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				...headers,
-			},
-			body: JSON.stringify(body),
-		});
-
 		try {
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					...headers,
+				},
+				body: JSON.stringify(body),
+			});
+
 			const json = await response.json();
 			return Promise.resolve({ data: json });
 		}
