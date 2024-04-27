@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../Contexts/AppContext';
-import axios from 'axios';
+import Http from '../Services/Http';
 import { useTranslation } from 'react-i18next';
 
 import Section from '../Components/Section';
@@ -30,7 +30,7 @@ export default function HomePage() {
 						label: boardConfigLabel,
 						fileName: boardConfigFileName,
 					});
-					axios
+					Http
 						.get(
 							'https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest',
 						)
