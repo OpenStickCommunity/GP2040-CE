@@ -5,7 +5,6 @@ import {
 	Navbar,
 	Button,
 	Modal,
-	Dropdown,
 } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -51,6 +50,10 @@ const Navigation = () => {
 	};
 
 	const { t } = useTranslation('');
+	
+	// eventKey prop is required on NavLink components in order for mobile menu
+	// to autoclose, so just auto increment as we build the menu
+	let eventKey = 0;
 
 	return (
 		<Navbar
@@ -60,42 +63,42 @@ const Navigation = () => {
 			expand="md"
 			fixed="top"
 		>
-			<Navbar.Brand href="/">
-				<img src="images/logo.png" className="title-logo" alt="logo" />{' '}
-				{t('Common:brand-text')}
+			<Navbar.Brand href="/" title={`GP2040-CE ${t('Navigation:home-label')}`}>
+				<img src="images/logo.png" className="title-logo" alt="GP2040-CE logo" />{' '}
 			</Navbar.Brand>
+			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 			<Navbar.Collapse id="basic-navbar-nav">
 				<Nav className="me-auto">
-					<Nav.Link as={NavLink} to="/">
-						{t('Navigation:home-label')}
-					</Nav.Link>
-					<Nav.Link as={NavLink} to="/settings">
+					<Nav.Link as={NavLink} to="/settings" eventKey={eventKey++}>
 						{t('Navigation:settings-label')}
 					</Nav.Link>
 					<NavDropdown title={t('Navigation:config-label')}>
-						<NavDropdown.Item as={NavLink} to="/pin-mapping">
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/pin-mapping">
 							{t('Navigation:pin-mapping-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="/peripheral-mapping">
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/peripheral-mapping">
 							{t('Navigation:peripheral-mapping-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="/led-config">
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/led-config">
 							{t('Navigation:led-config-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="/custom-theme">
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/custom-theme">
 							{t('Navigation:custom-theme-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="/display-config">
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/display-config">
 							{t('Navigation:display-config-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="/add-ons">
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/add-ons">
 							{t('Navigation:add-ons-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="/macro">
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/macro">
 							{t('Navigation:macro-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} to="/backup">
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/backup">
 							{t('Navigation:backup-label')}
+						</NavDropdown.Item>
+						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/reset-settings">
+							<span className="reset-settings-link">{t('Navigation:resetSettings-label')}</span>
 						</NavDropdown.Item>
 					</NavDropdown>
 					<NavDropdown title={t('Navigation:links-label')}>
@@ -109,33 +112,20 @@ const Navigation = () => {
 							{t('Navigation:github-label')}
 						</NavDropdown.Item>
 					</NavDropdown>
-
-					<Dropdown>
-						<Dropdown.Toggle variant="danger">
-							{t('Navigation:dangerZone-label').toUpperCase()}
-						</Dropdown.Toggle>
-
-						<Dropdown.Menu>
-							<Dropdown.Item href="/reset-settings">
-								{t('Navigation:resetSettings-label')}
-							</Dropdown.Item>
-						</Dropdown.Menu>
-					</Dropdown>
 				</Nav>
-				<Nav>
-					<LanguageSelector />
-					<ColorScheme />
+				<Nav className="navbar-actions">
 					<Button
-						style={{ marginRight: '7px' }}
 						variant="success"
 						onClick={handleShow}
 					>
 						{t('Navigation:reboot-label')}
 					</Button>
-					<div style={{ marginTop: '4px', marginRight: '10px' }}>
+					<ColorScheme />
+					<LanguageSelector />
+					<div className="navbar-label-select">
 						<FormSelect
 							name="buttonLabels"
-							className="form-select-sm"
+							className="form-select"
 							value={buttonLabels.buttonLabelType}
 							onChange={updateButtonLabels}
 						>
@@ -148,7 +138,6 @@ const Navigation = () => {
 								</option>
 							))}
 						</FormSelect>
-						<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					</div>
 				</Nav>
 			</Navbar.Collapse>
