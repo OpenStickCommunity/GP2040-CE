@@ -10,6 +10,13 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     _options.inverted = options.inverted;
     _options.font = options.font;
 
+    _options.i2c->readRegister(_options.address, 0x00, &this->screenType, 1);
+    this->screenType &= 0x0F;
+
+    if (isSH1106(this->screenType)) {
+        this->screenType = SCREEN_132x64;
+    }
+
 	uint8_t commands[] = {
 		0x00,
 		CommandOps::DISPLAY_OFF,
@@ -59,8 +66,48 @@ void GPGFX_TinySSD1306::init(GPGFX_DisplayTypeOptions options) {
     drawBuffer(NULL);
 }
 
+bool GPGFX_TinySSD1306::isSH1106(int detectedDisplay) {
+
+    this->setPower(false);
+
+    const uint8_t RANDOM_DATA[] = { 0xbf, 0x88, 0x13, 0x41, 0x00 };
+    uint8_t buffer[4];
+    uint8_t i = 0;
+    for (; i < sizeof(RANDOM_DATA); ++i) {
+        buffer[0] = 0x80; // one command
+        buffer[1] = 0xE0; // read-modify-write
+        buffer[2] = 0xC0; // one data
+        if (_options.i2c->write(_options.address, buffer, 3, false) == 0) {
+            break;
+        }
+
+        // Read two bytes back, the first byte is a dummy read and the second byte is the byte was actually want.
+        if (_options.i2c->read(_options.address, buffer, 2, false) == 0) {
+            break;
+        }
+
+        // Check whether the byte we read is the byte we previously wrote.
+        if (i > 0 && buffer[1] != RANDOM_DATA[i - 1]) {
+            break;
+        }
+
+        // Write the current byte, we will attempt to read it in the next loop iteration.
+        buffer[0] = 0xc0; // one data
+        buffer[1] = RANDOM_DATA[i]; // data byte
+        buffer[2] = 0x80; // one command
+        buffer[3] = 0xEE; // end read-modify-write
+        if (_options.i2c->write(_options.address, buffer, 4, false) == 0) {
+            break;
+        }
+    }
+
+    this->setPower(true);
+    return i == sizeof(RANDOM_DATA);
+}
+
 void GPGFX_TinySSD1306::setPower(bool isPowered) {
 	_isPowered = isPowered;
+	sendCommand(_isPowered ? CommandOps::DISPLAY_ON : CommandOps::DISPLAY_OFF);
 }
 
 void GPGFX_TinySSD1306::clear() {
@@ -72,7 +119,13 @@ void GPGFX_TinySSD1306::drawPixel(uint8_t x, uint8_t y, uint32_t color) {
 
 	if ((x<MAX_SCREEN_WIDTH) and (y<MAX_SCREEN_HEIGHT))
 	{
-		row=((y/8)*128)+x;
+        if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
+            x+=2;
+        }
+
+        if (x>=MAX_SCREEN_WIDTH) return;
+
+		row=((y/8)*MAX_SCREEN_WIDTH)+x;
 		bitIndex=y % 8;
 
         if (color == 1) {
@@ -317,18 +370,37 @@ void GPGFX_TinySSD1306::drawBuffer(uint8_t* pBuffer) {
 
 	int result = -1;
 	
-	sendCommand(CommandOps::PAGE_ADDRESS);
-	sendCommand(0x00);
-	sendCommand(0x07);
-	sendCommand(CommandOps::COLUMN_ADDRESS);
-	sendCommand(0x00);
-	sendCommand(0x7F);
-	if (pBuffer == NULL) {
-		memcpy(&buffer[1],frameBuffer,bufferSize);
-	} else {
-		memcpy(&buffer[1],pBuffer,bufferSize);
-	}
-	result = _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+    if (this->screenType == ScreenAlternatives::SCREEN_132x64) {
+        uint16_t x = 0;
+        uint16_t y = 0;
+        for (y = 0; y < (MAX_SCREEN_HEIGHT/8); y++) {
+            sendCommand(0xB0 + y);
+            sendCommand(x & 0x0F);
+            sendCommand(0x10 | (x >> 4));
+        
+            if (pBuffer == NULL) {
+                memcpy(&buffer[1],&frameBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
+            } else {
+                memcpy(&buffer[1],&pBuffer[y*MAX_SCREEN_WIDTH],MAX_SCREEN_WIDTH);
+            }
+        
+            result = _options.i2c->write(_options.address, buffer, MAX_SCREEN_WIDTH+3, false);
+        }
+    } else {
+        sendCommand(CommandOps::PAGE_ADDRESS);
+        sendCommand(0x00);
+        sendCommand(0x07);
+        sendCommand(CommandOps::COLUMN_ADDRESS);
+        sendCommand(0x00);
+        sendCommand(0x7F);
+
+        if (pBuffer == NULL) {
+            memcpy(&buffer[1],frameBuffer,bufferSize);
+        } else {
+            memcpy(&buffer[1],pBuffer,bufferSize);
+        }
+        result = _options.i2c->write(_options.address, buffer, sizeof(buffer), false);
+    }
 
 	if (framePage < MAX_SCREEN_HEIGHT/8) {
 		framePage++;
