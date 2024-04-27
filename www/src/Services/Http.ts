@@ -11,8 +11,13 @@ class Http {
 			},
 		});
 
-		const json = await response.json();
-		return Promise.resolve({ data: json });
+		try {
+			const json = await response.json();
+			return Promise.resolve({ data: json });
+		}
+		catch (err) {
+			return Promise.reject(err);
+		}
 	}
 
 	async post(url: string, body: unknown, headers: object = {}) {
@@ -25,8 +30,13 @@ class Http {
 			body: JSON.stringify(body),
 		});
 
-		const json = await response.json();
-		return Promise.resolve({ data: json });
+		try {
+			const json = await response.json();
+			return Promise.resolve({ data: json });
+		}
+		catch (err) {
+			return Promise.reject(err);
+		}
 	}
 }
 
