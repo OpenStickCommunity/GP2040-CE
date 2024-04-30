@@ -35,20 +35,19 @@ const BUTTON_LAYOUTS = [
 	{ label: 'Custom', value: 12 }, // BUTTON_LAYOUT_CUSTOM
 	{ label: 'Open_Core0 WASD', value: 13 }, // BUTTON_LAYOUT_OPENCORE0WASDA
 	{ label: 'Stickless 13', value: 14 }, // BUTTON_LAYOUT_STICKLESS_13
-	{ label: 'Stickless 16', value: 15 }, // BUTTON_LAYOUT_STICKLESS_16
-	{ label: 'Stickless 14', value: 16 }, // BUTTON_LAYOUT_STICKLESS_14
-	{ label: 'DDR Dancepad Left', value: 17 }, // BUTTON_LAYOUT_DANCEPAD_DDR_LEFT
-	{ label: 'DDR Dancepad Solo', value: 18 }, // BUTTON_LAYOUT_DANCEPAD_DDR_SOLO
-	{ label: 'PIU Dancepad Left', value: 19 }, // BUTTON_LAYOUT_DANCEPAD_PIU_LEFT
-	{ label: 'Popn Left', value: 20 }, // BUTTON_LAYOUT_POPN_A
-	{ label: 'Taiko', value: 21 }, // BUTTON_LAYOUT_TAIKO_A
-	{ label: 'Beatmania Turntable Left', value: 22 }, // BUTTON_LAYOUT_BM_TURNTABLE_A
-	{ label: 'Beatmania 5 Key Left', value: 23 }, // BUTTON_LAYOUT_BM_5KEY_A
-	{ label: 'Beatmania 7 Key Left', value: 24 }, // BUTTON_LAYOUT_BM_7KEY_A
-	{ label: 'Gitadora Fret', value: 25 }, // BUTTON_LAYOUT_GITADORA_FRET_A
-	{ label: 'Gitadora Strum', value: 26 }, // BUTTON_LAYOUT_GITADORA_STRUM_A
-	{ label: 'Board Defined', value: 27 }, // BUTTON_LAYOUT_BOARD_DEFINED_A
-	{ label: 'Stickless 16 A', value: 28 }, // BUTTON_LAYOUT_STICKLESS_16_A
+    { label: 'Stickless 16', value: 15 }, // BUTTON_LAYOUT_STICKLESS_16
+    { label: 'Stickless 14', value: 16 }, // BUTTON_LAYOUT_STICKLESS_14
+    { label: 'DDR Dancepad Left', value: 17 }, // BUTTON_LAYOUT_DANCEPAD_DDR_LEFT
+    { label: 'DDR Dancepad Solo', value: 18 }, // BUTTON_LAYOUT_DANCEPAD_DDR_SOLO
+    { label: 'PIU Dancepad Left', value: 19 }, // BUTTON_LAYOUT_DANCEPAD_PIU_LEFT
+    { label: 'Popn Left', value: 20 }, // BUTTON_LAYOUT_POPN_A
+    { label: 'Taiko', value: 21 }, // BUTTON_LAYOUT_TAIKO_A
+    { label: 'Beatmania Turntable Left', value: 22 }, // BUTTON_LAYOUT_BM_TURNTABLE_A
+    { label: 'Beatmania 5 Key Left', value: 23 }, // BUTTON_LAYOUT_BM_5KEY_A
+    { label: 'Beatmania 7 Key Left', value: 24 }, // BUTTON_LAYOUT_BM_7KEY_A
+    { label: 'Gitadora Fret', value: 25 }, // BUTTON_LAYOUT_GITADORA_FRET_A
+    { label: 'Gitadora Strum', value: 26 }, // BUTTON_LAYOUT_GITADORA_STRUM_A
+    { label: 'Board Defined', value: 27 }, // BUTTON_LAYOUT_BOARD_DEFINED_A
 ];
 
 const BUTTON_LAYOUTS_RIGHT = [
@@ -72,19 +71,18 @@ const BUTTON_LAYOUTS_RIGHT = [
 	{ label: 'Keyboard 8', value: 17 }, // BUTTON_LAYOUT_KEYBOARD8B
 	{ label: 'Open_Core0 WASD', value: 18 }, // BUTTON_LAYOUT_OPENCORE0WASDB
 	{ label: 'Stickless 13', value: 19 }, // BUTTON_LAYOUT_STICKLESS_13B
-	{ label: 'Stickless 16', value: 20 }, // BUTTON_LAYOUT_STICKLESS_16B
-	{ label: 'Stickless 14', value: 21 }, // BUTTON_LAYOUT_STICKLESS_14B
-	{ label: 'DDR Dancepad Right', value: 22}, // BUTTON_LAYOUT_DANCEPAD_DDR_RIGHT
-	{ label: 'PIU Dancepad Right', value: 23}, // BUTTON_LAYOUT_DANCEPAD_PIU_RIGHT
-	{ label: 'Popn Right', value: 24}, // BUTTON_LAYOUT_POPN_B
-	{ label: 'Taiko', value: 25}, // BUTTON_LAYOUT_TAIKO_B
-	{ label: 'Beatmania Turntable Right', value: 26}, // BUTTON_LAYOUT_BM_TURNTABLE_B
-	{ label: 'Beatmania 5 Key Right', value: 27}, // BUTTON_LAYOUT_BM_5KEY_B
-	{ label: 'Beatmania 7 Key Right', value: 28}, // BUTTON_LAYOUT_BM_7KEY_B
-	{ label: 'Gitadora Fret', value: 29}, // BUTTON_LAYOUT_GITADORA_FRET_B
-	{ label: 'Gitadora Strum', value: 30}, // BUTTON_LAYOUT_GITADORA_STRUM_B
-	{ label: 'Board Defined', value: 31 }, // BUTTON_LAYOUT_BOARD_DEFINED_B
-	{ label: 'Stickless 16 A', value: 32 }, // BUTTON_LAYOUT_STICKLESS_16B_A
+    { label: 'Stickless 16', value: 20 }, // BUTTON_LAYOUT_STICKLESS_16B
+    { label: 'Stickless 14', value: 21 }, // BUTTON_LAYOUT_STICKLESS_14B
+    { label: 'DDR Dancepad Right', value: 22}, // BUTTON_LAYOUT_DANCEPAD_DDR_RIGHT
+    { label: 'PIU Dancepad Right', value: 23}, // BUTTON_LAYOUT_DANCEPAD_PIU_RIGHT
+    { label: 'Popn Right', value: 24}, // BUTTON_LAYOUT_POPN_B
+    { label: 'Taiko', value: 25}, // BUTTON_LAYOUT_TAIKO_B
+    { label: 'Beatmania Turntable Right', value: 26}, // BUTTON_LAYOUT_BM_TURNTABLE_B
+    { label: 'Beatmania 5 Key Right', value: 27}, // BUTTON_LAYOUT_BM_5KEY_B
+    { label: 'Beatmania 7 Key Right', value: 28}, // BUTTON_LAYOUT_BM_7KEY_B
+    { label: 'Gitadora Fret', value: 29}, // BUTTON_LAYOUT_GITADORA_FRET_B
+    { label: 'Gitadora Strum', value: 30}, // BUTTON_LAYOUT_GITADORA_STRUM_B
+    { label: 'Board Defined', value: 31 }, // BUTTON_LAYOUT_BOARD_DEFINED_B
 ];
 
 const SPLASH_MODES = [
@@ -132,18 +130,15 @@ const defaultValues = {
 	displaySaverTimeout: 0,
 };
 
-const sortedButtonLayouts = BUTTON_LAYOUTS.sort((a, b) => a.label.localeCompare(b.label));
 const buttonLayoutSchema = yup
 	.number()
 	.required()
-	.oneOf(sortedButtonLayouts.map((o) => o.value))
+	.oneOf(BUTTON_LAYOUTS.map((o) => o.value))
 	.label('Button Layout Left');
-
-const sortedButtonLayoutsRight = BUTTON_LAYOUTS_RIGHT.sort((a, b) => a.label.localeCompare(b.label));
 const buttonLayoutRightSchema = yup
 	.number()
 	.required()
-	.oneOf(sortedButtonLayoutsRight.map((o) => o.value))
+	.oneOf(BUTTON_LAYOUTS_RIGHT.map((o) => o.value))
 	.label('Button Layout Right');
 
 const schema = yup.object().shape({
