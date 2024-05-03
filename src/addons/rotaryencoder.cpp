@@ -103,13 +103,13 @@ void RotaryEncoderInput::process()
             uint32_t lastChange = now - encoderState[i].changeTime;
 
             if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_X) {
-                gamepad->state.lx = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.lx = mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_ANALOG_Y) {
-                gamepad->state.ly = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.ly = mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_X) {
-                gamepad->state.rx = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.rx = mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_ANALOG_Y) {
-                gamepad->state.ry = -mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
+                gamepad->state.ry = mapEncoderValueStick(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_LEFT_TRIGGER) {
                 gamepad->state.lt = mapEncoderValueTrigger(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
             } else if (encoderMap[i].mode == ENCODER_MODE_RIGHT_TRIGGER) {
