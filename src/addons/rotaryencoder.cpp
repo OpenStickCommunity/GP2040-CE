@@ -155,7 +155,7 @@ uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderV
         return encoderValue;
     } else {
         int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[index].minRange, encoderMap[index].maxRange);
-        int32_t constrainedValue = bounds(mappedValue, encoderMap[index].minRange, encoderMap[index].maxRange-1);
+        int32_t constrainedValue = bounds(mappedValue, encoderMap[index].minRange, encoderMap[index].maxRange);
 
         return constrainedValue;
     }
