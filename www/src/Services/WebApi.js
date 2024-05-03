@@ -1,4 +1,4 @@
-import axios from 'axios';
+import Http from './Http';
 import { hexToInt, rgbIntToHex } from './Utilities';
 
 export const baseUrl =
@@ -182,7 +182,7 @@ export const baseWiiControls = {
 };
 
 async function resetSettings() {
-	return axios
+	return Http
 		.get(`${baseUrl}/api/resetSettings`)
 		.then((response) => response.data)
 		.catch(console.error);
@@ -190,7 +190,7 @@ async function resetSettings() {
 
 async function getDisplayOptions() {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getDisplayOptions`);
+		const response = await Http.get(`${baseUrl}/api/getDisplayOptions`);
 
 		if (response.data.i2cAddress) {
 			response.data.i2cAddress = '0x' + response.data.i2cAddress.toString(16);
@@ -229,7 +229,7 @@ async function setDisplayOptions(options, isPreview) {
 	const url = !isPreview
 		? `${baseUrl}/api/setDisplayOptions`
 		: `${baseUrl}/api/setPreviewDisplayOptions`;
-	return axios
+	return Http
 		.post(url, newOptions)
 		.then((response) => {
 			console.log(response.data);
@@ -243,7 +243,7 @@ async function setDisplayOptions(options, isPreview) {
 
 async function getSplashImage() {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getSplashImage`);
+		const response = await Http.get(`${baseUrl}/api/getSplashImage`);
 		return response.data;
 	} catch (error) {
 		console.error(error);
@@ -251,7 +251,7 @@ async function getSplashImage() {
 }
 
 async function setSplashImage({ splashImage }) {
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setSplashImage`, {
 			splashImage: btoa(
 				String.fromCharCode.apply(null, new Uint8Array(splashImage)),
@@ -267,7 +267,7 @@ async function getGamepadOptions(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getGamepadOptions`);
+		const response = await Http.get(`${baseUrl}/api/getGamepadOptions`);
 		setLoading(false);
 		return response.data;
 	} catch (error) {
@@ -277,7 +277,7 @@ async function getGamepadOptions(setLoading) {
 }
 
 async function setGamepadOptions(options) {
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setGamepadOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
@@ -293,7 +293,7 @@ async function getLedOptions(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getLedOptions`);
+		const response = await Http.get(`${baseUrl}/api/getLedOptions`);
 		setLoading(false);
 
 		response.data.pledColor = rgbIntToHex(response.data.pledColor) || '#ffffff';
@@ -306,7 +306,7 @@ async function getLedOptions(setLoading) {
 }
 
 async function setLedOptions(options) {
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
@@ -322,7 +322,7 @@ async function getCustomTheme(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getCustomTheme`);
+		const response = await Http.get(`${baseUrl}/api/getCustomTheme`);
 		setLoading(false);
 
 		let data = { hasCustomTheme: response.data.enabled, customTheme: {} };
@@ -356,7 +356,7 @@ async function setCustomTheme(customThemeOptions) {
 		};
 	});
 
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setCustomTheme`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
@@ -370,7 +370,7 @@ async function setCustomTheme(customThemeOptions) {
 
 async function getButtonLayouts(setLoading) {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getButtonLayouts`);
+		const response = await Http.get(`${baseUrl}/api/getButtonLayouts`);
 
 		return response.data;
 	} catch (error) {
@@ -380,7 +380,7 @@ async function getButtonLayouts(setLoading) {
 
 async function getButtonLayoutDefs(setLoading) {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getButtonLayoutDefs`);
+		const response = await Http.get(`${baseUrl}/api/getButtonLayoutDefs`);
 
 		return response.data;
 	} catch (error) {
@@ -390,7 +390,7 @@ async function getButtonLayoutDefs(setLoading) {
 
 async function getPinMappings() {
 	try {
-		const { data } = await axios.get(`${baseUrl}/api/getPinMappings`);
+		const { data } = await Http.get(`${baseUrl}/api/getPinMappings`);
 		return data;
 	} catch (error) {
 		console.log(error);
@@ -398,12 +398,12 @@ async function getPinMappings() {
 }
 
 async function setPinMappings(mappings) {
-	return axios.post(`${baseUrl}/api/setPinMappings`, mappings);
+	return Http.post(`${baseUrl}/api/setPinMappings`, mappings);
 }
 
 async function getProfileOptions() {
 	try {
-		const { data } = await axios.get(`${baseUrl}/api/getProfileOptions`);
+		const { data } = await Http.get(`${baseUrl}/api/getProfileOptions`);
 		return data?.alternativePinMappings;
 	} catch (error) {
 		console.log(error);
@@ -411,7 +411,7 @@ async function getProfileOptions() {
 }
 
 async function setProfileOptions(mappings) {
-	return axios.post(`${baseUrl}/api/setProfileOptions`, {
+	return Http.post(`${baseUrl}/api/setProfileOptions`, {
 		alternativePinMappings: mappings,
 	});
 }
@@ -420,7 +420,7 @@ async function getKeyMappings(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getKeyMappings`);
+		const response = await Http.get(`${baseUrl}/api/getKeyMappings`);
 		setLoading(false);
 
 		let mappings = { ...baseButtonMappings };
@@ -438,7 +438,7 @@ async function setKeyMappings(mappings) {
 	let data = {};
 	Object.keys(mappings).map((button) => (data[button] = mappings[button].key));
 
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
 		.then((response) => {
 			console.log(response.data);
@@ -454,7 +454,7 @@ async function getAddonsOptions(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getAddonsOptions`);
+		const response = await Http.get(`${baseUrl}/api/getAddonsOptions`);
 		const data = response.data;
 		setLoading(false);
 
@@ -480,7 +480,7 @@ async function setAddonsOptions(options) {
 		options.keyboardHostMap = data;
 	}
 
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
@@ -496,7 +496,7 @@ async function getMacroAddonOptions(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getMacroAddonOptions`);
+		const response = await Http.get(`${baseUrl}/api/getMacroAddonOptions`);
 		const data = response.data;
 		setLoading(false);
 
@@ -508,7 +508,7 @@ async function getMacroAddonOptions(setLoading) {
 }
 
 async function setMacroAddonOptions(options) {
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setMacroAddonOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
@@ -521,7 +521,7 @@ async function setMacroAddonOptions(options) {
 }
 
 async function setPS4Options(options) {
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setPS4Options`, options)
 		.then((response) => {
 			console.log(response.data);
@@ -537,7 +537,7 @@ async function getWiiControls(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getWiiControls`);
+		const response = await Http.get(`${baseUrl}/api/getWiiControls`);
 		setLoading(false);
 
 		let mappings = { ...baseWiiControls, ...response.data };
@@ -551,7 +551,7 @@ async function getWiiControls(setLoading) {
 async function setWiiControls(mappings) {
 	console.dir(mappings);
 
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
 		.then((response) => {
 			console.log(response.data);
@@ -566,7 +566,7 @@ async function setWiiControls(mappings) {
 async function getPeripheralOptions(setLoading) {
 	setLoading(true);
 	try {
-		const response = await axios.get(`${baseUrl}/api/getPeripheralOptions`);
+		const response = await Http.get(`${baseUrl}/api/getPeripheralOptions`);
 		setLoading(false);
 
 		let mappings = { ...basePeripheralMapping, ...response.data };
@@ -580,7 +580,7 @@ async function getPeripheralOptions(setLoading) {
 async function setPeripheralOptions(mappings) {
 	console.dir(mappings);
 
-	return axios
+	return Http
 		.post(`${baseUrl}/api/setPeripheralOptions`, sanitizeRequest(mappings))
 		.then((response) => {
 			console.log(response.data);
@@ -596,7 +596,8 @@ async function getFirmwareVersion(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getFirmwareVersion`);
+		const response = await Http.get(`${baseUrl}/api/getFirmwareVersion`);
+		console.log('got firmware version:', response.data);
 		setLoading(false);
 		return response.data;
 	} catch (error) {
@@ -609,7 +610,7 @@ async function getMemoryReport(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getMemoryReport`);
+		const response = await Http.get(`${baseUrl}/api/getMemoryReport`);
 		setLoading(false);
 		return response.data;
 	} catch (error) {
@@ -622,7 +623,7 @@ async function getUsedPins(setLoading) {
 	setLoading(true);
 
 	try {
-		const response = await axios.get(`${baseUrl}/api/getUsedPins`);
+		const response = await Http.get(`${baseUrl}/api/getUsedPins`);
 		setLoading(false);
 		return response.data;
 	} catch (error) {
@@ -633,7 +634,7 @@ async function getUsedPins(setLoading) {
 
 async function getHeldPins(abortSignal) {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getHeldPins`, {
+		const response = await Http.get(`${baseUrl}/api/getHeldPins`, {
 			signal: abortSignal,
 		});
 		return response.data;
@@ -645,14 +646,14 @@ async function getHeldPins(abortSignal) {
 
 async function abortGetHeldPins() {
 	try {
-		await axios.get(`${baseUrl}/api/abortGetHeldPins`);
+		await Http.get(`${baseUrl}/api/abortGetHeldPins`);
 	} catch (error) {
 		// Expected to fail
 	}
 }
 
 async function reboot(bootMode) {
-	return axios
+	return Http
 		.post(`${baseUrl}/api/reboot`, { bootMode })
 		.then((response) => response.data)
 		.catch(console.error);
