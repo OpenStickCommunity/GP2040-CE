@@ -17,6 +17,7 @@ const ENCODER_MODES = [
     { label: 'encoder-mode-right-trigger', value: 6 },
     { label: 'encoder-mode-dpad-x', value: 7 },
     { label: 'encoder-mode-dpad-y', value: 8 },
+    { label: 'encoder-mode-buttons', value: 9 },
 ];
 
 const ENCODER_MULTIPLES = [

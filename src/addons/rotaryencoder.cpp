@@ -122,6 +122,12 @@ void RotaryEncoderInput::process()
                 int8_t axis = mapEncoderValueDPad(i, encoderValues[i], encoderMap[i].pulsesPerRevolution);
                 dpadUp = (axis == 1);
                 dpadDown = (axis == -1);
+            } else if (encoderMap[i].mode == ENCODER_MODE_BUTTONS) {
+                if (encoderValues[i] < prevValues[i]) {
+                    gamepad->state.buttons |= GAMEPAD_MASK_L1;
+                } else if (encoderValues[i] > prevValues[i]) {
+                    gamepad->state.buttons |= GAMEPAD_MASK_L2;
+                }
             }
 
             if ((encoderValues[i] - prevValues[i]) != 0) {

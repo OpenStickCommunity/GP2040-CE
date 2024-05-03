@@ -16,6 +16,7 @@ export default {
     'encoder-mode-right-analog-y': 'Right Analog Y',
     'encoder-mode-left-trigger': 'Left Trigger',
     'encoder-mode-right-trigger': 'Right Trigger',
+    'encoder-mode-buttons': 'Buttons + / -',
     'encoder-mode-dpad-x': 'D-Pad Left/Right',
     'encoder-mode-dpad-y': 'D-Pad Up/Down',
 };
