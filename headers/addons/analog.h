@@ -75,8 +75,9 @@ private:
 
 	static float readPin(int pin, uint16_t center, bool autoCalibrate);
 	static uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
-	void radialDeadzone(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude);
-	void adjustCircularity(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude);
+	static float magnitudeCalculation(float x, float y, float& x_magnitude, float& y_magnitude);
+	static void radialDeadzone(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float magnitude);
+	static void adjustCircularity(float& x, float& y, float x_magnitude, float y_magnitude, float magnitude);
 };
 
 #endif  // _Analog_H_
