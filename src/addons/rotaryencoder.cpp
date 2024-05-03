@@ -83,8 +83,10 @@ void RotaryEncoderInput::process()
                     if ((encoderState[i].pinA == encoderState[i].prevA) && (encoderState[i].pinB == encoderState[i].prevB)) {
                         if ((encoderState[i].pinA && !encoderState[i].pinB && pinBValue) || (!encoderState[i].pinA && encoderState[i].pinB && !pinBValue)) {
                             encoderValues[i]+=encoderIncrement;
+                            lastValue = 1;
                         } else if ((!encoderState[i].pinA && encoderState[i].pinB && pinBValue) || (encoderState[i].pinA && !encoderState[i].pinB && !pinBValue)) {
                             encoderValues[i]-=encoderIncrement;
+                            lastValue = -1;
                         }
                     }
                 }
@@ -123,9 +125,9 @@ void RotaryEncoderInput::process()
                 dpadUp = (axis == 1);
                 dpadDown = (axis == -1);
             } else if (encoderMap[i].mode == ENCODER_MODE_BUTTONS) {
-                if (encoderValues[i] < prevValues[i]) {
+                if (lastValue == -1) {
                     gamepad->state.buttons |= GAMEPAD_MASK_L1;
-                } else if (encoderValues[i] > prevValues[i]) {
+                } else if (lastValue == 1) {
                     gamepad->state.buttons |= GAMEPAD_MASK_L2;
                 }
             }
@@ -136,6 +138,7 @@ void RotaryEncoderInput::process()
 
             if ((encoderMap[i].resetAfter > 0) && (lastChange >= encoderMap[i].resetAfter)) {
                 encoderValues[i] = 0;
+                lastValue = 0;
             }
         }
 
