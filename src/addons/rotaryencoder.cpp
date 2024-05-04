@@ -136,14 +136,19 @@ void RotaryEncoderInput::process()
                 encoderState[i].changeTime = now;
             }
 
-            //
-            if (lastChange > 500 && encoderValues[i] == prevValues[i]) {
-                lastValue = 0;
+            // if we are using mode_buttons we do not want to reset encoder values to 0
+            // but we want to just reset the button value.
+            // Resetting encoderValues will produce empty clicks
+            if (encoderMap[i].mode == ENCODER_MODE_BUTTONS) {
+                if (lastChange > encoderMap[i].resetAfter && encoderValues[i] == prevValues[i]) {
+                    lastValue = 0;
+                }
+            } else {
+                if ((encoderMap[i].resetAfter > 0) && (lastChange >= encoderMap[i].resetAfter)) {
+                    encoderValues[i] = 0;
+                }
             }
 
-            if ((encoderMap[i].resetAfter > 0) && (lastChange >= encoderMap[i].resetAfter)) {
-                encoderValues[i] = 0;
-            }
         }
 
         prevValues[i] = encoderValues[i];
