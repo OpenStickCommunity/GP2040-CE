@@ -136,9 +136,13 @@ void RotaryEncoderInput::process()
                 encoderState[i].changeTime = now;
             }
 
+            //
+            if (lastChange > 500 && encoderValues[i] == prevValues[i]) {
+                lastValue = 0;
+            }
+
             if ((encoderMap[i].resetAfter > 0) && (lastChange >= encoderMap[i].resetAfter)) {
                 encoderValues[i] = 0;
-                lastValue = 0;
             }
         }
 
