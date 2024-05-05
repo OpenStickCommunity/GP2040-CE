@@ -1,9 +1,51 @@
+$nav-outer-margin: 0.75rem;
+
+nav.navbar {
+	padding: 0;
+
+	.navbar-brand {
+		margin-right: $nav-outer-margin;
+	}
+
+	.navbar-toggler {
+		margin-right: $nav-outer-margin;
+	}
+
+	.navbar-actions {
+		margin-right: $nav-outer-margin;
+		column-gap: 0.5rem;
+		align-items: center;
+		flex-direction: row-reverse;
+
+		.dropdown-menu {
+			position: absolute;
+		}
+	}
+
+	.reset-settings-link {
+		color: #FF0000;
+	}
+}
+
 .title-logo {
-	height: 30px;
-	margin: -5px 8px 0 12px;
+	height: 40px;
+	margin: 0.25rem 0rem 0.25rem $nav-outer-margin;
 }
 
 .nav-link,
 .nav-item * {
 	font-size: 0.875rem;
+}
+
+@media (max-width: 767.98px) {
+	nav.navbar {
+		.navbar-actions {
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+		}
+
+		.nav-link {
+			margin-left: $nav-outer-margin;
+		}
+	}
 }

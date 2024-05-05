@@ -19,72 +19,6 @@ const ON_OFF_OPTIONS = [
 	{ label: 'Enabled', value: 1 },
 ];
 
-const BUTTON_LAYOUTS = [
-	{ label: 'Stick', value: 0 }, // BUTTON_LAYOUT_STICK
-	{ label: 'Stickless', value: 1 }, // BUTTON_LAYOUT_STICKLESS
-	{ label: 'Buttons Angled', value: 2 }, // BUTTON_LAYOUT_BUTTONS_ANGLED
-	{ label: 'Buttons Basic', value: 3 }, // BUTTON_LAYOUT_BUTTONS_BASIC
-	{ label: 'Keyboard Angled', value: 4 }, // BUTTON_LAYOUT_KEYBOARD_ANGLED
-	{ label: 'Keyboard', value: 5 }, // BUTTON_LAYOUT_KEYBOARDA
-	{ label: 'Dancepad', value: 6 }, // BUTTON_LAYOUT_DANCEPADA
-	{ label: 'Twinstick', value: 7 }, // BUTTON_LAYOUT_TWINSTICKA
-	{ label: 'Blank', value: 8 }, // BUTTON_LAYOUT_BLANKA
-	{ label: 'VLX', value: 9 }, // BUTTON_LAYOUT_VLXA
-	{ label: 'Fightboard', value: 10 }, // BUTTON_LAYOUT_FIGHTBOARD_STICK
-	{ label: 'Fightboard Mirrored', value: 11 }, // BUTTON_LAYOUT_FIGHTBOARD_MIRRORED
-	{ label: 'Custom', value: 12 }, // BUTTON_LAYOUT_CUSTOM
-	{ label: 'Open_Core0 WASD', value: 13 }, // BUTTON_LAYOUT_OPENCORE0WASDA
-	{ label: 'Stickless 13', value: 14 }, // BUTTON_LAYOUT_STICKLESS_13
-    { label: 'Stickless 16', value: 15 }, // BUTTON_LAYOUT_STICKLESS_16
-    { label: 'Stickless 14', value: 16 }, // BUTTON_LAYOUT_STICKLESS_14
-    { label: 'DDR Dancepad Left', value: 17 }, // BUTTON_LAYOUT_DANCEPAD_DDR_LEFT
-    { label: 'DDR Dancepad Solo', value: 18 }, // BUTTON_LAYOUT_DANCEPAD_DDR_SOLO
-    { label: 'PIU Dancepad Left', value: 19 }, // BUTTON_LAYOUT_DANCEPAD_PIU_LEFT
-    { label: 'Popn Left', value: 20 }, // BUTTON_LAYOUT_POPN_A
-    { label: 'Taiko', value: 21 }, // BUTTON_LAYOUT_TAIKO_A
-    { label: 'Beatmania Turntable Left', value: 22 }, // BUTTON_LAYOUT_BM_TURNTABLE_A
-    { label: 'Beatmania 5 Key Left', value: 23 }, // BUTTON_LAYOUT_BM_5KEY_A
-    { label: 'Beatmania 7 Key Left', value: 24 }, // BUTTON_LAYOUT_BM_7KEY_A
-    { label: 'Gitadora Fret', value: 25 }, // BUTTON_LAYOUT_GITADORA_FRET_A
-    { label: 'Gitadora Strum', value: 26 }, // BUTTON_LAYOUT_GITADORA_STRUM_A
-    { label: 'Board Defined', value: 27 }, // BUTTON_LAYOUT_BOARD_DEFINED_A
-];
-
-const BUTTON_LAYOUTS_RIGHT = [
-	{ label: 'Arcade', value: 0 }, // BUTTON_LAYOUT_ARCADE
-	{ label: 'Stickless', value: 1 }, // BUTTON_LAYOUT_STICKLESSB
-	{ label: 'Buttons Angled', value: 2 }, // BUTTON_LAYOUT_BUTTONS_ANGLEDB
-	{ label: 'Viewlix', value: 3 }, // BUTTON_LAYOUT_VEWLIX
-	{ label: 'Viewlix 7', value: 4 }, // BUTTON_LAYOUT_VEWLIX7
-	{ label: 'Capcom', value: 5 }, // BUTTON_LAYOUT_CAPCOM
-	{ label: 'Capcom 6', value: 6 }, // BUTTON_LAYOUT_CAPCOM6
-	{ label: 'Sega 2P', value: 7 }, // BUTTON_LAYOUT_SEGA2P
-	{ label: 'Noir 8', value: 8 }, // BUTTON_LAYOUT_NOIR8
-	{ label: 'Keyboard', value: 9 }, // BUTTON_LAYOUT_KEYBOARDB
-	{ label: 'Dancepad', value: 10 }, // BUTTON_LAYOUT_DANCEPADB
-	{ label: 'Twinstick', value: 11 }, // BUTTON_LAYOUT_TWINSTICKB
-	{ label: 'Blank', value: 12 }, // BUTTON_LAYOUT_BLANKB
-	{ label: 'VLX', value: 13 }, // BUTTON_LAYOUT_VLXB
-	{ label: 'Fightboard', value: 14 }, // BUTTON_LAYOUT_FIGHTBOARD
-	{ label: 'Fightboard Mirrored', value: 15 }, // BUTTON_LAYOUT_FIGHTBOARD_STICK_MIRRORED
-	{ label: 'Custom', value: 16 }, // BUTTON_LAYOUT_CUSTOM
-	{ label: 'Keyboard 8', value: 17 }, // BUTTON_LAYOUT_KEYBOARD8B
-	{ label: 'Open_Core0 WASD', value: 18 }, // BUTTON_LAYOUT_OPENCORE0WASDB
-	{ label: 'Stickless 13', value: 19 }, // BUTTON_LAYOUT_STICKLESS_13B
-    { label: 'Stickless 16', value: 20 }, // BUTTON_LAYOUT_STICKLESS_16B
-    { label: 'Stickless 14', value: 21 }, // BUTTON_LAYOUT_STICKLESS_14B
-    { label: 'DDR Dancepad Right', value: 22}, // BUTTON_LAYOUT_DANCEPAD_DDR_RIGHT
-    { label: 'PIU Dancepad Right', value: 23}, // BUTTON_LAYOUT_DANCEPAD_PIU_RIGHT
-    { label: 'Popn Right', value: 24}, // BUTTON_LAYOUT_POPN_B
-    { label: 'Taiko', value: 25}, // BUTTON_LAYOUT_TAIKO_B
-    { label: 'Beatmania Turntable Right', value: 26}, // BUTTON_LAYOUT_BM_TURNTABLE_B
-    { label: 'Beatmania 5 Key Right', value: 27}, // BUTTON_LAYOUT_BM_5KEY_B
-    { label: 'Beatmania 7 Key Right', value: 28}, // BUTTON_LAYOUT_BM_7KEY_B
-    { label: 'Gitadora Fret', value: 29}, // BUTTON_LAYOUT_GITADORA_FRET_B
-    { label: 'Gitadora Strum', value: 30}, // BUTTON_LAYOUT_GITADORA_STRUM_B
-    { label: 'Board Defined', value: 31 }, // BUTTON_LAYOUT_BOARD_DEFINED_B
-];
-
 const SPLASH_MODES = [
 	{ label: 'Enabled (Custom Splash Screen)', value: 0 },  // STATICSPLASH
 	{ label: 'Logo Close In', value: 1 }, // CLOSEIN
@@ -130,15 +64,15 @@ const defaultValues = {
 	displaySaverTimeout: 0,
 };
 
-const buttonLayoutSchema = yup
+let buttonLayoutDefinitions = {buttonLayout:{},buttonLayoutRight:{}};
+
+const buttonLayoutSchemaBase = yup
 	.number()
-	.required()
-	.oneOf(BUTTON_LAYOUTS.map((o) => o.value))
+	.required();
+
+let buttonLayoutSchema = buttonLayoutSchemaBase
 	.label('Button Layout Left');
-const buttonLayoutRightSchema = yup
-	.number()
-	.required()
-	.oneOf(BUTTON_LAYOUTS_RIGHT.map((o) => o.value))
+let buttonLayoutRightSchema = buttonLayoutSchemaBase
 	.label('Button Layout Right');
 
 const schema = yup.object().shape({
@@ -210,6 +144,9 @@ const FormContext = () => {
 			const data = await WebApi.getDisplayOptions();
 			const splashImageResponse = await WebApi.getSplashImage();
 			data.splashImage = splashImageResponse.splashImage;
+            buttonLayoutDefinitions = await WebApi.getButtonLayoutDefs();
+            buttonLayoutSchema = buttonLayoutSchema.oneOf(Object.values(buttonLayoutDefinitions.buttonLayout));
+            buttonLayoutRightSchema = buttonLayoutRightSchema.oneOf(Object.values(buttonLayoutDefinitions.buttonLayoutRight));
 			setValues(data);
 		}
 		fetchData();
@@ -440,9 +377,12 @@ export default function DisplayConfigPage() {
                                         isInvalid={errors.buttonLayout}
                                         onChange={handleChange}
                                     >
-                                        {BUTTON_LAYOUTS.map((o, i) => (
-                                            <option key={`buttonLayout-option-${i}`} value={o.value}>
-                                                {o.label}
+                                        {Object.keys(buttonLayoutDefinitions.buttonLayout).map((o, i) => (
+                                            <option
+                                                key={`buttonLayout-option-${i}`}
+                                                value={buttonLayoutDefinitions.buttonLayout[o]}
+                                            >
+                                                {t(`LayoutConfig:layouts.left.${o}`)}
                                             </option>
                                         ))}
                                     </FormSelect>
@@ -456,12 +396,12 @@ export default function DisplayConfigPage() {
                                         isInvalid={errors.buttonLayoutRight}
                                         onChange={handleChange}
                                     >
-                                        {BUTTON_LAYOUTS_RIGHT.map((o, i) => (
+                                        {Object.keys(buttonLayoutDefinitions.buttonLayoutRight).map((o, i) => (
                                             <option
                                                 key={`buttonLayoutRight-option-${i}`}
-                                                value={o.value}
+                                                value={buttonLayoutDefinitions.buttonLayoutRight[o]}
                                             >
-                                                {o.label}
+                                                {t(`LayoutConfig:layouts.right.${o}`)}
                                             </option>
                                         ))}
                                     </FormSelect>
@@ -501,12 +441,12 @@ export default function DisplayConfigPage() {
                                                     value={values.buttonLayoutCustomOptions.params.layout}
                                                     onChange={handleChange}
                                                 >
-                                                    {BUTTON_LAYOUTS.slice(0, -1).map((o, i) => (
+                                                    {Object.keys(buttonLayoutDefinitions.buttonLayout).map((o, i) => (
                                                         <option
                                                             key={`buttonLayout-option-${i}`}
-                                                            value={o.value}
+                                                            value={buttonLayoutDefinitions.buttonLayout[o]}
                                                         >
-                                                            {o.label}
+                                                            {t(`LayoutConfig:layouts.left.${o}`)}
                                                         </option>
                                                     ))}
                                                 </FormSelect>
@@ -592,12 +532,12 @@ export default function DisplayConfigPage() {
                                                     }
                                                     onChange={handleChange}
                                                 >
-                                                    {BUTTON_LAYOUTS_RIGHT.slice(0, -1).map((o, i) => (
+                                                    {Object.keys(buttonLayoutDefinitions.buttonLayoutRight).map((o, i) => (
                                                         <option
                                                             key={`buttonLayoutRight-option-${i}`}
-                                                            value={o.value}
+                                                            value={buttonLayoutDefinitions.buttonLayoutRight[o]}
                                                         >
-                                                            {o.label}
+                                                            {t(`LayoutConfig:layouts.right.${o}`)}
                                                         </option>
                                                     ))}
                                                 </FormSelect>

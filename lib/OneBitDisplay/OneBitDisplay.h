@@ -47,6 +47,7 @@ uint8_t mode; // data/command mode for 9-bit SPI
 uint8_t iDCPin, iMOSIPin, iCLKPin, iCSPin;
 uint8_t iLEDPin; // backlight
 uint8_t bBitBang;
+uint8_t registerValue;
 } OBDISP;
 
 typedef char * (*SIMPLECALLBACK)(int iMenuItem);
