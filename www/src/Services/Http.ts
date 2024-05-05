@@ -22,6 +22,9 @@ class Http {
 			return Promise.resolve({ data: json });
 		}
 		catch (err) {
+			if (signal?.aborted) {
+				throw new Error('ERR_CANCELED');
+			}
 			return Promise.reject(err);
 		}
 	}
