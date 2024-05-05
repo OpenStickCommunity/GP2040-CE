@@ -8,14 +8,20 @@ void Rainbow::Animate(RGB (&frame)[100]) {
     return;
   }
 
+  UpdateTime();
+  UpdatePresses(frame);
+
   for (auto &col : matrix->pixels) {
     for (auto &pixel : col) {
       if (pixel.index == NO_PIXEL.index)
         continue;
 
+      // Count down the timer
+      DecrementFadeCounter(pixel.index);
+
       RGB color = RGB::wheel(this->currentFrame);
       for (auto &pos : pixel.positions)
-        frame[pos] = color;
+        frame[pos] = BlendColor(hitColor[pixel.index], color, times[pixel.index]);
     }
   }
 

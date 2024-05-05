@@ -31,10 +31,6 @@ const TURBO_MASKS = [
 
 export const turboScheme = {
 	TurboInputEnabled: yup.number().required().label('Turbo Input Enabled'),
-	turboPin: yup
-		.number()
-		.label('Turbo Pin')
-		.validatePinWhenValue('TurboInputEnabled'),
 	turboPinLED: yup
 		.number()
 		.label('Turbo Pin LED')
@@ -122,7 +118,6 @@ export const turboState = {
 	shmupMixMode: 0,
 	shmupMode: 0,
 	TurboInputEnabled: 0,
-	turboPin: -1,
 	turboPinLED: -1,
 	turboShotCount: 5,
 };
@@ -133,19 +128,6 @@ const Turbo = ({ values, errors, handleChange, handleCheckbox }) => {
 		<Section title={t('AddonsConfig:turbo-header-text')}>
 			<div id="TurboInputOptions" hidden={!values.TurboInputEnabled}>
 				<Row className="mb-3">
-					<FormControl
-						type="number"
-						label={t('AddonsConfig:turbo-button-pin-label')}
-						name="turboPin"
-						className="form-select-sm"
-						groupClassName="col-sm-3 mb-3"
-						value={values.turboPin}
-						error={errors.turboPin}
-						isInvalid={errors.turboPin}
-						onChange={handleChange}
-						min={-1}
-						max={29}
-					/>
 					<FormControl
 						type="number"
 						label={t('AddonsConfig:turbo-led-pin-label')}

@@ -22,7 +22,6 @@
 #include <string.h>
 #include "pico/stdlib.h"
 
-#include "BitBang_I2C.h"
 #include "OneBitDisplay.h"
 // All of the drawing code is in here
 #include "obd.inl"
@@ -53,6 +52,24 @@ const unsigned char uc1701_initbuf[] = {0xe2, 0x40, 0xa0, 0xc8, 0xa2, 0x2c, 0x2e
 
 const unsigned char hx1230_initbuf[] = {0x2f, 0x90, 0xa6, 0xa4, 0xaf, 0x40, 0xb0, 0x10, 0x00};
 const unsigned char nokia5110_initbuf[] = {0x21, 0xa4, 0xb1, 0x04, 0x14, 0x20, 0x0c};
+
+const uint8_t ucMirror[256] =
+		{0, 128, 64, 192, 32, 160, 96, 224, 16, 144, 80, 208, 48, 176, 112, 240,
+		8, 136, 72, 200, 40, 168, 104, 232, 24, 152, 88, 216, 56, 184, 120, 248,
+		4, 132, 68, 196, 36, 164, 100, 228, 20, 148, 84, 212, 52, 180, 116, 244,
+		12, 140, 76, 204, 44, 172, 108, 236, 28, 156, 92, 220, 60, 188, 124, 252,
+		2, 130, 66, 194, 34, 162, 98, 226, 18, 146, 82, 210, 50, 178, 114, 242,
+		10, 138, 74, 202, 42, 170, 106, 234, 26, 154, 90, 218, 58, 186, 122, 250,
+		6, 134, 70, 198, 38, 166, 102, 230, 22, 150, 86, 214, 54, 182, 118, 246,
+		14, 142, 78, 206, 46, 174, 110, 238, 30, 158, 94, 222, 62, 190, 126, 254,
+		1, 129, 65, 193, 33, 161, 97, 225, 17, 145, 81, 209, 49, 177, 113, 241,
+		9, 137, 73, 201, 41, 169, 105, 233, 25, 153, 89, 217, 57, 185, 121, 249,
+		5, 133, 69, 197, 37, 165, 101, 229, 21, 149, 85, 213, 53, 181, 117, 245,
+		13, 141, 77, 205, 45, 173, 109, 237, 29, 157, 93, 221, 61, 189, 125, 253,
+		3, 131, 67, 195, 35, 163, 99, 227, 19, 147, 83, 211, 51, 179, 115, 243,
+		11, 139, 75, 203, 43, 171, 107, 235, 27, 155, 91, 219, 59, 187, 123, 251,
+		7, 135, 71, 199, 39, 167, 103, 231, 23, 151, 87, 215, 55, 183, 119, 247,
+		15, 143, 79, 207, 47, 175, 111, 239, 31, 159, 95, 223, 63, 191, 127, 255};
 
 static void obdCachedFlush(OBDISP *pOBD, int bRender);
 static void obdCachedWrite(OBDISP *pOBD, uint8_t *pData, uint8_t u8Len, int bRender);
@@ -205,7 +222,7 @@ static void LCDPowerUp(OBDISP *pOBD)
 	memcpy(uc, s, iLen);
 
 	if (pOBD->iMOSIPin == 0xff)
-		spi_write_blocking(pOBD->bbi2c.picoSPI, s, iLen);
+		spi_write_blocking(pOBD->spi->getController(), s, iLen);
 	else
 		SPI_BitBang(pOBD, s, iLen, pOBD->iMOSIPin, pOBD->iCLKPin);
 
@@ -275,8 +292,8 @@ void obdSPIInit(OBDISP *pOBD, int iType, int iDC, int iCS, int iReset, int iMOSI
 		gpio_set_function(pOBD->iCLKPin, GPIO_FUNC_SPI);
 		gpio_set_function(pOBD->iMOSIPin, GPIO_FUNC_SPI);
 
-		spi_init(pOBD->bbi2c.picoSPI, 1000 * 1000);
-		spi_set_format(pOBD->bbi2c.picoSPI, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
+		spi_init(pOBD->spi->getController(), 1000 * 1000);
+		spi_set_format(pOBD->spi->getController(), 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
 	}
 
 	pOBD->width = 128; // assume 128x64
@@ -438,7 +455,7 @@ void obdSPIInit(OBDISP *pOBD, int iType, int iDC, int iCS, int iReset, int iMOSI
 //
 // Initializes the OLED controller into "page mode"
 //
-int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int bWire, int sda, int scl, i2c_inst_t *picoI2C, int reset, int32_t iSpeed)
+int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int bWire, PeripheralI2C* i2cController, int reset)
 {
 	unsigned char uc[32];
 	uint8_t u8Len, *s;
@@ -449,13 +466,11 @@ int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int b
 	pOBD->flip = bFlip;
 	pOBD->invert = bInvert;
 	pOBD->wrap = 0; // default - disable text wrap
-	pOBD->bbi2c.iSDA = sda;
-	pOBD->bbi2c.iSCL = scl;
-	pOBD->bbi2c.picoI2C = picoI2C;
-	pOBD->bbi2c.bWire = bWire;
+    pOBD->i2c = i2cController;
+	pOBD->bWire = bWire;
 	pOBD->com_mode = COM_I2C; // communication mode
 
-	I2CInit(&pOBD->bbi2c, iSpeed); // on Linux, SDA = bus number, SCL = device address
+	//I2CInit(&pOBD->bbi2c, iSpeed); // on Linux, SDA = bus number, SCL = device address
 
 	// Reset it
 	if (reset != -1)
@@ -471,10 +486,10 @@ int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int b
 	// find the device address if requested
 	if (iAddr == -1 || iAddr == 0 || iAddr == 0xff) // find it
 	{
-		I2CTest(&pOBD->bbi2c, 0x3c);
-		if (I2CTest(&pOBD->bbi2c, 0x3c))
+		pOBD->i2c->test(0x3c);
+		if (pOBD->i2c->test(0x3c))
 			pOBD->oled_addr = 0x3c;
-		else if (I2CTest(&pOBD->bbi2c, 0x3d))
+		else if (pOBD->i2c->test(0x3d))
 			pOBD->oled_addr = 0x3d;
 		else
 			return rc; // no display found!
@@ -482,14 +497,14 @@ int obdI2CInit(OBDISP *pOBD, int iType, int iAddr, int bFlip, int bInvert, int b
 	else
 	{
 		pOBD->oled_addr = iAddr;
-		I2CTest(&pOBD->bbi2c, iAddr);
-		if (!I2CTest(&pOBD->bbi2c, iAddr))
+		pOBD->i2c->test(iAddr);
+		if (!pOBD->i2c->test(iAddr))
 			return rc; // no display found
 	}
 
 	// Detect the display controller (SSD1306, SH1107 or SH1106)
 	uint8_t u = 0;
-	I2CReadRegister(&pOBD->bbi2c, pOBD->oled_addr, 0x00, &u, 1); // read the status register
+	pOBD->i2c->readRegister(pOBD->oled_addr, 0x00, &u, 1); // read the status register
 	u &= 0x0f;                                                   // mask off power on/off bit
 	if ((u == 0x7 || u == 0xf) && pOBD->type == OLED_128x128)    // SH1107
 	{                                                            // A single SSD1306 display returned 7, so only act on it if the

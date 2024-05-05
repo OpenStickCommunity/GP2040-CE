@@ -66,6 +66,14 @@ void AnimationStation::HandleEvent(AnimationHotkey action) {
   if (action == HOTKEY_LEDS_PRESS_PARAMETER_DOWN) {
     this->buttonAnimation->ParameterDown();
   }
+
+  if (action == HOTKEY_LEDS_FADETIME_UP) {
+    this->baseAnimation->FadeTimeUp();
+  }
+
+  if (action == HOTKEY_LEDS_FADETIME_DOWN) {
+    this->baseAnimation->FadeTimeDown();
+  }  
   
 }
 
@@ -89,6 +97,7 @@ uint16_t AnimationStation::AdjustIndex(int changeSize) {
 
 void AnimationStation::HandlePressed(std::vector<Pixel> pressed) {
   this->lastPressed = pressed;
+  this->baseAnimation->UpdatePixels(pressed);  
   this->buttonAnimation->UpdatePixels(pressed);
 }
 
@@ -96,6 +105,10 @@ void AnimationStation::ClearPressed() {
   if (this->buttonAnimation != nullptr) {
     this->buttonAnimation->ClearPixels();
   }
+  if (this->baseAnimation != nullptr) {
+    this->baseAnimation->ClearPixels();
+  }
+
   this->lastPressed.clear();
 }
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../Contexts/AppContext';
-import axios from 'axios';
-import orderBy from 'lodash/orderBy';
+import Http from '../Services/Http';
 import { useTranslation } from 'react-i18next';
 
 import Section from '../Components/Section';
@@ -14,9 +13,7 @@ const toKB = (x) => parseFloat((x / 1024).toFixed(2));
 export default function HomePage() {
 	const [latestVersion, setLatestVersion] = useState('');
 	const [latestDownloadUrl, setLatestDownloadUrl] = useState('');
-	const [currentVersion, setCurrentVersion] = useState(
-		import.meta.env.VITE_CURRENT_VERSION,
-	);
+	const [currentVersion, setCurrentVersion] = useState('');
 	const [boardConfigProperties, setBoardConfigProperties] = useState({});
 	const [memoryReport, setMemoryReport] = useState(null);
 
@@ -26,27 +23,39 @@ export default function HomePage() {
 
 	useEffect(() => {
 		WebApi.getFirmwareVersion(setLoading)
-			.then(({ version, boardConfigLabel, boardConfigFileName, boardConfig }) => {
-				setCurrentVersion(version);
-				setBoardConfigProperties({ label: boardConfigLabel, fileName: boardConfigFileName});
-				axios.get('https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest')
-					.then((response) => {
-						const latestTag = response.data.tag_name;
-						setLatestDownloadUrl(
-							response.data?.assets?.find(({ name }) => {
-								return name?.substring(name.lastIndexOf('_') + 1)
-									?.replace('.uf2', '')
-									?.toLowerCase() === boardConfig.toLowerCase()
-							})?.browser_download_url || `https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`
-						);
-					})
-					.catch(console.error)
-			})
+			.then(
+				({ version, boardConfigLabel, boardConfigFileName, boardConfig }) => {
+					setCurrentVersion(version);
+					setBoardConfigProperties({
+						label: boardConfigLabel,
+						fileName: boardConfigFileName,
+					});
+					Http
+						.get(
+							'https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest',
+						)
+						.then((response) => {
+							const latestTag = response.data.tag_name;
+							setLatestVersion(latestTag);
+							setLatestDownloadUrl(
+								response.data?.assets?.find(({ name }) => {
+									return (
+										name
+											?.substring(name.lastIndexOf('_') + 1)
+											?.replace('.uf2', '')
+											?.toLowerCase() === boardConfig.toLowerCase()
+									);
+								})?.browser_download_url ||
+									`https://github.com/OpenStickCommunity/GP2040-CE/releases/tag/${latestTag}`,
+							);
+						})
+						.catch(console.error);
+				},
+			)
 			.catch(console.error);
 
 		WebApi.getMemoryReport(setLoading)
 			.then((response) => {
-				const unit = 1024;
 				const { totalFlash, usedFlash, staticAllocs, totalHeap, usedHeap } =
 					response;
 				setMemoryReport({
@@ -74,7 +83,7 @@ export default function HomePage() {
 					<div>{`${boardConfigProperties.label} (${boardConfigProperties.fileName}.uf2)`}</div>
 					<div>{t('HomePage:current-text', { version: currentVersion })}</div>
 					<div>{t('HomePage:latest-text', { version: latestVersion })}</div>
-					{latestVersion && currentVersion !== latestVersion && (
+					{latestVersion && currentVersion?.split("-").length == 1 && currentVersion !== latestVersion && (
 						<div className="mt-3 mb-3">
 							<a
 								target="_blank"

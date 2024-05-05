@@ -11,8 +11,8 @@ import { DUAL_STICK_MODES } from '../Data/Addons';
 
 const DUAL_COMBINE_MODES = [
 	{ label: 'Mixed', value: 0 },
-	{ label: 'Gamepad', value: 1 },
-	{ label: 'Dual Directional', value: 2 },
+	{ label: 'Gamepad Override', value: 1 },
+	{ label: 'DDI Override', value: 2 },
 	{ label: 'None', value: 3 },
 ];
 

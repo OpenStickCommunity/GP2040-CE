@@ -2,8 +2,8 @@
 #include "addons/buzzerspeaker.h"
 #include "songs.h"
 #include "storagemanager.h"
+#include "usbdriver.h"
 #include "math.h"
-#include "usb_driver.h"
 #include "helper.h"
 #include "config.pb.h"
 
@@ -18,6 +18,15 @@ void BuzzerSpeakerAddon::setup() {
 	gpio_set_function(buzzerPin, GPIO_FUNC_PWM);
 	buzzerPinSlice = pwm_gpio_to_slice_num (buzzerPin);
 	buzzerPinChannel = pwm_gpio_to_channel (buzzerPin);
+
+    // enable pin is optional so not required to toggle addon
+    if (isValidPin(options.pin)) {
+        isSpeakerOn = true;
+        buzzerEnablePin = options.enablePin;
+        gpio_init(buzzerEnablePin);
+        gpio_set_dir(buzzerEnablePin, GPIO_OUT);
+        gpio_put(buzzerEnablePin, isSpeakerOn);
+    }
 
 	buzzerVolume = options.volume;
 	introPlayed = false;
@@ -56,7 +65,7 @@ void BuzzerSpeakerAddon::processBuzzer() {
 	uint16_t currentTonePosition = floor((currentTimeSong * currentSong->song.size()) / totalTimeSong);
 	Tone currentTone = currentSong->song[currentTonePosition];
 
-	if (currentTonePosition > currentSong->song.size()) {
+	if (currentTonePosition >= currentSong->song.size()) {
 		stop();
 		return;
 	}

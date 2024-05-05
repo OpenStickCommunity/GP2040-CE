@@ -69,10 +69,10 @@ void GuitarExtension::init(uint8_t dataType) {
     _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center           = WII_GUITAR_GATE_CENTER;
     _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum          = WII_GUITAR_GATE_CENTER+WII_GUITAR_GATE_SIZE;
     
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum         = 15;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center          = WII_GUITAR_GATE_CENTER;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum         = WII_GUITAR_GATE_CENTER*2;
-    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].useOffset       = false;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum         = 131;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center          = 169;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum         = 207;
+    _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].useOffset       = true;
 
     _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum         = 0;
     _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center          = WII_GUITAR_GATE_CENTER;
@@ -91,6 +91,24 @@ void GuitarExtension::process(uint8_t *inputData) {
         // force the data type to 1 when a World Tour guitar is detected
         if ((_guitarType == WII_GUITAR_GHWT) && (getDataType() != WII_DATA_TYPE_1)) {
             setDataType(WII_DATA_TYPE_1);
+            _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].minimum          = 3;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].center           = 33;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_X].maximum          = 58;
+
+            _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].minimum          = 3;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].center           = 33;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_LEFT_Y].maximum          = 58;
+            
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].minimum         = 15;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].center          = 19;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].maximum         = 20;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_X].useOffset       = true;
+
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].minimum         = 0;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].center          = WII_GUITAR_GATE_CENTER;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].maximum         = WII_GUITAR_GATE_CENTER*2;
+            _analogCalibration[WiiAnalogs::WII_ANALOG_RIGHT_Y].useOffset       = false;
+
             _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].origin                           = WII_ANALOG_PRECISION_1;
             _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_X].destination                      = WII_ANALOG_PRECISION_3;
             _analogPrecision[WiiAnalogs::WII_ANALOG_LEFT_Y].origin                           = WII_ANALOG_PRECISION_1;
@@ -195,7 +213,9 @@ void GuitarExtension::process(uint8_t *inputData) {
 //        }
 //    }
 //    printf("Joy1 X=%4d Y=%4d  Whammy=%4d  U=%1d D=%1d -=%1d +=%1d\n", joy1X, joy1Y, whammyBar, directionUp, directionDown, buttonMinus, buttonPlus);
-//    printf("Whammy=%4d\n", analogState[WiiAnalogs::WII_ANALOG_RIGHT_X]);
+//    printf("Joy1 X=%4d Y=%4d\n", analogState[WiiAnalogs::WII_ANALOG_LEFT_X], analogState[WiiAnalogs::WII_ANALOG_LEFT_Y]);
+//    printf("Whammy=%4d:%4d\n", analogState[WiiAnalogs::WII_ANALOG_RIGHT_X], inputData[3]);
+//    printf("U=%1d D=%1d -=%1d +=%1d\n", buttons[WiiButtons::WII_BUTTON_UP], buttons[WiiButtons::WII_BUTTON_DOWN], buttons[WiiButtons::WII_BUTTON_MINUS], buttons[WiiButtons::WII_BUTTON_PLUS]);
 //    printf("O=%1d B=%1d Y=%1d R=%1d G=%1d\n", buttons[GuitarButtons::GUITAR_ORANGE], buttons[GuitarButtons::GUITAR_BLUE], buttons[GuitarButtons::GUITAR_YELLOW], buttons[GuitarButtons::GUITAR_RED], buttons[GuitarButtons::GUITAR_GREEN]);
 #endif
 }

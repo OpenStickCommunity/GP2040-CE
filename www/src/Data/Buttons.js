@@ -69,7 +69,7 @@ export const BUTTONS = {
 		Fn: 'Function',
 	},
 	switch: {
-		label: 'Nintendo Switch',
+		label: 'Switch',
 		value: 'switch',
 		Up: 'Up',
 		Down: 'Down',
@@ -138,7 +138,7 @@ export const BUTTONS = {
 		Fn: 'Function',
 	},
 	dinput: {
-		label: 'DirectInput',
+		label: 'DInput',
 		value: 'dinput',
 		Up: 'Up',
 		Down: 'Down',
@@ -162,7 +162,7 @@ export const BUTTONS = {
 	},
 };
 
-export const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2', 'Fn'];
+export const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2'];
 export const MAIN_BUTTONS = [
 	'Up',
 	'Down',

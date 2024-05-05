@@ -1,27 +1,35 @@
 #include "usbhostmanager.h"
+#include "storagemanager.h"
+#include "peripheralmanager.h"
 
 #include "pio_usb.h"
 #include "tusb.h"
-#include "host/usbh_classdriver.h"
 
-void USBHostManager::setDataPin(uint8_t inPin) {
-    dataPin = inPin;
-}
+#include "host/usbh.h"
+#include "host/usbh_pvt.h"
+
+#include "drivers/shared/xinput_host.h"
 
 void USBHostManager::start() {
-    if ( !addons.empty() ) {
-        pio_usb_configuration_t pio_cfg = PIO_USB_DEFAULT_CONFIG;
-        pio_cfg.pin_dp = dataPin;
-        pio_cfg.sm_tx = 1; // NeoPico uses PIO0:0, move to state machine 1
-        tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pio_cfg);
+    // This will happen after Gamepad has initialized
+    if (PeripheralManager::getInstance().isUSBEnabled(0)) {
+        pio_usb_configuration_t* pio_cfg = PeripheralManager::getInstance().getUSB(0)->getController();
+        tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, pio_cfg);
         tuh_init(BOARD_TUH_RHPORT);
         sleep_us(10); // ensure we are ready
         tuh_ready = true;
     }
 }
 
-void USBHostManager::pushAddon(USBAddon * usbAddon) { // If anything needs to update in the gpconfig driver
-    addons.push_back(usbAddon);
+// Shut down the USB bus if we are running USB right now
+void USBHostManager::shutdown() {
+    if (PeripheralManager::getInstance().isUSBEnabled(0)) {
+        tuh_rhport_reset_bus(BOARD_TUH_RHPORT, false);
+    }
+}
+
+void USBHostManager::pushListener(USBListener * usbListener) { // If anything needs to update in the gpconfig driver
+    listeners.push_back(usbListener);
 }
 
 // Host manager should call tuh_task as fast as possible
@@ -32,35 +40,69 @@ void USBHostManager::process() {
 }
 
 void USBHostManager::hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_report, uint16_t desc_len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->mount(dev_addr, instance, desc_report, desc_len);
     }
 }
 
 void USBHostManager::hid_umount_cb(uint8_t dev_addr, uint8_t instance) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->unmount(dev_addr);
     }
 }
 
 void USBHostManager::hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->report_received(dev_addr, instance, report, len);
     }
 }
 
 void USBHostManager::hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->set_report_complete(dev_addr, instance, report_id, report_type, len);
     }
 }
 
 void USBHostManager::hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
-    for( std::vector<USBAddon*>::iterator it = addons.begin(); it != addons.end(); it++ ){
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
         (*it)->get_report_complete(dev_addr, instance, report_id, report_type, len);
     }
 }
 
+void USBHostManager::xinput_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
+        (*it)->xmount(dev_addr, instance, controllerType, subtype);
+    }
+}
+
+void USBHostManager::xinput_umount_cb(uint8_t dev_addr) {
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
+        (*it)->unmount(dev_addr);
+    }
+}
+
+void USBHostManager::xinput_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
+        (*it)->report_received(dev_addr, instance, report, len);
+    }
+}
+
+void USBHostManager::xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
+    if ( listeners.size() == 0 ) return;
+    for( std::vector<USBListener*>::iterator it = listeners.begin(); it != listeners.end(); it++ ){
+        (*it)->report_sent(dev_addr, instance, report, len);
+    }
+}
+
+// HID: USB Host
 static uint8_t _intf_num = 0;
 
 // Required helper class for HID_REQ_CONTROL_GET_REPORT addition
@@ -122,13 +164,13 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
             if( TUSB_DESC_INTERFACE != tu_desc_type(p_desc) ) return;
             tusb_desc_interface_t const* desc_itf = (tusb_desc_interface_t const*) p_desc;
 
-            // only open and listen to HID endpoint IN
+            // only open and listen to HID endpoint IN (PS4)
             if (desc_itf->bInterfaceClass == TUSB_CLASS_HID)
             {
                 _intf_num = desc_itf->bInterfaceNumber;
                 break; // we got the interface number
-            }
-            
+            } 
+
             // next Interface or IAD descriptor
             uint16_t const drv_len = count_interface_total_len(desc_itf, assoc_itf_count, (uint16_t) (desc_end-p_desc));
             p_desc += drv_len;
@@ -168,6 +210,44 @@ void tuh_hid_set_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t 
 void tuh_hid_get_report_complete_cb(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, uint16_t len) {
     if ( len != 0 )
         USBHostManager::getInstance().hid_get_report_complete_cb(dev_addr, instance, report_id, report_type, len);
+}
+
+// USB Host: X-Input
+// Add X-Input Driver
+void tuh_xinput_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
+    USBHostManager::getInstance().xinput_mount_cb(dev_addr, instance, controllerType, subtype);
+}
+
+void tuh_xinput_umount_cb(uint8_t dev_addr, uint8_t instance) {
+    // send to xinput_unmount_cb in usb host manager
+    USBHostManager::getInstance().xinput_umount_cb(dev_addr);
+}
+
+void tuh_xinput_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t const *report, uint16_t len) {
+    // report received from xinput device
+    USBHostManager::getInstance().xinput_report_received_cb(dev_addr, instance, report, len);
+}
+
+void tuh_xinput_report_sent_cb(uint8_t dev_addr, uint8_t instance, uint8_t const *report, uint16_t len) {
+    // report sent to xinput device
+    USBHostManager::getInstance().xinput_report_sent_cb(dev_addr, instance, report, len);
+}
+
+usbh_class_driver_t driver_host[] = {
+    {
+#if CFG_TUSB_DEBUG >= 2
+        .name = "XInput_Host_HID",
+#endif
+        .init = xinputh_init,
+        .open = xinputh_open,
+        .set_config = xinputh_set_config,
+        .xfer_cb = xinputh_xfer_cb,
+        .close = xinputh_close}
+};
+
+usbh_class_driver_t const *usbh_app_driver_get_cb(uint8_t *driver_count) {
+    *driver_count = 1;
+    return driver_host;
 }
 
 // Request for HID_REQ_CONTROL_GET_REPORT missing from TinyUSB

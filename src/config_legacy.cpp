@@ -110,6 +110,9 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_FIGHTBOARD_MIRRORED,
         BUTTON_LAYOUT_CUSTOMA,
         BUTTON_LAYOUT_OPENCORE0WASDA,
+        BUTTON_LAYOUT_STICKLESS_13,
+        BUTTON_LAYOUT_STICKLESS_16,
+        BUTTON_LAYOUT_STICKLESS_14,
     };
 
     enum ButtonLayoutRight
@@ -133,6 +136,9 @@ namespace ConfigLegacy
         BUTTON_LAYOUT_CUSTOMB,
         BUTTON_LAYOUT_KEYBOARD8B,
         BUTTON_LAYOUT_OPENCORE0WASDB,
+        BUTTON_LAYOUT_STICKLESS_13B,
+        BUTTON_LAYOUT_STICKLESS_16B,
+        BUTTON_LAYOUT_STICKLESS_14B,
     };
 
     enum SplashMode
@@ -481,6 +487,8 @@ static bool isValidInputMode(ConfigLegacy::InputMode inputMode)
         case INPUT_MODE_KEYBOARD:
         case INPUT_MODE_PS4:
             return true;
+        default:
+            break;
     }
     return false;
 }
@@ -551,6 +559,9 @@ static bool isValidButtonLayout(ConfigLegacy::ButtonLayout buttonLayout)
         case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
         case BUTTON_LAYOUT_CUSTOMA:
         case BUTTON_LAYOUT_OPENCORE0WASDA:
+        case BUTTON_LAYOUT_STICKLESS_13:
+        case BUTTON_LAYOUT_STICKLESS_16:
+        case BUTTON_LAYOUT_STICKLESS_14:
             return true;
     }
     return false;
@@ -579,6 +590,9 @@ static bool isValidButtonLayoutRight(ConfigLegacy::ButtonLayoutRight buttonLayou
         case BUTTON_LAYOUT_CUSTOMB:
         case BUTTON_LAYOUT_KEYBOARD8B:
         case BUTTON_LAYOUT_OPENCORE0WASDB:
+        case BUTTON_LAYOUT_STICKLESS_13B:
+        case BUTTON_LAYOUT_STICKLESS_16B:        
+        case BUTTON_LAYOUT_STICKLESS_14B:
             return true;
     }
     return false;
@@ -787,10 +801,10 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         config.has_displayOptions = true;
         SET_PROPERTY(displayOptions, enabled, legacyBoardOptions.hasI2CDisplay);
         SET_PROPERTY(displayOptions, i2cBlock, legacyBoardOptions.i2cBlock);
-        SET_PROPERTY(displayOptions, i2cSDAPin, legacyBoardOptions.i2cSDAPin);
-        SET_PROPERTY(displayOptions, i2cSCLPin, legacyBoardOptions.i2cSCLPin);
+        SET_PROPERTY(displayOptions, deprecatedI2cSDAPin, legacyBoardOptions.i2cSDAPin);
+        SET_PROPERTY(displayOptions, deprecatedI2cSCLPin, legacyBoardOptions.i2cSCLPin);
         SET_PROPERTY(displayOptions, i2cAddress, legacyBoardOptions.displayI2CAddress);
-        SET_PROPERTY(displayOptions, i2cSpeed, legacyBoardOptions.i2cSpeed);
+        SET_PROPERTY(displayOptions, deprecatedI2cSpeed, legacyBoardOptions.i2cSpeed);
         if (isValidButtonLayout(legacyBoardOptions.buttonLayout))
         {
             SET_PROPERTY(displayOptions, buttonLayout, static_cast<ButtonLayout>(legacyBoardOptions.buttonLayout));
@@ -973,7 +987,8 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         {
             SET_PROPERTY(dualDirectionalOptions, dpadMode, static_cast<DpadMode>(legacyAddonOptions.dualDirDpadMode));
         }
-        SET_PROPERTY(dualDirectionalOptions, combineMode, legacyAddonOptions.dualDirCombineMode);
+        SET_PROPERTY(dualDirectionalOptions, combineMode,
+                static_cast<DualDirectionalCombinationMode>(legacyAddonOptions.dualDirCombineMode));
 
         ExtraButtonOptions& extraButtonOptions = config.addonOptions.deprecatedExtraButtonOptions;
         config.addonOptions.has_deprecatedExtraButtonOptions = true;
@@ -985,10 +1000,10 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         config.addonOptions.has_analogADS1219Options = true;
         SET_PROPERTY(analogADS1219Options, enabled, legacyAddonOptions.I2CAnalog1219InputEnabled);
         SET_PROPERTY(analogADS1219Options, i2cBlock, legacyAddonOptions.i2cAnalog1219Block);
-        SET_PROPERTY(analogADS1219Options, i2cSDAPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SDAPin));
-        SET_PROPERTY(analogADS1219Options, i2cSCLPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SCLPin));
+        SET_PROPERTY(analogADS1219Options, deprecatedI2cSDAPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SDAPin));
+        SET_PROPERTY(analogADS1219Options, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.i2cAnalog1219SCLPin));
         SET_PROPERTY(analogADS1219Options, i2cAddress, legacyAddonOptions.i2cAnalog1219Address);
-        SET_PROPERTY(analogADS1219Options, i2cSpeed, legacyAddonOptions.i2cAnalog1219Speed);
+        SET_PROPERTY(analogADS1219Options, deprecatedI2cSpeed, legacyAddonOptions.i2cAnalog1219Speed);
 
         SliderOptions& sliderOptions = config.addonOptions.sliderOptions;
         config.addonOptions.has_sliderOptions = true;
@@ -1040,7 +1055,7 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         TurboOptions& turboOptions = config.addonOptions.turboOptions;
         config.addonOptions.has_turboOptions = true;
         SET_PROPERTY(turboOptions, enabled, legacyAddonOptions.TurboInputEnabled);
-        SET_PROPERTY(turboOptions, buttonPin, bytePinToIntPin(legacyAddonOptions.pinButtonTurbo));
+        SET_PROPERTY(turboOptions, deprecatedButtonPin, bytePinToIntPin(legacyAddonOptions.pinButtonTurbo));
         SET_PROPERTY(turboOptions, ledPin, bytePinToIntPin(legacyAddonOptions.pinTurboLED));
         SET_PROPERTY(turboOptions, shotCount, legacyAddonOptions.turboShotCount);
         SET_PROPERTY(turboOptions, shmupDialPin, bytePinToIntPin(legacyAddonOptions.pinShmupDial));
@@ -1066,9 +1081,9 @@ bool ConfigUtils::fromLegacyStorage(Config& config)
         config.addonOptions.has_wiiOptions = true;
         SET_PROPERTY(wiiOptions, enabled, legacyAddonOptions.WiiExtensionAddonEnabled);
         SET_PROPERTY(wiiOptions, i2cBlock, legacyAddonOptions.wiiExtensionBlock);
-        SET_PROPERTY(wiiOptions, i2cSDAPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSDAPin));
-        SET_PROPERTY(wiiOptions, i2cSCLPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSCLPin));
-        SET_PROPERTY(wiiOptions, i2cSpeed, legacyAddonOptions.wiiExtensionSpeed);
+        SET_PROPERTY(wiiOptions, deprecatedI2cSDAPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSDAPin));
+        SET_PROPERTY(wiiOptions, deprecatedI2cSCLPin, bytePinToIntPin(legacyAddonOptions.wiiExtensionSCLPin));
+        SET_PROPERTY(wiiOptions, deprecatedI2cSpeed, legacyAddonOptions.wiiExtensionSpeed);
         
         PS4Options& ps4Options = config.addonOptions.ps4Options;
         config.addonOptions.has_ps4Options = true;

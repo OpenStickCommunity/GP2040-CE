@@ -1,6 +1,7 @@
 #include "addons/board_led.h"
-#include "usb_driver.h" // Required to check USB state
-#include "ps4_driver.h"
+#include "drivermanager.h"
+#include "drivers/ps4/PS4Driver.h"
+#include "usbdriver.h"
 #include "helper.h"
 #include "config.pb.h"
 
@@ -23,7 +24,10 @@ void BoardLedAddon::setup() {
 void BoardLedAddon::process() {
     bool state = 0;
     Gamepad * processedGamepad;
-    uint16_t joystickMid = GetJoystickMidValue(Storage::getInstance().getGamepadOptions().inputMode);
+    uint16_t joystickMid = GAMEPAD_JOYSTICK_MID;
+    if ( DriverManager::getInstance().getDriver() != nullptr ) {
+        joystickMid = DriverManager::getInstance().getDriver()->GetJoystickMidValue();
+    }
     switch (onBoardLedMode) {
         case OnBoardLedMode::ON_BOARD_LED_MODE_INPUT_TEST: // Blinks on input
             processedGamepad = Storage::getInstance().GetProcessedGamepad();
@@ -66,7 +70,11 @@ void BoardLedAddon::process() {
             }
             break;
         case OnBoardLedMode::ON_BOARD_LED_MODE_PS_AUTH:
-            state = PS4Data::getInstance().authsent == true;
+            processedGamepad = Storage::getInstance().GetProcessedGamepad();
+            if(processedGamepad->getOptions().inputMode == INPUT_MODE_PS4 ||
+                processedGamepad->getOptions().inputMode == INPUT_MODE_PS5) {
+                state = ((PS4Driver*)DriverManager::getInstance().getDriver())->getAuthSent() == true;
+            }
             if (prevState != state) {
                 gpio_put(BOARD_LED_PIN, state ? 1 : 0);
             }

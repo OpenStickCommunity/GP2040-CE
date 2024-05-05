@@ -8,7 +8,7 @@
 class CustomTheme : public Animation {
 public:
   CustomTheme(PixelMatrix &matrix);
-  ~CustomTheme() {};
+  ~CustomTheme() {  };
 
   static bool HasTheme();
   static void SetCustomTheme(std::map<uint32_t, RGB> customTheme);
@@ -16,7 +16,6 @@ public:
   void ParameterUp();
   void ParameterDown();
 protected:
-  RGB defaultColor = ColorBlack;
   static std::map<uint32_t, RGB> theme;
 };
 

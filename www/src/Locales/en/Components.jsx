@@ -1,10 +1,10 @@
 export default {
 	'language-selector': {
-		'en-GB': 'English (UK)',
 		en: 'English (US)',
 		nl: 'Nederlands (Dutch)',
 		'pt-BR': 'Português Brasil (Brazilian Portuguese)',
 		'zh-CN': '简体中文 (Simplified Chinese)',
+		'de-DE': 'Deutsch (German)',
 	},
 	'color-scheme': {
 		dark: 'Dark',

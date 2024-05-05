@@ -4,6 +4,7 @@ import FormSelect from './FormSelect';
 import { KEY_CODES } from '../Data/Keyboard';
 import { BUTTONS } from '../Data/Buttons';
 import boards from '../Data/Boards.json';
+import cloneDeep from 'lodash/cloneDeep';
 
 const KeyboardMapper = ({
 	buttonLabels,
@@ -28,7 +29,7 @@ const KeyboardMapper = ({
 			</thead>
 			<tbody>
 				{Object.keys(BUTTONS[buttonLabelType])
-					?.filter((p) => p !== 'label' && p !== 'value')
+					?.filter((btn) => !['label', 'value', 'Fn'].includes(btn))
 					.map((button, i) => {
 						let label = BUTTONS[buttonLabelType][button];
 						if (
@@ -83,7 +84,8 @@ const KeyboardMapper = ({
 	);
 };
 
-export const validateMappings = (mappings, t) => {
+export const validateMappings = (keyMappings, t) => {
+	const mappings = cloneDeep(keyMappings);
 	const props = Object.keys(mappings);
 
 	for (let prop of props) {
@@ -93,8 +95,8 @@ export const validateMappings = (mappings, t) => {
 			if (prop === otherProp) continue;
 
 			const key = KEY_CODES.find(
-				({ _, value }) => mappings[prop].key === value,
-			).label;
+				({ value }) => mappings?.[prop]?.key === value,
+			)?.label;
 
 			if (
 				mappings[prop].key !== 0x00 &&

@@ -5,8 +5,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  pull_request_target:
-    branches: [ "main" ]
+#  pull_request_target:
+#    branches: [ "main" ]
   workflow_dispatch:
 
 env:
@@ -23,18 +23,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        GP2040_BOARDCONFIG: [Pico, PicoW, AlpacaOwO, BentoBox, DURAL, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, FlatboxRev5RGB, FlatboxRev5Southpaw, KB2040, KeyboardConverter, Liatris, MavercadeKeebfighter, OpenCore0, OpenCore0WASD, PicoAnn, PicoFightingBoard, RanaTadpole, ReflexCtrlSNES, ReflexEncodeV1.2, ReflexEncodeV2.0, RP2040AdvancedBreakoutBoard, RP2040AdvancedBreakoutBoardUSBPassthrough, RP2040MiniBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress, SGFDevices  ]
+        GP2040_BOARDCONFIG: [ARCController, Pico, PicoW, BentoBox, FightboardV3, FightboardV3Mirrored, FlatboxRev4, FlatboxRev5, FlatboxRev5RGB, FlatboxRev5Southpaw, Granola, KB2040, KeyboardConverter, Haute42COSMOX, Liatris, Mavercade, OpenCore0, OpenCore0WASD, PicoAnn, PicoFightingBoard, RanaTadpole, ReflexCtrlGenesis6, ReflexCtrlNES, ReflexCtrlSaturn, ReflexCtrlSNES, ReflexCtrlVB, ReflexEncodeV1.2, ReflexEncodeV2.0, RP2040AdvancedBreakoutBoard, RP2040AdvancedBreakoutBoardUSBPassthrough, RP2040MiniBreakoutBoard, SparkFunProMicro, WaveshareZero, Stress, SGFBridget, SGFFaust]
 
     steps:
     #Global Setup
     - name: Checkout GP2040-CE
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4.1.1
+      with:
+        fetch-depth: 0
+        fetch-tags: true
 
     - name: Setup SDK pipeline
-      uses: Fortinbra/RaspberryPiPicoBuild@v1
+      uses: Fortinbra/RaspberryPiPicoBuild@v3
 
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v3.0.2
+      uses: actions/download-artifact@v4.1.2
       with:
         name: fsData
         path: ${{github.workspace}}/lib/httpd/
@@ -59,8 +62,16 @@ jobs:
       run: GP2040_BOARDCONFIG=${{ matrix.GP2040_BOARDCONFIG }} cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel ${{steps.core_count.outputs.output}}
 
     - name: Upload Pico Artifact
-      uses: actions/upload-artifact@v3.1.1
+      uses: actions/upload-artifact@v4.3.1
       with:
         name: GP2040-CE - ${{ matrix.GP2040_BOARDCONFIG }}
         path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.uf2
+        if-no-files-found: error
+        
+    - name: Upload .elf Artifact
+      if: ${{ matrix.GP2040_BOARDCONFIG == 'Pico'}}
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: elf
+        path: ${{github.workspace}}/build/GP2040-CE_*_${{ matrix.GP2040_BOARDCONFIG }}.elf
         if-no-files-found: error

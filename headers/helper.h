@@ -8,10 +8,6 @@
 #include <stdint.h>
 #include "AnimationStation.hpp"
 #include "PlayerLEDs.h"
-#include "xinput_driver.h"
-
-// GP2040-CE Version (32 character limit)
-#define GP2040VERSION "v0.7.5"
 
 // GP2040-CE Board Config (64 character limit)
 #ifndef GP2040_BOARDCONFIG

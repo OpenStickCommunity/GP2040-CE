@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { AppContext } from '../Contexts/AppContext';
 import { Button, Form, Col } from 'react-bootstrap';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
@@ -15,6 +15,11 @@ const API_BINDING = {
 		get: WebApi.getDisplayOptions,
 		set: WebApi.setDisplayOptions,
 	},
+	splash: {
+		label: 'Splash Image',
+		get: WebApi.getSplashImage,
+		set: WebApi.setSplashImage,
+	},
 	gamepad: {
 		label: 'Gamepad',
 		get: WebApi.getGamepadOptions,
@@ -26,10 +31,20 @@ const API_BINDING = {
 		get: WebApi.getCustomTheme,
 		set: WebApi.setCustomTheme,
 	},
-	pinmappings: {
+	macros: {
+		label: 'Macro Mappings',
+		get: WebApi.getMacroAddonOptions,
+		set: WebApi.setMacroAddonOptions,
+	},
+	pins: {
 		label: 'Pin Mappings',
 		get: WebApi.getPinMappings,
 		set: WebApi.setPinMappings,
+	},
+	profiles: {
+		label: 'Profile Mappings',
+		get: WebApi.getProfileOptions,
+		set: WebApi.setProfileOptions,
 	},
 	addons: {
 		label: 'Add-Ons',
@@ -81,7 +96,12 @@ export default function BackupPage() {
 			return {};
 		}
 
-		let validated = {};
+		let validated = Array.isArray(data) ? [] : {};
+		const addValidated = (value, key) =>
+			Array.isArray(validated)
+				? validated.push(value)
+				: (validated[key] = value);
+
 		for (const [key, value] of Object.entries(data)) {
 			const nextDataValue = nextData[key];
 			if (
@@ -90,9 +110,9 @@ export default function BackupPage() {
 				typeof value == typeof nextDataValue
 			) {
 				if (typeof nextDataValue == 'object') {
-					validated[key] = validateValues(value, nextDataValue);
+					addValidated(validateValues(value, nextDataValue), key);
 				} else {
-					validated[key] = nextDataValue;
+					addValidated(nextDataValue, key);
 				}
 			}
 		}
@@ -117,7 +137,7 @@ export default function BackupPage() {
 		setCheckValues((checkValues) => ({ ...checkValues, ...nextCheckValue }));
 	};
 
-	const handleSave = async (values) => {
+	const handleSave = async () => {
 		let exportData = {};
 		for (const [key, value] of Object.entries(checkValues)) {
 			if (key.match('export_') && (value != null || value !== undefined)) {
@@ -178,7 +198,6 @@ export default function BackupPage() {
 				setNoticeMessage(`No file data found for ${fileName}`);
 				return;
 			}
-
 			// validate parsed data
 			let newData = {};
 			for (const [key, value] of Object.entries(fileData)) {
@@ -221,9 +240,6 @@ export default function BackupPage() {
 
 	return (
 		<>
-			<Section title={t('BackupPage:header-text')}>
-				<i>{t('BackupPage:sub-header-text')}</i>
-			</Section>
 			<Section title={t('BackupPage:save-header-text')}>
 				<Col>
 					<Form.Group className={'row mb-3'}>
@@ -266,6 +282,9 @@ export default function BackupPage() {
 				</Col>
 			</Section>
 			<Section title={t('BackupPage:load-header-text')}>
+				<div className="alert alert-warning">
+					{t(`BackupPage:pin-version-warning-text`)}
+				</div>
 				<Col>
 					<Form.Group className={'row mb-3'}>
 						<div className={'col-sm-4'}>

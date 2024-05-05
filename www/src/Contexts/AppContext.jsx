@@ -1,11 +1,13 @@
 import React, { createContext, useEffect, useState } from 'react';
 import * as yup from 'yup';
 
-import WebApi from '../Services/WebApi';
+import WebApi, { basePeripheralMapping } from '../Services/WebApi';
+import { PERIPHERAL_DEVICES } from '../Data/Peripherals';
 
 export const AppContext = createContext(null);
 
 let checkPins = null;
+let checkPeripherals = basePeripheralMapping;
 
 yup.addMethod(yup.string, 'validateColor', function () {
 	return this.test('', 'Valid hex color required', (value) =>
@@ -18,7 +20,7 @@ yup.addMethod(
 	'validateSelectionWhenValue',
 	function (name, choices) {
 		return this.when(name, {
-			is: (value) => !isNaN(parseInt(value)),
+			is: 1,
 			then: () => this.required().oneOf(choices.map((o) => o.value)),
 			otherwise: () => yup.mixed().notRequired(),
 		});
@@ -27,7 +29,7 @@ yup.addMethod(
 
 yup.addMethod(yup.NumberSchema, 'validateNumberWhenValue', function (name) {
 	return this.when(name, {
-		is: (value) => !isNaN(parseInt(value)),
+		is: 1,
 		then: () => this.required(),
 		otherwise: () => yup.mixed().notRequired().strip(),
 	});
@@ -50,7 +52,7 @@ yup.addMethod(
 	'validateRangeWhenValue',
 	function (name, min, max) {
 		return this.when(name, {
-			is: (value) => !isNaN(parseInt(value)),
+			is: 1,
 			then: () => this.required().min(min).max(max),
 			otherwise: () => yup.mixed().notRequired().strip(),
 		});
@@ -70,7 +72,11 @@ yup.addMethod(
 );
 
 yup.addMethod(yup.NumberSchema, 'validatePinWhenValue', function (name) {
-	return this.checkUsedPins();
+	return this.when(name, {
+		is: 1,
+		then: () => this.checkUsedPins(),
+		otherwise: () => yup.mixed().notRequired().strip(),
+	})
 });
 
 yup.addMethod(yup.NumberSchema, 'checkUsedPins', function () {
@@ -171,6 +177,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 	};
 
 	const [usedPins, setUsedPins] = useState([]);
+    const [availablePeripherals, setAvailablePeripherals] = useState(basePeripheralMapping);
+    const [availableAddons, setAvailableAddons] = useState({});
 
 	const updateUsedPins = async () => {
 		const data = await WebApi.getUsedPins(setLoading);
@@ -179,8 +187,15 @@ export const AppContextProvider = ({ children, ...props }) => {
 		return data;
 	};
 
+    const updatePeripherals = async () => {
+        const peripherals = await WebApi.getPeripheralOptions(setLoading);
+        setAvailablePeripherals(peripherals);
+        console.log('availablePeripherals updated:', peripherals);
+    };
+
 	useEffect(() => {
 		updateUsedPins();
+        updatePeripherals();
 	}, []);
 
 	useEffect(() => {
@@ -195,6 +210,45 @@ export const AppContextProvider = ({ children, ...props }) => {
 	}, [usedPins, setUsedPins]);
 
 	console.log('usedPins:', usedPins);
+
+    const getAvailablePeripherals = (device) => {
+        // gymnastics to make sure the device is defined before trusting config value
+        let peripherals = Object.keys(availablePeripherals.peripheral)
+            .filter((p) => PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.map(({label}) => label).indexOf(p) > -1)
+            .filter((label) => availablePeripherals.peripheral[label].enabled)
+            .map((l) => ({label: l, value: PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.find(({label}) => label == l).value}));
+        return (peripherals.length > 0 ? peripherals : false);
+    };
+
+    const getSelectedPeripheral = (device,block) => {
+        let peripheral = availablePeripherals.peripheral[Object.keys(availablePeripherals.peripheral)
+            .filter((p) => PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.map(({label}) => label).indexOf(p) > -1)
+            .filter((label) => availablePeripherals.peripheral[label].enabled)
+            .map((l) => ({label: l, value: PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.find(({label}) => label == l).value}))
+            .find((p) => p.value == block).label];
+        return peripheral;
+    };
+
+    useEffect(() => {
+
+    }, [availablePeripherals, setAvailablePeripherals]);
+
+    useEffect(() => {
+		async function fetchData() {
+			const data = await WebApi.getAddonsOptions(setLoading);
+			setAvailableAddons(data);
+		}
+		fetchData();
+    }, []);
+
+    const updateAddons = async () => {
+        const data = await WebApi.getAddonsOptions(setLoading);
+        setAvailableAddons(data);
+    };
+
+    const getAvailableAddons = () => {
+        return availableAddons;
+    };
 
 	const [savedColorScheme, _setSavedColorScheme] = useState(
 		localStorage.getItem('savedColorScheme') || 'auto',
@@ -225,6 +279,11 @@ export const AppContextProvider = ({ children, ...props }) => {
 				gradientPressedColor2,
 				savedColors,
 				usedPins,
+                availablePeripherals,
+                getAvailablePeripherals,
+                getAvailableAddons,
+                updateAddons,
+                getSelectedPeripheral,
 				setButtonLabels,
 				setGradientNormalColor1,
 				setGradientNormalColor2,
@@ -232,6 +291,8 @@ export const AppContextProvider = ({ children, ...props }) => {
 				setGradientPressedColor2,
 				setSavedColors,
 				setUsedPins,
+                setAvailablePeripherals,
+                updatePeripherals,
 				updateUsedPins,
 				savedColorScheme,
 				setSavedColorScheme,

@@ -59,44 +59,46 @@ bool ExtensionBase::calibrate(uint8_t *calibrationData) {
 void ExtensionBase::postProcess() {
     uint8_t i;
 
-    uint16_t minVal, maxVal, cenVal, outVal;
+    uint16_t minVal, maxVal, cenVal;
+    int16_t outVal;
     int16_t centerOffset = 0;
 
     for (i = 0; i < WiiAnalogs::WII_MAX_ANALOGS; ++i) {
         // scale calibration values before using
         if (i != WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION) {
+
+            outVal = applyCalibration(analogState[i], _analogCalibration[i].minimum, _analogCalibration[i].maximum, _analogCalibration[i].center);
+
             minVal = map(_analogCalibration[i].minimum, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
             maxVal = map(_analogCalibration[i].maximum, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
             cenVal = map(_analogCalibration[i].center, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].origin-1, 0, _analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1);
-
+            
             if (isFirstRead) {
                 // stash the first read as the initial orientation. will reset on hotswap.
-                initialAnalogState[i] = map(analogState[i], 0, (_analogPrecision[i].origin-1), 0,(_analogPrecision[i].destination-1));
-
+                initialAnalogState[i] = outVal;
+            
                 if (!_hasCalibrationData) {
                     cenVal = initialAnalogState[i];
                 }
             }
-
+            
             if (_analogCalibration[i].useOffset) {
-                centerOffset = cenVal-initialAnalogState[i];
+                centerOffset = _analogCalibration[i].center-initialAnalogState[i];
             } else {
                 centerOffset = 0;
             }
 
-            outVal = map(analogState[i], 0, (_analogPrecision[i].origin-1), 0,(_analogPrecision[i].destination-1));
             if ((i != WiiAnalogs::WII_ANALOG_LEFT_TRIGGER) && (i != WiiAnalogs::WII_ANALOG_RIGHT_TRIGGER)) {
-                outVal = bounds(outVal, minVal, maxVal);
-                outVal = map(outVal+centerOffset, minVal+centerOffset, maxVal+centerOffset, 0, (_analogPrecision[i].destination-1));
-                outVal = bounds(outVal, minVal, maxVal);
+                outVal = map(outVal, _analogCalibration[i].minimum, _analogCalibration[i].maximum, minVal, maxVal);
+                outVal = map(outVal, minVal, maxVal, 10, (_analogPrecision[WiiAnalogs::WII_ANALOG_CALIBRATION_PRECISION].destination-1));
             } else {
-                outVal = bounds(outVal, 0, (_analogPrecision[i].destination-1));
+                outVal = bounds(outVal, 10, (_analogPrecision[i].destination-1));
             }
 
-            applyCalibration(outVal, minVal, maxVal, cenVal);
-
+            if (outVal < 0) outVal = 10;
+            if (outVal > (_analogPrecision[i].destination-1)) outVal = (_analogPrecision[i].destination-1);
 #if WII_EXTENSION_DEBUG==true
-            if (i == WiiAnalogs::WII_ANALOG_RIGHT_Y) {
+            if (i == WiiAnalogs::WII_ANALOG_LEFT_X) {
                 //printf("cur:%5d min=%5d:%5d max=%5d:%5d cen=%5d:%5d out:%5d off:%5d\n", analogState[i], _analogCalibration[i].minimum, minVal, _analogCalibration[i].maximum, maxVal, _analogCalibration[i].center, cenVal, outVal, centerOffset);
             }
 #endif
@@ -138,17 +140,16 @@ uint16_t ExtensionBase::applyCalibration(uint16_t pos, uint16_t min, uint16_t ma
     uint16_t result;
 
 #if WII_EXTENSION_CALIBRATION==true
-    if (pos >= min && pos <= max) {
-        result = pos;
+    float res;
+    if (pos == cen) {
+        res = 0;
+    } else if (pos < cen) {
+        res = (pos - min) / (cen - min + 1.0f) - 1.0f;
     } else {
-        if (pos < min) {
-            result = min;
-        } else if (pos > max) {
-            result = max;
-        } else {
-            result = cen;
-        }
+        res = (pos - cen) / (max - cen + 1.0f);
     }
+
+    result = (res - -1.0f) * (max - min) / (1.0f - -1.0f) + min;
 #else
     result = pos;
 #endif

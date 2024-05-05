@@ -7,8 +7,6 @@
 #include "helper.h"
 #include "config.pb.h"
 
-#define JSLIDER_DEBOUNCE_MILLIS 5
-
 #define DPAD_MODE_MASK (DPAD_MODE_LEFT_ANALOG & DPAD_MODE_RIGHT_ANALOG & DPAD_MODE_DIGITAL)
 
 bool JSliderInput::available() {
@@ -32,33 +30,28 @@ void JSliderInput::setup()
 
 DpadMode JSliderInput::read() {
     const SliderOptions& options = Storage::getInstance().getAddonOptions().sliderOptions;
-    Mask_t values = ~gpio_get_all();
+    Mask_t values = Storage::getInstance().GetGamepad()->debouncedGpio;
     if (values & dpModeMask)            return DpadMode::DPAD_MODE_DIGITAL;
     else if (values & lsModeMask)       return DpadMode::DPAD_MODE_LEFT_ANALOG;
     else if (values & rsModeMask)       return DpadMode::DPAD_MODE_RIGHT_ANALOG;
     return options.modeDefault;
 }
 
-void JSliderInput::debounce()
+/**
+ * Reinitialize masks.
+ */
+void JSliderInput::reinit()
 {
-    uint32_t uNowTime = getMillis();
-    if ((dDebState != dpadState) && ((uNowTime - uDebTime) > JSLIDER_DEBOUNCE_MILLIS)) {
-        if ( (dpadState ^ dDebState) == DPAD_MODE_RIGHT_ANALOG )
-            dDebState = (DpadMode)(dDebState ^ DPAD_MODE_RIGHT_ANALOG); // Bounce Right Analog
-        else if ( (dpadState ^ dDebState) & DPAD_MODE_LEFT_ANALOG )
-            dDebState = (DpadMode)(dDebState ^ DPAD_MODE_LEFT_ANALOG); // Bounce Left Analog
-        uDebTime = uNowTime;
-    }
-    dpadState = dDebState;
+    dpModeMask = 0;
+    lsModeMask = 0;
+    rsModeMask = 0;
+    this->setup();
 }
 
 void JSliderInput::process()
 {
     // Get Slider State
-    dpadState = read();
-#if JSLIDER_DEBOUNCE_MILLIS > 0
-    debounce();
-#endif
+    DpadMode dpadState = read();
 
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
     if ( gamepad->getOptions().dpadMode != dpadState) {

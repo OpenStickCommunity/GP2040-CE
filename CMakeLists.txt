@@ -12,10 +12,22 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.0")
   message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
+# set the version for webconfig, etc. based on git
+find_package(Git)
+execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT_VARIABLE GIT_REPO_VERSION
+	OUTPUT_STRIP_TRAILING_WHITESPACE)
+string(REGEX REPLACE "v([0-9]+\\.[0-9]+\\.[0-9]+).*" "\\1" CMAKE_GIT_REPO_VERSION ${GIT_REPO_VERSION})
+string(REGEX REPLACE "^(.......-.*)|(.......)$" "0.0.0" CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION}) # fix if all we have is the git SHA
+configure_file("headers/version.h.in" "headers/version.h")
+message("GIT_REPO_VERSION is ${GIT_REPO_VERSION}")
+message("CMAKE_GIT_REPO_VERSION is ${CMAKE_GIT_REPO_VERSION}")
+
 # Uncomment the next line for an unomptimized build for debugging. Use in conjunction with the Debug build type.
 # set(PICO_DEOPTIMIZED_DEBUG 1)
 
-project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.7.5)
+project(GP2040-CE LANGUAGES C CXX ASM VERSION ${CMAKE_GIT_REPO_VERSION})
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -104,6 +116,9 @@ add_compile_options(-Wall
 include(compile_proto.cmake)
 compile_proto()
 
+#pull in tinyUSB
+set(PICO_TINYUSB_PATH "${CMAKE_CURRENT_LIST_DIR}/lib/tinyusb")
+
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
@@ -127,10 +142,57 @@ src/main.cpp
 src/gp2040.cpp
 src/gp2040aux.cpp
 src/gamepad.cpp
+src/gamepad/GamepadState.cpp
 src/addonmanager.cpp
 src/configmanager.cpp
+src/drivers/shared/xinput_host.cpp
+src/drivers/shared/xgip_protocol.cpp
+src/drivers/astro/AstroDriver.cpp
+src/drivers/egret/EgretDriver.cpp
+src/drivers/hid/HIDDriver.cpp
+src/drivers/keyboard/KeyboardDriver.cpp
+src/drivers/mdmini/MDMiniDriver.cpp
+src/drivers/neogeo/NeoGeoDriver.cpp
+src/drivers/net/NetDriver.cpp
+src/drivers/pcengine/PCEngineDriver.cpp
+src/drivers/ps4/PS4Auth.cpp
+src/drivers/ps4/PS4AuthUSBListener.cpp
+src/drivers/ps4/PS4Driver.cpp
+src/drivers/psclassic/PSClassicDriver.cpp
+src/drivers/switch/SwitchDriver.cpp
+src/drivers/xbone/XBOneAuth.cpp
+src/drivers/xbone/XBOneAuthUSBListener.cpp
+src/drivers/xbone/XBOneDriver.cpp
+src/drivers/xboxog/xid/xid_driver.c
+src/drivers/xboxog/xid/xid_gamepad.c
+src/drivers/xboxog/xid/xid_remote.c
+src/drivers/xboxog/xid/xid_steelbattalion.c
+src/drivers/xboxog/xid/xid.c
+src/drivers/xboxog/XboxOriginalDriver.cpp
+src/drivers/xinput/XInputAuth.cpp
+src/drivers/xinput/XInputAuthUSBListener.cpp
+src/drivers/xinput/XInputDriver.cpp
+src/interfaces/i2c/ssd1306/obd_ssd1306.cpp
+src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
+src/display/ui/elements/GPWidget.cpp
+src/display/ui/elements/GPButton.cpp
+src/display/ui/elements/GPLever.cpp
+src/display/ui/elements/GPLabel.cpp
+src/display/ui/elements/GPScreen.cpp
+src/display/ui/elements/GPShape.cpp
+src/display/ui/elements/GPSprite.cpp
+src/display/ui/screens/ButtonLayoutScreen.cpp
+src/display/ui/screens/ConfigScreen.cpp
+src/display/ui/screens/MainMenuScreen.cpp
+src/display/ui/screens/SplashScreen.cpp
+src/display/GPGFX.cpp
+src/display/GPGFX_UI.cpp
+src/drivermanager.cpp
+src/layoutmanager.cpp
+src/peripheralmanager.cpp
 src/storagemanager.cpp
 src/system.cpp
+src/usbdriver.cpp
 src/usbhostmanager.cpp
 src/config_legacy.cpp
 src/config_utils.cpp
@@ -142,23 +204,22 @@ src/addons/focus_mode.cpp
 src/addons/buzzerspeaker.cpp
 src/addons/dualdirectional.cpp
 src/addons/keyboard_host.cpp
+src/addons/keyboard_host_listener.cpp
 src/addons/i2canalog1219.cpp
 src/addons/jslider.cpp
-src/addons/i2cdisplay.cpp
+src/addons/display.cpp
 src/addons/neopicoleds.cpp
 src/addons/playernum.cpp
 src/addons/playerleds.cpp
-src/addons/ps4mode.cpp
-src/addons/pspassthrough.cpp
+src/addons/rotaryencoder.cpp
 src/addons/reverse.cpp
 src/addons/turbo.cpp
 src/addons/slider_socd.cpp
 src/addons/wiiext.cpp
 src/addons/input_macro.cpp
 src/addons/snes_input.cpp
-src/gamepad/GamepadDebouncer.cpp
-src/gamepad/GamepadDescriptors.cpp
 src/addons/tilt.cpp
+src/addons/spi_analog_ads1256.cpp
 ${PROTO_OUTPUT_DIR}/enums.pb.c
 ${PROTO_OUTPUT_DIR}/config.pb.c
 )
@@ -166,7 +227,7 @@ ${PROTO_OUTPUT_DIR}/config.pb.c
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_${CMAKE_PROJECT_VERSION}_${GP2040_BOARDCONFIG})
 
 pico_set_program_name(GP2040-CE "GP2040-CE")
-pico_set_program_version(GP2040-CE "0.7.5")
+pico_set_program_version(GP2040-CE ${GIT_REPO_VERSION})
 
 target_link_libraries(${PROJECT_NAME}
 pico_stdlib
@@ -177,16 +238,17 @@ AnimationStation
 CRC32
 FlashPROM
 ADS1219
+ADS1256
 PlayerLEDs
 NeoPico
 OneBitDisplay
 ArduinoJson
 rndis
 hardware_adc
+PicoPeripherals
 WiiExtension
 SNESpad
 pico_mbedtls
-TinyUSB_Gamepad
 nanopb
 )
 
@@ -194,9 +256,18 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 headers
 headers/addons
 headers/configs
+headers/drivers
+headers/interfaces/i2c
+headers/interfaces/i2c/ssd1306
 headers/gamepad
+headers/display
+headers/display/fonts
+headers/display/ui
+headers/display/ui/elements
+headers/display/ui/screens
 configs/${GP2040_BOARDCONFIG}
 ${PROTO_OUTPUT_DIR}
+${CMAKE_BINARY_DIR}/headers
 )
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC

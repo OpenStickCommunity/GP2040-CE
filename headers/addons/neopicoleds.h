@@ -66,6 +66,10 @@
 #define LEDS_CHASE_CYCLE_TIME 85
 #endif
 
+#ifndef LEDS_PRESS_COLOR_COOLDOWN_TIME
+#define LEDS_PRESS_COLOR_COOLDOWN_TIME 0
+#endif
+
 #ifndef LED_BRIGHTNESS_MAXIMUM
 #define LED_BRIGHTNESS_MAXIMUM 128
 #endif
@@ -194,8 +198,6 @@ private:
 	NeoPicoPlayerLEDs * neoPLEDs = nullptr;
 	AnimationStation as;
 	std::map<std::string, int> buttonPositions;
-	bool isFocusModeEnabled;
-	bool focusModePrevState;
 	bool turnOffWhenSuspended;
 };
 
