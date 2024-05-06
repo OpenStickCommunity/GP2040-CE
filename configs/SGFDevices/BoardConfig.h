@@ -3,17 +3,17 @@
  * SPDX-FileCopyrightText: Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
  */
 
-#ifndef SGF_DEVICES_CONFIG_H_
-#define SGF_DEVICES_CONFIG_H_
+#ifndef SGF_DEVICES_CONFIG_H
+#define SGF_DEVICES_CONFIG_H
 
 #include "enums.pb.h"
 #include "class/hid/hid.h"
 
-#define BOARD_CONFIG_LABEL "SGF Bridget"
+#define BOARD_CONFIG_LABEL "SGF Devices"
 
 // Main pin mapping Configuration
-// Mapping between SGF Bridget and switch number (as silkscreened) and GPIO pin listed under "SGF Bridget SW#"
-//                                                  // Flatbox Rev4 SW# | GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
+// Mapping between SGF PCB and switch number (as silkscreened) and GPIO pin listed under "SGF SW#"
+//                                           SGF SW# | GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
 #define GPIO_PIN_16 GpioAction::BUTTON_PRESS_UP     // UP     | UP     | UP      | UP       | UP     | UP     |
 #define GPIO_PIN_10 GpioAction::BUTTON_PRESS_DOWN   // DOWN   | DOWN   | DOWN    | DOWN     | DOWN   | DOWN   |
 #define GPIO_PIN_11 GpioAction::BUTTON_PRESS_RIGHT  // RIGHT  | RIGHT  | RIGHT   | RIGHT    | RIGHT  | RIGHT  |
@@ -36,6 +36,8 @@
 // Setting GPIO pins to assigned by add-on
 //
 #define GPIO_PIN_07 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_12 GpioAction::ASSIGNED_TO_ADDON
+#define GPIO_PIN_13 GpioAction::ASSIGNED_TO_ADDON
 
 // Keyboard Mapping Configuration
 //                                            // GP2040 | Xinput | Switch  | PS3/4/5  | Dinput | Arcade |
@@ -58,6 +60,13 @@
 #define KEY_BUTTON_A1   HID_KEY_9             // A1     | Guide  | Home    | PS       | 13     | ~      |
 #define KEY_BUTTON_A2   HID_KEY_F2            // A2     | ~      | Capture | ~        | 14     | ~      |
 #define KEY_BUTTON_FN   -1                    // Hotkey Function                                        |
+
+#define USB_PERIPHERAL_ENABLED 1
+#define USB_PERIPHERAL_PIN_DPLUS 12
+
+#define DEFAULT_INPUT_MODE_R1 INPUT_MODE_XBONE
+#define DEFAULT_INPUT_MODE_B4 INPUT_MODE_PS5
+#define DEFAULT_PS5AUTHENTICATION_TYPE INPUT_MODE_AUTH_TYPE_USB
 
 #define BOARD_LEDS_PIN 7
 #define LED_BRIGHTNESS_MAXIMUM 255
