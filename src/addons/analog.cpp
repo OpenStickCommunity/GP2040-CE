@@ -10,7 +10,8 @@
 #define ADC_MAX ((1 << 12) - 1) // 4095
 #define ADC_PIN_OFFSET 26
 #define ANALOG_MAX 1.0f
-#define ANALOG_CENTER ANALOG_MAX / 2
+#define ANALOG_CENTER 0.5f
+#define ANALOG_MINIMUM 0.0f
 
 bool AnalogInput::available() {
     return Storage::getInstance().getAddonOptions().analogOptions.enabled;
@@ -186,13 +187,13 @@ float AnalogInput::magnitudeCalculation(float x, float y, float& x_magnitude, fl
 }
 
 void AnalogInput::radialDeadzone(float& x, float& y, float deadzone, float x_magnitude, float y_magnitude, float xy_magnitude) {
-    float scaling_factor = (xy_magnitude - deadzone) / (1.0f - 1.6f * deadzone);
+    float scaling_factor = (xy_magnitude - deadzone) / (1.0f - 3.4f * deadzone);
     
     x = ((x_magnitude / xy_magnitude) * scaling_factor) + ANALOG_CENTER;
     y = ((y_magnitude / xy_magnitude) * scaling_factor) + ANALOG_CENTER;
 
-    x = std::fmin(x, 1.0f);
-    y = std::fmin(y, 1.0f);
+    x = std::clamp(x, ANALOG_MINIMUM, ANALOG_MAX);
+    y = std::clamp(y, ANALOG_MINIMUM, ANALOG_MAX);
 }
 
 void AnalogInput::adjustCircularity(float& x, float& y, float x_magnitude, float y_magnitude, float xy_magnitude) {
