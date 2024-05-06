@@ -4,5 +4,5 @@
 
 Configuration for [SGF Devices All Button Controllers](https://sgfdevices.com/collections/controllers).  
 
-![SGF Faust](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/SGFDevices/assets/SGF_Controller.png)
-![SGF Faust Layout](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/SGFDevices/assets/SGF_Layout.png)
+![SGF Controller](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/SGFDevices/assets/SGF_Controller.png)
+![SGF Layout](https://github.com/OpenStickCommunity/GP2040-CE/blob/main/configs/SGFDevices/assets/SGF_Layout.png)
