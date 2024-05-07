@@ -43,14 +43,36 @@ void XBOneAuthUSBListener::process() {
 
     // Do not begin processing console auth unless we have the dongle ready
     if ( dongle_ready == true ) {
+        // Received a packet from the console (or Windows) to dongle
         if ( xboxOneAuthData->xboneState == XboxOneState::send_auth_console_to_dongle ) {
-            uint8_t isChunked = ( xboxOneAuthData->authLen > GIP_MAX_CHUNK_SIZE );
-            uint8_t needsAck = (xboxOneAuthData->authLen > 2);
+                // Find the first packet from console to dongle and send it
+                std::vector<XboxOneAuthBuffer>::iterator authIterator;
+                for ( authIterator = xboxOneAuthData->authBufferQueue.begin(); 
+                        authIterator != xboxOneAuthData->authBufferQueue.end(); authIterator++ ) {
+                    if ( (*authIterator).source == XboxOneSource::from_console ) {
+                        break;
+                    }
+                }
+
+                // ERROR: Could not find an auth packet from our dongle
+                if (authIterator == xboxOneAuthData->authBufferQueue.end()) {
+                    xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
+                    return;
+                }
+
+
+            uint8_t isChunked = ( authIterator->len > GIP_MAX_CHUNK_SIZE );
+            uint8_t needsAck = (authIterator->len > 2);
             outgoingXGIP.reset();
-            outgoingXGIP.setAttributes(xboxOneAuthData->authType, xboxOneAuthData->authSequence, 1, isChunked, needsAck);
-            outgoingXGIP.setData(xboxOneAuthData->authBuffer, xboxOneAuthData->authLen);
+            outgoingXGIP.setAttributes(authIterator->type, authIterator->sequence, 1, isChunked, needsAck);
+            outgoingXGIP.setData(authIterator->buffer, authIterator->len);
             xboxOneAuthData->xboneState = XboxOneState::wait_auth_console_to_dongle;
-        } else if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_console_to_dongle) {
+            delete [] authIterator->buffer; // clear the memory for our buffer
+            xboxOneAuthData->authBufferQueue.erase(authIterator);
+        }
+
+        // Process waiting (always on first frame)
+        if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_console_to_dongle) {
             queue_host_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
             if ( outgoingXGIP.getChunked() == false || outgoingXGIP.endOfChunk() == true ) {
                 xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
@@ -119,11 +141,15 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
         case GIP_FINAL_AUTH:
            if ( incomingXGIP.getChunked() == false || 
                     (incomingXGIP.getChunked() == true && incomingXGIP.endOfChunk() == true )) {
-                memcpy(xboxOneAuthData->authBuffer, incomingXGIP.getData(), incomingXGIP.getDataLength());
-				xboxOneAuthData->authLen = incomingXGIP.getDataLength();
-				xboxOneAuthData->authType = incomingXGIP.getCommand();
-				xboxOneAuthData->authSequence = incomingXGIP.getSequence();
-				xboxOneAuthData->xboneState = XboxOneState::send_auth_dongle_to_console;
+                XboxOneAuthBuffer authBuffer;
+                authBuffer.buffer = new uint8_t[incomingXGIP.getDataLength()];
+                memcpy(authBuffer.buffer, incomingXGIP.getData(), incomingXGIP.getDataLength());
+                authBuffer.len = incomingXGIP.getDataLength();
+                authBuffer.type = incomingXGIP.getCommand();
+                authBuffer.sequence = incomingXGIP.getSequence();
+                authBuffer.source = XboxOneSource::from_dongle;
+                xboxOneAuthData->authBufferQueue.push_back(authBuffer);
+                xboxOneAuthData->xboneState = XboxOneState::send_auth_dongle_to_console;
                 incomingXGIP.reset();
             }
             break;
