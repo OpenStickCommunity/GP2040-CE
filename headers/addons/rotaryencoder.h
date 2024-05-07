@@ -127,6 +127,8 @@ private:
     uint16_t mapEncoderValueTrigger(int8_t index, int32_t encoderValue, uint16_t ppr);
     int8_t mapEncoderValueDPad(int8_t index, int32_t encoderValue, uint16_t ppr);
 
+    int8_t getEncoderIndexByPin(uint8_t pin);
+    
     bool dpadUp = false;
     bool dpadDown = false;
     bool dpadLeft = false;

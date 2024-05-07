@@ -17,7 +17,7 @@ void RotaryEncoderInput::setup()
     const RotaryOptions& options = Storage::getInstance().getAddonOptions().rotaryOptions;
     Gamepad * gamepad = Storage::getInstance().GetGamepad();
 
-    encoderMap[0].enabled = options.encoderOne.enabled;
+    encoderMap[0].enabled = options.encoderOne.enabled && ((options.encoderOne.pinA != -1) && (options.encoderOne.pinB != -1));
     if (encoderMap[0].enabled) {
         encoderMap[0].pinA = options.encoderOne.pinA;
         encoderMap[0].pinB = options.encoderOne.pinB;
@@ -28,7 +28,7 @@ void RotaryEncoderInput::setup()
         encoderMap[0].multiplier = options.encoderOne.multiplier;
     }
 
-    encoderMap[1].enabled = options.encoderTwo.enabled;
+    encoderMap[1].enabled = options.encoderTwo.enabled && ((options.encoderTwo.pinA != -1) && (options.encoderTwo.pinB != -1));
     if (encoderMap[1].enabled) {
         encoderMap[1].pinA = options.encoderTwo.pinA;
         encoderMap[1].pinB = options.encoderTwo.pinB;
@@ -154,8 +154,11 @@ uint16_t RotaryEncoderInput::mapEncoderValueStick(int8_t index, int32_t encoderV
     if (encoderMap[index].allowWrapAround) {
         return encoderValue;
     } else {
-        int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[index].minRange, encoderMap[index].maxRange);
-        int32_t constrainedValue = bounds(mappedValue, encoderMap[index].minRange, encoderMap[index].maxRange-1);
+        int32_t mappedValue = map(encoderValue, minValue, maxValue, encoderMap[index].minRange+1, encoderMap[index].maxRange);
+        int32_t constrainedValue = mappedValue;
+        
+        if (constrainedValue < encoderMap[index].minRange+1) constrainedValue = encoderMap[index].minRange+1;
+        if (constrainedValue > encoderMap[index].maxRange) constrainedValue = encoderMap[index].maxRange;
 
         return constrainedValue;
     }
@@ -206,4 +209,13 @@ int32_t RotaryEncoderInput::map(int32_t x, int32_t in_min, int32_t in_max, int32
 
 int32_t RotaryEncoderInput::bounds(int32_t x, int32_t out_min, int32_t out_max) {
     return (x < out_min) ? out_min : ((x > out_max) ? out_max : x);
+}
+
+int8_t RotaryEncoderInput::getEncoderIndexByPin(uint8_t pin) {
+    for (uint8_t i = 0; i < MAX_ENCODERS; i++) {
+        if (encoderMap[i].enabled && ((encoderMap[i].pinA != -1) && (encoderMap[i].pinB != -1))) {
+            if ((encoderMap[i].pinA == pin) || (encoderMap[i].pinB == pin)) return pin;
+        }
+    }
+    return -1;
 }
