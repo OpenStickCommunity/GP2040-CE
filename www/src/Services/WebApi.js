@@ -639,7 +639,7 @@ async function getHeldPins(abortSignal) {
 		});
 		return response.data;
 	} catch (error) {
-		if (error?.code === 'ERR_CANCELED') return { canceled: true };
+		if (error?.name === 'AbortError') return { canceled: true };
 		else console.error(error);
 	}
 }
