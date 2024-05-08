@@ -34,6 +34,7 @@
 		"start": "vite"
 	},
 	"devDependencies": {
+		"@types/lodash": "^4.17.1",
 		"@types/node": "^20.5.9",
 		"@typescript-eslint/eslint-plugin": "^6.13.2",
 		"@typescript-eslint/parser": "^6.13.2",
