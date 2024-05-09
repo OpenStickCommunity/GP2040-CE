@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import { AppContext } from '../Contexts/AppContext';
@@ -47,24 +47,22 @@ const ColorScheme = () => {
 	};
 
 	return (
-		<Dropdown>
-			<Dropdown.Toggle variant="secondary" style={{ marginRight: '7px' }}>
-				<MoonStarsIcon />
-			</Dropdown.Toggle>
-
-			<Dropdown.Menu>
-				{translatedDropdownOptions.map((option) => (
-					<Dropdown.Item
-						key={option.scheme}
-						as={'button'}
-						className={savedColorScheme === option.scheme ? 'active' : ''}
-						onClick={() => setThemeAndState(option.scheme)}
-					>
-						<option.icon /> {option.label}
-					</Dropdown.Item>
-				))}
-			</Dropdown.Menu>
-		</Dropdown>
+		<DropdownButton
+			variant="secondary"
+			align="end"
+			title={<MoonStarsIcon />}
+		>
+			{translatedDropdownOptions.map((option) => (
+				<Dropdown.Item
+					key={option.scheme}
+					as={'button'}
+					className={savedColorScheme === option.scheme ? 'active' : ''}
+					onClick={() => setThemeAndState(option.scheme)}
+				>
+					<option.icon /> {option.label}
+				</Dropdown.Item>
+			))}
+		</DropdownButton>
 	);
 };
 
