@@ -13,6 +13,7 @@ bool KeyboardHostAddon::available() {
 
 void KeyboardHostAddon::setup() {
   listener = new KeyboardHostListener();
+  ((KeyboardHostListener*)listener)->setup();
 }
 
 void KeyboardHostAddon::preprocess() {
