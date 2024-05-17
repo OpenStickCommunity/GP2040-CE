@@ -274,17 +274,64 @@ void GPGFX_TinySSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, ui
 	}
 }
 
-void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled) {
-    //printf("Rect %d, %d, %d, %d, %d, %d\n", x, y, width, height, color, filled);
-	drawLine(x, y, x, height, color, filled);
-	drawLine(x, y, width, y, color, filled);
-	drawLine(width, height, x, height, color, filled);
-	drawLine(width, height, width, y, color, filled);
+void GPGFX_TinySSD1306::drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color, uint8_t filled, double rotationAngle) {
+    // Calculate center point of the rectangle
+    double centerX = (x + width) / 2.0;
+    double centerY = (y + height) / 2.0;
+
+    // Calculate half width and half height for easier calculations
+    double halfWidth = (width - x) / 2.0;
+    double halfHeight = (height - y) / 2.0;
+
+    // Convert rotation angle to radians
+    double angleRad = rotationAngle * M_PI / 180.0;
+
+    // Pre-calculate sine and cosine of the rotation angle
+    double cosA = cos(angleRad);
+    double sinA = sin(angleRad);
+
+    // Calculate rotated coordinates for each corner of the rectangle
+    double x0 = centerX + cosA * (-halfWidth) - sinA * (-halfHeight);
+    double y0 = centerY + sinA * (-halfWidth) + cosA * (-halfHeight);
+
+    double x1 = centerX + cosA * (halfWidth) - sinA * (-halfHeight);
+    double y1 = centerY + sinA * (halfWidth) + cosA * (-halfHeight);
+
+    double x2 = centerX + cosA * (halfWidth) - sinA * (halfHeight);
+    double y2 = centerY + sinA * (halfWidth) + cosA * (halfHeight);
+
+    double x3 = centerX + cosA * (-halfWidth) - sinA * (halfHeight);
+    double y3 = centerY + sinA * (-halfWidth) + cosA * (halfHeight);
+
+    // Round coordinates to nearest integer
+    uint16_t x0_rounded = (uint16_t)round(x0);
+    uint16_t y0_rounded = (uint16_t)round(y0);
+    uint16_t x1_rounded = (uint16_t)round(x1);
+    uint16_t y1_rounded = (uint16_t)round(y1);
+    uint16_t x2_rounded = (uint16_t)round(x2);
+    uint16_t y2_rounded = (uint16_t)round(y2);
+    uint16_t x3_rounded = (uint16_t)round(x3);
+    uint16_t y3_rounded = (uint16_t)round(y3);
+
+    // Draw lines between rotated coordinates
+    drawLine(x0_rounded, y0_rounded, x1_rounded, y1_rounded, color, filled);
+    drawLine(x1_rounded, y1_rounded, x2_rounded, y2_rounded, color, filled);
+    drawLine(x2_rounded, y2_rounded, x3_rounded, y3_rounded, color, filled);
+    drawLine(x3_rounded, y3_rounded, x0_rounded, y0_rounded, color, filled);
 
 	if (filled) {
-		for (uint8_t i = 1; i < (height-y); i++) {
-			drawLine(x, y+i, width, y+i, color, filled);
-		}
+        // Calculate the number of lines needed for the filling
+        uint16_t numLines = (uint16_t)round(sqrt(halfWidth * halfWidth + halfHeight * halfHeight) * 2);
+
+        for (uint16_t i = 0; i <= numLines; i++) {
+            double t = (double)i / numLines;
+            double xStart = (1 - t) * x0 + t * x3;
+            double yStart = (1 - t) * y0 + t * y3;
+            double xEnd = (1 - t) * x1 + t * x2;
+            double yEnd = (1 - t) * y1 + t * y2;
+
+            drawLine((uint16_t)round(xStart), (uint16_t)round(yStart), (uint16_t)round(xEnd), (uint16_t)round(yEnd), color, filled);
+        }
 	}
 }
 
