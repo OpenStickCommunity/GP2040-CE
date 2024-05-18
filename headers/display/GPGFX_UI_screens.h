@@ -5,12 +5,14 @@ enum DisplayMode {
     CONFIG_INSTRUCTION,
     BUTTONS,
     SPLASH,
-    MAIN_MENU
+    MAIN_MENU,
+    RESTART
 };
 
 #include "ui/screens/ButtonLayoutScreen.h"
 #include "ui/screens/ConfigScreen.h"
 #include "ui/screens/MainMenuScreen.h"
+#include "ui/screens/RestartScreen.h"
 #include "ui/screens/SplashScreen.h"
 
 #endif

@@ -2,6 +2,8 @@
 
 #include "hardware/adc.h"
 
+#include "eventmanager.h"
+#include "GPTurboEvent.h"
 #include "storagemanager.h"
 #include "helper.h"
 #include "config.pb.h"
@@ -41,6 +43,9 @@ void TurboInput::setup()
 {
     const TurboOptions& options = Storage::getInstance().getAddonOptions().turboOptions;
     uint32_t now = getMillis();
+
+    // handle event for encoder dial if available
+    EventManager::getInstance().registerEventHandler(GP_EVENT_ENCODER_CHANGE, GPEVENT_CALLBACK(this->handleEncoder(event);));
 
     // Turbo Dial
     uint8_t shotCount = std::clamp<uint8_t>(options.shotCount, TURBO_SHOT_MIN, TURBO_SHOT_MAX);
@@ -103,6 +108,7 @@ void TurboInput::setup()
     bTurboFlicker = false;
     updateInterval(shotCount);
     nextTimer = getMicro();
+    encoderValue = shotCount;
 }
 
 /**
@@ -119,6 +125,7 @@ void TurboInput::reinit()
             break;
         }
     }
+    EventManager::getInstance().triggerEvent(new GPTurboReinitEvent());
 }
 
 void TurboInput::process()
@@ -237,4 +244,17 @@ void TurboInput::updateTurboShotCount(uint8_t shotCount)
         Storage::getInstance().save();
     }
     updateInterval(shotCount);
+}
+
+void TurboInput::handleEncoder(GPEvent* e) {
+    GPEncoderChangeEvent* event = (GPEncoderChangeEvent*)e;
+    uint8_t previousValue = encoderValue;
+
+    if ((event->direction < 0) && (encoderValue > TURBO_SHOT_MIN)) {
+        encoderValue--;
+        updateTurboShotCount(encoderValue);
+    } else if ((event->direction > 0) && (encoderValue < TURBO_SHOT_MAX)) {
+        encoderValue++;
+        updateTurboShotCount(encoderValue);
+    }
 }

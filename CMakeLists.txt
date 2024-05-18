@@ -184,10 +184,12 @@ src/display/ui/elements/GPSprite.cpp
 src/display/ui/screens/ButtonLayoutScreen.cpp
 src/display/ui/screens/ConfigScreen.cpp
 src/display/ui/screens/MainMenuScreen.cpp
+src/display/ui/screens/RestartScreen.cpp
 src/display/ui/screens/SplashScreen.cpp
 src/display/GPGFX.cpp
 src/display/GPGFX_UI.cpp
 src/drivermanager.cpp
+src/eventmanager.cpp
 src/layoutmanager.cpp
 src/peripheralmanager.cpp
 src/storagemanager.cpp
@@ -257,6 +259,7 @@ headers
 headers/addons
 headers/configs
 headers/drivers
+headers/events
 headers/interfaces/i2c
 headers/interfaces/i2c/ssd1306
 headers/gamepad
