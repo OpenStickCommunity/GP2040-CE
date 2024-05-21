@@ -30,7 +30,7 @@ const LED_FORMATS = [
 
 const BUTTON_LAYOUTS = [
 	{ label: '8-Button Layout', value: 0 },
-	{ label: 'Hit Box Layout', value: 1 },
+	{ label: 'Stickless Layout', value: 1 },
 	{ label: 'WASD Layout', value: 2 },
 ];
 
