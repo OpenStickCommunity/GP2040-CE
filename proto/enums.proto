@@ -352,7 +352,7 @@ enum GPShape_Type
     
     GP_SHAPE_ELLIPSE = 0;
     GP_SHAPE_SQUARE = 1;
-    GP_SHAPE_DIAMOND = 2;
+    GP_SHAPE_LINE = 2;
     GP_SHAPE_POLYGON = 3;
     GP_SHAPE_ARC = 4;
 };
