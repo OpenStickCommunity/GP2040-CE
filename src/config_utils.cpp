@@ -32,6 +32,7 @@
 #include "addons/snes_input.h"
 #include "addons/input_macro.h"
 #include "addons/rotaryencoder.h"
+#include "addons/i2c_gpio_pcf8575.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -663,6 +664,17 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, clockPin, SNES_PAD_CLOCK_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, latchPin, SNES_PAD_LATCH_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
+
+    // addonOptions.pcf8575Options
+    INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options, enabled, I2C_PCF8575_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options, i2cBlock, (I2C_PCF8575_BLOCK == i2c0) ? 0 : 1);
+
+    for (uint16_t pin = 0; pin < 16; pin++) {
+        INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options.pins[pin], action, GpioAction::NONE);
+        INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options.pins[pin], direction, GpioDirection::GPIO_DIRECTION_INPUT);
+    }
+    // reminder that this must be set or else nanopb won't retain anything
+    config.addonOptions.pcf8575Options.pins_count = 16;
 
     // addonOptions.rotaryOptions
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions, enabled, !!ROTARY_ENCODER_ENABLED);

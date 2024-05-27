@@ -8,6 +8,7 @@ export const AppContext = createContext(null);
 
 let checkPins = null;
 let checkPeripherals = basePeripheralMapping;
+let checkExpansionPins = null;
 
 yup.addMethod(yup.string, 'validateColor', function () {
 	return this.test('', 'Valid hex color required', (value) =>
@@ -178,6 +179,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 
 	const [usedPins, setUsedPins] = useState([]);
     const [availablePeripherals, setAvailablePeripherals] = useState(basePeripheralMapping);
+    const [expansionPins, setExpansionPins] = useState({});
     const [availableAddons, setAvailableAddons] = useState({});
 
 	const updateUsedPins = async () => {
@@ -187,6 +189,13 @@ export const AppContextProvider = ({ children, ...props }) => {
 		return data;
 	};
 
+    const updateExpansionPins = async () => {
+		const data = await WebApi.getExpansionPins(setLoading);
+		setExpansionPins(data);
+		console.log('expansionPins updated:', data);
+		return data;
+    };
+
     const updatePeripherals = async () => {
         const peripherals = await WebApi.getPeripheralOptions(setLoading);
         setAvailablePeripherals(peripherals);
@@ -195,6 +204,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 
 	useEffect(() => {
 		updateUsedPins();
+        updateExpansionPins();
         updatePeripherals();
 	}, []);
 
@@ -210,6 +220,19 @@ export const AppContextProvider = ({ children, ...props }) => {
 	}, [usedPins, setUsedPins]);
 
 	console.log('usedPins:', usedPins);
+
+	useEffect(() => {
+		//checkExpansionPins = (value) => {
+		//	const hasValue = value > -1;
+		//	const isValid =
+		//		value === undefined ||
+		//		value === -1 ||
+		//		(hasValue && (expansionPins || []).indexOf(value) === -1);
+		//	return isValid;
+		//};
+	}, [expansionPins, setExpansionPins]);
+
+    console.log('expansionPins:', expansionPins);
 
     const getAvailablePeripherals = (device) => {
         // gymnastics to make sure the device is defined before trusting config value
@@ -281,6 +304,7 @@ export const AppContextProvider = ({ children, ...props }) => {
 				usedPins,
                 availablePeripherals,
                 getAvailablePeripherals,
+                expansionPins,
                 getAvailableAddons,
                 updateAddons,
                 getSelectedPeripheral,
@@ -291,9 +315,11 @@ export const AppContextProvider = ({ children, ...props }) => {
 				setGradientPressedColor2,
 				setSavedColors,
 				setUsedPins,
+                setExpansionPins,
                 setAvailablePeripherals,
                 updatePeripherals,
 				updateUsedPins,
+                updateExpansionPins,
 				savedColorScheme,
 				setSavedColorScheme,
 				savedLanguage,
