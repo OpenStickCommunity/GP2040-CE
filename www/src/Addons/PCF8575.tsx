@@ -29,10 +29,12 @@ import { getButtonLabels } from '../Data/Buttons';
 import {
 	BUTTON_ACTIONS,
     PIN_DIRECTIONS,
-	NON_SELECTABLE_BUTTON_ACTIONS,
+//	NON_SELECTABLE_BUTTON_ACTIONS,
 	PinActionValues,
     PinDirectionValues,
 } from '../Data/Pins';
+// currently using only the gamepad values here
+const NON_SELECTABLE_BUTTON_ACTIONS = [-5,0,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39];
 
 type PinCell = [string, {option: PinActionValues, direction: PinDirectionValues}];
 type PinRow = [PinCell, PinCell];
@@ -200,11 +202,6 @@ const PCF8575 = ({ values, errors, handleChange, handleCheckbox }) => {
     const { buttonLabels, getAvailablePeripherals, getSelectedPeripheral } = useContext(AppContext);
     const { fetchPins, pins, savePins, setPinAction, setPinDirection } = useExpansionPinStore();
     const { t } = useTranslation();
-
-//    let pins = {
-//        pin00: { option: -10, direction: 0}, pin01: { option: -10, direction: 0}, pin02: { option: -10, direction: 0}, pin03: { option: -10, direction: 0}, pin04: { option: -10, direction: 0}, pin05: { option: -10, direction: 0}, pin06: { option: -10, direction: 0}, pin07: { option: -10, direction: 0},
-//        pin08: { option: -10, direction: 0}, pin09: { option: -10, direction: 0}, pin10: { option: -10, direction: 0}, pin11: { option: -10, direction: 0}, pin12: { option: -10, direction: 0}, pin13: { option: -10, direction: 0}, pin14: { option: -10, direction: 0}, pin15: { option: -10, direction: 0},
-//    };
 
     const expansionType = 'pcf8575';
 
