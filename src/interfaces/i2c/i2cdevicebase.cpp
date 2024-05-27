@@ -1,5 +1,4 @@
 #include <vector>
-#include <cstdio>
 #include "i2cdevicebase.h"
 
 int8_t I2CDeviceBase::scanForDevice() {

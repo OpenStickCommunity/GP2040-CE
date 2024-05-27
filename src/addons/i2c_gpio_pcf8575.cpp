@@ -19,8 +19,6 @@ void PCF8575Addon::setup() {
     const PCF8575Options& options = Storage::getInstance().getAddonOptions().pcf8575Options;
     const GpioMappingInfo* gpioMappings = options.pins;
 
-    stdio_init_all();
-
     // check if pins have actions defined
     uint16_t pinMask = 0xFFFF;
     for (uint8_t i = 0; i < options.pins_count; i++) {
