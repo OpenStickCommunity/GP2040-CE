@@ -4,12 +4,16 @@
 #include "config.pb.h"
 
 bool PCF8575Addon::available() {
+    const DisplayOptions& displayOptions = Storage::getInstance().getDisplayOptions();
     const PCF8575Options& options = Storage::getInstance().getAddonOptions().pcf8575Options;
-
     if (options.enabled && PeripheralManager::getInstance().isI2CEnabled(options.i2cBlock)) {
-        PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
-        pcf = new PCF8575(i2c);
-        return (pcf->scanForDevice() > -1);
+        if (displayOptions.enabled && (displayOptions.i2cBlock == options.i2cBlock)) {
+            return false;
+        } else {
+            PeripheralI2C* i2c = PeripheralManager::getInstance().getI2C(options.i2cBlock);
+            pcf = new PCF8575(i2c);
+            return (pcf->scanForDevice() > -1);
+        }
     } else {
         return false;
     }
