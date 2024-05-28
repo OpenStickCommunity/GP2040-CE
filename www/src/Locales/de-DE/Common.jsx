@@ -2,7 +2,7 @@ export default {
 	'brand-text': 'GP2040-CE',
 	'button-clear-all-label': 'Alles löschen',
 	'button-delete-color-label': 'Farbe Löschen',
-	'button-dismiss-label': 'Verwerfen', 
+	'button-dismiss-label': 'Verwerfen',
 	'button-load-label': 'Laden',
 	'button-reset-settings-label': 'Einstellungen zurücksetzen',
 	'button-save-color-label': 'Farbe Speichern',

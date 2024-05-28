@@ -30,10 +30,9 @@ export default function HomePage() {
 						label: boardConfigLabel,
 						fileName: boardConfigFileName,
 					});
-					Http
-						.get(
-							'https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest',
-						)
+					Http.get(
+						'https://api.github.com/repos/OpenStickCommunity/GP2040-CE/releases/latest',
+					)
 						.then((response) => {
 							const latestTag = response.data.tag_name;
 							setLatestVersion(latestTag);
@@ -83,18 +82,20 @@ export default function HomePage() {
 					<div>{`${boardConfigProperties.label} (${boardConfigProperties.fileName}.uf2)`}</div>
 					<div>{t('HomePage:current-text', { version: currentVersion })}</div>
 					<div>{t('HomePage:latest-text', { version: latestVersion })}</div>
-					{latestVersion && currentVersion?.split("-").length == 1 && currentVersion !== latestVersion && (
-						<div className="mt-3 mb-3">
-							<a
-								target="_blank"
-								rel="noreferrer"
-								href={latestDownloadUrl}
-								className="btn btn-primary"
-							>
-								{t('HomePage:get-update-text')}
-							</a>
-						</div>
-					)}
+					{latestVersion &&
+						currentVersion?.split('-').length == 1 &&
+						currentVersion !== latestVersion && (
+							<div className="mt-3 mb-3">
+								<a
+									target="_blank"
+									rel="noreferrer"
+									href={latestDownloadUrl}
+									className="btn btn-primary"
+								>
+									{t('HomePage:get-update-text')}
+								</a>
+							</div>
+						)}
 					{memoryReport && (
 						<div>
 							<strong>{t('HomePage:memory-header-text')}</strong>

@@ -23,7 +23,8 @@ export default {
 	'reboot-modal-button-progress-label': 'Starte neu',
 	'reboot-modal-button-success-label': 'Fertig!',
 	'reboot-modal-label': 'Neustart?',
-	'reboot-modal-success': 'Neustart ausgeführt, dieser Browser-Tab kann nun geschlossen werden.',
+	'reboot-modal-success':
+		'Neustart ausgeführt, dieser Browser-Tab kann nun geschlossen werden.',
 	'resetSettings-label': 'Neustart Einstellungen',
 	'settings-label': 'Einstellungen',
 };

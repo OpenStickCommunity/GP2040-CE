@@ -57,11 +57,7 @@ const DualDirection = ({ values, errors, handleChange, handleCheckbox }) => {
 				hidden={!values.DualDirectionalInputEnabled}
 			>
 				<Row className="mb-3">
-					<p>
-						{t(
-							'AddonsConfig:pin-config-moved-to-core-text',
-						)}
-					</p>
+					<p>{t('AddonsConfig:pin-config-moved-to-core-text')}</p>
 					<FormSelect
 						label={t('AddonsConfig:dual-directional-input-dpad-mode-label')}
 						name="dualDirDpadMode"

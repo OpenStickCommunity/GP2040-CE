@@ -1,11 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-	Nav,
-	NavDropdown,
-	Navbar,
-	Button,
-	Modal,
-} from 'react-bootstrap';
+import { Nav, NavDropdown, Navbar, Button, Modal } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AppContext } from '../Contexts/AppContext';
@@ -50,7 +44,7 @@ const Navigation = () => {
 	};
 
 	const { t } = useTranslation('');
-	
+
 	// eventKey prop is required on NavLink components in order for mobile menu
 	// to autoclose, so just auto increment as we build the menu
 	let eventKey = 0;
@@ -64,7 +58,11 @@ const Navigation = () => {
 			fixed="top"
 		>
 			<Navbar.Brand href="/" title={`GP2040-CE ${t('Navigation:home-label')}`}>
-				<img src="images/logo.png" className="title-logo" alt="GP2040-CE logo" />{' '}
+				<img
+					src="images/logo.png"
+					className="title-logo"
+					alt="GP2040-CE logo"
+				/>{' '}
 			</Navbar.Brand>
 			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 			<Navbar.Collapse id="basic-navbar-nav">
@@ -73,19 +71,39 @@ const Navigation = () => {
 						{t('Navigation:settings-label')}
 					</Nav.Link>
 					<NavDropdown title={t('Navigation:config-label')}>
-						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/pin-mapping">
+						<NavDropdown.Item
+							as={NavLink}
+							eventKey={eventKey++}
+							to="/pin-mapping"
+						>
 							{t('Navigation:pin-mapping-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/peripheral-mapping">
+						<NavDropdown.Item
+							as={NavLink}
+							eventKey={eventKey++}
+							to="/peripheral-mapping"
+						>
 							{t('Navigation:peripheral-mapping-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/led-config">
+						<NavDropdown.Item
+							as={NavLink}
+							eventKey={eventKey++}
+							to="/led-config"
+						>
 							{t('Navigation:led-config-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/custom-theme">
+						<NavDropdown.Item
+							as={NavLink}
+							eventKey={eventKey++}
+							to="/custom-theme"
+						>
 							{t('Navigation:custom-theme-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/display-config">
+						<NavDropdown.Item
+							as={NavLink}
+							eventKey={eventKey++}
+							to="/display-config"
+						>
 							{t('Navigation:display-config-label')}
 						</NavDropdown.Item>
 						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/add-ons">
@@ -97,8 +115,14 @@ const Navigation = () => {
 						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/backup">
 							{t('Navigation:backup-label')}
 						</NavDropdown.Item>
-						<NavDropdown.Item as={NavLink} eventKey={eventKey++} to="/reset-settings">
-							<span className="reset-settings-link">{t('Navigation:resetSettings-label')}</span>
+						<NavDropdown.Item
+							as={NavLink}
+							eventKey={eventKey++}
+							to="/reset-settings"
+						>
+							<span className="reset-settings-link">
+								{t('Navigation:resetSettings-label')}
+							</span>
 						</NavDropdown.Item>
 					</NavDropdown>
 					<NavDropdown title={t('Navigation:links-label')}>
@@ -114,10 +138,7 @@ const Navigation = () => {
 					</NavDropdown>
 				</Nav>
 				<Nav className="navbar-actions">
-					<Button
-						variant="success"
-						onClick={handleShow}
-					>
+					<Button variant="success" onClick={handleShow}>
 						{t('Navigation:reboot-label')}
 					</Button>
 					<ColorScheme />
