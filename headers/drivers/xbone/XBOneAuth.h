@@ -4,8 +4,6 @@
 #include "drivers/shared/gpauthdriver.h"
 #include "drivers/shared/xgip_protocol.h"
 
-#include <vector>
-
 typedef enum {
     auth_idle_state = 0,
     send_auth_console_to_dongle = 1,
@@ -14,19 +12,43 @@ typedef enum {
     wait_auth_dongle_to_console = 4,
 } XboxOneState;
 
-typedef enum {
-    from_console = 0,
-    from_dongle = 1,
-} XboxOneSource;
+class XBOneAuthBuffer {
+public:
+    XBOneAuthBuffer() {
+        data = nullptr;
+        sequence = 0;
+        length = 0;
+        type = 0;
+    }
+    ~XBOneAuthBuffer(){
+        if ( data != nullptr ) {
+            delete [] data;
+        }
+    }
 
-// Xbox One Auth Buffer
-typedef struct {
-    uint8_t * buffer;
+    void setBuffer(uint8_t * inData, uint16_t inLen, uint8_t inSeq, uint8_t inType) {
+        data = new uint8_t[inLen];
+        length = inLen;
+        sequence = inSeq;
+        type = inType;        
+        memcpy(data, inData, inLen);
+    }
+
+    void reset() {
+        if ( data != nullptr ) {
+            delete [] data;
+        }
+        data = nullptr;
+        sequence = 0;
+        length = 0;
+        type = 0;
+    }
+
+    uint8_t * data;
     uint8_t sequence;
-    uint16_t len;
+    uint16_t length;
     uint8_t type;
-    XboxOneSource source;
-} XboxOneAuthBuffer;
+};
 
 typedef struct {
     XboxOneState xboneState;
@@ -36,7 +58,8 @@ typedef struct {
     bool authCompleted;
 
     // Auth Buffer Queue
-    std::vector<XboxOneAuthBuffer> authBufferQueue;
+    XBOneAuthBuffer consoleBuffer;
+    XBOneAuthBuffer dongleBuffer;
 } XboxOneAuthData;
 
 class XBOneAuth : public GPAuthDriver {
