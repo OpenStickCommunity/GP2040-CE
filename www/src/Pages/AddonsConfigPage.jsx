@@ -41,6 +41,7 @@ import FocusMode, {
 import Keyboard, { keyboardScheme, keyboardState } from '../Addons/Keyboard';
 import InputHistory, { inputHistoryScheme, inputHistoryState } from '../Addons/InputHistory';
 import Rotary, { rotaryScheme, rotaryState } from '../Addons/Rotary';
+import PCF8575, { pcf8575Scheme, pcf8575State } from '../Addons/PCF8575';
 
 const schema = yup.object().shape({
 	...analogScheme,
@@ -61,6 +62,7 @@ const schema = yup.object().shape({
 	...keyboardScheme,
 	...inputHistoryScheme,
 	...rotaryScheme,
+    ...pcf8575Scheme,
 });
 
 const defaultValues = {
@@ -83,6 +85,7 @@ const defaultValues = {
 	...keyboardState,
 	...inputHistoryState,
 	...rotaryState,
+    ...pcf8575State,
 };
 
 const ADDONS = [
@@ -104,7 +107,8 @@ const ADDONS = [
 	FocusMode,
 	Keyboard,
 	InputHistory,
-    Rotary
+    Rotary,
+    PCF8575,
 ];
 
 const FormContext = ({ setStoredData }) => {

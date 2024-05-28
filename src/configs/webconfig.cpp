@@ -197,6 +197,20 @@ static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K
     doc[key0][key1][key2] = var;
 }
 
+// Don't inline this function, we do not want to consume stack space in the calling function
+template <typename T, typename K0, typename K1, typename K2, typename K3>
+static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K0& key0, const K1& key1, const K2& key2, const K3& key3, const T& var)
+{
+    doc[key0][key1][key2][key3] = var;
+}
+
+// Don't inline this function, we do not want to consume stack space in the calling function
+template <typename T, typename K0, typename K1, typename K2, typename K3, typename K4>
+static void __attribute__((noinline)) writeDoc(DynamicJsonDocument& doc, const K0& key0, const K1& key1, const K2& key2, const K3& key3, const K4& key4, const T& var)
+{
+    doc[key0][key1][key2][key3][key4] = var;
+}
+
 static int32_t cleanPin(int32_t pin) { return isValidPin(pin) ? pin : -1; }
 
 void WebConfig::setup() {
@@ -1229,6 +1243,72 @@ std::string setPeripheralOptions()
     return serialize_json(doc);
 }
 
+std::string getExpansionPins()
+{
+    DynamicJsonDocument doc(LWIP_HTTPD_POST_MAX_PAYLOAD_LEN);
+    GpioMappingInfo* gpioMappings = Storage::getInstance().getAddonOptions().pcf8575Options.pins;
+
+    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "option", gpioMappings[0].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin00", "direction", gpioMappings[0].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "option", gpioMappings[1].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin01", "direction", gpioMappings[1].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "option", gpioMappings[2].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin02", "direction", gpioMappings[2].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "option", gpioMappings[3].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin03", "direction", gpioMappings[3].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "option", gpioMappings[4].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin04", "direction", gpioMappings[4].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "option", gpioMappings[5].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin05", "direction", gpioMappings[5].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "option", gpioMappings[6].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin06", "direction", gpioMappings[6].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "option", gpioMappings[7].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin07", "direction", gpioMappings[7].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "option", gpioMappings[8].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin08", "direction", gpioMappings[8].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "option", gpioMappings[9].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin09", "direction", gpioMappings[9].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "option", gpioMappings[10].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin10", "direction", gpioMappings[10].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "option", gpioMappings[11].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin11", "direction", gpioMappings[11].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "option", gpioMappings[12].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin12", "direction", gpioMappings[12].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "option", gpioMappings[13].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin13", "direction", gpioMappings[13].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "option", gpioMappings[14].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin14", "direction", gpioMappings[14].direction);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "option", gpioMappings[15].action);
+    writeDoc(doc, "pins", "pcf8575", 0, "pin15", "direction", gpioMappings[15].direction);
+
+    return serialize_json(doc);
+}
+
+std::string setExpansionPins()
+{
+    DynamicJsonDocument doc = get_post_data();
+
+    GpioMappingInfo* gpioMappings = Storage::getInstance().getAddonOptions().pcf8575Options.pins;
+
+    char pinName[6];
+    for (uint16_t pin = 0; pin < 16; pin++) {
+        snprintf(pinName, 6, "pin%0*d", 2, pin);
+        // setting a pin shouldn't change a new existing addon/reserved pin
+        if (gpioMappings[pin].action != GpioAction::RESERVED &&
+                gpioMappings[pin].action != GpioAction::ASSIGNED_TO_ADDON &&
+                (GpioAction)doc["pins"]["pcf8575"][0][pinName]["option"] != GpioAction::RESERVED &&
+                (GpioAction)doc["pins"]["pcf8575"][0][pinName]["option"] != GpioAction::ASSIGNED_TO_ADDON) {
+            gpioMappings[pin].action = (GpioAction)doc["pins"]["pcf8575"][0][pinName]["option"];
+            gpioMappings[pin].direction = (GpioDirection)doc["pins"]["pcf8575"][0][pinName]["direction"];
+        }
+    }
+    Storage::getInstance().getAddonOptions().pcf8575Options.pins_count = 16;
+
+    Storage::getInstance().save();
+
+    return serialize_json(doc);
+}
+
 std::string setAddonOptions()
 {
     DynamicJsonDocument doc = get_post_data();
@@ -1399,6 +1479,10 @@ std::string setAddonOptions()
     docToValue(rotaryOptions.encoderTwo.resetAfter, doc, "encoderTwoResetAfter");
     docToValue(rotaryOptions.encoderTwo.allowWrapAround, doc, "encoderTwoAllowWrapAround");
     docToValue(rotaryOptions.encoderTwo.multiplier, doc, "encoderTwoMultiplier");
+
+    PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
+    docToValue(pcf8575Options.i2cBlock, doc, "pcf8575Block");
+    docToValue(pcf8575Options.enabled, doc, "PCF8575AddonEnabled");
 
     Storage::getInstance().save();
 
@@ -1676,7 +1760,7 @@ std::string getAddonOptions()
     writeDoc(doc, "dualDirFourWayMode", dualDirectionalOptions.fourWayMode);
     writeDoc(doc, "DualDirectionalInputEnabled", dualDirectionalOptions.enabled);
 
-        const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
+    const TiltOptions& tiltOptions = Storage::getInstance().getAddonOptions().tiltOptions;
     writeDoc(doc, "tilt1Pin", cleanPin(tiltOptions.tilt1Pin));
     writeDoc(doc, "factorTilt1LeftX", tiltOptions.factorTilt1LeftX);
     writeDoc(doc, "factorTilt1LeftY", tiltOptions.factorTilt1LeftY);
@@ -1818,6 +1902,10 @@ std::string getAddonOptions()
     writeDoc(doc, "encoderTwoResetAfter", rotaryOptions.encoderTwo.resetAfter);
     writeDoc(doc, "encoderTwoAllowWrapAround", rotaryOptions.encoderTwo.allowWrapAround);
     writeDoc(doc, "encoderTwoMultiplier", rotaryOptions.encoderTwo.multiplier);
+
+    PCF8575Options& pcf8575Options = Storage::getInstance().getAddonOptions().pcf8575Options;
+    writeDoc(doc, "pcf8575Block", pcf8575Options.i2cBlock);
+    writeDoc(doc, "PCF8575AddonEnabled", pcf8575Options.enabled);
 
     return serialize_json(doc);
 }
@@ -2076,6 +2164,8 @@ static const std::pair<const char*, HandlerFuncPtr> handlerFuncs[] =
     { "/api/setProfileOptions", setProfileOptions },
     { "/api/setPeripheralOptions", setPeripheralOptions },
     { "/api/getPeripheralOptions", getPeripheralOptions },
+    { "/api/setExpansionPins", setExpansionPins },
+    { "/api/getExpansionPins", getExpansionPins },
     { "/api/setKeyMappings", setKeyMappings },
     { "/api/setAddonsOptions", setAddonOptions },
     { "/api/setMacroAddonOptions", setMacroAddonOptions },

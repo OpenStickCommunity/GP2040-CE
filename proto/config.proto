@@ -168,6 +168,7 @@ message PinMappings
 message GpioMappingInfo
 {
     optional GpioAction action = 1;
+    optional GpioDirection direction = 2;
 }
 
 message GpioMappings
@@ -727,6 +728,13 @@ message RotaryOptions
     optional RotaryPinOptions encoderTwo = 3;
 }
 
+message PCF8575Options
+{
+    optional bool enabled = 1;
+    optional int32 i2cBlock = 2;
+    repeated GpioMappingInfo pins = 3 [(nanopb).max_count = 16];
+}
+
 message AddonOptions
 {
     optional BootselButtonOptions bootselButtonOptions = 1;
@@ -753,6 +761,7 @@ message AddonOptions
     optional XBOnePassthroughOptions xbonePassthroughOptions = 22 [deprecated = true];
     optional AnalogADS1256Options analogADS1256Options = 23;
     optional RotaryOptions rotaryOptions = 24;
+    optional PCF8575Options pcf8575Options = 25;
 }
 
 message MigrationHistory

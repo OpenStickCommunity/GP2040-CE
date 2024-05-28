@@ -32,6 +32,7 @@
 #include "addons/snes_input.h"
 #include "addons/input_macro.h"
 #include "addons/rotaryencoder.h"
+#include "addons/i2c_gpio_pcf8575.h"
 
 #include "CRC32.h"
 #include "FlashPROM.h"
@@ -663,6 +664,31 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, clockPin, SNES_PAD_CLOCK_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, latchPin, SNES_PAD_LATCH_PIN);
     INIT_UNSET_PROPERTY(config.addonOptions.snesOptions, dataPin, SNES_PAD_DATA_PIN);
+
+    // addonOptions.pcf8575Options
+    INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options, enabled, I2C_PCF8575_ENABLED);
+    INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options, i2cBlock, (I2C_PCF8575_BLOCK == i2c0) ? 0 : 1);
+
+    GpioAction pcf8575Actions[PCF8575_PIN_COUNT] = {
+        PCF8575_PIN00_ACTION,PCF8575_PIN01_ACTION,PCF8575_PIN02_ACTION,PCF8575_PIN03_ACTION,
+        PCF8575_PIN04_ACTION,PCF8575_PIN05_ACTION,PCF8575_PIN06_ACTION,PCF8575_PIN07_ACTION,
+        PCF8575_PIN08_ACTION,PCF8575_PIN09_ACTION,PCF8575_PIN10_ACTION,PCF8575_PIN11_ACTION,
+        PCF8575_PIN12_ACTION,PCF8575_PIN13_ACTION,PCF8575_PIN14_ACTION,PCF8575_PIN15_ACTION
+    };
+
+    GpioDirection pcf8575Directions[PCF8575_PIN_COUNT] = {
+        PCF8575_PIN00_DIRECTION,PCF8575_PIN01_DIRECTION,PCF8575_PIN02_DIRECTION,PCF8575_PIN03_DIRECTION,
+        PCF8575_PIN04_DIRECTION,PCF8575_PIN05_DIRECTION,PCF8575_PIN06_DIRECTION,PCF8575_PIN07_DIRECTION,
+        PCF8575_PIN08_DIRECTION,PCF8575_PIN09_DIRECTION,PCF8575_PIN10_DIRECTION,PCF8575_PIN11_DIRECTION,
+        PCF8575_PIN12_DIRECTION,PCF8575_PIN13_DIRECTION,PCF8575_PIN14_DIRECTION,PCF8575_PIN15_DIRECTION
+    };
+
+    for (uint16_t pin = 0; pin < PCF8575_PIN_COUNT; pin++) {
+        INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options.pins[pin], action, pcf8575Actions[pin]);
+        INIT_UNSET_PROPERTY(config.addonOptions.pcf8575Options.pins[pin], direction, pcf8575Directions[pin]);
+    }
+    // reminder that this must be set or else nanopb won't retain anything
+    config.addonOptions.pcf8575Options.pins_count = PCF8575_PIN_COUNT;
 
     // addonOptions.rotaryOptions
     INIT_UNSET_PROPERTY(config.addonOptions.rotaryOptions, enabled, !!ROTARY_ENCODER_ENABLED);
