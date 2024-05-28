@@ -30,6 +30,7 @@ public:
     bool getAuthSent();
 private:
     virtual void update();
+    void process_report_queue(uint32_t now);
     bool send_xbone_usb(uint8_t const *buffer, uint16_t bufsize);
     void set_ack_wait();
     uint8_t last_report[CFG_TUD_ENDPOINT0_SIZE] = { };

@@ -150,8 +150,9 @@ bool tuh_xinput_ready(uint8_t dev_addr, uint8_t instance) {
 //--------------------------------------------------------------------+
 // USBH API
 //--------------------------------------------------------------------+
-void xinputh_init(void) {
+bool xinputh_init(void) {
     tu_memclr(_xinputh_dev, sizeof(_xinputh_dev));
+    return true;
 }
 
 bool xinputh_xfer_cb(uint8_t dev_addr, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes) {
