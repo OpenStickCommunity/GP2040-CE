@@ -37,5 +37,5 @@ export default {
 	Rotary,
 	InputMacroAddon,
 	LayoutConfig,
-    PCF8575,
+	PCF8575,
 };

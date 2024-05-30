@@ -13,16 +13,12 @@ import { SPI_BLOCKS } from '../Data/Peripherals';
 import WebApi from '../Services/WebApi';
 
 export const analog1256Scheme = {
-	Analog1256Enabled: yup
-		.number()
-		.label('Analog1256 Input Enabled'),
+	Analog1256Enabled: yup.number().label('Analog1256 Input Enabled'),
 	analog1256Block: yup
 		.number()
 		.label('Analog1256 Block')
 		.validateSelectionWhenValue('Analog1256Enabled', SPI_BLOCKS),
-	analog1256CsPin: yup
-		.number()
-		.label('Analog1256 CS Pin'),
+	analog1256CsPin: yup.number().label('Analog1256 CS Pin'),
 	analog1256DrdyPin: yup
 		.number()
 		.label('Analog1256 DRDY Pin')
@@ -39,7 +35,12 @@ export const analog1256State = {
 };
 
 const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
-	const { getAvailablePeripherals, getSelectedPeripheral, setLoading, usedPins } = useContext(AppContext);
+	const {
+		getAvailablePeripherals,
+		getSelectedPeripheral,
+		setLoading,
+		usedPins,
+	} = useContext(AppContext);
 	const [csPins, setCsPins] = useState([]);
 
 	const { t } = useTranslation();
@@ -53,13 +54,20 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 		const csPins = [];
 
 		const peripheralOptions = await WebApi.getPeripheralOptions(setLoading);
-		if (peripheralOptions.peripheral[`spi${spiBlock}`] && peripheralOptions.peripheral[`spi${spiBlock}`].cs > -1)
-			csPins.push({ pin: peripheralOptions.peripheral[`spi${spiBlock}`].cs, hwcs: true });
+		if (
+			peripheralOptions.peripheral[`spi${spiBlock}`] &&
+			peripheralOptions.peripheral[`spi${spiBlock}`].cs > -1
+		)
+			csPins.push({
+				pin: peripheralOptions.peripheral[`spi${spiBlock}`].cs,
+				hwcs: true,
+			});
 
-		const availablePins = [...Array(boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1).keys()]
-			.filter(p => (usedPins || []).indexOf(p) === -1) // Filter out used pins
+		const availablePins = [
+			...Array(boards[import.meta.env.VITE_GP2040_BOARD].maxPin + 1).keys(),
+		].filter((p) => (usedPins || []).indexOf(p) === -1); // Filter out used pins
 
-		csPins.push(...availablePins.map(pin => ({ pin, hwcs: false })));
+		csPins.push(...availablePins.map((pin) => ({ pin, hwcs: false })));
 
 		return csPins;
 	};
@@ -77,9 +85,7 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 		<Section title={t('AddonsConfig:analog1256-header-text')}>
 			<div
 				id="Analog1256InputOptions"
-				hidden={
-					!(values.Analog1256Enabled && getAvailablePeripherals('spi'))
-				}
+				hidden={!(values.Analog1256Enabled && getAvailablePeripherals('spi'))}
 			>
 				<Row className="mb-3">
 					{getAvailablePeripherals('spi') ? (
@@ -113,7 +119,10 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 						onChange={handleChange}
 					>
 						{csPins.map((p, i) => (
-							<option key={`cs-pin-select-${i}`} value={p.pin}>{p.pin}{p.hwcs ? ' (HW)' : ''}</option>
+							<option key={`cs-pin-select-${i}`} value={p.pin}>
+								{p.pin}
+								{p.hwcs ? ' (HW)' : ''}
+							</option>
 						))}
 					</FormSelect>
 					<FormControl
@@ -164,8 +173,7 @@ const Analog1256 = ({ values, errors, handleChange, handleCheckbox }) => {
 					reverse
 					isInvalid={false}
 					checked={
-						Boolean(values.Analog1256Enabled) &&
-						getAvailablePeripherals('spi')
+						Boolean(values.Analog1256Enabled) && getAvailablePeripherals('spi')
 					}
 					onChange={(e) => {
 						handleCheckbox('Analog1256Enabled', values);
