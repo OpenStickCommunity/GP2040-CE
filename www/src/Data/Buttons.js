@@ -234,7 +234,7 @@ export const BUTTON_MASKS = [
 export const ANALOG_PINS = [26, 27, 28, 29];
 
 // deep copy and swp
-export const getButtonLabels = (labelType, swapTpShareLabels = false)=> {
+export const getButtonLabels = (labelType, swapTpShareLabels = false) => {
 	const buttons = BUTTONS[labelType];
 
 	if (labelType == 'ps4' && swapTpShareLabels) {
@@ -242,10 +242,10 @@ export const getButtonLabels = (labelType, swapTpShareLabels = false)=> {
 		const buttonLabelA2 = buttons['A2'];
 		return {
 			...buttons,
-			"S1": buttonLabelA2,
-			"A2": buttonLabelS1,
-		}
+			S1: buttonLabelA2,
+			A2: buttonLabelS1,
+		};
 	} else {
-		return buttons
+		return buttons;
 	}
-}
+};

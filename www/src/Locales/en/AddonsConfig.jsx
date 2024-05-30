@@ -138,7 +138,8 @@ export default {
 	'keyboard-host-d-plus-label': 'D+',
 	'keyboard-host-d-minus-label': 'D-',
 	'keyboard-host-five-v-label': '5V Power (optional)',
-	'pin-config-moved-to-core-text': 'Note: the pins for this add-on are now configured on the Pin Mapping page.',
+	'pin-config-moved-to-core-text':
+		'Note: the pins for this add-on are now configured on the Pin Mapping page.',
 	'input-history-header-text': 'Input History',
 	'input-history-length-label': 'History length (characters)',
 	'input-history-col-label': 'Column',

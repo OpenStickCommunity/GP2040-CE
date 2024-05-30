@@ -2,9 +2,9 @@
 // if more than simple GET and POST requests are required.
 
 type GetOptions = {
-	headers?: Record<string, string>,
-	signal?: AbortSignal
-}
+	headers?: Record<string, string>;
+	signal?: AbortSignal;
+};
 
 class Http {
 	async get(url: string, { headers = {}, signal }: GetOptions = {}) {
@@ -15,13 +15,12 @@ class Http {
 					'Content-Type': 'application/json',
 					...headers,
 				},
-				signal
+				signal,
 			});
 
 			const json = await response.json();
 			return Promise.resolve({ data: json });
-		}
-		catch (err) {
+		} catch (err) {
 			return Promise.reject(err);
 		}
 	}
@@ -39,8 +38,7 @@ class Http {
 
 			const json = await response.json();
 			return Promise.resolve({ data: json });
-		}
-		catch (err) {
+		} catch (err) {
 			return Promise.reject(err);
 		}
 	}
