@@ -437,13 +437,13 @@ void Gamepad::processHotkeyAction(GamepadHotkey action) {
 				reqSave = true;
 			}
 			break;
-        case HOTKEY_NEXT_PROFILE:
-            if (action != lastAction) {
-                Storage::getInstance().nextProfile();
-                userRequestedReinit = true;
-                reqSave = true;
-            }
-            break;
+		case HOTKEY_NEXT_PROFILE:
+			if (action != lastAction) {
+				Storage::getInstance().nextProfile();
+				userRequestedReinit = true;
+				reqSave = true;
+			}
+			break;
 		default: // Unknown action
 			return;
 	}
