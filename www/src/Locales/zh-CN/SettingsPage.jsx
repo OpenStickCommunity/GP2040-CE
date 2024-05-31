@@ -72,7 +72,6 @@ export default {
 		'load-profile-2': '加载 档案 #2',
 		'load-profile-3': '加载 档案 #3',
 		'load-profile-4': '加载 档案 #4',
-		'next-profile': '下一档案',
 		'reboot-default': '重启 GP2040-CE',
 	},
 	'forced-setup-mode-label': '强制设置模式',
