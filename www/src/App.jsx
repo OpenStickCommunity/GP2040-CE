@@ -17,8 +17,10 @@ import AddonsConfigPage from './Pages/AddonsConfigPage';
 import BackupPage from './Pages/BackupPage';
 import PlaygroundPage from './Pages/PlaygroundPage';
 import InputMacroAddonPage from './Pages/InputMacroAddonPage';
-
+import { ButtonLayout } from './proto/enums_pb';
 import './App.scss';
+
+console.log('PROTOBUF ENUMS IN WEB?', ButtonLayout);
 
 const App = () => {
 	return (
