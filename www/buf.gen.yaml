@@ -1,5 +1,11 @@
-version: v1
+version: v2
 plugins:
-  - plugin: es
+  - protoc_builtin: es
     out: src/proto
     opt: target=ts
+inputs:
+  # The path to a directory.
+  - directory: ../proto
+    # Do not generate code for files in these paths.
+    exclude_paths:
+      - ../proto/config.proto
