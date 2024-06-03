@@ -1,10 +1,7 @@
 syntax = "proto2";
 
-import "nanopb.proto";
-
 enum ButtonLayout
 {
-    option (nanopb_enumopt).long_names = false;
 
     BUTTON_LAYOUT_STICK = 0;
     BUTTON_LAYOUT_STICKLESS = 1;
@@ -43,7 +40,6 @@ enum ButtonLayout
 
 enum ButtonLayoutRight
 {
-    option (nanopb_enumopt).long_names = false;
 
     BUTTON_LAYOUT_ARCADE = 0;
     BUTTON_LAYOUT_STICKLESSB = 1;
@@ -86,7 +82,6 @@ enum ButtonLayoutRight
 
 enum SplashMode
 {
-    option (nanopb_enumopt).long_names = false;
 
     SPLASH_MODE_STATIC = 0;
     SPLASH_MODE_CLOSEIN = 1;
@@ -96,7 +91,6 @@ enum SplashMode
 
 enum SplashChoice
 {
-    option (nanopb_enumopt).long_names = false;
 
     SPLASH_CHOICE_MAIN = 0;
     SPLASH_CHOICE_X = 1;
@@ -108,8 +102,7 @@ enum SplashChoice
 
 enum OnBoardLedMode
 {
-    option (nanopb_enumopt).long_names = false;
-    
+
     ON_BOARD_LED_MODE_OFF = 0;
     ON_BOARD_LED_MODE_MODE_INDICATOR = 1;
     ON_BOARD_LED_MODE_INPUT_TEST = 2;
@@ -118,7 +111,6 @@ enum OnBoardLedMode
 
 enum InputMode
 {
-    option (nanopb_enumopt).long_names = false;
 
     INPUT_MODE_XINPUT = 0;
     INPUT_MODE_SWITCH = 1;
@@ -139,7 +131,6 @@ enum InputMode
 
 enum InputModeAuthType
 {
-    option (nanopb_enumopt).long_names = false;
 
     INPUT_MODE_AUTH_TYPE_NONE = 0;
     INPUT_MODE_AUTH_TYPE_KEYS = 1;
@@ -149,7 +140,6 @@ enum InputModeAuthType
 
 enum DpadMode
 {
-    option (nanopb_enumopt).long_names = false;
 
     DPAD_MODE_DIGITAL = 0;
     DPAD_MODE_LEFT_ANALOG = 1;
@@ -158,7 +148,6 @@ enum DpadMode
 
 enum InvertMode
 {
-    option (nanopb_enumopt).long_names = false;
 
     INVERT_NONE = 0;
     INVERT_X = 1;
@@ -168,7 +157,6 @@ enum InvertMode
 
 enum SOCDMode
 {
-    option (nanopb_enumopt).long_names = false;
 
     SOCD_MODE_UP_PRIORITY = 0;				// U+D=U, L+R=N
     SOCD_MODE_NEUTRAL = 1;					// U+D=N, L+R=N
@@ -179,7 +167,6 @@ enum SOCDMode
 
 enum GpioAction
 {
-    option (nanopb_enumopt).long_names = false;
 
     // the lowest value is the default, which should be NONE;
     // reserving some numbers in case we need more not-mapped type values
@@ -229,7 +216,6 @@ enum GpioAction
 
 enum GamepadHotkey
 {
-    option (nanopb_enumopt).long_names = false;
 
     HOTKEY_NONE                  = 0;
     HOTKEY_DPAD_DIGITAL          = 1;
@@ -279,7 +265,6 @@ enum LEDFormat_Proto
 
 enum ShmupMixMode
 {
-    option (nanopb_enumopt).long_names = false;
 
     SHMUP_MIX_MODE_TURBO_PRIORITY = 0;
     SHMUP_MIX_MODE_CHARGE_PRIORITY = 1;
@@ -287,8 +272,7 @@ enum ShmupMixMode
 
 enum PLEDType
 {
-    option (nanopb_enumopt).long_names = false;
-    
+
     PLED_TYPE_NONE = -1;
     PLED_TYPE_PWM = 0;
     PLED_TYPE_RGB = 1;
@@ -296,8 +280,7 @@ enum PLEDType
 
 enum ForcedSetupMode
 {
-    option (nanopb_enumopt).long_names = false;
-    
+
 	FORCED_SETUP_MODE_OFF = 0;
 	FORCED_SETUP_MODE_LOCK_MODE_SWITCH = 1;
 	FORCED_SETUP_MODE_LOCK_WEB_CONFIG = 2;
@@ -306,7 +289,6 @@ enum ForcedSetupMode
 
 enum DualDirectionalCombinationMode
 {
-	option (nanopb_enumopt).long_names = false;
 
 	MIXED_MODE = 0;
 	GAMEPAD_MODE = 1;
@@ -316,15 +298,13 @@ enum DualDirectionalCombinationMode
 
 enum PS4ControllerType
 {
-    option (nanopb_enumopt).long_names = false;
-    
+
     PS4_CONTROLLER = 0;
     PS4_ARCADESTICK = 7;
 }
 
 enum MacroType
 {
-    option (nanopb_enumopt).long_names = false;
 
     ON_PRESS = 1;
     ON_HOLD_REPEAT = 2;
@@ -333,7 +313,6 @@ enum MacroType
 
 enum GPElement
 {
-    option (nanopb_enumopt).long_names = false;
 
     GP_ELEMENT_WIDGET = 0;
     GP_ELEMENT_SCREEN = 1;
@@ -348,8 +327,7 @@ enum GPElement
 
 enum GPShape_Type
 {
-    option (nanopb_enumopt).long_names = false;
-    
+
     GP_SHAPE_ELLIPSE = 0;
     GP_SHAPE_SQUARE = 1;
     GP_SHAPE_DIAMOND = 2;
@@ -359,7 +337,6 @@ enum GPShape_Type
 
 enum RotaryEncoderPinMode
 {
-    option (nanopb_enumopt).long_names = false;
 
     ENCODER_MODE_NONE = 0;
     ENCODER_MODE_LEFT_ANALOG_X = 1;
