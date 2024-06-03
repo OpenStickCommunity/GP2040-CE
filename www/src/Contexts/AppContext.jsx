@@ -77,7 +77,7 @@ yup.addMethod(yup.NumberSchema, 'validatePinWhenValue', function (name) {
 		is: 1,
 		then: () => this.checkUsedPins(),
 		otherwise: () => yup.mixed().notRequired().strip(),
-	})
+	});
 });
 
 yup.addMethod(yup.NumberSchema, 'checkUsedPins', function () {
@@ -178,7 +178,9 @@ export const AppContextProvider = ({ children, ...props }) => {
 	};
 
 	const [usedPins, setUsedPins] = useState([]);
-	const [availablePeripherals, setAvailablePeripherals] = useState(basePeripheralMapping);
+	const [availablePeripherals, setAvailablePeripherals] = useState(
+		basePeripheralMapping,
+	);
 	const [expansionPins, setExpansionPins] = useState({});
 	const [availableAddons, setAvailableAddons] = useState({});
 
@@ -221,30 +223,50 @@ export const AppContextProvider = ({ children, ...props }) => {
 
 	console.log('usedPins:', usedPins);
 
-	useEffect(() => {
-	}, [expansionPins, setExpansionPins]);
+	useEffect(() => {}, [expansionPins, setExpansionPins]);
 
 	const getAvailablePeripherals = (device) => {
 		// gymnastics to make sure the device is defined before trusting config value
 		let peripherals = Object.keys(availablePeripherals.peripheral)
-			.filter((p) => PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.map(({label}) => label).indexOf(p) > -1)
+			.filter(
+				(p) =>
+					PERIPHERAL_DEVICES.find((d) => d.label == device)
+						.blocks.map(({ label }) => label)
+						.indexOf(p) > -1,
+			)
 			.filter((label) => availablePeripherals.peripheral[label].enabled)
-			.map((l) => ({label: l, value: PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.find(({label}) => label == l).value}));
-		return (peripherals.length > 0 ? peripherals : false);
+			.map((l) => ({
+				label: l,
+				value: PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.find(
+					({ label }) => label == l,
+				).value,
+			}));
+		return peripherals.length > 0 ? peripherals : false;
 	};
 
-	const getSelectedPeripheral = (device,block) => {
-		let peripheral = availablePeripherals.peripheral[Object.keys(availablePeripherals.peripheral)
-			.filter((p) => PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.map(({label}) => label).indexOf(p) > -1)
-			.filter((label) => availablePeripherals.peripheral[label].enabled)
-			.map((l) => ({label: l, value: PERIPHERAL_DEVICES.find((d) => d.label == device).blocks.find(({label}) => label == l).value}))
-			.find((p) => p.value == block).label];
+	const getSelectedPeripheral = (device, block) => {
+		let peripheral =
+			availablePeripherals.peripheral[
+				Object.keys(availablePeripherals.peripheral)
+					.filter(
+						(p) =>
+							PERIPHERAL_DEVICES.find((d) => d.label == device)
+								.blocks.map(({ label }) => label)
+								.indexOf(p) > -1,
+					)
+					.filter((label) => availablePeripherals.peripheral[label].enabled)
+					.map((l) => ({
+						label: l,
+						value: PERIPHERAL_DEVICES.find(
+							(d) => d.label == device,
+						).blocks.find(({ label }) => label == l).value,
+					}))
+					.find((p) => p.value == block).label
+			];
 		return peripheral;
 	};
 
-	useEffect(() => {
-
-	}, [availablePeripherals, setAvailablePeripherals]);
+	useEffect(() => {}, [availablePeripherals, setAvailablePeripherals]);
 
 	useEffect(() => {
 		async function fetchData() {

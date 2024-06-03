@@ -250,7 +250,7 @@ const HOTKEY_ACTIONS = [
 	{ labelKey: 'hotkey-actions.reboot-default', value: 22 },
 	{ labelKey: 'hotkey-actions.b1-button', value: 23 },
 	{ labelKey: 'hotkey-actions.b2-button', value: 24 },
-	{ labelKey: 'hotkey-actions.b3-button', value: 24 },
+	{ labelKey: 'hotkey-actions.b3-button', value: 25 },
 	{ labelKey: 'hotkey-actions.b4-button', value: 26 },
 	{ labelKey: 'hotkey-actions.l1-button', value: 27 },
 	{ labelKey: 'hotkey-actions.r1-button', value: 28 },

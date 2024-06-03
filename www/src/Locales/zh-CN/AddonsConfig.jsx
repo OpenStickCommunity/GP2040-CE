@@ -135,5 +135,5 @@ export default {
 	'input-history-header-text': '输入历史',
 	'input-history-length-label': '历史长度（字符）',
 	'input-history-col-label': '列',
-	'input-history-row-label': '行'
+	'input-history-row-label': '行',
 };

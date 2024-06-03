@@ -35,10 +35,9 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 					<p>
 						{t(
 							'AddonsConfig:socd-cleaning-mode-selection-slider-sub-header-text',
-						)}<br />
-						{t(
-							'AddonsConfig:pin-config-moved-to-core-text',
 						)}
+						<br />
+						{t('AddonsConfig:pin-config-moved-to-core-text')}
 					</p>
 					<FormSelect
 						label={t(

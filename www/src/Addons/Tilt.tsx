@@ -14,7 +14,7 @@ export const tiltScheme = {
 	tilt1Pin: yup
 		.number()
 		.label('Tilt 1 Pin')
-		.validatePinWhenValue('TiltInputEnabled'),	
+		.validatePinWhenValue('TiltInputEnabled'),
 	factorTilt1LeftX: yup
 		.number()
 		.label('Tilt 1 Factor Left X')
