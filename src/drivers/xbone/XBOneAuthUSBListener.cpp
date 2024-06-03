@@ -28,34 +28,27 @@ static uint32_t lastReportQueue = 0;
 #define REPORT_QUEUE_INTERVAL 15
 
 void XBOneAuthUSBListener::setup() {
-    dongle_ready = false;
-    mounted = false;
     xboxOneAuthData = nullptr;
 }
 
 void XBOneAuthUSBListener::setAuthData(XboxOneAuthData * authData ) {
     xboxOneAuthData = authData;
+    xboxOneAuthData->dongle_ready = false;
 }
 
 void XBOneAuthUSBListener::process() {
-    // Process the report queue
-    process_report_queue();
-
     // Do nothing if auth data or dongle are not ready 
-    if ( xboxOneAuthData == nullptr || dongle_ready == false) // do nothing if we have not mounted an xbox one dongle
+    if ( mounted == false || xboxOneAuthData == nullptr) // do nothing if we have not mounted an xbox one dongle
         return;
 
     // Received a packet from the console (or Windows) to dongle
     if ( xboxOneAuthData->xboneState == XboxOneState::send_auth_console_to_dongle ) {
-        uint8_t * buffer = xboxOneAuthData->consoleBuffer.data;
-        uint8_t type = xboxOneAuthData->consoleBuffer.type;
-        uint16_t len = xboxOneAuthData->consoleBuffer.length;
-        uint8_t sequence = xboxOneAuthData->consoleBuffer.sequence;
-        uint8_t isChunked = ( len > GIP_MAX_CHUNK_SIZE );
-        uint8_t needsAck = (len > 2);
+        uint8_t isChunked = ( xboxOneAuthData->consoleBuffer.length > GIP_MAX_CHUNK_SIZE );
+        uint8_t needsAck = ( xboxOneAuthData->consoleBuffer.length > 2 );
         outgoingXGIP.reset();
-        outgoingXGIP.setAttributes(type, sequence, 1, isChunked, needsAck);
-        outgoingXGIP.setData(buffer, len);
+        outgoingXGIP.setAttributes(xboxOneAuthData->consoleBuffer.type,
+            xboxOneAuthData->consoleBuffer.sequence, 1, isChunked, needsAck);
+        outgoingXGIP.setData(xboxOneAuthData->consoleBuffer.data, xboxOneAuthData->consoleBuffer.length);
         xboxOneAuthData->consoleBuffer.reset();
         xboxOneAuthData->xboneState = XboxOneState::wait_auth_console_to_dongle;
     }
@@ -63,11 +56,14 @@ void XBOneAuthUSBListener::process() {
     // Process waiting (always on first frame)
     if ( xboxOneAuthData->xboneState == XboxOneState::wait_auth_console_to_dongle) {
         queue_host_report(outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
-        if ( outgoingXGIP.getChunked() == false || 
-                (outgoingXGIP.getChunked() == true && outgoingXGIP.endOfChunk() == true) ) {
+        if ( outgoingXGIP.getChunked() == false || outgoingXGIP.endOfChunk() == true) {
             xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
         }
     }
+
+    // Process the report queue
+    process_report_queue();
+
 }
 
 void XBOneAuthUSBListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t controllerType, uint8_t subtype) {
@@ -81,16 +77,18 @@ void XBOneAuthUSBListener::xmount(uint8_t dev_addr, uint8_t instance, uint8_t co
 }
 
 void XBOneAuthUSBListener::unmount(uint8_t dev_addr) {
-    // Do not reset dongle_ready on unmount (Magic-X will remount but still be ready)
-    mounted = false;
-    incomingXGIP.reset();
-    outgoingXGIP.reset();
-    dongle_ready = false; // not ready for auth if we unmounted
-    xboxOneAuthData->xboneState = XboxOneState::auth_idle_state;
+    if ( dev_addr == xbone_dev_addr ) {
+        // Do not reset dongle_ready on unmount (Magic-X will remount but still be ready)
+        mounted = false;
+        while (!report_queue.empty()) report_queue.pop();
+        incomingXGIP.reset();
+        outgoingXGIP.reset();
+        xboxOneAuthData->dongle_ready = false; // not ready for auth if we unmounted
+    }
 }
 
 void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len) {
-    if ( mounted == false || xboxOneAuthData == nullptr) {
+    if ( mounted == false || xboxOneAuthData == nullptr || dev_addr != xbone_dev_addr) {
         return;
     }
 
@@ -130,7 +128,7 @@ void XBOneAuthUSBListener::report_received(uint8_t dev_addr, uint8_t instance, u
                 queue_host_report((uint8_t*)outgoingXGIP.generatePacket(), outgoingXGIP.getPacketLength());
 
                 // Dongle is ready!
-                dongle_ready = true;
+                xboxOneAuthData->dongle_ready = true; // dongle is ready
             }
             break;
         case GIP_AUTH:
@@ -158,10 +156,12 @@ void XBOneAuthUSBListener::queue_host_report(void* report, uint16_t len) {
 
 void XBOneAuthUSBListener::process_report_queue() {
     uint32_t now = to_ms_since_boot(get_absolute_time());
-    if ( !report_queue.empty() && (now - lastReportQueue) > REPORT_QUEUE_INTERVAL  ) {
+    if ( mounted == true && !report_queue.empty() && (now - lastReportQueue) > REPORT_QUEUE_INTERVAL  ) {
         if ( tuh_xinput_send_report(xbone_dev_addr, xbone_instance, report_queue.front().report, report_queue.front().len) ) {
 			report_queue.pop();
             lastReportQueue = now; // last time we checked report queue
+        } else {
+            sleep_ms(REPORT_QUEUE_INTERVAL);
         }
 	}
 }

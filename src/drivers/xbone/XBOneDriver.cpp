@@ -26,11 +26,11 @@ static uint32_t lastReportQueue = 0;
 #define REPORT_QUEUE_INTERVAL 35
 
 typedef enum {
-    IDLE_STATE = 0,
     READY_ANNOUNCE,
     WAIT_DESCRIPTOR_REQUEST,
     SEND_DESCRIPTOR,
-    SETUP_AUTH
+    SETUP_AUTH,
+    AUTH_DONE
 } XboxOneDriverState;
 
 static XboxOneDriverState xboneDriverState;
@@ -149,9 +149,6 @@ static void xbone_reset(uint8_t rhport) {
     xbox_one_powered_on = false;
     while(!report_queue.empty())
         report_queue.pop();
-
-    // make sure xbox driver state is doing nothing
-    xboneDriverState = XboxOneDriverState::IDLE_STATE;
 
     // close any endpoints that are open
     tu_memclr(&_xboned_itf, sizeof(_xboned_itf));
@@ -279,6 +276,7 @@ bool xbone_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result,
         } else if ( command == GIP_AUTH || command == GIP_FINAL_AUTH) {
             if (incomingXGIP->getDataLength() == 2 && memcmp(incomingXGIP->getData(), authReady, sizeof(authReady))==0 ) {
                 xboxOneAuthData->authCompleted = true;
+                xboneDriverState = AUTH_DONE;
             }
             if ( (incomingXGIP->getChunked() == true && incomingXGIP->endOfChunk() == true) ||
                     (incomingXGIP->getChunked() == false )) {
@@ -611,7 +609,7 @@ void XBOneDriver::update() {
                 outgoingXGIP->setAttributes(GIP_ANNOUNCE, 1, 1, 0, 0);
                 outgoingXGIP->setData(announcePacket, sizeof(announcePacket));
                 queue_xbone_report(outgoingXGIP->generatePacket(), outgoingXGIP->getPacketLength());
-                xboneDriverState = IDLE_STATE;
+                xboneDriverState = WAIT_DESCRIPTOR_REQUEST;
             }
             break;
         case SEND_DESCRIPTOR:
@@ -649,7 +647,7 @@ void XBOneDriver::update() {
                 }
             }
             break;
-        case IDLE_STATE:
+        case AUTH_DONE:
         default:
             break;
     };

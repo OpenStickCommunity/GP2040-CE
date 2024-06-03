@@ -53,13 +53,16 @@ public:
 typedef struct {
     XboxOneState xboneState;
 
-    // Console-to-Host e.g. Xbox One to MagicBoots
-    //  Note: the Xbox One Passthrough can call send_xbone_report() directly but not the other way around
-    bool authCompleted;
-
     // Auth Buffer Queue
     XBOneAuthBuffer consoleBuffer;
     XBOneAuthBuffer dongleBuffer;
+    
+    // Console-to-Host e.g. Xbox One to MagicBoots
+    //  Note: the Xbox One Passthrough can call send_xbone_report() directly but not the other way around
+    bool authCompleted = false;
+
+    // Send announce to console AFTER the dongle is established
+    bool dongle_ready = false;
 } XboxOneAuthData;
 
 class XBOneAuth : public GPAuthDriver {
