@@ -18,36 +18,27 @@ import { AppContext } from '../Contexts/AppContext';
 import FormSelect from '../Components/FormSelect';
 import Section from '../Components/Section';
 import WebApi from '../Services/WebApi';
-import {
-	BUTTONS,
-	MAIN_BUTTONS,
-	AUX_BUTTONS,
-	KEYBOARD_LAYOUT,
-	STICK_LAYOUT,
-	STICKLESS_LAYOUT,
-} from '../Data/Buttons';
+import { BUTTONS, BUTTON_LAYOUTS } from '../Data/Buttons';
 import LEDColors from '../Data/LEDColors';
 
 import './CustomThemePage.scss';
 
-const BUTTON_LAYOUTS = [
+const COLOR_PICKER_POSITIONS = [
 	{
-		label: 'Stick',
-		value: 0,
-		stickLayout: 'standard',
-		matrix: STICK_LAYOUT,
+		label: 'Top',
+		value: "top",
 	},
 	{
-		label: 'Stickless',
-		value: 1,
-		stickLayout: 'stickless',
-		matrix: STICKLESS_LAYOUT,
+		label: 'Bottom',
+		value: "bottom",
 	},
 	{
-		label: 'WASD',
-		value: 2,
-		stickLayout: 'keyboard',
-		matrix: KEYBOARD_LAYOUT,
+		label: 'Left',
+		value: "left",
+	},
+	{
+		label: 'Right',
+		value: "right",
 	},
 ];
 
@@ -129,6 +120,7 @@ const CustomThemePage = () => {
 	} = useContext(AppContext);
 	const [saveMessage, setSaveMessage] = useState('');
 	const [ledLayout, setLedLayout] = useState(0);
+	const [colorPickerLocation, setColorPickerLocation] = useState("bottom");
 	const [pickerType, setPickerType] = useState(null);
 	const [selectedButton, setSelectedButton] = useState('');
 	const [selectedColor, setSelectedColor] = useState('#000000');
@@ -361,19 +353,34 @@ const CustomThemePage = () => {
 											</Trans>
 										</ul>
 									</div>
-									<FormSelect
-										label={t('CustomTheme:led-layout-label')}
-										name="ledLayout"
-										value={ledLayout}
-										onChange={(e) => setLedLayout(e.target.value)}
-										style={{ width: 150 }}
-									>
-										{BUTTON_LAYOUTS.map((o, i) => (
-											<option key={`ledLayout-option-${i}`} value={o.value}>
-												{o.label}
-											</option>
-										))}
-									</FormSelect>
+									<div>
+										<FormSelect
+											label={t('CustomTheme:led-layout-label')}
+											name="ledLayout"
+											value={ledLayout}
+											onChange={(e) => setLedLayout(e.target.value)}
+											style={{ width: 150 }}
+										>
+											{BUTTON_LAYOUTS.map((o, i) => (
+												<option key={`ledLayout-option-${i}`} value={o.value}>
+													{o.label}
+												</option>
+											))}
+										</FormSelect>
+										<FormSelect
+											label={t('CustomTheme:color-picker-location')}
+											name="ledColorPickerLocation"
+											value={colorPickerLocation}
+											onChange={(e) => setColorPickerLocation(e.target.value)}
+											style={{ width: 150 }}
+										>
+											{COLOR_PICKER_POSITIONS.map((o, i) => (
+												<option key={`colorPickerLocation-option-${i}`} value={o.value}>
+													{o.label}
+												</option>
+											))}
+										</FormSelect>
+									</div>
 								</div>
 								<div className="d-flex led-preview-container">
 									<div
@@ -381,7 +388,7 @@ const CustomThemePage = () => {
 										onContextMenu={(e) => e.preventDefault()}
 									>
 										<div className="container-aux">
-											{AUX_BUTTONS.map((buttonName) => (
+											{BUTTON_LAYOUTS[ledLayout]?.auxButtons.map((buttonName) => (
 												<LEDButton
 													key={`led-button-${buttonName}`}
 													className={`${buttonName} ${
@@ -396,7 +403,7 @@ const CustomThemePage = () => {
 											))}
 										</div>
 										<div className="container-main">
-											{MAIN_BUTTONS.map((buttonName) => (
+											{BUTTON_LAYOUTS[ledLayout]?.mainButtons.map((buttonName) => (
 												<LEDButton
 													key={`led-button-${buttonName}`}
 													className={`${buttonName} ${
@@ -437,7 +444,7 @@ const CustomThemePage = () => {
 						show={pickerVisible}
 						target={ledOverlayTarget}
 						placement={
-							specialButtons.indexOf(selectedButton) > -1 ? 'top' : 'bottom'
+							specialButtons.indexOf(selectedButton) > -1 ? 'top' : colorPickerLocation
 						}
 						container={this}
 						containerPadding={20}
