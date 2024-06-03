@@ -274,6 +274,7 @@ enum GamepadHotkey
     HOTKEY_S2_BUTTON             = 32;
     HOTKEY_A1_BUTTON             = 33;
     HOTKEY_A2_BUTTON             = 34;
+    HOTKEY_NEXT_PROFILE          = 35;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp

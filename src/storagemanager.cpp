@@ -119,6 +119,11 @@ void Storage::setProfile(const uint32_t profileNum)
 	this->config.gamepadOptions.profileNumber = (profileNum < 1 || profileNum > 4) ? 1 : profileNum;
 }
 
+void Storage::nextProfile()
+{
+    this->config.gamepadOptions.profileNumber = (this->config.gamepadOptions.profileNumber % 4) + 1;
+}
+
 void Storage::setFunctionalPinMappings()
 {
 	GpioMappingInfo* alts = nullptr;
