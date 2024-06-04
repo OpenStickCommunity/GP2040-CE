@@ -31,4 +31,6 @@ export default {
 		'hold-repeat': '按住重复',
 		toggle: '切换',
 	},
+    'macro-name': '宏名称',
+	'macro-activation-type': '宏激活类型',
 };

@@ -33,7 +33,7 @@ export default {
 		arcadestick: '街机摇杆',
 	},
     'input-mode-authentication': {
-		none: 'None',
+		none: '无',
 		key: '上传的密钥文件',
 		usb: 'Host USB',
 		i2c: 'Attached I2C',
@@ -55,13 +55,14 @@ export default {
 		off: '关闭',
 	},
 	'profile-number-label': '档案编号',
-    'debounce-delay-label': '去抖延迟 (以毫秒为单位)',
+    'debounce-delay-label': '去抖动延迟 (以毫秒为单位)',
 	'ps4-compatibility-label':
 		'对于 <strong>兼容PS5</strong>, 请使用“街机摇杆”模式并启用PS直通验证插件<br/>对于 <strong>支持PS4</strong>, 如果你已经上传了必要文件，请使用“游戏控制器”模式并启用PS4模式插件。',
 	'hotkey-settings-label': '快捷键设置',
 	'hotkey-settings-sub-header':
 		"<1>Fn</1> 组合映射在<4 exact='true' to='/pin-mapping'>引脚映射</4>页面提供了一个可映射的Function按键。 要选择 <1>Fn</1> 组合映射选项，请同时按住 Function 按键和其他快捷键。<5 />此外, 可从下拉列表中选择 <1>None</1> 以取消分配按钮",
-	'hotkey-settings-warning': 'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
+	'hotkey-settings-warning': 
+        'Function 按键未映射引脚时，Fn 组合映射将会被禁用',
 	'hotkey-actions': {
 		'no-action': '无',
 		'dpad-digital': '十字键模式',
@@ -98,6 +99,7 @@ export default {
 		'load-profile-3': '加载 档案 #3',
 		'load-profile-4': '加载 档案 #4',
 		'reboot-default': '重启 GP2040-CE',
+        'next-profile': '下一个档案',
 	},
 	'forced-setup-mode-label': '强制设置模式',
 	'forced-setup-mode-options': {

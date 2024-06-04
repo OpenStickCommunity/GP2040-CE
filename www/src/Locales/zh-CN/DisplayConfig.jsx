@@ -38,5 +38,9 @@ export default {
 		'inverted-label': '反相',
         'power-management-header': '电源管理',
 		'turn-off-when-suspended': '挂起时关闭',
+        'flip-display-none': '无',
+		'flip-display-flip': '翻转',
+		'flip-display-mirror': '镜像',
+		'flip-display-flip-mirror': '翻转并镜像',
 	},
 };
