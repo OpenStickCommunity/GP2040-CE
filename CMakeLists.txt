@@ -172,6 +172,8 @@ src/drivers/xboxog/XboxOriginalDriver.cpp
 src/drivers/xinput/XInputAuth.cpp
 src/drivers/xinput/XInputAuthUSBListener.cpp
 src/drivers/xinput/XInputDriver.cpp
+src/interfaces/i2c/i2cdevicebase.cpp
+src/interfaces/i2c/pcf8575/pcf8575.cpp
 src/interfaces/i2c/ssd1306/obd_ssd1306.cpp
 src/interfaces/i2c/ssd1306/tiny_ssd1306.cpp
 src/display/ui/elements/GPWidget.cpp
@@ -206,6 +208,7 @@ src/addons/dualdirectional.cpp
 src/addons/keyboard_host.cpp
 src/addons/keyboard_host_listener.cpp
 src/addons/i2canalog1219.cpp
+src/addons/i2c_gpio_pcf8575.cpp
 src/addons/jslider.cpp
 src/addons/display.cpp
 src/addons/neopicoleds.cpp
@@ -257,7 +260,9 @@ headers
 headers/addons
 headers/configs
 headers/drivers
+headers/interfaces
 headers/interfaces/i2c
+headers/interfaces/i2c/pcf8575
 headers/interfaces/i2c/ssd1306
 headers/gamepad
 headers/display

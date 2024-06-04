@@ -1,16 +1,16 @@
-[data-bs-theme=dark] {
-    optgroup {
-        background-color: var(--bs-secondary-bg);
-        color: var(--bs-secondary-text-emphasis);
-    }
-    option {
-        background-color: var(--bs-body-bg);
-        color: var(--bs-primary-text-emphasis);
+[data-bs-theme="dark"] {
+	optgroup {
+		background-color: var(--bs-secondary-bg);
+		color: var(--bs-secondary-text-emphasis);
+	}
+	option {
+		background-color: var(--bs-body-bg);
+		color: var(--bs-primary-text-emphasis);
 
-        &[disabled] {
-            font-style: italic;
-            background-color: var(--bs-tertiary-bg);
-            color: var(--bs-tertiary-color);
-        }
-    }
+		&[disabled] {
+			font-style: italic;
+			background-color: var(--bs-tertiary-bg);
+			color: var(--bs-tertiary-color);
+		}
+	}
 }

@@ -38,6 +38,7 @@
 	"devDependencies": {
 		"@bufbuild/buf": "^1.32.2",
 		"@bufbuild/protoc-gen-es": "^1.10.0",
+		"@types/lodash": "^4.17.1",
 		"@types/node": "^20.5.9",
 		"@typescript-eslint/eslint-plugin": "^6.13.2",
 		"@typescript-eslint/parser": "^6.13.2",

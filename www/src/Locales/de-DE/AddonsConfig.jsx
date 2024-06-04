@@ -22,7 +22,6 @@ export default {
 	'analog-adc-2-mode-label': 'Analog Stick 2 Modus',
 	'analog-adc-2-invert-label': 'Analog Stick 2 Invertieren',
 	'analog-force-circularity': 'Zirkularität erzwingen',
-	'analog-deadzone-size': 'Deadzone Größe (%)',
 	'analog-auto-calibrate': 'Auto Kalibrierung',
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Turbo Pin',
@@ -46,7 +45,8 @@ export default {
 	'joystick-selection-slider-header-text': 'Joystick Auswahl Schieberegler',
 	'joystick-selection-slider-pin-one-label': 'Schieberegler Pin Eins',
 	'joystick-selection-slider-pin-two-label': 'Schieberegler Pin Zwei',
-	'joystick-selection-slider-mode-zero-label': 'Schieberegler Pin Modus Standard',
+	'joystick-selection-slider-mode-zero-label':
+		'Schieberegler Pin Modus Standard',
 	'joystick-selection-slider-mode-one-label': 'Schieberegler Pin Modus Eins',
 	'joystick-selection-slider-mode-two-label': 'Schieberegler Pin Modus Zwei',
 	'input-reverse-header-text': 'Eingabe Umkehren',
@@ -108,16 +108,19 @@ export default {
 	'socd-cleaning-mode-selection-slider-header-text':
 		'SOCD Säuberungsmodus Auswahl-Schieberegler',
 	'socd-cleaning-mode-selection-slider-sub-header-text':
-		'Hinweis: PS4, PS3 und Nintendo Switch modi unterstützen nicht die SOCD-Säuberung auf \'Aus\' und verwenden standardmäßig den neutralen SOCD-Säuberungsmodus',
+		"Hinweis: PS4, PS3 und Nintendo Switch modi unterstützen nicht die SOCD-Säuberung auf 'Aus' und verwenden standardmäßig den neutralen SOCD-Säuberungsmodus",
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCD Schieberegler Modus Standard',
-	'socd-cleaning-mode-selection-slider-mode-one-label': 'SOCD Schieberegler Modus Eins',
+	'socd-cleaning-mode-selection-slider-mode-one-label':
+		'SOCD Schieberegler Modus Eins',
 	'socd-cleaning-mode-selection-slider-pin-one-label': 'Pin Eins',
-	'socd-cleaning-mode-selection-slider-mode-two-label': 'SOCD Schieberegler Modus Zwei',
+	'socd-cleaning-mode-selection-slider-mode-two-label':
+		'SOCD Schieberegler Modus Zwei',
 	'socd-cleaning-mode-selection-slider-pin-two-label': 'Pin Zwei',
 	'ps4-mode-header-text': 'PS4 Modus',
 	'ps4-mode-sub-header': 'HAFTUNGSAUSSCHLUSS!',
-	'ps4-mode-sub-header-text': 'GP2040-CE WIRD NIEMALS DIESE DATEIEN ZUR VERFÜGUNG STELLEN!!!',
+	'ps4-mode-sub-header-text':
+		'GP2040-CE WIRD NIEMALS DIESE DATEIEN ZUR VERFÜGUNG STELLEN!!!',
 	'ps4-mode-text':
 		'Bitte laden Sie die 3 benötigten Dateien hoch und klicken Sie die "Verifizieren & Speichern" Schaltfläche, um den PS4 Modus zu benutzen.',
 	'ps4-mode-private-key-label': 'Privater Schlüssel (PEM)',
@@ -126,7 +129,7 @@ export default {
 	'snes-extension-header-text': 'SNES-Erweiterungskonfiguration',
 	'snes-extension-sub-header-text':
 		'<0>Hinweis: Falls das Display zur gleichen Zeit aktiviert ist, wird diese Addon deaktiviert.</0> <1>Derzeit unterstützte Controller</1> <0>SNES pad: D-Pad Unterstützung. B = B1, A = B2, Y = B3, X = B4, L = L1, R = R1, Select = S1, Start = S2</0> <0>SNES maus: Analog Stick Unterstützt. Linksklick = B1, Rechtsklick = B2</0> <0>NES: D-Pad Unterstützt. B = B1, A = B2, Select = S1, Start = S2</0>',
-	'snes-extension-clock-pin-label': 'Takt Pin', 
+	'snes-extension-clock-pin-label': 'Takt Pin',
 	'snes-extension-latch-pin-label': 'Latch Pin',
 	'snes-extension-data-pin-label': 'Daten Pin',
 	'focus-mode-header-text': 'Fokus-Modus-Konfiguration',
@@ -137,9 +140,10 @@ export default {
 	'keyboard-host-d-plus-label': 'D+',
 	'keyboard-host-d-minus-label': 'D-',
 	'keyboard-host-five-v-label': '5V-Stromversorgung (optional)',
-	'pin-config-moved-to-core-text': 'Hinweis: Die Pins für dieses Add-On werden jetzt auf der Seite für die Pin-Zuordnung konfiguriert',
+	'pin-config-moved-to-core-text':
+		'Hinweis: Die Pins für dieses Add-On werden jetzt auf der Seite für die Pin-Zuordnung konfiguriert',
 	'input-history-header-text': 'Eingabeverlauf',
 	'input-history-length-label': 'Verlaufslänge (Zeichen)',
 	'input-history-col-label': 'Spalte',
-	'input-history-row-label': 'Reihe'
+	'input-history-row-label': 'Reihe',
 };

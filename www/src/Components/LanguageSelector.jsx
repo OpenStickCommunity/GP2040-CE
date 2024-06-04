@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Dropdown , DropdownButton } from 'react-bootstrap';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { AppContext } from '../Contexts/AppContext';
 import { useTranslation } from 'react-i18next';
 import GlobeIcon from '../Icons/Globe';
@@ -37,11 +37,7 @@ const LanguageSelector = () => {
 	};
 
 	return (
-		<DropdownButton
-			variant="secondary"
-			align="end"
-			title={<GlobeIcon />}
-		>
+		<DropdownButton variant="secondary" align="end" title={<GlobeIcon />}>
 			{dropdownOptions.map((option) => (
 				<Dropdown.Item
 					key={option.code}

@@ -214,6 +214,12 @@ enum GpioAction
     BUTTON_PRESS_MACRO_6         = 39;
 }
 
+enum GpioDirection
+{
+    GPIO_DIRECTION_INPUT = 0;
+    GPIO_DIRECTION_OUTPUT = 1;
+}
+
 enum GamepadHotkey
 {
 
@@ -252,6 +258,7 @@ enum GamepadHotkey
     HOTKEY_S2_BUTTON             = 32;
     HOTKEY_A1_BUTTON             = 33;
     HOTKEY_A2_BUTTON             = 34;
+    HOTKEY_NEXT_PROFILE          = 35;
 }
 
 // This has to be kept in sync with LEDFormat in NeoPico.hpp
@@ -330,7 +337,7 @@ enum GPShape_Type
 
     GP_SHAPE_ELLIPSE = 0;
     GP_SHAPE_SQUARE = 1;
-    GP_SHAPE_DIAMOND = 2;
+    GP_SHAPE_LINE = 2;
     GP_SHAPE_POLYGON = 3;
     GP_SHAPE_ARC = 4;
 };

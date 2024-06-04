@@ -21,7 +21,6 @@ export default {
 	'analog-adc-2-mode-label': '模拟摇杆2 模式',
 	'analog-adc-2-invert-label': '模拟摇杆2 反转',
 	'analog-force-circularity': '强制循环',
-	'analog-deadzone-size': '死区范围（%）',
 	'analog-auto-calibrate': '自动校准',
 	'turbo-header-text': 'Turbo 连发',
 	'turbo-button-pin-label': 'Turbo 引脚',
@@ -135,5 +134,5 @@ export default {
 	'input-history-header-text': '输入历史',
 	'input-history-length-label': '历史长度（字符）',
 	'input-history-col-label': '列',
-	'input-history-row-label': '行'
+	'input-history-row-label': '行',
 };

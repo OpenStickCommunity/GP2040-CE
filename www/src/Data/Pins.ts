@@ -1,4 +1,4 @@
-import { GpioAction } from '../proto/enums_pb';
+import { GpioAction, GpioDirection } from '../proto/enums_pb';
 
 // Hide from select options / Disable select if returned from board
 export const NON_SELECTABLE_BUTTON_ACTIONS = [
@@ -51,5 +51,13 @@ export const BUTTON_ACTIONS = {
 	BUTTON_PRESS_MACRO_6: GpioAction.BUTTON_PRESS_MACRO_6,
 } as const;
 
-type PinActionKeys = keyof typeof GpioAction;
+export const PIN_DIRECTIONS = {
+	DIRECTION_INPUT: GpioDirection.INPUT,
+	DIRECTION_OUTPUT: GpioDirection.OUTPUT,
+} as const;
+
+type PinActionKeys = keyof typeof BUTTON_ACTIONS;
 export type PinActionValues = (typeof BUTTON_ACTIONS)[PinActionKeys];
+
+type PinDirectionKeys = keyof typeof PIN_DIRECTIONS;
+export type PinDirectionValues = (typeof PIN_DIRECTIONS)[PinDirectionKeys];

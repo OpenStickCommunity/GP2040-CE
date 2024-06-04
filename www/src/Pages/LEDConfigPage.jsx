@@ -30,7 +30,7 @@ const LED_FORMATS = [
 
 const BUTTON_LAYOUTS = [
 	{ label: '8-Button Layout', value: 0 },
-	{ label: 'Hit Box Layout', value: 1 },
+	{ label: 'Stickless Layout', value: 1 },
 	{ label: 'WASD Layout', value: 2 },
 ];
 
@@ -143,7 +143,7 @@ const schema = yup.object().shape({
 const createDataSource = (ledButtonMap, buttonLabelType, swapTpShareLabels) => {
 	let available = {};
 	let assigned = {};
-	
+
 	Object.keys(ledButtonMap).forEach((p) => {
 		if (ledButtonMap[p] === null) available[p] = ledButtonMap[p];
 		else assigned[p] = ledButtonMap[p];
@@ -155,7 +155,7 @@ const createDataSource = (ledButtonMap, buttonLabelType, swapTpShareLabels) => {
 	];
 
 	return dataSources;
-}
+};
 
 const getLedButtons = (buttonLabels, map, excludeNulls, swapTpShareLabels) => {
 	const current_buttons = getButtonLabels(buttonLabels, swapTpShareLabels);
@@ -199,7 +199,11 @@ const FormContext = ({
 	useEffect(() => {
 		async function fetchData() {
 			const data = await WebApi.getLedOptions(setLoading);
-			const dataSources = createDataSource(data.ledButtonMap, buttonLabelType, swapTpShareLabels);
+			const dataSources = createDataSource(
+				data.ledButtonMap,
+				buttonLabelType,
+				swapTpShareLabels,
+			);
 			setDataSources(dataSources);
 			setValues(data);
 		}
@@ -208,7 +212,11 @@ const FormContext = ({
 	}, []);
 
 	useEffect(() => {
-		const dataSources = createDataSource(ledButtonMap, buttonLabelType, swapTpShareLabels);
+		const dataSources = createDataSource(
+			ledButtonMap,
+			buttonLabelType,
+			swapTpShareLabels,
+		);
 		setDataSources(dataSources);
 	}, [buttonLabelType, swapTpShareLabels]);
 
@@ -236,7 +244,10 @@ export default function LEDConfigPage() {
 	const ledOrderChanged = (setFieldValue, ledOrderArrays, ledsPerButton) => {
 		if (ledOrderArrays.length === 2) {
 			setRgbLedStartIndex(ledOrderArrays[1].length * (ledsPerButton || 0));
-			setFieldValue('ledButtonMap', getLedMap(buttonLabelType, ledOrderArrays[1]));
+			setFieldValue(
+				'ledButtonMap',
+				getLedMap(buttonLabelType, ledOrderArrays[1]),
+			);
 			console.log(
 				'new start index: ',
 				ledOrderArrays[1].length * (ledsPerButton || 0),
@@ -264,11 +275,14 @@ export default function LEDConfigPage() {
 		};
 
 		const success = await WebApi.setLedOptions(data);
-		if (success)
-			updateUsedPins();
+		if (success) updateUsedPins();
 
 		// Need to recreate the DraggableList data source after save
-		const dataSources = createDataSource(data.ledButtonMap, buttonLabelType, swapTpShareLabels);
+		const dataSources = createDataSource(
+			data.ledButtonMap,
+			buttonLabelType,
+			swapTpShareLabels,
+		);
 		setDataSources(dataSources);
 
 		setSaveMessage(
@@ -298,10 +312,7 @@ export default function LEDConfigPage() {
 				errors,
 				setFieldValue,
 			}) => (
-				<Form
-					noValidate
-					onSubmit={(e) => onSubmit(e, handleSubmit)}
-				>
+				<Form noValidate onSubmit={(e) => onSubmit(e, handleSubmit)}>
 					<Section title={t('LedConfig:rgb.header-text')}>
 						<Row>
 							<FormControl
@@ -325,7 +336,9 @@ export default function LEDConfigPage() {
 								value={values.ledFormat}
 								error={errors.ledFormat}
 								isInvalid={errors.ledFormat}
-								onChange={(e) => setFieldValue('ledFormat', parseInt(e.target.value))}
+								onChange={(e) =>
+									setFieldValue('ledFormat', parseInt(e.target.value))
+								}
 							>
 								{LED_FORMATS.map((o, i) => (
 									<option key={`ledFormat-option-${i}`} value={o.value}>
@@ -341,7 +354,9 @@ export default function LEDConfigPage() {
 								value={values.ledLayout}
 								error={errors.ledLayout}
 								isInvalid={errors.ledLayout}
-								onChange={(e) => setFieldValue('ledLayout', parseInt(e.target.value))}
+								onChange={(e) =>
+									setFieldValue('ledLayout', parseInt(e.target.value))
+								}
 							>
 								{BUTTON_LAYOUTS.map((o, i) => (
 									<option key={`ledLayout-option-${i}`} value={o.value}>
@@ -420,7 +435,9 @@ export default function LEDConfigPage() {
 								t('LedConfig:rgb-order.assigned-header-text'),
 							]}
 							dataSources={dataSources}
-							onChange={(a) => ledOrderChanged(setFieldValue, a, values.ledsPerButton)}
+							onChange={(a) =>
+								ledOrderChanged(setFieldValue, a, values.ledsPerButton)
+							}
 						/>
 					</Section>
 					<Section title={t('LedConfig:player.header-text')}>
@@ -434,7 +451,9 @@ export default function LEDConfigPage() {
 									value={values.pledType}
 									error={errors.pledType}
 									isInvalid={errors.pledType}
-									onChange={(e) => setFieldValue('pledType', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledType', parseInt(e.target.value))
+									}
 								>
 									<option value="-1" defaultValue={true}>
 										{t('LedConfig:player.pled-type-off')}
@@ -456,7 +475,9 @@ export default function LEDConfigPage() {
 									value={values.pledPin1}
 									error={errors.pledPin1}
 									isInvalid={errors.pledPin1}
-									onChange={(e) => setFieldValue('pledPin1', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledPin1', parseInt(e.target.value))
+									}
 									min={0}
 								/>
 								<FormControl
@@ -469,7 +490,9 @@ export default function LEDConfigPage() {
 									value={values.pledPin2}
 									error={errors.pledPin2}
 									isInvalid={errors.pledPin2}
-									onChange={(e) => setFieldValue('pledPin2', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledPin2', parseInt(e.target.value))
+									}
 									min={0}
 								/>
 								<FormControl
@@ -482,7 +505,9 @@ export default function LEDConfigPage() {
 									value={values.pledPin3}
 									error={errors.pledPin3}
 									isInvalid={errors.pledPin3}
-									onChange={(e) => setFieldValue('pledPin3', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledPin3', parseInt(e.target.value))
+									}
 									min={0}
 								/>
 								<FormControl
@@ -495,7 +520,9 @@ export default function LEDConfigPage() {
 									value={values.pledPin4}
 									error={errors.pledPin4}
 									isInvalid={errors.pledPin4}
-									onChange={(e) => setFieldValue('pledPin4', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledPin4', parseInt(e.target.value))
+									}
 									min={0}
 								/>
 								<FormControl
@@ -508,7 +535,9 @@ export default function LEDConfigPage() {
 									value={values.pledIndex1}
 									error={errors.pledIndex1}
 									isInvalid={errors.pledIndex1}
-									onChange={(e) => setFieldValue('pledIndex1', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledIndex1', parseInt(e.target.value))
+									}
 									min={0}
 								/>
 								<FormControl
@@ -521,7 +550,9 @@ export default function LEDConfigPage() {
 									value={values.pledIndex2}
 									error={errors.pledIndex2}
 									isInvalid={errors.pledIndex2}
-									onChange={(e) => setFieldValue('pledIndex2', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledIndex2', parseInt(e.target.value))
+									}
 									min={0}
 								/>
 								<FormControl
@@ -534,7 +565,9 @@ export default function LEDConfigPage() {
 									value={values.pledIndex3}
 									error={errors.pledIndex3}
 									isInvalid={errors.pledIndex3}
-									onChange={(e) => setFieldValue('pledIndex3', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledIndex3', parseInt(e.target.value))
+									}
 									min={0}
 								/>
 								<FormControl
@@ -547,7 +580,9 @@ export default function LEDConfigPage() {
 									value={values.pledIndex4}
 									error={errors.pledIndex4}
 									isInvalid={errors.pledIndex4}
-									onChange={(e) => setFieldValue('pledIndex4', parseInt(e.target.value))}
+									onChange={(e) =>
+										setFieldValue('pledIndex4', parseInt(e.target.value))
+									}
 									min={0}
 								/>
 								<FormControl

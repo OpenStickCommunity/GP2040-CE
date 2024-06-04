@@ -13,3 +13,8 @@ modules/Custom.cmake
 .idea
 cmake-*
 env.ini
+
+# Container
+.devcontainer
+*Dockerfile
+*docker-compose.yml

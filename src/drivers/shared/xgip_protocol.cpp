@@ -28,15 +28,11 @@
 
 // Default Constructor
 XGIPProtocol::XGIPProtocol() {
-    data = nullptr;
     reset();
 }
 
 // Default Destructor
 XGIPProtocol::~XGIPProtocol() {
-    if ( data != nullptr ) {
-        delete [] data;
-    }
 }
 
 // Reset packet information
@@ -50,10 +46,7 @@ void XGIPProtocol::reset() {
     numberOfChunksSent = 0;     // How many actual chunks have we sent?
     chunkEnded = false;         // Are we at the end of the chunk?
     isValidPacket = false;      // Is this a valid packet?
-    if ( data != nullptr ) {    // Delete our data if its not null
-        delete [] data;
-    }
-    data = nullptr;
+    memset(data, 0, 1024);
     dataLength = 0;             // Set data length to 0
     memset(packet, 0, sizeof(packet)); // Set our packet to 0
     packetLength = 0;           // Set packet length to 0
@@ -116,12 +109,8 @@ bool XGIPProtocol::parse(const uint8_t * buffer, uint16_t len) {
                     dataLength = dataLength - ((dataLength / 0x100)*0x80);
                 }
 
-                // Ensure we clear data if its set to something else
-                if ( data != nullptr )
-                    delete [] data;
-                data = new uint8_t[dataLength];
-                actualDataReceived = 0; // haven't received anything yet
-                totalChunkReceived = header.length; // 
+                // Set our chunk received to the header length
+                totalChunkReceived = header.length;
             } else {
                 totalChunkReceived += header.length; // not actual data length, but chunk value
             }
@@ -137,9 +126,6 @@ bool XGIPProtocol::parse(const uint8_t * buffer, uint16_t len) {
             reset();
             memcpy((void*)&header, buffer, sizeof(GipHeader_t));
             if ( header.length > 0 ) {
-                if (data != nullptr)
-                    delete [] data;
-                data = new uint8_t[header.length];
                 memcpy(data, &buffer[4], header.length); // copy incoming data
             }
             actualDataReceived = header.length;
@@ -177,9 +163,6 @@ bool XGIPProtocol::setData(const uint8_t * buffer, uint16_t len) {
     if ( len > 0x3000) { // arbitrary but this should cover us if something bad happens
         return false;
     }
-    if ( data != nullptr )
-        delete [] data;
-    data = new uint8_t[len];
     memcpy(data, buffer, len);
     dataLength = len;
     return true;

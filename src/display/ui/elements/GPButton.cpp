@@ -128,26 +128,12 @@ void GPButton::draw() {
         uint16_t turboX = baseX + (width - turboW) / 2;
         uint16_t turboY = baseY + (height - turboH) / 2;
 
-        getRenderer()->drawRectangle(baseX, baseY, sizeX+offsetX, sizeY, this->strokeColor, state);
+        getRenderer()->drawRectangle(baseX, baseY, sizeX+offsetX, sizeY, this->strokeColor, state, this->_angle);
         if (this->_inputType == GP_ELEMENT_BTN_BUTTON && (getGamepad()->turboState.buttons & this->_inputMask)) {
-            getRenderer()->drawRectangle(turboX, turboY, turboX+turboW, turboY+turboH, 1, 0);
+            getRenderer()->drawRectangle(turboX, turboY, turboX+turboW, turboY+turboH, 1, 0, this->_angle);
         }
-    } else if (this->_shape == GP_SHAPE_DIAMOND) {
-        uint16_t size = (this->_sizeX) * scaleX + this->getViewport().left;
-        if (state) {
-            int i;
-            for (i = 0; i < size; i++) {
-                getRenderer()->drawLine(baseX - i, baseY - size + i, baseX + i, baseY - size + i, this->strokeColor, 0);
-                getRenderer()->drawLine(baseX - i, baseY + size - i, baseX + i, baseY + size - i, this->strokeColor, 0);
-            }
-            getRenderer()->drawLine(baseX - size, baseY, baseX + size, baseY, this->strokeColor, 0); // Fill in the middle
-        }
-        getRenderer()->drawLine(baseX - size, baseY, baseX, baseY - size, this->strokeColor, 0);
-        getRenderer()->drawLine(baseX, baseY - size, baseX + size, baseY, this->strokeColor, 0);
-        getRenderer()->drawLine(baseX + size, baseY, baseX, baseY + size, this->strokeColor, 0);
-        getRenderer()->drawLine(baseX, baseY + size, baseX - size, baseY, this->strokeColor, 0);
-        if (this->_inputType == GP_ELEMENT_BTN_BUTTON && (getGamepad()->turboState.buttons & this->_inputMask)) {
-        }
+    } else if (this->_shape == GP_SHAPE_LINE) {
+        getRenderer()->drawLine(baseX, baseY, this->_sizeX, this->_sizeY, this->strokeColor, 0);
     } else if (this->_shape == GP_SHAPE_POLYGON) {
         uint16_t scaledSize = (uint16_t)((double)this->_sizeX * scaleX);
         uint16_t baseRadius = (uint16_t)scaledSize;

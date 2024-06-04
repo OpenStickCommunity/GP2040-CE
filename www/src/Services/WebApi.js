@@ -182,8 +182,7 @@ export const baseWiiControls = {
 };
 
 async function resetSettings() {
-	return Http
-		.get(`${baseUrl}/api/resetSettings`)
+	return Http.get(`${baseUrl}/api/resetSettings`)
 		.then((response) => response.data)
 		.catch(console.error);
 }
@@ -229,8 +228,7 @@ async function setDisplayOptions(options, isPreview) {
 	const url = !isPreview
 		? `${baseUrl}/api/setDisplayOptions`
 		: `${baseUrl}/api/setPreviewDisplayOptions`;
-	return Http
-		.post(url, newOptions)
+	return Http.post(url, newOptions)
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -251,12 +249,11 @@ async function getSplashImage() {
 }
 
 async function setSplashImage({ splashImage }) {
-	return Http
-		.post(`${baseUrl}/api/setSplashImage`, {
-			splashImage: btoa(
-				String.fromCharCode.apply(null, new Uint8Array(splashImage)),
-			),
-		})
+	return Http.post(`${baseUrl}/api/setSplashImage`, {
+		splashImage: btoa(
+			String.fromCharCode.apply(null, new Uint8Array(splashImage)),
+		),
+	})
 		.then((response) => {
 			return response.data;
 		})
@@ -277,8 +274,7 @@ async function getGamepadOptions(setLoading) {
 }
 
 async function setGamepadOptions(options) {
-	return Http
-		.post(`${baseUrl}/api/setGamepadOptions`, sanitizeRequest(options))
+	return Http.post(`${baseUrl}/api/setGamepadOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -306,8 +302,7 @@ async function getLedOptions(setLoading) {
 }
 
 async function setLedOptions(options) {
-	return Http
-		.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
+	return Http.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -356,8 +351,7 @@ async function setCustomTheme(customThemeOptions) {
 		};
 	});
 
-	return Http
-		.post(`${baseUrl}/api/setCustomTheme`, sanitizeRequest(options))
+	return Http.post(`${baseUrl}/api/setCustomTheme`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -438,8 +432,7 @@ async function setKeyMappings(mappings) {
 	let data = {};
 	Object.keys(mappings).map((button) => (data[button] = mappings[button].key));
 
-	return Http
-		.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
+	return Http.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -480,8 +473,7 @@ async function setAddonsOptions(options) {
 		options.keyboardHostMap = data;
 	}
 
-	return Http
-		.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
+	return Http.post(`${baseUrl}/api/setAddonsOptions`, sanitizeRequest(options))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -508,8 +500,10 @@ async function getMacroAddonOptions(setLoading) {
 }
 
 async function setMacroAddonOptions(options) {
-	return Http
-		.post(`${baseUrl}/api/setMacroAddonOptions`, sanitizeRequest(options))
+	return Http.post(
+		`${baseUrl}/api/setMacroAddonOptions`,
+		sanitizeRequest(options),
+	)
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -521,8 +515,7 @@ async function setMacroAddonOptions(options) {
 }
 
 async function setPS4Options(options) {
-	return Http
-		.post(`${baseUrl}/api/setPS4Options`, options)
+	return Http.post(`${baseUrl}/api/setPS4Options`, options)
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -551,8 +544,7 @@ async function getWiiControls(setLoading) {
 async function setWiiControls(mappings) {
 	console.dir(mappings);
 
-	return Http
-		.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
+	return Http.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -580,8 +572,10 @@ async function getPeripheralOptions(setLoading) {
 async function setPeripheralOptions(mappings) {
 	console.dir(mappings);
 
-	return Http
-		.post(`${baseUrl}/api/setPeripheralOptions`, sanitizeRequest(mappings))
+	return Http.post(
+		`${baseUrl}/api/setPeripheralOptions`,
+		sanitizeRequest(mappings),
+	)
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -632,6 +626,21 @@ async function getUsedPins(setLoading) {
 	}
 }
 
+async function getExpansionPins() {
+	try {
+		const response = await Http.get(`${baseUrl}/api/getExpansionPins`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+async function setExpansionPins(mappings) {
+	console.dir(mappings);
+
+	return Http.post(`${baseUrl}/api/setExpansionPins`, mappings);
+}
+
 async function getHeldPins(abortSignal) {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getHeldPins`, {
@@ -653,8 +662,7 @@ async function abortGetHeldPins() {
 }
 
 async function reboot(bootMode) {
-	return Http
-		.post(`${baseUrl}/api/reboot`, { bootMode })
+	return Http.post(`${baseUrl}/api/reboot`, { bootMode })
 		.then((response) => response.data)
 		.catch(console.error);
 }
@@ -690,6 +698,8 @@ const WebApi = {
 	setWiiControls,
 	getPeripheralOptions,
 	setPeripheralOptions,
+	getExpansionPins,
+	setExpansionPins,
 	getButtonLayouts,
 	getButtonLayoutDefs,
 	getSplashImage,
