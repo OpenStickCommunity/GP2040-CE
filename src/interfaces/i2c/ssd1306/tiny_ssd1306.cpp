@@ -237,7 +237,6 @@ void GPGFX_TinySSD1306::drawEllipse(uint16_t x, uint16_t y, uint32_t radiusX, ui
 	long x1 = -radiusX, y1 = 0;
 	long e2 = radiusY, dx = (1 + 2 * x1) * e2 * e2;
 	long dy = x1 * x1, err = dx + dy;
-	long diff = 0;
 
 	while (x1 <= 0) {
 		drawPixel(x - x1, y + y1, color);

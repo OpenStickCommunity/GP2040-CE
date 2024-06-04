@@ -174,8 +174,6 @@ void ButtonLayoutScreen::generateHeader() {
 		statusBar += "    "; // no turbo, don't show Txx setting
 	}
 
-	const GamepadOptions & options = gamepad->getOptions();
-
 	switch (gamepad->getOptions().dpadMode)
 	{
 		case DPAD_MODE_DIGITAL:      statusBar += " D"; break;
