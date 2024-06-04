@@ -53,7 +53,7 @@ const SOCD = ({ values, errors, handleChange, handleCheckbox }) => {
 					>
 						{SOCD_MODES.map((o, i) => (
 							<option key={`sliderSOCDModeDefault-option-${i}`} value={o.value}>
-								{o.label}
+								{t(`AddonsConfig:socd-slider-mode-${i}`)}
 							</option>
 						))}
 					</FormSelect>

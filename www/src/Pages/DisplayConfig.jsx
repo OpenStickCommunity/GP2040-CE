@@ -222,6 +222,11 @@ export default function DisplayConfigPage() {
 
 	const { t } = useTranslation('');
 
+	DISPLAY_FLIP_MODES[0].label = t('DisplayConfig:form.flip-display-none');
+	DISPLAY_FLIP_MODES[1].label = t('DisplayConfig:form.flip-display-flip');
+	DISPLAY_FLIP_MODES[2].label = t('DisplayConfig:form.flip-display-mirror');
+	DISPLAY_FLIP_MODES[3].label = t('DisplayConfig:form.flip-display-flip-mirror');
+
 	useEffect(() => {
 		updateAddons();
 		updatePeripherals();
