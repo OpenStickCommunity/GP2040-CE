@@ -32,11 +32,6 @@ export const onBoardLedState = {
 const OnBoardLed = ({ values, errors, handleChange, handleCheckbox }) => {
 	const { t } = useTranslation();
 
-	ON_BOARD_LED_MODES[0].label = t('AddonsConfig:on-board-led-mode-options:off');
-	ON_BOARD_LED_MODES[1].label = t('AddonsConfig:on-board-led-mode-options:mode-indicator');
-	ON_BOARD_LED_MODES[2].label = t('AddonsConfig:on-board-led-mode-options:input-test');
-	ON_BOARD_LED_MODES[3].label = t('AddonsConfig:on-board-led-mode-options:ps4-5-authentication');
-
 	return (
 		<Section title={t('AddonsConfig:on-board-led-configuration-label')}>
 			<div
@@ -55,7 +50,7 @@ const OnBoardLed = ({ values, errors, handleChange, handleCheckbox }) => {
 				>
 					{ON_BOARD_LED_MODES.map((o, i) => (
 						<option key={`onBoardLedMode-option-${i}`} value={o.value}>
-							{o.label}
+							{t(`AddonsConfig:on-board-led-mode-option-${i}`)}
 						</option>
 					))}
 				</FormSelect>

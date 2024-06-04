@@ -8,12 +8,10 @@ export default {
 	'bootsel-button-pin-label': 'BOOTSEL Button',
 	'on-board-led-configuration-label': 'On-Board LED Configuration',
 	'on-board-led-mode-label': 'LED Mode',
-	'on-board-led-mode-options': {
-		off: 'Off',
-		'mode-indicator': 'Mode Indicator',
-		'input-test': 'Input Test',
-		'ps4-5-authentication': 'PS4/5 Authentication',
-	},
+	'on-board-led-mode-option-0': 'Off',
+	'on-board-led-mode-option-1': 'Mode Indicator',
+	'on-board-led-mode-option-2': 'Input Test',
+	'on-board-led-mode-option-3': 'PS4/5 Authentication',
 	'analog-header-text': 'Analog',
 	'analog-warning':
 		'Note: Analog sticks will override gamepad Left-Stick and Right-Stick inputs when enabled',
