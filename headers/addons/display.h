@@ -23,7 +23,7 @@
 #include "peripheral_spi.h"
 
 #ifndef HAS_I2C_DISPLAY
-#define HAS_I2C_DISPLAY -1
+#define HAS_I2C_DISPLAY 0
 #endif
 
 #ifndef DISPLAY_I2C_ADDR

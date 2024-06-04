@@ -340,7 +340,7 @@ message AnalogOptions
     optional int32 analogAdc1PinX = 2;
     optional int32 analogAdc1PinY = 3;
     optional bool forced_circularity = 4;
-    optional uint32 analog_deadzone = 5;
+    optional uint32 inner_deadzone = 5;
     optional int32 analogAdc2PinX = 6;
     optional int32 analogAdc2PinY = 7;
     optional DpadMode analogAdc1Mode = 8;
@@ -348,6 +348,7 @@ message AnalogOptions
     optional InvertMode analogAdc1Invert = 10;
     optional InvertMode analogAdc2Invert = 11;
     optional bool auto_calibrate = 12;
+    optional uint32 outer_deadzone = 13;
 }
 
 message TurboOptions

@@ -22,7 +22,6 @@ export default {
 	'analog-adc-2-mode-label': 'Modo Analógico 2',
 	'analog-adc-2-invert-label': 'Inverter Analógico 2',
 	'analog-force-circularity': 'Forçar Circularidade',
-	'analog-deadzone-size': 'Tamanho da Zona Morta (%)',
 	'analog-auto-calibrate': 'Calibração Automática',
 	'turbo-header-text': 'Turbo',
 	'turbo-button-pin-label': 'Pino do Turbo',

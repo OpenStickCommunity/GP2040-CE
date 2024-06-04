@@ -162,8 +162,12 @@ export const BUTTONS = {
 	},
 };
 
-export const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2'];
-export const MAIN_BUTTONS = [
+const AUX_BUTTONS = ['S1', 'S2', 'L3', 'R3', 'A1', 'A2'];
+const AUX_BUTTONS_STICKLESS_13 = ['S1', 'S2', 'L3', 'R3', 'A2'];
+const AUX_BUTTONS_STICKLESS_14 = ['S1', 'S2', 'A1', 'A2'];
+const AUX_BUTTONS_STICKLESS_16 = ['S1', 'S2'];
+const AUX_BUTTONS_STICKLESS_16_A = ['S1', 'S2'];
+const MAIN_BUTTONS = [
 	'Up',
 	'Down',
 	'Left',
@@ -177,8 +181,75 @@ export const MAIN_BUTTONS = [
 	'L2',
 	'R2',
 ];
+const MAIN_BUTTONS_STICKLESS_13 = [
+	'Up',
+	'A1',
+	'Down',
+	'Left',
+	'Right',
+	'B1',
+	'B2',
+	'B3',
+	'B4',
+	'L1',
+	'R1',
+	'L2',
+	'R2',
+];
+const MAIN_BUTTONS_STICKLESS_14 = [
+	'Up',
+	'Down',
+	'Left',
+	'Right',
+	'B1',
+	'B2',
+	'B3',
+	'B4',
+	'L1',
+	'R1',
+	'L2',
+	'R2',
+	'L3',
+	'R3',
+];
+const MAIN_BUTTONS_STICKLESS_16 = [
+	'Up',
+	'A1',
+	'Down',
+	'Left',
+	'Right',
+	'B1',
+	'B2',
+	'B3',
+	'B4',
+	'L1',
+	'R1',
+	'L2',
+	'R2',
+	'R3',
+	'L3',
+	'A2',
+];
+const MAIN_BUTTONS_STICKLESS_16_A = [
+	'Up',
+	'A1',
+	'Down',
+	'Left',
+	'Right',
+	'B1',
+	'B2',
+	'B3',
+	'B4',
+	'L1',
+	'R1',
+	'L2',
+	'R2',
+	'R3',
+	'L3',
+	'A2',
+];
 
-export const STICK_LAYOUT = [
+const STICK_LAYOUT = [
 	[null, 'Left', null],
 	['Up', null, 'Down'],
 	[null, 'Right', null],
@@ -188,7 +259,7 @@ export const STICK_LAYOUT = [
 	['L1', null, 'L2'],
 ];
 
-export const STICKLESS_LAYOUT = [
+const STICKLESS_LAYOUT = [
 	['Left', null, null],
 	['Down', null, null],
 	['Right', null, null],
@@ -199,7 +270,51 @@ export const STICKLESS_LAYOUT = [
 	['L1', 'L2', null],
 ];
 
-export const KEYBOARD_LAYOUT = [
+const STICKLESS_13_LAYOUT = [
+	['Left', null, null],
+	['Down', null, null],
+	['A1', null, null],
+	['Right', null, null],
+	[null, 'Up', null],
+	['B3', 'B1', null],
+	['B4', 'B2', null],
+	['R1', 'R2', null],
+	['L1', 'L2', null],
+];
+
+const STICKLESS_14_LAYOUT = [
+	['L3', null, null],
+	['Left', null, null],
+	['Down', null, null],
+	['Right', null, null],
+	['B3', 'B1', 'Up'],
+	['B4', 'B2', 'R3'],
+	['R1', 'R2', null],
+	['L1', 'L2', null],
+];
+
+const STICKLESS_16_LAYOUT = [
+	[null, 'Left', null, null],
+	['A1', 'Down', null, null],
+	[null, 'Right', null, 'L3'],
+	['A2', 'B3', 'B1', 'Up'],
+	[null, 'B4', 'B2', 'R3'],
+	[null, 'R1', 'R2', null],
+	[null, 'L1', 'L2', null],
+];
+
+const STICKLESS_16_A_LAYOUT = [
+	['L3', null, null, null],
+	[null, 'Left', null, null],
+	['A1', 'Down', null, null],
+	[null, 'Right', null, null],
+	['A2', 'B3', 'B1', 'Up'],
+	[null, 'B4', 'B2', 'R3'],
+	[null, 'R1', 'R2', null],
+	[null, 'L1', 'L2', null],
+];
+
+const KEYBOARD_LAYOUT = [
 	[null, 'Left'],
 	['Up', 'Down'],
 	[null, 'Right'],
@@ -207,6 +322,65 @@ export const KEYBOARD_LAYOUT = [
 	['B4', 'B2'],
 	['R1', 'R2'],
 	['L1', 'L2'],
+];
+
+export const BUTTON_LAYOUTS = [
+    {
+        label: 'Stick',
+        value: 0,
+        stickLayout: 'standard',
+        matrix: STICK_LAYOUT,
+        auxButtons: AUX_BUTTONS,
+        mainButtons: MAIN_BUTTONS,
+    },
+    {
+        label: 'Stickless',
+        value: 1,
+        stickLayout: 'stickless',
+        matrix: STICKLESS_LAYOUT,
+        auxButtons: AUX_BUTTONS,
+        mainButtons: MAIN_BUTTONS,
+    },
+    {
+        label: 'Stickless 13',
+        value: 2,
+        stickLayout: 'stickless-13',
+        matrix: STICKLESS_13_LAYOUT,
+        auxButtons: AUX_BUTTONS_STICKLESS_13,
+        mainButtons: MAIN_BUTTONS_STICKLESS_13,
+    },
+    {
+        label: 'Stickless 14',
+        value: 3,
+        stickLayout: 'stickless-14',
+        matrix: STICKLESS_14_LAYOUT,
+        auxButtons: AUX_BUTTONS_STICKLESS_14,
+        mainButtons: MAIN_BUTTONS_STICKLESS_14,
+    },
+    {
+        label: 'Stickless 16',
+        value: 4,
+        stickLayout: 'stickless-16',
+        matrix: STICKLESS_16_LAYOUT,
+        auxButtons: AUX_BUTTONS_STICKLESS_16,
+        mainButtons: MAIN_BUTTONS_STICKLESS_16,
+    },
+    {
+        label: 'Stickless 16 A',
+        value: 5,
+        stickLayout: 'stickless-16-a',
+        matrix: STICKLESS_16_A_LAYOUT,
+        auxButtons: AUX_BUTTONS_STICKLESS_16_A,
+        mainButtons: MAIN_BUTTONS_STICKLESS_16_A,
+    },
+    {
+        label: 'WASD',
+        value: 6,
+        stickLayout: 'keyboard',
+        matrix: KEYBOARD_LAYOUT,
+        auxButtons: AUX_BUTTONS,
+        mainButtons: MAIN_BUTTONS,
+    },
 ];
 
 export const BUTTON_MASKS = [
