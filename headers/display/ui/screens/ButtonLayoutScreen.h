@@ -26,8 +26,8 @@
 #define CHAR_DL       "\x8A"
 #define CHAR_DR       "\x8B"
 
-#define CHAR_HOME_S   "\x8C"
-#define CHAR_CAP_S    "\x8D"
+#define CHAR_CAP_S    "\x8C"
+#define CHAR_HOME_S   "\x8D"
 
 #define CHAR_VIEW_X   "\x8E"
 #define CHAR_MENU_X   "\x8F"
