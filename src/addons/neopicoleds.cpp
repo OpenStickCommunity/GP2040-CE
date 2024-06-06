@@ -437,26 +437,26 @@ std::vector<std::vector<Pixel>> NeoPicoLEDAddon::createLEDLayout(ButtonLayout la
 	switch (static_cast<ButtonLayout>(layout))
 	{
 		case BUTTON_LAYOUT_STICKLESS:
-        case BUTTON_LAYOUT_OPENCORE0WASDA:
-        case BUTTON_LAYOUT_STICKLESS_13:
-        case BUTTON_LAYOUT_STICKLESS_14:
-        case BUTTON_LAYOUT_STICKLESS_16:
-        case BUTTON_LAYOUT_BOARD_DEFINED_A:
+		case BUTTON_LAYOUT_OPENCORE0WASDA:
+		case BUTTON_LAYOUT_STICKLESS_13:
+		case BUTTON_LAYOUT_STICKLESS_14:
+		case BUTTON_LAYOUT_STICKLESS_16:
+		case BUTTON_LAYOUT_BOARD_DEFINED_A:
 			return generatedLEDStickless(&positions);
-        case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
+		case BUTTON_LAYOUT_FIGHTBOARD_MIRRORED:
 			return generatedLEDWasdFBM(&positions);
 		case BUTTON_LAYOUT_BUTTONS_ANGLED:
-        case BUTTON_LAYOUT_FIGHTBOARD_STICK:
+		case BUTTON_LAYOUT_FIGHTBOARD_STICK:
 			return generatedLEDWasd(&positions);
 		case BUTTON_LAYOUT_BLANKA:
-        case BUTTON_LAYOUT_BUTTONS_BASIC:
-        case BUTTON_LAYOUT_KEYBOARD_ANGLED:
-        case BUTTON_LAYOUT_KEYBOARDA:
-        case BUTTON_LAYOUT_DANCEPADA:
-        case BUTTON_LAYOUT_TWINSTICKA:
-        case BUTTON_LAYOUT_ARCADE:
-        case BUTTON_LAYOUT_VLXA:
-        default:
+		case BUTTON_LAYOUT_BUTTONS_BASIC:
+		case BUTTON_LAYOUT_KEYBOARD_ANGLED:
+		case BUTTON_LAYOUT_KEYBOARDA:
+		case BUTTON_LAYOUT_DANCEPADA:
+		case BUTTON_LAYOUT_TWINSTICKA:
+		case BUTTON_LAYOUT_ARCADE:
+		case BUTTON_LAYOUT_VLXA:
+		default:
 			return generatedLEDButtons(&positions);
 	}
 
