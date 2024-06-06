@@ -27,7 +27,7 @@ export default {
 		primary: '主要输入模式',
 		mini: '迷你/经典主机模式',
 	},
-	'boot-input-mode-label': '启动输入模式',
+	'boot-input-mode-label': '引导输入模式',
 	'ps4-mode-options': {
 		controller: '游戏控制器',
 		arcadestick: '街机摇杆',

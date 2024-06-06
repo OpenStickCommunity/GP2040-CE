@@ -2,7 +2,7 @@ export default {
 	'header-text': '外围设备映射',
 	'sub-header-text': '',
 	'pins-label': '引脚',
-	'pin-in-use': '使用中',
+	'pin-in-use': '被占用',
 	'i2c-label': 'I\u00B2C',
 	'i2c-desc-header': 'I\u00B2C Information',
 	'i2c-description':
@@ -28,8 +28,8 @@ export default {
 	'pin-sck-label': 'SCK',
 	'pin-tx-label': 'TX',
 	'pin-dp-label': 'D+',
-	'pin-enable5v-label': 'Enable 5V',
-	'option-order-label': 'Pin Order',
+	'pin-enable5v-label': '启用 5V',
+	'option-order-label': '引脚顺序',
 	'option-order-choice-0-label': 'D+/D-',
 	'option-order-choice-1-label': 'D-/D+',
 };

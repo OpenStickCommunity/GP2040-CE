@@ -7,7 +7,7 @@ export default {
 		'可打断 (用户输入可取消宏)',
 	'input-macro-macro-show-frames': '显示帧数 (1 Frame = 16.666 ms)',
 	'input-macro-macro-uses-buttons':
-		'使用 Macro Button + 游戏控制器按键来触发',
+		'使用宏按钮 + 游戏控制器按键来触发',
 	'input-macro-macro-button-pin-plus': '按键分配:',
 	'input-macro-header-text': '宏概览',
 	'input-macro-1-header-text': 'Macro 1 Settings',
@@ -21,10 +21,10 @@ export default {
 	'input-macro-time-label-ms': 'ms',
 	'input-macro-time-label-frames': 'frame(s)',
 	'input-macro-sub-header':
-		'注意：对于通过引脚映射的宏，请参见功能配置下的引脚映射页面。宏也可以分配给游戏手柄按钮，与相应的单个 Macro Button 结合使用。',
+		'注意：对于通过引脚映射的宏，请参见功能配置下的引脚映射页面。宏也可以分配给游戏手柄按钮，与相应的单个宏按钮结合使用。',
 	'input-macro-warning':
-		'宏按键引脚未被映射。“使用按键”选项将被禁用。',
-	'input-macro-pin-label': 'Macro Button 引脚',
+		'宏按钮的引脚未被映射。“使用按键”选项将被禁用。',
+	'input-macro-pin-label': '宏按钮引脚',
 	'input-macro-macro-label-label': 'Label',
 	'input-macro-type': {
 		press: '按下',
@@ -32,5 +32,5 @@ export default {
 		toggle: '切换',
 	},
     'macro-name': '宏名称',
-	'macro-activation-type': '宏激活类型',
+	'macro-activation-type': '宏的激活类型',
 };
