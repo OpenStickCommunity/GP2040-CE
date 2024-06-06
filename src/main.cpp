@@ -31,10 +31,8 @@ void core1() {
 }
 
 int main() {
-	stdio_init_all();
 	// Create GP2040 Main Core (core0), Core1 is dependent on Core0
 	GP2040 * gp2040 = new GP2040();
-	printf("This runs.");
 	gp2040->setup();
 
 	// Create GP2040 Thread for Core1

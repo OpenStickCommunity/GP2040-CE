@@ -19,7 +19,7 @@ public:
 	virtual bool available();
 	virtual void setup();       // ControllerHost Setup
 	virtual void process() {}   // ControllerHost Process
-	virtual void preprocess() {};
+	virtual void preprocess();
 	virtual std::string name() { return ControllerHostName; }
 private:
 };

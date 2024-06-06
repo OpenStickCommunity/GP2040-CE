@@ -93,7 +93,7 @@ void GP2040::setup() {
 
 	// Setup Add-ons
 	addons.LoadUSBAddon(new KeyboardHostAddon(), CORE0_INPUT);
-	addons.LoadAddon(new ControllerHostAddon(), CORE0_INPUT);
+	addons.LoadUSBAddon(new ControllerHostAddon(), CORE0_INPUT);
 	addons.LoadAddon(new AnalogInput(), CORE0_INPUT);
 	addons.LoadAddon(new BootselButtonAddon(), CORE0_INPUT);
 	addons.LoadAddon(new DualDirectionalInput(), CORE0_INPUT);
