@@ -172,7 +172,7 @@ void InputMacro::runCurrentMacro() {
 
     // Stop Macro if released (ON PRESS & ON HOLD REPEAT)
     if (inputMacroOptions->macroList[macroPosition].macroType == ON_HOLD_REPEAT &&
-            !isMacroTriggerHeld && macro.interruptible) {
+            !isMacroTriggerHeld ) {
         reset();
         return;
     }
