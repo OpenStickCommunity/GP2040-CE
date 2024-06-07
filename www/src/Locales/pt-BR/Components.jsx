@@ -6,6 +6,7 @@ export default {
 		'pt-BR': 'Português Brasil',
 		'zh-CN': '简体中文 (Chinês simplificado)',
 		'de-DE': 'Deutsch (Alemão)',
+		'ja-JP': '日本語 (Japonesa)'
 	},
 	'color-scheme': {
 		dark: 'Escuro',
