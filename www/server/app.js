@@ -253,6 +253,18 @@ app.get('/api/getCustomTheme', (req, res) => {
 	});
 });
 
+app.get('/api/getPinMappingsV2', (req, res) => {
+	return res.send(
+		Object.entries(picoController).reduce(
+			(acc, [key, value]) => ({
+				...acc,
+				[key]: { action: value, customButtonMask: 0, customDpadMask: 0 },
+			}),
+			{},
+		),
+	);
+});
+
 app.get('/api/getPinMappings', (req, res) => {
 	return res.send(picoController);
 });

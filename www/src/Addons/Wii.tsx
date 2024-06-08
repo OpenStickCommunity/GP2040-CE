@@ -1,29 +1,17 @@
 import { AppContext } from '../Contexts/AppContext';
 import React, { useContext, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import {
-	Button,
-	Form,
-	Row,
-	FormCheck,
-	Tab,
-	Tabs,
-	FormLabel,
-} from 'react-bootstrap';
+import { Button, Row, FormCheck, Tab, Tabs, FormLabel } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 
 import Section from '../Components/Section';
 
-import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
-import { I2C_BLOCKS, PERIPHERAL_DEVICES } from '../Data/Peripherals';
-import { BUTTON_MASKS } from '../Data/Buttons';
+import { I2C_BLOCKS } from '../Data/Peripherals';
+import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 
-import WebApi, {
-	baseWiiControls,
-	basePeripheralMapping,
-} from '../Services/WebApi';
+import WebApi, { baseWiiControls } from '../Services/WebApi';
 
 export const wiiScheme = {
 	WiiExtensionAddonEnabled: yup
@@ -454,7 +442,7 @@ const Wii = ({
 													}))
 												}
 											>
-												{BUTTON_MASKS.map((o, i) => (
+												{BUTTON_MASKS_OPTIONS.map((o, i) => (
 													<option
 														key={`wiiExtensionController${controlObj.id}Button${buttonObj.id}-option-${i}`}
 														value={o.value}

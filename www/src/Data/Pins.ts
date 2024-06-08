@@ -1,6 +1,3 @@
-// Hide from select options / Disable select if returned from board
-export const NON_SELECTABLE_BUTTON_ACTIONS = [-5, 0];
-
 // These could theoretically be created from enums.proto
 export const BUTTON_ACTIONS = {
 	NONE: -10,
@@ -45,6 +42,7 @@ export const BUTTON_ACTIONS = {
 	BUTTON_PRESS_MACRO_4: 37,
 	BUTTON_PRESS_MACRO_5: 38,
 	BUTTON_PRESS_MACRO_6: 39,
+	CUSTOM_BUTTON_COMBO: 40,
 } as const;
 
 export const PIN_DIRECTIONS = {

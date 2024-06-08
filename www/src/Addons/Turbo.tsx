@@ -7,7 +7,7 @@ import Section from '../Components/Section';
 import FormSelect from '../Components/FormSelect';
 import FormControl from '../Components/FormControl';
 import AnalogPinOptions from '../Components/AnalogPinOptions';
-import { BUTTON_MASKS } from '../Data/Buttons';
+import { BUTTON_MASKS_OPTIONS } from '../Data/Buttons';
 import { DUAL_STICK_MODES } from '../Data/Addons';
 
 const SHMUP_MIXED_MODES = [
@@ -70,35 +70,35 @@ export const turboScheme = {
 	shmupAlwaysOn1: yup
 		.number()
 		.label('Turbo-Button 1 (Always On)')
-		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	shmupAlwaysOn2: yup
 		.number()
 		.label('Turbo-Button 2 (Always On)')
-		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	shmupAlwaysOn3: yup
 		.number()
 		.label('Turbo-Button 3 (Always On)')
-		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	shmupAlwaysOn4: yup
 		.number()
 		.label('Turbo-Button 4 (Always On)')
-		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	shmupBtnMask1: yup
 		.number()
 		.label('Charge Shot Button 1 Map')
-		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	shmupBtnMask2: yup
 		.number()
 		.label('Charge Shot Button 2 Map')
-		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	shmupBtnMask3: yup
 		.number()
 		.label('Charge Shot Button 3 Map')
-		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 	shmupBtnMask4: yup
 		.number()
 		.label('Charge Shot Button 4 Map')
-		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS),
+		.validateSelectionWhenValue('TurboInputEnabled', BUTTON_MASKS_OPTIONS),
 };
 
 export const turboState = {
