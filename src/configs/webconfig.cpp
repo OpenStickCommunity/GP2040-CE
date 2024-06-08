@@ -1065,8 +1065,8 @@ std::string setPinMappingsV2()
 				(GpioAction)doc[pinName]["action"] != GpioAction::RESERVED &&
 				(GpioAction)doc[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
 			gpioMappings[pin].action = (GpioAction)doc[pinName]["action"];
-			gpioMappings[pin].customButtonMask = (GpioAction)doc[pinName]["customButtonMask"];
-			gpioMappings[pin].customDpadMask = (GpioAction)doc[pinName]["customDpadMask"];
+			gpioMappings[pin].customButtonMask = (uint32_t)doc[pinName]["customButtonMask"];
+			gpioMappings[pin].customDpadMask = (uint32_t)doc[pinName]["customDpadMask"];
 		}
 	}
 
