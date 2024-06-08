@@ -45,11 +45,7 @@ export default {
 	'turbo-shmup-button-mask-4-label': 'チャージボタン 4 割り当て',
 	'turbo-shmup-mix-mode-label': '同時優先モード',
 	'joystick-selection-slider-header-text': '十字キー選択スライダー',
-	'joystick-selection-slider-pin-one-label': 'Slider Pin One',  // not used?
-	'joystick-selection-slider-pin-two-label': 'Slider Pin Two',  // not used?
-	'joystick-selection-slider-mode-zero-label': 'Slider Pin Mode Default',  // not used?
-	'joystick-selection-slider-mode-one-label': 'Slider Pin Mode One',  // not used?
-	'joystick-selection-slider-mode-two-label': 'Slider Pin Mode Two',  // not used?
+	'joystick-selection-slider-mode-zero-label': 'スライダー端子標準モード',
 	'input-reverse-header-text': '入力反転',
 	'input-reverse-button-pin-label': '入力端子反転',
 	'input-reverse-led-pin-label': '入力キーLED端子反転',
@@ -67,10 +63,6 @@ export default {
 	'i2c-analog-ads1219-speed-label': 'I2C A/D変換 ADS1219 速度',
 	'i2c-analog-ads1219-address-label': 'I2C A/D変換 ADS1219 アドレス',
 	'dual-directional-input-header-text': 'デュアル方向入力',
-	'dual-directional-input-up-pin-label': 'Dual Up Pin', // not used
-	'dual-directional-input-down-pin-label': 'Dual Down Pin', // not used
-	'dual-directional-input-left-pin-label': 'Dual Left Pin', // not used
-	'dual-directional-input-right-pin-label': 'Dual Right Pin', // not used
 	'dual-directional-input-dpad-mode-label': 'デュアル方向入力モード',
 	'dual-directional-input-combine-mode-label': '組み合わせ方法',
 	'dual-directional-input-four-way-joystick-mode-label':
@@ -99,9 +91,6 @@ export default {
 	'buzzer-speaker-pin-label': 'ブザー端子',
 	'buzzer-speaker-enable-pin-label': 'ブザー有効化端子',
 	'buzzer-speaker-volume-label': 'ブザー音量',
-	'extra-button-header-text': 'Extra Button Configuration', // not used
-	'extra-button-pin-label': 'Extra Button Pin', // not used
-	'extra-button-map-label': 'Extra Button', // not used
 	'player-number-header-text': 'プレイヤー番号 (X-INPUTのみ)',
 	'player-number-sub-header': '警告',
 	'player-number-sub-header-text':
@@ -113,11 +102,6 @@ export default {
 		'注：PS4、PS3及び任天堂Switch モードではSOCDクリーナのモード無効化は非対応となり、SOCDニュートラル設定になります。',
 	'socd-cleaning-mode-selection-slider-mode-default-label':
 		'SOCDクリーナ標準モード',
-	'socd-cleaning-mode-selection-slider-mode-one-label': 'SOCD Slider Mode One', // not used.
-	'socd-cleaning-mode-selection-slider-pin-one-label': 'Pin One', // not used.
-	'socd-cleaning-mode-selection-slider-mode-two-label': 'SOCD Slider Mode Two', // not used.
-	'socd-cleaning-mode-selection-slider-pin-two-label': 'Pin Two', // not used.
-	'ps4-mode-header-text': 'PS4 Mode', // not used
 	'ps4-mode-sub-header': '免責事項',
 	'ps4-mode-sub-header-text': 'いかなる場合においてもGP2040-CEから以下のファイルは提供いたしません！！',
 	'ps4-mode-text':
@@ -135,10 +119,7 @@ export default {
 	'focus-mode-pin-label': 'フォーカスモード端子',
 	'keyboard-host-header-text': 'キーボードホスト設定',
 	'keyboard-host-sub-header-text':
-		'Following set the data +, - and 5V (optional) pins. Only the + and 5V pin can be configured.', // outdated explanation?
-	'keyboard-host-d-plus-label': 'D+', // not used.
-	'keyboard-host-d-minus-label': 'D-', // not used.
-	'keyboard-host-five-v-label': '5V Power (optional)', // not used.
+		'以下のフォームでボタンとキーの割り当てを設定してください',
 	'pin-config-moved-to-core-text':
 		'注：このAdd-onに関する端子設定は端子割り当て設定ページに移動しました。',
 	'input-history-header-text': '入力履歴',

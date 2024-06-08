@@ -4,18 +4,17 @@ export default {
 	'alert-text':
 		"未接続や未実装の端子を割当設定するとコントローラが動作しない状態に陥る可能性があります。無効な設定を初期化したい場合は<2>設定初期化</2>のページで初期化を実行してください。",
 	'pin-viewer': '端子確認',
-	'pin-pressed': 'このボタンの配線先は端子 {{pressedPin}} です！',
+	'pin-pressed': 'このボタンの配線先は {{pressedPin}} 番端子です！',
 	'pin-header-label': '端子',
 	'profile-pins-warning':
 		'プロファイルの変更ホットキーに設定しているボタンや方向キーの設定変更は、現在のプロファイル選択状況がわからなくなる原因となるため非推奨です。',
 	'profile-copy-base': 'Baseプロファイルをコピー',
 	errors: {
-		conflict: '端子{{pin}}は既に{{conflictedMappings}}に割り当て済みです',
+		conflict: '{{pin}} 番端子は既に{{conflictedMappings}}に割り当て済みです',
 		required: '{{button}}の設定は必須です',
-		invalid: '端子{{pin}}はこのボードでは無効です',
-		used: '端子{{pin}}は既に別機能に割り当て済みです',
+		invalid: '{{pin}}番端子はこのボードでは無効です',
+		used: '{{pin}}番端子は既に別機能に割り当て済みです',
 	},
-	'all-capture-button-label': 'コントローラ端子を割り当て\u00A0\u00A0🎮',
 	actions: {
 		NONE: '無し',
 		RESERVED: '予約',

@@ -91,6 +91,7 @@ export default {
 		'load-profile-2': 'プロファイル #2をロード',
 		'load-profile-3': 'プロファイル #3をロード',
 		'load-profile-4': 'プロファイル #4をロード',
+		'next-profile': '次のプロファイルをロード',
 		'reboot-default': 'GP2040-CEを再起動',
 	},
 	'forced-setup-mode-label': '強制セットアップモード',
@@ -102,10 +103,10 @@ export default {
 	},
 	'forced-setup-mode-modal-title': '強制セットアップモードに関する注意',
 	'forced-setup-mode-modal-body':
-		'保存後にコントローラモードで再起動すると、以降Web設定モードにはアクセスできなくなります。注意点をよく理解したうえで、保存ボタンを有効化するには「{{warningCheckText}}」を以下に入力してください。Dismissボタンを押下した場合はこの設定は元に戻され保存されます。',
+		'保存後にコントローラモードで再起動すると、以降Web設定モードにはアクセスできなくなります。注意点をよく理解したうえで、保存ボタンを有効化するには「{{warningCheckText}}」を以下に入力してください。閉じるボタンを押下した場合はこの設定は元に戻され保存されます。',
 	'4-way-joystick-mode-label': '4方向ジョイスティックモード',
 	'lock-hotkeys-label': 'ホットキーをロック',
-	'keyboard-mapping-header-text': 'キーボードマッピング',
+	'keyboard-mapping-header-text': 'キーボードキー割り当て',
 	'keyboard-mapping-sub-header-text':
 		'以下のフォームを利用してボタンとキーの割り当て変更をしてください。',
 };

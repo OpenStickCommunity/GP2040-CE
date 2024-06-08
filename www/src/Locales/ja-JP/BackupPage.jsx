@@ -10,9 +10,9 @@ export default {
 	'api-gamepad-text': 'ゲームパッド',
 	'api-led-text': 'LED',
 	'api-ledTheme-text': 'カスタムLEDテーマ',
-	'api-macros-text': 'マクロマッピング',
-	'api-pins-text': 'ピンマッピング',
-	'api-profiles-text': 'プロファイルマッピング',
+	'api-macros-text': 'マクロボタン割り当て',
+	'api-pins-text': '端子割り当て',
+	'api-profiles-text': 'プロファイルボタン割り当て',
 	'api-addons-text': 'アドオン',
 	'api-splash-text': 'スプラッシュ画像',
 };

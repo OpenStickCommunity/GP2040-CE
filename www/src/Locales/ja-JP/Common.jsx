@@ -2,7 +2,7 @@ export default {
 	'brand-text': 'GP2040-CE',
 	'button-clear-all-label': '全て削除',
 	'button-delete-color-label': '色を削除',
-	'button-dismiss-label': 'Dismiss',
+	'button-dismiss-label': '閉じる',
 	'button-load-label': '読込',
 	'button-reset-settings-label': '設定を初期化',
 	'button-save-color-label': '色を保存',

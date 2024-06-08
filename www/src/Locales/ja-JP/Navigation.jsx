@@ -3,7 +3,6 @@ export default {
 	'backup-label': '設定のバックアップ保存と復元',
 	'config-label': '構成設定',
 	'custom-theme-label': 'カスタムLEDテーマ',
-	'dangerZone-label': 'Danger Zone',
 	'display-config-label': 'ディスプレイ設定',
 	'docs-label': '公式サイト',
 	'home-label': 'ホーム',
