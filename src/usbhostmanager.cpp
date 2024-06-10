@@ -12,7 +12,7 @@
 
 void USBHostManager::start() {
     // This will happen after Gamepad has initialized
-    if (PeripheralManager::getInstance().isUSBEnabled(0)) {
+    if (PeripheralManager::getInstance().isUSBEnabled(0) && listeners.size() > 0) {
         pio_usb_configuration_t* pio_cfg = PeripheralManager::getInstance().getUSB(0)->getController();
         tuh_configure(1, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, pio_cfg);
         tuh_init(BOARD_TUH_RHPORT);
