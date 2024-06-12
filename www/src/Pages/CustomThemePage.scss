@@ -612,13 +612,13 @@ $button-keycap: 19px;
 	}
 	.L3 {
 		@include arcade-button($button-24mm, true);
-		left: calc(50% - #{$button-24mm * 3.5});
-		top: calc(50% + #{$button-24mm * 0.75});
+		left: calc(59% - #{$button-24mm});
+		top: calc(0% - #{$button-24mm * 2.15});
 	}
 	.A2 {
 		@include arcade-button($button-24mm, true);
-		left: calc(59% - #{$button-24mm});
-		top: calc(0% - #{$button-24mm * 2.15});
+		left: calc(50% - #{$button-24mm * 3.5});
+		top: calc(50% + #{$button-24mm * 0.75});
 	}
 }
 
@@ -697,13 +697,13 @@ $button-keycap: 19px;
 	}
 	.L3 {
 		@include arcade-button($button-24mm, true);
-		left: calc(50% - #{$button-24mm * 11});
-		top: $button-24mm * 2;
+		left: calc(59% - #{$button-24mm});
+		top: calc(0% - #{$button-24mm * 2.15});
 	}
 	.A2 {
 		@include arcade-button($button-24mm, true);
-		left: calc(59% - #{$button-24mm});
-		top: calc(0% - #{$button-24mm * 2.15});
+		left: calc(50% - #{$button-24mm * 11});
+		top: $button-24mm * 2;
 	}
 }
 
