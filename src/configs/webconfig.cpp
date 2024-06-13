@@ -557,8 +557,8 @@ std::string setProfileOptions()
                     (GpioAction)alt[pinName]["action"] != GpioAction::RESERVED &&
                     (GpioAction)alt[pinName]["action"] != GpioAction::ASSIGNED_TO_ADDON) {
                 profileOptions.gpioMappingsSets[altsIndex].pins[pin].action = (GpioAction)alt[pinName]["action"];
-                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customButtonMask = (GpioAction)alt[pinName]["customButtonMask"];
-                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (GpioAction)alt[pinName]["customDpadMask"];
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customButtonMask = (uint32_t)alt[pinName]["customButtonMask"];
+                profileOptions.gpioMappingsSets[altsIndex].pins[pin].customDpadMask = (uint32_t)alt[pinName]["customDpadMask"];
             }
         }
         profileOptions.gpioMappingsSets_count = ++altsIndex;
