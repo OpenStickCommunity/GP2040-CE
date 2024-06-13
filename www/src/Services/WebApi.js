@@ -361,20 +361,8 @@ async function setCustomTheme(customThemeOptions) {
 			return false;
 		});
 }
-async function getPinMappingsV2() {
-	try {
-		const { data } = await Http.get(`${baseUrl}/api/getPinMappingsV2`);
-		return data;
-	} catch (error) {
-		console.log(error);
-	}
-}
 
-async function setPinMappingsV2(mappings) {
-	return Http.post(`${baseUrl}/api/setPinMappingsV2`, mappings);
-}
-
-async function getButtonLayouts(setLoading) {
+async function getButtonLayouts() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getButtonLayouts`);
 
@@ -384,7 +372,7 @@ async function getButtonLayouts(setLoading) {
 	}
 }
 
-async function getButtonLayoutDefs(setLoading) {
+async function getButtonLayoutDefs() {
 	try {
 		const response = await Http.get(`${baseUrl}/api/getButtonLayoutDefs`);
 
@@ -722,6 +710,4 @@ export default {
 	getHeldPins,
 	abortGetHeldPins,
 	reboot,
-	getPinMappingsV2,
-	setPinMappingsV2,
 };

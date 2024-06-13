@@ -16,14 +16,15 @@ type State = {
 	pins: { [key: string]: MaskPayload };
 	loadingPins: boolean;
 };
-export type setPinType = (
+
+export type SetPinType = (
 	pin: string,
 	{ action, customButtonMask, customDpadMask }: MaskPayload,
 ) => void;
 
 type Actions = {
 	fetchPins: () => void;
-	setPin: setPinType;
+	setPin: SetPinType;
 	savePins: () => Promise<object>;
 };
 
@@ -73,7 +74,7 @@ const usePinStore = create<State & Actions>()((set, get) => ({
 	...INITIAL_STATE,
 	fetchPins: async () => {
 		set({ loadingPins: true });
-		const pins = await WebApi.getPinMappingsV2();
+		const pins = await WebApi.getPinMappings();
 		set((state) => ({
 			...state,
 			pins,
@@ -93,7 +94,7 @@ const usePinStore = create<State & Actions>()((set, get) => ({
 				},
 			},
 		})),
-	savePins: async () => WebApi.setPinMappingsV2(get().pins),
+	savePins: async () => WebApi.setPinMappings(get().pins),
 }));
 
 export default usePinStore;

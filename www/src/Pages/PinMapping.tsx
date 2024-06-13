@@ -6,7 +6,7 @@ import invert from 'lodash/invert';
 import omit from 'lodash/omit';
 
 import { AppContext } from '../Contexts/AppContext';
-import usePinStore from '../Store/usePinStore';
+import usePinStore, { MaskPayload, SetPinType } from '../Store/usePinStore';
 import useProfilesStore from '../Store/useProfilesStore';
 
 import Section from '../Components/Section';
@@ -26,10 +26,11 @@ type OptionType = {
 	customDpadMask: number;
 };
 
-type ProfilePinSectionType = {
-	title: string;
-	profilePins: { [key: string]: PinActionValues };
-	profileIndex: number;
+type PinSectionType = {
+	sectionTitle: string;
+	pins: { [key: string]: MaskPayload };
+	saveHandler: () => Promise<object>;
+	setHandler: SetPinType;
 };
 
 const disabledOptions = [
@@ -101,29 +102,12 @@ const getMultiValue = (pinData) => {
 		: options.filter((option) => option.value === pinData.action);
 };
 
-const getSingleValue = (pinData) => {
-	const actionKey = invert(BUTTON_ACTIONS)[pinData];
-	return { label: actionKey, value: pinData };
-};
-
-const PinMappingWarning = () => {
-	const { t } = useTranslation('');
-	return (
-		<div className="alert alert-warning">
-			<Trans ns="PinMapping" i18nKey="alert-text">
-				Mapping buttons to pins that aren&apos;t connected or available can
-				leave the device in non-functional state. To clear the invalid
-				configuration go to the{' '}
-				<NavLink to="/reset-settings">Reset Settings</NavLink> page.
-			</Trans>
-			<br />
-			<br />
-			{t(`PinMapping:profile-pins-warning`)}
-		</div>
-	);
-};
-const BasePinSection = () => {
-	const { pins, savePins, setPin } = usePinStore();
+const PinSection = ({
+	sectionTitle,
+	pins,
+	saveHandler,
+	setHandler,
+}: PinSectionType) => {
 	const { buttonLabels, updateUsedPins } = useContext(AppContext);
 	const { t } = useTranslation('');
 	const [saveMessage, setSaveMessage] = useState('');
@@ -137,7 +121,7 @@ const BasePinSection = () => {
 			(selected: MultiValue<OptionType> | SingleValue<OptionType>) => {
 				// Handle clearing
 				if (!selected || (Array.isArray(selected) && !selected.length)) {
-					setPin(pin, {
+					setHandler(pin, {
 						action: BUTTON_ACTIONS.NONE,
 						customButtonMask: 0,
 						customDpadMask: 0,
@@ -146,13 +130,13 @@ const BasePinSection = () => {
 					const lastSelected = selected[selected.length - 1];
 					// Revert to single option if choosing action type
 					if (lastSelected.type === 'action') {
-						setPin(pin, {
+						setHandler(pin, {
 							action: lastSelected.value,
 							customButtonMask: 0,
 							customDpadMask: 0,
 						});
 					} else {
-						setPin(
+						setHandler(
 							pin,
 							selected.reduce(
 								(masks, option) => ({
@@ -175,7 +159,7 @@ const BasePinSection = () => {
 						);
 					}
 				} else {
-					setPin(pin, {
+					setHandler(pin, {
 						action: selected[0].value,
 						customButtonMask: 0,
 						customDpadMask: 0,
@@ -201,7 +185,7 @@ const BasePinSection = () => {
 		e.preventDefault();
 		e.stopPropagation();
 		try {
-			await savePins();
+			await saveHandler();
 			updateUsedPins();
 			setSaveMessage(t('Common:saved-success-message'));
 		} catch (error) {
@@ -211,8 +195,18 @@ const BasePinSection = () => {
 
 	return (
 		<>
-			<PinMappingWarning />
-			<Section title={`Base(Profile 1) - Pin Mapping`}>
+			<div className="alert alert-warning">
+				<Trans ns="PinMapping" i18nKey="alert-text">
+					Mapping buttons to pins that aren&apos;t connected or available can
+					leave the device in non-functional state. To clear the invalid
+					configuration go to the{' '}
+					<NavLink to="/reset-settings">Reset Settings</NavLink> page.
+				</Trans>
+				<br />
+				<br />
+				{t(`PinMapping:profile-pins-warning`)}
+			</div>
+			<Section title={sectionTitle}>
 				<Form onSubmit={handleSubmit}>
 					<div className="pin-grid gap-3">
 						{Object.entries(pins).map(([pin, pinData], index) => (
@@ -238,7 +232,7 @@ const BasePinSection = () => {
 					<CaptureButton
 						labels={Object.values(buttonNames)}
 						onChange={(label, pin) =>
-							setPin(
+							setHandler(
 								// Convert getHeldPins format to setPinMappings format
 								pin < 10 ? `pin0${pin}` : `pin${pin}`,
 								{
@@ -263,108 +257,10 @@ const BasePinSection = () => {
 	);
 };
 
-const ProfilePinSection = ({
-	title,
-	profilePins,
-	profileIndex,
-}: ProfilePinSectionType) => {
-	const { saveProfiles, setProfileAction } = useProfilesStore();
-	const { buttonLabels, updateUsedPins } = useContext(AppContext);
-	const { t } = useTranslation('');
-	const [saveMessage, setSaveMessage] = useState('');
-
-	const { buttonLabelType, swapTpShareLabels } = buttonLabels;
-	const CURRENT_BUTTONS = getButtonLabels(buttonLabelType, swapTpShareLabels);
-	const buttonNames = omit(CURRENT_BUTTONS, ['label', 'value']);
-
-	const onChange = useCallback(
-		(pin: string, profileIndex: number) =>
-			(selected: SingleValue<OptionType>) => {
-				setProfileAction(
-					profileIndex,
-					pin,
-					selected?.value === undefined ? BUTTON_ACTIONS.NONE : selected.value,
-				);
-			},
-		[],
-	);
-
-	const getOptionLabel = useCallback(
-		(option: OptionType) => {
-			const labelKey = option.label?.split('BUTTON_PRESS_')?.pop();
-			// Need to fallback as some button actions are not part of button names
-			return (
-				(labelKey && buttonNames[labelKey]) ||
-				t(`PinMapping:actions.${option.label}`)
-			);
-		},
-		[buttonNames],
-	);
-
-	const handleSubmit = useCallback(async (e) => {
-		e.preventDefault();
-		e.stopPropagation();
-		try {
-			await saveProfiles();
-			updateUsedPins();
-			setSaveMessage(t('Common:saved-success-message'));
-		} catch (error) {
-			setSaveMessage(t('Common:saved-error-message'));
-		}
-	}, []);
-
-	return (
-		<>
-			<PinMappingWarning />
-			<Section title={title}>
-				<Form onSubmit={handleSubmit}>
-					<div className="pin-grid gap-3">
-						{Object.entries(profilePins).map(([pin, pinData], index) => (
-							<div
-								key={`select-${index}`}
-								className="d-flex col align-items-center"
-							>
-								<div className="d-flex flex-shrink-0" style={{ width: '4rem' }}>
-									<label>{pin.toUpperCase()}</label>
-								</div>
-								<CustomSelect
-									isClearable
-									options={groupedOptions}
-									isDisabled={isDisabled(pinData)}
-									getOptionLabel={getOptionLabel}
-									onChange={onChange(pin, profileIndex)}
-									value={getSingleValue(pinData)}
-								/>
-							</div>
-						))}
-					</div>
-					<CaptureButton
-						labels={Object.values(buttonNames)}
-						onChange={(label, pin) =>
-							setProfileAction(
-								profileIndex,
-								// Convert getHeldPins format to setPinMappings format
-								pin < 10 ? `pin0${pin}` : `pin${pin}`,
-								// Maps current mode buttons to actions
-								BUTTON_ACTIONS[
-									`BUTTON_PRESS_${invert(buttonNames)[label].toUpperCase()}`
-								],
-							)
-						}
-					/>
-					<Button type="submit" className="m-4">
-						{t('Common:button-save-label')}
-					</Button>
-					{saveMessage && <Alert variant="info">{saveMessage}</Alert>}
-				</Form>
-			</Section>
-		</>
-	);
-};
-
 export default function PinMapping() {
-	const { fetchPins } = usePinStore();
-	const { fetchProfiles, profiles } = useProfilesStore();
+	const { fetchPins, pins, setPin, savePins } = usePinStore();
+	const { fetchProfiles, profiles, setProfilePin, saveProfiles } =
+		useProfilesStore();
 	const [pressedPin, setPressedPin] = useState<number | null>(null);
 	const { t } = useTranslation('');
 
@@ -409,7 +305,12 @@ export default function PinMapping() {
 				<Col sm={10}>
 					<Tab.Content>
 						<Tab.Pane eventKey="profile-1">
-							<BasePinSection />
+							<PinSection
+								sectionTitle={`Base(Profile 1) - Pin Mapping`}
+								pins={pins}
+								setHandler={setPin}
+								saveHandler={savePins}
+							/>
 						</Tab.Pane>
 
 						{profiles.map((profilePins, profileIndex) => (
@@ -417,10 +318,13 @@ export default function PinMapping() {
 								key={`profile-${profileIndex + 2}`}
 								eventKey={`profile-${profileIndex + 2}`}
 							>
-								<ProfilePinSection
-									title={`Profile ${profileIndex + 2} - Pin Mapping`}
-									profilePins={profilePins}
-									profileIndex={profileIndex}
+								<PinSection
+									sectionTitle={`Profile ${profileIndex + 2} - Pin Mapping`}
+									pins={profilePins}
+									saveHandler={saveProfiles}
+									setHandler={(pin, maskPayload) =>
+										setProfilePin(profileIndex, pin, maskPayload)
+									}
 								/>
 							</Tab.Pane>
 						))}

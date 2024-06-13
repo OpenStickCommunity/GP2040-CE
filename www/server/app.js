@@ -16,6 +16,13 @@ const __dirname = path.dirname(__filename);
 const { pico: picoController } = JSON.parse(
 	readFileSync(path.resolve(__dirname, '../src/Data/Controllers.json'), 'utf8'),
 );
+const PinMappings = Object.entries(picoController).reduce(
+	(acc, [key, value]) => ({
+		...acc,
+		[key]: { action: value, customButtonMask: 0, customDpadMask: 0 },
+	}),
+	{},
+);
 
 const port = process.env.PORT || 8080;
 
@@ -253,20 +260,8 @@ app.get('/api/getCustomTheme', (req, res) => {
 	});
 });
 
-app.get('/api/getPinMappingsV2', (req, res) => {
-	return res.send(
-		Object.entries(picoController).reduce(
-			(acc, [key, value]) => ({
-				...acc,
-				[key]: { action: value, customButtonMask: 0, customDpadMask: 0 },
-			}),
-			{},
-		),
-	);
-});
-
 app.get('/api/getPinMappings', (req, res) => {
-	return res.send(picoController);
+	return res.send(PinMappings);
 });
 
 app.get('/api/getKeyMappings', (req, res) =>
@@ -386,7 +381,7 @@ app.get('/api/getWiiControls', (req, res) =>
 
 app.get('/api/getProfileOptions', (req, res) => {
 	return res.send({
-		alternativePinMappings: [picoController, picoController, picoController],
+		alternativePinMappings: [PinMappings, PinMappings, PinMappings],
 	});
 });
 
