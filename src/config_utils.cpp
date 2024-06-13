@@ -119,6 +119,10 @@
     #define DEFAULT_PS4CONTROLLER_TYPE PS4_CONTROLLER
 #endif
 
+#ifndef DEFAULT_DEBOUNCE_DELAY
+    #define DEFAULT_DEBOUNCE_DELAY 5
+#endif
+
 #ifndef DEFAULT_PS4_REPORTHACK
     #define DEFAULT_PS4_REPORTHACK false
 #endif
@@ -254,7 +258,7 @@ void ConfigUtils::initUnsetPropertiesWithDefaults(Config& config)
     INIT_UNSET_PROPERTY(config.gamepadOptions, fourWayMode, false);
     INIT_UNSET_PROPERTY(config.gamepadOptions, profileNumber, 1);
     INIT_UNSET_PROPERTY(config.gamepadOptions, ps4ControllerType, DEFAULT_PS4CONTROLLER_TYPE);
-    INIT_UNSET_PROPERTY(config.gamepadOptions, debounceDelay, 5);
+    INIT_UNSET_PROPERTY(config.gamepadOptions, debounceDelay, DEFAULT_DEBOUNCE_DELAY);
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeB1, DEFAULT_INPUT_MODE_B1);
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeB2, DEFAULT_INPUT_MODE_B2);
     INIT_UNSET_PROPERTY(config.gamepadOptions, inputModeB3, DEFAULT_INPUT_MODE_B3);
