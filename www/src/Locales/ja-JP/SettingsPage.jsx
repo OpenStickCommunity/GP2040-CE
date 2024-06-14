@@ -13,7 +13,7 @@ export default {
 		mdmini: 'Sega Genesis/メガドライブ Mini',
 		pcemini: 'PCエンジン/Turbografx 16 Mini',
 		astro: 'アストロシティミニ',
-		psclassic: 'プレイスッテーションクラシック',
+		psclassic: 'プレイステーションクラシック',
 		xboxoriginal: '初代 Xbox',
 	},
 	'input-mode-group': {
