@@ -16,6 +16,8 @@ void HIDDriver::initialize() {
 	hidReport = {
 		.buttons = 0,
 		.direction = HID_HAT_NOTHING,
+		.l_x_axis = HID_JOYSTICK_MID, .l_y_axis = HID_JOYSTICK_MID,
+		.r_x_axis = HID_JOYSTICK_MID, .r_y_axis = HID_JOYSTICK_MID,
 	};
 
 	class_driver = {
@@ -45,6 +47,11 @@ void HIDDriver::process(Gamepad * gamepad, uint8_t * outBuffer) {
 		case GAMEPAD_MASK_UP | GAMEPAD_MASK_LEFT:    hidReport.direction = HID_HAT_UPLEFT;    break;
 		default:                                     hidReport.direction = HID_HAT_NOTHING;   break;
 	}
+
+	hidReport.l_x_axis = static_cast<uint8_t>(gamepad->state.lx >> 8);
+	hidReport.l_y_axis = static_cast<uint8_t>(gamepad->state.ly >> 8);
+	hidReport.r_x_axis = static_cast<uint8_t>(gamepad->state.rx >> 8);
+	hidReport.r_y_axis = static_cast<uint8_t>(gamepad->state.ry >> 8);
 
 	// these first three buttons are in this unintuitive order to be compatible with
 	// expectations, e.g. both PS3/4/5 modes and Switch modes map to HID as

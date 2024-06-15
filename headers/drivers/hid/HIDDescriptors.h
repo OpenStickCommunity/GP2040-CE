@@ -54,9 +54,14 @@ typedef struct __attribute((packed, aligned(1)))
 	// 8 = center, 0 = up, 1 = up/right, 2 = right, 3 = right/down
 	// 4 = down, 5 = down/left, 6 = left, 7 = left/up
 	uint8_t direction : 4;
-	// TODO: provide the raw directions in case something wants them?
 	// four bits would fill this out...
 	uint8_t dummy : 4;
+
+	// analogs --- left stick x/y, right stick x/y
+	uint8_t l_x_axis;
+	uint8_t l_y_axis;
+	uint8_t r_x_axis;
+	uint8_t r_y_axis;
 } HIDReport;
 
 static const uint8_t hid_string_language[]     = { 0x09, 0x04 };
@@ -115,6 +120,18 @@ static const uint8_t hid_report_descriptor[] =
 	0x95, 0x01,        //   REPORT_COUNT (1)
 	0x75, 0x04,        //   REPORT_SIZE (4)
 	0x81, 0x01,        //   INPUT (Cnst,Ary,Abs)
+	/* // analogs */
+	0x05, 0x01,        //   USAGE_PAGE (Generic Desktop)
+	0x26, 0xff, 0x00,  //   LOGICAL_MAXIMUM (255)
+	0x46, 0xff, 0x00,  //   PHYSICAL_MAXIMUM (255)
+	0x09, 0x30,        //   USAGE (X)
+	0x09, 0x31,        //   USAGE (Y)
+	0x09, 0x32,        //   USAGE (Z)
+	0x09, 0x35,        //   USAGE (Rz)
+	0x75, 0x08,        //   REPORT_SIZE (8)
+	0x95, 0x04,        //   REPORT_COUNT (4)
+	0x81, 0x02,        //   INPUT (Data,Var,Abs)
+	/* // done */
 	0xc0               // END_COLLECTION
 };
 
