@@ -55,15 +55,15 @@ Input latency is tested using the methodology outlined at [WydD's inputlag.scien
 
 | Version | Mode         | Poll Rate | Min     | Max     | Avg     | Stdev   | % on time | %1f skip | %2f skip |
 | ------- | ------------ | --------- | ------- | ------- | ------- | ------- | --------- | -------- | -------- |
-| v0.7.8  | Xinput       | 1 ms      | 0.45 ms | 1.28 ms | 0.76 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       |
-| v0.7.8  | Switch       | 1 ms      | 0.41 ms | 1.22 ms | 0.72 ms | 0.24 ms | 98.53%    | 1.47%    | 0%       |
-| v0.7.8  | Dinput (PS3) | 1 ms      | 0.44 ms | 1.27 ms | 0.75 ms | 0.24 ms | 98.49%    | 1.51%    | 0%       |
-| v0.7.8  | PS4          | 1 ms      | 0.55 ms | 2.37 ms | 0.90 ms | 0.32 ms | 98.20%    | 1.80%    | 0%       |
-| v0.7.8  | PS5          | 1 ms      | 0.55 ms | 2.24 ms | 0.91 ms | 0.32 ms | 98.18%    | 1.82%    | 0%       |
+| v0.7.9  | Xinput       | 1 ms      | 0.45 ms | 1.28 ms | 0.76 ms | 0.24 ms | 98.48%    | 1.52%    | 0%       |
+| v0.7.9  | Switch       | 1 ms      | 0.41 ms | 1.23 ms | 0.72 ms | 0.24 ms | 98.53%    | 1.47%    | 0%       |
+| v0.7.9  | Dinput (PS3) | 1 ms      | 0.44 ms | 1.27 ms | 0.75 ms | 0.24 ms | 98.49%    | 1.51%    | 0%       |
+| v0.7.9  | PS4          | 1 ms      | 0.55 ms | 2.26 ms | 0.90 ms | 0.32 ms | 98.21%    | 1.79%    | 0%       |
+| v0.7.9  | PS5          | 1 ms      | 0.55 ms | 2.33 ms | 0.91 ms | 0.33 ms | 98.18%    | 1.82%    | 0%       |
 
-Full results can be found in the [GP2040-CE v0.7.8 Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.8.xlsx) .xlsx Sheet.
+Full results can be found in the [GP2040-CE v0.7.9 Firmware Latency Test Results](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.9.xlsx) .xlsx Sheet.
 
-Results from v0.7.7 can be found [HERE](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.7.xlsx).  Previous results can be found in the `latency_testing` folder [HERE](https://github.com/OpenStickCommunity/Site/tree/main/latency_testing).
+Results from v0.7.8 can be found [HERE](https://github.com/OpenStickCommunity/Site/raw/main/latency_testing/GP2040-CE_Firmware_Latency_Test_Results_v0.7.8.xlsx).  Previous results can be found in the `latency_testing` folder.
 
 ## Support
 
